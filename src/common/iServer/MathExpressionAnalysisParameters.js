@@ -6,7 +6,8 @@ import SuperMap from '../SuperMap';
  * @param options - {Object} 可选参数。如：</br>
  *        dataset - {string} 要用来做栅格代数运算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
  *        extractRegion - {SuperMap.Geometry.Ploygon} 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
- *        如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。</br>
+ *                         面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
+ *                         如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。</br>
  *        expression - {string} 指定的栅格运算表达式。如：[DatasourceAlias1.Raster1]*2-10；必设字段。</br>
  *        isZip - {boolean} 是否对结果数据集进行压缩处理。默认为 false，表示不压缩。</br>
  *        ignoreNoValue - {boolean} 是否忽略无值栅格数据。true </br>表示忽略无值数据，即无值栅格不参与运算。默认为 false。
@@ -14,7 +15,7 @@ import SuperMap from '../SuperMap';
  *        resultGridName - {number}指定结果数据集名称，必设字段。</br>
  *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
  */
-export default  class MathExpressionAnalysisParameters {
+export default class MathExpressionAnalysisParameters {
 
     /**
      * @member SuperMap.MathExpressionAnalysisParameters.prototype.dataset -{string}
@@ -25,8 +26,9 @@ export default  class MathExpressionAnalysisParameters {
     dataset = null;
 
     /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.extractRegion -{SuperMap.Geometry.Ploygon}
-     * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.extractRegion
+     * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
      * 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
      */
     extractRegion = null;
@@ -90,6 +92,7 @@ export default  class MathExpressionAnalysisParameters {
         me.resultGridName = null;
         me.deleteExistResultDataset = null;
     }
+
     /**
      * @function SuperMap.MathExpressionAnalysisParameters.toObject
      * @param mathExpressionAnalysisParameters -{Object} 栅格代数运算参数

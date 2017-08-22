@@ -6,6 +6,7 @@ import {PixelFormat} from '../REST';
  * @classdesc插值分析参数类。
  * @param options - {Object} 可选参数。如</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        searchRadius - {number}查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
  *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。</br>
  *        zValueScale - {number}用于进行插值分析值的缩放比率，默认为1。</br>
@@ -15,13 +16,15 @@ import {PixelFormat} from '../REST';
  *        outputDatasourceName - {string} 插值分析结果数据源的名称。</br>
  *        pixelFormat - {SuperMap.PixelFormat} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 用于做插值分析的数据源中数据集的名称。</br>
- *        inputPoints - {Array <Point>}|{Array} 用于做插值分析的离散点集合。</br>
+ *        inputPoints - {Array <Object>}|{Array} 用于做插值分析的离散点集合。</br>
+ *                      点类型可以是：SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  *        InterpolationAnalystType - {string} 插值分析类型（dataset或geometry），默认为dataset 。</br>
  */
-export default  class InterpolationAnalystParameters {
+export default class InterpolationAnalystParameters {
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.bounds -{SuperMap.Bounds}
-     * @description 插值分析的范围，用于确定结果栅格数据集的范围。
+     * @member SuperMap.InterpolationAnalystParameters.prototype.bounds
+     * @description 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+     * Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
      * 如果缺省，则默认为原数据集的范围。鉴于此插值方法为内插方法，原数据集的范围内的插值结果才相对有参考价值，
      * 因此建议此参数不大于原数据集范围。
      */
@@ -29,7 +32,7 @@ export default  class InterpolationAnalystParameters {
 
     /**
      * @member SuperMap.InterpolationAnalystParameters.prototype.searchRadius -{number}
-     * @description 查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。
+     * @description 查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。</br>
      * 计算某个位置的Z 值时，会以该位置为圆心，以查找范围的值为半径，落在这个范围内的采样点都将参与运算。
      * 该值需要根据待插值点数据的分布状况和点数据集范围进行设置。
      */
@@ -37,7 +40,7 @@ export default  class InterpolationAnalystParameters {
 
     /**
      * @member SuperMap.InterpolationAnalystParameters.prototype.zValueFieldName -{string}
-     * @description 数据集插值分析中，用于指定进行插值分析的目标字段名，插值分析不支持文本类型的字段。
+     * @description 数据集插值分析中，用于指定进行插值分析的目标字段名，插值分析不支持文本类型的字段。</br>
      * 含义为每个插值点在插值过程中的权重，可以将所有点此字段值设置为1，即所有点在整体插值中权重相同。
      * 当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。
      */
@@ -52,7 +55,7 @@ export default  class InterpolationAnalystParameters {
 
     /**
      * @member SuperMap.InterpolationAnalystParameters.prototype.resolution -{number}
-     * @description 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
+     * @description 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
      * 该值不能超过待分析数据集的范围边长。
      * 且该值设置时，应该考虑点数据集范围大小来取值，一般为结果栅格行列值（即结果栅格数据集范围除以分辨率），在500以内可以较好地体现密度走势。
      */
@@ -92,10 +95,11 @@ export default  class InterpolationAnalystParameters {
     dataset = null;
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.inputPoints -{Array<Point>}|{Array<Array>}
-     *
-     * @description 用于做插值分析的离散点（离散点包括Z值）集合。
-     * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。通过离散点直接进行插值分析不需要指定输入数据集inputDatasourceName，inputDatasetName以及zValueFieldName。
+     * @member SuperMap.InterpolationAnalystParameters.prototype.inputPoints -{Array<Object>}|{Array<Array>}
+     * @description 用于做插值分析的离散点（离散点包括Z值）集合。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
+     * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。
+     * 通过离散点直接进行插值分析不需要指定输入数据集inputDatasourceName，inputDatasetName以及zValueFieldName。
      */
     inputPoints = null;
 
@@ -135,6 +139,7 @@ export default  class InterpolationAnalystParameters {
         me.outputDatasetName = null;
         me.pixelFormat = null;
     }
+
     /**
      * @function SuperMap.InterpolationAnalystParameters.toObject
      * @param interpolationAnalystParameters -{Object} 插值分析参数

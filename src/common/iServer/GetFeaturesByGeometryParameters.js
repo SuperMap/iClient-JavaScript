@@ -2,11 +2,15 @@
 import {SpatialQueryMode} from '../REST';
 import FilterParameter from './FilterParameter';
 import GetFeaturesParametersBase from './GetFeaturesParametersBase';
+
 /**
  * @class SuperMap.GetFeaturesByGeometryParameters
  * @classdesc 数据集几何查询参数类。该类用于设置数据集几何查询的相关参数。
  * @param options - {Object} 可選参数。如:</br>
  *        geometry - {Object} 用于查询的几何对象。</br>
+ *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+ *                  线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+ *                  面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
  *        attributeFilter - {string} 几何查询属性过滤条件。</br>
  *        fields - {Array<string>} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
@@ -17,7 +21,7 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
-export default  class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
+export default class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
 
 
     /**
@@ -28,8 +32,11 @@ export default  class GetFeaturesByGeometryParameters extends GetFeaturesParamet
     getFeatureMode = "SPATIAL";
 
     /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.geometry {Object}
-     * @description 用于查询的几何对象。
+     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.geometry
+     * @description 用于查询的几何对象。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
     geometry = null;
 

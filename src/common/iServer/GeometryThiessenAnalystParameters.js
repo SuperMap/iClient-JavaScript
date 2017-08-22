@@ -1,5 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import ThiessenAnalystParameters from './ThiessenAnalystParameters';
+
 /**
  * @class SuperMap.GeometryThiessenAnalystParameters
  * @constructs SuperMap.GeometryThiessenAnalystParameters
@@ -7,14 +8,16 @@ import ThiessenAnalystParameters from './ThiessenAnalystParameters';
  * 几何对象泰森多边形分析参数类
  * 对指定的某个几何对象做泰森多边形分析。通过该类可以指定要做泰森多边形分析的几何对象、返回数据集名称等。
  * @param options - {Object} 可选参数。如:</br>
- *        points - {Array<Point>}|{Array} 使用点数组进行分析时使用的几何对象。
+ *        points - {Array<Point>}|{Array} 使用点数组进行分析时使用的几何对象。</br>
+ *                 点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  * @extends SuperMap.ThiessenAnalystParameters
  */
 
-export default  class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters {
+export default class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters {
     /**
-     * @member SuperMap.GeometryThiessenAnalystParameters.prototype.points -{Array<Point>}|{Array}
-     * @description 使用点数组进行分析时使用的几何对象。
+     * @member SuperMap.GeometryThiessenAnalystParameters.prototype.points -{Array<Object>}|{Array}
+     * @description 使用点数组进行分析时使用的几何对象。</br>
+     * 点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
      */
     points = null;
 
@@ -38,6 +41,7 @@ export default  class GeometryThiessenAnalystParameters extends ThiessenAnalystP
             me.points = null;
         }
     }
+
     /**
      * @function SuperMap.GeometryThiessenAnalystParameters.toObject
      * @param geometryThiessenAnalystParameters -{Object} 几何对象泰森多边形分析参数。

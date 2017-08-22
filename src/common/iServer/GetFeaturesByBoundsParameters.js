@@ -7,7 +7,8 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  * @class SuperMap.GetFeaturesByBoundsParameters
  * @classdesc 数据集范围查询参数类,该类用于设置数据集范围查询的相关参数。
  * @param options - {Object} 参数。如：<br>
- *        bounds - {SuperMap.Bounds} 用于查询的范围对象。</br>
+ *        bounds - {Object} 用于查询的范围对象。</br>
+ *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        attributeFilter - {string} 范围查询属性过滤条件。</br>
  *        fields - {Array<string>} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
@@ -28,8 +29,8 @@ export default class GetFeaturesByBoundsParameters extends GetFeaturesParameters
     getFeatureMode = null;
 
     /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.bounds -{SuperMap.Bounds}
-     * @description 用于查询的范围对象。
+     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.bounds
+     * @description 用于查询的范围对象。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent
      *
      */
     bounds = null;

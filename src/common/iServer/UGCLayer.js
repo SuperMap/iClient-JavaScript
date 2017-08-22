@@ -13,7 +13,7 @@
  *        type - {SuperMap.UGCLayerType} 图层类型。<br>
  *        visible - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
  */
-export default  class UGCLayer {
+export default class UGCLayer {
 
     /**
      * @member SuperMap.UGCLayer.prototype.bounds -{SuperMap.Bounds}

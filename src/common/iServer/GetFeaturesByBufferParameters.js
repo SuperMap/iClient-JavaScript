@@ -10,13 +10,16 @@ import FilterParameter from './FilterParameter';
  *        attributeFilter - {string} 属性查询条件。 </br>
  *        fields - {Array<string>} 设置查询结果返回字段。默认返回所有字段。</br>
  *        geometry - {Object} 空间查询条件。</br>
+ *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+ *                  线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+ *                  面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
  *        dataSetNames - {Array<string>} 数据集集合中的数据集名称列表。</br>
  *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
-export default  class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
+export default class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
 
 
     /**
@@ -32,8 +35,11 @@ export default  class GetFeaturesByBufferParameters extends GetFeaturesParameter
     attributeFilter = null;
 
     /**
-     * @member SuperMap.GetFeaturesByBufferParameters.prototype.geometry - {Object}
-     * @description 空间查询条件。
+     * @member SuperMap.GetFeaturesByBufferParameters.prototype.geometry
+     * @description 空间查询条件。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
     geometry = null;
 

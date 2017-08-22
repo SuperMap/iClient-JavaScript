@@ -6,6 +6,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  * @classdesc 点密度差值分析参数类
  * @param options - {Object} 可选参数。如:</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ *                 Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        searchRadius - {number}查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。</br>
  *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
  *        zValueScale - {number}用于进行插值分析值的缩放比率，默认值为1。</br>
@@ -16,6 +17,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
  *        inputPoints - {Array <SuperMap.Geometry.Point>} 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
+ *                      点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  * @extends SuperMap.InterpolationAnalystParameters
  * @example 例如：
  * (start code)

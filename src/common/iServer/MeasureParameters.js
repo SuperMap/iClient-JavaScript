@@ -4,7 +4,10 @@ import {Unit} from '../REST';
 /**
  * @class SuperMap.MeasureParameters
  * @classdesc 量算参数类。
- * @param geometry - {Object} 要量算的几何对象。
+ * @param geometry - {Object} 要量算的几何对象。<br>
+ *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+ *                  线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+ *                  面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br>
  * @param options - {Object} 可选参数。如：<br>
  *         unit - {Unit} 量算单位。<br>
  *         prjCoordSys -{string} 用来指定该量算操作所使用的投影,该项默认值为空。<br>
@@ -14,7 +17,10 @@ export default class MeasureParameters {
 
     /**
      * @member SuperMap.MeasureParameters.prototype.geometry -{Object}
-     * @description 要量算的几何对象（{Line} 或 {Polygon}），必设属性。
+     * @description 要量算的几何对象（{Line} 或 {Polygon}），必设属性。<br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
     geometry = null;
 

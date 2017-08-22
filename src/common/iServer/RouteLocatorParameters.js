@@ -8,7 +8,7 @@ import Route from './Route';
  * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数
  * 如果用户两种参数均设置，优先选择Dataset方式
  * @param options - {Object} 可选参数。如:</br>
- *        sourceRoute -  {SuperMap.Route} 【必选参数】路由对象。</br>
+ *        sourceRoute -  {SuperMap.Route} 【必选参数】路由对象。路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString。</br>
  *        type -  {string} 【必选参数】类型：点 or 线。</br>
  *        measure - {Double} 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
  *        offset - {Double} 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>
@@ -16,10 +16,10 @@ import Route from './Route';
  *        startMeasure - {Double} 定位线的起始M值。只当路由对象定位线时有意义。</br>
  *        endMeasure -  {Double} 定位线的终止M值。只当路由对象定位线时有意义。</br>
  */
-export default  class RouteLocatorParameters {
+export default class RouteLocatorParameters {
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.sourceRoute -{SuperMap.Route}
-     * @description 路由对象。
+     * @member SuperMap.RouteLocatorParameters.prototype.sourceRoute
+     * @description 路由对象。路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
      */
     sourceRoute = null;
 

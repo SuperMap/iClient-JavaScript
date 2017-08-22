@@ -1,19 +1,26 @@
 ﻿import SuperMap from '../SuperMap';
 import BufferAnalystParameters from './BufferAnalystParameters';
+
 /**
  * @class SuperMap.GeometryBufferAnalystParameters
  * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
  * @param options - {Object} 可选参数。如:</br>
  *        sourceGeometry - {Object} 要做缓冲区分析的几何对象。必设字段。</br>
+ *              点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+ *              线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+ *              面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
  *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
  * @extends SuperMap.BufferAnalystParameters
  */
-export default  class GeometryBufferAnalystParameters extends BufferAnalystParameters {
+export default class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 
     /**
-     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
-     * @description 要做缓冲区分析的几何对象(支持Point、LineString、LinearRing、Polygon)。必设字段。
+     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry
+     * @description 要做缓冲区分析的几何对象。必设字段。。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
     sourceGeometry = null;
 
@@ -36,13 +43,14 @@ export default  class GeometryBufferAnalystParameters extends BufferAnalystParam
             me.sourceGeometry = null;
         }
     }
+
     /**
      * @function SuperMap.GeometryBufferAnalystParameters.toObject
      * @param geometryBufferAnalystParameters -{Object} 几何对象缓冲区分析参数
      * @param tempObj - {Object} 目标对象
      * @description 生成几何对象缓冲区分析对象
      */
-    static  toObject(geometryBufferAnalystParameters, tempObj) {
+    static toObject(geometryBufferAnalystParameters, tempObj) {
         for (var name in geometryBufferAnalystParameters) {
             if (name === "bufferSetting") {
                 var tempBufferSetting = {};

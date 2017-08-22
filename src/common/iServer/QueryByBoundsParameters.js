@@ -16,9 +16,10 @@ import QueryParameters from './QueryParameters';
  *         holdTime - {number}资源在服务端保存的时间。<br>
  *         returnCustomResult -{boolean} 仅供三维使用。<br>
  *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
- *         bounds - {SuperMap.Bounds} 指定的查询范围。
+ *         bounds - {SuperMap.Bounds} 指定的查询范围。<br>
+ *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
  */
-export default  class QueryByBoundsParameters extends QueryParameters {
+export default class QueryByBoundsParameters extends QueryParameters {
 
     /**
      * @member SuperMap.QueryByBoundsParameters.prototype.returnContent -{boolean}
@@ -29,8 +30,9 @@ export default  class QueryByBoundsParameters extends QueryParameters {
     returnContent = true;
 
     /**
-     * @member SuperMap.QueryByBoundsParameters.prototype.bounds -{SuperMap.Bounds}
-     * @description 指定的查询范围。
+     * @member SuperMap.QueryByBoundsParameters.prototype.bounds
+     * @description 指定的查询范围。<br>
+     * Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
      */
     bounds = null;
 

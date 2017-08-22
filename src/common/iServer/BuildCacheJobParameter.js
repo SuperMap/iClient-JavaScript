@@ -10,64 +10,64 @@ import SuperMap from '../SuperMap';
  *         serverAdresses - {string} MongoDB地址。<br>
  *         database -- {string} 数据库。<br>
  *         version -{string} 版本。<br>
- *         bounds -{SuperMap.Bounds} 缓存范围。<br>
+ *         bounds -{SuperMap.Bounds} 缓存范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
  *         imageType -{number}缓存类型.<br>
  *         level -{number}缓存比例尺级别。
  */
-export default  class BuildCacheJobParameter {
+export default class BuildCacheJobParameter {
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{string}
      * @description 数据集名称。
      */
-    datasetName= "";
+    datasetName = "";
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{string}
      * @description 缓存名称。
      */
-    cacheName= "";
+    cacheName = "";
 
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{string}
      * @description 存储类型。
      */
-    cacheType= "";
+    cacheType = "";
 
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.serverAdresses -{string}
      * @description MongoDB地址。
      */
-    serverAdresses= "";
+    serverAdresses = "";
 
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.database -{string}
      * @description 数据库。
      */
-    database= "";
+    database = "";
 
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.version -{string}
      * @description 版本。
      */
-    version= "";
+    version = "";
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
-     * @description 缓存范围。
+     * @member SuperMap.BuildCacheJobParameter.prototype.bounds
+     * @description 缓存范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent
      */
-    bounds= "";
+    bounds = "";
 
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
      * @description 缓存类型。
      */
-    imageType= 'Heatmap';
+    imageType = 'Heatmap';
 
 
     /**
@@ -98,13 +98,14 @@ export default  class BuildCacheJobParameter {
         this.imageType = null;
         this.level = null;
     }
+
     /**
      * @function SuperMap.BuildCacheJobParameter.toObject
      * @param buildCacheJobParameter -{Object} 地图缓存参数。
      * @param tempObj - {Object} 目标对象
      * @description 生成地图缓存对象
      */
-    static  toObject(buildCacheJobParameter, tempObj) {
+    static toObject(buildCacheJobParameter, tempObj) {
         for (let name in buildCacheJobParameter) {
             if (name === "datasetName") {
                 tempObj['input'] = tempObj['input'] || {};

@@ -720,6 +720,16 @@ deps = {
                     "name": "mapboxgl.supermap.MapvLayer",
                     "des": "百度MapV可视化效果"
                 }]
+            },
+            "ThemeLayer": {
+                "name": "ThemeLayer",
+                "src": [
+                    "./src/mapboxgl/overlay/RankTheme3DLayer.js"
+                ],
+                "modules": [{
+                    "name": "RankTheme3DLayer.js",
+                    "des": "分段专题图"
+                }]
             }
         },
         "Control": {

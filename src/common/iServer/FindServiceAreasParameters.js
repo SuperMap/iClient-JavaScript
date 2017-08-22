@@ -10,11 +10,12 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *        isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
  *        isCenterMutuallyExclusive - {boolean} 是否中心点互斥。<br>
  *        centers - {Array} 服务站点数组，必设字段。<br>
+ *                          点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        isFromCenter - {boolean} 是否从中心点开始分析。<br>
  *        weights - {Array} 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
-export default  class FindServiceAreasParameters {
+export default class FindServiceAreasParameters {
 
     /**
      * @member SuperMap.FindServiceAreasParameters.prototype.isAnalyzeById -{boolean}
@@ -33,10 +34,11 @@ export default  class FindServiceAreasParameters {
     isCenterMutuallyExclusive = false;
 
     /**
-     * @member SuperMap.FindServiceAreasParameters.prototype.centers -{Array<{SuperMap.Point}>}|{Array<number>}
+     * @member SuperMap.FindServiceAreasParameters.prototype.centers -{Array<Object>|Array<number>}
      * @description 服务站点数组，必设字段。<br>
-     *               当该类的 iSAnalyzeById = true 时，通过结点 ID 号指定服务站点；<br>
-     *               当 iSAnalyzeById = false 时，通过点坐标指定服务站点。
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+     *              当该类的 iSAnalyzeById = true 时，通过结点 ID 号指定服务站点；<br>
+     *              当 iSAnalyzeById = false 时，通过点坐标指定服务站点。
      */
     centers = null;
 

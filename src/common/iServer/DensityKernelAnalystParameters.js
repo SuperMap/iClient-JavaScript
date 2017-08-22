@@ -1,10 +1,12 @@
 import SuperMap from '../SuperMap';
+
 /**
  * @class SuperMap.DensityKernelAnalystParameters
  * @classdesc 核密度分析参数类
  * @param options - {Object} 可选参数。如:</br>
  *        dataset - {string} 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
- *        bounds - {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。 如果缺省，则默认为原数据集的范围。</br>
+ *        bounds - {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。如果缺省，则默认为原数据集的范围。</br>
+ *                                   Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        searchRadius - {number}栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。</br>
  *        fieldName - {string} 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。</br>
  *        resultGridDatasetResolution - {number}密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。</br>
@@ -12,7 +14,7 @@ import SuperMap from '../SuperMap';
  *        resultGridName - {number}指定结果数据集名称，必设字段。</br>
  *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
  */
-export default  class DensityKernelAnalystParameters {
+export default class DensityKernelAnalystParameters {
 
     /**
      * @member SuperMap.DensityKernelAnalystParameters.prototype.dataset -{string}
@@ -23,8 +25,9 @@ export default  class DensityKernelAnalystParameters {
     dataset = null;
 
     /**
-     * @member SuperMap.DensityKernelAnalystParameters.prototype.bounds -{SuperMap.Bounds}
-     * @description 核密度分析的范围，用于确定结果栅格数据集的范围。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.bounds
+     * @description 核密度分析的范围，用于确定结果栅格数据集的范围。</br>
+     * Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
      * 如果缺省，则默认为原数据集的范围。
      */
     bounds = null;
@@ -89,6 +92,7 @@ export default  class DensityKernelAnalystParameters {
         me.resultGridName = null;
         me.deleteExistResultDataset = null;
     }
+
     /**
      * @function SuperMap.DensityKernelAnalystParameters.toObject
      * @param densityKernelAnalystParameters -{Object} 核密度分析参数。

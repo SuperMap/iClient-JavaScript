@@ -4249,7 +4249,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         serverAdresses - {string} MongoDB地址。<br>
  *         database -- {string} 数据库。<br>
  *         version -{string} 版本。<br>
- *         bounds -{SuperMap.Bounds} 缓存范围。<br>
+ *         bounds -{SuperMap.Bounds} 缓存范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
  *         imageType -{number}缓存类型.<br>
  *         level -{number}缓存比例尺级别。
  */
@@ -4309,8 +4309,8 @@ var BuildCacheJobParameter = function () {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
-     * @description 缓存范围。
+     * @member SuperMap.BuildCacheJobParameter.prototype.bounds
+     * @description 缓存范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent
      */
 
 
@@ -4344,6 +4344,7 @@ var BuildCacheJobParameter = function () {
             this.imageType = null;
             this.level = null;
         }
+
         /**
          * @function SuperMap.BuildCacheJobParameter.toObject
          * @param buildCacheJobParameter -{Object} 地图缓存参数。
@@ -4766,7 +4767,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @description 密度分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。 <br>
- *        query -{SuperMap.Bounds} 分析范围。 <br>
+ *        query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
  *        resolution -{number}分辨率。 <br>
  *        method -{number}分析方法。 <br>
  *        meshType -{number}分析类型。 <br>
@@ -4855,7 +4856,7 @@ var KernelDensityJobParameter = function () {
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。
+     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
      */
 
 
@@ -5262,7 +5263,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。<br>
- *        query -{SuperMap.Bounds} 分析范围。<br>
+ *        query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
  *        resolution -{number}分辨率。<br>
  *        statisticModes -{string} 分析模式。<br>
  *        meshType -{number}分析类型。<br>
@@ -5284,8 +5285,8 @@ var SummaryMeshJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.query -{Object}
+     * @description 分析范围(聚合类型为网格面聚合时使用的参数)。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
      */
 
 
@@ -5543,7 +5544,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>
  *         sumShape -{boolean} 是否统计长度或面积。 <br>
- *         query -{SuperMap.Bounds} 分析范围。 <br>
+ *         query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
  *         standardSummaryFields -{boolean} 以标准属字段统计。 <br>
  *         standardFields -{string} 以标准属字段统计的字段名称。 <br>
  *         standardStatisticModes -{string} 以标准属字段统计的统计模式。 <br>
@@ -5658,8 +5659,8 @@ var SummaryRegionJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。
+     * @member SuperMap.SummaryRegionJobParameter.prototype.query
+     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
      */
 
 
@@ -5686,6 +5687,7 @@ var SummaryRegionJobParameter = function () {
             this.meshSizeUnit = null;
             this.type = null;
         }
+
         /**
          * @function SuperMap.SummaryRegionJobParameter.toObject
          * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。

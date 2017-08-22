@@ -1,10 +1,12 @@
 ﻿import SuperMap from '../SuperMap';
 import {EditType} from '../REST';
+
 /**
  * @class SuperMap.EditFeaturesParameters
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
  * @param options - {Object} 可選参数。如:</br>
  *        features - {Array<Object>} 当前需要创建或者是修改的要素集。</br>
+ *                                   feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。</br>
  *        returnContent - {boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>
  *        editType - {SuperMap.EditType} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。</br>
  *        IDs - {Array<string|Integer>}删除要素时的要素的ID数组。</br>
@@ -24,8 +26,9 @@ export default class EditFeaturesParameters {
     dataSetName = null;
 
     /**
-     * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<SuperMap.Feature.Vector>}|{GeoJSON.Feature}
-     * @description 当前需要创建或者是修改的要素集。
+     * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
+     * @description 当前需要创建或者是修改的要素集。</br>
+     * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
      */
     features = null;
 

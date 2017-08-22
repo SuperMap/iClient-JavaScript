@@ -1,5 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import {SmoothMethod} from '../REST';
+
 /**
  * @class SuperMap.SurfaceAnalystParametersSetting
  * @classdesc
@@ -7,6 +8,7 @@ import {SmoothMethod} from '../REST';
  * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {SuperMap.Geometry} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
+ *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
  *        datumValue - {number}获取或设置表面分析中提取等值线、提取等值面的基准值。</br>
  *        expectedZValues - {Array<number>} 获取或设置期望分析结果的 Z 值集合。</br>
  *        interval - {number}获取或设置等值距。等值距是两条等值线之间的间隔值。</br>
@@ -14,11 +16,12 @@ import {SmoothMethod} from '../REST';
  *        smoothMethod - {SuperMap.SmoothMethod} 获取或设置光滑处理所使用的方法。</br>
  *        smoothness - {number}获取或设置表面分析中等值线或等值面的边界线的光滑度。</br>
  */
-export default  class SurfaceAnalystParametersSetting {
+export default class SurfaceAnalystParametersSetting {
 
     /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.clipRegion -{SuperMap.Geometry}
-     * @description 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。
+     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.clipRegion
+     * @description 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。
      */
     clipRegion = null;
 

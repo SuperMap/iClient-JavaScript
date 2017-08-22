@@ -10,12 +10,13 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *              最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。<br>
  * @param options - {Object} 可选参数。如：<br>
  *        endNodeAssigned - {boolean} 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
- *        true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。<br>
+ *                                      true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。<br>
  *        isAnalyzeById - {boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
- *        nodes - {Array<SuperMap.Point>}|{Array<number>} 配送目标集合，必设字段。<br>
+ *        nodes - {Array<Object>|Array<number>} 配送目标集合，必设字段。<br>
+ *                          点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。<br>
  */
-export default  class FindTSPPathsParameters {
+export default class FindTSPPathsParameters {
     /**
      * @member SuperMap.FindTSPPathsParameters.prototype.endNodeAssigned -{boolean}
      * @description 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
@@ -30,10 +31,11 @@ export default  class FindTSPPathsParameters {
     isAnalyzeById = false;
 
     /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.nodes -{Array<SuperMap.Point>}|{Array<number>}
+     * @member SuperMap.FindTSPPathsParameters.prototype.nodes -{Array<Object>|Array<number>}
      * @description 旅行商分析途经点数组，必设字段。<br>
-     *               当 SuperMap.FindTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
-     *               当 SuperMap.FindTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+     *              当 SuperMap.FindTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
+     *              当 SuperMap.FindTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
      */
     nodes = null;
 

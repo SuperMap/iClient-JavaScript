@@ -1,7 +1,8 @@
-﻿import  SuperMap from '../SuperMap';
+﻿import SuperMap from '../SuperMap';
 import DataReturnOption from './DataReturnOption';
 import FilterParameter from './FilterParameter';
 import OverlayAnalystParameters from './OverlayAnalystParameters';
+
 /**
  * @class SuperMap.DatasetOverlayAnalystParameters
  * @classdesc 数据集叠加分析参数类。
@@ -9,7 +10,8 @@ import OverlayAnalystParameters from './OverlayAnalystParameters';
  *        operateDataset - {string} 叠加分析中操作数据集的名称。必设字段。</br>
  *        operateDatasetFields - {Array<string>} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
  *        operateDatasetFilter - {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。</br>
- *        operateRegions - {Array<SuperMap.Geometry>} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
+ *        operateRegions - {Array<Object>} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
+ *                         面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
  *        sourceDataset - {string} 叠加分析中源数据集的名称。必设字段。</br>
  *        sourceDatasetFields - {Array<string>} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
  *        sourceDatasetFilter - {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。</br>
@@ -18,7 +20,7 @@ import OverlayAnalystParameters from './OverlayAnalystParameters';
  *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
-export default  class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
+export default class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
     /**
      * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateDataset -{string}
@@ -39,8 +41,9 @@ export default  class DatasetOverlayAnalystParameters extends OverlayAnalystPara
     operateDatasetFilter = null;
 
     /**
-     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateRegions -{Array<SuperMap.Geometry>}
-     * @description 操作面对象集合，表示与这些面对象进行叠加分析。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateRegions
+     * @description 操作面对象集合，表示与这些面对象进行叠加分析。<br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。<br>
      * 与 operateDataset 参数互斥，冲突时以operateDataset 为准。
      */
     operateRegions = null;
@@ -126,6 +129,7 @@ export default  class DatasetOverlayAnalystParameters extends OverlayAnalystPara
             me.resultSetting = null;
         }
     }
+
     /**
      * @function SuperMap.DatasetOverlayAnalystParameters.toObject
      * @param datasetOverlayAnalystParameters -{Object} 数据集分析参数。

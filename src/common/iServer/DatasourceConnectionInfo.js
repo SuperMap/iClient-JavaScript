@@ -57,7 +57,7 @@ export default  class DatasourceConnectionInfo {
     engineType = null;
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive-{boolean}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive -{boolean}
      * @description 是否以独占方式打开数据源。
      */
     exclusive = null;

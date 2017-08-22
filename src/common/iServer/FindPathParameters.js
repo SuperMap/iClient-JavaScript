@@ -16,16 +16,17 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *        isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
  *        hasLeastEdgeCount - {boolean} 是否按照弧段数最少的进行最佳路径分析。<br>
  *        nodes - {Array} 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
+ *                        点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
-export default  class FindPathParameters {
+export default class FindPathParameters {
 
     /**
      * @member SuperMap.FindPathParameters.prototype.isAnalyzeById -{boolean}
      * @description 是否通过节点 ID 指定路径分析的结点，默认为 false。<br>
-     *               指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
-     *               当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindPathParameters.nodes = [ID1,ID2,...]；<br>
-     *               反之表示通过结点坐标指定途经点，即 SuperMap.FindPathParameters.nodes = [{x1,y1},{x2,y2},...] 。
+     *              指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
+     *              当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindPathParameters.nodes = [ID1,ID2,...]；<br>
+     *              反之表示通过结点坐标指定途经点，即 SuperMap.FindPathParameters.nodes = [{x1,y1},{x2,y2},...] 。
      */
     isAnalyzeById = false;
 
@@ -38,10 +39,11 @@ export default  class FindPathParameters {
     hasLeastEdgeCount = null;
 
     /**
-     * @member SuperMap.FindPathParameters.prototype.nodes -{Array<{SuperMap.Point}>}|{Array<number>}
+     * @member SuperMap.FindPathParameters.prototype.nodes -{Array<Object>|Array<number>}
      * @description 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
-     *               当 SuperMap.FindPathParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
-     *               当 SuperMap.FindPathParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+     *              当 SuperMap.FindPathParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
+     *              当 SuperMap.FindPathParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
      */
     nodes = null;
 

@@ -52,6 +52,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  *        variogramMode - {string} 克吕金插值时的半变函数类型，默认为球型（SPHERICAL）。</br>
  *        exponent - {string} 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数，可选值为exp1、exp2，默认值为exp1。</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        searchMode - {string} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找，必设参数。</br>
  *        expectedCount - {number}【固定点数查找】方式下，设置待查找的点数，默认值为12；【定长查找】方式下，设置查找的最小点数，默认值为12。</br>
  *        searchRadius - {number}【定长查找】方式下，设置参与运算点的查找范围，默认值为0。</br>
@@ -66,8 +67,8 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。</br>
  * 当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
- *
+ *        inputPoints - {Array <Object} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
+ *                       点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  * @extends SuperMap.InterpolationAnalystParameters
  * @example 例如：
  * (start code)

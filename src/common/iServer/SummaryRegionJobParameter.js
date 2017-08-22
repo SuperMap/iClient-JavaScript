@@ -7,7 +7,7 @@ import {StatisticAnalystMode, SummaryType, AnalystSizeUnit} from '../REST'
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>
  *         sumShape -{boolean} 是否统计长度或面积。 <br>
- *         query -{SuperMap.Bounds} 分析范围。 <br>
+ *         query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
  *         standardSummaryFields -{boolean} 以标准属字段统计。 <br>
  *         standardFields -{string} 以标准属字段统计的字段名称。 <br>
  *         standardStatisticModes -{string} 以标准属字段统计的统计模式。 <br>
@@ -40,8 +40,8 @@ export default class SummaryRegionJobParameter {
     sumShape = true;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。
+     * @member SuperMap.SummaryRegionJobParameter.prototype.query
+     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
      */
     query = "";
 
@@ -131,6 +131,7 @@ export default class SummaryRegionJobParameter {
         this.meshSizeUnit = null;
         this.type = null;
     }
+
     /**
      * @function SuperMap.SummaryRegionJobParameter.toObject
      * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。

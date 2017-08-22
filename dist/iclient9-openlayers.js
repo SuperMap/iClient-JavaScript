@@ -5234,13 +5234,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** * @class SuperMap.TransportationAnalystParameter * @classdesc 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 * @param options - {Object} 可选参数。如:</br> *        barrierEdgeIDs - {Array<number>} 网络分析中障碍弧段的 ID 数组。 *        barrierNodeIDs - {Array<number>} 网络分析中障碍点的 ID 数组。 *        barrierPoints - {Array<Point>} *        weightFieldName - {string} 阻力字段的名称。 *        turnWeightField - {string} 转向权重字段的名称。 *        resultSetting - {SuperMap.TransportationAnalystResultSetting} 分析结果返回内容。 */
+/** * @class SuperMap.TransportationAnalystParameter * @classdesc 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 * @param options - {Object} 可选参数。如:</br> *        barrierEdgeIDs - {Array<number>} 网络分析中障碍弧段的 ID 数组。</br> *        barrierNodeIDs - {Array<number>} 网络分析中障碍点的 ID 数组。</br> *        barrierPoints - {Array<Point>} 网络分析中 Point2D 类型的障碍点数组。</br> *                         点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br> *        weightFieldName - {string} 阻力字段的名称。</br> *        turnWeightField - {string} 转向权重字段的名称。</br> *        resultSetting - {SuperMap.TransportationAnalystResultSetting} 分析结果返回内容。 */
 var TransportationAnalystParameter = function () {
 
   /**     * @member SuperMap.TransportationAnalystParameter.prototype.turnWeightField -{string}     * @description 转向权重字段的名称。     */
 
 
-  /**     * @member SuperMap.TransportationAnalystParameter.prototype.barrierPoints -{Array<Point>}     * @description 网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */
+  /**     * @member SuperMap.TransportationAnalystParameter.prototype.barrierPoints -{Array<Point>}     * @description 网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。</br>     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */
 
 
   /**     * @member SuperMap.TransportationAnalystParameter.prototype.barrierEdgeIDs -{Array<number>}     * @description 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */
@@ -5849,6 +5849,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc插值分析参数类。
  * @param options - {Object} 可选参数。如</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        searchRadius - {number}查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
  *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。</br>
  *        zValueScale - {number}用于进行插值分析值的缩放比率，默认为1。</br>
@@ -5858,7 +5859,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        outputDatasourceName - {string} 插值分析结果数据源的名称。</br>
  *        pixelFormat - {SuperMap.PixelFormat} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 用于做插值分析的数据源中数据集的名称。</br>
- *        inputPoints - {Array <Point>}|{Array} 用于做插值分析的离散点集合。</br>
+ *        inputPoints - {Array <Object>}|{Array} 用于做插值分析的离散点集合。</br>
+ *                      点类型可以是：SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  *        InterpolationAnalystType - {string} 插值分析类型（dataset或geometry），默认为dataset 。</br>
  */
 var InterpolationAnalystParameters = function () {
@@ -5898,7 +5900,7 @@ var InterpolationAnalystParameters = function () {
 
     /**
      * @member SuperMap.InterpolationAnalystParameters.prototype.searchRadius -{number}
-     * @description 查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。
+     * @description 查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。</br>
      * 计算某个位置的Z 值时，会以该位置为圆心，以查找范围的值为半径，落在这个范围内的采样点都将参与运算。
      * 该值需要根据待插值点数据的分布状况和点数据集范围进行设置。
      */
@@ -5939,10 +5941,11 @@ var InterpolationAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.inputPoints -{Array<Point>}|{Array<Array>}
-     *
-     * @description 用于做插值分析的离散点（离散点包括Z值）集合。
-     * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。通过离散点直接进行插值分析不需要指定输入数据集inputDatasourceName，inputDatasetName以及zValueFieldName。
+     * @member SuperMap.InterpolationAnalystParameters.prototype.inputPoints -{Array<Object>}|{Array<Array>}
+     * @description 用于做插值分析的离散点（离散点包括Z值）集合。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
+     * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。
+     * 通过离散点直接进行插值分析不需要指定输入数据集inputDatasourceName，inputDatasetName以及zValueFieldName。
      */
 
 
@@ -5962,7 +5965,7 @@ var InterpolationAnalystParameters = function () {
 
     /**
      * @member SuperMap.InterpolationAnalystParameters.prototype.resolution -{number}
-     * @description 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
+     * @description 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
      * 该值不能超过待分析数据集的范围边长。
      * 且该值设置时，应该考虑点数据集范围大小来取值，一般为结果栅格行列值（即结果栅格数据集范围除以分辨率），在500以内可以较好地体现密度走势。
      */
@@ -5970,14 +5973,15 @@ var InterpolationAnalystParameters = function () {
 
     /**
      * @member SuperMap.InterpolationAnalystParameters.prototype.zValueFieldName -{string}
-     * @description 数据集插值分析中，用于指定进行插值分析的目标字段名，插值分析不支持文本类型的字段。
+     * @description 数据集插值分析中，用于指定进行插值分析的目标字段名，插值分析不支持文本类型的字段。</br>
      * 含义为每个插值点在插值过程中的权重，可以将所有点此字段值设置为1，即所有点在整体插值中权重相同。
      * 当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。
      */
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.bounds -{SuperMap.Bounds}
-     * @description 插值分析的范围，用于确定结果栅格数据集的范围。
+     * @member SuperMap.InterpolationAnalystParameters.prototype.bounds
+     * @description 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+     * Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
      * 如果缺省，则默认为原数据集的范围。鉴于此插值方法为内插方法，原数据集的范围内的插值结果才相对有参考价值，
      * 因此建议此参数不大于原数据集范围。
      */
@@ -5997,6 +6001,7 @@ var InterpolationAnalystParameters = function () {
             me.outputDatasetName = null;
             me.pixelFormat = null;
         }
+
         /**
          * @function SuperMap.InterpolationAnalystParameters.toObject
          * @param interpolationAnalystParameters -{Object} 插值分析参数
@@ -8101,6 +8106,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 泰森多边形分析参数基类。
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {SuperMap.Geometry} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
+ *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
  *        createResultDataset - {boolean} 是否返回结果数据集，默认不返回。</br>
  *        resultDatasetName - {boolean} 指定结果数据集名称。</br>
  *        resultDatasourceName - {boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
@@ -8163,8 +8169,9 @@ var ThiessenAnalystParameters = function () {
      */
 
     /**
-     * @member SuperMap.ThiessenAnalystParameters.prototype.clipRegion -{SuperMap.Geometry}
-     * @description 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。
+     * @member SuperMap.ThiessenAnalystParameters.prototype.clipRegion
+     * @description 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。
      */
 
 
@@ -21990,7 +21997,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         serverAdresses - {string} MongoDB地址。<br>
  *         database -- {string} 数据库。<br>
  *         version -{string} 版本。<br>
- *         bounds -{SuperMap.Bounds} 缓存范围。<br>
+ *         bounds -{SuperMap.Bounds} 缓存范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
  *         imageType -{number}缓存类型.<br>
  *         level -{number}缓存比例尺级别。
  */
@@ -22050,8 +22057,8 @@ var BuildCacheJobParameter = function () {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
-     * @description 缓存范围。
+     * @member SuperMap.BuildCacheJobParameter.prototype.bounds
+     * @description 缓存范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent
      */
 
 
@@ -22085,6 +22092,7 @@ var BuildCacheJobParameter = function () {
             this.imageType = null;
             this.level = null;
         }
+
         /**
          * @function SuperMap.BuildCacheJobParameter.toObject
          * @param buildCacheJobParameter -{Object} 地图缓存参数。
@@ -22705,7 +22713,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 可选参数。如：<br>
  *         queryMode - {string} 海图查询模式类型，SuperMap iClient for JavaScript对
  *                              海图支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。<br>
- *         bounds - {SuperMap.Bounds}  海图查询范围。<br>
+ *         bounds - {SuperMap.Bounds}  海图查询范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
  *         chartLayerNames - {Array<string>} 查询的海图图层的名称。<br>
  *         chartQueryFilterParameters - {Array <SuperMap.ChartQueryFilterParameter>} 海图查询过滤参数。包括：物标代码、
  *                                                                         物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。<br>
@@ -22730,8 +22738,8 @@ var ChartQueryParameters = function () {
 
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.bounds -{SuperMap.Bounds}
-     * @description 海图查询范围。
+     * @member SuperMap.ChartQueryParameters.prototype.bounds
+     * @description 海图查询范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
      */
     function ChartQueryParameters(options) {
         _classCallCheck(this, ChartQueryParameters);
@@ -23395,19 +23403,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ComputeWeightMatrixParameters
  * @classdesc 耗费矩阵分析参数类。<br>
- *               根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
+ *            根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
  * @param options - {Object} 可选参数。如：<br>
  *         isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
- *         nodes - {Array<SuperMap.Point>}|{Array<number>} 要计算耗费矩阵的点数组，必设字段。<br>
+ *         nodes - {Array<Object>|Array<number>} 要计算耗费矩阵的点数组，必设字段。<br>
+ *         点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *         parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 var ComputeWeightMatrixParameters = function () {
 
     /**
-     * @member SuperMap.ComputeWeightMatrixParameters.prototype.nodes {Array<Point>}|{Array<Number>}
+     * @member SuperMap.ComputeWeightMatrixParameters.prototype.nodes {Array<Object>|Array<number>}
      * @description 要计算耗费矩阵的点数组，必设字段。<br>
-     *               当 SuperMap.ComputeWeightMatrixParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
-     *               当 SuperMap.ComputeWeightMatrixParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+     *              当 SuperMap.ComputeWeightMatrixParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
+     *              当 SuperMap.ComputeWeightMatrixParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
      */
     function ComputeWeightMatrixParameters(options) {
         _classCallCheck(this, ComputeWeightMatrixParameters);
@@ -24270,7 +24280,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        operateDataset - {string} 叠加分析中操作数据集的名称。必设字段。</br>
  *        operateDatasetFields - {Array<string>} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
  *        operateDatasetFilter - {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。</br>
- *        operateRegions - {Array<SuperMap.Geometry>} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
+ *        operateRegions - {Array<Object>} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
+ *                         面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
  *        sourceDataset - {string} 叠加分析中源数据集的名称。必设字段。</br>
  *        sourceDatasetFields - {Array<string>} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
  *        sourceDatasetFilter - {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。</br>
@@ -24295,8 +24306,9 @@ var DatasetOverlayAnalystParameters = function (_OverlayAnalystParame) {
 
 
     /**
-     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateRegions -{Array<SuperMap.Geometry>}
-     * @description 操作面对象集合，表示与这些面对象进行叠加分析。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateRegions
+     * @description 操作面对象集合，表示与这些面对象进行叠加分析。<br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。<br>
      * 与 operateDataset 参数互斥，冲突时以operateDataset 为准。
      */
 
@@ -24402,6 +24414,7 @@ var DatasetOverlayAnalystParameters = function (_OverlayAnalystParame) {
                 me.resultSetting = null;
             }
         }
+
         /**
          * @function SuperMap.DatasetOverlayAnalystParameters.toObject
          * @param datasetOverlayAnalystParameters -{Object} 数据集分析参数。
@@ -24767,7 +24780,7 @@ var DatasourceConnectionInfo = function () {
 
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive-{boolean}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive -{boolean}
      * @description 是否以独占方式打开数据源。
      */
 
@@ -25039,7 +25052,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 核密度分析参数类
  * @param options - {Object} 可选参数。如:</br>
  *        dataset - {string} 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
- *        bounds - {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。 如果缺省，则默认为原数据集的范围。</br>
+ *        bounds - {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。如果缺省，则默认为原数据集的范围。</br>
+ *                                   Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        searchRadius - {number}栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。</br>
  *        fieldName - {string} 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。</br>
  *        resultGridDatasetResolution - {number}密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。</br>
@@ -25117,8 +25131,9 @@ var DensityKernelAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.DensityKernelAnalystParameters.prototype.bounds -{SuperMap.Bounds}
-     * @description 核密度分析的范围，用于确定结果栅格数据集的范围。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.bounds
+     * @description 核密度分析的范围，用于确定结果栅格数据集的范围。</br>
+     * Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
      * 如果缺省，则默认为原数据集的范围。
      */
 
@@ -25137,6 +25152,7 @@ var DensityKernelAnalystParameters = function () {
             me.resultGridName = null;
             me.deleteExistResultDataset = null;
         }
+
         /**
          * @function SuperMap.DensityKernelAnalystParameters.toObject
          * @param densityKernelAnalystParameters -{Object} 核密度分析参数。
@@ -25191,6 +25207,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
  * @param options - {Object} 可選参数。如:</br>
  *        features - {Array<Object>} 当前需要创建或者是修改的要素集。</br>
+ *                                   feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。</br>
  *        returnContent - {boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>
  *        editType - {SuperMap.EditType} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。</br>
  *        IDs - {Array<string|Integer>}删除要素时的要素的ID数组。</br>
@@ -25251,8 +25268,9 @@ var EditFeaturesParameters = function () {
 
 
     /**
-     * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<SuperMap.Feature.Vector>}|{GeoJSON.Feature}
-     * @description 当前需要创建或者是修改的要素集。
+     * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
+     * @description 当前需要创建或者是修改的要素集。</br>
+     * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
      */
 
 
@@ -27006,33 +27024,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.FindClosestFacilitiesParameters
  * @classdesc 最近设施分析参数类。
- * @param options - {Object} 可选参数。
- *         event - {Point/Integer} 事件点，一般为需要获得服务设施服务的事件位置，必设字段。
- *         expectFacilityCount - {Integer} 要查找的设施点数量。默认值为1。
- *         facilities - {Array<SuperMap.Point>}|{Array<number>} 设施点集合，一般为提供服务的服务设施位置，必设字段。
- *         fromEvent - {boolean} 是否从事件点到设施点进行查找。
- *         isAnalyzeById - {boolean} 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
- *         maxWeight - {number}查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
- *         parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
+ * @param options - {Object} 可选参数。</br>
+ *         event - {Object/Integer} 事件点，一般为需要获得服务设施服务的事件位置，必设字段。</br>
+ *                  点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
+ *         expectFacilityCount - {Integer} 要查找的设施点数量。默认值为1。</br>
+ *         facilities - {Array<Object>|Array<number>} 设施点集合，一般为提供服务的服务设施位置，必设字段。</br>
+ *                       点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
+ *         fromEvent - {boolean} 是否从事件点到设施点进行查找。</br>
+ *         isAnalyzeById - {boolean} 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。</br>
+ *         maxWeight - {number}查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。</br>
+ *         parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。</br>
  */
 var FindClosestFacilitiesParameters = function () {
 
     /**
      * @member SuperMap.FindClosestFacilitiesParameters.prototype.maxWeight -{number}
-     * @description 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
-     *               例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。
-     *               那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
+     * @description 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。</br>
+     *              例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。
+     *              那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
      */
 
 
     /**
      * @member SuperMap.FindClosestFacilitiesParameters.prototype.fromEvent -{boolean}
-     * @description 是否从事件点到设施点进行查找。
-     *               最近设施分析主要是通过设施点和事件点之间最优的路线来分析在一定范围内哪个或哪些设施与事件点有最优路线的关系。
-     *               这个行走线路是通过网络图层进行网络分析算法计算出来的两点间的最优路线。
-     *               由于存在从 A 点到 B 点与从 B 点到 A 点的耗费不一样的情况，因此起止点不同可能会得到不同的最优路线。
-     *               因此在进行最近设施分析之前，需要设置获取的最优路线的方向，即是以事件点作为起点到最近设施点的方向分析，还是以最近设施点为起点到事件点的方向分析。
-     *               如果需要以事件点作为起点到设施点方向进行查找，设置该字段值为 true；默认为 false，表示从设施点到事件点进行查找。
+     * @description 是否从事件点到设施点进行查找。</br>
+     *              最近设施分析主要是通过设施点和事件点之间最优的路线来分析在一定范围内哪个或哪些设施与事件点有最优路线的关系。</br>
+     *              这个行走线路是通过网络图层进行网络分析算法计算出来的两点间的最优路线。
+     *              由于存在从 A 点到 B 点与从 B 点到 A 点的耗费不一样的情况，因此起止点不同可能会得到不同的最优路线。
+     *              因此在进行最近设施分析之前，需要设置获取的最优路线的方向，即是以事件点作为起点到最近设施点的方向分析，还是以最近设施点为起点到事件点的方向分析。
+     *              如果需要以事件点作为起点到设施点方向进行查找，设置该字段值为 true；默认为 false，表示从设施点到事件点进行查找。
      */
 
 
@@ -27068,9 +27088,9 @@ var FindClosestFacilitiesParameters = function () {
 
     /**
      * @member SuperMap.FindClosestFacilitiesParameters.prototype.parameter {SuperMap.TransportationAnalystParameter}
-     * @description 交通网络分析通用参数。
-     *               通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。
-     *               它为 SuperMap.TransportationAnalystParameter 类型，虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
+     * @description 交通网络分析通用参数。</br>
+     *              通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。</br>
+     *              它为 SuperMap.TransportationAnalystParameter 类型，虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
      */
 
 
@@ -27081,16 +27101,18 @@ var FindClosestFacilitiesParameters = function () {
 
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.facilities -{Array<Point>}|{Array<number>}
-     * @description 设施点集合，一般为提供服务的服务设施位置，必设字段。
-     *                可以通过两种方式赋予设施点：当该类中字段 isAnalyzeById = true 时，应输入设施点 ID 号；当 isAnalyzeById = false 时，应输入设施点坐标。
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.facilities -{Array<Object>|Array<number>}
+     * @description 设施点集合，一般为提供服务的服务设施位置，必设字段。</br>
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
+     *              可以通过两种方式赋予设施点：当该类中字段 isAnalyzeById = true 时，应输入设施点 ID 号；当 isAnalyzeById = false 时，应输入设施点坐标。
      */
 
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.event -{Point/Integer}
-     * @description 事件点，一般为需要获得服务设施服务的事件位置，必设字段。
-     *                可以通过两种方式赋予事件点：当该类中字段 isAnalyzeById = true 时，应输入事件点 ID 号；当 isAnalyzeById = false 时，应输入事件点坐标。
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.event -{Object}
+     * @description 事件点，一般为需要获得服务设施服务的事件位置，必设字段。</br>
+     *              点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
+     *              可以通过两种方式赋予事件点：当该类中字段 isAnalyzeById = true 时，应输入事件点 ID 号；当 isAnalyzeById = false 时，应输入事件点坐标。</br>
      */
 
 
@@ -27358,9 +27380,9 @@ var FindLocationParameters = function () {
 
     /**
      * @member SuperMap.FindLocationParameters.prototype.isFromCenter -{boolean}
-     * @description 是否从中心点开始分配资源。默认为 false。
-     *                由于网路数据中的弧段具有正反阻力，即弧段的正向阻力值与其反向阻力值可能不同，
-     *                因此，在进行分析时，从资源供给中心开始分配资源到需求点与从需求点向资源供给中心分配这两种分配形式下，所得的分析结果会不同。
+     * @description 是否从中心点开始分配资源。默认为 false。<br>
+     *              由于网路数据中的弧段具有正反阻力，即弧段的正向阻力值与其反向阻力值可能不同，
+     *              因此，在进行分析时，从资源供给中心开始分配资源到需求点与从需求点向资源供给中心分配这两种分配形式下，所得的分析结果会不同。
      */
     function FindLocationParameters(options) {
         _classCallCheck(this, FindLocationParameters);
@@ -27391,17 +27413,17 @@ var FindLocationParameters = function () {
 
 
     /**
-     * @member SuperMap.FindLocationParameters.prototype.supplyCenters -{Array<SupplyCenter>}
-     * @description 资源供给中心集合，必设字段。
-     *               资源供给中心是提供资源和服务的设施，对应于网络结点，
-     *               资源供给中心的相关信息包括资源量、最大阻力值、资源供给中心类型，资源供给中心在网络中所处结点的 ID 等，以便在进行选址分区分析时使用。
+     * @member SuperMap.FindLocationParameters.prototype.supplyCenters -{Array<SuperMap.SupplyCenter>}
+     * @description 资源供给中心集合，必设字段。<br>
+     *              资源供给中心是提供资源和服务的设施，对应于网络结点，
+     *              资源供给中心的相关信息包括资源量、最大阻力值、资源供给中心类型，资源供给中心在网络中所处结点的 ID 等，以便在进行选址分区分析时使用。
      */
 
 
     /**
      * @member SuperMap.FindLocationParameters.prototype.expectedSupplyCenterCount -{number}
-     * @description 期望用于最终设施选址的资源供给中心数量，必设字段。
-     *               当输入值为0时，最终设施选址的资源供给中心数量默认为覆盖分析区域内的所需最少的供给中心数。
+     * @description 期望用于最终设施选址的资源供给中心数量，必设字段。<br>
+     *              当输入值为0时，最终设施选址的资源供给中心数量默认为覆盖分析区域内的所需最少的供给中心数。
      */
 
 
@@ -27629,28 +27651,31 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.FindMTSPPathsParameters
  * @classdesc 多旅行商分析参数类
- * @param options - {Object} 可选参数。如：
- *        centers - {Point/Integer} 配送中心集合，必设字段。<br>
+ * @param options - {Object} 可选参数。如：<br>
+ *        centers - {Array<Object>|Array<number>} 配送中心集合，必设字段。<br>
+ *                                  点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        hasLeastTotalCost - {boolean} 配送模式是否为总花费最小方案。默认为 false。<br>
  *        isAnalyzeById - {boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
  *        nodes - {Array<{SuperMap.Point}|number>} 配送目标集合，必设字段。<br>
+ *                                  点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 var FindMTSPPathsParameters = function () {
 
     /**
-     * @member SuperMap.FindMTSPPathsParameters.prototype.nodes -{Array<SuperMap.Point>}|{Array<number>}
+     * @member SuperMap.FindMTSPPathsParameters.prototype.nodes -{Array<Object>|Array<number>}
      * @description 配送目标集合，必设字段。<br>
-     *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
-     *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+     *              当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
+     *              当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
      */
 
 
     /**
      * @member SuperMap.FindMTSPPathsParameters.prototype.hasLeastTotalCost -{boolean}
      * @description 配送模式是否为总花费最小方案。默认为 false。<br>
-     *               若为 true，则按照总花费最小的模式进行配送，此时可能会出现某几个配送中心点配送的花费较多而其他配送中心点的花费很少的情况。<br>
-     *               若为 false，则为局部最优，此方案会控制每个配送中心点的花费，使各个中心点花费相对平均，此时总花费不一定最小。
+     *              若为 true，则按照总花费最小的模式进行配送，此时可能会出现某几个配送中心点配送的花费较多而其他配送中心点的花费很少的情况。<br>
+     *              若为 false，则为局部最优，此方案会控制每个配送中心点的花费，使各个中心点花费相对平均，此时总花费不一定最小。
      */
     function FindMTSPPathsParameters(options) {
         _classCallCheck(this, FindMTSPPathsParameters);
@@ -27679,8 +27704,8 @@ var FindMTSPPathsParameters = function () {
     /**
      * @member SuperMap.FindMTSPPathsParameters.prototype.parameter -{SuperMap.TransportationAnalystParameter}
      * @description 交通网络分析通用参数。<br>
-     *               通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。<br>
-     *               SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
+     *              通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。<br>
+     *              SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
      */
 
 
@@ -27691,10 +27716,11 @@ var FindMTSPPathsParameters = function () {
 
 
     /**
-     * @member SuperMap.FindMTSPPathsParameters.prototype.centers -{Point/Integer}
+     * @member SuperMap.FindMTSPPathsParameters.prototype.centers -{Array<Object>|Array<number>}
      * @description 配送中心集合，必设字段。<br>
-     *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = false 时，centers 应为点的坐标数组；<br>
-     *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = true 时，centers 应为点的 ID 数组。
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+     *              当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = false 时，centers 应为点的坐标数组；<br>
+     *              当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = true 时，centers 应为点的 ID 数组。
      */
 
 
@@ -27947,24 +27973,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
  *        hasLeastEdgeCount - {boolean} 是否按照弧段数最少的进行最佳路径分析。<br>
  *        nodes - {Array} 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
+ *                        点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 var FindPathParameters = function () {
 
     /**
-     * @member SuperMap.FindPathParameters.prototype.nodes -{Array<{SuperMap.Point}>}|{Array<number>}
+     * @member SuperMap.FindPathParameters.prototype.nodes -{Array<Object>|Array<number>}
      * @description 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
-     *               当 SuperMap.FindPathParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
-     *               当 SuperMap.FindPathParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+     *              当 SuperMap.FindPathParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
+     *              当 SuperMap.FindPathParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
      */
 
 
     /**
      * @member SuperMap.FindPathParameters.prototype.isAnalyzeById -{boolean}
      * @description 是否通过节点 ID 指定路径分析的结点，默认为 false。<br>
-     *               指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
-     *               当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindPathParameters.nodes = [ID1,ID2,...]；<br>
-     *               反之表示通过结点坐标指定途经点，即 SuperMap.FindPathParameters.nodes = [{x1,y1},{x2,y2},...] 。
+     *              指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
+     *              当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindPathParameters.nodes = [ID1,ID2,...]；<br>
+     *              反之表示通过结点坐标指定途经点，即 SuperMap.FindPathParameters.nodes = [{x1,y1},{x2,y2},...] 。
      */
     function FindPathParameters(options) {
         _classCallCheck(this, FindPathParameters);
@@ -28240,6 +28268,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
  *        isCenterMutuallyExclusive - {boolean} 是否中心点互斥。<br>
  *        centers - {Array} 服务站点数组，必设字段。<br>
+ *                          点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        isFromCenter - {boolean} 是否从中心点开始分析。<br>
  *        weights - {Array} 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
@@ -28255,10 +28284,11 @@ var FindServiceAreasParameters = function () {
 
 
     /**
-     * @member SuperMap.FindServiceAreasParameters.prototype.centers -{Array<{SuperMap.Point}>}|{Array<number>}
+     * @member SuperMap.FindServiceAreasParameters.prototype.centers -{Array<Object>|Array<number>}
      * @description 服务站点数组，必设字段。<br>
-     *               当该类的 iSAnalyzeById = true 时，通过结点 ID 号指定服务站点；<br>
-     *               当 iSAnalyzeById = false 时，通过点坐标指定服务站点。
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+     *              当该类的 iSAnalyzeById = true 时，通过结点 ID 号指定服务站点；<br>
+     *              当 iSAnalyzeById = false 时，通过点坐标指定服务站点。
      */
 
 
@@ -28558,18 +28588,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。<br>
  * @param options - {Object} 可选参数。如：<br>
  *        endNodeAssigned - {boolean} 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
- *        true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。<br>
+ *                                      true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。<br>
  *        isAnalyzeById - {boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
- *        nodes - {Array<SuperMap.Point>}|{Array<number>} 配送目标集合，必设字段。<br>
+ *        nodes - {Array<Object>|Array<number>} 配送目标集合，必设字段。<br>
+ *                          点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。<br>
  */
 var FindTSPPathsParameters = function () {
 
     /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.nodes -{Array<SuperMap.Point>}|{Array<number>}
+     * @member SuperMap.FindTSPPathsParameters.prototype.nodes -{Array<Object>|Array<number>}
      * @description 旅行商分析途经点数组，必设字段。<br>
-     *               当 SuperMap.FindTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
-     *               当 SuperMap.FindTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
+     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+     *              当 SuperMap.FindTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
+     *              当 SuperMap.FindTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
      */
 
     /**
@@ -29736,6 +29768,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
  * @param options - {Object} 可选参数。如:</br>
  *        sourceGeometry - {Object} 要做缓冲区分析的几何对象。必设字段。</br>
+ *              点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+ *              线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+ *              面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
  *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
  * @extends SuperMap.BufferAnalystParameters
  */
@@ -29762,8 +29797,11 @@ var GeometryBufferAnalystParameters = function (_BufferAnalystParamet) {
 
 
     /**
-     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
-     * @description 要做缓冲区分析的几何对象(支持Point、LineString、LinearRing、Polygon)。必设字段。
+     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry
+     * @description 要做缓冲区分析的几何对象。必设字段。。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
 
 
@@ -29777,6 +29815,7 @@ var GeometryBufferAnalystParameters = function (_BufferAnalystParamet) {
                 me.sourceGeometry = null;
             }
         }
+
         /**
          * @function SuperMap.GeometryBufferAnalystParameters.toObject
          * @param geometryBufferAnalystParameters -{Object} 几何对象缓冲区分析参数
@@ -29850,7 +29889,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
  * @param options - {Object} 可选参数。如:</br>
  *        operateGeometry - {SuperMap.Geometry} 叠加分析的操作几何对象。必设字段。</br>
+ *                      点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+ *                      线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+ *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
  *        sourceGeometry - {SuperMap.Geometry} 叠加分析的源几何对象。必设字段。</br>
+ *                      点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+ *                      线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+ *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
  *        operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
  * @extends SuperMap.OverlayAnalystParameters
  */
@@ -29858,8 +29903,11 @@ var GeometryOverlayAnalystParameters = function (_OverlayAnalystParame) {
     _inherits(GeometryOverlayAnalystParameters, _OverlayAnalystParame);
 
     /**
-     * @member SuperMap.GeometryOverlayAnalystParameters.prototype.operateGeometry -{SuperMap.Geometry}
-     * @description 叠加分析的操作几何对象。必设字段。
+     * @member SuperMap.GeometryOverlayAnalystParameters.prototype.operateGeometry
+     * @description 叠加分析的操作几何对象。必设字段。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
     function GeometryOverlayAnalystParameters(options) {
         _classCallCheck(this, GeometryOverlayAnalystParameters);
@@ -29882,8 +29930,11 @@ var GeometryOverlayAnalystParameters = function (_OverlayAnalystParame) {
 
 
     /**
-     * @member SuperMap.GeometryOverlayAnalystParameters.prototype.sourceGeometry -{SuperMap.Geometry}
-     * @description 叠加分析的源几何对象。必设字段。
+     * @member SuperMap.GeometryOverlayAnalystParameters.prototype.sourceGeometry
+     * @description 叠加分析的源几何对象。必设字段。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。
      */
 
 
@@ -29970,6 +30021,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 该类对几何对象表面分析所用到的参数进行设置。
  * @param options - {Object} 可选参数。如:</br>
  *        points - {Array<SuperMap.Geometry.Point>} 表面分析的坐标点数组。</br>
+ *                  点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  *        zValues - {Array<number>} 表面分析的坐标点的 Z 值数组。</br>
  *        resolution - {number}获取或设置指定中间结果（栅格数据集）的分辨率。</br>
  *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
@@ -29981,8 +30033,9 @@ var GeometrySurfaceAnalystParameters = function (_SurfaceAnalystParame) {
     _inherits(GeometrySurfaceAnalystParameters, _SurfaceAnalystParame);
 
     /**
-     * @member SuperMap.GeometrySurfaceAnalystParameters.prototype.points -{Array<SuperMap.Geometry.Point>}
-     * @description 获取或设置用于表面分析的坐标点数组。
+     * @member SuperMap.GeometrySurfaceAnalystParameters.prototype.points
+     * @description 获取或设置用于表面分析的坐标点数组。</br>
+     * 点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
      */
     function GeometrySurfaceAnalystParameters(options) {
         _classCallCheck(this, GeometrySurfaceAnalystParameters);
@@ -30072,7 +30125,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 几何对象泰森多边形分析参数类
  * 对指定的某个几何对象做泰森多边形分析。通过该类可以指定要做泰森多边形分析的几何对象、返回数据集名称等。
  * @param options - {Object} 可选参数。如:</br>
- *        points - {Array<Point>}|{Array} 使用点数组进行分析时使用的几何对象。
+ *        points - {Array<Point>}|{Array} 使用点数组进行分析时使用的几何对象。</br>
+ *                 点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  * @extends SuperMap.ThiessenAnalystParameters
  */
 
@@ -30098,8 +30152,9 @@ var GeometryThiessenAnalystParameters = function (_ThiessenAnalystParam) {
      */
 
     /**
-     * @member SuperMap.GeometryThiessenAnalystParameters.prototype.points -{Array<Point>}|{Array}
-     * @description 使用点数组进行分析时使用的几何对象。
+     * @member SuperMap.GeometryThiessenAnalystParameters.prototype.points -{Array<Object>}|{Array}
+     * @description 使用点数组进行分析时使用的几何对象。</br>
+     * 点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
      */
 
 
@@ -30115,6 +30170,7 @@ var GeometryThiessenAnalystParameters = function (_ThiessenAnalystParam) {
                 me.points = null;
             }
         }
+
         /**
          * @function SuperMap.GeometryThiessenAnalystParameters.toObject
          * @param geometryThiessenAnalystParameters -{Object} 几何对象泰森多边形分析参数。
@@ -30184,7 +30240,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.GetFeaturesByBoundsParameters
  * @classdesc 数据集范围查询参数类,该类用于设置数据集范围查询的相关参数。
  * @param options - {Object} 参数。如：<br>
- *        bounds - {SuperMap.Bounds} 用于查询的范围对象。</br>
+ *        bounds - {Object} 用于查询的范围对象。</br>
+ *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        attributeFilter - {string} 范围查询属性过滤条件。</br>
  *        fields - {Array<string>} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
@@ -30247,8 +30304,8 @@ var GetFeaturesByBoundsParameters = function (_GetFeaturesParameter) {
 
 
     /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.bounds -{SuperMap.Bounds}
-     * @description 用于查询的范围对象。
+     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.bounds
+     * @description 用于查询的范围对象。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent
      *
      */
 
@@ -30472,6 +30529,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        attributeFilter - {string} 属性查询条件。 </br>
  *        fields - {Array<string>} 设置查询结果返回字段。默认返回所有字段。</br>
  *        geometry - {Object} 空间查询条件。</br>
+ *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+ *                  线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+ *                  面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
  *        dataSetNames - {Array<string>} 数据集集合中的数据集名称列表。</br>
  *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
@@ -30482,8 +30542,11 @@ var GetFeaturesByBufferParameters = function (_GetFeaturesParameter) {
     _inherits(GetFeaturesByBufferParameters, _GetFeaturesParameter);
 
     /**
-     * @member SuperMap.GetFeaturesByBufferParameters.prototype.geometry - {Object}
-     * @description 空间查询条件。
+     * @member SuperMap.GetFeaturesByBufferParameters.prototype.geometry
+     * @description 空间查询条件。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
 
 
@@ -30734,6 +30797,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 数据集几何查询参数类。该类用于设置数据集几何查询的相关参数。
  * @param options - {Object} 可選参数。如:</br>
  *        geometry - {Object} 用于查询的几何对象。</br>
+ *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+ *                  线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+ *                  面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
  *        attributeFilter - {string} 几何查询属性过滤条件。</br>
  *        fields - {Array<string>} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
@@ -30754,8 +30820,11 @@ var GetFeaturesByGeometryParameters = function (_GetFeaturesParameter) {
 
 
     /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.geometry {Object}
-     * @description 用于查询的几何对象。
+     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.geometry
+     * @description 用于查询的几何对象。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
     function GetFeaturesByGeometryParameters(options) {
         _classCallCheck(this, GetFeaturesByGeometryParameters);
@@ -32727,6 +32796,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 点密度差值分析参数类
  * @param options - {Object} 可选参数。如:</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ *                 Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        searchRadius - {number}查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。</br>
  *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
  *        zValueScale - {number}用于进行插值分析值的缩放比率，默认值为1。</br>
@@ -32737,6 +32807,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
  *        inputPoints - {Array <SuperMap.Geometry.Point>} 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
+ *                      点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  * @extends SuperMap.InterpolationAnalystParameters
  * @example 例如：
  * (start code)
@@ -32827,6 +32898,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param options - {Object} 可选参数。如:</br>
  *        power - {number}距离权重计算的幂次。</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        searchMode - {string} 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。必设参数</br>
  *        expectedCount - {number}【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。</br>
  *        searchRadius - {number}【定长查找】方式下，设置查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。</br>
@@ -32838,7 +32910,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        outputDatasourceName - {string} 插值分析结果数据源的名称。必设参数</br>
  *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
+ *        inputPoints - {Array <Object} 用于做插值分析的离散点集合。当插值分析类型（SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
+ *                      点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  * @extends SuperMap.InterpolationAnalystParameters
  * @example 例如：
  * (start code)
@@ -33014,6 +33087,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        variogramMode - {string} 克吕金插值时的半变函数类型，默认为球型（SPHERICAL）。</br>
  *        exponent - {string} 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数，可选值为exp1、exp2，默认值为exp1。</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+ *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。</br>
  *        searchMode - {string} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找，必设参数。</br>
  *        expectedCount - {number}【固定点数查找】方式下，设置待查找的点数，默认值为12；【定长查找】方式下，设置查找的最小点数，默认值为12。</br>
  *        searchRadius - {number}【定长查找】方式下，设置参与运算点的查找范围，默认值为0。</br>
@@ -33028,8 +33102,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。</br>
  * 当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
- *
+ *        inputPoints - {Array <Object} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
+ *                       点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  * @extends SuperMap.InterpolationAnalystParameters
  * @example 例如：
  * (start code)
@@ -33432,7 +33506,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @description 密度分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。 <br>
- *        query -{SuperMap.Bounds} 分析范围。 <br>
+ *        query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
  *        resolution -{number}分辨率。 <br>
  *        method -{number}分析方法。 <br>
  *        meshType -{number}分析类型。 <br>
@@ -33521,7 +33595,7 @@ var KernelDensityJobParameter = function () {
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。
+     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
      */
 
 
@@ -34932,7 +35006,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 可选参数。如：</br>
  *        dataset - {string} 要用来做栅格代数运算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
  *        extractRegion - {SuperMap.Geometry.Ploygon} 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
- *        如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。</br>
+ *                         面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
+ *                         如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。</br>
  *        expression - {string} 指定的栅格运算表达式。如：[DatasourceAlias1.Raster1]*2-10；必设字段。</br>
  *        isZip - {boolean} 是否对结果数据集进行压缩处理。默认为 false，表示不压缩。</br>
  *        ignoreNoValue - {boolean} 是否忽略无值栅格数据。true </br>表示忽略无值数据，即无值栅格不参与运算。默认为 false。
@@ -35010,8 +35085,9 @@ var MathExpressionAnalysisParameters = function () {
 
 
     /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.extractRegion -{SuperMap.Geometry.Ploygon}
-     * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.extractRegion
+     * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
      * 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
      */
 
@@ -35029,6 +35105,7 @@ var MathExpressionAnalysisParameters = function () {
             me.resultGridName = null;
             me.deleteExistResultDataset = null;
         }
+
         /**
          * @function SuperMap.MathExpressionAnalysisParameters.toObject
          * @param mathExpressionAnalysisParameters -{Object} 栅格代数运算参数
@@ -35229,7 +35306,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.MeasureParameters
  * @classdesc 量算参数类。
- * @param geometry - {Object} 要量算的几何对象。
+ * @param geometry - {Object} 要量算的几何对象。<br>
+ *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+ *                  线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+ *                  面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br>
  * @param options - {Object} 可选参数。如：<br>
  *         unit - {Unit} 量算单位。<br>
  *         prjCoordSys -{string} 用来指定该量算操作所使用的投影,该项默认值为空。<br>
@@ -35245,7 +35325,10 @@ var MeasureParameters = function () {
 
     /**
      * @member SuperMap.MeasureParameters.prototype.geometry -{Object}
-     * @description 要量算的几何对象（{Line} 或 {Polygon}），必设属性。
+     * @description 要量算的几何对象（{Line} 或 {Polygon}），必设属性。<br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
     function MeasureParameters(geometry, options) {
         _classCallCheck(this, MeasureParameters);
@@ -36359,7 +36442,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         holdTime - {number}资源在服务端保存的时间。<br>
  *         returnCustomResult -{boolean} 仅供三维使用。<br>
  *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
- *         bounds - {SuperMap.Bounds} 指定的查询范围。
+ *         bounds - {SuperMap.Bounds} 指定的查询范围。<br>
+ *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
  */
 var QueryByBoundsParameters = function (_QueryParameters) {
     _inherits(QueryByBoundsParameters, _QueryParameters);
@@ -36393,8 +36477,9 @@ var QueryByBoundsParameters = function (_QueryParameters) {
 
 
     /**
-     * @member SuperMap.QueryByBoundsParameters.prototype.bounds -{SuperMap.Bounds}
-     * @description 指定的查询范围。
+     * @member SuperMap.QueryByBoundsParameters.prototype.bounds
+     * @description 指定的查询范围。<br>
+     * Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
      */
 
 
@@ -36558,7 +36643,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/** * @class SuperMap.QueryByDistanceParameters * @classdesc Distance 查询参数类。 *               该类用于设置 Distance 查询的相关参数。 * @extends SuperMap.QueryParameters * @param options - {Object} 可选参数。如：<br> *         customParams - {string} 自定义参数，供扩展使用。<br> *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br> *         expectCount - {number}期望返回结果记录个数。<br> *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br> *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br> *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br> *         startRecord - {number}查询起始记录号。<br> *         holdTime - {number}资源在服务端保存的时间。<br> *         returnCustomResult -{boolean} 仅供三维使用。<br> *         distance - {number}查询距离。<br> *         geometry - {Object} 用于查询的几何对象。<br> *         isNearest - {boolean} 是否为最近距离查询。<br> *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。 */
+/** * @class SuperMap.QueryByDistanceParameters * @classdesc Distance 查询参数类。 *               该类用于设置 Distance 查询的相关参数。 * @extends SuperMap.QueryParameters * @param options - {Object} 可选参数。如：<br> *         customParams - {string} 自定义参数，供扩展使用。<br> *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br> *         expectCount - {number}期望返回结果记录个数。<br> *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br> *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br> *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br> *         startRecord - {number}查询起始记录号。<br> *         holdTime - {number}资源在服务端保存的时间。<br> *         returnCustomResult -{boolean} 仅供三维使用。<br> *         distance - {number}查询距离。<br> *         geometry - {Object} 用于查询的几何对象。<br> *                   点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br> *                   线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br> *                   面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br> *         isNearest - {boolean} 是否为最近距离查询。<br> *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。 */
 var QueryByDistanceParameters = function (_QueryParameters) {
   _inherits(QueryByDistanceParameters, _QueryParameters);
 
@@ -36590,7 +36675,7 @@ var QueryByDistanceParameters = function (_QueryParameters) {
   /**     * @member SuperMap.QueryByDistanceParameters.prototype.returnContent -{boolean}     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>     *               为 false，则返回的是查询结果资源的 URI。默认为 true。     */
 
 
-  /**     * @member SuperMap.QueryByDistanceParameters.prototype.geometry -{Object}     * @description 用于查询的地理对象，必设属性。     */
+  /**     * @member SuperMap.QueryByDistanceParameters.prototype.geometry     * @description 用于查询的地理对象，必设属性。<br>     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON     */
 
 
   _createClass(QueryByDistanceParameters, [{
@@ -36773,17 +36858,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         queryParams - {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br>
  *         startRecord - {number}查询起始记录号。<br>
  *         holdTime - {number}资源在服务端保存的时间。<br>
- *         returnCustomResult -{boolean} 仅供三维使用。
+ *         returnCustomResult -{boolean} 仅供三维使用。<br>
  *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
- *         geometry - {Object} 用于查询的几何对象。
+ *         geometry - {Object} 用于查询的几何对象。<br>
+ *                   点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+ *                   线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+ *                   面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br>
  *         spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式。
  */
 var QueryByGeometryParameters = function (_QueryParameters) {
     _inherits(QueryByGeometryParameters, _QueryParameters);
 
     /**
-     * @member SuperMap.QueryByGeometryParameters.prototype.geometry -{Object}
-     * @description 用于查询的几何对象。
+     * @member SuperMap.QueryByGeometryParameters.prototype.geometry
+     * @description 用于查询的几何对象。<br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
     function QueryByGeometryParameters(options) {
         _classCallCheck(this, QueryByGeometryParameters);
@@ -37634,6 +37725,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 可选参数。如:</br>
  *        sourceRoute - {Object} 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。</br>
  *        point - {Object} 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
+ *                点坐标对象可以是:SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  *        tolerance - {Double} 【可选参数】容限值。</br>
  *        isIgnoreGap - {Double}  【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
  */
@@ -37646,8 +37738,9 @@ var RouteCalculateMeasureParameters = function () {
 
 
     /**
-     * @member SuperMap.RouteCalculateMeasureParameters.prototype.sourceRoute -{SuperMap.Route}
+     * @member SuperMap.RouteCalculateMeasureParameters.prototype.sourceRoute
      * @description 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象；
+     * 路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
      */
     function RouteCalculateMeasureParameters(options) {
         _classCallCheck(this, RouteCalculateMeasureParameters);
@@ -37677,8 +37770,9 @@ var RouteCalculateMeasureParameters = function () {
 
 
     /**
-     * @member SuperMap.RouteCalculateMeasureParameters.prototype.point -{Object}
-     * @description 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。
+     * @member SuperMap.RouteCalculateMeasureParameters.prototype.point
+     * @description 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
+     * 点坐标对象可以是:SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
      */
 
 
@@ -37916,7 +38010,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数
  * 如果用户两种参数均设置，优先选择Dataset方式
  * @param options - {Object} 可选参数。如:</br>
- *        sourceRoute -  {SuperMap.Route} 【必选参数】路由对象。</br>
+ *        sourceRoute -  {SuperMap.Route} 【必选参数】路由对象。路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString。</br>
  *        type -  {string} 【必选参数】类型：点 or 线。</br>
  *        measure - {Double} 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
  *        offset - {Double} 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>
@@ -37954,8 +38048,8 @@ var RouteLocatorParameters = function () {
      */
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.sourceRoute -{SuperMap.Route}
-     * @description 路由对象。
+     * @member SuperMap.RouteLocatorParameters.prototype.sourceRoute
+     * @description 路由对象。路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
      */
     function RouteLocatorParameters(options) {
         _classCallCheck(this, RouteLocatorParameters);
@@ -39618,7 +39712,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。<br>
- *        query -{SuperMap.Bounds} 分析范围。<br>
+ *        query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
  *        resolution -{number}分辨率。<br>
  *        statisticModes -{string} 分析模式。<br>
  *        meshType -{number}分析类型。<br>
@@ -39640,8 +39734,8 @@ var SummaryMeshJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.query -{Object}
+     * @description 分析范围(聚合类型为网格面聚合时使用的参数)。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
      */
 
 
@@ -39899,7 +39993,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>
  *         sumShape -{boolean} 是否统计长度或面积。 <br>
- *         query -{SuperMap.Bounds} 分析范围。 <br>
+ *         query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
  *         standardSummaryFields -{boolean} 以标准属字段统计。 <br>
  *         standardFields -{string} 以标准属字段统计的字段名称。 <br>
  *         standardStatisticModes -{string} 以标准属字段统计的统计模式。 <br>
@@ -40014,8 +40108,8 @@ var SummaryRegionJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。
+     * @member SuperMap.SummaryRegionJobParameter.prototype.query
+     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
      */
 
 
@@ -40042,6 +40136,7 @@ var SummaryRegionJobParameter = function () {
             this.meshSizeUnit = null;
             this.type = null;
         }
+
         /**
          * @function SuperMap.SummaryRegionJobParameter.toObject
          * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。
@@ -40337,6 +40432,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {SuperMap.Geometry} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
+ *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
  *        datumValue - {number}获取或设置表面分析中提取等值线、提取等值面的基准值。</br>
  *        expectedZValues - {Array<number>} 获取或设置期望分析结果的 Z 值集合。</br>
  *        interval - {number}获取或设置等值距。等值距是两条等值线之间的间隔值。</br>
@@ -40413,8 +40509,9 @@ var SurfaceAnalystParametersSetting = function () {
 
 
     /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.clipRegion -{SuperMap.Geometry}
-     * @description 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。
+     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.clipRegion
+     * @description 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。
      */
 
 
@@ -43952,6 +44049,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 参数。如:</br>
  *        transferLines - {Array<SuperMap.TransferLine>} 本换乘分段内可乘车的路线集合。</br>
  *        points - {Array<Integer>} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
+ *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
+ *
  */
 var TransferPathParameters = function () {
     /**
@@ -43977,9 +44076,9 @@ var TransferPathParameters = function () {
 
     /**
      *  @member SuperMap.TransferPathParameters.prototype.points -{Array<string>}|{Array<Object>}
-     *  @description 两种查询方式：
-     *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，
-     * 公交站点的ID对应服务提供者配置中的站点ID字段；
+     *  @description 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
+     *  两种查询方式：
+     *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；
      *           2. 按照起止点的坐标进行查询，则points参数的类型为Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
      */
 
@@ -44167,6 +44266,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        transferPreference - {SuperMap.TransferPreference} 乘车偏好枚举。</br>
  *        walkingRatio - {Array<number>} 步行与公交的消耗权重比，默认值为 10。</br>
  *        points - {Array<number>} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
+ *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
  *        evadeLines - {Array<number>} 避让路线的ID，默认为null。</br>
  *        evadeStops - {Array<number>} 避让站点的ID，默认为null。</br>
  *        priorLines - {Array<number>} 优先路线的ID，默认为null。</br>
@@ -44189,17 +44289,16 @@ var TransferSolutionParameters = function () {
 
     /**
      *  @member SuperMap.TransferSolutionParameters.prototype.points - {Array<String>}|{Array<Object>}
-     *  @description 两种查询方式：
-     *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，
-     * 公交站点的ID对应服务提供者配置中的站点ID字段；
+     *  @description 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
+     *  两种查询方式：
+     *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；
      *           2. 按照起止点的坐标进行查询，则points参数的类型为Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
      */
 
 
     /**
      *  @member SuperMap.TransferSolutionParameters.prototype.transferTactic - {SuperMap.TransferTactic}
-     *  @description 交通换乘策略类型，包括时间最短、距离最短、最少换乘、
-     * 最少步行四种选择。默认为SuperMap.TransferTactic.LESS_TIME
+     *  @description 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。默认为SuperMap.TransferTactic.LESS_TIME
      */
 
 
@@ -44252,18 +44351,18 @@ var TransferSolutionParameters = function () {
 
     /**
      *  @member SuperMap.TransferSolutionParameters.prototype.walkingRatio - {number}
-     *  @description 步行与公交的消耗权重比，默认值为 10。此值越大，则步行因素对于方案选择的影响越大。例如：
-     * 例如现在有两种换乘方案（在仅考虑消耗因素的情况下）：
-     * 方案1：坐车10公里，走路1公里；
-     * 方案2：坐车15公里，走路0.5公里；
-     * 1. 假设权重比为15：
-     * •方案1的总消耗为：10 + 1*15 = 25
-     * •方案2的总消耗为：15 + 0.5*15 = 22.5
-     * 此时方案2消耗更低。
-     * 2. 假设权重比为2：
-     * •方案1的总消耗为：10+1*2 = 12
-     * •方案2的总消耗为：15+0.5*2 = 17
-     * 此时方案1消耗更低。
+     *  @description 步行与公交的消耗权重比，默认值为 10。此值越大，则步行因素对于方案选择的影响越大。例如：</br>
+     * 例如现在有两种换乘方案（在仅考虑消耗因素的情况下）：</br>
+     * 方案1：坐车10公里，走路1公里；</br>
+     * 方案2：坐车15公里，走路0.5公里；</br>
+     *      1. 假设权重比为15：
+     *          •方案1的总消耗为：10 + 1*15 = 25
+     *          •方案2的总消耗为：15 + 0.5*15 = 22.5
+     *          此时方案2消耗更低。
+     *      2. 假设权重比为2：
+     *          •方案1的总消耗为：10+1*2 = 12
+     *          •方案2的总消耗为：15+0.5*2 = 17
+     *          此时方案1消耗更低。
      */
 
     /**

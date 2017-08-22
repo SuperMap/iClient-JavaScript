@@ -6,7 +6,7 @@ import {StatisticAnalystMode, SummaryType} from '../REST'
  * @classdesc 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。<br>
- *        query -{SuperMap.Bounds} 分析范围。<br>
+ *        query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
  *        resolution -{number}分辨率。<br>
  *        statisticModes -{string} 分析模式。<br>
  *        meshType -{number}分析类型。<br>
@@ -28,8 +28,8 @@ export default class SummaryMeshJobParameter {
     regionDataset = "";
 
     /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.query -{Object}
+     * @description 分析范围(聚合类型为网格面聚合时使用的参数)。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
      */
     query = "";
 

@@ -16,12 +16,15 @@ import {SpatialQueryMode} from '../REST';
  *         queryParams - {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br>
  *         startRecord - {number}查询起始记录号。<br>
  *         holdTime - {number}资源在服务端保存的时间。<br>
- *         returnCustomResult -{boolean} 仅供三维使用。
+ *         returnCustomResult -{boolean} 仅供三维使用。<br>
  *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
- *         geometry - {Object} 用于查询的几何对象。
+ *         geometry - {Object} 用于查询的几何对象。<br>
+ *                   点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+ *                   线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+ *                   面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br>
  *         spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式。
  */
-export default  class QueryByGeometryParameters extends QueryParameters {
+export default class QueryByGeometryParameters extends QueryParameters {
 
     /**
      * @member SuperMap.QueryByGeometryParameters.prototype.returnContent -{boolean}
@@ -32,8 +35,11 @@ export default  class QueryByGeometryParameters extends QueryParameters {
     returnContent = true;
 
     /**
-     * @member SuperMap.QueryByGeometryParameters.prototype.geometry -{Object}
-     * @description 用于查询的几何对象。
+     * @member SuperMap.QueryByGeometryParameters.prototype.geometry
+     * @description 用于查询的几何对象。<br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
      */
     geometry = null;
 

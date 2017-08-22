@@ -5,6 +5,7 @@
  * @classdesc 泰森多边形分析参数基类。
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {SuperMap.Geometry} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
+ *                      面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
  *        createResultDataset - {boolean} 是否返回结果数据集，默认不返回。</br>
  *        resultDatasetName - {boolean} 指定结果数据集名称。</br>
  *        resultDatasourceName - {boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
@@ -12,8 +13,9 @@
  */
 export default class ThiessenAnalystParameters {
     /**
-     * @member SuperMap.ThiessenAnalystParameters.prototype.clipRegion -{SuperMap.Geometry}
-     * @description 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。
+     * @member SuperMap.ThiessenAnalystParameters.prototype.clipRegion
+     * @description 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。
      */
     clipRegion = null;
 
