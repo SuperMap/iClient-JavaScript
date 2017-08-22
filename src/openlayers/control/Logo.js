@@ -49,8 +49,8 @@ export default class Logo extends ol.control.Control {
             var alt = this.options.alt;
             var link = this.options.link;
 
-            var imageWidth = "96px";
-            var imageHeight = "26px";
+            var imageWidth = "94px";
+            var imageHeight = "29px";
             var styleSize = "width:" + imageWidth + ";height:" + imageHeight + ";";
             if (this.options.imageUrl) {
                 imageWidth = this.options.width;
@@ -63,7 +63,7 @@ export default class Logo extends ol.control.Control {
 
 
             div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
-                "<img src=" + imgSrc + " alt='" + alt + "'  style='border: none;" + styleSize + "white-space: nowrap'></a>";
+                "<img src=" + imgSrc + " alt='" + alt + "'  style='border: none;" + styleSize + "white-space: nowrap;margin-bottom: 2px'></a>";
             return div;
         }
         /*

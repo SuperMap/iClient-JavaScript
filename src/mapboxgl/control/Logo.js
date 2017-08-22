@@ -53,8 +53,8 @@ export class Logo {
         }
         var alt = this.alt;
 
-        var imageWidth = "96px";
-        var imageHeight = "26px";
+        var imageWidth = "94px";
+        var imageHeight = "29px";
         var styleSize = "width:" + imageWidth + ";height:" + imageHeight + ";";
         if (this.imageUrl) {
             imageWidth = this.width;
@@ -66,7 +66,7 @@ export class Logo {
         }
         var link = this.link || "http://iclient.supermapol.com";
         this._container.innerHTML = "<a href='" + link + "' target='_blank'>" +
-            "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "'></a>";
+            "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "margin-bottom: 2px'></a>";
         this._createStyleSheet();
         return this._container;
     }
@@ -80,7 +80,7 @@ export class Logo {
             ".iclient-logo a{" +
             "border: none;" +
             "display: block;" +
-            "height:26px;" +
+            "height:31px;" +
             "}" +
             ".iclient-logo img{" +
             "border: none;" +

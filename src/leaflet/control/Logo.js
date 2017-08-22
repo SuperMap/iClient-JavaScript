@@ -54,8 +54,8 @@ export var Logo = L.Control.extend({
         }
         var alt = this.options.alt;
 
-        var imageWidth = "96px";
-        var imageHeight = "26px";
+        var imageWidth = "94px";
+        var imageHeight = "29px";
         var styleSize = "width:" + imageWidth + ";height:" + imageHeight + ";";
         if (this.options.imageUrl) {
             imageWidth = this.options.width;
@@ -67,7 +67,7 @@ export var Logo = L.Control.extend({
         }
         var link = this.options.link || "http://iclient.supermapol.com";
         div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
-            "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:2px;white-space: nowrap'></a>";
+            "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'></a>";
         return div;
     }
 });
