@@ -26,8 +26,6 @@ describe('leaflet_testFieldService', function () {
         setTimeout(function () {
             try {
                 expect(getFieldsService).not.toBeNull();
-                expect(getFieldsService.options.dataSourceName).toBe("World");
-                expect(getFieldsService.options.dataSetName).toBe("continent_T");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.datasource).toBe("World");
                 expect(serviceResult.object.dataset).toBe("continent_T");
@@ -49,14 +47,15 @@ describe('leaflet_testFieldService', function () {
 
     //字段查询服务 失败事件
     it('failEvent:getFields_dataSourceNotExist', function (done) {
-        var getFieldsService = L.supermap.fieldService(dataServiceURL).getFields(params,function (result) {
+        var getFieldsService = L.supermap.fieldService(dataServiceURL).getFields({
+            datasource: "World1",
+            dataset: "continent_T"
+        },function (result) {
             serviceResult = result
         });
         setTimeout(function () {
             try {
                 expect(getFieldsService).not.toBeNull();
-                expect(getFieldsService.options.dataSourceName).toBe("World1");
-                expect(getFieldsService.options.dataSetName).toBe("continent_T");
                 expect(serviceResult.type).toBe("processFailed");
                 expect(serviceResult.object.datasource).toBe("World1");
                 expect(serviceResult.object.dataset).toBe("continent_T");
@@ -89,8 +88,6 @@ describe('leaflet_testFieldService', function () {
         setTimeout(function () {
             try {
                 expect(getFieldStatisticsInfoService).not.toBeNull();
-                expect(getFieldStatisticsInfoService.options.dataSourceName).toBe("World");
-                expect(getFieldStatisticsInfoService.options.dataSetName).toBe("continent_T");
                 expect(getFieldStatisticsInfoService.currentStatisticResult.fieldName).toBe("SmID");
                 expect(getFieldStatisticsInfoService.currentStatisticResult.AVERAGE).toEqual(4);
                 expect(getFieldStatisticsInfoService.currentStatisticResult.MAX).toEqual(7);
@@ -131,8 +128,6 @@ describe('leaflet_testFieldService', function () {
         setTimeout(function () {
             try {
                 expect(getFieldStatisticsInfoService).not.toBeNull();
-                expect(getFieldStatisticsInfoService.options.dataSourceName).toBe("World1");
-                expect(getFieldStatisticsInfoService.options.dataSetName).toBe("continent_T");
                 expect(getFieldStatisticsInfoService.currentStatisticResult.fieldName).toBe("SmID");
                 expect(getFieldStatisticsInfoService.currentStatisticResult.AVERAGE).toBeNull();
                 expect(getFieldStatisticsInfoService.currentStatisticResult.MAX).toBeNull();
