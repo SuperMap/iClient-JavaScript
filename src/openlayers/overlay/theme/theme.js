@@ -16,34 +16,32 @@ export default class Theme extends ol.source.ImageCanvas {
         var options = opt_options ? opt_options : {};
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            if (!this.notFirst) {
-                this.redrawThematicFeatures(extent);
-                this.notFirst = true;
-            }
+            this.pixelRatio = pixelRatio;
             var mapWidth = size[0] * pixelRatio;
             var mapHeight = size[1] * pixelRatio;
             var width = this.map.getSize()[0] * pixelRatio;
             var height = this.map.getSize()[1] * pixelRatio;
-            if (!this.themeCanvas) {
-                this.div.style.width = mapWidth + "px";
-                this.div.style.height = mapHeight + "px";
-                this.map.getViewport().appendChild(this.div);
-                this.renderer.resize();
-                this.map.getViewport().removeChild(this.div);
-                this.themeCanvas = this.renderer.painter.root.getElementsByTagName('canvas')[0];
+            this.offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
+            if (!this.notFirst) {
+                this.redrawThematicFeatures(extent);
+                this.notFirst = true;
             }
+            this.div.style.width = mapWidth + "px";
+            this.div.style.height = mapHeight + "px";
+            this.map.getViewport().appendChild(this.div);
+            this.renderer.resize();
+            this.map.getViewport().removeChild(this.div);
+            this.themeCanvas = this.renderer.painter.root.getElementsByTagName('canvas')[0];
             this.themeCanvas.width = mapWidth;
             this.themeCanvas.height = mapHeight;
             this.themeCanvas.style.width = mapWidth + "px";
             this.themeCanvas.style.height = mapHeight + "px";
             this.themeCanvas.getContext('2d').clearRect(0, 0, mapWidth, mapHeight);
-            this.offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
 
             var highLightContext = this.renderer.painter._layers.hover.ctx;
+            var highlightCanvas = highLightContext.canvas;
             var copyHighLightContext = Util.createCanvasContext2D(mapWidth, mapHeight);
-            // copyHighLightContext.translate((mapWidth - width) / 2, (mapHeight - height) / 2);
-            copyHighLightContext.drawImage(highLightContext.canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
-            this.highLightCanvas = copyHighLightContext.canvas;
+            copyHighLightContext.drawImage(highlightCanvas, 0, 0, highlightCanvas.width, highlightCanvas.height, 0, 0, mapWidth, mapHeight);
 
             this.redrawThematicFeatures(extent);
             if (!this.context) {
@@ -56,14 +54,7 @@ export default class Theme extends ol.source.ImageCanvas {
             canvas.style.width = mapWidth + "px";
             canvas.style.height = mapHeight + "px";
             this.context.drawImage(this.themeCanvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
-            if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
-                this.highLightCanvas = null;
-                this.resolution = resolution;
-                this.extent = extent;
-            }
-            if (this.highLightCanvas) {
-                this.context.drawImage(this.highLightCanvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
-            }
+            this.context.drawImage(copyHighLightContext.canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
             return this.context.canvas;
         }
 
@@ -102,6 +93,7 @@ export default class Theme extends ol.source.ImageCanvas {
         //处理用户预先（在图层添加到 map 前）监听的事件
         this.addTFEvents();
     }
+
     /**
      * @function ol.source.Theme.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
@@ -120,6 +112,7 @@ export default class Theme extends ol.source.ImageCanvas {
         this.movingOffset = null;
         this.currentMousePosition = null;
     }
+
     /**
      * @function ol.source.Theme.prototype.destroyFeatures
      * @param features -{Object} 将被销毁的要素
@@ -137,6 +130,7 @@ export default class Theme extends ol.source.ImageCanvas {
             }
         }
     }
+
     /**
      * @function ol.source.Theme.prototype.setOpacity
      * @description 设置图层的不透明度,取值[0-1]之间。
@@ -212,6 +206,7 @@ export default class Theme extends ol.source.ImageCanvas {
         var succeed = featuresFailRemoved.length == 0 ? true : false;
         this.dispatchEvent({type: "featuresremoved", value: {features: featuresFailRemoved, succeed: succeed}});
     }
+
     /**
      * @function ol.source.Theme.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
@@ -329,7 +324,8 @@ export default class Theme extends ol.source.ImageCanvas {
         var y = this.getY(event);
         var rotation = -this.map.getView().getRotation();
         var center = this.map.getPixelFromCoordinate(this.map.getView().getCenter());
-        var rotatedP = this.rotate([x, y], rotation, center);
+        var scaledP = this.scale([x, y], center, this.pixelRatio);
+        var rotatedP = this.rotate(scaledP, rotation, center);
         var resultP = [rotatedP[0] + this.offset[0], rotatedP[1] + this.offset[1]];
         var offsetEvent = document.createEvent('Event');
         offsetEvent.initEvent('pointermove', true, true);
@@ -379,6 +375,7 @@ export default class Theme extends ol.source.ImageCanvas {
             || typeof e.layerY != 'undefined' && e.layerY
             || typeof e.clientY != 'undefined' && e.clientY;
     }
+
     /**
      * @function ol.source.Theme.prototype.un
      * @param event - {string} 事件名称。
@@ -416,6 +413,7 @@ export default class Theme extends ol.source.ImageCanvas {
             this.renderer.on(tfEs[i][0], tfEs[i][1]);
         }
     }
+
     /**
      * @function ol.source.Theme.prototype.getLocalXY
      * @param coordinate - {Object} 坐标位置。
@@ -432,14 +430,18 @@ export default class Theme extends ol.source.ImageCanvas {
         var rotation = -map.getView().getRotation();
         var center = map.getPixelFromCoordinate(map.getView().getCenter());
         var rotatedP = pixelP;
+        if (this.pixelRatio) {
+            rotatedP = this.scale(pixelP, center, this.pixelRatio);
+        }
         if (pixelP && center) {
-            rotatedP = this.rotate(pixelP, rotation, center);
+            rotatedP = this.rotate(rotatedP, rotation, center);
         }
         if (this.offset && rotatedP) {
             return [rotatedP[0] + this.offset[0], rotatedP[1] + this.offset[1]];
         }
         return rotatedP;
     }
+
     /**
      * @function ol.source.Theme.prototype.rotate
      * @param pixelP - {number} 像素坐标点位置。
@@ -452,6 +454,14 @@ export default class Theme extends ol.source.ImageCanvas {
         var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
         return [x, y];
     }
+
+    //获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
+    scale(pixelP, center, scaleRatio) {
+        var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
+        var y = (pixelP[1] - center[1]) * scaleRatio + center[1];
+        return [x, y];
+    }
+
 
     toiClientFeature(feature) {
         if (feature instanceof ThemeFeature) {

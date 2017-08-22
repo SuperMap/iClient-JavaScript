@@ -19,6 +19,8 @@ export default class MapvLayer extends BaiduMapLayer {
     constructor(map, dataSet, options, mapWidth, mapHeight, source) {
         super(map, dataSet, options);
         this.dataSet = dataSet;
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
         var self = this;
         options = options || {};
         this.source = source;
@@ -43,6 +45,7 @@ export default class MapvLayer extends BaiduMapLayer {
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
         this.bindEvent();
     }
+
     /**
      * @function ol.supermap.MapvLayer.prototype.init
      * @param options - {Object} 参数
@@ -58,6 +61,7 @@ export default class MapvLayer extends BaiduMapLayer {
         }
         this.initAnimator();
     }
+
     /**
      * @function ol.supermap.MapvLayer.prototype.clickEvent
      * @param e - {Object} 事件参数
@@ -67,6 +71,7 @@ export default class MapvLayer extends BaiduMapLayer {
         var pixel = e.pixel;
         super.clickEvent({x: pixel[0], y: pixel[1]}, e);
     }
+
     /**
      * @function ol.supermap.MapvLayer.prototype.mousemoveEvent
      * @param e - {Object} 事件参数
@@ -76,6 +81,7 @@ export default class MapvLayer extends BaiduMapLayer {
         var pixel = e.pixel;
         super.mousemoveEvent({x: pixel[0], y: pixel[1]}, e);
     }
+
     /**
      * @function ol.supermap.MapvLayer.prototype.bindEvent
      * @description 绑定事件
@@ -96,6 +102,7 @@ export default class MapvLayer extends BaiduMapLayer {
             }
         }
     }
+
     /**
      * @function ol.supermap.MapvLayer.prototype.unbindEvent
      * @description 解除绑定事件
@@ -147,7 +154,8 @@ export default class MapvLayer extends BaiduMapLayer {
                 var pixelP = map.getPixelFromCoordinate(coordinate);
                 var rotation = -map.getView().getRotation();
                 var center = map.getPixelFromCoordinate(map.getView().getCenter());
-                var rotatedP = rotate(pixelP, rotation, center);
+                var scaledP = scale(pixelP, center, self.pixelRatio);
+                var rotatedP = rotate(scaledP, rotation, center);
                 var result = [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
                 return result;
             }
@@ -157,6 +165,13 @@ export default class MapvLayer extends BaiduMapLayer {
         function rotate(pixelP, rotation, center) {
             var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
             var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
+            return [x, y];
+        }
+
+        //获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
+        function scale(pixelP, center, scaleRatio) {
+            var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
+            var y = (pixelP[1] - center[1]) * scaleRatio + center[1];
             return [x, y];
         }
 
@@ -170,12 +185,13 @@ export default class MapvLayer extends BaiduMapLayer {
                 }
             };
         }
+        if (self.isEnabledTime() && !self.notFirst) {
+            self.canvasLayer.resize(self.mapWidth, self.mapHeight);
+            self.notFirst = true;
+        }
         var data = self.dataSet.get(dataGetOptions);
-
-        this.processData(data);
-
+        self.processData(data);
         self.options._size = self.options.size;
-
         var pixel = map.getPixelFromCoordinate([0, 0]);
         this.drawContext(context, new mapv.DataSet(data), self.options, {x: pixel[0], y: pixel[1]});
         if (self.isEnabledTime()) {

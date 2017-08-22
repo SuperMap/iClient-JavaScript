@@ -34,7 +34,8 @@ export default class Mapv extends ol.source.ImageCanvas {
             if (!this.layer) {
                 this.layer = new MapvLayer(this.map, this.dataSet, this.mapvOptions, mapWidth, mapHeight, this);
             }
-            this.layer.offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
+            this.layer.pixelRatio = pixelRatio;
+            this.layer.offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
             if (!this.rotate) {
                 this.rotate = this.map.getView().getRotation();
             } else {
@@ -65,6 +66,7 @@ export default class Mapv extends ol.source.ImageCanvas {
             return this.context.canvas;
         }
     }
+
     /**
      * @function ol.source.Mapv.prototype.update
      * @description 更新数据
