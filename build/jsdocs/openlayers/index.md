@@ -1,5 +1,5 @@
 # SuperMap iClient for OpenLayers API
-SuperMap iClient for OpenLayers是一套基于OpenLayers的GIS客户端应用程序开发工具，支持SuperMap iServer / iExpress / iPortal / Online地图和服务，同时提供了优秀的可视化功能。
+SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户端开发平台， 支持访问SuperMap iServer / iExpress / iPortal / iManager / Online的地图、服务和资源，为用户提供了完整专业的GIS能力， 同时提供了优秀的可视化功能。
 
 *   官网(website)：[http://iclient.supermapol.com/introduction/openlayers.html#introduce](http://iclient.supermapol.com/introduction/openlayers.html#introduce)
 
@@ -18,7 +18,7 @@ SuperMap iClient for OpenLayers是一套基于OpenLayers的GIS客户端应用程
         <br>
         [ol.supermap.ProcessingService](ol.supermap.ProcessingService.html)<br>
         [ol.supermap.DataFlowService](ol.supermap.DataFlowService.html)<br>
-        [ol.supermap.Webmap](ol.supermap.Webmap.html)<br>
+        [ol.supermap.WebMap](ol.supermap.WebMap.html)<br>
         [SuperMap.iPortal](SuperMap.iPortal.html)<br>
         [SuperMap.Online](SuperMap.Online.html)<br>
         ......</td>   
@@ -37,7 +37,7 @@ SuperMap iClient for OpenLayers是一套基于OpenLayers的GIS客户端应用程
         ......</td>
     <td><p>丰富地图，iSevrer REST MAP、互联网地图</p>
         [ol.source.TileSuperMapRest](ol.source.TileSuperMapRest.html)<br>
-        [ol.source.ImageSuperMapRest](ol.source.ImageSuperMapRest)<br>
+        [ol.source.ImageSuperMapRest](ol.source.ImageSuperMapRest.html)<br>
         [ol.source.Baidu](ol.source.Baidu.html)<br>
         [ol.source.Tianditu](ol.source.Tianditu.html)<br>
          ......</td>

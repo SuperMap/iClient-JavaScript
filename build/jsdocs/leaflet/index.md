@@ -1,5 +1,5 @@
 # SuperMap iClient for Leaflet API
-SuperMap iClient for Leaflet是一套基于Leaflet的GIS客户端应用程序开发工具，支持SuperMap iServer / iExpress / iPortal / Online地图和服务，同时提供了优秀的可视化功能。
+SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开发平台， 支持访问SuperMap iServer / iExpress / iPortal / iManager / Online的地图、服务和资源，为用户提供了完整专业的GIS能力， 同时提供了优秀的可视化功能。
 
 *   官网(website)：[http://iclient.supermapol.com/introduction/leaflet.html#introduce](http://iclient.supermapol.com/introduction/leaflet.html#introduce)
 
@@ -13,7 +13,7 @@ SuperMap iClient for Leaflet是一套基于Leaflet的GIS客户端应用程序开
         [L.supermap.spatialAnalystService](L.supermap.spatialAnalystService.html)<br>
         [L.supermap.networkAnalystService](L.supermap.networkAnalystService.html)<br>
         [L.supermap.trafficTransferAnalystService](L.supermap.trafficTransferAnalystService.html)<br>
-        [L.supermap.addressMatchService](L.supermap.addressMatchService)</td>
+        [L.supermap.addressMatchService](L.supermap.addressMatchService.html)</td>
      <td>
         <br>
         [L.supermap.processingService](L.supermap.processingService.html)<br>
@@ -39,12 +39,11 @@ SuperMap iClient for Leaflet是一套基于Leaflet的GIS客户端应用程序开
         [L.supermap.tiledMapLayer](L.supermap.tiledMapLayer.html)<br>
         [L.supermap.imageMapLayer](L.supermap.imageMapLayer.html)<br>
         [L.supermap.baiduTileLayer](L.supermap.baiduTileLayer.html)<br>
-        [L.supermap.baiduTileLayer](L.supermap.baiduTileLayer.html)<br>
         [L.supermap.tiandituTileLayer](L.supermap.tiandituTileLayer.html)<br>
         [L.supermap.wmtsLayer](L.supermap.wmtsLayer.html)<br>
          ......</td>
     <td><p>扩展Leaflet投影，更易用</p>
-        [L.Proj.Projection](L.Proj.Projection.html)<br>
+        [L.Proj.CRS](L.Proj.CRS.html)<br>
         [L.CRS.NonEarthCRS](L.CRS.NonEarthCRS.html)<br>
 </tr></table>
 

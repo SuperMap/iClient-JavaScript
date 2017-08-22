@@ -42,7 +42,7 @@
   "homepage": "http://iclient.supermapol.com",
   "repository": {
     "type": "git",
-    "url": "https://git.oschina.net/isupermap/iClient9.git"
+    "url": "https://github.com/SuperMap/iClient9.git"
   },
   "author": "SuperMap",
   "license": "Apache-2.0",
