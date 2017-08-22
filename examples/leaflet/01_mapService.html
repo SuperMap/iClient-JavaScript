@@ -24,9 +24,7 @@
     mapService();
 
     function mapService() {
-        L.supermap.mapService(url, {
-            projection: "4326"
-        }).getMapInfo(function (serviceResult) {
+        L.supermap.mapService(url).getMapInfo(function (serviceResult) {
             var result = serviceResult.result;
             var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
             innerHTML += "地图名：" + JSON.stringify(result.name, null, 2) + "<br>";
