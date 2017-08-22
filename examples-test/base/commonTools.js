@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var getPixels = require("get-pixels");
-var assert = require('assert');
 var images = require('images');
 
 var commonTools = ({
@@ -20,6 +19,7 @@ var commonTools = ({
             var baseDir = path.resolve(__dirname, '../../').replace(/\\/g, '/');
             var exampleUrl = baseDir + '/examples/' + type + '/' + exampleName + '.html';
             browser.url(exampleUrl);
+            browser.pause(2000);
             browser.expect.element('body').to.be.present.before(2000);
             browser.expect.element('#map').to.be.present.before(3000);
             browser.pause(1000);
@@ -83,7 +83,7 @@ var commonTools = ({
             });
             browser.pause(5000, function () {
                 console.log('start to compare two tiles');
-                commonTools.isTwoTilesEqual(tileStandardPath, tileTestPath);
+                commonTools.isTwoTilesEqual(browser,tileStandardPath, tileTestPath);
             });
         },
 
@@ -101,13 +101,13 @@ var commonTools = ({
          * function: compare two image by tilePath,
          * return : boolean
          * */
-        isTwoTilesEqual: function (tilePath1, tilePath2) {
+        isTwoTilesEqual: function (browser, tilePath1, tilePath2) {
             var array1 = [];
             var array2 = [];
             console.log('start to compare two tiles');
             getPixels(tilePath1, function (err, pixels) {
                 if (err) {
-                    assert.ok(false, "path in tile1 not exist: " + tilePath1);
+                    browser.assert.ok(false, "path in tile1 not exist: " + tilePath1);
                     return;
                 }
                 for (var i = 0; i < pixels.data.length; i++) {
@@ -116,7 +116,7 @@ var commonTools = ({
                 console.log('tile1 ( ' + tilePath1 + ' ) has pixels : ' + (array1.length / 4));
                 getPixels(tilePath2, function (err, pixels) {
                     if (err) {
-                        assert.ok(false, "path in tile2 not exist: " + tilePath2);
+                        browser.assert.ok(false, "path in tile2 not exist: " + tilePath2);
                         return;
                     }
                     for (var i = 0; i < pixels.data.length; i++) {
@@ -124,7 +124,11 @@ var commonTools = ({
                     }
                     console.log('tile2 ( ' + tilePath2 + ' ) has pixels : ' + (array2.length / 4));
                     var isEqual = commonTools.judgeTwoTilesByRgbaArrays(array1, array2);
-                    assert.ok(isEqual, 'similarity of two tiles are too low')
+                    if(isEqual){
+                        browser.assert.ok(isEqual, 'similarity of two pictures >= 0.94');
+                    }else{
+                        browser.assert.ok(isEqual, 'similarity of two pictures < 0.94');
+                    }
                 });
             });
         },
