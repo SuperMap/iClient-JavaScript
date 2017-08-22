@@ -28,6 +28,7 @@ import {LabelOverLengthMode} from '../REST';
  *         rangeExpression - {string} 制作分段标签专题的分段字段或字段表达式。<br>
  *         smallGeometryLabeled - {boolean} 是否显示长度大于被标注对象本身长度的标签。<br>
  *         text - {SuperMap.ThemeLabelText} 标签中文本风格。<br>
+ *         textSpace - {number} 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。<br>
  *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
 export default class ThemeLabel extends Theme {
@@ -139,6 +140,12 @@ export default class ThemeLabel extends Theme {
      */
     text = null;
 
+    /**
+     * @member SuperMap.ThemeLabel.prototype.textSpace -{number}
+     * @description 沿线标注，相邻两个文字之间的间距，单位当前设置的字高
+     */
+    textSpace = 0;
+
     constructor(options) {
         super("LABEL", options);
         var me = this;
@@ -195,6 +202,7 @@ export default class ThemeLabel extends Theme {
             me.text.destroy();
             me.text = null;
         }
+        me.textSpace = null;
     }
 
     /**
@@ -257,6 +265,7 @@ export default class ThemeLabel extends Theme {
         obj.labelExpression = this.labelExpression;
         obj.overlapAvoided = this.overlapAvoided;
         obj.matrixCells = this.matrixCells;
+        obj.textSpace = this.textSpace;
         return obj;
     }
 

@@ -7188,10 +7188,109 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         rangeExpression - {string} 制作分段标签专题的分段字段或字段表达式。<br>
  *         smallGeometryLabeled - {boolean} 是否显示长度大于被标注对象本身长度的标签。<br>
  *         text - {SuperMap.ThemeLabelText} 标签中文本风格。<br>
+ *         textSpace - {number} 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。<br>
  *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
 var ThemeLabel = function (_Theme) {
     _inherits(ThemeLabel, _Theme);
+
+    /**
+     * @member SuperMap.ThemeLabel.prototype.text -{SuperMap.ThemeLabelText}
+     * @description 标签中文本风格。
+     */
+
+
+    /**
+     * @member SuperMap.ThemeLabel.prototype.uniqueExpression -{string}
+     * @description 用于制作单值专题图的字段或字段表达式。
+     *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段,必须与labelExpression一起使用
+     */
+
+
+    /**
+     * @member SuperMap.ThemeLabel.prototype.overlapAvoided -{boolean}
+     * @description 是否允许以文本避让方式显示文本。默认值为 true， 即自动避免文本叠盖。只针对该标签专题图层中的文本数据。
+     *               在标签重叠度很大的情况下，即使使用自动避让功能，可能也无法完全避免标签重叠现象。
+     */
+
+
+    /**
+     * @member SuperMap.ThemeLabel.prototype.numericPrecision -{number}
+     * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
+     *              如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
+     */
+
+
+    /**
+     * @member SuperMap.ThemeLabel.prototype.matrixCells -{Array<SuperMap.LabelMatrixCell>}
+     * @description 矩阵标签元素数组，用于制作矩阵标签专题图。
+     *              数组中可以放置符号类型的矩阵标签元素和图片类型的矩阵标签元素。
+     */
+
+
+    /**
+     * @member SuperMap.ThemeLabel.prototype.labelExpression -{string}
+     * @description 标注字段表达式。系统将 labelExpression 对应的字段或字段表达式的值以标签的形式显示在图层中。必设字段。
+     */
+
+
+    /**
+     * @member SuperMap.ThemeLabel.prototype.items - {Array<SuperMap.ThemeUniqueItem>}
+     * @description 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression <br>
+     *              指定数字型的字段作为分段数据，items 中的每个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值。每个子项拥有自己的风格。
+     */
+
+
+    /**
+     * @member SuperMap.ThemeLabel.prototype.background -{SuperMap.ThemeLabelBackground}
+     * @description 标签专题图中标签的背景风格类。通过该字段可以设置标签的背景形状和风格。
+     */
+    function ThemeLabel(options) {
+        _classCallCheck(this, ThemeLabel);
+
+        var _this = _possibleConstructorReturn(this, (ThemeLabel.__proto__ || Object.getPrototypeOf(ThemeLabel)).call(this, "LABEL", options));
+
+        _this.alongLine = null;
+        _this.background = null;
+        _this.flow = null;
+        _this.items = null;
+        _this.uniqueItems = null;
+        _this.labelExpression = null;
+        _this.labelOverLengthMode = _REST.LabelOverLengthMode.NONE;
+        _this.matrixCells = null;
+        _this.maxLabelLength = 256;
+        _this.numericPrecision = 0;
+        _this.offset = null;
+        _this.overlapAvoided = true;
+        _this.rangeExpression = null;
+        _this.uniqueExpression = null;
+        _this.smallGeometryLabeled = false;
+        _this.text = null;
+        _this.textSpace = 0;
+        _this.CLASS_NAME = "SuperMap.ThemeLabel";
+
+        var me = _this;
+        me.alongLine = new _ThemeLabelAlongLine2["default"]();
+        me.background = new _ThemeLabelBackground2["default"]();
+        me.flow = new _ThemeFlow2["default"]();
+        me.offset = new _ThemeOffset2["default"]();
+        me.text = new _ThemeLabelText2["default"]();
+        if (options) {
+            _SuperMap2["default"].Util.extend(_this, options);
+        }
+        return _this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+
+
+    /**
+     * @member SuperMap.ThemeLabel.prototype.textSpace -{number}
+     * @description 沿线标注，相邻两个文字之间的间距，单位当前设置的字高
+     */
+
 
     /**
      * @member SuperMap.ThemeLabel.prototype.smallGeometryLabeled -{boolean}
@@ -7245,97 +7344,6 @@ var ThemeLabel = function (_Theme) {
      * @description 标签沿线标注方向样式类。<br>
      *              在该类中可以设置标签是否沿线标注以及沿线标注的多种方式。沿线标注属性只适用于线数据集专题图。
      */
-    function ThemeLabel(options) {
-        _classCallCheck(this, ThemeLabel);
-
-        var _this = _possibleConstructorReturn(this, (ThemeLabel.__proto__ || Object.getPrototypeOf(ThemeLabel)).call(this, "LABEL", options));
-
-        _this.alongLine = null;
-        _this.background = null;
-        _this.flow = null;
-        _this.items = null;
-        _this.uniqueItems = null;
-        _this.labelExpression = null;
-        _this.labelOverLengthMode = _REST.LabelOverLengthMode.NONE;
-        _this.matrixCells = null;
-        _this.maxLabelLength = 256;
-        _this.numericPrecision = 0;
-        _this.offset = null;
-        _this.overlapAvoided = true;
-        _this.rangeExpression = null;
-        _this.uniqueExpression = null;
-        _this.smallGeometryLabeled = false;
-        _this.text = null;
-        _this.CLASS_NAME = "SuperMap.ThemeLabel";
-
-        var me = _this;
-        me.alongLine = new _ThemeLabelAlongLine2["default"]();
-        me.background = new _ThemeLabelBackground2["default"]();
-        me.flow = new _ThemeFlow2["default"]();
-        me.offset = new _ThemeOffset2["default"]();
-        me.text = new _ThemeLabelText2["default"]();
-        if (options) {
-            _SuperMap2["default"].Util.extend(_this, options);
-        }
-        return _this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-
-
-    /**
-     * @member SuperMap.ThemeLabel.prototype.text -{SuperMap.ThemeLabelText}
-     * @description 标签中文本风格。
-     */
-
-
-    /**
-     * @member SuperMap.ThemeLabel.prototype.uniqueExpression -{string}
-     * @description 用于制作单值专题图的字段或字段表达式。
-     *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段,必须与labelExpression一起使用
-     */
-
-
-    /**
-     * @member SuperMap.ThemeLabel.prototype.overlapAvoided -{boolean}
-     * @description 是否允许以文本避让方式显示文本。默认值为 true， 即自动避免文本叠盖。只针对该标签专题图层中的文本数据。
-     *               在标签重叠度很大的情况下，即使使用自动避让功能，可能也无法完全避免标签重叠现象。
-     */
-
-
-    /**
-     * @member SuperMap.ThemeLabel.prototype.numericPrecision -{number}
-     * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
-     *              如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
-     */
-
-
-    /**
-     * @member SuperMap.ThemeLabel.prototype.matrixCells -{Array<SuperMap.LabelMatrixCell>}
-     * @description 矩阵标签元素数组，用于制作矩阵标签专题图。
-     *              数组中可以放置符号类型的矩阵标签元素和图片类型的矩阵标签元素。
-     */
-
-
-    /**
-     * @member SuperMap.ThemeLabel.prototype.labelExpression -{string}
-     * @description 标注字段表达式。系统将 labelExpression 对应的字段或字段表达式的值以标签的形式显示在图层中。必设字段。
-     */
-
-
-    /**
-     * @member SuperMap.ThemeLabel.prototype.items - {Array<SuperMap.ThemeUniqueItem>}
-     * @description 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression <br>
-     *              指定数字型的字段作为分段数据，items 中的每个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值。每个子项拥有自己的风格。
-     */
-
-
-    /**
-     * @member SuperMap.ThemeLabel.prototype.background -{SuperMap.ThemeLabelBackground}
-     * @description 标签专题图中标签的背景风格类。通过该字段可以设置标签的背景形状和风格。
-     */
 
 
     _createClass(ThemeLabel, [{
@@ -7379,6 +7387,7 @@ var ThemeLabel = function (_Theme) {
                 me.text.destroy();
                 me.text = null;
             }
+            me.textSpace = null;
         }
 
         /**
@@ -7447,6 +7456,7 @@ var ThemeLabel = function (_Theme) {
             obj.labelExpression = this.labelExpression;
             obj.overlapAvoided = this.overlapAvoided;
             obj.matrixCells = this.matrixCells;
+            obj.textSpace = this.textSpace;
             return obj;
         }
 
