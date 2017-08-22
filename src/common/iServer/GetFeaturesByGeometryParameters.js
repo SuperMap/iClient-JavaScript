@@ -68,7 +68,7 @@ export default class GetFeaturesByGeometryParameters extends GetFeaturesParamete
 
 
     /**
-     * @function SuperMap.BuildCacheJobsService.prototype.destroy
+     * @function SuperMap.GetFeaturesByGeometryParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

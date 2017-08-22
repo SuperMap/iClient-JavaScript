@@ -4,7 +4,7 @@ import ServiceBase from './ServiceBase';
 import DataFlow from '../../common/iServer/DataFlowService';
 /**
  * @class ol.supermap.DataFlowService
- * @classdesc 实时大数据服务
+ * @classdesc 实时数据服务
  * @extends ol.supermap.ServiceBase
  * @example
  * 用法：

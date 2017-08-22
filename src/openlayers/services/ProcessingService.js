@@ -1,9 +1,9 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
+import Util from '../core/Util';
 import ServiceBase from './ServiceBase';
 import KernelDensityJobsService from '../../common/iServer/KernelDensityJobsService';
 import SingleObjectQueryJobsService from '../../common/iServer/SingleObjectQueryJobsService';
-import BuildCacheJobsService from '../../common/iServer/BuildCacheJobsService';
 import SummaryMeshJobsService from '../../common/iServer/SummaryMeshJobsService';
 import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsService';
 import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
@@ -25,7 +25,6 @@ export default class ProcessingService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
         this.kernelDensityJobs = {};
-        this.buildCacheJobs = {};
         this.summaryMeshJobs = {};
         this.queryJobs = {};
         this.summaryRegionJobs = {};
@@ -201,90 +200,6 @@ export default class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.ProcessingService.prototype.getBuildCacheJobs
-     * @description 获取生成地图缓存的列表。
-     * @param callback -{function} 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {ol.supermap.ProcessingService}
-     */
-    getBuildCacheJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-            serverType: me.options.serverType,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        buildCacheJobsService.getBuildCacheJobs();
-        return me;
-    }
-
-    /**
-     * @function ol.supermap.ProcessingService.prototype.getBuildCacheJob
-     * @description 获取某一个生成地图缓存。
-     * @param id -{string}空间分析的id。
-     * @param callback - {function}请求结果的回调函数。
-     * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {ol.supermap.ProcessingService}
-     */
-    getBuildCacheJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-            serverType: me.options.serverType,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        buildCacheJobsService.getBuildCacheJob(id);
-        return me;
-    }
-
-    /**
-     * @function ol.supermap.ProcessingService.prototype.addBuildCacheJob
-     * @description 新建一个生成地图缓存。
-     * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
-     * @param callback - {function} 请求结果的回调函数
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
-     * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）
-     * @return {ol.supermap.ProcessingService}
-     */
-    addBuildCacheJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
-        var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning: function (job) {
-                    me.buildCacheJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        buildCacheJobsService.addBuildCacheJob(param, seconds);
-        return me;
-    }
-
-    /**
-     * @function ol.supermap.ProcessingService.prototype.getBuildCacheJobState
-     * @description 获取生成地图缓存的状态。
-     * @param id - {string}生成地图缓存的id。
-     */
-    getBuildCacheJobState(id) {
-        return this.buildCacheJobs[id];
-    }
-
-    /**
      * @function ol.supermap.ProcessingService.prototype.getQueryJobs
      * @description 获取单对象查询分析的列表。
      * @param callback -{function}请求结果的回调函数。
@@ -370,7 +285,7 @@ export default class ProcessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.ProcessingService.prototype.getSummaryRegionJobs
-     * @description 获取范围汇总分析的列表。
+     * @description 获取区域汇总分析的列表。
      * @param callback -{function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {ol.supermap.ProcessingService}
@@ -393,8 +308,8 @@ export default class ProcessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.ProcessingService.prototype.getSummaryRegionJob
-     * @description 获取某一个范围汇总分析。
-     * @param id -{string}范围汇总分析的id。
+     * @description 获取某一个区域汇总分析。
+     * @param id -{string}区域汇总分析的id。
      * @param callback - {function}请求结果的回调函数。
      * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
      * @return {ol.supermap.ProcessingService}
@@ -417,8 +332,8 @@ export default class ProcessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.ProcessingService.prototype.addSummaryRegionJob
-     * @description 新建一个范围汇总分析。
-     * @param params - {SuperMap.SummaryRegionJobParameter} 范围汇总分析参数类
+     * @description 新建一个区域汇总分析。
+     * @param params - {SuperMap.SummaryRegionJobParameter} 区域汇总分析参数类
      * @param callback - {function} 请求结果的回调函数
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
      * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）
@@ -445,8 +360,8 @@ export default class ProcessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.ProcessingService.prototype.getSummaryRegionJobState
-     * @description 获取范围汇总分析的状态。
-     * @param id - {string}生成范围汇总分析的id。
+     * @description 获取区域汇总分析的状态。
+     * @param id - {string}生成区域汇总分析的id。
      */
     getSummaryRegionJobState(id) {
         return this.summaryRegionJobs[id];
@@ -546,10 +461,7 @@ export default class ProcessingService extends ServiceBase {
             return {};
         }
         if (params.query) {
-            params.query = params.query.toString();
-        }
-        if (params.bounds) {
-            params.bounds = params.bounds.toString();
+            params.query = Util.toSuperMapBounds(params.query);
         }
         return params;
     }

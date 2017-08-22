@@ -48,7 +48,7 @@ export default class VectorClipJobsParameter {
     }
     /**
      * @function SuperMap.VectorClipJobsParameter.toObject
-     * @param vectorClipJobsParameter -{Object} 范围汇总分析服务参数
+     * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
      * @param tempObj - {Object} 目标对象。
      * @description 矢量裁剪分析任务对象
      */

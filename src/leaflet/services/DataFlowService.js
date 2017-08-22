@@ -5,10 +5,10 @@ import {ServiceBase} from './ServiceBase';
 import DataFlow from '../../common/iServer/DataFlowService';
 /**
  * @class L.supermap.dataFlowService
- * @classdesc 实时大数据服务类
+ * @classdesc 实时数据服务类
  * @extends L.supermap.ServiceBase
- * @param url - {string} 实时大数据服务地址
- * @param options - {Object} 加载实时大数据可选参数。如：<br>
+ * @param url - {string} 实时数据服务地址
+ * @param options - {Object} 加载实时数据可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>

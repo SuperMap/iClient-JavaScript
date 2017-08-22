@@ -3,7 +3,7 @@ import {StatisticAnalystMode, SummaryType, AnalystSizeUnit} from '../REST'
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
- * @classdesc 范围汇总分析任务参数类
+ * @classdesc 区域汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>
  *         sumShape -{boolean} 是否统计长度或面积。 <br>
@@ -136,7 +136,7 @@ export default class SummaryRegionJobParameter {
      * @function SuperMap.SummaryRegionJobParameter.toObject
      * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。
      * @param tempObj - {Object} 目标对象。
-     * @description 生成范围汇总分析服务对象
+     * @description 生成区域汇总分析服务对象
      */
     static toObject(summaryRegionJobParameter, tempObj) {
         for (var name in summaryRegionJobParameter) {
@@ -151,7 +151,11 @@ export default class SummaryRegionJobParameter {
             }
             if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
                 tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = summaryRegionJobParameter[name];
+                if (name === 'query') {
+                    tempObj['analyst'][name] = summaryRegionJobParameter[name].toBBOX();
+                } else {
+                    tempObj['analyst'][name] = summaryRegionJobParameter[name];
+                }
             }
         }
     }

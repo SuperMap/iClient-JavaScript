@@ -37,6 +37,15 @@ export default class Util {
         return scale;
     }
 
+    static toSuperMapBounds(bounds) {
+        return new SuperMap.Bounds(
+            bounds[0],
+            bounds[1],
+            bounds[2],
+            bounds[3]
+        );
+    }
+
     static scaleToResolution(scale, dpi, mapUnit) {
         var inchPerMeter = 1 / 0.0254;
         var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);

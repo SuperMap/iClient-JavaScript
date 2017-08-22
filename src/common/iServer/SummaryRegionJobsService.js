@@ -4,10 +4,10 @@ import SummaryRegionJobParameter from './SummaryRegionJobParameter';
 
 /**
  * @class SuperMap.SummaryRegionJobsService
- * @classdesc 范围汇总分析服务类
+ * @classdesc 区域汇总分析服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 范围汇总分析服务地址。
- * @param options - {Object} 范围汇总分析服务可选参数。
+ * @param url -{string} 区域汇总分析服务地址。
+ * @param options - {Object} 区域汇总分析服务可选参数。
  */
 export default  class SummaryRegionJobsService extends ProcessingServiceBase {
 
@@ -25,7 +25,7 @@ export default  class SummaryRegionJobsService extends ProcessingServiceBase {
 
     /**
      * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
-     * @description 获取范围汇总分析任务集合。
+     * @description 获取区域汇总分析任务集合。
      * @return {*}
      */
     getSummaryRegionJobs() {
@@ -34,8 +34,8 @@ export default  class SummaryRegionJobsService extends ProcessingServiceBase {
 
     /**
      * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJob
-     * @description 获取指定id的范围汇总分析任务。
-     * @param id -{string} 要获取范围汇总分析任务的id
+     * @description 获取指定id的区域汇总分析任务。
+     * @param id -{string} 要获取区域汇总分析任务的id
      */
     getSummaryRegionJob(id) {
         return super.getJobs(this.url + '/' + id);
@@ -43,8 +43,8 @@ export default  class SummaryRegionJobsService extends ProcessingServiceBase {
 
     /**
      * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
-     * @description 新建范围汇总任务。
-     * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
+     * @description 新建区域汇总任务。
+     * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个区域汇总任务的请求参数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryRegionJob(params, seconds) {

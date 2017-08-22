@@ -3,10 +3,10 @@ import CommonServiceBase from './CommonServiceBase';
 
 /**
  * @class SuperMap.DataFlowService
- * @classdesc 实时大数据服务类
+ * @classdesc 实时数据服务类
  * @extends SuperMap.CommonServiceBase
- * @param url - {string} 实时大数据服务地址
- * @param options - {Object} 加载实时大数据可选参数。如：<br>
+ * @param url - {string} 实时数据服务地址
+ * @param options - {Object} 加载实时数据可选参数。如：<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
  *        geometry - {Array<Object>} 设置增添的几何要素对象数组。

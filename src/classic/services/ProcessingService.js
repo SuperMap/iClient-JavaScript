@@ -3,7 +3,6 @@ import {DataFormat} from '../../common/REST';
 import CommonServiceBase from '../../common/iServer/CommonServiceBase';
 import KernelDensityJobsService from '../../common/iServer/KernelDensityJobsService';
 import SingleObjectQueryJobsService from '../../common/iServer/SingleObjectQueryJobsService';
-import BuildCacheJobsService from '../../common/iServer/BuildCacheJobsService';
 import SummaryMeshJobsService from '../../common/iServer/SummaryMeshJobsService';
 import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsService';
 import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
@@ -26,7 +25,6 @@ export class ProcessingService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         this.kernelDensityJobs = {};
-        this.buildCacheJobs = {};
         this.summaryMeshJobs = {};
         this.queryJobs = {};
         this.summaryRegionJobs = {};
@@ -90,9 +88,7 @@ export class ProcessingService extends CommonServiceBase {
      * @return {SuperMap.REST.ProcessingService}
      */
     addKernelDensityJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
+        var me = this, format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             eventListeners: {
                 scope: me,
@@ -104,7 +100,7 @@ export class ProcessingService extends CommonServiceBase {
             },
             format: format
         });
-        kernelDensityJobsService.addKernelDensityJob(param, seconds);
+        kernelDensityJobsService.addKernelDensityJob(params, seconds);
         return me;
     }
 
@@ -174,9 +170,7 @@ export class ProcessingService extends CommonServiceBase {
      * @return {SuperMap.REST.ProcessingService}
      */
     addSummaryMeshJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
+        var me = this, format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             eventListeners: {
                 scope: me,
@@ -188,7 +182,7 @@ export class ProcessingService extends CommonServiceBase {
             },
             format: format
         });
-        summaryMeshJobsService.addSummaryMeshJob(param, seconds);
+        summaryMeshJobsService.addSummaryMeshJob(params, seconds);
         return me;
     }
 
@@ -199,90 +193,6 @@ export class ProcessingService extends CommonServiceBase {
      */
     getSummaryMeshJobState(id) {
         return this.summaryMeshJobs[id];
-    }
-
-    /**
-     * @function SuperMap.REST.ProcessingService.prototype.getBuildCacheJobs
-     * @description 获取生成地图缓存的列表。
-     * @param callback - {function} 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
-     */
-    getBuildCacheJobs(callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-            serverType: me.serverType,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        buildCacheJobsService.getBuildCacheJobs();
-        return me;
-    }
-
-    /**
-     * @function SuperMap.REST.ProcessingService.prototype.getBuildCacheJob
-     * @description 获取某一个生成地图缓存。
-     * @param id - {string} 空间分析的id。
-     * @param callback - {function} 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
-     */
-    getBuildCacheJob(id, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
-        var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-            serverType: me.serverType,
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback
-            },
-            format: format
-        });
-        buildCacheJobsService.getBuildCacheJob(id);
-        return me;
-    }
-
-    /**
-     * @function SuperMap.REST.ProcessingService.prototype.addBuildCacheJob
-     * @description 新建一个生成地图缓存。
-     * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
-     * @param callback - {function} 请求结果的回调函数
-     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
-     * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
-     */
-    addBuildCacheJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
-        var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-            eventListeners: {
-                scope: me,
-                processCompleted: callback,
-                processFailed: callback,
-                processRunning(job) {
-                    me.buildCacheJobs[job.id] = job.state;
-                }
-            },
-            format: format
-        });
-        buildCacheJobsService.addBuildCacheJob(param, seconds);
-        return me;
-    }
-
-    /**
-     * @function SuperMap.REST.ProcessingService.prototype.getBuildCacheJobState
-     * @description 获取生成地图缓存的状态。
-     * @param id - {string}生成地图缓存的id。
-     */
-    getBuildCacheJobState(id) {
-        return this.buildCacheJobs[id];
     }
 
     /**
@@ -342,9 +252,7 @@ export class ProcessingService extends CommonServiceBase {
      * @return {SuperMap.REST.ProcessingService}
      */
     addQueryJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
+        var me = this, format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             eventListeners: {
                 scope: me,
@@ -356,7 +264,7 @@ export class ProcessingService extends CommonServiceBase {
             },
             format: format
         });
-        singleObjectQueryJobsService.addQueryJob(param, seconds);
+        singleObjectQueryJobsService.addQueryJob(params, seconds);
         return me;
     }
 
@@ -371,7 +279,7 @@ export class ProcessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobs
-     * @description 获取范围汇总分析的列表。
+     * @description 获取区域汇总分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {SuperMap.REST.ProcessingService}
@@ -394,8 +302,8 @@ export class ProcessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJob
-     * @description 获取某一个范围汇总分析。
-     * @param id - {string}范围汇总分析的id。
+     * @description 获取某一个区域汇总分析。
+     * @param id - {string}区域汇总分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {SuperMap.REST.ProcessingService}
@@ -418,17 +326,15 @@ export class ProcessingService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addSummaryRegionJob
-     * @description 新建一个范围汇总分析。
-     * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个范围汇总分析的请求参数。
+     * @description 新建一个区域汇总分析。
+     * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个区域汇总分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {SuperMap.REST.ProcessingService}
      */
     addSummaryRegionJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
+        var me = this, format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
             eventListeners: {
                 scope: me,
@@ -440,14 +346,14 @@ export class ProcessingService extends CommonServiceBase {
             },
             format: format
         });
-        summaryRegionJobsService.addSummaryRegionJob(param, seconds);
+        summaryRegionJobsService.addSummaryRegionJob(params, seconds);
         return me;
     }
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobState
-     * @description 获取范围汇总分析的状态。
-     * @param id - {string}范围汇总分析的id。
+     * @description 获取区域汇总分析的状态。
+     * @param id - {string}区域汇总分析的id。
      */
     getSummaryRegionJobState(id) {
         return this.summaryRegionJobs[id];
@@ -510,9 +416,7 @@ export class ProcessingService extends CommonServiceBase {
      * @return {SuperMap.ProcessingService}
      */
     addVectorClipJob(params, callback, seconds, resultFormat) {
-        var me = this,
-            param = me._processParams(params),
-            format = me._processFormat(resultFormat);
+        var me = this, format = me._processFormat(resultFormat);
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             serverType: me.serverType,
             eventListeners: {
@@ -525,7 +429,7 @@ export class ProcessingService extends CommonServiceBase {
             },
             format: format
         });
-        vectorClipJobsService.addVectorClipJob(param, seconds);
+        vectorClipJobsService.addVectorClipJob(params, seconds);
         return me;
     }
 
@@ -542,18 +446,6 @@ export class ProcessingService extends CommonServiceBase {
         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
-    _processParams(params) {
-        if (!params) {
-            return {};
-        }
-        if (params.query) {
-            params.query = params.query.toString();
-        }
-        if (params.bounds) {
-            params.bounds = params.bounds.toString();
-        }
-        return params;
-    }
 }
 
 SuperMap.REST.ProcessingService = ProcessingService;

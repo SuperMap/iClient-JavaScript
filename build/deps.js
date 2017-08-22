@@ -88,7 +88,6 @@ deps = {
             "./src/common/iServer/ThiessenAnalystService.js",
             //ProcessingService
             "./src/common/iServer/KernelDensityJobsService.js",
-            "./src/common/iServer/BuildCacheJobsService.js",
             "./src/common/iServer/SingleObjectQueryJobsService.js",
             "./src/common/iServer/SummaryMeshJobsService.js",
             "./src/common/iServer/SummaryRegionJobsService.js",
@@ -268,13 +267,13 @@ deps = {
                 }]
             },
             "ProcessingService": {
-                "name": "大数据分析服务",
+                "name": "分布式空间分析服务",
                 "src": [
                     "./src/leaflet/services/ProcessingService.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.processingService",
-                    "des": "大数据分析服务"
+                    "des": "分布式空间分析服务"
                 }]
             },
             "iPortal": {
@@ -318,17 +317,17 @@ deps = {
                 }]
             },
             "DataFlow": {
-                "name": "实时大数据服务",
+                "name": "实时数据服务",
                 "src": [
                     "./src/leaflet/services/DataFlowService.js",
                     "./src/leaflet/overlay/DataFlowLayer.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.dataFlowService",
-                    "des": "实时大数据服务"
+                    "des": "实时数据服务"
                 }, {
                     "name": "L.supermap.dataFlowLayer",
-                    "des": "实时大数据图层"
+                    "des": "实时数据图层"
                 }]
             }
         },
@@ -594,13 +593,13 @@ deps = {
                 }]
             },
             "ProcessingService": {
-                "name": "大数据分析服务",
+                "name": "分布式空间分析服务",
                 "src": [
                     "./src/openlayers/services/ProcessingService.js"
                 ],
                 "modules": [{
                     "name": "ol.supermap.ProcessingService",
-                    "des": "大数据分析服务"
+                    "des": "分布式空间分析服务"
                 }]
             },
             "AddressMatch": {
@@ -614,17 +613,17 @@ deps = {
                 }]
             },
             "DataFlow": {
-                "name": "实时大数据服务",
+                "name": "实时数据服务",
                 "src": [
                     "./src/openlayers/services/DataFlowService.js",
                     "./src/openlayers/overlay/DataFlow.js"
                 ],
                 "modules": [{
                     "name": "ol.supermap.DataFlowService",
-                    "des": "实时大数据服务"
+                    "des": "实时数据服务"
                 }, {
                     "name": "ol.source.DataFlow",
-                    "des": "实时大数据"
+                    "des": "实时数据"
                 }]
             }
         },
@@ -754,13 +753,13 @@ deps = {
             "title": "服务",
             "description": "对各种功能服务的包装",
             "ProcessingService": {
-                "name": "大数据分析服务",
+                "name": "分布式空间分析服务",
                 "src": [
                     "./src/classic/services/ProcessingService.js"
                 ],
                 "modules": [{
                     "name": "SuperMap.REST.ProcessingService",
-                    "des": "大数据分析服务"
+                    "des": "分布式空间分析服务"
                 }]
             },
             "AddressMatch": {

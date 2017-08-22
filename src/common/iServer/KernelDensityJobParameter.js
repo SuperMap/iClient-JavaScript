@@ -98,6 +98,7 @@ export default class KernelDensityJobParameter {
         this.radiusUnit = null;
         this.areaUnit = null;
     }
+
     /**
      * @function SuperMap.KernelDensityJobParameter.toObject
      * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
@@ -112,7 +113,11 @@ export default class KernelDensityJobParameter {
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};
-            tempObj['analyst'][name] = kernelDensityJobParameter[name];
+            if (name === 'query') {
+                tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+            } else {
+                tempObj['analyst'][name] = kernelDensityJobParameter[name];
+            }
         }
     }
 
