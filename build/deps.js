@@ -713,11 +713,19 @@ deps = {
             "Mapv": {
                 "name": "Mapv",
                 "src": [
-                    "./src/mapboxgl/overlay/MapvLayer.js"
+                    "./src/mapboxgl/overlay/MapvLayer.js",
+                    "./src/mapboxgl/overlay/mapv/MapvDataSet.js",
+                    "./src/mapboxgl/overlay/mapv/MapExtend.js",
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.MapvLayer",
                     "des": "百度MapV可视化效果"
+                }, {
+                    "name": "mapboxgl.supermap.MapvDataSet",
+                    "des": "mapboxgl的mapv图层数据集"
+                }, {
+                    "name": "mapboxgl.supermap.map",
+                    "des": "mapboxgl的Map对象扩展"
                 }]
             },
             "ThemeLayer": {

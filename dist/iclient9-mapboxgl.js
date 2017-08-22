@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -82,6 +82,12 @@ module.exports = mapboxgl;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return mapv}catch(e){return {}}}();
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98,7 +104,7 @@ var _mapboxGl = __webpack_require__(0);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
-var _iClient = __webpack_require__(5);
+var _iClient = __webpack_require__(8);
 
 var _iClient2 = _interopRequireDefault(_iClient);
 
@@ -233,7 +239,7 @@ _mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
 _mapboxGl2.default.supermap.LogoControl = Logo;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -246,7 +252,7 @@ exports.MapvLayer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _MapvRenderer = __webpack_require__(4);
+var _MapvRenderer = __webpack_require__(7);
 
 var _MapvRenderer2 = _interopRequireDefault(_MapvRenderer);
 
@@ -332,7 +338,7 @@ _mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
 _mapboxGl2.default.supermap.MapvLayer = MapvLayer;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -748,7 +754,223 @@ _mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
 _mapboxGl2.default.supermap.RankTheme3DLayer = RankTheme3DLayer;
 
 /***/ }),
-/* 4 */
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.setPaintProperty = exports.setBackground = exports.getDefaultVectorTileStyle = undefined;
+
+var _mapboxGl = __webpack_require__(0);
+
+var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
+_mapboxGl2.default.supermap.map = _mapboxGl2.default.supermap.map || {};
+
+/**
+ * 配置默认底图样式
+ */
+var getDefaultVectorTileStyle = exports.getDefaultVectorTileStyle = function getDefaultVectorTileStyle(urlTemplate, options) {
+    options = options || {};
+    var defaultOptions = {};
+    defaultOptions.version = options.version || 8;
+    defaultOptions.layers = options.layers || [];
+    defaultOptions.light = options.light || {
+        "anchor": "viewport",
+        "color": "#fcf6ef",
+        "intensity": 0.5,
+        "position": [1.15, 201, 20]
+    };
+
+    var style = {
+        "version": defaultOptions.version,
+        "sources": {
+            "vector-tiles": {
+                "type": "vector",
+                "tiles": [urlTemplate]
+            }
+        },
+        "layers": defaultOptions.layers,
+        "light": defaultOptions.light
+    };
+    if (options.sprite != null) {
+        style.sprite = options.sprite;
+    }
+    if (options.glyphs != null) {
+        style.glyphs = options.glyphs;
+    }
+    return style;
+};
+
+/**
+ * 设置地图背景
+ */
+var setBackground = exports.setBackground = function setBackground(map, color) {
+    if (color && map) {
+        map.addLayer({
+            "id": "background",
+            "type": "background",
+            "paint": {
+                "background-color": color
+            }
+        }, "background");
+    }
+};
+
+/**
+ * 设置图层风格
+ * @param map
+ * @param layerIds
+ * @param type
+ * @param paint
+ * @param source 非必填，默认vector-tiles
+ * @param sourceLayers 非必填，默认与id对应
+ */
+var setPaintProperty = exports.setPaintProperty = function setPaintProperty(map, layerIds, type, paint, source, sourceLayers) {
+    if (layerIds && map) {
+        if (Object.prototype.toString.call(layerIds) !== '[object Array]') {
+            layerIds = [layerIds];
+        }
+        for (var i = 0; i < layerIds.length; i++) {
+            var sourceLayer = sourceLayers ? sourceLayers[i] : null;
+            var layer = getLayer(layerIds[i], type, source, sourceLayer, paint);
+            map.addLayer(layer, layerIds[i]);
+            map.moveLayer(layerIds[i]);
+        }
+    }
+};
+
+function getLayer(id, type, source, sourceLayer, paint) {
+    var sourceType = source || "vector-tiles";
+    var sLayer = sourceLayer || id;
+    var layer = {
+        "id": id,
+        "type": type,
+        "source": sourceType,
+        "source-layer": sLayer,
+        "paint": paint
+    };
+    return layer;
+}
+
+_mapboxGl2.default.supermap.map.getDefaultVectorTileStyle = getDefaultVectorTileStyle;
+_mapboxGl2.default.supermap.map.setBackground = setBackground;
+_mapboxGl2.default.supermap.map.setPaintProperty = setPaintProperty;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MapvDataSet = undefined;
+
+var _mapboxGl = __webpack_require__(0);
+
+var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
+
+var _mapv = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
+
+var MapvDataSet = exports.MapvDataSet = {
+
+    /**
+     * 返回mapv点数据集
+     */
+    getPoint: function getPoint(center) {
+        if (center && center instanceof Array) {
+            return new _mapv.DataSet([{
+                geometry: {
+                    type: 'Point',
+                    coordinates: center
+                }
+            }]);
+        }
+    },
+
+    /**
+     * 返回mapv多点数据集
+     */
+    getPoints: function getPoints(points) {
+        if (points && points instanceof Array) {
+            var mPoints = [];
+            points.map(function (data) {
+                mPoints.push({
+                    geometry: {
+                        type: 'Point',
+                        coordinates: data.geometry.coordinates
+                    }
+                });
+            });
+            return new _mapv.DataSet(mPoints);
+        }
+    },
+
+    /**
+     * 返回mapv弧形线数据集
+     */
+    getCurveLines: function getCurveLines(startPoint, LinePoints) {
+        if (startPoint && startPoint instanceof Array && LinePoints && LinePoints instanceof Array) {
+            var lineData = [];
+            LinePoints.map(function (data) {
+                var coords = data.geometry && data.geometry.coordinates;
+                var toCenter = { lng: coords[0], lat: coords[1] };
+                var fromCenter = { lng: startPoint[0], lat: startPoint[1] };
+                var cv = _mapv.utilCurve.getPoints([fromCenter, toCenter]);
+                lineData.push({
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: cv
+                    }
+                });
+            });
+            return new _mapv.DataSet(lineData);
+        }
+    },
+
+    /**
+     * 返回mapv弧形动态点数据集
+     */
+    getCurveDynamicPoints: function getCurveDynamicPoints(center, endPoints) {
+        if (center && center instanceof Array && endPoints && endPoints instanceof Array) {
+            var timeData = [];
+            endPoints.map(function (data) {
+                var coords = data.geometry && data.geometry.coordinates;
+                var toCenter = { lng: coords[0], lat: coords[1] };
+                var fromCenter = { lng: center[0], lat: center[1] };
+                var cv = _mapv.utilCurve.getPoints([fromCenter, toCenter]);
+                for (var j = 0; j < cv.length; j++) {
+                    timeData.push({
+                        geometry: {
+                            type: 'Point',
+                            coordinates: cv[j]
+                        },
+                        time: j
+                    });
+                }
+            });
+            return new _mapv.DataSet(timeData);
+        }
+    }
+};
+_mapboxGl2.default.supermap.MapvDataSet = MapvDataSet;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -762,7 +984,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _mapv = __webpack_require__(6);
+var _mapv = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1081,24 +1303,20 @@ var MapvRenderer = function (_BaseLayer) {
 exports.default = MapvRenderer;
 
 /***/ }),
-/* 5 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0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"
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = function(){try{return mapv}catch(e){return {}}}();
-
-/***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(2);
 __webpack_require__(3);
-module.exports = __webpack_require__(1);
+__webpack_require__(6);
+__webpack_require__(5);
+__webpack_require__(4);
+module.exports = __webpack_require__(2);
 
 
 /***/ })
