@@ -16,7 +16,7 @@
 <script type="text/javascript">
     var map, url = "http://117.122.248.69:8090/iserver/services/map-jingjin/rest/maps/京津地区地图";
     //自定义比例尺
-    var scaleDenominators = [100000, 50000, 25000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 1];
+    var scaleDenominators = [4000000, 2000000, 1000000, 500000,  250000, 125000];
     var origin = [114.59, 42.31];
     //leaflet CRS投影设置
     var crs = L.Proj.CRS("EPSG:4326", {
@@ -27,9 +27,8 @@
     map = L.map('map', {
         crs: crs,
         center: [39.79, 116.85],
-        minZoom:1,
-        maxZoom: 14,
-        zoom: 10,
+        maxZoom: 5,
+        zoom: 0,
     });
     L.supermap.tiledMapLayer(url).addTo(map);
 </script>
