@@ -7492,7 +7492,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
-         * @description 获取单对象空间查询分析所有
+         * @description 获取单对象空间查询分析所有任务
          * @return {*}
          */
 

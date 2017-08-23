@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript"  include="mapv" src="../../dist/mbgl-include.js"></script>
+    <script type="text/javascript" include="mapv" src="../../dist/mbgl-include.js"></script>
     <title>强边界图</title>
     <style>
         body {
@@ -24,7 +24,8 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map"></div>
 <script type="text/javascript">
-    var attribution = "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
     var map = new mapboxgl.Map({
         container: 'map',
         style: {
@@ -51,9 +52,9 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
-            .setLngLat(map.getCenter())
-            .setHTML('示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理')
-            .addTo(map);
+        .setLngLat(map.getCenter())
+        .setHTML('示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理')
+        .addTo(map);
 
     map.on('load', function () {
         var randomCount = 500;
@@ -77,13 +78,13 @@
                 y: cityCenter.lat - 5 + Math.random() * 10,
             };
             edge_data.push(
-                    {"source": ~~(i * Math.random()), "target": '0'}
+                {"source": ~~(i * Math.random()), "target": '0'}
             );
         }
 
         var fbundling = mapv.utilForceEdgeBundling()
-                .nodes(node_data)
-                .edges(edge_data);
+            .nodes(node_data)
+            .edges(edge_data);
 
         var results = fbundling();
 

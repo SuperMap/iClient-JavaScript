@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript"  include="mapv" src="../../dist/mbgl-include.js"></script>
+    <script type="text/javascript" include="mapv" src="../../dist/mbgl-include.js"></script>
 
     <title>强度线</title>
     <style>
@@ -25,7 +25,8 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map"></div>
 <script type="text/javascript">
-    var attribution = "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a> <a href='http://mapv.baidu.com' target='_blank'>© 2017 百度 MapV</a> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
     var map = new mapboxgl.Map({
         container: 'map',
         style: {

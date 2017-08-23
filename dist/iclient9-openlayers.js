@@ -11458,7 +11458,7 @@ var Theme = function (_ol$source$ImageCanva) {
 
         var _this = _possibleConstructorReturn(this, (Theme.__proto__ || Object.getPrototypeOf(Theme)).call(this, {
             attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -14837,7 +14837,7 @@ var Mapv = function (_ol$source$ImageCanva) {
 
         var _this = _possibleConstructorReturn(this, (Mapv.__proto__ || Object.getPrototypeOf(Mapv)).call(this, {
             attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
+                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -39095,7 +39095,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
-         * @description 获取单对象空间查询分析所有
+         * @description 获取单对象空间查询分析所有任务
          * @return {*}
          */
 
