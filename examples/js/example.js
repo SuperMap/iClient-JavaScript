@@ -135,7 +135,7 @@ function scroll() {
 
     }
 
-    if (ele) {
+    if (ele&&ele.offset()) {
          $("body").animate({scrollTop: ele.offset().top - 50}, 0);
     }
 }
