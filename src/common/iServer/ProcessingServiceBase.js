@@ -4,9 +4,9 @@ import {FetchRequest} from '../util/FetchRequest';
 
 /**
  * @class SuperMap.ProcessingServiceBase
- * @description 大数据服务基类
+ * @description 分布式空间分析服务基类
  * @extends SuperMap.CommonServiceBase
- * @param url - {string} 大数据服务地址。
+ * @param url - {string} 分布式空间分析服务地址。
  * @param options - {Object} 参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
@@ -17,7 +17,7 @@ import {FetchRequest} from '../util/FetchRequest';
 export default class ProcessingServiceBase extends CommonServiceBase {
 
     constructor(url, options) {
-        options=options||{};
+        options = options || {};
         /*
          * Constant: EVENT_TYPES
          * {Array<string>}
@@ -26,7 +26,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
          * - *processFailed* 创建失败后触发的事件 。
          * - *processRunning* 创建过程的整个阶段都会触发的事件，用于获取创建过程的状态 。
          */
-        options.EVENT_TYPES=["processCompleted", "processFailed", "processRunning"];
+        options.EVENT_TYPES = ["processCompleted", "processFailed", "processRunning"];
         super(url, options)
     }
 
@@ -39,7 +39,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
 
     /**
      * @function SuperMap.ProcessingServiceBase.prototype.getJobs
-     * @description 获取大数据
+     * @description 获取分布式空间分析任务。
      * @param url - {string} 资源地址。
      */
     getJobs(url) {
@@ -55,7 +55,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
 
     /**
      * @function SuperMap.ProcessingServiceBase.prototype.addJob
-     * @description 添加大数据
+     * @description 添加分布式空间分析任务。
      * @param url - {string} 资源根地址。
      * @param params - {Object} 创建一个空间分析的请求参数。
      * @param paramType - {string} - 请求参数类型。

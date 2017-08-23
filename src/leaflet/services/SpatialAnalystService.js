@@ -26,7 +26,7 @@ import CommontypesConversion from '../core/CommontypesConversion';
  *      .bufferAnalysis(params,function(result){
  *          //doSomething
  *      })
- * @param url -{string} 大数据服务地址。
+ * @param url -{string} 空间分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online
  */

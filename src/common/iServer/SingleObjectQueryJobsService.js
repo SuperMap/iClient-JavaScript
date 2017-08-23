@@ -4,9 +4,9 @@ import SingleObjectQueryJobsParameter from './SingleObjectQueryJobsParameter';
 
 /**
  * @class SuperMap.SingleObjectQueryJobsService
- * @classdesc 大数据单对象查询分析服务类
+ * @classdesc 单对象查询分析服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 大数据单对象空间查询分析服务地址。
+ * @param url -{string} 单对象空间查询分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 export default  class SingleObjectQueryJobsService extends ProcessingServiceBase {
@@ -25,7 +25,7 @@ export default  class SingleObjectQueryJobsService extends ProcessingServiceBase
 
     /**
      * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
-     * @description 获取大数据单对象空间查询分析所有
+     * @description 获取单对象空间查询分析所有任务
      * @return {*}
      */
     getQueryJobs() {
@@ -43,7 +43,7 @@ export default  class SingleObjectQueryJobsService extends ProcessingServiceBase
 
     /**
      * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
-     * @description 新建大数据单对象空间查询分析服务
+     * @description 新建单对象空间查询分析服务
      * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      */

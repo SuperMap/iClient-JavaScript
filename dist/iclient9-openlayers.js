@@ -5893,9 +5893,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.ProcessingServiceBase
- * @description 大数据服务基类
+ * @description 分布式空间分析服务基类
  * @extends SuperMap.CommonServiceBase
- * @param url - {string} 大数据服务地址。
+ * @param url - {string} 分布式空间分析服务地址。
  * @param options - {Object} 参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
@@ -5939,7 +5939,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
 
         /**
          * @function SuperMap.ProcessingServiceBase.prototype.getJobs
-         * @description 获取大数据
+         * @description 获取分布式空间分析任务。
          * @param url - {string} 资源地址。
          */
 
@@ -5958,7 +5958,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
 
         /**
          * @function SuperMap.ProcessingServiceBase.prototype.addJob
-         * @description 添加大数据
+         * @description 添加分布式空间分析任务。
          * @param url - {string} 资源根地址。
          * @param params - {Object} 创建一个空间分析的请求参数。
          * @param paramType - {string} - 请求参数类型。
@@ -8386,8 +8386,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param url - {string} 与客户端交互的大数据服务地址。
- * @param options - {Object} 加载大数据可选参数。如：<br>
+ * @param url - {string} 与客户端交互的实时数据服务地址。
+ * @param options - {Object} 加载实时数据可选参数。如：<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
  *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
@@ -17267,7 +17267,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.supermap.ProcessingService
- * @classdesc 大数据处理相关服务类。
+ * @classdesc 分布式空间分析相关服务类。
  * @extends ol.supermap.ServiceBase
  * @example
  * 用法：
@@ -17275,7 +17275,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      .getKernelDensityJobs(function(result){
  *          //doSomething
  *      })
- * @param url -{string} 大数据服务地址。
+ * @param url -{string} 分布式空间分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数
  */
 var ProcessingService = function (_ServiceBase) {
@@ -33327,9 +33327,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.KernelDensityJobsService
- * @classdesc 核密度大数据服务类
+ * @classdesc 核密度分析服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 核密度大数据服务地址。
+ * @param url -{string} 核密度分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 var KernelDensityJobsService = function (_ProcessingServiceBas) {
@@ -33359,7 +33359,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
-         * @description 获取核密度大数据
+         * @description 获取核密度分析任务
          * @return {*}
          */
 
@@ -33371,7 +33371,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
-         * @description 获取指定id的核密度大数据服务
+         * @description 获取指定id的核密度分析服务
          * @param id -{string} 指定要获取数据的id
          */
 
@@ -33383,7 +33383,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
-         * @description 新建核密度大数据服务
+         * @description 新建核密度分析服务
          * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
@@ -39063,9 +39063,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SingleObjectQueryJobsService
- * @classdesc 大数据单对象查询分析服务类
+ * @classdesc 单对象查询分析服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 大数据单对象空间查询分析服务地址。
+ * @param url -{string} 单对象空间查询分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
@@ -39095,7 +39095,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
-         * @description 获取大数据单对象空间查询分析所有
+         * @description 获取单对象空间查询分析所有
          * @return {*}
          */
 
@@ -39119,7 +39119,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
-         * @description 新建大数据单对象空间查询分析服务
+         * @description 新建单对象空间查询分析服务
          * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
@@ -39537,7 +39537,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryMeshJobsService
- * @classdesc 点聚合分析大数据任务类。
+ * @classdesc 点聚合分析任务类。
  * @param url -{string} 点聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
@@ -39573,7 +39573,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJobs
-         * @description 获取点聚合分析大数据
+         * @description 获取点聚合分析任务
          */
 
     }, {
@@ -39584,7 +39584,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJob
-         * @description 获取指定ip的点聚合分析大数据
+         * @description 获取指定ip的点聚合分析任务
          * @param id -{string} 指定要获取数据的id
          */
 
@@ -39596,7 +39596,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SummaryMeshJobsService.prototype.addSummaryMeshJob
-         * @description 新建点聚合分析大数据服务
+         * @description 新建点聚合分析服务
          * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
@@ -45394,9 +45394,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.VectorClipJobsService
- * @classdesc 大数据矢量裁剪分析服务类
+ * @classdesc 矢量裁剪分析服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 大数据矢量裁剪分析服务地址。
+ * @param url -{string} 矢量裁剪分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 var VectorClipJobsService = function (_ProcessingServiceBas) {
@@ -45426,7 +45426,7 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.VectorClipJobsService.protitype.getVectorClipJobs
-         * @description 获取大数据矢量裁剪分析所有
+         * @description 获取矢量裁剪分析所有任务
          * @return {*}
          */
 
@@ -45450,7 +45450,7 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
-         * @description 新建大数据矢量裁剪分析服务
+         * @description 新建矢量裁剪分析服务
          * @param params - {SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
@@ -51068,7 +51068,7 @@ var MapvCanvasLayer = function () {
 
         /*
          * @function ol.supermap.MapvCanvasLayer.prototype.resize
-         * @param mapWidth - {number} ��ͼ����
+         * @param mapWidth - {number} ��ͼ���
          * @param mapHeight - {number} ��ͼ�߶�
          * @description ������ͼ��С
          */
@@ -51096,7 +51096,7 @@ var MapvCanvasLayer = function () {
         /*
          * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
          * @param zIndex - {number} �㼶����
-         * @description ����ͼ���㼶
+         * @description ����ͼ��㼶
          */
 
     }, {
@@ -51106,7 +51106,7 @@ var MapvCanvasLayer = function () {
         }
         /*
          * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
-         * @description ��ȡͼ���㼶
+         * @description ��ȡͼ��㼶
          */
 
     }, {

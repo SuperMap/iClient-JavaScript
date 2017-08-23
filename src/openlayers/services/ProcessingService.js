@@ -9,7 +9,7 @@ import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsServ
 import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
 /**
  * @class ol.supermap.ProcessingService
- * @classdesc 大数据处理相关服务类。
+ * @classdesc 分布式空间分析相关服务类。
  * @extends ol.supermap.ServiceBase
  * @example
  * 用法：
@@ -17,7 +17,7 @@ import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
  *      .getKernelDensityJobs(function(result){
  *          //doSomething
  *      })
- * @param url -{string} 大数据服务地址。
+ * @param url -{string} 分布式空间分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数
  */
 export default class ProcessingService extends ServiceBase {

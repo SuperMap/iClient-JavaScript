@@ -12,8 +12,8 @@ import DataFlow from '../../common/iServer/DataFlowService';
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param url - {string} 与客户端交互的大数据服务地址。
- * @param options - {Object} 加载大数据可选参数。如：<br>
+ * @param url - {string} 与客户端交互的实时数据服务地址。
+ * @param options - {Object} 加载实时数据可选参数。如：<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
  *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>

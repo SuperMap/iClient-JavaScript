@@ -4,7 +4,7 @@ import SummaryMeshJobParameter from './SummaryMeshJobParameter';
 
 /**
  * @class SuperMap.SummaryMeshJobsService
- * @classdesc 点聚合分析大数据任务类。
+ * @classdesc 点聚合分析任务类。
  * @param url -{string} 点聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
@@ -29,7 +29,7 @@ export default  class SummaryMeshJobsService extends ProcessingServiceBase {
 
     /**
      * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJobs
-     * @description 获取点聚合分析大数据
+     * @description 获取点聚合分析任务
      */
     getSummaryMeshJobs() {
         return super.getJobs(this.url);
@@ -37,7 +37,7 @@ export default  class SummaryMeshJobsService extends ProcessingServiceBase {
 
     /**
      * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJob
-     * @description 获取指定ip的点聚合分析大数据
+     * @description 获取指定ip的点聚合分析任务
      * @param id -{string} 指定要获取数据的id
      */
     getSummaryMeshJob(id) {
@@ -46,7 +46,7 @@ export default  class SummaryMeshJobsService extends ProcessingServiceBase {
 
     /**
      * @function SuperMap.SummaryMeshJobsService.prototype.addSummaryMeshJob
-     * @description 新建点聚合分析大数据服务
+     * @description 新建点聚合分析服务
      * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      */
