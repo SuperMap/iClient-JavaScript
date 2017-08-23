@@ -7,12 +7,12 @@ import SingleObjectQueryJobsService from '../../common/iServer/SingleObjectQuery
 import SummaryMeshJobsService from '../../common/iServer/SummaryMeshJobsService';
 import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsService';
 import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
+
 /**
  * @class ol.supermap.ProcessingService
  * @classdesc 分布式空间分析相关服务类。
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.ProcessingService(url,options)
  *      .getKernelDensityJobs(function(result){
  *          //doSomething

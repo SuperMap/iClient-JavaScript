@@ -6,15 +6,19 @@ import {DeafultCanvasStyle} from '../overlay/vectortile/DeafultCanvasStyle';
 ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.StyleUtils
- * @classdesc 风格工具
+ * @classdesc 样式工具类
  * @private
- * @param map - {Object} 地图
- * @param layerInfo - {Object} 图层信息
- * @param feature - {Object} 特征
- * @param url - {string} 地址
  */
 export default class StyleUtils {
 
+    /**
+     * @function ol.supermap.StyleUtils.getValidStyleFromLayerInfo
+     * @description 通过图层信息获取有效的样式
+     * @param layerInfo - {Object} 图层信息
+     * @param feature - {ol.Feature}{@linkdoc-openlayers/ol.Feature} 要素
+     * @param url - {string} 图层数据地址
+     * @return {ol.style.Style}
+     */
     static getValidStyleFromLayerInfo(layerInfo, feature, url) {
         var type = feature.getGeometry().getType().toUpperCase(),
             shader = layerInfo.layerStyle,
@@ -228,7 +232,6 @@ export default class StyleUtils {
      * @param feature -{Object} 要素
      * @param fromServer -{string} 服务源
      * @param url -{string} 地址
-     *
      */
     static getStyleFromCarto(zoom, scale, shader, feature, fromServer, url) {
         var type = feature.getGeometry().getType().toUpperCase(),
@@ -455,7 +458,7 @@ export default class StyleUtils {
      * @description 从iPortal标记获取样式
      * @param iPortalStyle -{Object} iportal样式
      * @param type - {string} 样式类型
-     * @param fStyle -{Object} 特征样式
+     * @param fStyle -{Object} 要素样式
      */
     static getStyleFromiPortalStyle(iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;

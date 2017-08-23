@@ -1,9 +1,10 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import Graph from './theme/graph';
+
 /**
  * @class ol.source.RankSymbol
- * @classdesc 获取等级标志
+ * @classdesc 等级符号专题图类
  * @param name - {string} 专题图层名
  * @param symbolType -{string} 标志类型
  * @param opt_options -{Object} 参数
@@ -60,8 +61,9 @@ export default class RankSymbol extends Graph {
     }
 
     /**
+     * @private
      * @function ol.source.RankSymbol.prototype.createThematicFeature
-     * @description 创建专题图形
+     * @description 创建专题图形要素
      * @param feature -{Object} 要创建的专题图形要素
      */
     createThematicFeature(feature) {

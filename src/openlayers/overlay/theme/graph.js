@@ -11,13 +11,14 @@ import '../../../common/iServer/ThemeVector';
 import '../../../common/style/ThemeStyle';
 import SuperMap from '../../../common/SuperMap';
 import Theme from './theme';
+
 /**
  * @class ol.source.Graph
- * @classdesc 图像
+ * @classdesc 图表类
  * @private
- * @param chartsType -{string} 图形类别
- * @param name - {string} 名称
- * @param opt_options -{Object} 参数
+ * @param chartsType -{string} 图表类别
+ * @param name - {string} 图层名称
+ * @param opt_options - {Object} 参数
  * @extends ol.source.Theme
  */
 export default class Graph extends Theme {
@@ -32,6 +33,7 @@ export default class Graph extends Theme {
         this.cache = {};
         this.chartsType = chartsType;
     }
+
     /**
      * @function ol.source.Graph.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
@@ -47,6 +49,7 @@ export default class Graph extends Theme {
         this.charts = null;
         this.cache = null;
     }
+
     /**
      * @function ol.source.Graph.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
@@ -56,6 +59,7 @@ export default class Graph extends Theme {
         this.chartsType = chartsType;
         this.redraw();
     }
+
     /**
      * @function ol.source.Graph.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
@@ -83,6 +87,7 @@ export default class Graph extends Theme {
             this.redrawThematicFeatures(this.map.getView().calculateExtent());
         }
     }
+
     /**
      * @function ol.source.Graph.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
@@ -146,6 +151,7 @@ export default class Graph extends Theme {
         thematicFeature.assembleShapes();
         return thematicFeature;
     }
+
     /**
      * @function ol.source.Graph.prototype.drawCharts
      * @description 绘制图表。包含压盖处理。
@@ -265,6 +271,7 @@ export default class Graph extends Theme {
         }
         return list;
     }
+
     /**
      * @function ol.source.Graph.prototype.isQuadrilateralOverLap
      * @description  判断两个四边形是否有压盖。
@@ -305,6 +312,7 @@ export default class Graph extends Theme {
         }
         return OverLap;
     }
+
     /**
      * @function ol.source.Graph.prototype.isPointInPoly
      * @description  判断一个点是否在多边形里面。(射线法)
@@ -318,6 +326,7 @@ export default class Graph extends Theme {
             && (isIn = !isIn);
         return isIn;
     }
+
     /**
      * @function ol.source.Graph.prototype.isChartInMap
      * @description  判断图表是否在地图里。
@@ -337,6 +346,7 @@ export default class Graph extends Theme {
         }
         return isIn;
     }
+
     /**
      * @function ol.source.Graph.prototype.clearCache
      * @description  清除缓存
@@ -345,6 +355,7 @@ export default class Graph extends Theme {
         this.cache = {};
         this.charts = [];
     }
+
     /**
      * @function ol.source.Graph.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature

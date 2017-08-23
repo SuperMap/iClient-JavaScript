@@ -3,12 +3,12 @@ import SuperMap from '../../common/SuperMap';
 import ServiceBase from './ServiceBase';
 import ChartQueryService from '../../common/iServer/ChartQueryService';
 import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoSpecsService';
+
 /**
  * @class ol.supermap.ChartService
- * @classdesc openlayer的海图服务。
+ * @classdesc 海图服务。
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.ChartService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
@@ -26,9 +26,9 @@ export default class ChartService extends ServiceBase {
     /**
      * @function ol.supermap.ChartService.prototype.queryChart
      * @description 查询海图服务。
-     * @param params -{SuperMap.ChartQueryParameters} 海图查询所需参数类。
-     * @param callback -{function} 回调函数。
-     * @param resultFormat -{SuperMap.DataFormat} 返回的结果格式类型。
+     * @param params - {SuperMap.ChartQueryParameters} 海图查询所需参数类。
+     * @param callback - {function} 回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果格式类型。
      * @return {ol.supermap.ChartService}
      */
     queryChart(params, callback, resultFormat) {
@@ -52,7 +52,7 @@ export default class ChartService extends ServiceBase {
     /**
      * @function ol.supermap.ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息服务。
-     * @param callback -{function} 回调函数
+     * @param callback - {function} 回调函数
      * @return {ol.supermap.ChartService}
      */
     getChartFeatureInfo(callback) {

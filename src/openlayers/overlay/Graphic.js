@@ -1,10 +1,11 @@
 import ol from 'openlayers/dist/ol-debug';
 import Util from '../core/Util';
 import './graphic/Graphic';
+
 /**
  * @class ol.source.Graphic
  * @classdesc 图形类。
- * @param options -{olx.source.ImageCanvasOptions} 图形参数
+ * @param options -{Object} 图形参数
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 export default class Graphic extends ol.source.ImageCanvas {
@@ -38,16 +39,17 @@ export default class Graphic extends ol.source.ImageCanvas {
             return this.canvasContext_.canvas;
         }
     }
+
     /**
-     * @functionol.source.Graphic.prototype.forEachFeatureAtCoordinate
-     * @description 获取在视图上的特征
+     * @private
+     * @function ol.source.Graphic.prototype.forEachFeatureAtCoordinate
+     * @description 获取在视图上的要素
      * @param coordinate -{string} 坐标
      * @param rotation -{number} 角度
      * @param hitTolerance -{number} 精度
      * @param skippedFeatureUids -{boolean} 跳过功能的UID
      * @param resolution -{number} 分辨率
      * @param callback -{function} 回调函数
-     *
      */
     forEachFeatureAtCoordinate(coordinate, resolution, rotation, hitTolerance, skippedFeatureUids, callback) {
         var graphics = this.getGraphicsInExtent();
@@ -74,11 +76,11 @@ export default class Graphic extends ol.source.ImageCanvas {
         var dy2 = -center[1];
         return ol.transform.compose(this.imageTransform, dx1, dy1, sx, sy, 0, dx2, dy2);
     }
+
     /**
-     * @functionol.source.Graphic.prototype.getGraphicsInExtent
-     * @description 获取面积
+     * @function ol.source.Graphic.prototype.getGraphicsInExtent
+     * @description 在指定范围中获取几何要素面积
      * @param extent -{Object} 长度范围
-     *
      */
     getGraphicsInExtent(extent) {
         var graphics = [];

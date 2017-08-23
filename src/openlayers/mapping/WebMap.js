@@ -7,9 +7,14 @@ import Logo from '../control/Logo';
 ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.WebMap
- * @classdesc 网络图层类。
- * @param id -{string} iPortal|Online 地图ID
- * @param options -{Object} 参数
+ * @classdesc 对接iPortal/Online地图类。
+ * @param id - {string} iPortal|Online 地图ID
+ * @param options - {Object} 参数。如：<br>
+ *        target - {string} 目标类型。<br>
+ *        map - {ol.map} 地图对象。<br>
+ *        server - {string} 服务地址。<br>
+ *        credentialKey - {string} 凭证密钥。<br>
+ *        credentialValue - {string} 凭证值。
  * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
  */
 export default class WebMap extends ol.Observable {
@@ -29,6 +34,7 @@ export default class WebMap extends ol.Observable {
         this.credentialKey = options.credentialKey || 'key';
         this.load();
     }
+
     /**
      * @function ol.supermap.WebMap.prototype.load
      * @description 登陆窗口后添加地图图层
@@ -53,6 +59,7 @@ export default class WebMap extends ol.Observable {
             me.createLayersByJson(layers);
         })
     }
+
     /**
      * @function ol.supermap.WebMap.prototype.createLayersByJson
      * @description 通过json创建图层
@@ -125,6 +132,7 @@ export default class WebMap extends ol.Observable {
         }
         return 'EPSG:' + epsgCode;
     }
+
     /**
      * @function ol.supermap.WebMap.prototype.createMap
      * @description 创建地图
@@ -143,6 +151,7 @@ export default class WebMap extends ol.Observable {
             view.fit(options.extent);
         }
     }
+
     /**
      * @function ol.supermap.WebMap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率
@@ -158,6 +167,7 @@ export default class WebMap extends ol.Observable {
         }
         return resolutions;
     }
+
     /**
      * @function ol.supermap.WebMap.prototype.createLayer
      * @description 创建图层
@@ -297,6 +307,7 @@ export default class WebMap extends ol.Observable {
             extent: extent
         };
     }
+
     /**
      * @function ol.supermap.WebMap.prototype.createTiandituLayer
      * @description 创建天地图图层
@@ -325,6 +336,7 @@ export default class WebMap extends ol.Observable {
         })
         return layer;
     }
+
     /**
      * @function ol.supermap.WebMap.prototype.createMarkersLayer
      * @description 创建图标图层
@@ -405,6 +417,7 @@ export default class WebMap extends ol.Observable {
             }
         }
     }
+
     /**
      * @function ol.supermap.WebMap.prototype.createWmsLayer
      * @description 创建Wms图层

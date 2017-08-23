@@ -18,9 +18,11 @@ export var pointStyle = {
     globalCompositeOperation: "source-over",
     imageSmoothingEnabled: true
 };
+
 /**
  * @constant ol.supermap.lineStyle
  * @description 线属性名的对应表
+ * @private
  */
 export var lineStyle = {
     strokeStyle: "rgba(0,0,0,0)",
@@ -38,9 +40,11 @@ export var lineStyle = {
     globalCompositeOperation: "source-over",
     imageSmoothingEnabled: true
 };
+
 /**
  * @constant ol.supermap.polygonStyle
  * @description 面属性名的对应表
+ * @private
  */
 export var polygonStyle = {
     /*包含LINE的部分*/
@@ -66,9 +70,11 @@ export var polygonStyle = {
     globalCompositeOperation: "source-over",
     imageSmoothingEnabled: true
 };
+
 /**
  * @constant ol.supermap.DeafultCanvasStyle
  * @description 默认画布属性名的对应表
+ * @private
  */
 export var DeafultCanvasStyle = {
     /*

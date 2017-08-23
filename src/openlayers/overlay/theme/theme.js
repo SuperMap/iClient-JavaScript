@@ -4,10 +4,10 @@ import SuperMap from '../../../common/SuperMap';
 import ThemeFeature from './themeFeature';
 /**
  * @class ol.source.Theme
- * @classdesc 主题
+ * @classdesc 专题
  * @private
  * @param name - {string} 名称
- * @param opt_options -{olx.source.ImageCanvasOptions} 参数
+ * @param opt_options -{Object} 可选构造参数。如：
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 export default class Theme extends ol.source.ImageCanvas {
@@ -115,8 +115,8 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.destroyFeatures
-     * @param features -{Object} 将被销毁的要素
      * @description 销毁某个要素
+     * @param features -{Object} 将被销毁的要素
      */
     destroyFeatures(features) {
         var all = (features == undefined);
@@ -153,22 +153,21 @@ export default class Theme extends ol.source.ImageCanvas {
      * @function ol.source.Theme.prototype.addFeatures
      * @param features -{Array<SuperMap.Feature.Vector>} 需要添加的数据
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
-     * 专题图仅接收 SuperMap.Feature.Vector 类型数据，
-     * feature 将储存于 features 属性中，其存储形式为数组。
+     *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
+     *              feature 将储存于 features 属性中，其存储形式为数组。
      */
     addFeatures(features) {
 
     }
 
-
     /**
      * @function ol.source.Theme.prototype.removeFeatures
      * @param features - {Array<SuperMap.Feature.Vector>} 要删除feature的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-     * 参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
-     * 如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
-     * 如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
-     * 删除所有feature后再重新添加。这样效率会更高。
+     *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
+     *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
+     *              如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
+     *              删除所有feature后再重新添加。这样效率会更高。
      */
     removeFeatures(features) {
         if (!features || features.length === 0) {
@@ -236,10 +235,10 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.getFeatureBy
+     * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
+     *              返回此 feature（并且只返回第一个）。
      * @param property - {string} feature 的某个属性名称。
      * @param value - {string} property 所对应的值。
-     * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
-     * 返回此 feature（并且只返回第一个）。
      * @return {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
      */
     getFeatureBy(property, value) {
@@ -256,8 +255,8 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.getFeatureById
-     * @param featureId - {string} 矢量要素的属性 id。
      * @description 通过给定一个 id，返回对应的矢量要素。
+     * @param featureId - {string} 矢量要素的属性 id。
      * @return {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
@@ -266,10 +265,10 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.getFeaturesByAttribute
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param attrName - {string} 属性的 key。
      * @param attrValue - {string} 矢量要素的属性 id。
-     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @return  Array<SuperMap.Feature.Vector> 一个匹配的 feature 数组。
+     * @return {Array<SuperMap.Feature.Vector>}一个匹配的 feature 数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -288,17 +287,17 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.redrawThematicFeatures
-     * @param extent - {Array} 当前级别下计算出的地图范围
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
+     * @param extent - {Array} 当前级别下计算出的地图范围
      */
     redrawThematicFeatures(extent) {
     }
 
     /**
      * @function ol.source.Theme.prototype.on
+     * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
      * @param event - {string} 事件名称。
      * @param callback - {Function} 事件回调函数。
-     * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
      */
     on(event, callback) {
         var cb = callback;
@@ -314,9 +313,9 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.fire
+     * @description 添加专题要素事件监听
      * @param type - {string} 事件类型。
      * @param event - {string} 事件名称。
-     * @description 添加专题要素事件监听
      */
     fire(type, event) {
         event = event.originalEvent;
@@ -378,9 +377,9 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.un
+     * @description 移除专题要素事件监听
      * @param event - {string} 事件名称。
      * @param callback - {Function} 事件回调函数。
-     * @description 移除专题要素事件监听
      */
     un(event, callback) {
         var cb = callback;
@@ -416,8 +415,8 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.getLocalXY
-     * @param coordinate - {Object} 坐标位置。
      * @description 获取坐标系统
+     * @param coordinate - {Object} 坐标位置。
      */
     getLocalXY(coordinate) {
         var pixelP;
@@ -444,10 +443,10 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.rotate
+     * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
      * @param pixelP - {number} 像素坐标点位置。
      * @param rotation - {number} 旋转角度
      * @param center - {number} 中心位置。
-     * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
      */
     rotate(pixelP, rotation, center) {
         var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
@@ -455,14 +454,25 @@ export default class Theme extends ol.source.ImageCanvas {
         return [x, y];
     }
 
-    //获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
+    /**
+     * @function ol.source.Theme.prototype.scale
+     * @description 获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
+     * @param pixelP - {Object} 像素点
+     * @param center - {Object} 中心点
+     * @param scaleRatio - {number} 缩放倍数
+     * @return {Array<number>} 返回数组形比例
+     */
     scale(pixelP, center, scaleRatio) {
         var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
         var y = (pixelP[1] - center[1]) * scaleRatio + center[1];
         return [x, y];
     }
 
-
+    /**
+     * @function ol.source.Theme.prototype.scale
+     * @description 转为 iClient 要素
+     * @param feature 待转要素
+     */
     toiClientFeature(feature) {
         if (feature instanceof ThemeFeature) {
             return feature.toFeature();

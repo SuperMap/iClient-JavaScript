@@ -1,12 +1,12 @@
 ﻿import ol from 'openlayers/dist/ol-debug';
 import ServiceBase from './ServiceBase';
 import CommonThemeService from '../../common/iServer/ThemeService';
+
 /**
  * @class ol.supermap.ThemeService
  * @classdesc 专题图服务类
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.ThemeService(url,{
  *            projection:projection
  *      }).getThemeInfo(params,function(result){
@@ -14,7 +14,7 @@ import CommonThemeService from '../../common/iServer/ThemeService';
  *      });
  * @param url - {string} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
+ *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
  */
 export default class ThemeService extends ServiceBase {
 

@@ -1,9 +1,16 @@
 import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.supermap.MapvCanvasLayer
- * @classdesc µØÍ¼»­²¼Í¼²ã
+ * @classdesc Mapvåœ°å›¾ç”»å¸ƒå›¾å±‚ç±»
  * @private
- * @param options - {Object} ²ÎÊı
+ * @param options - {Object} å¯é€‰å‚æ•°ã€‚å¦‚ï¼š<br>
+ *        paneName - {string} çª—å£åã€‚<br>
+ *        enableMassClear - {} ã€‚<br>
+ *        context - {string} å†…å®¹ã€‚<br>
+ *        zIndex - {number} å±‚çº§ã€‚<br>
+ *        width - {number} ç”»å¸ƒå®½ã€‚<br>
+ *        height - {number} ç”»å¸ƒé«˜ã€‚<br>
+ *        mixBlendMode - {string} æœ€å°æ··åˆæ¨¡å¼ã€‚
  */
 export default class MapvCanvasLayer {
 
@@ -19,10 +26,7 @@ export default class MapvCanvasLayer {
         this.height = options.height;
         this.initialize();
     }
-    /*
-     * @function ol.supermap.MapvCanvasLayer.prototype.initialize
-     * @description ³õÊ¼»¯
-     */
+
     initialize() {
         var me = this;
         var canvas = me.canvas = document.createElement("canvas");
@@ -39,19 +43,20 @@ export default class MapvCanvasLayer {
         canvas.style.width = canvas.width + "px";
         canvas.style.height = canvas.height + "px";
     }
-    /*
+
+    /**
      * @function ol.supermap.MapvCanvasLayer.prototype.draw
-     * @description Éú³ÉµØÍ¼
+     * @description ç”Ÿæˆåœ°å›¾
      */
     draw() {
         this.options.update && this.options.update.call(this);
     }
 
-    /*
+    /**
      * @function ol.supermap.MapvCanvasLayer.prototype.resize
-     * @param mapWidth - {number} µØÍ¼¿í¶È
-     * @param mapHeight - {number} µØÍ¼¸ß¶È
-     * @description µ÷ÕûµØÍ¼´óĞ¡
+     * @param mapWidth - {number} åœ°å›¾å®½åº¦
+     * @param mapHeight - {number} åœ°å›¾é«˜åº¦
+     * @description è°ƒæ•´åœ°å›¾å¤§å°
      */
     resize(mapWidth, mapHeight) {
         this.canvas.width = mapWidth;
@@ -60,25 +65,27 @@ export default class MapvCanvasLayer {
         this.canvas.style.height = mapHeight + "px";
     }
 
-    /*
+    /**
      * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
-     * @description »ñÈ¡ÈİÆ÷
+     * @description è·å–å®¹å™¨
      * @return {Element}
      */
     getContainer() {
         return this.canvas;
     }
-    /*
+
+    /**
      * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
-     * @param zIndex - {number} ²ã¼¶²ÎÊı
-     * @description ÉèÖÃÍ¼²ã²ã¼¶
+     * @param zIndex - {number} å±‚çº§å‚æ•°
+     * @description è®¾ç½®å›¾å±‚å±‚çº§
      */
     setZIndex(zIndex) {
         this.canvas.style.zIndex = zIndex;
     }
-    /*
+
+    /**
      * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
-     * @description »ñÈ¡Í¼²ã²ã¼¶
+     * @description è·å–å›¾å±‚å±‚çº§
      */
     getZIndex() {
         return this.zIndex;

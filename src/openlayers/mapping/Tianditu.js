@@ -1,8 +1,15 @@
 import ol from 'openlayers/dist/ol-debug';
+
 /**
  * @class ol.source.Tianditu
  * @classdesc 天地图
- * @param opt_options - {olx.source.WMTSOptions} 参数
+ * @param opt_options - {Object} 参数。
+ *        url - {string} 服务地址。<br>
+ *        attributions - {string} 版权描述信息。<br>
+ *        cacheSize - {number} 缓冲大小。<br>
+ *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
+ *        maxZoom - {Object} 最大缩放级别。<br>
+ *        opaque - {boolean} 是否透明。
  * @extends ol.source.WMTS{@linkdoc-openlayers/ol.source.WMTS}
  */
 export default class Tianditu extends ol.source.WMTS {
@@ -39,10 +46,11 @@ export default class Tianditu extends ol.source.WMTS {
             wrapX: options.wrapX
         })
     }
+
     /**
      * @function ol.source.Tianditu.getTileGrid
-     * @description 网格瓦片
-     * @param projection -{objecxt} 投影参考对象
+     * @description 获取网格瓦片
+     * @param projection - {Object} 投影参考对象
      * @return {ol.tilegrid.WMTS}
      */
     static getTileGrid(projection) {
@@ -51,9 +59,10 @@ export default class Tianditu extends ol.source.WMTS {
         }
         return ol.source.Tianditu.default3857TileGrid();
     }
+
     /**
      * @function ol.source.Tianditu.default4326TileGrid
-     * @description 自定义4326网格瓦片
+     * @description 获取默认4326网格瓦片
      * @return {ol.tilegrid.WMTS}
      */
     static default4326TileGrid() {
@@ -72,9 +81,10 @@ export default class Tianditu extends ol.source.WMTS {
         });
         return tileGird;
     }
+
     /**
      * @function ol.source.Tianditu.default3857TileGrid
-     * @description 自定义3857网格瓦片
+     * @description 获取默认3857网格瓦片
      * @return {ol.tilegrid.WMTS}
      */
     static default3857TileGrid() {

@@ -14,9 +14,11 @@ export var pointMap = {
     "point-opacity": "globalAlpha",
     "point-comp-op": "globalCompositeOperation"
 };
+
 /**
- * @constant  ol.supermap.lineMap
+ * @constant ol.supermap.lineMap
  * @description 线图
+ * @private
  */
 export var lineMap = {
     "line-color": "strokeStyle",
@@ -31,9 +33,11 @@ export var lineMap = {
     "line-offset": "offset",
     "line-comp-op": "globalCompositeOperation"
 };
+
 /**
- * @constant  ol.supermap.polygonMap
+ * @constant ol.supermap.polygonMap
  * @description 面图
+ * @private
  */
 export var polygonMap = {
     /*包括LINE的部分，用以设置面的外围边界*/
@@ -55,6 +59,10 @@ export var polygonMap = {
     "polygon-comp-op": "globalCompositeOperation"
 };
 
+/**
+ * @constant ol.supermap.StyleMap
+ * @description 地图样式
+ */
 export var StyleMap = {
     /*
      * @constant ol.supermap.StyleMap.prototype.CartoStyleMap
@@ -95,7 +103,6 @@ export var StyleMap = {
      * @constant ol.supermap.StyleMap.prototype.ServerStyleMap
      * @description 服务端传过来的style属性名与Canvas的style属性名的对应表
      */
-
     ServerStyleMap: {
         fillBackOpaque: {
             canvasStyle: "",

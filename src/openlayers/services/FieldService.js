@@ -3,10 +3,11 @@ import Util from '../core/Util';
 import ServiceBase from './ServiceBase';
 import GetFieldsService from '../../common/iServer/GetFieldsService';
 import FieldStatisticService from '../../common/iServer/FieldStatisticService';
+
 /**
  * @class ol.supermap.FieldService
  * @classdesc 字段服务类
- * @example 用法：
+ * @example
  *      new ol.supermap.FieldService(url).getFields(function(result){
  *           //doSomething
  *      });
@@ -24,7 +25,7 @@ export default class FieldService extends ServiceBase {
      * @function ol.supermap.FieldService.prototype.getFields
      * @description 字段查询服务
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
-     * @param callback -{function} 回调函数
+     * @param callback - {function} 回调函数
      * @return {ol.supermap.FieldService}
      */
     getFields(params,callback) {

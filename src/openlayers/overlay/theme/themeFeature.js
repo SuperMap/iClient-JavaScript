@@ -3,10 +3,10 @@ import SuperMap from '../../../common/SuperMap';
 ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.ThemeFeature
- * @classdesc 主题特征
+ * @classdesc 专题图要素类
  * @private
  * @param geometry - {Object} 要量算的几何对象
- * @param attributes -{Object} 属性
+ * @param attributes - {Object} 属性
  */
 export default class ThemeFeature {
 

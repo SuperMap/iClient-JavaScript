@@ -4,10 +4,10 @@ import Theme from './theme';
 import Vector from '../../../common/iServer/ThemeVector';
 /**
  * @class ol.source.GeoFeature
- * @classdesc 地理特征
+ * @classdesc 地理几何专题要素型专题图层基类。
  * @private
- * @param name - {string} 名称
- * @param opt_options -{olx.source.ImageCanvasOptions} 参数。
+ * @param name - {string} 图层名称
+ * @param opt_options -{Object} 参数。
  * @extends ol.source.Theme
  */
 
@@ -27,6 +27,7 @@ export default class GeoFeature extends Theme {
         this.highlightStyle = null;
         this.isAllowFeatureStyle = false;
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
@@ -44,12 +45,12 @@ export default class GeoFeature extends Theme {
         this.highlightStyle = null;
         this.isAllowFeatureStyle = null;
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.addFeatures
-     * @param features - {Object} 要素对象
      * @description 添加要素
+     * @param features - {Object} 要素对象
      */
-
     addFeatures(features) {
         //数组
         if (!(SuperMap.Util.isArray(features))) {
@@ -73,15 +74,17 @@ export default class GeoFeature extends Theme {
             this.redrawThematicFeatures(this.map.getView().calculateExtent());
         }
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.removeFeatures
-     * @param features - {Object} 要删除的要素对象
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @param features - {Object} 要删除的要素对象
      */
     removeFeatures(features) {
         this.clearCache();
         Theme.prototype.removeFeatures.apply(this, arguments);
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
@@ -162,10 +165,11 @@ export default class GeoFeature extends Theme {
             this.renderer.updateHoverShapes(hShapes);
         }
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.createThematicFeature
-     * @param feature - {Object} 要素对象
      * @description 创建专题要素
+     * @param feature - {Object} 要素对象
      */
     createThematicFeature(feature) {
         var style = SuperMap.Util.copyAttributesWithClip(this.style);
@@ -191,6 +195,7 @@ export default class GeoFeature extends Theme {
     canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
         return Theme.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.clearCache
      * @description 清除缓存
@@ -199,6 +204,7 @@ export default class GeoFeature extends Theme {
         this.cache = {};
         this.cacheFields = [];
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.clear
      * @description  清除的内容包括数据（features） 、专题要素、缓存。
@@ -209,6 +215,7 @@ export default class GeoFeature extends Theme {
         this.removeAllFeatures();
         this.clearCache();
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.getCacheCount
      * @description 获取当前缓存数量。
@@ -220,8 +227,8 @@ export default class GeoFeature extends Theme {
 
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-     * @description 设置最大缓存条数
      * @param cacheCount -{number} 缓存总数
+     * @description 设置最大缓存条数
      */
     setMaxCacheCount(cacheCount) {
         if (!isNaN(cacheCount)) {
@@ -229,10 +236,11 @@ export default class GeoFeature extends Theme {
             this.isCustomSetMaxCacheCount = true;
         }
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-     * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param featureID -{number} 要素ID。
+     * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      */
     getShapesByFeatureID(featureID) {
         var list = [];
