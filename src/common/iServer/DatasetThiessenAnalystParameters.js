@@ -2,7 +2,7 @@
 import ThiessenAnalystParameters from './ThiessenAnalystParameters';
 /**
  * @class SuperMap.DatasetThiessenAnalystParameters
- * @description 数据集泰森多边形分析参数类
+ * @classdesc 数据集泰森多边形分析参数类
  * @param options - {Object} 可选参数。如:</br>
  *        filterQueryParameter - {SuperMap.FilterParameter} 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
  * @extends SuperMap.ThiessenAnalystParameters

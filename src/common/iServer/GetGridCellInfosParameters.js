@@ -7,7 +7,7 @@ import SuperMap from '../SuperMap';
  *        datasetName - {string} 数据集名称。</br>
  *        dataSourceName - {string} 数据源名称</br>
  *        X - {Integer} 要查询的地理位置X轴。</br>
- *        Y - {Integer} 要查询的地理位置Y轴。</br>
+ *        Y - {Integer} 要查询的地理位置Y轴。
  */
 export default  class GetGridCellInfosParameters {
     /**

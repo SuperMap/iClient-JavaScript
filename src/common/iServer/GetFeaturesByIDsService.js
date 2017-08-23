@@ -6,19 +6,19 @@ import GetFeaturesByIDsParameters from './GetFeaturesByIDsParameters';
  * @class SuperMap.GetFeaturesByIDsService
  * @classdesc 数据集ID查询服务类。在数据集集合中查找指定 ID 号对应的空间地物要素。
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务。
- * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
- * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+ *              URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
+ *              例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。</br>
  * @extends SuperMap.GetFeaturesServiceBase
  * @example 例如：
  * (start code)
  * var myGetFeaturesByIDsService = new SuperMap.GetFeaturesByIDsService(url, {
-     *     eventListeners: {
-     *         "processCompleted": getFeatureCompleted,
-     *         "processFailed": getFeatureError
-     *            }
-     *     });
+ *     eventListeners: {
+ *         "processCompleted": getFeatureCompleted,
+ *         "processFailed": getFeatureError
+ *            }
+ *     });
  * function getFeatureCompleted(object){//todo};
  * function getFeatureError(object){//todo}
  * (end)

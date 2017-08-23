@@ -11,7 +11,7 @@ import FacilityAnalystUpstream3DService from '../../common/iServer/FacilityAnaly
  * @class L.supermap.networkAnalyst3DService
  * @classdesc 3D网络分析服务类
  * @extends L.supermap.ServiceBase
- * @example 用法：
+ * @example
  *      L.supermap.networkAnalyst3DService(url)
  *      .sinksFacilityAnalyst(params,function(result){
  *           //doSomething

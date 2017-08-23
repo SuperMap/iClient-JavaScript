@@ -7,7 +7,7 @@ import CommonMatchAddressService from'../../common/iServer/AddressMatchService';
  * @constructs L.supermap.addressMatchService
  * @classdesc 地址匹配服务
  * @extends L.supermap.ServiceBase
- * @example 用法：
+ * @example
  *      L.supermap.addressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething

@@ -4,7 +4,7 @@ import GetGridCellInfosService from  '../../common/iServer/GetGridCellInfosServi
 
 /**
  * @class L.supermap.gridCellInfosService
- * @description 数据栅格查询服务
+ * @classdesc 数据栅格查询服务
  * @extends L.supermap.ServiceBase
  * @example
  *      L.supermap.gridCellInfosService(url)
