@@ -11,8 +11,7 @@
 <div class="loader loader-curtain"></div>
 <div id='map'></div>
 <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
-    var iServerUrl = "http://117.122.248.69:8090/iserver/services/map-chongqing/rest/maps/chongqing3857/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}";
+    var iServerUrl = "http://117.122.248.69:8090/iserver/services/map-city/rest/maps/city/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}";
 
     var buildingLayer, heightField = "floor", ratio = 15, layerId = "buildings",
         center = [106.540545, 29.531714];
@@ -38,17 +37,17 @@
     map.on('load', function () {
         /*绿色风格*/
         mapboxgl.supermap.map.setBackground(map, "hsl(47, 26%, 88%)");
-        mapboxgl.supermap.map.setPaintProperty(map, '水系多边形@chongqing', 'fill', {'fill-color': 'hsl(205, 56%, 73%)'});
-        mapboxgl.supermap.map.setPaintProperty(map, '植被_多边形_R@chongqing', 'fill', {'fill-color': 'hsl(82, 46%, 72%)', 'fill-opacity': 0.4});
-        mapboxgl.supermap.map.setPaintProperty(map, ['R_一级道路@chongqing', 'R_二级道路@chongqing'], 'line', {'line-color': '#fff', 'line-width': 2});
-        mapboxgl.supermap.map.setPaintProperty(map, ['R_三级道路@chongqing', 'R_四级道路@chongqing'], 'line', {'line-color': 'hsl(0, 0%, 97%)', 'line-width': 1});
+        mapboxgl.supermap.map.setPaintProperty(map, '水系多边形@city', 'fill', {'fill-color': 'hsl(205, 56%, 73%)'});
+        mapboxgl.supermap.map.setPaintProperty(map, '植被_多边形_R@city', 'fill', {'fill-color': 'hsl(82, 46%, 72%)', 'fill-opacity': 0.4});
+        mapboxgl.supermap.map.setPaintProperty(map, ['R_一级道路@city', 'R_二级道路@city'], 'line', {'line-color': '#fff', 'line-width': 2});
+        mapboxgl.supermap.map.setPaintProperty(map, ['R_三级道路@city', 'R_四级道路@city'], 'line', {'line-color': 'hsl(0, 0%, 97%)', 'line-width': 1});
 
         /*切换蓝色风格*/
         mapboxgl.supermap.map.setBackground(map, "#042133");
-        mapboxgl.supermap.map.setPaintProperty(map, '水系多边形@chongqing', 'fill', {'fill-color': '#021019'});
-        mapboxgl.supermap.map.setPaintProperty(map, '植被_多边形_R@chongqing', 'fill', {'fill-color': '#021019', 'fill-opacity': 0.4});
-        mapboxgl.supermap.map.setPaintProperty(map, ['R_一级道路@chongqing', 'R_二级道路@chongqing'], 'line', {'line-color': '#021019', 'line-width': 2});
-        mapboxgl.supermap.map.setPaintProperty(map, ['R_三级道路@chongqing', 'R_四级道路@chongqing'], 'line', {'line-color': '#021019', 'line-width': 1});
+        mapboxgl.supermap.map.setPaintProperty(map, '水系多边形@city', 'fill', {'fill-color': '#021019'});
+        mapboxgl.supermap.map.setPaintProperty(map, '植被_多边形_R@city', 'fill', {'fill-color': '#021019', 'fill-opacity': 0.4});
+        mapboxgl.supermap.map.setPaintProperty(map, ['R_一级道路@city', 'R_二级道路@city'], 'line', {'line-color': '#021019', 'line-width': 2});
+        mapboxgl.supermap.map.setPaintProperty(map, ['R_三级道路@city', 'R_四级道路@city'], 'line', {'line-color': '#021019', 'line-width': 1});
 
         /*加载三维专题图*/
         buildingLayer = new mapboxgl.supermap.RankTheme3DLayer(layerId, map, {
