@@ -260,6 +260,7 @@ export default class StyleUtils {
                             if (!value || value === "") continue;
                         } else if (fromServer && prop === 'pointFile') {
                             value = url + '/tileFeature/symbols/' + value.replace(/(___)/gi, '@');
+                            value = value.replace(/(__0__0__)/gi, '__8__8__');
                         }
                         if (prop === 'lineWidth' && value < 1) {
                             value = Math.ceil(value);

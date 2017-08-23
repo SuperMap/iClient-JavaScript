@@ -1,7 +1,7 @@
 import '../core/Base';
 import '../../common/security/SecurityManager';
 import L from "leaflet";
-import {ServerType,Unit} from "../../common/REST";
+import {ServerType, Unit} from "../../common/REST";
 import * as Util from "../core/Util";
 /**
  * @class L.supermap.tiledMapLayer
@@ -152,6 +152,9 @@ export var TiledMapLayer = L.TileLayer.extend({
         this.tileSets = tileSets;
         if (L.Util.isArray(this.tileSets)) {
             this.tileSets = this.tileSets[0];
+        }
+        if (!this.tileSets) {
+            return;
         }
         this.fire('tilesetsinfoloaded', {tileVersions: this.tileSets.tileVersions});
         this.changeTilesVersion();

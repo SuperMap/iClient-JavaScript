@@ -10693,6 +10693,7 @@ var StyleUtils = function () {
                                 if (!value || value === "") continue;
                             } else if (fromServer && prop === 'pointFile') {
                                 value = url + '/tileFeature/symbols/' + value.replace(/(___)/gi, '@');
+                                value = value.replace(/(__0__0__)/gi, '__8__8__');
                             }
                             if (prop === 'lineWidth' && value < 1) {
                                 value = Math.ceil(value);
@@ -13493,6 +13494,9 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
             this.tileSets = tileSets;
             if (_Util2.default.isArray(this.tileSets)) {
                 this.tileSets = tileSets[0];
+            }
+            if (!this.tileSets) {
+                return;
             }
             this.dispatchEvent({ type: 'tilesetsinfoloaded', value: { tileVersions: this.tileSets.tileVersions } });
             this.changeTilesVersion();
@@ -51064,7 +51068,7 @@ var MapvCanvasLayer = function () {
 
         /*
          * @function ol.supermap.MapvCanvasLayer.prototype.resize
-         * @param mapWidth - {number} ��ͼ���
+         * @param mapWidth - {number} ��ͼ����
          * @param mapHeight - {number} ��ͼ�߶�
          * @description ������ͼ��С
          */
@@ -51092,7 +51096,7 @@ var MapvCanvasLayer = function () {
         /*
          * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
          * @param zIndex - {number} �㼶����
-         * @description ����ͼ��㼶
+         * @description ����ͼ���㼶
          */
 
     }, {
@@ -51102,7 +51106,7 @@ var MapvCanvasLayer = function () {
         }
         /*
          * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
-         * @description ��ȡͼ��㼶
+         * @description ��ȡͼ���㼶
          */
 
     }, {

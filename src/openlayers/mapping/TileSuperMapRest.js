@@ -213,6 +213,9 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         if (Util.isArray(this.tileSets)) {
             this.tileSets = tileSets[0];
         }
+        if (!this.tileSets) {
+            return;
+        }
         this.dispatchEvent({type: 'tilesetsinfoloaded', value: {tileVersions: this.tileSets.tileVersions}});
         this.changeTilesVersion();
     }
