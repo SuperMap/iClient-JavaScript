@@ -94,6 +94,8 @@ deps = {
             "./src/common/iServer/VectorClipJobsService.js",
             //AddressService
             "./src/common/iServer/AddressMatchService.js",
+            //DataFlowService
+            "./src/common/iServer/DataFlowService.js",
         ],
         "graph": [
             "./src/common/iServer/Bar.js",
@@ -835,17 +837,216 @@ deps = {
                 },{
                     "name": "SuperMap.VectorClipJobsService",
                     "des": "矢量裁剪分析服务"
-                }
-                ]
+                }]
             },
             "AddressMatch": {
                 "name": "地址匹配服务",
                 "src": [
-                    "./src/common/iServer/AddressMatchService.js"
+                    "./src/common/iServer/AddressMatchService.js",
                 ],
                 "modules": [{
                     "name": "SuperMap.AddressMatchService",
                     "des": "地址匹配服务"
+                }]
+            },
+            "Map": {
+                "name": "地图服务",
+                "src": [
+                    "./src/common/iServer/GetLayersInfoService.js",
+                    "./src/common/iServer/MapService.js",
+                    "./src/common/iServer/ChartQueryService.js",
+                    "./src/common/iServer/QueryByDistanceService.js",
+                    "./src/common/iServer/QueryByGeometryService.js",
+                    "./src/common/iServer/QueryBySQLService.js",
+                    "./src/common/iServer/QueryByBoundsService.js",
+                    "./src/common/iServer/TilesetsService.js",
+                    "./src/common/iServer/MeasureService.js",
+                    "./src/common/iServer/ChartFeatureInfoSpecsService.js",
+                    "./src/common/iServer/SetLayerInfoService.js",
+                    "./src/common/iServer/SetLayersInfoService.js",
+                    "./src/common/iServer/SetLayerStatusService.js",
+                ],
+                "modules": [{
+                    "name": "SuperMap.GetLayersInfoService",
+                    "des": "图层信息服务"
+                }, {
+                    "name": "SuperMap.MapService",
+                    "des": "地图服务"
+                }, {
+                    "name": "SuperMap.ChartQueryService",
+                    "des": "海图服务"
+                }, {
+                    "name": "SuperMap.QueryByDistanceService",
+                    "des": "距离查询服务"
+                }, {
+                    "name": "SuperMap.QueryByGeometryService",
+                    "des": "几何对象查询服务"
+                }, {
+                    "name": "SuperMap.QueryBySQLService",
+                    "des": "SQL查询服务"
+                }, {
+                    "name": "SuperMap.QueryByBoundsService",
+                    "des": "Bounds查询服务"
+                }, {
+                    "name": "SuperMap.TilesetsService",
+                    "des": "瓦片集服务"
+                }, {
+                    "name": "SuperMap.MeasureService",
+                    "des": "测量服务"
+                }, {
+                    "name": "SuperMap.ChartFeatureInfoSpecsService",
+                    "des": "海图物标信息服务"
+                }, {
+                    "name": "SuperMap.SetLayerInfoService",
+                    "des": "设置图层信息服务"
+                }, {
+                    "name": "SuperMap.SetLayersInfoService",
+                    "des": "设置图层集信息服务"
+                }, {
+                    "name": "SuperMap.SetLayerStatusService",
+                    "des": "设置图层状态服务"
+                }]
+            },
+            "Theme": {
+                "name": "服务器专题图服务",
+                "src": [
+                    "./src/common/iServer/ThemeService.js",
+                    "./src/common/iServer/Bar.js",
+                    "./src/common/iServer/Bar3D.js",
+                    "./src/common/iServer/Circle.js",
+                    "./src/common/iServer/Line.js",
+                    "./src/common/iServer/Pie.js",
+                    "./src/common/iServer/Point.js",
+                    "./src/common/iServer/Ring.js",
+                ],
+                "modules": [{
+                    "name": "SuperMap.ThemeService",
+                    "des": "服务器专题图服务"
+                },{
+                    "name": "SuperMap.Feature.Theme.Bar",
+                    "des": "柱状图"
+                },{
+                    "name": "SuperMap.Feature.Theme.Bar3D",
+                    "des": "三维柱状图"
+                },{
+                    "name": "SuperMap.Feature.Theme.Circle",
+                    "des": "圆类"
+                },{
+                    "name": "SuperMap.Feature.Theme.Line",
+                    "des": "折线图"
+                },{
+                    "name": "SuperMap.Feature.Theme.Pie",
+                    "des": "饼图"
+                },{
+                    "name": "SuperMap.Feature.Theme.Point",
+                    "des": "点状图"
+                },{
+                    "name": "SuperMap.Feature.Theme.Ring",
+                    "des": "环状图"
+                }]
+            },
+            "DataFlow": {
+                "name": "实时数据服务",
+                "src": [
+                    "./src/common/iServer/DataFlowService.js",
+                ],
+                "modules": [{
+                    "name": "SuperMap.DataFlowService",
+                    "des": "实时数据服务"
+                }]
+            },
+            "NetworkAnalyst": {
+                "name": "网络分析服务",
+                "src": [
+                    "./src/common/iServer/BurstPipelineAnalystService.js",
+                    "./src/common/iServer/ComputeWeightMatrixService.js",
+                    "./src/common/iServer/FacilityAnalystStreamService.js",
+                    "./src/common/iServer/FindClosestFacilitiesService.js",
+                    "./src/common/iServer/FindLocationService.js",
+                    "./src/common/iServer/FindMTSPPathsService.js",
+                    "./src/common/iServer/FindPathService.js",
+                    "./src/common/iServer/FindServiceAreasService.js",
+                    "./src/common/iServer/FindTSPPathsService.js",
+                    "./src/common/iServer/UpdateEdgeWeightService.js",
+                    "./src/common/iServer/UpdateTurnNodeWeightService.js",
+                ],
+                "modules": [{
+                    "name": "SuperMap.BurstPipelineAnalystService",
+                    "des": "爆管分析服务"
+                },{
+                    "name": "SuperMap.ComputeWeightMatrixService",
+                    "des": "耗费矩阵分析服务"
+                },{
+                    "name": "SuperMap.FacilityAnalystStreamService",
+                    "des": "关键设施查找服务"
+                },{
+                    "name": "SuperMap.FindClosestFacilitiesService",
+                    "des": "最近设施分析服务"
+                },{
+                    "name": "SuperMap.FindLocationService",
+                    "des": "选址分区分析服务"
+                },{
+                    "name": "SuperMap.FindMTSPPathsService",
+                    "des": "多旅行商分析服务"
+                },{
+                    "name": "SuperMap.FindPathService",
+                    "des": "最佳路径分析服务"
+                },{
+                    "name": "SuperMap.FindServiceAreasService",
+                    "des": "服务区分析服务"
+                },{
+                    "name": "SuperMap.FindTSPPathsService",
+                    "des": "旅行商分析服务"
+                },{
+                    "name": "SuperMap.UpdateEdgeWeightService",
+                    "des": "更新边的边的耗费权重服务"
+                },{
+                    "name": "SuperMap.UpdateTurnNodeWeightService",
+                    "des": "转向耗费权重更新服务"
+                }]
+            },
+            "NetworkAnalyst3D": {
+                "name": "3D网络分析服务",
+                "src": [
+                    "./src/common/iServer/FacilityAnalystSinks3DService.js",
+                    "./src/common/iServer/FacilityAnalystSources3DService.js",
+                    "./src/common/iServer/FacilityAnalystTracedown3DService.js",
+                    "./src/common/iServer/FacilityAnalystTraceup3DService.js",
+                    "./src/common/iServer/FacilityAnalystUpstream3DService.js",
+                ],
+                "modules": [{
+                    "name": "SuperMap.FacilityAnalystSinks3DService",
+                    "des": "最近设施分析服务"
+                },{
+                    "name": "SuperMap.FacilityAnalystSources3DService",
+                    "des": "最近设施分析服务"
+                },{
+                    "name": "SuperMap.FacilityAnalystTracedown3DService",
+                    "des": "下游追踪资源服务"
+                },{
+                    "name": "SuperMap.FacilityAnalystTraceup3DService",
+                    "des": "上游追踪资源服务"
+                },{
+                    "name": "SuperMap.FacilityAnalystUpstream3DService",
+                    "des": "上游关键设施查找资源服务"
+                }]
+            },
+            "TrafficTransferAnalyst": {
+                "name": "交通换乘服务",
+                "src": [
+                    "./src/common/iServer/StopQueryService.js",
+                    "./src/common/iServer/TransferPathService.js",
+                    "./src/common/iServer/TransferSolutionService.js",
+                ],
+                "modules": [{
+                    "name": "SuperMap.StopQueryService",
+                    "des": "站点查询服务"
+                },{
+                    "name": "SuperMap.TransferPathService",
+                    "des": "交通换乘线路查询服务"
+                },{
+                    "name": "SuperMap.TransferSolutionService",
+                    "des": "交通换乘方案查询服务"
                 }]
             },
         },
@@ -862,12 +1063,6 @@ deps = {
                 "modules": [{
                     "name": "mapboxgl.supermap.MapvLayer",
                     "des": "百度MapV可视化效果"
-                }, {
-                    "name": "mapboxgl.supermap.MapvDataSet",
-                    "des": "mapboxgl的mapv图层数据集"
-                }, {
-                    "name": "mapboxgl.supermap.map",
-                    "des": "mapboxgl的Map对象扩展"
                 }]
             },
             "ThemeLayer": {
@@ -876,7 +1071,7 @@ deps = {
                     "./src/mapboxgl/overlay/RankTheme3DLayer.js"
                 ],
                 "modules": [{
-                    "name": "RankTheme3DLayer.js",
+                    "name": "mapboxgl.supermap.RankTheme3DLayer",
                     "des": "分段专题图"
                 }]
             }

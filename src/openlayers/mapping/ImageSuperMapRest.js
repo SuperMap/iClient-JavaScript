@@ -5,8 +5,11 @@ import  Util from '../core/Util';
 
 /**
  * @class ol.source.ImageSuperMapRest
- * @classdesc UGC 影像图层类。
- * @param options - {Object} 参数
+ * @classdesc SuperMap UGC 对接iServer地图Image资源。
+ * @param options - {Object} 服务参数：<br>
+ *        url - {string} 服务地址。<br>
+ *        attributions - {string} 版权描述信息。<br>
+ *        serverType {SuperMap.ServerType} 服务类型。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 export default class ImageSuperMapRest extends ol.source.TileImage {
@@ -23,7 +26,8 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
         //为url添加安全认证信息片段
         layerUrl = appendCredential(layerUrl, options.serverType);
-        /**
+
+        /*
          * @function ol.source.ImageSuperMapRest.prototype.appendCredential
          * @description 添加凭据
          * @param url - {string} 地址
@@ -101,7 +105,7 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         if (options.cacheEnabled === true && options.tileversion) {
             layerUrl += "tileversion=" + options.tileversion;
         }
-        /**
+        /*
          * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
          * @param tileCoord - {Object} 瓦片坐标系
          * @param pixelRatio - {Object} 像素密度
@@ -141,6 +145,7 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
             layersID: options.layersID
         });
     }
+
     /**
      * @function ol.source.ImageSuperMapRest.optionsFromMapJSON
      * @param url - {string} 地址

@@ -3,7 +3,7 @@ import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
 
 /**
  * @class SuperMap.KernelDensityJobParameter
- * @description 密度分析任务参数类
+ * @classdesc 密度分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。 <br>
  *        query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>

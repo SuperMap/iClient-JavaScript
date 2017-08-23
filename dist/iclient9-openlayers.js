@@ -2725,16 +2725,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 _olDebug2.default.supermap = _olDebug2.default.supermap || {};
+
 /**
  * @class ol.supermap.Util
  * @classdesc 工具类
- * @private
  */
 
 var Util = function () {
     function Util() {
         _classCallCheck(this, Util);
     }
+
+    /**
+     * @function ol.supermap.Util.toGeoJSON
+     * @description 将传入对象转为 GeoJSON 格式
+     * @param smObj - {Object} 待转参数
+     */
+
 
     _createClass(Util, null, [{
         key: 'toGeoJSON',
@@ -2744,6 +2751,13 @@ var Util = function () {
                 return JSON.parse(format.write(smObj));
             }
         }
+
+        /**
+         * @function ol.supermap.Util.toSuperMapGeometry
+         * @description 将 geoJSON 对象转为SuperMap几何图形
+         * @param geoJSON - {Object} geoJSON 对象
+         */
+
     }, {
         key: 'toSuperMapGeometry',
         value: function toSuperMapGeometry(geoJSON) {
@@ -2753,6 +2767,16 @@ var Util = function () {
                 return result[0].geometry;
             }
         }
+
+        /**
+         * @function ol.supermap.Util.resolutionToScale
+         * @description 通过分辨率计算比例尺
+         * @param resolution - {number} 分辨率
+         * @param dpi - {number} 屏幕分辨率
+         * @param mapUnit - {string} 地图单位
+         * @return {number} 比例尺
+         */
+
     }, {
         key: 'resolutionToScale',
         value: function resolutionToScale(resolution, dpi, mapUnit) {
@@ -2763,11 +2787,29 @@ var Util = function () {
             scale = 1 / scale;
             return scale;
         }
+
+        /**
+         * @function ol.supermap.Util.toSuperMapBounds
+         * @description 转为SuperMapBounds格式
+         * @param bounds {Array<number>} bounds数组
+         * @return {SuperMap.Bounds}
+         */
+
     }, {
         key: 'toSuperMapBounds',
         value: function toSuperMapBounds(bounds) {
             return new _SuperMap2.default.Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
         }
+
+        /**
+         * @function ol.supermap.Util.scaleToResolution
+         * @description 通过比例尺计算分辨率
+         * @param scale - {number} 比例尺
+         * @param dpi - {number} 屏幕分辨率
+         * @param mapUnit - {string} 地图单位
+         * @return {number} 分辨率
+         */
+
     }, {
         key: 'scaleToResolution',
         value: function scaleToResolution(scale, dpi, mapUnit) {
@@ -2777,6 +2819,15 @@ var Util = function () {
             resolution = 1 / resolution;
             return resolution;
         }
+
+        /**
+         * @private
+         * @function ol.supermap.Util.getMeterPerMapUnit
+         * @description 获取每地图单位多少米
+         * @param mapUnit mapUnit - {string} 地图单位
+         * @return {number}
+         */
+
     }, {
         key: 'getMeterPerMapUnit',
         value: function getMeterPerMapUnit(mapUnit) {
@@ -2798,11 +2849,27 @@ var Util = function () {
             }
             return meterPerMapUnit;
         }
+
+        /**
+         * @function ol.supermap.Util.isArray
+         * @description 判断是否为数组格式
+         * @param obj - {Object} 待判断对象
+         * @return {boolean}
+         */
+
     }, {
         key: 'isArray',
         value: function isArray(obj) {
             return Object.prototype.toString.call(obj) == '[object Array]';
         }
+
+        /**
+         * @function ol.supermap.Util.Csv2GeoJSON
+         * @description 将 csv 格式转为 GeoJSON
+         * @param csv - {Object} csv 对象
+         * @param options - {Object} 转换参数
+         */
+
     }, {
         key: 'Csv2GeoJSON',
         value: function Csv2GeoJSON(csv, options) {
@@ -2877,6 +2944,14 @@ var Util = function () {
                 return json;
             }
         }
+
+        /**
+         * @function ol.supermap.Util.createCanvasContext2D
+         * @description 创建2D画布
+         * @param opt_width - {number} 画布宽度
+         * @param opt_height - {number} 画布高度
+         */
+
     }, {
         key: 'createCanvasContext2D',
         value: function createCanvasContext2D(opt_width, opt_height) {
@@ -8241,21 +8316,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 _olDebug2.default.supermap = _olDebug2.default.supermap || {};
 _olDebug2.default.supermap.control = _olDebug2.default.supermap.control || {};
+
 /**
  * @class ol.supermap.control.Logo
  * @classdesc Logo控件。默认不显示，需手动添加控件。
  * @extends ol.control.Control{@linkdoc-openlayers/ol.control.Control}
  * @example
- * (start code)
  *      var control = new ol.supermap.control.Logo();
  *      map.addControl(control);
- * (end)
- * @param options -{Object} logo控件配置项</br>
- *        imageUrl - {string} logo图片地址</br>
- *        width - {string} logo图片宽</br>
- *        height - {string} logo图片高</br>
- *        link - {string} 跳转链接</br>
- *        alt - {string} logo图片失效时显示文本
+ * @param options - {Object} logo控件配置项。配置项有如下:</br>
+ *        imageUrl - {string} logo图片地址。</br>
+ *        width - {number} logo图片宽。</br>
+ *        height - {number} logo图片高。</br>
+ *        link - {string} 跳转链接。</br>
+ *        alt - {string} logo图片失效时显示文本。
  */
 
 var Logo = function (_ol$control$Control) {
@@ -8381,7 +8455,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 实时数据服务
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.DataFlowService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
@@ -8420,6 +8493,7 @@ var DataFlowService = function (_ServiceBase) {
         });
         return _this;
     }
+
     /**
      * @function ol.supermap.DataFlowService.prototype.initBroadcast
      * @description 初始化广播
@@ -10429,12 +10503,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 _olDebug2.default.supermap = _olDebug2.default.supermap || {};
 /**
  * @class ol.supermap.StyleUtils
- * @classdesc 风格工具
+ * @classdesc 样式工具类
  * @private
- * @param map - {Object} 地图
- * @param layerInfo - {Object} 图层信息
- * @param feature - {Object} 特征
- * @param url - {string} 地址
  */
 
 var StyleUtils = function () {
@@ -10444,6 +10514,16 @@ var StyleUtils = function () {
 
     _createClass(StyleUtils, null, [{
         key: 'getValidStyleFromLayerInfo',
+
+
+        /**
+         * @function ol.supermap.StyleUtils.getValidStyleFromLayerInfo
+         * @description 通过图层信息获取有效的样式
+         * @param layerInfo - {Object} 图层信息
+         * @param feature - {ol.Feature}{@linkdoc-openlayers/ol.Feature} 要素
+         * @param url - {string} 图层数据地址
+         * @return {ol.style.Style}
+         */
         value: function getValidStyleFromLayerInfo(layerInfo, feature, url) {
             var type = feature.getGeometry().getType().toUpperCase(),
                 shader = layerInfo.layerStyle,
@@ -10658,7 +10738,6 @@ var StyleUtils = function () {
          * @param feature -{Object} 要素
          * @param fromServer -{string} 服务源
          * @param url -{string} 地址
-         *
          */
 
     }, {
@@ -10906,7 +10985,7 @@ var StyleUtils = function () {
          * @description 从iPortal标记获取样式
          * @param iPortalStyle -{Object} iportal样式
          * @param type - {string} 样式类型
-         * @param fStyle -{Object} 特征样式
+         * @param fStyle -{Object} 要素样式
          */
 
     }, {
@@ -11070,10 +11149,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.source.GeoFeature
- * @classdesc 地理特征
+ * @classdesc 地理几何专题要素型专题图层基类。
  * @private
- * @param name - {string} 名称
- * @param opt_options -{olx.source.ImageCanvasOptions} 参数。
+ * @param name - {string} 图层名称
+ * @param opt_options -{Object} 参数。
  * @extends ol.source.Theme
  */
 
@@ -11098,6 +11177,7 @@ var GeoFeature = function (_Theme) {
         _this.isAllowFeatureStyle = false;
         return _this;
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
@@ -11119,10 +11199,11 @@ var GeoFeature = function (_Theme) {
             this.highlightStyle = null;
             this.isAllowFeatureStyle = null;
         }
+
         /**
          * @function ol.source.GeoFeature.prototype.addFeatures
-         * @param features - {Object} 要素对象
          * @description 添加要素
+         * @param features - {Object} 要素对象
          */
 
     }, {
@@ -11150,10 +11231,11 @@ var GeoFeature = function (_Theme) {
                 this.redrawThematicFeatures(this.map.getView().calculateExtent());
             }
         }
+
         /**
          * @function ol.source.GeoFeature.prototype.removeFeatures
-         * @param features - {Object} 要删除的要素对象
          * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+         * @param features - {Object} 要删除的要素对象
          */
 
     }, {
@@ -11162,6 +11244,7 @@ var GeoFeature = function (_Theme) {
             this.clearCache();
             _theme2.default.prototype.removeFeatures.apply(this, arguments);
         }
+
         /**
          * @function ol.source.GeoFeature.prototype.removeAllFeatures
          * @description 清除当前图层所有的矢量要素。
@@ -11246,10 +11329,11 @@ var GeoFeature = function (_Theme) {
                 this.renderer.updateHoverShapes(hShapes);
             }
         }
+
         /**
          * @function ol.source.GeoFeature.prototype.createThematicFeature
-         * @param feature - {Object} 要素对象
          * @description 创建专题要素
+         * @param feature - {Object} 要素对象
          */
 
     }, {
@@ -11279,6 +11363,7 @@ var GeoFeature = function (_Theme) {
         value: function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             return _theme2.default.prototype.canvasFunctionInternal_.apply(this, arguments);
         }
+
         /**
          * @function ol.source.GeoFeature.prototype.clearCache
          * @description 清除缓存
@@ -11290,6 +11375,7 @@ var GeoFeature = function (_Theme) {
             this.cache = {};
             this.cacheFields = [];
         }
+
         /**
          * @function ol.source.GeoFeature.prototype.clear
          * @description  清除的内容包括数据（features） 、专题要素、缓存。
@@ -11303,6 +11389,7 @@ var GeoFeature = function (_Theme) {
             this.removeAllFeatures();
             this.clearCache();
         }
+
         /**
          * @function ol.source.GeoFeature.prototype.getCacheCount
          * @description 获取当前缓存数量。
@@ -11317,8 +11404,8 @@ var GeoFeature = function (_Theme) {
 
         /**
          * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-         * @description 设置最大缓存条数
          * @param cacheCount -{number} 缓存总数
+         * @description 设置最大缓存条数
          */
 
     }, {
@@ -11329,10 +11416,11 @@ var GeoFeature = function (_Theme) {
                 this.isCustomSetMaxCacheCount = true;
             }
         }
+
         /**
          * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-         * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
          * @param featureID -{number} 要素ID。
+         * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
          */
 
     }, {
@@ -11399,10 +11487,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.source.Theme
- * @classdesc 主题
+ * @classdesc 专题
  * @private
  * @param name - {string} 名称
- * @param opt_options -{olx.source.ImageCanvasOptions} 参数
+ * @param opt_options -{Object} 可选构造参数。如：
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 var Theme = function (_ol$source$ImageCanva) {
@@ -11516,8 +11604,8 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.destroyFeatures
-         * @param features -{Object} 将被销毁的要素
          * @description 销毁某个要素
+         * @param features -{Object} 将被销毁的要素
          */
 
     }, {
@@ -11559,8 +11647,8 @@ var Theme = function (_ol$source$ImageCanva) {
          * @function ol.source.Theme.prototype.addFeatures
          * @param features -{Array<SuperMap.Feature.Vector>} 需要添加的数据
          * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
-         * 专题图仅接收 SuperMap.Feature.Vector 类型数据，
-         * feature 将储存于 features 属性中，其存储形式为数组。
+         *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
+         *              feature 将储存于 features 属性中，其存储形式为数组。
          */
 
     }, {
@@ -11571,10 +11659,10 @@ var Theme = function (_ol$source$ImageCanva) {
          * @function ol.source.Theme.prototype.removeFeatures
          * @param features - {Array<SuperMap.Feature.Vector>} 要删除feature的数组。
          * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
-         * 参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
-         * 如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
-         * 如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
-         * 删除所有feature后再重新添加。这样效率会更高。
+         *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
+         *              如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
+         *              如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
+         *              删除所有feature后再重新添加。这样效率会更高。
          */
 
     }, {
@@ -11651,10 +11739,10 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.getFeatureBy
+         * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
+         *              返回此 feature（并且只返回第一个）。
          * @param property - {string} feature 的某个属性名称。
          * @param value - {string} property 所对应的值。
-         * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
-         * 返回此 feature（并且只返回第一个）。
          * @return {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
          */
 
@@ -11674,8 +11762,8 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.getFeatureById
-         * @param featureId - {string} 矢量要素的属性 id。
          * @description 通过给定一个 id，返回对应的矢量要素。
+         * @param featureId - {string} 矢量要素的属性 id。
          * @return {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
          */
 
@@ -11687,10 +11775,10 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.getFeaturesByAttribute
+         * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
          * @param attrName - {string} 属性的 key。
          * @param attrValue - {string} 矢量要素的属性 id。
-         * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-         * @return  Array<SuperMap.Feature.Vector> 一个匹配的 feature 数组。
+         * @return {Array<SuperMap.Feature.Vector>}一个匹配的 feature 数组。
          */
 
     }, {
@@ -11712,8 +11800,8 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.redrawThematicFeatures
-         * @param extent - {Array} 当前级别下计算出的地图范围
          * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
+         * @param extent - {Array} 当前级别下计算出的地图范围
          */
 
     }, {
@@ -11722,9 +11810,9 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.on
+         * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
          * @param event - {string} 事件名称。
          * @param callback - {Function} 事件回调函数。
-         * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
          */
 
     }, {
@@ -11743,9 +11831,9 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.fire
+         * @description 添加专题要素事件监听
          * @param type - {string} 事件类型。
          * @param event - {string} 事件名称。
-         * @description 添加专题要素事件监听
          */
 
     }, {
@@ -11805,9 +11893,9 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.un
+         * @description 移除专题要素事件监听
          * @param event - {string} 事件名称。
          * @param callback - {Function} 事件回调函数。
-         * @description 移除专题要素事件监听
          */
 
     }, {
@@ -11848,8 +11936,8 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.getLocalXY
-         * @param coordinate - {Object} 坐标位置。
          * @description 获取坐标系统
+         * @param coordinate - {Object} 坐标位置。
          */
 
     }, {
@@ -11879,10 +11967,10 @@ var Theme = function (_ol$source$ImageCanva) {
 
         /**
          * @function ol.source.Theme.prototype.rotate
+         * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
          * @param pixelP - {number} 像素坐标点位置。
          * @param rotation - {number} 旋转角度
          * @param center - {number} 中心位置。
-         * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
          */
 
     }, {
@@ -11893,7 +11981,14 @@ var Theme = function (_ol$source$ImageCanva) {
             return [x, y];
         }
 
-        //获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
+        /**
+         * @function ol.source.Theme.prototype.scale
+         * @description 获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
+         * @param pixelP - {Object} 像素点
+         * @param center - {Object} 中心点
+         * @param scaleRatio - {number} 缩放倍数
+         * @return {Array<number>} 返回数组形比例
+         */
 
     }, {
         key: 'scale',
@@ -11902,6 +11997,13 @@ var Theme = function (_ol$source$ImageCanva) {
             var y = (pixelP[1] - center[1]) * scaleRatio + center[1];
             return [x, y];
         }
+
+        /**
+         * @function ol.source.Theme.prototype.scale
+         * @description 转为 iClient 要素
+         * @param feature 待转要素
+         */
+
     }, {
         key: 'toiClientFeature',
         value: function toiClientFeature(feature) {
@@ -12223,7 +12325,7 @@ _olDebug2.default.supermap.control = _olDebug2.default.supermap.control || {};
  *        orientation - {string} 方向horizontal|vertical。<br>
  *        switch - {boolean} 是否显示上/下一个版本切换控件
  * @example
- * 用法： var control = new ol.supermap.control.ChangeTileVersion({
+ * var control = new ol.supermap.control.ChangeTileVersion({
  *           layer: baseLayer,
  *           orientation: "horizontal"
  *      });
@@ -12233,10 +12335,6 @@ _olDebug2.default.supermap.control = _olDebug2.default.supermap.control || {};
 var ChangeTileVersion = function (_ol$control$Control) {
     _inherits(ChangeTileVersion, _ol$control$Control);
 
-    /*
-     * @function ol.supermap.control.ChangeTileVersion.prototype.constructor
-     * @param options -{options} 参数
-     */
     function ChangeTileVersion(options) {
         _classCallCheck(this, ChangeTileVersion);
 
@@ -12355,7 +12453,8 @@ var ChangeTileVersion = function (_ol$control$Control) {
             } else {
                 this._sliderContainer.style.width = 150 + 'px';
             }
-            /**
+
+            /*
              * @function ol.supermap.control.ChangeTileVersion.prototype.addDomEvent
              * @description 为元素添加事件
              */
@@ -12387,7 +12486,6 @@ var ChangeTileVersion = function (_ol$control$Control) {
          * @param container -{Object} 容器
          * @return {object|Element} 元素
          */
-
         function createElement(tagName, className, container) {
             var el = document.createElement(tagName);
             el.className = className || '';
@@ -12407,7 +12505,6 @@ var ChangeTileVersion = function (_ol$control$Control) {
          * @param context -{Object} 当前环境
          * @return {addDomEvent} 添加的事件
          */
-
         function addDomEvent(obj, type, fn, context) {
             var handler = function handler(e) {
                 if (fn) {
@@ -12494,6 +12591,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
             this._sliderValue.innerHTML = value;
             return this;
         }
+
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.setToolTip
          * @description 设置提示信息
@@ -12507,6 +12605,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
             this.tooltip.innerHTML = tooltip;
             return this;
         }
+
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.updateLength
          * @description 更新进度条长度
@@ -12522,6 +12621,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
             }
             return this;
         }
+
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.setLayer
          * @description 绑定图层
@@ -12547,6 +12647,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
             me.getTileSetsInfo();
             return this;
         }
+
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.update
          * @description 更新缓存切片集及进度条长度
@@ -12579,6 +12680,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
             }
             return this;
         }
+
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.removeLayer
          * @description 移除绑定的地图图层
@@ -12611,7 +12713,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
 
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.lastTilesVersion
-         * @description 上一个版本
+         * @description 获取上一个版本信息
          */
 
     }, {
@@ -12642,6 +12744,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
                 }
             }
         }
+
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.getValue
          * @description 获取进度条的值。注：(进度条的值并不是版本号)
@@ -12652,6 +12755,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
         value: function getValue() {
             return this.slider.value;
         }
+
         /**
          * @function ol.supermap.control.ChangeTileVersion.prototype.getVersion
          * @description 获取当前进度条值对应的版本号
@@ -12700,7 +12804,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.Baidu
  * @classdesc 百度地图
- * @param opt_options - {Object} 参数
+ * @param opt_options - {Object} 创建地图参数可选参数：<br>
+ *        url - {string} 服务地址。<br>
+ *        attributions - {string} 版权描述信息。<br>
+ *        cacheSize - {number} 缓冲大小。<br>
+ *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
+ *        maxZoom - {Object} 最大缩放级别。<br>
+ *        opaque - {boolean} 是否透明。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 var Baidu = function (_ol$source$TileImage) {
@@ -12746,9 +12856,10 @@ var Baidu = function (_ol$source$TileImage) {
             }
         }));
     }
+
     /**
      * @function ol.source.Baidu.defaultTileGrid
-     * @description 自定义网格切片
+     * @description 获取默认瓦片格网
      * @return {ol.tilegrid.TileGrid}
      */
 
@@ -12810,8 +12921,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.source.ImageSuperMapRest
- * @classdesc UGC 影像图层类。
- * @param options - {Object} 参数
+ * @classdesc SuperMap UGC 对接iServer地图Image资源。
+ * @param options - {Object} 服务参数：<br>
+ *        url - {string} 服务地址。<br>
+ *        attributions - {string} 版权描述信息。<br>
+ *        serverType {SuperMap.ServerType} 服务类型。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 var ImageSuperMapRest = function (_ol$source$TileImage) {
@@ -12830,7 +12944,8 @@ var ImageSuperMapRest = function (_ol$source$TileImage) {
         options.serverType = options.serverType || _SuperMap2.default.ServerType.ISERVER;
         //为url添加安全认证信息片段
         layerUrl = appendCredential(layerUrl, options.serverType);
-        /**
+
+        /*
          * @function ol.source.ImageSuperMapRest.prototype.appendCredential
          * @description 添加凭据
          * @param url - {string} 地址
@@ -12910,7 +13025,7 @@ var ImageSuperMapRest = function (_ol$source$TileImage) {
         if (options.cacheEnabled === true && options.tileversion) {
             layerUrl += "tileversion=" + options.tileversion;
         }
-        /**
+        /*
          * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
          * @param tileCoord - {Object} 瓦片坐标系
          * @param pixelRatio - {Object} 像素密度
@@ -12948,6 +13063,7 @@ var ImageSuperMapRest = function (_ol$source$TileImage) {
             layersID: options.layersID
         }));
     }
+
     /**
      * @function ol.source.ImageSuperMapRest.optionsFromMapJSON
      * @param url - {string} 地址
@@ -13063,7 +13179,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.SuperMapCloud
  * @classdesc 超图云
- * @param opt_options - {olx.source.XYZOptions} 参数
+ * @param opt_options - {Object} 可选参数：如：<br>
+ *        url - {string} 服务地址。<br>
+ *        attributions - {string} 版权描述信息。<br>
+ *        cacheSize - {number} 缓冲大小。<br>
+ *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
+ *        maxZoom - {Object} 最大缩放级别。<br>
+ *        opaque - {boolean} 是否透明。
  * @extends ol.source.XYZ{@linkdoc-openlayers/ol.source.XYZ}
  */
 var SuperMapCloud = function (_ol$source$XYZ) {
@@ -13129,7 +13251,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.Tianditu
  * @classdesc 天地图
- * @param opt_options - {olx.source.WMTSOptions} 参数
+ * @param opt_options - {Object} 参数。
+ *        url - {string} 服务地址。<br>
+ *        attributions - {string} 版权描述信息。<br>
+ *        cacheSize - {number} 缓冲大小。<br>
+ *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
+ *        maxZoom - {Object} 最大缩放级别。<br>
+ *        opaque - {boolean} 是否透明。
  * @extends ol.source.WMTS{@linkdoc-openlayers/ol.source.WMTS}
  */
 var Tianditu = function (_ol$source$WMTS) {
@@ -13167,10 +13295,11 @@ var Tianditu = function (_ol$source$WMTS) {
             wrapX: options.wrapX
         }));
     }
+
     /**
      * @function ol.source.Tianditu.getTileGrid
-     * @description 网格瓦片
-     * @param projection -{objecxt} 投影参考对象
+     * @description 获取网格瓦片
+     * @param projection - {Object} 投影参考对象
      * @return {ol.tilegrid.WMTS}
      */
 
@@ -13183,9 +13312,10 @@ var Tianditu = function (_ol$source$WMTS) {
             }
             return _olDebug2.default.source.Tianditu.default3857TileGrid();
         }
+
         /**
          * @function ol.source.Tianditu.default4326TileGrid
-         * @description 自定义4326网格瓦片
+         * @description 获取默认4326网格瓦片
          * @return {ol.tilegrid.WMTS}
          */
 
@@ -13207,9 +13337,10 @@ var Tianditu = function (_ol$source$WMTS) {
             });
             return tileGird;
         }
+
         /**
          * @function ol.source.Tianditu.default3857TileGrid
-         * @description 自定义3857网格瓦片
+         * @description 获取默认3857网格瓦片
          * @return {ol.tilegrid.WMTS}
          */
 
@@ -13277,8 +13408,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.source.TileSuperMapRest
- * @classdesc 地图REST瓦片服务
- * @param options - {olx.source.TileImageOptions} 参数
+ * @classdesc 对接iServer地图TileImage服务
+ * @param options - {Object} 可选参数。如：<br>
+ *        url - {string} 服务地址。<br>
+ *        attributions - {string} 版权描述信息。<br>
+ *        cacheSize - {number} 缓冲大小。<br>
+ *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
+ *        maxZoom - {Object} 最大缩放级别。<br>
+ *        opaque - {boolean} 是否透明。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 var TileSuperMapRest = function (_ol$source$TileImage) {
@@ -13481,10 +13618,11 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
 
         return _this;
     }
+
     /**
      * @function  ol.source.TileSuperMapRest.prototype.setTileSetsInfo
      * @description 设置瓦片集信息
-     * @param tileSets -{Object} 瓦片集合
+     * @param tileSets - {Object} 瓦片集合
      */
 
 
@@ -13513,6 +13651,7 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
             this.tempIndex = this.tileSetsIndex - 1;
             this.changeTilesVersion();
         }
+
         /**
          * @function  ol.source.TileSuperMapRest.prototype.nextTilesVersion
          * @description 请求下一个版本切片，并重新绘制。
@@ -13524,6 +13663,7 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
             this.tempIndex = this.tileSetsIndex + 1;
             this.changeTilesVersion();
         }
+
         /**
          * @function  ol.source.TileSuperMapRest.prototype.changeTilesVersion
          * @description 切换到某一版本的切片，并重绘。通过this.tempIndex保存需要切换的版本索引。
@@ -13556,8 +13696,8 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
 
         /**
          * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
-         * @param index - {Object} 可选参数
-         * @description 手动设置当前切片集索引，目前主要提供给控件使用。
+         * @description 更新当前切片集索引，目前主要提供给控件使用。
+         * @param index - {number} 索引号
          */
 
     }, {
@@ -13565,10 +13705,11 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
         value: function updateCurrentTileSetsIndex(index) {
             this.tempIndex = index;
         }
+
         /**
          * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
-         * @param version - {Object} 版本信息
          * @description 更改URL请求参数中的切片版本号,并重绘。
+         * @param version - {Object} 版本信息
          * @return {boolean}
          */
 
@@ -13586,9 +13727,9 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
 
         /**
          * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
+         * @description 从 MapJSON 中获取参数对象
          * @param url - {string} 地址
          * @param mapJSONObj -{Object} 地图JSON对象
-         * @description 更改URL请求参数中的切片版本号,并重绘。
          */
 
     }], [{
@@ -13635,6 +13776,7 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
             });
             return options;
         }
+
         /**
          * @function  ol.source.TileSuperMapRest.createTileGrid
          * @description 创建切片网格
@@ -13643,7 +13785,7 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
          * @param minZoom - {number} 最小的放大级别
          * @param tileSize - {number} 瓦片的尺寸
          * @param origin - {number} 原点
-        */
+         * */
 
     }, {
         key: 'createTileGrid',
@@ -13714,9 +13856,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 _olDebug2.default.supermap = _olDebug2.default.supermap || {};
 /**
  * @class ol.supermap.WebMap
- * @classdesc 网络图层类。
- * @param id -{string} iPortal|Online 地图ID
- * @param options -{Object} 参数
+ * @classdesc 对接iPortal/Online地图类。
+ * @param id - {string} iPortal|Online 地图ID
+ * @param options - {Object} 参数。如：<br>
+ *        target - {string} 目标类型。<br>
+ *        map - {ol.map} 地图对象。<br>
+ *        server - {string} 服务地址。<br>
+ *        credentialKey - {string} 凭证密钥。<br>
+ *        credentialValue - {string} 凭证值。
  * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
  */
 
@@ -13742,6 +13889,7 @@ var WebMap = function (_ol$Observable) {
         _this.load();
         return _this;
     }
+
     /**
      * @function ol.supermap.WebMap.prototype.load
      * @description 登陆窗口后添加地图图层
@@ -13770,6 +13918,7 @@ var WebMap = function (_ol$Observable) {
                 me.createLayersByJson(layers);
             });
         }
+
         /**
          * @function ol.supermap.WebMap.prototype.createLayersByJson
          * @description 通过json创建图层
@@ -13849,6 +13998,7 @@ var WebMap = function (_ol$Observable) {
             }
             return 'EPSG:' + epsgCode;
         }
+
         /**
          * @function ol.supermap.WebMap.prototype.createMap
          * @description 创建地图
@@ -13869,6 +14019,7 @@ var WebMap = function (_ol$Observable) {
                 view.fit(options.extent);
             }
         }
+
         /**
          * @function ol.supermap.WebMap.prototype.getResolutionsFromScales
          * @description 通过比例尺获取分辨率
@@ -13887,6 +14038,7 @@ var WebMap = function (_ol$Observable) {
             }
             return resolutions;
         }
+
         /**
          * @function ol.supermap.WebMap.prototype.createLayer
          * @description 创建图层
@@ -14032,6 +14184,7 @@ var WebMap = function (_ol$Observable) {
                 extent: extent
             };
         }
+
         /**
          * @function ol.supermap.WebMap.prototype.createTiandituLayer
          * @description 创建天地图图层
@@ -14062,6 +14215,7 @@ var WebMap = function (_ol$Observable) {
             });
             return layer;
         }
+
         /**
          * @function ol.supermap.WebMap.prototype.createMarkersLayer
          * @description 创建图标图层
@@ -14153,6 +14307,7 @@ var WebMap = function (_ol$Observable) {
                 }
             }
         }
+
         /**
          * @function ol.supermap.WebMap.prototype.createWmsLayer
          * @description 创建Wms图层
@@ -14226,7 +14381,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.DataFlow
  * @classdesc 数据流
- * @param opt_options -{olx.source.VectorOptions} 参数
+ * @param opt_options -{Object} 参数
  * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
  */
 var DataFlow = function (_ol$source$Vector) {
@@ -14281,6 +14436,7 @@ var DataFlow = function (_ol$source$Vector) {
             this.prjCoordSys = prjCoordSys;
             return this;
         }
+
         /**
          * @function ol.source.DataFlow.prototype.setExcludeField
          * @description 设置唯一字段
@@ -14294,6 +14450,7 @@ var DataFlow = function (_ol$source$Vector) {
             this.excludeField = excludeField;
             return this;
         }
+
         /**
          * @function ol.source.DataFlow.prototype.setGeometry
          * @description 设置几何图形
@@ -14363,7 +14520,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.Graphic
  * @classdesc 图形类。
- * @param options -{olx.source.ImageCanvasOptions} 图形参数
+ * @param options -{Object} 图形参数
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 var Graphic = function (_ol$source$ImageCanva) {
@@ -14402,16 +14559,17 @@ var Graphic = function (_ol$source$ImageCanva) {
         }
         return _this;
     }
+
     /**
-     * @functionol.source.Graphic.prototype.forEachFeatureAtCoordinate
-     * @description 获取在视图上的特征
+     * @private
+     * @function ol.source.Graphic.prototype.forEachFeatureAtCoordinate
+     * @description 获取在视图上的要素
      * @param coordinate -{string} 坐标
      * @param rotation -{number} 角度
      * @param hitTolerance -{number} 精度
      * @param skippedFeatureUids -{boolean} 跳过功能的UID
      * @param resolution -{number} 分辨率
      * @param callback -{function} 回调函数
-     *
      */
 
 
@@ -14443,11 +14601,11 @@ var Graphic = function (_ol$source$ImageCanva) {
             var dy2 = -center[1];
             return _olDebug2.default.transform.compose(this.imageTransform, dx1, dy1, sx, sy, 0, dx2, dy2);
         }
+
         /**
-         * @functionol.source.Graphic.prototype.getGraphicsInExtent
-         * @description 获取面积
+         * @function ol.source.Graphic.prototype.getGraphicsInExtent
+         * @description 在指定范围中获取几何要素面积
          * @param extent -{Object} 长度范围
-         *
          */
 
     }, {
@@ -14511,6 +14669,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 _olDebug2.default.supermap = _olDebug2.default.supermap || {};
+
 /**
  * @class ol.source.VectorTileSuperMapRest
  * @classdesc 矢量瓦片REST服务
@@ -14638,8 +14797,9 @@ var VectorTileSuperMapRest = function (_ol$source$VectorTile) {
             var tileSize = _olDebug2.default.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
         }
+
         /**
-         * @functionol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
+         * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
          * @description 加载瓦片
          * @param tile -{onject} 瓦片类
          * @param tileUrl -{string} 瓦片地址
@@ -14686,6 +14846,7 @@ var VectorTileSuperMapRest = function (_ol$source$VectorTile) {
         }
         return _this;
     }
+
     /**
      * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
      * @param url - {string} 地址
@@ -14824,7 +14985,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.source.Mapv
  * @classdesc MapV服务
- * @param opt_options -{olx.source.ImageCanvasOptions} 参数
+ * @param opt_options -{Object} 参数
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 var Mapv = function (_ol$source$ImageCanva) {
@@ -14955,7 +15116,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.source.Range
- * @classdesc 获取范围信息
+ * @classdesc 分段专题图类
  * @param name - {string} 名称
  * @param opt_options -{Object} 参数。
  * @extends ol.source.GeoFeature
@@ -15017,9 +15178,10 @@ var Range = function (_GeoFeature) {
         }
 
         /**
+         * @private
          * @function ol.source.Range.prototype.createThematicFeature
+         * @description 创建专题图要素
          * @param feature -{Object} 要创建的专题图形要素
-         * @description 创建专题图特征
          */
 
     }, {
@@ -15047,9 +15209,10 @@ var Range = function (_GeoFeature) {
         }
 
         /**
+         * @private
          * @function ol.source.Range.prototype.getStyleByData
-         * @param fea -{Object} 要创建的专题图形要素
-         * @description 获取style
+         * @description 通过数据获取style
+         * @param fea -{Object} 要素数据
          */
 
     }, {
@@ -15138,7 +15301,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.source.RankSymbol
- * @classdesc 获取等级标志
+ * @classdesc 等级符号专题图类
  * @param name - {string} 专题图层名
  * @param symbolType -{string} 标志类型
  * @param opt_options -{Object} 参数
@@ -15207,8 +15370,9 @@ var RankSymbol = function (_Graph) {
         }
 
         /**
+         * @private
          * @function ol.source.RankSymbol.prototype.createThematicFeature
-         * @description 创建专题图形
+         * @description 创建专题图形要素
          * @param feature -{Object} 要创建的专题图形要素
          */
 
@@ -15280,8 +15444,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.source.Unique
- * @classdesc 地理专题图
- * @param name - {String} 名称
+ * @classdesc 单值专题图类
+ * @param name - {String} 图层名称
  * @param opt_options -{Object} 参数。
  * @extends ol.source.GeoFeature
  */
@@ -15320,6 +15484,7 @@ var Unique = function (_GeoFeature) {
         }
         return _this;
     }
+
     /**
      * @function ol.source.Unique.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
@@ -15335,9 +15500,10 @@ var Unique = function (_GeoFeature) {
             _geoFeature2.default.prototype.destroy.apply(this, arguments);
         }
         /**
+         * @private
          * @function ol.source.Unique.prototype.createThematicFeature
-         * @param feature -{Object} 要素
          * @description 创建专题要素。
+         * @param feature -{Object} 要素
          */
 
     }, {
@@ -15359,7 +15525,9 @@ var Unique = function (_GeoFeature) {
             }
             return thematicFeature;
         }
+
         /**
+         * @private
          * @function ol.source.Unique.prototype.getStyleByData
          * @description 根据用户数据（feature）设置专题要素的 Style
          * @param fea {Object} 用户要素数据
@@ -15455,7 +15623,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.supermap.AddressMatchService
  * @classdesc 地址匹配服务
- * @example 用法：
+ * @example
  *      new ol.supermap.AddressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
@@ -15476,8 +15644,8 @@ var AddressMatchService = function (_ServiceBase) {
     /**
      * @function ol.supermap.AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param params -{Object}正向匹配参数。
-     * @param callback -{function}请求结果的回调函数。
+     * @param params - {Object} 正向匹配参数。
+     * @param callback - {function} 请求结果的回调函数。
      */
 
 
@@ -15571,10 +15739,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.supermap.ChartService
- * @classdesc openlayer的海图服务。
+ * @classdesc 海图服务。
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.ChartService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
@@ -15595,9 +15762,9 @@ var ChartService = function (_ServiceBase) {
     /**
      * @function ol.supermap.ChartService.prototype.queryChart
      * @description 查询海图服务。
-     * @param params -{SuperMap.ChartQueryParameters} 海图查询所需参数类。
-     * @param callback -{function} 回调函数。
-     * @param resultFormat -{SuperMap.DataFormat} 返回的结果格式类型。
+     * @param params - {SuperMap.ChartQueryParameters} 海图查询所需参数类。
+     * @param callback - {function} 回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果格式类型。
      * @return {ol.supermap.ChartService}
      */
 
@@ -15625,7 +15792,7 @@ var ChartService = function (_ServiceBase) {
         /**
          * @function ol.supermap.ChartService.prototype.getChartFeatureInfo
          * @description 获取海图物标信息服务。
-         * @param callback -{function} 回调函数
+         * @param callback - {function} 回调函数
          * @return {ol.supermap.ChartService}
          */
 
@@ -15740,7 +15907,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.FeatureService
  * @constructs ol.supermap.FeatureService
  * @classdesc 数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
- * @example 用法：
+ * @example
  *      new ol.supermap.FeatureService(url)
  *      .getFeaturesByIDs(param,function(result){
  *          //doSomething
@@ -15761,9 +15928,9 @@ var FeatureService = function (_ServiceBase) {
     /**
      * @function ol.supermap.FeatureService.prototype.getFeaturesByIDs
      * @description 数据集ID查询服务
-     * @param params -{SuperMap.GetFeaturesByIDsParameters} 查询所需参数类。
-     * @param callback -{function} 回调函数
-     * @param resultFormat -{SuperMap.DataFormat} 返回的数据格式
+     * @param params - {SuperMap.GetFeaturesByIDsParameters} 查询所需参数类。
+     * @param callback - {function} 回调函数
+     * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
      * @return {ol.supermap.FeatureService}
      */
 
@@ -15787,8 +15954,8 @@ var FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.getFeaturesByBounds
          * @description 数据集Bounds查询服务
-         * @param params -{SuperMap.GetFeaturesByBoundsParameters} 查询所需参数类。
-         * @param callback -{function} 回调函数
+         * @param params - {SuperMap.GetFeaturesByBoundsParameters} 查询所需参数类。
+         * @param callback - {function} 回调函数
          * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
          * @return {ol.supermap.FeatureService}
          */
@@ -15812,9 +15979,9 @@ var FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.getFeaturesByBuffer
          * @description 数据集Buffer查询服务
-         * @param params {SuperMap.GetFeaturesByBufferParameters} 查询所需参数类。
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回的数据格式
+         * @param params - {SuperMap.GetFeaturesByBufferParameters} 查询所需参数类。
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
          * @return {ol.supermap.FeatureService}
          */
 
@@ -15837,9 +16004,9 @@ var FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.getFeaturesBySQL
          * @description 数据集SQL查询服务
-         * @param params -{SuperMap.GetFeaturesBySQLParameters} 查询所需参数类。
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回的数据格式
+         * @param params - {SuperMap.GetFeaturesBySQLParameters} 查询所需参数类。
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
          * @return {ol.supermap.FeatureService}
          */
 
@@ -15863,8 +16030,8 @@ var FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.getFeaturesByGeometry
          * @description 数据集几何查询服务类
-         * @param params {SuperMap.GetFeaturesByGeometryParameters} 查询所需参数类。
-         * @param callback -{function} 回调函数
+         * @param params - {SuperMap.GetFeaturesByGeometryParameters} 查询所需参数类。
+         * @param callback - {function} 回调函数
          * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
          * @return {ol.supermap.FeatureService}
          */
@@ -15888,8 +16055,8 @@ var FeatureService = function (_ServiceBase) {
         /**
          * @function ol.supermap.FeatureService.prototype.editFeatures
          * @description 地物编辑服务
-         * @param params -{SuperMap.EditFeaturesParameters} 查询所需参数类。
-         * @param callback -{function} 回调函数
+         * @param params - {SuperMap.EditFeaturesParameters} 查询所需参数类。
+         * @param callback - {function} 回调函数
          * @return {ol.supermap.FeatureService}
          */
 
@@ -16027,7 +16194,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.supermap.FieldService
  * @classdesc 字段服务类
- * @example 用法：
+ * @example
  *      new ol.supermap.FieldService(url).getFields(function(result){
  *           //doSomething
  *      });
@@ -16048,7 +16215,7 @@ var FieldService = function (_ServiceBase) {
      * @function ol.supermap.FieldService.prototype.getFields
      * @description 字段查询服务
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
-     * @param callback -{function} 回调函数
+     * @param callback - {function} 回调函数
      * @return {ol.supermap.FieldService}
      */
 
@@ -16181,12 +16348,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.GridCellInfosService
  * @classdesc 数据栅格查询服务
  * @extends ol.supermap.ServiceBase
- * @example 用法：
+ * @example
  *      new ol.superMap.GridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- *@param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param options - {Object} 服务所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
@@ -16202,8 +16369,8 @@ var GridCellInfosService = function (_ServiceBase) {
 
     /**
      * @function ol.supermap.GridCellInfosService.prototype.getGridCellInfos
-     * @param params -{SuperMap.GetGridCellInfosParameters} 查询所需参数类
-     * @param callback -{function} 回调函数
+     * @param params - {SuperMap.GetGridCellInfosParameters} 查询所需参数类
+     * @param callback - {function} 回调函数
      */
 
 
@@ -16284,14 +16451,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 图层信息服务类
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.LayerInfoService(url).getLayersInfo(function(result){
  *           //doSomething
  *      })
  * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param options - {Object} 服务所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 var LayerInfoService = function (_ServiceBase) {
     _inherits(LayerInfoService, _ServiceBase);
@@ -16329,7 +16495,7 @@ var LayerInfoService = function (_ServiceBase) {
          * @function ol.supermap.LayerInfoService.prototype.setLayerInfo
          * @description 设置图层信息服务。可以实现临时图层中子图层的修改
          * @param params - {SuperMap.SetLayerInfoParameters} 设置图层信息参数类
-         * @param callback -{function} 回调函数
+         * @param callback - {function} 回调函数
          */
 
     }, {
@@ -16606,7 +16772,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 3D网络分析服务类
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.NetworkAnalyst3DService(url)
  *      .sinksFacilityAnalyst(params,function(result){
  *           //doSomething
@@ -16615,7 +16780,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 服务所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象
+ *        eventListeners - {Object} 需要被注册的监听器对象
  */
 var NetworkAnalyst3DService = function (_ServiceBase) {
     _inherits(NetworkAnalyst3DService, _ServiceBase);
@@ -16842,16 +17007,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 网络分析服务类
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.NetworkAnalystService(url)
  *      .findPath(params,function(result){
  *           //doSomething
  *      })
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
- *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param options - {Object} 服务所需可选参数。如：<br>
- *         serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
+ *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
  */
 var NetworkAnalystService = function (_ServiceBase) {
     _inherits(NetworkAnalystService, _ServiceBase);
@@ -17270,7 +17434,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 分布式空间分析相关服务类。
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.ProcessingService(url,options)
  *      .getKernelDensityJobs(function(result){
  *          //doSomething
@@ -17862,8 +18025,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param url - {string} 地图查询服务访问地址。
  * @param options - {Object} 服务交互时所需的可选参数。
  * @example
- * 用法：
- * new ol.supermap.QueryService(url)
+ *    new ol.supermap.QueryService(url)
  *      .queryByBounds(param,function(result){
  *          //doSomething
  *      })
@@ -17881,7 +18043,7 @@ var QueryService = function (_ServiceBase) {
      * @function ol.supermap.QueryService.prototype.queryByBounds
      * @description bounds查询地图服务
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
-     * @param callback -{function} 回调函数
+     * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      * @return ol.supermap.QueryService}
      */
@@ -17910,7 +18072,7 @@ var QueryService = function (_ServiceBase) {
          * @description 地图距离查询服务
          * @param params - {QueryByDistanceParameters} Distance查询相关参数类
          * @param callback - {function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.QueryService}
          */
 
@@ -17936,8 +18098,8 @@ var QueryService = function (_ServiceBase) {
          * @function ol.supermap.QueryService.prototype.queryBySQL
          * @description 地图SQL查询服务
          * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.QueryService}
          */
 
@@ -18114,7 +18276,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.SpatialAnalystService
  * @extends ol.supermap.ServiceBase
  * @classdesc 空间分析服务类。提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
- * @example  用法：
+ * @example
  *      new ol.supermap.SpatialAnalystService(url)
  *      .bufferAnalysis(params,function(result){
  *          //doSomething
@@ -18134,7 +18296,7 @@ var SpatialAnalystService = function (_ServiceBase) {
     /**
      * @function ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射
-     * @param params -{AreaSolarRadiationParameters} 查询相关参数类
+     * @param params -{SuperMap.AreaSolarRadiationParameters} 查询相关参数类
      * @param callback -{function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
      * @return {ol.supermap.SpatialAnalystService}
@@ -18161,7 +18323,7 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.bufferAnalysis
          * @description 缓冲区分析
-         * @param params -{DatasetBufferAnalystParameters} 查询相关参数类
+         * @param params -{SuperMap.DatasetBufferAnalystParameters} 查询相关参数类
          * @param callback -{function} 回调函数
          * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
@@ -18187,7 +18349,7 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.densityAnalysis
          * @description 点密度分析
-         * @param params -{DensityKernelAnalystParameters} 查询相关参数类
+         * @param params -{SuperMap.DensityKernelAnalystParameters} 查询相关参数类
          * @param callback -{function} 回调函数
          * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
@@ -18213,9 +18375,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.generateSpatialData
          * @description 动态分段分析
-         * @param params -{GenerateSpatialDataParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.GenerateSpatialDataParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18239,9 +18401,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis
          * @description 空间关系分析
-         * @param params -{GeoRelationAnalystParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.GeoRelationAnalystParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18265,9 +18427,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis
          * @description 插值分析
-         * @param params -{InterpolationRBFAnalystParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.InterpolationRBFAnalystParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18291,9 +18453,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis
          * @description 栅格代数运算
-         * @param params -{MathExpressionAnalysisParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.MathExpressionAnalysisParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18317,9 +18479,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.overlayAnalysis
          * @description 叠加分析
-         * @param params -{DatasetOverlayAnalystParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.DatasetOverlayAnalystParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18343,9 +18505,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure
          * @description 路由测量计算
-         * @param params -{RouteCalculateMeasureParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.RouteCalculateMeasureParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18369,9 +18531,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.routeLocate
          * @description 路由定位
-         * @param params -{RouteLocatorParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.RouteLocatorParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18395,9 +18557,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis
          * @description 表面分析
-         * @param params -{DatasetSurfaceAnalystParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.DatasetSurfaceAnalystParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18421,9 +18583,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate
          * @description 地形曲率计算
-         * @param params -{TerrainCurvatureCalculationParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.TerrainCurvatureCalculationParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18447,9 +18609,9 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis
          * @description 泰森多边形分析
-         * @param params -{DatasetThiessenAnalystParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
-         * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+         * @param params - {SuperMap.DatasetThiessenAnalystParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
          * @return {ol.supermap.SpatialAnalystService}
          */
 
@@ -18545,6 +18707,14 @@ var SpatialAnalystService = function (_ServiceBase) {
         value: function _processFormat(resultFormat) {
             return resultFormat ? resultFormat : _SuperMap2.default.DataFormat.GEOJSON;
         }
+
+        /**
+         * @private
+         * @function ol.supermap.SpatialAnalystService.prototype.convertGeometry
+         * @description 隐藏几何对象
+         * @param ol3Geometry - {Object} 待隐藏的几何对象
+         */
+
     }, {
         key: 'convertGeometry',
         value: function convertGeometry(ol3Geometry) {
@@ -18597,7 +18767,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 专题图服务类
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.ThemeService(url,{
  *            projection:projection
  *      }).getThemeInfo(params,function(result){
@@ -18605,7 +18774,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      });
  * @param url - {string} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
+ *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
  */
 var ThemeService = function (_ServiceBase) {
     _inherits(ThemeService, _ServiceBase);
@@ -18698,7 +18867,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.supermap.TrafficTransferAnalystService
  * @extends ol.supermap.ServiceBase
  * @classdesc 交通换乘分析服务类
- * @example 用法
+ * @example
  *      new ol.supermap.TrafficTransferAnalystService(url)
  *      .queryStop(params,function(result){
  *           //doSomething
@@ -18719,8 +18888,8 @@ var TrafficTransferAnalystService = function (_ServiceBase) {
     /**
      * @function ol.supermap.TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务
-     * @param params -{StopQueryParameters} 查询相关参数类
-     * @param callback -{function} 回调函数
+     * @param params - {SuperMap.StopQueryParameters} 查询相关参数类
+     * @param callback - {function} 回调函数
      * @return {ol.supermap.TrafficTransferAnalystService}
      */
 
@@ -18744,8 +18913,8 @@ var TrafficTransferAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
          * @description 交通换乘线路查询服务
-         * @param params -{TransferPathParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
+         * @param params - {SuperMap.TransferPathParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
          * @return {ol.supermap.TrafficTransferAnalystService}
          */
 
@@ -18768,8 +18937,8 @@ var TrafficTransferAnalystService = function (_ServiceBase) {
         /**
          * @function ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
          * @description 交通换乘方案查询服务
-         * @param params -{TransferSolutionParameters} 查询相关参数类
-         * @param callback -{function} 回调函数
+         * @param params - {SuperMap.TransferSolutionParameters} 查询相关参数类
+         * @param callback - {function} 回调函数
          * @return {ol.supermap.TrafficTransferAnalystService}
          */
 
@@ -50829,7 +50998,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.Graphic
- * @classdesc 地理几何信息
+ * @classdesc 地理几何对象类
  * @private
  * @param geometry - {Object} 几何对象
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}
@@ -50848,8 +51017,9 @@ var Graphic = function (_ol$Object) {
         _this.setStyle();
         return _this;
     }
+
     /**
-     * @function  ol.Graphic.prototype.clone
+     * @function ol.Graphic.prototype.clone
      * @description 复制当前信息
      */
 
@@ -50863,8 +51033,9 @@ var Graphic = function (_ol$Object) {
             clone.setStyle(this.style_);
             return clone;
         }
+
         /**
-         * @function   ol.Graphic.prototype.getId
+         * @function ol.Graphic.prototype.getId
          * @description 获取当前ID
          */
 
@@ -50873,8 +51044,9 @@ var Graphic = function (_ol$Object) {
         value: function getId() {
             return this.id_;
         }
+
         /**
-         * @function   ol.Graphic.prototype.setId
+         * @function ol.Graphic.prototype.setId
          * @description 设置当前ID
          */
 
@@ -50883,8 +51055,9 @@ var Graphic = function (_ol$Object) {
         value: function setId(id) {
             this.id_ = id;
         }
+
         /**
-         * @function   ol.Graphic.prototype.setId
+         * @function ol.Graphic.prototype.getGeometry
          * @description 获取当前几何信息
          */
 
@@ -50893,10 +51066,11 @@ var Graphic = function (_ol$Object) {
         value: function getGeometry() {
             return this.geometry_;
         }
+
         /**
-         * @function   ol.Graphic.prototype.setId
+         * @function ol.Graphic.prototype.setGeometry
+         * @description 设置当前几何信息
          * @param geometry -{Object} 几何参数
-         * @description  设置当前几何信息
          */
 
     }, {
@@ -50905,8 +51079,8 @@ var Graphic = function (_ol$Object) {
             this.geometry_ = geometry;
         }
         /**
-         * @function   ol.Graphic.prototype.getStyle
-         * @description  获取样式
+         * @function ol.Graphic.prototype.getStyle
+         * @description 获取样式
          */
 
     }, {
@@ -50914,10 +51088,11 @@ var Graphic = function (_ol$Object) {
         value: function getStyle() {
             return this.style_;
         }
+
         /**
-         * @function   ol.Graphic.prototype.getStyle
-         * @param style -{Object} 样式参数
-         * @description  设置样式
+         * @function ol.Graphic.prototype.setStyle
+         * @description 设置样式
+         * @param style - {Object} 样式参数
          */
 
     }, {
@@ -50927,9 +51102,10 @@ var Graphic = function (_ol$Object) {
             this.styleFunction_ = !style ? undefined : _olDebug2.default.Graphic.createStyleFunction(style);
             this.changed();
         }
+
         /**
-         * @function   ol.Graphic.prototype.getStyleFunction
-         * @description  获取样式函数
+         * @function ol.Graphic.prototype.getStyleFunction
+         * @description 获取样式函数
          */
 
     }, {
@@ -50937,14 +51113,16 @@ var Graphic = function (_ol$Object) {
         value: function getStyleFunction() {
             return this.styleFunction_;
         }
+
         /**
-         * @function   ol.Graphic.createStyleFunction
-         * @param obj -{Object} 对象参数
+         * @function ol.Graphic.createStyleFunction
          * @description  新建样式函数
+         * @param obj - {Object} 对象参数
          */
 
     }, {
         key: 'destroy',
+
 
         /**
          * @function ol.Graphic.prototype.destroy
@@ -51012,9 +51190,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class ol.supermap.MapvCanvasLayer
- * @classdesc ��ͼ����ͼ��
+ * @classdesc Mapv地图画布图层类
  * @private
- * @param options - {Object} ����
+ * @param options - {Object} 可选参数。如：<br>
+ *        paneName - {string} 窗口名。<br>
+ *        enableMassClear - {} 。<br>
+ *        context - {string} 内容。<br>
+ *        zIndex - {number} 层级。<br>
+ *        width - {number} 画布宽。<br>
+ *        height - {number} 画布高。<br>
+ *        mixBlendMode - {string} 最小混合模式。
  */
 var MapvCanvasLayer = function () {
     function MapvCanvasLayer(options) {
@@ -51031,11 +51216,6 @@ var MapvCanvasLayer = function () {
         this.height = options.height;
         this.initialize();
     }
-    /*
-     * @function ol.supermap.MapvCanvasLayer.prototype.initialize
-     * @description ��ʼ��
-     */
-
 
     _createClass(MapvCanvasLayer, [{
         key: 'initialize',
@@ -51055,9 +51235,10 @@ var MapvCanvasLayer = function () {
             canvas.style.width = canvas.width + "px";
             canvas.style.height = canvas.height + "px";
         }
-        /*
+
+        /**
          * @function ol.supermap.MapvCanvasLayer.prototype.draw
-         * @description ���ɵ�ͼ
+         * @description 生成地图
          */
 
     }, {
@@ -51066,11 +51247,11 @@ var MapvCanvasLayer = function () {
             this.options.update && this.options.update.call(this);
         }
 
-        /*
+        /**
          * @function ol.supermap.MapvCanvasLayer.prototype.resize
-         * @param mapWidth - {number} ��ͼ���
-         * @param mapHeight - {number} ��ͼ�߶�
-         * @description ������ͼ��С
+         * @param mapWidth - {number} 地图宽度
+         * @param mapHeight - {number} 地图高度
+         * @description 调整地图大小
          */
 
     }, {
@@ -51082,9 +51263,9 @@ var MapvCanvasLayer = function () {
             this.canvas.style.height = mapHeight + "px";
         }
 
-        /*
+        /**
          * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
-         * @description ��ȡ����
+         * @description 获取容器
          * @return {Element}
          */
 
@@ -51093,10 +51274,11 @@ var MapvCanvasLayer = function () {
         value: function getContainer() {
             return this.canvas;
         }
-        /*
+
+        /**
          * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
-         * @param zIndex - {number} �㼶����
-         * @description ����ͼ��㼶
+         * @param zIndex - {number} 层级参数
+         * @description 设置图层层级
          */
 
     }, {
@@ -51104,9 +51286,10 @@ var MapvCanvasLayer = function () {
         value: function setZIndex(zIndex) {
             this.canvas.style.zIndex = zIndex;
         }
-        /*
+
+        /**
          * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
-         * @description ��ȡͼ��㼶
+         * @description 获取图层层级
          */
 
     }, {
@@ -51161,10 +51344,17 @@ var BaiduMapLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Functi
  * @private
  * @param map - {Object} 地图
  * @param dataSet - {Object} 数据集
- * @param options - {Object} 参数
+ * @param options - {Object} 参数，如：<br>
+ *        paneName - {string} 窗口名。<br>
+ *        enableMassClear - {} 。<br>
+ *        context - {string} 内容。<br>
+ *        zIndex - {number} 层级。<br>
+ *        width - {number} 画布宽。<br>
+ *        height - {number} 画布高。<br>
+ *        mixBlendMode - {string} 最小混合模式。
  * @param mapWidth - {number} 地图宽度
  * @param mapHeight - {number} 地图高度
- * @param source - {Object} 路径
+ * @param source - {Object} 资源
  * @extends BaiduMapLayer
  */
 
@@ -51473,11 +51663,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.source.Graph
- * @classdesc 图像
+ * @classdesc 图表类
  * @private
- * @param chartsType -{string} 图形类别
- * @param name - {string} 名称
- * @param opt_options -{Object} 参数
+ * @param chartsType -{string} 图表类别
+ * @param name - {string} 图层名称
+ * @param opt_options - {Object} 参数
  * @extends ol.source.Theme
  */
 var Graph = function (_Theme) {
@@ -51512,6 +51702,7 @@ var Graph = function (_Theme) {
         _this.chartsType = chartsType;
         return _this;
     }
+
     /**
      * @function ol.source.Graph.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
@@ -51531,6 +51722,7 @@ var Graph = function (_Theme) {
             this.charts = null;
             this.cache = null;
         }
+
         /**
          * @function ol.source.Graph.prototype.setChartsType
          * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
@@ -51543,6 +51735,7 @@ var Graph = function (_Theme) {
             this.chartsType = chartsType;
             this.redraw();
         }
+
         /**
          * @function ol.source.Graph.prototype.addFeatures
          * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
@@ -51573,6 +51766,7 @@ var Graph = function (_Theme) {
                 this.redrawThematicFeatures(this.map.getView().calculateExtent());
             }
         }
+
         /**
          * @function ol.source.Graph.prototype.redrawThematicFeatures
          * @description 重绘所有专题要素。
@@ -51642,6 +51836,7 @@ var Graph = function (_Theme) {
             thematicFeature.assembleShapes();
             return thematicFeature;
         }
+
         /**
          * @function ol.source.Graph.prototype.drawCharts
          * @description 绘制图表。包含压盖处理。
@@ -51748,6 +51943,7 @@ var Graph = function (_Theme) {
     }, {
         key: 'isQuadrilateralOverLap',
 
+
         /**
          * @function ol.source.Graph.prototype.isQuadrilateralOverLap
          * @description  判断两个四边形是否有压盖。
@@ -51788,6 +51984,7 @@ var Graph = function (_Theme) {
             }
             return OverLap;
         }
+
         /**
          * @function ol.source.Graph.prototype.isPointInPoly
          * @description  判断一个点是否在多边形里面。(射线法)
@@ -51802,6 +51999,7 @@ var Graph = function (_Theme) {
                 (poly[i].y <= pt.y && pt.y < poly[j].y || poly[j].y <= pt.y && pt.y < poly[i].y) && pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x && (isIn = !isIn);
             }return isIn;
         }
+
         /**
          * @function ol.source.Graph.prototype.isChartInMap
          * @description  判断图表是否在地图里。
@@ -51824,6 +52022,7 @@ var Graph = function (_Theme) {
             }
             return isIn;
         }
+
         /**
          * @function ol.source.Graph.prototype.clearCache
          * @description  清除缓存
@@ -51835,6 +52034,7 @@ var Graph = function (_Theme) {
             this.cache = {};
             this.charts = [];
         }
+
         /**
          * @function ol.source.Graph.prototype.removeFeatures
          * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature
@@ -51929,10 +52129,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 _olDebug2.default.supermap = _olDebug2.default.supermap || {};
 /**
  * @class ol.supermap.ThemeFeature
- * @classdesc 主题特征
+ * @classdesc 专题图要素类
  * @private
  * @param geometry - {Object} 要量算的几何对象
- * @param attributes -{Object} 属性
+ * @param attributes - {Object} 属性
  */
 
 var ThemeFeature = function () {
@@ -52014,9 +52214,11 @@ var pointStyle = exports.pointStyle = {
     globalCompositeOperation: "source-over",
     imageSmoothingEnabled: true
 };
+
 /**
  * @constant ol.supermap.lineStyle
  * @description 线属性名的对应表
+ * @private
  */
 var lineStyle = exports.lineStyle = {
     strokeStyle: "rgba(0,0,0,0)",
@@ -52034,9 +52236,11 @@ var lineStyle = exports.lineStyle = {
     globalCompositeOperation: "source-over",
     imageSmoothingEnabled: true
 };
+
 /**
  * @constant ol.supermap.polygonStyle
  * @description 面属性名的对应表
+ * @private
  */
 var polygonStyle = exports.polygonStyle = {
     /*包含LINE的部分*/
@@ -52062,9 +52266,11 @@ var polygonStyle = exports.polygonStyle = {
     globalCompositeOperation: "source-over",
     imageSmoothingEnabled: true
 };
+
 /**
  * @constant ol.supermap.DeafultCanvasStyle
  * @description 默认画布属性名的对应表
+ * @private
  */
 var DeafultCanvasStyle = exports.DeafultCanvasStyle = {
     /*
@@ -52137,9 +52343,11 @@ var pointMap = exports.pointMap = {
     "point-opacity": "globalAlpha",
     "point-comp-op": "globalCompositeOperation"
 };
+
 /**
- * @constant  ol.supermap.lineMap
+ * @constant ol.supermap.lineMap
  * @description 线图
+ * @private
  */
 var lineMap = exports.lineMap = {
     "line-color": "strokeStyle",
@@ -52154,9 +52362,11 @@ var lineMap = exports.lineMap = {
     "line-offset": "offset",
     "line-comp-op": "globalCompositeOperation"
 };
+
 /**
- * @constant  ol.supermap.polygonMap
+ * @constant ol.supermap.polygonMap
  * @description 面图
+ * @private
  */
 var polygonMap = exports.polygonMap = {
     /*包括LINE的部分，用以设置面的外围边界*/
@@ -52178,6 +52388,10 @@ var polygonMap = exports.polygonMap = {
     "polygon-comp-op": "globalCompositeOperation"
 };
 
+/**
+ * @constant ol.supermap.StyleMap
+ * @description 地图样式
+ */
 var StyleMap = exports.StyleMap = {
     /*
      * @constant ol.supermap.StyleMap.prototype.CartoStyleMap
@@ -52218,7 +52432,6 @@ var StyleMap = exports.StyleMap = {
      * @constant ol.supermap.StyleMap.prototype.ServerStyleMap
      * @description 服务端传过来的style属性名与Canvas的style属性名的对应表
      */
-
     ServerStyleMap: {
         fillBackOpaque: {
             canvasStyle: "",
@@ -52395,6 +52608,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 _olDebug2.default.supermap = _olDebug2.default.supermap || {};
+
 /**
  * @class ol.supermap.VectorTileStyles
  * @classdesc 矢量瓦片风格
@@ -52511,7 +52725,7 @@ var VectorTileStyles = function (_ol$Observable) {
             _olDebug2.default.supermap.VectorTileStyles.setSelectedId(e.element.selectedId);
             _olDebug2.default.supermap.VectorTileStyles.setLayerName(e.element.layerName);
         });
-        /**
+        /*
          * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedPointStyle
          * @description 设置默认选择后的点样式
          */
@@ -52525,7 +52739,7 @@ var VectorTileStyles = function (_ol$Observable) {
                 })
             });
         }
-        /**
+        /*
          * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedLineStyle
          * @description 设置默认选择后的线样式
          */
@@ -52537,7 +52751,7 @@ var VectorTileStyles = function (_ol$Observable) {
                 })
             });
         }
-        /**
+        /*
          * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedRegionStyle
          * @description 设置默认选择后的面样式
          */
@@ -52552,7 +52766,7 @@ var VectorTileStyles = function (_ol$Observable) {
                 })
             });
         }
-        /**
+        /*
          * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedTextStyle
          * @description 设置默认选择后的文本样式
          */
@@ -52572,15 +52786,17 @@ var VectorTileStyles = function (_ol$Observable) {
         }
         return _this;
     }
+
     /**
      * @function ol.supermap.VectorTileStyles.setCartoShaders
-     * @param cartoShaders -{Array} Carto阴影
      * @description 设置Carto的阴影
+     * @param cartoShaders -{Array} Carto阴影
      */
 
 
     _createClass(VectorTileStyles, [{
         key: 'getFeatureStyle',
+
 
         /**
          * @function ol.supermap.VectorTileStyles.prototype.getFeatureStyle
@@ -52611,6 +52827,7 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function setCartoShaders(cartoShaders) {
             this.cartoShaders = cartoShaders;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.getCartoShaders
          * @description 获取客户端Carto的阴影
@@ -52624,8 +52841,8 @@ var VectorTileStyles = function (_ol$Observable) {
 
         /**
          * @function ol.supermap.VectorTileStyles.setClientCartoShaders
-         * @param clientCartoShaders -{Array} 客户端Carto阴影
          * @description 设置客户端Carto的阴影
+         * @param clientCartoShaders -{Array} 客户端Carto阴影
          */
 
     }, {
@@ -52647,8 +52864,8 @@ var VectorTileStyles = function (_ol$Observable) {
 
         /**
          * @function ol.supermap.VectorTileStyles.setCartoCss
-         * @param cartoCss -{Object} cartoCss的样式
          * @description 设置cartoCss的样式
+         * @param cartoCss -{Object} cartoCss的样式
          */
 
     }, {
@@ -52670,8 +52887,8 @@ var VectorTileStyles = function (_ol$Observable) {
 
         /**
          * @function ol.supermap.VectorTileStyles.setDonotNeedServerCartoCss
-         * @param donotNeedServerCartoCss -{Object} 是否需要CartoCss服务
          * @description 设置是否需要CartoCss服务
+         * @param donotNeedServerCartoCss - {Object} 是否需要CartoCss服务
          */
 
     }, {
@@ -52693,8 +52910,8 @@ var VectorTileStyles = function (_ol$Observable) {
 
         /**
          * @function ol.supermap.VectorTileStyles.setLayersInfo
-         * @param layersInfo -{Object} 图层信息
          * @description 设置图层信息服务
+         * @param layersInfo -{Object} 图层信息
          */
 
     }, {
@@ -52715,8 +52932,8 @@ var VectorTileStyles = function (_ol$Observable) {
 
         /**
          * @function ol.supermap.VectorTileStyles.setUrl
-         * @param url -{string} 地址
          * @description 设置地址
+         * @param url -{string} 地址
          */
 
     }, {
@@ -52735,10 +52952,11 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function getUrl() {
             return this.url;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.setView
-         * @param view -{Object} 视图
          * @description 设置视图
+         * @param view -{Object} 视图
          */
 
     }, {
@@ -52746,6 +52964,7 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function setView(view) {
             this.view = view;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.getView
          * @description 获取视图
@@ -52756,10 +52975,11 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function getView() {
             return this.view;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedId
-         * @param selectedId -{number} 选择序号
          * @description 设置选择序号
+         * @param selectedId -{number} 选择序号
          */
 
     }, {
@@ -52767,6 +52987,7 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function setSelectedId(selectedId) {
             this.selectedId = selectedId;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.getSelectedId
          * @description 获取选择序号
@@ -52777,10 +52998,11 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function getSelectedId() {
             return this.selectedId;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.setLayerName
-         * @param layerName -{string} 图层名称
          * @description 设置图层名称
+         * @param layerName -{string} 图层名称
          */
 
     }, {
@@ -52788,6 +53010,7 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function setLayerName(layerName) {
             this.layerName = layerName;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.getLayerName
          * @description 获取图层名称
@@ -52798,10 +53021,11 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function getLayerName() {
             return this.layerName;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedPointStyle
-         * @param selectedPointStyle -{Object} 选择后点样式
          * @description 设置选择后点样式
+         * @param selectedPointStyle -{Object} 选择后点样式
          */
 
     }, {
@@ -52809,10 +53033,11 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function setSelectedPointStyle(selectedPointStyle) {
             this.selectedPointStyle = selectedPointStyle;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedLineStyle
-         * @param selectedLineStyle -{Object} 选择后线样式
          * @description 设置选择后线样式
+         * @param selectedLineStyle -{Object} 选择后线样式
          */
 
     }, {
@@ -52820,10 +53045,11 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function setSelectedLineStyle(selectedLineStyle) {
             this.selectedLineStyle = selectedLineStyle;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedRegionStyle
-         * @param selectedRegionStyle -{Object} 选择后面样式
          * @description 设置选择后面样式
+         * @param selectedRegionStyle -{Object} 选择后面样式
          */
 
     }, {
@@ -52831,10 +53057,11 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function setSelectedRegionStyle(selectedRegionStyle) {
             this.selectedRegionStyle = selectedRegionStyle;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.setSelectedRegionStyle
-         * @param selectedTextStyle -{Object} 选择后文本样式
          * @description 设置选择后文本样式
+         * @param selectedTextStyle -{Object} 选择后文本样式
          */
 
     }, {
@@ -52842,10 +53069,11 @@ var VectorTileStyles = function (_ol$Observable) {
         value: function setSelectedTextStyle(selectedTextStyle) {
             this.selectedTextStyle = selectedTextStyle;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.getSelectedStyle
-         * @param type -{string} 选择后的样式
          * @description 设置选择后的样式
+         * @param type -{string} 选择后的样式
          */
 
     }, {
@@ -52864,10 +53092,11 @@ var VectorTileStyles = function (_ol$Observable) {
                 return this.selectedTextStyle;
             }
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.getLayerInfo
-         * @param layerName -{string} 图层名
          * @description 获取图层的信息
+         * @param layerName -{string} 图层名
          */
 
     }, {
@@ -52901,11 +53130,12 @@ var VectorTileStyles = function (_ol$Observable) {
             }
             return layerInfo_simple;
         }
+
         /**
          * @function ol.supermap.VectorTileStyles.getStyle
+         * @description 获取样式
          * @param originalLayerName -{string} 原始图层信息
          * @param feature -{Object} 要素对象
-         * @description 获取样式
          */
 
     }, {
@@ -52946,11 +53176,12 @@ var VectorTileStyles = function (_ol$Observable) {
                 }
                 return styleArray;
             }
-            /**
+
+            /*
              * @function ol.supermap.VectorTileStyles.prototype.mergeTextFeatureStyle
-             * @description 合并文本特征样式
+             * @description 合并文本要素样式
              * @param layerInfo -{string} 图层信息
-             * @param feature -{Object} 获取的特征
+             * @param feature -{Object} 获取的要素
              * @param url -{string} 地址
              */
             function mergeTextFeatureStyle(layerInfo, feature, url) {

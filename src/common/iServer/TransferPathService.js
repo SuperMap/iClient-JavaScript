@@ -4,18 +4,15 @@ import TransferPathParameters from './TransferPathParameters';
 
 /**
  * @class SuperMap.TransferPathService
- * @classdesc
- * 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
- * 返回结果通过该类支持的事件的监听函数参数获取
+ * @classdesc 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
+ *            返回结果通过该类支持的事件的监听函数参数获取
  * @extends SuperMap.CommonServiceBase
  * @example 例如：
- * (start code)
  * var myService = new SuperMap.TransferPathService(url, {eventListeners: {
-     *     "processCompleted": TrafficTransferCompleted,
-     *     "processFailed": TrafficTransferError
-     *     }
-     * };
- * (end)
+ *     "processCompleted": TrafficTransferCompleted,
+ *     "processFailed": TrafficTransferError
+ *     }
+ * };
  * @param url - {string} 与客户端交互的交通换乘线路查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param options - {Object} 可選参数。如:</br>

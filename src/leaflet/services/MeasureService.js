@@ -5,7 +5,7 @@ import * as Util from '../core/Util';
 import SuperMapMeasureService from '../../common/iServer/MeasureService' ;
 /**
  * @class L.supermap.measureService
- * @description 量算服务服务类
+ * @classdesc 量算服务服务类
  * @augments L.supermap.ServiceBase
  * @example
  * 用法：

@@ -12,17 +12,14 @@ import GetFeaturesByBufferParameters from './GetFeaturesByBufferParameters';
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.GetFeaturesServiceBase
  * @example 例如：
- * (start code)
  * var myGetFeaturesByBufferService = new   SuperMap.GetFeaturesByBufferService(url, {
-     *     eventListeners: {
-     *           "processCompleted": GetFeaturesCompleted,
-     *           "processFailed": GetFeaturesError
-     *           }
-     * });
+ *     eventListeners: {
+ *           "processCompleted": GetFeaturesCompleted,
+ *           "processFailed": GetFeaturesError
+ *           }
+ * });
  * function GetFeaturesCompleted(object){//todo};
  * function GetFeaturesError(object){//todo};
- * (end)
- *
  */
 
 export default  class GetFeaturesByBufferService extends GetFeaturesServiceBase {

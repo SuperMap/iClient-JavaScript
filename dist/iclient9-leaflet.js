@@ -1202,7 +1202,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(20);
+__webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -4294,6 +4294,131 @@ _leaflet2["default"].supermap.CommontypesConversion = CommontypesConversion;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.NormalizeScale = exports.GetResolutionFromScaleDpi = exports.getMeterPerMapUnit = exports.scaleToResolution = exports.resolutionToScale = exports.toSuperMapGeometry = exports.toGeoJSON = exports.supermap_callbacks = undefined;
+
+var _leaflet = __webpack_require__(1);
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+var _GeoJSON = __webpack_require__(7);
+
+var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var supermap_callbacks = exports.supermap_callbacks = {};
+_leaflet2["default"].Util.supermap_callbacks = supermap_callbacks;
+var toGeoJSON = exports.toGeoJSON = function toGeoJSON(feature) {
+    if (!feature) {
+        return feature;
+    }
+    return JSON.parse(new _GeoJSON2["default"]().write(feature));
+};
+var toSuperMapGeometry = exports.toSuperMapGeometry = function toSuperMapGeometry(geometry) {
+    if (!geometry) {
+        return geometry;
+    }
+    var result,
+        format = new _GeoJSON2["default"]();
+    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
+        result = format.read(geometry, geometry.type);
+    } else if (typeof geometry.toGeoJSON === "function") {
+        var geojson = geometry.toGeoJSON();
+        result = geojson ? format.read(geojson, geojson.type) : geometry;
+    }
+
+    var serverResult = result;
+    if (_leaflet2["default"].Util.isArray(result)) {
+        if (result.length === 1) {
+            serverResult = result[0];
+        } else if (result.length > 1) {
+            serverResult = [];
+            result.map(function (item) {
+                serverResult.push(item.geometry);
+            });
+        }
+    }
+
+    return serverResult && serverResult.geometry ? serverResult.geometry : serverResult;
+};
+var resolutionToScale = exports.resolutionToScale = function resolutionToScale(resolution, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    // 地球半径。
+    var meterPerMapUnit = getMeterPerMapUnit(mapUnit);
+    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
+    scale = 1 / scale;
+    return scale;
+};
+var scaleToResolution = exports.scaleToResolution = function scaleToResolution(scale, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
+    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
+    resolution = 1 / resolution;
+    return resolution;
+};
+var getMeterPerMapUnit = exports.getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
+    var earchRadiusInMeters = 6378137;
+    var meterPerMapUnit;
+    if (mapUnit === _SuperMap2["default"].Unit.METER) {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === _SuperMap2["default"].Unit.DEGREE) {
+        // 每度表示多少米。
+        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+    } else if (mapUnit === _SuperMap2["default"].Unit.KILOMETER) {
+        meterPerMapUnit = 1.0E-3;
+    } else if (mapUnit === _SuperMap2["default"].Unit.INCH) {
+        meterPerMapUnit = 1 / 2.5399999918E-2;
+    } else if (mapUnit === _SuperMap2["default"].Unit.FOOT) {
+        meterPerMapUnit = 0.3048;
+    } else {
+        return meterPerMapUnit;
+    }
+    return meterPerMapUnit;
+};
+var GetResolutionFromScaleDpi = exports.GetResolutionFromScaleDpi = function GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis) {
+    var resolution = null,
+        ratio = 10000;
+    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
+    datumAxis = datumAxis || 6378137;
+    coordUnit = coordUnit || "";
+    if (scale > 0 && dpi > 0) {
+        scale = _leaflet2["default"].Util.NormalizeScale(scale);
+        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+            //scale = SuperMap.Util.normalizeScale(scale);
+            resolution = 0.0254 * ratio / dpi / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
+            return resolution;
+        } else {
+            resolution = 0.0254 * ratio / dpi / scale / ratio;
+            return resolution;
+        }
+    }
+    return -1;
+};
+var NormalizeScale = exports.NormalizeScale = function NormalizeScale(scale) {
+    return scale > 1.0 ? 1.0 / scale : scale;
+};
+_leaflet2["default"].Util.toGeoJSON = toGeoJSON;
+_leaflet2["default"].Util.toSuperMapGeometry = toSuperMapGeometry;
+_leaflet2["default"].Util.resolutionToScale = resolutionToScale;
+_leaflet2["default"].Util.scaleToResolution = scaleToResolution;
+_leaflet2["default"].Util.getMeterPerMapUnit = getMeterPerMapUnit;
+_leaflet2["default"].Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
+_leaflet2["default"].Util.NormalizeScale = NormalizeScale;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -4440,7 +4565,7 @@ exports["default"] = QueryParameters;
 _SuperMap2["default"].QueryParameters = QueryParameters;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4694,7 +4819,7 @@ exports["default"] = ServerTextStyle;
 _SuperMap2["default"].ServerTextStyle = ServerTextStyle;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4788,7 +4913,7 @@ exports["default"] = TransportationAnalystParameter;
 _SuperMap2["default"].TransportationAnalystParameter = TransportationAnalystParameter;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5020,131 +5145,6 @@ _SuperMap2["default"].SecurityManager = {
 };
 _SuperMap2["default"].SecurityManager.SSO = "https://sso.supermap.com";
 _SuperMap2["default"].SecurityManager.ONLINE = "http://www.supermapol.com";
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.NormalizeScale = exports.GetResolutionFromScaleDpi = exports.getMeterPerMapUnit = exports.scaleToResolution = exports.resolutionToScale = exports.toSuperMapGeometry = exports.toGeoJSON = exports.supermap_callbacks = undefined;
-
-var _leaflet = __webpack_require__(1);
-
-var _leaflet2 = _interopRequireDefault(_leaflet);
-
-var _GeoJSON = __webpack_require__(7);
-
-var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var supermap_callbacks = exports.supermap_callbacks = {};
-_leaflet2["default"].Util.supermap_callbacks = supermap_callbacks;
-var toGeoJSON = exports.toGeoJSON = function toGeoJSON(feature) {
-    if (!feature) {
-        return feature;
-    }
-    return JSON.parse(new _GeoJSON2["default"]().write(feature));
-};
-var toSuperMapGeometry = exports.toSuperMapGeometry = function toSuperMapGeometry(geometry) {
-    if (!geometry) {
-        return geometry;
-    }
-    var result,
-        format = new _GeoJSON2["default"]();
-    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
-        result = format.read(geometry, geometry.type);
-    } else if (typeof geometry.toGeoJSON === "function") {
-        var geojson = geometry.toGeoJSON();
-        result = geojson ? format.read(geojson, geojson.type) : geometry;
-    }
-
-    var serverResult = result;
-    if (_leaflet2["default"].Util.isArray(result)) {
-        if (result.length === 1) {
-            serverResult = result[0];
-        } else if (result.length > 1) {
-            serverResult = [];
-            result.map(function (item) {
-                serverResult.push(item.geometry);
-            });
-        }
-    }
-
-    return serverResult && serverResult.geometry ? serverResult.geometry : serverResult;
-};
-var resolutionToScale = exports.resolutionToScale = function resolutionToScale(resolution, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    // 地球半径。
-    var meterPerMapUnit = getMeterPerMapUnit(mapUnit);
-    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
-    scale = 1 / scale;
-    return scale;
-};
-var scaleToResolution = exports.scaleToResolution = function scaleToResolution(scale, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
-    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
-    resolution = 1 / resolution;
-    return resolution;
-};
-var getMeterPerMapUnit = exports.getMeterPerMapUnit = function getMeterPerMapUnit(mapUnit) {
-    var earchRadiusInMeters = 6378137;
-    var meterPerMapUnit;
-    if (mapUnit === _SuperMap2["default"].Unit.METER) {
-        meterPerMapUnit = 1;
-    } else if (mapUnit === _SuperMap2["default"].Unit.DEGREE) {
-        // 每度表示多少米。
-        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-    } else if (mapUnit === _SuperMap2["default"].Unit.KILOMETER) {
-        meterPerMapUnit = 1.0E-3;
-    } else if (mapUnit === _SuperMap2["default"].Unit.INCH) {
-        meterPerMapUnit = 1 / 2.5399999918E-2;
-    } else if (mapUnit === _SuperMap2["default"].Unit.FOOT) {
-        meterPerMapUnit = 0.3048;
-    } else {
-        return meterPerMapUnit;
-    }
-    return meterPerMapUnit;
-};
-var GetResolutionFromScaleDpi = exports.GetResolutionFromScaleDpi = function GetResolutionFromScaleDpi(scale, dpi, coordUnit, datumAxis) {
-    var resolution = null,
-        ratio = 10000;
-    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
-    datumAxis = datumAxis || 6378137;
-    coordUnit = coordUnit || "";
-    if (scale > 0 && dpi > 0) {
-        scale = _leaflet2["default"].Util.NormalizeScale(scale);
-        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
-            //scale = SuperMap.Util.normalizeScale(scale);
-            resolution = 0.0254 * ratio / dpi / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
-            return resolution;
-        } else {
-            resolution = 0.0254 * ratio / dpi / scale / ratio;
-            return resolution;
-        }
-    }
-    return -1;
-};
-var NormalizeScale = exports.NormalizeScale = function NormalizeScale(scale) {
-    return scale > 1.0 ? 1.0 / scale : scale;
-};
-_leaflet2["default"].Util.toGeoJSON = toGeoJSON;
-_leaflet2["default"].Util.toSuperMapGeometry = toSuperMapGeometry;
-_leaflet2["default"].Util.resolutionToScale = resolutionToScale;
-_leaflet2["default"].Util.scaleToResolution = scaleToResolution;
-_leaflet2["default"].Util.getMeterPerMapUnit = getMeterPerMapUnit;
-_leaflet2["default"].Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
-_leaflet2["default"].Util.NormalizeScale = NormalizeScale;
 
 /***/ }),
 /* 22 */
@@ -6172,7 +6172,7 @@ var _CommonServiceBase2 = __webpack_require__(3);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _QueryParameters = __webpack_require__(17);
+var _QueryParameters = __webpack_require__(18);
 
 var _QueryParameters2 = _interopRequireDefault(_QueryParameters);
 
@@ -6713,7 +6713,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(2);
 
-__webpack_require__(20);
+__webpack_require__(21);
 
 var _FetchRequest = __webpack_require__(14);
 
@@ -7943,7 +7943,7 @@ exports.tiledMapLayer = exports.TiledMapLayer = undefined;
 
 __webpack_require__(4);
 
-__webpack_require__(20);
+__webpack_require__(21);
 
 var _leaflet = __webpack_require__(1);
 
@@ -7951,7 +7951,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _REST = __webpack_require__(2);
 
-var _Util = __webpack_require__(21);
+var _Util = __webpack_require__(17);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -15234,7 +15234,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(20);
+__webpack_require__(21);
 
 var _OnlineQueryDatasParameter = __webpack_require__(313);
 
@@ -18530,7 +18530,7 @@ exports.tiledVectorLayer = exports.TileVectorLayer = undefined;
 
 __webpack_require__(4);
 
-__webpack_require__(20);
+__webpack_require__(21);
 
 var _leaflet = __webpack_require__(1);
 
@@ -19348,7 +19348,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _ServiceBase = __webpack_require__(6);
 
-var _Util = __webpack_require__(21);
+var _Util = __webpack_require__(17);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -20015,7 +20015,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _ServiceBase = __webpack_require__(6);
 
-var _Util = __webpack_require__(21);
+var _Util = __webpack_require__(17);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -21203,7 +21203,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _ServiceBase = __webpack_require__(6);
 
-var _Util = __webpack_require__(21);
+var _Util = __webpack_require__(17);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -21404,7 +21404,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _ServiceBase = __webpack_require__(6);
 
-var _Util = __webpack_require__(21);
+var _Util = __webpack_require__(17);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -27234,7 +27234,7 @@ var _CommonServiceBase2 = __webpack_require__(3);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _QueryParameters = __webpack_require__(17);
+var _QueryParameters = __webpack_require__(18);
 
 var _QueryParameters2 = _interopRequireDefault(_QueryParameters);
 
@@ -27742,7 +27742,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(19);
+var _TransportationAnalystParameter = __webpack_require__(20);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -31363,7 +31363,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(19);
+var _TransportationAnalystParameter = __webpack_require__(20);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -31990,7 +31990,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(19);
+var _TransportationAnalystParameter = __webpack_require__(20);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -32300,7 +32300,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(19);
+var _TransportationAnalystParameter = __webpack_require__(20);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -32601,7 +32601,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(19);
+var _TransportationAnalystParameter = __webpack_require__(20);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -32921,7 +32921,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(19);
+var _TransportationAnalystParameter = __webpack_require__(20);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -38256,7 +38256,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(18);
+var _ServerTextStyle = __webpack_require__(19);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -40770,7 +40770,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(17);
+var _QueryParameters2 = __webpack_require__(18);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -40986,7 +40986,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(17);
+var _QueryParameters2 = __webpack_require__(18);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -41185,7 +41185,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(17);
+var _QueryParameters2 = __webpack_require__(18);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -41420,7 +41420,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(17);
+var _QueryParameters2 = __webpack_require__(18);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -45467,7 +45467,7 @@ var _ServerColor = __webpack_require__(12);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
-var _ServerTextStyle = __webpack_require__(18);
+var _ServerTextStyle = __webpack_require__(19);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -45811,7 +45811,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(18);
+var _ServerTextStyle = __webpack_require__(19);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -46779,7 +46779,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(18);
+var _ServerTextStyle = __webpack_require__(19);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -46914,7 +46914,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(18);
+var _ServerTextStyle = __webpack_require__(19);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -47068,7 +47068,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(18);
+var _ServerTextStyle = __webpack_require__(19);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -50552,7 +50552,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(20);
+__webpack_require__(21);
 
 var _REST = __webpack_require__(2);
 
@@ -55523,12 +55523,14 @@ var _proj = __webpack_require__(352);
 
 var _proj2 = _interopRequireDefault(_proj);
 
+var _Util = __webpack_require__(17);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-/**
- * Inspired by https://github.com/kartena/Proj4Leaflet
- */
-window.Proj4js = _proj2["default"];
+window.Proj4js = _proj2["default"]; /**
+                                  * Inspired by https://github.com/kartena/Proj4Leaflet
+                                  */
+
 _leaflet2["default"].Proj = {};
 
 _leaflet2["default"].Proj._isProj4Obj = function (a) {
@@ -55593,6 +55595,9 @@ _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
         }
 
         return (0, _proj2["default"])(code);
+    },
+    getUnits: function getUnits() {
+        return this._proj.oProj.units;
     }
 });
 
@@ -55751,11 +55756,28 @@ var CRS = exports.CRS = _leaflet2["default"].Class.extend({
             return proj4Scales;
         }
         for (var i = 0; i < scales.length; i++) {
-            proj4Scales[i] = 96 * scales[i] / 0.0254;
+            var a = this.projection ? this._getMeterPerMapUnit(this.projection.getUnits()) : 1;
+            proj4Scales[i] = 1 / (0.0254 / (96 * scales[i]) / a);
         }
         return proj4Scales;
     },
-
+    _getMeterPerMapUnit: function _getMeterPerMapUnit(mapUnit) {
+        var earchRadiusInMeters = 6378137;
+        var meterPerMapUnit = 1;
+        if (mapUnit === "meter") {
+            meterPerMapUnit = 1;
+        } else if (mapUnit === "degrees") {
+            // 每度表示多少米。
+            meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+        } else if (mapUnit === "kilometer") {
+            meterPerMapUnit = 1.0E-3;
+        } else if (mapUnit === "inch") {
+            meterPerMapUnit = 1 / 2.5399999918E-2;
+        } else if (mapUnit === "feet") {
+            meterPerMapUnit = 0.3048;
+        }
+        return meterPerMapUnit;
+    },
     _getDefaultProj4ScalesByBounds: function _getDefaultProj4ScalesByBounds(bounds) {
         if (!bounds) {
             return [];
@@ -57985,7 +58007,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _Util = __webpack_require__(21);
+var _Util = __webpack_require__(17);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -62319,7 +62341,108 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 /* 382 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\work\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {
+	"_from": "proj4@2.3.15",
+	"_id": "proj4@2.3.15",
+	"_inBundle": false,
+	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
+	"_location": "/proj4",
+	"_phantomChildren": {},
+	"_requested": {
+		"type": "version",
+		"registry": true,
+		"raw": "proj4@2.3.15",
+		"name": "proj4",
+		"escapedName": "proj4",
+		"rawSpec": "2.3.15",
+		"saveSpec": null,
+		"fetchSpec": "2.3.15"
+	},
+	"_requiredBy": [
+		"/"
+	],
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
+	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
+	"_spec": "proj4@2.3.15",
+	"_where": "G:\\github-iClient\\iClient9",
+	"author": "",
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
+	},
+	"bundleDependencies": false,
+	"contributors": [
+		{
+			"name": "Mike Adair",
+			"email": "madair@dmsolutions.ca"
+		},
+		{
+			"name": "Richard Greenwood",
+			"email": "rich@greenwoodmap.com"
+		},
+		{
+			"name": "Calvin Metcalf",
+			"email": "calvin.metcalf@gmail.com"
+		},
+		{
+			"name": "Richard Marsden",
+			"url": "http://www.winwaed.com"
+		},
+		{
+			"name": "T. Mittan"
+		},
+		{
+			"name": "D. Steinwand"
+		},
+		{
+			"name": "S. Nelson"
+		}
+	],
+	"dependencies": {
+		"mgrs": "~0.0.2"
+	},
+	"deprecated": false,
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"devDependencies": {
+		"browserify": "~12.0.1",
+		"chai": "~1.8.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"grunt": "~0.4.2",
+		"grunt-browserify": "~4.0.1",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~0.8.0",
+		"grunt-contrib-uglify": "~0.11.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"istanbul": "~0.2.4",
+		"mocha": "~1.17.1",
+		"tin": "~0.4.0"
+	},
+	"directories": {
+		"test": "test",
+		"doc": "docs"
+	},
+	"homepage": "https://github.com/proj4js/proj4js#readme",
+	"jam": {
+		"main": "dist/proj4.js",
+		"include": [
+			"dist/proj4.js",
+			"README.md",
+			"AUTHORS",
+			"LICENSE.md"
+		]
+	},
+	"license": "MIT",
+	"main": "lib/index.js",
+	"name": "proj4",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
+	},
+	"scripts": {
+		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
+	},
+	"version": "2.3.15"
+};
 
 /***/ }),
 /* 383 */

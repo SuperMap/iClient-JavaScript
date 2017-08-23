@@ -2,12 +2,12 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import ServiceBase from './ServiceBase';
 import DataFlow from '../../common/iServer/DataFlowService';
+
 /**
  * @class ol.supermap.DataFlowService
  * @classdesc 实时数据服务
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.DataFlowService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
@@ -41,6 +41,7 @@ export default class DataFlowService extends ServiceBase {
             scope: this
         });
     }
+
     /**
      * @function ol.supermap.DataFlowService.prototype.initBroadcast
      * @description 初始化广播

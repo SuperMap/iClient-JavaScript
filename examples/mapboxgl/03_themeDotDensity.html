@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>点密度专题图</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript"  src="../../dist/mbgl-include.js"></script>
+<span id="show"></span>
+
+
+<script type="text/javascript">
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+    var dataUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": ['http://support.supermap.com.cn:8090/iserver/services/maps/rest/maps/World/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [0, 0],
+        zoom: 2
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    function createTheme() {
+        var themeDotDensity = new SuperMap.ThemeDotDensity({
+            dotExpression: "Pop_1994",
+            value: 5000000,
+            style: new SuperMap.ServerStyle({
+                markerSize: 3,
+                markerSymbolID: 12
+            })
+        });
+       var themeParameters = new SuperMap.ThemeParameters({
+            themes: [themeDotDensity],
+            datasetNames: ["Countries"],
+            dataSourceNames: ["World"]
+        });
+
+        var themeService = new SuperMap.ThemeService(dataUrl, {
+            serverType: SuperMap.ServerType.ISERVER,
+            eventListeners: {
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        themeService.processAsync(themeParameters);
+    }
+
+    map.on('load', function () {
+
+        createTheme();
+    });
+
+
+    function callback(serviceResult) {
+
+        var result = serviceResult.result;
+        var innerHTML= "地图地址：</br>" + JSON.stringify(result.newResourceLocation) + "<br>";
+        new mapboxgl.Popup({closeOnClick: false})
+            .setLngLat([-96, 37.8])
+            .setHTML(innerHTML+"</br>")
+            .addTo(map);
+    }
+
+
+</script>
+
+</body>
+</html>

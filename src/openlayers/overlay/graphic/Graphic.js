@@ -1,7 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.Graphic
- * @classdesc 地理几何信息
+ * @classdesc 地理几何对象类
  * @private
  * @param geometry - {Object} 几何对象
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}
@@ -15,8 +15,9 @@ export default class Graphic extends ol.Object {
         }
         this.setStyle();
     }
+
     /**
-     * @function  ol.Graphic.prototype.clone
+     * @function ol.Graphic.prototype.clone
      * @description 复制当前信息
      */
     clone() {
@@ -26,46 +27,51 @@ export default class Graphic extends ol.Object {
         clone.setStyle(this.style_);
         return clone;
     }
+
     /**
-     * @function   ol.Graphic.prototype.getId
+     * @function ol.Graphic.prototype.getId
      * @description 获取当前ID
      */
     getId() {
         return this.id_;
     }
+
     /**
-     * @function   ol.Graphic.prototype.setId
+     * @function ol.Graphic.prototype.setId
      * @description 设置当前ID
      */
     setId(id) {
         this.id_ = id;
     }
+
     /**
-     * @function   ol.Graphic.prototype.setId
+     * @function ol.Graphic.prototype.getGeometry
      * @description 获取当前几何信息
      */
     getGeometry() {
         return this.geometry_;
     }
+
     /**
-     * @function   ol.Graphic.prototype.setId
+     * @function ol.Graphic.prototype.setGeometry
+     * @description 设置当前几何信息
      * @param geometry -{Object} 几何参数
-     * @description  设置当前几何信息
      */
     setGeometry(geometry) {
         this.geometry_ = geometry;
     }
     /**
-     * @function   ol.Graphic.prototype.getStyle
-     * @description  获取样式
+     * @function ol.Graphic.prototype.getStyle
+     * @description 获取样式
      */
     getStyle() {
         return this.style_;
     }
+
     /**
-     * @function   ol.Graphic.prototype.getStyle
-     * @param style -{Object} 样式参数
-     * @description  设置样式
+     * @function ol.Graphic.prototype.setStyle
+     * @description 设置样式
+     * @param style - {Object} 样式参数
      */
     setStyle(style) {
         this.style_ = style;
@@ -73,17 +79,19 @@ export default class Graphic extends ol.Object {
             undefined : ol.Graphic.createStyleFunction(style);
         this.changed();
     }
+
     /**
-     * @function   ol.Graphic.prototype.getStyleFunction
-     * @description  获取样式函数
+     * @function ol.Graphic.prototype.getStyleFunction
+     * @description 获取样式函数
      */
     getStyleFunction() {
         return this.styleFunction_;
     }
+
     /**
-     * @function   ol.Graphic.createStyleFunction
-     * @param obj -{Object} 对象参数
+     * @function ol.Graphic.createStyleFunction
      * @description  新建样式函数
+     * @param obj - {Object} 对象参数
      */
     static createStyleFunction(obj) {
         var styleFunction;
@@ -108,6 +116,7 @@ export default class Graphic extends ol.Object {
         }
         return styleFunction;
     }
+
     /**
      * @function ol.Graphic.prototype.destroy
      * @description  清除参数值

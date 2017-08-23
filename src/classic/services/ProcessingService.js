@@ -9,7 +9,7 @@ import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
 
 /**
  * @class SuperMap.REST.ProcessingService
- * @description 分布式空间分析相关服务类。
+ * @classdesc 分布式空间分析相关服务类。
  * @augments SuperMap.CommonServiceBase
  * @example
  * 用法：

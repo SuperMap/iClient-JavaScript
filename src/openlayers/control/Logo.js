@@ -3,21 +3,20 @@ import logoSrc from '../../common/control/img/iClient.png'
 
 ol.supermap = ol.supermap || {};
 ol.supermap.control = ol.supermap.control || {};
+
 /**
  * @class ol.supermap.control.Logo
  * @classdesc Logo控件。默认不显示，需手动添加控件。
  * @extends ol.control.Control{@linkdoc-openlayers/ol.control.Control}
  * @example
- * (start code)
  *      var control = new ol.supermap.control.Logo();
  *      map.addControl(control);
- * (end)
- * @param options -{Object} logo控件配置项</br>
- *        imageUrl - {string} logo图片地址</br>
- *        width - {string} logo图片宽</br>
- *        height - {string} logo图片高</br>
- *        link - {string} 跳转链接</br>
- *        alt - {string} logo图片失效时显示文本
+ * @param options - {Object} logo控件配置项。配置项有如下:</br>
+ *        imageUrl - {string} logo图片地址。</br>
+ *        width - {number} logo图片宽。</br>
+ *        height - {number} logo图片高。</br>
+ *        link - {string} 跳转链接。</br>
+ *        alt - {string} logo图片失效时显示文本。
  */
 export default class Logo extends ol.control.Control {
 

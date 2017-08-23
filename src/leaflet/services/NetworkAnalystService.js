@@ -15,10 +15,9 @@ import UpdateTurnNodeWeightService from  '../../common/iServer/UpdateTurnNodeWei
 
 /**
  * @class L.supermap.networkAnalystService
- * @description 网络分析服务类
+ * @classdesc 网络分析服务类
  * @augments  L.supermap.ServiceBase
  * @example
- * 用法：
  *      L.supermap.networkAnalystService(url)
  *      .findPath(params,function(result){
  *           //doSomething

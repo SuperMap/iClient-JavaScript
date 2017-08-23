@@ -19,16 +19,15 @@ import UpdateTurnNodeWeightService from'../../common/iServer/UpdateTurnNodeWeigh
  * @classdesc 网络分析服务类
  * @extends ol.supermap.ServiceBase
  * @example
- * 用法：
  *      new ol.supermap.NetworkAnalystService(url)
  *      .findPath(params,function(result){
  *           //doSomething
  *      })
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
- *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param options - {Object} 服务所需可选参数。如：<br>
- *         serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
+ *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
  */
 export default class NetworkAnalystService extends ServiceBase {
 

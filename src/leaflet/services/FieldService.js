@@ -6,10 +6,10 @@ import FieldStatisticService from '../../common/iServer/FieldStatisticService';
  * @class  L.supermap.fieldService
  * @classdesc 字段服务类
  * @extends L.supermap.ServiceBase
- * @example 用法：
- * L.supermap.fieldService(url).getFields(function(result){
-      //doSomething
- * });
+ * @example
+ *   L.supermap.fieldService(url).getFields(function(result){
+ *     //doSomething
+ *   });
  * @param url - {string} 字段服务地址
  * @param options - {Object} 字段服务类可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online。<br>

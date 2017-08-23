@@ -9,7 +9,6 @@ import CommontypesConversion from '../core/CommontypesConversion';
  * @classdesc 海图服务。
  * @extends L.supermap.ServiceBase
  * @example
- * 用法：
  *      L.supermap.chartService(url)
  *      .queryChart(param,function(result){
  *          //doSomething

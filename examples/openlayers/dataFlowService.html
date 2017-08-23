@@ -65,7 +65,7 @@
     var map, resultLayer,
             urlMap = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China",
             urlQuery = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
-            urlDataFlow = "ws://117.122.248.69:8091/iserver/services/dataflow/dataflow";
+            urlDataFlow = "ws://117.122.248.69:8800/iserver/services/dataflow/dataflow";
     var timer, featureResult, dataFlowService, source;
     new ol.supermap.MapService(urlQuery).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;

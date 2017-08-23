@@ -6,6 +6,7 @@ import QueryByBoundsService from '../../common/iServer/QueryByBoundsService';
 import QueryByDistanceService from '../../common/iServer/QueryByDistanceService';
 import QueryBySQLService from '../../common/iServer/QueryBySQLService';
 import QueryByGeometryService from '../../common/iServer/QueryByGeometryService';
+
 /**
  * @class ol.supermap.QueryService
  * @classdesc 地图查询服务类。
@@ -14,8 +15,7 @@ import QueryByGeometryService from '../../common/iServer/QueryByGeometryService'
  * @param url - {string} 地图查询服务访问地址。
  * @param options - {Object} 服务交互时所需的可选参数。
  * @example
- * 用法：
- * new ol.supermap.QueryService(url)
+ *    new ol.supermap.QueryService(url)
  *      .queryByBounds(param,function(result){
  *          //doSomething
  *      })
@@ -30,7 +30,7 @@ export default class QueryService extends ServiceBase {
      * @function ol.supermap.QueryService.prototype.queryByBounds
      * @description bounds查询地图服务
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
-     * @param callback -{function} 回调函数
+     * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      * @return ol.supermap.QueryService}
      */
@@ -55,7 +55,7 @@ export default class QueryService extends ServiceBase {
      * @description 地图距离查询服务
      * @param params - {QueryByDistanceParameters} Distance查询相关参数类
      * @param callback - {function} 回调函数
-     * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+     * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      * @return {ol.supermap.QueryService}
      */
     queryByDistance(params, callback, resultFormat) {
@@ -78,8 +78,8 @@ export default class QueryService extends ServiceBase {
      * @function ol.supermap.QueryService.prototype.queryBySQL
      * @description 地图SQL查询服务
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
-     * @param callback -{function} 回调函数
-     * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+     * @param callback - {function} 回调函数
+     * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      * @return {ol.supermap.QueryService}
      */
     queryBySQL(params, callback, resultFormat) {

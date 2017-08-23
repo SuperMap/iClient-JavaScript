@@ -12,7 +12,7 @@ import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class L.supermap.featureService
  * @classdesc 要素数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
- * @example 用法：
+ * @example
  *      L.supermap.featureService(url)
  *      .getFeaturesByIDs(param,function(result){
  *          //doSomething

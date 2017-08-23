@@ -2,10 +2,17 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import '../../common/security/SecurityManager';
 import Util from  '../core/Util';
+
 /**
  * @class ol.source.TileSuperMapRest
- * @classdesc 地图REST瓦片服务
- * @param options - {olx.source.TileImageOptions} 参数
+ * @classdesc 对接iServer地图TileImage服务
+ * @param options - {Object} 可选参数。如：<br>
+ *        url - {string} 服务地址。<br>
+ *        attributions - {string} 版权描述信息。<br>
+ *        cacheSize - {number} 缓冲大小。<br>
+ *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
+ *        maxZoom - {Object} 最大缩放级别。<br>
+ *        opaque - {boolean} 是否透明。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 export default class TileSuperMapRest extends ol.source.TileImage {
@@ -203,10 +210,11 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         }
 
     }
+
     /**
      * @function  ol.source.TileSuperMapRest.prototype.setTileSetsInfo
      * @description 设置瓦片集信息
-     * @param tileSets -{Object} 瓦片集合
+     * @param tileSets - {Object} 瓦片集合
      */
     setTileSetsInfo(tileSets) {
         this.tileSets = tileSets;
@@ -228,6 +236,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         this.tempIndex = this.tileSetsIndex - 1;
         this.changeTilesVersion();
     }
+
     /**
      * @function  ol.source.TileSuperMapRest.prototype.nextTilesVersion
      * @description 请求下一个版本切片，并重新绘制。
@@ -236,6 +245,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         this.tempIndex = this.tileSetsIndex + 1;
         this.changeTilesVersion();
     }
+
     /**
      * @function  ol.source.TileSuperMapRest.prototype.changeTilesVersion
      * @description 切换到某一版本的切片，并重绘。通过this.tempIndex保存需要切换的版本索引。
@@ -265,16 +275,17 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
     /**
      * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
-     * @param index - {Object} 可选参数
-     * @description 手动设置当前切片集索引，目前主要提供给控件使用。
+     * @description 更新当前切片集索引，目前主要提供给控件使用。
+     * @param index - {number} 索引号
      */
     updateCurrentTileSetsIndex(index) {
         this.tempIndex = index;
     }
+
     /**
      * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
-     * @param version - {Object} 版本信息
      * @description 更改URL请求参数中的切片版本号,并重绘。
+     * @param version - {Object} 版本信息
      * @return {boolean}
      */
     mergeTileVersionParam(version) {
@@ -289,9 +300,9 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
     /**
      * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
+     * @description 从 MapJSON 中获取参数对象
      * @param url - {string} 地址
      * @param mapJSONObj -{Object} 地图JSON对象
-     * @description 更改URL请求参数中的切片版本号,并重绘。
      */
     static optionsFromMapJSON(url, mapJSONObj) {
         var options = {};
@@ -335,6 +346,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         });
         return options;
     }
+
     /**
      * @function  ol.source.TileSuperMapRest.createTileGrid
      * @description 创建切片网格
@@ -343,7 +355,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
      * @param minZoom - {number} 最小的放大级别
      * @param tileSize - {number} 瓦片的尺寸
      * @param origin - {number} 原点
-*/
+     * */
     static createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
         var tilegrid = ol.tilegrid.createXYZ({
             extent: extent,

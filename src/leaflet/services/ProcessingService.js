@@ -12,7 +12,6 @@ import CommontypesConversion from '../core/CommontypesConversion';
  * @classdesc 分布式空间分析相关服务类
  * @extends  L.supermap.ServiceBase
  * @example
- * 用法：
  *      L.supermap.processingService(url)
  *      .getKernelDensityJobs(function(result){
  *           //doSomething

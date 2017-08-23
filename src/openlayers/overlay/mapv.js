@@ -1,10 +1,11 @@
 import ol from 'openlayers/dist/ol-debug';
 import MapvLayer from './mapv/MapvLayer';
 import Util from '../core/Util';
+
 /**
  * @class ol.source.Mapv
  * @classdesc MapV服务
- * @param opt_options -{olx.source.ImageCanvasOptions} 参数
+ * @param opt_options -{Object} 参数
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 export default class Mapv extends ol.source.ImageCanvas {

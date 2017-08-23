@@ -3,6 +3,7 @@
  */
 import L from "leaflet";
 import proj4 from "proj4";
+import {getMeterPerMapUnit} from "./Util";
 window.Proj4js = proj4;
 L.Proj = {};
 
@@ -69,6 +70,9 @@ L.Proj.Projection = L.Class.extend({
         }
 
         return proj4(code);
+    },
+    getUnits: function () {
+        return this._proj.oProj.units;
     }
 });
 
@@ -232,11 +236,28 @@ export var CRS = L.Class.extend({
             return proj4Scales;
         }
         for (var i = 0; i < scales.length; i++) {
-            proj4Scales[i] = (96 * scales[i]) / 0.0254;
+            var a = this.projection ? this._getMeterPerMapUnit(this.projection.getUnits()) : 1;
+            proj4Scales[i] = 1 / ( 0.0254 / (96 * scales[i]) / a);
         }
         return proj4Scales;
     },
-
+    _getMeterPerMapUnit: function (mapUnit) {
+        var earchRadiusInMeters = 6378137;
+        var meterPerMapUnit = 1;
+        if (mapUnit === "meter") {
+            meterPerMapUnit = 1;
+        } else if (mapUnit === "degrees") {
+            // 每度表示多少米。
+            meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+        } else if (mapUnit === "kilometer") {
+            meterPerMapUnit = 1.0E-3;
+        } else if (mapUnit === "inch") {
+            meterPerMapUnit = 1 / 2.5399999918E-2;
+        } else if (mapUnit === "feet") {
+            meterPerMapUnit = 0.3048;
+        }
+        return meterPerMapUnit;
+    },
     _getDefaultProj4ScalesByBounds: function (bounds) {
         if (!bounds) {
             return [];

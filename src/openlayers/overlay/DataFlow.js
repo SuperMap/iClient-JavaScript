@@ -3,7 +3,7 @@ import DataFlowService  from "../services/DataFlowService";
 /**
  * @class ol.source.DataFlow
  * @classdesc 数据流
- * @param opt_options -{olx.source.VectorOptions} 参数
+ * @param opt_options -{Object} 参数
  * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
  */
 export default class DataFlow extends ol.source.Vector {
@@ -48,6 +48,7 @@ export default class DataFlow extends ol.source.Vector {
         this.prjCoordSys = prjCoordSys;
         return this;
     }
+
     /**
      * @function ol.source.DataFlow.prototype.setExcludeField
      * @description 设置唯一字段
@@ -58,6 +59,7 @@ export default class DataFlow extends ol.source.Vector {
         this.excludeField = excludeField;
         return this;
     }
+
     /**
      * @function ol.source.DataFlow.prototype.setGeometry
      * @description 设置几何图形

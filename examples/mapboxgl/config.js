@@ -16,6 +16,12 @@ var exampleConfig = {
                         name: "3857底图",
                         thumbnail: "mb_TileLayer.png",
                         fileName: "01_tiledMapLayer"
+                    },
+                    {
+                        name: "地图信息",
+                        thumbnail: "mb_mapService.png",
+                        fileName: "01_mapService"
+
                     }
                 ]
             },
@@ -26,8 +32,14 @@ var exampleConfig = {
                     thumbnail: "mb_getFeatureByIDs.png",
                     fileName: "02_getFeatureByIDs"
                 }
-                ]
-
+                ]},
+            "theme": {
+                name: "专题图",
+                content: [{
+                    name: "点密度专题图",
+                    thumbnail: "mb_themeDotDensity.png",
+                    fileName: "03_themeDotDensity"
+                }]
             },
             "spatialAnalyst": {
                 name: "空间分析",

@@ -5,12 +5,12 @@ import GetGridCellInfosService from '../../common/iServer/GetGridCellInfosServic
  * @class ol.supermap.GridCellInfosService
  * @classdesc 数据栅格查询服务
  * @extends ol.supermap.ServiceBase
- * @example 用法：
+ * @example
  *      new ol.superMap.GridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- *@param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param options - {Object} 服务所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
@@ -23,8 +23,8 @@ export default class GridCellInfosService extends ServiceBase {
 
     /**
      * @function ol.supermap.GridCellInfosService.prototype.getGridCellInfos
-     * @param params -{SuperMap.GetGridCellInfosParameters} 查询所需参数类
-     * @param callback -{function} 回调函数
+     * @param params - {SuperMap.GetGridCellInfosParameters} 查询所需参数类
+     * @param callback - {function} 回调函数
      */
     getGridCellInfos(params, callback) {
         if (!params) {

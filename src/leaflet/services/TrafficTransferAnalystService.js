@@ -8,7 +8,7 @@ import TransferSolutionService from '../../common/iServer/TransferSolutionServic
  * @class L.supermap.trafficTransferAnalystService
  * @classdesc 交通换乘分析服务类
  * @example
- * L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
+ *   L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
  *      //doSomething
  *    })
  * @extends L.supermap.ServiceBase
