@@ -180,10 +180,10 @@ var exampleConfig = {
         name: "GTC",
         content: {
             "GTC2017": {
-                name: "GTC2017",
+                name: "2017",
                 content: [
                     {
-                        name: "",
+                        name: "GTC2017",
                         thumbnail: "gtc2017.png",
                         fileName: "GTC2017"
                     }
