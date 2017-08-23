@@ -19,9 +19,9 @@
         var css = '<link rel="stylesheet" href="' + url + '">';
         document.writeln(css);
     }
-    Array.prototype.contains = function ( needle ) {
-        for (i in this) {
-            if (this[i] == needle){
+    function inArray(arr,item){
+        for (i in arr) {
+            if (arr[i] == item){
                 return true;
             }
         }
@@ -31,21 +31,21 @@
     function load() {
         var includes=(targetScript.getAttribute('include')||"").split(",");
         var excludes=(targetScript.getAttribute('exclude')||"").split(",");
-        if(!excludes.contains('mapbox-gl')) {
+        if(!inArray(excludes,'mapbox-gl')) {
             inputCSS("https://cdn.bootcss.com/mapbox-gl/0.39.1/mapbox-gl.css");
             inputScript("https://cdn.bootcss.com/mapbox-gl/0.39.1/mapbox-gl.js");
         }
-        if(includes.contains('mapv')){
+        if(inArray(includes,'mapv')){
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
-        if(!excludes.contains('iclient9-mapboxgl')) {
+        if(!inArray(excludes,'iclient9-mapboxgl')) {
             inputScript("../../dist/iclient9-mapboxgl.min.js");
         }
-        if(includes.contains('echarts')){
+        if(inArray(includes,'echarts')){
             inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
             inputScript("http://iclient.supermapol.com/libs/echartsLayer/EchartsLayer.js");
         }
-        if(includes.contains('proj4')){
+        if(inArray(includes,'proj4')){
             inputScript("https://cdn.bootcss.com/proj4js/2.4.3/proj4.js");
         }
     }
