@@ -862,12 +862,6 @@ deps = {
                 "modules": [{
                     "name": "mapboxgl.supermap.MapvLayer",
                     "des": "百度MapV可视化效果"
-                }, {
-                    "name": "mapboxgl.supermap.MapvDataSet",
-                    "des": "mapboxgl的mapv图层数据集"
-                }, {
-                    "name": "mapboxgl.supermap.map",
-                    "des": "mapboxgl的Map对象扩展"
                 }]
             },
             "ThemeLayer": {
@@ -876,7 +870,7 @@ deps = {
                     "./src/mapboxgl/overlay/RankTheme3DLayer.js"
                 ],
                 "modules": [{
-                    "name": "RankTheme3DLayer.js",
+                    "name": "mapboxgl.supermap.RankTheme3DLayer",
                     "des": "分段专题图"
                 }]
             }
