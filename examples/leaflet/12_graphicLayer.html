@@ -7,7 +7,7 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-
+<script type="text/javascript" src="http://cdn.bootcss.com/randomcolor/0.5.2/randomColor.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
@@ -21,33 +21,50 @@
     });
     var url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
     L.supermap.tiledMapLayer(url).addTo(map);
-    addGraphicGroup();
+    var colorCount = 10;
+    var colors = getRandomColors(colorCount);
+    addGraphicLayer();
 
-    function addGraphicGroup() {
-        var circleStyle = L.supermap.circleStyle({
-            color: 'rgba(255,204,0,1)',
-            radius: 7.5,
-            fill: true,
-            fillColor: 'rgba(255,153,0, 1)',
-            fillOpacity: 1
-        });
+    function addGraphicLayer() {
         var count = 100000;
         var graphics = [];
         var e = 45;
+        var randomCircleStyles = [];
+        for (var i = 0; i < colorCount; i++) {
+            randomCircleStyles.push(L.supermap.circleStyle({
+                color: colors[i],
+                opacity: 1,
+                radius: Math.floor(Math.random() * 15 + 1),
+                fill: true,
+                fillColor: colors[i],
+                fillOpacity: 1
+            }));
+        }
+
         for (var i = 0; i < count; ++i) {
             var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
             graphics[i] = L.supermap.graphic({
                 _latlng: L.latLng(coordinates[0], coordinates[1]),
-                _canvas: circleStyle.getCanvas()
+                _canvas: randomCircleStyles[Math.floor(Math.random() * colorCount)].getCanvas()
             });
         }
-        L.supermap.graphicGroup(graphics, {
+        L.supermap.graphicLayer(graphics, {
             handleClick: function (graphic) {
                 L.popup().setLatLng(graphic.getLatLng())
                         .setContent('<p>经纬度是：<br>' + graphic.getLatLng().lng + ',<br>' + graphic.getLatLng().lat + '</p>')
                         .openOn(map);
             }
         }).addTo(map);
+    }
+
+    function getRandomColors(count) {
+        return randomColor({
+            luminosity: 'bright',
+            hue: 'random',
+            alpha: 0.5,
+            format: 'rgba',
+            count: count
+        });
     }
 </script>
 </body>

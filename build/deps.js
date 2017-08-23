@@ -335,23 +335,23 @@ deps = {
         "Overlay": {
             "title": "可视化",
             "description": "数据可视化效果扩展",
-            "EChartMapLayer": {
+            "EChartsLayer": {
                 "name": "ECharts地图图层",
                 "src": [
-                    "./src/leaflet/overlay/EChartMapLayer.js"
+                    "./src/leaflet/overlay/EChartsLayer.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.echartsMapLayer",
+                    "name": "L.supermap.echartsLayer",
                     "des": "百度Ecahrts可视化效果"
                 }]
             },
             "GraphicLayer": {
                 "name": "高效率点图层",
                 "src": [
-                    "./src/leaflet/overlay/GraphicGroup.js"
+                    "./src/leaflet/overlay/GraphicLayer.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.graphicGroup",
+                    "name": "L.supermap.graphicLayer",
                     "des": "高效率点图层效果"
                 }]
             },

@@ -4,7 +4,7 @@ import './graphic/CircleStyle';
 import './graphic/Graphic';
 
 /**
- * @class L.supermap.graphicGroup
+ * @class L.supermap.graphicLayer
  * @classdesc 图形组合类。
  * @extends L.Path{@linkdoc-leaflet/#path}
  * @param graphics - {Object} 图形成员
@@ -21,7 +21,7 @@ import './graphic/Graphic';
  *        fillRule - {string} 填充形状
  *        radius - {number}半径
  */
-export var GraphicGroup = L.Path.extend({
+export var GraphicLayer = L.Path.extend({
 
         initialize: function (graphics, options) {
             options = options || {};
@@ -30,9 +30,9 @@ export var GraphicGroup = L.Path.extend({
         },
 
         /**
-         * @function L.supermap.graphicGroup.prototype.getEvents
+         * @function L.supermap.graphicLayer.prototype.getEvents
          * @description 获取事件
-         * @return {{click: L.supermap.GraphicGroup._handleClick}}
+         * @return {{click: L.supermap.graphicLayer._handleClick}}
          */
         getEvents: function () {
             var events = {
@@ -42,7 +42,7 @@ export var GraphicGroup = L.Path.extend({
         },
 
     /**
-     * @function L.supermap.graphicGroup.prototype.onAdd
+     * @function L.supermap.graphicLayer.prototype.onAdd
      * @description 添加图形
      */
     onAdd: function () {
@@ -123,8 +123,8 @@ L.Canvas.include({
     }
 });
 
-export var graphicGroup = function (graphics, options) {
-    return new GraphicGroup(graphics, options);
+export var graphicLayer = function (graphics, options) {
+    return new GraphicLayer(graphics, options);
 };
 
-L.supermap.graphicGroup = graphicGroup;
+L.supermap.graphicLayer = graphicLayer;

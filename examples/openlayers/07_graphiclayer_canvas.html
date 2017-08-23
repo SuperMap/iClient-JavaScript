@@ -6,8 +6,6 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
     <title>canvas渲染</title>
-
-
     <style>
         .ol-popup {
             position: absolute;
@@ -45,7 +43,6 @@
             left: 48px;
             margin-left: -11px;
         }
-
     </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
@@ -53,11 +50,13 @@
 <div id="popup" class="ol-popup">
     <div id="popup-content"></div>
 </div>
-
+<script type="text/javascript" src="http://cdn.bootcss.com/randomcolor/0.5.2/randomColor.min.js"></script>
 <script src="http://cdn.bootcss.com/openlayers/4.2.0/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
+    var colorCount = 10;
+    var colors = getRandomColors(colorCount);
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         var container = document.getElementById('popup');
@@ -72,7 +71,7 @@
         var map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                    .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [0, 0],
                 zoom: 2,
@@ -87,18 +86,19 @@
         });
         map.addLayer(layer);
 
-        var fillColors = 'rgba(255,153,0, 1)';
-        var strokeColors = 'rgba(255,204,0,1)';
-        var radius = 7.5;
-        var symbolinfo = new ol.style.Circle({
-            radius: radius,
-            fill: new ol.style.Fill({
-                color: fillColors
-            }),
-            stroke: new ol.style.Stroke({
-                color: strokeColors
-            })
-        });
+        var randomCircleStyles = [];
+        for (var i = 0; i < colorCount; i++) {
+            randomCircleStyles.push(new ol.style.Circle({
+                radius: Math.floor(Math.random() * 15 + 1),
+                fill: new ol.style.Fill({
+                    color: colors[i]
+                }),
+                stroke: new ol.style.Stroke({
+                    color: colors[i]
+                })
+            }));
+        }
+
         var count = 100000;    //矢量点的个数
         var graphics = new Array(count);
         var e = 45;
@@ -106,7 +106,7 @@
             var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
             graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
             graphics[i].setStyle(new ol.style.Style({
-                image: symbolinfo
+                image: randomCircleStyles[Math.floor(Math.random() * colorCount)]
             }));
         }
         var graphicLayer = new ol.layer.Image({
@@ -127,6 +127,16 @@
         });
         map.addLayer(graphicLayer);
     });
+
+    function getRandomColors(count) {
+        return randomColor({
+            luminosity: 'bright',
+            hue: 'random',
+            alpha: 0.5,
+            format: 'rgba',
+            count: count
+        });
+    }
 </script>
 </body>
 </html>

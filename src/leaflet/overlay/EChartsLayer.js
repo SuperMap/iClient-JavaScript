@@ -3,7 +3,7 @@ import L from "leaflet";
 import echarts  from "echarts";
 
 /**
- * @class L.supermap.echartsMapLayer
+ * @class L.supermap.echartsLayer
  * @classdesc 图表地图图层类。
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param echartsOptions - {Object} 图表参数
@@ -11,7 +11,7 @@ import echarts  from "echarts";
  *        attribution - {string} 版权信息。<br>
  *        loadWhileAnimating - {boolean} 是否在启动时加载。
  */
-export var EchartsMapLayer = L.Layer.extend({
+export var EchartsLayer = L.Layer.extend({
 
     includes: [],
     _echartsContainer: null,
@@ -21,12 +21,12 @@ export var EchartsMapLayer = L.Layer.extend({
 
     options: {
         attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
-        loadWhileAnimating:true
+        loadWhileAnimating: true
     },
 
-    initialize: function (echartsOptions,options) {
-        if(echartsOptions){
-            echartsOptions.LeafletMap={
+    initialize: function (echartsOptions, options) {
+        if (echartsOptions) {
+            echartsOptions.LeafletMap = {
                 roam: true
             }
         }
@@ -35,20 +35,20 @@ export var EchartsMapLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.echartsMapLayer.prototype.setOption
+     * @function L.supermap.echartsLayer.prototype.setOption
      * @description 设置图表地图参数
      * @param echartsOptions - {Object} 图表参数
      * @param notMerge - {boolean} 是否合并参数
      * @param lazyUpdate - {string} 后台自动更新
      */
-    setOption: function (echartsOptions, notMerge, lazyUpdate){
-        if(echartsOptions){
-            echartsOptions.LeafletMap={
+    setOption: function (echartsOptions, notMerge, lazyUpdate) {
+        if (echartsOptions) {
+            echartsOptions.LeafletMap = {
                 roam: true
             }
         }
         this._echartsOptions = echartsOptions;
-        this._ec.setOption(echartsOptions,notMerge,lazyUpdate);
+        this._ec.setOption(echartsOptions, notMerge, lazyUpdate);
     },
 
     _disableEchartsContainer: function () {
@@ -59,7 +59,7 @@ export var EchartsMapLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.echartsMapLayer.prototype.onAdd
+     * @function L.supermap.echartsLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
      */
@@ -76,7 +76,8 @@ export var EchartsMapLayer = L.Layer.extend({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
             update: 'updateLayout'
-        }, function (payload, ecModel) {})
+        }, function (payload, ecModel) {
+        })
         echarts.registerCoordinateSystem(
             'leaflet', LeafletMapCoordSys
         );
@@ -122,15 +123,16 @@ export var EchartsMapLayer = L.Layer.extend({
                     })
                     me._enableEchartsContainer();
                 }
-                if(me.options.loadWhileAnimating){
+
+                if (me.options.loadWhileAnimating) {
                     leafletMap.off('move', this._oldMoveHandler)
-                }else{
+                } else {
                     leafletMap.off('moveend', this._oldMoveHandler)
                 }
                 leafletMap.off('zoomend', this._oldZoomEndHandler)
-                if(me.options.loadWhileAnimating){
+                if (me.options.loadWhileAnimating) {
                     leafletMap.on('move', moveHandler);
-                }else{
+                } else {
                     leafletMap.on('moveend', moveHandler);
                 }
                 leafletMap.on('zoomend', zoomEndHandler)
@@ -218,9 +220,8 @@ LeafletMapCoordSys.create = function (ecModel, api) {
     })
 }
 
-
-export var echartsMapLayer= function (echartsOptions, options) {
-    return new EchartsMapLayer(echartsOptions, options);
+export var echartsLayer = function (echartsOptions, options) {
+    return new EchartsLayer(echartsOptions, options);
 };
-L.supermap.echartsMapLayer  = echartsMapLayer;
+L.supermap.echartsLayer = echartsLayer;
 

@@ -29,10 +29,10 @@ SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开�
 </tr><tr>
     <td><p>丰富的可视化效果，矢量瓦片、客户端专题图、开源可视化库[ECharts](http://echarts.baidu.com/)，[MapV](http://mapv.baidu.com/)</p>
         [L.supermap.tiledVectorLayer](L.supermap.tiledVectorLayer.html)<br>
-        [L.supermap.graphicGroup](L.supermap.graphicGroup.html)<br>
+        [L.supermap.graphicLayer](L.supermap.graphicLayer.html)<br>
         [L.supermap.dataFlowLayer](L.supermap.dataFlowLayer.html)<br>
         [L.supermap.rangeThemeLayer](L.supermap.rangeThemeLayer.html)<br>
-        [L.supermap.echartsMapLayer](L.supermap.echartsMapLayer.html)<br>
+        [L.supermap.echartsLayer](L.supermap.echartsLayer.html)<br>
         [L.supermap.mapVLayer](L.supermap.mapVLayer.html)<br>
         ......</td>
     <td><p>丰富地图，iSevrer REST MAP、互联网地图、OGC服务</p>

@@ -45,14 +45,14 @@ var exampleConfig = {
                     fileName: "addressMatchService"
                 }]
             },
-/*            "processingService": {
+            "processingService": {
                 name: "分布式空间分析",
                 content: [{
                     name: "密度分析",
                     thumbnail: "kernelDensityJobService.png",
                     fileName: "kernelDensityJobService"
                 }]
-            }*/
+            }
         }
     },
     "viz": {

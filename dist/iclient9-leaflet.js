@@ -17666,7 +17666,7 @@ _leaflet2["default"].supermap.dataFlowLayer = dataFlowLayer;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.echartsMapLayer = exports.EchartsMapLayer = undefined;
+exports.echartsLayer = exports.EchartsLayer = undefined;
 exports.LeafletMapCoordSys = LeafletMapCoordSys;
 
 __webpack_require__(4);
@@ -17682,7 +17682,7 @@ var _echarts2 = _interopRequireDefault(_echarts);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
- * @class L.supermap.echartsMapLayer
+ * @class L.supermap.echartsLayer
  * @classdesc 图表地图图层类。
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param echartsOptions - {Object} 图表参数
@@ -17690,7 +17690,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        attribution - {string} 版权信息。<br>
  *        loadWhileAnimating - {boolean} 是否在启动时加载。
  */
-var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2["default"].Layer.extend({
+var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
 
     includes: [],
     _echartsContainer: null,
@@ -17714,7 +17714,7 @@ var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2["default"].Layer.exten
     },
 
     /**
-     * @function L.supermap.echartsMapLayer.prototype.setOption
+     * @function L.supermap.echartsLayer.prototype.setOption
      * @description 设置图表地图参数
      * @param echartsOptions - {Object} 图表参数
      * @param notMerge - {boolean} 是否合并参数
@@ -17738,7 +17738,7 @@ var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2["default"].Layer.exten
     },
 
     /**
-     * @function L.supermap.echartsMapLayer.prototype.onAdd
+     * @function L.supermap.echartsLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
      */
@@ -17799,6 +17799,7 @@ var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2["default"].Layer.exten
                     });
                     me._enableEchartsContainer();
                 }
+
                 if (me.options.loadWhileAnimating) {
                     leafletMap.off('move', this._oldMoveHandler);
                 } else {
@@ -17895,10 +17896,10 @@ LeafletMapCoordSys.create = function (ecModel, api) {
     });
 };
 
-var echartsMapLayer = exports.echartsMapLayer = function echartsMapLayer(echartsOptions, options) {
-    return new EchartsMapLayer(echartsOptions, options);
+var echartsLayer = exports.echartsLayer = function echartsLayer(echartsOptions, options) {
+    return new EchartsLayer(echartsOptions, options);
 };
-_leaflet2["default"].supermap.echartsMapLayer = echartsMapLayer;
+_leaflet2["default"].supermap.echartsLayer = echartsLayer;
 
 /***/ }),
 /* 103 */
@@ -17910,7 +17911,7 @@ _leaflet2["default"].supermap.echartsMapLayer = echartsMapLayer;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.graphicGroup = exports.GraphicGroup = undefined;
+exports.graphicLayer = exports.GraphicLayer = undefined;
 
 __webpack_require__(4);
 
@@ -17925,7 +17926,7 @@ __webpack_require__(326);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
- * @class L.supermap.graphicGroup
+ * @class L.supermap.graphicLayer
  * @classdesc 图形组合类。
  * @extends L.Path{@linkdoc-leaflet/#path}
  * @param graphics - {Object} 图形成员
@@ -17942,7 +17943,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        fillRule - {string} 填充形状
  *        radius - {number}半径
  */
-var GraphicGroup = exports.GraphicGroup = _leaflet2["default"].Path.extend({
+var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
 
     initialize: function initialize(graphics, options) {
         options = options || {};
@@ -17951,9 +17952,9 @@ var GraphicGroup = exports.GraphicGroup = _leaflet2["default"].Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicGroup.prototype.getEvents
+     * @function L.supermap.graphicLayer.prototype.getEvents
      * @description 获取事件
-     * @return {{click: L.supermap.GraphicGroup._handleClick}}
+     * @return {{click: L.supermap.graphicLayer._handleClick}}
      */
     getEvents: function getEvents() {
         var events = {
@@ -17963,7 +17964,7 @@ var GraphicGroup = exports.GraphicGroup = _leaflet2["default"].Path.extend({
     },
 
     /**
-     * @function L.supermap.graphicGroup.prototype.onAdd
+     * @function L.supermap.graphicLayer.prototype.onAdd
      * @description 添加图形
      */
     onAdd: function onAdd() {
@@ -18043,11 +18044,11 @@ _leaflet2["default"].Canvas.include({
     }
 });
 
-var graphicGroup = exports.graphicGroup = function graphicGroup(graphics, options) {
-    return new GraphicGroup(graphics, options);
+var graphicLayer = exports.graphicLayer = function graphicLayer(graphics, options) {
+    return new GraphicLayer(graphics, options);
 };
 
-_leaflet2["default"].supermap.graphicGroup = graphicGroup;
+_leaflet2["default"].supermap.graphicLayer = graphicLayer;
 
 /***/ }),
 /* 104 */
@@ -62315,108 +62316,7 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 /* 382 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"_from": "proj4@2.3.15",
-	"_id": "proj4@2.3.15",
-	"_inBundle": false,
-	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
-	"_location": "/proj4",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "version",
-		"registry": true,
-		"raw": "proj4@2.3.15",
-		"name": "proj4",
-		"escapedName": "proj4",
-		"rawSpec": "2.3.15",
-		"saveSpec": null,
-		"fetchSpec": "2.3.15"
-	},
-	"_requiredBy": [
-		"/"
-	],
-	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
-	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
-	"_spec": "proj4@2.3.15",
-	"_where": "G:\\github-iClient\\iClient9",
-	"author": "",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
-	},
-	"bundleDependencies": false,
-	"contributors": [
-		{
-			"name": "Mike Adair",
-			"email": "madair@dmsolutions.ca"
-		},
-		{
-			"name": "Richard Greenwood",
-			"email": "rich@greenwoodmap.com"
-		},
-		{
-			"name": "Calvin Metcalf",
-			"email": "calvin.metcalf@gmail.com"
-		},
-		{
-			"name": "Richard Marsden",
-			"url": "http://www.winwaed.com"
-		},
-		{
-			"name": "T. Mittan"
-		},
-		{
-			"name": "D. Steinwand"
-		},
-		{
-			"name": "S. Nelson"
-		}
-	],
-	"dependencies": {
-		"mgrs": "~0.0.2"
-	},
-	"deprecated": false,
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"devDependencies": {
-		"browserify": "~12.0.1",
-		"chai": "~1.8.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"grunt": "~0.4.2",
-		"grunt-browserify": "~4.0.1",
-		"grunt-cli": "~0.1.13",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~0.8.0",
-		"grunt-contrib-uglify": "~0.11.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"istanbul": "~0.2.4",
-		"mocha": "~1.17.1",
-		"tin": "~0.4.0"
-	},
-	"directories": {
-		"test": "test",
-		"doc": "docs"
-	},
-	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"jam": {
-		"main": "dist/proj4.js",
-		"include": [
-			"dist/proj4.js",
-			"README.md",
-			"AUTHORS",
-			"LICENSE.md"
-		]
-	},
-	"license": "MIT",
-	"main": "lib/index.js",
-	"name": "proj4",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
-	},
-	"scripts": {
-		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
-	},
-	"version": "2.3.15"
-};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\codes\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 383 */
