@@ -35,6 +35,9 @@
         L.supermap
                 .gridCellInfosService(url)
                 .getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
+                    if(!serviceResult.result){
+                        return;
+                    }
                     if (marker) {
                         marker.setLatLng(evt.latlng);
                     } else {
