@@ -56,7 +56,6 @@
         .setHTML('示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理')
         .addTo(map);
 
-    map.on('load', function () {
         var randomCount = 500;
 
         var node_data = {
@@ -154,7 +153,6 @@
         };
 
         new mapboxgl.supermap.MapvLayer(map, dataSet, options);
-    });
 
 </script>
 </body>
