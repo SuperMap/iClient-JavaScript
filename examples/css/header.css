@@ -3,7 +3,7 @@
 }
 
 .main-header .navbar-brand {
-    padding-top: 10px;
+    padding-right: 5px;
 }
 
 .navbar .project-title {
@@ -98,8 +98,8 @@
     font-size: 16px;
     color: #FFFFFF;
     height: 52px;
-    padding-left: 10px;
-    padding-top: 16px;
+    padding-left: 5px;
+    padding-top: 17px;
     padding-bottom: 15px;
     float: left;
 }

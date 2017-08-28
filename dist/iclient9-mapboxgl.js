@@ -20572,6 +20572,7 @@ var MapvDataSet = exports.MapvDataSet = {
                         coordinates: data.geometry.coordinates
                     }
                 });
+                return data;
             });
             return new _mapv.DataSet(mPoints);
         }
@@ -20594,6 +20595,7 @@ var MapvDataSet = exports.MapvDataSet = {
                         coordinates: cv
                     }
                 });
+                return data;
             });
             return new _mapv.DataSet(lineData);
         }
@@ -20619,6 +20621,7 @@ var MapvDataSet = exports.MapvDataSet = {
                         time: j
                     });
                 }
+                return data;
             });
             return new _mapv.DataSet(timeData);
         }
