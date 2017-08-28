@@ -32,6 +32,7 @@ export var MapvDataSet = {
                         coordinates: data.geometry.coordinates
                     },
                 });
+                return data;
             });
             return new DataSet(mPoints);
         }
@@ -54,6 +55,7 @@ export var MapvDataSet = {
                         coordinates: cv
                     }
                 });
+                return data;
             });
             return new DataSet(lineData);
         }
@@ -79,6 +81,7 @@ export var MapvDataSet = {
                         time: j
                     });
                 }
+                return data
             });
             return new DataSet(timeData);
         }
