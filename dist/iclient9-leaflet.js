@@ -18158,12 +18158,13 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.update
-     * @description 更新数据
-     * @param data - {Object} 要更新的数据
-     * @param options -{Object} 要更新的值
+     * @description 更新图层
+     * @param opt - {Object} 待更新的数据<br>
+     *        data -{Object} mapv数据集<br>
+     *        options -{Object} mapv绘制参数<br>
      */
-    update: function update(data, options) {
-        this.renderer.updateData(data, options);
+    update: function update(opt) {
+        this.renderer.update(opt);
     },
 
     /**
@@ -19136,7 +19137,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @constructs L.supermap.addressMatchService
  * @classdesc 地址匹配服务
  * @extends L.supermap.ServiceBase
- * @example 用法：
+ * @example
  *      L.supermap.addressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
@@ -19241,7 +19242,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @classdesc 海图服务。
  * @extends L.supermap.ServiceBase
  * @example
- * 用法：
  *      L.supermap.chartService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
@@ -19387,7 +19387,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /**
  * @class L.supermap.featureService
  * @classdesc 要素数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
- * @example 用法：
+ * @example
  *      L.supermap.featureService(url)
  *      .getFeaturesByIDs(param,function(result){
  *          //doSomething
@@ -19635,10 +19635,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class  L.supermap.fieldService
  * @classdesc 字段服务类
  * @extends L.supermap.ServiceBase
- * @example 用法：
- * L.supermap.fieldService(url).getFields(function(result){
-      //doSomething
- * });
+ * @example
+ *   L.supermap.fieldService(url).getFields(function(result){
+ *     //doSomething
+ *   });
  * @param url - {string} 字段服务地址
  * @param options - {Object} 字段服务类可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
@@ -19763,7 +19763,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.gridCellInfosService
- * @description 数据栅格查询服务
+ * @classdesc 数据栅格查询服务
  * @extends L.supermap.ServiceBase
  * @example
  *      L.supermap.gridCellInfosService(url)
@@ -20029,7 +20029,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.measureService
- * @description 量算服务服务类
+ * @classdesc 量算服务服务类
  * @augments L.supermap.ServiceBase
  * @example
  * 用法：
@@ -20160,7 +20160,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.networkAnalyst3DService
  * @classdesc 3D网络分析服务类
  * @extends L.supermap.ServiceBase
- * @example 用法：
+ * @example
  *      L.supermap.networkAnalyst3DService(url)
  *      .sinksFacilityAnalyst(params,function(result){
  *           //doSomething
@@ -20354,10 +20354,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.networkAnalystService
- * @description 网络分析服务类
+ * @classdesc 网络分析服务类
  * @augments  L.supermap.ServiceBase
  * @example
- * 用法：
  *      L.supermap.networkAnalystService(url)
  *      .findPath(params,function(result){
  *           //doSomething
@@ -20714,7 +20713,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @classdesc 分布式空间分析相关服务类
  * @extends  L.supermap.ServiceBase
  * @example
- * 用法：
  *      L.supermap.processingService(url)
  *      .getKernelDensityJobs(function(result){
  *           //doSomething
@@ -21473,7 +21471,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @classdesc 空间分析服务类。
  * @description 提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
  * @extends L.supermap.ServiceBase
- * @example 用法：
+ * @example
  *      L.supermap.spatialAnalystService(url)
  *      .bufferAnalysis(params,function(result){
  *          //doSomething
@@ -21964,7 +21962,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.trafficTransferAnalystService
  * @classdesc 交通换乘分析服务类
  * @example
- * L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
+ *   L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
  *      //doSomething
  *    })
  * @extends L.supermap.ServiceBase
@@ -28976,7 +28974,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.DatasetThiessenAnalystParameters
- * @description 数据集泰森多边形分析参数类
+ * @classdesc 数据集泰森多边形分析参数类
  * @param options - {Object} 可选参数。如:</br>
  *        filterQueryParameter - {SuperMap.FilterParameter} 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
  * @extends SuperMap.ThiessenAnalystParameters
@@ -35046,17 +35044,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.GetFeaturesServiceBase
  * @example 例如：
- * (start code)
  * var myGetFeaturesByBufferService = new   SuperMap.GetFeaturesByBufferService(url, {
-     *     eventListeners: {
-     *           "processCompleted": GetFeaturesCompleted,
-     *           "processFailed": GetFeaturesError
-     *           }
-     * });
+ *     eventListeners: {
+ *           "processCompleted": GetFeaturesCompleted,
+ *           "processFailed": GetFeaturesError
+ *           }
+ * });
  * function GetFeaturesCompleted(object){//todo};
  * function GetFeaturesError(object){//todo};
- * (end)
- *
  */
 
 var GetFeaturesByBufferService = function (_GetFeaturesServiceBa) {
@@ -35564,19 +35559,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.GetFeaturesByIDsService
  * @classdesc 数据集ID查询服务类。在数据集集合中查找指定 ID 号对应的空间地物要素。
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务。
- * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
- * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+ *              URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
+ *              例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。</br>
  * @extends SuperMap.GetFeaturesServiceBase
  * @example 例如：
  * (start code)
  * var myGetFeaturesByIDsService = new SuperMap.GetFeaturesByIDsService(url, {
-     *     eventListeners: {
-     *         "processCompleted": getFeatureCompleted,
-     *         "processFailed": getFeatureError
-     *            }
-     *     });
+ *     eventListeners: {
+ *         "processCompleted": getFeatureCompleted,
+ *         "processFailed": getFeatureError
+ *            }
+ *     });
  * function getFeatureCompleted(object){//todo};
  * function getFeatureError(object){//todo}
  * (end)
@@ -36012,7 +36007,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        datasetName - {string} 数据集名称。</br>
  *        dataSourceName - {string} 数据源名称</br>
  *        X - {Integer} 要查询的地理位置X轴。</br>
- *        Y - {Integer} 要查询的地理位置Y轴。</br>
+ *        Y - {Integer} 要查询的地理位置Y轴。
  */
 var GetGridCellInfosParameters = function () {
 
@@ -37853,7 +37848,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.KernelDensityJobParameter
- * @description 密度分析任务参数类
+ * @classdesc 密度分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。 <br>
  *        query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
@@ -48514,18 +48509,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.TransferPathService
- * @classdesc
- * 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
- * 返回结果通过该类支持的事件的监听函数参数获取
+ * @classdesc 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
+ *            返回结果通过该类支持的事件的监听函数参数获取
  * @extends SuperMap.CommonServiceBase
  * @example 例如：
- * (start code)
  * var myService = new SuperMap.TransferPathService(url, {eventListeners: {
-     *     "processCompleted": TrafficTransferCompleted,
-     *     "processFailed": TrafficTransferError
-     *     }
-     * };
- * (end)
+ *     "processCompleted": TrafficTransferCompleted,
+ *     "processFailed": TrafficTransferError
+ *     }
+ * };
  * @param url - {string} 与客户端交互的交通换乘线路查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param options - {Object} 可選参数。如:</br>
@@ -48916,7 +48908,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** * @class SuperMap.TransportationAnalystResultSetting * @description 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 * @param options - {Object} 可选参数。如:</br> *        returnEdgeFeatures - {boolean} 是否在分析结果中包含弧段要素集合。</br> *        returnEdgeGeometry - {boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。</br> *        returnEdgeIDs - {boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。</br> *        returnNodeFeatures - {boolean} 是否在分析结果中包含结点要素集合。</br> *        returnNodeGeometry - {boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。</br> *        returnNodeIDs - {boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。</br> *        returnPathGuides - {boolean} 返回分析结果中是否包含行驶导引集合。</br> *        returnRoutes - {boolean} 返回分析结果中是否包含路由对象的集合。 */
+/** * @class SuperMap.TransportationAnalystResultSetting * @classdesc 交通网络分析结果参数类。 *            通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 * @param options - {Object} 可选参数。如:</br> *        returnEdgeFeatures - {boolean} 是否在分析结果中包含弧段要素集合。</br> *        returnEdgeGeometry - {boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。</br> *        returnEdgeIDs - {boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。</br> *        returnNodeFeatures - {boolean} 是否在分析结果中包含结点要素集合。</br> *        returnNodeGeometry - {boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。</br> *        returnNodeIDs - {boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。</br> *        returnPathGuides - {boolean} 返回分析结果中是否包含行驶导引集合。</br> *        returnRoutes - {boolean} 返回分析结果中是否包含路由对象的集合。 */
 var TransportationAnalystResultSetting = function () {
 
   /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnPathGuides -{boolean}     * @description 返回分析结果中是否包含行驶导引集合。     */
@@ -56419,21 +56411,27 @@ var MapVRenderer = function (_BaseLayer) {
         }
 
         /**
-         * @function L.supermap.MapVRenderer.prototype.updateData
-         * @description 更新覆盖原数据
-         * @param data - {oject} 待更新的数据
-         * @param options - {oject} 待更新的数据信息
+         * @function L.supermap.MapVRenderer.prototype.update
+         * @description 更新图层
+         * @param opt - {Object} 待更新的数据<br>
+         *        data -{Object} mapv数据集<br>
+         *        options -{Object} mapv绘制参数<br>
          */
 
     }, {
-        key: 'updateData',
-        value: function updateData(data, options) {
-            var _data = data;
-            if (data && data.get) {
-                _data = data.get();
+        key: 'update',
+        value: function update(opt) {
+            var update = opt || {};
+            var _data = update.data;
+            if (_data && _data.get) {
+                _data = _data.get();
             }
-            this.dataSet.set(_data);
-            this.update({ options: options });
+            if (_data != undefined) {
+                this.dataSet.set(_data);
+            }
+            if (update.options != undefined) {
+                _get(MapVRenderer.prototype.__proto__ || Object.getPrototypeOf(MapVRenderer.prototype), 'update', this).call(this, { options: update.options });
+            }
         }
 
         /**
@@ -62361,10 +62359,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
+	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
 	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
 	"_spec": "proj4@2.3.15",
-	"_where": "G:\\github-iClient\\iClient9",
+	"_where": "F:\\dev\\iClient",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

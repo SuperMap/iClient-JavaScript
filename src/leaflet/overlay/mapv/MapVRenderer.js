@@ -1,6 +1,7 @@
 import L from 'leaflet';
 import {baiduMapLayer} from "mapv";
-var BaseLayer = baiduMapLayer? baiduMapLayer.__proto__ : Function;
+
+var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
 /**
  * @class L.supermap.MapVRenderer
@@ -114,18 +115,24 @@ export default class MapVRenderer extends BaseLayer {
     }
 
     /**
-     * @function L.supermap.MapVRenderer.prototype.updateData
-     * @description 更新覆盖原数据
-     * @param data - {oject} 待更新的数据
-     * @param options - {oject} 待更新的数据信息
+     * @function L.supermap.MapVRenderer.prototype.update
+     * @description 更新图层
+     * @param opt - {Object} 待更新的数据<br>
+     *        data -{Object} mapv数据集<br>
+     *        options -{Object} mapv绘制参数<br>
      */
-    updateData(data, options) {
-        var _data = data;
-        if (data && data.get) {
-            _data = data.get();
+    update(opt) {
+        var update = opt || {};
+        var _data = update.data;
+        if (_data && _data.get) {
+            _data = _data.get();
         }
-        this.dataSet.set(_data);
-        this.update({options: options});
+        if (_data != undefined) {
+            this.dataSet.set(_data);
+        }
+        if (update.options != undefined) {
+            super.update({options: update.options});
+        }
     }
 
     /**

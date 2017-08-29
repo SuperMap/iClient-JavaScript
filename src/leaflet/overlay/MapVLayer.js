@@ -84,12 +84,13 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.update
-     * @description 更新数据
-     * @param data - {Object} 要更新的数据
-     * @param options -{Object} 要更新的值
+     * @description 更新图层
+     * @param opt - {Object} 待更新的数据<br>
+     *        data -{Object} mapv数据集<br>
+     *        options -{Object} mapv绘制参数<br>
      */
-    update: function (data, options) {
-        this.renderer.updateData(data, options);
+    update: function (opt) {
+        this.renderer.update(opt);
     },
 
     /**
