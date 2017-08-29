@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>单对象查询分析</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" include="bootstrap,jquery" src="../include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -64,10 +64,6 @@
         </div>
     </div>
 </div>
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var layer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
             map = new ol.Map({

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>SuperMap 图层信息</title>
-
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" include="bootstrap-css" src="../include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -51,9 +50,6 @@
 <div id="popup" class="ol-popup">
     <div id="popup-content"></div>
 </div>
-
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');

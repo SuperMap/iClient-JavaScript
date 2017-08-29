@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>2014当了一回背包客</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="width: 100%;height:100%"></div>
@@ -12,9 +11,6 @@
      style="background-color: white;padding: 15px;border-radius: 10px;border: 1px solid #cccccc;">
     <div id="popup-content"></div>
 </div>
-
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     new ol.supermap.WebMap(128).addEventListener(ol.supermap.WebMap.EventType.WEBMAPLOADEND, function (e) {
         var map = e.value;

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>拖拽图形</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" include="jquery,bootstrap" src="../include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -21,10 +21,6 @@
         <button id="none" value='None' type="button" class="btn btn-default">无拖拽</button>
     </div>
 </div>
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, select, drag, source, baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
             url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";

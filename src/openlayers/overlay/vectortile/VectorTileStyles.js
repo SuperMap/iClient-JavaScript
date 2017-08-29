@@ -113,8 +113,8 @@ export default class VectorTileStyles extends ol.Observable {
         layersXHR.open("GET", ol.supermap.VectorTileStyles.getUrl() + '/layers.json', false);
         layersXHR.send(null);
         this.on('featureSelected', function (e) {
-            ol.supermap.VectorTileStyles.setSelectedId(e.element.selectedId);
-            ol.supermap.VectorTileStyles.setLayerName(e.element.layerName);
+            ol.supermap.VectorTileStyles.setSelectedId(e.selectedId);
+            ol.supermap.VectorTileStyles.setLayerName(e.layerName);
         });
         /*
          * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedPointStyle
@@ -502,7 +502,11 @@ export default class VectorTileStyles extends ol.Observable {
         var id = feature.getProperties().id || feature.id_;
         if (feature.getProperties().type && feature.getProperties().type.toUpperCase() === 'TEXT') {
             selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type.toUpperCase());
-            selectedStyle.getText().text_ = feature.getProperties().texts[0];
+            if(feature.getProperties().texts){
+                selectedStyle.getText().text_ = feature.getProperties().texts[0];
+            }else{
+                selectedStyle.getText().text_ =  "";
+            }
         } else {
             selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getGeometry().getType().toUpperCase());
         }

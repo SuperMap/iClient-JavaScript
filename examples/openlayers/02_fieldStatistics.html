@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>数据集字段查询统计</title>
-
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" include="bootstrap-css" src="../include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -26,14 +25,11 @@
 <div id="popup" class="ol-popup">
     <div id="popup-content"></div>
 </div>
-
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var container, content, info;
     var map, currentData, layersName = [],
-            mapURL = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-            dataURL = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+        mapURL = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+        dataURL = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
 
     map = new ol.Map({
         target: 'map',
@@ -98,7 +94,7 @@
                     datasource: dataInfo.dataSourceName,
                     dataset: dataInfo.dataSetName
                 });
-                new ol.supermap.FieldService(dataURL).getFields(param,function (serviceResult) {
+                new ol.supermap.FieldService(dataURL).getFields(param, function (serviceResult) {
                     fieldStatistic();
                 });
             }
@@ -132,12 +128,12 @@
             return;
         }
         var innerHTMLStr = '<div style="line-height: 35px;">'
-                + '<strong>图层</strong>（continent_T@World）&nbsp;&nbsp;&nbsp;<strong>字段</strong>（' + serviceResult.fieldName + '）<div>';
+            + '<strong>图层</strong>（continent_T@World）&nbsp;&nbsp;&nbsp;<strong>字段</strong>（' + serviceResult.fieldName + '）<div>';
         innerHTMLStr += '<div style="line-height: 35px;">'
-                + '<strong>统计结果：</strong><div>';
+            + '<strong>统计结果：</strong><div>';
         var keys = ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"];
         var tableStr = "<table id='trafficRes' class='table table-bordered'><tr><td>平均值</td><td>最大值</td><td>最小值</td>"
-                + "<td>标准差</td><td>和</td><td>方差</td></tr>";
+            + "<td>标准差</td><td>和</td><td>方差</td></tr>";
         var resultTR = "<tr>";
         for (var i = 0; i < keys.length; i++) {
             resultTR += "<td>" + serviceResult[keys[i]] + "</td>";

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>空间分析服务-点定里程</title>
-
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" include="bootstrap-css" src="../include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -51,14 +50,11 @@
 <div id="popup" class="ol-popup">
     <div id="popup-content"></div>
 </div>
-
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, options, queryBySQLParams, queryBySQLService, resultLayer,
-            routeCalculateMeasureParameters, routeCalculateMeasureService, resultLayer1,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+        routeCalculateMeasureParameters, routeCalculateMeasureService,
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');
     var overlay = new ol.Overlay(({
@@ -79,7 +75,7 @@
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                    .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [4503.62, -3861.91],
                 zoom: 2,
@@ -128,7 +124,7 @@
             var pointsList = [];
             var routeObj = queryBySQLResult.features[0].geometry.coordinates[0];
             for (var i = 0; i < routeObj.length; i++) {
-                pointsList.push([routeObj[i][0], routeObj[i][1],routeObj[i][2]])
+                pointsList.push([routeObj[i][0], routeObj[i][1], routeObj[i][2]])
             }
             var routeLine = new ol.geom.LineString([pointsList]);
 
@@ -153,7 +149,7 @@
                 map.addLayer(resultLayer);
                 var innerHTML = "查询获取的M值为:" + routeCaculateServiceResult.result.measure;
                 content.innerHTML = innerHTML;
-                overlay.setPosition([point.getCoordinates()[0],point.getCoordinates()[1]]);
+                overlay.setPosition([point.getCoordinates()[0], point.getCoordinates()[1]]);
             });
         });
     }

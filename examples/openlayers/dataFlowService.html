@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>实时数据服务</title>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -49,9 +48,6 @@
 <div id="popup" class="ol-popup">
     <div id="popup-content"></div>
 </div>
-
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');
@@ -62,8 +58,7 @@
             duration: 250
         }
     }));
-    var map, resultLayer,
-            urlMap = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China",
+    var resultLayer,
             urlQuery = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
             urlDataFlow = "ws://117.122.248.69:8800/iserver/services/dataflow/dataflow";
     var timer, featureResult, dataFlowService, source;

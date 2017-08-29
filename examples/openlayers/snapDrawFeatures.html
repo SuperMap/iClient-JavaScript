@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>捕捉图形绘制</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" include="bootstrap,jquery" src="../include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -25,11 +25,6 @@
         <button id="clear" value='Clear' type="button" class="btn btn-default">清除</button>
     </div>
 </div>
-
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, draw, snap, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
     map = new ol.Map({

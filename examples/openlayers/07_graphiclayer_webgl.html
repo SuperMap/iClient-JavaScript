@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <script type="text/javascript" include="randomcolor" src="../include-web.js"></script>
     <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/openlayers/4.2.0/ol-debug.js"></script>
+    <script type="text/javascript" exclude="ol" src="../../dist/include-openlayers.js"></script>
     <title>webgl渲染</title>
     <style>
         .ol-popup {
@@ -51,9 +54,6 @@
 <div id="popup" class="ol-popup">
     <div id="popup-content"></div>
 </div>
-<script type="text/javascript" src="http://cdn.bootcss.com/randomcolor/0.5.2/randomColor.min.js"></script>
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol-debug.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
     var colorCount = 10;

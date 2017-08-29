@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>地物编辑</title>
-
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" include="bootstrap-css" src="../include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .editPane {
             position: absolute;
@@ -64,7 +63,7 @@
         var polygon = new ol.geom.Polygon([[[118, 20], [120, 20], [120, 50], [-120, 50], [118, 20]]]);
         var featureService = new ol.supermap.FeatureService(url);
         var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
-            toIndex:-1,
+            toIndex: -1,
             datasetNames: ["World:Capitals"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"

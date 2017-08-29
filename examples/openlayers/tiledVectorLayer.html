@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>矢量瓦片</title>
-
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
-
 <script type="text/javascript">
     var url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
@@ -37,10 +32,10 @@
         map.addLayer(vectorLayer);
         map.on('click', function (e) {
             map.forEachFeatureAtPixel(e.pixel, function (feature) {
-                vectorTileStyles.dispatchEvent(new ol.Collection.Event('featureSelected', {
+                vectorTileStyles.dispatchEvent({type: 'featureSelected',
                     selectedId: feature.getProperties().id,
                     layerName: feature.getProperties().layerName
-                }));
+                });
                 return true;
             }, {hitTolerance: 5});
             vectorLayer.changed();
