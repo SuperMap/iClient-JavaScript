@@ -38,9 +38,13 @@ module.exports = function (config) {
             {pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-15221.js', include: false},
             {pattern: '../src/classic/libs/Lang/*.js', include: false},
             {pattern: '../src/classic/theme/default/*.css', include: false},
+
         /***common的源码***/
             '../src/common/*.js',
             '../src/common/**/*.js',
+
+            '../src/classic/**.js',
+            '../src/classic/services/*.js',
         /***leaflet的源码***/
             {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
             {pattern: '../src/leaflet/**/**/*.css', include: false},
@@ -54,14 +58,15 @@ module.exports = function (config) {
         /***测试文件***/
             './tool/**.js',
             // 以下为不同客户端对应的配置文件, 分别存放各自的测试用例以便调试
+
             './test-main-common.js',
+            './test-main-classic.js',
             './test-main-leaflet.js',
             './test-main-openlayers.js'
         ],
 
         // list of files to exclude 测试时排除的文件
         exclude: [],
-
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -70,9 +75,14 @@ module.exports = function (config) {
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
             '../src/classic/libs/SuperMap_Basic-8.1.1-15221.js': ['browserify'],
             '../src/classic/libs/Lang/*.js': ['browserify'],
+
             '../src/common/**/*.js': ['browserify'],
             './common/**/*Spec.js': ['browserify'],
             './test-main-common.js': ['browserify'],
+
+            '../src/classic/**/*.js': ['browserify'],
+            './classic/**/*Spec.js': ['browserify'],
+            './test-main-classic.js': ['browserify'],
 
             '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
             '../src/leaflet/**/*.js': ['browserify'],
