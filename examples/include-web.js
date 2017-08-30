@@ -76,6 +76,18 @@
         if (inArray(includes, 'dat-gui')) {
             inputScript("http://cdn.bootcss.com/dat-gui/0.6.5/dat.gui.min.js");
         }
+        if (inArray(includes, 'admin-lte')) {
+            inputCSS("http://cdn.bootcss.com/admin-lte/2.3.8/css/AdminLTE.min.css");
+            inputCSS("http://cdn.bootcss.com/admin-lte/2.3.8/css/skins/skin-blue.min.css");
+            inputCSS("http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css");
+            inputScript("http://cdn.bootcss.com/admin-lte/2.3.8/js/app.min.js");
+        }
+        if (inArray(includes, 'jquery.scrollto')) {
+            inputScript("http://cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js");
+        }
+        if (inArray(includes, 'ace')) {
+            inputScript("http://cdn.bootcss.com/ace/1.2.6/ace.js");
+        }
 
     }
 
