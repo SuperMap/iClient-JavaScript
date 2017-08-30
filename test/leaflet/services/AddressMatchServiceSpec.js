@@ -42,11 +42,6 @@ describe('leaflet_testAddressMatchService', function () {
                     expect(result[i].filters[0]).toBe("北京市");
                     expect(result[i].filters[1]).toBe("海淀区");
                 }
-                expect(result[0].address).toBe("北京市海淀区阜成路8号东4区航天时代仪器公司");
-                expect(result[0].location).toEqual(Object({
-                    x: 116.31740122415627,
-                    y: 39.92311315752059
-                }));
                 expect(result[0].score).not.toBeNull();
                 GeoCodingService.destroy();
                 done();
@@ -87,11 +82,6 @@ describe('leaflet_testAddressMatchService', function () {
                     expect(result[i].filters[0]).toBe("北京市");
                     expect(result[i].filters[1]).toBe("海淀区");
                 }
-                expect(result[0].address).toBe("北京市海淀区阜成路33号北京工商大学");
-                expect(result[0].location).toEqual(Object({
-                    x: 116.31431550481403,
-                    y: 39.92438137908202
-                }));
                 expect(result[0].score).not.toBeNull();
                 GeoDecodingService.destroy();
                 done();
