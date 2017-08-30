@@ -14,7 +14,7 @@ import SuperMap from '../../common/SuperMap';
  * @param url - {string} 图层数据服务地址
  * @param options - {Object} 图层可选参数
  */
-export var  TileVectorLayer = VectorGrid.extend({
+export var TileVectorLayer = VectorGrid.extend({
 
     options: {
         //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
@@ -63,9 +63,9 @@ export var  TileVectorLayer = VectorGrid.extend({
             url = url.substr(0, url.length - 1);
             me.url = url;
         }
+        this.cartoCSSToLeaflet = new CartoCSSToLeaflet(me.url);
         me._initLayerUrl();
         me.initLayersInfo();
-        CartoCSSToLeaflet.mapUrl = me.url;
         if (!me.options.serverCartoCSSStyle && me.options) {
             me.setClientCartoCSS(me.options.cartoCSS);
         }
@@ -136,7 +136,7 @@ export var  TileVectorLayer = VectorGrid.extend({
             return {};
         }
         var layerInfo = me.layersInfo[layerName];
-        if (!layerInfo)return null;
+        if (!layerInfo) return null;
         layerInfo_simple = {layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType};
         switch (layerInfo.ugcLayerType) {
             case "VECTOR":
@@ -190,10 +190,10 @@ export var  TileVectorLayer = VectorGrid.extend({
     },
 
     setServerCartoCSS: function (cartoCSSStr) {
-        CartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, true);
+        this.cartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, true);
     },
     setClientCartoCSS: function (cartoCSSStr) {
-        CartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, false);
+        this.cartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, false);
     },
 
     /**
@@ -232,12 +232,12 @@ export var  TileVectorLayer = VectorGrid.extend({
         // 客户端配置的cartoCSS会覆盖相应图层的服务端cartoCSS
         if (!style) {
             var scale = this.getScaleFromCoords(coords);
-            var shaders = CartoCSSToLeaflet.pickShader(layerName) || [];
+            var shaders = this.cartoCSSToLeaflet.pickShader(layerName) || [];
             style = [];
             for (var itemKey in shaders) {
                 var shader = shaders[itemKey];
                 for (var j = 0; j < shader.length; j++) {
-                    var serverStyle = CartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
+                    var serverStyle = this.cartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
                     if (serverStyle) {
                         style.push(serverStyle);
                     }
@@ -249,7 +249,7 @@ export var  TileVectorLayer = VectorGrid.extend({
 
         //次优先级是layers资源的默认的样式，最低优先级是CartoDefaultStyle的样式
         if (feature.type === "TEXT" || (!style || style.length < 1)) {
-            style = CartoCSSToLeaflet.getValidStyleFromLayerInfo(feature, layerStyleInfo);
+            style = this.cartoCSSToLeaflet.getValidStyleFromLayerInfo(feature, layerStyleInfo);
             if (feature.type === "TEXT") {
                 style.textName = "[" + feature.properties.textField + "]";
             }

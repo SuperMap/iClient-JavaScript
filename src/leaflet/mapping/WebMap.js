@@ -44,7 +44,7 @@ export var WebMap = L.LayerGroup.extend({
         L.setOptions(this, options);
         this.id = id;
         this.load();
-
+        this.cartoCSSToLeaflet = new CartoCSSToLeaflet();
     },
 
     /**
@@ -317,9 +317,9 @@ export var WebMap = L.LayerGroup.extend({
             "http://t{s}.tianditu.com/{type}_{proj}/wmts?";
         var type = layerInfo.type.split('_')[1].toLowerCase();
         if (layerInfo.layerType === 'OVERLAY_LAYER') {
-            if (type == "vec")type = "cva"
-            if (type == "img")type = "cia"
-            if (type == "ter")type = "cta"
+            if (type == "vec") type = "cva"
+            if (type == "img") type = "cia"
+            if (type == "ter") type = "cta"
         }
         wmtsURL = wmtsURL.replace("{type}", type).replace("{proj}", proj);
         var layer = L.supermap.tiandituTileLayer(wmtsURL,
@@ -359,7 +359,7 @@ export var WebMap = L.LayerGroup.extend({
                 return m;
             },
             coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
-                return CartoCSSToLeaflet.getStyleFromiPortalMarker(geoJsonFeature.properties.icon);
+                return that.cartoCSSToLeaflet.getStyleFromiPortalMarker(geoJsonFeature.properties.icon);
             },
         });
         if (this.options.featureLayerPopupEnable) {
@@ -377,36 +377,34 @@ export var WebMap = L.LayerGroup.extend({
     createVectorLayer: function (layerInfo, crs) {
         var style = layerInfo.style,
             opacity = layerInfo.opacity,
-            isVisible = layerInfo.isVisible;
+            isVisible = layerInfo.isVisible,
+            me = this;
         //todo readonly = layerInfo.readonly;
         var coordsToLatLng = function (coords) {
             var ll = crs.unproject(L.point(coords[0], coords[1]));
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
         if (!layerInfo.url) {
-            var me = this;
             var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.features), {
-                    pointToLayer: function (geojson, latlng) {
-                        var m = new L.Marker(latlng);
-                        m.setStyle = function (style) {
-                            if (style) {
-                                m.setIcon(style);
-                            }
+                pointToLayer: function (geojson, latlng) {
+                    var m = new L.Marker(latlng);
+                    m.setStyle = function (style) {
+                        if (style) {
+                            m.setIcon(style);
                         }
-                        return m;
-                    },
-                    coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
-                        return CartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
-                    },
-                    opacity: opacity
-                })
-                ;
+                    }
+                    return m;
+                },
+                coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
+                    return me.cartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
+                },
+                opacity: opacity
+            });
             if (this.options.featureLayerPopupEnable) {
                 layer.bindPopup(this.options.featureLayerPopup || this.defaultFeatureLayerPopup)
             }
             return layer;
         } else {
-            var me = this;
             var url = layerInfo.url,
                 datasourceName = layerInfo.name,
                 datasets = layerInfo.features;
@@ -429,17 +427,17 @@ export var WebMap = L.LayerGroup.extend({
                                     if (style) {
                                         m.setIcon(style);
                                     }
-                                }
+                                };
                                 return m;
                             },
                             coordsToLatLng: coordsToLatLng,
                             style: function (geoJsonFeature) {
-                                return CartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
+                                return me.cartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
                             },
                             opacity: opacity
                         });
                         if (this.options.featureLayerPopupEnable) {
-                            layer.bindPopup(this.options.featureLayerPopup || this.defaultFeatureLayerPopup)
+                            layer.bindPopup(me.options.featureLayerPopup || me.defaultFeatureLayerPopup)
                         }
                         me.addLayer(layer);
                     });

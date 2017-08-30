@@ -4,24 +4,30 @@ import './CartoStyleMap';
 import CartoCSS from '../../../common/style/CartoCSS';
 import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
+
 /**
  * @class L.supermap.CartoCSSToLeaflet
  * @classdesc CartoCSS样式转Leaflet样式类
+ * @param url - {String} 地图服务地址
  * @private
  */
-export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
+export class CartoCSSToLeaflet {
 
     /**
      * @member L.supermap.CartoCSSToLeaflet.prototype.cartoCSS
      * @description CartoCSS样式
      */
-    cartoCSS: null,
+    cartoCSS = null;
 
     /**
      * @member L.supermap.CartoCSSToLeaflet.prototype.mapUrl
      * @description 地图服务地址
      */
-    mapUrl: null,
+    mapUrl = null;
+
+    constructor(url) {
+        this.mapUrl = url;
+    }
 
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.pretreatedCartoCSS
@@ -29,7 +35,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
      * @param cartoStr - {string} Carto信息
      * @param processCharacters - {Object} 需要处理的特征对象
      */
-    pretreatedCartoCSS: function (cartoStr, processCharacters) {
+    pretreatedCartoCSS(cartoStr, processCharacters) {
         if (processCharacters) {
             cartoStr = this.processCharacters(cartoStr);
         }
@@ -45,14 +51,14 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
             this.cartoCSS[element.clean][attachment] = this.cartoCSS[element.clean][attachment] || [];
             this.cartoCSS[element.clean][attachment].push(shaders[i]);
         }
-    },
+    }
 
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.processCharacters
      * @description 替换一些关键符号
      * @param cartoCSSStr - {string} cartoCSSS信息
      */
-    processCharacters: function (cartoCSSStr) {
+    processCharacters(cartoCSSStr) {
         var style = cartoCSSStr;
         if (!style) {
             return;
@@ -68,27 +74,27 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
         //将zoom转化为scale，以免引起混淆
         style = style.replace(/\[zoom/gi, "[scale");
         return style;
-    },
+    }
 
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.pickShader
      * @description 拾取着色对象
      * @param layerName - {string} 图层名称
      */
-    pickShader: function (layerName) {
+    pickShader(layerName) {
         if (!this.cartoCSS) {
             return null;
         }
         var name = layerName.replace(/[@#\s]/gi, "___");
         return this.cartoCSS[name];
-    },
+    }
 
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getDefaultStyle
      * @description 获取默认风格
      * @param type - {string} 默认风格类型
      */
-    getDefaultStyle: function (type) {
+    getDefaultStyle(type) {
         var style = {};
         //设置默认值
         var expandStyle = L.supermap.DefaultStyle[type];
@@ -97,14 +103,14 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
             style[prop] = val;
         }
         return style;
-    },
+    }
 
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
      * @description 从iPortalMarker中获取样式
      * @param icon - {string} iPortal图标
      */
-    getStyleFromiPortalMarker: function (icon) {
+    getStyleFromiPortalMarker(icon) {
         if (icon.indexOf("./") == 0) {
             return null;
         }
@@ -118,7 +124,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
             iconAnchor: L.point(24, 43),
             popupAnchor: L.point(0, -43)
         });
-    },
+    }
 
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
@@ -127,7 +133,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
      * @param type - {string} 样式类型
      * @param fStyle -{Object} 图标参数
      */
-    getStyleFromiPortalStyle: function (iPortalStyle, type, fStyle) {
+    getStyleFromiPortalStyle(iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
         var style = {};
         if (type === 'Point' || type === 'MultiPoint') {
@@ -179,7 +185,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
             style.dashArray = this.dashStyle(polygonStyle, 1);
             return style;
         }
-    },
+    }
 
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.dashStyle
@@ -187,8 +193,8 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
      * @param style -{Object} 样式参数
      * @param widthFactor -{number}宽度系数
      */
-    dashStyle: function (style, widthFactor) {
-        if (!style)return [];
+    dashStyle(style, widthFactor) {
+        if (!style) return [];
         var w = style.strokeWidth * widthFactor;
         var str = style.strokeDashstyle;
         switch (str) {
@@ -205,12 +211,12 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
             case 'longdashdot':
                 return [8 * w, 4 * w, 1, 4 * w];
             default:
-                if (!str)return [];
-                if (SuperMap.Util.isArray(str))return str;
+                if (!str) return [];
+                if (SuperMap.Util.isArray(str)) return str;
                 str = SuperMap.String.trim(str).replace(/\s+/g, ",");
                 return str.replace(/\[|\]/gi, "").split(",");
         }
-    },
+    }
 
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromCarto
@@ -221,7 +227,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
      * @param feature - {L.feature} 要素
      * @param fromServer - {string} 服务源
      */
-    getValidStyleFromCarto: function (zoom, scale, shader, feature, fromServer) {
+    getValidStyleFromCarto(zoom, scale, shader, feature, fromServer) {
         if (!shader) {
             return null;
         }
@@ -250,7 +256,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
                 } else {
                     if (prop === "globalCompositeOperation") {
                         value = L.supermap.CompOpMap[value];
-                        if (!value || value === "")continue;
+                        if (!value || value === "") continue;
                     } else if (fromServer && prop === 'iconUrl') {
                         value = this.mapUrl + '/tileFeature/symbols/' + value.replace(/(___)/gi, '@');
                         value = value.replace(/(__0__0__)/gi, '__8__8__');
@@ -265,7 +271,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
             }
         }
         return style;
-    },
+    }
 
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromLayerInfo
@@ -273,7 +279,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
      * @param feature - {SuperMap.Feature} 要素
      * @param layerInfo - {Object} 图层信息
      */
-    getValidStyleFromLayerInfo: function (feature, layerInfo) {
+    getValidStyleFromLayerInfo(feature, layerInfo) {
         var type = feature.type,
             style = this.getDefaultStyle(type),
             shader = layerInfo && layerInfo.layerStyle;
@@ -402,4 +408,6 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
         return style;
     }
 
-};
+}
+
+L.supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;
