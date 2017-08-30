@@ -161,26 +161,27 @@
     <div id="info-content"></div>
 </div>
 <script type="text/javascript">
-    var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
-            addressUrl = "http://117.122.248.69:8090/iserver/services/addressmatch-Address/restjsr/v1/address",
-            imgUrl = "http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig_select.png",
-            vectorSource = new ol.source.Vector(),
-            addressMatchService = new ol.supermap.AddressMatchService(addressUrl),
-            view = new ol.View({
-                center: [116.383572, 39.914714],
-                zoom: 12,
-                projection: 'EPSG:4326'
-            }),
-            container = document.getElementById('info'),
-            content = document.getElementById('info-content'),
-            overlay = new ol.Overlay(({
-                element: container,
-                autoPan: true,
-                autoPanAnimation: {
-                    duration: 250
-                },
-                offset: [0, -20]
-            }));
+    var map,
+        url = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China_4326",
+        addressUrl = (window.isLocal ? document.location.host : "http://117.122.248.69:8090") + "/iserver/services/addressmatch-Address/restjsr/v1/address",
+        imgUrl = "../img/markerbig_select.png",
+        vectorSource = new ol.source.Vector(),
+        addressMatchService = new ol.supermap.AddressMatchService(addressUrl),
+        view = new ol.View({
+            center: [116.383572, 39.914714],
+            zoom: 12,
+            projection: 'EPSG:4326'
+        }),
+        container = document.getElementById('info'),
+        content = document.getElementById('info-content'),
+        overlay = new ol.Overlay(({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            },
+            offset: [0, -20]
+        }));
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
@@ -219,6 +220,7 @@
         $("#geodecodeParam").addClass('active');
         $("#geocodeParam").removeClass('active');
     });
+
     //判断输入字符串是否为空或者全部都是空格
     function isNull(str) {
         if (str == "") return true;
@@ -226,6 +228,7 @@
         var re = new RegExp(regu);
         return re.test(str);
     }
+
     var filters = $('#filters').val() || $('#filters').attr('placeholder');
     $("#codeBtn").click(function () {
         var geoCodeParam = new SuperMap.GeoCodingParameter({

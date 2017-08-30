@@ -36,9 +36,9 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, id, pointFeature, vectorSource, resultLayer,
-        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-        urlCapital = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data",
-        url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+        baseUrl = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World",
+        urlCapital = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/data-world/rest/data",
+        url = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/data-world/rest/data";
 
     map = new ol.Map({
         target: 'map',
@@ -73,7 +73,7 @@
             for (var i = 0; i < features.length; i++) {
                 features[i].setStyle(new ol.style.Style({
                     image: new ol.style.Icon(({
-                        src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig_select.png'
+                        src: '../img/markerbig_select.png'
                     }))
                 }));
             }
@@ -94,7 +94,7 @@
         pointFeature = new ol.Feature(new ol.geom.Point([Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)]));
         pointFeature.setStyle(new ol.style.Style({
             image: new ol.style.Icon(({
-                src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig.png'
+                src: '../img/markerbig.png'
             }))
         }));
         pointFeature.setProperties({POP: 1, CAPITAL: 'test'});

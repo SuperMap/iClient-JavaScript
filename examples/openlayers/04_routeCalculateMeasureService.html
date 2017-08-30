@@ -53,8 +53,8 @@
 <script type="text/javascript">
     var map, options, queryBySQLParams, queryBySQLService, resultLayer,
         routeCalculateMeasureParameters, routeCalculateMeasureService,
-        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+        baseUrl = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');
     var overlay = new ol.Overlay(({

@@ -8,18 +8,18 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="width: 100%;height:100%"></div>
 <div id="stopMarker1">
-    <img src="http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png"/>
+    <img src="../img/marker.png"/>
 </div>
 <div id="stopMarker2">
-    <img src="http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png"/>
+    <img src="../img/marker.png"/>
 </div>
 <div id="stopMarker3">
-    <img src="http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png"/>
+    <img src="../img/marker.png"/>
 </div>
 <script type="text/javascript">
     var map,
-        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+        baseUrl = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     //最佳路径分析是按照站点添加顺序对站点进行访问的
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({

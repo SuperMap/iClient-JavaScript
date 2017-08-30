@@ -82,7 +82,7 @@
         }),
         overlays: [overlay]
     });
-    var url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+    var url = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China";
     var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,

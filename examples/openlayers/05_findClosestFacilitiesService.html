@@ -9,8 +9,8 @@
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
     var map, options,
-        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+        baseUrl = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
@@ -46,7 +46,7 @@
         var facilityFeature3 = new ol.Feature(facilityPoint3);
         var iconStyle_facility = new ol.style.Style({
             image: new ol.style.Icon(({
-                src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker-gold.png'
+                src: '../img/marker-gold.png'
             }))
         });
         facilityFeature1.setStyle(iconStyle_facility);
@@ -63,7 +63,7 @@
         var eventFeature = new ol.Feature(eventPoint);
         var iconStyle_event = new ol.style.Style({
             image: new ol.style.Icon(({
-                src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png'
+                src: '../img/marker.png'
             }))
         });
         eventFeature.setStyle(iconStyle_event);

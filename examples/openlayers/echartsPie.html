@@ -21,7 +21,7 @@
         }),
         layers: [new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({
-                url: "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Gray",
+                url: (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/世界地图_Gray",
             }),
             projection: 'EPSG:4326'
         })]
