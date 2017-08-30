@@ -51,15 +51,16 @@ describe('testTilesetsService_processAsync',function(){
                 expect(analyseResult).not.toBeNull();
                 expect(analyseResult.succeed).toBeTruthy();
                 expect(analyseResult.length).toEqual(1);
-                expect(serviceCompletedEventArgsSystem.result[0].name).toBe("smtiles_tileset_-2107465189");
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.mapName).toBe("ChinaProvinces");
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.resolutions[0]).toEqual(0.24598888713);
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.resolutions[1]).toEqual(0.12299444357);
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.scaleDenominators[0]).toEqual(103496154.92075206);
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.scaleDenominators[1]).toEqual(51748077.46247971);
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.tileFormat).toBe("PNG");
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.tileHeight).toEqual(256);
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.tileWidth).toEqual(256);
+                expect(analyseResult[0].name).toBe("smtiles_tileset_1116742863");
+                expect(analyseResult[0].metaData.mapName).toBe("长春市区图");
+                expect(analyseResult[0].metaData.resolutions[0]).toEqual(34.80645971);
+                expect(analyseResult[0].metaData.resolutions[1]).toEqual(17.403229855);
+                expect(analyseResult[0].metaData.scaleDenominators[0]).toEqual(131551.9737070866);
+                expect(analyseResult[0].metaData.scaleDenominators[1]).toEqual(65775.9868535433);
+                expect(analyseResult[0].metaData.tileFormat).toBe("PNG");
+                expect(analyseResult[0].metaData.tileType).toBe("Image");
+                expect(analyseResult[0].metaData.tileHeight).toEqual(256);
+                expect(analyseResult[0].metaData.tileWidth).toEqual(256);
                 tilesetsService.destroy();
                 done();
             } catch (exception) {

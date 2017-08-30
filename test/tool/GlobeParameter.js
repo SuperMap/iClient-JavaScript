@@ -18,7 +18,7 @@
     WMTSURL: "http://localhost:8090/iserver/services/map-world/wmts100",
     WCSURL: "http://localhost:8090/iserver/services/data-world/wcs111",
     plotUrl: "http://localhost:8090/iserver/services/plot-jingyong/rest/plot",
-    tileSetsURL: "http://localhost:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces",
+    tileSetsURL: "http://localhost:8090/iserver/services/map-changchun/rest/maps/长春市区图",
     addressMatchURL: "http://localhost:8090/iserver/services/addressmatch-Address/restjsr/v1/address",
     jingjinMapURL: "http://localhost:8090/iserver/services/map-jingjin/rest",
     editServiceURL_leaflet: "http://localhost:8090/iserver/services/data-jingjin/rest/data",
