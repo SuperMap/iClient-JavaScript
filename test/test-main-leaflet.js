@@ -21,6 +21,7 @@ require('./leaflet/services/ThemeServiceSpec.js');
 
 /*leaflet -- overlay*/
 require('./leaflet/overlay/RankSymbolThemeLayerSpec.js');
+require('./leaflet/overlay/TileVectorLayerSpec.js');
 require('./leaflet/overlay/UniqueThemeLayerSpec.js');
 require('./leaflet/overlay/theme/GraphThemeLayerSpec.js');
 
