@@ -113,7 +113,7 @@ export default class WebMap extends ol.Observable {
     }
 
     toProjection(epsgCode, type, extent) {
-        if (epsgCode == -1000 && type == "PCS_NON_EARTH") {
+        if (epsgCode == -1000) {
             return new ol.proj.Projection({
                 extent: extent,
                 units: 'm'
@@ -162,6 +162,9 @@ export default class WebMap extends ol.Observable {
      */
     getResolutionsFromScales(scales, dpi, units, datum) {
         var resolutions = [];
+        if(!scales||scales.length==0){
+            return resolutions;
+        }
         for (var i = 0; i < scales.length; i++) {
             resolutions.push(SuperMap.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
@@ -179,16 +182,17 @@ export default class WebMap extends ol.Observable {
             epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
             center = this.mapInfo.center || layerInfo.center,
             level = this.mapInfo.level || layerInfo.level,
-            bounds = this.mapInfo.extent || layerInfo.bounds,
+            bounds = layerInfo.bounds ||this.mapInfo.extent ,
             scales = layerInfo.scales,
             opacity = layerInfo.opacity,
             origin = [bounds.leftBottom.x, bounds.rightTop.y],
             extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
         var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
+
         //var crs = this.createCRS(epsgCode, origin, resolution, boundsL);
         var viewOptions = {
             center: [center.x, center.y],
-            zoom: level - 1,
+            zoom: level,
             projection: projection,
             extent: extent
         };
@@ -198,7 +202,11 @@ export default class WebMap extends ol.Observable {
                 layer = new ol.layer.Tile({
                     source: new ol.source.TileSuperMapRest({
                         url: layerInfo.url,
-                        opaque: opacity
+                        transparent: true,
+                        tileGrid:scales? new ol.tilegrid.TileGrid({
+                            extent: extent,
+                            resolutions: this.getResolutionsFromScales(scales,96)
+                        }):ol.source.TileSuperMapRest.createTileGrid(extent)
                     }),
                     projection: projection
                 });

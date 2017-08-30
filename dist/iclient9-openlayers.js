@@ -13979,7 +13979,7 @@ var WebMap = function (_ol$Observable) {
     }, {
         key: 'toProjection',
         value: function toProjection(epsgCode, type, extent) {
-            if (epsgCode == -1000 && type == "PCS_NON_EARTH") {
+            if (epsgCode == -1000) {
                 return new _olDebug2.default.proj.Projection({
                     extent: extent,
                     units: 'm'
@@ -14033,6 +14033,9 @@ var WebMap = function (_ol$Observable) {
         key: 'getResolutionsFromScales',
         value: function getResolutionsFromScales(scales, dpi, units, datum) {
             var resolutions = [];
+            if (!scales || scales.length == 0) {
+                return resolutions;
+            }
             for (var i = 0; i < scales.length; i++) {
                 resolutions.push(_SuperMap2.default.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum));
             }
@@ -14053,16 +14056,17 @@ var WebMap = function (_ol$Observable) {
                 epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
                 center = this.mapInfo.center || layerInfo.center,
                 level = this.mapInfo.level || layerInfo.level,
-                bounds = this.mapInfo.extent || layerInfo.bounds,
+                bounds = layerInfo.bounds || this.mapInfo.extent,
                 scales = layerInfo.scales,
                 opacity = layerInfo.opacity,
                 origin = [bounds.leftBottom.x, bounds.rightTop.y],
                 extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
             var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
+
             //var crs = this.createCRS(epsgCode, origin, resolution, boundsL);
             var viewOptions = {
                 center: [center.x, center.y],
-                zoom: level - 1,
+                zoom: level,
                 projection: projection,
                 extent: extent
             };
@@ -14072,7 +14076,11 @@ var WebMap = function (_ol$Observable) {
                     layer = new _olDebug2.default.layer.Tile({
                         source: new _olDebug2.default.source.TileSuperMapRest({
                             url: layerInfo.url,
-                            opaque: opacity
+                            transparent: true,
+                            tileGrid: scales ? new _olDebug2.default.tilegrid.TileGrid({
+                                extent: extent,
+                                resolutions: this.getResolutionsFromScales(scales, 96)
+                            }) : _olDebug2.default.source.TileSuperMapRest.createTileGrid(extent)
                         }),
                         projection: projection
                     });

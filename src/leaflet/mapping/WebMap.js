@@ -3,6 +3,7 @@ import L from "leaflet";
 import {FetchRequest as Request} from '../../common/util/FetchRequest';
 import SuperMap from '../../common/SuperMap';
 import {CartoCSSToLeaflet} from '../overlay/carto/CartoCSSToLeaflet' ;
+import {NonEarthCRS} from "../core/NonEarthCRS"
 
 /**
  * @class L.supermap.webmap
@@ -147,13 +148,14 @@ export var WebMap = L.LayerGroup.extend({
      * @param bounds -{SuperMap.Bounds} 指定坐标范围
      */
     createCRS: function (epsgCode, type, resolutions, origin, bounds) {
-        if (epsgCode == -1000 && type == "PCS_NON_EARTH") {
-            return L.supermap.NonEarthCRS({
+        if (epsgCode < 0) {
+            return new NonEarthCRS({
                 bounds: bounds,
                 origin: origin,
                 resolutions: resolutions
             })
         }
+
         if (epsgCode === 910112 || epsgCode === 910102) {
             return L.CRS.BaiduCRS;
         }
@@ -188,7 +190,12 @@ export var WebMap = L.LayerGroup.extend({
             zoom: options.zoom || 0,
             crs: crs
         });
-        this._map.fitBounds(bounds);
+        if(crs instanceof  NonEarthCRS){
+            this._map.setZoom(options.zoom? options.zoom + 2: 2,{maxZoom:options.maxZoom || 22});
+        }else{
+            this._map.fitBounds(bounds,{maxZoom:options.maxZoom || 22});
+        }
+
 
     },
 
