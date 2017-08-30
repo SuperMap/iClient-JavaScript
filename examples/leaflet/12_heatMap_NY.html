@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>纽约出租车上车点热力图</title>
+    <script type="text/javascript" include="bootstrap-css,jquery,papaparse" src="../include-web.js"></script>
 
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
     <style>
         #loading {
             position: absolute;
@@ -26,12 +25,7 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <div id="loading">纽约出租车145万上车点数据加载中...</div>
-
-<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js"></script>
-<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/PapaParse/4.3.2/papaparse.min.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript" include="leaflet.heat" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
 
     var url = "https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Dark";
@@ -43,7 +37,7 @@
     });
 
     var attribution = '数据来源<a target="_blank" href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml">NYC Taxi(纽约出租车上车点)</a>';
-    L.supermap.tiledMapLayer(url,{attribution:attribution}).addTo(map);
+    L.supermap.tiledMapLayer(url, {attribution: attribution}).addTo(map);
     loadHeatMap();
 
     function loadHeatMap() {

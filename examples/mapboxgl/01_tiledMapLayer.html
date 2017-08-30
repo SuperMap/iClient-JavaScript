@@ -4,8 +4,6 @@
     <meta charset='utf-8'/>
     <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script type="text/javascript" exclude='iclient9-mapboxgl' src="../../dist/mbgl-include.js"></script>
-
     <style>
         body {
             margin: 0;
@@ -21,9 +19,10 @@
     </style>
 </head>
 <body>
-
 <div id='map'></div>
-<script>
+<script type="text/javascript" exclude='iclient9-mapboxgl' src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090";
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
         " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
@@ -36,7 +35,7 @@
                 "raster-tiles": {
                     "attribution": attribution,
                     "type": "raster",
-                    "tiles": ['http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
                     "tileSize": 256
                 }
             },

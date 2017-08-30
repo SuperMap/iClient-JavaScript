@@ -2,9 +2,8 @@
 <head>
     <meta charset='utf-8'/>
     <title></title>
-
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script type="text/javascript" exclude='iclient9-mapboxgl' src="../../dist/mbgl-include.js"></script>
+    <script type="text/javascript" exclude='iclient9-mapboxgl' src="../../dist/include-mapboxgl.js"></script>
     <style>
         body {
             margin: 0;
@@ -20,10 +19,11 @@
     </style>
 </head>
 <body>
-
 <div id='map'></div>
-<script>
-    var attribution="<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+<script type="text/javascript">
+    var host = window.isLocal ? document.location.host : "http://117.122.248.69:8090";
+
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
         " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
 
@@ -33,12 +33,12 @@
             "version": 8,
             "sources": {
                 "vector-tiles": {
-                    "attribution":attribution,
+                    "attribution": attribution,
                     "type": "vector",
-                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": [host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
-            "glyphs": "http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
+            "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": []
         },
         center: [116.4, 39.9],
@@ -730,7 +730,7 @@
                 "text-size": 14
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -750,7 +750,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -770,7 +770,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -790,7 +790,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -810,7 +810,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -830,7 +830,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -850,7 +850,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -870,7 +870,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -890,7 +890,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -910,7 +910,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -930,7 +930,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -950,7 +950,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -975,7 +975,7 @@
                 "公厕"
             ],
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -995,7 +995,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1020,7 +1020,7 @@
                 "停车场"
             ],
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1042,7 +1042,7 @@
             },
 
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1062,7 +1062,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1082,7 +1082,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1102,7 +1102,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1122,7 +1122,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1142,7 +1142,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1162,7 +1162,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1182,7 +1182,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1202,7 +1202,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,
@@ -1222,7 +1222,7 @@
                 "text-size": 12
             },
             "paint": {
-               "text-color": "rgb(117, 129, 145)",
+                "text-color": "rgb(117, 129, 145)",
                 "text-opacity": 1,
                 "text-halo-color": "rgb(242,243,240)",
                 "text-halo-width": 1,

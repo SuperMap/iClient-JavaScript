@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>区域汇总分析</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" include="jquery,bootstrap" src="../include-web.js"></script>
     <style>
         .control {
             position: absolute;
@@ -135,23 +135,20 @@
         </div>
     </div>
 </div>
-
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://iclient.supermapol.com/libs/iclient8c/libs/SuperMap.Include.js"></script>
-<script type="text/javascript" src="../../dist/iclient-classic.min.js"></script>
-
+<script type="text/javascript" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var resultLayer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
-            token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
-            map = new SuperMap.Map("map", {
-                controls: [
-                    new SuperMap.Control.Navigation(),
-                    new SuperMap.Control.Zoom(),
-                    new SuperMap.Control.LayerSwitcher()
+    var host = window.isLocal ? document.location.host : "http://117.122.248.69:8090";
+    var resultLayer,
+        processingsUrl = host + "/iserver/services/spatialprocessing/rest/v1/jobs",
+        token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Navigation(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.LayerSwitcher()
 
-                ], allOverlays: true
-            });
+            ], allOverlays: true
+        });
     map.addControl(new SuperMap.Control.MousePosition());
     var tiandituLayer = new SuperMap.Layer.Tianditu();
     map.addLayers([tiandituLayer]);
@@ -172,7 +169,8 @@
         $("#weightS").hide();
     });
     var processingService = new SuperMap.REST.ProcessingService(processingsUrl);
-    SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
+    SuperMap.SecurityManager.registerToken(host, token);
+
     function getQuery() {
         if ($('#query').val() === "") {
             return "";
@@ -182,12 +180,13 @@
             query.push(parseFloat(el));
         });
         return new SuperMap.Bounds(
-                query[0],
-                query[1],
-                query[2],
-                query[3]
+            query[0],
+            query[1],
+            query[2],
+            query[3]
         );
     }
+
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
@@ -226,6 +225,7 @@
                         var mapUrl = result[0].path;
                         resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer("resultLayer", mapUrl, {transparent: true});
                         resultLayer.events.on({"layerInitialized": addLayer});
+
                         function addLayer() {
                             map.addLayer(resultLayer);
                             $("#model").modal('hide');
@@ -242,9 +242,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                    "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
-                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                    "<strong><p id='msg'></p></strong></div>");
+                "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

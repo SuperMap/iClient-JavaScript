@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>区域汇总分析</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <script type="text/javascript" include="jquery,bootstrap" src="../include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="model" class="modal fade" tabindex="-1" role="dialog">
@@ -20,21 +19,18 @@
     </div>
 </div>
 <div id="map" style="width: 100%;height:100%"></div>
-
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
-    var layer, processingUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
-            token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
-            map = L.map('map', {
-                crs: L.CRS.TianDiTu_WGS84,
-                center: [40.75, -73.95],
-                maxZoom: 18,
-                zoom: 12
-            }),
-            info = L.control({position: 'topright'});
+    var host = window.isLocal ? document.location.host : "http://117.122.248.69:8090";
+    var layer, processingUrl = host + "/iserver/services/spatialprocessing/rest/v1/jobs",
+        token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
+        map = L.map('map', {
+            crs: L.CRS.TianDiTu_WGS84,
+            center: [40.75, -73.95],
+            maxZoom: 18,
+            zoom: 12
+        }),
+        info = L.control({position: 'topright'});
     L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
         layer: "vec",
         tilematrixSet: "c"
@@ -44,58 +40,58 @@
         var popup = L.DomUtil.create('div');
         popup.style = 'width:420px';
         popup.innerHTML = "<div class='panel panel-default'>" +
-                "<div class='panel-heading'>" +
-                "<h3 class='panel-title'>区域汇总分析</h3>" +
-                "</div><div class='panel-body'>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>输入数据<span title='必填字段' style='color: red;'> * </span>　　　　　</span>" +
-                "<input id='datasetName' type='text' class='form-control'value='samples_processing_newyorkZone_R'/>" +
-                "</div><p><div class='input-group'>" +
-                "<span class='input-group-addon'>汇总类型<span title='必填字段' style='color: red;'> * </span>　　　　　</span> <div>" +
-                "<select class='form-control' id='type' name='clientType'>" +
-                "<option value='SUMMARYMESH' selected='selected'>网格面汇总</option>" +
-                "<option value='SUMMARYREGION'>多边形汇总</option>" +
-                "</select></div></div><p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>网格面汇总类型<span title='必填字段' style='color: red;'> * </span>　　</span>" +
-                "<select class='form-control' id='meshType' name='clientType'>" +
-                "<option value='0' selected='selected'>四边形网格</option>" +
-                "<option value='1'>六边形网格</option>" +
-                "</select></div><p><div class='input-group'>" +
-                "<span class='input-group-addon'>分析范围　　　　　</span>" +
-                "<input id='query' type='text' class='form-control' value='-74.050,40.650,-73.850,40.850'/>" +
-                "</div><p><p><div class='input-group'>" +
-                "<span class='input-group-addon'>以标准属性字段统计</span>" +
-                "<span class='form-control'>" +
-                "<input id='standardSummaryFields' type='checkbox'>" +
-                "</span><span class='input-group-addon'>以权重字段统计　</span>" +
-                "<span class='form-control'><input id='weightedSummaryFields' type='checkbox'>" +
-                "</span></div><p><div id='standardS' style='display: none'>" +
-                "<div class='input-group'><span class='input-group-addon'>属性字段统计模式<span title='必填字段' style='color: red;'> * </span>　</span>" +
-                "<input id='standardStatisticModes' type='text' class='form-control' value='max'/>" +
-                "</div><p><div class='input-group'>" +
-                "<span class='input-group-addon'>属性字段名<span title='必填字段' style='color: red;'> * </span>　　　　</span>" +
-                "<input id='standardFields' type='text' class='form-control' value='LocationID'/>" +
-                "</div><p></div><div id='weightS' style='display: none'>" +
-                "<div class='input-group'><span class='input-group-addon'>权重字段统计模式<span title='必填字段' style='color: red;'> * </span>　</span>" +
-                "<input id='weightedStatisticModes' type='text' class='form-control' value='max'/>" +
-                "</div><p><div class='input-group'><span class='input-group-addon'>权重字段名<span title='必填字段' style='color: red;'> * </span>　　　　</span>" +
-                "<input id='weightedFields' type='text' class='form-control' value='LocationID'/>" +
-                "</div><p></div><div class='input-group'>" +
-                "<span class='input-group-addon'>网格大小　　　　　</span>" +
-                "<input id='resolution' type='text' class='form-control' value='100'/>" +
-                "</div><p><div class='input-group'><span class='input-group-addon'>网格大小单位　　　</span>" +
-                "<select class='form-control' id='meshSizeUnit' name='clientType'>" +
-                "<option value='Meter' selected='selected'>Meter</option>" +
-                "<option value='Kilometer'>Kilometer</option>" +
-                "<option value='Yard'>Yard</option>" +
-                "<option value='Foot'>Foot</option>" +
-                "<option value='Mile'>Mile</option>" +
-                "</select></div><p><div class='input-group'>" +
-                "<span class='input-group-addon'>是否统计长度或面积</span>" +
-                "<span class='form-control'><input id='sumShape' type='checkbox' checked>" +
-                "</span></div><p><div align='right'>" +
-                "<input type='button' id='btn' class='btn btn-primary' value='创建'/></div></div>"
+            "<div class='panel-heading'>" +
+            "<h3 class='panel-title'>区域汇总分析</h3>" +
+            "</div><div class='panel-body'>" +
+            "<div class='input-group'>" +
+            "<span class='input-group-addon'>输入数据<span title='必填字段' style='color: red;'> * </span>　　　　　</span>" +
+            "<input id='datasetName' type='text' class='form-control'value='samples_processing_newyorkZone_R'/>" +
+            "</div><p><div class='input-group'>" +
+            "<span class='input-group-addon'>汇总类型<span title='必填字段' style='color: red;'> * </span>　　　　　</span> <div>" +
+            "<select class='form-control' id='type' name='clientType'>" +
+            "<option value='SUMMARYMESH' selected='selected'>网格面汇总</option>" +
+            "<option value='SUMMARYREGION'>多边形汇总</option>" +
+            "</select></div></div><p>" +
+            "<div class='input-group'>" +
+            "<span class='input-group-addon'>网格面汇总类型<span title='必填字段' style='color: red;'> * </span>　　</span>" +
+            "<select class='form-control' id='meshType' name='clientType'>" +
+            "<option value='0' selected='selected'>四边形网格</option>" +
+            "<option value='1'>六边形网格</option>" +
+            "</select></div><p><div class='input-group'>" +
+            "<span class='input-group-addon'>分析范围　　　　　</span>" +
+            "<input id='query' type='text' class='form-control' value='-74.050,40.650,-73.850,40.850'/>" +
+            "</div><p><p><div class='input-group'>" +
+            "<span class='input-group-addon'>以标准属性字段统计</span>" +
+            "<span class='form-control'>" +
+            "<input id='standardSummaryFields' type='checkbox'>" +
+            "</span><span class='input-group-addon'>以权重字段统计　</span>" +
+            "<span class='form-control'><input id='weightedSummaryFields' type='checkbox'>" +
+            "</span></div><p><div id='standardS' style='display: none'>" +
+            "<div class='input-group'><span class='input-group-addon'>属性字段统计模式<span title='必填字段' style='color: red;'> * </span>　</span>" +
+            "<input id='standardStatisticModes' type='text' class='form-control' value='max'/>" +
+            "</div><p><div class='input-group'>" +
+            "<span class='input-group-addon'>属性字段名<span title='必填字段' style='color: red;'> * </span>　　　　</span>" +
+            "<input id='standardFields' type='text' class='form-control' value='LocationID'/>" +
+            "</div><p></div><div id='weightS' style='display: none'>" +
+            "<div class='input-group'><span class='input-group-addon'>权重字段统计模式<span title='必填字段' style='color: red;'> * </span>　</span>" +
+            "<input id='weightedStatisticModes' type='text' class='form-control' value='max'/>" +
+            "</div><p><div class='input-group'><span class='input-group-addon'>权重字段名<span title='必填字段' style='color: red;'> * </span>　　　　</span>" +
+            "<input id='weightedFields' type='text' class='form-control' value='LocationID'/>" +
+            "</div><p></div><div class='input-group'>" +
+            "<span class='input-group-addon'>网格大小　　　　　</span>" +
+            "<input id='resolution' type='text' class='form-control' value='100'/>" +
+            "</div><p><div class='input-group'><span class='input-group-addon'>网格大小单位　　　</span>" +
+            "<select class='form-control' id='meshSizeUnit' name='clientType'>" +
+            "<option value='Meter' selected='selected'>Meter</option>" +
+            "<option value='Kilometer'>Kilometer</option>" +
+            "<option value='Yard'>Yard</option>" +
+            "<option value='Foot'>Foot</option>" +
+            "<option value='Mile'>Mile</option>" +
+            "</select></div><p><div class='input-group'>" +
+            "<span class='input-group-addon'>是否统计长度或面积</span>" +
+            "<span class='form-control'><input id='sumShape' type='checkbox' checked>" +
+            "</span></div><p><div align='right'>" +
+            "<input type='button' id='btn' class='btn btn-primary' value='创建'/></div></div>"
         handleMapEvent(popup, this._map);
         return popup;
     };
@@ -117,6 +113,7 @@
     });
     var processingService = new L.supermap.processingService(processingUrl);
     SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
+
     function getQuery() {
         if ($('#query').val() === "") {
             return "";
@@ -127,6 +124,7 @@
         });
         return L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2]));
     }
+
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
@@ -194,9 +192,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                    "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
-                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                    "<strong><p id='msg'></p></strong></div>");
+                "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

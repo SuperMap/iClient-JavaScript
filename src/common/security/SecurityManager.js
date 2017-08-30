@@ -120,7 +120,7 @@ SuperMap.SecurityManager = {
      * @param newTab -{boolean}是否新窗口打开
      */
     loginOnline: function (callbackLocation, newTab) {
-        var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
+        var loginUrl = SuperMap.SecurityManager.SSO  + "/login?service=" + callbackLocation;
         this._open(loginUrl, newTab);
     },
 

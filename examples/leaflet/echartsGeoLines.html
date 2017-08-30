@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>ECharts Geo-Lines with Leaflet</title>
-
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-
-<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
-<script>
-    var map, url = "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Gray";
+<script type="text/javascript" include="echarts" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090";
+    var map, url = host + "/iserver/services/map-world/rest/maps/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Gray";
     map = L.map('map', {
         crs: L.CRS.EPSG4326,
         center: [31.66, 114.88],
@@ -200,80 +196,80 @@
     var series = [];
     [['北京', BJData], ['上海', SHData], ['广州', GZData]].forEach(function (item, i) {
         series.push({
-                    name: item[0] + ' Top10',
-                    type: 'lines',
-                    coordinateSystem: 'leaflet',
-                    zlevel: 1,
-                    effect: {
-                        show: true,
-                        period: 6,
-                        trailLength: 0.7,
-                        color: '#fff',
-                        symbolSize: 3
-                    },
-                    lineStyle: {
-                        normal: {
-                            color: color[i],
-                            width: 0,
-                            curveness: 0.2
-                        }
-                    },
-                    data: convertData(item[1])
+                name: item[0] + ' Top10',
+                type: 'lines',
+                coordinateSystem: 'leaflet',
+                zlevel: 1,
+                effect: {
+                    show: true,
+                    period: 6,
+                    trailLength: 0.7,
+                    color: '#fff',
+                    symbolSize: 3
                 },
-                {
-                    name: item[0] + ' Top10',
-                    type: 'lines',
-                    coordinateSystem: 'leaflet',
-                    zlevel: 2,
-                    symbol: ['none', 'arrow'],
-                    symbolSize: 10,
-                    effect: {
-                        show: true,
-                        period: 6,
-                        trailLength: 0,
-                        symbol: planePath,
-                        symbolSize: 15
-                    },
-                    lineStyle: {
-                        normal: {
-                            color: color[i],
-                            width: 1,
-                            opacity: 0.6,
-                            curveness: 0.2
-                        }
-                    },
-                    data: convertData(item[1])
+                lineStyle: {
+                    normal: {
+                        color: color[i],
+                        width: 0,
+                        curveness: 0.2
+                    }
                 },
-                {
-                    name: item[0] + ' Top10',
-                    type: 'effectScatter',
-                    coordinateSystem: 'leaflet',
-                    zlevel: 2,
-                    rippleEffect: {
-                        brushType: 'stroke'
-                    },
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'right',
-                            formatter: '{b}'
-                        }
-                    },
-                    symbolSize: function (val) {
-                        return val[2] / 8;
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: color[i]
-                        }
-                    },
-                    data: item[1].map(function (dataItem) {
-                        return {
-                            name: dataItem[1].name,
-                            value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
-                        };
-                    })
-                });
+                data: convertData(item[1])
+            },
+            {
+                name: item[0] + ' Top10',
+                type: 'lines',
+                coordinateSystem: 'leaflet',
+                zlevel: 2,
+                symbol: ['none', 'arrow'],
+                symbolSize: 10,
+                effect: {
+                    show: true,
+                    period: 6,
+                    trailLength: 0,
+                    symbol: planePath,
+                    symbolSize: 15
+                },
+                lineStyle: {
+                    normal: {
+                        color: color[i],
+                        width: 1,
+                        opacity: 0.6,
+                        curveness: 0.2
+                    }
+                },
+                data: convertData(item[1])
+            },
+            {
+                name: item[0] + ' Top10',
+                type: 'effectScatter',
+                coordinateSystem: 'leaflet',
+                zlevel: 2,
+                rippleEffect: {
+                    brushType: 'stroke'
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                symbolSize: function (val) {
+                    return val[2] / 8;
+                },
+                itemStyle: {
+                    normal: {
+                        color: color[i]
+                    }
+                },
+                data: item[1].map(function (dataItem) {
+                    return {
+                        name: dataItem[1].name,
+                        value: geoCoordMap[dataItem[1].name].concat([dataItem[1].value])
+                    };
+                })
+            });
     });
 
     option = {

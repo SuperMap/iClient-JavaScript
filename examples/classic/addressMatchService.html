@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>地址匹配服务</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" include="bootstrap-css,jquery" src="../include-web.js"></script>
     <style>
         .control {
             position: absolute;
@@ -25,120 +25,119 @@
                 <li id="geocode" role="presentation" class="active"><a href="#">正向匹配</a></li>
                 <li id="geodecode" role="presentation"><a href="#">反向匹配</a></li>
             </ul>
-            <p>
-                <div class="tab-content">
-                    <div id="geocodeParam" role="tabpanel" class="tab-pane deplistContent active">
-                        <div class="input-group">
-                            <span class="input-group-addon">地址　　　</span>
-                            <input id="address" type="text" class="form-control" placeholder="公司"/>
-                        </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">过滤字段　</span>
-                <input id="filters" type="text" class="form-control"
-                       placeholder="北京"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">最小索引　</span>
-                <input id="fromIndex" type="text" class="form-control"
-                       placeholder="0"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">最大索引　</span>
-                <input id="toIndex" type="text" class="form-control"
-                       placeholder="10"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">最大结果数</span>
-                <input id="maxReturn" type="text" class="form-control"
-                       placeholder="-1"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">坐标系　　</span>
-                <input id="prjCoordSys" type="text" class="form-control"
-                       placeholder="{epsgcode:4326}"/>
-            </div>
-            <p>
-            <div align="right">
-                <input type="button" id='codeBtn' class="btn btn-primary" value="匹配"/>
-            </div>
-        </div>
-        <div id="geodecodeParam" role="tabpanel" class="tab-pane deplistContent">
-            <div class="input-group">
-                <span class="input-group-addon">横坐标　　</span>
-                <input id="xCoord" type="text" class="form-control" placeholder="116.3518541194752"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">纵坐标　　</span>
-                <input id="yCoord" type="text" class="form-control"
-                       placeholder="40.00097839595237"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">过滤字段　</span>
-                <input id="filters2" type="text" class="form-control"
-                       placeholder=""/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">最小索引　</span>
-                <input id="fromIndex2" type="text" class="form-control"
-                       placeholder="0"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">最大索引　</span>
-                <input id="toIndex2" type="text" class="form-control"
-                       placeholder="10"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">最大结果数</span>
-                <input id="maxReturn2" type="text" class="form-control"
-                       placeholder="-1"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">查询半径　</span>
-                <input id="geoDecodingRadius" type="text" class="form-control"
-                       placeholder="-1"/>
-            </div>
-            <p>
-            <div class="input-group">
-                <span class="input-group-addon">坐标系　　</span>
-                <input id="prjCoordSys2" type="text" class="form-control"
-                       placeholder="{epsgcode:4326}"/>
-            </div>
-            <p>
-            <div align="right">
-                <input type="button" id='decodeBtn' class="btn btn-primary" value="匹配"/>
+            <p></p>
+            <div class="tab-content">
+                <div id="geocodeParam" role="tabpanel" class="tab-pane deplistContent active">
+                    <div class="input-group">
+                        <span class="input-group-addon">地址　　　</span>
+                        <input id="address" type="text" class="form-control" placeholder="公司"/>
+                    </div>
+
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">过滤字段　</span>
+                        <input id="filters" type="text" class="form-control"
+                               placeholder="北京"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">最小索引　</span>
+                        <input id="fromIndex" type="text" class="form-control"
+                               placeholder="0"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">最大索引　</span>
+                        <input id="toIndex" type="text" class="form-control"
+                               placeholder="10"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">最大结果数</span>
+                        <input id="maxReturn" type="text" class="form-control"
+                               placeholder="-1"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">坐标系　　</span>
+                        <input id="prjCoordSys" type="text" class="form-control"
+                               placeholder="{epsgcode:4326}"/>
+                    </div>
+                    <p></p>
+                    <div align="right">
+                        <input type="button" id='codeBtn' class="btn btn-primary" value="匹配"/>
+                    </div>
+                </div>
+                <div id="geodecodeParam" role="tabpanel" class="tab-pane deplistContent">
+                    <div class="input-group">
+                        <span class="input-group-addon">横坐标　　</span>
+                        <input id="xCoord" type="text" class="form-control" placeholder="116.3518541194752"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">纵坐标　　</span>
+                        <input id="yCoord" type="text" class="form-control"
+                               placeholder="40.00097839595237"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">过滤字段　</span>
+                        <input id="filters2" type="text" class="form-control"
+                               placeholder=""/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">最小索引　</span>
+                        <input id="fromIndex2" type="text" class="form-control"
+                               placeholder="0"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">最大索引　</span>
+                        <input id="toIndex2" type="text" class="form-control"
+                               placeholder="10"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">最大结果数</span>
+                        <input id="maxReturn2" type="text" class="form-control"
+                               placeholder="-1"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">查询半径　</span>
+                        <input id="geoDecodingRadius" type="text" class="form-control"
+                               placeholder="-1"/>
+                    </div>
+                    <p></p>
+                    <div class="input-group">
+                        <span class="input-group-addon">坐标系　　</span>
+                        <input id="prjCoordSys2" type="text" class="form-control"
+                               placeholder="{epsgcode:4326}"/>
+                    </div>
+                    <p></p>
+                    <div align="right">
+                        <input type="button" id='decodeBtn' class="btn btn-primary" value="匹配"/>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-</div>
-
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://iclient.supermapol.com/libs/iclient8c/libs/SuperMap.Include.js"></script>
-<script type="text/javascript" src="../../dist/iclient-classic.min.js"></script>
+<script type="text/javascript" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var map, infowin, layer, markerlayer,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
-            addressUrl = "http://117.122.248.69:8090/iserver/services/addressmatch-Address/restjsr/v1/address",
-            imgUrl = "http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png",
-            addressMatchService = new SuperMap.REST.AddressMatchService(addressUrl, {data: '11'}),
-            map = new SuperMap.Map("map", {
-                controls: [
-                    new SuperMap.Control.Navigation(),
-                    new SuperMap.Control.Zoom()
-                ]
-            });
+    var host = window.isLocal ? document.location.host : "http://117.122.248.69:8090";
+    var infowin, layer, markerlayer,
+        url = host + "/iserver/services/map-china400/rest/maps/China_4326",
+        addressUrl = host + "/iserver/services/addressmatch-Address/restjsr/v1/address",
+        imgUrl = "../img/marker.png",
+        addressMatchService = new SuperMap.REST.AddressMatchService(addressUrl, {data: '11'}),
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Navigation(),
+                new SuperMap.Control.Zoom()
+            ]
+        });
     map.addControl(new SuperMap.Control.MousePosition());
 
     layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, null, {maxResolution: "auto"});
@@ -162,6 +161,7 @@
         $("#geodecodeParam").addClass('active');
         $("#geocodeParam").removeClass('active');
     });
+
     //判断输入字符串是否为空或者全部都是空格
     function isNull(str) {
         if (str == "") return true;
@@ -169,6 +169,7 @@
         var re = new RegExp(regu);
         return re.test(str);
     }
+
     var filters = $('#filters').val() || $('#filters').attr('placeholder');
     $("#codeBtn").click(function () {
         var geoCodeParam = new SuperMap.GeoCodingParameter({
@@ -226,11 +227,11 @@
                 }
                 innerHTML += "过滤字段:" + item.filters + "<br>";
                 var popup = new SuperMap.Popup.FramedCloud("popwin",
-                        new SuperMap.LonLat(lonlat.lon, lonlat.lat),
-                        null,
-                        innerHTML,
-                        icon,
-                        true);
+                    new SuperMap.LonLat(lonlat.lon, lonlat.lat),
+                    null,
+                    innerHTML,
+                    icon,
+                    true);
                 infowin = popup;
                 map.addPopup(popup);
             }

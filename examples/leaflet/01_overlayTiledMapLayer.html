@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>SuperMap REST 地图叠加</title>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.2/leaflet.css">
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.2/leaflet.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
-    var map, urlWorld = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-        urlJinjing = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+    var host = window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090";
+    var map, urlWorld = host + "/iserver/services/map-world/rest/maps/World",
+        urlJinjing = host + "/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
     map = L.map('map', {
         crs: L.CRS.EPSG4326,
         center: [40, 118],

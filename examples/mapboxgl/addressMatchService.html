@@ -3,42 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>地址匹配服务</title>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../dist/mbgl-include.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap" src="../include-web.js"></script>
     <style>
-        body{
+        body {
             margin: 0;
             overflow: hidden;
             background: #fff;
             width: 100%;
-            height:100%;
+            height: 100%;
             position: absolute;
             top: 0;
         }
-        #map{
-            margin:0 auto;
+
+        #map {
+            margin: 0 auto;
             width: 100%;
             height: 100%;
             position: absolute;
         }
-        .panel-default{
-            width:20%;
+
+        .panel-default {
+            width: 20%;
             float: right;
             margin: 15px 15px 0 0;
             position: relative;
         }
-        .input-group{
+
+        .input-group {
             margin-bottom: 15px;
-        }
-        .marker {
-            display: block;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            padding: 0;
-            background-image: url("https://cdn.bootcss.com/leaflet/1.0.3/images/marker-icon.png");
         }
     </style>
 </head>
@@ -58,58 +50,59 @@
             <div id='geocodeParam' role='tabpanel' class='tab-pane deplistContent active'>
                 <div class='input-group'>
                     <span class='input-group-addon'>地址　　　</span>
-                    <input id='address' type='text' class='form-control' placeholder='公司' /></div>
+                    <input id='address' type='text' class='form-control' placeholder='公司'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>过滤字段　</span>
-                    <input id='filters' type='text' class='form-control' placeholder='北京' /></div>
+                    <input id='filters' type='text' class='form-control' placeholder='北京'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>最小索引　</span>
-                    <input id='fromIndex' type='text' class='form-control' placeholder='0' /></div>
+                    <input id='fromIndex' type='text' class='form-control' placeholder='0'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>最大索引　</span>
-                    <input id='toIndex' type='text' class='form-control' placeholder='10' /></div>
+                    <input id='toIndex' type='text' class='form-control' placeholder='10'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>最大结果数</span>
-                    <input id='maxReturn' type='text' class='form-control' placeholder='-1' /></div>
+                    <input id='maxReturn' type='text' class='form-control' placeholder='-1'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>坐标系　　</span>
-                    <input id='prjCoordSys' type='text' class='form-control' placeholder='{epsgcode:4326}' /></div>
+                    <input id='prjCoordSys' type='text' class='form-control' placeholder='{epsgcode:4326}'/></div>
                 <div align='right'>
-                    <input type='button' id='codeBtn' class='btn btn-primary' value='匹配' />
+                    <input type='button' id='codeBtn' class='btn btn-primary' value='匹配'/>
                 </div>
             </div>
             <div id='geodecodeParam' role='tabpanel' class='tab-pane deplistContent'>
                 <div class='input-group'>
                     <span class='input-group-addon'>横坐标　　</span>
-                    <input id='xCoord' type='text' class='form-control' placeholder='116.3518541194752' /></div>
+                    <input id='xCoord' type='text' class='form-control' placeholder='116.3518541194752'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>纵坐标　　</span>
-                    <input id='yCoord' type='text' class='form-control' placeholder='40.00097839595237' /></div>
+                    <input id='yCoord' type='text' class='form-control' placeholder='40.00097839595237'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>过滤字段　</span>
-                    <input id='filters2' type='text' class='form-control' placeholder='' /></div>
+                    <input id='filters2' type='text' class='form-control' placeholder=''/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>最小索引　</span>
-                    <input id='fromIndex2' type='text' class='form-control' placeholder='0' /></div>
+                    <input id='fromIndex2' type='text' class='form-control' placeholder='0'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>最大索引　</span>
-                    <input id='toIndex2' type='text' class='form-control' placeholder='10' /></div>
+                    <input id='toIndex2' type='text' class='form-control' placeholder='10'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>最大结果数</span>
-                    <input id='maxReturn2' type='text' class='form-control' placeholder='-1' /></div>
+                    <input id='maxReturn2' type='text' class='form-control' placeholder='-1'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>查询半径　</span>
-                    <input id='geoDecodingRadius' type='text' class='form-control' placeholder='-1' /></div>
+                    <input id='geoDecodingRadius' type='text' class='form-control' placeholder='-1'/></div>
                 <div class='input-group'>
                     <span class='input-group-addon'>坐标系　　</span>
-                    <input id='prjCoordSys2' type='text' class='form-control' placeholder='{epsgcode:4326}' /></div>
+                    <input id='prjCoordSys2' type='text' class='form-control' placeholder='{epsgcode:4326}'/></div>
                 <div align='right'>
-                    <input type='button' id='decodeBtn' class='btn btn-primary' value='匹配' />
+                    <input type='button' id='decodeBtn' class='btn btn-primary' value='匹配'/>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
     //绑定两个按钮触发事件
     $("#geocode").click(function () {
@@ -124,37 +117,38 @@
         $("#geodecodeParam").addClass('active');
         $("#geocodeParam").removeClass('active');
     });
+    var host = window.isLocal ? document.location.host : "http://117.122.248.69:8090";
 
-    var map, codeMarkers = [], decodeMarkers = [],
+    var codeMarkers = [], decodeMarkers = [],
         attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
             "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
             " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
-        url = 'http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}',
-        addressUrl = "http://117.122.248.69:8090/iserver/services/addressmatch-Address/restjsr/v1/address",
+        url = host + "/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}",
+        addressUrl = host + "/iserver/services/addressmatch-Address/restjsr/v1/address",
 
-    map = new mapboxgl.Map({
-        container: 'map',
-        style: {
-            "version": 8,
-            "sources": {
-                "raster-tiles": {
-                    "attribution": attribution,
+        map = new mapboxgl.Map({
+            container: 'map',
+            style: {
+                "version": 8,
+                "sources": {
+                    "raster-tiles": {
+                        "attribution": attribution,
+                        "type": "raster",
+                        "tiles": [url],
+                        "tileSize": 256
+                    }
+                },
+                "layers": [{
+                    "id": "simple-tiles",
                     "type": "raster",
-                    "tiles": [url],
-                    "tileSize": 256
-                }
+                    "source": "raster-tiles",
+                    "minzoom": 2,
+                    "maxzoom": 18
+                }]
             },
-            "layers": [{
-                "id": "simple-tiles",
-                "type": "raster",
-                "source": "raster-tiles",
-                "minzoom": 2,
-                "maxzoom": 18
-            }]
-        },
-        center: [116.383572,39.914714],
-        zoom: 11
-    });
+            center: [116.383572, 39.914714],
+            zoom: 11
+        });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
@@ -165,7 +159,8 @@
         var re = new RegExp(regu);
         return re.test(str);
     }
-    var addressMatchService = new SuperMap.AddressMatchService(addressUrl,{
+
+    var addressMatchService = new SuperMap.AddressMatchService(addressUrl, {
         serverType: SuperMap.ServerType.ISERVER,
         eventListeners: {
             processCompleted: match,
@@ -202,16 +197,14 @@
     function match(obj) {
         clearMarkers();
         obj.result.map(function (item) {
-            var el = document.createElement('div');
-            el.className = 'marker';
-            el.style.width = '25px';
-            el.style.height = '41px';
+            var img = new Image();
+            img.src = '../img/marker-icon.png';
 
-            el.addEventListener('click', function() {
+            img.addEventListener('click', function () {
                 window.alert(marker.properties.message);
             });
 
-            var marker = new mapboxgl.Marker(el).setLngLat([item.location.x, item.location.y]);
+            var marker = new mapboxgl.Marker(img).setLngLat([item.location.x, item.location.y]);
             decodeMarkers.push(marker);
 
             var innerHTML = "";
@@ -230,7 +223,7 @@
         for (var i = 0; i < decodeMarkers.length; i++) {
             decodeMarkers[i].addTo(map);
         }
-        map.setCenter([116.383572,39.914714])
+        map.setCenter([116.383572, 39.914714]);
         map.setZoom(10);
         // map.setView(L.latLng( 116.383572,39.914714), 10);
     }

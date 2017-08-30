@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>数据集Bounds查询</title>
-
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-
-<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
+    var host = window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090";
     var map, resultLayer,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-            url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+        baseUrl = host + "/iserver/services/map-world/rest/maps/World",
+        url = host + "/iserver/services/data-world/rest/data";
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -34,14 +30,14 @@
             bounds: polygon.getBounds()
         });
         L.supermap
-                .featureService(url)
-                .getFeaturesByBounds(boundsParam, function (serviceResult) {
-                    resultLayer = L.geoJSON(serviceResult.result.features, {
-                        onEachFeature: function (feature, layer) {
-                            layer.bindPopup("首都：" + feature.properties.CAPITAL);
-                        }
-                    }).addTo(map);
-                });
+            .featureService(url)
+            .getFeaturesByBounds(boundsParam, function (serviceResult) {
+                resultLayer = L.geoJSON(serviceResult.result.features, {
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup("首都：" + feature.properties.CAPITAL);
+                    }
+                }).addTo(map);
+            });
     }
 </script>
 </body>

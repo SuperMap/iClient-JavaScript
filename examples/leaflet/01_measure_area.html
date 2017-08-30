@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>测量服务-距离</title>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
+    var host = window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090";
     var map, resultLayer,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        url = host + "/iserver/services/map-world/rest/maps/World";
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -29,11 +27,11 @@
         resultLayer.addLayer(polygon);
         var areaMeasureParam = new SuperMap.MeasureParameters(polygon);
         L.supermap
-                .measureService(url)
-                .measureArea(areaMeasureParam, function (serviceResult) {
-                    var content = "面积： " + serviceResult.result.area + "  平方米";
-                    polygon.bindPopup(content).openPopup(polygon.getCenter());
-                });
+            .measureService(url)
+            .measureArea(areaMeasureParam, function (serviceResult) {
+                var content = "面积： " + serviceResult.result.area + "  平方米";
+                polygon.bindPopup(content).openPopup(polygon.getCenter());
+            });
 
     }
 </script>

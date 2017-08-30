@@ -3,12 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>客户端单值专题图</title>
-
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap-css" src="../include-web.js"></script>
     <style>
         .legendItemHeader,
         .legendItemValue {
@@ -20,14 +15,15 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
-
+    var host = window.isLocal ? document.location.host : "http://117.122.248.69:8090";
     var map, themeLayer, infoView,
-        baseUrl = "http://117.122.248.69:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
-        dataUrl = "http://117.122.248.69:8090/iserver/services/data-jingjin/rest/data";
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        dataUrl = host + "/iserver/services/data-jingjin/rest/data";
 
     init();
+
     function init() {
         // 检测是否支持 Canvas
         if (!document.createElement('canvas').getContext) {
@@ -257,6 +253,7 @@
             infoView.remove();
         }
     }
+
     function handleMapEvent(div, map) {
         if (!div || !map) {
             return;

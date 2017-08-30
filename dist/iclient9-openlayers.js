@@ -4603,7 +4603,7 @@ _SuperMap2.default.SecurityManager = {
      * @param newTab -{boolean}是否新窗口打开
      */
     loginOnline: function loginOnline(callbackLocation, newTab) {
-        var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
+        var loginUrl = _SuperMap2.default.SecurityManager.SSO + "/login?service=" + callbackLocation;
         this._open(loginUrl, newTab);
     },
 
@@ -10586,7 +10586,7 @@ var StyleUtils = function () {
                     /*//首先判定是否需要绘制阴影，如果需要绘制，阴影应该在最下面
                      if(shader.shadow)
                      {
-                      //桌面里面的阴影没有做模糊处理，这里统一设置为0,
+                       //桌面里面的阴影没有做模糊处理，这里统一设置为0,
                      style.shadowBlur=0;
                      //和桌面统一，往右下角偏移阴影，默认3像素
                      style.shadowOffsetX=3;
@@ -11087,7 +11087,7 @@ var StyleUtils = function () {
          * @function ol.supermap.StyleUtils.getDefaultStyle
          * @description 获取默认风格
          * @param type -{string} 类型参数
-          */
+           */
 
     }, {
         key: 'getDefaultStyle',
@@ -31450,7 +31450,7 @@ _SuperMap2.default.GetFieldsService = GetFieldsService;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -31474,60 +31474,60 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var GetGridCellInfosParameters = function () {
 
-  /**
-   * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
-   * @description 要查询的地理位置X轴
-   */
+    /**
+     * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
+     * @description 要查询的地理位置X轴
+     */
 
-  /**
-   * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
-   * @description 数据集名称。
-   */
-  function GetGridCellInfosParameters(options) {
-    _classCallCheck(this, GetGridCellInfosParameters);
+    /**
+     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
+     * @description 数据集名称。
+     */
+    function GetGridCellInfosParameters(options) {
+        _classCallCheck(this, GetGridCellInfosParameters);
 
-    this.datasetName = null;
-    this.dataSourceName = null;
-    this.X = null;
-    this.Y = null;
-    this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
+        this.datasetName = null;
+        this.dataSourceName = null;
+        this.X = null;
+        this.Y = null;
+        this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
 
-    if (!options) {
-      return;
+        if (!options) {
+            return;
+        }
+        _SuperMap2.default.Util.extend(this, options);
     }
-    _SuperMap2.default.Util.extend(this, options);
-  }
 
-  /**
-   * @function SuperMap.GetGridCellInfosParameters.prototype.destroy
-   * @description 释放资源，将引用的资源属性置空。
-   */
+    /**
+     * @function SuperMap.GetGridCellInfosParameters.prototype.destroy
+     * @description 释放资源，将引用的资源属性置空。
+     */
 
 
-  /**
-   * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
-   * @description 要查询的地理位置Y轴
-   */
+    /**
+     * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
+     * @description 要查询的地理位置Y轴
+     */
 
 
-  /**
-   * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
-   * @description  数据源名称。
-   */
+    /**
+     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
+     * @description  数据源名称。
+     */
 
 
-  _createClass(GetGridCellInfosParameters, [{
-    key: "destroy",
-    value: function destroy() {
-      var me = this;
-      me.datasetName = null;
-      me.dataSourceName = null;
-      me.X = null;
-      me.Y = null;
-    }
-  }]);
+    _createClass(GetGridCellInfosParameters, [{
+        key: "destroy",
+        value: function destroy() {
+            var me = this;
+            me.datasetName = null;
+            me.dataSourceName = null;
+            me.X = null;
+            me.Y = null;
+        }
+    }]);
 
-  return GetGridCellInfosParameters;
+    return GetGridCellInfosParameters;
 }();
 
 exports.default = GetGridCellInfosParameters;
@@ -33294,7 +33294,7 @@ _SuperMap2.default.InterpolationRBFAnalystParameters = InterpolationRBFAnalystPa
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -33323,132 +33323,132 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var KernelDensityJobParameter = function () {
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
-   * @description 搜索半径单位。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
+     * @description 搜索半径单位。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
-   * @description 分析的影响半径。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
+     * @description 分析的影响半径。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
-   * @description 分析类型。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
+     * @description 分析类型。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
-   * @description 网格大小。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
+     * @description 网格大小。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
-   * @description 数据集名。
-   */
-  function KernelDensityJobParameter(options) {
-    _classCallCheck(this, KernelDensityJobParameter);
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
+     * @description 数据集名。
+     */
+    function KernelDensityJobParameter(options) {
+        _classCallCheck(this, KernelDensityJobParameter);
 
-    this.datasetName = "";
-    this.query = "";
-    this.resolution = 80;
-    this.method = 0;
-    this.meshType = 0;
-    this.fields = "";
-    this.radius = 300;
-    this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-    this.radiusUnit = _REST.AnalystSizeUnit.METER;
-    this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
+        this.datasetName = "";
+        this.query = "";
+        this.resolution = 80;
+        this.method = 0;
+        this.meshType = 0;
+        this.fields = "";
+        this.radius = 300;
+        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+        this.radiusUnit = _REST.AnalystSizeUnit.METER;
+        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
-    if (!options) {
-      return;
-    }
-    _SuperMap2.default.Util.extend(this, options);
-  }
-
-  /**
-   * @function SuperMap.KernelDensityJobParameter.prototype.destroy
-   * @description 释放资源，将引用资源的属性置空。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
-   * @description 面积单位。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-   * @description 网格大小单位。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
-   * @description 权重索引。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
-   * @description 分析方法。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
-   * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
-   */
-
-
-  _createClass(KernelDensityJobParameter, [{
-    key: 'destroy',
-    value: function destroy() {
-      this.datasetName = null;
-      this.query = null;
-      this.resolution = null;
-      this.method = null;
-      this.radius = null;
-      this.meshType = null;
-      this.fields = null;
-      this.meshSizeUnit = null;
-      this.radiusUnit = null;
-      this.areaUnit = null;
+        if (!options) {
+            return;
+        }
+        _SuperMap2.default.Util.extend(this, options);
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.toObject
-     * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
-     * @param tempObj - {Object} 目标对象
-     * @description 生成密度分析任务对象
+     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
 
-  }], [{
-    key: 'toObject',
-    value: function toObject(kernelDensityJobParameter, tempObj) {
-      for (var name in kernelDensityJobParameter) {
-        if (name === "datasetName") {
-          tempObj['input'] = tempObj['input'] || {};
-          tempObj['input'][name] = kernelDensityJobParameter[name];
-          continue;
-        }
-        tempObj['analyst'] = tempObj['analyst'] || {};
-        if (name === 'query') {
-          tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-        } else {
-          tempObj['analyst'][name] = kernelDensityJobParameter[name];
-        }
-      }
-    }
-  }]);
 
-  return KernelDensityJobParameter;
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
+     * @description 面积单位。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+     * @description 网格大小单位。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
+     * @description 权重索引。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
+     * @description 分析方法。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
+     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+     */
+
+
+    _createClass(KernelDensityJobParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.query = null;
+            this.resolution = null;
+            this.method = null;
+            this.radius = null;
+            this.meshType = null;
+            this.fields = null;
+            this.meshSizeUnit = null;
+            this.radiusUnit = null;
+            this.areaUnit = null;
+        }
+
+        /**
+         * @function SuperMap.KernelDensityJobParameter.toObject
+         * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
+         * @param tempObj - {Object} 目标对象
+         * @description 生成密度分析任务对象
+         */
+
+    }], [{
+        key: 'toObject',
+        value: function toObject(kernelDensityJobParameter, tempObj) {
+            for (var name in kernelDensityJobParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = kernelDensityJobParameter[name];
+                    continue;
+                }
+                tempObj['analyst'] = tempObj['analyst'] || {};
+                if (name === 'query') {
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                } else {
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                }
+            }
+        }
+    }]);
+
+    return KernelDensityJobParameter;
 }();
 
 exports.default = KernelDensityJobParameter;

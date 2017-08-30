@@ -3,8 +3,8 @@
     <meta charset='utf-8'/>
     <title>风格切换</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script type="text/javascript" exclude='iclient9-mapboxgl' src="../../dist/mbgl-include.js"></script>
+    <script type="text/javascript" include='bootstrap-css' src="../include-web.js"></script>
+    <script type="text/javascript" exclude='iclient9-mapboxgl' src="../../dist/include-mapboxgl.js"></script>
     <style>
         body {
             margin: 0;
@@ -42,7 +42,6 @@
     </style>
 </head>
 <body>
-
 <div id='map'></div>
 <div id='menu' class="mapboxgl-ctrl">
     <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
@@ -59,7 +58,7 @@
     <label for='positron'>淡灰风格</label>
 </div>
 <script type="text/javascript" src="styles.js"></script>
-<script>
+<script type="text/javascript">
     var currentLayerGroupId = "basic";
     var defaultStyle = mapStyles[currentLayerGroupId].style;
     var map = new mapboxgl.Map({
@@ -77,6 +76,7 @@
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].onclick = switchStyle;
     }
+
     function switchStyle(layer) {
         var layerGroupId = layer.target.id;
         if (!layerGroupId || !(mapStyles[layerGroupId]) || layerGroupId === currentLayerGroupId) {
@@ -86,8 +86,6 @@
         currentLayerGroupId = layerGroupId;
     }
 
-
 </script>
-
 </body>
 </html>

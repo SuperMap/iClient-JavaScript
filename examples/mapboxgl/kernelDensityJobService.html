@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>密度分析</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../dist/mbgl-include.js"></script>
-
+    <script type="text/javascript" include="jquery,bootstrap" src="../include-web.js"></script>
     <style>
-        body,#map{
+        body, #map {
             position: absolute;
             width: 100%;
-            height:100%
+            height: 100%
         }
-        .panel-default{
+
+        .panel-default {
             width: 300px;
             float: right;
             margin: 15px 15px 0 0;
             position: relative;
         }
-        .input-group{
+
+        .input-group {
             margin-bottom: 15px;
         }
     </style>
@@ -39,7 +37,6 @@
     </div>
 </div>
 <div id="map"></div>
-
 <div class='panel panel-default'>
     <div class='panel-heading'>
         <h3 class='panel-title'>密度分析</h3>
@@ -49,7 +46,7 @@
       <span class='input-group-addon'>输入数据
       <span title='必填字段' style='color: red;'>*</span> 　</span>
             <input id='datasetName' type='text' class='form-control'
-                   value='samples_newyork_taxi_2013-01_14k' /></div>
+                   value='samples_newyork_taxi_2013-01_14k'/></div>
         <div class='input-group'>
         <span class='input-group-addon'>分析方法
         <span title='必填字段' style='color: red;'>*</span> 　</span>
@@ -69,14 +66,14 @@
             </select></div>
         <div class='input-group'>
             <span class='input-group-addon'>权重值字段　</span>
-            <input id='fields' type='text' class='form-control' value='col7,col8' /></div>
+            <input id='fields' type='text' class='form-control' value='col7,col8'/></div>
         <div class='input-group'>
             <span class='input-group-addon'>分析范围　　</span>
             <input id='query' type='text' class='form-control' value='-74.150, 40.550, -73.750, 40.950'/></div>
         <div class='input-group'>
       <span class='input-group-addon'>网格大小
       <span title='必填字段' style='color: red;'>*</span> 　</span>
-            <input id='resolution' type='text' class='form-control' value='80' /></div>
+            <input id='resolution' type='text' class='form-control' value='80'/></div>
         <div class='input-group'>
             <span class='input-group-addon'>网格大小单位</span>
             <select class='form-control' id='meshSizeUnit' name='clientType'>
@@ -89,7 +86,7 @@
         <div class='input-group'>
       <span class='input-group-addon'>搜索半径
       <span title='必填字段' style='color: red;'>*</span> 　</span>
-            <input id='radius' type='text' class='form-control' value='300' /></div>
+            <input id='radius' type='text' class='form-control' value='300'/></div>
         <div class='input-group'>
             <span class='input-group-addon'>搜索半径单位</span>
             <select class='form-control' id='radiusUnit' name='clientType'>
@@ -111,16 +108,21 @@
                 <option value='SquareMile' selected='selected'>SquareMile</option>
             </select></div>
         <div align='right'>
-            <input type='button' id='btn' class='btn btn-primary' value='创建' />
+            <input type='button' id='btn' class='btn btn-primary' value='创建'/>
         </div>
     </div>
 </div>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
+    var host = window.isLocal ? document.location.host : "http://117.122.248.69:8090";
+
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
-            " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
-        processingUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+        " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+
+        processingUrl = host + "/iserver/services/spatialprocessing/rest/v1/jobs",
         token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..';
+
     var map = new mapboxgl.Map({
         container: 'map', // container id
         style: {
@@ -129,7 +131,7 @@
                 "raster-tiles": {
                     "attribution": attribution,
                     "type": "raster",
-                    "tiles": ['http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
                     "tileSize": 256
                 }
             },
@@ -141,13 +143,13 @@
                 "minzoom": 2,
             }]
         },
-        center: [-73.9,40.74],
+        center: [-73.9, 40.74],
         zoom: 11
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
-    SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
+    SuperMap.SecurityManager.registerToken(host, token);
 
     function getQuery() {
         if ($('#query').val() === "") {
@@ -179,7 +181,7 @@
             method: $('#method option:selected').attr('value'),
             meshType: $('#meshType option:selected').attr('value'),
             fields: $('#fields').val(),
-            query:getQuery(),
+            query: getQuery(),
             radius: $('#radius').val(),
             meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
             radiusUnit: $('#radiusUnit option:selected').attr('value'),

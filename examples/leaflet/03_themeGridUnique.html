@@ -3,45 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>栅格单值专题图</title>
-
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-
-<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
+    var host = window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090";
     var map, themeService, themeGridUnique, themeParameters, themeLayer,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图";
+        url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图";
     map = L.map('map', {
         crs: L.CRS.EPSG4326,
         center: [40, 117],
         maxZoom: 18,
         zoom: 6
     });
-    L.supermap.tiledMapLayer(url, { noWrap: true}).addTo(map);
+    L.supermap.tiledMapLayer(url, {noWrap: true}).addTo(map);
     createTheme();
 
     function setItems() {
         var items = [],
-                color0 = new SuperMap.ServerColor(198, 244, 240),
-                color1 = new SuperMap.ServerColor(176, 244, 188),
-                color2 = new SuperMap.ServerColor(218, 251, 178),
-                color3 = new SuperMap.ServerColor(220, 236, 145),
-                color4 = new SuperMap.ServerColor(96, 198, 66),
-                color5 = new SuperMap.ServerColor(20, 142, 53),
-                color6 = new SuperMap.ServerColor(85, 144, 55),
-                color7 = new SuperMap.ServerColor(171, 168, 38),
-                color8 = new SuperMap.ServerColor(235, 165, 9),
-                color9 = new SuperMap.ServerColor(203, 89, 2),
-                color10 = new SuperMap.ServerColor(157, 25, 1),
-                color11 = new SuperMap.ServerColor(118, 15, 3),
-                color12 = new SuperMap.ServerColor(112, 32, 7),
-                color13 = new SuperMap.ServerColor(106, 45, 12),
-                color14 = new SuperMap.ServerColor(129, 80, 50),
-                color15 = new SuperMap.ServerColor(160, 154, 146);
+            color0 = new SuperMap.ServerColor(198, 244, 240),
+            color1 = new SuperMap.ServerColor(176, 244, 188),
+            color2 = new SuperMap.ServerColor(218, 251, 178),
+            color3 = new SuperMap.ServerColor(220, 236, 145),
+            color4 = new SuperMap.ServerColor(96, 198, 66),
+            color5 = new SuperMap.ServerColor(20, 142, 53),
+            color6 = new SuperMap.ServerColor(85, 144, 55),
+            color7 = new SuperMap.ServerColor(171, 168, 38),
+            color8 = new SuperMap.ServerColor(235, 165, 9),
+            color9 = new SuperMap.ServerColor(203, 89, 2),
+            color10 = new SuperMap.ServerColor(157, 25, 1),
+            color11 = new SuperMap.ServerColor(118, 15, 3),
+            color12 = new SuperMap.ServerColor(112, 32, 7),
+            color13 = new SuperMap.ServerColor(106, 45, 12),
+            color14 = new SuperMap.ServerColor(129, 80, 50),
+            color15 = new SuperMap.ServerColor(160, 154, 146);
 
         for (var i = -4; i < 2197; i++) {
             var num = parseInt(i / 135);
@@ -106,6 +102,7 @@
         }
         return items;
     }
+
     function createTheme() {
         themeService = L.supermap.themeService(url);
 

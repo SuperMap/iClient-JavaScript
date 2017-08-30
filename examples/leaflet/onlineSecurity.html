@@ -3,13 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Online SecurityManager使用示例</title>
-
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
-
+    <script type="text/javascript" include="bootstrap-css,jquery" src="../include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
     <style>
         .panel {
             margin-bottom: 0;
@@ -131,6 +126,7 @@
         var href = window.location.href;
         SuperMap.SecurityManager.loginOnline(href, true);
     }
+
     /*登录 end*/
 
 
@@ -150,6 +146,7 @@
             }
         });
     }
+
     function registerOnlineKeyAndRequestService() {
         var key = $('#key_online').val();
         var serviceUrl = getOnlineServiceUrl();
@@ -186,6 +183,7 @@
             serverType: SuperMap.ServerType.ONLINE
         }).addTo(onlineMap);
     }
+
     /*出图 end*/
 
 

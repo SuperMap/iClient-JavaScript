@@ -1,5 +1,5 @@
 ﻿(function() {
-    var r = new RegExp("(^|(.*?\\/))(mbgl-include\.js)(\\?|$)"),
+    var r = new RegExp("(^|(.*?\\/))(include-mapboxgl\.js)(\\?|$)"),
     s = document.getElementsByTagName('script'), targetScript;
     for(var i=0;i<s.length; i++) {
         var src = s[i].getAttribute('src');
@@ -38,12 +38,12 @@
         if(inArray(includes,'mapv')){
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
-        if(!inArray(excludes,'iclient9-mapboxgl')) {
-            inputScript("../../dist/iclient9-mapboxgl.min.js");
-        }
         if(inArray(includes,'echarts')){
             inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
             inputScript("http://iclient.supermapol.com/libs/echartsLayer/EchartsLayer.js");
+        }
+        if (!inArray(excludes, 'iclient9-mapboxgl')) {
+            inputScript("../../dist/iclient9-mapboxgl.min.js");
         }
         if(inArray(includes,'proj4')){
             inputScript("https://cdn.bootcss.com/proj4js/2.4.3/proj4.js");

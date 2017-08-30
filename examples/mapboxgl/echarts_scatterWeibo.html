@@ -2,11 +2,8 @@
 <head>
     <meta charset='utf-8'/>
     <title>微博签到图</title>
-
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" exclude='iclient9-mapboxgl' include="echarts" src="../../dist/mbgl-include.js"></script>
-
+    <script type="text/javascript" include="jquery" src="../include-web.js"></script>
     <style>
         body {
             margin: 0;
@@ -22,9 +19,9 @@
     </style>
 </head>
 <body>
-
 <div id='map'></div>
-<script>
+<script type="text/javascript" exclude='iclient9-mapboxgl' include="echarts" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         'Map Data © <a href="https://www.supermapol.com/" target="_blank"> SuperMap Online</a> <a href="http://echarts.baidu.com/" target="_blank">© 2017 百度 ECharts</a>';
     var map = new mapboxgl.Map({

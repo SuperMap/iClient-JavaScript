@@ -2445,7 +2445,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.REST.ProcessingService
- * @description 分布式空间分析相关服务类。
+ * @classdesc 分布式空间分析相关服务类。
  * @augments SuperMap.CommonServiceBase
  * @example
  * 用法：
@@ -4367,7 +4367,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.KernelDensityJobParameter
- * @description 密度分析任务参数类
+ * @classdesc 密度分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{string} 数据集名。 <br>
  *        query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
@@ -5890,7 +5890,7 @@ _SuperMap2.default.SecurityManager = {
      * @param newTab -{boolean}是否新窗口打开
      */
     loginOnline: function loginOnline(callbackLocation, newTab) {
-        var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
+        var loginUrl = _SuperMap2.default.SecurityManager.SSO + "/login?service=" + callbackLocation;
         this._open(loginUrl, newTab);
     },
 

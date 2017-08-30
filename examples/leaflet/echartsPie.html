@@ -3,21 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>ECharts Pie with Leaflet</title>
-
-    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-
-<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
-<script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-<script>
-
-
-    var map, resultLayer, url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Gray";
-    var url2 = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+<script type="text/javascript" include="echarts" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090";
+    var map, resultLayer, url = host + "/iserver/services/map-world/rest/maps/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Gray";
+    var url2 = host + "/iserver/services/map-china400/rest/maps/China";
     map = L.map('map', {
         crs: L.CRS.EPSG4326,
         center: [39.905, 116.402],
@@ -129,6 +122,7 @@
     };
     control.addTo(map);
     query();
+
     function query() {
         clearLayer();
         var param = new SuperMap.QueryBySQLParameters({
@@ -142,53 +136,55 @@
         });
 
         L.supermap
-                .queryService(url2)
-                .queryBySQL(param, function (serviceResult) {
-                    serviceResult.result.recordsets.map(function (record) {
-                        resultLayer = L.geoJSON(record.features, {
-                            coordsToLatLng: function (coords) {
-                                var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
-                                latlng.alt = coords[2];
-                                return latlng;
-                            }
-                        }).on('click', function (e) {
-                            var city = e.layer.feature.properties.NAME;
-                            chart.setOption({
-                                title: {
-                                    text: city + '商品销量'
+            .queryService(url2)
+            .queryBySQL(param, function (serviceResult) {
+                serviceResult.result.recordsets.map(function (record) {
+                    resultLayer = L.geoJSON(record.features, {
+                        coordsToLatLng: function (coords) {
+                            var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
+                            latlng.alt = coords[2];
+                            return latlng;
+                        }
+                    }).on('click', function (e) {
+                        var city = e.layer.feature.properties.NAME;
+                        chart.setOption({
+                            title: {
+                                text: city + '商品销量'
+                            },
+                            series: [
+                                {
+                                    name: '商品类目',
+                                    data: categoryDataMap[city]
                                 },
-                                series: [
-                                    {
-                                        name: '商品类目',
-                                        data: categoryDataMap[city]
-                                    },
-                                    {
-                                        name: '商品',
-                                        data: dataMap[city]
-                                    }
-                                ]
-                            });
-                            map.panTo(e.latlng);
-                        }, {maxWidth: 700}).addTo(map);
-                    })
-                });
+                                {
+                                    name: '商品',
+                                    data: dataMap[city]
+                                }
+                            ]
+                        });
+                        map.panTo(e.latlng);
+                    }, {maxWidth: 700}).addTo(map);
+                })
+            });
     }
+
     function clearLayer() {
         if (resultLayer) {
             resultLayer.removeFrom(map);
         }
     }
+
     L.DomEvent
-            .on(div, 'mouseover', function () {
-                map.dragging.disable();
-                map.scrollWheelZoom.disable();
-                map.doubleClickZoom.disable();
-            })
-            .on(div, 'mouseout', function () {
-                map.dragging.enable();
-                map.scrollWheelZoom.enable();
-                map.doubleClickZoom.enable();
-            })
+        .on(div, 'mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        })
+        .on(div, 'mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        })
 </script>
 </body>
 </html>
