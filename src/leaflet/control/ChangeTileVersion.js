@@ -157,7 +157,7 @@ export var ChangeTileVersion = L.Control.extend({
         if (me.options.layer) {
             new MapService(me.options.layer._url).getTilesets(getTilesInfoSucceed);
             function getTilesInfoSucceed(info) {
-                me.options.layer.serTileSetsInfo(info.result);
+                me.options.layer.setTileSetsInfo(info.result);
             }
 
         }

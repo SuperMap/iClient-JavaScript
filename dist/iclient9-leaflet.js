@@ -8099,11 +8099,11 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.serTileSetsInfo
+     * @function L.supermap.tiledMapLayer.prototype.setTileSetsInfo
      * @description 设置瓦片集信息
      * @param tileSets - {Array<Object>} 瓦片对象集
      */
-    serTileSetsInfo: function serTileSetsInfo(tileSets) {
+    setTileSetsInfo: function setTileSetsInfo(tileSets) {
         this.tileSets = tileSets;
         if (_leaflet2["default"].Util.isArray(this.tileSets)) {
             this.tileSets = this.tileSets[0];
@@ -16465,7 +16465,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
         var me = this;
         if (me.options.layer) {
             var getTilesInfoSucceed = function getTilesInfoSucceed(info) {
-                me.options.layer.serTileSetsInfo(info.result);
+                me.options.layer.setTileSetsInfo(info.result);
             };
 
             new _MapService.MapService(me.options.layer._url).getTilesets(getTilesInfoSucceed);

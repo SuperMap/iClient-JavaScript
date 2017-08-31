@@ -144,11 +144,11 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.tiledMapLayer.prototype.serTileSetsInfo
+     * @function L.supermap.tiledMapLayer.prototype.setTileSetsInfo
      * @description 设置瓦片集信息
      * @param tileSets - {Array<Object>} 瓦片对象集
      */
-    serTileSetsInfo: function (tileSets) {
+    setTileSetsInfo: function (tileSets) {
         this.tileSets = tileSets;
         if (L.Util.isArray(this.tileSets)) {
             this.tileSets = this.tileSets[0];
