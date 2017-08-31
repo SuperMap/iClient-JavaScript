@@ -60,7 +60,7 @@
             duration: 250
         }
     }));
-    var url = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World";
+    var url = (window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})

@@ -58,7 +58,7 @@
         .addTo(map);
 
     map.on('load', function () {
-        var randomCount = 1000;
+        var randomCount = 2;
 
         var data = [];
 
@@ -86,7 +86,34 @@
             lineWidth: 0.7,
             draw: 'simple'
         };
-        new mapboxgl.supermap.MapvLayer(map, dataSet, options);
+       // new mapboxgl.supermap.MapvLayer(map, dataSet, options);
+        map.addLayer({
+            "id": "route",
+            "type": "line",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [
+                            [110.94965, 40.487754],
+                            [115.3021825, 18.19125]
+
+                        ]
+                    }
+                }
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "red",
+                "line-width": 8
+            }
+        });
     });
 
 </script>

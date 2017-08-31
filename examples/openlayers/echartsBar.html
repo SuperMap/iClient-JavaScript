@@ -21,7 +21,7 @@
         }),
         layers: [new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({
-                url: (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World",
+                url: (window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World",
             }),
             projection: 'EPSG:4326'
         })]

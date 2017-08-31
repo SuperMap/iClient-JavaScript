@@ -18,8 +18,8 @@
 </div>
 <script type="text/javascript">
     var map,
-        baseUrl = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-changchun/rest/maps/长春市区图",
-        serviceUrl = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+        baseUrl = (window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = (window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     //多旅行商分析是无序的路径分析
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({

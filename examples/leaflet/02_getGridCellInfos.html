@@ -8,7 +8,7 @@
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;background-color: white"></div>
 <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090";
     var map, marker,
         baseUrl = host + "/iserver/services/map-world/rest/maps/世界地图_Day",
         url = host + "/iserver/services/data-world/rest/data";

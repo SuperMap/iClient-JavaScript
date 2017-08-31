@@ -25,7 +25,7 @@
         layers: [new ol.layer.Tile({
             opacity: 0.7,
             source: new ol.source.TileWMS({
-                url: (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/wms111/China",
+                url: (window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/wms111/China",
                 params: {
                     'LAYERS': 'China',
                     'FORMAT': 'image/png'
