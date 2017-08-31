@@ -419,7 +419,7 @@ export default class Theme extends ol.source.ImageCanvas {
      * @param coordinate - {Object} 坐标位置。
      */
     getLocalXY(coordinate) {
-        var pixelP;
+        var pixelP, map = this.map;
         if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
             pixelP = map.getPixelFromCoordinate([coordinate.x, coordinate.y]);
         }

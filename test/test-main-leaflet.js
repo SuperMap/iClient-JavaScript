@@ -1,4 +1,4 @@
-/*leaflet -- services*/
+/**leaflet -- services**/
 require('./leaflet/services/AddressMatchServiceSpec.js');
 
 require('./leaflet/services/EditFeaturesServiceRegionSpec.js');
@@ -25,12 +25,7 @@ require('./leaflet/overlay/TileVectorLayerSpec.js');
 require('./leaflet/overlay/UniqueThemeLayerSpec.js');
 require('./leaflet/overlay/theme/GraphThemeLayerSpec.js');
 require('./leaflet/overlay/EchartsLayerSpec.js');
+require('./leaflet/overlay/RangeThemeLayerSpec.js');
 
 /*leaflet -- overlay*/
 require('./leaflet/mapping/WebMapSpec.js');
-
-
-
-
-
-
