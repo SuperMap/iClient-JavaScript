@@ -13676,8 +13676,6 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
             var me = this;
             //切片版本集信息是否存在
             if (me.tileSets == null) {
-                //版本信息为空，重新查询，查询成功继续跳转到相应的版本
-                me.getTileSetsInfo();
                 return;
             }
             if (me.tempIndex === me.tileSetsIndex || this.tempIndex < 0) {
