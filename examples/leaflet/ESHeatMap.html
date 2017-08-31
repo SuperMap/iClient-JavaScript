@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>热力/格网图</title>
-    <script type="text/javascript" include="jquery,bootstrap,moment,bootstrap-datetimepicker,bootstrap-select,geohash" src="../include-web.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap,moment,bootstrap-datetimepicker,bootstrap-select,geohash" src="../js/include-web.js"></script>
     <style>
         .bootstrap-select {
             width: 168px !important;
@@ -187,7 +187,7 @@
         if (!liveRenderer) {
             liveRenderer = L.supermap.mapVLayer(liveDataSet, layerOptions, {noWrap: true}).addTo(map);
         } else {
-            liveRenderer.update({data: liveDataSet, options: layerOptions},);
+            liveRenderer.update({data: liveDataSet, options: layerOptions});
         }
     }
 
