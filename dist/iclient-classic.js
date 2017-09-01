@@ -1797,7 +1797,7 @@ var CommonServiceBase = function () {
     }, {
         key: '_commit',
         value: function _commit(options) {
-            if (options.method === "POST") {
+            if (options.method === "POST" || options.method === "PUT") {
                 if (options.params) {
                     options.url = _SuperMap2.default.Util.urlAppend(options.url, _SuperMap2.default.Util.getParameterString(options.params || {}));
                 }
@@ -1814,7 +1814,7 @@ var CommonServiceBase = function () {
 
                 if (result.error) {
                     var failure = options.scope ? _SuperMap2.default.Function.bind(options.failure, options.scope) : options.failure;
-                    failure(result.error);
+                    failure(result);
                 } else {
                     result.succeed = result.succeed == undefined ? true : result.succeed;
                     var success = options.scope ? _SuperMap2.default.Function.bind(options.success, options.scope) : options.success;

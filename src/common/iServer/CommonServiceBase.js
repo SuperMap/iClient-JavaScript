@@ -352,7 +352,7 @@ export default  class CommonServiceBase {
         this.events.triggerEvent("processFailed", {error: error});
     }
     _commit(options) {
-        if (options.method === "POST") {
+        if (options.method === "POST" || options.method === "PUT") {
             if (options.params) {
                 options.url = SuperMap.Util.urlAppend(options.url,
                     SuperMap.Util.getParameterString(options.params || {}));
@@ -370,7 +370,7 @@ export default  class CommonServiceBase {
 
             if(result.error){
                 var failure = (options.scope) ? SuperMap.Function.bind(options.failure, options.scope) : options.failure;
-                failure(result.error);
+                failure(result);
             }else{
                 result.succeed = result.succeed == undefined ? true : result.succeed;
                 var success = (options.scope) ? SuperMap.Function.bind(options.success, options.scope) : options.success;

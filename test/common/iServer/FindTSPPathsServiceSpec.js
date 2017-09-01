@@ -208,7 +208,7 @@ describe('testFindTSPPathsService_processAsync',function(){
     });
 
     //AnalyzeById_null
-    it('parameterNull',function(done){
+    it('AnalyzeById_null',function(done){
         var nodeArray = [new SuperMap.Geometry.Point(5627.7550668827, -3627.4849836293),
             new SuperMap.Geometry.Point(5018.1469160422, -4638.5424045354),
             new SuperMap.Geometry.Point(6133.2837773358,-4645.9766502774)
@@ -223,7 +223,7 @@ describe('testFindTSPPathsService_processAsync',function(){
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
+        var analystParameter1 = new SuperMap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
@@ -231,7 +231,7 @@ describe('testFindTSPPathsService_processAsync',function(){
             isAnalyzeById: "AnalyzeById",
             nodes: nodeArray,
             endNodeAssigned: false,
-            parameter: analystParameter
+            parameter: analystParameter1
         });
         var findTSPPathsService = initFindTSPPathService();
         findTSPPathsService.processAsync(parameter);
