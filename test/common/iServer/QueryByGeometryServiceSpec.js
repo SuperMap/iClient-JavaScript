@@ -29,7 +29,7 @@ describe('testQueryByGeometryService_constructor',function(){
     it('constructor and destroy',function(){
         var queryByGeometryService = initQueryByGeometryService();
         expect(queryByGeometryService).not.toBeNull();
-        expect(queryByGeometryService.url).toEqual(worldMapURL+ "/queryResults.jsonp?");
+        expect(queryByGeometryService.url).toEqual(worldMapURL+ "/queryResults.json?");
         queryByGeometryService.destroy();
         expect(queryByGeometryService.EVENT_TYPES).toBeNull();
         expect(queryByGeometryService.events).toBeNull();

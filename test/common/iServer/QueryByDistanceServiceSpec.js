@@ -28,7 +28,7 @@ describe('testQueryByBoundsService_constructor',function(){
     it('constructor and destroy',function(){
         var queryByDistanceService = initQueryByDistanceService();
         expect(queryByDistanceService).not.toBeNull();
-        expect(queryByDistanceService.url).toEqual(worldMapURL+ "/queryResults.jsonp?");
+        expect(queryByDistanceService.url).toEqual(worldMapURL+ "/queryResults.json?");
         queryByDistanceService.destroy();
         expect(queryByDistanceService.EVENT_TYPES).toBeNull();
         expect(queryByDistanceService.events).toBeNull();

@@ -4,7 +4,7 @@ describe('testQueryBySQLService_constructor', function () {
     it('constructor and destroy', function () {
         var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL);
         expect(queryBySQLService).not.toBeNull();
-        expect(queryBySQLService.url).toEqual(worldMapURL + "/queryResults.jsonp?");
+        expect(queryBySQLService.url).toEqual(worldMapURL + "/queryResults.json?");
         queryBySQLService.destroy();
         expect(queryBySQLService.EVENT_TYPES).toBeNull();
         expect(queryBySQLService.events).toBeNull();

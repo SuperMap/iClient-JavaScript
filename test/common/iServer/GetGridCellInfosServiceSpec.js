@@ -66,11 +66,7 @@ describe('testGetGridCellInfosService_processAsync',function(){
 
         setTimeout(function() {
             try{
-                if (myService.isInTheSameDomain) {
-                    expect(myService.url).toEqual(dataServiceURL + "/datasources/World/datasets/LandCover/gridValue.json?x=110&y=50");
-                } else {
-                    expect(myService.url).toEqual(dataServiceURL + "/datasources/World/datasets/LandCover/gridValue.jsonp?x=110&y=50");
-                }
+                expect(myService.url).toEqual(dataServiceURL + "/datasources/World/datasets/LandCover/gridValue.json?x=110&y=50");
                 myService.destroy();
                 queryParam.destroy();
                 done();
@@ -127,7 +123,7 @@ describe('testGetGridCellInfosService_getDatasetInfoCompleted',function(){
                 type: "GRID"
             }
         };
-        myService.url = dataServiceURL + "/datasources/World/datasets/LandCover.jsonp";
+        myService.url = dataServiceURL + "/datasources/World/datasets/LandCover.json";
         myService.getDatasetInfoCompleted(result);
         expect(myService.datasetType).toBe("GRID");
     });
@@ -144,12 +140,12 @@ describe('testGetGridCellInfosService_getDatasetInfoFailed',function(){
 
 describe('testGetGridCellInfosService_queryGridInfos',function(){
     it('queryGridInfos',function(){
-        var url = dataServiceURL + "/datasources/World/datasets/LandCover.jsonp";
+        var url = dataServiceURL + "/datasources/World/datasets/LandCover.json";
         var myService = initGetGridCellInfosService(url);
         myService.X = "110";
         myService.Y = "50";
         myService.queryGridInfos();
-        expect(myService.url).toEqual(dataServiceURL + "/datasources/World/datasets/LandCover/imageValue.jsonp?x=110&y=50");
+        expect(myService.url).toEqual(dataServiceURL + "/datasources/World/datasets/LandCover/imageValue.json?x=110&y=50");
     });
 });
 

@@ -73,7 +73,7 @@ describe('testThemeService_processAsync', function () {
         });
         themeRange.items = new Array(themeRangeItem1, themeRangeItem2, themeRangeItem3);
         expect(themeService).not.toBeNull();
-        expect(themeService.url).toEqual(themeURL+"/tempLayersSet.jsonp?");
+        expect(themeService.url).toEqual(themeURL+"/tempLayersSet.json?");
         var themeParameters = new SuperMap.ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
