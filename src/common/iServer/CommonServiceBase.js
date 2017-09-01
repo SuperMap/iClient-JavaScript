@@ -370,7 +370,7 @@ export default  class CommonServiceBase {
 
             if(result.error){
                 var failure = (options.scope) ? SuperMap.Function.bind(options.failure, options.scope) : options.failure;
-                failure(result);
+                failure(result.error);
             }else{
                 result.succeed = result.succeed == undefined ? true : result.succeed;
                 var success = (options.scope) ? SuperMap.Function.bind(options.success, options.scope) : options.success;

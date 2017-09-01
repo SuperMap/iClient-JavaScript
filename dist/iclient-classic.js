@@ -1814,7 +1814,7 @@ var CommonServiceBase = function () {
 
                 if (result.error) {
                     var failure = options.scope ? _SuperMap2.default.Function.bind(options.failure, options.scope) : options.failure;
-                    failure(result);
+                    failure(result.error);
                 } else {
                     result.succeed = result.succeed == undefined ? true : result.succeed;
                     var success = options.scope ? _SuperMap2.default.Function.bind(options.success, options.scope) : options.success;
