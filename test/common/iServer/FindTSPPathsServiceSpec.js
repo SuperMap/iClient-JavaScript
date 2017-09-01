@@ -223,7 +223,7 @@ describe('testFindTSPPathsService_processAsync',function(){
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter1 = new SuperMap.TransportationAnalystParameter({
+        var analystParameter = new SuperMap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
@@ -231,7 +231,7 @@ describe('testFindTSPPathsService_processAsync',function(){
             isAnalyzeById: "AnalyzeById",
             nodes: nodeArray,
             endNodeAssigned: false,
-            parameter: analystParameter1
+            parameter: analystParameter
         });
         var findTSPPathsService = initFindTSPPathService();
         findTSPPathsService.processAsync(parameter);

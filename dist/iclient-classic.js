@@ -1809,9 +1809,12 @@ var CommonServiceBase = function () {
                 timeout: options.async ? 0 : null,
                 proxy: options.proxy
             }).then(function (response) {
-                return response.json();
-            }).then(function (result) {
-
+                return response.text();
+            }).then(function (text) {
+                var result = new _SuperMap2.default.Format.JSON().read(text);
+                if (!result) {
+                    result = { error: text };
+                }
                 if (result.error) {
                     var failure = options.scope ? _SuperMap2.default.Function.bind(options.failure, options.scope) : options.failure;
                     failure(result.error);

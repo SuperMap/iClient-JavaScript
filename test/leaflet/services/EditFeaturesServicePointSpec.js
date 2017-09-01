@@ -146,7 +146,7 @@ describe('leaflet_testFeatureService_editFeatures', function () {
                 expect(featuresNullResult.object.options.method).toBe("POST");
                 expect(featuresNullResult.error).not.toBeNull();
                 expect(featuresNullResult.error.code).toEqual(400);
-                expect(featuresNullResult.error.errorMsg).toBe("parameters format error");
+                expect(featuresNullResult.error.errorMsg).toBe("the features is empty addFeatures method");
                 nullFeaturesService.destroy();
                 done();
             } catch (exception) {

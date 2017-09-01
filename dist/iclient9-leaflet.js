@@ -1616,9 +1616,12 @@ var CommonServiceBase = function () {
                 timeout: options.async ? 0 : null,
                 proxy: options.proxy
             }).then(function (response) {
-                return response.json();
-            }).then(function (result) {
-
+                return response.text();
+            }).then(function (text) {
+                var result = new _SuperMap2["default"].Format.JSON().read(text);
+                if (!result) {
+                    result = { error: text };
+                }
                 if (result.error) {
                     var failure = options.scope ? _SuperMap2["default"].Function.bind(options.failure, options.scope) : options.failure;
                     failure(result.error);
@@ -29847,17 +29850,16 @@ var EditFeaturesParameters = function () {
 
                 features = { ids: params.IDs };
             } else {
-                if (params.features === null) return;
-
-                len = params.features.length;
                 features = [];
-                for (var i = 0; i < len; i++) {
-                    feature = params.features[i];
-                    feature.geometry = _SuperMap2["default"].REST.ServerGeometry.fromGeometry(feature.geometry);
-                    features.push(feature);
+                if (params.features) {
+                    len = params.features.length;
+                    for (var i = 0; i < len; i++) {
+                        feature = params.features[i];
+                        feature.geometry = _SuperMap2["default"].REST.ServerGeometry.fromGeometry(feature.geometry);
+                        features.push(feature);
+                    }
                 }
             }
-
             return _SuperMap2["default"].Util.toJSON(features);
         }
     }]);

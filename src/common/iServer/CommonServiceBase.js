@@ -351,6 +351,7 @@ export default  class CommonServiceBase {
         let error = result.error || result;
         this.events.triggerEvent("processFailed", {error: error});
     }
+
     _commit(options) {
         if (options.method === "POST" || options.method === "PUT") {
             if (options.params) {
@@ -364,14 +365,17 @@ export default  class CommonServiceBase {
             withCredentials: options.withCredentials,
             timeout: options.async ? 0 : null,
             proxy: options.proxy
-        }).then(function (response){
-            return response.json()
-        }).then(function (result) {
-
-            if(result.error){
+        }).then(function (response) {
+            return response.text()
+        }).then(function (text) {
+            var result = new SuperMap.Format.JSON().read(text);
+            if (!result) {
+                result = {error: text};
+            }
+            if (result.error) {
                 var failure = (options.scope) ? SuperMap.Function.bind(options.failure, options.scope) : options.failure;
                 failure(result.error);
-            }else{
+            } else {
                 result.succeed = result.succeed == undefined ? true : result.succeed;
                 var success = (options.scope) ? SuperMap.Function.bind(options.success, options.scope) : options.success;
                 success(result);
@@ -379,6 +383,7 @@ export default  class CommonServiceBase {
 
         });
     }
+
     CLASS_NAME = "SuperMap.CommonServiceBase";
 }
 
