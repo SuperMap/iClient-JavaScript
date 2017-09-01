@@ -6,9 +6,9 @@ module.exports = {
         commonTools.openExampleAndLoadMap(browser, type, exampleName);
         /*check elements exist*/
         browser.click('#map').pause(1000);
-        browser.expect.element('.leaflet-pane.leaflet-marker-pane').to.be.present.before(3000);
-        browser.expect.element('.leaflet-pane.leaflet-marker-pane img').to.be.present.before(3000);
-        browser.expect.element('.leaflet-popup-content').to.be.present.before(3000);
+        browser.expect.element('.leaflet-pane.leaflet-marker-pane').to.be.present.before(10000);
+        browser.expect.element('.leaflet-pane.leaflet-marker-pane img').to.be.present.before(10000);
+        browser.expect.element('.leaflet-popup-content').to.be.present.before(10000);
         var popupContent1 = '栅格查询结果';
         var popupContent2 = 'column';
         var popupContent3 = 'row';
@@ -18,7 +18,8 @@ module.exports = {
         browser.expect.element('.leaflet-popup-content').text.to.be.contain(popupContent3);
         browser.expect.element('.leaflet-popup-content').text.to.be.contain(popupContent4);
         browser.click('.leaflet-popup-close-button', function () {
-            browser.expect.element('.leaflet-popup-content').to.not.be.present.before(2000);
+            browser.pause(1000);
+            browser.expect.element('.leaflet-popup-content').to.not.be.present.before(10000);
         });
         browser.pause(1000);
         browser.end();
