@@ -130,9 +130,7 @@ export default class MapVRenderer extends BaseLayer {
         if (_data != undefined) {
             this.dataSet.set(_data);
         }
-        if (update.options != undefined) {
-            super.update({options: update.options});
-        }
+        super.update({options: update.options});
     }
 
     /**
