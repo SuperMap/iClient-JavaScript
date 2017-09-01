@@ -11,3 +11,6 @@ require('./openlayers/overlay/VectorTileSuperMapRestSpec.js');
 
 /*openlayers -- mapping*/
 require('./openlayers/mapping/WebMapSpec.js');
+
+/*openlayers -- control*/
+require('./openlayers/control/ChangeTileVersionSpec');

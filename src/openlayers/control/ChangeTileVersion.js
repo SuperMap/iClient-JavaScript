@@ -250,8 +250,10 @@ export default class ChangeTileVersion extends ol.control.Control {
         function tilesVersion(e) {
             var version = this.getVersion();
             this.tilesVersion(version);
+
         }
     }
+
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.setContent
      * @description 设置版本相关信息
@@ -320,7 +322,7 @@ export default class ChangeTileVersion extends ol.control.Control {
             me.setContent(tileVersions);
         });
         me.getTileSetsInfo();
-        return this;
+        return me;
     }
 
     /**
@@ -346,7 +348,7 @@ export default class ChangeTileVersion extends ol.control.Control {
                 me.options.layer.setTileSetsInfo(info.result);
             }
         }
-        return this;
+        return me;
     }
 
     /**
@@ -364,7 +366,9 @@ export default class ChangeTileVersion extends ol.control.Control {
      */
     nextTilesVersion() {
         if (this.firstLoad) {
+
             this.options.layer.nextTilesVersion();
+
             this.firstLoad = !!0;
             return this;
         }

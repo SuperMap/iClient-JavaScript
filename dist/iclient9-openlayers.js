@@ -12597,6 +12597,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
         }
         return _this;
     }
+
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.setContent
      * @description 设置版本相关信息
@@ -12681,7 +12682,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
                 me.setContent(tileVersions);
             });
             me.getTileSetsInfo();
-            return this;
+            return me;
         }
 
         /**
@@ -12714,7 +12715,7 @@ var ChangeTileVersion = function (_ol$control$Control) {
 
                 new _MapService2.default(me.options.layer._url).getTilesets(getTilesInfoSucceed);
             }
-            return this;
+            return me;
         }
 
         /**
@@ -12738,7 +12739,9 @@ var ChangeTileVersion = function (_ol$control$Control) {
         key: 'nextTilesVersion',
         value: function nextTilesVersion() {
             if (this.firstLoad) {
+
                 this.options.layer.nextTilesVersion();
+
                 this.firstLoad = !!0;
                 return this;
             }
