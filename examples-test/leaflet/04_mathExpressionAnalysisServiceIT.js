@@ -17,8 +17,6 @@ module.exports = {
                 browser.assert.equal(result.value.length, 2, "expect Number of leaflet-tile-container to be 2, actual is " + result.value.length);
             });
         }, 'element .leaflet-layer present in 20000ms');
-        //测试过程中截取地图瓦片, 和已有的标准瓦片进行对比
-        commonTools.cmpTestTileWithStdTile(browser, type, exampleName, 100, 100, 256, 256);
         browser.pause(1000);
         browser.end();
     }
