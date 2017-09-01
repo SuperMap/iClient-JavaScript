@@ -72,16 +72,12 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
 
         end = me.url.substr(me.url.length - 1, 1);
         // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-        // if (me.format==="geojson" && me.isInTheSameDomain) {
+        // if (me.format==="geojson" ) {
         //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
         // } else {
-        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+        //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
         // }
-        if (me.isInTheSameDomain) {
-            me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
-        } else {
-            me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
-        }
+        me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
     }
 
     /**

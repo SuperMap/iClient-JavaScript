@@ -42,11 +42,11 @@ export default  class FacilityAnalystStreamService extends NetworkAnalystService
         //URL 通过参数类型来判断是 上游 还是下游 查询
         if (params.queryType === 0) {
             me.url = me.url + ((end === "/") ? "upstreamcirticalfaclilities" :
-                "/upstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+                "/upstreamcirticalfaclilities") +".json?";
         }
         else if (params.queryType === 1) {
             me.url = me.url + ((end === "/") ? "downstreamcirticalfaclilities" :
-                "/downstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+                "/downstreamcirticalfaclilities") +".json?";
         }
         else return;
 

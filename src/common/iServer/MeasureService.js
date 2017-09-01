@@ -64,19 +64,9 @@ export default class MeasureService extends CommonServiceBase {
         }
         end = me.url.substr(me.url.length - 1, 1);
         if (me.measureMode === MeasureMode.AREA) {
-            if (me.isInTheSameDomain) {
-                me.url += ((end === "/") ? "area.json?" : "/area.json?");
-            }
-            else {
-                me.url += ((end === "/") ? "area.jsonp?" : "/area.jsonp?");
-            }
+            me.url += ((end === "/") ? "area.json?" : "/area.json?");
         } else {
-            if (me.isInTheSameDomain) {
-                me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
-            }
-            else {
-                me.url += ((end === "/") ? "distance.jsonp?" : "/distance.jsonp?");
-            }
+            me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
         }
         var serverGeometry = SuperMap.REST.ServerGeometry.fromGeometry(geometry);
         if (!serverGeometry) {
@@ -94,7 +84,11 @@ export default class MeasureService extends CommonServiceBase {
             else if (typeof (params.prjCoordSys) === "string") {
                 prjCoordSysTemp = '{"epsgCode"' + params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"), params.prjCoordSys.length) + "}";
             }
-            paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit, "prjCoordSys": prjCoordSysTemp};
+            paramsTemp = {
+                "point2Ds": SuperMap.Util.toJSON(point2ds),
+                "unit": params.unit,
+                "prjCoordSys": prjCoordSysTemp
+            };
         }
         else {
             paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit};

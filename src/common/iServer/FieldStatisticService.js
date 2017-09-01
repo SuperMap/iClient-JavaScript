@@ -86,11 +86,7 @@ export default  class FieldStatisticService extends CommonServiceBase {
         var me = this,
             end = me.url.substr(me.url.length - 1, 1),
             fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
-        if (me.isInTheSameDomain) {
             me.url += (end == "/") ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
-        } else {
-            me.url += (end == "/") ? fieldStatisticURL + ".jsonp?" : "/" + fieldStatisticURL + ".jsonp?";
-        }
 
         me.request({
             method: "GET",

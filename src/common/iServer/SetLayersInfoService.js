@@ -71,7 +71,7 @@ export default  class SetLayersInfoService extends CommonServiceBase {
             me.url += "tempLayersSet";
             method = "POST";
         }
-        me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+        me.url += ".json?";
         var layers = params.subLayers.layers,
             len = layers.length;
         for (var i in layers) {

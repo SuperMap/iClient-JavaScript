@@ -81,14 +81,7 @@ export default  class ThiessenAnalystService extends SpatialAnalystBase {
         }
 
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
-
-
-        if (me.isInTheSameDomain) {
-            me.url += '.json?returnContent=true';
-        } else {
-            me.url += '.jsonp?returnContent=true';
-        }
-
+        me.url += '.json?returnContent=true';
         me.request({
             method: "POST",
             data: jsonParameters,

@@ -27,11 +27,7 @@ export default  class ThemeService extends CommonServiceBase {
         var end,
             me = this;
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.isInTheSameDomain) {
-            me.url += (end === "/") ? "tempLayersSet.json?" : "/tempLayersSet.json?";
-        } else {
-            me.url += (end === "/") ? "tempLayersSet.jsonp?" : "/tempLayersSet.jsonp?";
-        }
+        me.url += (end === "/") ? "tempLayersSet.json?" : "/tempLayersSet.json?";
     }
 
     /**

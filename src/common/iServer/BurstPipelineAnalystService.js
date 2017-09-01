@@ -36,7 +36,7 @@ export default  class BurstPipelineAnalystService extends NetworkAnalystServiceB
         }
         var me = this, jsonObject;
         var end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "burstAnalyse" : "/burstAnalyse") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "burstAnalyse" : "/burstAnalyse") +  ".json?";
 
         jsonObject = {
             sourceNodeIDs: params.sourceNodeIDs,

@@ -57,7 +57,7 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "closestfacility" : "/closestfacility") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "closestfacility" : "/closestfacility") + ".json?";
         jsonObject = {
             expectFacilityCount: params.expectFacilityCount,
             fromEvent: params.fromEvent,

@@ -106,12 +106,7 @@ export default  class RouteCalculateMeasureService extends SpatialAnalystBase {
     getJsonParameters(params) {
         var jsonParameters, jsonStr = "geometry/calculatemeasure", me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.isInTheSameDomain) {
-            me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
-        } else {
-            me.url += (end === "/") ? jsonStr + ".jsonp" : "/" + jsonStr + ".jsonp";
-        }
-
+        me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
         me.url += "?returnContent=true";
         jsonParameters = SuperMap.Util.toJSON(params);
         return jsonParameters;

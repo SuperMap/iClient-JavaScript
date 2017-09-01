@@ -66,34 +66,21 @@ export default  class SurfaceAnalystService extends SpatialAnalystBase {
      * @return {Object} 转化后的JSON字符串。
      */
     getJsonParameters(params) {
-        var jsonParameters="";
+        var jsonParameters = "";
         var parameterObject = {};
         var me = this, end;
         if (params instanceof DatasetSurfaceAnalystParameters) {
             var end = me.url.substr(me.url.length - 1, 1);
-
-            if (me.isInTheSameDomain) {
-                me.url += (end === "/") ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() +
-                    ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
-                    params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
-            } else {
-                me.url += (end === "/") ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() +
-                    ".jsonp?returnContent=true" : "/datasets/" + params.dataset + "/" +
-                    params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true";
-            }
-            DatasetSurfaceAnalystParameters.toObject(params,parameterObject);
+            me.url += (end === "/") ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() +
+            ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
+            params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
+            DatasetSurfaceAnalystParameters.toObject(params, parameterObject);
             jsonParameters = SuperMap.Util.toJSON(parameterObject);
         } else if (params instanceof GeometrySurfaceAnalystParameters) {
             end = me.url.substr(me.url.length - 1, 1);
-            if (me.isInTheSameDomain) {
-                me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                    ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                    ".json?returnContent=true";
-            } else {
-                me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                    ".jsonp?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                    ".jsonp?returnContent=true";
-            }
+            me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
+            ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
+            ".json?returnContent=true";
             jsonParameters = SuperMap.Util.toJSON(params);
         } else {
             return;

@@ -35,7 +35,7 @@ export default  class TilesetsService extends CommonServiceBase {
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
 
-        me.url = me.url + ((end === "/") ? "tilesets" : "/tilesets") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "tilesets" : "/tilesets") + ".json?";
 
         me.request({
             method: "GET",

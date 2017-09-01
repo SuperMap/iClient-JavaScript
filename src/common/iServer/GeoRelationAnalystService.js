@@ -74,11 +74,7 @@ export default  class GeoRelationAnalystService extends SpatialAnalystBase {
 
         var jsonParameters = SuperMap.Util.toJSON(parameter);
 
-        if (me.isInTheSameDomain) {
-            me.url += '.json?returnContent=true';
-        } else {
-            me.url += '.jsonp?returnContent=true';
-        }
+        me.url += '.json?returnContent=true';
 
         me.request({
             method: "POST",

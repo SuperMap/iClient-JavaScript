@@ -143,10 +143,19 @@ export default class MapvRenderer extends BaseLayer {
         if (self.options.minZoom && map.getZoom() < self.options.minZoom || self.options.maxZoom && map.getZoom() > self.options.maxZoom) {
             return;
         }
+        function projectPoint(p) {
+            var sin = Math.sin(p[1] * Math.PI / 180),
+                x = (p[0] / 360 + 0.5),
+                y = (0.5 - 0.25 * Math.log((1 + sin) / (1 - sin)) / Math.PI);
 
+            y = y < 0 ? 0 :
+                y > 1 ? 1 : y;
+
+            return [x, y, 0];
+        }
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                var worldPoint = map.project(new window.mapboxgl.LngLat(coordinate[0], coordinate[1]));
+                var worldPoint = map.transform.locationPoint((new window.mapboxgl.LngLat(coordinate[0], coordinate[1])));
                 return [worldPoint.x, worldPoint.y];
             }
         };

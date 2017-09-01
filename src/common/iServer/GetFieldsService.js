@@ -61,11 +61,7 @@ export default  class GetFieldsService extends CommonServiceBase {
         var me = this,
             end = me.url.substr(me.url.length - 1, 1),
             datasetURL = "datasources/" + me.datasource + "/datasets/" + me.dataset;
-        if (me.isInTheSameDomain) {
             me.url += (end == "/") ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
-        } else {
-            me.url += (end == "/") ? datasetURL + "/fields.jsonp?" : "/" + datasetURL + "/fields.jsonp?";
-        }
 
         me.request({
             method: "GET",

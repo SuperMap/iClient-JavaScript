@@ -48,7 +48,7 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "weightmatrix" : "/weightmatrix") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "weightmatrix" : "/weightmatrix") + ".json?" ;
         jsonObject = {
             parameter: SuperMap.Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)

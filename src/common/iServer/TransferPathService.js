@@ -46,7 +46,7 @@ export default  class TransferPathService extends CommonServiceBase {
 
         end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? '' : '/';
-        me.url += me.isInTheSameDomain ? "path.json?" : "path.jsonp";
+        me.url += "path.json?";
 
         jsonParameters = {
             points: SuperMap.Util.toJSON(params.points),

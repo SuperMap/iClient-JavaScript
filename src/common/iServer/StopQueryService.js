@@ -56,7 +56,7 @@ export default  class StopQueryService extends CommonServiceBase {
         end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? '' : '/';
         me.url += "stops/keyword/" + params.keyWord;
-        me.url += me.isInTheSameDomain ? ".json?" : ".jsonp";
+        me.url += ".json?";
 
         me.request({
             method: "GET",

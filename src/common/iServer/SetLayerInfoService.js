@@ -48,7 +48,7 @@ export default  class SetLayerInfoService extends CommonServiceBase {
         if (!params) {
             return;
         }
-        me.url += me.isInTheSameDomain ? ".json" : ".jsonp";
+        me.url += ".json";
         var jsonParamsStr = SuperMap.Util.toJSON(params);
         me.request({
             method: "PUT",

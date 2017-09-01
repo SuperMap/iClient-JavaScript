@@ -48,7 +48,7 @@ export default class FindLocationService extends NetworkAnalystServiceBase {
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "location" : "/location") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "location" : "/location") + ".json?";
         jsonObject = {
             isFromCenter: params.isFromCenter,
             expectedSupplyCenterCount: params.expectedSupplyCenterCount,

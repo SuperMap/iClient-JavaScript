@@ -2,8 +2,8 @@ import fetch from 'whatwg-fetch-importable'
 import fetchJsonp from 'fetch-jsonp';
 import SuperMap from '../SuperMap';
 
-export var Support = SuperMap.Support = {
-    cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
+export var Support = SuperMap.Support = SuperMap.Support|| {
+    cors: (window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest())
 };
 export var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
@@ -24,10 +24,10 @@ export var FetchRequest = SuperMap.FetchRequest = {
 
     get: function (url, params, options) {
         var type = 'GET';
-        url = this._processUrl(url);
+        url = this._processUrl(url,options);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (url.length <= 2000) {
-            if (SuperMap.Util.isInTheSameDomain(url) || (SuperMap.Support.cors && this._isMVTRequest(url))) {
+        if (!this.urlIsLong(url)) {
+            if (SuperMap.Util.isInTheSameDomain(url) || Support.cors || options.proxy) {
                 return this._fetch(url, params, options, type);
             }
             if (!SuperMap.Util.isInTheSameDomain(url)) {
@@ -40,29 +40,45 @@ export var FetchRequest = SuperMap.FetchRequest = {
 
     delete: function (url, params, options) {
         var type = 'DELETE';
-        url = this._processUrl(url);
+        url = this._processUrl(url,options);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (url.length <= 2000 && SuperMap.Support.cors) {
+        if (!this.urlIsLong(url)&& Support.cors) {
             return this._fetch(url, params, options, type);
         }
         return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
     },
 
     post: function (url, params, options) {
-        return this._fetch(this._processUrl(url), params, options, 'POST');
+        return this._fetch(this._processUrl(url,options), params, options, 'POST');
     },
 
     put: function (url, params, options) {
-        return this._fetch(this._processUrl(url), params, options, 'PUT');
+        return this._fetch(this._processUrl(url,options), params, options, 'PUT');
     },
-
+    urlIsLong : function (url){
+        //当前url的字节长度。
+        var totalLength = 0,
+            charCode = null;
+        for (var i=0, len=url.length; i<len; i++) {
+            //转化为Unicode编码
+            charCode = url.charCodeAt(i);
+            if (charCode < 0x007f) {
+                totalLength++;
+            } else if ((0x0080 <= charCode) && (charCode <= 0x07ff)) {
+                totalLength += 2;
+            } else if ((0x0800 <= charCode) && (charCode <= 0xffff)) {
+                totalLength += 3;
+            }
+        }
+        return (totalLength < 2000) ? false : true;
+    },
     _postSimulatie: function (type, url, params, options) {
         var separator = url.indexOf("?") > -1 ? "&" : "?";
         url += separator + '_method= ' + type;
         return this.post(url, params, options);
     },
 
-    _processUrl: function (url) {
+    _processUrl: function (url,options) {
         if (this._isMVTRequest(url)) {
             return url;
         }
@@ -75,6 +91,14 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 if (urlArrays.length === 2) {
                     url = urlArrays[0] + ".json?" + urlArrays[1]
                 }
+            }
+        }
+        if (options && options.proxy) {
+            if (typeof options.proxy === "function") {
+                url = options.proxy(url);
+            } else {
+                url = decodeURIComponent(url);
+                url = options.proxy + encodeURIComponent(url);
             }
         }
         return url;

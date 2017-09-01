@@ -46,11 +46,7 @@ export default class EditFeaturesService extends CommonServiceBase {
         }
         var me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.isInTheSameDomain) {
-            me.url += (end == "/") ? "features.json?" : "/features.json?";
-        } else {
-            me.url += (end == "/") ? "features.jsonp?" : "/features.jsonp?";
-        }
+        me.url += (end == "/") ? "features.json?" : "/features.json?";
     }
 
 

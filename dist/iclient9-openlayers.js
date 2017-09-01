@@ -1204,6 +1204,8 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 __webpack_require__(15);
 
+var _FetchRequest = __webpack_require__(12);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1441,7 +1443,7 @@ var CommonServiceBase = function () {
             options.success = me.getUrlCompleted;
             options.failure = me.getUrlFailed;
             me.options = options;
-            _SuperMap2.default.Util.committer(me.options);
+            me._commit(me.options);
         }
 
         /**
@@ -1527,19 +1529,9 @@ var CommonServiceBase = function () {
             me.index = parseInt(Math.random() * me.length);
             me.url = me.urls[me.index];
             url = url.replace(re, re.exec(me.url)[0]);
-            var isInTheSameDomain = _SuperMap2.default.Util.isInTheSameDomain(url);
-            if (isInTheSameDomain) {
-                if (url.indexOf(".jsonp") > 0) {
-                    url = url.replace(/.jsonp/, ".json");
-                }
-            } else {
-                if (!(url.indexOf(".jsonp") > 0)) {
-                    url = url.replace(/.json/, ".jsonp");
-                }
-            }
             me.options.url = url;
-            me.options.isInTheSameDomain = isInTheSameDomain;
-            _SuperMap2.default.Util.committer(me.options);
+            me.options.isInTheSameDomain = _SuperMap2.default.Util.isInTheSameDomain(url);
+            me._commit(me.options);
         }
 
         /**
@@ -1608,6 +1600,33 @@ var CommonServiceBase = function () {
             result = _SuperMap2.default.Util.transformResult(result);
             var error = result.error || result;
             this.events.triggerEvent("processFailed", { error: error });
+        }
+    }, {
+        key: '_commit',
+        value: function _commit(options) {
+            if (options.method === "POST") {
+                if (options.params) {
+                    options.url = _SuperMap2.default.Util.urlAppend(options.url, _SuperMap2.default.Util.getParameterString(options.params || {}));
+                }
+                options.params = options.data;
+            }
+            _FetchRequest.FetchRequest.commit(options.method, options.url, options.params, {
+                headers: options.headers,
+                withCredentials: options.withCredentials,
+                timeout: options.async ? 0 : null,
+                proxy: options.proxy
+            }).then(function (response) {
+                return response.json();
+            }).then(function (result) {
+
+                if (result.error) {
+                    var failure = options.scope ? _SuperMap2.default.Function.bind(options.failure, options.scope) : options.failure;
+                    failure(result.error);
+                } else {
+                    var success = options.scope ? _SuperMap2.default.Function.bind(options.success, options.scope) : options.success;
+                    success(result);
+                }
+            });
         }
     }]);
 
@@ -3607,6 +3626,208 @@ _SuperMap2.default.ServerColor = ServerColor;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.FetchRequest = exports.Support = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _whatwgFetchImportable = __webpack_require__(82);
+
+var _whatwgFetchImportable2 = _interopRequireDefault(_whatwgFetchImportable);
+
+var _fetchJsonp2 = __webpack_require__(81);
+
+var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Support = exports.Support = _SuperMap2.default.Support = _SuperMap2.default.Support || {
+    cors: window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()
+};
+var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
+    commit: function commit(method, url, params, options) {
+        method = method ? method.toUpperCase() : method;
+        switch (method) {
+            case 'GET':
+                return this.get(url, params, options);
+            case 'POST':
+                return this.post(url, params, options);
+            case 'PUT':
+                return this.put(url, params, options);
+            case 'DELETE':
+                return this.delete(url, params, options);
+            default:
+                return this.get(url, params, options);
+        }
+    },
+
+    get: function get(url, params, options) {
+        var type = 'GET';
+        url = this._processUrl(url, options);
+        url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
+        if (!this.urlIsLong(url)) {
+            if (_SuperMap2.default.Util.isInTheSameDomain(url) || Support.cors || options.proxy) {
+                return this._fetch(url, params, options, type);
+            }
+            if (!_SuperMap2.default.Util.isInTheSameDomain(url)) {
+                url = url.replace('.json', '.jsonp');
+                return this._fetchJsonp(url, options);
+            }
+        }
+        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+    },
+
+    delete: function _delete(url, params, options) {
+        var type = 'DELETE';
+        url = this._processUrl(url, options);
+        url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
+        if (!this.urlIsLong(url) && Support.cors) {
+            return this._fetch(url, params, options, type);
+        }
+        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+    },
+
+    post: function post(url, params, options) {
+        return this._fetch(this._processUrl(url, options), params, options, 'POST');
+    },
+
+    put: function put(url, params, options) {
+        return this._fetch(this._processUrl(url, options), params, options, 'PUT');
+    },
+    urlIsLong: function urlIsLong(url) {
+        //当前url的字节长度。
+        var totalLength = 0,
+            charCode = null;
+        for (var i = 0, len = url.length; i < len; i++) {
+            //转化为Unicode编码
+            charCode = url.charCodeAt(i);
+            if (charCode < 0x007f) {
+                totalLength++;
+            } else if (0x0080 <= charCode && charCode <= 0x07ff) {
+                totalLength += 2;
+            } else if (0x0800 <= charCode && charCode <= 0xffff) {
+                totalLength += 3;
+            }
+        }
+        return totalLength < 2000 ? false : true;
+    },
+    _postSimulatie: function _postSimulatie(type, url, params, options) {
+        var separator = url.indexOf("?") > -1 ? "&" : "?";
+        url += separator + '_method= ' + type;
+        return this.post(url, params, options);
+    },
+
+    _processUrl: function _processUrl(url, options) {
+        if (this._isMVTRequest(url)) {
+            return url;
+        }
+
+        if (url.indexOf('.json') === -1) {
+            if (url.indexOf("?") < 0) {
+                url += '.json';
+            } else {
+                var urlArrays = url.split("?");
+                if (urlArrays.length === 2) {
+                    url = urlArrays[0] + ".json?" + urlArrays[1];
+                }
+            }
+        }
+        if (options && options.proxy) {
+            if (typeof options.proxy === "function") {
+                url = options.proxy(url);
+            } else {
+                url = decodeURIComponent(url);
+                url = options.proxy + encodeURIComponent(url);
+            }
+        }
+        return url;
+    },
+
+    _fetch: function _fetch(url, params, options, type) {
+        options = options || {};
+        options.headers = options.headers || {};
+        if (!options.headers['Content-Type']) {
+            options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+        }
+        if (options.timeout) {
+            return this._timeout(options.timeout, (0, _whatwgFetchImportable2.default)(url, {
+                method: type,
+                headers: options.headers,
+                body: type === 'PUT' || type === 'POST' ? params : undefined,
+                credentials: options.withCredentials ? 'include' : 'omit',
+                mode: 'cors'
+            }).then(function (response) {
+                return response;
+            }));
+        }
+        return (0, _whatwgFetchImportable2.default)(url, {
+            method: type,
+            body: type === 'PUT' || type === 'POST' ? params : undefined,
+            headers: options.headers,
+            credentials: options.withCredentials ? 'include' : 'omit',
+            mode: 'cors'
+        }).then(function (response) {
+            return response;
+        });
+    },
+
+    _fetchJsonp: function _fetchJsonp(url, options) {
+        options = options || {};
+        return (0, _fetchJsonp3.default)(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
+            return response;
+        });
+    },
+
+    _timeout: function _timeout(seconds, promise) {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                reject(new Error("timeout"));
+            }, seconds);
+            promise.then(resolve, reject);
+        });
+    },
+
+    _getParameterString: function _getParameterString(params) {
+        var paramsArray = [];
+        for (var key in params) {
+            var value = params[key];
+            if (value != null && typeof value !== 'function') {
+                var encodedValue;
+                if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value.constructor === Array) {
+                    var encodedItemArray = [];
+                    var item;
+                    for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
+                        item = value[itemIndex];
+                        encodedItemArray.push(encodeURIComponent(item === null || item === undefined ? "" : item));
+                    }
+                    encodedValue = '[' + encodedItemArray.join(",") + ']';
+                } else {
+                    encodedValue = encodeURIComponent(value);
+                }
+                paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
+            }
+        }
+        return paramsArray.join("&");
+    },
+
+    _isMVTRequest: function _isMVTRequest(url) {
+        return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
+    }
+};
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -3696,184 +3917,6 @@ exports.default = Theme;
 
 
 _SuperMap2.default.Theme = Theme;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.FetchRequest = exports.Support = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _whatwgFetchImportable = __webpack_require__(82);
-
-var _whatwgFetchImportable2 = _interopRequireDefault(_whatwgFetchImportable);
-
-var _fetchJsonp2 = __webpack_require__(81);
-
-var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Support = exports.Support = _SuperMap2.default.Support = {
-    cors: window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()
-};
-var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
-    commit: function commit(method, url, params, options) {
-        method = method ? method.toUpperCase() : method;
-        switch (method) {
-            case 'GET':
-                return this.get(url, params, options);
-            case 'POST':
-                return this.post(url, params, options);
-            case 'PUT':
-                return this.put(url, params, options);
-            case 'DELETE':
-                return this.delete(url, params, options);
-            default:
-                return this.get(url, params, options);
-        }
-    },
-
-    get: function get(url, params, options) {
-        var type = 'GET';
-        url = this._processUrl(url);
-        url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (url.length <= 2000) {
-            if (_SuperMap2.default.Util.isInTheSameDomain(url) || _SuperMap2.default.Support.cors && this._isMVTRequest(url)) {
-                return this._fetch(url, params, options, type);
-            }
-            if (!_SuperMap2.default.Util.isInTheSameDomain(url)) {
-                url = url.replace('.json', '.jsonp');
-                return this._fetchJsonp(url, options);
-            }
-        }
-        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
-    },
-
-    delete: function _delete(url, params, options) {
-        var type = 'DELETE';
-        url = this._processUrl(url);
-        url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (url.length <= 2000 && _SuperMap2.default.Support.cors) {
-            return this._fetch(url, params, options, type);
-        }
-        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
-    },
-
-    post: function post(url, params, options) {
-        return this._fetch(this._processUrl(url), params, options, 'POST');
-    },
-
-    put: function put(url, params, options) {
-        return this._fetch(this._processUrl(url), params, options, 'PUT');
-    },
-
-    _postSimulatie: function _postSimulatie(type, url, params, options) {
-        var separator = url.indexOf("?") > -1 ? "&" : "?";
-        url += separator + '_method= ' + type;
-        return this.post(url, params, options);
-    },
-
-    _processUrl: function _processUrl(url) {
-        if (this._isMVTRequest(url)) {
-            return url;
-        }
-
-        if (url.indexOf('.json') === -1) {
-            if (url.indexOf("?") < 0) {
-                url += '.json';
-            } else {
-                var urlArrays = url.split("?");
-                if (urlArrays.length === 2) {
-                    url = urlArrays[0] + ".json?" + urlArrays[1];
-                }
-            }
-        }
-        return url;
-    },
-
-    _fetch: function _fetch(url, params, options, type) {
-        options = options || {};
-        options.headers = options.headers || {};
-        if (!options.headers['Content-Type']) {
-            options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-        }
-        if (options.timeout) {
-            return this._timeout(options.timeout, (0, _whatwgFetchImportable2.default)(url, {
-                method: type,
-                headers: options.headers,
-                body: type === 'PUT' || type === 'POST' ? params : undefined,
-                credentials: options.withCredentials ? 'include' : 'omit',
-                mode: 'cors'
-            }).then(function (response) {
-                return response;
-            }));
-        }
-        return (0, _whatwgFetchImportable2.default)(url, {
-            method: type,
-            body: type === 'PUT' || type === 'POST' ? params : undefined,
-            headers: options.headers,
-            credentials: options.withCredentials ? 'include' : 'omit',
-            mode: 'cors'
-        }).then(function (response) {
-            return response;
-        });
-    },
-
-    _fetchJsonp: function _fetchJsonp(url, options) {
-        options = options || {};
-        return (0, _fetchJsonp3.default)(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
-            return response;
-        });
-    },
-
-    _timeout: function _timeout(seconds, promise) {
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                reject(new Error("timeout"));
-            }, seconds);
-            promise.then(resolve, reject);
-        });
-    },
-
-    _getParameterString: function _getParameterString(params) {
-        var paramsArray = [];
-        for (var key in params) {
-            var value = params[key];
-            if (value != null && typeof value !== 'function') {
-                var encodedValue;
-                if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value.constructor === Array) {
-                    var encodedItemArray = [];
-                    var item;
-                    for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
-                        item = value[itemIndex];
-                        encodedItemArray.push(encodeURIComponent(item === null || item === undefined ? "" : item));
-                    }
-                    encodedValue = '[' + encodedItemArray.join(",") + ']';
-                } else {
-                    encodedValue = encodeURIComponent(value);
-                }
-                paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
-            }
-        }
-        return paramsArray.join("&");
-    },
-
-    _isMVTRequest: function _isMVTRequest(url) {
-        return url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1;
-    }
-};
 
 /***/ }),
 /* 14 */
@@ -4482,7 +4525,7 @@ var _KeyServiceParameter = __webpack_require__(268);
 
 var _KeyServiceParameter2 = _interopRequireDefault(_KeyServiceParameter);
 
-var _FetchRequest = __webpack_require__(13);
+var _FetchRequest = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5595,16 +5638,12 @@ var GetFeaturesServiceBase = function (_CommonServiceBase) {
 
         end = me.url.substr(me.url.length - 1, 1);
         // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-        // if (me.format==="geojson" && me.isInTheSameDomain) {
+        // if (me.format==="geojson" ) {
         //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
         // } else {
-        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+        //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
         // }
-        if (me.isInTheSameDomain) {
-            me.url += end == "/" ? "featureResults.json?" : "/featureResults.json?";
-        } else {
-            me.url += end == "/" ? "featureResults.jsonp?" : "/featureResults.jsonp?";
-        }
+        me.url += end == "/" ? "featureResults.json?" : "/featureResults.json?";
         return _this;
     }
 
@@ -5956,7 +5995,7 @@ var _CommonServiceBase2 = __webpack_require__(3);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FetchRequest = __webpack_require__(13);
+var _FetchRequest = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6218,16 +6257,12 @@ var QueryService = function (_CommonServiceBase) {
         end = me.url.substr(me.url.length - 1, 1);
 
         // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-        // if (this.format==="geojson" && me.isInTheSameDomain) {
+        // if (this.format==="geojson") {
         //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
         // } else {
-        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+        //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
         // }
-        if (me.isInTheSameDomain) {
-            me.url += end === "/" ? "queryResults.json?" : "/queryResults.json?";
-        } else {
-            me.url += end === "/" ? "queryResults.jsonp?" : "/queryResults.jsonp?";
-        }
+        me.url += end === "/" ? "queryResults.json?" : "/queryResults.json?";
         return _this;
     }
 
@@ -7269,7 +7304,7 @@ var _REST = __webpack_require__(1);
 
 __webpack_require__(15);
 
-var _FetchRequest = __webpack_require__(13);
+var _FetchRequest = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7681,7 +7716,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(12);
+var _Theme2 = __webpack_require__(13);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
@@ -9288,7 +9323,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(12);
+var _Theme2 = __webpack_require__(13);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
@@ -9442,7 +9477,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(12);
+var _Theme2 = __webpack_require__(13);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
@@ -9671,7 +9706,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(12);
+var _Theme2 = __webpack_require__(13);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
@@ -10112,7 +10147,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(12);
+var _Theme2 = __webpack_require__(13);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
@@ -10290,7 +10325,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(12);
+var _Theme2 = __webpack_require__(13);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
@@ -12047,7 +12082,7 @@ var _iPortalMapsQueryParam = __webpack_require__(86);
 
 var _iPortalMapsQueryParam2 = _interopRequireDefault(_iPortalMapsQueryParam);
 
-var _FetchRequest = __webpack_require__(13);
+var _FetchRequest = __webpack_require__(12);
 
 var _iPortalService = __webpack_require__(87);
 
@@ -12193,7 +12228,7 @@ var _OnlineData = __webpack_require__(264);
 
 var _OnlineData2 = _interopRequireDefault(_OnlineData);
 
-var _FetchRequest = __webpack_require__(13);
+var _FetchRequest = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13830,7 +13865,7 @@ var _olDebug = __webpack_require__(2);
 
 var _olDebug2 = _interopRequireDefault(_olDebug);
 
-var _FetchRequest = __webpack_require__(13);
+var _FetchRequest = __webpack_require__(12);
 
 var _SuperMap = __webpack_require__(0);
 
@@ -20424,7 +20459,7 @@ var _CommonServiceBase2 = __webpack_require__(3);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FetchRequest = __webpack_require__(13);
+var _FetchRequest = __webpack_require__(12);
 
 var _GeoCodingParameter = __webpack_require__(147);
 
@@ -20868,12 +20903,7 @@ var AreaSolarRadiationService = function (_SpatialAnalystBase) {
 
             _SuperMap2.default.AreaSolarRadiationParameters.toObject(parameter, parameterObject);
             var jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
-
-            if (me.isInTheSameDomain) {
-                me.url += '.json?returnContent=true';
-            } else {
-                me.url += '.jsonp?returnContent=true';
-            }
+            me.url += '.json?returnContent=true';
 
             me.request({
                 method: "POST",
@@ -21827,13 +21857,7 @@ var BufferAnalystService = function (_SpatialAnalystBase) {
             }
 
             var jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
-
-            if (me.isInTheSameDomain) {
-                me.url += '.json?returnContent=true';
-            } else {
-                me.url += '.jsonp?returnContent=true';
-            }
-
+            me.url += '.json?returnContent=true';
             me.request({
                 method: "POST",
                 data: jsonParameters,
@@ -22241,7 +22265,7 @@ var BurstPipelineAnalystService = function (_NetworkAnalystServic) {
             var me = this,
                 jsonObject;
             var end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "burstAnalyse" : "/burstAnalyse") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "burstAnalyse" : "/burstAnalyse") + ".json?";
 
             jsonObject = {
                 sourceNodeIDs: params.sourceNodeIDs,
@@ -22356,9 +22380,9 @@ var ChartFeatureInfoSpecsService = function (_CommonServiceBase) {
                 end = me.url.substr(me.url.length - 1, 1);
             if (!me.isTempLayers) {
                 me.url += end === "/" ? '' : '/';
-                me.url += me.isInTheSameDomain ? "chartFeatureInfoSpecs.json?" : "chartFeatureInfoSpecs.jsonp?";
+                me.url += "chartFeatureInfoSpecs.json?";
             } else {
-                me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+                me.url += ".json?";
             }
             me.request({
                 method: method,
@@ -22799,16 +22823,12 @@ var ChartQueryService = function (_CommonServiceBase) {
         end = me.url.substr(me.url.length - 1, 1);
 
         // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-        // if (me.format==="geojson" && me.isInTheSameDomain) {
+        // if (me.format==="geojson") {
         //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
         // } else {
-        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+        //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
         // }
-        if (me.isInTheSameDomain) {
-            me.url += end === "/" ? "queryResults.json?" : "/queryResults.json?";
-        } else {
-            me.url += end === "/" ? "queryResults.jsonp?" : "/queryResults.jsonp?";
-        }
+        me.url += end === "/" ? "queryResults.json?" : "/queryResults.json?";
         return _this;
     }
 
@@ -23386,7 +23406,7 @@ var ComputeWeightMatrixService = function (_NetworkAnalystServic) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "weightmatrix" : "/weightmatrix") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "weightmatrix" : "/weightmatrix") + ".json?";
             jsonObject = {
                 parameter: _SuperMap2.default.Util.toJSON(params.parameter),
                 nodes: me.getJson(params.isAnalyzeById, params.nodes)
@@ -24822,12 +24842,7 @@ var DensityAnalystService = function (_SpatialAnalystBase) {
 
             _DensityKernelAnalystParameters2.default.toObject(parameter, parameterObject);
             var jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
-
-            if (me.isInTheSameDomain) {
-                me.url += '.json?returnContent=true';
-            } else {
-                me.url += '.jsonp?returnContent=true';
-            }
+            me.url += '.json?returnContent=true';
 
             me.request({
                 method: "POST",
@@ -25234,11 +25249,7 @@ var EditFeaturesService = function (_CommonServiceBase) {
         var me = _this,
             end;
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.isInTheSameDomain) {
-            me.url += end == "/" ? "features.json?" : "/features.json?";
-        } else {
-            me.url += end == "/" ? "features.jsonp?" : "/features.jsonp?";
-        }
+        me.url += end == "/" ? "features.json?" : "/features.json?";
         return _this;
     }
 
@@ -25491,7 +25502,7 @@ var FacilityAnalystSinks3DService = function (_CommonServiceBase) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "sinks" : "/sinks") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "sinks" : "/sinks") + ".json?";
             jsonObject = {
                 edgeID: params.edgeID,
                 nodeID: params.nodeID,
@@ -25681,7 +25692,7 @@ var FacilityAnalystSources3DService = function (_CommonServiceBase) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "sources" : "/sources") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "sources" : "/sources") + ".json?";
             jsonObject = {
                 edgeID: params.edgeID,
                 nodeID: params.nodeID,
@@ -25897,9 +25908,9 @@ var FacilityAnalystStreamService = function (_NetworkAnalystServic) {
 
             //URL 通过参数类型来判断是 上游 还是下游 查询
             if (params.queryType === 0) {
-                me.url = me.url + (end === "/" ? "upstreamcirticalfaclilities" : "/upstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+                me.url = me.url + (end === "/" ? "upstreamcirticalfaclilities" : "/upstreamcirticalfaclilities") + ".json?";
             } else if (params.queryType === 1) {
-                me.url = me.url + (end === "/" ? "downstreamcirticalfaclilities" : "/downstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+                me.url = me.url + (end === "/" ? "downstreamcirticalfaclilities" : "/downstreamcirticalfaclilities") + ".json?";
             } else return;
 
             jsonObject = {
@@ -26087,7 +26098,7 @@ var FacilityAnalystTracedown3DService = function (_CommonServiceBase) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "tracedownresult" : "/tracedownresult") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "tracedownresult" : "/tracedownresult") + ".json?";
             jsonObject = {
                 edgeID: params.edgeID,
                 nodeID: params.nodeID,
@@ -26278,7 +26289,7 @@ var FacilityAnalystTraceup3DService = function (_CommonServiceBase) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "traceupresult" : "/traceupresult") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "traceupresult" : "/traceupresult") + ".json?";
             jsonObject = {
                 edgeID: params.edgeID,
                 nodeID: params.nodeID,
@@ -26472,7 +26483,7 @@ var FacilityAnalystUpstream3DService = function (_CommonServiceBase) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "upstreamcirticalfaclilities" : "/upstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "upstreamcirticalfaclilities" : "/upstreamcirticalfaclilities") + ".json?";
             jsonObject = {
                 sourceNodeIDs: params.sourceNodeIDs,
                 edgeID: params.edgeID,
@@ -26702,11 +26713,7 @@ var FieldStatisticService = function (_CommonServiceBase) {
             var me = this,
                 end = me.url.substr(me.url.length - 1, 1),
                 fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
-            if (me.isInTheSameDomain) {
-                me.url += end == "/" ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
-            } else {
-                me.url += end == "/" ? fieldStatisticURL + ".jsonp?" : "/" + fieldStatisticURL + ".jsonp?";
-            }
+            me.url += end == "/" ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
 
             me.request({
                 method: "GET",
@@ -27068,7 +27075,7 @@ var FindClosestFacilitiesService = function (_NetworkAnalystServic) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "closestfacility" : "/closestfacility") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "closestfacility" : "/closestfacility") + ".json?";
             jsonObject = {
                 expectFacilityCount: params.expectFacilityCount,
                 fromEvent: params.fromEvent,
@@ -27370,7 +27377,7 @@ var FindLocationService = function (_NetworkAnalystServic) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "location" : "/location") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "location" : "/location") + ".json?";
             jsonObject = {
                 isFromCenter: params.isFromCenter,
                 expectedSupplyCenterCount: params.expectedSupplyCenterCount,
@@ -27669,7 +27676,7 @@ var FindMTSPPathsService = function (_NetworkAnalystServic) {
                 end = me.url.substr(me.url.length - 1, 1),
                 centers = me.getJson(params.isAnalyzeById, params.centers),
                 nodes = me.getJson(params.isAnalyzeById, params.nodes);
-            me.url = me.url + "/mtsppath" + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + "/mtsppath" + ".json?";
             jsonObject = {
                 centers: centers,
                 nodes: nodes,
@@ -27971,7 +27978,7 @@ var FindPathService = function (_NetworkAnalystServic) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "path" : "/path") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "path" : "/path") + ".json?";
             jsonObject = {
                 hasLeastEdgeCount: params.hasLeastEdgeCount,
                 parameter: _SuperMap2.default.Util.toJSON(params.parameter),
@@ -28288,7 +28295,7 @@ var FindServiceAreasService = function (_NetworkAnalystServic) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "servicearea" : "/servicearea") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "servicearea" : "/servicearea") + ".json?";
             jsonObject = {
                 isFromCenter: params.isFromCenter,
                 isCenterMutuallyExclusive: params.isCenterMutuallyExclusive,
@@ -28589,7 +28596,7 @@ var FindTSPPathsService = function (_NetworkAnalystServic) {
             var me = this,
                 jsonObject,
                 end = me.url.substr(me.url.length - 1, 1);
-            me.url = me.url + (end === "/" ? "tsppath" : "/tsppath") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "tsppath" : "/tsppath") + ".json?";
             jsonObject = {
                 parameter: _SuperMap2.default.Util.toJSON(params.parameter),
                 endNodeAssigned: params.endNodeAssigned,
@@ -28990,11 +28997,7 @@ var GenerateSpatialDataService = function (_SpatialAnalystBase) {
                 end;
 
             end = me.url.substr(me.url.length - 1, 1);
-            if (me.isInTheSameDomain) {
-                me.url += end === "/" ? jsonStr + ".json" : "/" + jsonStr + ".json";
-            } else {
-                me.url += end === "/" ? jsonStr + ".jsonp" : "/" + jsonStr + ".jsonp";
-            }
+            me.url += end === "/" ? jsonStr + ".json" : "/" + jsonStr + ".json";
 
             me.url += "?returnContent=true";
             jsonParameters = _SuperMap2.default.Util.toJSON(params);
@@ -29527,11 +29530,7 @@ var GeoRelationAnalystService = function (_SpatialAnalystBase) {
 
             var jsonParameters = _SuperMap2.default.Util.toJSON(parameter);
 
-            if (me.isInTheSameDomain) {
-                me.url += '.json?returnContent=true';
-            } else {
-                me.url += '.jsonp?returnContent=true';
-            }
+            me.url += '.json?returnContent=true';
 
             me.request({
                 method: "POST",
@@ -31427,11 +31426,7 @@ var GetFieldsService = function (_CommonServiceBase) {
             var me = this,
                 end = me.url.substr(me.url.length - 1, 1),
                 datasetURL = "datasources/" + me.datasource + "/datasets/" + me.dataset;
-            if (me.isInTheSameDomain) {
-                me.url += end == "/" ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
-            } else {
-                me.url += end == "/" ? datasetURL + "/fields.jsonp?" : "/" + datasetURL + "/fields.jsonp?";
-            }
+            me.url += end == "/" ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
 
             me.request({
                 method: "GET",
@@ -31676,11 +31671,7 @@ var GetGridCellInfosService = function (_CommonServiceBase) {
             }
             var me = this;
             var end = me.url.substr(me.url.length - 1, 1);
-            if (me.isInTheSameDomain) {
-                me.url += end == "/" ? "datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json" : "/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json";
-            } else {
-                me.url += end == "/" ? "datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".jsonp" : "/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".jsonp";
-            }
+            me.url += end == "/" ? "datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json" : "/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json";
 
             me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
         }
@@ -31874,9 +31865,9 @@ var GetLayersInfoService = function (_CommonServiceBase) {
                 end = me.url.substr(me.url.length - 1, 1);
             if (!me.isTempLayers) {
                 me.url += end === "/" ? '' : '/';
-                me.url += me.isInTheSameDomain ? "layers.json?" : "layers.jsonp?";
+                me.url += "layers.json?";
             } else {
-                me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+                me.url += ".json?";
             }
             me.request({
                 method: method,
@@ -32552,12 +32543,7 @@ var InterpolationAnalystService = function (_SpatialAnalystBase) {
             }
             _InterpolationAnalystParameters2.default.toObject(parameter, parameterObject);
             var jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
-
-            if (me.isInTheSameDomain) {
-                me.url += '.json?returnContent=true';
-            } else {
-                me.url += '.jsonp?returnContent=true';
-            }
+            me.url += '.json?returnContent=true';
 
             me.request({
                 method: "POST",
@@ -34710,7 +34696,7 @@ var MapService = function (_CommonServiceBase) {
         }
         var me = _this;
 
-        me.url += me.isInTheSameDomain ? ".json" : ".jsonp";
+        me.url += ".json";
 
         if (me.projection) {
             if (typeof me.projection === "string") {
@@ -35077,13 +35063,7 @@ var MathExpressionAnalysisService = function (_SpatialAnalystBase) {
 
             _MathExpressionAnalysisParameters2.default.toObject(parameter, parameterObject);
             var jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
-
-            if (me.isInTheSameDomain) {
-                me.url += '.json?returnContent=true';
-            } else {
-                me.url += '.jsonp?returnContent=true';
-            }
-
+            me.url += '.json?returnContent=true';
             me.request({
                 method: "POST",
                 data: jsonParameters,
@@ -35323,17 +35303,9 @@ var MeasureService = function (_CommonServiceBase) {
             }
             end = me.url.substr(me.url.length - 1, 1);
             if (me.measureMode === _REST.MeasureMode.AREA) {
-                if (me.isInTheSameDomain) {
-                    me.url += end === "/" ? "area.json?" : "/area.json?";
-                } else {
-                    me.url += end === "/" ? "area.jsonp?" : "/area.jsonp?";
-                }
+                me.url += end === "/" ? "area.json?" : "/area.json?";
             } else {
-                if (me.isInTheSameDomain) {
-                    me.url += end === "/" ? "distance.json?" : "/distance.json?";
-                } else {
-                    me.url += end === "/" ? "distance.jsonp?" : "/distance.jsonp?";
-                }
+                me.url += end === "/" ? "distance.json?" : "/distance.json?";
             }
             var serverGeometry = _SuperMap2.default.REST.ServerGeometry.fromGeometry(geometry);
             if (!serverGeometry) {
@@ -35350,7 +35322,11 @@ var MeasureService = function (_CommonServiceBase) {
                 } else if (typeof params.prjCoordSys === "string") {
                     prjCoordSysTemp = '{"epsgCode"' + params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"), params.prjCoordSys.length) + "}";
                 }
-                paramsTemp = { "point2Ds": _SuperMap2.default.Util.toJSON(point2ds), "unit": params.unit, "prjCoordSys": prjCoordSysTemp };
+                paramsTemp = {
+                    "point2Ds": _SuperMap2.default.Util.toJSON(point2ds),
+                    "unit": params.unit,
+                    "prjCoordSys": prjCoordSysTemp
+                };
             } else {
                 paramsTemp = { "point2Ds": _SuperMap2.default.Util.toJSON(point2ds), "unit": params.unit };
             }
@@ -35497,13 +35473,7 @@ var OverlayAnalystService = function (_SpatialAnalystBase) {
             }
 
             var jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
-
-            if (me.isInTheSameDomain) {
-                me.url += '.json?returnContent=true';
-            } else {
-                me.url += '.jsonp?returnContent=true';
-            }
-
+            me.url += '.json?returnContent=true';
             me.request({
                 method: "POST",
                 data: jsonParameters,
@@ -37780,12 +37750,7 @@ var RouteCalculateMeasureService = function (_SpatialAnalystBase) {
                 me = this,
                 end;
             end = me.url.substr(me.url.length - 1, 1);
-            if (me.isInTheSameDomain) {
-                me.url += end === "/" ? jsonStr + ".json" : "/" + jsonStr + ".json";
-            } else {
-                me.url += end === "/" ? jsonStr + ".jsonp" : "/" + jsonStr + ".jsonp";
-            }
-
+            me.url += end === "/" ? jsonStr + ".json" : "/" + jsonStr + ".json";
             me.url += "?returnContent=true";
             jsonParameters = _SuperMap2.default.Util.toJSON(params);
             return jsonParameters;
@@ -38127,12 +38092,7 @@ var RouteLocatorService = function (_SpatialAnalystBase) {
                 jsonStr = "datasets/" + params.dataset + "/linearreferencing/routelocator";
                 params.sourceRoute = null;
             }
-            if (me.isInTheSameDomain) {
-                me.url += end === "/" ? jsonStr + ".json" : "/" + jsonStr + ".json";
-            } else {
-                me.url += end === "/" ? jsonStr + ".jsonp" : "/" + jsonStr + ".jsonp";
-            }
-
+            me.url += end === "/" ? jsonStr + ".json" : "/" + jsonStr + ".json";
             me.url += "?returnContent=true";
             jsonParameters = _SuperMap2.default.Util.toJSON(params);
             return jsonParameters;
@@ -38516,7 +38476,7 @@ var SetLayerInfoService = function (_CommonServiceBase) {
             if (!params) {
                 return;
             }
-            me.url += me.isInTheSameDomain ? ".json" : ".jsonp";
+            me.url += ".json";
             var jsonParamsStr = _SuperMap2.default.Util.toJSON(params);
             me.request({
                 method: "PUT",
@@ -38754,7 +38714,7 @@ var SetLayerStatusService = function (_CommonServiceBase) {
 
             if (params.resourceID == null) {
                 me.url += "tempLayersSet";
-                me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+                me.url += ".json?";
 
                 me.lastparams = params;
 
@@ -38766,7 +38726,7 @@ var SetLayerStatusService = function (_CommonServiceBase) {
                 });
             } else {
                 me.url += "tempLayersSet/" + params.resourceID;
-                me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+                me.url += ".json?";
 
                 me.url += "elementRemain=true&reference=" + params.resourceID + "&holdTime=" + params.holdTime.toString();
 
@@ -39050,7 +39010,7 @@ var SetLayersInfoService = function (_CommonServiceBase) {
                 me.url += "tempLayersSet";
                 method = "POST";
             }
-            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+            me.url += ".json?";
             var layers = params.subLayers.layers,
                 len = layers.length;
             for (var i in layers) {
@@ -39486,7 +39446,7 @@ var StopQueryService = function (_CommonServiceBase) {
             end = me.url.substr(me.url.length - 1, 1);
             me.url += end === "/" ? '' : '/';
             me.url += "stops/keyword/" + params.keyWord;
-            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp";
+            me.url += ".json?";
 
             me.request({
                 method: "GET",
@@ -40495,21 +40455,12 @@ var SurfaceAnalystService = function (_SpatialAnalystBase) {
                 end;
             if (params instanceof _DatasetSurfaceAnalystParameters2.default) {
                 var end = me.url.substr(me.url.length - 1, 1);
-
-                if (me.isInTheSameDomain) {
-                    me.url += end === "/" ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true" : "/datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
-                } else {
-                    me.url += end === "/" ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true" : "/datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true";
-                }
+                me.url += end === "/" ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true" : "/datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
                 _DatasetSurfaceAnalystParameters2.default.toObject(params, parameterObject);
                 jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
             } else if (params instanceof _GeometrySurfaceAnalystParameters2.default) {
                 end = me.url.substr(me.url.length - 1, 1);
-                if (me.isInTheSameDomain) {
-                    me.url += end === "/" ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
-                } else {
-                    me.url += end === "/" ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true";
-                }
+                me.url += end === "/" ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
                 jsonParameters = _SuperMap2.default.Util.toJSON(params);
             } else {
                 return;
@@ -40760,13 +40711,7 @@ var TerrainCurvatureCalculationService = function (_SpatialAnalystBase) {
 
             _TerrainCurvatureCalculationParameters2.default.toObject(parameter, parameterObject);
             var jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
-
-            if (me.isInTheSameDomain) {
-                me.url += '.json?returnContent=true';
-            } else {
-                me.url += '.jsonp?returnContent=true';
-            }
-
+            me.url += '.json?returnContent=true';
             me.request({
                 method: "POST",
                 data: jsonParameters,
@@ -41392,7 +41337,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(12);
+var _Theme2 = __webpack_require__(13);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
@@ -41706,7 +41651,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(12);
+var _Theme2 = __webpack_require__(13);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
@@ -43162,11 +43107,7 @@ var ThemeService = function (_CommonServiceBase) {
         var end,
             me = _this;
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.isInTheSameDomain) {
-            me.url += end === "/" ? "tempLayersSet.json?" : "/tempLayersSet.json?";
-        } else {
-            me.url += end === "/" ? "tempLayersSet.jsonp?" : "/tempLayersSet.jsonp?";
-        }
+        me.url += end === "/" ? "tempLayersSet.json?" : "/tempLayersSet.json?";
         return _this;
     }
 
@@ -43553,13 +43494,7 @@ var ThiessenAnalystService = function (_SpatialAnalystBase) {
             }
 
             var jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
-
-            if (me.isInTheSameDomain) {
-                me.url += '.json?returnContent=true';
-            } else {
-                me.url += '.jsonp?returnContent=true';
-            }
-
+            me.url += '.json?returnContent=true';
             me.request({
                 method: "POST",
                 data: jsonParameters,
@@ -43677,7 +43612,7 @@ var TilesetsService = function (_CommonServiceBase) {
             var me = this;
             var end = me.url.substr(me.url.length - 1, 1);
 
-            me.url = me.url + (end === "/" ? "tilesets" : "/tilesets") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + (end === "/" ? "tilesets" : "/tilesets") + ".json?";
 
             me.request({
                 method: "GET",
@@ -44036,7 +43971,7 @@ var TransferPathService = function (_CommonServiceBase) {
 
             end = me.url.substr(me.url.length - 1, 1);
             me.url += end === "/" ? '' : '/';
-            me.url += me.isInTheSameDomain ? "path.json?" : "path.jsonp";
+            me.url += "path.json?";
 
             jsonParameters = {
                 points: _SuperMap2.default.Util.toJSON(params.points),
@@ -44326,7 +44261,7 @@ var TransferSolutionService = function (_CommonServiceBase) {
 
             end = me.url.substr(me.url.length - 1, 1);
             me.url += end === "/" ? '' : '/';
-            me.url += me.isInTheSameDomain ? "solutions.json?" : "solutions.jsonp";
+            me.url += "solutions.json?";
 
             jsonParameters = {
                 points: _SuperMap2.default.Util.toJSON(params.points),
@@ -44987,7 +44922,7 @@ var UpdateEdgeWeightService = function (_NetworkAnalystServic) {
             if (end === "/") {
                 me.url.splice(me.url.length - 1, 1);
             }
-            me.url = me.url + paramStr + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + paramStr + ".json?";
             var data = params.edgeWeight ? params.edgeWeight : null;
             me.request({
                 method: "PUT",
@@ -45250,7 +45185,7 @@ var UpdateTurnNodeWeightService = function (_NetworkAnalystServic) {
             if (end === "/") {
                 me.url.splice(me.url.length - 1, 1);
             }
-            me.url = me.url + paramStr + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            me.url = me.url + paramStr + ".json?";
             var data = params.turnNodeWeight ? params.turnNodeWeight : null;
             me.request({
                 method: "PUT",
@@ -46020,7 +45955,7 @@ __webpack_require__(15);
 
 var _REST = __webpack_require__(1);
 
-var _FetchRequest = __webpack_require__(13);
+var _FetchRequest = __webpack_require__(12);
 
 var _FetchRequest2 = _interopRequireDefault(_FetchRequest);
 

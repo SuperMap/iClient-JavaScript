@@ -106,12 +106,7 @@ export default  class RouteLocatorService extends SpatialAnalystBase {
             jsonStr = "datasets/" + params.dataset + "/linearreferencing/routelocator";
             params.sourceRoute = null;
         }
-        if (me.isInTheSameDomain) {
-            me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
-        } else {
-            me.url += (end === "/") ? jsonStr + ".jsonp" : "/" + jsonStr + ".jsonp";
-        }
-
+        me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
         me.url += "?returnContent=true";
         jsonParameters = SuperMap.Util.toJSON(params);
         return jsonParameters;

@@ -82,13 +82,8 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
         }
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
-        if (me.isInTheSameDomain) {
-            me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json") :
-                ("/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json");
-        } else {
-            me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".jsonp") :
-                ("/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".jsonp");
-        }
+        me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json") :
+            ("/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json");
 
         me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
     }

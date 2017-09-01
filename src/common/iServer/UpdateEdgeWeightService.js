@@ -59,7 +59,7 @@ export default  class UpdateEdgeWeightService extends NetworkAnalystServiceBase 
         if (end === "/") {
             me.url.splice(me.url.length - 1, 1);
         }
-        me.url = me.url + paramStr + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + paramStr + ".json?";
         var data = params.edgeWeight ? params.edgeWeight : null;
         me.request({
             method: "PUT",

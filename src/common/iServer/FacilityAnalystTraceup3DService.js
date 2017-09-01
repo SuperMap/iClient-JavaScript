@@ -45,7 +45,7 @@ export default  class FacilityAnalystTraceup3DService extends CommonServiceBase 
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "traceupresult" : "/traceupresult") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "traceupresult" : "/traceupresult") + ".json?";
         jsonObject = {
             edgeID: params.edgeID,
             nodeID: params.nodeID,

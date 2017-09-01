@@ -1397,6 +1397,8 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 __webpack_require__(26);
 
+var _FetchRequest = __webpack_require__(5);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1634,7 +1636,7 @@ var CommonServiceBase = function () {
             options.success = me.getUrlCompleted;
             options.failure = me.getUrlFailed;
             me.options = options;
-            _SuperMap2.default.Util.committer(me.options);
+            me._commit(me.options);
         }
 
         /**
@@ -1720,19 +1722,9 @@ var CommonServiceBase = function () {
             me.index = parseInt(Math.random() * me.length);
             me.url = me.urls[me.index];
             url = url.replace(re, re.exec(me.url)[0]);
-            var isInTheSameDomain = _SuperMap2.default.Util.isInTheSameDomain(url);
-            if (isInTheSameDomain) {
-                if (url.indexOf(".jsonp") > 0) {
-                    url = url.replace(/.jsonp/, ".json");
-                }
-            } else {
-                if (!(url.indexOf(".jsonp") > 0)) {
-                    url = url.replace(/.json/, ".jsonp");
-                }
-            }
             me.options.url = url;
-            me.options.isInTheSameDomain = isInTheSameDomain;
-            _SuperMap2.default.Util.committer(me.options);
+            me.options.isInTheSameDomain = _SuperMap2.default.Util.isInTheSameDomain(url);
+            me._commit(me.options);
         }
 
         /**
@@ -1802,6 +1794,33 @@ var CommonServiceBase = function () {
             var error = result.error || result;
             this.events.triggerEvent("processFailed", { error: error });
         }
+    }, {
+        key: '_commit',
+        value: function _commit(options) {
+            if (options.method === "POST") {
+                if (options.params) {
+                    options.url = _SuperMap2.default.Util.urlAppend(options.url, _SuperMap2.default.Util.getParameterString(options.params || {}));
+                }
+                options.params = options.data;
+            }
+            _FetchRequest.FetchRequest.commit(options.method, options.url, options.params, {
+                headers: options.headers,
+                withCredentials: options.withCredentials,
+                timeout: options.async ? 0 : null,
+                proxy: options.proxy
+            }).then(function (response) {
+                return response.json();
+            }).then(function (result) {
+
+                if (result.error) {
+                    var failure = options.scope ? _SuperMap2.default.Function.bind(options.failure, options.scope) : options.failure;
+                    failure(result.error);
+                } else {
+                    var success = options.scope ? _SuperMap2.default.Function.bind(options.success, options.scope) : options.success;
+                    success(result);
+                }
+            });
+        }
     }]);
 
     return CommonServiceBase;
@@ -1840,7 +1859,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Support = exports.Support = _SuperMap2.default.Support = {
+var Support = exports.Support = _SuperMap2.default.Support = _SuperMap2.default.Support || {
     cors: window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()
 };
 var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
@@ -1862,10 +1881,10 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
 
     get: function get(url, params, options) {
         var type = 'GET';
-        url = this._processUrl(url);
+        url = this._processUrl(url, options);
         url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (url.length <= 2000) {
-            if (_SuperMap2.default.Util.isInTheSameDomain(url) || _SuperMap2.default.Support.cors && this._isMVTRequest(url)) {
+        if (!this.urlIsLong(url)) {
+            if (_SuperMap2.default.Util.isInTheSameDomain(url) || Support.cors || options.proxy) {
                 return this._fetch(url, params, options, type);
             }
             if (!_SuperMap2.default.Util.isInTheSameDomain(url)) {
@@ -1878,29 +1897,45 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
 
     delete: function _delete(url, params, options) {
         var type = 'DELETE';
-        url = this._processUrl(url);
+        url = this._processUrl(url, options);
         url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (url.length <= 2000 && _SuperMap2.default.Support.cors) {
+        if (!this.urlIsLong(url) && Support.cors) {
             return this._fetch(url, params, options, type);
         }
         return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
     },
 
     post: function post(url, params, options) {
-        return this._fetch(this._processUrl(url), params, options, 'POST');
+        return this._fetch(this._processUrl(url, options), params, options, 'POST');
     },
 
     put: function put(url, params, options) {
-        return this._fetch(this._processUrl(url), params, options, 'PUT');
+        return this._fetch(this._processUrl(url, options), params, options, 'PUT');
     },
-
+    urlIsLong: function urlIsLong(url) {
+        //当前url的字节长度。
+        var totalLength = 0,
+            charCode = null;
+        for (var i = 0, len = url.length; i < len; i++) {
+            //转化为Unicode编码
+            charCode = url.charCodeAt(i);
+            if (charCode < 0x007f) {
+                totalLength++;
+            } else if (0x0080 <= charCode && charCode <= 0x07ff) {
+                totalLength += 2;
+            } else if (0x0800 <= charCode && charCode <= 0xffff) {
+                totalLength += 3;
+            }
+        }
+        return totalLength < 2000 ? false : true;
+    },
     _postSimulatie: function _postSimulatie(type, url, params, options) {
         var separator = url.indexOf("?") > -1 ? "&" : "?";
         url += separator + '_method= ' + type;
         return this.post(url, params, options);
     },
 
-    _processUrl: function _processUrl(url) {
+    _processUrl: function _processUrl(url, options) {
         if (this._isMVTRequest(url)) {
             return url;
         }
@@ -1913,6 +1948,14 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
                 if (urlArrays.length === 2) {
                     url = urlArrays[0] + ".json?" + urlArrays[1];
                 }
+            }
+        }
+        if (options && options.proxy) {
+            if (typeof options.proxy === "function") {
+                url = options.proxy(url);
+            } else {
+                url = decodeURIComponent(url);
+                url = options.proxy + encodeURIComponent(url);
             }
         }
         return url;

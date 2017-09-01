@@ -71,16 +71,6 @@ export var WebMap = L.LayerGroup.extend({
             me.mapInfo = jsonObj;
             me.createLayersByJson(layers);
         });
-        // fetchJsonp(mapUrl + '.jsonp').then(function (response) {
-        //     return response.json()
-        // }).then(function (jsonObj) {
-        //     if (!jsonObj) {
-        //         return;
-        //     }
-        //     var layers = jsonObj.layers;
-        //     me.mapInfo = jsonObj;
-        //     me.createLayersByJson(layers);
-        // })
     },
 
     /**

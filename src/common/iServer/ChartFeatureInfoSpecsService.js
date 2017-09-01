@@ -41,9 +41,9 @@ export default class ChartFeatureInfoSpecsService extends CommonServiceBase {
             end = me.url.substr(me.url.length - 1, 1);
         if (!me.isTempLayers) {
             me.url += (end === "/") ? '' : '/';
-            me.url += me.isInTheSameDomain ? "chartFeatureInfoSpecs.json?" : "chartFeatureInfoSpecs.jsonp?";
+            me.url += "chartFeatureInfoSpecs.json?" ;
         } else {
-            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+            me.url += ".json?";
         }
         me.request({
             method: method,

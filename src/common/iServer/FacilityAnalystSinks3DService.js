@@ -49,7 +49,7 @@ export default  class FacilityAnalystSinks3DService extends CommonServiceBase {
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "sinks" : "/sinks") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "sinks" : "/sinks") + ".json?";
         jsonObject = {
             edgeID: params.edgeID,
             nodeID: params.nodeID,

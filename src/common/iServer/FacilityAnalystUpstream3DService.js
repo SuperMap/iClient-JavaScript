@@ -37,7 +37,7 @@ export default  class FacilityAnalystUpstream3DService extends CommonServiceBase
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
         me.url = me.url + ((end === "/") ? "upstreamcirticalfaclilities" :
-            "/upstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+            "/upstreamcirticalfaclilities") + ".json?";
         jsonObject = {
             sourceNodeIDs: params.sourceNodeIDs,
             edgeID: params.edgeID,

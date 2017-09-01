@@ -50,9 +50,9 @@ export default  class GetLayersInfoService extends CommonServiceBase {
             end = me.url.substr(me.url.length - 1, 1);
         if (!me.isTempLayers) {
             me.url += (end === "/") ? '' : '/';
-            me.url += me.isInTheSameDomain ? "layers.json?" : "layers.jsonp?";
+            me.url += "layers.json?";
         } else {
-            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+            me.url += ".json?";
         }
         me.request({
             method: method,

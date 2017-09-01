@@ -48,7 +48,7 @@ export default  class FindPathService extends NetworkAnalystServiceBase {
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "path" : "/path") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "path" : "/path") + ".json?";
         jsonObject = {
             hasLeastEdgeCount: params.hasLeastEdgeCount,
             parameter: SuperMap.Util.toJSON(params.parameter),

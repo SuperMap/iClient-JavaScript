@@ -48,7 +48,7 @@ export default  class FindServiceAreasService extends NetworkAnalystServiceBase 
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "servicearea" : "/servicearea") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "servicearea" : "/servicearea") + ".json?";
         jsonObject = {
             isFromCenter: params.isFromCenter,
             isCenterMutuallyExclusive: params.isCenterMutuallyExclusive,

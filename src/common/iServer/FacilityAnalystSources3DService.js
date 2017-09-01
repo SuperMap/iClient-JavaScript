@@ -42,7 +42,7 @@ export default  class FacilityAnalystSources3DService extends CommonServiceBase 
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "sources" : "/sources") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "sources" : "/sources") + ".json?";
         jsonObject = {
             edgeID: params.edgeID,
             nodeID: params.nodeID,

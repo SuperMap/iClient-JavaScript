@@ -1,5 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import '../security/SecurityManager';
+import {FetchRequest} from "../util/FetchRequest"
 /**
  * @class SuperMap.CommonServiceBase
  * @classdesc common服务基类
@@ -211,7 +212,7 @@ export default  class CommonServiceBase {
         options.success = me.getUrlCompleted;
         options.failure = me.getUrlFailed;
         me.options = options;
-        SuperMap.Util.committer(me.options);
+        me._commit(me.options);
     }
 
     /**
@@ -285,19 +286,9 @@ export default  class CommonServiceBase {
         me.index = parseInt(Math.random() * me.length);
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
-        let isInTheSameDomain = SuperMap.Util.isInTheSameDomain(url);
-        if (isInTheSameDomain) {
-            if (url.indexOf(".jsonp") > 0) {
-                url = url.replace(/.jsonp/, ".json");
-            }
-        } else {
-            if (!(url.indexOf(".jsonp") > 0)) {
-                url = url.replace(/.json/, ".jsonp");
-            }
-        }
         me.options.url = url;
-        me.options.isInTheSameDomain = isInTheSameDomain;
-        SuperMap.Util.committer(me.options);
+        me.options.isInTheSameDomain = SuperMap.Util.isInTheSameDomain(url);
+        me._commit(me.options);
     }
 
 
@@ -360,7 +351,33 @@ export default  class CommonServiceBase {
         let error = result.error || result;
         this.events.triggerEvent("processFailed", {error: error});
     }
+    _commit(options) {
+        if (options.method === "POST") {
+            if (options.params) {
+                options.url = SuperMap.Util.urlAppend(options.url,
+                    SuperMap.Util.getParameterString(options.params || {}));
+            }
+            options.params = options.data;
+        }
+        FetchRequest.commit(options.method, options.url, options.params, {
+            headers: options.headers,
+            withCredentials: options.withCredentials,
+            timeout: options.async ? 0 : null,
+            proxy: options.proxy
+        }).then(function (response){
+            return response.json()
+        }).then(function (result) {
 
+            if(result.error){
+                var failure = (options.scope) ? SuperMap.Function.bind(options.failure, options.scope) : options.failure;
+                failure(result.error);
+            }else{
+                var success = (options.scope) ? SuperMap.Function.bind(options.success, options.scope) : options.success;
+                success(result);
+            }
+
+        });
+    }
     CLASS_NAME = "SuperMap.CommonServiceBase";
 }
 

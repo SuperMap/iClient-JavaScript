@@ -57,7 +57,7 @@ export default  class UpdateTurnNodeWeightService extends NetworkAnalystServiceB
         if (end === "/") {
             me.url.splice(me.url.length - 1, 1);
         }
-        me.url = me.url + paramStr + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + paramStr + ".json?";
         var data = params.turnNodeWeight ? params.turnNodeWeight : null;
         me.request({
             method: "PUT",

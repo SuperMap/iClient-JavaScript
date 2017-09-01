@@ -39,7 +39,6 @@ export default  class BufferAnalystService extends SpatialAnalystBase {
     }
 
 
-
     /**
      * @inheritDoc
      */
@@ -77,14 +76,7 @@ export default  class BufferAnalystService extends SpatialAnalystBase {
         }
 
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
-
-
-        if (me.isInTheSameDomain) {
-            me.url += '.json?returnContent=true';
-        } else {
-            me.url += '.jsonp?returnContent=true';
-        }
-
+        me.url += '.json?returnContent=true';
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -100,18 +92,18 @@ export default  class BufferAnalystService extends SpatialAnalystBase {
      * @description 将含有geometry的数据转换为geojson格式。
      * @param result - {Object} 服务器返回的结果对象。
      */
-    // toGeoJSONResult(result) {
-    //     if (!result) {
-    //         return result;
-    //     }
-    //
-    //     var analystResult = super.toGeoJSONResult(result);
-    //     if (analystResult.resultGeometry) {
-    //         var geoJSONFormat = new GeoJSON();
-    //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
-    //     }
-    //     return result;
-    // }
+        // toGeoJSONResult(result) {
+        //     if (!result) {
+        //         return result;
+        //     }
+        //
+        //     var analystResult = super.toGeoJSONResult(result);
+        //     if (analystResult.resultGeometry) {
+        //         var geoJSONFormat = new GeoJSON();
+        //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
+        //     }
+        //     return result;
+        // }
 
     CLASS_NAME = "SuperMap.BufferAnalystService"
 }

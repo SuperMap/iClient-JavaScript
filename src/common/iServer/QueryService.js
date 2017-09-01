@@ -59,16 +59,12 @@ export default  class QueryService extends CommonServiceBase {
         end = me.url.substr(me.url.length - 1, 1);
 
         // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-        // if (this.format==="geojson" && me.isInTheSameDomain) {
+        // if (this.format==="geojson") {
         //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
         // } else {
-        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+        //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
         // }
-        if (me.isInTheSameDomain) {
-            me.url += (end === "/") ? "queryResults.json?" : "/queryResults.json?";
-        } else {
-            me.url += (end === "/") ? "queryResults.jsonp?" : "/queryResults.jsonp?";
-        }
+        me.url += (end === "/") ? "queryResults.json?" : "/queryResults.json?";
     }
 
     /**

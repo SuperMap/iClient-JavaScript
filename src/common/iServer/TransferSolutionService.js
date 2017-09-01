@@ -51,7 +51,7 @@ export default  class TransferSolutionService extends CommonServiceBase {
 
         end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? '' : '/';
-        me.url += me.isInTheSameDomain ? "solutions.json?" : "solutions.jsonp";
+        me.url += "solutions.json?";
 
         jsonParameters = {
             points: SuperMap.Util.toJSON(params.points),

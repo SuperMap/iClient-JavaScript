@@ -34,7 +34,7 @@ export default  class MapService extends CommonServiceBase {
         }
         var me = this;
 
-        me.url += me.isInTheSameDomain ? ".json" : ".jsonp";
+        me.url += ".json";
 
         if (me.projection) {
             if (typeof me.projection === "string") {

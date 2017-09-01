@@ -58,7 +58,7 @@ export default  class SetLayerStatusService extends CommonServiceBase {
 
         if (params.resourceID == null) {
             me.url += "tempLayersSet";
-            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+            me.url += ".json?";
 
             me.lastparams = params;
 
@@ -70,7 +70,7 @@ export default  class SetLayerStatusService extends CommonServiceBase {
             });
         } else {
             me.url += "tempLayersSet/" + params.resourceID;
-            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+            me.url += ".json?";
 
             me.url += "elementRemain=true&reference=" + params.resourceID + "&holdTime=" + params.holdTime.toString();
 

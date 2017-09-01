@@ -50,7 +50,7 @@ export default  class FindTSPPathsService extends NetworkAnalystServiceBase {
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "tsppath" : "/tsppath") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + ((end === "/") ? "tsppath" : "/tsppath") + ".json?";
         jsonObject = {
             parameter: SuperMap.Util.toJSON(params.parameter),
             endNodeAssigned: params.endNodeAssigned,

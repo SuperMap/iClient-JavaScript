@@ -51,7 +51,7 @@ export default  class FindMTSPPathsService extends NetworkAnalystServiceBase {
             end = me.url.substr(me.url.length - 1, 1),
             centers = me.getJson(params.isAnalyzeById, params.centers),
             nodes = me.getJson(params.isAnalyzeById, params.nodes);
-        me.url = me.url + "/mtsppath" + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+        me.url = me.url + "/mtsppath" + ".json?";
         jsonObject = {
             centers: centers,
             nodes: nodes,
