@@ -20,8 +20,8 @@ var commonTools = ({
             var exampleUrl = baseDir + '/examples/' + type + '/' + exampleName + '.html';
             browser.url(exampleUrl);
             browser.pause(2000);
-            browser.expect.element('body').to.be.present.before(2000);
-            browser.expect.element('#map').to.be.present.before(3000);
+            browser.expect.element('body').to.be.present.before(5000);
+            browser.expect.element('#map').to.be.present.before(5000);
             browser.pause(1000);
         },
 
@@ -83,7 +83,7 @@ var commonTools = ({
             });
             browser.pause(5000, function () {
                 console.log('start to compare two tiles');
-                commonTools.isTwoTilesEqual(browser,tileStandardPath, tileTestPath);
+                commonTools.isTwoTilesEqual(browser, tileStandardPath, tileTestPath);
             });
         },
 
@@ -124,9 +124,9 @@ var commonTools = ({
                     }
                     console.log('tile2 ( ' + tilePath2 + ' ) has pixels : ' + (array2.length / 4));
                     var isEqual = commonTools.judgeTwoTilesByRgbaArrays(array1, array2);
-                    if(isEqual){
+                    if (isEqual) {
                         browser.assert.ok(isEqual, 'similarity of two pictures >= 0.94');
-                    }else{
+                    } else {
                         browser.assert.ok(isEqual, 'similarity of two pictures < 0.94');
                     }
                 });

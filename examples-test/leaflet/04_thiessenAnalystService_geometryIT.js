@@ -10,7 +10,7 @@ module.exports = {
             browser.expect.element('.leaflet-pane.leaflet-overlay-pane svg g').to.be.present.before(10000);
             browser.expect.element('.leaflet-pane.leaflet-overlay-pane svg g path').to.be.present.before(10000);
             browser.elements('tag name', 'path', function (result) {
-                this.assert.equal(result.value.length, 10, "expect Number of thiessen polygon(geometry) to be 10, actual is " + result.value.length);
+                browser.assert.equal(result.value.length, 10, "expect Number of thiessen polygon(geometry) to be 10, actual is " + result.value.length);
             });
         }, 'element .leaflet-pane.leaflet-overlay-pane present in 5000ms');
         browser.pause(1000);
