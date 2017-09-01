@@ -65,7 +65,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var layer, processingsUrl = (window.isLocal ? document.location.protocol + document.location.host : "http://117.122.248.69:8090")+"/iserver/services/spatialprocessing/rest/v1/jobs",
+    var layer, processingsUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090")+"/iserver/services/spatialprocessing/rest/v1/jobs",
             map = new ol.Map({
                 target: 'map',
                 controls: ol.control.defaults({attributionOptions: {collapsed: false}})

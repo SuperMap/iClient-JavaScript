@@ -162,8 +162,8 @@
 </div>
 <script type="text/javascript">
     var map,
-        url = (window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China_4326",
-        addressUrl = (window.isLocal ? document.location.protocol + document.location.host : "http://117.122.248.69:8090") + "/iserver/services/addressmatch-Address/restjsr/v1/address",
+        url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China_4326",
+        addressUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090") + "/iserver/services/addressmatch-Address/restjsr/v1/address",
         imgUrl = "../img/markerbig_select.png",
         vectorSource = new ol.source.Vector(),
         addressMatchService = new ol.supermap.AddressMatchService(addressUrl),

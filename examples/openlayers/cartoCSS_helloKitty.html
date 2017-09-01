@@ -106,7 +106,7 @@
 </script>
 
 <script type="text/javascript">
-    var url = (window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China";
+    var url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China";
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var map = new ol.Map({
             target: 'map',

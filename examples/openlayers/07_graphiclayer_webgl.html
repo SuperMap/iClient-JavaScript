@@ -55,7 +55,7 @@
     <div id="popup-content"></div>
 </div>
 <script type="text/javascript">
-    var url = (window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China_4326";
+    var url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China_4326";
     var colorCount = 10;
     var colors = getRandomColors(colorCount);
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {

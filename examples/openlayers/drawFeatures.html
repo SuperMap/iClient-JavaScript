@@ -26,7 +26,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var map, draw, url = (window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China";
+    var map, draw, url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})

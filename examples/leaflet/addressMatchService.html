@@ -9,7 +9,7 @@
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? document.location.protocol + document.location.host : "http://117.122.248.69:8090";
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
     var map, codeMarkers = [], decodeMarkers = [],
         url = host + "/iserver/services/map-china400/rest/maps/China_4326",
         addressUrl = host + "/iserver/services/addressmatch-Address/restjsr/v1/address",

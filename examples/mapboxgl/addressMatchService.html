@@ -117,7 +117,7 @@
         $("#geodecodeParam").addClass('active');
         $("#geocodeParam").removeClass('active');
     });
-    var host = window.isLocal ? document.location.protocol + document.location.host : "http://117.122.248.69:8090";
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
 
     var codeMarkers = [], decodeMarkers = [],
         attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +

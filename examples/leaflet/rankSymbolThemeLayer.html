@@ -9,7 +9,7 @@
 <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript" src="../data/chinaConsumptionLevel.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? document.location.protocol + document.location.host : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
     var map, themeLayer,
         infowin, infowinPosition,
         baseUrl = host + "/iserver/services/map-china400/rest/maps/China_4326";
