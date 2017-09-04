@@ -25,12 +25,12 @@ export default class Graph extends Theme {
 
     constructor(name, chartsType, opt_options) {
         super(name, opt_options);
-        this.chartsSetting = {};
-        this.themeFields = null;
-        this.overlayWeightField = null;
-        this.isOverLay = true;
-        this.charts = [];
-        this.cache = {};
+        this.chartsSetting = opt_options.chartsSetting || {};
+        this.themeFields = opt_options.themeFields || null;
+        this.overlayWeightField = opt_options.overlayWeightField || null;
+        this.isOverLay = opt_options.isOverLay ||true;
+        this.charts = opt_options.charts || [];
+        this.cache = opt_options.cache || {};
         this.chartsType = chartsType;
     }
 

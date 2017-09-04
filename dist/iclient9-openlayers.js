@@ -11203,17 +11203,17 @@ var GeoFeature = function (_Theme) {
 
         var _this = _possibleConstructorReturn(this, (GeoFeature.__proto__ || Object.getPrototypeOf(GeoFeature)).call(this, name, opt_options));
 
-        _this.cache = new Object();
-        _this.cacheFields = [];
-        _this.style = new Object();
-        _this.maxCacheCount = 0;
-        _this.isCustomSetMaxCacheCount = false;
-        _this.nodesClipPixel = 2;
-        _this.isHoverAble = false;
-        _this.isMultiHover = false;
-        _this.isClickAble = true;
-        _this.highlightStyle = null;
-        _this.isAllowFeatureStyle = false;
+        _this.cache = opt_options.cache || {};
+        _this.cacheFields = opt_options.cacheFields || [];
+        _this.style = opt_options.style || {};
+        _this.maxCacheCount = opt_options.maxCacheCount || 0;
+        _this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount || false;
+        _this.nodesClipPixel = opt_options.nodesClipPixel || 2;
+        _this.isHoverAble = opt_options.isHoverAble || false;
+        _this.isMultiHover = opt_options.isMultiHover || false;
+        _this.isClickAble = opt_options.isClickAble || true;
+        _this.highlightStyle = opt_options.highlightStyle || null;
+        _this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle || false;
         return _this;
     }
 
@@ -11878,6 +11878,9 @@ var Theme = function (_ol$source$ImageCanva) {
     }, {
         key: 'fire',
         value: function fire(type, event) {
+            if (!this.offset) {
+                return;
+            }
             event = event.originalEvent;
             var x = this.getX(event);
             var y = this.getY(event);
@@ -14848,6 +14851,7 @@ var VectorTileSuperMapRest = function (_ol$source$VectorTile) {
         }
 
         /**
+         * @private
          * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
          * @description 加载瓦片
          * @param tile -{onject} 瓦片类
@@ -35988,15 +35992,15 @@ var Point = function (_Graph) {
         /**
          * @function SuperMap.Feature.Theme.Point.prototype.calculateXShapeInfo
          * @description 计算 X 轴方向上的图形信息，此信息是一个对象，包含两个属性，
-         * 属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
-         * 如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
-         * width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-         * 本函数中图形配置对象 setting 可设属性：
-         * xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
-         * 长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
+         *              属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
+         *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
+         *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
+         *              本函数中图形配置对象 setting 可设属性：
+         *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
+         *              长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
          * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
-         * xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
-         * width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。</br>
+         *         xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
+         *         width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。</br>
          *
          */
 
@@ -51647,12 +51651,12 @@ var Graph = function (_Theme) {
             return list;
         };
 
-        _this.chartsSetting = {};
-        _this.themeFields = null;
-        _this.overlayWeightField = null;
-        _this.isOverLay = true;
-        _this.charts = [];
-        _this.cache = {};
+        _this.chartsSetting = opt_options.chartsSetting || {};
+        _this.themeFields = opt_options.themeFields || null;
+        _this.overlayWeightField = opt_options.overlayWeightField || null;
+        _this.isOverLay = opt_options.isOverLay || true;
+        _this.charts = opt_options.charts || [];
+        _this.cache = opt_options.cache || {};
         _this.chartsType = chartsType;
         return _this;
     }

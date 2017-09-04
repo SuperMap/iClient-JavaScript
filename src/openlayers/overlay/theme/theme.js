@@ -318,6 +318,9 @@ export default class Theme extends ol.source.ImageCanvas {
      * @param event - {string} 事件名称。
      */
     fire(type, event) {
+        if(!this.offset){
+            return;
+        }
         event = event.originalEvent;
         var x = this.getX(event);
         var y = this.getY(event);

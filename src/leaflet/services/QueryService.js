@@ -21,12 +21,6 @@ import CommontypesConversion from '../core/CommontypesConversion';
  */
 export var QueryService = ServiceBase.extend({
 
-    /*
-     * @function L.supermap.queryService.prototype.initialize
-     * @description L.supermap.queryService类的构造函数。
-     * @param url - {string} 地图查询服务访问地址。
-     * @param options - {Object} 服务交互时所需的可选参数。
-     */
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
     },

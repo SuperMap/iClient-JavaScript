@@ -15,17 +15,17 @@ export default class GeoFeature extends Theme {
 
     constructor(name, opt_options) {
         super(name, opt_options);
-        this.cache = new Object();
-        this.cacheFields = [];
-        this.style = new Object();
-        this.maxCacheCount = 0;
-        this.isCustomSetMaxCacheCount = false;
-        this.nodesClipPixel = 2;
-        this.isHoverAble = false;
-        this.isMultiHover = false;
-        this.isClickAble = true;
-        this.highlightStyle = null;
-        this.isAllowFeatureStyle = false;
+        this.cache = opt_options.cache || {};
+        this.cacheFields = opt_options.cacheFields || [];
+        this.style = opt_options.style || {};
+        this.maxCacheCount = opt_options.maxCacheCount || 0;
+        this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount || false;
+        this.nodesClipPixel = opt_options.nodesClipPixel || 2;
+        this.isHoverAble = opt_options.isHoverAble || false;
+        this.isMultiHover = opt_options.isMultiHover || false;
+        this.isClickAble = opt_options.isClickAble || true;
+        this.highlightStyle = opt_options.highlightStyle || null;
+        this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle || false;
     }
 
     /**

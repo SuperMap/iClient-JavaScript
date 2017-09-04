@@ -26,6 +26,13 @@ require('./leaflet/overlay/UniqueThemeLayerSpec.js');
 require('./leaflet/overlay/theme/GraphThemeLayerSpec.js');
 require('./leaflet/overlay/EchartsLayerSpec.js');
 require('./leaflet/overlay/RangeThemeLayerSpec.js');
+//require('./leaflet/overlay/DataFlowlayerSpec.js');
+require('./leaflet/overlay/mapVLayerSpec.js');
 
-/*leaflet -- overlay*/
+/*leaflet -- mapping*/
 require('./leaflet/mapping/WebMapSpec.js');
+require('./leaflet/mapping/TiledMapLayerSpec.js');
+require('./leaflet/mapping/ImageMapLayerSpec.js');
+
+/*leaflet -- control*/
+require('./leaflet/control/ChangeTileVersionSpec.js');

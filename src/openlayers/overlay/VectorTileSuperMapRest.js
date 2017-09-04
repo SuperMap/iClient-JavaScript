@@ -126,6 +126,7 @@ export default class VectorTileSuperMapRest extends ol.source.VectorTile {
         }
 
         /**
+         * @private
          * @function ol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
          * @description 加载瓦片
          * @param tile -{onject} 瓦片类

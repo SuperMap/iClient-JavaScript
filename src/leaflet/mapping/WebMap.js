@@ -88,6 +88,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.createLayersByJson
      * @description 通过json创建图层
      * @param layersJson - {JSON} 图层的json信息
@@ -129,6 +130,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.createCRS
      * @description 创建坐标对象
      * @param epsgCode - {mnumber} epsg编码
@@ -166,6 +168,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.createMap
      * @description 创建地图
      * @param options - {Object} 创建地图所需参数
@@ -303,6 +306,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.createTiandituLayer
      * @description 创建天地图图层
      * @param layerInfo - {Object} 图层信息
@@ -329,6 +333,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.createMarkersLayer
      * @description 创建图标图层
      * @param layerInfo - {Object} 图层信息
@@ -366,6 +371,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.createVectorLayer
      * @description 创建矢量要素图层
      * @param layerInfo - {Object} 图层信息
@@ -444,6 +450,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.createWmsLayer
      * @description 创建Wms图层
      * @param layerInfo - {Object} 图层信息

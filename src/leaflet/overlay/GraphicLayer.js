@@ -41,11 +41,11 @@ export var GraphicLayer = L.Path.extend({
             return events;
         },
 
-    /**
-     * @function L.supermap.graphicLayer.prototype.onAdd
-     * @description 添加图形
-     */
-    onAdd: function () {
+        /**
+         * @function L.supermap.graphicLayer.prototype.onAdd
+         * @description 添加图形
+         */
+        onAdd: function () {
             this._canvas = document.createElement('canvas');
             var width = this._map.getPixelBounds().getSize().x;
             var height = this._map.getPixelBounds().getSize().y;

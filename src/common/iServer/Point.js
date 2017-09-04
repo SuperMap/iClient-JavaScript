@@ -204,15 +204,15 @@ export default  class Point extends Graph {
     /**
      * @function SuperMap.Feature.Theme.Point.prototype.calculateXShapeInfo
      * @description 计算 X 轴方向上的图形信息，此信息是一个对象，包含两个属性，
-     * 属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
-     * 如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
-     * width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-     * 本函数中图形配置对象 setting 可设属性：
-     * xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
-     * 长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
+     *              属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
+     *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
+     *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
+     *              本函数中图形配置对象 setting 可设属性：
+     *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
+     *              长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
      * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
-     * xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
-     * width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。</br>
+     *         xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
+     *         width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。</br>
      *
      */
     calculateXShapeInfo() {
