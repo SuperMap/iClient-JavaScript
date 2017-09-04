@@ -119,7 +119,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    var layer, processingsUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090")+"/iserver/services/spatialprocessing/rest/v1/jobs",
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
+    var layer, processingsUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090")+"/iserver/services/distributedanalyst/rest/v1/jobs", mapURL = host + "/iserver/services/map-world/rest/maps/World",
             token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
             map = new ol.Map({
                 target: 'map',
@@ -132,18 +133,18 @@
                 })
             });
     map.addLayer(new ol.layer.Tile({
-        source: new ol.source.Tianditu({
-            url: "http://t0.tianditu.com/vec_c/wmts",
-            matrixSet: 'c',
-            layer: 'vec',
-            projection: "EPSG:4326"
-        })
+        source: new ol.source.TileSuperMapRest({
+            url: mapURL,
+        }),
     }));
     var processingService = new ol.supermap.ProcessingService(processingsUrl);
     var info = new ol.control.Control({element: popup});
     info.setMap(map);
     map.addControl(info);
-    SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
+    if(!window.isLocal){
+        SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
+    }
+
     function getQuery() {
         if ($('#query').val() === "") {
             return "";

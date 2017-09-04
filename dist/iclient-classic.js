@@ -1133,7 +1133,7 @@ var ClipAnalystMode = exports.ClipAnalystMode = _SuperMap2.default.ClipAnalystMo
     INTERSECT: "intersect"
 };
 /**
- * 分布式空间分析面积单位
+ * 分布式分析面积单位
  * @type {{SQUAREMETER: string, SQUAREKILOMETER: string, HECTARE: string, ARE: string, ACRE: string, SQUAREFOOT: string, SQUAREYARD: string, SQUAREMILE: string}}
  */
 var AnalystAreaUnit = exports.AnalystAreaUnit = _SuperMap2.default.AnalystAreaUnit = {
@@ -1147,7 +1147,7 @@ var AnalystAreaUnit = exports.AnalystAreaUnit = _SuperMap2.default.AnalystAreaUn
     "SQUAREMILE": "SquareMile"
 };
 /**
- * 分布式空间分析单位
+ * 分布式分析单位
  * @type {{METER: string, KILOMETER: string, YARD: string, FOOT: string, MILE: string}}
  */
 var AnalystSizeUnit = exports.AnalystSizeUnit = _SuperMap2.default.AnalystSizeUnit = {
@@ -1158,7 +1158,7 @@ var AnalystSizeUnit = exports.AnalystSizeUnit = _SuperMap2.default.AnalystSizeUn
     "MILE": "Mile"
 };
 /**
- * 分布式空间分析统计模式
+ * 分布式分析统计模式
  * @type {{MAX: string, MIN: string, AVERAGE: string, SUM: string, VARIANCE: string, STDDEVIATION: string}}
  */
 var StatisticAnalystMode = exports.StatisticAnalystMode = _SuperMap2.default.StatisticAnalystMode = {
@@ -1170,7 +1170,7 @@ var StatisticAnalystMode = exports.StatisticAnalystMode = _SuperMap2.default.Sta
     "STDDEVIATION": "stdDeviation"
 };
 /**
- * 分布式空间分析聚合类型
+ * 分布式分析聚合类型
  * @type {{SUMMARYMESH: string, SUMMARYREGION: string}}
  */
 var SummaryType = exports.SummaryType = _SuperMap2.default.SummaryType = {
@@ -1214,9 +1214,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.ProcessingServiceBase
- * @description 分布式空间分析服务基类
+ * @description 分布式分析服务基类
  * @extends SuperMap.CommonServiceBase
- * @param url - {string} 分布式空间分析服务地址。
+ * @param url - {string} 分布式分析服务地址。
  * @param options - {Object} 参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
@@ -1260,7 +1260,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
 
         /**
          * @function SuperMap.ProcessingServiceBase.prototype.getJobs
-         * @description 获取分布式空间分析任务。
+         * @description 获取分布式分析任务。
          * @param url - {string} 资源地址。
          */
 
@@ -1279,7 +1279,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
 
         /**
          * @function SuperMap.ProcessingServiceBase.prototype.addJob
-         * @description 添加分布式空间分析任务。
+         * @description 添加分布式分析任务。
          * @param url - {string} 资源根地址。
          * @param params - {Object} 创建一个空间分析的请求参数。
          * @param paramType - {string} - 请求参数类型。
@@ -2492,7 +2492,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.REST.ProcessingService
- * @classdesc 分布式空间分析相关服务类。
+ * @classdesc 分布式分析相关服务类。
  * @augments SuperMap.CommonServiceBase
  * @example
  * 用法：
@@ -2500,7 +2500,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      .getKernelDensityJobs(function(result){
  *          //doSomething
  *      })
- * @param url -{string} 分布式空间分析服务地址。
+ * @param url -{string} 分布式分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数
  */
 var ProcessingService = exports.ProcessingService = function (_CommonServiceBase) {

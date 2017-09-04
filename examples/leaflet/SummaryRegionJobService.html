@@ -22,19 +22,17 @@
 <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
-    var layer, processingUrl = host + "/iserver/services/spatialprocessing/rest/v1/jobs",
-        token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
-        map = L.map('map', {
-            crs: L.CRS.TianDiTu_WGS84,
-            center: [40.75, -73.95],
-            maxZoom: 18,
-            zoom: 12
-        }),
-        info = L.control({position: 'topright'});
-    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
-        layer: "vec",
-        tilematrixSet: "c"
-    }).addTo(map);
+    var layer, processingUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
+            map = L.map('map', {
+                crs: L.CRS.EPSG4326,
+                center: [40.75, -73.95],
+                maxZoom: 18,
+                zoom: 12
+            }),
+            info = L.control({position: 'topright'});
+    L.supermap.tiledMapLayer(mapURL).addTo(map);
 
     info.onAdd = function () {
         var popup = L.DomUtil.create('div');
@@ -112,7 +110,10 @@
         $("#weightS").hide();
     });
     var processingService = new L.supermap.processingService(processingUrl);
-    SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
+    if(! window.isLocal){
+        SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
+    }
+
 
     function getQuery() {
         if ($('#query').val() === "") {
@@ -185,6 +186,16 @@
             map.scrollWheelZoom.enable();
             map.doubleClickZoom.enable();
         });
+        $("#model").on('shown.bs.modal', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        $("#model").on('hidden.bs.modal', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        })
     }
 
     function showAlert(msg, state) {

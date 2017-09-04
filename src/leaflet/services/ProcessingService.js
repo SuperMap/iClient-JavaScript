@@ -9,14 +9,14 @@ import VectorClipJobsService from  '../../common/iServer/VectorClipJobsService';
 import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class L.supermap.processingService
- * @classdesc 分布式空间分析相关服务类
+ * @classdesc 分布式分析相关服务类
  * @extends  L.supermap.ServiceBase
  * @example
  *      L.supermap.processingService(url)
  *      .getKernelDensityJobs(function(result){
  *           //doSomething
  *      })
- * @param url -{string} 分布式空间分析服务地址。
+ * @param url -{string} 分布式分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online。
  */

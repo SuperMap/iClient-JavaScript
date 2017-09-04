@@ -58,7 +58,7 @@ var exampleConfig = {
                 }]
             },
             "processingService": {
-                name: "分布式空间分析",
+                name: "分布式分析",
                 content: [{
                     name: "密度分析",
                     thumbnail: "kernelDensityJobService.png",

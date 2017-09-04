@@ -269,13 +269,13 @@ deps = {
                 }]
             },
             "ProcessingService": {
-                "name": "分布式空间分析服务",
+                "name": "分布式分析服务",
                 "src": [
                     "./src/leaflet/services/ProcessingService.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.processingService",
-                    "des": "分布式空间分析服务"
+                    "des": "分布式分析服务"
                 }]
             },
             "iPortal": {
@@ -595,13 +595,13 @@ deps = {
                 }]
             },
             "ProcessingService": {
-                "name": "分布式空间分析服务",
+                "name": "分布式分析服务",
                 "src": [
                     "./src/openlayers/services/ProcessingService.js"
                 ],
                 "modules": [{
                     "name": "ol.supermap.ProcessingService",
-                    "des": "分布式空间分析服务"
+                    "des": "分布式分析服务"
                 }]
             },
             "AddressMatch": {
@@ -814,7 +814,7 @@ deps = {
                 }]
             },
             "ProcessingService": {
-                "name": "分布式空间分析服务",
+                "name": "分布式分析服务",
                 "src": [
                     "./src/common/iServer/KernelDensityJobsService.js",
                     "./src/common/iServer/SummaryMeshJobsService.js",
@@ -1098,13 +1098,13 @@ deps = {
             "title": "服务",
             "description": "对各种功能服务的包装",
             "ProcessingService": {
-                "name": "分布式空间分析服务",
+                "name": "分布式分析服务",
                 "src": [
                     "./src/classic/services/ProcessingService.js"
                 ],
                 "modules": [{
                     "name": "SuperMap.REST.ProcessingService",
-                    "des": "分布式空间分析服务"
+                    "des": "分布式分析服务"
                 }]
             },
             "AddressMatch": {

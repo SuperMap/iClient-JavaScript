@@ -9,7 +9,7 @@ import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
 
 /**
  * @class SuperMap.REST.ProcessingService
- * @classdesc 分布式空间分析相关服务类。
+ * @classdesc 分布式分析相关服务类。
  * @augments SuperMap.CommonServiceBase
  * @example
  * 用法：
@@ -17,7 +17,7 @@ import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
  *      .getKernelDensityJobs(function(result){
  *          //doSomething
  *      })
- * @param url -{string} 分布式空间分析服务地址。
+ * @param url -{string} 分布式分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数
  */
 export class ProcessingService extends CommonServiceBase {

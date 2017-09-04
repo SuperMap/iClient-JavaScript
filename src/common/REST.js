@@ -1028,7 +1028,7 @@ export var ClipAnalystMode = SuperMap.ClipAnalystMode = {
     INTERSECT: "intersect"
 };
 /**
- * 分布式空间分析面积单位
+ * 分布式分析面积单位
  * @type {{SQUAREMETER: string, SQUAREKILOMETER: string, HECTARE: string, ARE: string, ACRE: string, SQUAREFOOT: string, SQUAREYARD: string, SQUAREMILE: string}}
  */
 export var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
@@ -1042,7 +1042,7 @@ export var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
     "SQUAREMILE": "SquareMile"
 };
 /**
- * 分布式空间分析单位
+ * 分布式分析单位
  * @type {{METER: string, KILOMETER: string, YARD: string, FOOT: string, MILE: string}}
  */
 export var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
@@ -1053,7 +1053,7 @@ export var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
     "MILE": "Mile",
 };
 /**
- * 分布式空间分析统计模式
+ * 分布式分析统计模式
  * @type {{MAX: string, MIN: string, AVERAGE: string, SUM: string, VARIANCE: string, STDDEVIATION: string}}
  */
 export var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
@@ -1065,7 +1065,7 @@ export var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
     "STDDEVIATION": "stdDeviation"
 };
 /**
- * 分布式空间分析聚合类型
+ * 分布式分析聚合类型
  * @type {{SUMMARYMESH: string, SUMMARYREGION: string}}
  */
 export var SummaryType = SuperMap.SummaryType = {

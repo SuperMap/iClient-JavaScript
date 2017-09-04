@@ -22,100 +22,100 @@
 <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
-    var layer, processingUrl = host + "/iserver/services/spatialprocessing/rest/v1/jobs",
-        token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
-        map = L.map('map', {
-            crs: L.CRS.TianDiTu_WGS84,
-            center: [40.75, -73.95],
-            maxZoom: 18,
-            zoom: 12
-        }),
-        info = L.control({position: 'topright'});
-//    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
-//        layer: "vec",
-//        tilematrixSet: "c"
-//    }).addTo(map);
-    L.supermap.tiledMapLayer("http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World").addTo(map);
+    var layer, processingUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
+            map = L.map('map', {
+                crs: L.CRS.EPSG4326,
+                center: [40.75, -73.95],
+                maxZoom: 18,
+                zoom: 12
+            }),
+            info = L.control({position: 'topright'});
+    L.supermap.tiledMapLayer(mapURL).addTo(map);
 
     info.onAdd = function () {
         var popup = L.DomUtil.create('div');
         popup.style = 'width:300px';
         popup.innerHTML = "<div class='panel panel-default'>" +
-            "<div class='panel-heading'>" +
-            "<h3 class='panel-title'>密度分析</h3>" +
-            "</div>" +
-            "<div class='panel-body'>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>输入数据<span title='必填字段' style='color: red;'> * </span>　</span>" +
-            "<input id='datasetName' type='text' class='form-control' value='samples_newyork_taxi_2013-01_14k'/>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>分析方法<span title='必填字段' style='color: red;'> * </span>　</span>" +
-            "<div>" +
-            "<select class='form-control' id='method' name='clientType'>" +
-            "<option value='0' selected='selected'>简单点密度分析</option>" +
-            "<option value='1'>核密度分析</option>" +
-            "</select></div>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>网格面类型<span title='必填字段' style='color: red;'> * </span></span>" +
-            "<select class='form-control' id='meshType' name='clientType'>" +
-            "<option value='0' selected='selected'>四边形网格</option>" +
-            "<option value='1'>六边形网格</option>" +
-            "</select>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>权重值字段　</span>" +
-            "<input id='fields' type='text' class='form-control' value='col7,col8'/>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>分析范围　　</span>" +
-            "<input id='query' type='text' class='form-control' value='-74.150, 40.550, -73.750, 40.950'/>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>网格大小<span title='必填字段' style='color: red;'> * </span>　</span>" +
-            "<input id='resolution' type='text' class='form-control' value='80'/>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>网格大小单位</span>" +
-            "<select class='form-control' id='meshSizeUnit' name='clientType'>" +
-            "<option value='Meter' selected='selected'>Meter</option>" +
-            "<option value='Kilometer'>Kilometer</option>" +
-            "<option value='Yard'>Yard</option>" +
-            "<option value='Foot'>Foot</option>" +
-            "<option value='Mile'>Mile</option></select></div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>搜索半径<span title='必填字段' style='color: red;'> * </span>　</span>" +
-            "<input id='radius' type='text' class='form-control' value='300'/>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>搜索半径单位</span>" +
-            "<select class='form-control' id='radiusUnit' name='clientType'>" +
-            "<option value='Meter' selected='selected'>Meter</option>" +
-            "<option value='Kilometer'>Kilometer</option>" +
-            "<option value='Yard'>Yard</option>" +
-            "<option value='Foot'>Foot</option>" +
-            "<option value='Mile'>Mile</option></select></div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>面积单位　　</span>" +
-            "<select class='form-control' id='areaUnit' name='clientType'>" +
-            "<option value='SquareMile' selected='selected'>SquareMile</option>" +
-            "<option value='Hectare'>Hectare</option>" +
-            "<option value='Are'>Are</option>" +
-            "<option value='Acre'>Acre</option>" +
-            "<option value='SquareFoot'>SquareFoot</option>" +
-            "<option value='SquareYard'>SquareYard</option>" +
-            "<option value='SquareMeter'>SquareMeter</option></select></div><p>" +
-            "<div align='right'>" +
-            "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
-            "</div></div></div>";
+                "<div class='panel-heading'>" +
+                "<h3 class='panel-title'>密度分析</h3>" +
+                "</div>" +
+                "<div class='panel-body'>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>输入数据<span title='必填字段' style='color: red;'> * </span>　</span>" +
+                "<input id='datasetName' type='text' class='form-control' value='samples_newyork_taxi_2013-01_14k'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>分析方法<span title='必填字段' style='color: red;'> * </span>　</span>" +
+                "<div>" +
+                "<select class='form-control' id='method' name='clientType'>" +
+                "<option value='0' selected='selected'>简单点密度分析</option>" +
+                "<option value='1'>核密度分析</option>" +
+                "</select></div>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>网格面类型<span title='必填字段' style='color: red;'> * </span></span>" +
+                "<select class='form-control' id='meshType' name='clientType'>" +
+                "<option value='0' selected='selected'>四边形网格</option>" +
+                "<option value='1'>六边形网格</option>" +
+                "</select>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>权重值字段　</span>" +
+                "<input id='fields' type='text' class='form-control' value='col7,col8'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>分析范围　　</span>" +
+                "<input id='query' type='text' class='form-control' value='-74.150, 40.550, -73.750, 40.950'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>网格大小<span title='必填字段' style='color: red;'> * </span>　</span>" +
+                "<input id='resolution' type='text' class='form-control' value='80'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>网格大小单位</span>" +
+                "<select class='form-control' id='meshSizeUnit' name='clientType'>" +
+                "<option value='Meter' selected='selected'>Meter</option>" +
+                "<option value='Kilometer'>Kilometer</option>" +
+                "<option value='Yard'>Yard</option>" +
+                "<option value='Foot'>Foot</option>" +
+                "<option value='Mile'>Mile</option></select></div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>搜索半径<span title='必填字段' style='color: red;'> * </span>　</span>" +
+                "<input id='radius' type='text' class='form-control' value='300'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>搜索半径单位</span>" +
+                "<select class='form-control' id='radiusUnit' name='clientType'>" +
+                "<option value='Meter' selected='selected'>Meter</option>" +
+                "<option value='Kilometer'>Kilometer</option>" +
+                "<option value='Yard'>Yard</option>" +
+                "<option value='Foot'>Foot</option>" +
+                "<option value='Mile'>Mile</option></select></div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>面积单位　　</span>" +
+                "<select class='form-control' id='areaUnit' name='clientType'>" +
+                "<option value='SquareMile' selected='selected'>SquareMile</option>" +
+                "<option value='Hectare'>Hectare</option>" +
+                "<option value='Are'>Are</option>" +
+                "<option value='Acre'>Acre</option>" +
+                "<option value='SquareFoot'>SquareFoot</option>" +
+                "<option value='SquareYard'>SquareYard</option>" +
+                "<option value='SquareMeter'>SquareMeter</option></select></div><p>" +
+                "<div align='right'>" +
+                "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
+                "</div></div></div>";
         handleMapEvent(popup, this._map);
         return popup;
     };
     info.addTo(map);
 
     var processingService = new L.supermap.processingService(processingUrl);
-    SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
+    if( !window.isLocal){
+        SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
+    }
+
 
     function getQuery() {
         if ($('#query').val() === "") {
@@ -175,9 +175,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                    "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);
@@ -199,6 +199,16 @@
             map.scrollWheelZoom.enable();
             map.doubleClickZoom.enable();
         });
+        $("#model").on('shown.bs.modal', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        $("#model").on('hidden.bs.modal', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        })
     }
 
 </script>

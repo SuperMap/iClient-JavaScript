@@ -124,7 +124,7 @@
 <script type="text/javascript" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
-    var resultLayer, processingsUrl = host + "/iserver/services/spatialprocessing/rest/v1/jobs",
+    var resultLayer, processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",mapURL = host + "/iserver/services/map-world/rest/maps/World",
         token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
         map = new SuperMap.Map("map", {
             controls: [
@@ -135,11 +135,16 @@
             ], allOverlays: true
         });
     map.addControl(new SuperMap.Control.MousePosition());
-    var tiandituLayer = new SuperMap.Layer.Tianditu();
-    map.addLayers([tiandituLayer]);
-    map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
+    var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null,{maxResolution:"auto"});
+    layer.events.on({"layerInitialized":addLayer});
+    function addLayer(){
+        map.addLayers([layer]);
+        map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
+    }
     var processingService = new SuperMap.REST.ProcessingService(processingsUrl);
-    SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
+    if(!window.isLocal){
+        SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
+    }
 
     function getQuery() {
         if ($('#query').val() === "") {
