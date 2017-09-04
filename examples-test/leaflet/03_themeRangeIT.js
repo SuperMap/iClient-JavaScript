@@ -5,9 +5,10 @@ module.exports = {
         var exampleName = '03_themeRange';
         commonTools.openExampleAndLoadMap(browser, type, exampleName);
         /*check elements exist*/
-        browser.expect.element('.leaflet-pane.leaflet-map-pane').to.be.present.before(8000);
-        browser.expect.element('.leaflet-pane.leaflet-tile-pane').to.be.present.before(8000);
-        browser.expect.element('.leaflet-layer').to.be.present.before(8000);
+        browser.waitForElementPresent('.leaflet-pane.leaflet-map-pane', 10000);
+        browser.waitForElementPresent('.leaflet-pane.leaflet-tile-pane', 10000);
+        browser.waitForElementPresent('.leaflet-layer', 10000);
+        browser.pause(3000);
         browser.elements('class name', 'leaflet-layer', function (result) {
             this.assert.equal(result.value.length, 2, "expect Number of leaflet-layer to be 2, actual is " + result.value.length);
         });

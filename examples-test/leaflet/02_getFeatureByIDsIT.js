@@ -5,8 +5,8 @@ module.exports = {
         var exampleName = '02_getFeatureByIDs';
         commonTools.openExampleAndLoadMap(browser, type, exampleName);
         /*check elements exist*/
-        browser.expect.element('.leaflet-pane.leaflet-overlay-pane').to.be.present.before(10000);
-        browser.expect.element('.leaflet-zoom-animated').to.be.present.before(10000);
+        browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane', 10000);
+        browser.waitForElementPresent('.leaflet-pane.leaflet-overlay-pane canvas', 10000);
         browser.pause(1000);
         browser.end();
     }

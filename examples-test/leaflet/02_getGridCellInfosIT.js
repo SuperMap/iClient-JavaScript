@@ -5,21 +5,16 @@ module.exports = {
         var exampleName = '02_getGridCellInfos';
         commonTools.openExampleAndLoadMap(browser, type, exampleName);
         /*check elements exist*/
-        browser.click('#map').pause(1000);
-        browser.expect.element('.leaflet-pane.leaflet-marker-pane').to.be.present.before(10000);
-        browser.expect.element('.leaflet-pane.leaflet-marker-pane img').to.be.present.before(10000);
-        browser.expect.element('.leaflet-popup-content').to.be.present.before(10000);
-        var popupContent1 = '栅格查询结果';
-        var popupContent2 = 'column';
-        var popupContent3 = 'row';
-        var popupContent4 = 'value';
-        browser.expect.element('.leaflet-popup-content').text.to.be.contain(popupContent1);
-        browser.expect.element('.leaflet-popup-content').text.to.be.contain(popupContent2);
-        browser.expect.element('.leaflet-popup-content').text.to.be.contain(popupContent3);
-        browser.expect.element('.leaflet-popup-content').text.to.be.contain(popupContent4);
+        browser.click('#map');
+        browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 10000);
+        browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
+        browser.waitForElementPresent('.leaflet-popup-content', 10000);
+        browser.expect.element('.leaflet-popup-content').text.to.be.contain('栅格查询结果');
+        browser.expect.element('.leaflet-popup-content').text.to.be.contain('column');
+        browser.expect.element('.leaflet-popup-content').text.to.be.contain('row');
+        browser.expect.element('.leaflet-popup-content').text.to.be.contain('value');
         browser.click('.leaflet-popup-close-button', function () {
-            browser.pause(1000);
-            browser.expect.element('.leaflet-popup-content').to.not.be.present.before(10000);
+            browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
         });
         browser.pause(1000);
         browser.end();

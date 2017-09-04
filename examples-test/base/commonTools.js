@@ -16,12 +16,14 @@ var commonTools = ({
                 console.log('invalid input : type or exampleName is not a string');
                 return;
             }
-            var baseDir = path.resolve(__dirname, '../../').replace(/\\/g, '/');
-            var exampleUrl = baseDir + '/examples/' + type + '/' + exampleName + '.html';
+            //var baseDir = path.resolve(__dirname, '../../').replace(/\\/g, '/');
+            //var exampleUrl = baseDir + '/examples/' + type + '/' + exampleName + '.html';
+            var basePath = 'http://192.168.169.249:8090/iserver/iClient/forJavaScript';
+            var exampleUrl = basePath + '/examples/' + type + '/' + exampleName + '.html';
             browser.url(exampleUrl);
             browser.pause(2000);
-            browser.expect.element('body').to.be.present.before(5000);
-            browser.expect.element('#map').to.be.present.before(5000);
+            browser.waitForElementPresent('body', 5000);
+            browser.waitForElementPresent('#map', 5000);
             browser.pause(1000);
         },
 
