@@ -59,15 +59,17 @@
         }
     }));
     var resultLayer,
-            urlQuery = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China_4326",
-            urlDataFlow ="ws://"+ (window.isLocal ? document.location.protocol + "//" + document.location.hostname+":8080" : "117.122.248.69:8800")+"/iserver/services/dataflow/dataflow";
+            urlQuery = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China_4326",
+            wsHost = "ws:\//" + (window.isLocal ? document.location.host : "117.122.248.69:8800");
+    var token = "jDTu8vHZoo9ABgE_IW48UcyYbwBhlOmfIub7gscWjzmiszd0vKC7xtcp8pIcK0eAAzANtETZdaFiE9d1l9Ojtg..";
+    var urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
     var timer, featureResult, dataFlowService, source;
     new ol.supermap.MapService(urlQuery).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         var map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
+                    .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [116.443571, 39.887549],
                 zoom: 12,
@@ -79,6 +81,9 @@
             source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(urlQuery, mapJSONObj))
         });
         map.addLayer(layer);
+        if(!window.isLocal){
+            SuperMap.SecurityManager.registerToken(urlDataFlow, token);
+        }
         query();
         function query() {
             var param = new SuperMap.QueryBySQLParameters({
@@ -107,14 +112,14 @@
                     .queryBySQL(param, function (serviceResult) {
                         featureResult = serviceResult;
                         source = new ol.source.DataFlow({ws: urlDataFlow});
-                        source.on('addfeature',function (e) {
-                            var feature=e.feature;
+                        source.on('addfeature', function (e) {
+                            var feature = e.feature;
                             content.innerHTML = feature.get('time');
                             overlay.setPosition(feature.getGeometry().getCoordinates());
                         });
                         resultLayer = new ol.layer.Vector({
                             source: source,
-                            style:new ol.style.Style({
+                            style: new ol.style.Style({
                                 image: new ol.style.Circle({
                                     fill: fill,
                                     radius: 6

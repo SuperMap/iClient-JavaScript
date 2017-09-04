@@ -6003,7 +6003,7 @@ _SuperMap2.default.SecurityManager = {
     },
 
     _getTokenStorageKey: function _getTokenStorageKey(url) {
-        var patten = /http:\/\/([^\/]+)/i;
+        var patten = /(.*?):\/\/([^\/]+)/i;
         var result = url.match(patten);
         if (!result) {
             return url;

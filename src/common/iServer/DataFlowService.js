@@ -221,6 +221,7 @@ export default class DataFlowService extends CommonServiceBase {
 
 
     _connect(url) {
+        url = this._appendCredentials(url);
         if ("WebSocket" in window) {
             return new WebSocket(url);
         } else if ("MozWebSocket" in window) {
@@ -230,6 +231,15 @@ export default class DataFlowService extends CommonServiceBase {
             return null;
         }
     }
+
+    _appendCredentials(url) {
+        var token = SuperMap.SecurityManager.getToken(url);
+        if (token) {
+            url += "?token=" + token;
+        }
+        return url;
+    }
+
 
     CLASS_NAME = "SuperMap.DataFlowService"
 }

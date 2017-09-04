@@ -39,7 +39,7 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if(!inArray(excludes,'iclient9-openlayers')) {
-            inputScript("../../dist/iclient9-openlayers.js");
+            inputScript("../../dist/iclient9-openlayers.min.js");
         }
         if(!inArray(excludes,'iclient9-openlayers-css')) {
             inputCSS("../../dist/iclient9-openlayers.min.css");

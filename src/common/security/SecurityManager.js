@@ -189,7 +189,7 @@ SuperMap.SecurityManager = {
     },
 
     _getTokenStorageKey: function (url) {
-        var patten = /http:\/\/([^\/]+)/i;
+        var patten = /(.*?):\/\/([^\/]+)/i;
         var result = url.match(patten);
         if (!result) {
             return url;

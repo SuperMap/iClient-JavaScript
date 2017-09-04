@@ -9,7 +9,8 @@
 <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
-    var wsHost = window.isLocal ? "ws:\\//" + document.location.protocol + "//" + document.location.host : "ws://117.122.248.69:8800";
+    var wsHost = "ws:\//" + (window.isLocal ? document.location.host: "117.122.248.69:8800");
+    var token = "jDTu8vHZoo9ABgE_IW48UcyYbwBhlOmfIub7gscWjzmiszd0vKC7xtcp8pIcK0eAAzANtETZdaFiE9d1l9Ojtg..";
     var map,
         urlMap = host + "/iserver/services/map-china400/rest/maps/China",
         urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326",
@@ -22,6 +23,10 @@
         zoom: 12
     });
     L.supermap.tiledMapLayer(urlMap).addTo(map);
+    if(!window.isLocal){
+        SuperMap.SecurityManager.registerToken(urlDataFlow, token);
+    }
+
     //创建DataFlowLayer，创建DataFlowLayer订阅DataFlow并将结果加载到地图上
     var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow, {
         style: function (feature) {

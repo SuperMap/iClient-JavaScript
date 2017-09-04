@@ -10932,6 +10932,7 @@ var DataFlowService = function (_CommonServiceBase) {
     }, {
         key: '_connect',
         value: function _connect(url) {
+            url = this._appendCredentials(url);
             if ("WebSocket" in window) {
                 return new WebSocket(url);
             } else if ("MozWebSocket" in window) {
@@ -10940,6 +10941,15 @@ var DataFlowService = function (_CommonServiceBase) {
                 console.log("no WebSocket");
                 return null;
             }
+        }
+    }, {
+        key: '_appendCredentials',
+        value: function _appendCredentials(url) {
+            var token = _SuperMap2.default.SecurityManager.getToken(url);
+            if (token) {
+                url += "?token=" + token;
+            }
+            return url;
         }
     }]);
 
@@ -35987,7 +35997,7 @@ _SuperMap2.default.SecurityManager = {
     },
 
     _getTokenStorageKey: function _getTokenStorageKey(url) {
-        var patten = /http:\/\/([^\/]+)/i;
+        var patten = /(.*?):\/\/([^\/]+)/i;
         var result = url.match(patten);
         if (!result) {
             return url;
