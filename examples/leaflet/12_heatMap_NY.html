@@ -27,8 +27,8 @@
 <div id="loading">纽约出租车145万上车点数据加载中...</div>
 <script type="text/javascript" include="leaflet.heat" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
-
-    var url = "https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Dark";
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
     var map = L.map('map', {
         maxZoom: 20,
@@ -36,7 +36,7 @@
         zoom: 12,
     });
 
-    var attribution = '数据来源<a target="_blank" href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml">NYC Taxi(纽约出租车上车点)</a>';
+    var attribution = '数据来源<a target="_blank" href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml">NYC Taxi(纽约出租车上车点)</a> Map Data <span>© <a href="http://support.supermap.com.cn/product/iServer.aspx" target="_blank">SuperMap iServer</a></span> with <span>© <a href="http://iclient.supermapol.com" target="_blank">SuperMap iClient</a></span>';
     L.supermap.tiledMapLayer(url, {attribution: attribution}).addTo(map);
     loadHeatMap();
 

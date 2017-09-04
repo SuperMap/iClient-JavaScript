@@ -21,12 +21,13 @@
         })
     });
 
-    var url = "https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Dark";
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,
             attributions: new ol.Attribution({
-                html: "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a>"
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a>"
             })
         })
     }));

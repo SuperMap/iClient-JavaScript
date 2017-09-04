@@ -404,9 +404,10 @@
                 zoom: 5,
                 crs: L.CRS.EPSG3857
             });
-            var attr = 'Data © <a href="https://www.elastic.co/products/elasticsearch" target="_blank">ElasticSearch</a> Map Data © <a href="https://www.supermapol.com/" target="_blank"> SuperMap Online</a> with <span>© <a href="http://iclient.supermapol.com" target="_blank">SuperMap iClient</a></span>',
-                url = 'https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Dark';
-            L.supermap.tiledMapLayer(url, {attribution: attr}).addTo(map);
+            var attr = 'Data © <a href="https://www.elastic.co/products/elasticsearch" target="_blank">ElasticSearch</a> Map Data <span>© <a href="http://support.supermap.com.cn/product/iServer.aspx" target="_blank">SuperMap iServer</a></span> with <span>© <a href="http://iclient.supermapol.com" target="_blank">SuperMap iClient</a></span>';
+            var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+            var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+            L.supermap.tiledMapLayer(url,{attribution:attr}).addTo(map);
         }
 
         initTimeControlView();

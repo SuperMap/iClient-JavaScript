@@ -31,10 +31,11 @@
             zoom: 12
         }),
         info = L.control({position: 'topright'});
-    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
-        layer: "vec",
-        tilematrixSet: "c"
-    }).addTo(map);
+//    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
+//        layer: "vec",
+//        tilematrixSet: "c"
+//    }).addTo(map);
+    L.supermap.tiledMapLayer("http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World").addTo(map);
 
     info.onAdd = function () {
         var popup = L.DomUtil.create('div');

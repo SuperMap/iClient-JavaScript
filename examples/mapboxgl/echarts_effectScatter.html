@@ -22,7 +22,9 @@
 <script type="text/javascript" exclude='iclient9-mapboxgl' include="echarts" src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-        "| Map Data © <a href='https://www.supermapol.com' target='_blank'> SuperMap Online</a> <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts</a>";
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts</a>";
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
     var map = new mapboxgl.Map({
         container: 'map',
         style: {
@@ -31,7 +33,7 @@
                 "raster-tiles": {
                     "attribution": attribution,
                     "type": "raster",
-                    "tiles": ['https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Dark/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tiles": [tileURL],
                     "tileSize": 256,
                 },
             },
