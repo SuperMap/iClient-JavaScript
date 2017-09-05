@@ -9,12 +9,12 @@
 <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
-    var wsHost = "ws:\//" + (window.isLocal ? document.location.host: "117.122.248.69:8800");
+    var wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + "8800" : "117.122.248.69:8800");
     var token = "jDTu8vHZoo9ABgE_IW48UcyYbwBhlOmfIub7gscWjzmiszd0vKC7xtcp8pIcK0eAAzANtETZdaFiE9d1l9Ojtg..";
     var map,
-        urlMap = host + "/iserver/services/map-china400/rest/maps/China",
-        urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326",
-        urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
+            urlMap = host + "/iserver/services/map-china400/rest/maps/China",
+            urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326",
+            urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG3857,
@@ -23,7 +23,7 @@
         zoom: 12
     });
     L.supermap.tiledMapLayer(urlMap).addTo(map);
-    if(!window.isLocal){
+    if (!window.isLocal) {
         SuperMap.SecurityManager.registerToken(urlDataFlow, token);
     }
 
@@ -39,9 +39,9 @@
         },
         onEachFeature: function (feature, layer) {
             L.popup({offset: L.point(0, 0)})
-                .setLatLng(L.GeoJSON.coordsToLatLng(feature.geometry.coordinates))
-                .setContent(feature.properties.time)
-                .openOn(map);
+                    .setLatLng(L.GeoJSON.coordsToLatLng(feature.geometry.coordinates))
+                    .setContent(feature.properties.time)
+                    .openOn(map);
         },
         //geometry:{coordinates:[[[116.381741960923,39.8765100055449],[116.414681699817,39.8765100055449],[116.414681699817,39.8415115329708],[116.381741960923, 39.8415115329708],[116.381741960923,39.8765100055449]]],type:"Polygon"},
         // excludeField:["id"]
@@ -61,14 +61,14 @@
             }
         });
         L.supermap
-            .queryService(urlQuery)
-            .queryBySQL(param, function (serviceResult) {
-                featureResult = serviceResult;
-                dataFlowService = L.supermap.dataFlowService(urlDataFlow).initBroadcast();
-                dataFlowService.on('broadcastSocketConnected', function (e) {
-                    timer = window.setInterval("broadcast()", 2000);
-                })
-            });
+                .queryService(urlQuery)
+                .queryBySQL(param, function (serviceResult) {
+                    featureResult = serviceResult;
+                    dataFlowService = L.supermap.dataFlowService(urlDataFlow).initBroadcast();
+                    dataFlowService.on('broadcastSocketConnected', function (e) {
+                        timer = window.setInterval("broadcast()", 2000);
+                    })
+                });
     }
 
     var count = 200;
