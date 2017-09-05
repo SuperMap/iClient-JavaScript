@@ -5,9 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <script type="text/javascript" include="randomcolor" src="../js/include-web.js"></script>
-    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
-    <script src="http://cdn.bootcss.com/openlayers/4.2.0/ol-debug.js"></script>
-    <script type="text/javascript" exclude="ol" src="../../dist/include-openlayers.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <title>canvas渲染</title>
     <style>
         .ol-popup {
@@ -54,7 +52,7 @@
     <div id="popup-content"></div>
 </div>
 <script type="text/javascript">
-    var url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China_4326";
+    var url = (window.isLocal ? document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China_4326";
     var colorCount = 10;
     var colors = getRandomColors(colorCount);
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
@@ -71,7 +69,7 @@
         var map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                    .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [0, 0],
                 zoom: 2,
@@ -88,14 +86,15 @@
 
         var randomCircleStyles = [];
         for (var i = 0; i < colorCount; i++) {
-            randomCircleStyles.push(new ol.style.Circle({
+            randomCircleStyles.push(new ol.style.RegularShape({
                 radius: Math.floor(Math.random() * 15 + 1),
                 fill: new ol.style.Fill({
                     color: colors[i]
                 }),
                 stroke: new ol.style.Stroke({
                     color: colors[i]
-                })
+                }),
+                points: 3,
             }));
         }
 
@@ -105,25 +104,22 @@
         for (var i = 0; i < count; ++i) {
             var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
             graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
-            graphics[i].setStyle(new ol.style.Style({
-                image: randomCircleStyles[Math.floor(Math.random() * colorCount)]
-            }));
+            graphics[i].setStyle(randomCircleStyles[Math.floor(Math.random() * colorCount)]);
         }
         var graphicLayer = new ol.layer.Image({
             source: new ol.source.Graphic({
-                graphics: graphics
+                graphics: graphics,
+                map: map,
+                onClick: function (graphic) {
+                    if (graphic) {
+                        var coords = graphic.getGeometry().getCoordinates();
+                        content.innerHTML = "坐标为:[" + coords[0] + "," + coords[1] + "]";
+                        overlay.setPosition(graphic.getGeometry().getCoordinates());
+                        return;
+                    }
+                    overlay.setPosition(undefined);
+                }
             })
-        });
-        var select = new ol.interaction.Select();
-        map.addInteraction(select);
-        //开启事件
-        select.on('select', function (e) {
-            if (e.selected.length > 0) {
-                content.innerHTML = "id:" + e.selected[0].ol_uid;
-                overlay.setPosition(e.selected[0].getGeometry().flatCoordinates);
-            } else if (overlay) {
-                overlay.setPosition(undefined);
-            }
         });
         map.addLayer(graphicLayer);
     });

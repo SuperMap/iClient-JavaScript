@@ -1,4 +1,5 @@
 import ol from 'openlayers/dist/ol-debug';
+
 /**
  * @class ol.Graphic
  * @classdesc 地理几何对象类
@@ -60,6 +61,7 @@ export default class Graphic extends ol.Object {
     setGeometry(geometry) {
         this.geometry_ = geometry;
     }
+
     /**
      * @function ol.Graphic.prototype.getStyle
      * @description 获取样式
@@ -76,7 +78,7 @@ export default class Graphic extends ol.Object {
     setStyle(style) {
         this.style_ = style;
         this.styleFunction_ = !style ?
-            undefined : ol.Graphic.createStyleFunction(style);
+            undefined : ol.Graphic.createStyleFunction(new ol.style.Style({image: style}));
         this.changed();
     }
 

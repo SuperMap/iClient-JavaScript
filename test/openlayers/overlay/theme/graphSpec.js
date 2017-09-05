@@ -42,7 +42,8 @@ describe('openlayer_graph', function () {
     });
 
     it('construtor and destroy', function () {
-        var barThemeLayer = new ol.source.Graph("BarThemeLayer", "Bar", {map: map,
+        var barThemeLayer = new ol.source.Graph("BarThemeLayer", "Bar", {
+            map: map,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
             chartsSetting: {
                 width: 240,
@@ -57,7 +58,12 @@ describe('openlayer_graph', function () {
                 backgroundStyle: {fillColor: "#CCE8CF"},
                 backgroundRadius: [5, 5, 5, 5],
                 showShadow: true,
-                barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
+                barShadowStyle: {
+                    shadowBlur: 8,
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 2,
+                    shadowColor: "rgba(100,100,100,0.8)"
+                },
                 barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
             }
         });
@@ -95,8 +101,9 @@ describe('openlayer_graph', function () {
             }
         });
 
-        var layer =  new ol.layer.Image({
-            source: graphThemeSource});
+        var layer = new ol.layer.Image({
+            source: graphThemeSource
+        });
         map.addLayer(layer);
 
         expect(graphThemeSource.chartsType).toBe("Bar");
@@ -155,15 +162,23 @@ describe('openlayer_graph', function () {
                 backgroundStyle: {fillColor: "#CCE8CF"},
                 backgroundRadius: [5, 5, 5, 5],
                 showShadow: true,
-                barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
+                barShadowStyle: {
+                    shadowBlur: 8,
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 2,
+                    shadowColor: "rgba(100,100,100,0.8)"
+                },
                 barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
             }
         });
         var layer = new ol.layer.Image({
-            source: graphThemeSource});
+            source: graphThemeSource
+        });
         map.addLayer(layer);
-        graphThemeSource.drawCharts();
-        expect(graphThemeSource).not.toBeNull();
+        setTimeout(function () {
+            graphThemeSource.drawCharts();
+            expect(graphThemeSource).not.toBeNull();
+        }, 5000);
     });
 
     xit('removeFeatures', function () {
@@ -176,8 +191,9 @@ describe('openlayer_graph', function () {
                 codomain: [0, 40000],
             }
         });
-        var layer =  new ol.layer.Image({
-            source: graphThemeSource});
+        var layer = new ol.layer.Image({
+            source: graphThemeSource
+        });
         map.addLayer(layer);
         var features = [];
         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
@@ -200,8 +216,9 @@ describe('openlayer_graph', function () {
             chartsSetting: {
                 width: 240,
                 height: 100,
-                codomain: [0, 40000]}
-            });
+                codomain: [0, 40000]
+            }
+        });
         graphThemeSource.charts = [1, 2, 3];
         graphThemeSource.cache = {'name': 'ONETWO'};
         expect(graphThemeSource.charts.length).toEqual(3);
@@ -230,7 +247,12 @@ describe('openlayer_graph', function () {
                 backgroundStyle: {fillColor: "#CCE8CF"},
                 backgroundRadius: [5, 5, 5, 5],
                 showShadow: true,
-                barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
+                barShadowStyle: {
+                    shadowBlur: 8,
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 2,
+                    shadowColor: "rgba(100,100,100,0.8)"
+                },
                 barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
             }
         });

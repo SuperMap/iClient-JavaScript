@@ -10625,7 +10625,7 @@ var StyleUtils = function () {
                     /*//首先判定是否需要绘制阴影，如果需要绘制，阴影应该在最下面
                      if(shader.shadow)
                      {
-                       //桌面里面的阴影没有做模糊处理，这里统一设置为0,
+                      //桌面里面的阴影没有做模糊处理，这里统一设置为0,
                      style.shadowBlur=0;
                      //和桌面统一，往右下角偏移阴影，默认3像素
                      style.shadowOffsetX=3;
@@ -11126,7 +11126,7 @@ var StyleUtils = function () {
          * @function ol.supermap.StyleUtils.getDefaultStyle
          * @description 获取默认风格
          * @param type -{string} 类型参数
-           */
+          */
 
     }, {
         key: 'getDefaultStyle',
@@ -15599,76 +15599,99 @@ var Graphic = function (_ol$source$ImageCanva) {
             state: options.state
         }));
 
-        _this.canvasContext_ = _Util2.default.createCanvasContext2D();
-        _this.imageTransform = [1, 0, 0, 1, 0, 0];
         _this.graphics_ = options.graphics;
+        _this.map = options.map;
+        _this.highLightStyle = options.highLightStyle;
+
+        var me = _this;
+        if (options.onClick) {
+            me.map.on('click', function (e) {
+                var coordinate = e.coordinate;
+                var resolution = e.frameState.viewState.resolution;
+                me.forEachFeatureAtCoordinate(coordinate, resolution, options.onClick);
+            });
+        }
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            var width = Math.round(_olDebug2.default.extent.getWidth(extent) / resolution);
-            var height = Math.round(_olDebug2.default.extent.getHeight(extent) / resolution);
-            this.canvasContext_.canvas.width = width;
-            this.canvasContext_.canvas.height = height;
-            this.imageTransform = this.getTransform_(_olDebug2.default.extent.getCenter(extent), resolution, pixelRatio, size);
-            var vectorContext = new _olDebug2.default.render.canvas.Immediate(this.canvasContext_, pixelRatio, extent, this.imageTransform, 0);
-            //var vectorContext = ol.render.toContext(this.canvasContext_, {pixelRatio:pixelRatio, size:size});
+            var mapWidth = size[0] * pixelRatio;
+            var mapHeight = size[1] * pixelRatio;
+            var width = this.map.getSize()[0] * pixelRatio;
+            var height = this.map.getSize()[1] * pixelRatio;
+            var context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
+            var offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
+            var vectorContext = _olDebug2.default.render.toContext(context, { size: size, pixelRatio: pixelRatio });
             var graphics = this.getGraphicsInExtent(extent);
+            var me = this;
             graphics.map(function (graphic) {
-                vectorContext.drawFeature(graphic, graphic.getStyle());
+                var style = graphic.getStyle();
+                if (me.selected === graphic) {
+                    if (style instanceof _olDebug2.default.style.Circle) {
+                        var defaultHighLightStyle = new _olDebug2.default.style.Circle({
+                            radius: style.getRadius(),
+                            fill: new _olDebug2.default.style.Fill({
+                                color: 'rgba(0, 153, 255, 1)'
+                            }),
+                            stroke: style.getStroke(),
+                            snapToPixel: style.getSnapToPixel()
+                        });
+                    } else if (style instanceof _olDebug2.default.style.RegularShape) {
+                        var defaultHighLightStyle = new _olDebug2.default.style.RegularShape({
+                            radius: style.getRadius(),
+                            radius2: style.getRadius2(),
+                            points: style.getPoints(),
+                            angle: style.getAngle(),
+                            snapToPixel: style.getSnapToPixel(),
+                            rotation: style.getRotation(),
+                            rotateWithView: style.getRotateWithView(),
+                            fill: new _olDebug2.default.style.Fill({
+                                color: 'rgba(0, 153, 255, 1)'
+                            }),
+                            stroke: style.getStroke()
+                        });
+                    }
+                    style = me.highLightStyle || defaultHighLightStyle;
+                }
+                vectorContext.setStyle(new _olDebug2.default.style.Style({
+                    image: style
+                }));
+                var geometry = graphic.getGeometry();
+                var coordinate = geometry.getCoordinates();
+                var pixelP = me.map.getPixelFromCoordinate(coordinate);
+                var rotation = -me.map.getView().getRotation();
+                var center = me.map.getPixelFromCoordinate(me.map.getView().getCenter());
+                var scaledP = scale(pixelP, center, pixelRatio);
+                var rotatedP = rotate(scaledP, rotation, center);
+                var result = [rotatedP[0] + offset[0], rotatedP[1] + offset[1]];
+                var pixelGeometry = new _olDebug2.default.geom.Point(result);
+                vectorContext.drawGeometry(pixelGeometry);
             });
-            return this.canvasContext_.canvas;
+            return context.canvas;
+        }
+
+        //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+        function rotate(pixelP, rotation, center) {
+            var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
+            var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
+            return [x, y];
+        }
+
+        //获取某像素坐标点pixelP相对于中心center进行缩放scaleRatio倍后的像素点坐标。
+        function scale(pixelP, center, scaleRatio) {
+            var x = (pixelP[0] - center[0]) * scaleRatio + center[0];
+            var y = (pixelP[1] - center[1]) * scaleRatio + center[1];
+            return [x, y];
         }
         return _this;
     }
 
     /**
-     * @private
-     * @function ol.source.Graphic.prototype.forEachFeatureAtCoordinate
-     * @description 获取在视图上的要素
-     * @param coordinate -{string} 坐标
-     * @param rotation -{number} 角度
-     * @param hitTolerance -{number} 精度
-     * @param skippedFeatureUids -{boolean} 跳过功能的UID
-     * @param resolution -{number} 分辨率
-     * @param callback -{function} 回调函数
+     * @function ol.source.Graphic.prototype.getGraphicsInExtent
+     * @description 在指定范围中获取几何要素面积
+     * @param extent -{Object} 长度范围
      */
 
 
     _createClass(Graphic, [{
-        key: 'forEachFeatureAtCoordinate',
-        value: function forEachFeatureAtCoordinate(coordinate, resolution, rotation, hitTolerance, skippedFeatureUids, callback) {
-            var graphics = this.getGraphicsInExtent();
-            for (var i = 0; i < graphics.length; i++) {
-                var center = graphics[i].getGeometry().getCoordinates();
-                var image = graphics[i].getStyle().getImage();
-                var extent = [];
-                extent[0] = center[0] - image.getAnchor()[0] * resolution;
-                extent[2] = center[0] + image.getAnchor()[0] * resolution;
-                extent[1] = center[1] - image.getAnchor()[1] * resolution;
-                extent[3] = center[1] + image.getAnchor()[1] * resolution;
-                if (_olDebug2.default.extent.containsCoordinate(extent, coordinate)) {
-                    return callback.call(this, graphics[i]);
-                }
-            }
-        }
-    }, {
-        key: 'getTransform_',
-        value: function getTransform_(center, resolution, pixelRatio, size) {
-            var dx1 = size[0] / 2;
-            var dy1 = size[1] / 2;
-            var sx = pixelRatio / resolution;
-            var sy = -sx;
-            var dx2 = -center[0];
-            var dy2 = -center[1];
-            return _olDebug2.default.transform.compose(this.imageTransform, dx1, dy1, sx, sy, 0, dx2, dy2);
-        }
-
-        /**
-         * @function ol.source.Graphic.prototype.getGraphicsInExtent
-         * @description 在指定范围中获取几何要素面积
-         * @param extent -{Object} 长度范围
-         */
-
-    }, {
         key: 'getGraphicsInExtent',
         value: function getGraphicsInExtent(extent) {
             var graphics = [];
@@ -15684,6 +15707,41 @@ var Graphic = function (_ol$source$ImageCanva) {
                 }
             });
             return graphics;
+        }
+
+        /**
+         * @private
+         * @function ol.source.Graphic.prototype.forEachFeatureAtCoordinate
+         * @description 获取在视图上的要素
+         * @param coordinate -{string} 坐标
+         * @param resolution -{number} 分辨率
+         * @param callback -{function} 回调函数
+         */
+
+    }, {
+        key: 'forEachFeatureAtCoordinate',
+        value: function forEachFeatureAtCoordinate(coordinate, resolution, callback) {
+            var graphics = this.getGraphicsInExtent();
+            for (var i = graphics.length - 1; i > 0; i--) {
+                var center = graphics[i].getGeometry().getCoordinates();
+                var image = new _olDebug2.default.style.Style({
+                    image: graphics[i].getStyle()
+                }).getImage();
+                var extent = [];
+                extent[0] = center[0] - image.getAnchor()[0] * resolution;
+                extent[2] = center[0] + image.getAnchor()[0] * resolution;
+                extent[1] = center[1] - image.getAnchor()[1] * resolution;
+                extent[3] = center[1] + image.getAnchor()[1] * resolution;
+                if (_olDebug2.default.extent.containsCoordinate(extent, coordinate)) {
+                    this.selected = graphics[i];
+                    this.changed();
+                    callback(graphics[i]);
+                    return;
+                }
+                this.selected = null;
+                this.changed();
+            }
+            callback();
         }
     }]);
 
@@ -26562,7 +26620,7 @@ _SuperMap2.default.DensityKernelAnalystParameters = DensityKernelAnalystParamete
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -26589,120 +26647,120 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var EditFeaturesParameters = function () {
 
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.returnContent -{boolean}
-     * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
-     *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
-     */
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.returnContent -{boolean}
+   * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
+   *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
+   */
 
 
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{EditType}
-     * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
-     */
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{EditType}
+   * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
+   */
 
 
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{string}
-     * @description 当前需要创建或者是修改的要素的数据集。
-     */
-    function EditFeaturesParameters(options) {
-        _classCallCheck(this, EditFeaturesParameters);
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{string}
+   * @description 当前需要创建或者是修改的要素的数据集。
+   */
+  function EditFeaturesParameters(options) {
+    _classCallCheck(this, EditFeaturesParameters);
 
-        this.dataSourceName = null;
-        this.dataSetName = null;
-        this.features = null;
-        this.editType = _REST.EditType.ADD;
-        this.IDs = null;
-        this.returnContent = false;
-        this.isUseBatch = false;
-        this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
+    this.dataSourceName = null;
+    this.dataSetName = null;
+    this.features = null;
+    this.editType = _REST.EditType.ADD;
+    this.IDs = null;
+    this.returnContent = false;
+    this.isUseBatch = false;
+    this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
 
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
+    if (!options) {
+      return;
+    }
+    _SuperMap2.default.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.EditFeaturesParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.isUseBatch -{boolean}
+   * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
+   */
+
+
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{Array<string>}|{Array<Integer>}
+   * @description 执行删除时要素集ID集合。
+   */
+
+
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
+   * @description 当前需要创建或者是修改的要素集。</br>
+   * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
+   */
+
+
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
+   * @description 当前需要创建或者是修改的要素的数据源
+   */
+
+
+  _createClass(EditFeaturesParameters, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.dataSourceName = null;
+      me.dataSetName = null;
+      me.features = null;
+      me.editType = null;
+      me.IDs = null;
+      me.returnContent = null;
     }
 
     /**
-     * @function SuperMap.EditFeaturesParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
+     * @description 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
+     * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
+     * return {string} 转化后的 json字符串。
      */
 
+  }], [{
+    key: 'toJsonParameters',
+    value: function toJsonParameters(params) {
+      var geometry,
+          feature,
+          len,
+          features,
+          editType = params.editType;
 
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.isUseBatch -{boolean}
-     * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
-     */
+      if (editType === _SuperMap2.default.EditType.DELETE) {
+        if (params.IDs === null) return;
 
-
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{Array<string>}|{Array<Integer>}
-     * @description 执行删除时要素集ID集合。
-     */
-
-
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
-     * @description 当前需要创建或者是修改的要素集。</br>
-     * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
-     */
-
-
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
-     * @description 当前需要创建或者是修改的要素的数据源
-     */
-
-
-    _createClass(EditFeaturesParameters, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.dataSourceName = null;
-            me.dataSetName = null;
-            me.features = null;
-            me.editType = null;
-            me.IDs = null;
-            me.returnContent = null;
+        features = { ids: params.IDs };
+      } else {
+        features = [];
+        if (params.features) {
+          len = params.features.length;
+          for (var i = 0; i < len; i++) {
+            feature = params.features[i];
+            feature.geometry = _SuperMap2.default.REST.ServerGeometry.fromGeometry(feature.geometry);
+            features.push(feature);
+          }
         }
+      }
+      return _SuperMap2.default.Util.toJSON(features);
+    }
+  }]);
 
-        /**
-         * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
-         * @description 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
-         * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
-         * return {string} 转化后的 json字符串。
-         */
-
-    }], [{
-        key: 'toJsonParameters',
-        value: function toJsonParameters(params) {
-            var geometry,
-                feature,
-                len,
-                features,
-                editType = params.editType;
-
-            if (editType === _SuperMap2.default.EditType.DELETE) {
-                if (params.IDs === null) return;
-
-                features = { ids: params.IDs };
-            } else {
-                features = [];
-                if (params.features) {
-                    len = params.features.length;
-                    for (var i = 0; i < len; i++) {
-                        feature = params.features[i];
-                        feature.geometry = _SuperMap2.default.REST.ServerGeometry.fromGeometry(feature.geometry);
-                        features.push(feature);
-                    }
-                }
-            }
-            return _SuperMap2.default.Util.toJSON(features);
-        }
-    }]);
-
-    return EditFeaturesParameters;
+  return EditFeaturesParameters;
 }();
 
 exports.default = EditFeaturesParameters;
@@ -32993,7 +33051,7 @@ _SuperMap2.default.GetFieldsService = GetFieldsService;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -33017,60 +33075,60 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var GetGridCellInfosParameters = function () {
 
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
-     * @description 要查询的地理位置X轴
-     */
+  /**
+   * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
+   * @description 要查询的地理位置X轴
+   */
 
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
-     * @description 数据集名称。
-     */
-    function GetGridCellInfosParameters(options) {
-        _classCallCheck(this, GetGridCellInfosParameters);
+  /**
+   * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
+   * @description 数据集名称。
+   */
+  function GetGridCellInfosParameters(options) {
+    _classCallCheck(this, GetGridCellInfosParameters);
 
-        this.datasetName = null;
-        this.dataSourceName = null;
-        this.X = null;
-        this.Y = null;
-        this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
+    this.datasetName = null;
+    this.dataSourceName = null;
+    this.X = null;
+    this.Y = null;
+    this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
 
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
+    if (!options) {
+      return;
     }
+    _SuperMap2.default.Util.extend(this, options);
+  }
 
-    /**
-     * @function SuperMap.GetGridCellInfosParameters.prototype.destroy
-     * @description 释放资源，将引用的资源属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
-     * @description 要查询的地理位置Y轴
-     */
+  /**
+   * @function SuperMap.GetGridCellInfosParameters.prototype.destroy
+   * @description 释放资源，将引用的资源属性置空。
+   */
 
 
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
-     * @description  数据源名称。
-     */
+  /**
+   * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
+   * @description 要查询的地理位置Y轴
+   */
 
 
-    _createClass(GetGridCellInfosParameters, [{
-        key: "destroy",
-        value: function destroy() {
-            var me = this;
-            me.datasetName = null;
-            me.dataSourceName = null;
-            me.X = null;
-            me.Y = null;
-        }
-    }]);
+  /**
+   * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
+   * @description  数据源名称。
+   */
 
-    return GetGridCellInfosParameters;
+
+  _createClass(GetGridCellInfosParameters, [{
+    key: "destroy",
+    value: function destroy() {
+      var me = this;
+      me.datasetName = null;
+      me.dataSourceName = null;
+      me.X = null;
+      me.Y = null;
+    }
+  }]);
+
+  return GetGridCellInfosParameters;
 }();
 
 exports.default = GetGridCellInfosParameters;
@@ -34828,7 +34886,7 @@ _SuperMap2.default.InterpolationRBFAnalystParameters = InterpolationRBFAnalystPa
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -34857,132 +34915,132 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var KernelDensityJobParameter = function () {
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
-     * @description 搜索半径单位。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
+   * @description 搜索半径单位。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
-     * @description 分析的影响半径。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
+   * @description 分析的影响半径。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
-     * @description 分析类型。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
+   * @description 分析类型。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
-     * @description 网格大小。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
+   * @description 网格大小。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    function KernelDensityJobParameter(options) {
-        _classCallCheck(this, KernelDensityJobParameter);
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
+   * @description 数据集名。
+   */
+  function KernelDensityJobParameter(options) {
+    _classCallCheck(this, KernelDensityJobParameter);
 
-        this.datasetName = "";
-        this.query = "";
-        this.resolution = 80;
-        this.method = 0;
-        this.meshType = 0;
-        this.fields = "";
-        this.radius = 300;
-        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-        this.radiusUnit = _REST.AnalystSizeUnit.METER;
-        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
+    this.datasetName = "";
+    this.query = "";
+    this.resolution = 80;
+    this.method = 0;
+    this.meshType = 0;
+    this.fields = "";
+    this.radius = 300;
+    this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+    this.radiusUnit = _REST.AnalystSizeUnit.METER;
+    this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
+    if (!options) {
+      return;
+    }
+    _SuperMap2.default.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.KernelDensityJobParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
+   * @description 面积单位。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+   * @description 网格大小单位。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
+   * @description 权重索引。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
+   * @description 分析方法。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
+   * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+   */
+
+
+  _createClass(KernelDensityJobParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.datasetName = null;
+      this.query = null;
+      this.resolution = null;
+      this.method = null;
+      this.radius = null;
+      this.meshType = null;
+      this.fields = null;
+      this.meshSizeUnit = null;
+      this.radiusUnit = null;
+      this.areaUnit = null;
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.KernelDensityJobParameter.toObject
+     * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
+     * @param tempObj - {Object} 目标对象
+     * @description 生成密度分析任务对象
      */
 
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
-     * @description 面积单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-     * @description 网格大小单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
-     * @description 权重索引。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
-     * @description 分析方法。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
-     */
-
-
-    _createClass(KernelDensityJobParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.query = null;
-            this.resolution = null;
-            this.method = null;
-            this.radius = null;
-            this.meshType = null;
-            this.fields = null;
-            this.meshSizeUnit = null;
-            this.radiusUnit = null;
-            this.areaUnit = null;
+  }], [{
+    key: 'toObject',
+    value: function toObject(kernelDensityJobParameter, tempObj) {
+      for (var name in kernelDensityJobParameter) {
+        if (name === "datasetName") {
+          tempObj['input'] = tempObj['input'] || {};
+          tempObj['input'][name] = kernelDensityJobParameter[name];
+          continue;
         }
-
-        /**
-         * @function SuperMap.KernelDensityJobParameter.toObject
-         * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
-         * @param tempObj - {Object} 目标对象
-         * @description 生成密度分析任务对象
-         */
-
-    }], [{
-        key: 'toObject',
-        value: function toObject(kernelDensityJobParameter, tempObj) {
-            for (var name in kernelDensityJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = kernelDensityJobParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                if (name === 'query') {
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-                } else {
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
-                }
-            }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        if (name === 'query') {
+          tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+        } else {
+          tempObj['analyst'][name] = kernelDensityJobParameter[name];
         }
-    }]);
+      }
+    }
+  }]);
 
-    return KernelDensityJobParameter;
+  return KernelDensityJobParameter;
 }();
 
 exports.default = KernelDensityJobParameter;
@@ -47820,7 +47878,7 @@ var TokenServiceParameter = function () {
 
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 
@@ -52555,6 +52613,7 @@ var Graphic = function (_ol$Object) {
         value: function setGeometry(geometry) {
             this.geometry_ = geometry;
         }
+
         /**
          * @function ol.Graphic.prototype.getStyle
          * @description 获取样式
@@ -52576,7 +52635,7 @@ var Graphic = function (_ol$Object) {
         key: 'setStyle',
         value: function setStyle(style) {
             this.style_ = style;
-            this.styleFunction_ = !style ? undefined : _olDebug2.default.Graphic.createStyleFunction(style);
+            this.styleFunction_ = !style ? undefined : _olDebug2.default.Graphic.createStyleFunction(new _olDebug2.default.style.Style({ image: style }));
             this.changed();
         }
 
