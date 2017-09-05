@@ -100,7 +100,6 @@ describe('classic_MapVLayer', function () {
         //判断是否返回期望的maplayer
         expect(mapvLayer.renderer).not.toBeNull();
         expect(mapvLayer.renderer.context).toBe("2d");
-        expect(mapvLayer.renderer.canvasLayer.id).toBe("SuperMap.Layer_24" );
         expect(mapvLayer.renderer.canvasLayer.name).toBe("mapv");
         expect(mapvLayer.renderer.canvasLayer.maxResolution).toEqual(1.40625);
         expect(mapvLayer.renderer.canvasLayer.minResolution).toEqual(0.00004291534423828125);
