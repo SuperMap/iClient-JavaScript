@@ -1,4 +1,4 @@
-require('../../../src/classic/overlay/mapVLayer');
+require('../../../src/classic/overlay/MapVLayer');
 var mapv = require('mapv');
 window.mapv = mapv;
 
