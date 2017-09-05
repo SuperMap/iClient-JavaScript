@@ -105,22 +105,24 @@
             graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
             graphics[i].setStyle(randomCircleStyles[Math.floor(Math.random() * colorCount)]);
         }
-        var graphicLayer = new ol.layer.Image({
-            source: new ol.source.Graphic({
-                graphics: graphics,
-                map: map,
-                onClick: function (graphic) {
-                    if (graphic) {
-                        var coords = graphic.getGeometry().getCoordinates();
-                        content.innerHTML = "坐标为:[" + coords[0] + "," + coords[1] + "]";
-                        overlay.setPosition(graphic.getGeometry().getCoordinates());
-                        return;
+        map.once('postrender', function () {
+            var graphicLayer = new ol.layer.Image({
+                source: new ol.source.Graphic({
+                    graphics: graphics,
+                    map: map,
+                    onClick: function (graphic) {
+                        if (graphic) {
+                            var coords = graphic.getGeometry().getCoordinates();
+                            content.innerHTML = "坐标为:[" + coords[0] + "," + coords[1] + "]";
+                            overlay.setPosition(graphic.getGeometry().getCoordinates());
+                            return;
+                        }
+                        overlay.setPosition(undefined);
                     }
-                    overlay.setPosition(undefined);
-                }
-            })
-        });
-        map.addLayer(graphicLayer);
+                })
+            });
+            map.addLayer(graphicLayer);
+        })
     });
 
     function getRandomColors(count) {

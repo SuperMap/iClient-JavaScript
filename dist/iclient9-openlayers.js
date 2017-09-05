@@ -15619,14 +15619,15 @@ var Graphic = function (_ol$source$ImageCanva) {
             var height = this.map.getSize()[1] * pixelRatio;
             var context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
             var offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
-            var vectorContext = _olDebug2.default.render.toContext(context, { size: size, pixelRatio: pixelRatio });
+            var vectorContext = _olDebug2.default.render.toContext(context, { size: [mapWidth, mapHeight], pixelRatio: pixelRatio });
             var graphics = this.getGraphicsInExtent(extent);
             var me = this;
             graphics.map(function (graphic) {
                 var style = graphic.getStyle();
                 if (me.selected === graphic) {
+                    var defaultHighLightStyle = style;
                     if (style instanceof _olDebug2.default.style.Circle) {
-                        var defaultHighLightStyle = new _olDebug2.default.style.Circle({
+                        defaultHighLightStyle = new _olDebug2.default.style.Circle({
                             radius: style.getRadius(),
                             fill: new _olDebug2.default.style.Fill({
                                 color: 'rgba(0, 153, 255, 1)'
@@ -15635,7 +15636,7 @@ var Graphic = function (_ol$source$ImageCanva) {
                             snapToPixel: style.getSnapToPixel()
                         });
                     } else if (style instanceof _olDebug2.default.style.RegularShape) {
-                        var defaultHighLightStyle = new _olDebug2.default.style.RegularShape({
+                        defaultHighLightStyle = new _olDebug2.default.style.RegularShape({
                             radius: style.getRadius(),
                             radius2: style.getRadius2(),
                             points: style.getPoints(),
@@ -52534,7 +52535,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class ol.Graphic
  * @classdesc 地理几何对象类
- * @private
  * @param geometry - {Object} 几何对象
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}
  */

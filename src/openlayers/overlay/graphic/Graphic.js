@@ -3,7 +3,6 @@ import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.Graphic
  * @classdesc 地理几何对象类
- * @private
  * @param geometry - {Object} 几何对象
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}
  */

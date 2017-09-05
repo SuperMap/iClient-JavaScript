@@ -40,14 +40,15 @@ export default class Graphic extends ol.source.ImageCanvas {
             var height = this.map.getSize()[1] * pixelRatio;
             var context = Util.createCanvasContext2D(mapWidth, mapHeight);
             var offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
-            var vectorContext = ol.render.toContext(context, {size: size, pixelRatio: pixelRatio});
+            var vectorContext = ol.render.toContext(context, {size: [mapWidth, mapHeight], pixelRatio: pixelRatio});
             var graphics = this.getGraphicsInExtent(extent);
             var me = this;
             graphics.map(function (graphic) {
                 var style = graphic.getStyle();
                 if (me.selected === graphic) {
+                    var defaultHighLightStyle = style;
                     if (style instanceof ol.style.Circle) {
-                        var defaultHighLightStyle = new ol.style.Circle({
+                        defaultHighLightStyle = new ol.style.Circle({
                             radius: style.getRadius(),
                             fill: new ol.style.Fill({
                                 color: 'rgba(0, 153, 255, 1)'
@@ -56,7 +57,7 @@ export default class Graphic extends ol.source.ImageCanvas {
                             snapToPixel: style.getSnapToPixel()
                         });
                     } else if (style instanceof ol.style.RegularShape) {
-                        var defaultHighLightStyle = new ol.style.RegularShape({
+                        defaultHighLightStyle = new ol.style.RegularShape({
                             radius: style.getRadius(),
                             radius2: style.getRadius2(),
                             points: style.getPoints(),
