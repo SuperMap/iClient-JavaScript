@@ -353,7 +353,16 @@ var exampleConfig = {
     },
     "iManager": {
         name: "iManager",
-        content: null
+        content: {
+            "im_node": {
+                name: "节点",
+                content: [{
+                    name: "节点管理",
+                    thumbnail: "imanagerNodeManager.png",
+                    fileName: "iManagerNodeManager"
+                }]
+            }
+        }
     },
     "ElasticSearch": {
         name: "ElasticSearch",
