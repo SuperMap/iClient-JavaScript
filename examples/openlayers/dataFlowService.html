@@ -60,7 +60,7 @@
     }));
     var resultLayer,
             urlQuery = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-china400/rest/maps/China_4326",
-            wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + "8800" : "117.122.248.69:8800");
+            wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "117.122.248.69:8800");
     var token = "jDTu8vHZoo9ABgE_IW48UcyYbwBhlOmfIub7gscWjzmiszd0vKC7xtcp8pIcK0eAAzANtETZdaFiE9d1l9Ojtg..";
     var urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
     var timer, featureResult, dataFlowService, source;
