@@ -34,7 +34,6 @@
         L.supermap
             .featureService(url)
             .getFeaturesByGeometry(geometryParam, function (serviceResult) {
-                polygon.closePopup();
                 resultLayer = L.geoJSON(serviceResult.result.features, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup("国家：" + feature.properties.COUNTRY);
