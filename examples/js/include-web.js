@@ -89,6 +89,10 @@
             inputScript("http://cdn.bootcss.com/ace/1.2.6/ace.js");
         }
 
+        if (inArray(includes, 'loader')) {
+            inputCSS("https://cdn.bootcss.com/css-loader/2.2.0/css-loader.css");
+            inputScript("../js/loader.js");
+        }
     }
 
     load();
