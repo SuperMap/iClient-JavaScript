@@ -125,7 +125,7 @@ var commonTools = ({
                         array2.push(pixels.data[i]);
                     }
                     console.log('tile2 ( ' + tilePath2 + ' ) has pixels : ' + (array2.length / 4));
-                    var isEqual = commonTools.judgeTwoTilesByRgbaArrays(array1, array2);
+                    var isEqual = commonTools.judgeTwoTilesByRgbaArrays(browser, array1, array2);
                     if (isEqual) {
                         browser.assert.ok(isEqual, 'similarity of two pictures >= 0.94');
                     } else {
@@ -140,7 +140,7 @@ var commonTools = ({
          * elements in one-dimensional RgbaArrays are [r1,g1,b1,a1,r2,g2,b2,a2,...,rn,gn,bn,an].
          * return : boolean
          * */
-        judgeTwoTilesByRgbaArrays: function (RgbaArraysOfTile1, RgbaArraysOfTile2) {
+        judgeTwoTilesByRgbaArrays: function (browser, RgbaArraysOfTile1, RgbaArraysOfTile2) {
             var isLengthEqual = (RgbaArraysOfTile1.length == RgbaArraysOfTile2.length);
             if (!isLengthEqual) {
                 console.log('length are not equal');
@@ -152,10 +152,10 @@ var commonTools = ({
             console.log('different pixels count : ' + unEqualCount);
             var similarity = ((totalCount - unEqualCount) / totalCount).toFixed(5);
             if (similarity < 0.94) {
-                console.log('similarity : ' + similarity + ' < 0.94');
+                browser.assert.ok(similarity < 0.94, 'similarity : ' + similarity + ' < 0.94');
                 return false;
             }
-            console.log('similarity : ' + similarity + ' >= 0.94');
+            browser.assert.ok(similarity >= 0.94, 'similarity : ' + similarity + ' >= 0.94');
             return true;
         },
 
