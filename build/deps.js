@@ -311,10 +311,10 @@ deps = {
                 "name": "ElasticSearch",
                 "src": [
                     "./src/common/control/TimeFlowControl.js",
-                    "./src/common/thirdparty/elasticsearch/ElasticSearchService.js"
+                    "./src/common/thirdparty/elasticsearch/ElasticSearch.js"
                 ],
                 "modules": [{
-                    "name": "SuperMap.ElasticSearchService",
+                    "name": "SuperMap.ElasticSearch",
                     "des": "ElasticSearch服务"
                 }]
             },
@@ -612,6 +612,17 @@ deps = {
                 "modules": [{
                     "name": "ol.supermap.AddressMatchService",
                     "des": "地址匹配服务"
+                }]
+            },
+            "ElasticSearch": {
+                "name": "ElasticSearch",
+                "src": [
+                    "./src/common/control/TimeFlowControl.js",
+                    "./src/common/thirdparty/elasticsearch/ElasticSearch.js"
+                ],
+                "modules": [{
+                    "name": "SuperMap.ElasticSearch",
+                    "des": "ElasticSearch服务"
                 }]
             },
             "DataFlow": {
@@ -945,6 +956,17 @@ deps = {
                     "des": "环状图"
                 }]
             },
+            "ElasticSearch": {
+                "name": "ElasticSearch",
+                "src": [
+                    "./src/common/control/TimeFlowControl.js",
+                    "./src/common/thirdparty/elasticsearch/ElasticSearch.js"
+                ],
+                "modules": [{
+                    "name": "SuperMap.ElasticSearch",
+                    "des": "ElasticSearch服务"
+                }]
+            },
             "DataFlow": {
                 "name": "实时数据服务",
                 "src": [
@@ -1116,7 +1138,18 @@ deps = {
                     "name": "SuperMap.REST.AddressMatchService",
                     "des": "地址匹配服务"
                 }]
-            }
+            },
+            "ElasticSearch": {
+                "name": "ElasticSearch",
+                "src": [
+                    "./src/common/control/TimeFlowControl.js",
+                    "./src/common/thirdparty/elasticsearch/ElasticSearch.js"
+                ],
+                "modules": [{
+                    "name": "SuperMap.ElasticSearch",
+                    "des": "ElasticSearch服务"
+                }]
+            },
         },
         "Overlay": {
             "title": "可视化",

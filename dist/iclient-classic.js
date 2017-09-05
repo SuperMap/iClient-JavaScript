@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 31);
+/******/ 	return __webpack_require__(__webpack_require__.s = 35);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -85,7 +85,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-__webpack_require__(29);
+__webpack_require__(32);
 
 exports.default = window.SuperMap;
 
@@ -1395,7 +1395,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(26);
+__webpack_require__(29);
 
 var _FetchRequest = __webpack_require__(5);
 
@@ -1849,11 +1849,11 @@ exports.FetchRequest = exports.Support = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _whatwgFetchImportable = __webpack_require__(10);
+var _whatwgFetchImportable = __webpack_require__(12);
 
 var _whatwgFetchImportable2 = _interopRequireDefault(_whatwgFetchImportable);
 
-var _fetchJsonp2 = __webpack_require__(9);
+var _fetchJsonp2 = __webpack_require__(11);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
@@ -2057,7 +2057,7 @@ var _SuperMap = __webpack_require__(3);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _MapVRenderer = __webpack_require__(11);
+var _MapVRenderer = __webpack_require__(13);
 
 var _MapVRenderer2 = _interopRequireDefault(_MapVRenderer);
 
@@ -2352,7 +2352,7 @@ var _CommonServiceBase2 = __webpack_require__(4);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _AddressMatchService = __webpack_require__(12);
+var _AddressMatchService = __webpack_require__(15);
 
 var _AddressMatchService2 = _interopRequireDefault(_AddressMatchService);
 
@@ -2462,23 +2462,23 @@ var _CommonServiceBase2 = __webpack_require__(4);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _KernelDensityJobsService = __webpack_require__(16);
+var _KernelDensityJobsService = __webpack_require__(19);
 
 var _KernelDensityJobsService2 = _interopRequireDefault(_KernelDensityJobsService);
 
-var _SingleObjectQueryJobsService = __webpack_require__(18);
+var _SingleObjectQueryJobsService = __webpack_require__(21);
 
 var _SingleObjectQueryJobsService2 = _interopRequireDefault(_SingleObjectQueryJobsService);
 
-var _SummaryMeshJobsService = __webpack_require__(20);
+var _SummaryMeshJobsService = __webpack_require__(23);
 
 var _SummaryMeshJobsService2 = _interopRequireDefault(_SummaryMeshJobsService);
 
-var _SummaryRegionJobsService = __webpack_require__(22);
+var _SummaryRegionJobsService = __webpack_require__(25);
 
 var _SummaryRegionJobsService2 = _interopRequireDefault(_SummaryRegionJobsService);
 
-var _VectorClipJobsService = __webpack_require__(24);
+var _VectorClipJobsService = __webpack_require__(27);
 
 var _VectorClipJobsService2 = _interopRequireDefault(_VectorClipJobsService);
 
@@ -3012,6 +3012,1014 @@ _SuperMap2.default.REST.ProcessingService = ProcessingService;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _TimeControlBase2 = __webpack_require__(14);
+
+var _TimeControlBase3 = _interopRequireDefault(_TimeControlBase2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.TimeFlowControl
+ * @classdesc 时间管理类。<br>
+ *              此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
+ *              如设置起始时间为1000，结束时间是2000，步长设置为1，
+ *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
+ * @extends SuperMap.TimeControlBase
+ * @param callback - {Function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
+ * @param options - {Object} 该类开放的可选属性。如：<br>
+ *        speed - {number}步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
+ *        frequency -  {number} 刷新频率(单位ms)，默认为1000ms。<br>
+ *        startTime - {number}起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
+ *        endTime - {number}结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
+ *        repeat - {boolean} 是否重复循环。默认为true。<br>
+ *        reverse - {boolean} 是否反向。默认为false。
+ */
+var TimeFlowControl = function (_TimeControlBase) {
+    _inherits(TimeFlowControl, _TimeControlBase);
+
+    function TimeFlowControl(callback, options) {
+        _classCallCheck(this, TimeFlowControl);
+
+        var _this = _possibleConstructorReturn(this, (TimeFlowControl.__proto__ || Object.getPrototypeOf(TimeFlowControl)).call(this, options));
+
+        _this.callback = null;
+        _this.CLASS_NAME = "SuperMap.TimeFlowControl";
+
+        var me = _this;
+
+        //先让IE下支持bind方法
+        if (!Function.prototype.bind) {
+            Function.prototype.bind = function (oThis) {
+                if (typeof this !== "function") {
+                    throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+                }
+                var aArgs = Array.prototype.slice.call(arguments, 1),
+                    fToBind = this,
+                    fNOP = function fNOP() {
+                    //empty Function
+                },
+                    fBound = function fBound() {
+                    return fToBind.apply(this instanceof fNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
+                fNOP.prototype = this.prototype;
+                fBound.prototype = new fNOP();
+                return fBound;
+            };
+        }
+        //保证 this.tick 的上下文还是 TimeControl 这个对象
+        me.update = me.update.bind(me);
+
+        me.oldTime = me.currentTime;
+        //记录回调函数
+        me.callback = callback;
+        return _this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+
+
+    /**
+     * @member callback -{Function}
+     * @description 每次刷新执行的回调函数
+     */
+
+
+    _createClass(TimeFlowControl, [{
+        key: 'updateOptions',
+        value: function updateOptions(options) {
+            options = options || {};
+            _get(TimeFlowControl.prototype.__proto__ || Object.getPrototypeOf(TimeFlowControl.prototype), 'updateOptions', this).call(this, options);
+        }
+
+        /**
+         * @inheritDoc
+         */
+
+    }, {
+        key: 'start',
+        value: function start() {
+            var me = this;
+            if (me.running) {
+                return;
+            }
+            me.running = true;
+            if (me.reverse) {
+                if (me.currentTime === me.startTime) {
+                    me.oldTime = me.endTime;
+                    me.currentTime = me.oldTime;
+                }
+            } else {
+                if (me.oldTime === me.endTime) {
+                    me.currentTime = me.startTime;
+                    me.oldTime = me.currentTime;
+                }
+            }
+            me.tick();
+        }
+
+        /**
+         * @inheritDoc
+         */
+
+    }, {
+        key: 'stop',
+        value: function stop() {
+            _get(TimeFlowControl.prototype.__proto__ || Object.getPrototypeOf(TimeFlowControl.prototype), 'stop', this).call(this);
+            var me = this;
+            me.oldTime = me.currentTime;
+
+            if (me.running) {
+                me.running = false;
+            }
+            //清除定时tick
+            me.intervalId && window.clearTimeout(me.intervalId);
+        }
+
+        /**
+         * @inheritDoc
+         */
+
+    }, {
+        key: 'destroy',
+        value: function destroy() {
+            _get(TimeFlowControl.prototype.__proto__ || Object.getPrototypeOf(TimeFlowControl.prototype), 'destroy', this).call(this);
+            var me = this;
+            me.oldTime = null;
+            me.callback = null;
+        }
+
+        /**
+         * @function SuperMap.TimeFlowControl.prototype.tick
+         * @description 定时刷新
+         */
+
+    }, {
+        key: 'tick',
+        value: function tick() {
+            var me = this;
+            me.intervalId && window.clearInterval(me.intervalId);
+            me.intervalId = null;
+            me.intervalId = window.setInterval(me.update, me.frequency);
+        }
+
+        /**
+         * @inheritDoc
+         */
+
+    }, {
+        key: 'update',
+        value: function update() {
+            var me = this;
+
+            //判定是否还需要继续
+            if (!me.running) {
+                return;
+            }
+            //调用回调函数
+            me.callback && me.callback(me.currentTime); //destroy之后callback就为空，所以需要判定一下
+
+            if (!me.reverse) {
+                //如果相等，则代表上一帧已经运行到了最后，下一帧运行初始化的状态
+                if (me.oldTime === me.endTime) {
+                    //不循环时
+                    if (!me.repeat) {
+                        me.running = false;
+                        me.stop();
+                        return null;
+                    }
+                    me.stop();
+                    me.currentTime = me.startTime;
+                    me.oldTime = me.currentTime;
+                    me.start();
+                }
+                //否则时间递增
+                else {
+                        me.oldTime = me.currentTime;
+                        me.currentTime += me.speed;
+                    }
+
+                if (me.currentTime >= me.endTime) {
+                    me.currentTime = me.endTime;
+                }
+            } else {
+                //如果相等，则代表上一帧已经运行到了最前，下一帧运行结束的状态
+                if (me.currentTime === me.startTime) {
+                    //不循环时
+                    if (!me.repeat) {
+                        me.running = false;
+                        return null;
+                    }
+
+                    me.oldTime = me.endTime;
+                    me.currentTime = me.oldTime;
+                }
+                //否则时间递减
+                else {
+                        me.currentTime = me.oldTime;
+                        me.oldTime -= me.speed;
+                    }
+
+                if (me.oldTime <= me.startTime) {
+                    me.oldTime = me.startTime;
+                }
+            }
+        }
+    }]);
+
+    return TimeFlowControl;
+}(_TimeControlBase3.default);
+
+exports.default = TimeFlowControl;
+
+
+_SuperMap2.default.TimeFlowControl = TimeFlowControl;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _elasticsearch = __webpack_require__(33);
+
+var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.ElasticSearch
+ * @classdesc ElasticSearch服务
+ *              通用参数设置请参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-conventions.html
+ * @param url - {string} 地址
+ * @param options - {Object} 参数
+ */
+
+var ElasticSearch = function () {
+
+    /**
+     * @member SuperMap.ElasticSearch.prototype.events -{SuperMap.Events}
+     * @description 事件
+     */
+
+
+    /**
+     * @member SuperMap.ElasticSearch.prototype.geoFence -{Object}
+     * @description 地理围栏
+     * @example {
+     *    radius: 1000,//单位是m
+     *    center: [104.40, 30.43],
+     *    unit: 'meter|degree'
+     *  }
+     */
+
+    /**
+     *  @member SuperMap.ElasticSearch.prototype.openGeoFence -{boolean}
+     *  @description 是否开启地理围栏验证，默认为不开启。
+     */
+
+    /**
+     *  @member SuperMap.ElasticSearch.prototype.client -{Object}
+     *  @description client ES客户端
+     */
+    function ElasticSearch(url, options) {
+        _classCallCheck(this, ElasticSearch);
+
+        this.url = null;
+        this.client = null;
+        this.change = null;
+        this.openGeoFence = false;
+        this.outOfGeoFence = null;
+        this.geoFence = null;
+        this.EVENT_TYPES = ['change', 'error', 'outOfGeoFence'];
+        this.events = null;
+        this.eventListeners = null;
+
+        options = options || {};
+        var me = this;
+        me.url = url;
+        me.client = new _elasticsearch2.default.Client({
+            host: me.url
+        });
+        me.change = options.change;
+        me.geoFence = options.geoFence;
+        me.openGeoFence = options.openGeoFence;
+        me.outOfGeoFence = options.outOfGeoFence;
+        me.events = new _SuperMap2.default.Events(me, null, me.EVENT_TYPES);
+        me.eventListeners = options.eventListeners;
+        if (me.eventListeners instanceof Object) {
+            me.events.on(me.eventListeners);
+        }
+    }
+
+    /**
+     * @function  SuperMap.ElasticSearch.prototype.setGeoFence
+     * @description 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
+     * @param geoFence - {SuperMap.Geometry} 地理围栏。
+     */
+
+    /**
+     * @member SuperMap.ElasticSearch.prototype.eventListeners -{Object}
+     * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
+     * 相当于调用 SuperMap.Events.on(eventListeners)。
+     */
+
+
+    /*
+     * Constant: EVENT_TYPES
+     * {Array<String>}
+     * 此类支持的事件类型。
+     *
+     */
+
+    /**
+     *  @member SuperMap.ElasticSearch.prototype.outOfGeoFence -{function}
+     *  @description 数据超出地理围栏后执行的操作
+     */
+
+    /**
+     *  @member SuperMap.ElasticSearch.prototype.change -{function}
+     *  @description 服务器返回数据后执行的操作
+     */
+
+    /**
+     *  @member SuperMap.ElasticSearch.prototype.url -{string}
+     *  @description ElasticSearch服务地址
+     */
+
+
+    _createClass(ElasticSearch, [{
+        key: 'setGeoFence',
+        value: function setGeoFence(geoFence) {
+            this.geoFence = geoFence;
+        }
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.bulk
+         * @description 批量操作API，允许执行多个索引/删除操作。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-bulk</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'bulk',
+        value: function bulk(params, callback) {
+            return this.client.bulk(params, callback);
+        }
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.clearScroll
+         * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-clearscroll</br>
+         *更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'clearScroll',
+        value: function clearScroll(params, callback) {
+            return this.client.clearScroll(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.count
+         * @description 获取集群、索引、类型或查询的文档个数。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-count</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-count.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'count',
+        value: function count(params, callback) {
+            return this.client.count(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.count
+         * @description 在特定索引中添加一个类型化的JSON文档，使其可搜索。如果具有相同index，type且id已经存在的文档将发生错误。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'create',
+        value: function create(params, callback) {
+            return this.client.create(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.delete
+         * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-delete</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'delete',
+        value: function _delete(params, callback) {
+            return this.client.delete(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.delete
+         * @description 根据其ID从特定索引中删除键入的JSON文档。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletebyquery</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'deleteByQuery',
+        value: function deleteByQuery(params, callback) {
+            return this.client.deleteByQuery(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.delete
+         * @description 根据其ID删除脚本。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletescript</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'deleteScript',
+        value: function deleteScript(params, callback) {
+            return this.client.deleteScript(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.deleteTemplate
+         * @description 根据其ID删除模板。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-deletetemplate</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'deleteTemplate',
+        value: function deleteTemplate(params, callback) {
+            return this.client.deleteTemplate(params, callback);
+        }
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.exists
+         * @description 检查给定文档是否存在。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-exists</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'exists',
+        value: function exists(params, callback) {
+            return this.client.exists(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.existsSource
+         * @description 检查资源是否存在。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-existssource</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'existsSource',
+        value: function existsSource(params, callback) {
+            return this.client.existsSource(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.explain
+         * @description 提供与特定查询相关的特定文档分数的详细信息。它还会告诉您文档是否与指定的查询匹配。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-explain</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-explain.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'explain',
+        value: function explain(params, callback) {
+            return this.client.explain(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.fieldCaps
+         * @description 允许检索多个索引之间的字段的功能。(实验性API，可能会在未来版本中删除)</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-fieldcaps</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-field-caps.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'fieldCaps',
+        value: function fieldCaps(params, callback) {
+            return this.client.fieldCaps(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.get
+         * @description 从索引获取一个基于其id的类型的JSON文档。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-get</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'get',
+        value: function get(params, callback) {
+            return this.client.get(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.getScript
+         * @description 获取脚本。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getscript</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'getScript',
+        value: function getScript(params, callback) {
+            return this.client.getScript(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.getSource
+         * @description 通过索引，类型和ID获取文档的源。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-getsource</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'getSource',
+        value: function getSource(params, callback) {
+            return this.client.getSource(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.getTemplate
+         * @description 获取模板。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-gettemplate</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'getTemplate',
+        value: function getTemplate(params, callback) {
+            return this.client.getTemplate(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.index
+         * @description 在索引中存储一个键入的JSON文档，使其可搜索。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-index</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'index',
+        value: function index(params, callback) {
+            return this.client.index(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.info
+         * @description 从当前集群获取基本信息。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-info</br>
+         * 更多信息参考 https://www.elastic.co/guide/index.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'info',
+        value: function info(params, callback) {
+            return this.client.info(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.mget
+         * @description 根据索引，类型（可选）和ids来获取多个文档。mget所需的主体可以采用两种形式：文档位置数组或文档ID数组。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mget</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'mget',
+        value: function mget(params, callback) {
+            return this.client.mget(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.msearch
+         * @description 在同一请求中执行多个搜索请求。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'msearch',
+        value: function msearch(params, callback) {
+            var me = this;
+            if (me.openGeoFence) {
+                return me.client.msearch(params, callback).then(function (resp) {
+                    me._update(resp.responses);
+                }, function (err) {
+                    me.events.triggerEvent('error', { error: err });
+                });
+            }
+            return me.client.msearch(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.msearchTemplate
+         * @description 在同一请求中执行多个搜索模板请求。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearchtemplate</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'msearchTemplate',
+        value: function msearchTemplate(params, callback) {
+            return this.client.msearchTemplate(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.mtermvectors
+         * @description 多termvectors API允许一次获得多个termvectors。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-mtermvectors</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-termvectors.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'mtermvectors',
+        value: function mtermvectors(params, callback) {
+            return this.client.mtermvectors(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.ping
+         * @description 测试连接。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-ping</br>
+         * 更多信息参考 https://www.elastic.co/guide/index.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'ping',
+        value: function ping(params, callback) {
+            return this.client.ping(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.putScript
+         * @description 添加脚本。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-putscript</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'putScript',
+        value: function putScript(params, callback) {
+            return this.client.putScript(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.putTemplate
+         * @description 添加模板。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-puttemplate</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'putTemplate',
+        value: function putTemplate(params, callback) {
+            return this.client.putTemplate(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.reindex
+         * @description 重新索引。</br>
+         * 参数设置参考 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindex</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'reindex',
+        value: function reindex(params, callback) {
+            return this.client.reindex(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.reindexRessrottle
+         * @description 重新索引。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-reindexrethrottle</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'reindexRessrottle',
+        value: function reindexRessrottle(params, callback) {
+            return this.client.reindexRessrottle(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.renderSearchTemplate
+         * @description 搜索模板。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-rendersearchtemplate</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'renderSearchTemplate',
+        value: function renderSearchTemplate(params, callback) {
+            return this.client.renderSearchTemplate(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.scroll
+         * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-scroll</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'scroll',
+        value: function scroll(params, callback) {
+            return this.client.scroll(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.search
+         * @description  在search()调用中指定滚动参数之后，滚动搜索请求（检索下一组结果）。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'search',
+        value: function search(params, callback) {
+            var me = this;
+            if (me.openGeoFence) {
+                return me.client.search(params, callback).then(function (resp) {
+                    me._update(resp.responses);
+                }, function (err) {
+                    me.events.triggerEvent('error', { error: err });
+                });
+            }
+            return me.client.search(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.searchShards
+         * @description  返回要执行搜索请求的索引和分片。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchshards</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-shards.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'searchShards',
+        value: function searchShards(params, callback) {
+            return this.client.searchShards(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.searchTemplate
+         * @description  搜索模板。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-searchtemplate</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'searchTemplate',
+        value: function searchTemplate(params, callback) {
+            return this.client.searchTemplate(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.suggest
+         * @description 该建议功能通过使用特定的建议者，基于所提供的文本来建议类似的术语。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'suggest',
+        value: function suggest(params, callback) {
+            return this.client.suggest(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.termvectors
+         * @description 返回有关特定文档字段中的术语的信息和统计信息。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-termvectors</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'termvectors',
+        value: function termvectors(params, callback) {
+            return this.client.termvectors(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.update
+         * @description 更新文档的部分。</br>
+         * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-update</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'update',
+        value: function update(params, callback) {
+            return this.client.update(params, callback);
+        }
+
+        /**
+         * @function  SuperMap.ElasticSearch.prototype.update
+         * @description 通过查询API来更新文档。</br>
+         * 参数设置参考 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery</br>
+         * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html</br>
+         * @param params - {Object} 参数。
+         * @param callback - {function} 回调函数。
+         */
+
+    }, {
+        key: 'updateByQuery',
+        value: function updateByQuery(params, callback) {
+            return this.client.updateByQuery(params, callback);
+        }
+    }, {
+        key: '_update',
+        value: function _update(data) {
+            var me = this;
+            if (!data) {
+                return;
+            }
+            me.data = data;
+            if (me.geoFence) {
+                me._validateDatas(data);
+            }
+            me.events.triggerEvent('change', { data: me.data });
+            me.change && me.change(data);
+        }
+    }, {
+        key: '_validateDatas',
+        value: function _validateDatas(datas) {
+            if (!datas) {
+                return;
+            }
+            if (!(datas instanceof Array)) {
+                datas = [datas];
+            }
+            var i,
+                len = datas.length;
+            for (i = 0; i < len; i++) {
+                this._validateData(datas[i]);
+            }
+        }
+    }, {
+        key: '_validateData',
+        value: function _validateData(data) {
+            var me = this;
+            data.hits.hits.map(function (source) {
+                var content = source._source;
+                var meterUnit = me._getMeterPerMapUnit(me.geoFence.unit);
+                var geoFenceCX = me.geoFence.center[0] * meterUnit;
+                var geoFenceCY = me.geoFence.center[1] * meterUnit;
+                var contentX = content.x * meterUnit;
+                var contentY = content.y * meterUnit;
+                var distance = me._distance(contentX, contentY, geoFenceCX, geoFenceCY);
+                var radius = me.geoFence.radius;
+                if (distance > radius) {
+                    me.outOfGeoFence && me.outOfGeoFence(data);
+                    me.events.triggerEvent('outOfGeoFence', { data: data });
+                }
+            });
+        }
+    }, {
+        key: '_distance',
+        value: function _distance(x1, y1, x2, y2) {
+            return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+        }
+    }, {
+        key: '_getMeterPerMapUnit',
+        value: function _getMeterPerMapUnit(mapUnit) {
+            var earchRadiusInMeters = 6378137;
+            var meterPerMapUnit = void 0;
+            if (mapUnit === 'meter') {
+                meterPerMapUnit = 1;
+            } else if (mapUnit === 'degree') {
+                // 每度表示多少米。
+                meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+            }
+            return meterPerMapUnit;
+        }
+    }]);
+
+    return ElasticSearch;
+}();
+
+exports.default = ElasticSearch;
+
+_SuperMap2.default.ElasticSearch = ElasticSearch;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 (function (global, factory) {
@@ -3127,7 +4135,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3574,7 +4582,7 @@ var whatwgFetch = function (self) {
 module.exports = whatwgFetch;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3592,7 +4600,7 @@ var _SuperMap = __webpack_require__(3);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _mapv = __webpack_require__(30);
+var _mapv = __webpack_require__(34);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3997,7 +5005,520 @@ var MapVRenderer = function (_MapVBaseLayer) {
 exports.default = MapVRenderer;
 
 /***/ }),
-/* 12 */
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.TimeControlBase
+ * @classdesc 时间控制基类类。
+ * @param options - {Object} 该类开放的可选属性。如：<br>
+ *        speed - {number}速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
+ *        startTime - {number}的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
+ *        endTime - {number}的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
+ *        repeat - {boolean} 是否重复循环。默认为true。<br>
+ *        reverse - {boolean} 是否反向。默认为false。<br>
+ *        geoFence - {SuperMap.Geometry} 地理围栏。
+ */
+var TimeControlBase = function () {
+
+    /*
+     * Constant: EVENT_TYPES
+     * {Array<String>}
+     * 此类支持的事件类型。
+     *
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.running -{boolean}
+     * @description 记录当前是否处于运行中，默认为false。
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.currentTime -{number}
+     * @description 记录近期的时间，也就是当前帧运行到的时间。
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.endTime -{number}
+     * @description 记录的结束时间，必须为数字，
+     *              如果不设置，初始化时以当前时间进行设置，建议设置
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.frequency -{number}
+     * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
+     */
+    function TimeControlBase(options) {
+        _classCallCheck(this, TimeControlBase);
+
+        this.speed = 1;
+        this.frequency = 1000;
+        this.startTime = null;
+        this.endTime = null;
+        this.repeat = true;
+        this.currentTime = null;
+        this.oldTime = null;
+        this.running = false;
+        this.reverse = false;
+        this.EVENT_TYPES = ["start", "pause", "stop"];
+        this.events = null;
+        this.CLASS_NAME = "SuperMap.TimeControlBase";
+
+        //设置步长，刷新频率、开始结束时间、是否循环、是否反向
+        var me = this;
+        options = options || {};
+        me.speed = options.speed && options.speed >= 0 ? options.speed : me.speed;
+        me.frequency = options.speed && options.frequency >= 0 ? options.frequency : me.frequency;
+        me.startTime = options.startTime && options.startTime != null ? options.startTime : 0;
+        me.endTime = options.endTime && options.endTime != null && options.endTime >= me.startTime ? options.endTime : +new Date();
+        me.repeat = options.repeat != undefined ? options.repeat : me.repeat;
+        me.reverse = options.reverse != undefined ? options.reverse : me.reverse;
+
+        me.speed = Number(me.speed);
+        me.frequency = Number(me.frequency);
+        me.startTime = Number(me.startTime);
+        me.endTime = Number(me.endTime);
+
+        me.events = new _SuperMap2.default.Events(this, null, this.EVENT_TYPES);
+        me.startTime = Date.parse(new Date(this.startTime));
+        me.endTime = Date.parse(new Date(this.endTime));
+
+        //初始化处于非运行阶段
+        me.running = false;
+
+        //初始化当前时间
+        me.currentTime = me.startTime;
+    }
+
+    /**
+     * @function SuperMap.TimeControlBase.prototype.updateOptions
+     * @param options - {Object} 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.events -{SuperMap.Events}
+     * @description 事件
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.reverse -{boolean}
+     * @description 是否反向，默认为false。
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.oldTime -{number}
+     * @description 记录上一帧的时间，也就是之前运行到的时间。
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.repeat -{boolean}
+     * @description 是否重复循环，默认为true。
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.startTime -{number}
+     * @description 记录的起始时间，必须为数字，
+     *              如果不设置，初始化时为0，建议设置
+     */
+
+
+    /**
+     * @member SuperMap.TimeControlBase.prototype.speed -{number}
+     * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
+     */
+
+
+    _createClass(TimeControlBase, [{
+        key: "updateOptions",
+        value: function updateOptions(options) {
+            //设置步长，刷新频率、开始结束时间、是否循环、是否反向
+            var me = this;
+            options = options || {};
+            if (options.speed && options.speed >= 0) {
+                me.speed = options.speed;
+                me.speed = Number(me.speed);
+            }
+
+            if (options.speed && options.frequency >= 0) {
+                me.frequency = options.frequency;
+                me.frequency = Number(me.frequency);
+            }
+
+            if (options.startTime && options.startTime != null) {
+                me.startTime = options.startTime;
+                me.startTime = Date.parse(new Date(me.startTime));
+            }
+
+            if (options.endTime && options.endTime != null && options.endTime >= me.startTime) {
+                me.endTime = options.endTime;
+                me.endTime = Date.parse(new Date(me.endTime));
+            }
+
+            if (options.repeat != null) {
+                me.repeat = options.repeat;
+            }
+
+            if (options.reverse != null) {
+                me.reverse = options.reverse;
+            }
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.start
+         * @description 开始
+         */
+
+    }, {
+        key: "start",
+        value: function start() {
+            var me = this;
+
+            if (!me.running) {
+                me.running = true;
+                me.tick();
+                me.events.triggerEvent('start', me.currentTime);
+            }
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.pause
+         * @description 暂停
+         */
+
+    }, {
+        key: "pause",
+        value: function pause() {
+            var me = this;
+            me.running = false;
+            me.events.triggerEvent('pause', me.currentTime);
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.stop
+         * @description 停止，停止后返回起始状态
+         */
+
+    }, {
+        key: "stop",
+        value: function stop() {
+            var me = this;
+            //停止时 时间设置为开始时间
+            me.currentTime = me.startTime;
+            //如果正在运行，修改为初始时间即可绘制一帧
+            if (me.running) {
+                me.running = false;
+            }
+            me.events.triggerEvent('stop', me.currentTime);
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.toggle
+         * @description 开关切换，切换的是开始和暂停
+         */
+
+    }, {
+        key: "toggle",
+        value: function toggle() {
+            var me = this;
+            if (!connect) {
+                return false;
+            }
+            if (me.running) {
+                me.pause();
+            } else {
+                me.start();
+            }
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.setSpeed
+         * @description 设置步长。
+         * @param speed - {number}步长，必须为非负数，默认为1
+         * @return {Boolean} true代表设置成功，false设置失败（speed小于0时失败）
+         */
+
+    }, {
+        key: "setSpeed",
+        value: function setSpeed(speed) {
+            var me = this;
+            if (speed >= 0) {
+                me.speed = speed;
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.getSpeed
+         * @description 获取步长。
+         * @return {number} 返回当前的步长
+         */
+
+    }, {
+        key: "getSpeed",
+        value: function getSpeed() {
+            return this.speed;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.setFrequency
+         * @description 设置刷新频率。
+         * @param speed - {number}刷新频率，单位为ms，默认为1s
+         * @return {Boolean} true代表设置成功，false设置失败（frequency小于0时失败）
+         */
+
+    }, {
+        key: "setFrequency",
+        value: function setFrequency(frequency) {
+            var me = this;
+            if (frequency >= 0) {
+                me.frequency = frequency;
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.getFrequency
+         * @description 获取刷新频率。
+         * @return {number} 返回当前的刷新频率
+         */
+
+    }, {
+        key: "getFrequency",
+        value: function getFrequency() {
+            return this.frequency;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.setStartTime
+         * @description 设置起始时间，设置完成后如果当前时间小于起始时间，则从起始时间开始
+         * @param startTime - {number}需要设置的起始时间
+         * @return {Boolean} true代表设置成功，false设置失败（startTime 大于结束时间时失败）
+         */
+
+    }, {
+        key: "setStartTime",
+        value: function setStartTime(startTime) {
+            var me = this;
+            startTime = Date.parse(new Date(startTime));
+            //起始时间不得大于结束时间
+            if (startTime > me.endTime) {
+                return false;
+            }
+            me.startTime = startTime;
+            //如果当前时间小于了起始时间，则从当前起始时间开始
+            if (me.currentTime < me.startTime) {
+                me.currentTime = me.startTime;
+                me.tick();
+            }
+            return true;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.getStartTime
+         * @description 获取起始时间
+         * @return {number} 返回当前的起始时间
+         */
+
+    }, {
+        key: "getStartTime",
+        value: function getStartTime() {
+            return this.startTime;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.setEndTime
+         * @description 设置结束时间，设置完成后如果当前时间大于结束，则从起始时间开始
+         * @param endTime - {number}需要设置的结束时间
+         * @return {Boolean} true代表设置成功，false设置失败（endTime 小于开始时间时失败）
+         */
+
+    }, {
+        key: "setEndTime",
+        value: function setEndTime(endTime) {
+            var me = this;
+            me.endTime = Date.parse(new Date(me.endTime));
+            //结束时间不得小于开始时间
+            if (endTime < me.startTime) {
+                return false;
+            }
+            me.endTime = endTime;
+            //如果当前时间大于了结束时间，则从起始时间开始
+            if (me.currentTime >= me.endTime) {
+                me.currentTime = me.startTime;
+                me.tick();
+            }
+            return true;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.getEndTime
+         * @description 获取结束时间
+         * @return {number} 返回当前的结束时间
+         */
+
+    }, {
+        key: "getEndTime",
+        value: function getEndTime() {
+            return this.endTime;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.setCurrentTime
+         * @description 设置当前时间
+         * @param currentTime - {number}需要设置的当前时间
+         * @return {Boolean} true代表设置成功，false设置失败
+         */
+
+    }, {
+        key: "setCurrentTime",
+        value: function setCurrentTime(currentTime) {
+            var me = this;
+            me.currentTime = Date.parse(new Date(me.currentTime));
+            //结束时间不得小于开始时间
+            if (currentTime >= me.startTime && currentTime <= me.endTime) {
+                me.currentTime = currentTime;
+                me.startTime = me.currentTime;
+                me.tick();
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.getCurrentTime
+         * @description 获取当前时间
+         * @return {number} 返回当前时间
+         */
+
+    }, {
+        key: "getCurrentTime",
+        value: function getCurrentTime() {
+            return this.currentTime;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.setRepeat
+         * @description 设置是否重复循环
+         * @param repeat - {boolean} 是否重复循环
+         */
+
+    }, {
+        key: "setRepeat",
+        value: function setRepeat(repeat) {
+            this.repeat = repeat;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.getRepeat
+         * @description 获取是否重复循环，默认是true。
+         * @return {Boolean} 返回是否重复循环
+         */
+
+    }, {
+        key: "getRepeat",
+        value: function getRepeat() {
+            return this.repeat;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.setReverse
+         * @description 设置是否反向
+         * @param reverse - {boolean} 是否反向
+         */
+
+    }, {
+        key: "setReverse",
+        value: function setReverse(reverse) {
+            this.reverse = reverse;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.getReverse
+         * @description 获取是否反向，默认是false。
+         * @return {Boolean} 返回是否反向
+         */
+
+    }, {
+        key: "getReverse",
+        value: function getReverse() {
+            return this.reverse;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.getRunning
+         * @description 获取运行状态
+         * @return {Boolean} true代表正在运行，false发表没有运行
+         */
+
+    }, {
+        key: "getRunning",
+        value: function getRunning() {
+            return this.running;
+        }
+
+        /**
+         * @function SuperMap.TimeControlBase.prototype.destroy
+         * @description 销毁Animator对象，释放资源。
+         */
+
+    }, {
+        key: "destroy",
+        value: function destroy() {
+            var me = this;
+            me.speed = null;
+            me.frequency = null;
+            me.startTime = null;
+            me.endTime = null;
+            me.currentTime = null;
+            me.repeat = null;
+            me.running = false;
+            me.reverse = null;
+        }
+    }, {
+        key: "tick",
+        value: function tick() {
+            //TODO 每次刷新执行的操作。子类实现
+        }
+    }]);
+
+    return TimeControlBase;
+}();
+
+exports.default = TimeControlBase;
+
+
+_SuperMap2.default.TimeControlBase = TimeControlBase;
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4021,11 +5542,11 @@ var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
 var _FetchRequest = __webpack_require__(5);
 
-var _GeoCodingParameter = __webpack_require__(13);
+var _GeoCodingParameter = __webpack_require__(16);
 
 var _GeoCodingParameter2 = _interopRequireDefault(_GeoCodingParameter);
 
-var _GeoDecodingParameter = __webpack_require__(14);
+var _GeoDecodingParameter = __webpack_require__(17);
 
 var _GeoDecodingParameter2 = _interopRequireDefault(_GeoDecodingParameter);
 
@@ -4146,7 +5667,7 @@ exports.default = AddressMatchService;
 _SuperMap2.default.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4257,7 +5778,7 @@ exports.default = GeoCodingParameter;
 _SuperMap2.default.GeoCodingParameter = GeoCodingParameter;
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4390,7 +5911,7 @@ exports.default = GeoDecodingParameter;
 _SuperMap2.default.GeoDecodingParameter = GeoDecodingParameter;
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4560,7 +6081,7 @@ exports.default = KernelDensityJobParameter;
 _SuperMap2.default.KernelDensityJobParameter = KernelDensityJobParameter;
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4582,7 +6103,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _KernelDensityJobParameter = __webpack_require__(15);
+var _KernelDensityJobParameter = __webpack_require__(18);
 
 var _KernelDensityJobParameter2 = _interopRequireDefault(_KernelDensityJobParameter);
 
@@ -4673,7 +6194,7 @@ exports.default = KernelDensityJobsService;
 _SuperMap2.default.KernelDensityJobsService = KernelDensityJobsService;
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4778,7 +6299,7 @@ exports.default = SingleObjectQueryJobsParameter;
 _SuperMap2.default.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4800,7 +6321,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _SingleObjectQueryJobsParameter = __webpack_require__(17);
+var _SingleObjectQueryJobsParameter = __webpack_require__(20);
 
 var _SingleObjectQueryJobsParameter2 = _interopRequireDefault(_SingleObjectQueryJobsParameter);
 
@@ -4891,7 +6412,7 @@ exports.default = SingleObjectQueryJobsService;
 _SuperMap2.default.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5060,7 +6581,7 @@ exports.default = SummaryMeshJobParameter;
 _SuperMap2.default.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5082,7 +6603,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _SummaryMeshJobParameter = __webpack_require__(19);
+var _SummaryMeshJobParameter = __webpack_require__(22);
 
 var _SummaryMeshJobParameter2 = _interopRequireDefault(_SummaryMeshJobParameter);
 
@@ -5176,7 +6697,7 @@ exports.default = SummaryMeshJobsService;
 _SuperMap2.default.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5389,7 +6910,7 @@ exports.default = SummaryRegionJobParameter;
 _SuperMap2.default.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5411,7 +6932,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _SummaryRegionJobParameter = __webpack_require__(21);
+var _SummaryRegionJobParameter = __webpack_require__(24);
 
 var _SummaryRegionJobParameter2 = _interopRequireDefault(_SummaryRegionJobParameter);
 
@@ -5502,7 +7023,7 @@ exports.default = SummaryRegionJobsService;
 _SuperMap2.default.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5609,7 +7130,7 @@ exports.default = VectorClipJobsParameter;
 _SuperMap2.default.VectorClipJobsParameter = VectorClipJobsParameter;
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5631,7 +7152,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _VectorClipJobsParameter = __webpack_require__(23);
+var _VectorClipJobsParameter = __webpack_require__(26);
 
 var _VectorClipJobsParameter2 = _interopRequireDefault(_VectorClipJobsParameter);
 
@@ -5722,7 +7243,7 @@ exports.default = VectorClipJobsService;
 _SuperMap2.default.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5794,7 +7315,7 @@ exports.default = KeyServiceParameter;
 _SuperMap2.default.KeyServiceParameter = KeyServiceParameter;
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5804,15 +7325,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerInfo = __webpack_require__(27);
+var _ServerInfo = __webpack_require__(30);
 
 var _ServerInfo2 = _interopRequireDefault(_ServerInfo);
 
-var _TokenServiceParameter = __webpack_require__(28);
+var _TokenServiceParameter = __webpack_require__(31);
 
 var _TokenServiceParameter2 = _interopRequireDefault(_TokenServiceParameter);
 
-var _KeyServiceParameter = __webpack_require__(25);
+var _KeyServiceParameter = __webpack_require__(28);
 
 var _KeyServiceParameter2 = _interopRequireDefault(_KeyServiceParameter);
 
@@ -6028,7 +7549,7 @@ _SuperMap2.default.SecurityManager.SSO = "https://sso.supermap.com";
 _SuperMap2.default.SecurityManager.ONLINE = "http://www.supermapol.com";
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6121,7 +7642,7 @@ exports.default = ServerInfo;
 _SuperMap2.default.ServerInfo = ServerInfo;
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6225,23 +7746,31 @@ exports.default = TokenServiceParameter;
 _SuperMap2.default.TokenServiceParameter = TokenServiceParameter;
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = SuperMap;
 
 /***/ }),
-/* 30 */
+/* 33 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(8);
 __webpack_require__(7);
+__webpack_require__(9);
+__webpack_require__(10);
 module.exports = __webpack_require__(6);
 
 

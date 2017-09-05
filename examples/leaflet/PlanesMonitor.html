@@ -47,12 +47,12 @@
 
     function init() {
         initMap();
-        liveESService = new SuperMap.ElasticSearchService(dataUrl, {
+        liveESService = new SuperMap.ElasticSearch(dataUrl, {
             change: renderLive,
             outOfGeoFence: renderOutOfGeoFenceLabel,
             openGeoFence: true
         });
-        trackESService = new SuperMap.ElasticSearchService(dataUrl, {
+        trackESService = new SuperMap.ElasticSearch(dataUrl, {
             change: renderTrack,
             openGeoFence: true
         });

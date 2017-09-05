@@ -45,7 +45,7 @@
             return popup;
         };
         info.addTo(map);
-        liveESService = new SuperMap.ElasticSearchService(dataUrl);
+        liveESService = new SuperMap.ElasticSearch(dataUrl);
     }
 
     function handleMapEvent(div, map) {
