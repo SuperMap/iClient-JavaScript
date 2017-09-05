@@ -197,9 +197,7 @@ export default  class TimeControlBase {
      */
     toggle() {
         var me = this;
-        if (!connect) {
-            return false;
-        }
+
         if (me.running) {
             me.pause();
         } else {

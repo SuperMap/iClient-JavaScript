@@ -3202,7 +3202,7 @@ var TimeFlowControl = function (_TimeControlBase) {
 
             if (!me.reverse) {
                 //如果相等，则代表上一帧已经运行到了最后，下一帧运行初始化的状态
-                if (me.oldTime === me.endTime) {
+                if (me.currentTime === me.endTime) {
                     //不循环时
                     if (!me.repeat) {
                         me.running = false;
@@ -5246,9 +5246,7 @@ var TimeControlBase = function () {
         key: "toggle",
         value: function toggle() {
             var me = this;
-            if (!connect) {
-                return false;
-            }
+
             if (me.running) {
                 me.pause();
             } else {
@@ -7713,7 +7711,7 @@ var TokenServiceParameter = function () {
 
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 

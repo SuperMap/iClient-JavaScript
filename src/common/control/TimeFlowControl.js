@@ -146,7 +146,7 @@ export default  class TimeFlowControl extends TimeControlBase {
 
         if (!me.reverse) {
             //如果相等，则代表上一帧已经运行到了最后，下一帧运行初始化的状态
-            if (me.oldTime === me.endTime) {
+            if (me.currentTime === me.endTime) {
                 //不循环时
                 if (!me.repeat) {
                     me.running = false;

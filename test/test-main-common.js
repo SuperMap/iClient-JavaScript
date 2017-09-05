@@ -77,5 +77,10 @@ require('./common/iServer/TransferSolutionServiceSpec.js');
 require('./common/iServer/UpdateEdgeWeightServiceSpec.js');
 require('./common/iServer/UpdateTurnNodeWeightServiceSpec.js');
 require('./common/format/JSONSpec.js');
+require('./common/control/TimeControlBaseSpec.js');
+require('./common/control/TimeFlowControlSpec.js');
+
+
+
 
 
