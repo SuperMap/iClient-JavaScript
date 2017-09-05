@@ -16,7 +16,9 @@ deps = {
         "security": [
             "./src/common/security/SecurityManager.js"
         ],
-        // "iManager" : [],
+        "iManager": [
+            "./src/common/iManager/iManager.js"
+        ],
         "online": [
             "./src/common/online/Online.js"
         ],
@@ -295,6 +297,15 @@ deps = {
                 "modules": [{
                     "name": "SuperMap.Online",
                     "des": "Online服务"
+                }]
+            },
+            "iManager": {
+                "name": "iManager服务",
+                "src": [
+                    "./src/common/iManager/iManager.js"
+                ], "modules": [{
+                    "name": "SuperMap.iManager",
+                    "des": "iManager服务"
                 }]
             },
             "AddressMatch": {
@@ -594,6 +605,15 @@ deps = {
                     "des": "Online服务"
                 }]
             },
+             "iManager": {
+                "name": "iManager服务",
+                "src": [
+                    "./src/common/iManager/iManager.js"
+                ], "modules": [{
+                    "name": "SuperMap.iManager",
+                    "des": "iManager服务"
+                }]
+            },
             "ProcessingService": {
                 "name": "分布式分析服务",
                 "src": [
@@ -739,28 +759,28 @@ deps = {
                 "modules": [{
                     "name": "SuperMap.GetFeaturesByIDsService",
                     "des": "数据集ID查询服务"
-                },{
+                }, {
                     "name": "SuperMap.GetFeaturesBySQLService",
                     "des": "数据服务中数据集 SQL 查询服务"
-                },{
+                }, {
                     "name": "SuperMap.GetFeaturesByBoundsService",
                     "des": "数据集范围查询服务"
-                },{
+                }, {
                     "name": "SuperMap.GetFeaturesByBufferService",
                     "des": "数据服务中数据集缓冲区查询服务"
-                },{
+                }, {
                     "name": "SuperMap.GetFeaturesByGeometryService",
                     "des": "数据集几何查询服务"
-                },{
+                }, {
                     "name": "SuperMap.EditFeaturesService",
                     "des": "数据服务中数据集添加、更新、删除服务"
-                },{
+                }, {
                     "name": "SuperMap.GetFieldsService",
                     "des": "字段查询服务"
-                },{
+                }, {
                     "name": "SuperMap.FieldStatisticService",
                     "des": "字段查询统计服务"
-                },{
+                }, {
                     "name": "SuperMap.GetGridCellInfosService",
                     "des": "数据栅格查询服务"
                 }
@@ -786,40 +806,40 @@ deps = {
                 "modules": [{
                     "name": "SuperMap.AreaSolarRadiationService",
                     "des": "地区太阳辐射服务"
-                },{
+                }, {
                     "name": "SuperMap.BufferAnalystService",
                     "des": "缓冲区分析服务"
-                },{
+                }, {
                     "name": "SuperMap.DensityAnalystService",
                     "des": "密度分析服务"
-                },{
+                }, {
                     "name": "SuperMap.GenerateSpatialDataService",
                     "des": "动态分段分析服务"
-                },{
+                }, {
                     "name": "SuperMap.GeoRelationAnalystService",
                     "des": "空间关系分析服务"
-                },{
+                }, {
                     "name": "SuperMap.InterpolationAnalystService",
                     "des": "插值分析服务"
-                },{
+                }, {
                     "name": "SuperMap.MathExpressionAnalysisService",
                     "des": "栅格代数运算服务"
-                },{
+                }, {
                     "name": "SuperMap.OverlayAnalystService",
                     "des": "叠加分析服务"
-                },{
+                }, {
                     "name": "SuperMap.RouteCalculateMeasureService",
                     "des": "点定里程服务"
-                },{
+                }, {
                     "name": "SuperMap.RouteLocatorService",
                     "des": "里程定点/定线服务"
-                },{
+                }, {
                     "name": "SuperMap.SurfaceAnalystService",
                     "des": "表面分析服务"
-                },{
+                }, {
                     "name": "SuperMap.TerrainCurvatureCalculationService",
                     "des": "地形曲率计算服务"
-                },{
+                }, {
                     "name": "SuperMap.ThiessenAnalystService",
                     "des": "泰森多边形分析服务"
                 }]
@@ -836,16 +856,16 @@ deps = {
                 "modules": [{
                     "name": "SuperMap.KernelDensityJobsService",
                     "des": "密度分析服务"
-                },{
+                }, {
                     "name": "SuperMap.SummaryMeshJobsService",
                     "des": "点聚合分析服务"
-                },{
+                }, {
                     "name": "SuperMap.SingleObjectQueryJobsService",
                     "des": "单对象查询分析服务"
-                },{
+                }, {
                     "name": "SuperMap.SummaryRegionJobsService",
                     "des": "区域汇总分析服务"
-                },{
+                }, {
                     "name": "SuperMap.VectorClipJobsService",
                     "des": "矢量裁剪分析服务"
                 }]
@@ -933,25 +953,25 @@ deps = {
                 "modules": [{
                     "name": "SuperMap.ThemeService",
                     "des": "服务器专题图服务"
-                },{
+                }, {
                     "name": "SuperMap.Feature.Theme.Bar",
                     "des": "柱状图"
-                },{
+                }, {
                     "name": "SuperMap.Feature.Theme.Bar3D",
                     "des": "三维柱状图"
-                },{
+                }, {
                     "name": "SuperMap.Feature.Theme.Circle",
                     "des": "圆类"
-                },{
+                }, {
                     "name": "SuperMap.Feature.Theme.Line",
                     "des": "折线图"
-                },{
+                }, {
                     "name": "SuperMap.Feature.Theme.Pie",
                     "des": "饼图"
-                },{
+                }, {
                     "name": "SuperMap.Feature.Theme.Point",
                     "des": "点状图"
-                },{
+                }, {
                     "name": "SuperMap.Feature.Theme.Ring",
                     "des": "环状图"
                 }]
@@ -995,34 +1015,34 @@ deps = {
                 "modules": [{
                     "name": "SuperMap.BurstPipelineAnalystService",
                     "des": "爆管分析服务"
-                },{
+                }, {
                     "name": "SuperMap.ComputeWeightMatrixService",
                     "des": "耗费矩阵分析服务"
-                },{
+                }, {
                     "name": "SuperMap.FacilityAnalystStreamService",
                     "des": "关键设施查找服务"
-                },{
+                }, {
                     "name": "SuperMap.FindClosestFacilitiesService",
                     "des": "最近设施分析服务"
-                },{
+                }, {
                     "name": "SuperMap.FindLocationService",
                     "des": "选址分区分析服务"
-                },{
+                }, {
                     "name": "SuperMap.FindMTSPPathsService",
                     "des": "多旅行商分析服务"
-                },{
+                }, {
                     "name": "SuperMap.FindPathService",
                     "des": "最佳路径分析服务"
-                },{
+                }, {
                     "name": "SuperMap.FindServiceAreasService",
                     "des": "服务区分析服务"
-                },{
+                }, {
                     "name": "SuperMap.FindTSPPathsService",
                     "des": "旅行商分析服务"
-                },{
+                }, {
                     "name": "SuperMap.UpdateEdgeWeightService",
                     "des": "更新边的边的耗费权重服务"
-                },{
+                }, {
                     "name": "SuperMap.UpdateTurnNodeWeightService",
                     "des": "转向耗费权重更新服务"
                 }]
@@ -1039,16 +1059,16 @@ deps = {
                 "modules": [{
                     "name": "SuperMap.FacilityAnalystSinks3DService",
                     "des": "最近设施分析服务"
-                },{
+                }, {
                     "name": "SuperMap.FacilityAnalystSources3DService",
                     "des": "最近设施分析服务"
-                },{
+                }, {
                     "name": "SuperMap.FacilityAnalystTracedown3DService",
                     "des": "下游追踪资源服务"
-                },{
+                }, {
                     "name": "SuperMap.FacilityAnalystTraceup3DService",
                     "des": "上游追踪资源服务"
-                },{
+                }, {
                     "name": "SuperMap.FacilityAnalystUpstream3DService",
                     "des": "上游关键设施查找资源服务"
                 }]
@@ -1063,10 +1083,10 @@ deps = {
                 "modules": [{
                     "name": "SuperMap.StopQueryService",
                     "des": "站点查询服务"
-                },{
+                }, {
                     "name": "SuperMap.TransferPathService",
                     "des": "交通换乘线路查询服务"
-                },{
+                }, {
                     "name": "SuperMap.TransferSolutionService",
                     "des": "交通换乘方案查询服务"
                 }]

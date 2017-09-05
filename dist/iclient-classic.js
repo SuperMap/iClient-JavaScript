@@ -7471,6 +7471,46 @@ _SuperMap2.default.SecurityManager = {
         url += end === "/" ? "web/login" : "/web/login";
         this._open(url, newTab);
     },
+
+    /**
+     * @function SuperMap.SecurityManager.prototype.loginManager
+     * @description iManager登录验证
+     * @param url -{String} iManager地址。<br>
+     *                      地址参数为iManager首页地址，如： http://localhost:8390/imanager<br>
+     * @param loginInfoParams -{Object} iManager 登录参数<br>
+     *        userName -{String} 用户名<br>
+     *        password-{String} 密码
+     * @param isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+     */
+    loginManager: function loginManager(url, loginInfoParams, options) {
+        if (!_SuperMap2.default.Util.isInTheSameDomain(url)) {
+            var isNewTab = options ? options.isNewTab : true;
+            this._open(url, isNewTab);
+            return;
+        }
+        var end = url.substr(url.length - 1, 1);
+        var requestUrl = end === "/" ? url + "icloud/security/tokens.json" : url + "/icloud/security/tokens.json";
+        var params = loginInfoParams || {};
+        var loginInfo = {
+            username: params.userName && params.userName.toString(),
+            password: params.password && params.password.toString()
+        };
+        loginInfo = JSON.stringify(loginInfo);
+        var requestOptions = {
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            }
+        };
+        var me = this;
+        return _FetchRequest.FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
+            response.text().then(function (result) {
+                me.imanagerToken = result;
+                return result;
+            });
+        });
+    },
+
     /**
      * @function SuperMap.SecurityManager.prototype.destroyAllCredentials
      * @description 清空全部验证信息
@@ -7711,7 +7751,7 @@ var TokenServiceParameter = function () {
 
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 

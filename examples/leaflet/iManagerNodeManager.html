@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>iManager 节点管理使用示例</title>
+    <script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+
+    <style>
+        .panel {
+            margin-bottom: 0;
+        }
+		#listTable th,#listTable td{
+			padding:5px;
+		}
+    </style>
+</head>
+<body style=" margin: 0;overflow: auto;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div class="container">
+    <div class="page-header">
+        <h4>iManager 节点管理使用示例</h4>
+    </div>
+    <div class="row">
+        <table class="table table-bordered col-md-6">
+            <thead>
+            <tr>
+                <th class="text-center">功能</th>
+                <th class="text-center">示例</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--登录-->
+            <tr>
+                <td class="text-center text-success">登录</td>
+                <td>
+                    <div class="col-md-10 col-md-offset-1">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="loginUrl_iManager" class="col-md-2 control-label">服务地址</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="loginUrl_iManager" placeholder="iManager首页地址，如http://localhost:8390/imanager">
+                                    </div>
+                                </div>
+								<div class="form-group">
+                                    <label for="username_iManager" class="col-md-2 control-label">用户名</label>
+
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="username_iManager" value="admin">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password_iManager" class="col-md-2 control-label">密码</label>
+
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" id="password_iManager" value="admin">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <a class="btn btn-success" onclick="loginManager()">登录</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+			
+			<!--token 获取iServer列表-->
+            <tr>
+                <td class="text-center text-success">获取iServer列表</td>
+                <td>
+                    <div class="col-md-10 col-md-offset-1">
+                        <form class="form-horizontal">
+                            <fieldset>                                                        
+                                <div class="form-group">                                   
+                                    <div class="col-md-12">
+									    <table id="listTable">
+											<thead>
+												<tr role="row">
+													<th rowspan="1" colspan="1" style="width: 50px;">
+														<div><span>id</span></div>
+													</th>
+													<th rowspan="1" colspan="1" style="width: 150px;">
+														<div><span>名称</span></div>
+													</th>
+													<th rowspan="1" colspan="1" style="width: 150px;">
+														<div><span>地址</span></div>
+													</th>
+												</tr>
+											</thead>
+											<tbody id="nodeList">									
+											</tbody>
+										</table>
+									</div>
+                                </div>
+								<div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <a class="btn btn-success" onclick="iServerList()">获取</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <!--token 停止节点-->
+
+            <!--token 启动节点-->
+            <tr>
+                <td class="text-center text-success">启动节点</td>
+                <td>
+                    <div class="col-md-10 col-md-offset-1">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="start_node_ids" class="col-md-2 control-label">节点id</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="start_node_ids" placeholder="要启动节点的id">
+                                    </div>
+                                </div>                               
+                                <div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <a class="btn btn-success" onclick="startNodes()">启动</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+			
+            <!--token 停止节点-->
+            <tr>
+                <td class="text-center text-success">停止节点</td>
+                <td>
+                    <div class="col-md-10 col-md-offset-1">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="stop_node_ids" class="col-md-2 control-label">节点id</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="stop_node_ids" placeholder="要停止节点的id">
+                                    </div>
+                                </div>                               
+                                <div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <a class="btn btn-success" onclick="stopNodes()">停止</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+			
+			<!--创建iServer-->
+            <tr>
+                <td class="text-center text-success">创建iServer</td>
+                <td>
+                    <div class="col-md-10 col-md-offset-1">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="create_nodeName" class="col-md-2 control-label">节点名称</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="create_nodeName" placeholder="请填写节点名称">
+                                    </div>
+                                </div>								
+                                <div class="form-group">
+                                    <label for="create_physicalMachineName" class="col-md-2 control-label">物理机名称</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="create_physicalMachineName" placeholder="填写vm所属的物理机">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <a class="btn btn-success" onclick="createIServer()">创建</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+			
+            <tr>
+                <td colspan="3">
+                    <div class="row">
+                        <div class="col-md-12  text-center">
+                            <div class="col-md-12" id="iportal_map" style=" height: 300px;"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $("#loginUrl_iManager").val("http://imgr.supermapol.com/imanager");       
+    });
+
+    /*登录*/
+    function loginManager() {
+        var loginUrl = $("#loginUrl_iManager").val();
+        if (!checkValue(loginUrl,'请填写服务地址')) {
+            return;
+        }
+		var userName = $('#username_iManager').val();
+        var password = $('#password_iManager').val();
+        SuperMap.SecurityManager.loginManager(loginUrl, {userName: userName, password: password});
+    }
+    /*登录 end*/
+	
+	/*获取iServer List*/
+    function iServerList() {
+        var url = getIManagerURL();
+        var iManager = new SuperMap.iManager(url)
+            .iServerList()
+            .then(function (response) {
+				console.log(JSON.stringify(response));
+				var result = response;
+				if(result.list){
+					var html = "";
+				    for(var i = 0 ;i < result.list.length; i++){
+					var obj = result.list[i];
+					var address = obj.productInfos? obj.productInfos[0].address : "";
+					    html+="<tr role='row'><td>"+obj.id+"</td><td>"+obj.nodeName+"</td><td><a href='"+address+"' target='_blank'>"+address+"</a></td><td></tr>";
+					}
+					$("#nodeList").html(html);
+				}               
+            });
+    }
+	/*获取iServer List end*/
+
+    /*启动节点*/
+    function startNodes() {
+        var url = getIManagerURL();
+		var id = $("#start_node_ids").val();
+		if (!checkValue(id,'请填写id')) {
+            return;
+        }
+		var ids = [id];
+        var iManager = new SuperMap.iManager(url)
+            .startNodes(ids)
+            .then(function (response) {
+                console.log(JSON.stringify(response));
+				alert(JSON.stringify(response));
+            });
+    }
+	/*启动节点 end*/
+	
+	/*停止节点*/
+    function stopNodes() {
+        var url = getIManagerURL();
+		var id = $("#stop_node_ids").val();
+		if (!checkValue(id,'请填写id')) {
+            return;
+        }
+		var ids = [id];
+        var iManager = new SuperMap.iManager(url)
+            .stopNodes(ids)
+            .then(function (response) {
+                console.log(JSON.stringify(response));
+				alert(JSON.stringify(response));
+            });
+    }
+	/*停止节点 end*/
+	
+	/*创建iServer*/
+    function createIServer() {
+        var url = getIManagerURL();
+		var nodeName = $("#create_nodeName").val();
+		var physicalMachineName = $("#create_physicalMachineName").val();
+		if (!checkValue(nodeName,'请填写节点名称')) {
+            return;
+        }
+		if (!checkValue(physicalMachineName,'请填写物理机名称')) {
+            return;
+        }
+        var param = {nodeName:nodeName,physicalMachineName:physicalMachineName};
+        var iManager = new SuperMap.iManager(url)
+            .createIServer(param)
+            .then(function (response) {
+                console.log(JSON.stringify(response));
+				alert(JSON.stringify(response));
+            });
+    }
+	/*创建iServer end*/	
+
+    function getIManagerURL() {
+        return $("#loginUrl_iManager").val();
+    }
+
+    function checkValue(value,tip) {
+        if (value === "") {
+            alert(tip);
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>
