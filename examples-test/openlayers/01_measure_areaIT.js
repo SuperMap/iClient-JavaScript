@@ -15,7 +15,7 @@ module.exports = {
             browser.moveTo(null, 0, -100).mouseButtonClick();
             browser.moveTo(null, 0, 0).mouseButtonClick(function () {
                 browser.waitForElementPresent('#msg_container', 10000);
-                browser.expect.element('#msg_container').text.to.be.contain('3745073663984.319平方米');
+                browser.expect.element('#msg_container').text.to.be.contain('平方米');
             });
             browser.pause(1000);
             browser.click('.close', function () {

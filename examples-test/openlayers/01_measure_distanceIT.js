@@ -9,7 +9,7 @@ module.exports = {
             browser.moveTo(null, 100, 0).mouseButtonClick();
             browser.moveTo(null, 0, 0).mouseButtonClick(function () {
                 browser.waitForElementPresent('#msg_container', 10000);
-                browser.expect.element('#msg_container').text.to.be.contain('1956785.6187790427米');
+                browser.expect.element('#msg_container').text.to.be.contain('米');
             });
             browser.pause(1000);
             browser.click('.close', function () {
