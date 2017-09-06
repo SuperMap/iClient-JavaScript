@@ -43,6 +43,8 @@ module.exports = {
                 browser.assert.equal(result.value.length, 3, "expect Number of marker after click '抚松路' in '方案2' to be 3, actual is " + result.value.length);
             });
         });
+        //测试版权点击的正确性
+        commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }

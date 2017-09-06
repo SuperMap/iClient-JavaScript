@@ -13,6 +13,8 @@ module.exports = {
         browser.elements('tag name', 'path', function (result) {
             this.assert.equal(result.value.length, 45, "expect Number of overlay polygon to be 45, actual is " + result.value.length);
         });
+        //测试版权点击的正确性
+        commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }

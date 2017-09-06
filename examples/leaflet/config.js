@@ -583,6 +583,14 @@ var exampleConfig = {
                     thumbnail: "l_rankSymbolThemeLayer.png",
                     fileName: "rankSymbolThemeLayer"
                 }]
+            },
+            "Turf": {
+                name: "Turf",
+                content: [{
+                    name: "缓冲区",
+                    thumbnail: "turf_buffer.png",
+                    fileName: "turf_buffer"
+                }]
             }
         }
     },

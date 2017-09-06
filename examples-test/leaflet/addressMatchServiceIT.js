@@ -61,6 +61,8 @@ module.exports = {
                 browser.expect.element('.leaflet-popup-content').text.to.contain('过滤字段');
             })
         });
+        //测试版权点击的正确性
+        commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }

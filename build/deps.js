@@ -406,6 +406,16 @@ deps = {
                     "name": "L.supermap.mapVLayer",
                     "des": "百度MapV可视化效果"
                 }]
+            },
+            "Turf": {
+                "name": "Turf",
+                "src": [
+                    './src/leaflet/overlay/TurfLayer.js'
+                ],
+                "modules": [{
+                    "name": "L.supermap.turfLayer",
+                    "des": "客户端空间分析js库"
+                }]
             }
         },
 
@@ -605,7 +615,7 @@ deps = {
                     "des": "Online服务"
                 }]
             },
-             "iManager": {
+            "iManager": {
                 "name": "iManager服务",
                 "src": [
                     "./src/common/iManager/iManager.js"
@@ -709,6 +719,16 @@ deps = {
                 "modules": [{
                     "name": "ol.source.Mapv",
                     "des": "百度MapV可视化效果"
+                }]
+            },
+            "Turf": {
+                "name": "Turf",
+                "src": [
+                    "./src/openlayers/overlay/turf.js",
+                ],
+                "modules": [{
+                    "name": "ol.source.Turf",
+                    "des": "客户端空间分析js库"
                 }]
             }
         },

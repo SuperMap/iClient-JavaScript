@@ -26,7 +26,8 @@ module.exports = {
         'leaflet': 'L',
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
         'mapv':  "function(){try{return mapv}catch(e){return {}}}()",
-        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()'
+        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
+        'turf':  "function(){try{return turf}catch(e){return {}}}()"
     },
 
     module: {
