@@ -7075,7 +7075,7 @@ var Collection = _SuperMap2.default.Geometry.Collection;
  * @class SuperMap.Route
  * @classdesc
  * 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
- * @param points - {Array} 形成路由对象的线数组。
+ * @param points - {{Array<SuperMap.Geometry>}} 形成路由对象的线数组。
  * @param  options - {Object} 可选参数。如:</br>
  *         id - {number}路由对象在数据库中的id。</br>
  *         length - {number}路由对象的长度。</br>
@@ -7089,8 +7089,64 @@ var Route = function (_Collection) {
     _inherits(Route, _Collection);
 
     /**
-     * @member SuperMap.Route.prototype.components -{Array<SuperMap.Geometry>}
-     * @description 存储几何对象的数组。
+     * @member SuperMap.Route.prototype.type -{string}
+     * @description 服务端几何对象类型。
+     */
+
+
+    /**
+     * @member SuperMap.Route.prototype.parts -{Array<number>}
+     * @description 服务端几何对象中各个子对象所包含的节点个数。
+     */
+
+
+    /**
+     *  @member SuperMap.Route.prototype.maxM -{number}
+     *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
+     */
+
+
+    /**
+     * @member SuperMap.Route.prototype.style -{string}
+     */
+
+
+    /**
+     * @member SuperMap.Route.prototype.id -{number}
+     * @description 路由对象在数据库中的id。
+     */
+    function Route(points, options) {
+        _classCallCheck(this, Route);
+
+        var _this = _possibleConstructorReturn(this, (Route.__proto__ || Object.getPrototypeOf(Route)).call(this, points, options));
+
+        _this.id = null;
+        _this.center = null;
+        _this.style = null;
+        _this.length = null;
+        _this.maxM = null;
+        _this.minM = null;
+        _this.parts = null;
+        _this.points = null;
+        _this.type = null;
+        _this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
+        _this.CLASS_NAME = "SuperMap.Route";
+
+        if (options) {
+            _SuperMap2.default.Util.extend(_this, options);
+        }
+        return _this;
+    }
+
+    /**
+     *
+     * @function SuperMap.Route.prototype.toJson
+     * @description 转换为json对象。
+     */
+
+
+    /**
+     * @member SuperMap.Route.prototype.componentTypes -{string}
      */
 
 
@@ -7130,69 +7186,6 @@ var Route = function (_Collection) {
 
     /**
      * @member SuperMap.Route.prototype.center -{number}
-     */
-    function Route(points, options) {
-        _classCallCheck(this, Route);
-
-        var _this = _possibleConstructorReturn(this, (Route.__proto__ || Object.getPrototypeOf(Route)).call(this, points, options));
-
-        _this.id = null;
-        _this.center = null;
-        _this.style = null;
-        _this.length = null;
-        _this.maxM = null;
-        _this.minM = null;
-        _this.parts = null;
-        _this.points = null;
-        _this.type = null;
-        _this.components = null;
-        _this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
-        _this.CLASS_NAME = "SuperMap.Route";
-
-        if (options) {
-            _SuperMap2.default.Util.extend(_this, options);
-        }
-        return _this;
-    }
-
-    /**
-     *
-     * @function SuperMap.Route.prototype.toJson
-     * @description 转换为json对象。
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.componentTypes -{string}
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.type -{string}
-     * @description 服务端几何对象类型。
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.parts -{Array<number>}
-     * @description 服务端几何对象中各个子对象所包含的节点个数。
-     */
-
-
-    /**
-     *  @member SuperMap.Route.prototype.maxM -{number}
-     *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.style -{string}
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.id -{number}
-     * @description 路由对象在数据库中的id。
      */
 
 
@@ -7260,9 +7253,9 @@ var Route = function (_Collection) {
             me.minM = null;
             me.type = null;
             me.parts = null;
-            this.components.length = 0;
-            this.components = null;
-            this.componentTypes = null;
+            me.components.length = 0;
+            me.components = null;
+            me.componentTypes = null;
         }
 
         /**
@@ -37744,7 +37737,7 @@ var TokenServiceParameter = function () {
 
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 

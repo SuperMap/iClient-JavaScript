@@ -9116,7 +9116,7 @@ var Collection = _SuperMap2["default"].Geometry.Collection;
  * @class SuperMap.Route
  * @classdesc
  * 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
- * @param points - {Array} 形成路由对象的线数组。
+ * @param points - {{Array<SuperMap.Geometry>}} 形成路由对象的线数组。
  * @param  options - {Object} 可选参数。如:</br>
  *         id - {number}路由对象在数据库中的id。</br>
  *         length - {number}路由对象的长度。</br>
@@ -9130,8 +9130,64 @@ var Route = function (_Collection) {
     _inherits(Route, _Collection);
 
     /**
-     * @member SuperMap.Route.prototype.components -{Array<SuperMap.Geometry>}
-     * @description 存储几何对象的数组。
+     * @member SuperMap.Route.prototype.type -{string}
+     * @description 服务端几何对象类型。
+     */
+
+
+    /**
+     * @member SuperMap.Route.prototype.parts -{Array<number>}
+     * @description 服务端几何对象中各个子对象所包含的节点个数。
+     */
+
+
+    /**
+     *  @member SuperMap.Route.prototype.maxM -{number}
+     *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
+     */
+
+
+    /**
+     * @member SuperMap.Route.prototype.style -{string}
+     */
+
+
+    /**
+     * @member SuperMap.Route.prototype.id -{number}
+     * @description 路由对象在数据库中的id。
+     */
+    function Route(points, options) {
+        _classCallCheck(this, Route);
+
+        var _this = _possibleConstructorReturn(this, (Route.__proto__ || Object.getPrototypeOf(Route)).call(this, points, options));
+
+        _this.id = null;
+        _this.center = null;
+        _this.style = null;
+        _this.length = null;
+        _this.maxM = null;
+        _this.minM = null;
+        _this.parts = null;
+        _this.points = null;
+        _this.type = null;
+        _this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
+        _this.CLASS_NAME = "SuperMap.Route";
+
+        if (options) {
+            _SuperMap2["default"].Util.extend(_this, options);
+        }
+        return _this;
+    }
+
+    /**
+     *
+     * @function SuperMap.Route.prototype.toJson
+     * @description 转换为json对象。
+     */
+
+
+    /**
+     * @member SuperMap.Route.prototype.componentTypes -{string}
      */
 
 
@@ -9171,69 +9227,6 @@ var Route = function (_Collection) {
 
     /**
      * @member SuperMap.Route.prototype.center -{number}
-     */
-    function Route(points, options) {
-        _classCallCheck(this, Route);
-
-        var _this = _possibleConstructorReturn(this, (Route.__proto__ || Object.getPrototypeOf(Route)).call(this, points, options));
-
-        _this.id = null;
-        _this.center = null;
-        _this.style = null;
-        _this.length = null;
-        _this.maxM = null;
-        _this.minM = null;
-        _this.parts = null;
-        _this.points = null;
-        _this.type = null;
-        _this.components = null;
-        _this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
-        _this.CLASS_NAME = "SuperMap.Route";
-
-        if (options) {
-            _SuperMap2["default"].Util.extend(_this, options);
-        }
-        return _this;
-    }
-
-    /**
-     *
-     * @function SuperMap.Route.prototype.toJson
-     * @description 转换为json对象。
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.componentTypes -{string}
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.type -{string}
-     * @description 服务端几何对象类型。
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.parts -{Array<number>}
-     * @description 服务端几何对象中各个子对象所包含的节点个数。
-     */
-
-
-    /**
-     *  @member SuperMap.Route.prototype.maxM -{number}
-     *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.style -{string}
-     */
-
-
-    /**
-     * @member SuperMap.Route.prototype.id -{number}
-     * @description 路由对象在数据库中的id。
      */
 
 
@@ -9301,9 +9294,9 @@ var Route = function (_Collection) {
             me.minM = null;
             me.type = null;
             me.parts = null;
-            this.components.length = 0;
-            this.components = null;
-            this.componentTypes = null;
+            me.components.length = 0;
+            me.components = null;
+            me.componentTypes = null;
         }
 
         /**
@@ -51324,7 +51317,7 @@ var TokenServiceParameter = function () {
 
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 
@@ -62658,7 +62651,7 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 /* 385 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 386 */

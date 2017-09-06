@@ -50,7 +50,7 @@
         }
 
         if (!inArray(excludes, 'iclient9-leaflet')) {
-            inputScript("../../dist/iclient9-leaflet.min.js");
+            inputScript("../../dist/iclient9-leaflet.js");
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
             inputCSS("../../dist/iclient9-leaflet.min.css");

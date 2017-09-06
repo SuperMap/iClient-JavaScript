@@ -79,6 +79,9 @@ require('./common/iServer/UpdateTurnNodeWeightServiceSpec.js');
 require('./common/format/JSONSpec.js');
 require('./common/control/TimeControlBaseSpec.js');
 require('./common/control/TimeFlowControlSpec.js');
+require('./common/security/SecurityManagerSpec.js');
+require('./common/iServer/RouteSpec.js');
+
 
 
 

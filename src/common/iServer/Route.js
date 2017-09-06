@@ -7,7 +7,7 @@ const Collection = SuperMap.Geometry.Collection;
  * @class SuperMap.Route
  * @classdesc
  * 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
- * @param points - {Array} 形成路由对象的线数组。
+ * @param points - {{Array<SuperMap.Geometry>}} 形成路由对象的线数组。
  * @param  options - {Object} 可选参数。如:</br>
  *         id - {number}路由对象在数据库中的id。</br>
  *         length - {number}路由对象的长度。</br>
@@ -87,15 +87,10 @@ export default  class Route extends Collection {
     type = null;
 
     /**
-     * @member SuperMap.Route.prototype.components -{Array<SuperMap.Geometry>}
-     * @description 存储几何对象的数组。
-     */
-    components = null;
-
-    /**
      * @member SuperMap.Route.prototype.componentTypes -{string}
      */
     componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
+
 
     constructor(points, options) {
         super(points, options);
@@ -169,9 +164,9 @@ export default  class Route extends Collection {
         me.minM = null;
         me.type = null;
         me.parts = null;
-        this.components.length = 0;
-        this.components = null;
-        this.componentTypes = null;
+        me.components.length = 0;
+        me.components = null;
+        me.componentTypes = null;
     }
 
 

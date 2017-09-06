@@ -26,7 +26,7 @@ export default class TokenServiceParameter {
     clientType = ClientType.NONE;
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 
