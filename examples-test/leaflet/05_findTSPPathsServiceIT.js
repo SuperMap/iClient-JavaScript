@@ -19,6 +19,8 @@ module.exports = {
         browser.elements('tag name', 'path', function (result) {
             this.assert.equal(result.value.length, 1, "expect Number of findTSPPathsService result to be 1, actual is " + result.value.length);
         });
+        //测试版权点击的正确性
+        commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }

@@ -18,6 +18,8 @@ module.exports = {
         browser.elements('tag name', 'path', function (result) {
             this.assert.equal(result.value.length, 31, "expect Number of findPathService path to be 31, actual is " + result.value.length);
         });
+        //测试版权点击的正确性
+        commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }

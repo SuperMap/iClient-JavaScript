@@ -15,6 +15,8 @@ module.exports = {
         });
         browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane', 10000);
         browser.waitForElementPresent('.leaflet-pane.leaflet-marker-pane img', 10000);
+        //测试版权点击的正确性
+        commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }
