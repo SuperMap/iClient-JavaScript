@@ -3,7 +3,7 @@ var mapv = require('mapv');
 window.mapv = mapv;
 
 var url = GlobeParameter.ChinaURL;
-describe('', function () {
+describe('openlayers_testMapV', function () {
     var originalTimeout;
     var testDiv, map, mapVSource;
     beforeAll(function () {
