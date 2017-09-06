@@ -105,7 +105,7 @@ describe('testRoute', function () {
         expect(route.componentTypes).toBeNull();
     });
 
-    it('fromJson', function () {
+    it('fromJson', function ( ) {
         var jsonobj = {
             "id": 1,
             "length": 1024,
