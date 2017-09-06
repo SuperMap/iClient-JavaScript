@@ -17539,7 +17539,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 layerQueue.unshift(layerJson);
                 continue;
             } else {
-                layerInfo.isBaseLayer = true;
+                layerJson.isBaseLayer = true;
                 this.createLayer(layerJson.type, layerJson);
             }
         }

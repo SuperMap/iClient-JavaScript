@@ -111,7 +111,7 @@ export var WebMap = L.LayerGroup.extend({
                 layerQueue.unshift(layerJson);
                 continue;
             } else {
-                layerInfo.isBaseLayer = true;
+                layerJson.isBaseLayer = true;
                 this.createLayer(layerJson.type, layerJson);
             }
         }
