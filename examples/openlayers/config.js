@@ -375,13 +375,6 @@ var exampleConfig = {
                 }
                 ]
             },
-            // "D3": {
-            //     name: "D3-单值专题图",
-            //     content: [{
-            //         name: "D3-单值专题图",
-            //         content: null
-            //     }]
-            // },
             "ECharts": {
                 name: "ECharts",
                 content: [
@@ -406,7 +399,6 @@ var exampleConfig = {
                         fileName: "echartsPie"
                     }
                 ]
-
             },
             "MapV": {
                 name: "Mapv",
@@ -516,6 +508,14 @@ var exampleConfig = {
                     name: "符号等级专题图",
                     thumbnail: "rankSymbolThemeLayer.png",
                     fileName: "rankSymbolThemeLayer"
+                }]
+            },
+            "Turf": {
+                name: "Turf",
+                content: [{
+                    name: "缓冲区",
+                    thumbnail: "turf_buffer.png",
+                    fileName: "turf_buffer"
                 }]
             }
         }

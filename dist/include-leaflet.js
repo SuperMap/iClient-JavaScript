@@ -42,15 +42,17 @@
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
+        if (inArray(includes, 'turf')) {
+            inputScript("https://cdn.bootcss.com/Turf.js/4.6.1/turf.min.js");
+        }
         if (inArray(includes, 'echarts')) {
             inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
         }
         if (inArray(includes, 'elasticsearch')) {
             inputScript("http://cdn.bootcss.com/elasticsearch/13.0.1/elasticsearch.min.js");
         }
-
         if (!inArray(excludes, 'iclient9-leaflet')) {
-            inputScript("../../dist/iclient9-leaflet.js");
+            inputScript("../../dist/iclient9-leaflet.min.js");
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
             inputCSS("../../dist/iclient9-leaflet.min.css");
