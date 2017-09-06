@@ -232,7 +232,7 @@ export default  class Bar3D extends Graph {
         }
 
         // 获取 x 轴上的图形信息
-        var xShapeInfo = this.calculateXShapeInfo(dvb, sets, "Bar3D", fv.length);
+        var xShapeInfo = this.calculateXShapeInfo();
         if (!xShapeInfo) return;
         // 每个柱条 x 位置
         var xsLoc = xShapeInfo.xPositions;

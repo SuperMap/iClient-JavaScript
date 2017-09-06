@@ -664,8 +664,7 @@ export default  class GeoJSON extends JSONFormat {
      * @description 将服务端的点几何对象转换为几何对象
      */
     toGeoPoint(geometry) {
-        var me = this,
-            geoPoints = geometry.points || [],
+        var geoPoints = geometry.points || [],
             geoParts = geometry.parts || [geoPoints.length],
             len = geoParts.length;
         if (len < 1) {
@@ -707,12 +706,12 @@ export default  class GeoJSON extends JSONFormat {
             }
             return {type: "LineString", components: pointList};
         } else {
-            for (var i = 0, lineList = []; i < len; i++) {
-                for (var j = 0, pointList = []; j < geoParts[i]; j++) {
-                    pointList.push({x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y)});
+            for (var k = 0, lineList = []; k < len; k++) {
+                for (var j = 0, pointArr = []; j < geoParts[k]; j++) {
+                    pointArr.push({x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y)});
                 }
-                lineList.push(pointList);
-                geoPoints.splice(0, geoParts[i]);
+                lineList.push(pointArr);
+                geoPoints.splice(0, geoParts[k]);
             }
             return {type: "MultiLineString", components: lineList};
         }

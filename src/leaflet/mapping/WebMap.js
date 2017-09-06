@@ -103,17 +103,16 @@ export var WebMap = L.LayerGroup.extend({
         this.layers = [];
         var layerQueue = [];
         for (var i = 0; i < layersJson.length; i++) {
-            var layerInfo = layersJson[i];
-            layerInfo["_originIndex"] = i;
-            var layerType = layerInfo.layerType = layerInfo.layerType || "BASE_LAYER";
-            var type = layerInfo.type;
-            if (layerType !== "BASE_LAYER") {
+            var layerJson = layersJson[i];
+            layerJson["_originIndex"] = i;
+            var layerJsonType = layerJson.layerType = layerJson.layerType || "BASE_LAYER";
+            if (layerJsonType !== "BASE_LAYER") {
                 //如果图层不是底图，则先加到图层队列里面等待底图完成后再处理
-                layerQueue.unshift(layerInfo);
+                layerQueue.unshift(layerJson);
                 continue;
             } else {
                 layerInfo.isBaseLayer = true;
-                this.createLayer(type, layerInfo);
+                this.createLayer(layerJson.type, layerJson);
             }
         }
         //底图加载完成后开始处理图层队列里的图层
@@ -183,10 +182,10 @@ export var WebMap = L.LayerGroup.extend({
             zoom: options.zoom || 0,
             crs: crs
         });
-        if(crs instanceof  NonEarthCRS){
-            this._map.setZoom(options.zoom? options.zoom + 2: 2,{maxZoom:options.maxZoom || 22});
-        }else{
-            this._map.fitBounds(bounds,{maxZoom:options.maxZoom || 22});
+        if (crs instanceof NonEarthCRS) {
+            this._map.setZoom(options.zoom ? options.zoom + 2 : 2, {maxZoom: options.maxZoom || 22});
+        } else {
+            this._map.fitBounds(bounds, {maxZoom: options.maxZoom || 22});
         }
 
 
@@ -340,17 +339,17 @@ export var WebMap = L.LayerGroup.extend({
      * @param crs - {Object} 坐标对象
      */
     createMarkersLayer: function (layerInfo, crs) {
-        var markers = layerInfo.markers || [],
-            style = layerInfo.style,
-            opacity = layerInfo.opacity,
-            marker, point, size, offset, icon, that = this;
+        var markers = layerInfo.markers || [];
+        //style = layerInfo.style,
+        //opacity = layerInfo.opacity,
+        //marker, point, size, offset, icon, that = this;
         //todo offset
         var coordsToLatLng = function (coords) {
             var ll = crs.unproject(L.point(coords[0], coords[1]));
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
 
-        var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.markers), {
+        var layer = L.geoJSON(L.Util.toGeoJSON(markers), {
             pointToLayer: function (geojson, latlng) {
                 var m = new L.Marker(latlng);
                 m.setStyle = function (style) {
@@ -412,6 +411,28 @@ export var WebMap = L.LayerGroup.extend({
                 datasourceName = layerInfo.name,
                 datasets = layerInfo.features;
             style = layerInfo.style;
+            var fun = function (serviceResult) {
+                var layer = L.geoJSON(serviceResult.result, {
+                    pointToLayer: function (geojson, latlng) {
+                        var m = new L.Marker(latlng);
+                        m.setStyle = function (style) {
+                            if (style) {
+                                m.setIcon(style);
+                            }
+                        };
+                        return m;
+                    },
+                    coordsToLatLng: coordsToLatLng,
+                    style: function (geoJsonFeature) {
+                        return me.cartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
+                    },
+                    opacity: opacity
+                });
+                if (this.options.featureLayerPopupEnable) {
+                    layer.bindPopup(me.options.featureLayerPopup || me.defaultFeatureLayerPopup)
+                }
+                me.addLayer(layer);
+            };
             for (var setNameIndex = 0; setNameIndex < datasets.length; setNameIndex++) {
                 var dataset = datasets[setNameIndex];
                 if (dataset.visible) {
@@ -422,28 +443,7 @@ export var WebMap = L.LayerGroup.extend({
                         },
                         datasetNames: [datasourceName + ":" + dataset.name]
                     });
-                    L.supermap.getFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", function (serviceResult) {
-                        var layer = L.geoJSON(serviceResult.result, {
-                            pointToLayer: function (geojson, latlng) {
-                                var m = new L.Marker(latlng);
-                                m.setStyle = function (style) {
-                                    if (style) {
-                                        m.setIcon(style);
-                                    }
-                                };
-                                return m;
-                            },
-                            coordsToLatLng: coordsToLatLng,
-                            style: function (geoJsonFeature) {
-                                return me.cartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
-                            },
-                            opacity: opacity
-                        });
-                        if (this.options.featureLayerPopupEnable) {
-                            layer.bindPopup(me.options.featureLayerPopup || me.defaultFeatureLayerPopup)
-                        }
-                        me.addLayer(layer);
-                    });
+                    L.supermap.getFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", fun);
                 }
             }
         }

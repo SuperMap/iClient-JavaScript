@@ -181,8 +181,6 @@ export default  class ThemeVector extends ThemeFeature {
         for (var i = 0; i < components.length; i++) {
             var components_i = components[i];
             refLocal = [];
-            localLX = [];
-
             localLX = this.getLocalXY(components_i);
 
             refLocal[0] = localLX[0] - location[0];
@@ -267,8 +265,6 @@ export default  class ThemeVector extends ThemeFeature {
         for (var i = 0; i < components.length; i++) {
             var components_i = components[i];
             refLocal = [];
-            localLX = [];
-
             localLX = this.getLocalXY(components_i);
 
             refLocal[0] = localLX[0] - location[0];
@@ -431,8 +427,6 @@ export default  class ThemeVector extends ThemeFeature {
 
                 for (var j = 0; j < components_i.length; j++) {
                     refLocal = [];
-                    localLX = [];
-
                     localLX = this.getLocalXY(components_i[j]);
 
                     refLocal[0] = localLX[0] - location[0];
@@ -452,19 +446,17 @@ export default  class ThemeVector extends ThemeFeature {
                 // 其它 component 作为岛洞
                 holePolygonPointList = [];
 
-                for (var j = 0; j < components_i.length; j++) {
+                for (var k = 0; k < components_i.length; k++) {
                     refLocal = [];
-                    localLX = [];
-
-                    localLX = this.getLocalXY(components_i[j]);
+                    localLX = this.getLocalXY(components_i[k]);
 
                     refLocal[0] = localLX[0] - location[0];
                     refLocal[1] = localLX[1] - location[1];
 
                     //抽稀 - 2 px
                     if (holePolygonPointList.length > 0) {
-                        var lastLocalXY = holePolygonPointList[holePolygonPointList.length - 1];
-                        if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
+                        var lastXY = holePolygonPointList[holePolygonPointList.length - 1];
+                        if ((Math.abs(lastXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastXY[1] - refLocal[1]) <= nCPx)) continue;
                     }
 
                     //使用参考点
@@ -484,7 +476,7 @@ export default  class ThemeVector extends ThemeFeature {
         }
 
         //赋 style
-        var style = new Object();
+        var style = {};
         style = SuperMap.Util.copyAttributesWithClip(style, this.style, ['pointList']);
         style.pointList = pointList;
 

@@ -74,16 +74,15 @@ export default class WebMap extends ol.Observable {
         }
         var layerQueue = [];
         for (var i = 0; i < layersJson.length; i++) {
-            var layerInfo = layersJson[i];
-            layerInfo["_originIndex"] = i;
-            var layerType = layerInfo.layerType = layerInfo.layerType || "BASE_LAYER";
-            var type = layerInfo.type;
-            if (layerType !== "BASE_LAYER") {
+            var layerJson = layersJson[i];
+            layerJson["_originIndex"] = i;
+            var layerJsonType = layerJson.layerType = layerJson.layerType || "BASE_LAYER";
+            if (layerJsonType !== "BASE_LAYER") {
                 //如果图层不是底图，则先加到图层队列里面等待底图完成后再处理
-                layerQueue.unshift(layerInfo);
+                layerQueue.unshift(layerJson);
                 continue;
             } else {
-                this.createLayer(type, layerInfo);
+                this.createLayer(layerJson.type, layerJson);
             }
         }
         //底图加载完成后开始处理图层队列里的图层
@@ -162,7 +161,7 @@ export default class WebMap extends ol.Observable {
      */
     getResolutionsFromScales(scales, dpi, units, datum) {
         var resolutions = [];
-        if(!scales||scales.length==0){
+        if (!scales || scales.length == 0) {
             return resolutions;
         }
         for (var i = 0; i < scales.length; i++) {
@@ -182,7 +181,7 @@ export default class WebMap extends ol.Observable {
             epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
             center = this.mapInfo.center || layerInfo.center,
             level = this.mapInfo.level || layerInfo.level,
-            bounds = layerInfo.bounds ||this.mapInfo.extent ,
+            bounds = layerInfo.bounds || this.mapInfo.extent,
             scales = layerInfo.scales,
             opacity = layerInfo.opacity,
             origin = [bounds.leftBottom.x, bounds.rightTop.y],
@@ -203,10 +202,10 @@ export default class WebMap extends ol.Observable {
                     source: new ol.source.TileSuperMapRest({
                         url: layerInfo.url,
                         transparent: true,
-                        tileGrid:scales? new ol.tilegrid.TileGrid({
+                        tileGrid: scales ? new ol.tilegrid.TileGrid({
                             extent: extent,
-                            resolutions: this.getResolutionsFromScales(scales,96)
-                        }):ol.source.TileSuperMapRest.createTileGrid(extent)
+                            resolutions: this.getResolutionsFromScales(scales, 96)
+                        }) : ol.source.TileSuperMapRest.createTileGrid(extent)
                     }),
                     projection: projection
                 });
@@ -352,17 +351,14 @@ export default class WebMap extends ol.Observable {
      * @return {ol.layer.Vector}
      */
     createMarkersLayer(layerInfo) {
-        var markers = layerInfo.markers || [],
-            style = layerInfo.style,
-            opacity = layerInfo.opacity,
-            marker, point, size, offset, icon, that = this;
+        var markers = layerInfo.markers || [];
         //todo offset
         var layer = new ol.layer.Vector({
             style: function (feature) {
                 return StyleUtils.getStyleFromiPortalMarker(feature.getProperties().icon);
             },
             source: new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(ol.supermap.Util.toGeoJSON(layerInfo.markers)),
+                features: (new ol.format.GeoJSON()).readFeatures(ol.supermap.Util.toGeoJSON(markers)),
                 wrapX: false
             })
         });
@@ -377,9 +373,9 @@ export default class WebMap extends ol.Observable {
      * @return {ol.layer.Vector}
      */
     createVectorLayer(layerInfo) {
-        var style = layerInfo.style,
-            opacity = layerInfo.opacity,
-            isVisible = layerInfo.isVisible;
+        var style = layerInfo.style;
+        //opacity = layerInfo.opacity,
+        //isVisible = layerInfo.isVisible;
         //todo readonly = layerInfo.readonly;
         if (!layerInfo.url) {
             var layer = new ol.layer.Vector({
@@ -399,6 +395,18 @@ export default class WebMap extends ol.Observable {
                 datasets = layerInfo.features;
             style = layerInfo.style;
             var me = this;
+            var fun = function (serviceResult) {
+                var layer = new ol.layer.Vector({
+                    style: function (feature) {
+                        return StyleUtils.getStyleFromiPortalStyle(style, feature.getGeometry().getType(), feature.getProperties().style);
+                    },
+                    source: new ol.source.Vector({
+                        features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result),
+                        wrapX: false
+                    })
+                });
+                me.map.addLayer(layer);
+            };
             for (var setNameIndex = 0; setNameIndex < datasets.length; setNameIndex++) {
                 var dataset = datasets[setNameIndex];
                 if (dataset.visible) {
@@ -409,18 +417,7 @@ export default class WebMap extends ol.Observable {
                         },
                         datasetNames: [datasourceName + ":" + dataset.name]
                     });
-                    new ol.supermap.GetFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", function (serviceResult) {
-                        var layer = new ol.layer.Vector({
-                            style: function (feature) {
-                                return StyleUtils.getStyleFromiPortalStyle(style, feature.getGeometry().getType(), feature.getProperties().style);
-                            },
-                            source: new ol.source.Vector({
-                                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result),
-                                wrapX: false
-                            })
-                        });
-                        me.map.addLayer(layer);
-                    });
+                    new ol.supermap.GetFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", fun);
                 }
             }
         }

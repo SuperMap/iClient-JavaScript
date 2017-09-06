@@ -2486,8 +2486,7 @@ var GeoJSON = function (_JSONFormat) {
     }, {
         key: 'toGeoPoint',
         value: function toGeoPoint(geometry) {
-            var me = this,
-                geoPoints = geometry.points || [],
+            var geoPoints = geometry.points || [],
                 geoParts = geometry.parts || [geoPoints.length],
                 len = geoParts.length;
             if (len < 1) {
@@ -2530,12 +2529,12 @@ var GeoJSON = function (_JSONFormat) {
                 }
                 return { type: "LineString", components: pointList };
             } else {
-                for (var i = 0, lineList = []; i < len; i++) {
-                    for (var j = 0, pointList = []; j < geoParts[i]; j++) {
-                        pointList.push({ x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y) });
+                for (var k = 0, lineList = []; k < len; k++) {
+                    for (var j = 0, pointArr = []; j < geoParts[k]; j++) {
+                        pointArr.push({ x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y) });
                     }
-                    lineList.push(pointList);
-                    geoPoints.splice(0, geoParts[i]);
+                    lineList.push(pointArr);
+                    geoPoints.splice(0, geoParts[k]);
                 }
                 return { type: "MultiLineString", components: lineList };
             }
@@ -9793,7 +9792,7 @@ var Bar3D = function (_Graph) {
             }
 
             // 获取 x 轴上的图形信息
-            var xShapeInfo = this.calculateXShapeInfo(dvb, sets, "Bar3D", fv.length);
+            var xShapeInfo = this.calculateXShapeInfo();
             if (!xShapeInfo) return;
             // 每个柱条 x 位置
             var xsLoc = xShapeInfo.xPositions;

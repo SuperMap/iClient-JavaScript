@@ -2409,8 +2409,7 @@ var GeoJSON = function (_JSONFormat) {
     }, {
         key: 'toGeoPoint',
         value: function toGeoPoint(geometry) {
-            var me = this,
-                geoPoints = geometry.points || [],
+            var geoPoints = geometry.points || [],
                 geoParts = geometry.parts || [geoPoints.length],
                 len = geoParts.length;
             if (len < 1) {
@@ -2453,12 +2452,12 @@ var GeoJSON = function (_JSONFormat) {
                 }
                 return { type: "LineString", components: pointList };
             } else {
-                for (var i = 0, lineList = []; i < len; i++) {
-                    for (var j = 0, pointList = []; j < geoParts[i]; j++) {
-                        pointList.push({ x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y) });
+                for (var k = 0, lineList = []; k < len; k++) {
+                    for (var j = 0, pointArr = []; j < geoParts[k]; j++) {
+                        pointArr.push({ x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y) });
                     }
-                    lineList.push(pointList);
-                    geoPoints.splice(0, geoParts[i]);
+                    lineList.push(pointArr);
+                    geoPoints.splice(0, geoParts[k]);
                 }
                 return { type: "MultiLineString", components: lineList };
             }
@@ -6642,8 +6641,6 @@ var ThemeVector = function (_ThemeFeature) {
             for (var i = 0; i < components.length; i++) {
                 var components_i = components[i];
                 refLocal = [];
-                localLX = [];
-
                 localLX = this.getLocalXY(components_i);
 
                 refLocal[0] = localLX[0] - location[0];
@@ -6729,8 +6726,6 @@ var ThemeVector = function (_ThemeFeature) {
             for (var i = 0; i < components.length; i++) {
                 var components_i = components[i];
                 refLocal = [];
-                localLX = [];
-
                 localLX = this.getLocalXY(components_i);
 
                 refLocal[0] = localLX[0] - location[0];
@@ -6900,8 +6895,6 @@ var ThemeVector = function (_ThemeFeature) {
 
                     for (var j = 0; j < components_i.length; j++) {
                         refLocal = [];
-                        localLX = [];
-
                         localLX = this.getLocalXY(components_i[j]);
 
                         refLocal[0] = localLX[0] - location[0];
@@ -6920,19 +6913,17 @@ var ThemeVector = function (_ThemeFeature) {
                     // 其它 component 作为岛洞
                     holePolygonPointList = [];
 
-                    for (var j = 0; j < components_i.length; j++) {
+                    for (var k = 0; k < components_i.length; k++) {
                         refLocal = [];
-                        localLX = [];
-
-                        localLX = this.getLocalXY(components_i[j]);
+                        localLX = this.getLocalXY(components_i[k]);
 
                         refLocal[0] = localLX[0] - location[0];
                         refLocal[1] = localLX[1] - location[1];
 
                         //抽稀 - 2 px
                         if (holePolygonPointList.length > 0) {
-                            var lastLocalXY = holePolygonPointList[holePolygonPointList.length - 1];
-                            if (Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx && Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx) continue;
+                            var lastXY = holePolygonPointList[holePolygonPointList.length - 1];
+                            if (Math.abs(lastXY[0] - refLocal[0]) <= nCPx && Math.abs(lastXY[1] - refLocal[1]) <= nCPx) continue;
                         }
 
                         //使用参考点
@@ -6952,7 +6943,7 @@ var ThemeVector = function (_ThemeFeature) {
             }
 
             //赋 style
-            var style = new Object();
+            var style = {};
             style = _SuperMap2.default.Util.copyAttributesWithClip(style, this.style, ['pointList']);
             style.pointList = pointList;
 
@@ -15173,16 +15164,15 @@ var WebMap = function (_ol$Observable) {
             }
             var layerQueue = [];
             for (var i = 0; i < layersJson.length; i++) {
-                var layerInfo = layersJson[i];
-                layerInfo["_originIndex"] = i;
-                var layerType = layerInfo.layerType = layerInfo.layerType || "BASE_LAYER";
-                var type = layerInfo.type;
-                if (layerType !== "BASE_LAYER") {
+                var layerJson = layersJson[i];
+                layerJson["_originIndex"] = i;
+                var layerJsonType = layerJson.layerType = layerJson.layerType || "BASE_LAYER";
+                if (layerJsonType !== "BASE_LAYER") {
                     //如果图层不是底图，则先加到图层队列里面等待底图完成后再处理
-                    layerQueue.unshift(layerInfo);
+                    layerQueue.unshift(layerJson);
                     continue;
                 } else {
-                    this.createLayer(type, layerInfo);
+                    this.createLayer(layerJson.type, layerJson);
                 }
             }
             //底图加载完成后开始处理图层队列里的图层
@@ -15471,22 +15461,14 @@ var WebMap = function (_ol$Observable) {
     }, {
         key: 'createMarkersLayer',
         value: function createMarkersLayer(layerInfo) {
-            var markers = layerInfo.markers || [],
-                style = layerInfo.style,
-                opacity = layerInfo.opacity,
-                marker,
-                point,
-                size,
-                offset,
-                icon,
-                that = this;
+            var markers = layerInfo.markers || [];
             //todo offset
             var layer = new _olDebug2.default.layer.Vector({
                 style: function style(feature) {
                     return _StyleUtils2.default.getStyleFromiPortalMarker(feature.getProperties().icon);
                 },
                 source: new _olDebug2.default.source.Vector({
-                    features: new _olDebug2.default.format.GeoJSON().readFeatures(_olDebug2.default.supermap.Util.toGeoJSON(layerInfo.markers)),
+                    features: new _olDebug2.default.format.GeoJSON().readFeatures(_olDebug2.default.supermap.Util.toGeoJSON(markers)),
                     wrapX: false
                 })
             });
@@ -15504,9 +15486,9 @@ var WebMap = function (_ol$Observable) {
     }, {
         key: 'createVectorLayer',
         value: function createVectorLayer(layerInfo) {
-            var _style = layerInfo.style,
-                opacity = layerInfo.opacity,
-                isVisible = layerInfo.isVisible;
+            var _style = layerInfo.style;
+            //opacity = layerInfo.opacity,
+            //isVisible = layerInfo.isVisible;
             //todo readonly = layerInfo.readonly;
             if (!layerInfo.url) {
                 var layer = new _olDebug2.default.layer.Vector({
@@ -15526,6 +15508,18 @@ var WebMap = function (_ol$Observable) {
                     datasets = layerInfo.features;
                 _style = layerInfo.style;
                 var me = this;
+                var fun = function fun(serviceResult) {
+                    var layer = new _olDebug2.default.layer.Vector({
+                        style: function style(feature) {
+                            return _StyleUtils2.default.getStyleFromiPortalStyle(_style, feature.getGeometry().getType(), feature.getProperties().style);
+                        },
+                        source: new _olDebug2.default.source.Vector({
+                            features: new _olDebug2.default.format.GeoJSON().readFeatures(serviceResult.element.result),
+                            wrapX: false
+                        })
+                    });
+                    me.map.addLayer(layer);
+                };
                 for (var setNameIndex = 0; setNameIndex < datasets.length; setNameIndex++) {
                     var dataset = datasets[setNameIndex];
                     if (dataset.visible) {
@@ -15536,18 +15530,7 @@ var WebMap = function (_ol$Observable) {
                             },
                             datasetNames: [datasourceName + ":" + dataset.name]
                         });
-                        new _olDebug2.default.supermap.GetFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", function (serviceResult) {
-                            var layer = new _olDebug2.default.layer.Vector({
-                                style: function style(feature) {
-                                    return _StyleUtils2.default.getStyleFromiPortalStyle(_style, feature.getGeometry().getType(), feature.getProperties().style);
-                                },
-                                source: new _olDebug2.default.source.Vector({
-                                    features: new _olDebug2.default.format.GeoJSON().readFeatures(serviceResult.element.result),
-                                    wrapX: false
-                                })
-                            });
-                            me.map.addLayer(layer);
-                        });
+                        new _olDebug2.default.supermap.GetFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", fun);
                     }
                 }
             }
@@ -23486,7 +23469,7 @@ var Bar3D = function (_Graph) {
             }
 
             // 获取 x 轴上的图形信息
-            var xShapeInfo = this.calculateXShapeInfo(dvb, sets, "Bar3D", fv.length);
+            var xShapeInfo = this.calculateXShapeInfo();
             if (!xShapeInfo) return;
             // 每个柱条 x 位置
             var xsLoc = xShapeInfo.xPositions;
