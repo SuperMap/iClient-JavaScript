@@ -1,6 +1,7 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
     'leaflet_tiandituLayer_mercator': function (browser) {
+        browser.windowMaximize();
         var type = 'leaflet';
         var exampleName = 'tiandituLayer_mercator';
         commonTools.openExampleAndLoadMap(browser, type, exampleName);

@@ -127,9 +127,9 @@ var commonTools = ({
                     console.log('tile2 ( ' + tilePath2 + ' ) has pixels : ' + (array2.length / 4));
                     var isEqual = commonTools.judgeTwoTilesByRgbaArrays(browser, array1, array2);
                     if (isEqual) {
-                        browser.assert.ok(isEqual, 'similarity of two pictures >= 0.94');
+                        browser.assert.ok(isEqual, 'similarity of two pictures >= 0.9');
                     } else {
-                        browser.assert.ok(isEqual, 'similarity of two pictures < 0.94');
+                        browser.assert.ok(isEqual, 'similarity of two pictures < 0.9');
                     }
                 });
             });
@@ -151,11 +151,11 @@ var commonTools = ({
             var unEqualCount = commonTools.difPixelsCount(RgbaArraysOfTile1, RgbaArraysOfTile2);
             console.log('different pixels count : ' + unEqualCount);
             var similarity = ((totalCount - unEqualCount) / totalCount).toFixed(5);
-            if (similarity < 0.94) {
-                browser.assert.ok(similarity < 0.94, 'similarity : ' + similarity + ' < 0.94');
+            if (similarity < 0.9) {
+                browser.assert.ok(similarity < 0.9, 'similarity : ' + similarity + ' < 0.9');
                 return false;
             }
-            browser.assert.ok(similarity >= 0.94, 'similarity : ' + similarity + ' >= 0.94');
+            browser.assert.ok(similarity >= 0.9, 'similarity : ' + similarity + ' >= 0.9');
             return true;
         },
 

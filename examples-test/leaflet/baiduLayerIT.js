@@ -1,6 +1,7 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
     'leaflet_baiduLayer': function (browser) {
+        browser.windowMaximize();
         var type = 'leaflet';
         var exampleName = 'baiduLayer';
         commonTools.openExampleAndLoadMap(browser, type, exampleName);

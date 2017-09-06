@@ -1,6 +1,7 @@
 var commonTools = require('../base/commonTools');
 module.exports = {
     'leaflet_01_overlayTiledMapLayer': function (browser) {
+        browser.windowMaximize();
         var type = 'leaflet';
         var exampleName = '01_overlayTiledMapLayer';
         commonTools.openExampleAndLoadMap(browser, type, exampleName);
