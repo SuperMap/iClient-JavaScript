@@ -96,7 +96,7 @@ describe('testRoute', function () {
         expect(route.id).toBeNull();
         expect(route.center).toBeNull();
         expect(route.style).toBeNull();
-        expect(route.length).toBe(0);
+        expect(route.length).toBeNull();
         expect(route.maxM).toBeNull();
         expect(route.minM).toBeNull();
         expect(route.type).toBeNull();
