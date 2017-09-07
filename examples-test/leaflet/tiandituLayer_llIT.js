@@ -9,7 +9,7 @@ module.exports = {
         commonTools.cmpTestTileWithStdTile(browser, type, exampleName, 0, 0, 128, 128);
         //验证版权跳转正确性
         //iClient logo
-        browser.click('.iclient-leaflet-logo.leaflet-control a');
+        browser.useXpath().click('//*[@id="map"]/div[2]/div[4]/div[1]/a');
         browser.pause(1000);
         browser.windowHandles(function (result) {
             browser.switchWindow(result.value[1]);

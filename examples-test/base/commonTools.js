@@ -195,7 +195,7 @@ var commonTools = ({
     /*leaflet: verify correctness of copyright*/
     verifyCopyrightOfLeaflet: function (browser) {
         //iClient logo
-        browser.click('.iclient-leaflet-logo.leaflet-control a');
+        browser.useXpath().click('//*[@id="map"]/div[2]/div[4]/div[1]/a');
         browser.pause(1000);
         browser.windowHandles(function (result) {
             browser.switchWindow(result.value[1]);
@@ -221,6 +221,7 @@ var commonTools = ({
             browser.switchWindow(result.value[1]);
             browser.assert.urlEquals('http://iclient.supermapol.com/');
             browser.closeWindow();
+            browser.switchWindow(result.value[0]);
         });
     }
 

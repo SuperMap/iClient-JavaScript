@@ -9,7 +9,7 @@ module.exports = {
         commonTools.cmpTestTileWithStdTile(browser, type, exampleName, 0, 0, 256, 256);
         //测试版权点击的正确性
         commonTools.verifyCopyrightOfLeaflet(browser);
-        browser(1000);
+        browser.pause(1000);
         browser.end();
     }
 };
