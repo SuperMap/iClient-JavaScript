@@ -1,7 +1,7 @@
 require('../../../src/leaflet/mapping/ImageMapLayer');
 
 var url = GlobeParameter.imageURL;
-describe('TiledMapLayer', function () {
+describe('leaflet_TiledMapLayer', function () {
     var originalTimeout;
     var testDiv, map , imageLayerObject;
     beforeAll(function () {

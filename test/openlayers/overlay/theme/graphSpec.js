@@ -2,7 +2,7 @@ require('../../../../src/openlayers/overlay/theme/graph');
 require('../../../tool/chinaConsumptionLevel');
 
 var url = GlobeParameter.China4326URL;
-describe('openlayer_graph', function () {
+describe('openlayers_graph', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {

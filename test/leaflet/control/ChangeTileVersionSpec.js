@@ -1,7 +1,7 @@
 require('../../../src/leaflet/control/ChangeTileVersion');
 
 var url = GlobeParameter.ChinaProvincesURL;
-describe('ChangeTileVersion Test', function () {
+describe('leaflet_ChangeTileVersionTest', function () {
     var originalTimeout;
     var testDiv, map , changeTileVersion;
     beforeAll(function () {

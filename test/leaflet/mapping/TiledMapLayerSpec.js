@@ -1,7 +1,7 @@
 require('../../../src/leaflet/mapping/TiledMapLayer');
 
 var url = GlobeParameter.ChinaURL;
-describe('TiledMapLayer', function () {
+describe('leaflet_TiledMapLayer', function () {
     var originalTimeout;
     var testDiv, map , tiledMapLayerObject;
     beforeAll(function () {

@@ -1,7 +1,7 @@
 require('../../../src/leaflet/overlay/EChartsLayer');
 
 var url = GlobeParameter.imageURL;
-describe('EChartsLayer Test', function () {
+describe('leaflet_EChartsLayerTest', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {

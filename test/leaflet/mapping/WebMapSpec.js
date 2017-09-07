@@ -1,6 +1,6 @@
 require('../../../src/leaflet/mapping/WebMap');
 
-describe('WebMapTest', function() {
+describe('leaflet_WebMapTest', function() {
     var originalTimeout;
     var testDiv;
     beforeEach(function () {

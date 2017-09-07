@@ -1,7 +1,7 @@
 require('../../../src/openlayers/mapping/ImageSuperMapRest');
 
 var url = GlobeParameter.imageURL;
-describe('ImageSuperMapRest Test', function() {
+describe('openlayers_ImageSuperMapRestTest', function() {
     var originalTimeout;
     var testDiv, map, imageTileOptions, imageTileSource;
     beforeAll(function () {

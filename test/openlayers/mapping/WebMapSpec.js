@@ -1,6 +1,6 @@
 require('../../../src/openlayers/mapping/WebMap');
 
-describe('WebMapTest', function() {
+describe('openlayers_WebMapTest', function() {
     var originalTimeout;
     var testDiv;
     beforeEach(function () {
