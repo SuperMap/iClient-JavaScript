@@ -83,7 +83,7 @@ describe('testSecurityManager', function () {
     });
 
     it("loginPortal", function () {
-        var newTab = true;
+        var newTab = false;
         var url = 'http://localhost:8092/';
         SuperMap.SecurityManager.loginPortal(url, newTab);
     });
