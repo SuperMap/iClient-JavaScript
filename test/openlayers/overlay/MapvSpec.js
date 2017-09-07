@@ -88,18 +88,17 @@ describe('openlayers_testMapV', function () {
     });
 
     it('constructor test', function (done) {
-        expect(mapVSource).not.toBeNull();
-        expect(mapVSource.mapvOptions.shadowBlur).toBe(20);
-        expect(mapVSource.mapvOptions.draw).toBe("honeycomb");
-
         //判断是否返回期望的maplayer
         setTimeout(function () {
+            expect(mapVSource).not.toBeNull();
+            expect(mapVSource.mapvOptions.shadowBlur).toBe(20);
+            expect(mapVSource.mapvOptions.draw).toBe("honeycomb");
             expect(mapVSource.layer).not.toBeNull();
             expect(mapVSource.layer.canvasLayer.context).toBe("2d");
             expect(mapVSource.layer.canvasLayer.paneName).toBe("mapPane");
             expect(mapVSource.layer.canvasLayer.zIndex).toEqual(2);
             done();
-        },5000)
+        }, 5000)
     });
 
 });

@@ -73,6 +73,7 @@ export default class WebMap extends ol.Observable {
             return;
         }
         var layerQueue = [];
+        var baseLayerJson;
         for (var i = 0; i < layersJson.length; i++) {
             var layerJson = layersJson[i];
             layerJson["_originIndex"] = i;
@@ -82,20 +83,40 @@ export default class WebMap extends ol.Observable {
                 layerQueue.unshift(layerJson);
                 continue;
             } else {
-                this.createLayer(layerJson.type, layerJson);
+                baseLayerJson=layerJson;
+
             }
         }
-        //底图加载完成后开始处理图层队列里的图层
-        while (layerQueue.length > 0) {
-            var layerInfo = layerQueue.pop();
-            var type = layerInfo.type;
-            var layerType = layerInfo.layerType = layerInfo.layerType || "BASE_LAYER";
-            if (layerType !== "OVERLAY_LAYER") {
-                type = layerType;
-            }
-            this.createLayer(type, layerInfo);
+        var viewOptions=this._getViewOptions(baseLayerJson);
+        if (!this.map) {
+            var view = new ol.View(viewOptions);
+            var controls = ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new Logo()]);
+            this.map = new ol.Map({
+                target: this.target,
+                view: view,
+                controls: controls
+            });
+            var me =this;
+            this.map.once('postrender',function () {
+                me.createLayer(baseLayerJson.type, baseLayerJson);
+                //底图加载完成后开始处理图层队列里的图层
+                while (layerQueue.length > 0) {
+                    var layerInfo = layerQueue.pop();
+                    var type = layerInfo.type;
+                    var layerType = layerInfo.layerType = layerInfo.layerType || "BASE_LAYER";
+                    if (layerType !== "OVERLAY_LAYER") {
+                        type = layerType;
+                    }
+                    me.createLayer(type, layerInfo);
+                }
+                me.dispatchEvent({type: ol.supermap.WebMap.EventType.WEBMAPLOADEND, value: this.map});
+            })
+            view.fit(options.extent);
+
         }
-        this.dispatchEvent({type: ol.supermap.WebMap.EventType.WEBMAPLOADEND, value: this.map});
+
+
     };
 
     /**
@@ -139,15 +160,7 @@ export default class WebMap extends ol.Observable {
      */
     createMap(options) {
         if (!this.map) {
-            var view = new ol.View(options);
-            var controls = ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new Logo()]);
-            this.map = new ol.Map({
-                target: this.target,
-                view: view,
-                controls: controls
-            });
-            view.fit(options.extent);
+
         }
     }
 
@@ -168,6 +181,25 @@ export default class WebMap extends ol.Observable {
             resolutions.push(SuperMap.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
+    }
+
+    _getViewOptions(layerInfo) {
+        var prjCoordSys = layerInfo.prjCoordSys,
+            epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
+            center = this.mapInfo.center || layerInfo.center,
+            level = this.mapInfo.level || layerInfo.level,
+            bounds = layerInfo.bounds || this.mapInfo.extent,
+            extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
+        var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
+
+        //var crs = this.createCRS(epsgCode, origin, resolution, boundsL);
+        return {
+            center: [center.x, center.y],
+            zoom: level,
+            projection: projection,
+            extent: extent
+        };
+
     }
 
     /**
