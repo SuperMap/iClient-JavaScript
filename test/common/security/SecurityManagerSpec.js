@@ -78,7 +78,7 @@ describe('testSecurityManager', function () {
 
     it("loginOnline", function () {
         var callbackLocation = "Online";
-        var newTab = true;
+        var newTab = false;
         SuperMap.SecurityManager.loginOnline(callbackLocation, newTab);
     });
 
