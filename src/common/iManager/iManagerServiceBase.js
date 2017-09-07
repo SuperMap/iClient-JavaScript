@@ -28,7 +28,7 @@ export default class IManagerServiceBase {
      * @param requestOptions -{Object}
      * @param param -{Object}
      * @description 获取返回参数的json数组
-     *
+     * @returns {Promise}
      */
 
     request(method, url, param, requestOptions) {

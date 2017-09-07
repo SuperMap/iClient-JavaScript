@@ -50,7 +50,7 @@ export default class AddressMatchService extends CommonServiceBase {
 
     processAsync(url, params) {
         var me = this;
-        return FetchRequest.get(url, params).then(function (response) {
+        FetchRequest.get(url, params).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -71,6 +71,7 @@ export default class AddressMatchService extends CommonServiceBase {
     serviceProcessCompleted(result) {
         super.serviceProcessCompleted(result);
     }
+
     /**
      * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
      * @param result - {Object} 服务器返回的结果对象。

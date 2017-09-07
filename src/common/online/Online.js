@@ -27,13 +27,21 @@ export default class Online {
         this.mDatasUrl = mContentUrl + "/datas";
     }
 
+    /**
+     * @function SuperMap.Online.prototype.load
+     * @description 加载online，验证online是否可用
+     * @returns {Promise}
+     */
     load() {
         return FetchRequest.get(this.rootUrl).then(function (response) {
             return response;
         });
     }
 
-
+    /**
+     * @function SuperMap.Online.prototype.login
+     * @description 登录Online
+     */
     login() {
         SuperMap.SecurityManager.loginOnline(this.rootUrl, true);
     }
@@ -42,6 +50,7 @@ export default class Online {
      * @function SuperMap.Online.prototype.queryDatas
      * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
      * @param parameter -｛SuperMap.OnlineQueryDatasParameter｝myDatas服务资源查询参数
+     * @returns {Promise}
      */
     queryDatas(parameter) {
         var me = this, url = me.mDatasUrl;

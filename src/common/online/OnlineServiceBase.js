@@ -16,14 +16,14 @@ export default class OnlineServiceBase {
         me.serverType = ServerType.ONLINE;
     }
 
-    /*
+    /**
      * @function SuperMap.OnlineServiceBase.prototype.request
      * @description 请求online服务
      * @param method - {function}
      * @param url - {string} 服务地址
      * @param param
      * @param requestOptions
-     * @return {Promise.<TResult>|jQuery.deferred|jQuery.jqXHR|jQuery.Promise|*}
+     * @return {Promise}
      */
     request(method, url, param, requestOptions) {
         url = this.createCredentialUrl(url);

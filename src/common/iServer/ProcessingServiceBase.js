@@ -44,7 +44,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
      */
     getJobs(url) {
         var me = this;
-        return FetchRequest.get(url).then(function (response) {
+        FetchRequest.get(url).then(function (response) {
             return response.json();
         }).then(function (result) {
             me.events.triggerEvent("processCompleted", {result: result});
@@ -70,7 +70,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+        FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
@@ -89,23 +89,23 @@ export default class ProcessingServiceBase extends CommonServiceBase {
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                return FetchRequest.get(result.newResourceLocation)
+                FetchRequest.get(result.newResourceLocation)
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
-                        me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
-                        if (job.state.runState === 'LOST') {
-                            clearInterval(id);
-                            me.events.triggerEvent("processFailed", {error: job.state.errorMsg});
-                        }
-                        if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
-                            clearInterval(id);
-                            me.events.triggerEvent("processCompleted", {result: job});
-                        }
-                    }).catch(function (e) {
+                    me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
+                    if (job.state.runState === 'LOST') {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", {error: e});
-                    });
+                        me.events.triggerEvent("processFailed", {error: job.state.errorMsg});
+                    }
+                    if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
+                        clearInterval(id);
+                        me.events.triggerEvent("processCompleted", {result: job});
+                    }
+                }).catch(function (e) {
+                    clearInterval(id);
+                    me.events.triggerEvent("processFailed", {error: e});
+                });
             }, seconds);
         }
     }

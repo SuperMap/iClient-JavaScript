@@ -22,6 +22,7 @@ export default  class IPortalServiceBase {
      * @param url -{string} 服务地址
      * @param param -{Object} 请求参数
      * @param requestOptions -{Object} fetch请求配置项
+     * @returns {Promise}
      */
 
     request(method, url, param, requestOptions) {

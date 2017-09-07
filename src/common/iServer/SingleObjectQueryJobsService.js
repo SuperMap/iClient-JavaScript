@@ -9,7 +9,7 @@ import SingleObjectQueryJobsParameter from './SingleObjectQueryJobsParameter';
  * @param url -{string} 单对象空间查询分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-export default  class SingleObjectQueryJobsService extends ProcessingServiceBase {
+export default class SingleObjectQueryJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -26,10 +26,9 @@ export default  class SingleObjectQueryJobsService extends ProcessingServiceBase
     /**
      * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
      * @description 获取单对象空间查询分析所有任务
-     * @return {*}
      */
     getQueryJobs() {
-        return super.getJobs(this.url);
+        super.getJobs(this.url);
     }
 
     /**
@@ -38,7 +37,7 @@ export default  class SingleObjectQueryJobsService extends ProcessingServiceBase
      * @param id -{string} 指定要获取数据的id
      */
     getQueryJob(id) {
-        return super.getJobs(this.url + '/' + id);
+        super.getJobs(this.url + '/' + id);
     }
 
     /**
@@ -48,7 +47,7 @@ export default  class SingleObjectQueryJobsService extends ProcessingServiceBase
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      */
     addQueryJob(params, seconds) {
-        return super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds);
+        super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds);
     }
 
     CLASS_NAME = "SuperMap.SingleObjectQueryJobsService"

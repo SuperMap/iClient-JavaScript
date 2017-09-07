@@ -13,7 +13,7 @@ import SummaryMeshJobParameter from './SummaryMeshJobParameter';
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
-export default  class SummaryMeshJobsService extends ProcessingServiceBase {
+export default class SummaryMeshJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -32,7 +32,7 @@ export default  class SummaryMeshJobsService extends ProcessingServiceBase {
      * @description 获取点聚合分析任务
      */
     getSummaryMeshJobs() {
-        return super.getJobs(this.url);
+        super.getJobs(this.url);
     }
 
     /**
@@ -41,7 +41,7 @@ export default  class SummaryMeshJobsService extends ProcessingServiceBase {
      * @param id -{string} 指定要获取数据的id
      */
     getSummaryMeshJob(id) {
-        return super.getJobs(this.url + '/' + id);
+        super.getJobs(this.url + '/' + id);
     }
 
     /**

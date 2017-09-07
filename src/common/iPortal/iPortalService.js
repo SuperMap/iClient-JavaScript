@@ -1,5 +1,6 @@
 import SuperMap from '../SuperMap';
 import IPortalServiceBase from './iPortalServiceBase';
+
 /**
  * @class SuperMap.iPortalService
  * @classdesc iPortal服务
@@ -8,7 +9,7 @@ import IPortalServiceBase from './iPortalServiceBase';
  * @param params -{Object} 服务请求参数
  *
  */
-export default  class IPortalService extends IPortalServiceBase {
+export default class IPortalService extends IPortalServiceBase {
 
     addedMapNames = null;
     addedSceneNames = null;
@@ -47,10 +48,11 @@ export default  class IPortalService extends IPortalServiceBase {
             this.serviceUrl = serviceUrl + "/" + this.id;
         }
     }
+
     /**
      * @function SuperMap.iPortalService.prototype.load
      * @description 加载服务信息
-     *
+     * @returns {Promise}
      */
 
     load() {
@@ -69,7 +71,7 @@ export default  class IPortalService extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalService.prototype.update
      * @description 更新服务
-     *
+     * @returns {Promise}
      */
     update() {
         var serviceUpdateParam = {

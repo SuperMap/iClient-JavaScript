@@ -9,7 +9,7 @@ import KernelDensityJobParameter from './KernelDensityJobParameter';
  * @param url -{string} 核密度分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-export default  class KernelDensityJobsService extends ProcessingServiceBase {
+export default class KernelDensityJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -26,10 +26,9 @@ export default  class KernelDensityJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
      * @description 获取核密度分析任务
-     * @return {*}
      */
     getKernelDensityJobs() {
-        return super.getJobs(this.url);
+        super.getJobs(this.url);
     }
 
     /**
@@ -38,7 +37,7 @@ export default  class KernelDensityJobsService extends ProcessingServiceBase {
      * @param id -{string} 指定要获取数据的id
      */
     getKernelDensityJob(id) {
-        return super.getJobs(this.url + '/' + id);
+        super.getJobs(this.url + '/' + id);
     }
 
     /**
@@ -48,7 +47,7 @@ export default  class KernelDensityJobsService extends ProcessingServiceBase {
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      */
     addKernelDensityJob(params, seconds) {
-        return super.addJob(this.url, params, KernelDensityJobParameter, seconds);
+        super.addJob(this.url, params, KernelDensityJobParameter, seconds);
     }
 
     CLASS_NAME = "SuperMap.KernelDensityJobsService"

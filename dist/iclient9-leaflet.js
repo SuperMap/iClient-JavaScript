@@ -4313,6 +4313,7 @@ _SuperMap2["default"].SecurityManager = {
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
      * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
+     * @return {Promise}
      */
     generateToken: function generateToken(url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -4435,7 +4436,9 @@ _SuperMap2["default"].SecurityManager = {
      * @param loginInfoParams -{Object} iManager 登录参数<br>
      *        userName -{String} 用户名<br>
      *        password-{String} 密码
-     * @param isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+     * @param options -{Object} <br>
+     *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+     * @return {Promise}
      */
     loginManager: function loginManager(url, loginInfoParams, options) {
         if (!_SuperMap2["default"].Util.isInTheSameDomain(url)) {
@@ -6074,7 +6077,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
         key: 'getJobs',
         value: function getJobs(url) {
             var me = this;
-            return _FetchRequest.FetchRequest.get(url).then(function (response) {
+            _FetchRequest.FetchRequest.get(url).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 me.events.triggerEvent("processCompleted", { result: result });
@@ -6104,7 +6107,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
             var options = {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             };
-            return _FetchRequest.FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+            _FetchRequest.FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 if (result.succeed) {
@@ -6124,7 +6127,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
             var me = this;
             if (result) {
                 var id = setInterval(function () {
-                    return _FetchRequest.FetchRequest.get(result.newResourceLocation).then(function (response) {
+                    _FetchRequest.FetchRequest.get(result.newResourceLocation).then(function (response) {
                         return response.json();
                     }).then(function (job) {
                         me.events.triggerEvent("processRunning", { id: job.id, state: job.state });
@@ -6822,6 +6825,7 @@ var IPortalServiceBase = function () {
      * @param url -{string} 服务地址
      * @param param -{Object} 请求参数
      * @param requestOptions -{Object} fetch请求配置项
+     * @returns {Promise}
      */
 
     _createClass(IPortalServiceBase, [{
@@ -11668,7 +11672,7 @@ var ThemeVector = function (_ThemeFeature) {
         value: function multiPointToTF(geometry) {
             /*   //-- 不抽稀
              var components = geometry.components;
-              for(var i = 0; i < components.length; i++){
+               for(var i = 0; i < components.length; i++){
              var components_i = components[i];
              this.pointToTF(components_i);
              }
@@ -15317,7 +15321,7 @@ _SuperMap2["default"].TimeFlowControl = TimeFlowControl;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -15351,102 +15355,109 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  */
 var IManager = function (_IManagerServiceBase) {
-  _inherits(IManager, _IManagerServiceBase);
+    _inherits(IManager, _IManagerServiceBase);
 
-  /*
-   * @function SuperMap.iManager.prototype.constructor
-   * @param serviceUrl -{string} iManager首页地址
-   */
-  function IManager(iManagerUrl) {
-    _classCallCheck(this, IManager);
+    /*
+     * @function SuperMap.iManager.prototype.constructor
+     * @param serviceUrl -{string} iManager首页地址
+     */
+    function IManager(iManagerUrl) {
+        _classCallCheck(this, IManager);
 
-    return _possibleConstructorReturn(this, (IManager.__proto__ || Object.getPrototypeOf(IManager)).call(this, iManagerUrl));
-  }
-
-  /**
-   * @function SuperMap.iManager.prototype.load
-   * @description 获取所有服务接口，验证是否已登录授权
-   */
-
-
-  _createClass(IManager, [{
-    key: 'load',
-    value: function load() {
-      return this.request("GET", this.serviceUrl + '/web/api/service.json');
+        return _possibleConstructorReturn(this, (IManager.__proto__ || Object.getPrototypeOf(IManager)).call(this, iManagerUrl));
     }
 
     /**
-     * @function SuperMap.iManager.prototype.createIServer
-     * @param createParam -{SuperMap.iManagerCreateNodeParam} 创建参数
-     * @description 创建iServer
+     * @function SuperMap.iManager.prototype.load
+     * @description 获取所有服务接口，验证是否已登录授权
+     * @returns {Promise}
      */
 
-  }, {
-    key: 'createIServer',
-    value: function createIServer(createParam) {
-      return this.request("POST", this.serviceUrl + '/icloud/web/nodes/server.json', new _iManagerCreateNodeParam2["default"](createParam));
-    }
 
-    /**
-     * @function SuperMap.iManager.prototype.createIPortal
-     * @param createParam -{SuperMap.iManagerCreateNodeParam} 创建参数
-     * @description 创建iPortal
-     */
+    _createClass(IManager, [{
+        key: 'load',
+        value: function load() {
+            return this.request("GET", this.serviceUrl + '/web/api/service.json');
+        }
 
-  }, {
-    key: 'createIPortal',
-    value: function createIPortal(createParam) {
-      return this.request("POST", this.serviceUrl + '/icloud/web/nodes/portal.json', new _iManagerCreateNodeParam2["default"](createParam));
-    }
+        /**
+         * @function SuperMap.iManager.prototype.createIServer
+         * @param createParam -{SuperMap.iManagerCreateNodeParam} 创建参数
+         * @description 创建iServer
+         * @returns {Promise}
+         */
 
-    /**
-     * @function SuperMap.iManager.prototype.iServerList
-     * @description 获取所有创建的iServer
-     */
+    }, {
+        key: 'createIServer',
+        value: function createIServer(createParam) {
+            return this.request("POST", this.serviceUrl + '/icloud/web/nodes/server.json', new _iManagerCreateNodeParam2["default"](createParam));
+        }
 
-  }, {
-    key: 'iServerList',
-    value: function iServerList() {
-      return this.request("GET", this.serviceUrl + '/icloud/web/nodes/server.json');
-    }
+        /**
+         * @function SuperMap.iManager.prototype.createIPortal
+         * @param createParam -{SuperMap.iManagerCreateNodeParam} 创建参数
+         * @description 创建iPortal
+         * @returns {Promise}
+         */
 
-    /**
-     * @function SuperMap.iManager.prototype.iPortalList
-     * @description 获取所有创建的iPortal
-     */
+    }, {
+        key: 'createIPortal',
+        value: function createIPortal(createParam) {
+            return this.request("POST", this.serviceUrl + '/icloud/web/nodes/portal.json', new _iManagerCreateNodeParam2["default"](createParam));
+        }
 
-  }, {
-    key: 'iPortalList',
-    value: function iPortalList() {
-      return this.request("GET", this.serviceUrl + '/icloud/web/nodes/portal.json');
-    }
+        /**
+         * @function SuperMap.iManager.prototype.iServerList
+         * @description 获取所有创建的iServer
+         * @returns {Promise}
+         */
 
-    /**
-     * @function SuperMap.iManager.prototype.startNodes
-     * @param ids -{Array}  需要启动节点的id数组.e.g:['1']
-     * @description 启动节点
-     */
+    }, {
+        key: 'iServerList',
+        value: function iServerList() {
+            return this.request("GET", this.serviceUrl + '/icloud/web/nodes/server.json');
+        }
 
-  }, {
-    key: 'startNodes',
-    value: function startNodes(ids) {
-      return this.request("POST", this.serviceUrl + '/icloud/web/nodes/started.json', ids);
-    }
+        /**
+         * @function SuperMap.iManager.prototype.iPortalList
+         * @description 获取所有创建的iPortal
+         * @returns {Promise}
+         */
 
-    /**
-     * @function SuperMap.iManager.prototype.stopNodes
-     * @param ids -{Array}  需要停止节点的id数组.e.g:['1']
-     * @description 停止节点
-     */
+    }, {
+        key: 'iPortalList',
+        value: function iPortalList() {
+            return this.request("GET", this.serviceUrl + '/icloud/web/nodes/portal.json');
+        }
 
-  }, {
-    key: 'stopNodes',
-    value: function stopNodes(ids) {
-      return this.request("POST", this.serviceUrl + '/icloud/web/nodes/stopped.json', ids);
-    }
-  }]);
+        /**
+         * @function SuperMap.iManager.prototype.startNodes
+         * @param ids -{Array}  需要启动节点的id数组.e.g:['1']
+         * @description 启动节点
+         * @returns {Promise}
+         */
 
-  return IManager;
+    }, {
+        key: 'startNodes',
+        value: function startNodes(ids) {
+            return this.request("POST", this.serviceUrl + '/icloud/web/nodes/started.json', ids);
+        }
+
+        /**
+         * @function SuperMap.iManager.prototype.stopNodes
+         * @param ids -{Array}  需要停止节点的id数组.e.g:['1']
+         * @description 停止节点
+         * @returns {Promise}
+         */
+
+    }, {
+        key: 'stopNodes',
+        value: function stopNodes(ids) {
+            return this.request("POST", this.serviceUrl + '/icloud/web/nodes/stopped.json', ids);
+        }
+    }]);
+
+    return IManager;
 }(_iManagerServiceBase2["default"]);
 
 exports["default"] = IManager;
@@ -15519,10 +15530,11 @@ var IPortal = function (_IPortalServiceBase) {
         _this.iportalUrl = iportalUrl;
         return _this;
     }
+
     /**
      * @function SuperMap.iPortal.prototype.load
      * @description 加载页面
-     *
+     * @returns {Promise}
      */
 
 
@@ -15536,6 +15548,7 @@ var IPortal = function (_IPortalServiceBase) {
          * @function SuperMap.iPortal.prototype.queryServices
          * @param queryParams -{SuperMap.iPortalServicesQueryParam} 查询参数
          * @description 查询服务
+         * @returns {Promise}
          */
 
     }, {
@@ -15555,6 +15568,7 @@ var IPortal = function (_IPortalServiceBase) {
          * @function SuperMap.iPortal.prototype.deleteServices
          * @param ids -{Array} 服务的序号
          * @description 删除服务
+         * @returns {Promise}
          */
 
     }, {
@@ -15568,6 +15582,7 @@ var IPortal = function (_IPortalServiceBase) {
          * @function SuperMap.iPortal.prototype.queryMaps
          * @param queryParams -{SuperMap.iPortalMapsQueryParam} 查询参数
          * @description 获取地图信息
+         * @returns {Promise}
          */
 
     }, {
@@ -15658,6 +15673,13 @@ var Online = function () {
         this.mDatasUrl = mContentUrl + "/datas";
     }
 
+    /**
+     * @function SuperMap.Online.prototype.load
+     * @description 加载online，验证online是否可用
+     * @returns {Promise}
+     */
+
+
     _createClass(Online, [{
         key: 'load',
         value: function load() {
@@ -15665,6 +15687,12 @@ var Online = function () {
                 return response;
             });
         }
+
+        /**
+         * @function SuperMap.Online.prototype.login
+         * @description 登录Online
+         */
+
     }, {
         key: 'login',
         value: function login() {
@@ -15675,6 +15703,7 @@ var Online = function () {
          * @function SuperMap.Online.prototype.queryDatas
          * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取)并返回可操作的服务对象
          * @param parameter -｛SuperMap.OnlineQueryDatasParameter｝myDatas服务资源查询参数
+         * @returns {Promise}
          */
 
     }, {
@@ -25163,7 +25192,7 @@ var IManagerServiceBase = function () {
      * @param requestOptions -{Object}
      * @param param -{Object}
      * @description 获取返回参数的json数组
-     *
+     * @returns {Promise}
      */
 
     _createClass(IManagerServiceBase, [{
@@ -25282,6 +25311,7 @@ var IPortalMap = function (_IPortalServiceBase) {
     /**
      * @function SuperMap.iPortalMap.prototype.load
      * @description 加载地图信息
+     * @returns {Promise}
      */
 
 
@@ -25302,6 +25332,7 @@ var IPortalMap = function (_IPortalServiceBase) {
         /**
          * @function SuperMap.iPortalMap.prototype.update
          * @description 更新地图参数
+         * @returns {Promise}
          */
 
     }, {
@@ -25473,10 +25504,11 @@ var IPortalService = function (_IPortalServiceBase) {
         }
         return _this;
     }
+
     /**
      * @function SuperMap.iPortalService.prototype.load
      * @description 加载服务信息
-     *
+     * @returns {Promise}
      */
 
     _createClass(IPortalService, [{
@@ -25496,7 +25528,7 @@ var IPortalService = function (_IPortalServiceBase) {
         /**
          * @function SuperMap.iPortalService.prototype.update
          * @description 更新服务
-         *
+         * @returns {Promise}
          */
 
     }, {
@@ -25681,7 +25713,7 @@ var AddressMatchService = function (_CommonServiceBase) {
         key: 'processAsync',
         value: function processAsync(url, params) {
             var me = this;
-            return _FetchRequest.FetchRequest.get(url, params).then(function (response) {
+            _FetchRequest.FetchRequest.get(url, params).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 if (result) {
@@ -25705,6 +25737,7 @@ var AddressMatchService = function (_CommonServiceBase) {
         value: function serviceProcessCompleted(result) {
             _get(AddressMatchService.prototype.__proto__ || Object.getPrototypeOf(AddressMatchService.prototype), 'serviceProcessCompleted', this).call(this, result);
         }
+
         /**
          * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
          * @param result - {Object} 服务器返回的结果对象。
@@ -30172,7 +30205,7 @@ _SuperMap2["default"].DensityKernelAnalystParameters = DensityKernelAnalystParam
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -30199,120 +30232,120 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var EditFeaturesParameters = function () {
 
-  /**
-   * @member SuperMap.EditFeaturesParameters.prototype.returnContent -{boolean}
-   * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
-   *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
-   */
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.returnContent -{boolean}
+     * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
+     *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
+     */
 
 
-  /**
-   * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{EditType}
-   * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
-   */
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{EditType}
+     * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
+     */
 
 
-  /**
-   * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{string}
-   * @description 当前需要创建或者是修改的要素的数据集。
-   */
-  function EditFeaturesParameters(options) {
-    _classCallCheck(this, EditFeaturesParameters);
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{string}
+     * @description 当前需要创建或者是修改的要素的数据集。
+     */
+    function EditFeaturesParameters(options) {
+        _classCallCheck(this, EditFeaturesParameters);
 
-    this.dataSourceName = null;
-    this.dataSetName = null;
-    this.features = null;
-    this.editType = _REST.EditType.ADD;
-    this.IDs = null;
-    this.returnContent = false;
-    this.isUseBatch = false;
-    this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
+        this.dataSourceName = null;
+        this.dataSetName = null;
+        this.features = null;
+        this.editType = _REST.EditType.ADD;
+        this.IDs = null;
+        this.returnContent = false;
+        this.isUseBatch = false;
+        this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
 
-    if (!options) {
-      return;
-    }
-    _SuperMap2["default"].Util.extend(this, options);
-  }
-
-  /**
-   * @function SuperMap.EditFeaturesParameters.prototype.destroy
-   * @description 释放资源，将引用资源的属性置空。
-   */
-
-
-  /**
-   * @member SuperMap.EditFeaturesParameters.prototype.isUseBatch -{boolean}
-   * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
-   */
-
-
-  /**
-   * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{Array<string>}|{Array<Integer>}
-   * @description 执行删除时要素集ID集合。
-   */
-
-
-  /**
-   * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
-   * @description 当前需要创建或者是修改的要素集。</br>
-   * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
-   */
-
-
-  /**
-   * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
-   * @description 当前需要创建或者是修改的要素的数据源
-   */
-
-
-  _createClass(EditFeaturesParameters, [{
-    key: 'destroy',
-    value: function destroy() {
-      var me = this;
-      me.dataSourceName = null;
-      me.dataSetName = null;
-      me.features = null;
-      me.editType = null;
-      me.IDs = null;
-      me.returnContent = null;
+        if (!options) {
+            return;
+        }
+        _SuperMap2["default"].Util.extend(this, options);
     }
 
     /**
-     * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
-     * @description 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
-     * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
-     * return {string} 转化后的 json字符串。
+     * @function SuperMap.EditFeaturesParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
 
-  }], [{
-    key: 'toJsonParameters',
-    value: function toJsonParameters(params) {
-      var geometry,
-          feature,
-          len,
-          features,
-          editType = params.editType;
 
-      if (editType === _SuperMap2["default"].EditType.DELETE) {
-        if (params.IDs === null) return;
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.isUseBatch -{boolean}
+     * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
+     */
 
-        features = { ids: params.IDs };
-      } else {
-        features = [];
-        if (params.features) {
-          len = params.features.length;
-          for (var i = 0; i < len; i++) {
-            feature = params.features[i];
-            feature.geometry = _SuperMap2["default"].REST.ServerGeometry.fromGeometry(feature.geometry);
-            features.push(feature);
-          }
+
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{Array<string>}|{Array<Integer>}
+     * @description 执行删除时要素集ID集合。
+     */
+
+
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
+     * @description 当前需要创建或者是修改的要素集。</br>
+     * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
+     */
+
+
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
+     * @description 当前需要创建或者是修改的要素的数据源
+     */
+
+
+    _createClass(EditFeaturesParameters, [{
+        key: 'destroy',
+        value: function destroy() {
+            var me = this;
+            me.dataSourceName = null;
+            me.dataSetName = null;
+            me.features = null;
+            me.editType = null;
+            me.IDs = null;
+            me.returnContent = null;
         }
-      }
-      return _SuperMap2["default"].Util.toJSON(features);
-    }
-  }]);
 
-  return EditFeaturesParameters;
+        /**
+         * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
+         * @description 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
+         * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
+         * return {string} 转化后的 json字符串。
+         */
+
+    }], [{
+        key: 'toJsonParameters',
+        value: function toJsonParameters(params) {
+            var geometry,
+                feature,
+                len,
+                features,
+                editType = params.editType;
+
+            if (editType === _SuperMap2["default"].EditType.DELETE) {
+                if (params.IDs === null) return;
+
+                features = { ids: params.IDs };
+            } else {
+                features = [];
+                if (params.features) {
+                    len = params.features.length;
+                    for (var i = 0; i < len; i++) {
+                        feature = params.features[i];
+                        feature.geometry = _SuperMap2["default"].REST.ServerGeometry.fromGeometry(feature.geometry);
+                        features.push(feature);
+                    }
+                }
+            }
+            return _SuperMap2["default"].Util.toJSON(features);
+        }
+    }]);
+
+    return EditFeaturesParameters;
 }();
 
 exports["default"] = EditFeaturesParameters;
@@ -36603,7 +36636,7 @@ _SuperMap2["default"].GetFieldsService = GetFieldsService;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -36627,60 +36660,60 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var GetGridCellInfosParameters = function () {
 
-  /**
-   * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
-   * @description 要查询的地理位置X轴
-   */
+    /**
+     * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
+     * @description 要查询的地理位置X轴
+     */
 
-  /**
-   * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
-   * @description 数据集名称。
-   */
-  function GetGridCellInfosParameters(options) {
-    _classCallCheck(this, GetGridCellInfosParameters);
+    /**
+     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
+     * @description 数据集名称。
+     */
+    function GetGridCellInfosParameters(options) {
+        _classCallCheck(this, GetGridCellInfosParameters);
 
-    this.datasetName = null;
-    this.dataSourceName = null;
-    this.X = null;
-    this.Y = null;
-    this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
+        this.datasetName = null;
+        this.dataSourceName = null;
+        this.X = null;
+        this.Y = null;
+        this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
 
-    if (!options) {
-      return;
+        if (!options) {
+            return;
+        }
+        _SuperMap2["default"].Util.extend(this, options);
     }
-    _SuperMap2["default"].Util.extend(this, options);
-  }
 
-  /**
-   * @function SuperMap.GetGridCellInfosParameters.prototype.destroy
-   * @description 释放资源，将引用的资源属性置空。
-   */
+    /**
+     * @function SuperMap.GetGridCellInfosParameters.prototype.destroy
+     * @description 释放资源，将引用的资源属性置空。
+     */
 
 
-  /**
-   * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
-   * @description 要查询的地理位置Y轴
-   */
+    /**
+     * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
+     * @description 要查询的地理位置Y轴
+     */
 
 
-  /**
-   * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
-   * @description  数据源名称。
-   */
+    /**
+     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
+     * @description  数据源名称。
+     */
 
 
-  _createClass(GetGridCellInfosParameters, [{
-    key: "destroy",
-    value: function destroy() {
-      var me = this;
-      me.datasetName = null;
-      me.dataSourceName = null;
-      me.X = null;
-      me.Y = null;
-    }
-  }]);
+    _createClass(GetGridCellInfosParameters, [{
+        key: "destroy",
+        value: function destroy() {
+            var me = this;
+            me.datasetName = null;
+            me.dataSourceName = null;
+            me.X = null;
+            me.Y = null;
+        }
+    }]);
 
-  return GetGridCellInfosParameters;
+    return GetGridCellInfosParameters;
 }();
 
 exports["default"] = GetGridCellInfosParameters;
@@ -38438,7 +38471,7 @@ _SuperMap2["default"].InterpolationRBFAnalystParameters = InterpolationRBFAnalys
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -38467,132 +38500,132 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var KernelDensityJobParameter = function () {
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
-   * @description 搜索半径单位。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
+     * @description 搜索半径单位。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
-   * @description 分析的影响半径。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
+     * @description 分析的影响半径。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
-   * @description 分析类型。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
+     * @description 分析类型。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
-   * @description 网格大小。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
+     * @description 网格大小。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
-   * @description 数据集名。
-   */
-  function KernelDensityJobParameter(options) {
-    _classCallCheck(this, KernelDensityJobParameter);
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
+     * @description 数据集名。
+     */
+    function KernelDensityJobParameter(options) {
+        _classCallCheck(this, KernelDensityJobParameter);
 
-    this.datasetName = "";
-    this.query = "";
-    this.resolution = 80;
-    this.method = 0;
-    this.meshType = 0;
-    this.fields = "";
-    this.radius = 300;
-    this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-    this.radiusUnit = _REST.AnalystSizeUnit.METER;
-    this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
+        this.datasetName = "";
+        this.query = "";
+        this.resolution = 80;
+        this.method = 0;
+        this.meshType = 0;
+        this.fields = "";
+        this.radius = 300;
+        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+        this.radiusUnit = _REST.AnalystSizeUnit.METER;
+        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
-    if (!options) {
-      return;
-    }
-    _SuperMap2["default"].Util.extend(this, options);
-  }
-
-  /**
-   * @function SuperMap.KernelDensityJobParameter.prototype.destroy
-   * @description 释放资源，将引用资源的属性置空。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
-   * @description 面积单位。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-   * @description 网格大小单位。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
-   * @description 权重索引。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
-   * @description 分析方法。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
-   * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
-   */
-
-
-  _createClass(KernelDensityJobParameter, [{
-    key: 'destroy',
-    value: function destroy() {
-      this.datasetName = null;
-      this.query = null;
-      this.resolution = null;
-      this.method = null;
-      this.radius = null;
-      this.meshType = null;
-      this.fields = null;
-      this.meshSizeUnit = null;
-      this.radiusUnit = null;
-      this.areaUnit = null;
+        if (!options) {
+            return;
+        }
+        _SuperMap2["default"].Util.extend(this, options);
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.toObject
-     * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
-     * @param tempObj - {Object} 目标对象
-     * @description 生成密度分析任务对象
+     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
 
-  }], [{
-    key: 'toObject',
-    value: function toObject(kernelDensityJobParameter, tempObj) {
-      for (var name in kernelDensityJobParameter) {
-        if (name === "datasetName") {
-          tempObj['input'] = tempObj['input'] || {};
-          tempObj['input'][name] = kernelDensityJobParameter[name];
-          continue;
-        }
-        tempObj['analyst'] = tempObj['analyst'] || {};
-        if (name === 'query') {
-          tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-        } else {
-          tempObj['analyst'][name] = kernelDensityJobParameter[name];
-        }
-      }
-    }
-  }]);
 
-  return KernelDensityJobParameter;
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
+     * @description 面积单位。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+     * @description 网格大小单位。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
+     * @description 权重索引。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
+     * @description 分析方法。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
+     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+     */
+
+
+    _createClass(KernelDensityJobParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.query = null;
+            this.resolution = null;
+            this.method = null;
+            this.radius = null;
+            this.meshType = null;
+            this.fields = null;
+            this.meshSizeUnit = null;
+            this.radiusUnit = null;
+            this.areaUnit = null;
+        }
+
+        /**
+         * @function SuperMap.KernelDensityJobParameter.toObject
+         * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
+         * @param tempObj - {Object} 目标对象
+         * @description 生成密度分析任务对象
+         */
+
+    }], [{
+        key: 'toObject',
+        value: function toObject(kernelDensityJobParameter, tempObj) {
+            for (var name in kernelDensityJobParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = kernelDensityJobParameter[name];
+                    continue;
+                }
+                tempObj['analyst'] = tempObj['analyst'] || {};
+                if (name === 'query') {
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                } else {
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                }
+            }
+        }
+    }]);
+
+    return KernelDensityJobParameter;
 }();
 
 exports["default"] = KernelDensityJobParameter;
@@ -38670,13 +38703,12 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
          * @description 获取核密度分析任务
-         * @return {*}
          */
 
     }, {
         key: 'getKernelDensityJobs',
         value: function getKernelDensityJobs() {
-            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -38688,7 +38720,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getKernelDensityJob',
         value: function getKernelDensityJob(id) {
-            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -38701,7 +38733,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addKernelDensityJob',
         value: function addKernelDensityJob(params, seconds) {
-            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'addJob', this).call(this, this.url, params, _KernelDensityJobParameter2["default"], seconds);
+            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'addJob', this).call(this, this.url, params, _KernelDensityJobParameter2["default"], seconds);
         }
     }]);
 
@@ -44380,13 +44412,12 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
          * @description 获取单对象空间查询分析所有任务
-         * @return {*}
          */
 
     }, {
         key: 'getQueryJobs',
         value: function getQueryJobs() {
-            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -44398,7 +44429,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getQueryJob',
         value: function getQueryJob(id) {
-            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -44411,7 +44442,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addQueryJob',
         value: function addQueryJob(params, seconds) {
-            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'addJob', this).call(this, this.url, params, _SingleObjectQueryJobsParameter2["default"], seconds);
+            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'addJob', this).call(this, this.url, params, _SingleObjectQueryJobsParameter2["default"], seconds);
         }
     }]);
 
@@ -44863,7 +44894,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getSummaryMeshJobs',
         value: function getSummaryMeshJobs() {
-            return _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -44875,7 +44906,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getSummaryMeshJob',
         value: function getSummaryMeshJob(id) {
-            return _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -45183,13 +45214,12 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
          * @description 获取区域汇总分析任务集合。
-         * @return {*}
          */
 
     }, {
         key: 'getSummaryRegionJobs',
         value: function getSummaryRegionJobs() {
-            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -45201,7 +45231,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getSummaryRegionJob',
         value: function getSummaryRegionJob(id) {
-            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -45214,7 +45244,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addSummaryRegionJob',
         value: function addSummaryRegionJob(params, seconds) {
-            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryRegionJobParameter2["default"], seconds);
+            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryRegionJobParameter2["default"], seconds);
         }
     }]);
 
@@ -50683,13 +50713,12 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.VectorClipJobsService.protitype.getVectorClipJobs
          * @description 获取矢量裁剪分析所有任务
-         * @return {*}
          */
 
     }, {
         key: 'getVectorClipJobs',
         value: function getVectorClipJobs() {
-            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -50701,7 +50730,7 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getVectorClipJob',
         value: function getVectorClipJob(id) {
-            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -50714,7 +50743,7 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addVectorClipJob',
         value: function addVectorClipJob(params, seconds) {
-            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'addJob', this).call(this, this.url, params, _VectorClipJobsParameter2["default"], seconds);
+            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'addJob', this).call(this, this.url, params, _VectorClipJobsParameter2["default"], seconds);
         }
     }]);
 
@@ -50824,6 +50853,7 @@ var OnlineData = function (_OnlineServiceBase) {
     /**
      * @function SuperMap.OnlineData.prototype.load
      * @description 通过url请求获取该服务完整信息
+     * @returns {Promise}
      */
 
     //数据的缩略图路径。
@@ -51128,14 +51158,14 @@ var OnlineServiceBase = function () {
         me.serverType = _REST.ServerType.ONLINE;
     }
 
-    /*
+    /**
      * @function SuperMap.OnlineServiceBase.prototype.request
      * @description 请求online服务
      * @param method - {function}
      * @param url - {string} 服务地址
      * @param param
      * @param requestOptions
-     * @return {Promise.<TResult>|jQuery.deferred|jQuery.jqXHR|jQuery.Promise|*}
+     * @return {Promise}
      */
 
 
@@ -51366,7 +51396,7 @@ _SuperMap2["default"].ServerInfo = ServerInfo;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -51387,74 +51417,74 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 参数。
  */
 var TokenServiceParameter = function () {
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
-   * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-   */
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
 
 
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
-   * @description token申请的客户端标识类型。
-   */
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
+     * @description token申请的客户端标识类型。
+     */
 
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
-   * @description 用户名。
-   */
-  function TokenServiceParameter(options) {
-    _classCallCheck(this, TokenServiceParameter);
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
+     * @description 用户名。
+     */
+    function TokenServiceParameter(options) {
+        _classCallCheck(this, TokenServiceParameter);
 
-    this.userName = null;
-    this.password = null;
-    this.clientType = _REST.ClientType.NONE;
-    this.ip = null;
-    this.referer = null;
-    this.expiration = 60;
-    this.CLASS_NAME = "SuperMap.TokenServiceParameter";
+        this.userName = null;
+        this.password = null;
+        this.clientType = _REST.ClientType.NONE;
+        this.ip = null;
+        this.referer = null;
+        this.expiration = 60;
+        this.CLASS_NAME = "SuperMap.TokenServiceParameter";
 
-    _SuperMap2["default"].Util.extend(this, options);
-  }
-
-  /**
-   * @function SuperMap.TokenServiceParameter.prototype.toJSON
-   * @description 将所有信息转成JSON字符串
-   * @return {string} 参数的JSON字符串
-   */
-
-
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
-   * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
-   */
-
-
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
-   * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-   */
-
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.password -{string}
-   * @description 密码。
-   */
-
-
-  _createClass(TokenServiceParameter, [{
-    key: 'toJSON',
-    value: function toJSON() {
-      return {
-        userName: this.userName,
-        password: this.password,
-        clientType: this.clientType,
-        ip: this.ip,
-        referer: this.referer,
-        expiration: this.expiration
-      };
+        _SuperMap2["default"].Util.extend(this, options);
     }
-  }]);
 
-  return TokenServiceParameter;
+    /**
+     * @function SuperMap.TokenServiceParameter.prototype.toJSON
+     * @description 将所有信息转成JSON字符串
+     * @return {string} 参数的JSON字符串
+     */
+
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
+     * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
+     */
+
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.password -{string}
+     * @description 密码。
+     */
+
+
+    _createClass(TokenServiceParameter, [{
+        key: 'toJSON',
+        value: function toJSON() {
+            return {
+                userName: this.userName,
+                password: this.password,
+                clientType: this.clientType,
+                ip: this.ip,
+                referer: this.referer,
+                expiration: this.expiration
+            };
+        }
+    }]);
+
+    return TokenServiceParameter;
 }();
 
 exports["default"] = TokenServiceParameter;
@@ -58458,6 +58488,7 @@ var VectorTileJSON = exports.VectorTileJSON = _leaflet2["default"].Class.extend(
     /**
      * @function L.supermap.VectorTileJSON.prototype.getTile
      * @description 获取瓦片
+     * @return {Promise}
      */
     getTile: function getTile() {
         var me = this;
@@ -58627,6 +58658,7 @@ var VectorTilePBF = exports.VectorTilePBF = _leaflet2["default"].Class.extend({
     /**
      * @function L.supermap.VectorTilePBF.prototype.getTile
      * @description 获取瓦片PBF(MVT)
+     * @return {Promise}
      */
     getTile: function getTile() {
         var me = this;
@@ -62764,7 +62796,108 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 /* 386 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\codes\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {
+	"_from": "proj4@2.3.15",
+	"_id": "proj4@2.3.15",
+	"_inBundle": false,
+	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
+	"_location": "/proj4",
+	"_phantomChildren": {},
+	"_requested": {
+		"type": "version",
+		"registry": true,
+		"raw": "proj4@2.3.15",
+		"name": "proj4",
+		"escapedName": "proj4",
+		"rawSpec": "2.3.15",
+		"saveSpec": null,
+		"fetchSpec": "2.3.15"
+	},
+	"_requiredBy": [
+		"/"
+	],
+	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
+	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
+	"_spec": "proj4@2.3.15",
+	"_where": "F:\\dev\\iClient",
+	"author": "",
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
+	},
+	"bundleDependencies": false,
+	"contributors": [
+		{
+			"name": "Mike Adair",
+			"email": "madair@dmsolutions.ca"
+		},
+		{
+			"name": "Richard Greenwood",
+			"email": "rich@greenwoodmap.com"
+		},
+		{
+			"name": "Calvin Metcalf",
+			"email": "calvin.metcalf@gmail.com"
+		},
+		{
+			"name": "Richard Marsden",
+			"url": "http://www.winwaed.com"
+		},
+		{
+			"name": "T. Mittan"
+		},
+		{
+			"name": "D. Steinwand"
+		},
+		{
+			"name": "S. Nelson"
+		}
+	],
+	"dependencies": {
+		"mgrs": "~0.0.2"
+	},
+	"deprecated": false,
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"devDependencies": {
+		"browserify": "~12.0.1",
+		"chai": "~1.8.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"grunt": "~0.4.2",
+		"grunt-browserify": "~4.0.1",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~0.8.0",
+		"grunt-contrib-uglify": "~0.11.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"istanbul": "~0.2.4",
+		"mocha": "~1.17.1",
+		"tin": "~0.4.0"
+	},
+	"directories": {
+		"test": "test",
+		"doc": "docs"
+	},
+	"homepage": "https://github.com/proj4js/proj4js#readme",
+	"jam": {
+		"main": "dist/proj4.js",
+		"include": [
+			"dist/proj4.js",
+			"README.md",
+			"AUTHORS",
+			"LICENSE.md"
+		]
+	},
+	"license": "MIT",
+	"main": "lib/index.js",
+	"name": "proj4",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
+	},
+	"scripts": {
+		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
+	},
+	"version": "2.3.15"
+};
 
 /***/ }),
 /* 387 */

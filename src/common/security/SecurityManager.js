@@ -2,7 +2,8 @@ import SuperMap from '../SuperMap';
 import ServerInfo from './ServerInfo';
 import TokenServiceParameter from './TokenServiceParameter';
 import KeyServiceParameter from './KeyServiceParameter';
-import { FetchRequest } from '../util/FetchRequest';
+import {FetchRequest} from '../util/FetchRequest';
+
 /**
  * @class SuperMap.SecurityManager
  * @classdesc
@@ -22,6 +23,7 @@ SuperMap.SecurityManager = {
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
      * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
+     * @return {Promise}
      */
     generateToken: function (url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -144,7 +146,9 @@ SuperMap.SecurityManager = {
      * @param loginInfoParams -{Object} iManager 登录参数<br>
      *        userName -{String} 用户名<br>
      *        password-{String} 密码
-     * @param isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+     * @param options -{Object} <br>
+     *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+     * @return {Promise}
      */
     loginManager: function (url, loginInfoParams, options) {
         if (!SuperMap.Util.isInTheSameDomain(url)) {

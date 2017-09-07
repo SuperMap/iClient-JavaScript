@@ -9,7 +9,7 @@ import SummaryRegionJobParameter from './SummaryRegionJobParameter';
  * @param url -{string} 区域汇总分析服务地址。
  * @param options - {Object} 区域汇总分析服务可选参数。
  */
-export default  class SummaryRegionJobsService extends ProcessingServiceBase {
+export default class SummaryRegionJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -26,10 +26,9 @@ export default  class SummaryRegionJobsService extends ProcessingServiceBase {
     /**
      * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
      * @description 获取区域汇总分析任务集合。
-     * @return {*}
      */
     getSummaryRegionJobs() {
-        return super.getJobs(this.url);
+        super.getJobs(this.url);
     }
 
     /**
@@ -38,7 +37,7 @@ export default  class SummaryRegionJobsService extends ProcessingServiceBase {
      * @param id -{string} 要获取区域汇总分析任务的id
      */
     getSummaryRegionJob(id) {
-        return super.getJobs(this.url + '/' + id);
+        super.getJobs(this.url + '/' + id);
     }
 
     /**
@@ -48,7 +47,7 @@ export default  class SummaryRegionJobsService extends ProcessingServiceBase {
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryRegionJob(params, seconds) {
-        return super.addJob(this.url, params, SummaryRegionJobParameter, seconds);
+        super.addJob(this.url, params, SummaryRegionJobParameter, seconds);
     }
 
     CLASS_NAME = "SuperMap.SummaryRegionJobsService"

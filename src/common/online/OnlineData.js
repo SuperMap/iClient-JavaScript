@@ -64,6 +64,7 @@ export default  class OnlineData extends OnlineServiceBase {
     /**
      * @function SuperMap.OnlineData.prototype.load
      * @description 通过url请求获取该服务完整信息
+     * @returns {Promise}
      */
     load() {
         if (!this.serviceUrl) {

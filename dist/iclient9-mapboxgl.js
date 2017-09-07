@@ -5288,7 +5288,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
         key: 'getJobs',
         value: function getJobs(url) {
             var me = this;
-            return _FetchRequest.FetchRequest.get(url).then(function (response) {
+            _FetchRequest.FetchRequest.get(url).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 me.events.triggerEvent("processCompleted", { result: result });
@@ -5318,7 +5318,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
             var options = {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             };
-            return _FetchRequest.FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+            _FetchRequest.FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 if (result.succeed) {
@@ -5338,7 +5338,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
             var me = this;
             if (result) {
                 var id = setInterval(function () {
-                    return _FetchRequest.FetchRequest.get(result.newResourceLocation).then(function (response) {
+                    _FetchRequest.FetchRequest.get(result.newResourceLocation).then(function (response) {
                         return response.json();
                     }).then(function (job) {
                         me.events.triggerEvent("processRunning", { id: job.id, state: job.state });
@@ -8981,7 +8981,7 @@ var AddressMatchService = function (_CommonServiceBase) {
         key: 'processAsync',
         value: function processAsync(url, params) {
             var me = this;
-            return _FetchRequest.FetchRequest.get(url, params).then(function (response) {
+            _FetchRequest.FetchRequest.get(url, params).then(function (response) {
                 return response.json();
             }).then(function (result) {
                 if (result) {
@@ -9005,6 +9005,7 @@ var AddressMatchService = function (_CommonServiceBase) {
         value: function serviceProcessCompleted(result) {
             _get(AddressMatchService.prototype.__proto__ || Object.getPrototypeOf(AddressMatchService.prototype), 'serviceProcessCompleted', this).call(this, result);
         }
+
         /**
          * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
          * @param result - {Object} 服务器返回的结果对象。
@@ -15040,13 +15041,12 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
          * @description 获取核密度分析任务
-         * @return {*}
          */
 
     }, {
         key: 'getKernelDensityJobs',
         value: function getKernelDensityJobs() {
-            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -15058,7 +15058,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getKernelDensityJob',
         value: function getKernelDensityJob(id) {
-            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -15071,7 +15071,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addKernelDensityJob',
         value: function addKernelDensityJob(params, seconds) {
-            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'addJob', this).call(this, this.url, params, _KernelDensityJobParameter2.default, seconds);
+            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'addJob', this).call(this, this.url, params, _KernelDensityJobParameter2.default, seconds);
         }
     }]);
 
@@ -18143,13 +18143,12 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
          * @description 获取单对象空间查询分析所有任务
-         * @return {*}
          */
 
     }, {
         key: 'getQueryJobs',
         value: function getQueryJobs() {
-            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -18161,7 +18160,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getQueryJob',
         value: function getQueryJob(id) {
-            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -18174,7 +18173,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addQueryJob',
         value: function addQueryJob(params, seconds) {
-            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'addJob', this).call(this, this.url, params, _SingleObjectQueryJobsParameter2.default, seconds);
+            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'addJob', this).call(this, this.url, params, _SingleObjectQueryJobsParameter2.default, seconds);
         }
     }]);
 
@@ -18388,7 +18387,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getSummaryMeshJobs',
         value: function getSummaryMeshJobs() {
-            return _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -18400,7 +18399,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getSummaryMeshJob',
         value: function getSummaryMeshJob(id) {
-            return _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -18495,13 +18494,12 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
          * @description 获取区域汇总分析任务集合。
-         * @return {*}
          */
 
     }, {
         key: 'getSummaryRegionJobs',
         value: function getSummaryRegionJobs() {
-            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -18513,7 +18511,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getSummaryRegionJob',
         value: function getSummaryRegionJob(id) {
-            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -18526,7 +18524,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addSummaryRegionJob',
         value: function addSummaryRegionJob(params, seconds) {
-            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryRegionJobParameter2.default, seconds);
+            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryRegionJobParameter2.default, seconds);
         }
     }]);
 
@@ -19890,13 +19888,12 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.VectorClipJobsService.protitype.getVectorClipJobs
          * @description 获取矢量裁剪分析所有任务
-         * @return {*}
          */
 
     }, {
         key: 'getVectorClipJobs',
         value: function getVectorClipJobs() {
-            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url);
+            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url);
         }
 
         /**
@@ -19908,7 +19905,7 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'getVectorClipJob',
         value: function getVectorClipJob(id) {
-            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
         }
 
         /**
@@ -19921,7 +19918,7 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addVectorClipJob',
         value: function addVectorClipJob(params, seconds) {
-            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'addJob', this).call(this, this.url, params, _VectorClipJobsParameter2.default, seconds);
+            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'addJob', this).call(this, this.url, params, _VectorClipJobsParameter2.default, seconds);
         }
     }]);
 
@@ -37344,6 +37341,7 @@ _SuperMap2.default.SecurityManager = {
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
      * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
+     * @return {Promise}
      */
     generateToken: function generateToken(url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -37466,7 +37464,9 @@ _SuperMap2.default.SecurityManager = {
      * @param loginInfoParams -{Object} iManager 登录参数<br>
      *        userName -{String} 用户名<br>
      *        password-{String} 密码
-     * @param isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+     * @param options -{Object} <br>
+     *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+     * @return {Promise}
      */
     loginManager: function loginManager(url, loginInfoParams, options) {
         if (!_SuperMap2.default.Util.isInTheSameDomain(url)) {

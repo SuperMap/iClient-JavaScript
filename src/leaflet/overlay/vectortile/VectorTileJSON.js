@@ -20,6 +20,7 @@ export var VectorTileJSON = L.Class.extend({
     /**
      * @function L.supermap.VectorTileJSON.prototype.getTile
      * @description 获取瓦片
+     * @return {Promise}
      */
     getTile: function () {
         var me = this;

@@ -48,6 +48,7 @@ export default  class IPortalMap extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalMap.prototype.load
      * @description 加载地图信息
+     * @returns {Promise}
      */
     load() {
         var me = this;
@@ -65,6 +66,7 @@ export default  class IPortalMap extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalMap.prototype.update
      * @description 更新地图参数
+     * @returns {Promise}
      */
     update() {
         var mapUpdateParam = {
