@@ -1,3 +1,4 @@
+import mapboxgl from 'mapbox-gl';
 import {baiduMapLayer} from "mapv";
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**

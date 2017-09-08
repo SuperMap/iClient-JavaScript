@@ -513,9 +513,9 @@ var exampleConfig = {
             "Turf": {
                 name: "Turf",
                 content: [{
-                    name: "缓冲区",
-                    thumbnail: "turf_buffer.png",
-                    fileName: "turf_buffer"
+                    name: "空间分析",
+                    thumbnail: "turf_transformation.png",
+                    fileName: "turf_transformation"
                 }]
             }
         }

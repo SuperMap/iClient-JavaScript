@@ -8296,7 +8296,7 @@ exports.default = MapVRenderer;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -8321,108 +8321,108 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var Credential = function () {
 
-    /**
-     * Constructor: SuperMap.Credential
-     * SuperMap地图服务安全验证类。
-     *
-     * 例如:
-     * (start code)
-     * var pixcel = new SuperMap.Credential("valueString","token");
-     * pixcel.destroy();
-     * (end)
-     *
-     * Parameters:
-     * value - {String}  访问受安全限制的服务时用于通过安全认证的验证信息。
-     * name - {String}  验证信息前缀，name=value部分的name部分，默认为“token”。
-     */
+  /**
+   * Constructor: SuperMap.Credential
+   * SuperMap地图服务安全验证类。
+   *
+   * 例如:
+   * (start code)
+   * var pixcel = new SuperMap.Credential("valueString","token");
+   * pixcel.destroy();
+   * (end)
+   *
+   * Parameters:
+   * value - {String}  访问受安全限制的服务时用于通过安全认证的验证信息。
+   * name - {String}  验证信息前缀，name=value部分的name部分，默认为“token”。
+   */
 
-    /**
-     * APIProperty: value
-     * {String} 访问受安全限制的服务时用于通过安全认证的验证信息。
-     */
-    function Credential(value, name) {
-        _classCallCheck(this, Credential);
+  /**
+   * APIProperty: value
+   * {String} 访问受安全限制的服务时用于通过安全认证的验证信息。
+   */
+  function Credential(value, name) {
+    _classCallCheck(this, Credential);
 
-        this.value = "";
-        this.name = "token";
-        this.CLASS_NAME = "SuperMap.Credential";
+    this.value = "";
+    this.name = "token";
+    this.CLASS_NAME = "SuperMap.Credential";
 
-        this.value = value ? value : this.value;
-        this.name = name ? name : this.name;
+    this.value = value ? value : this.value;
+    this.name = name ? name : this.name;
+  }
+
+  /**
+   * Property: getUrlParameters
+   *
+   * 例如:
+   * (start code)
+   * var credential = new SuperMap.Credential("valueString","token");
+   * //这里 str = "token=valueString";
+   * var str = credential.getUrlParameters();
+   * (end)
+   *
+   * Returns:
+   * {String} 返回安全信息组成的url片段。
+   */
+
+
+  /**
+   * APIProperty: name
+   * {String} 验证信息前缀，name=value部分的name部分，默认为“token”。
+   */
+
+
+  _createClass(Credential, [{
+    key: "getUrlParameters",
+    value: function getUrlParameters() {
+      //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
+      return this.name + "=" + this.value;
     }
 
     /**
-     * Property: getUrlParameters
+     * APIProperty: getValue
+     * 获取value
+     *
+     * 例如:
+     * (start code)
+     * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
+     * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
+     * var str = credential.getValue();
+     * (end)
+     *
+     * Returns:
+     * {String} 返回value字符串，在iServer服务下该value值即为token值。
+     */
+
+  }, {
+    key: "getValue",
+    value: function getValue() {
+      return this.value;
+    }
+
+    /**
+     *
+     * APIMethod: destroy
+     * 销毁此对象。
+     * 销毁后此对象的所有属性为null，而不是初始值。
      *
      * 例如:
      * (start code)
      * var credential = new SuperMap.Credential("valueString","token");
-     * //这里 str = "token=valueString";
-     * var str = credential.getUrlParameters();
+     * credential.destroy();
      * (end)
      *
-     * Returns:
-     * {String} 返回安全信息组成的url片段。
      */
 
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.value = null;
+      this.name = null;
+    }
+  }]);
 
-    /**
-     * APIProperty: name
-     * {String} 验证信息前缀，name=value部分的name部分，默认为“token”。
-     */
-
-
-    _createClass(Credential, [{
-        key: "getUrlParameters",
-        value: function getUrlParameters() {
-            //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
-            return this.name + "=" + this.value;
-        }
-
-        /**
-         * APIProperty: getValue
-         * 获取value
-         *
-         * 例如:
-         * (start code)
-         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
-         * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
-         * var str = credential.getValue();
-         * (end)
-         *
-         * Returns:
-         * {String} 返回value字符串，在iServer服务下该value值即为token值。
-         */
-
-    }, {
-        key: "getValue",
-        value: function getValue() {
-            return this.value;
-        }
-
-        /**
-         *
-         * APIMethod: destroy
-         * 销毁此对象。
-         * 销毁后此对象的所有属性为null，而不是初始值。
-         *
-         * 例如:
-         * (start code)
-         * var credential = new SuperMap.Credential("valueString","token");
-         * credential.destroy();
-         * (end)
-         *
-         */
-
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.value = null;
-            this.name = null;
-        }
-    }]);
-
-    return Credential;
+  return Credential;
 }();
 
 exports.default = Credential;
@@ -10652,7 +10652,7 @@ _SuperMap2.default.GeoDecodingParameter = GeoDecodingParameter;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10681,132 +10681,132 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var KernelDensityJobParameter = function () {
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
-     * @description 搜索半径单位。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
+   * @description 搜索半径单位。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
-     * @description 分析的影响半径。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
+   * @description 分析的影响半径。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
-     * @description 分析类型。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
+   * @description 分析类型。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
-     * @description 网格大小。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
+   * @description 网格大小。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    function KernelDensityJobParameter(options) {
-        _classCallCheck(this, KernelDensityJobParameter);
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
+   * @description 数据集名。
+   */
+  function KernelDensityJobParameter(options) {
+    _classCallCheck(this, KernelDensityJobParameter);
 
-        this.datasetName = "";
-        this.query = "";
-        this.resolution = 80;
-        this.method = 0;
-        this.meshType = 0;
-        this.fields = "";
-        this.radius = 300;
-        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-        this.radiusUnit = _REST.AnalystSizeUnit.METER;
-        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
+    this.datasetName = "";
+    this.query = "";
+    this.resolution = 80;
+    this.method = 0;
+    this.meshType = 0;
+    this.fields = "";
+    this.radius = 300;
+    this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+    this.radiusUnit = _REST.AnalystSizeUnit.METER;
+    this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
+    if (!options) {
+      return;
+    }
+    _SuperMap2.default.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.KernelDensityJobParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
+   * @description 面积单位。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+   * @description 网格大小单位。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
+   * @description 权重索引。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
+   * @description 分析方法。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
+   * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+   */
+
+
+  _createClass(KernelDensityJobParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.datasetName = null;
+      this.query = null;
+      this.resolution = null;
+      this.method = null;
+      this.radius = null;
+      this.meshType = null;
+      this.fields = null;
+      this.meshSizeUnit = null;
+      this.radiusUnit = null;
+      this.areaUnit = null;
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.KernelDensityJobParameter.toObject
+     * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
+     * @param tempObj - {Object} 目标对象
+     * @description 生成密度分析任务对象
      */
 
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
-     * @description 面积单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-     * @description 网格大小单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
-     * @description 权重索引。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
-     * @description 分析方法。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
-     */
-
-
-    _createClass(KernelDensityJobParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.query = null;
-            this.resolution = null;
-            this.method = null;
-            this.radius = null;
-            this.meshType = null;
-            this.fields = null;
-            this.meshSizeUnit = null;
-            this.radiusUnit = null;
-            this.areaUnit = null;
+  }], [{
+    key: 'toObject',
+    value: function toObject(kernelDensityJobParameter, tempObj) {
+      for (var name in kernelDensityJobParameter) {
+        if (name === "datasetName") {
+          tempObj['input'] = tempObj['input'] || {};
+          tempObj['input'][name] = kernelDensityJobParameter[name];
+          continue;
         }
-
-        /**
-         * @function SuperMap.KernelDensityJobParameter.toObject
-         * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
-         * @param tempObj - {Object} 目标对象
-         * @description 生成密度分析任务对象
-         */
-
-    }], [{
-        key: 'toObject',
-        value: function toObject(kernelDensityJobParameter, tempObj) {
-            for (var name in kernelDensityJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = kernelDensityJobParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                if (name === 'query') {
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-                } else {
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
-                }
-            }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        if (name === 'query') {
+          tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+        } else {
+          tempObj['analyst'][name] = kernelDensityJobParameter[name];
         }
-    }]);
+      }
+    }
+  }]);
 
-    return KernelDensityJobParameter;
+  return KernelDensityJobParameter;
 }();
 
 exports.default = KernelDensityJobParameter;
@@ -12422,7 +12422,7 @@ _SuperMap2.default.ServerInfo = ServerInfo;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -12443,74 +12443,74 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 参数。
  */
 var TokenServiceParameter = function () {
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
-     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-     */
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+   * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+   */
 
 
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
-     * @description token申请的客户端标识类型。
-     */
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
+   * @description token申请的客户端标识类型。
+   */
 
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
-     * @description 用户名。
-     */
-    function TokenServiceParameter(options) {
-        _classCallCheck(this, TokenServiceParameter);
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
+   * @description 用户名。
+   */
+  function TokenServiceParameter(options) {
+    _classCallCheck(this, TokenServiceParameter);
 
-        this.userName = null;
-        this.password = null;
-        this.clientType = _REST.ClientType.NONE;
-        this.ip = null;
-        this.referer = null;
-        this.expiration = 60;
-        this.CLASS_NAME = "SuperMap.TokenServiceParameter";
+    this.userName = null;
+    this.password = null;
+    this.clientType = _REST.ClientType.NONE;
+    this.ip = null;
+    this.referer = null;
+    this.expiration = 60;
+    this.CLASS_NAME = "SuperMap.TokenServiceParameter";
 
-        _SuperMap2.default.Util.extend(this, options);
+    _SuperMap2.default.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.TokenServiceParameter.prototype.toJSON
+   * @description 将所有信息转成JSON字符串
+   * @return {string} 参数的JSON字符串
+   */
+
+
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
+   * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
+   */
+
+
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
+   * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+   */
+
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.password -{string}
+   * @description 密码。
+   */
+
+
+  _createClass(TokenServiceParameter, [{
+    key: 'toJSON',
+    value: function toJSON() {
+      return {
+        userName: this.userName,
+        password: this.password,
+        clientType: this.clientType,
+        ip: this.ip,
+        referer: this.referer,
+        expiration: this.expiration
+      };
     }
+  }]);
 
-    /**
-     * @function SuperMap.TokenServiceParameter.prototype.toJSON
-     * @description 将所有信息转成JSON字符串
-     * @return {string} 参数的JSON字符串
-     */
-
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
-     * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
-     */
-
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
-     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-     */
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.password -{string}
-     * @description 密码。
-     */
-
-
-    _createClass(TokenServiceParameter, [{
-        key: 'toJSON',
-        value: function toJSON() {
-            return {
-                userName: this.userName,
-                password: this.password,
-                clientType: this.clientType,
-                ip: this.ip,
-                referer: this.referer,
-                expiration: this.expiration
-            };
-        }
-    }]);
-
-    return TokenServiceParameter;
+  return TokenServiceParameter;
 }();
 
 exports.default = TokenServiceParameter;

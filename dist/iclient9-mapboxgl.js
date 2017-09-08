@@ -1645,7 +1645,7 @@ var TWO_PI = Math.PI * 2;
 // have drifted from their original location along the 180th meridian (due to
 // floating point error) from changing their sign.
 var SPI = 3.14159265359;
-var sign = __webpack_require__(35);
+var sign = __webpack_require__(36);
 
 module.exports = function(x) {
   return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
@@ -1669,7 +1669,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(20);
+__webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4596,7 +4596,7 @@ var _MultiPoint = __webpack_require__(46);
 
 var _MultiPoint2 = _interopRequireDefault(_MultiPoint);
 
-var _LineString = __webpack_require__(22);
+var _LineString = __webpack_require__(23);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -5510,7 +5510,7 @@ var _LinearRing = __webpack_require__(38);
 
 var _LinearRing2 = _interopRequireDefault(_LinearRing);
 
-var _LineString = __webpack_require__(22);
+var _LineString = __webpack_require__(23);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -6594,7 +6594,7 @@ var _Geometry2 = __webpack_require__(62);
 
 var _Geometry3 = _interopRequireDefault(_Geometry2);
 
-var _Projection = __webpack_require__(21);
+var _Projection = __webpack_require__(22);
 
 var _Projection2 = _interopRequireDefault(_Projection);
 
@@ -8240,6 +8240,12 @@ module.exports = function(eccent, sinphi, cosphi) {
 
 /***/ }),
 /* 20 */
+/***/ (function(module, exports) {
+
+module.exports = mapboxgl;
+
+/***/ }),
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8749,7 +8755,7 @@ var ArrayExt = exports.ArrayExt = _SuperMap2.default.Array = {
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9121,7 +9127,7 @@ _SuperMap2.default.Projection = Projection;
 })();
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10892,7 +10898,7 @@ function GetBezierGap(pSrcPt, j) {
 }
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10984,7 +10990,7 @@ exports.default = DataReturnOption;
 _SuperMap2.default.DataReturnOption = DataReturnOption;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11084,7 +11090,7 @@ exports.default = FacilityAnalyst3DParameters;
 _SuperMap2.default.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11196,7 +11202,7 @@ exports.default = GetFeaturesParametersBase;
 _SuperMap2.default.GetFeaturesParametersBase = GetFeaturesParametersBase;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11406,7 +11412,7 @@ exports.default = GetFeaturesServiceBase;
 _SuperMap2.default.GetFeaturesServiceBase = GetFeaturesServiceBase;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11625,7 +11631,7 @@ exports.default = InterpolationAnalystParameters;
 _SuperMap2.default.InterpolationAnalystParameters = InterpolationAnalystParameters;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11812,22 +11818,14 @@ exports.default = ProcessingServiceBase;
 _SuperMap2.default.ProcessingServiceBase = ProcessingServiceBase;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
-var sign = __webpack_require__(35);
+var sign = __webpack_require__(36);
 
 module.exports = function(x) {
   return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
-};
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-module.exports = function(x) {
-  return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
 };
 
 /***/ }),
@@ -11835,7 +11833,7 @@ module.exports = function(x) {
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
-  return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
+  return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
 };
 
 /***/ }),
@@ -11843,7 +11841,7 @@ module.exports = function(x) {
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
-  return (0.05859375 * x * x * (1 + 0.75 * x));
+  return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
 };
 
 /***/ }),
@@ -11851,11 +11849,19 @@ module.exports = function(x) {
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
-  return (x * x * x * (35 / 3072));
+  return (0.05859375 * x * x * (1 + 0.75 * x));
 };
 
 /***/ }),
 /* 34 */
+/***/ (function(module, exports) {
+
+module.exports = function(x) {
+  return (x * x * x * (35 / 3072));
+};
+
+/***/ }),
+/* 35 */
 /***/ (function(module, exports) {
 
 module.exports = function(e0, e1, e2, e3, phi) {
@@ -11863,18 +11869,12 @@ module.exports = function(e0, e1, e2, e3, phi) {
 };
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
   return x<0 ? -1 : 1;
 };
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
-
-module.exports = mapboxgl;
 
 /***/ }),
 /* 37 */
@@ -12188,7 +12188,7 @@ var _Collection = __webpack_require__(14);
 
 var _Collection2 = _interopRequireDefault(_Collection);
 
-var _LineString2 = __webpack_require__(22);
+var _LineString2 = __webpack_require__(23);
 
 var _LineString3 = _interopRequireDefault(_LineString2);
 
@@ -12196,11 +12196,11 @@ var _Point = __webpack_require__(11);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _Projection = __webpack_require__(21);
+var _Projection = __webpack_require__(22);
 
 var _Projection2 = _interopRequireDefault(_Projection);
 
-var _BaseTypes = __webpack_require__(20);
+var _BaseTypes = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13868,7 +13868,7 @@ var _Point = __webpack_require__(11);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _LineString = __webpack_require__(22);
+var _LineString = __webpack_require__(23);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -16333,7 +16333,7 @@ var _Polygon = __webpack_require__(47);
 
 var _Polygon2 = _interopRequireDefault(_Polygon);
 
-var _Projection = __webpack_require__(21);
+var _Projection = __webpack_require__(22);
 
 var _Projection2 = _interopRequireDefault(_Projection);
 
@@ -17967,7 +17967,7 @@ var _Collection2 = __webpack_require__(14);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
-var _LineString = __webpack_require__(22);
+var _LineString = __webpack_require__(23);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -18572,7 +18572,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _DataReturnOption = __webpack_require__(23);
+var _DataReturnOption = __webpack_require__(24);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
@@ -20092,15 +20092,15 @@ module.exports = function(defData) {
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var e0fn = __webpack_require__(30);
-var e1fn = __webpack_require__(31);
-var e2fn = __webpack_require__(32);
-var e3fn = __webpack_require__(33);
-var mlfn = __webpack_require__(34);
+var e0fn = __webpack_require__(31);
+var e1fn = __webpack_require__(32);
+var e2fn = __webpack_require__(33);
+var e3fn = __webpack_require__(34);
+var mlfn = __webpack_require__(35);
 var adjust_lon = __webpack_require__(3);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var sign = __webpack_require__(35);
+var sign = __webpack_require__(36);
 var asinz = __webpack_require__(18);
 
 exports.init = function() {
@@ -24678,7 +24678,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(26);
+var _GetFeaturesServiceBase = __webpack_require__(27);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
@@ -24781,7 +24781,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(26);
+var _GetFeaturesServiceBase = __webpack_require__(27);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
@@ -24882,7 +24882,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(26);
+var _GetFeaturesServiceBase = __webpack_require__(27);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
@@ -24985,7 +24985,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(26);
+var _GetFeaturesServiceBase = __webpack_require__(27);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
@@ -25087,7 +25087,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(26);
+var _GetFeaturesServiceBase = __webpack_require__(27);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
@@ -25756,7 +25756,7 @@ var _InterpolationKrigingAnalystParameters = __webpack_require__(213);
 
 var _InterpolationKrigingAnalystParameters2 = _interopRequireDefault(_InterpolationKrigingAnalystParameters);
 
-var _InterpolationAnalystParameters = __webpack_require__(27);
+var _InterpolationAnalystParameters = __webpack_require__(28);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -25911,7 +25911,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(28);
+var _ProcessingServiceBase = __webpack_require__(29);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
@@ -27892,7 +27892,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(28);
+var _ProcessingServiceBase = __webpack_require__(29);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
@@ -28127,7 +28127,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(28);
+var _ProcessingServiceBase = __webpack_require__(29);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
@@ -28243,7 +28243,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(28);
+var _ProcessingServiceBase = __webpack_require__(29);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
@@ -29637,7 +29637,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(28);
+var _ProcessingServiceBase = __webpack_require__(29);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
@@ -30503,7 +30503,7 @@ exports.Logo = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _mapboxGl = __webpack_require__(36);
+var _mapboxGl = __webpack_require__(20);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
@@ -30659,7 +30659,7 @@ var _MapvRenderer = __webpack_require__(274);
 
 var _MapvRenderer2 = _interopRequireDefault(_MapvRenderer);
 
-var _mapboxGl = __webpack_require__(36);
+var _mapboxGl = __webpack_require__(20);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
@@ -30754,7 +30754,7 @@ exports.RankTheme3DLayer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _mapboxGl = __webpack_require__(36);
+var _mapboxGl = __webpack_require__(20);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
@@ -31168,7 +31168,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setPaintProperty = exports.setBackground = exports.getDefaultVectorTileStyle = undefined;
 
-var _mapboxGl = __webpack_require__(36);
+var _mapboxGl = __webpack_require__(20);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
@@ -31279,7 +31279,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MapvDataSet = undefined;
 
-var _mapboxGl = __webpack_require__(36);
+var _mapboxGl = __webpack_require__(20);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
@@ -31949,7 +31949,7 @@ module.exports = whatwgFetch;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -31974,108 +31974,108 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var Credential = function () {
 
-    /**
-     * Constructor: SuperMap.Credential
-     * SuperMap地图服务安全验证类。
-     *
-     * 例如:
-     * (start code)
-     * var pixcel = new SuperMap.Credential("valueString","token");
-     * pixcel.destroy();
-     * (end)
-     *
-     * Parameters:
-     * value - {String}  访问受安全限制的服务时用于通过安全认证的验证信息。
-     * name - {String}  验证信息前缀，name=value部分的name部分，默认为“token”。
-     */
+  /**
+   * Constructor: SuperMap.Credential
+   * SuperMap地图服务安全验证类。
+   *
+   * 例如:
+   * (start code)
+   * var pixcel = new SuperMap.Credential("valueString","token");
+   * pixcel.destroy();
+   * (end)
+   *
+   * Parameters:
+   * value - {String}  访问受安全限制的服务时用于通过安全认证的验证信息。
+   * name - {String}  验证信息前缀，name=value部分的name部分，默认为“token”。
+   */
 
-    /**
-     * APIProperty: value
-     * {String} 访问受安全限制的服务时用于通过安全认证的验证信息。
-     */
-    function Credential(value, name) {
-        _classCallCheck(this, Credential);
+  /**
+   * APIProperty: value
+   * {String} 访问受安全限制的服务时用于通过安全认证的验证信息。
+   */
+  function Credential(value, name) {
+    _classCallCheck(this, Credential);
 
-        this.value = "";
-        this.name = "token";
-        this.CLASS_NAME = "SuperMap.Credential";
+    this.value = "";
+    this.name = "token";
+    this.CLASS_NAME = "SuperMap.Credential";
 
-        this.value = value ? value : this.value;
-        this.name = name ? name : this.name;
+    this.value = value ? value : this.value;
+    this.name = name ? name : this.name;
+  }
+
+  /**
+   * Property: getUrlParameters
+   *
+   * 例如:
+   * (start code)
+   * var credential = new SuperMap.Credential("valueString","token");
+   * //这里 str = "token=valueString";
+   * var str = credential.getUrlParameters();
+   * (end)
+   *
+   * Returns:
+   * {String} 返回安全信息组成的url片段。
+   */
+
+
+  /**
+   * APIProperty: name
+   * {String} 验证信息前缀，name=value部分的name部分，默认为“token”。
+   */
+
+
+  _createClass(Credential, [{
+    key: "getUrlParameters",
+    value: function getUrlParameters() {
+      //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
+      return this.name + "=" + this.value;
     }
 
     /**
-     * Property: getUrlParameters
+     * APIProperty: getValue
+     * 获取value
+     *
+     * 例如:
+     * (start code)
+     * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
+     * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
+     * var str = credential.getValue();
+     * (end)
+     *
+     * Returns:
+     * {String} 返回value字符串，在iServer服务下该value值即为token值。
+     */
+
+  }, {
+    key: "getValue",
+    value: function getValue() {
+      return this.value;
+    }
+
+    /**
+     *
+     * APIMethod: destroy
+     * 销毁此对象。
+     * 销毁后此对象的所有属性为null，而不是初始值。
      *
      * 例如:
      * (start code)
      * var credential = new SuperMap.Credential("valueString","token");
-     * //这里 str = "token=valueString";
-     * var str = credential.getUrlParameters();
+     * credential.destroy();
      * (end)
      *
-     * Returns:
-     * {String} 返回安全信息组成的url片段。
      */
 
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.value = null;
+      this.name = null;
+    }
+  }]);
 
-    /**
-     * APIProperty: name
-     * {String} 验证信息前缀，name=value部分的name部分，默认为“token”。
-     */
-
-
-    _createClass(Credential, [{
-        key: "getUrlParameters",
-        value: function getUrlParameters() {
-            //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
-            return this.name + "=" + this.value;
-        }
-
-        /**
-         * APIProperty: getValue
-         * 获取value
-         *
-         * 例如:
-         * (start code)
-         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
-         * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
-         * var str = credential.getValue();
-         * (end)
-         *
-         * Returns:
-         * {String} 返回value字符串，在iServer服务下该value值即为token值。
-         */
-
-    }, {
-        key: "getValue",
-        value: function getValue() {
-            return this.value;
-        }
-
-        /**
-         *
-         * APIMethod: destroy
-         * 销毁此对象。
-         * 销毁后此对象的所有属性为null，而不是初始值。
-         *
-         * 例如:
-         * (start code)
-         * var credential = new SuperMap.Credential("valueString","token");
-         * credential.destroy();
-         * (end)
-         *
-         */
-
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.value = null;
-            this.name = null;
-        }
-    }]);
-
-    return Credential;
+  return Credential;
 }();
 
 exports.default = Credential;
@@ -32115,7 +32115,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _BaseTypes = __webpack_require__(20);
+var _BaseTypes = __webpack_require__(21);
 
 var _Util = __webpack_require__(4);
 
@@ -32336,7 +32336,7 @@ var _Event = __webpack_require__(44);
 
 var _Event2 = _interopRequireDefault(_Event);
 
-var _BaseTypes = __webpack_require__(20);
+var _BaseTypes = __webpack_require__(21);
 
 var _Util = __webpack_require__(4);
 
@@ -33545,7 +33545,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Projection = __webpack_require__(21);
+var _Projection = __webpack_require__(22);
 
 var _Projection2 = _interopRequireDefault(_Projection);
 
@@ -33903,7 +33903,7 @@ var _Event = __webpack_require__(44);
 
 var _Event2 = _interopRequireDefault(_Event);
 
-var _BaseTypes = __webpack_require__(20);
+var _BaseTypes = __webpack_require__(21);
 
 var _Util = __webpack_require__(4);
 
@@ -34845,7 +34845,7 @@ var _MultiPoint2 = __webpack_require__(46);
 
 var _MultiPoint3 = _interopRequireDefault(_MultiPoint2);
 
-var _Projection = __webpack_require__(21);
+var _Projection = __webpack_require__(22);
 
 var _Projection2 = _interopRequireDefault(_Projection);
 
@@ -37127,7 +37127,7 @@ _SuperMap2.default.ColorDictionary = ColorDictionary;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -37158,61 +37158,61 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var ComputeWeightMatrixParameters = function () {
 
-    /**
-     * @member SuperMap.ComputeWeightMatrixParameters.prototype.nodes {Array<Object>|Array<number>}
-     * @description 要计算耗费矩阵的点数组，必设字段。<br>
-     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
-     *              当 SuperMap.ComputeWeightMatrixParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
-     *              当 SuperMap.ComputeWeightMatrixParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
-     */
-    function ComputeWeightMatrixParameters(options) {
-        _classCallCheck(this, ComputeWeightMatrixParameters);
+  /**
+   * @member SuperMap.ComputeWeightMatrixParameters.prototype.nodes {Array<Object>|Array<number>}
+   * @description 要计算耗费矩阵的点数组，必设字段。<br>
+   *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
+   *              当 SuperMap.ComputeWeightMatrixParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
+   *              当 SuperMap.ComputeWeightMatrixParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
+   */
+  function ComputeWeightMatrixParameters(options) {
+    _classCallCheck(this, ComputeWeightMatrixParameters);
 
-        this.isAnalyzeById = false;
-        this.nodes = null;
-        this.parameter = null;
-        this.CLASS_NAME = "SuperMap.ComputeWeightMatrixParameters";
+    this.isAnalyzeById = false;
+    this.nodes = null;
+    this.parameter = null;
+    this.CLASS_NAME = "SuperMap.ComputeWeightMatrixParameters";
 
-        var me = this;
-        me.parameter = new _TransportationAnalystParameter2.default();
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
+    var me = this;
+    me.parameter = new _TransportationAnalystParameter2.default();
+    if (!options) {
+      return;
     }
+    _SuperMap2.default.Util.extend(this, options);
+  }
 
-    /**
-     * @function SuperMap.ComputeWeightMatrixParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.ComputeWeightMatrixParameters.prototype.parameter {SuperMap.TransportationAnalystParameter}
-     * @description 交通网络分析通用参数。
-     */
+  /**
+   * @function SuperMap.ComputeWeightMatrixParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
 
 
-    /**
-     * @member SuperMap.ComputeWeightMatrixParameters.prototype.isAnalyzeById {Boolean}
-     * @description 是否通过节点 ID 指定路径分析的结点，默认为 false，即通过坐标点指定。
-     */
+  /**
+   * @member SuperMap.ComputeWeightMatrixParameters.prototype.parameter {SuperMap.TransportationAnalystParameter}
+   * @description 交通网络分析通用参数。
+   */
 
 
-    _createClass(ComputeWeightMatrixParameters, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.isAnalyzeById = null;
-            me.nodes = null;
-            if (me.parameter) {
-                me.parameter.destroy();
-                me.parameter = null;
-            }
-        }
-    }]);
+  /**
+   * @member SuperMap.ComputeWeightMatrixParameters.prototype.isAnalyzeById {Boolean}
+   * @description 是否通过节点 ID 指定路径分析的结点，默认为 false，即通过坐标点指定。
+   */
 
-    return ComputeWeightMatrixParameters;
+
+  _createClass(ComputeWeightMatrixParameters, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.isAnalyzeById = null;
+      me.nodes = null;
+      if (me.parameter) {
+        me.parameter.destroy();
+        me.parameter = null;
+      }
+    }
+  }]);
+
+  return ComputeWeightMatrixParameters;
 }();
 
 exports.default = ComputeWeightMatrixParameters;
@@ -37242,7 +37242,7 @@ var _BufferAnalystParameters = __webpack_require__(66);
 
 var _BufferAnalystParameters2 = _interopRequireDefault(_BufferAnalystParameters);
 
-var _DataReturnOption = __webpack_require__(23);
+var _DataReturnOption = __webpack_require__(24);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
@@ -37553,7 +37553,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _DataReturnOption = __webpack_require__(23);
+var _DataReturnOption = __webpack_require__(24);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
@@ -37783,7 +37783,7 @@ var _SurfaceAnalystParameters = __webpack_require__(68);
 
 var _SurfaceAnalystParameters2 = _interopRequireDefault(_SurfaceAnalystParameters);
 
-var _DataReturnOption = __webpack_require__(23);
+var _DataReturnOption = __webpack_require__(24);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
@@ -38360,7 +38360,7 @@ _SuperMap2.default.DensityKernelAnalystParameters = DensityKernelAnalystParamete
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -38391,121 +38391,121 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var EditFeaturesParameters = function () {
 
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.returnContent -{boolean}
-     * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
-     *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
-     */
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.returnContent -{boolean}
+   * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
+   *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
+   */
 
 
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{EditType}
-     * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
-     */
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{EditType}
+   * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
+   */
 
 
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{string}
-     * @description 当前需要创建或者是修改的要素的数据集。
-     */
-    function EditFeaturesParameters(options) {
-        _classCallCheck(this, EditFeaturesParameters);
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{string}
+   * @description 当前需要创建或者是修改的要素的数据集。
+   */
+  function EditFeaturesParameters(options) {
+    _classCallCheck(this, EditFeaturesParameters);
 
-        this.dataSourceName = null;
-        this.dataSetName = null;
-        this.features = null;
-        this.editType = _REST.EditType.ADD;
-        this.IDs = null;
-        this.returnContent = false;
-        this.isUseBatch = false;
-        this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
+    this.dataSourceName = null;
+    this.dataSetName = null;
+    this.features = null;
+    this.editType = _REST.EditType.ADD;
+    this.IDs = null;
+    this.returnContent = false;
+    this.isUseBatch = false;
+    this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
 
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
+    if (!options) {
+      return;
+    }
+    _SuperMap2.default.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.EditFeaturesParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.isUseBatch -{boolean}
+   * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
+   */
+
+
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{Array<string>}|{Array<Integer>}
+   * @description 执行删除时要素集ID集合。
+   */
+
+
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
+   * @description 当前需要创建或者是修改的要素集。</br>
+   * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
+   */
+
+
+  /**
+   * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
+   * @description 当前需要创建或者是修改的要素的数据源
+   */
+
+
+  _createClass(EditFeaturesParameters, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.dataSourceName = null;
+      me.dataSetName = null;
+      me.features = null;
+      me.editType = null;
+      me.IDs = null;
+      me.returnContent = null;
     }
 
     /**
-     * @function SuperMap.EditFeaturesParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
+     * @description 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
+     * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
+     * return {string} 转化后的 json字符串。
      */
 
+  }], [{
+    key: 'toJsonParameters',
+    value: function toJsonParameters(params) {
+      var geometry,
+          feature,
+          len,
+          features,
+          editType = params.editType;
 
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.isUseBatch -{boolean}
-     * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
-     */
+      if (editType === _SuperMap2.default.EditType.DELETE) {
+        if (params.IDs === null) return;
 
+        features = { ids: params.IDs };
+      } else {
+        if (params.features === null) return;
 
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{Array<string>}|{Array<Integer>}
-     * @description 执行删除时要素集ID集合。
-     */
-
-
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
-     * @description 当前需要创建或者是修改的要素集。</br>
-     * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
-     */
-
-
-    /**
-     * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
-     * @description 当前需要创建或者是修改的要素的数据源
-     */
-
-
-    _createClass(EditFeaturesParameters, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.dataSourceName = null;
-            me.dataSetName = null;
-            me.features = null;
-            me.editType = null;
-            me.IDs = null;
-            me.returnContent = null;
+        len = params.features.length;
+        features = [];
+        for (var i = 0; i < len; i++) {
+          feature = params.features[i];
+          feature.geometry = _ServerGeometry2.default.fromGeometry(feature.geometry);
+          features.push(feature);
         }
+      }
 
-        /**
-         * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
-         * @description 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
-         * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
-         * return {string} 转化后的 json字符串。
-         */
+      return _SuperMap2.default.Util.toJSON(features);
+    }
+  }]);
 
-    }], [{
-        key: 'toJsonParameters',
-        value: function toJsonParameters(params) {
-            var geometry,
-                feature,
-                len,
-                features,
-                editType = params.editType;
-
-            if (editType === _SuperMap2.default.EditType.DELETE) {
-                if (params.IDs === null) return;
-
-                features = { ids: params.IDs };
-            } else {
-                if (params.features === null) return;
-
-                len = params.features.length;
-                features = [];
-                for (var i = 0; i < len; i++) {
-                    feature = params.features[i];
-                    feature.geometry = _ServerGeometry2.default.fromGeometry(feature.geometry);
-                    features.push(feature);
-                }
-            }
-
-            return _SuperMap2.default.Util.toJSON(features);
-        }
-    }]);
-
-    return EditFeaturesParameters;
+  return EditFeaturesParameters;
 }();
 
 exports.default = EditFeaturesParameters;
@@ -38532,7 +38532,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(24);
+var _FacilityAnalyst3DParameters = __webpack_require__(25);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -38609,7 +38609,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(24);
+var _FacilityAnalyst3DParameters = __webpack_require__(25);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -38792,7 +38792,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(24);
+var _FacilityAnalyst3DParameters = __webpack_require__(25);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -38867,7 +38867,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(24);
+var _FacilityAnalyst3DParameters = __webpack_require__(25);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -38941,7 +38941,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(24);
+var _FacilityAnalyst3DParameters = __webpack_require__(25);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -39947,7 +39947,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _DataReturnOption = __webpack_require__(23);
+var _DataReturnOption = __webpack_require__(24);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
@@ -40999,7 +40999,7 @@ var _FilterParameter = __webpack_require__(10);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _GetFeaturesParametersBase = __webpack_require__(25);
+var _GetFeaturesParametersBase = __webpack_require__(26);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
@@ -41177,7 +41177,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesParametersBase = __webpack_require__(25);
+var _GetFeaturesParametersBase = __webpack_require__(26);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
@@ -41352,7 +41352,7 @@ var _FilterParameter = __webpack_require__(10);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _GetFeaturesParametersBase = __webpack_require__(25);
+var _GetFeaturesParametersBase = __webpack_require__(26);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
@@ -41534,7 +41534,7 @@ var _FilterParameter = __webpack_require__(10);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _GetFeaturesParametersBase = __webpack_require__(25);
+var _GetFeaturesParametersBase = __webpack_require__(26);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
@@ -41671,7 +41671,7 @@ var _FilterParameter = __webpack_require__(10);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _GetFeaturesParametersBase = __webpack_require__(25);
+var _GetFeaturesParametersBase = __webpack_require__(26);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
@@ -41778,7 +41778,7 @@ _SuperMap2.default.GetFeaturesBySQLParameters = GetFeaturesBySQLParameters;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -41802,60 +41802,60 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var GetGridCellInfosParameters = function () {
 
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
-     * @description 要查询的地理位置X轴
-     */
+  /**
+   * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
+   * @description 要查询的地理位置X轴
+   */
 
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
-     * @description 数据集名称。
-     */
-    function GetGridCellInfosParameters(options) {
-        _classCallCheck(this, GetGridCellInfosParameters);
+  /**
+   * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
+   * @description 数据集名称。
+   */
+  function GetGridCellInfosParameters(options) {
+    _classCallCheck(this, GetGridCellInfosParameters);
 
-        this.datasetName = null;
-        this.dataSourceName = null;
-        this.X = null;
-        this.Y = null;
-        this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
+    this.datasetName = null;
+    this.dataSourceName = null;
+    this.X = null;
+    this.Y = null;
+    this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
 
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
+    if (!options) {
+      return;
     }
+    _SuperMap2.default.Util.extend(this, options);
+  }
 
-    /**
-     * @function SuperMap.GetGridCellInfosParameters.prototype.destroy
-     * @description 释放资源，将引用的资源属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
-     * @description 要查询的地理位置Y轴
-     */
+  /**
+   * @function SuperMap.GetGridCellInfosParameters.prototype.destroy
+   * @description 释放资源，将引用的资源属性置空。
+   */
 
 
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
-     * @description  数据源名称。
-     */
+  /**
+   * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
+   * @description 要查询的地理位置Y轴
+   */
 
 
-    _createClass(GetGridCellInfosParameters, [{
-        key: "destroy",
-        value: function destroy() {
-            var me = this;
-            me.datasetName = null;
-            me.dataSourceName = null;
-            me.X = null;
-            me.Y = null;
-        }
-    }]);
+  /**
+   * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
+   * @description  数据源名称。
+   */
 
-    return GetGridCellInfosParameters;
+
+  _createClass(GetGridCellInfosParameters, [{
+    key: "destroy",
+    value: function destroy() {
+      var me = this;
+      me.datasetName = null;
+      me.dataSourceName = null;
+      me.X = null;
+      me.Y = null;
+    }
+  }]);
+
+  return GetGridCellInfosParameters;
 }();
 
 exports.default = GetGridCellInfosParameters;
@@ -42313,7 +42313,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _InterpolationAnalystParameters = __webpack_require__(27);
+var _InterpolationAnalystParameters = __webpack_require__(28);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -42414,7 +42414,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _InterpolationAnalystParameters = __webpack_require__(27);
+var _InterpolationAnalystParameters = __webpack_require__(28);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -42559,7 +42559,7 @@ var _ThiessenAnalystParameters = __webpack_require__(54);
 
 var _ThiessenAnalystParameters2 = _interopRequireDefault(_ThiessenAnalystParameters);
 
-var _InterpolationAnalystParameters = __webpack_require__(27);
+var _InterpolationAnalystParameters = __webpack_require__(28);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -42847,7 +42847,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _InterpolationAnalystParameters = __webpack_require__(27);
+var _InterpolationAnalystParameters = __webpack_require__(28);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -43020,7 +43020,7 @@ _SuperMap2.default.InterpolationRBFAnalystParameters = InterpolationRBFAnalystPa
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -43049,132 +43049,132 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var KernelDensityJobParameter = function () {
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
-     * @description 搜索半径单位。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
+   * @description 搜索半径单位。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
-     * @description 分析的影响半径。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
+   * @description 分析的影响半径。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
-     * @description 分析类型。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
+   * @description 分析类型。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
-     * @description 网格大小。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
+   * @description 网格大小。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    function KernelDensityJobParameter(options) {
-        _classCallCheck(this, KernelDensityJobParameter);
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
+   * @description 数据集名。
+   */
+  function KernelDensityJobParameter(options) {
+    _classCallCheck(this, KernelDensityJobParameter);
 
-        this.datasetName = "";
-        this.query = "";
-        this.resolution = 80;
-        this.method = 0;
-        this.meshType = 0;
-        this.fields = "";
-        this.radius = 300;
-        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-        this.radiusUnit = _REST.AnalystSizeUnit.METER;
-        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
+    this.datasetName = "";
+    this.query = "";
+    this.resolution = 80;
+    this.method = 0;
+    this.meshType = 0;
+    this.fields = "";
+    this.radius = 300;
+    this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+    this.radiusUnit = _REST.AnalystSizeUnit.METER;
+    this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
+    if (!options) {
+      return;
+    }
+    _SuperMap2.default.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.KernelDensityJobParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
+   * @description 面积单位。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+   * @description 网格大小单位。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
+   * @description 权重索引。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
+   * @description 分析方法。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
+   * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+   */
+
+
+  _createClass(KernelDensityJobParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.datasetName = null;
+      this.query = null;
+      this.resolution = null;
+      this.method = null;
+      this.radius = null;
+      this.meshType = null;
+      this.fields = null;
+      this.meshSizeUnit = null;
+      this.radiusUnit = null;
+      this.areaUnit = null;
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.KernelDensityJobParameter.toObject
+     * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
+     * @param tempObj - {Object} 目标对象
+     * @description 生成密度分析任务对象
      */
 
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
-     * @description 面积单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-     * @description 网格大小单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
-     * @description 权重索引。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
-     * @description 分析方法。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
-     */
-
-
-    _createClass(KernelDensityJobParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.query = null;
-            this.resolution = null;
-            this.method = null;
-            this.radius = null;
-            this.meshType = null;
-            this.fields = null;
-            this.meshSizeUnit = null;
-            this.radiusUnit = null;
-            this.areaUnit = null;
+  }], [{
+    key: 'toObject',
+    value: function toObject(kernelDensityJobParameter, tempObj) {
+      for (var name in kernelDensityJobParameter) {
+        if (name === "datasetName") {
+          tempObj['input'] = tempObj['input'] || {};
+          tempObj['input'][name] = kernelDensityJobParameter[name];
+          continue;
         }
-
-        /**
-         * @function SuperMap.KernelDensityJobParameter.toObject
-         * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
-         * @param tempObj - {Object} 目标对象
-         * @description 生成密度分析任务对象
-         */
-
-    }], [{
-        key: 'toObject',
-        value: function toObject(kernelDensityJobParameter, tempObj) {
-            for (var name in kernelDensityJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = kernelDensityJobParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                if (name === 'query') {
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-                } else {
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
-                }
-            }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        if (name === 'query') {
+          tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+        } else {
+          tempObj['analyst'][name] = kernelDensityJobParameter[name];
         }
-    }]);
+      }
+    }
+  }]);
 
-    return KernelDensityJobParameter;
+  return KernelDensityJobParameter;
 }();
 
 exports.default = KernelDensityJobParameter;
@@ -44295,7 +44295,7 @@ var PointWithMeasure = function (_Point) {
             result += "}";
             return result;
         }
-             /**
+           /**
          * @function SuperMap.PointWithMeasure.prototype.destroy
          * @description 释放资源，将引用资源的属性置空。
          */
@@ -50583,7 +50583,7 @@ _SuperMap2.default.ServerInfo = ServerInfo;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -50604,74 +50604,74 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 参数。
  */
 var TokenServiceParameter = function () {
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
-     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-     */
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+   * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+   */
 
 
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
-     * @description token申请的客户端标识类型。
-     */
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
+   * @description token申请的客户端标识类型。
+   */
 
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
-     * @description 用户名。
-     */
-    function TokenServiceParameter(options) {
-        _classCallCheck(this, TokenServiceParameter);
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
+   * @description 用户名。
+   */
+  function TokenServiceParameter(options) {
+    _classCallCheck(this, TokenServiceParameter);
 
-        this.userName = null;
-        this.password = null;
-        this.clientType = _REST.ClientType.NONE;
-        this.ip = null;
-        this.referer = null;
-        this.expiration = 60;
-        this.CLASS_NAME = "SuperMap.TokenServiceParameter";
+    this.userName = null;
+    this.password = null;
+    this.clientType = _REST.ClientType.NONE;
+    this.ip = null;
+    this.referer = null;
+    this.expiration = 60;
+    this.CLASS_NAME = "SuperMap.TokenServiceParameter";
 
-        _SuperMap2.default.Util.extend(this, options);
+    _SuperMap2.default.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.TokenServiceParameter.prototype.toJSON
+   * @description 将所有信息转成JSON字符串
+   * @return {string} 参数的JSON字符串
+   */
+
+
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
+   * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
+   */
+
+
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
+   * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+   */
+
+  /**
+   * @member SuperMap.TokenServiceParameter.prototype.password -{string}
+   * @description 密码。
+   */
+
+
+  _createClass(TokenServiceParameter, [{
+    key: 'toJSON',
+    value: function toJSON() {
+      return {
+        userName: this.userName,
+        password: this.password,
+        clientType: this.clientType,
+        ip: this.ip,
+        referer: this.referer,
+        expiration: this.expiration
+      };
     }
+  }]);
 
-    /**
-     * @function SuperMap.TokenServiceParameter.prototype.toJSON
-     * @description 将所有信息转成JSON字符串
-     * @return {string} 参数的JSON字符串
-     */
-
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
-     * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
-     */
-
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
-     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-     */
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.password -{string}
-     * @description 密码。
-     */
-
-
-    _createClass(TokenServiceParameter, [{
-        key: 'toJSON',
-        value: function toJSON() {
-            return {
-                userName: this.userName,
-                password: this.password,
-                clientType: this.clientType,
-                ip: this.ip,
-                referer: this.referer,
-                expiration: this.expiration
-            };
-        }
-    }]);
-
-    return TokenServiceParameter;
+  return TokenServiceParameter;
 }();
 
 exports.default = TokenServiceParameter;
@@ -50694,7 +50694,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
+var _mapboxGl = __webpack_require__(20);
+
+var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
+
 var _mapv = __webpack_require__(81);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -52475,11 +52481,11 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 var adjust_lon = __webpack_require__(3);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var mlfn = __webpack_require__(34);
-var e0fn = __webpack_require__(30);
-var e1fn = __webpack_require__(31);
-var e2fn = __webpack_require__(32);
-var e3fn = __webpack_require__(33);
+var mlfn = __webpack_require__(35);
+var e0fn = __webpack_require__(31);
+var e1fn = __webpack_require__(32);
+var e2fn = __webpack_require__(33);
+var e3fn = __webpack_require__(34);
 var gN = __webpack_require__(56);
 var asinz = __webpack_require__(18);
 var imlfn = __webpack_require__(57);
@@ -52675,14 +52681,14 @@ exports.names = ["Azimuthal_Equidistant", "aeqd"];
 /* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var mlfn = __webpack_require__(34);
-var e0fn = __webpack_require__(30);
-var e1fn = __webpack_require__(31);
-var e2fn = __webpack_require__(32);
-var e3fn = __webpack_require__(33);
+var mlfn = __webpack_require__(35);
+var e0fn = __webpack_require__(31);
+var e1fn = __webpack_require__(32);
+var e2fn = __webpack_require__(33);
+var e3fn = __webpack_require__(34);
 var gN = __webpack_require__(56);
 var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(29);
+var adjust_lat = __webpack_require__(30);
 var imlfn = __webpack_require__(57);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
@@ -52853,7 +52859,7 @@ exports.names = ["cea"];
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(29);
+var adjust_lat = __webpack_require__(30);
 exports.init = function() {
 
   this.x0 = this.x0 || 0;
@@ -52899,14 +52905,14 @@ exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 /* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var e0fn = __webpack_require__(30);
-var e1fn = __webpack_require__(31);
-var e2fn = __webpack_require__(32);
-var e3fn = __webpack_require__(33);
+var e0fn = __webpack_require__(31);
+var e1fn = __webpack_require__(32);
+var e2fn = __webpack_require__(33);
+var e3fn = __webpack_require__(34);
 var msfnz = __webpack_require__(19);
-var mlfn = __webpack_require__(34);
+var mlfn = __webpack_require__(35);
 var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(29);
+var adjust_lat = __webpack_require__(30);
 var imlfn = __webpack_require__(57);
 var EPSLN = 1.0e-10;
 exports.init = function() {
@@ -53573,7 +53579,7 @@ var EPSLN = 1.0e-10;
 var msfnz = __webpack_require__(19);
 var tsfnz = __webpack_require__(43);
 var HALF_PI = Math.PI/2;
-var sign = __webpack_require__(35);
+var sign = __webpack_require__(36);
 var adjust_lon = __webpack_require__(3);
 var phi2z = __webpack_require__(42);
 exports.init = function() {
@@ -54360,13 +54366,13 @@ exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_O
 /* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var e0fn = __webpack_require__(30);
-var e1fn = __webpack_require__(31);
-var e2fn = __webpack_require__(32);
-var e3fn = __webpack_require__(33);
+var e0fn = __webpack_require__(31);
+var e1fn = __webpack_require__(32);
+var e2fn = __webpack_require__(33);
+var e3fn = __webpack_require__(34);
 var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(29);
-var mlfn = __webpack_require__(34);
+var adjust_lat = __webpack_require__(30);
+var mlfn = __webpack_require__(35);
 var EPSLN = 1.0e-10;
 var gN = __webpack_require__(56);
 var MAX_ITER = 20;
@@ -54494,7 +54500,7 @@ exports.names = ["Polyconic", "poly"];
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(29);
+var adjust_lat = __webpack_require__(30);
 var pj_enfn = __webpack_require__(278);
 var MAX_ITER = 20;
 var pj_mlfn = __webpack_require__(74);
@@ -54692,7 +54698,7 @@ exports.names = ["somerc"];
 
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var sign = __webpack_require__(35);
+var sign = __webpack_require__(36);
 var msfnz = __webpack_require__(19);
 var tsfnz = __webpack_require__(43);
 var phi2z = __webpack_require__(42);
@@ -55074,108 +55080,7 @@ exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 318 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"_from": "proj4@2.3.15",
-	"_id": "proj4@2.3.15",
-	"_inBundle": false,
-	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
-	"_location": "/proj4",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "version",
-		"registry": true,
-		"raw": "proj4@2.3.15",
-		"name": "proj4",
-		"escapedName": "proj4",
-		"rawSpec": "2.3.15",
-		"saveSpec": null,
-		"fetchSpec": "2.3.15"
-	},
-	"_requiredBy": [
-		"/"
-	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
-	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
-	"_spec": "proj4@2.3.15",
-	"_where": "F:\\dev\\iClient",
-	"author": "",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
-	},
-	"bundleDependencies": false,
-	"contributors": [
-		{
-			"name": "Mike Adair",
-			"email": "madair@dmsolutions.ca"
-		},
-		{
-			"name": "Richard Greenwood",
-			"email": "rich@greenwoodmap.com"
-		},
-		{
-			"name": "Calvin Metcalf",
-			"email": "calvin.metcalf@gmail.com"
-		},
-		{
-			"name": "Richard Marsden",
-			"url": "http://www.winwaed.com"
-		},
-		{
-			"name": "T. Mittan"
-		},
-		{
-			"name": "D. Steinwand"
-		},
-		{
-			"name": "S. Nelson"
-		}
-	],
-	"dependencies": {
-		"mgrs": "~0.0.2"
-	},
-	"deprecated": false,
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"devDependencies": {
-		"browserify": "~12.0.1",
-		"chai": "~1.8.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"grunt": "~0.4.2",
-		"grunt-browserify": "~4.0.1",
-		"grunt-cli": "~0.1.13",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~0.8.0",
-		"grunt-contrib-uglify": "~0.11.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"istanbul": "~0.2.4",
-		"mocha": "~1.17.1",
-		"tin": "~0.4.0"
-	},
-	"directories": {
-		"test": "test",
-		"doc": "docs"
-	},
-	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"jam": {
-		"main": "dist/proj4.js",
-		"include": [
-			"dist/proj4.js",
-			"README.md",
-			"AUTHORS",
-			"LICENSE.md"
-		]
-	},
-	"license": "MIT",
-	"main": "lib/index.js",
-	"name": "proj4",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
-	},
-	"scripts": {
-		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
-	},
-	"version": "2.3.15"
-};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\codes\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 319 */
