@@ -19,15 +19,10 @@ module.exports = function (config) {
                 [require('babelify'), {
                     presets: ["es2015"],
                     ignore: ["**/classic/libs/**", "**/test/**"],
-                    plugins: ['transform-class-properties']
+                    plugins: ['transform-class-properties','istanbul']
                 }],
                 require('browserify-css'),
-                require('browserify-imgify'),
-                [require('browserify-istanbul'), {
-                    instrumenterConfig: {
-                        embedSource: true
-                    }
-                }]
+                require('browserify-imgify')
             ]
         },
 
