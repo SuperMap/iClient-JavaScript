@@ -1,0 +1,574 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Turf.js空间分析</title>
+    <script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 120px;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .menu {
+            position: absolute;
+            top: 20px;
+            right: 50px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%"></div>
+<div id="info" class="ol-popup">
+    <div id="info-content"></div>
+</div>
+<div id="menu" class="menu">
+    <select id="menuSelect" class="form-control">
+        <option value="bboxClip" selected="selected">bboxClip</option>
+        <option value="bezier">bezier</option>
+        <option value="buffer">buffer</option>
+        <option value="circle">circle</option>
+        <option value="concave">concave</option>
+        <option value="convex">convex</option>
+        <option value="difference">difference</option>
+        <option value="dissolve">dissolve</option>
+        <option value="intersect">intersect</option>
+        <option value="simplify">simplify</option>
+        <option value="tesselate">tesselate</option>
+        <option value="transformRotate">transformRotate</option>
+        <option value="transformTranslate">transformTranslate</option>
+        <option value="transformScale">transformScale</option>
+        <option value="union">union</option>
+    </select>
+</div>
+<script type="text/javascript">
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090",
+        select, container = document.getElementById('info'),
+        content = document.getElementById('info-content'),
+        overlay = new ol.Overlay(({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        }));
+    var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    var map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
+        view: new ol.View({
+            center: [7, 5],
+            zoom: 6,
+            projection: 'EPSG:4326'
+        }),
+        overlays: [overlay]
+    });
+    var menu = new ol.control.Control({element: $("#menu")[0]});
+    menu.setMap(map);
+    map.addControl(menu);
+    map.addLayer(new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: url,
+            prjCoordSys: {"epsgCode": 4326}
+        }),
+        projection: 'EPSG:4326'
+    }));
+
+    var turfSource = new ol.source.Turf({
+        wrapX: false,
+        attributions: new ol.Attribution({
+            html: "© <a href='http://turfjs.org/' target='_blank'>turfjs<span></a> with"
+        }),
+    });
+    map.addLayer(new ol.layer.Vector({
+        source: turfSource,
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'rgba(0,153,255,1)',
+                width: 6
+            }),
+            fill: new ol.style.Fill({
+                color: 'rgba(0,153,255,0.1)'
+            })
+        })
+    }));
+    var resultSource = new ol.source.Turf({
+        wrapX: false,
+        attributions: new ol.Attribution({
+            html: ""
+        }),
+    });
+    var resultLayer = new ol.layer.Vector({
+        source: resultSource,
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'rgba(178,34,34,1)',
+                width: 2
+            }),
+            fill: new ol.style.Fill({
+                color: 'rgba(178,34,34,0.3)'
+            })
+        })
+    });
+    map.addLayer(resultLayer);
+
+    $('#menuSelect').change(function () {
+        overlay.setPosition(undefined);
+        turfSource.clear();
+        resultSource.clear();
+        resetSelect();
+        var func = eval($('#menuSelect').val());
+        new func();
+    });
+
+    resetSelect();
+    bboxClip();
+
+    function resetSelect() {
+        if (select) {
+            map.removeInteraction(select);
+        }
+        select = new ol.interaction.Select({
+            layers: [resultLayer],
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(178,34,34,1)',
+                    width: 2
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(178,34,34,1)'
+                })
+            }),
+            hitTolerance: 5
+        });
+        select.on('select', function (e) {
+            if (e.selected.length > 0) {
+                content.innerHTML = "空间分析结果";
+                overlay.setPosition(e.mapBrowserEvent.coordinate);
+            } else {
+                overlay.setPosition(undefined);
+            }
+        });
+        map.addInteraction(select);
+    }
+
+    function bboxClip() {
+        map.getView().setCenter([7, 5]);
+        map.getView().setZoom(6);
+        turfSource.process("Helper.polygon", {
+            "coordinates": [[[2, 2], [8, 4], [12, 8], [3, 7], [2, 2]]],
+        }, function (polygon) {
+            resultSource.process("Transformation.bboxClip", {
+                "feature": polygon,
+                "bbox": [0, 0, 10, 10],
+            });
+        });
+    }
+
+    function bezier() {
+        map.getView().setCenter([-75, 19.5]);
+        map.getView().setZoom(8);
+        turfSource.process("Helper.lineString", {
+            "coordinates": [[-76.091308, 18.427501],
+                [-76.695556, 18.729501],
+                [-76.552734, 19.40443],
+                [-74.61914, 19.134789],
+                [-73.652343, 20.07657],
+                [-73.157958, 20.210656]],
+        }, function (line) {
+            resultSource.process("Transformation.bezier", {
+                "line": line,
+            });
+        });
+    }
+
+    function buffer() {
+        map.getView().setCenter([-90.548630, 14.616599]);
+        map.getView().setZoom(6);
+        var point = new ol.geom.Point([-90.548630, 14.616599]);
+        var iconStyle = new ol.style.Style({
+            image: new ol.style.Icon(({
+                src: '../img/markerbig_select.png'
+            }))
+        });
+        var feature = new ol.Feature(point);
+        feature.setStyle(iconStyle);
+        turfSource.addFeature(feature);
+        turfSource.process("Helper.point", {
+            anchor: [0.5, 1],
+            "coordinates": [-90.548630, 14.616599],
+        }, function (point) {
+            resultSource.process("Transformation.buffer", {
+                "geojson": point,
+                "radius": 500,
+                "units": 'miles',
+            });
+        });
+    }
+
+    function circle() {
+        map.getView().setCenter([-75.343, 39.984]);
+        map.getView().setZoom(12);
+        var point = new ol.geom.Point([-75.343, 39.984]);
+        var iconStyle = new ol.style.Style({
+            image: new ol.style.Icon(({
+                anchor: [0.5, 1],
+                src: '../img/markerbig_select.png'
+            }))
+        });
+        var feature = new ol.Feature(point);
+        feature.setStyle(iconStyle);
+        turfSource.addFeature(feature);
+        resultSource.process("Transformation.circle", {
+            "center": [-75.343, 39.984],
+            "radius": 5,
+            "steps": 10,
+            "units": 'kilometers',
+            "properties": {foo: 'bar'}
+        });
+    }
+
+    function concave() {
+        map.getView().setCenter([-63.59, 44.645]);
+        map.getView().setZoom(15);
+        var coordinatesArray = [
+            [-63.601226, 44.642643],
+            [-63.591442, 44.651436],
+            [-63.580799, 44.648749],
+            [-63.573589, 44.641788],
+            [-63.587665, 44.64533],
+            [-63.595218, 44.64765]
+        ];
+        var points = [];
+        coordinatesArray.map(function (coordinates) {
+            var point = new ol.geom.Point(coordinates);
+            var iconStyle = new ol.style.Style({
+                image: new ol.style.Icon(({
+                    anchor: [0.5, 1],
+                    src: '../img/markerbig_select.png'
+                }))
+            });
+            var feature = new ol.Feature(point);
+            feature.setStyle(iconStyle);
+            turfSource.addFeature(feature);
+            turfSource.process("Helper.point", {
+                "coordinates": coordinates,
+            }, function (point) {
+                points.push(point);
+            });
+        });
+        turfSource.process("Helper.featureCollection", {
+            "features": points
+        }, function (collection) {
+            resultSource.process("Transformation.concave", {
+                "points": collection,
+                "maxEdge": 1,
+                "units": 'miles',
+            });
+        });
+    }
+
+    function convex() {
+        map.getView().setCenter([10.3, 43.6]);
+        map.getView().setZoom(10);
+        var coordinatesArray = [
+            [10.195312, 43.755225],
+            [10.404052, 43.8424511],
+            [10.579833, 43.659924],
+            [10.360107, 43.516688],
+            [10.14038, 43.588348],
+            [10.195312, 43.755225]
+        ];
+        var points = [];
+        coordinatesArray.map(function (coordinates) {
+            var point = new ol.geom.Point(coordinates);
+            var iconStyle = new ol.style.Style({
+                image: new ol.style.Icon(({
+                    anchor: [0.5, 1],
+                    src: '../img/markerbig_select.png'
+                }))
+            });
+            var feature = new ol.Feature(point);
+            feature.setStyle(iconStyle);
+            turfSource.addFeature(feature);
+            turfSource.process("Helper.point", {
+                "coordinates": coordinates,
+            }, function (point) {
+                points.push(point);
+            });
+        });
+        turfSource.process("Helper.featureCollection", {
+            "features": points
+        }, function (collection) {
+            resultSource.process("Transformation.convex", {
+                "feature": collection
+            });
+        });
+    }
+
+    function difference() {
+        map.getView().setCenter([133, -24]);
+        map.getView().setZoom(5);
+        turfSource.process("Helper.polygon", {
+            "coordinates": [[
+                [128, -26],
+                [141, -26],
+                [141, -21],
+                [128, -21],
+                [128, -26]
+            ]]
+        }, function (polygon1) {
+            turfSource.process("Helper.polygon", {
+                "coordinates": [[
+                    [126, -28],
+                    [140, -28],
+                    [140, -20],
+                    [126, -20],
+                    [126, -28]
+                ]]
+            }, function (polygon2) {
+                resultSource.process("Transformation.difference", {
+                    "polygon1": polygon1,
+                    "polygon2": polygon2
+                });
+            });
+        });
+    }
+
+    function dissolve() {
+        map.getView().setCenter([0.5, 0]);
+        map.getView().setZoom(8);
+        var polygons = [{
+            "coordinates": [[[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]],
+            "properties": {"combine": "yes"}
+        }, {
+            "coordinates": [[[0, -1], [0, 0], [1, 0], [1, -1], [0, -1]]],
+            "properties": {"combine": "yes"}
+        }, {
+            "coordinates": [[[1, -1], [1, 0], [2, 0], [2, -1], [1, -1]]],
+            "properties": {"combine": "no"}
+        }];
+        var features = [];
+        polygons.map(function (polygon) {
+            turfSource.process("Helper.polygon", polygon, function (feature) {
+                features.push(feature);
+            });
+        });
+        turfSource.process("Helper.featureCollection", {
+            "features": features
+        }, function (collection) {
+            resultSource.process("Transformation.dissolve", {
+                "featureCollection": collection,
+                "propertyName": 'combine'
+            });
+        });
+    }
+
+    function intersect() {
+        map.getView().setCenter([-122.6, 45.47]);
+        map.getView().setZoom(11);
+        turfSource.process("Helper.polygon", {
+            "coordinates": [[
+                [-122.801742, 45.48565],
+                [-122.801742, 45.60491],
+                [-122.584762, 45.60491],
+                [-122.584762, 45.48565],
+                [-122.801742, 45.48565]
+            ]]
+        }, function (polygon1) {
+            turfSource.process("Helper.polygon", {
+                "coordinates": [[
+                    [-122.520217, 45.535693],
+                    [-122.64038, 45.553967],
+                    [-122.720031, 45.526554],
+                    [-122.669906, 45.507309],
+                    [-122.723464, 45.446643],
+                    [-122.532577, 45.408574],
+                    [-122.487258, 45.477466],
+                    [-122.520217, 45.535693]
+                ]]
+            }, function (polygon2) {
+                resultSource.process("Transformation.intersect", {
+                    "poly1": polygon1,
+                    "poly2": polygon2
+                });
+            });
+        });
+    }
+
+    function simplify() {
+        map.getView().setCenter([-70.65, -33.43]);
+        map.getView().setZoom(11);
+        turfSource.process("Helper.polygon", {
+            "coordinates": [[
+                [-70.603637, -33.399918],
+                [-70.614624, -33.395332],
+                [-70.639343, -33.392466],
+                [-70.659942, -33.394759],
+                [-70.683975, -33.404504],
+                [-70.697021, -33.419406],
+                [-70.701141, -33.434306],
+                [-70.700454, -33.446339],
+                [-70.694274, -33.458369],
+                [-70.682601, -33.465816],
+                [-70.668869, -33.472117],
+                [-70.646209, -33.473835],
+                [-70.624923, -33.472117],
+                [-70.609817, -33.468107],
+                [-70.595397, -33.458369],
+                [-70.587158, -33.442901],
+                [-70.587158, -33.426283],
+                [-70.590591, -33.414248],
+                [-70.594711, -33.406224],
+                [-70.603637, -33.399918]
+            ]]
+        }, function (feature) {
+            resultSource.process("Transformation.simplify", {
+                feature: feature,
+                tolerance: 0.01,
+                highQuality: false,
+            });
+        });
+    }
+
+    function tesselate() {
+        map.getView().setCenter([15, 7]);
+        map.getView().setZoom(4);
+        turfSource.process("Helper.polygon", {
+            "coordinates": [[
+                [11, 0],
+                [22, 4],
+                [31, 0],
+                [31, 11],
+                [21, 15],
+                [11, 11],
+                [11, 0]
+            ]]
+        }, function (poly) {
+            resultSource.process("Transformation.tesselate", {
+                poly: poly
+            });
+        });
+    }
+
+    function transformRotate() {
+        map.getView().setCenter([1.8, 30.5]);
+        map.getView().setZoom(6);
+        turfSource.process("Helper.polygon", {
+            "coordinates": [[
+                [0, 29],
+                [3.5, 29],
+                [2.5, 32],
+                [0, 29]
+            ]]
+        }, function (poly) {
+            resultSource.process("Transformation.transformRotate", {
+                geojson: poly,
+                angle: 10,
+                pivot: [0, 25]
+            });
+        });
+    }
+
+    function transformTranslate() {
+        map.getView().setCenter([1.8, 30.5]);
+        map.getView().setZoom(6);
+        turfSource.process("Helper.polygon", {
+            "coordinates": [[
+                [0, 29],
+                [3.5, 29],
+                [2.5, 32],
+                [0, 29]
+            ]]
+        }, function (poly) {
+            resultSource.process("Transformation.transformTranslate", {
+                geojson: poly,
+                distance: 100,
+                direction: 35
+            });
+        });
+    }
+
+    function transformScale() {
+        map.getView().setCenter([1.8, 30.5]);
+        map.getView().setZoom(6);
+        turfSource.process("Helper.polygon", {
+            "coordinates": [[
+                [0, 29],
+                [3.5, 29],
+                [2.5, 32],
+                [0, 29]
+            ]]
+        }, function (poly) {
+            resultSource.process("Transformation.transformScale", {
+                geojson: poly,
+                factor: 3
+            });
+        });
+    }
+
+    function union() {
+        map.getView().setCenter([-82.55, 35.6]);
+        map.getView().setZoom(14);
+        turfSource.process("Helper.polygon", {
+            "coordinates": [[
+                [-82.574787, 35.594087],
+                [-82.574787, 35.615581],
+                [-82.545261, 35.615581],
+                [-82.545261, 35.594087],
+                [-82.574787, 35.594087]
+            ]]
+        }, function (poly1) {
+            turfSource.process("Helper.polygon", {
+                "coordinates": [[
+                    [-82.560024, 35.585153],
+                    [-82.560024, 35.602602],
+                    [-82.52964, 35.602602],
+                    [-82.52964, 35.585153],
+                    [-82.560024, 35.585153]
+                ]]
+            }, function (poly2) {
+                resultSource.process("Transformation.union", {
+                    A: [poly1, poly2],
+                });
+            })
+        });
+    }
+
+</script>
+</body>
+</html>
