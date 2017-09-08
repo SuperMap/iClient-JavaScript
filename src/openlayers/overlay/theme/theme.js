@@ -1,7 +1,14 @@
 import ol from 'openlayers/dist/ol-debug';
 import Util from '../../core/Util';
 import SuperMap from '../../../common/SuperMap';
+import ServerFeature from '../../../common/iServer/ServerFeature';
 import ThemeFeature from './themeFeature';
+import LonLat from "../../../common/commontypes/LonLat";
+import Point from "../../../common/commontypes/geometry/Point";
+import GeoText from "../../../common/commontypes/geometry/GeoText";
+import LevelRenderer from "../../../common/overlay/levelRenderer/LevelRenderer";
+import "../../../common/overlay/levelRenderer/Render";
+
 /**
  * @class ol.source.Theme
  * @classdesc 专题
@@ -70,10 +77,9 @@ export default class Theme extends ol.source.ImageCanvas {
             state: options.state
         });
         this.canvasFunctionInternal_ = canvasFunctionInternal_;
-        this.EVENT_TYPES =
-            SuperMap.Layer.Theme.prototype.EVENT_TYPES.concat(
-                SuperMap.Layer.prototype.EVENT_TYPES
-            );
+        this.EVENT_TYPES = ["loadstart", "loadend", "loadcancel",
+            "visibilitychanged", "move", "moveend", "added", "removed",
+            "tileloaded", "beforefeaturesadded", "featuresadded", "featuresremoved"];
         this.imageTransform = [1, 0, 0, 1, 0, 0];
         this.features = [];
         this.TFEvents = [];
@@ -85,7 +91,7 @@ export default class Theme extends ol.source.ImageCanvas {
         this.div.style.width = size[0] + "px";
         this.div.style.height = size[1] + "px";
         this.setOpacity(options.opacity);
-        this.levelRenderer = new SuperMap.LevelRenderer();
+        this.levelRenderer = new LevelRenderer();
         this.movingOffset = [0, 0];
         this.renderer = this.levelRenderer.init(this.div);
         this.map.getViewport().removeChild(this.div);
@@ -423,10 +429,10 @@ export default class Theme extends ol.source.ImageCanvas {
      */
     getLocalXY(coordinate) {
         var pixelP, map = this.map;
-        if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
+        if (coordinate instanceof Point || coordinate instanceof GeoText) {
             pixelP = map.getPixelFromCoordinate([coordinate.x, coordinate.y]);
         }
-        if (coordinate instanceof SuperMap.LonLat) {
+        if (coordinate instanceof LonLat) {
             pixelP = map.getPixelFromCoordinate([coordinate.lon, coordinate.lat]);
         }
         var rotation = -map.getView().getRotation();
@@ -480,7 +486,7 @@ export default class Theme extends ol.source.ImageCanvas {
         if (feature instanceof ThemeFeature) {
             return feature.toFeature();
         }
-        return new SuperMap.REST.ServerFeature.fromJson(feature).toFeature();
+        return new ServerFeature.fromJson(feature).toFeature();
     }
 
 }

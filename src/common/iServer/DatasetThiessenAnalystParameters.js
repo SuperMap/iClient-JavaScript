@@ -1,5 +1,7 @@
 ﻿import SuperMap from '../SuperMap';
 import ThiessenAnalystParameters from './ThiessenAnalystParameters';
+import ServerGeometry from './ServerGeometry';
+
 /**
  * @class SuperMap.DatasetThiessenAnalystParameters
  * @classdesc 数据集泰森多边形分析参数类
@@ -7,7 +9,7 @@ import ThiessenAnalystParameters from './ThiessenAnalystParameters';
  *        filterQueryParameter - {SuperMap.FilterParameter} 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
  * @extends SuperMap.ThiessenAnalystParameters
  */
-export default  class DatasetThiessenAnalystParameters extends ThiessenAnalystParameters {
+export default class DatasetThiessenAnalystParameters extends ThiessenAnalystParameters {
 
     /**
      * @member SuperMap.DatasetThiessenAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
@@ -47,16 +49,17 @@ export default  class DatasetThiessenAnalystParameters extends ThiessenAnalystPa
             me.filterQueryParameter = null;
         }
     }
+
     /**
      * @function SuperMap.DatasetThiessenAnalystParameters.toObject
      * @param datasetThiessenAnalystParameters -{Object} 泰森多边形分析服务参数。
      * @param tempObj - {Object} 目标对象。
      * @description 生成泰森多边形分析服务对象。
      */
-    static  toObject(datasetThiessenAnalystParameters, tempObj) {
+    static toObject(datasetThiessenAnalystParameters, tempObj) {
         for (var name in datasetThiessenAnalystParameters) {
             if (name === "clipRegion") {
-                tempObj.clipRegion = SuperMap.REST.ServerGeometry.fromGeometry(datasetThiessenAnalystParameters.clipRegion);
+                tempObj.clipRegion = ServerGeometry.fromGeometry(datasetThiessenAnalystParameters.clipRegion);
             } else {
                 tempObj[name] = datasetThiessenAnalystParameters[name];
             }

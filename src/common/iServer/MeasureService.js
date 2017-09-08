@@ -1,6 +1,7 @@
 ﻿import SuperMap from '../SuperMap';
 import CommonServiceBase from './CommonServiceBase';
 import MeasureParameters from './MeasureParameters';
+import ServerGeometry from './ServerGeometry';
 import {MeasureMode} from '../REST';
 
 /**
@@ -68,7 +69,7 @@ export default class MeasureService extends CommonServiceBase {
         } else {
             me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
         }
-        var serverGeometry = SuperMap.REST.ServerGeometry.fromGeometry(geometry);
+        var serverGeometry = ServerGeometry.fromGeometry(geometry);
         if (!serverGeometry) {
             return;
         }

@@ -1,5 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
+import ServerGeometry from '../../common/iServer/ServerGeometry';
 import '../../common/security/SecurityManager';
 import Util from  '../core/Util';
 
@@ -118,7 +119,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             if (options.clipRegion instanceof ol.geom.Geometry) {
                 options.clipRegionEnabled = true;
                 options.clipRegion = Util.toSuperMapGeometry(new ol.format.GeoJSON().writeGeometryObject(options.clipRegion));
-                options.clipRegion = SuperMap.Util.toJSON(SuperMap.REST.ServerGeometry.fromGeometry(options.clipRegion));
+                options.clipRegion = SuperMap.Util.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
                 params["clipRegionEnabled"] = options.clipRegionEnabled;
                 params["clipRegion"] = JSON.stringify(options.clipRegion);
             }

@@ -1,4 +1,5 @@
 import SuperMap from '../SuperMap';
+
 /**
  * @class SuperMap.CartoCSS
  * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象
@@ -16,7 +17,7 @@ import SuperMap from '../SuperMap';
  * me.cartoShaders=carto.getShaders();
  * (end)
  */
-export default  class CartoCSS {
+export default class CartoCSS {
     env = null;
 
     /**
@@ -528,7 +529,7 @@ export default  class CartoCSS {
                             return new SuperMap.CartoCSS.Tree.Invalid(value, memo, 'Missing closing ) in URL.');
                         } else {
                             return new SuperMap.CartoCSS.Tree.URL((typeof value.value !== 'undefined' ||
-                            value instanceof SuperMap.CartoCSS.Tree.Variable) ?
+                                value instanceof SuperMap.CartoCSS.Tree.Variable) ?
                                 value : new SuperMap.CartoCSS.Tree.Quoted(value));
                         }
                     },
@@ -624,10 +625,10 @@ export default  class CartoCSS {
                         segments = 0, conditions = 0;
 
                     while (
-                    (e = $(this.element)) ||
-                    (z = $(this.zoom)) ||
-                    (f = $(this.filter)) ||
-                    (a = $(this.attachment))
+                        (e = $(this.element)) ||
+                        (z = $(this.zoom)) ||
+                        (f = $(this.filter)) ||
+                        (a = $(this.attachment))
                         ) {
                         segments++;
                         if (e) {
@@ -2927,7 +2928,7 @@ SuperMap.CartoCSS.Tree.functions = {
             val: val,
             color: color,
             mode: mode,
-            toString: function (env) {
+            toString(env) {
                 return '\n\t<stop value="' + val.ev(env) + '"' +
                     (color ? ' color="' + color.ev(env) + '" ' : '') +
                     (mode ? ' mode="' + mode.ev(env) + '" ' : '') +
@@ -2958,7 +2959,7 @@ SuperMap.CartoCSS.Tree.functions = {
             if (h * 6 < 1) return m1 + (m2 - m1) * h * 6;
             else if (h * 2 < 1) return m2;
             else if (h * 3 < 2) return m1 + (m2 - m1) * (2 / 3 - h) * 6;
-            else                return m1;
+            else return m1;
         }
     },
     hue: function (color) {
@@ -3095,14 +3096,15 @@ SuperMap.CartoCSS.Tree.functions = {
     }
 };
 
-SuperMap.CartoCSS.Tree.Call = SuperMap.Class({
-    is: 'call',
+SuperMap.CartoCSS.Tree.Call = class Call {
+    is = 'call';
 
-    initialize: function (name, args, index) {
+    constructor(name, args, index) {
         this.name = name;
         this.args = args;
         this.index = index;
-    },
+    }
+
     // When evuating a function call,
     // we either find the function in `tree.functions` [1],
     // in which case we call it, passing the  evaluated arguments,
@@ -3111,7 +3113,7 @@ SuperMap.CartoCSS.Tree.Call = SuperMap.Class({
     // The reason why we evaluate the arguments, is in the case where
     // we try to pass a variable to a function, like: `saturate(@color)`.
     // The function should receive the value, not the variable.
-    'ev': function (env) {
+    'ev'(env) {
         var args = this.args.map(function (a) {
             return a.ev(env);
         });
@@ -3194,20 +3196,21 @@ SuperMap.CartoCSS.Tree.Call = SuperMap.Class({
                 return this;
             }
         }
-    },
+    }
 
-    toString: function (env, format) {
+    toString(env, format) {
         if (this.args.length) {
             return this.name + '(' + this.args.join(',') + ')';
         } else {
             return this.name;
         }
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Color = SuperMap.Class({
-    is: 'color',
-    initialize: function (rgb, a) {
+SuperMap.CartoCSS.Tree.Color = class Color {
+    is = 'color';
+
+    constructor(rgb, a) {
         // The end goal here, is to parse the arguments
         // into an integer triplet, such as `128, 255, 0`
         //
@@ -3231,20 +3234,21 @@ SuperMap.CartoCSS.Tree.Color = SuperMap.Class({
         } else {
             this.alpha = 1;
         }
-    },
-    'ev': function () {
+    }
+
+    'ev'() {
         return this;
-    },
+    }
 
     // If we have some transparency, the only way to represent it
     // is via `rgba`. Otherwise, we use the hex representation,
     // which has better compatibility with older browsers.
     // Values are capped between `0` and `255`, rounded and zero-padded.
-    toString: function () {
+    toString() {
         /* if (this.alpha < 1.0) {*/
         return 'rgba(' + this.rgb.map(function (c) {
-                return Math.round(c);
-            }).concat(this.alpha).join(', ') + ')';
+            return Math.round(c);
+        }).concat(this.alpha).join(', ') + ')';
         /*} else {
          return '#' + this.rgb.map(function(i) {
          i = Math.round(i);
@@ -3252,13 +3256,13 @@ SuperMap.CartoCSS.Tree.Color = SuperMap.Class({
          return i.length === 1 ? '0' + i : i;
          }).join('');
          }*/
-    },
+    }
 
     // Operations have to be done per-channel, if not,
     // channels will spill onto each other. Once we have
     // our result, in the form of an integer triplet,
     // we create a new Color node to hold the result.
-    operate: function (env, op, other) {
+    operate(env, op, other) {
         var result = [];
 
         if (!(other instanceof SuperMap.CartoCSS.Tree.Color)) {
@@ -3269,9 +3273,9 @@ SuperMap.CartoCSS.Tree.Color = SuperMap.Class({
             result[c] = SuperMap.CartoCSS.Tree.operate(op, this.rgb[c], other.rgb[c]);
         }
         return new SuperMap.CartoCSS.Tree.Color(result);
-    },
+    }
 
-    toHSL: function () {
+    toHSL() {
         var r = this.rgb[0] / 255,
             g = this.rgb[1] / 255,
             b = this.rgb[2] / 255,
@@ -3302,23 +3306,25 @@ SuperMap.CartoCSS.Tree.Color = SuperMap.Class({
         }
         return {h: h * 360, s: s, l: l, a: a};
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Comment = SuperMap.Class({
-    initialize: function (value, silent) {
+SuperMap.CartoCSS.Tree.Comment = class Comment {
+    constructor(value, silent) {
         this.value = value;
         this.silent = !!silent;
-    },
-    toString: function (env) {
+    }
+
+    toString(env) {
         return '<!--' + this.value + '-->';
-    },
-    'ev': function () {
+    }
+
+    'ev'() {
         return this;
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
-    initialize: function (selector, rules) {
+SuperMap.CartoCSS.Tree.Definition = class Definition {
+    constructor(selector, rules) {
         this.elements = selector.elements;
         //assert.ok(selector.filters instanceof SuperMap.CartoCSS.Tree.Filterset);
         this.rules = rules;
@@ -3332,15 +3338,17 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
         this.zoom = selector.zoom;
         this.attachment = selector.attachment || '__default__';
         this.specificity = selector.specificity();
-    },
-    toString: function () {
+    }
+
+    toString() {
         var str = this.filters.toString();
         for (var i = 0; i < this.rules.length; i++) {
             str += '\n    ' + this.rules[i];
         }
         return str;
-    },
-    toJS: function (env) {
+    }
+
+    toJS(env) {
         var shaderAttrs = {};
 
         // merge conditions from filters with zoom condition of the
@@ -3352,6 +3360,7 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
         if (_if) filters.push(_if);
         //if(frame_offset) filters.push('ctx["frame-offset"] === ' + frame_offset);
         _if = filters.join(" && ");
+
         function eachRule(rule) {
             if (rule instanceof SuperMap.CartoCSS.Tree.Rule) {
                 shaderAttrs[rule.name] = shaderAttrs[rule.name] || [];
@@ -3378,8 +3387,9 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
             eachRule(this.rules[id]);
         }
         return shaderAttrs;
-    },
-    clone: function (filters) {
+    }
+
+    clone(filters) {
         //if (filters) assert.ok(filters instanceof SuperMap.CartoCSS.Tree.Filterset);
         var clone = Object.create(SuperMap.CartoCSS.Tree.Definition.prototype);
         clone.rules = this.rules.slice();
@@ -3387,9 +3397,9 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
         clone.filters = filters ? filters : this.filters.clone();
         clone.attachment = this.attachment;
         return clone;
-    },
+    }
 
-    addRules: function (rules) {
+    addRules(rules) {
         var added = 0;
 
         // Add only unique rules.
@@ -3402,17 +3412,19 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
         }
 
         return added;
-    },
-    appliesTo: function (id, classes) {
+    }
+
+    appliesTo(id, classes) {
         for (var i = 0, l = this.elements.length; i < l; i++) {
             var elem = this.elements[i];
             if (!(elem.wildcard ||
-                (elem.type === 'class' && classes[elem.clean]) ||
-                (elem.type === 'id' && id === elem.clean))) return false;
+                    (elem.type === 'class' && classes[elem.clean]) ||
+                    (elem.type === 'id' && id === elem.clean))) return false;
         }
         return true;
-    },
-    symbolizersToXML: function (env, symbolizers, zoom) {
+    }
+
+    symbolizersToXML(env, symbolizers, zoom) {
         var xml = zoom.toXML(env).join('') + this.filters.toXML(env);
 
         // Sort symbolizers by the index of their first property definition
@@ -3457,6 +3469,7 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
                     filename: rule.filename
                 });
             }
+
             function symbolizerName(symbolizer) {
                 function capitalize(str) {
                     return str[1].toUpperCase();
@@ -3499,8 +3512,9 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
         }
         if (!sym_count || !xml) return '';
         return '  <Rule>\n' + xml + '  </Rule>\n';
-    },
-    collectSymbolizers: function (zooms, i) {
+    }
+
+    collectSymbolizers(zooms, i) {
         var symbolizers = {}, child;
 
         for (var j = i; j < this.rules.length; j++) {
@@ -3508,7 +3522,7 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
             var key = child.instance + '/' + child.symbolizer;
             if (zooms.current & child.zoom &&
                 (!(key in symbolizers) ||
-                (!(child.name in symbolizers[key])))) {
+                    (!(child.name in symbolizers[key])))) {
                 zooms.current &= child.zoom;
                 if (!(key in symbolizers)) {
                     symbolizers[key] = {};
@@ -3521,8 +3535,9 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
             zooms.rule &= (zooms.available &= ~zooms.current);
             return symbolizers;
         }
-    },
-    toXML: function (env, existing) {
+    }
+
+    toXML(env, existing) {
         var filter = this.filters.toString();
         if (!(filter in existing)) existing[filter] = SuperMap.CartoCSS.Tree.Zoom.all;
 
@@ -3544,28 +3559,28 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
 
         return xml;
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Dimension = SuperMap.Class({
-    is: 'float',
-    physical_units: ['m', 'cm', 'in', 'mm', 'pt', 'pc'],
-    screen_units: ['px', '%'],
-    all_units: ['m', 'cm', 'in', 'mm', 'pt', 'pc', 'px', '%'],
-    densities: {
+SuperMap.CartoCSS.Tree.Dimension = class Dimension {
+    is = 'float';
+    physical_units = ['m', 'cm', 'in', 'mm', 'pt', 'pc'];
+    screen_units = ['px', '%'];
+    all_units = ['m', 'cm', 'in', 'mm', 'pt', 'pc', 'px', '%'];
+    densities = {
         m: 0.0254,
         mm: 25.4,
         cm: 2.54,
         pt: 72,
         pc: 6
-    },
+    };
 
-    initialize: function (value, unit, index) {
+    constructor(value, unit, index) {
         this.value = parseFloat(value);
         this.unit = unit || null;
         this.index = index;
-    },
+    }
 
-    ev: function (env) {
+    ev(env) {
         if (this.unit && !_.contains(this.all_units, this.unit)) {
             env.error({
                 message: "Invalid unit: '" + this.unit + "'",
@@ -3590,18 +3605,22 @@ SuperMap.CartoCSS.Tree.Dimension = SuperMap.Class({
         }
 
         return this;
-    },
-    toColor: function () {
+    }
+
+    toColor() {
         return new SuperMap.CartoCSS.Tree.Color([this.value, this.value, this.value]);
-    },
-    round: function () {
+    }
+
+    round() {
         this.value = Math.round(this.value);
         return this;
-    },
-    toString: function () {
+    }
+
+    toString() {
         return this.value.toString();
-    },
-    operate: function (env, op, other) {
+    }
+
+    operate(env, op, other) {
         if (this.unit === '%' && other.unit !== '%') {
             env.error({
                 message: 'If two operands differ, the first must not be %',
@@ -3634,10 +3653,10 @@ SuperMap.CartoCSS.Tree.Dimension = SuperMap.Class({
         return new SuperMap.CartoCSS.Tree.Dimension(SuperMap.CartoCSS.Tree.operate(op, this.value, other.value),
             this.unit || other.unit);
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Element = SuperMap.Class({
-    initialize: function (value) {
+SuperMap.CartoCSS.Tree.Element = class Element {
+    constructor(value) {
         this.value = value.trim();
         if (this.value[0] === '#') {
             this.type = 'id';
@@ -3650,26 +3669,28 @@ SuperMap.CartoCSS.Tree.Element = SuperMap.Class({
         if (this.value.indexOf('*') !== -1) {
             this.type = 'wildcard';
         }
-    },
+    }
 
-    specificity: function () {
+    specificity() {
         return [
             (this.type === 'id') ? 1 : 0, // a
             (this.type === 'class') ? 1 : 0  // b
         ];
-    },
+    }
 
-    toString: function () {
+    toString() {
         return this.value;
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Expression = SuperMap.Class({
-    is: 'expression',
-    initialize: function (value) {
+SuperMap.CartoCSS.Tree.Expression = class Expression {
+    is = 'expression';
+
+    constructor(value) {
         this.value = value;
-    },
-    ev: function (env) {
+    }
+
+    ev(env) {
         if (this.value.length > 1) {
             return new SuperMap.CartoCSS.Tree.Expression(this.value.map(function (e) {
                 return e.ev(env);
@@ -3677,40 +3698,33 @@ SuperMap.CartoCSS.Tree.Expression = SuperMap.Class({
         } else {
             return this.value[0].ev(env);
         }
-    },
+    }
 
-    toString: function (env) {
+    toString(env) {
         return this.value.map(function (e) {
             return e.toString(env);
         }).join(' ');
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Field = SuperMap.Class({
-    is: 'field',
-    initialize: function (content) {
+SuperMap.CartoCSS.Tree.Field = class Field {
+    is = 'field';
+
+    constructor(content) {
         this.value = content || '';
-    },
-    toString: function () {
+    }
+
+    toString() {
         return '["' + this.value.toUpperCase() + '"]';
-    },
-    'ev': function () {
+    }
+
+    'ev'() {
         return this;
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Filter = SuperMap.Class({
-    initialize: function (key, op, val, index, filename) {
-        this.key = key;
-        this.op = op;
-        this.val = val;
-        this.index = index;
-        this.filename = filename;
-
-        this.id = this.key + this.op + this.val;
-    },
-
-    ops: {
+SuperMap.CartoCSS.Tree.Filter = class Filter {
+    ops = {
         '<': [' &lt; ', 'numeric'],
         '>': [' &gt; ', 'numeric'],
         '=': [' = ', 'both'],
@@ -3718,15 +3732,25 @@ SuperMap.CartoCSS.Tree.Filter = SuperMap.Class({
         '<=': [' &lt;= ', 'numeric'],
         '>=': [' &gt;= ', 'numeric'],
         '=~': ['.match(', 'string', ')']
-    },
+    };
 
-    ev: function (env) {
+    constructor(key, op, val, index, filename) {
+        this.key = key;
+        this.op = op;
+        this.val = val;
+        this.index = index;
+        this.filename = filename;
+
+        this.id = this.key + this.op + this.val;
+    }
+
+    ev(env) {
         this.key = this.key.ev(env);
         this.val = this.val.ev(env);
         return this;
-    },
+    }
 
-    toXML: function (env) {
+    toXML(env) {
         if (SuperMap.CartoCSS.Tree.Reference.data.filter) {
             if (this.key.is === 'keyword' && -1 === SuperMap.CartoCSS.Tree.Reference.data.filter.value.indexOf(this.key.toString())) {
                 env.error({
@@ -3758,19 +3782,19 @@ SuperMap.CartoCSS.Tree.Filter = SuperMap.Class({
         }
 
         return key + this.ops[this.op][0] + val + (this.ops[this.op][2] || '');
-    },
+    }
 
-    toString: function () {
+    toString() {
         return '[' + this.id + ']';
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
-    initialize: function () {
+SuperMap.CartoCSS.Tree.Filterset = class Filterset {
+    constructor() {
         this.filters = {};
-    },
+    }
 
-    toXML: function (env) {
+    toXML(env) {
         var filters = [];
         for (var id in this.filters) {
             filters.push('(' + this.filters[id].toXML(env).trim() + ')');
@@ -3780,9 +3804,9 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
         } else {
             return '';
         }
-    },
+    }
 
-    toJS: function (env) {
+    toJS(env) {
         function eachFilter(filter) {
             var op = filter.op;
             if (op === "=") {
@@ -3807,30 +3831,30 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
             results.push(eachFilter(this.filters[id]));
         }
         return results.join(' && ');
-    },
+    }
 
-    toString: function () {
+    toString() {
         var arr = [];
         for (var id in this.filters) arr.push(this.filters[id].id);
         return arr.sort().join('\t');
-    },
+    }
 
-    ev: function (env) {
+    ev(env) {
         for (var i in this.filters) {
             this.filters[i].ev(env);
         }
         return this;
-    },
+    }
 
-    clone: function () {
+    clone() {
         var clone = new SuperMap.CartoCSS.Tree.Filterset();
         for (var id in this.filters) {
             clone.filters[id] = this.filters[id];
         }
         return clone;
-    },
+    }
 
-    cloneWith: function (other) {
+    cloneWith(other) {
         var additions = [];
         for (var id in other.filters) {
             var status = this.addable(other.filters[id]);
@@ -3867,9 +3891,9 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
         }
 
         return clone;
-    },
+    }
 
-    addable: function (filter) {
+    addable(filter) {
         var key = filter.key.toString(),
             value = filter.val.toString();
 
@@ -3945,9 +3969,9 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
             default:
                 break;
         }
-    },
+    }
 
-    conflict: function (filter) {
+    conflict(filter) {
         var key = filter.key.toString(),
             value = filter.val.toString();
 
@@ -3957,18 +3981,18 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
         // if (a=b) && (a!=b)
         // or (a!=b) && (a=b)
         if ((filter.op === '=' && this.filters[key + '='] !== undefined &&
-            value != this.filters[key + '='].val.toString()) ||
+                value != this.filters[key + '='].val.toString()) ||
             (filter.op === '!=' && this.filters[key + '='] !== undefined &&
-            value == this.filters[key + '='].val.toString()) ||
+                value == this.filters[key + '='].val.toString()) ||
             (filter.op === '=' && this.filters[key + '!='] !== undefined &&
-            value === this.filters[key + '!='].val.toString())) {
+                value === this.filters[key + '!='].val.toString())) {
             return filter.toString() + ' added to ' + this.toString() + ' produces an invalid filter';
         }
 
         return false;
-    },
+    }
 
-    add: function (filter, env) {
+    add(filter, env) {
         var key = filter.key.toString(), id,
             op = filter.op,
             conflict = this.conflict(filter),
@@ -4034,14 +4058,15 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
             }
         }
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Fontset = SuperMap.Class({
-    initialize: function (env, fonts) {
+SuperMap.CartoCSS.Tree.Fontset = class Fontset {
+    constructor(env, fonts) {
         this.fonts = fonts;
         this.name = 'fontset-' + env.effects.length;
-    },
-    toXML: function (env) {
+    }
+
+    toXML(env) {
         return '<FontSet name="' +
             this.name +
             '">\n' +
@@ -4050,37 +4075,40 @@ SuperMap.CartoCSS.Tree.Fontset = SuperMap.Class({
             }).join('\n') +
             '\n</FontSet>';
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Imagefilter = SuperMap.Class({
-    is: 'imagefilter',
-    initialize: function (filter, args) {
+SuperMap.CartoCSS.Tree.Imagefilter = class Imagefilter {
+    is = 'imagefilter';
+
+    constructor(filter, args) {
         this.filter = filter;
         this.args = args || null;
-    },
+    }
 
-    ev: function () {
+    ev() {
         return this;
-    },
+    }
 
-    toString: function () {
+    toString() {
         if (this.args) {
             return this.filter + '(' + this.args.join(',') + ')';
         } else {
             return this.filter;
         }
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Invalid = SuperMap.Class({
-    is: 'invalid',
-    initialize: function (chunk, index, message) {
+SuperMap.CartoCSS.Tree.Invalid = class Invalid {
+    is = 'invalid';
+
+    constructor(chunk, index, message) {
         this.chunk = chunk;
         this.index = index;
         this.type = 'syntax';
         this.message = message || "Invalid code: " + this.chunk;
-    },
-    ev: function (env) {
+    }
+
+    ev(env) {
         env.error({
             chunk: this.chunk,
             index: this.index,
@@ -4091,13 +4119,14 @@ SuperMap.CartoCSS.Tree.Invalid = SuperMap.Class({
             is: 'undefined'
         };
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Keyword = SuperMap.Class({
-    ev: function () {
+SuperMap.CartoCSS.Tree.Keyword = class Keyword {
+    ev() {
         return this;
-    },
-    initialize: function (value) {
+    }
+
+    constructor(value) {
         this.value = value;
         var special = {
             'transparent': 'color',
@@ -4105,35 +4134,40 @@ SuperMap.CartoCSS.Tree.Keyword = SuperMap.Class({
             'false': 'boolean'
         };
         this.is = special[value] ? special[value] : 'keyword';
-    },
-    toString: function () {
+    }
+
+    toString() {
         return this.value;
     }
-});
+};
 
-/*Layer:SuperMap.Class(),*/
+/*Layer:class Invalid ),*/
 
-SuperMap.CartoCSS.Tree.Literal = SuperMap.Class({
-    initialize: function (content) {
+SuperMap.CartoCSS.Tree.Literal = class Literal {
+    constructor(content) {
         this.value = content || '';
         this.is = 'field';
-    },
-    toString: function () {
+    }
+
+    toString() {
         return this.value;
-    },
-    'ev': function () {
+    }
+
+    'ev'() {
         return this;
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Operation = SuperMap.Class({
-    is: 'operation',
-    initialize: function (op, operands, index) {
+SuperMap.CartoCSS.Tree.Operation = class Operation {
+    is = 'operation';
+
+    constructor(op, operands, index) {
         this.op = op.trim();
         this.operands = operands;
         this.index = index;
-    },
-    ev: function (env) {
+    }
+
+    ev(env) {
         var a = this.operands[0].ev(env),
             b = this.operands[1].ev(env),
             temp;
@@ -4206,14 +4240,16 @@ SuperMap.CartoCSS.Tree.Operation = SuperMap.Class({
 
         return a.operate(env, this.op, b);
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Quoted = SuperMap.Class({
-    is: 'string',
-    initialize: function (content) {
+SuperMap.CartoCSS.Tree.Quoted = class Quoted {
+    is = 'string';
+
+    constructor(content) {
         this.value = content || '';
-    },
-    toString: function (quotes) {
+    }
+
+    toString(quotes) {
         var escapedValue = this.value
             .replace(/&/g, '&amp;')
         var xmlvalue = escapedValue
@@ -4222,16 +4258,16 @@ SuperMap.CartoCSS.Tree.Quoted = SuperMap.Class({
             .replace(/</g, '&lt;')
             .replace(/\>/g, '&gt;');
         return (quotes === true) ? "'" + xmlvalue + "'" : escapedValue;
-    },
+    }
 
-    'ev': function () {
+    ev() {
         return this;
-    },
+    }
 
-    operate: function (env, op, other) {
+    operate(env, op, other) {
         return new SuperMap.CartoCSS.Tree.Quoted(SuperMap.CartoCSS.Tree.operate(op, this.toString(), other.toString(this.contains_field)));
     }
-});
+};
 
 SuperMap.CartoCSS.Tree.Reference = {
     _validateValue: {
@@ -4369,7 +4405,7 @@ SuperMap.CartoCSS.Tree.Reference = {
         function validateKeyword(value, selector) {
             if (typeof this.selector(selector).type === 'object') {
                 return this.selector(selector).type
-                        .indexOf(value.value[0].value) !== -1;
+                    .indexOf(value.value[0].value) !== -1;
             } else {
                 // allow unquoted keywords as strings
                 return this.selector(selector).type === 'string';
@@ -4432,9 +4468,10 @@ SuperMap.CartoCSS.Tree.Reference = {
 };
 SuperMap.CartoCSS.Tree.Reference.setVersion("latest");
 
-SuperMap.CartoCSS.Tree.Rule = SuperMap.Class({
-    is: 'rule',
-    initialize: function (name, value, index, filename) {
+SuperMap.CartoCSS.Tree.Rule = class Rule {
+    is = 'rule';
+
+    constructor(name, value, index, filename) {
         var parts = name.split('/');
         this.name = parts.pop();
         this.instance = parts.length ? parts[0] : '__default__';
@@ -4444,8 +4481,9 @@ SuperMap.CartoCSS.Tree.Rule = SuperMap.Class({
         this.symbolizer = SuperMap.CartoCSS.Tree.Reference.symbolizer(this.name);
         this.filename = filename;
         this.variable = (name.charAt(0) === '@');
-    },
-    clone: function () {
+    }
+
+    clone() {
         var clone = Object.create(SuperMap.CartoCSS.Tree.Rule.prototype);
         clone.name = this.name;
         clone.value = this.value;
@@ -4455,14 +4493,17 @@ SuperMap.CartoCSS.Tree.Rule = SuperMap.Class({
         clone.filename = this.filename;
         clone.variable = this.variable;
         return clone;
-    },
-    updateID: function () {
+    }
+
+    updateID() {
         return this.id = this.zoom + '#' + this.instance + '#' + this.name;
-    },
-    toString: function () {
+    }
+
+    toString() {
         return '[' + SuperMap.CartoCSS.Tree.Zoom.toString(this.zoom) + '] ' + this.name + ': ' + this.value;
-    },
-    toXML: function (env, content, sep, format) {
+    }
+
+    toXML(env, content, sep, format) {
         if (!SuperMap.CartoCSS.Tree.Reference.validSelector(this.name)) {
             function getMean(name) {
                 return Object.keys(SuperMap.CartoCSS.Tree.Reference.selector_cache).map(function (f) {
@@ -4530,24 +4571,27 @@ SuperMap.CartoCSS.Tree.Rule = SuperMap.Class({
                 this.value.toString(env, this.name) +
                 '"';
         }
-    },
-    ev: function (context) {
+    }
+
+    ev(context) {
         return new SuperMap.CartoCSS.Tree.Rule(this.name,
             this.value.ev(context),
             this.index,
             this.filename);
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Ruleset = SuperMap.Class({
-    is: 'ruleset',
-    initialize: function (selectors, rules) {
+SuperMap.CartoCSS.Tree.Ruleset = class Ruleset {
+    is = 'ruleset';
+
+    constructor(selectors, rules) {
         this.selectors = selectors;
         this.rules = rules;
         // static cache of find() function
         this._lookups = {};
-    },
-    'ev': function (env) {
+    }
+
+    ev(env) {
         var i,
             rule,
             ruleset = new SuperMap.CartoCSS.Tree.Ruleset(this.selectors, this.rules.slice(0));
@@ -4566,11 +4610,13 @@ SuperMap.CartoCSS.Tree.Ruleset = SuperMap.Class({
         env.frames.shift();
 
         return ruleset;
-    },
-    match: function (args) {
+    }
+
+    match(args) {
         return !args || args.length === 0;
-    },
-    variables: function () {
+    }
+
+    variables() {
         if (this._variables) {
             return this._variables;
         }
@@ -4582,11 +4628,13 @@ SuperMap.CartoCSS.Tree.Ruleset = SuperMap.Class({
                 return hash;
             }, {});
         }
-    },
-    variable: function (name) {
+    }
+
+    variable(name) {
         return this.variables()[name];
-    },
-    rulesets: function () {
+    }
+
+    rulesets() {
         if (this._rulesets) {
             return this._rulesets;
         }
@@ -4595,8 +4643,9 @@ SuperMap.CartoCSS.Tree.Ruleset = SuperMap.Class({
                 return (r instanceof SuperMap.CartoCSS.Tree.Ruleset);
             });
         }
-    },
-    find: function (selector, self) {
+    }
+
+    find(selector, self) {
         self = self || this;
         var rules = [], rule, match,
             key = selector.toString();
@@ -4622,10 +4671,11 @@ SuperMap.CartoCSS.Tree.Ruleset = SuperMap.Class({
             }
         });
         return this._lookups[key] = rules;
-    },
+    }
+
     // Zooms can use variables. This replaces SuperMap.CartoCSS.Tree.Zoom objects on selectors
     // with simple bit-arrays that we can compare easily.
-    evZooms: function (env) {
+    evZooms(env) {
         for (var i = 0; i < this.selectors.length; i++) {
             var zval = SuperMap.CartoCSS.Tree.Zoom.all;
             for (var z = 0; z < this.selectors[i].zoom.length; z++) {
@@ -4633,8 +4683,9 @@ SuperMap.CartoCSS.Tree.Ruleset = SuperMap.Class({
             }
             this.selectors[i].zoom = zval;
         }
-    },
-    flatten: function (result, parents, env) {
+    }
+
+    flatten(result, parents, env) {
         var selectors = [], i, j;
         if (this.selectors.length === 0) {
             env.frames = env.frames.concat(this.rules);
@@ -4716,18 +4767,19 @@ SuperMap.CartoCSS.Tree.Ruleset = SuperMap.Class({
 
         return result;
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Selector = SuperMap.Class({
-    initialize: function (filters, zoom, elements, attachment, conditions, index) {
+SuperMap.CartoCSS.Tree.Selector = class Selector {
+    constructor(filters, zoom, elements, attachment, conditions, index) {
         this.elements = elements || [];
         this.attachment = attachment;
         this.filters = filters || {};
         this.zoom = typeof zoom !== 'undefined' ? zoom : SuperMap.CartoCSS.Tree.Zoom.all;
         this.conditions = conditions;
         this.index = index;
-    },
-    specificity: function () {
+    }
+
+    specificity() {
         return this.elements.reduce(function (memo, e) {
             var spec = e.specificity();
             memo[0] += spec[0];
@@ -4735,30 +4787,35 @@ SuperMap.CartoCSS.Tree.Selector = SuperMap.Class({
             return memo;
         }, [0, 0, this.conditions, this.index]);
     }
-});
+};
 
-/*style:SuperMap.Class(),*/
+/*style:class Invalid ),*/
 
-SuperMap.CartoCSS.Tree.URL = SuperMap.Class({
-    is: 'uri',
-    initialize: function (val, paths) {
+SuperMap.CartoCSS.Tree.URL = class URL {
+    is = 'uri';
+
+    constructor(val, paths) {
         this.value = val;
         this.paths = paths;
-    },
-    toString: function () {
+    };
+
+    toString() {
         return this.value.toString();
-    },
-    ev: function (ctx) {
+    }
+
+    ev(ctx) {
         return new SuperMap.CartoCSS.Tree.URL(this.value.ev(ctx), this.paths);
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Value = SuperMap.Class({
-    is: 'value',
-    initialize: function (value) {
+SuperMap.CartoCSS.Tree.Value = class Value {
+    is = 'value';
+
+    constructor(value) {
         this.value = value;
-    },
-    ev: function (env) {
+    }
+
+    ev(env) {
         if (this.value.length === 1) {
             return this.value[0].ev(env);
         } else {
@@ -4766,8 +4823,9 @@ SuperMap.CartoCSS.Tree.Value = SuperMap.Class({
                 return v.ev(env);
             }));
         }
-    },
-    toJS: function (env) {
+    }
+
+    toJS(env) {
         //var v = this.value[0].value[0];
         var val = this.ev(env);
         var v = val.toString();
@@ -4782,32 +4840,37 @@ SuperMap.CartoCSS.Tree.Value = SuperMap.Class({
         }
 
         return "_value = " + v + ";";
-    },
-    toString: function (env, selector, sep, format) {
+    }
+
+    toString(env, selector, sep, format) {
         return this.value.map(function (e) {
             return e.toString(env, format);
         }).join(sep || ', ');
-    },
-    clone: function () {
+    }
+
+    clone() {
         var obj = Object.create(SuperMap.CartoCSS.Tree.Value.prototype);
         if (Array.isArray(obj)) obj.value = this.value.slice();
         else obj.value = this.value;
         obj.is = this.is;
         return obj;
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Variable = SuperMap.Class({
-    is: 'variable',
-    initialize: function (name, index, filename) {
+SuperMap.CartoCSS.Tree.Variable = class Variable {
+    is = 'variable';
+
+    constructor(name, index, filename) {
         this.name = name;
         this.index = index;
         this.filename = filename;
-    },
-    toString: function () {
+    }
+
+    toString() {
         return this.name;
-    },
-    ev: function (env) {
+    }
+
+    ev(env) {
         var variable,
             v,
             name = this.name;
@@ -4832,19 +4895,21 @@ SuperMap.CartoCSS.Tree.Variable = SuperMap.Class({
             };
         }
     }
-});
+};
 
-SuperMap.CartoCSS.Tree.Zoom = SuperMap.Class({
-    initialize: function (op, value, index) {
+SuperMap.CartoCSS.Tree.Zoom = class Zoom {
+    constructor(op, value, index) {
         this.op = op;
         this.value = value;
         this.index = index;
-    },
-    setZoom: function (zoom) {
+    }
+
+    setZoom(zoom) {
         this.zoom = zoom;
         return this;
-    },
-    ev: function (env) {
+    }
+
+    ev(env) {
         var start = 0,
             end = Infinity,
             value = parseInt(this.value.ev(env).toString(), 10),
@@ -4887,15 +4952,17 @@ SuperMap.CartoCSS.Tree.Zoom = SuperMap.Class({
          this.zoom = zoom;
          this.zoom=value+this.op+"zoom";*/
         return this;
-    },
-    toString: function () {
+    }
+
+    toString() {
         var str = '';
         for (var i = 0; i <= SuperMap.CartoCSS.Tree.Zoom.maxZoom; i++) {
             str += (this.zoom & (1 << i)) ? 'X' : '.';
         }
         return str;
-    },
-    toXML: function () {
+    }
+
+    toXML() {
         var conditions = [];
         if (this.zoom != SuperMap.CartoCSS.Tree.Zoom.all) {
             var start = null, end = null;
@@ -4913,7 +4980,7 @@ SuperMap.CartoCSS.Tree.Zoom = SuperMap.Class({
         return conditions;
     }
 
-});
+};
 
 // Covers all zoomlevels from 0 to 22
 SuperMap.CartoCSS.Tree.Zoom.all = 23;

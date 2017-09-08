@@ -1,7 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import GeoFeature from './theme/geoFeature';
-import Vector from '../../common/iServer/ThemeVector';
+import Vector from '../../common/overlay/ThemeVector';
 
 /**
  * @class ol.source.Unique

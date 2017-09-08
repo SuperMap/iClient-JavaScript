@@ -1,16 +1,17 @@
 import SuperMap from '../../../common/SuperMap';
 import '../../../common/REST';
-import '../../../common/iServer/Bar';
-import '../../../common/iServer/Bar3D';
-import '../../../common/iServer/Circle';
-import '../../../common/iServer/Pie';
-import '../../../common/iServer/Point';
-import '../../../common/iServer/Line';
-import '../../../common/iServer/Ring';
-import '../../../common/iServer/ThemeVector';
+import '../../../common/overlay/Bar';
+import '../../../common/overlay/Bar3D';
+import '../../../common/overlay/Circle';
+import '../../../common/overlay/Pie';
+import '../../../common/overlay/Point';
+import '../../../common/overlay/Line';
+import '../../../common/overlay/Ring';
+import '../../../common/overlay/ThemeVector';
 import '../../../common/style/ThemeStyle';
 import {ThemeFeature} from './ThemeFeature';
 import {ThemeLayer} from './ThemeLayer';
+import ServerFeature from '../../../common/iServer/ServerFeature';
 import L from "leaflet";
 import CommontypesConversion from '../../core/CommontypesConversion';
 
@@ -486,7 +487,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
         if (feature instanceof ThemeFeature) {
             feature = feature.toFeature();
         } else if (!(feature instanceof SuperMap.Feature.Vector)) {
-            feature = new SuperMap.REST.ServerFeature.fromJson(feature).toFeature();
+            feature = new ServerFeature.fromJson(feature).toFeature();
         }
         if (!feature.hasOwnProperty("attributes") && feature.fieldNames && feature.filedValues) {
             var attrs = {},
@@ -503,4 +504,4 @@ export var GraphThemeLayer = ThemeLayer.extend({
 export var graphThemeLayer = function (name, chartsType, options) {
     return new GraphThemeLayer(name, chartsType, options);
 };
-L.supermap.graphThemeLayer= graphThemeLayer;
+L.supermap.graphThemeLayer = graphThemeLayer;

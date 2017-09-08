@@ -24,13 +24,12 @@ module.exports = {
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
         'mapv': "function(){try{return mapv}catch(e){return {}}}()",
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
-        '../classic/libs/SuperMap_Basic-8.1.1-15221': 'SuperMap',
-        '../../classic/libs/SuperMap_Visualization-8.1.1-15221': 'SuperMap'
     },
     module: {
         rules: [{
             test: /\.js/,
             loader: 'babel-loader',
+            exclude: /node_modules[\/\\]proj4/,
             query: {
                 presets: ['es2015'],
                 plugins: [

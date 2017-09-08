@@ -1,6 +1,7 @@
 ﻿import SuperMap from '../SuperMap';
 import QueryService from './QueryService';
 import QueryByDistanceParameters from './QueryByDistanceParameters';
+import ServerGeometry from './ServerGeometry';
 
 /**
  * @class SuperMap.QueryByDistanceService
@@ -22,7 +23,7 @@ import QueryByDistanceParameters from './QueryByDistanceParameters';
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class QueryByDistanceService extends QueryService {
+export default class QueryByDistanceService extends QueryService {
 
     constructor(url, options) {
         super(url, options);
@@ -46,7 +47,7 @@ export default  class QueryByDistanceService extends QueryService {
         var me = this,
             jsonParameters = "",
             qp = me.getQueryParameters(params);
-        var sg = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
+        var sg = ServerGeometry.fromGeometry(params.geometry);
 
         jsonParameters += params.isNearest ? "'queryMode':'FindNearest','queryParameters':" : "'queryMode':'DistanceQuery','queryParameters':";
         jsonParameters += SuperMap.Util.toJSON(qp);

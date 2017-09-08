@@ -1,7 +1,7 @@
 ﻿import SuperMap from '../SuperMap';
 import GetFeaturesParametersBase from './GetFeaturesParametersBase';
 import FilterParameter from './FilterParameter';
-
+import ServerGeometry from './ServerGeometry';
 /**
  * @class SuperMap.GetFeaturesByBufferParameters
  * @classdesc 数据服务中数据集缓冲区查询参数类。
@@ -88,7 +88,7 @@ export default class GetFeaturesByBufferParameters extends GetFeaturesParameters
         var filterParameter,
             paramsBySql,
             geometry;
-        geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
+        geometry = ServerGeometry.fromGeometry(params.geometry);
         paramsBySql = {
             datasetNames: params.datasetNames,
             getFeatureMode: "BUFFER",

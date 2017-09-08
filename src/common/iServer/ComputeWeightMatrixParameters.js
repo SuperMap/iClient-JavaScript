@@ -1,5 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import TransportationAnalystParameter from './TransportationAnalystParameter';
+import '../commontypes/geometry/Point';
 
 /**
  * @class SuperMap.ComputeWeightMatrixParameters

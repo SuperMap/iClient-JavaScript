@@ -1,6 +1,7 @@
 import '../../core/Base';
 import './CartoDefaultStyle';
 import './CartoStyleMap';
+import '../../../common/commontypes/Util';
 import CartoCSS from '../../../common/style/CartoCSS';
 import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";

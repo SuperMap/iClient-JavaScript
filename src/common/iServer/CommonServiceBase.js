@@ -1,6 +1,10 @@
 ﻿import SuperMap from '../SuperMap';
+import {FetchRequest} from "../util/FetchRequest";
+import '../../common/commontypes/Events';
+import '../../common/commontypes/Credential';
 import '../security/SecurityManager';
-import {FetchRequest} from "../util/FetchRequest"
+
+
 /**
  * @class SuperMap.CommonServiceBase
  * @classdesc common服务基类
@@ -12,7 +16,7 @@ import {FetchRequest} from "../util/FetchRequest"
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
-export default  class CommonServiceBase {
+export default class CommonServiceBase {
 
     /*
      * @constant: EVENT_TYPES- {Array<string>}

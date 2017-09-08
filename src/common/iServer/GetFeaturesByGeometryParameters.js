@@ -2,6 +2,7 @@
 import {SpatialQueryMode} from '../REST';
 import FilterParameter from './FilterParameter';
 import GetFeaturesParametersBase from './GetFeaturesParametersBase';
+import ServerGeometry from './ServerGeometry';
 
 /**
  * @class SuperMap.GetFeaturesByGeometryParameters
@@ -100,7 +101,7 @@ export default class GetFeaturesByGeometryParameters extends GetFeaturesParamete
             geometry,
             parasByGeometry;
 
-        geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
+        geometry = ServerGeometry.fromGeometry(params.geometry);
         parasByGeometry = {
             datasetNames: params.datasetNames,
             getFeatureMode: "SPATIAL",

@@ -1,5 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import {EditType} from '../REST';
+import ServerGeometry from './ServerGeometry';
 
 /**
  * @class SuperMap.EditFeaturesParameters
@@ -97,16 +98,17 @@ export default class EditFeaturesParameters {
 
             features = {ids: params.IDs};
         } else {
+            if (params.features === null) return;
+
+            len = params.features.length;
             features = [];
-            if (params.features){
-                len = params.features.length;
-                for (var i = 0; i < len; i++) {
-                    feature = params.features[i];
-                    feature.geometry = SuperMap.REST.ServerGeometry.fromGeometry(feature.geometry);
-                    features.push(feature);
-                }
+            for (var i = 0; i < len; i++) {
+                feature = params.features[i];
+                feature.geometry = ServerGeometry.fromGeometry(feature.geometry);
+                features.push(feature);
             }
         }
+
         return SuperMap.Util.toJSON(features);
     }
 

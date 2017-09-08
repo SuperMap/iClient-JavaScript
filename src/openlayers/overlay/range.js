@@ -1,7 +1,8 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import GeoFeature from './theme/geoFeature';
-import Vector from '../../common/iServer/ThemeVector';
+import ServerFeature from '../../common/iServer/ServerFeature';
+import Vector from '../../common/overlay/ThemeVector';
 
 /**
  * @class ol.source.Range
@@ -36,7 +37,7 @@ export default class Range extends GeoFeature {
         var featuresFailAdded = [];
         var toFeatures = [];
         for (var i = 0, len = features.length; i < len; i++) {
-            toFeatures.push(new SuperMap.REST.ServerFeature.fromJson(features[i]).toFeature());
+            toFeatures.push(new ServerFeature.fromJson(features[i]).toFeature());
         }
         this.features = toFeatures;
         var succeed = featuresFailAdded.length == 0 ? true : false;

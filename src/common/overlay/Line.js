@@ -93,7 +93,6 @@ import Graph from './Graph';
  * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
  */
 export default  class Line extends Graph {
-
     /*
      * @function SuperMap.Feature.Theme.Line.prototype.Constructor
      * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。

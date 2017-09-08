@@ -1,7 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import PointWithMeasure from './PointWithMeasure';
-
-const Collection = SuperMap.Geometry.Collection;
+import Collection from '../commontypes/geometry/Collection';
 
 /**
  * @class SuperMap.Route

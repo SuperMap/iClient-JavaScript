@@ -132,7 +132,7 @@ describe('leaflet_testFeatureService_editFeatures', function () {
         var nullFeaturesParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Neighbor_P",
-            features: null,
+            features: [],
             editType: "add"
         });
         var nullFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(nullFeaturesParams, function (result) {

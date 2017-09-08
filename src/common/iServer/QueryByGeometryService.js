@@ -1,6 +1,7 @@
 ﻿import SuperMap from '../SuperMap';
 import QueryService from './QueryService';
 import QueryByGeometryParameters from './QueryByGeometryParameters';
+import ServerGeometry from './ServerGeometry';
 
 /**
  * @class SuperMap.QueryByGeometryService
@@ -19,7 +20,7 @@ import QueryByGeometryParameters from './QueryByGeometryParameters';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class QueryByGeometryService extends QueryService {
+export default class QueryByGeometryService extends QueryService {
 
     /*
      * @function SuperMap.QueryByGeometryService.prototype.constructor
@@ -51,7 +52,7 @@ export default  class QueryByGeometryService extends QueryService {
             jsonParameters = "",
             qp = null,
             geometry = params.geometry,
-            sg = SuperMap.REST.ServerGeometry.fromGeometry(geometry);
+            sg = ServerGeometry.fromGeometry(geometry);
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'SpatialQuery','queryParameters':";
         jsonParameters += SuperMap.Util.toJSON(qp) + ",'geometry':" + SuperMap.Util.toJSON(sg)

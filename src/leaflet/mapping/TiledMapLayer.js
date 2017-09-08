@@ -3,6 +3,7 @@ import '../../common/security/SecurityManager';
 import L from "leaflet";
 import {ServerType, Unit} from "../../common/REST";
 import * as Util from "../core/Util";
+import ServerGeometry from '../../common/iServer/ServerGeometry';
 /**
  * @class L.supermap.tiledMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用TileImage资源出图.
@@ -276,7 +277,7 @@ export var TiledMapLayer = L.TileLayer.extend({
 
         if (options.clipRegionEnabled && options.clipRegion instanceof L.Path) {
             options.clipRegion = Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = SuperMap.Util.toJSON(SuperMap.REST.ServerGeometry.fromGeometry(options.clipRegion));
+            options.clipRegion = SuperMap.Util.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
             params["clipRegionEnabled"] = options.clipRegionEnabled;
             params["clipRegion"] = JSON.stringify(options.clipRegion);
         }

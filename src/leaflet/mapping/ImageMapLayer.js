@@ -1,6 +1,7 @@
 import '../core/Base';
 import L from "leaflet";
 import SuperMap from "../../common/SuperMap" ;
+import ServerGeometry from '../../common/iServer/ServerGeometry';
 
 /**
  * @class L.supermap.imageMapLayer
@@ -115,7 +116,7 @@ export var ImageMapLayer = L.TileLayer.extend({
 
         if (options.clipRegionEnabled && options.clipRegion instanceof L.Path) {
             options.clipRegion = L.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = SuperMap.Util.toJSON(SuperMap.REST.ServerGeometry.fromGeometry(options.clipRegion));
+            options.clipRegion = SuperMap.Util.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
             params.push("clipRegionEnabled=" + options.clipRegionEnabled);
             params.push("clipRegion=" + JSON.stringify(options.clipRegion));
         }

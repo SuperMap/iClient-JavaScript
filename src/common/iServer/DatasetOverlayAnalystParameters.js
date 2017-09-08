@@ -2,6 +2,7 @@
 import DataReturnOption from './DataReturnOption';
 import FilterParameter from './FilterParameter';
 import OverlayAnalystParameters from './OverlayAnalystParameters';
+import ServerGeometry from './ServerGeometry';
 
 /**
  * @class SuperMap.DatasetOverlayAnalystParameters
@@ -145,7 +146,7 @@ export default class DatasetOverlayAnalystParameters extends OverlayAnalystParam
                 var ors = datasetOverlayAnalystParameters.operateRegions;
                 for (var index in ors) {
                     if (ors.hasOwnProperty(index)) {    //icl542
-                        tempObj.operateRegions[index] = SuperMap.REST.ServerGeometry.fromGeometry(ors[index]);
+                        tempObj.operateRegions[index] = ServerGeometry.fromGeometry(ors[index]);
                     }
                 }
             }

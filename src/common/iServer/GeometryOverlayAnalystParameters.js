@@ -1,5 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import OverlayAnalystParameters from './OverlayAnalystParameters';
+import ServerGeometry from './ServerGeometry';
 
 /**
  * @class SuperMap.GeometryOverlayAnalystParameters
@@ -18,7 +19,7 @@ import OverlayAnalystParameters from './OverlayAnalystParameters';
  *        operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
  * @extends SuperMap.OverlayAnalystParameters
  */
-export default  class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
+export default class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 
     /**
      * @member SuperMap.GeometryOverlayAnalystParameters.prototype.operateGeometry
@@ -62,6 +63,7 @@ export default  class GeometryOverlayAnalystParameters extends OverlayAnalystPar
             me.operateGeometry = null;
         }
     }
+
     /**
      * @function SuperMap.GeometryOverlayAnalystParameters.toObject
      * @param geometryOverlayAnalystParameters -{Object} 几何对象叠加分析参数。
@@ -71,10 +73,10 @@ export default  class GeometryOverlayAnalystParameters extends OverlayAnalystPar
     static toObject(geometryOverlayAnalystParameters, tempObj) {
         for (var name in geometryOverlayAnalystParameters) {
             if (name === "sourceGeometry") {
-                tempObj.sourceGeometry = SuperMap.REST.ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.sourceGeometry);
+                tempObj.sourceGeometry = ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.sourceGeometry);
             }
             else if (name === "operateGeometry") {
-                tempObj.operateGeometry = SuperMap.REST.ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.operateGeometry);
+                tempObj.operateGeometry = ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.operateGeometry);
             }
             else {
                 tempObj[name] = geometryOverlayAnalystParameters[name];

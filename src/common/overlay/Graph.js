@@ -1,7 +1,6 @@
 import SuperMap from '../SuperMap';
-import './VisualizationBase';
-
-const ThemeFeature = SuperMap.Feature.Theme;
+import Theme from '../overlay/feature/Theme';
+import '../overlay/feature/ShapeFactory';
 
 /**
  * @class SuperMap.Feature.Theme.Graph
@@ -18,7 +17,7 @@ const ThemeFeature = SuperMap.Feature.Theme;
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Graph} 返回一个统计专题要素。
  */
-export default class Graph extends ThemeFeature {
+export default class Graph extends Theme {
 
     /**
      * @member SuperMap.Feature.Theme.Graph.prototype.shapeFactory -{SuperMap.Feature.ShapeFactory}

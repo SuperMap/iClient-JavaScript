@@ -79,7 +79,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
                 me.serviceProcessFailed(result);
             }
         }).catch(function (e) {
-            me.eventListeners.processFailed({error: e});
+            me.serviceProcessFailed({error: e});
         });
     }
 

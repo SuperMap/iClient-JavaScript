@@ -88,7 +88,7 @@ describe('classic_MapVLayer', function () {
 
     afterAll(function () {
         document.body.removeChild(testDiv);
-        map.destroy();
+        //map.destroy();
         mapv = null;
     });
 

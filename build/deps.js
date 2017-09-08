@@ -962,38 +962,10 @@ deps = {
                 "name": "服务器专题图服务",
                 "src": [
                     "./src/common/iServer/ThemeService.js",
-                    "./src/common/iServer/Bar.js",
-                    "./src/common/iServer/Bar3D.js",
-                    "./src/common/iServer/Circle.js",
-                    "./src/common/iServer/Line.js",
-                    "./src/common/iServer/Pie.js",
-                    "./src/common/iServer/Point.js",
-                    "./src/common/iServer/Ring.js",
                 ],
                 "modules": [{
                     "name": "SuperMap.ThemeService",
                     "des": "服务器专题图服务"
-                }, {
-                    "name": "SuperMap.Feature.Theme.Bar",
-                    "des": "柱状图"
-                }, {
-                    "name": "SuperMap.Feature.Theme.Bar3D",
-                    "des": "三维柱状图"
-                }, {
-                    "name": "SuperMap.Feature.Theme.Circle",
-                    "des": "圆类"
-                }, {
-                    "name": "SuperMap.Feature.Theme.Line",
-                    "des": "折线图"
-                }, {
-                    "name": "SuperMap.Feature.Theme.Pie",
-                    "des": "饼图"
-                }, {
-                    "name": "SuperMap.Feature.Theme.Point",
-                    "des": "点状图"
-                }, {
-                    "name": "SuperMap.Feature.Theme.Ring",
-                    "des": "环状图"
                 }]
             },
             "ElasticSearch": {

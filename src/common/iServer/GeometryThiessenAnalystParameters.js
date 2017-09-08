@@ -1,5 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import ThiessenAnalystParameters from './ThiessenAnalystParameters';
+import ServerGeometry from './ServerGeometry';
 
 /**
  * @class SuperMap.GeometryThiessenAnalystParameters
@@ -51,7 +52,7 @@ export default class GeometryThiessenAnalystParameters extends ThiessenAnalystPa
     static toObject(geometryThiessenAnalystParameters, tempObj) {
         for (var name in geometryThiessenAnalystParameters) {
             if (name === "clipRegion") {
-                tempObj.clipRegion = SuperMap.REST.ServerGeometry.fromGeometry(geometryThiessenAnalystParameters.clipRegion);
+                tempObj.clipRegion = ServerGeometry.fromGeometry(geometryThiessenAnalystParameters.clipRegion);
             } else {
                 tempObj[name] = geometryThiessenAnalystParameters[name];
             }

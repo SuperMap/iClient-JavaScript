@@ -2,6 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import {StyleMap} from '../overlay/vectortile/StyleMap';
 import {DeafultCanvasStyle} from '../overlay/vectortile/DeafultCanvasStyle';
+import '../../common/commontypes/Util';
 
 ol.supermap = ol.supermap || {};
 /**
@@ -28,8 +29,8 @@ export default class StyleUtils {
                 var symbolParameters = {
                     "transparent": true,
                     "resourceType": "SYMBOLMARKER",
-                    "picWidth": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"])||13,
-                    "picHeight": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"])||13,
+                    "picWidth": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 13,
+                    "picHeight": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 13,
                     "style": JSON.stringify(shader)
                 };
                 var imageUrl = SuperMap.Util.urlAppend(url + "/symbol.png", SuperMap.Util.getParameterString(symbolParameters));

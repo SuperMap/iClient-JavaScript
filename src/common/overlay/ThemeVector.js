@@ -1,7 +1,6 @@
 import SuperMap from '../SuperMap';
-import './VisualizationBase';
+import ThemeFeature from '../overlay/feature/Theme';
 
-const ThemeFeature = SuperMap.Feature.Theme;
 
 /**
  * @class SuperMap.Feature.Theme.Vector
@@ -17,7 +16,7 @@ const ThemeFeature = SuperMap.Feature.Theme;
  *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
  *        highlightStyle - {Object} 高亮样式。
  */
-export default  class ThemeVector extends ThemeFeature {
+export default class ThemeVector extends ThemeFeature {
 
     /**
      * @member SuperMap.Feature.Theme.Vector.prototype.dataBounds -{SuperMap.Bounds}

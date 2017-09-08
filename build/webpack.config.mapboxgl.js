@@ -40,7 +40,7 @@ module.exports = {
             }]
         },{
             test: /\.js/,
-            exclude: /classic/,
+            exclude: /node_modules[\/\\]proj4|classic/,
             loader: 'babel-loader',
             query: {
                 presets: ['es2015'],

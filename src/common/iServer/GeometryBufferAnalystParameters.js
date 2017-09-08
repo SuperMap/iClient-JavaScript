@@ -1,6 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import BufferAnalystParameters from './BufferAnalystParameters';
-
+import ServerGeometry from './ServerGeometry';
 /**
  * @class SuperMap.GeometryBufferAnalystParameters
  * @classdesc 几何对象缓冲区分析参数类
@@ -61,7 +61,7 @@ export default class GeometryBufferAnalystParameters extends BufferAnalystParame
                 tempObj.analystParameter = tempBufferSetting;
             }
             else if (name === "sourceGeometry") {
-                tempObj.sourceGeometry = SuperMap.REST.ServerGeometry.fromGeometry(geometryBufferAnalystParameters.sourceGeometry);
+                tempObj.sourceGeometry = ServerGeometry.fromGeometry(geometryBufferAnalystParameters.sourceGeometry);
             }
             else {
                 tempObj[name] = geometryBufferAnalystParameters[name];

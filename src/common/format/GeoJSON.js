@@ -1,12 +1,21 @@
 import SuperMap from '../SuperMap';
 import JSONFormat from './JSON';
+import Point from '../commontypes/geometry/Point';
+import MultiPoint from '../commontypes/geometry/MultiPoint';
+import LineString from '../commontypes/geometry/LineString';
+import MultiLineString from '../commontypes/geometry/MultiLineString';
+import LinearRing from '../commontypes/geometry/LinearRing';
+import Polygon from '../commontypes/geometry/Polygon';
+import MultiPolygon from '../commontypes/geometry/MultiPolygon';
+import {GeometryType} from '../REST';
+
 /**
  * @class SuperMap.Format.GeoJSON
  * @description GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器.
  * @augments SuperMap.Format.JSON
  * @param options - {Object} 选项对象，
  */
-export default  class GeoJSON extends JSONFormat {
+export default class GeoJSON extends JSONFormat {
 
     /**
      * APIProperty: ignoreExtraDims
@@ -230,7 +239,7 @@ export default  class GeoJSON extends JSONFormat {
                 array.length != 2) {
                 throw "Only 2D points are supported: " + array;
             }
-            return new SuperMap.Geometry.Point(array[0], array[1]);
+            return new Point(array[0], array[1]);
         },
 
         /**
@@ -250,7 +259,7 @@ export default  class GeoJSON extends JSONFormat {
                 }
                 points.push(p);
             }
-            return new SuperMap.Geometry.MultiPoint(points);
+            return new MultiPoint(points);
         },
 
         /**
@@ -270,7 +279,7 @@ export default  class GeoJSON extends JSONFormat {
                 }
                 points.push(p);
             }
-            return new SuperMap.Geometry.LineString(points);
+            return new LineString(points);
         },
 
         /**
@@ -290,7 +299,7 @@ export default  class GeoJSON extends JSONFormat {
                 }
                 lines.push(l);
             }
-            return new SuperMap.Geometry.MultiLineString(lines);
+            return new MultiLineString(lines);
         },
 
         /**
@@ -307,10 +316,10 @@ export default  class GeoJSON extends JSONFormat {
                 } catch (err) {
                     throw err;
                 }
-                r = new SuperMap.Geometry.LinearRing(l.components);
+                r = new LinearRing(l.components);
                 rings.push(r);
             }
-            return new SuperMap.Geometry.Polygon(rings);
+            return new Polygon(rings);
         },
 
         /**
@@ -330,7 +339,7 @@ export default  class GeoJSON extends JSONFormat {
                 }
                 polys.push(p);
             }
-            return new SuperMap.Geometry.MultiPolygon(polys);
+            return new MultiPolygon(polys);
         },
 
         /**
@@ -343,13 +352,13 @@ export default  class GeoJSON extends JSONFormat {
             if (array.length != 2) {
                 throw "GeoJSON box coordinates must have 2 elements";
             }
-            return new SuperMap.Geometry.Polygon([
-                new SuperMap.Geometry.LinearRing([
-                    new SuperMap.Geometry.Point(array[0][0], array[0][1]),
-                    new SuperMap.Geometry.Point(array[1][0], array[0][1]),
-                    new SuperMap.Geometry.Point(array[1][0], array[1][1]),
-                    new SuperMap.Geometry.Point(array[0][0], array[1][1]),
-                    new SuperMap.Geometry.Point(array[0][0], array[0][1])
+            return new Polygon([
+                new LinearRing([
+                    new Point(array[0][0], array[0][1]),
+                    new Point(array[1][0], array[0][1]),
+                    new Point(array[1][0], array[1][1]),
+                    new Point(array[0][0], array[1][1]),
+                    new Point(array[0][0], array[0][1])
                 ])
             ]);
         }
@@ -497,7 +506,7 @@ export default  class GeoJSON extends JSONFormat {
         'point': function (point) {
             var p = [point.x, point.y];
             for (var name in point) {
-                if (name !== "x" && name !== "y"&&!isNaN(point[name])) {
+                if (name !== "x" && name !== "y" && !isNaN(point[name])) {
                     p.push(point[name]);
                 }
             }
@@ -637,22 +646,22 @@ export default  class GeoJSON extends JSONFormat {
         var me = this,
             geoType = geometry.type;
         if (geoType === 'polygon') {
-            geoType = SuperMap.REST.GeometryType.REGION;
+            geoType = GeometryType.REGION;
         }
         switch (geoType.toUpperCase()) {
-            case SuperMap.REST.GeometryType.POINT:
+            case GeometryType.POINT:
                 return me.toGeoPoint(geometry);
-            case SuperMap.REST.GeometryType.LINE:
+            case GeometryType.LINE:
                 return me.toGeoLine(geometry);
-            case SuperMap.REST.GeometryType.LINEM:
+            case GeometryType.LINEM:
                 return me.toGeoLinem(geometry);
-            case SuperMap.REST.GeometryType.REGION:
+            case GeometryType.REGION:
                 return me.toGeoRegion(geometry);
-            case SuperMap.REST.GeometryType.POINTEPS:
+            case GeometryType.POINTEPS:
                 return me.toGeoPoint(geometry);
-            // case SuperMap.REST.GeometryType.LINEEPS:
+            // case GeometryType.LINEEPS:
             //     return me.toGeoLineEPS();
-            // case SuperMap.REST.GeometryType.REGIONEPS:
+            // case GeometryType.REGIONEPS:
             //     return me.toGeoRegionEPS();
             default:
                 return geometry;

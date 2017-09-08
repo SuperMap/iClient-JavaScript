@@ -1,6 +1,10 @@
-import '../../core/Base';
 import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
+import Point from "../../../common/commontypes/geometry/Point";
+import GeoText from "../../../common/commontypes/geometry/GeoText";
+import LevelRenderer from "../../../common/overlay/levelRenderer/LevelRenderer";
+import "../../../common/overlay/levelRenderer/Render";
+import '../../core/Base';
 
 /**
  * @class L.supermap.ThemeLayer
@@ -26,7 +30,7 @@ export var ThemeLayer = L.Layer.extend({
         this.options.name = name;
         this.features = [];
         this.TFEvents = [];
-        this.levelRenderer = new SuperMap.LevelRenderer();
+        this.levelRenderer = new LevelRenderer();
         this.movingOffset = [0, 0];
     },
 
@@ -375,7 +379,7 @@ export var ThemeLayer = L.Layer.extend({
         }
         var coor = coordinate;
         if (!(coordinate instanceof L.LatLng)) {
-            if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
+            if (coordinate instanceof Point || coordinate instanceof GeoText) {
                 coor = L.latLng(coordinate.y, coordinate.x);
             } else {
                 coor = L.latLng(coordinate.lat, coordinate.lon);

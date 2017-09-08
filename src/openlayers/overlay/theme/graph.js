@@ -1,13 +1,13 @@
 import ol from 'openlayers/dist/ol-debug';
 import '../../../common/REST';
-import '../../../common/iServer/Bar';
-import '../../../common/iServer/Bar3D';
-import '../../../common/iServer/Circle';
-import '../../../common/iServer/Pie';
-import '../../../common/iServer/Point';
-import '../../../common/iServer/Line';
-import '../../../common/iServer/Ring';
-import '../../../common/iServer/ThemeVector';
+import '../../../common/overlay/Bar';
+import '../../../common/overlay/Bar3D';
+import '../../../common/overlay/Circle';
+import '../../../common/overlay/Pie';
+import '../../../common/overlay/Point';
+import '../../../common/overlay/Line';
+import '../../../common/overlay/Ring';
+import '../../../common/overlay/ThemeVector';
 import '../../../common/style/ThemeStyle';
 import SuperMap from '../../../common/SuperMap';
 import Theme from './theme';
@@ -28,7 +28,7 @@ export default class Graph extends Theme {
         this.chartsSetting = opt_options.chartsSetting || {};
         this.themeFields = opt_options.themeFields || null;
         this.overlayWeightField = opt_options.overlayWeightField || null;
-        this.isOverLay = opt_options.isOverLay ||true;
+        this.isOverLay = opt_options.isOverLay || true;
         this.charts = opt_options.charts || [];
         this.cache = opt_options.cache || {};
         this.chartsType = chartsType;
@@ -363,7 +363,7 @@ export default class Graph extends Theme {
      */
     removeFeatures(features) {
         this.clearCache();
-        SuperMap.Layer.Theme.prototype.removeFeatures.apply(this, arguments);
+        super.removeFeatures(features);
     }
 
     /**
@@ -372,7 +372,7 @@ export default class Graph extends Theme {
      */
     removeAllFeatures() {
         this.clearCache();
-        SuperMap.Layer.Theme.prototype.removeAllFeatures.apply(this, arguments);
+        super.removeAllFeatures();
     }
 
     /**
@@ -381,7 +381,11 @@ export default class Graph extends Theme {
      */
     redraw() {
         this.clearCache();
-        return SuperMap.Layer.Theme.prototype.redraw.apply(this, arguments);
+        if (this.renderer) {
+            this.redrawThematicFeatures(this.map.getView().calculateExtent());
+            return true;
+        }
+        return false
     }
 
     /**

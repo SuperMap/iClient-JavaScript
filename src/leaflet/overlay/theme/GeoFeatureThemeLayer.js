@@ -1,8 +1,9 @@
-import  '../../../common/style/ThemeStyle';
-import '../../../common/iServer/ThemeVector';
+import '../../../common/style/ThemeStyle';
+import '../../../common/overlay/ThemeVector';
 import SuperMap from '../../../common/SuperMap';
 import {ThemeLayer} from './ThemeLayer';
 import {ThemeFeature} from './ThemeFeature';
+import ServerFeature from '../../../common/iServer/ServerFeature';
 import CommontypesConversion from '../../core/CommontypesConversion';
 import L from "leaflet";
 
@@ -285,7 +286,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         if (feature instanceof ThemeFeature) {
             feature = feature.toFeature();
         } else if (!(feature instanceof SuperMap.Feature.Vector)) {
-            feature = new SuperMap.REST.ServerFeature.fromJson(feature).toFeature();
+            feature = new ServerFeature.fromJson(feature).toFeature();
         }
         if (!feature.hasOwnProperty("attributes") && feature.fieldNames && feature.filedValues) {
             var attrs = {},
