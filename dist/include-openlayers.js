@@ -55,8 +55,7 @@
             inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
         }
         if (inArray(includes, 'osmbuildings')) {
-            // inputScript("http://iclient.supermapol.com/libs/osmbuildings/OSMBuildings-OL3.js");
-            inputScript("../../examples/openlayers/OSMBuildings-OL3.debug.js");
+            inputScript("http://iclient.supermapol.com/libs/osmbuildings/OSMBuildings-OL3.js");
         }
         if (inArray(includes, 'animatedclusterlayer')) {
             inputScript("http://viglino.github.io/OL3-AnimatedCluster/layer/animatedclusterlayer.js");
