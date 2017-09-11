@@ -8296,7 +8296,7 @@ exports.default = MapVRenderer;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -8311,140 +8311,109 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.Credential
- * @description SuperMap的安全证书类，其中包括token等安全验证信息。
- *
- * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens"下申请value
- *
- * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.."的value
- *
+ * @classdesc SuperMap的安全证书类，其中包括token等安全验证信息。<br>
+ * 需要使用用户名和密码在："http://localhost:8090/iserver/services/security/tokens"下申请value <br>
+ * 获得形如："2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ.."的value<br>
  * 目前支持的功能包括：地图服务、专题图、量算、查询、公交换乘、空间分析、网络分析，不支持轮询功能。
+ * @param value - {string}  访问受安全限制的服务时用于通过安全认证的验证信息。
+ * @param name - {string}  验证信息前缀，name=value部分的name部分，默认为“token”。
+ * @example
+ * var pixcel = new SuperMap.Credential("valueString","token");
+ * pixcel.destroy();
  */
 var Credential = function () {
 
-  /**
-   * Constructor: SuperMap.Credential
-   * SuperMap地图服务安全验证类。
-   *
-   * 例如:
-   * (start code)
-   * var pixcel = new SuperMap.Credential("valueString","token");
-   * pixcel.destroy();
-   * (end)
-   *
-   * Parameters:
-   * value - {String}  访问受安全限制的服务时用于通过安全认证的验证信息。
-   * name - {String}  验证信息前缀，name=value部分的name部分，默认为“token”。
-   */
-
-  /**
-   * APIProperty: value
-   * {String} 访问受安全限制的服务时用于通过安全认证的验证信息。
-   */
-  function Credential(value, name) {
-    _classCallCheck(this, Credential);
-
-    this.value = "";
-    this.name = "token";
-    this.CLASS_NAME = "SuperMap.Credential";
-
-    this.value = value ? value : this.value;
-    this.name = name ? name : this.name;
-  }
-
-  /**
-   * Property: getUrlParameters
-   *
-   * 例如:
-   * (start code)
-   * var credential = new SuperMap.Credential("valueString","token");
-   * //这里 str = "token=valueString";
-   * var str = credential.getUrlParameters();
-   * (end)
-   *
-   * Returns:
-   * {String} 返回安全信息组成的url片段。
-   */
-
-
-  /**
-   * APIProperty: name
-   * {String} 验证信息前缀，name=value部分的name部分，默认为“token”。
-   */
-
-
-  _createClass(Credential, [{
-    key: "getUrlParameters",
-    value: function getUrlParameters() {
-      //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
-      return this.name + "=" + this.value;
-    }
-
     /**
-     * APIProperty: getValue
-     * 获取value
-     *
-     * 例如:
-     * (start code)
-     * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
-     * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
-     * var str = credential.getValue();
-     * (end)
-     *
-     * Returns:
-     * {String} 返回value字符串，在iServer服务下该value值即为token值。
+     * @member SuperMap.Bounds.prototype.name -{string}
+     * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
      */
+    function Credential(value, name) {
+        _classCallCheck(this, Credential);
 
-  }, {
-    key: "getValue",
-    value: function getValue() {
-      return this.value;
+        this.value = "";
+        this.name = "token";
+        this.CLASS_NAME = "SuperMap.Credential";
+
+        this.value = value ? value : this.value;
+        this.name = name ? name : this.name;
     }
 
     /**
-     *
-     * APIMethod: destroy
-     * 销毁此对象。
-     * 销毁后此对象的所有属性为null，而不是初始值。
-     *
-     * 例如:
-     * (start code)
+     * @function SuperMap.Credential.prototype.getUrlParameters
+     * @example
      * var credential = new SuperMap.Credential("valueString","token");
-     * credential.destroy();
-     * (end)
+     * //这里 str = "token=valueString";
+     * var str = credential.getUrlParameters();
+     * @returns {string} 返回安全信息组成的url片段。
+     */
+
+    /**
+     * @member SuperMap.Credential.CREDENTIAL -{SuperMap.Credential}
+     * @description 这个对象保存一个安全类的实例，在服务端需要安全验证的时候必须进行设置。
+     * @constant
+     * @example
+     * 代码实例:
+     *  // 当iServer启用服务安全的时候，下边的代码是必须的。安全证书类能够接收一个value和一个name参数。
+     *  var value = "(以iServer为例，这里是申请的token值)";
+     *  var name = "token";
+     *  // 默认name参数为token，所以当使用iServer服务的时候可以不进行设置。
+     *  SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(value, name);
      *
      */
 
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      this.value = null;
-      this.name = null;
-    }
-  }]);
+    /**
+     * @member SuperMap.Bounds.prototype.value -{string}
+     * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
+     */
 
-  return Credential;
+
+    _createClass(Credential, [{
+        key: "getUrlParameters",
+        value: function getUrlParameters() {
+            //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
+            return this.name + "=" + this.value;
+        }
+
+        /**
+         * @function SuperMap.Bounds.prototype.getValue
+         * @description 获取value
+         * @example
+         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
+         * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
+         * var str = credential.getValue();
+         * @returns {string} 返回value字符串，在iServer服务下该value值即为token值。
+         */
+
+    }, {
+        key: "getValue",
+        value: function getValue() {
+            return this.value;
+        }
+
+        /**
+         *
+         * @function SuperMap.Credential.prototype.destroy
+         * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
+         * @example
+         * var credential = new SuperMap.Credential("valueString","token");
+         * credential.destroy();
+         */
+
+    }, {
+        key: "destroy",
+        value: function destroy() {
+            this.value = null;
+            this.name = null;
+        }
+    }]);
+
+    return Credential;
 }();
 
+Credential.CREDENTIAL = null;
 exports.default = Credential;
 
 _SuperMap2.default.Credential = Credential;
-/**
- * Constant: CREDENTIAL
- * {<SuperMap.Credential>} 这个对象保存一个安全类的实例，在服务端需要安全验证的时候必须进行
- * 设置。
- *
- * 代码实例:
- * (code)
- *  // 当iServer启用服务安全的时候，下边的代码是必须的。安全证书类能够接收一个value和一个name参数。
- *  var value = "(以iServer为例，这里是申请的token值)";
- *  var name = "token";
- *  // 默认name参数为token，所以当使用iServer服务的时候可以不进行设置。
- *  SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(value, name);
- * (end)
- *
- */
-
-_SuperMap2.default.Credential.CREDENTIAL = null;
 
 /***/ }),
 /* 17 */
@@ -8456,6 +8425,7 @@ _SuperMap2.default.Credential.CREDENTIAL = null;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Event = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -8471,7 +8441,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @namespace
  * @description 事件处理函数.
  */
-exports.default = Event = _SuperMap2.default.Event = {
+var Event = exports.Event = _SuperMap2.default.Event = {
 
     /**
      * @description  A hashtable cache of the event observers. Keyed by element._eventCacheID
@@ -8785,7 +8755,6 @@ exports.default = Event = _SuperMap2.default.Event = {
 
     CLASS_NAME: "SuperMap.Event"
 };
-
 _SuperMap2.default.Event = Event;
 /* prevent memory leaks in IE */
 _SuperMap2.default.Event.observe(window, 'unload', _SuperMap2.default.Event.unloadCache, false);
@@ -8815,8 +8784,6 @@ var _Pixel2 = _interopRequireDefault(_Pixel);
 
 var _Event = __webpack_require__(17);
 
-var _Event2 = _interopRequireDefault(_Event);
-
 var _BaseTypes = __webpack_require__(6);
 
 var _Util = __webpack_require__(7);
@@ -8826,64 +8793,56 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.Events
+ * @class SuperMap.Events
+ * @classdesc 事件类
+ * @param object - {Object} 当前事件对象被添加到的JS对象
+ * @param element - {HTMLElement} 响应浏览器事件的dom元素
+ * @param eventTypes - {Array<string>} 自定义应用事件的数组
+ * @param fallThrough - {Boolean} 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡
+ * @param options - {Object} 事件对象选项。
  */
 var Events = function () {
 
     /**
-     * Constructor: SuperMap.Events
-     * SuperMap.Events 构造函数。
-     *
-     * Parameters:
-     * object - {Object} 当前事件对象被添加到的JS对象
-     * element - {DOMElement} 响应浏览器事件的dom元素
-     * eventTypes - {Array(String)} 自定义应用事件的数组
-     * fallThrough - {Boolean} 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡
-     * options - {Object} 事件对象选项。
-     */
-
-
-    /**
-     * Property: extensionCount
-     * {Object} Keys are event types (like in <listeners>), values are the
+     * @member SuperMap.Events.prototype.extensionCount -{Object}
+     * @description Keys are event types (like in <listeners>), values are the
      *     number of extension listeners for each event type.
      */
 
 
     /**
-     * APIProperty: includeXY
-     * {Boolean} 判断是否让.xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生.xy属性。
-     * 可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数，如：
-     * (code)
+     * @member SuperMap.Events.prototype.includeXY -{Boolean}
+     * @description 判断是否让.xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生.xy属性。
+     * 可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数，
+     * @example
+     * 如：
      *  function named(evt) {
      *        this.xy = this.object.events.getMousePosition(evt)
      *  }
-     * (end)
      *
      * 这个选项习惯默认为false的原因在于，当创建一个事件对象，其主要目的是管理
      * 在一个div的相对定位的鼠标事件,将其设为true也是有意义的。
      *
      * 这个选项也可以用来控制是否抵消缓存。如果设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
      *
-     *
      */
 
 
     /**
-     * Property: eventHandler
-     * {Function}  bound event handler attached to elements
+     * @member SuperMap.Events.prototype.eventHandler -{Function}
+     * @description bound event handler attached to elements
      */
 
 
     /**
-     * Property: element
-     * {DOMElement}  the DOM element receiving browser events
+     * @member SuperMap.Events.prototype.element  -{HTMLElement}
+     * @description the DOM element receiving browser events
      */
 
 
     /**
-     * Property: listeners
-     * {Object} Hashtable of Array(Function): events listener functions
+     * @member SuperMap.Events.prototype.listeners -{Object}
+     * @description Hashtable of Array(Function): events listener functions
      */
     function Events(object, element, eventTypes, fallThrough, options) {
         _classCallCheck(this, Events);
@@ -8936,41 +8895,42 @@ var Events = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 移除当前要素element上的所有事件监听和处理。
+     * @function SuperMap.Events.prototype.destroy
+     * @description 移除当前要素element上的所有事件监听和处理。
      */
 
     /**
-     * Method: clearMouseListener
-     * A version of <clearMouseCache> that is bound to this instance so that
-     *     it can be used with <SuperMap.Event.observe> and
-     *     <SuperMap.Event.stopObserving>.
+     * @member SuperMap.Events.prototype.clearMouseListener -{Object}
+     * @description A version of {@link clearMouseCache} that is bound to this instance so that
+     *     it can be used with {@link SuperMap.Event.observe} and
+     *     {@link SuperMap.Event.stopObserving}.
      */
 
 
     /**
-     * APIProperty: extensions
-     * {Object} Event extensions registered with this instance. Keys are
+     * @member SuperMap.Events.prototype.extensions -{Object}
+     * @description Event extensions registered with this instance. Keys are
      *     event types, values are {SuperMap.Events.*} extension instances or
      *     {Boolean} for events that an instantiated extension provides in
-     *     addition to the one it was created for.
+     *     addition to the one it was created for.<br>
      *
      * Extensions create an event in addition to browser events, which usually
      * fires when a sequence of browser events is completed. Extensions are
      * automatically instantiated when a listener is registered for an event
-     * provided by an extension.
+     * provided by an extension.<br>
      *
      * Extensions are created in the <SuperMap.Events> namespace using
      * <SuperMap.Class>, and named after the event they provide.
      * The constructor receives the target <SuperMap.Events> instance as
      * argument. Extensions that need to capture browser events before they
      * propagate can register their listeners events using <register>, with
-     * {extension: true} as 4th argument.
+     * {extension: true} as 4th argument.<br>
      *
      * If an extension creates more than one event, an alias for each event
      * type should be created and reference the same class. The constructor
-     * should set a reference in the target's extensions registry to itself.
+     * should set a reference in the target's extensions registry to itself.<br>
      *
+     * @example
      * Below is a minimal extension that provides the "foostart" and "fooend"
      * event types, which replace the native "click" event type if clicked on
      * an element with the css class "foo":
@@ -9007,32 +8967,42 @@ var Events = function () {
      *   });
      *   // only required if extension provides more than one event type
      *   SuperMap.Events.fooend = SuperMap.Events.foostart;
-     * (end)
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.fallThrough -{Boolean}
+     * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.eventTypes  -{Array<string>}
+     * @description list of support application events
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.object  -{Object}
+     * @description  the code object issuing application events
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
+     * @description 支持的事件。
+     * @constant
+     * @default [
+     "mouseover", "mouseout",
+     "mousedown", "mouseup", "mousemove",
+     "click", "dblclick", "rightclick", "dblrightclick",
+     "resize", "focus", "blur",
+     "touchstart", "touchmove", "touchend",
+     "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
+     "MSGestureStart", "MSGestureChange", "MSGestureEnd",
+     "contextmenu"
+     ]
      *
-     */
-
-
-    /**
-     * APIProperty: fallThrough
-     * {Boolean} 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
-     */
-
-
-    /**
-     * Property: eventTypes
-     * {Array(String)}  list of support application events
-     */
-
-
-    /**
-     * Property: object
-     * {Object}  the code object issuing application events
-     */
-
-
-    /**
-     * Constant: BROWSER_EVENTS
-     * {Array(String)} 支持的事件。
      */
 
 
@@ -9046,9 +9016,9 @@ var Events = function () {
             }
             this.extensions = null;
             if (this.element) {
-                _Event2.default.stopObservingElement(this.element);
+                _Event.Event.stopObservingElement(this.element);
                 if (this.element.hasScrollEvent) {
-                    _Event2.default.stopObserving(window, "scroll", this.clearMouseListener);
+                    _Event.Event.stopObserving(window, "scroll", this.clearMouseListener);
                 }
             }
             this.element = null;
@@ -9061,11 +9031,9 @@ var Events = function () {
         }
 
         /**
-         * APIMethod: addEventType
-         * 在此事件对象中添加新的事件类型，如果这个事件类型已经添加过了，则不做任何事情。
-         *
-         * Parameters:
-         * eventName - {String} 事件名。
+         * @function SuperMap.Events.prototype.addEventType
+         * @description 在此事件对象中添加新的事件类型，如果这个事件类型已经添加过了，则不做任何事情。
+         * @param eventName - {string} 事件名。
          */
 
     }, {
@@ -9078,17 +9046,15 @@ var Events = function () {
         }
 
         /**
-         * Method: attachToElement
-         *
-         * Parameters:
-         * element - {HTMLDOMElement} a DOM element to attach browser events to
+         * @function SuperMap.Events.prototype.attachToElement
+         * @param element - {HTMLDOMElement} a DOM element to attach browser events to
          */
 
     }, {
         key: 'attachToElement',
         value: function attachToElement(element) {
             if (this.element) {
-                _Event2.default.stopObservingElement(this.element);
+                _Event.Event.stopObservingElement(this.element);
             } else {
                 // keep a bound copy of handleBrowserEvent() so that we can
                 // pass the same function to both Event.observe() and .stopObserving()
@@ -9106,18 +9072,16 @@ var Events = function () {
                 this.addEventType(eventType);
 
                 // use Prototype to register the event cross-browser
-                _Event2.default.observe(element, eventType, this.eventHandler);
+                _Event.Event.observe(element, eventType, this.eventHandler);
             }
             // disable dragstart in IE so that mousedown/move/up works normally
-            _Event2.default.observe(element, "dragstart", _Event2.default.stop);
+            _Event.Event.observe(element, "dragstart", _Event.Event.stop);
         }
 
         /**
-         * APIMethod: on
-         * 在一个相同的范围内注册监听器的方法，此方法调用register函数。
-         *
-         * Example use:
-         * (code)
+         * @function SuperMap.Events.prototype.on
+         * @description 在一个相同的范围内注册监听器的方法，此方法调用register函数。
+         * @example
          * // 注册一个"loadstart"监听事件
          * events.on({"loadstart": loadStartListener});
          *
@@ -9134,10 +9098,9 @@ var Events = function () {
          * // 同时为对象注册多个监听事件，多次调用register方法
          * events.register("loadstart", object, loadStartListener);
          * events.register("loadend", object, loadEndListener);
-         * (end)
          *
-         * Parameters:
-         *  object - {Object}
+         *
+         * @param  object - {Object} 添加监听的对象
          */
 
     }, {
@@ -9151,15 +9114,13 @@ var Events = function () {
         }
 
         /**
-         * APIMethod: register
-         * 在事件对象上注册一个事件。当事件被触发时，'func'函数被调用，假设我们触发一个事件，
+         * @function SuperMap.Events.prototype.register
+         * @description 在事件对象上注册一个事件。当事件被触发时，'func'函数被调用，假设我们触发一个事件，
          * 指定SuperMap.Bounds作为‘obj’,当事件被触发时，回调函数的上下文作为Bounds对象，
-         *
-         * Parameters:
-         * type - {String} 事件注册者的名字
-         * obj - {Object} 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性
-         * func - {Function} 回调函数，如果没有特定的回调，则这个函数不做任何事情
-         * priority - {Boolean|Object} 当为true时将新的监听加在事件队列的前面。
+         * @param type - {string} 事件注册者的名字
+         * @param obj - {Object} 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性
+         * @param func - {Function} 回调函数，如果没有特定的回调，则这个函数不做任何事情
+         * @param priority - {Boolean|Object} 当为true时将新的监听加在事件队列的前面。
          */
 
     }, {
@@ -9192,13 +9153,11 @@ var Events = function () {
         }
 
         /**
-         * APIMethod: registerPriority
-         * 相同的注册方法，但是在前面增加新的监听者事件查询而代替到方法的结束
-         *
-         * Parameters:
-         * type - {String} 事件注册者的名字
-         * obj - {Object} 对象绑定方面的回调。如果没有特定的对象，则默认是事件的object属性
-         * func - {Function} 回调函数，如果没有特定的回调，则这个函数不做任何事情
+         * @function SuperMap.Events.prototype.registerPriority
+         * @description 相同的注册方法，但是在前面增加新的监听者事件查询而代替到方法的结束
+         * @param type - {string} 事件注册者的名字
+         * @param obj - {Object} 对象绑定方面的回调。如果没有特定的对象，则默认是事件的object属性
+         * @param func - {Function} 回调函数，如果没有特定的回调，则这个函数不做任何事情
          */
 
     }, {
@@ -9208,11 +9167,9 @@ var Events = function () {
         }
 
         /**
-         * APIMethod: un
-         * 在一个相同的范围内取消注册监听器的方法，此方法调用<unregister>函数。
-         *
-         * Example use:
-         * (code)
+         * @function SuperMap.Events.prototype.un
+         * @description 在一个相同的范围内取消注册监听器的方法，此方法调用<unregister>函数。
+         * @example
          * // 移除"loadstart" 事件监听
          * events.un({"loadstart": loadStartListener});
          *
@@ -9229,7 +9186,8 @@ var Events = function () {
          * // 取消对象多个事件监听，多次调用unregister方法
          * events.unregister("loadstart", object, loadStartListener);
          * events.unregister("loadend", object, loadEndListener);
-         * (end)
+         *
+         * @param object - {Object} 移除监听的对象
          */
 
     }, {
@@ -9243,13 +9201,11 @@ var Events = function () {
         }
 
         /**
-         * APIMethod: unregister
-         * 反注册
-         *
-         * Parameters:
-         * type - {String}
-         * obj - {Object} 默认为 this.object。
-         * func - {Function}
+         * @function SuperMap.Events.prototype.unregister
+         * @description 反注册
+         * @param type - {string}
+         * @param obj - {Object} 默认为 this.object。
+         * @param func - {Function}
          */
 
     }, {
@@ -9270,12 +9226,10 @@ var Events = function () {
         }
 
         /**
-         * Method: remove
-         * Remove all listeners for a given event type. If type is not registered,
+         * @function SuperMap.Events.prototype.remove
+         * @description Remove all listeners for a given event type. If type is not registered,
          *     does nothing.
-         *
-         * Parameters:
-         * type - {String}
+         * @param type - {string}
          */
 
     }, {
@@ -9287,15 +9241,11 @@ var Events = function () {
         }
 
         /**
-         * APIMethod: triggerEvent
-         * 触发一个特定的注册事件.
-         *
-         * Parameters:
-         * type - {String} 触发事件类型。
-         * evt - {Event} 事件。
-         *
-         * Returns:
-         * {Boolean} 返回监听对象，如果返回是faler(假)，则停止监听。
+         * @function SuperMap.Events.prototype.triggerEvent
+         * @description 触发一个特定的注册事件.
+         * @param type - {string} 触发事件类型。
+         * @param evt - {Event} 事件。
+         * @returns {Boolean} 返回监听对象，如果返回是faler(假)，则停止监听。
          */
 
     }, {
@@ -9335,19 +9285,17 @@ var Events = function () {
             }
             // don't fall through to other DOM elements
             if (!this.fallThrough) {
-                _Event2.default.stop(evt, true);
+                _Event.Event.stop(evt, true);
             }
             return continueChain;
         }
 
         /**
-         * Method: handleBrowserEvent
-         * Basically just a wrapper to the triggerEvent() function, but takes
+         * @function SuperMap.Events.prototype.handleBrowserEvent
+         * @description Basically just a wrapper to the triggerEvent() function, but takes
          *     care to set a property 'xy' on the event with the current mouse
          *     position.
-         *
-         * Parameters:
-         * evt - {Event}
+         * @param evt - {Event}
          */
 
     }, {
@@ -9381,8 +9329,8 @@ var Events = function () {
         }
 
         /**
-         * APIMethod: clearMouseCache
-         * 清除鼠标缓存。
+         * @function SuperMap.Events.prototype.clearMouseCache
+         * @description 清除鼠标缓存。
          */
 
     }, {
@@ -9403,13 +9351,9 @@ var Events = function () {
         }
 
         /**
-         * Method: getMousePosition
-         *
-         * Parameters:
-         * evt - {Event}
-         *
-         * Returns:
-         * {<SuperMap.Pixel>} The current xy coordinate of the mouse, adjusted
+         * @function SuperMap.Events.prototype.getMousePosition
+         * @param evt - {Event}
+         * @returns {SuperMap.Pixel} The current xy coordinate of the mouse, adjusted
          *                      for offsets
          */
 
@@ -9419,7 +9363,7 @@ var Events = function () {
             if (!this.includeXY) {
                 this.clearMouseCache();
             } else if (!this.element.hasScrollEvent) {
-                _Event2.default.observe(window, "scroll", this.clearMouseListener);
+                _Event.Event.observe(window, "scroll", this.clearMouseListener);
                 this.element.hasScrollEvent = true;
             }
 
@@ -9456,7 +9400,7 @@ _SuperMap2.default.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -9471,269 +9415,219 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.Pixel
- * @description 此类用x,y坐标描绘屏幕坐标（像素点）。
+ * @classdesc 此类用x,y坐标描绘屏幕坐标（像素点）。
+ * @param x - {number} x坐标，默认为0.0
+ * @param y - {number} y坐标，默认为0.0
+ * @param mode - {string} 坐标模式，默认为{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+ *
+ * @example
+ * //单独创建一个对象
+ * var pixcel = new SuperMap.Pixel(100,50);
+ *
+ * //依据size创建
+ *  var size = new SuperMap.Size(21,25);
+ *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
  */
 var Pixel = function () {
 
-  /**
-   * Constructor: SuperMap.Pixel
-   * 创建新的SuperMap.Pixel实例。
-   *
-   * 例如:
-   * (start code)
-   * //单独创建一个对象
-   * var pixcel = new SuperMap.Pixel(100,50);
-   *
-   * //依据size创建
-   *  var size = new SuperMap.Size(21,25);
-   *    var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
-   * (end)
-   *
-   * Parameters:
-   * x - {Number} x坐标，默认为0.0
-   * y - {Number} y坐标，默认为0.0
-   * mode - {String} 坐标模式，默认为SuperMap.Pixel.Mode.LeftTop
-   *
-   * Returns:
-   * 返回 <SuperMap.Pixel> 实例。
-   */
+    /**
+     * @member SuperMap.Pixel.prototype.y -{number}
+     * @description y坐标，默认为0.0
+     */
+    function Pixel(x, y, mode) {
+        _classCallCheck(this, Pixel);
 
+        this.x = 0.0;
+        this.y = 0.0;
+        this.mode = null;
+        this.CLASS_NAME = "SuperMap.Pixel";
 
-  /**
-   * APIProperty: y
-   * {Number} y坐标，默认为0.0
-   */
-  function Pixel(x, y, mode) {
-    _classCallCheck(this, Pixel);
-
-    this.x = 0.0;
-    this.y = 0.0;
-    this.mode = null;
-    this.CLASS_NAME = "SuperMap.Pixel";
-
-    this.x = x ? parseFloat(x) : this.x;
-    this.y = y ? parseFloat(y) : this.y;
-    this.mode = mode;
-  }
-
-  /**
-   * APIMethod: toString
-   * 返回此对象的字符串形式
-   *
-   * 例如:
-   * (start code)
-   * var pixcel = new SuperMap.Pixel(100,50);
-   * var str = pixcel.toString();
-   * (end)
-   *
-   * Returns:
-   * {String} 例如: "x=200.4,y=242.2"
-   */
-
-
-  /**
-   * APIProperty: mode
-   * {String} 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。
-   *          值有SuperMap.Pixel.Mode.LeftTop，SuperMap.Pixel.Mode.RightTop，SuperMap.Pixel.Mode.RightBottom，
-   *          SuperMap.Pixel.Mode.LeftBottom 这四种,默认值为：SuperMap.Pixel.Mode.LeftTop
-   * */
-
-
-  /**
-   * APIProperty: x
-   * {Number} x坐标，默认为0.0
-   */
-
-
-  _createClass(Pixel, [{
-    key: "toString",
-    value: function toString() {
-      return "x=" + this.x + ",y=" + this.y;
+        this.x = x ? parseFloat(x) : this.x;
+        this.y = y ? parseFloat(y) : this.y;
+        this.mode = mode;
     }
 
     /**
-     * APIMethod: clone
-     * 克隆当前的 pixel 对象。
+     * @function SuperMap.Pixel.prototype. toString
+     * 返回此对象的字符串形式
+     * @example
      *
-     * 例如:
-     * (start code)
      * var pixcel = new SuperMap.Pixel(100,50);
-     * var pixcel2 = pixcel.clone();
-     * (end)
+     * var str = pixcel.toString();
      *
-     * Returns:
-     * {<SuperMap.Pixel>} 返回一个新的与当前 pixel 对象有相同x、y坐标的 pixel 对象。
+     * @returns {string} 例如: "x=200.4,y=242.2"
      */
 
-  }, {
-    key: "clone",
-    value: function clone() {
-      return new Pixel(this.x, this.y, this.mode);
-    }
 
     /**
-     * APIMethod: equals
-     * 比较两 pixel 是否相等
+     * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
+     * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
+     * 值有<br>
+     * * SuperMap.Pixel.Mode.LeftTop
+     * * SuperMap.Pixel.Mode.RightTop
+     * * SuperMap.Pixel.Mode.RightBottom
+     * * SuperMap.Pixel.Mode.LeftBottom
      *
-     * 例如:
-     * (start code)
-     * var pixcel = new SuperMap.Pixel(100,50);
-     * var pixcel2 = new SuperMap.Pixel(100,50);
-     * var isEquals = pixcel.equals(pixcel2);
-     * (end)
+     * 这四种 默认值为：SuperMap.Pixel.Mode.LeftTop
      *
-     * Parameters:
-     * px - {<SuperMap.Pixel>} 用于比较相等的 pixel 对象。
-     *
-     * Returns:
-     * {Boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
+     * @default SuperMap.Pixel.Mode.LeftTop
      */
 
-  }, {
-    key: "equals",
-    value: function equals(px) {
-      var equals = false;
-      if (px != null) {
-        equals = this.x == px.x && this.y == px.y || isNaN(this.x) && isNaN(this.y) && isNaN(px.x) && isNaN(px.y);
-      }
-      return equals;
-    }
 
     /**
-     * APIMethod: distanceTo
-     * 返回两个 pixel 的距离。
-     *
-     * 例如:
-     * (start code)
-     * var pixcel = new SuperMap.Pixel(100,50);
-     * var pixcel2 = new SuperMap.Pixel(110,30);
-     * var distance = pixcel.distanceTo(pixcel2);
-     * (end)
-     *
-     * Parameters:
-     * px - {<SuperMap.Pixel>} 用于计算的一个 pixel
-     *
-     * Returns:
-     * {Float} 作为参数传入的像素与当前像素点的距离。
+     * @member SuperMap.Pixel.prototype.x -{number}
+     * @description x坐标，默认为0.0
      */
 
-  }, {
-    key: "distanceTo",
-    value: function distanceTo(px) {
-      return Math.sqrt(Math.pow(this.x - px.x, 2) + Math.pow(this.y - px.y, 2));
-    }
 
-    /**
-     * APIMethod: add
-     * 在原来像素坐标基础上，x值加上传入的x参数，y值加上传入的y参数。
-     *
-     * 例如:
-     * (start code)
-     * var pixcel = new SuperMap.Pixel(100,50);
-     * //pixcel2是新的对象
-     * var pixcel2 = pixcel.add(20,30);
-     * (end)
-     *
-     * Parameters:
-     * x - {Number} 传入的x值。
-     * y - {Number} 传入的y值。
-     *
-     * Returns:
-     * {<SuperMap.Pixel>} 返回一个新的pixel对象，该pixel是由当前的pixel与传
-     *      入的x,y相加得到。
-     */
+    _createClass(Pixel, [{
+        key: "toString",
+        value: function toString() {
+            return "x=" + this.x + ",y=" + this.y;
+        }
 
-  }, {
-    key: "add",
-    value: function add(x, y) {
-      if (x == null || y == null) {
-        throw new TypeError('Pixel.add cannot receive null values');
-      }
-      return new Pixel(this.x + x, this.y + y);
-    }
+        /**
+         * @function SuperMap.Pixel.prototype. clone
+         * @description 克隆当前的 pixel 对象。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = pixcel.clone();
+         * @returns {SuperMap.Pixel} 返回一个新的与当前 pixel 对象有相同x、y坐标的 pixel 对象。
+         */
 
-    /**
-     * APIMethod: offset
-     * 通过传入的 <SuperMap.Pixel> 参数对原屏幕坐标进行偏移。
-     *
-     * 例如:
-     * (start code)
-     * var pixcel = new SuperMap.Pixel(100,50);
-     * var pixcel2 = new SuperMap.Pixel(130,20);
-     * //pixcel3 是新的对象
-     * var pixcel3 = pixcel.offset(pixcel2);
-     * (end)
-     *
-     * Parameters
-     * px - {<SuperMap.Pixel>}  传入的 <SuperMap.Pixel> 对象。
-     *
-     * Returns:
-     * {<SuperMap.Pixel>} 返回一个新的pixel，该pixel是由当前的pixel对象的x，y
-     *      值与传入的Pixel对象的x，y值相加得到。
-     */
+    }, {
+        key: "clone",
+        value: function clone() {
+            return new Pixel(this.x, this.y, this.mode);
+        }
 
-  }, {
-    key: "offset",
-    value: function offset(px) {
-      var newPx = this.clone();
-      if (px) {
-        newPx = this.add(px.x, px.y);
-      }
-      return newPx;
-    }
+        /**
+         * @function SuperMap.Pixel.prototype. equals
+         * @description 比较两 pixel 是否相等
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = new SuperMap.Pixel(100,50);
+         * var isEquals = pixcel.equals(pixcel2);
+         *
+         * @param px - {SuperMap.Pixel} 用于比较相等的 pixel 对象。
+         * @returns {Boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
+         */
 
-    /**
-     *
-     * APIMethod: destroy
-     * 销毁此对象。
-     * 销毁后此对象的所有属性为null，而不是初始值。
-     *
-     * 例如:
-     * (start code)
-     * var pixcel = new SuperMap.Pixel(100,50);
-     * pixcel.destroy();
-     * (end)
-     *
-     */
+    }, {
+        key: "equals",
+        value: function equals(px) {
+            var equals = false;
+            if (px != null) {
+                equals = this.x == px.x && this.y == px.y || isNaN(this.x) && isNaN(this.y) && isNaN(px.x) && isNaN(px.y);
+            }
+            return equals;
+        }
 
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      this.x = null;
-      this.y = null;
-      this.mode = null;
-    }
+        /**
+         * @function SuperMap.Pixel.prototype. distanceTo
+         * @description 返回两个 pixel 的距离。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = new SuperMap.Pixel(110,30);
+         * var distance = pixcel.distanceTo(pixcel2);
+         *
+         * @param px - {SuperMap.Pixel} 用于计算的一个 pixel
+         * @returns {float} 作为参数传入的像素与当前像素点的距离。
+         */
 
-    /**
-     * Constant:SuperMap.Pixel.Mode.LeftTop
-     * 左上模式
-     * */
+    }, {
+        key: "distanceTo",
+        value: function distanceTo(px) {
+            return Math.sqrt(Math.pow(this.x - px.x, 2) + Math.pow(this.y - px.y, 2));
+        }
 
-    /**
-     * Constant:SuperMap.Pixel.Mode.RightTop
-     * 右上模式
-     * */
+        /**
+         * @function SuperMap.Pixel.prototype. add
+         * @description 在原来像素坐标基础上，x值加上传入的x参数，y值加上传入的y参数。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * //pixcel2是新的对象
+         * var pixcel2 = pixcel.add(20,30);
+         *
+         * @param x - {number} 传入的x值。
+         * @param y - {number} 传入的y值。
+         * @returns {SuperMap.Pixel} 返回一个新的pixel对象，该pixel是由当前的pixel与传
+         *      入的x,y相加得到。
+         */
 
-    /**
-     * Constant:SuperMap.Pixel.Mode.RightBottom
-     * 右下模式
-     * */
+    }, {
+        key: "add",
+        value: function add(x, y) {
+            if (x == null || y == null) {
+                throw new TypeError('Pixel.add cannot receive null values');
+            }
+            return new Pixel(this.x + x, this.y + y);
+        }
 
-    /**
-     * Constant:SuperMap.Pixel.Mode.LeftBottom
-     * 左下模式
-     * */
+        /**
+         * @function SuperMap.Pixel.prototype. offset
+         * @description 通过传入的 {@link SuperMap.Pixel} 参数对原屏幕坐标进行偏移。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = new SuperMap.Pixel(130,20);
+         * //pixcel3 是新的对象
+         * var pixcel3 = pixcel.offset(pixcel2);
+         *
+         * @param px - {SuperMap.Pixel}  传入的 <SuperMap.Pixel> 对象。
+         * @returns {SuperMap.Pixel} 返回一个新的pixel，该pixel是由当前的pixel对象的x，y
+         *      值与传入的Pixel对象的x，y值相加得到。
+         */
 
-  }]);
+    }, {
+        key: "offset",
+        value: function offset(px) {
+            var newPx = this.clone();
+            if (px) {
+                newPx = this.add(px.x, px.y);
+            }
+            return newPx;
+        }
 
-  return Pixel;
+        /**
+         *
+         * @function SuperMap.Pixel.prototype. destroy
+         * @description 销毁此对象。
+         * 销毁后此对象的所有属性为null，而不是初始值。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * pixcel.destroy();
+         */
+
+    }, {
+        key: "destroy",
+        value: function destroy() {
+            this.x = null;
+            this.y = null;
+            this.mode = null;
+        }
+
+        /**
+         * @member SuperMap.Pixel.Mode
+         * @enum {string}
+         * @readonly
+         * @description 模式
+         *
+         * * SuperMap.Pixel.Mode.LeftTop 左上模式
+         * * SuperMap.Pixel.Mode.RightTop 右上模式
+         * * SuperMap.Pixel.Mode.RightBottom 右下模式
+         * * SuperMap.Pixel.Mode.LeftBottom 左下模式
+         */
+
+    }]);
+
+    return Pixel;
 }();
 
 Pixel.Mode = {
-  LeftTop: "lefttop",
-  RightTop: "righttop",
-  RightBottom: "rightbottom",
-  LeftBottom: "leftbottom"
+    LeftTop: "lefttop",
+    RightTop: "righttop",
+    RightBottom: "rightbottom",
+    LeftBottom: "leftbottom"
 };
 exports.default = Pixel;
 
@@ -10652,7 +10546,7 @@ _SuperMap2.default.GeoDecodingParameter = GeoDecodingParameter;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10681,132 +10575,132 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var KernelDensityJobParameter = function () {
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
-   * @description 搜索半径单位。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
+     * @description 搜索半径单位。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
-   * @description 分析的影响半径。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
+     * @description 分析的影响半径。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
-   * @description 分析类型。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
+     * @description 分析类型。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
-   * @description 网格大小。
-   */
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
+     * @description 网格大小。
+     */
 
 
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
-   * @description 数据集名。
-   */
-  function KernelDensityJobParameter(options) {
-    _classCallCheck(this, KernelDensityJobParameter);
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
+     * @description 数据集名。
+     */
+    function KernelDensityJobParameter(options) {
+        _classCallCheck(this, KernelDensityJobParameter);
 
-    this.datasetName = "";
-    this.query = "";
-    this.resolution = 80;
-    this.method = 0;
-    this.meshType = 0;
-    this.fields = "";
-    this.radius = 300;
-    this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-    this.radiusUnit = _REST.AnalystSizeUnit.METER;
-    this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
+        this.datasetName = "";
+        this.query = "";
+        this.resolution = 80;
+        this.method = 0;
+        this.meshType = 0;
+        this.fields = "";
+        this.radius = 300;
+        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+        this.radiusUnit = _REST.AnalystSizeUnit.METER;
+        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
-    if (!options) {
-      return;
-    }
-    _SuperMap2.default.Util.extend(this, options);
-  }
-
-  /**
-   * @function SuperMap.KernelDensityJobParameter.prototype.destroy
-   * @description 释放资源，将引用资源的属性置空。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
-   * @description 面积单位。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-   * @description 网格大小单位。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
-   * @description 权重索引。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
-   * @description 分析方法。
-   */
-
-
-  /**
-   * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
-   * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
-   */
-
-
-  _createClass(KernelDensityJobParameter, [{
-    key: 'destroy',
-    value: function destroy() {
-      this.datasetName = null;
-      this.query = null;
-      this.resolution = null;
-      this.method = null;
-      this.radius = null;
-      this.meshType = null;
-      this.fields = null;
-      this.meshSizeUnit = null;
-      this.radiusUnit = null;
-      this.areaUnit = null;
+        if (!options) {
+            return;
+        }
+        _SuperMap2.default.Util.extend(this, options);
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.toObject
-     * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
-     * @param tempObj - {Object} 目标对象
-     * @description 生成密度分析任务对象
+     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
 
-  }], [{
-    key: 'toObject',
-    value: function toObject(kernelDensityJobParameter, tempObj) {
-      for (var name in kernelDensityJobParameter) {
-        if (name === "datasetName") {
-          tempObj['input'] = tempObj['input'] || {};
-          tempObj['input'][name] = kernelDensityJobParameter[name];
-          continue;
-        }
-        tempObj['analyst'] = tempObj['analyst'] || {};
-        if (name === 'query') {
-          tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-        } else {
-          tempObj['analyst'][name] = kernelDensityJobParameter[name];
-        }
-      }
-    }
-  }]);
 
-  return KernelDensityJobParameter;
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
+     * @description 面积单位。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+     * @description 网格大小单位。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
+     * @description 权重索引。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
+     * @description 分析方法。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
+     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+     */
+
+
+    _createClass(KernelDensityJobParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.query = null;
+            this.resolution = null;
+            this.method = null;
+            this.radius = null;
+            this.meshType = null;
+            this.fields = null;
+            this.meshSizeUnit = null;
+            this.radiusUnit = null;
+            this.areaUnit = null;
+        }
+
+        /**
+         * @function SuperMap.KernelDensityJobParameter.toObject
+         * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
+         * @param tempObj - {Object} 目标对象
+         * @description 生成密度分析任务对象
+         */
+
+    }], [{
+        key: 'toObject',
+        value: function toObject(kernelDensityJobParameter, tempObj) {
+            for (var name in kernelDensityJobParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = kernelDensityJobParameter[name];
+                    continue;
+                }
+                tempObj['analyst'] = tempObj['analyst'] || {};
+                if (name === 'query') {
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                } else {
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                }
+            }
+        }
+    }]);
+
+    return KernelDensityJobParameter;
 }();
 
 exports.default = KernelDensityJobParameter;
@@ -12422,7 +12316,7 @@ _SuperMap2.default.ServerInfo = ServerInfo;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -12443,74 +12337,74 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 参数。
  */
 var TokenServiceParameter = function () {
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
-   * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-   */
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
 
 
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
-   * @description token申请的客户端标识类型。
-   */
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
+     * @description token申请的客户端标识类型。
+     */
 
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
-   * @description 用户名。
-   */
-  function TokenServiceParameter(options) {
-    _classCallCheck(this, TokenServiceParameter);
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
+     * @description 用户名。
+     */
+    function TokenServiceParameter(options) {
+        _classCallCheck(this, TokenServiceParameter);
 
-    this.userName = null;
-    this.password = null;
-    this.clientType = _REST.ClientType.NONE;
-    this.ip = null;
-    this.referer = null;
-    this.expiration = 60;
-    this.CLASS_NAME = "SuperMap.TokenServiceParameter";
+        this.userName = null;
+        this.password = null;
+        this.clientType = _REST.ClientType.NONE;
+        this.ip = null;
+        this.referer = null;
+        this.expiration = 60;
+        this.CLASS_NAME = "SuperMap.TokenServiceParameter";
 
-    _SuperMap2.default.Util.extend(this, options);
-  }
-
-  /**
-   * @function SuperMap.TokenServiceParameter.prototype.toJSON
-   * @description 将所有信息转成JSON字符串
-   * @return {string} 参数的JSON字符串
-   */
-
-
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
-   * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
-   */
-
-
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
-   * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-   */
-
-  /**
-   * @member SuperMap.TokenServiceParameter.prototype.password -{string}
-   * @description 密码。
-   */
-
-
-  _createClass(TokenServiceParameter, [{
-    key: 'toJSON',
-    value: function toJSON() {
-      return {
-        userName: this.userName,
-        password: this.password,
-        clientType: this.clientType,
-        ip: this.ip,
-        referer: this.referer,
-        expiration: this.expiration
-      };
+        _SuperMap2.default.Util.extend(this, options);
     }
-  }]);
 
-  return TokenServiceParameter;
+    /**
+     * @function SuperMap.TokenServiceParameter.prototype.toJSON
+     * @description 将所有信息转成JSON字符串
+     * @return {string} 参数的JSON字符串
+     */
+
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
+     * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
+     */
+
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.ip -{string}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.password -{string}
+     * @description 密码。
+     */
+
+
+    _createClass(TokenServiceParameter, [{
+        key: 'toJSON',
+        value: function toJSON() {
+            return {
+                userName: this.userName,
+                password: this.password,
+                clientType: this.clientType,
+                ip: this.ip,
+                referer: this.referer,
+                expiration: this.expiration
+            };
+        }
+    }]);
+
+    return TokenServiceParameter;
 }();
 
 exports.default = TokenServiceParameter;

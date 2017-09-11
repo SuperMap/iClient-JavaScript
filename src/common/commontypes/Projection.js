@@ -4,55 +4,41 @@ import {Util} from './Util';
 
 /**
  * @class  SuperMap.Projection
- * @description 坐标转换类。这个类封装了与 proj4js 投影对象进行交互的几种方法。
+ * @classdesc 坐标转换类。这个类封装了与 proj4js 投影对象进行交互的几种方法。
  *
- * SuperMap 默认支持 EPSG:4326, CRS:84, urn:ogc:def:crs:EPSG:6.6:4326, EPSG:900913, EPSG:3857,
- * EPSG:102113, EPSG:102100 投影间的转换。
- *
- * 对于 SuperMap 不支持或者用户想要自定义投影类型，可通过下载 proj4js 产品包，并引入产品包中的 proj4js.js
+ * > 对于不支持或者用户想要自定义投影类型，可通过下载 proj4js 产品包，并引入产品包中的 proj4js.js
  * 实现自定义的投影转换。
- * 具体方法可以参见开发指南《坐标投影转换》。
- *
- * 目前 proj4js 支持的投影种类有：
+ * > 目前 proj4js 支持的投影种类有：<br>
  * WGS84, EPSG:4326, EPSG:4269, EPSG:3875, EPSG:3785, EPSG4139,EPSG:4181, EPSG:4272, EPSG:4302, EPSG:21781,
  * EPSG:102113,EPSG:26591,EPSG:26912, EPSG:27200, EPSG:27563, EPSG:41001, EPSG:42304,EPSG:102067, EPSG:102757,
  * EPSG:102758, EPSG:900913, GOOGLE
  *
+ * @param  projCode - {string} 投影编码。
+ * @param  options - {Object} 设置图层上的的附加属性。
+ *
+ * @example
+ * var geographic = new SuperMap.Projection("EPSG:4326");
  */
 export default class Projection {
 
     /**
-     * Property: proj
-     * {Object} Proj4js.Proj instance.
+     * @member SuperMap.Projection.prototype.proj -{Object}
+     * @description Proj4js.Proj instance.
      */
     proj = null;
 
     /**
-     * APIProperty: projCode
-     * {String} 投影编码。
+     * @member SuperMap.Projection.prototype.projCode -{string}
+     * @description 投影编码。
      */
     projCode = null;
 
     /**
-     * Property: titleRegEx
-     * {RegExp} regular expression to strip the title from a proj4js definition
+     * @member SuperMap.Projection.prototype.titleRegEx -{RegExp}
+     * @description regular expression to strip the title from a proj4js definition
      */
     titleRegEx = /\+title=[^\+]*/;
 
-    /**
-     * Constructor: SuperMap.Projection
-     *
-     * Parameters:
-     * projCode - {String} 投影编码。
-     * options - {Object} 设置图层上的的附加属性。
-     *
-     * (code)
-     * var geographic = new SuperMap.Projection("EPSG:4326");
-     * (end)
-     *
-     * Returns:
-     * {<SuperMap.Projection>} 投影对象。
-     */
     constructor(projCode, options) {
         Util.extend(this, options);
         this.projCode = projCode;
@@ -63,11 +49,9 @@ export default class Projection {
 
 
     /**
-     * APIMethod: getCode
-     * 获取SRS代码字符串。
-     *
-     * Returns:
-     * {String} SRS代码。
+     * @function SuperMap.Projection.prototype.getCode
+     * @description 获取SRS代码字符串。
+     * @returns {string} SRS代码。
      */
     getCode() {
         return this.proj ? this.proj.srsCode : this.projCode;
@@ -75,11 +59,9 @@ export default class Projection {
 
 
     /**
-     * APIMethod: getUnits
-     * 获取投影的单位字符串。如果 proj4js 不可用则返回null。
-     *
-     * Returns:
-     * {String} 获取的单位。
+     * @function SuperMap.Projection.prototype.getUnits
+     * @description 获取投影的单位字符串。如果 proj4js 不可用则返回null。
+     * @returns {string} 获取的单位。
      */
     getUnits() {
         return this.proj ? this.proj.units : null;
@@ -87,11 +69,9 @@ export default class Projection {
 
 
     /**
-     * Method: toString
-     * 将投影转换为字符串(内部封装了getCode方法)
-     *
-     * Returns:
-     * {String} 投影代码。
+     * @function SuperMap.Projection.prototype.toString
+     * @description 将投影转换为字符串(内部封装了getCode方法)
+     * @returns {string} 投影代码。
      */
     toString() {
         return this.getCode();
@@ -99,12 +79,10 @@ export default class Projection {
 
 
     /**
-     * Method: equals
-     * Test equality of two projection instances.  Determines equality based
+     * @function SuperMap.Projection.prototype.equals
+     * @description Test equality of two projection instances.  Determines equality based
      *     soley on the projection code.
-     *
-     * Returns:
-     * {Boolean} The two projections are equivalent.
+     * @returns {Boolean} The two projections are equivalent.
      */
     equals(projection) {
         var p = projection, equals = false;
@@ -127,8 +105,9 @@ export default class Projection {
     }
 
 
-    /* Method: destroy
-     * Destroy projection object.
+    /**
+     * @function SuperMap.Projection.prototype.destroy
+     * @description Destroy projection object.
      */
     destroy() {
         delete this.proj;
@@ -136,29 +115,29 @@ export default class Projection {
     }
 
     /**
-     * Property: transforms
-     * Transforms is an object, with from properties, each of which may
+     * @member SuperMap.Projection.transforms
+     * @description Transforms is an object, with from properties, each of which may
      * have a to property. This allows you to define projections without
-     * requiring support for proj4js to be included.
+     * requiring support for proj4js to be included.<br>
      *
      * This object has keys which correspond to a 'source' projection object.  The
      * keys should be strings, corresponding to the projection.getCode() value.
      * Each source projection object should have a set of destination projection
-     * keys included in the object.
+     * keys included in the object.<br>
      *
      * Each value in the destination object should be a transformation function,
      * where the function is expected to be passed an object with a .x and a .y
      * property.  The function should return the object, with the .x and .y
-     * transformed according to the transformation function.
+     * transformed according to the transformation function.<br>
      *
-     * Note - Properties on this object should not be set directly.  To add a
+     * > Note - Properties on this object should not be set directly.  To add a
      *     transform method to this object, use the <addTransform> method.  For an
      *     example of usage, see the SuperMap.Layer.SphericalMercator file.
      */
     static transforms = {};
     /**
-     * APIProperty: defaults
-     * {Object} SuperMap 默认支持 EPSG:4326, CRS:84, urn:ogc:def:crs:EPSG:6.6:4326, EPSG:900913, EPSG:3857,
+     * @member SuperMap.Projection.defaults -{Object}
+     * @description 默认支持 EPSG:4326, CRS:84, urn:ogc:def:crs:EPSG:6.6:4326, EPSG:900913, EPSG:3857,
      * EPSG:102113, EPSG:102100 投影间的转换。defaults 定义的关键字为坐标系统编码，相应的属性值为
      * units, maxExtent(坐标系统的有效范围)和yx(当坐标系统有反向坐标轴时为true)
      */
@@ -185,15 +164,13 @@ export default class Projection {
 
 
     /**
-     * APIMethod: addTransform
-     * 设置自定义投影转换方法。在proj4js库不可用或者自定义的投影需要处理时使用此方法。
-     *
-     * Parameters:
-     * from - {String} 源投影代码。
-     * to - {String} 目标投影代码。
-     * method - {Function} 将作为参数的点的源投影转化为目标投影的方法。
+     * @function SuperMap.Projection.addTransform
+     * @description 设置自定义投影转换方法。在proj4js库不可用或者自定义的投影需要处理时使用此方法。
+     * @param from - {string} 源投影代码。
+     * @param to - {string} 目标投影代码。
+     * @param method - {Function} 将作为参数的点的源投影转化为目标投影的方法。
      */
-    static addTransform = function (from, to, method) {
+    static addTransform(from, to, method) {
         if (method === Projection.nullTransform) {
             var defaults = Projection.defaults[from];
             if (defaults && !Projection.defaults[to]) {
@@ -208,18 +185,14 @@ export default class Projection {
 
 
     /**
-     * APIMethod: transform
-     * 点投影转换。
-     *
-     * Parameters:
-     * point - {<SuperMap.Geometry.Point> | Object} 带有x,y坐标的点对象。
-     * source - {SuperMap.Projection} 源地图坐标系统。
-     * dest - {SuperMap.Projection} 目标地图坐标系统。
-     *
-     * Returns:
-     * point - {object} 转换后的坐标。
+     * @function SuperMap.Projection.transform
+     * @description 点投影转换。
+     * @param point - {SuperMap.Geometry.Point| Object} 带有x,y坐标的点对象。
+     * @param source - {SuperMap.Projection} 源地图坐标系统。
+     * @param dest - {SuperMap.Projection} 目标地图坐标系统。
+     * @returns point - {object} 转换后的坐标。
      */
-    static transform = function (point, source, dest) {
+    static transform(point, source, dest) {
         if (source && dest) {
             if (!(source instanceof Projection)) {
                 source = new Projection(source);
@@ -244,10 +217,9 @@ export default class Projection {
 
 
     /**
-     * APIFunction: nullTransform
-     * 空转换，有用的定义投影的别名时proj4js不可用：当proj4js不可用时，用来定义投影的别名。
-     *
-     * (code)
+     * @function SuperMap.Projection.nullTransform
+     * @description 空转换，有用的定义投影的别名时proj4js不可用：当proj4js不可用时，用来定义投影的别名。
+     * @example
      * SuperMap.Projection.addTransform("EPSG:4326", "EPSG:3857",
      *     SuperMap.Layer.SphericalMercator.projectForward);
      * SuperMap.Projection.addTransform("EPSG:3857", "EPSG:3857",
@@ -256,7 +228,6 @@ export default class Projection {
      *     SuperMap.Projection.nullTransform);
      * SuperMap.Projection.addTransform("EPSG:900913", "EPSG:3857",
      *     SuperMap.Projection.nullTransform);
-     * (end)
      */
     static nullTransform = function (point) {
         return point;

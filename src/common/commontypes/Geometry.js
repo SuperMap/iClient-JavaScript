@@ -5,56 +5,49 @@ import {Util} from './Util';
 
 /**
  * @class SuperMap.Geometry
- * @description 几何对象类，描述地理对象的几何图形。
+ * @classdesc 几何对象类，描述地理对象的几何图形。
  */
 export default class Geometry {
 
     /**
-     * Property: id
-     * {String} A unique identifier for this geometry.
-     * 此几何对象的唯一标示符。
+     * @member SuperMap.Geometry.prototype.id -{string}
+     * @description  此几何对象的唯一标示符。
+     *
      */
     id = null;
 
     /**
-     * Property: parent
-     * {<SuperMap.Geometry>}This is set when a Geometry is added as component
+     * @member SuperMap.Geometry.prototype.parent -{SuperMap.Geometry}
+     * @description This is set when a Geometry is added as component
      * of another geometry
      */
     parent = null;
 
     /**
-     * Property: bounds
-     * {<SuperMap.Bounds>} The bounds of this geometry
-     * 几何对象的范围
+     * @member SuperMap.Geometry.prototype.bounds -{SuperMap.Bounds}
+     * @description 几何对象的范围
+     *
      */
     bounds = null;
 
     /**
-     * APIProperty: SRID
-     * {Interger}投影坐标参数。通过该参数，服务器判断Geometry对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
-     *
-     * (code)
+     * @member SuperMap.Geometry.prototype.SRID -{interger}
+     * @description 投影坐标参数。通过该参数，服务器判断Geometry对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
+     * @example
      *   var geometry= new SuperMap.Geometry();
-     *    geometry. SRID=4326;
-     *  (end)
+     *   geometry. SRID=4326;
      *
      */
     SRID = null;
 
-    /**
-     * Constructor: SuperMap.Geometry
-     * 创建一个几何图形的对象.
-     */
     constructor() {
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
     }
 
 
     /**
-     * Method: destroy
-     * Destroy this geometry.
-     * 解构Geometry类，释放资源。
+     * @function SuperMap.Geometry.prototype.destroy
+     * @description 解构Geometry类，释放资源。
      */
     destroy() {
         this.id = null;
@@ -64,11 +57,9 @@ export default class Geometry {
 
 
     /**
-     * APIMethod: clone
-     * 创建克隆的几何图形。克隆的几何图形不设置非标准的属性。
-     *
-     * Returns:
-     * {<SuperMap.Geometry>} 克隆的几何图形。
+     * @function SuperMap.Geometry.prototype.clone
+     * @description 创建克隆的几何图形。克隆的几何图形不设置非标准的属性。
+     * @returns {SuperMap.Geometry} 克隆的几何图形。
      */
     clone() {
         return new Geometry();
@@ -76,10 +67,9 @@ export default class Geometry {
 
 
     /**
-     * Set the bounds for this Geometry.
-     * 设置此几何对象的bounds。
-     * Parameters:
-     * object - {<SuperMap.Bounds>}
+     * @function SuperMap.Geometry.prototype.setBounds
+     * @description 设置此几何对象的bounds。
+     * @param bounds - {SuperMap.Bounds}
      */
     setBounds(bounds) {
         if (bounds) {
@@ -89,9 +79,8 @@ export default class Geometry {
 
 
     /**
-     * Method: clearBounds
-     * Nullify this components bounds and that of its parent as well.
-     * 清除几何对象的bounds。
+     * @function SuperMap.Geometry.prototype.clearBounds
+     * @description 清除几何对象的bounds。
      * 如果该对象有父类，也会清除父类几何对象的bounds。
      */
     clearBounds() {
@@ -103,12 +92,11 @@ export default class Geometry {
 
 
     /**
-     * Method: extendBounds
-     * Extend the existing bounds to include the new bounds.
+     * @function SuperMap.Geometry.prototype.extendBounds
+     * @description Extend the existing bounds to include the new bounds.
      * If geometry's bounds is not yet set, then set a new Bounds.
      *
-     * Parameters:
-     * newBounds - {<SuperMap.Bounds>}
+     * @param newBounds - {SuperMap.Bounds}
      */
     extendBounds(newBounds) {
         var bounds = this.getBounds();
@@ -121,11 +109,9 @@ export default class Geometry {
 
 
     /**
-     * APIMethod: getBounds
-     * 获得几何图形的边界。如果没有设置边界，可通过计算获得。
-     *
-     * Returns:
-     * {<SuperMap.Bounds>}返回的几何对象的边界。
+     * @function SuperMap.Geometry.prototype.getBounds
+     * @description 获得几何图形的边界。如果没有设置边界，可通过计算获得。
+     * @returns {SuperMap.Bounds}返回的几何对象的边界。
      */
     getBounds() {
         if (this.bounds == null) {
@@ -136,8 +122,8 @@ export default class Geometry {
 
 
     /**
-     * APIMethod: calculateBounds
-     * 重新计算几何图形的边界。（需要在子类中实现此方法）
+     * @function SuperMap.Geometry.prototype.calculateBounds
+     * @description 重新计算几何图形的边界。（需要在子类中实现此方法）
      */
     calculateBounds() {
         //
@@ -147,50 +133,37 @@ export default class Geometry {
 
 
     /**
-     * APIMethod: distanceTo
-     * 计算两个几个图形间的最小距离（x-y平面坐标系下）。
+     * @function SuperMap.Geometry.prototype.distanceTo
+     * @description 计算两个几个图形间的最小距离（x-y平面坐标系下）。
      * （需要在子类中实现此方法）
-     * Parameters:
-     * geometry - {<SuperMap.Geometry>} 目标几何图形.
-     * options - {Object} 距离计算需要设计的可选属性。有效的选项取决于特定的几何类型。
-     *
-     * Returns:
-     * {Number | Object} 两个几个图形间的距离。
+     * @param geometry - {SuperMap.Geometry} 目标几何图形.
+     * @param options - {Object} 距离计算需要设计的可选属性。有效的选项取决于特定的几何类型。
+     * @returns {number | Object} 两个几个图形间的距离。
      */
     distanceTo(geometry, options) {
     }
 
 
     /**
-     * APIMethod: getVertices
-     * 返回几何图形的所有顶点的列表。
-     * （需要在子类中实现此方法）
-     * Parameters:
-     * nodes - {Boolean} 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
-     *
-     * Returns:
-     * {Array} 几何图形的顶点列表。
+     * @function SuperMap.Geometry.prototype.getVertices
+     * @description 返回几何图形的所有顶点的列表。（需要在子类中实现此方法）
+     * @param nodes - {Boolean} 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
+     * @returns {Array} 几何图形的顶点列表。
      */
     getVertices(nodes) {
     }
 
 
     /**
-     * Method: atPoint
-     * Note - This is only an approximation based on the bounds of the
-     * geometry.
-     * 确定坐标是否在几何对象的范围内。
+     * @function SuperMap.Geometry.prototype.atPoint
+     * @description 确定坐标是否在几何对象的范围内。
      *
-     * Parameters:
-     * lonlat - {<SuperMap.LonLat>}
-     * toleranceLon - {float} Optional tolerance in Geometric Coords
-     * 可选参数，经度的偏移 。
-     * toleranceLat - {float} Optional tolerance in Geographic Coords
-     * 可选参数，纬度的偏移。
+     * @param lonlat -{SuperMap.LonLat}
+     * @param toleranceLon - {float} 可选参数，经度的偏移。
+     * @param toleranceLat - {float}  可选参数，纬度的偏移。
      *
-     * Returns:
-     * {Boolean} Whether or not the geometry is at the specified location
-     *    判断传入的坐标是否在指定的范围内 。
+     * @returns {Boolean} 判断传入的坐标是否在指定的范围内 。
+     *
      */
     atPoint(lonlat, toleranceLon, toleranceLat) {
         var atPoint = false;
@@ -213,13 +186,9 @@ export default class Geometry {
 
 
     /**
-     * Method: getLength
-     * Calculate the length of this geometry. This method is defined in
-     * subclasses.
-     * 计算几何对象的长度 ，此方法需要在子类中定义  。
-     *
-     * Returns:
-     * {Float} The length of the collection by summing its parts
+     * @function SuperMap.Geometry.prototype.getLength
+     * @description 计算几何对象的长度 ，此方法需要在子类中定义  。
+     * @returns {float} The length of the collection by summing its parts
      */
     getLength() {
         //to be overridden by geometries that actually have a length
@@ -229,12 +198,9 @@ export default class Geometry {
 
 
     /**
-     * Method: getArea
-     * Calculate the area of this geometry. This method is defined in subclasses.
-     *     计算几何对象的面积 ，此方法需要在子类中定义  。
-     *
-     * Returns:
-     * {Float} The area of the collection by summing its parts
+     * @function SuperMap.Geometry.prototype.getArea
+     * @description 计算几何对象的面积 ，此方法需要在子类中定义  。
+     * @returns {float} The area of the collection by summing its parts
      */
     getArea() {
         //to be overridden by geometries that actually have an area
@@ -244,11 +210,9 @@ export default class Geometry {
 
 
     /**
-     * APIMethod: getCentroid
-     * 计算几何图形的质心。
-     * （需要在子类中实现此方法）
-     * Returns:
-     * {<SuperMap.Geometry.Point>} 采集的质心。
+     * @function SuperMap.Geometry.prototype.getCentroid
+     * @description 计算几何图形的质心。（需要在子类中实现此方法）
+     * @returns {SuperMap.Geometry.Point} 采集的质心。
      */
     getCentroid() {
         return null;
@@ -256,13 +220,9 @@ export default class Geometry {
 
 
     /**
-     * Method: toString
-     * 返回geometry对象的字符串表述，需要引入SuperMap.Format.WKT.(Returns the Well-Known Text representation of a geometry.If the WKT format is
-     *     included in a build, this will be the Well-Known Text
-     *     representation.)此方法只能在子类实现，在父类使用会报错。
-     *
-     * Returns:
-     * {String} geometry对象的字符串表述(Well-Known Text)
+     * @function SuperMap.Geometry.prototype.toString
+     * @description 返回geometry对象的字符串表述，需要引入{@link SuperMap.Format.WKT}。此方法只能在子类实现，在父类使用会报错。
+     * @returns {string} geometry对象的字符串表述(Well-Known Text)
      */
     toString() {
         var string;
@@ -276,22 +236,14 @@ export default class Geometry {
     }
 
     /**
-     * Function: SuperMap.Geometry.fromWKT
-     * 从一个给定的字符串生成一个geometry对象，需要引入SuperMap.Format.WKT，该方法方可生效。
-     * (Generate a geometry given a Well-Known Text string.For this method to
-     *     work, you must include the SuperMap.Format.WKT in your build
-     *     explicitly.)
+     * @function SuperMap.Geometry.fromWKT
+     * @description 从一个给定的字符串生成一个geometry对象，需要引入SuperMap.Format.WKT，该方法方可生效。
+     * @example
+     * var geometry= new SuperMap.Geometry.fromWKT("POINT(0 0)");
+     * geometry.x=0;
      *
-     * (code)
-     *     var geometry= new SuperMap.Geometry.fromWKT("POINT(0 0)");
-     *     geometry.x=0;
-     * (end)
-     *
-     * Parameters:
-     * wkt - {String} 描述geometry信息的字符串(A string representing the geometry in Well-Known Text.)
-     *
-     * Returns:
-     * {<SuperMap.Geometry>} 适当类型的geometry对象(A geometry of the appropriate class).
+     * @param wkt - {string} 描述geometry信息的字符串(A string representing the geometry in Well-Known Text.)
+     * @returns {SuperMap.Geometry} 适当类型的geometry对象(A geometry of the appropriate class).
      */
     static fromWKT(wkt) {
         var geom;
@@ -317,57 +269,26 @@ export default class Geometry {
     }
 
     /**
-     * Method: SuperMap.Geometry.segmentsIntersect
-     *  线段相交
-     * Determine whether two line segments intersect.  Optionally calculates
-     *     and returns the intersection point.  This function is optimized for
-     *     cases where seg1.x2 >= seg2.x1 || seg2.x2 >= seg1.x1.  In those
-     *     obvious cases where there is no intersection, the function should
-     *     not be called.
-     *    该方法是判断两条线段是否相交。计算并返回相交的point。如果seg1.x2 >= seg2.x1 || seg2.x2 >= seg1.x1 ，该方法明显不会被调用。
+     * @function SuperMap.Geometry.prototype.SuperMap.Geometry.segmentsIntersect
+     * @description 线段相交。
+     * 该方法是判断两条线段是否相交。计算并返回相交的point。如果seg1.x2 >= seg2.x1 || seg2.x2 >= seg1.x1 ，该方法明显不会被调用。
      *
-     * Parameters:
-     * seg1 - {Object} Object representing a segment with properties x1, y1, x2,
-     *     and y2.  The start point is represented by x1 and y1.  The end point
-     *     is represented by x2 and y2.  Start and end are ordered so that x1 < x2.
+     * @param seg1 - {Object}
      *     该对象包含的属性是 x1, y1, x2,和y2。
      *     起始点是 由x1 and y1构成，终点是有x2 and y2组成，必须满足的是x1 < x2。
      *
-     * seg2 - {Object} Object representing a segment with properties x1, y1, x2,
-     *     and y2.  The start point is represented by x1 and y1.  The end point
-     *     is represented by x2 and y2.  Start and end are ordered so that x1 < x2.
+     * @param seg2 - {Object}
      *     该对象包含的属性是 x1, y1, x2,和y2。
      *     起始点是 由x1 and y1构成，终点是有x2 and y2组成，必须满足的是x1 < x2。
-     * options - {Object} Optional properties for calculating the intersection.
-     *  该对象是判断是否计算相交的点。
+     * @param options - {Object} Optional properties for calculating the intersection.
+     *  该对象是判断是否计算相交的点。<br>
      *
-     * Valid options:
-     * point - {Boolean} Return the intersection point.  If false, the actual
-     *     intersection point will not be calculated.  If true and the segments
-     *     intersect, the intersection point will be returned.  If true and
-     *     the segments do not intersect, false will be returned.  If true and
-     *     the segments are coincident, true will be returned.
-     *     返回相交点。如果设置为false，说明实际的相交点不需要计算出来。如果设置为true,并且这两条线段相交，返回相交的点 。
-     *     如果设置为true，但是两条线段不相交，返回false。如果设置为true，但是两条线段平行，则返回true。
-     * tolerance - {Number} If a non-null value is provided, if the segments are
-     *     within the tolerance distance, this will be considered an intersection.
-     *     In addition, if the point option is true and the calculated intersection
-     *     is within the tolerance distance of an end point, the endpoint will be
-     *     returned instead of the calculated intersection.  Further, if the
-     *     intersection is within the tolerance of endpoints on both segments, or
-     *     if two segment endpoints are within the tolerance distance of eachother
-     *     (but no intersection is otherwise calculated), an endpoint on the
-     *     first segment provided will be returned.
-     *     如果设置该值不为空，两条线段在容线的范围内，则会被当作相交。此外，如果point这个属性为true，计算相交的容线距离终点,端点将返回而不是计算相交。
+     * Valid options:<br>
+     * point - {Boolean} 返回相交点。如果设置为false，说明实际的相交点不需要计算出来。如果设置为true,并且这两条线段相交，返回相交的点 。
+     *     如果设置为true，但是两条线段不相交，返回false。如果设置为true，但是两条线段平行，则返回true。<br>
+     * tolerance - {Number} 如果设置该值不为空，两条线段在容线的范围内，则会被当作相交。此外，如果point这个属性为true，计算相交的容线距离终点,端点将返回而不是计算相交。
      *
-     *
-     *
-     * Returns:
-     * {Boolean | <SuperMap.Geometry.Point>}  The two segments intersect.
-     *     If the point argument is true, the return will be the intersection
-     *     point or false if none exists.  If point is true and the segments
-     *     are coincident, return will be true (and the instersection is equal
-     *     to the shorter segment).
+     * @returns {Boolean | SuperMap.Geometry.Point}
      *     返回线之间是否相交，如果设置点属性为true的话，会返回相交的点坐标。如果点为true，线重合，将会返回true（相交的等于最短的线）。
      */
     static segmentsIntersect(seg1, seg2, options) {
@@ -459,17 +380,12 @@ export default class Geometry {
     }
 
     /**
-     * Function: SuperMap.Geometry.distanceToSegment
-     * 计算点到直线的距离
+     * @function SuperMap.Geometry.distanceToSegment
+     * @description 计算点到直线的距离
      *
-     * Parameters:
-     * point - {Object} An object with x and y properties representing the
-     *     point coordinates.
-     *     一个点包含x和y坐标。
-     * segment - {Object} An object with x1, y1, x2, and y2 properties
-     *     representing endpoint coordinates.
-     *     一个对象包含 x1, y1, x2, and y2坐标。
-     *     (code)
+     * @param point - {Object} 一个点包含x和y坐标。
+     * @param segment - {Object} 一个对象包含 x1, y1, x2, and y2坐标。
+     * @example
      *        var point={
      *         x:0,
      *          y:13
@@ -481,14 +397,8 @@ export default class Geometry {
      *            y2:12
      *       } ;
      *       var geo=SuperMap.Geometry.distanceToSegment(point,seg1);
-     *     (end)
      *
-     * Returns:
-     * {Object} An object with distance, x, and y properties.  The distance
-     *     will be the shortest distance between the input point and segment.
-     *     The x and y properties represent the coordinates along the segment
-     *     where the shortest distance meets the segment.
-     *     返回的是点到直线的最短距离，以及点与直线最短距离相交的点坐标（x,y）。
+     * @returns {Object} 返回的是点到直线的最短距离，以及点与直线最短距离相交的点坐标（x,y）。
      */
     static distanceToSegment(point, segment) {
         var x0 = point.x;

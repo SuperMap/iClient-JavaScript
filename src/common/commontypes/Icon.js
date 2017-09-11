@@ -7,66 +7,57 @@ import {Util} from './Util';
 
 /**
  * @class SuperMap.Icon
- *
- * @description 图标类，表示显示在屏幕上的图标，通常与 {<SuperMap.Marker>} 配合使用表示屏幕上显示的Marker。<br>
+ * @classdesc 图标类，表示显示在屏幕上的图标，通常与 {@link SuperMap.Marker} 配合使用表示屏幕上显示的Marker。<br>
  *              Icon具有url,size和position属性。也包含偏移量属性，<br>
  *              可以提供作为一个固定的偏移量，也可以函数计算得到期望的偏移量。<br>
+ * @param url - {string} 图标对应图片的url地址。
+ * @param size - {SuperMap.Size} 指定图标的大小， 为 {@link SuperMap.Size} 对象。
+ * @param offset - {SuperMap.Pixel} 指定图标的偏移量，为 {@link SuperMap.Pixel} 对象。
+ * @param calculateOffset - {Function}  用于计算偏移量的方法。
+ *
+ * @example
+ * var size = new SuperMap.Size(44, 33),
+ * var offset = new SuperMap.Pixel(-(size.w/2), -size.h),
+ * var icon = new SuperMap.Icon("../theme/images/marker.png", size, offset);
  */
 export default class Icon {
 
     /**
-     * Property: url
-     * {String}  image url
+     * @member SuperMap.Icon.prototype.eventTypes  -{string}
+     * @description image url
      */
     url = null;
 
     /**
-     * Property: size
-     * {<SuperMap.Size>}
+     * @member SuperMap.Icon.prototype.size -{SuperMap.Size}
+     * @description size
      */
     size = null;
 
     /**
-     * Property: offset
-     * {<SuperMap.Pixel>} distance in pixels to offset the image when being rendered
+     * @member SuperMap.Icon.prototype.offset -{SuperMap.Pixel}
+     * @description distance in pixels to offset the image when being rendered
      */
     offset = null;
 
     /**
-     * Property: calculateOffset
-     * {<SuperMap.Pixel>} Function to calculate the offset (based on the size)
+     * @member SuperMap.Icon.prototype.calculateOffset -{SuperMap.Pixel}
+     * @description Function to calculate the offset (based on the size)
      */
     calculateOffset = null;
 
     /**
-     * Property: imageDiv
-     * {DOMElement}
+     * @member SuperMap.Icon.prototype.imageDiv -{HTMLElement}
+     * @description imageDiv
      */
     imageDiv = null;
 
     /**
-     * Property: px
-     * {<SuperMap.Pixel>}
+     * @member SuperMap.Icon.prototype.px -{SuperMap.Pixel}
+     * @description px
      */
     px = null;
 
-    /**
-     * Constructor: SuperMap.Icon
-     * 创建图标，在网页中表现为div标签中的image标签。
-     *
-     * 例如:
-     * (start code)
-     *  size = new SuperMap.Size(44, 33),
-     *  offset = new SuperMap.Pixel(-(size.w/2), -size.h),
-     *  icon = new SuperMap.Icon("../theme/images/marker.png", size, offset);
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 图标对应图片的url地址。
-     * size - {<SuperMap.Size>} 指定图标的大小， 为 <SuperMap.Size> 对象。
-     * offset - {<SuperMap.Pixel>} 指定图标的偏移量，为 <SuperMap.Pixel> 对象。
-     * calculateOffset - {Function}  用于计算偏移量的方法。
-     */
     constructor(url, size, offset, calculateOffset) {
         this.url = url;
         this.size = (size) ? size : new Size(20, 20);
@@ -78,8 +69,8 @@ export default class Icon {
     }
 
     /**
-     * Method: destroy
-     * Nullify references and remove event listeners to prevent circular
+     * @function SuperMap.Icon.prototype.destroy
+     * @description Nullify references and remove event listeners to prevent circular
      * references and memory leaks
      */
     destroy() {
@@ -91,10 +82,8 @@ export default class Icon {
     }
 
     /**
-     * Method: clone
-     *
-     * Returns:
-     * {<SuperMap.Icon>} A fresh copy of the icon.
+     * @function SuperMap.Icon.prototype.clone
+     * @returns {SuperMap.Icon} A fresh copy of the icon.
      */
     clone() {
         return new Icon(this.url,
@@ -104,10 +93,8 @@ export default class Icon {
     }
 
     /**
-     * Method: setSize
-     *
-     * Parameters:
-     * size - {<SuperMap.Size>}
+     * @function SuperMap.Icon.prototype.setSize
+     * @param size - {SuperMap.Size}
      */
     setSize(size) {
         if (size != null) {
@@ -117,10 +104,8 @@ export default class Icon {
     }
 
     /**
-     * Method: setUrl
-     *
-     * Parameters:
-     * url - {String}
+     * @function SuperMap.Icon.prototype.setUrl
+     * @param url - {string}
      */
     setUrl(url) {
         if (url != null) {
@@ -130,14 +115,10 @@ export default class Icon {
     }
 
     /**
-     * Method: draw
-     * Move the div to the given pixel.
-     *
-     * Parameters:
-     * px - {<SuperMap.Pixel>}
-     *
-     * Returns:
-     * {DOMElement} A new DOM Image of this icon set at the location passed-in
+     * @function SuperMap.Icon.prototype.draw
+     * @description Move the div to the given pixel.
+     * @param px - {SuperMap.Pixel}
+     * @returns {HTMLElement} A new DOM Image of this icon set at the location passed-in
      */
     draw(px) {
         Util.modifyAlphaImageDiv(this.imageDiv,
@@ -152,9 +133,8 @@ export default class Icon {
     }
 
     /**
-     * Method: erase
-     * Erase the underlying image element.
-     *
+     * @function SuperMap.Icon.prototype.erase
+     * @description Erase the underlying image element.
      */
     erase() {
         if (this.imageDiv != null && this.imageDiv.parentNode != null) {
@@ -163,11 +143,9 @@ export default class Icon {
     }
 
     /**
-     * Method: setOpacity
-     * Change the icon's opacity
-     *
-     * Parameters:
-     * opacity - {float}
+     * @function SuperMap.Icon.prototype.setOpacity
+     * @description Change the icon's opacity
+     * @param opacity - {float}
      */
     setOpacity(opacity) {
         Util.modifyAlphaImageDiv(this.imageDiv, null, null, null,
@@ -176,11 +154,9 @@ export default class Icon {
     }
 
     /**
-     * Method: moveTo
-     * move icon to passed in px.
-     *
-     * Parameters:
-     * px - {<SuperMap.Pixel>}
+     * @function SuperMap.Icon.prototype.moveTo
+     * @description move icon to passed in px.
+     * @param px - {SuperMap.Pixel}
      */
     moveTo(px) {
         //if no px passed in, use stored location
@@ -202,11 +178,9 @@ export default class Icon {
     }
 
     /**
-     * Method: display
-     * Hide or show the icon
-     *
-     * Parameters:
-     * display - {Boolean}
+     * @function SuperMap.Icon.prototype.display
+     * @description Hide or show the icon
+     * @param display - {Boolean}
      */
     display(display) {
         this.imageDiv.style.display = (display) ? "" : "none";
@@ -214,16 +188,14 @@ export default class Icon {
 
 
     /**
-     * APIMethod: isDrawn
-     *
-     * Returns:
-     * {Boolean} 图标是否重绘。
+     * @function SuperMap.Icon.prototype.isDrawn
+     * @returns {Boolean} 图标是否`重绘。
      */
     isDrawn() {
         // nodeType 11 for ie, whose nodes *always* have a parentNode
         // (of type document fragment)
         var isDrawn = (this.imageDiv && this.imageDiv.parentNode &&
-            (this.imageDiv.parentNode.nodeType !== 11));
+        (this.imageDiv.parentNode.nodeType !== 11));
 
         return isDrawn;
     }

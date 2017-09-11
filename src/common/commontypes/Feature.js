@@ -4,64 +4,59 @@ import {Util} from './Util';
 
 /**
  * @class SuperMap.Feature
- * 要素类组合了地理和属性，Feature 类同时具有 marker 和 lonlat 属性。
+ * @classdesc 要素类组合了地理和属性，Feature 类同时具有 marker 和 lonlat 属性。
+ * @param layer - {SuperMap.Layer} 图层。
+ * @param lonlat - {SuperMap.LonLat} 经纬度。
+ * @param data - {Object} 数据对象。
  */
 export default class Feature {
 
     /**
-     * Property: layer
-     * {<SuperMap.Layer>}
+     * @deprecated
+     * @member SuperMap.Feature.prototype.layer -{SuperMap.Layer}
+     * @description layer
      */
     layer = null;
 
     /**
-     * Property: id
-     * {String}
+     * @member SuperMap.Feature.prototype.id -{String}
+     * @description id
      */
     id = null;
 
     /**
-     * Property: lonlat
-     * {<SuperMap.LonLat>}
+     * @member SuperMap.Feature.prototype.lonlat -{SuperMap.LonLat}
+     * @description lonlat
+     *
      */
     lonlat = null;
 
     /**
-     * Property: data
-     * {Object}
+     * @member SuperMap.Feature.prototype.data -{Object}
+     * @description data
      */
     data = null;
 
     /**
-     * Property: marker
-     * {<SuperMap.Marker>}
+     * @member SuperMap.Feature.prototype.marker -{SuperMap.Marker}
+     * @description marker
      */
     marker = null;
 
     /**
-     * APIProperty: popupClass
-     * {<SuperMap.Class>} 用来实例化新的弹出窗口。默认为SuperMap.Popup.AnchoredBubble。
+     * @deprecated
+     * @member SuperMap.Feature.prototype.popupClass -{SuperMap.Class}
+     * @description 用来实例化新的弹出窗口。默认为{@link SuperMap.Popup.AnchoredBubble}
      */
     popupClass = null;
 
     /**
-     * Property: popup
-     * {<SuperMap.Popup>}
+     * @deprecated
+     * @member SuperMap.Feature.prototype.popup -{SuperMap.Popup}
+     * @description popup
      */
     popup = null;
 
-    /**
-     * Constructor: SuperMap.Feature
-     * 构造函数，用来创建新的feature对象。
-     *
-     * Parameters:
-     * layer - {<SuperMap.Layer>} 图层。
-     * lonlat - {<SuperMap.LonLat>} 经纬度。
-     * data - {Object} 数据对象。
-     *
-     * Returns:
-     * {<SuperMap.Feature>}返回一个要素类。
-     */
     constructor(layer, lonlat, data) {
         this.layer = layer;
         this.lonlat = lonlat;
@@ -70,8 +65,8 @@ export default class Feature {
     }
 
     /**
-     * Method: destroy
-     * nullify references to prevent circular references and memory leaks
+     * @function SuperMap.Feature.prototype.destroy
+     * @description nullify references to prevent circular references and memory leaks
      */
     destroy() {
 
@@ -102,10 +97,8 @@ export default class Feature {
 
 
     /**
-     * Method: onScreen
-     *
-     * Returns:
-     * {Boolean} Whether or not the feature is currently visible on screen
+     * @function SuperMap.Feature.prototype.onScreen
+     * @returns {Boolean} Whether or not the feature is currently visible on screen
      *           (based on its 'lonlat' property)
      */
     onScreen() {
@@ -119,11 +112,9 @@ export default class Feature {
 
 
     /**
-     * Method: createMarker
-     * Based on the data associated with the Feature, create and return a marker object.
-     *
-     * Returns:
-     * {<SuperMap.Marker>} A Marker Object created from the 'lonlat' and 'icon' properties
+     * @function SuperMap.Feature.prototype.createMarker
+     * @description Based on the data associated with the Feature, create and return a marker object.
+     * @returns {SuperMap.Marker} A Marker Object created from the 'lonlat' and 'icon' properties
      *          set in this.data. If no 'lonlat' is set, returns null. If no
      *          'icon' is set, SuperMap.Marker() will load the default image.
      *
@@ -139,8 +130,8 @@ export default class Feature {
 
 
     /**
-     * Method: destroyMarker
-     * Destroys marker.
+     * @function SuperMap.Feature.prototype.destroyMarker
+     * @description Destroys marker.
      * If user overrides the createMarker() function, s/he should be able
      *   to also specify an alternative function for destroying it
      */
@@ -150,25 +141,21 @@ export default class Feature {
 
 
     /**
-     * Method: createPopup
-     * Creates a popup object created from the 'lonlat', 'popupSize',
+     * @function SuperMap.Feature.prototype.createPopup
+     * @description Creates a popup object created from the 'lonlat', 'popupSize',
      *     and 'popupContentHTML' properties set in this.data. It uses
-     *     this.marker.icon as default anchor.
+     *     this.marker.icon as default anchor.<br>
      *
-     *  If no 'lonlat' is set, returns null.
-     *  If no this.marker has been created, no anchor is sent.
+     *  If no 'lonlat' is set, returns null.<br>
+     *  If no this.marker has been created, no anchor is sent.<br>
      *
      *  Note - the returned popup object is 'owned' by the feature, so you
      *      cannot use the popup's destroy method to discard the popup.
-     *      Instead, you must use the feature's destroyPopup
+     *      Instead, you must use the feature's destroyPopup.<br>
      *
-     *  Note - this.popup is set to return value
-     *
-     * Parameters:
-     * closeBox - {Boolean} create popup with closebox or not
-     *
-     * Returns:
-     * {<SuperMap.Popup>} Returns the created popup, which is also set
+     *  Note - this.popup is set to return value.<br>
+     * @param closeBox - {Boolean} create popup with closebox or not
+     * @returns {SuperMap.Popup} Returns the created popup, which is also set
      *     as 'popup' property of this feature. Will be of whatever type
      *     specified by this feature's 'popupClass' property, but must be
      *     of type <SuperMap.Popup>.
@@ -198,10 +185,9 @@ export default class Feature {
 
 
     /**
-     * Method: destroyPopup
-     * Destroys the popup created via createPopup.
-     *
-     * As with the marker, if user overrides the createPopup() function, s/he
+     * @function SuperMap.Feature.prototype.destroyPopup
+     * @description Destroys the popup created via createPopup.
+     *  As with the marker, if user overrides the createPopup() function, s/he
      *   should also be able to override the destruction
      */
     destroyPopup() {

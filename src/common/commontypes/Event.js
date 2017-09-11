@@ -7,7 +7,7 @@ import {Util} from './Util';
  * @namespace
  * @description 事件处理函数.
  */
-export default Event = SuperMap.Event = {
+export var Event = SuperMap.Event = {
 
     /**
      * @description  A hashtable cache of the event observers. Keyed by element._eventCacheID
