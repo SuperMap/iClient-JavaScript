@@ -56,7 +56,7 @@
     "browserify": "^14.3.0",
     "browserify-css": "^0.11.1",
     "browserify-imgify": "^0.0.1",
-    "chromedriver": "^2.29.2",
+    "chromedriver": "^2.32.1",
     "clean-css-cli": "^4.1.6",
     "commander": "^2.9.0",
     "css-loader": "^0.26.1",

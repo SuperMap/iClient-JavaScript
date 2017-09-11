@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var getPixels = require("get-pixels");
 var images = require('images');
+var n = 0; //截图次数
 
 var commonTools = ({
 
@@ -70,22 +71,22 @@ var commonTools = ({
             console.log('invalid input : type or exampleName is not a string');
             return;
         }
-        screenShotPath = './examples-test/output/' + type + '_' + exampleName + '.png';
-        tileTestPath = './examples-test/output/' + type + '_' + exampleName + 'TileTest.png';
+        screenShotPath = './examples-test/output/' + type + '_' + exampleName + '_' + n + '.png';
+        tileTestPath = './examples-test/output/' + type + '_' + exampleName + 'TileTest_' + n + '.png';
         tileStandardPath = './examples-test/' + type + '/resources/' + exampleName + '.png';
         browser.pause(5000);
         browser.saveScreenshot(screenShotPath, function () {
-            console.log('start to get the tile');
+            console.log('start to get test tile');
             var totalWidth = images(screenShotPath).width();
             var totalHeight = images(screenShotPath).height();
             var offX = (totalWidth - width) / 2 + offsetX;
             var offY = (totalHeight - height) / 2 - offsetY;
             commonTools.getTileFromScreenshot(screenShotPath, offX, offY, width, height, tileTestPath);
-            console.log('get the tile completed');
+            console.log('get test tile completed');
         });
         browser.pause(5000, function () {
-            console.log('start to compare two tiles');
-            commonTools.isTwoTilesEqual(browser, tileStandardPath, tileTestPath);
+            console.log('start to compare test tile with standard tile');
+            commonTools.isTwoTilesEqual(browser, tileStandardPath, tileTestPath, type, exampleName, offsetX, offsetY, width, height);
         });
     },
 
@@ -94,21 +95,23 @@ var commonTools = ({
      * offX, offY: Offset relative to the top-left corner
      * */
     getTileFromScreenshot: function (sourceImagePath, offX, offY, width, height, tilePath) {
-        images(images(sourceImagePath), offX, offY, width, height)
-            .save(tilePath);
+        images(images(sourceImagePath), offX, offY, width, height).save(tilePath);
     },
 
     /*
      * function: compare two image by tilePath,
      * return : boolean
      * */
-    isTwoTilesEqual: function (browser, tilePath1, tilePath2) {
+    isTwoTilesEqual: function (browser, tilePath1, tilePath2, type, exampleName, offsetX, offsetY, width, height) {
+        browser.pause(2000, function () {
+            n++;
+        });
         var array1 = [];
         var array2 = [];
         console.log('start to compare two tiles');
         getPixels(tilePath1, function (err, pixels) {
             if (err) {
-                browser.assert.ok(false, "path in tile1 not exist: " + tilePath1);
+                browser.assert.ok(false, "path of standard tile not exist: " + tilePath1);
                 return;
             }
             for (var i = 0; i < pixels.data.length; i++) {
@@ -117,7 +120,7 @@ var commonTools = ({
             console.log('tile1 ( ' + tilePath1 + ' ) has pixels : ' + (array1.length / 4));
             getPixels(tilePath2, function (err, pixels) {
                 if (err) {
-                    browser.assert.ok(false, "path in tile2 not exist: " + tilePath2);
+                    browser.assert.ok(false, "path of test tile not exist: " + tilePath2);
                     return;
                 }
                 for (var i = 0; i < pixels.data.length; i++) {
@@ -125,10 +128,21 @@ var commonTools = ({
                 }
                 console.log('tile2 ( ' + tilePath2 + ' ) has pixels : ' + (array2.length / 4));
                 var isEqual = commonTools.judgeTwoTilesByRgbaArrays(browser, array1, array2);
+                //判断两张图是否相等
                 if (isEqual) {
-                    browser.assert.ok(isEqual, 'similarity of two pictures >= 0.9');
-                } else {
-                    browser.assert.ok(isEqual, 'similarity of two pictures < 0.9');
+                    n = 0;
+                    browser.assert.ok(isEqual, '第' + n + '次比较,similarity of two pictures >=0.9');
+                }
+                else if (n > 4) {
+                    n = 0;
+                    browser.assert.ok(isEqual, '4次比较后,similarity of two pictures <0.9');
+                }
+                else {
+                    console.log('第' + n + '次比较,地图不相等,继续比较...');
+                    browser.deleteCookies(function () {
+                        commonTools.openExampleAndLoadMap(browser, type, exampleName);
+                        commonTools.cmpTestTileWithStdTile(browser, type, exampleName, offsetX, offsetY, width, height);
+                    });
                 }
             });
         });
@@ -145,7 +159,7 @@ var commonTools = ({
             console.log('length are not equal');
             return false;
         }
-        console.log('length are equal');
+        console.log('length of two tiles are equal');
         var totalCount = ((RgbaArraysOfTile1.length) / 4);
         var unEqualCount = commonTools.difPixelsCount(RgbaArraysOfTile1, RgbaArraysOfTile2);
         console.log('different pixels count : ' + unEqualCount);
@@ -194,6 +208,7 @@ var commonTools = ({
 
     /*leaflet: verify correctness of copyright*/
     verifyCopyrightOfLeaflet: function (browser) {
+        browser.pause(1000);
         //iClient logo
         browser.useXpath().click('//*[@id="map"]/div[2]/div[4]/div[1]/a');
         browser.pause(1000);
