@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 321);
+/******/ 	return __webpack_require__(__webpack_require__.s = 248);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1191,13 +1191,13 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FetchRequest = __webpack_require__(41);
+var _FetchRequest = __webpack_require__(28);
 
-__webpack_require__(155);
+__webpack_require__(127);
 
-__webpack_require__(153);
+__webpack_require__(125);
 
-__webpack_require__(271);
+__webpack_require__(242);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1639,20 +1639,1915 @@ _SuperMap2.default.CommonServiceBase = CommonServiceBase;
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var TWO_PI = Math.PI * 2;
-// SPI is slightly greater than Math.PI, so values that exceed the -180..180
-// degree range by a tiny amount don't get wrapped. This prevents points that
-// have drifted from their original location along the 180th meridian (due to
-// floating point error) from changing their sign.
-var SPI = 3.14159265359;
-var sign = __webpack_require__(36);
+"use strict";
 
-module.exports = function(x) {
-  return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
-};
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _REST = __webpack_require__(1);
+
+var _CommonServiceBase2 = __webpack_require__(2);
+
+var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
+
+var _GeoJSON = __webpack_require__(4);
+
+var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.SpatialAnalystBase
+ * @classdesc 空间分析服务基类。
+ * @param url -{string} 地址d。
+ * @param options -{Object} 参数。
+ * @extends SuperMap.CommonServiceBase
+ */
+var SpatialAnalystBase = function (_CommonServiceBase) {
+    _inherits(SpatialAnalystBase, _CommonServiceBase);
+
+    function SpatialAnalystBase(url, options) {
+        _classCallCheck(this, SpatialAnalystBase);
+
+        var _this = _possibleConstructorReturn(this, (SpatialAnalystBase.__proto__ || Object.getPrototypeOf(SpatialAnalystBase)).call(this, url, options));
+
+        _this.format = _REST.DataFormat.GEOJSON;
+        _this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
+
+        if (options && options.format) {
+            _this.format = options.format.toUpperCase();
+        }
+        return _this;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     */
+
+    /**
+     * @member SuperMap.SpatialAnalystBase.prototype.format -{string}
+     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式，参数格式为"ISERVER","GEOJSON",GEOJSON
+     */
+
+
+    _createClass(SpatialAnalystBase, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(SpatialAnalystBase.prototype.__proto__ || Object.getPrototypeOf(SpatialAnalystBase.prototype), 'destroy', this).call(this);
+            this.format = null;
+        }
+
+        /**
+         * @function SuperMap.SpatialAnalystBase.prototype.serviceProcessCompleted
+         * @description 分析完成，执行此方法。
+         * @param result - {Object} 服务器返回的结果对象。
+         */
+
+    }, {
+        key: 'serviceProcessCompleted',
+        value: function serviceProcessCompleted(result) {
+            var me = this,
+                analystResult;
+            result = _SuperMap2.default.Util.transformResult(result);
+            if (result && me.format === _REST.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+                analystResult = me.toGeoJSONResult(result);
+            }
+            if (!analystResult) {
+                analystResult = result;
+            }
+            me.events.triggerEvent("processCompleted", { result: analystResult });
+        }
+
+        /**
+         * @function SuperMap.SpatialAnalystBase.prototype.toGeoJSONResult
+         * @description 将含有geometry的数据转换为geojson格式。
+         * @param result - {Object} 服务器返回的结果对象。
+         *
+         */
+
+    }, {
+        key: 'toGeoJSONResult',
+        value: function toGeoJSONResult(result) {
+            if (!result) {
+                return null;
+            }
+            var geoJSONFormat = new _GeoJSON2.default();
+            if (result.recordsets) {
+                for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
+                    if (recordsets[i].features) {
+                        recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    }
+                }
+            } else if (result.recordset && result.recordset.features) {
+                result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
+            }
+            if (result.resultGeometry) {
+                result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
+            }
+
+            return result;
+        }
+    }]);
+
+    return SpatialAnalystBase;
+}(_CommonServiceBase3.default);
+
+exports.default = SpatialAnalystBase;
+
+_SuperMap2.default.SpatialAnalystBase = SpatialAnalystBase;
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _JSON = __webpack_require__(134);
+
+var _JSON2 = _interopRequireDefault(_JSON);
+
+var _Point = __webpack_require__(10);
+
+var _Point2 = _interopRequireDefault(_Point);
+
+var _MultiPoint = __webpack_require__(30);
+
+var _MultiPoint2 = _interopRequireDefault(_MultiPoint);
+
+var _LineString = __webpack_require__(18);
+
+var _LineString2 = _interopRequireDefault(_LineString);
+
+var _MultiLineString = __webpack_require__(42);
+
+var _MultiLineString2 = _interopRequireDefault(_MultiLineString);
+
+var _LinearRing = __webpack_require__(25);
+
+var _LinearRing2 = _interopRequireDefault(_LinearRing);
+
+var _Polygon = __webpack_require__(31);
+
+var _Polygon2 = _interopRequireDefault(_Polygon);
+
+var _MultiPolygon = __webpack_require__(43);
+
+var _MultiPolygon2 = _interopRequireDefault(_MultiPolygon);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.Format.GeoJSON
+ * @description GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器.
+ * @augments SuperMap.Format.JSON
+ * @param options - {Object} 选项对象，
+ */
+var GeoJSON = function (_JSONFormat) {
+    _inherits(GeoJSON, _JSONFormat);
+
+    function GeoJSON() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, GeoJSON);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GeoJSON.__proto__ || Object.getPrototypeOf(GeoJSON)).call.apply(_ref, [this].concat(args))), _this), _this.ignoreExtraDims = false, _this.parseCoords = {
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.point
+             * @description 将一组坐标成一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的一组坐标。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "point": function point(array) {
+                if (this.ignoreExtraDims == false && array.length != 2) {
+                    throw "Only 2D points are supported: " + array;
+                }
+                return new _Point2.default(array[0], array[1]);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.multipoint
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "multipoint": function multipoint(array) {
+                var points = [];
+                var p = null;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        p = this.parseCoords["point"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    points.push(p);
+                }
+                return new _MultiPoint2.default(points);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.linestring
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "linestring": function linestring(array) {
+                var points = [];
+                var p = null;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        p = this.parseCoords["point"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    points.push(p);
+                }
+                return new _LineString2.default(points);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.multilinestring
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "multilinestring": function multilinestring(array) {
+                var lines = [];
+                var l = null;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        l = this.parseCoords["linestring"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    lines.push(l);
+                }
+                return new _MultiLineString2.default(lines);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.polygon
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "polygon": function polygon(array) {
+                var rings = [];
+                var r, l;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        l = this.parseCoords["linestring"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    r = new _LinearRing2.default(l.components);
+                    rings.push(r);
+                }
+                return new _Polygon2.default(rings);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.multipolygon
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "multipolygon": function multipolygon(array) {
+                var polys = [];
+                var p = null;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        p = this.parseCoords["polygon"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    polys.push(p);
+                }
+                return new _MultiPolygon2.default(polys);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.box
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "box": function box(array) {
+                if (array.length != 2) {
+                    throw "GeoJSON box coordinates must have 2 elements";
+                }
+                return new _Polygon2.default([new _LinearRing2.default([new _Point2.default(array[0][0], array[0][1]), new _Point2.default(array[1][0], array[0][1]), new _Point2.default(array[1][0], array[1][1]), new _Point2.default(array[0][0], array[1][1]), new _Point2.default(array[0][0], array[0][1])])]);
+            }
+
+        }, _this.extract = {
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.feature
+             * @description 返回一个表示单个要素对象的GeoJSON的一部分。
+             * @param feature - iServer要素对象
+             * @return {Object} 一个表示点的对象。
+             */
+            'feature': function feature(_feature) {
+                var geom = this.extract.geometry.apply(this, [_feature.geometry]);
+                var json = {
+                    "type": "Feature",
+                    "properties": this.createAttributes(_feature),
+                    "geometry": geom
+                };
+
+                if (_feature.geometry && _feature.geometry.type === 'TEXT') {
+                    json.properties.texts = _feature.geometry.texts;
+                    json.properties.textStyle = _feature.geometry.textStyle;
+                }
+                if (_feature.fid !== null) {
+                    json.id = _feature.fid;
+                }
+                if (_feature.ID !== null) {
+                    json.id = _feature.ID;
+                }
+                return json;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.geometry
+             * @description 返回一个表示单个几何对象的GeoJSON的一部分。
+             * @param geometry -iServer 几何对象
+             * @return {Object} 一个表示几何体的对象。
+             */
+            'geometry': function geometry(_geometry) {
+                if (_geometry == null) {
+                    return null;
+                }
+                var geo = this.toGeometry(_geometry);
+                var geometryType = geo.type;
+                var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
+                geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
+                var json;
+                if (geometryType === "Collection") {
+                    json = {
+                        "type": "GeometryCollection",
+                        "geometries": data
+                    };
+                } else {
+                    json = {
+                        "type": geometryType,
+                        "coordinates": data
+                    };
+                }
+                return json;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.point
+             * @description 从一个点对象中返回一个坐标组。
+             * @param point - {SuperMap.Geometry.Point} 一个点对象。
+             * @return {Array} 一个表示一个点的坐标组。
+             */
+            'point': function point(_point) {
+                var p = [_point.x, _point.y];
+                for (var name in _point) {
+                    if (name !== "x" && name !== "y" && !isNaN(_point[name])) {
+                        p.push(_point[name]);
+                    }
+                }
+                return p;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.point
+             * @description 从一个文本对象中返回一个坐标组。
+             * @param geo 一个文本对象。
+             * @return {Array} 一个表示一个点的坐标组。
+             */
+            'text': function text(geo) {
+                return [geo.points[0].x, geo.points[0].y];
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.multipoint
+             * @description 从一个多点对象中返一个坐标组数组。
+             * @param multipoint - {SuperMap.Geometry.MultiPoint} 多点对象。
+             * @return {Array} 一个表示多点的坐标组数组。
+             */
+            'multipoint': function multipoint(_multipoint) {
+                var array = [];
+                for (var i = 0, len = _multipoint.components.length; i < len; ++i) {
+                    array.push(this.extract.point.apply(this, [_multipoint.components[i]]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.linestring
+             * @description 从一个线对象中返回一个坐标组数组。
+             * @param linestring - {SuperMap.Geometry.Linestring} 线对象。
+             * @return {Array} 一个表示线对象的坐标组数组。
+             */
+            'linestring': function linestring(_linestring) {
+                var array = [];
+                for (var i = 0, len = _linestring.components.length; i < len; ++i) {
+                    array.push(this.extract.point.apply(this, [_linestring.components[i]]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.multilinestring
+             * @description 从一个多线对象中返回一个线数组。
+             * @param multilinestring - {SuperMap.Geometry.MultiLinestring} 多线对象
+             *
+             * @return {Array} 一个表示多线的线数组。
+             */
+            'multilinestring': function multilinestring(_multilinestring) {
+                var array = [];
+                for (var i = 0, len = _multilinestring.components.length; i < len; ++i) {
+                    array.push(this.extract.linestring.apply(this, [{ components: _multilinestring.components[i] }]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.polygon
+             * @description 从一个面对象中返回一组线环。
+             * @polygon - {SuperMap.Geometry.Polygon} 面对象。
+             * @return {Array} 一组表示面的线环。
+             */
+            'polygon': function polygon(_polygon) {
+                var array = [];
+                for (var i = 0, len = _polygon.components.length; i < len; ++i) {
+                    array.push(this.extract.linestring.apply(this, [{ components: _polygon.components[i] }]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.multipolygon
+             * @description 从一个多面对象中返回一组面。
+             * @param multipolygon - {SuperMap.Geometry.MultiPolygon} 多面对象。
+             * @return {Array} 一组表示多面的面。
+             */
+            'multipolygon': function multipolygon(_multipolygon) {
+                var array = [];
+                for (var i = 0, len = _multipolygon.components.length; i < len; ++i) {
+                    array.push(this.extract.polygon.apply(this, [{ components: _multipolygon.components[i] }]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.collection
+             * @description 从一个几何要素集合中一组几何要素数组。
+             * @param collection - {SuperMap.Geometry.Collection} 几何要素集合。
+             * @return {Array} 一组表示几何要素集合的几何要素数组。
+             */
+            'collection': function collection(_collection) {
+                var len = _collection.components.length;
+                var array = new Array(len);
+                for (var i = 0; i < len; ++i) {
+                    array[i] = this.extract.geometry.apply(this, [{
+                        type: "Collection",
+                        components: _collection.components[i]
+                    }]);
+                }
+                return array;
+            }
+        }, _this.CLASS_NAME = "SuperMap.Format.GeoJSON", _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    /**
+     * APIProperty: ignoreExtraDims
+     * {Boolean} 忽略维度超过2的几何要素
+     */
+
+
+    _createClass(GeoJSON, [{
+        key: 'read',
+
+
+        /**
+         * @function SuperMap.Format.GeoJSON.read
+         * @description 反序列化一个 GeoJSON 字符串
+         *
+         * @param json - {string}  GeoJSON 字符串
+         * @param type - {string} 可选的字符串，它决定了输出的格式。
+         *     支持的值有："Geometry","Feature",和"FeatureCollection",
+         *     如果此值为null，则会使用默认值"FeaureCollection"。
+         * @param filter - {Function} 对象中每个层次每个键值对都会调用此函数得出一个结果。
+         *     每个值都会被filter函数的结果所替换掉。这个函数可被用来将某些对象转化成
+         *     某个类相应的对象，或者将日期字符串转化成Date对象。
+         *
+         * @return {Object}
+         *    返回值依赖于type参数的值。如果type等于"FeatureCollection"（默认值），
+         *     返回值将会是 <SuperMap.Feature.Vector> 数组。如果type为"Geometry",
+         *     输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>
+         *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是<SuperMap.Feature.Vector> 。
+         */
+        value: function read(json, type, filter) {
+            type = type ? type : "FeatureCollection";
+            var results = null;
+            var obj = null;
+            if (typeof json == "string") {
+                obj = _get(GeoJSON.prototype.__proto__ || Object.getPrototypeOf(GeoJSON.prototype), 'read', this).call(this, json, filter);
+            } else {
+                obj = json;
+            }
+            if (!obj) {
+                //SuperMap.Console.error("Bad JSON: " + json);
+            } else if (typeof obj.type != "string") {
+                //SuperMap.Console.error("Bad GeoJSON - no type: " + json);
+            } else if (this.isValidType(obj, type)) {
+                switch (type) {
+                    case "Geometry":
+                        try {
+                            results = this.parseGeometry(obj);
+                        } catch (err) {
+                            //SuperMap.Console.error(err);
+                        }
+                        break;
+                    case "Feature":
+                        try {
+                            results = this.parseFeature(obj);
+                            results.type = "Feature";
+                        } catch (err) {
+                            //SuperMap.Console.error(err);
+                        }
+                        break;
+                    case "FeatureCollection":
+                        // for type FeatureCollection, we allow input to be any type
+                        results = [];
+                        switch (obj.type) {
+                            case "Feature":
+                                try {
+                                    results.push(this.parseFeature(obj));
+                                } catch (err) {
+                                    results = null;
+                                    //SuperMap.Console.error(err);
+                                }
+                                break;
+                            case "FeatureCollection":
+                                for (var i = 0, len = obj.features.length; i < len; ++i) {
+                                    try {
+                                        results.push(this.parseFeature(obj.features[i]));
+                                    } catch (err) {
+                                        results = null;
+                                        // SuperMap.Console.error(err);
+                                    }
+                                }
+                                break;
+                            default:
+                                try {
+                                    var geom = this.parseGeometry(obj);
+                                    results.push(new _SuperMap2.default.Feature.Vector(geom));
+                                } catch (err) {
+                                    results = null;
+                                    //SuperMap.Console.error(err);
+                                }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return results;
+        }
+
+        /**
+         *  @function SuperMap.Format.GeoJSON.isValidType
+         *  @description 检查一个GeoJSON对象是否和给定的类型相符的合法的对象。
+         *  @return {Boolean} GeoJSON是否是给定类型的合法对象。
+         */
+
+    }, {
+        key: 'isValidType',
+        value: function isValidType(obj, type) {
+            var valid = false;
+            switch (type) {
+                case "Geometry":
+                    if (_SuperMap2.default.Util.indexOf(["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon", "Box", "GeometryCollection"], obj.type) == -1) {
+                        // unsupported geometry type
+                        //SuperMap.Console.error("Unsupported geometry type: " +
+                        // obj.type);
+                    } else {
+                        valid = true;
+                    }
+                    break;
+                case "FeatureCollection":
+                    // allow for any type to be converted to a feature collection
+                    valid = true;
+                    break;
+                default:
+                    // for Feature types must match
+                    if (obj.type == type) {
+                        valid = true;
+                    } else {
+                        //SuperMap.Console.error("Cannot convert types from " +
+                        //obj.type + " to " + type);
+                    }
+            }
+            return valid;
+        }
+
+        /**
+         * @function SuperMap.Format.GeoJSON.parseFeature
+         * @description 将一个GeoJSON中的feature转化成<SuperMap.Feature.Vector>对象。
+         * @param obj - {Object} 从GeoJSON对象中创建一个对象。
+         * @return {SuperMap.Feature.Vector} 一个要素。
+         */
+
+    }, {
+        key: 'parseFeature',
+        value: function parseFeature(obj) {
+            var feature, geometry, attributes, bbox;
+            attributes = obj.properties ? obj.properties : {};
+            bbox = obj.geometry && obj.geometry.bbox || obj.bbox;
+            try {
+                geometry = this.parseGeometry(obj.geometry);
+            } catch (err) {
+                // deal with bad geometries
+                throw err;
+            }
+            feature = new _SuperMap2.default.Feature.Vector(geometry, attributes);
+            if (bbox) {
+                feature.bounds = _SuperMap2.default.Bounds.fromArray(bbox);
+            }
+            if (obj.id) {
+                feature.fid = obj.id;
+            }
+            return feature;
+        }
+
+        /**
+         * @function SuperMap.Format.GeoJSON.parseGeometry
+         * @description将一个GeoJSON中的几何要素转化成<SuperMap.Geometry>对象。
+         * @param obj - {Object} 从GeoJSON对象中创建一个对象。
+         * @return {SuperMap.Geometry} 一个几何要素。
+         */
+
+    }, {
+        key: 'parseGeometry',
+        value: function parseGeometry(obj) {
+            if (obj == null) {
+                return null;
+            }
+            var geometry,
+                collection = false;
+            if (obj.type == "GeometryCollection") {
+                if (!_SuperMap2.default.Util.isArray(obj.geometries)) {
+                    throw "GeometryCollection must have geometries array: " + obj;
+                }
+                var numGeom = obj.geometries.length;
+                var components = new Array(numGeom);
+                for (var i = 0; i < numGeom; ++i) {
+                    components[i] = this.parseGeometry.apply(this, [obj.geometries[i]]);
+                }
+                geometry = new _SuperMap2.default.Geometry.Collection(components);
+                collection = true;
+            } else {
+                if (!_SuperMap2.default.Util.isArray(obj.coordinates)) {
+                    throw "Geometry must have coordinates array: " + obj;
+                }
+                if (!this.parseCoords[obj.type.toLowerCase()]) {
+                    throw "Unsupported geometry type: " + obj.type;
+                }
+                try {
+                    geometry = this.parseCoords[obj.type.toLowerCase()].apply(this, [obj.coordinates]);
+                } catch (err) {
+                    // deal with bad coordinates
+                    throw err;
+                }
+            }
+            return geometry;
+        }
+
+        /**
+         * Property: parseCoords
+         * 一个属性名对应着GeoJSON对象的几何类型的对象。每个属性其实都是一个实际上做解析用的方法。
+         */
+
+    }, {
+        key: 'write',
+
+
+        /**
+         * @function SuperMap.Format.GeoJSON.write
+         * @description 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
+         * @param obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
+         * @param pretty - {boolean} 是否使用换行和缩进来控制输出。默认值为false。
+         * @return {string} 一个GeoJSON字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
+         */
+        value: function write(obj, pretty) {
+            var geojson = {
+                "type": null
+            };
+            if (_SuperMap2.default.Util.isArray(obj)) {
+                geojson.type = "FeatureCollection";
+                var numFeatures = obj.length;
+                geojson.features = new Array(numFeatures);
+                for (var i = 0; i < numFeatures; ++i) {
+                    var element = obj[i];
+                    if (isGeometry(element)) {
+                        var feature = {};
+                        feature.geometry = element;
+                        geojson.features[i] = this.extract.feature.apply(this, [feature]);
+                    } else {
+                        geojson.features[i] = this.extract.feature.apply(this, [element]);
+                    }
+                }
+            } else if (isGeometry(obj)) {
+                var feature = {};
+                feature.geometry = obj;
+                geojson = this.extract.feature.apply(this, [feature]);
+            }
+
+            function isGeometry(input) {
+                return input.hasOwnProperty("parts") && input.hasOwnProperty("points");
+            }
+
+            return _get(GeoJSON.prototype.__proto__ || Object.getPrototypeOf(GeoJSON.prototype), 'write', this).call(this, geojson, pretty);
+        }
+
+        /**
+         * @function SuperMap.Format.GeoJSON.createCRSObject
+         * @description 从一个要素对象中创建一个坐标参考系对象。
+         * @param object - {SuperMap.Feature.Vector} 要素对象
+         * @return {Object} 一个可作为GeoJSON对象的crs属性使用的对象。
+         */
+
+    }, {
+        key: 'createCRSObject',
+        value: function createCRSObject(object) {
+            var proj = object.layer.projection.toString();
+            var crs = {};
+            if (proj.match(/epsg:/i)) {
+                var code = parseInt(proj.substring(proj.indexOf(":") + 1));
+                if (code == 4326) {
+                    crs = {
+                        "type": "name",
+                        "properties": {
+                            "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+                        }
+                    };
+                } else {
+                    crs = {
+                        "type": "name",
+                        "properties": {
+                            "name": "EPSG:" + code
+                        }
+                    };
+                }
+            }
+            return crs;
+        }
+
+        /**
+         * Property: extract
+         * 一个属性名对应着GeoJSON类型的对象。其值为相应的实际的解析方法。
+         */
+
+    }, {
+        key: 'createAttributes',
+        value: function createAttributes(feature) {
+            if (!feature) {
+                return null;
+            }
+            var attr = {};
+            processFieldsAttributes(feature, attr);
+            var exceptKeys = ["fieldNames", "fieldValues", "geometry"];
+            for (var key in feature) {
+                if (exceptKeys.indexOf(key) > -1) {
+                    continue;
+                }
+                attr[key] = feature[key];
+            }
+
+            function processFieldsAttributes(feature, attributes) {
+                if (!(feature.hasOwnProperty("fieldNames") && feature.hasOwnProperty("fieldValues"))) {
+                    return;
+                }
+                var names = feature.fieldNames,
+                    values = feature.fieldValues;
+                for (var i in names) {
+                    attributes[names[i]] = values[i];
+                }
+            }
+
+            return attr;
+        }
+    }, {
+        key: 'toGeometry',
+        value: function toGeometry(geometry) {
+            var me = this,
+                geoType = geometry.type;
+            if (geoType === 'polygon') {
+                geoType = _REST.GeometryType.REGION;
+            }
+            switch (geoType.toUpperCase()) {
+                case _REST.GeometryType.POINT:
+                    return me.toGeoPoint(geometry);
+                case _REST.GeometryType.LINE:
+                    return me.toGeoLine(geometry);
+                case _REST.GeometryType.LINEM:
+                    return me.toGeoLinem(geometry);
+                case _REST.GeometryType.REGION:
+                    return me.toGeoRegion(geometry);
+                case _REST.GeometryType.POINTEPS:
+                    return me.toGeoPoint(geometry);
+                // case GeometryType.LINEEPS:
+                //     return me.toGeoLineEPS();
+                // case GeometryType.REGIONEPS:
+                //     return me.toGeoRegionEPS();
+                default:
+                    return geometry;
+            }
+        }
+
+        /**
+         * @function SuperMap.Format.GeoJSON.toGeoPoint
+         * @description 将服务端的点几何对象转换为几何对象
+         */
+
+    }, {
+        key: 'toGeoPoint',
+        value: function toGeoPoint(geometry) {
+            var geoPoints = geometry.points || [],
+                geoParts = geometry.parts || [geoPoints.length],
+                len = geoParts.length;
+            if (len < 1) {
+                return null;
+            }
+            if (len === 1) {
+                return { type: "Point", x: parseFloat(geoPoints[0].x), y: parseFloat(geoPoints[0].y) };
+            } else {
+                for (var i = 0, pointList = []; i < len; i++) {
+                    pointList.push({ x: parseFloat(geoPoints[i].x), y: parseFloat(geoPoints[i].y) });
+                }
+                return { type: "MultiPoint", components: pointList };
+            }
+        }
+
+        /**
+         *
+         * @function SuperMap.Format.GeoJSON.toGeoPoint
+         * @description 将服务端的线几何对象转换为几何对象。
+         */
+
+    }, {
+        key: 'toGeoLine',
+        value: function toGeoLine(geometry) {
+            var me = this,
+                geoPoints = geometry.points || [],
+                geoParts = geometry.parts || [geoPoints.length],
+                len = geoParts.length;
+            if (len < 1) {
+                return null;
+            }
+            if (len === 1) {
+                for (var i = 0, pointList = []; i < geoParts[0]; i++) {
+                    pointList.push({ x: parseFloat(geoPoints[i].x), y: parseFloat(geoPoints[i].y) });
+                }
+                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+                if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
+                    pointList.pop();
+                    pointList.push(pointList[0]);
+                }
+                return { type: "LineString", components: pointList };
+            } else {
+                for (var k = 0, lineList = []; k < len; k++) {
+                    for (var j = 0, pointArr = []; j < geoParts[k]; j++) {
+                        pointArr.push({ x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y) });
+                    }
+                    lineList.push(pointArr);
+                    geoPoints.splice(0, geoParts[k]);
+                }
+                return { type: "MultiLineString", components: lineList };
+            }
+        }
+
+        /**
+         *
+         * @function SuperMap.Format.GeoJSON.toGeoLinem
+         * @description 将服务端的路由线几何对象转换为几何对象。
+         */
+
+    }, {
+        key: 'toGeoLinem',
+        value: function toGeoLinem(geometry) {
+            var me = this,
+                geoPoints = geometry.points || [],
+                geoParts = geometry.parts || [geoPoints.length],
+                len = geoParts.length,
+                lineList = [],
+                type;
+            if (len < 1) {
+                return null;
+            }
+            for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
+                for (var j = 0; j < geoParts[i]; j++) {
+                    pointList.push({
+                        x: parseFloat(geoPoints[pointIndex + j].x),
+                        y: parseFloat(geoPoints[pointIndex + j].y),
+                        measure: parseFloat(geoPoints[pointIndex + j].measure)
+                    });
+                }
+                pointIndex += geoParts[i];
+                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+                if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
+                    pointList.pop();
+                    pointList.push(pointList[0]);
+                }
+                lineList.push(pointList);
+                pointList = [];
+            }
+            return { type: "MultiLineString", components: lineList };
+        }
+
+        /**
+         *
+         * @function SuperMap.Format.GeoJSON.toGeoRegion
+         * @description 将服务端的面几何对象转换为几何对象。
+         */
+
+    }, {
+        key: 'toGeoRegion',
+        value: function toGeoRegion(geometry) {
+            var CCWArray = [],
+                geoPoints = geometry.points || [],
+                geoParts = geometry.parts || [geoPoints.length],
+                len = geoParts.length;
+            if (len < 1) {
+                return null;
+            }
+            var polygonArray = new Array();
+            for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
+                for (var j = 0; j < geoParts[i]; j++) {
+                    pointList.push({
+                        x: parseFloat(geoPoints[pointIndex + j].x),
+                        y: parseFloat(geoPoints[pointIndex + j].y)
+                    });
+                }
+
+                pointIndex += geoParts[i];
+                var linearRing = pointList.concat();
+                linearRing.pop();
+                linearRing.push(linearRing[0]);
+
+                if (this.isClockWise(linearRing) > 0) {
+                    CCWArray.push(linearRing);
+                } else {
+                    polygonArray.push([linearRing]);
+                }
+
+                if (i === len - 1) {
+                    var polyLength = polygonArray.length;
+                    if (!!polyLength) {
+                        polygonArray[polyLength - 1] = polygonArray[polyLength - 1].concat(CCWArray);
+                    } else {
+                        for (var k = 0, length = CCWArray.length; k < length; k++) {
+                            polygonArray.push([CCWArray[k]].concat());
+                        }
+                    }
+                }
+                pointList = [];
+            }
+            return { type: "MultiPolygon", components: polygonArray };
+        }
+    }, {
+        key: 'isClockWise',
+        value: function isClockWise(points) {
+            var length = points.length;
+            if (length < 3) {
+                return 0.0;
+            }
+            var s = points[0].y * (points[length - 1].x - points[1].x);
+            points.push(points[0]);
+            for (var i = 1; i < length; i++) {
+                s += points[i].y * (points[i - 1].x - points[i + 1].x);
+            }
+            return s * 0.5;
+        }
+    }, {
+        key: 'isPointsEquals',
+        value: function isPointsEquals(point1, point2) {
+            return point1.x === point2.x && point1.y === point2.y;
+        }
+    }]);
+
+    return GeoJSON;
+}(_JSON2.default);
+
+exports.default = GeoJSON;
+
+_SuperMap2.default.Format.GeoJSON = GeoJSON;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _Bounds = __webpack_require__(39);
+
+var _Bounds2 = _interopRequireDefault(_Bounds);
+
+var _Point = __webpack_require__(10);
+
+var _Point2 = _interopRequireDefault(_Point);
+
+var _MultiPoint = __webpack_require__(30);
+
+var _MultiPoint2 = _interopRequireDefault(_MultiPoint);
+
+var _LinearRing = __webpack_require__(25);
+
+var _LinearRing2 = _interopRequireDefault(_LinearRing);
+
+var _LineString = __webpack_require__(18);
+
+var _LineString2 = _interopRequireDefault(_LineString);
+
+var _MultiLineString = __webpack_require__(42);
+
+var _MultiLineString2 = _interopRequireDefault(_MultiLineString);
+
+var _Polygon = __webpack_require__(31);
+
+var _Polygon2 = _interopRequireDefault(_Polygon);
+
+var _MultiPolygon = __webpack_require__(43);
+
+var _MultiPolygon2 = _interopRequireDefault(_MultiPolygon);
+
+var _ServerStyle = __webpack_require__(6);
+
+var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
+
+var _Route = __webpack_require__(34);
+
+var _Route2 = _interopRequireDefault(_Route);
+
+var _Util = __webpack_require__(7);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/** * @private * @class SuperMap.ServerGeometry * @description 服务端几何对象类。 * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。 * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。 */
+var ServerGeometry = function () {
+
+  /*     * Constructor: SuperMap.ServerGeometry     * 服务端几何对象类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * id - {String} 服务端几何对象唯一标识符。     * style - {<SuperMap.ServerStyle>}  服务端几何对象的风格。     * parts - {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * points - {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * type - {<SuperMap.GeometryType>} 几何对象的类型。     */
+
+  /**     * APIProperty: type     * {<SuperMap.GeometryType>} 几何对象的类型(GeometryType)。     */
+
+  /**     * APIProperty: parts     * {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。     * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，     * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，     * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。     * 2.通常情况，一个简单几何对象的子对象就是它本身，     * 因此对于简单对象来说的该字段为长度为1的整型数组，     * 该字段的值就是这个简单对象节点的个数。     * 如果一个几何对象是由几个简单对象组合而成的，     * 例如，一个岛状几何对象由3个简单的多边形组成而成，     * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为3的整型数组，     * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。     */
+
+
+  /**     * APIProperty: id     * {String} 服务端几何对象唯一标识符。     */
+  function ServerGeometry(options) {
+    _classCallCheck(this, ServerGeometry);
+
+    this.id = 0;
+    this.style = null;
+    this.parts = null;
+    this.points = null;
+    this.type = null;
+    this.prjCoordSys = null;
+    this.CLASS_NAME = "SuperMap.ServerGeometry";
+
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
+  }
+
+  /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */
+
+  /**     * APIProperty: prjCoordSys     * {Object}投影坐标参数,现仅在缓冲区分析中有效。     */
+
+  /**     * APIProperty: points     * {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，     * 该字段存放了组成几何对象的点坐标的数组。     * 对于简单的面对象，他的起点和终点的坐标点相同。     * 2.对于复杂的几何对象，根据 Parts 属性来确定每一个组成复杂几何对象的简单对象所对应的节点的个数，     * 从而确定 Points 字段中坐标对的分配归属问题。     */
+
+
+  /**     * APIProperty: style     * {<SuperMap.ServerStyle>} 服务端几何对象的风格(ServerStyle)。     */
+
+
+  _createClass(ServerGeometry, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.id = null;
+      me.style = null;
+      me.parts = null;
+      me.partTopo = null;
+      me.points = null;
+      me.type = null;
+      me.prjCoordSys = null;
+    }
+
+    /**     * APIMethod: toGeometry     * 将服务端几何对象 ServerGeometry 转换为客户端几何对象 Geometry。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
+
+  }, {
+    key: 'toGeometry',
+    value: function toGeometry() {
+      var me = this,
+          geoType = me.type;
+      switch (geoType) {
+        case _REST.GeometryType.POINT:
+          return me.toGeoPoint();
+        case _REST.GeometryType.LINE:
+          return me.toGeoLine();
+        case _REST.GeometryType.LINEM:
+          return me.toGeoLinem();
+        case _REST.GeometryType.REGION:
+          return me.toGeoRegion();
+        case _REST.GeometryType.POINTEPS:
+          return me.toGeoPoint();
+        case _REST.GeometryType.LINEEPS:
+          return me.toGeoLineEPS();
+        case _REST.GeometryType.REGIONEPS:
+          return me.toGeoRegionEPS();
+      }
+    }
+
+    /**     * Method: toGeoPoint     * 将服务端的点几何对象转换为客户端几何对象。     * 包括 Point 、MultiPoint。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
+
+  }, {
+    key: 'toGeoPoint',
+    value: function toGeoPoint() {
+      var me = this,
+          geoParts = me.parts || [],
+          geoPoints = me.points || [],
+          len = geoParts.length;
+      if (len > 0) {
+        if (len === 1) {
+          return new _Point2.default(geoPoints[0].x, geoPoints[0].y);
+        } else {
+          for (var i = 0, pointList = []; i < len; i++) {
+            pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y));
+          }
+          return new _MultiPoint2.default(pointList);
+        }
+      } else {
+        return null;
+      }
+    }
+
+    /**     * Method: toGeoLine     * 将服务端的线几何对象转换为客户端几何对象。     * 包括LinearRing、LineString、MultiLineString。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
+
+  }, {
+    key: 'toGeoLine',
+    value: function toGeoLine() {
+      var me = this,
+          geoParts = me.parts || [],
+          geoPoints = me.points || [],
+          len = geoParts.length;
+      if (len > 0) {
+        if (len === 1) {
+          for (var i = 0, pointList = []; i < geoParts[0]; i++) {
+            pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y));
+          }
+          //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+          if (pointList[0].equals(pointList[geoParts[0] - 1])) {
+            return new _LinearRing2.default(pointList);
+          } else {
+            return new _LineString2.default(pointList);
+          }
+        } else {
+          for (var i = 0, lineList = []; i < len; i++) {
+            for (var j = 0, pointList = []; j < geoParts[i]; j++) {
+              pointList.push(new _Point2.default(geoPoints[j].x, geoPoints[j].y));
+            }
+            lineList.push(new _LineString2.default(pointList));
+            geoPoints.splice(0, geoParts[i]);
+          }
+          return new _MultiLineString2.default(lineList);
+        }
+      } else {
+        return null;
+      }
+    }
+
+    /**     * Method: toGeoLineEPS     * 将服务端的线几何对象转换为客户端几何对象。     * 包括LinearRing、LineString、MultiLineString。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
+
+  }, {
+    key: 'toGeoLineEPS',
+    value: function toGeoLineEPS() {
+      var me = this,
+          geoParts = me.parts || [],
+          geoPoints = me.points || [],
+          i,
+          j,
+          pointList,
+          lineList,
+          lineEPS,
+          len = geoParts.length;
+      if (len > 0) {
+        if (len === 1) {
+          for (i = 0, pointList = []; i < geoParts[0]; i++) {
+            pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y, geoPoints[i].type));
+          }
+          //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+          if (pointList[0].equals(pointList[geoParts[0] - 1])) {
+            lineEPS = _LineString2.default.createLineEPS(pointList);
+            return new _SuperMap2.default.Geometry.LineRing(lineEPS);
+          } else {
+            lineEPS = _LineString2.default.createLineEPS(pointList);
+            return new _LineString2.default(lineEPS);
+          }
+        } else {
+          for (i = 0, lineList = []; i < len; i++) {
+            for (j = 0, pointList = []; j < geoParts[i]; j++) {
+              pointList.push(new _Point2.default(geoPoints[j].x, geoPoints[j].y));
+            }
+            lineEPS = _LineString2.default.createLineEPS(pointList);
+            lineList.push(new _LineString2.default(lineEPS));
+            geoPoints.splice(0, geoParts[i]);
+          }
+          return new _MultiLineString2.default(lineList);
+        }
+      } else {
+        return null;
+      }
+    }
+
+    /**     * Method: toGeoLine     * 将服务端的路由线几何对象转换为客户端几何对象。     * 包括LinearRing、LineString、MultiLineString。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
+
+  }, {
+    key: 'toGeoLinem',
+    value: function toGeoLinem() {
+      var me = this;
+      return new _Route2.default.fromJson(me);
+    }
+
+    /**     * Method: toGeoRegion     * 将服务端的面几何对象转换为客户端几何对象。     * 类型为Polygon。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
+
+  }, {
+    key: 'toGeoRegion',
+    value: function toGeoRegion() {
+      var me = this,
+          geoParts = me.parts || [],
+          geoTopo = me.partTopo || [],
+          geoPoints = me.points || [],
+          len = geoParts.length;
+      if (len <= 0) {
+        return null;
+      }
+      var polygonArray = [];
+      var pointList = [];
+      if (len == 1) {
+        for (var i = 0; i < geoPoints.length; i++) {
+          pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y));
+        }
+        polygonArray.push(new _Polygon2.default([new _LinearRing2.default(pointList)]));
+        pointList = [];
+        return new _MultiPolygon2.default(polygonArray);
+      }
+      //处理复杂面
+      var CCWArray = [];
+      var areaArray = [];
+      var polygonArrayTemp = [];
+      //polyon岛洞标识数组，初始都是岛。
+      var CCWIdent = [];
+      for (var i = 0, pointIndex = 0; i < len; i++) {
+        for (var j = 0; j < geoParts[i]; j++) {
+          pointList.push(new _Point2.default(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y));
+        }
+        pointIndex += geoParts[i];
+        var polygon = new _Polygon2.default([new _LinearRing2.default(pointList)]);
+        pointList = [];
+        polygonArrayTemp.push(polygon);
+        CCWIdent.push(1);
+        areaArray.push(polygon.getArea());
+      }
+      //根据面积排序
+      ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
+      //iServer 9D新增字段
+      if (geoTopo.length === 0) {
+        //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
+        // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
+        // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
+        //目标polygon索引列表 -1标示没有被任何polygon包含，
+        var targetArray = [];
+        for (var i = 1; i < polygonArrayTemp.length; i++) {
+          for (var j = i - 1; j >= 0; j--) {
+            targetArray[i] = -1;
+            if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
+              CCWIdent[i] = CCWIdent[j] * -1;
+              if (CCWIdent[i] < 0) {
+                targetArray[i] = j;
+              }
+              break;
+            }
+          }
+        }
+        for (var i = 0; i < polygonArrayTemp.length; i++) {
+          if (CCWIdent[i] > 0) {
+            polygonArray.push(polygonArrayTemp[i]);
+          } else {
+            polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
+            //占位
+            polygonArray.push('');
+          }
+        }
+      } else {
+        //根据面积排序
+        //ServerGeometry.bubbleSort(areaArray, polygonArrayTemp,geoTopo);
+        var polygonArray = new Array();
+        for (var i = 0; i < polygonArrayTemp.length; i++) {
+          if (geoTopo[i] && geoTopo[i] == -1) {
+            CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
+          } else {
+            if (CCWArray.length > 0 && polygonArray.length > 0) {
+              polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
+              CCWArray = [];
+            }
+            polygonArray.push(polygonArrayTemp[i]);
+          }
+          if (i == len - 1) {
+            var polyLength = polygonArray.length;
+            if (!!polyLength) {
+              polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
+            } else {
+              for (var k = 0, length = CCWArray.length; k < length; k++) {
+                polygonArray.push(new _Polygon2.default(CCWArray));
+              }
+            }
+          }
+        }
+      }
+      return new _MultiPolygon2.default(polygonArray);
+    }
+
+    /**     * Method: toGeoRegionEPS     * 将服务端的面几何对象转换为客户端几何对象。     * 类型为Polygon。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
+
+  }, {
+    key: 'toGeoRegionEPS',
+    value: function toGeoRegionEPS() {
+      var me = this,
+          geoParts = me.parts || [],
+          geoTopo = me.partTopo || [],
+          geoPoints = me.points || [],
+          len = geoParts.length;
+
+      if (len <= 0) {
+        return null;
+      }
+      var polygonArray = [];
+      var pointList = [];
+      var lineEPS;
+      if (len == 1) {
+        for (var i = 0; i < geoPoints.length; i++) {
+          pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y));
+        }
+
+        lineEPS = _LineString2.default.createLineEPS(pointList);
+        polygonArray.push(new _Polygon2.default([new _LinearRing2.default(lineEPS)]));
+        pointList = [];
+        return new _MultiPolygon2.default(polygonArray);
+      }
+      //处理复杂面
+      var CCWArray = [];
+      var areaArray = [];
+      var polygonArrayTemp = [];
+      //polyon岛洞标识数组，初始都是岛。
+      var CCWIdent = [];
+      for (var i = 0, pointIndex = 0; i < len; i++) {
+        for (var j = 0; j < geoParts[i]; j++) {
+          pointList.push(new _Point2.default(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y));
+        }
+        pointIndex += geoParts[i];
+
+        lineEPS = _LineString2.default.createLineEPS(pointList);
+        var polygon = new _Polygon2.default([new _LinearRing2.default(lineEPS)]);
+        pointList = [];
+        polygonArrayTemp.push(polygon);
+        CCWIdent.push(1);
+        areaArray.push(polygon.getArea());
+      }
+      //根据面积排序
+      ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
+      //iServer 9D新增字段
+      if (geoTopo.length === 0) {
+        //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
+        // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
+        // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
+        //目标polygon索引列表 -1标示没有被任何polygon包含，
+        var targetArray = [];
+        for (var i = 1; i < polygonArrayTemp.length; i++) {
+          for (var j = i - 1; j >= 0; j--) {
+            targetArray[i] = -1;
+            if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
+              CCWIdent[i] = CCWIdent[j] * -1;
+              if (CCWIdent[i] < 0) {
+                targetArray[i] = j;
+              }
+              break;
+            }
+          }
+        }
+        for (var i = 0; i < polygonArrayTemp.length; i++) {
+          if (CCWIdent[i] > 0) {
+            polygonArray.push(polygonArrayTemp[i]);
+          } else {
+            polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
+            //占位
+            polygonArray.push('');
+          }
+        }
+      } else {
+        //根据面积排序
+        var polygonArray = new Array();
+        for (var i = 0; i < polygonArrayTemp.length; i++) {
+          if (geoTopo[i] && geoTopo[i] == -1) {
+            CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
+          } else {
+            if (CCWArray.length > 0 && polygonArray.length > 0) {
+              polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
+              CCWArray = [];
+            }
+            polygonArray.push(polygonArrayTemp[i]);
+          }
+          if (i == len - 1) {
+            var polyLength = polygonArray.length;
+            if (!!polyLength) {
+              polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
+            } else {
+              for (var k = 0, length = CCWArray.length; k < length; k++) {
+                polygonArray.push(new _Polygon2.default(CCWArray));
+              }
+            }
+          }
+        }
+      }
+      return new _MultiPolygon2.default(polygonArray);
+    }
+
+    /**     * Function: ServerGeometry.fromJson     * 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。     *     * Parameters:     * jsonObject - {Object} 要转换的 JSON 对象。     *     * Returns:     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。     */
+
+  }], [{
+    key: 'fromJson',
+    value: function fromJson(jsonObject) {
+      if (!jsonObject) {
+        return;
+      }
+      return new ServerGeometry({
+        id: jsonObject.id,
+        style: _ServerStyle2.default.fromJson(jsonObject.style),
+        parts: jsonObject.parts,
+        partTopo: jsonObject.partTopo,
+        points: jsonObject.points,
+        center: jsonObject.center,
+        length: jsonObject.length,
+        maxM: jsonObject.maxM,
+        minM: jsonObject.minM,
+        type: jsonObject.type
+      });
+    }
+  }, {
+    key: 'fromGeometry',
+
+
+    /**     * Function: ServerGeometry.fromGeometry     * 将客户端Geometry转换成服务端ServerGeometry。     *     * Parameters:     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。     *     * Returns:     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。     */
+    value: function fromGeometry(geometry) {
+      if (!geometry) {
+        return;
+      }
+      var id = 0,
+          parts = [],
+          points = [],
+          type = null,
+          icomponents = geometry.components,
+          className = geometry.CLASS_NAME,
+          prjCoordSys = { "epsgCode": geometry.SRID };
+
+      if (!isNaN(geometry.id)) {
+        id = geometry.id;
+      }
+      //坑爹的改法，没法，为了支持态势标绘，有时间就得全改
+      if (className != "SuperMap.Geometry.LinearRing" && className != "SuperMap.Geometry.LineString" && (geometry instanceof _MultiPoint2.default || geometry instanceof _MultiLineString2.default)) {
+        var ilen = icomponents.length;
+        for (var i = 0; i < ilen; i++) {
+          var partPointsCount = icomponents[i].getVertices().length;
+          parts.push(partPointsCount);
+          for (var j = 0; j < partPointsCount; j++) {
+            points.push(new _Point2.default(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
+          }
+        }
+        //这里className不是多点就全部是算线
+        type = className == "SuperMap.Geometry.MultiPoint" ? _REST.GeometryType.POINT : _REST.GeometryType.LINE;
+      } else if (geometry instanceof _MultiPolygon2.default) {
+        var ilen = icomponents.length;
+        for (var i = 0; i < ilen; i++) {
+          var polygon = icomponents[i],
+              linearRingOfPolygon = polygon.components,
+              linearRingOfPolygonLen = linearRingOfPolygon.length;
+          for (var j = 0; j < linearRingOfPolygonLen; j++) {
+            var partPointsCount = linearRingOfPolygon[j].getVertices().length + 1;
+            parts.push(partPointsCount);
+            for (var k = 0; k < partPointsCount - 1; k++) {
+              points.push(new _Point2.default(linearRingOfPolygon[j].getVertices()[k].x, linearRingOfPolygon[j].getVertices()[k].y));
+            }
+            points.push(new _Point2.default(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y));
+          }
+        }
+        type = _REST.GeometryType.REGION;
+      } else if (geometry instanceof _Polygon2.default) {
+        var ilen = icomponents.length;
+        for (var i = 0; i < ilen; i++) {
+          var partPointsCount = icomponents[i].getVertices().length + 1;
+          parts.push(partPointsCount);
+          for (var j = 0; j < partPointsCount - 1; j++) {
+            points.push(new _Point2.default(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
+          }
+          points.push(new _Point2.default(icomponents[i].getVertices()[0].x, icomponents[i].getVertices()[0].y));
+        }
+        type = _REST.GeometryType.REGION;
+      } else {
+        var geometryVerticesCount = geometry.getVertices().length;
+        for (var j = 0; j < geometryVerticesCount; j++) {
+          points.push(new _Point2.default(geometry.getVertices()[j].x, geometry.getVertices()[j].y));
+        }
+        if (geometry instanceof _LinearRing2.default) {
+          points.push(new _Point2.default(geometry.getVertices()[0].x, geometry.getVertices()[0].y));
+          geometryVerticesCount++;
+        }
+        parts.push(geometryVerticesCount);
+        type = geometry instanceof _Point2.default ? _REST.GeometryType.POINT : _REST.GeometryType.LINE;
+      }
+
+      return new ServerGeometry({
+        id: id,
+        style: null,
+        parts: parts,
+        points: points,
+        type: type,
+        prjCoordSys: prjCoordSys
+      });
+    }
+  }, {
+    key: 'IsClockWise',
+
+
+    /**     * Function: SuperMap.Geometry.IsClockWise     * 判断linearRing中的点的顺序，顺时针？逆时针     * 返回值大于0, 逆时针; 小于0, 顺时针     *     * Parameters:     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。     *     * Returns:     * {<Number>}。     */
+    value: function IsClockWise(points) {
+      var length = points.length;
+      if (length < 3) {
+        return 0.0;
+      }
+      var s = points[0].y * (points[length - 1].x - points[1].x);
+      points.push(points[0]);
+      for (var i = 1; i < length; i++) {
+        s += points[i].y * (points[i - 1].x - points[i + 1].x);
+      }
+      return s * 0.5;
+    }
+  }, {
+    key: 'bubbleSort',
+    value: function bubbleSort(areaArray, pointList, geoTopo) {
+      for (var i = 0; i < areaArray.length; i++) {
+        for (var j = 0; j < areaArray.length; j++) {
+          if (areaArray[i] > areaArray[j]) {
+            var d = areaArray[j];
+            areaArray[j] = areaArray[i];
+            areaArray[i] = d;
+            var b = pointList[j];
+            pointList[j] = pointList[i];
+            pointList[i] = b;
+            if (geoTopo && geoTopo.length > 0) {
+              var c = geoTopo[j];
+              geoTopo[j] = geoTopo[i];
+              geoTopo[i] = c;
+            }
+          }
+        }
+      }
+    }
+  }]);
+
+  return ServerGeometry;
+}();
+
+exports.default = ServerGeometry;
+
+_SuperMap2.default.ServerGeometry = ServerGeometry;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _ServerColor = __webpack_require__(11);
+
+var _ServerColor2 = _interopRequireDefault(_ServerColor);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.ServerStyle
+ * @classdesc 服务端矢量要素风格类。
+ * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
+ * @param options - {Object} 可选参数。如：<br>
+ *        fillBackColor - {SuperMap.ServerColor} 填充背景颜色。<br>
+ *        fillBackOpaque - {boolean} 背景是否不透明。<br>
+ *        fillForeColor - {SuperMap.ServerColor} 填充颜色。<br>
+ *        fillGradientMode - {FillGradientMode} 渐变填充风格的渐变类型。<br>
+ *        fillGradientAngle - {number}渐变填充的旋转角度。<br>
+ *        fillGradientOffsetRatioX - {number}渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
+ *        fillGradientOffsetRatioY - {number}填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
+ *        fillOpaqueRate - {number}填充不透明度。<br>
+ *        fillSymbolID - {Integer} 填充符号的编码。<br>
+ *        lineColor - {SuperMap.ServerColor} 矢量要素的边线颜色。<br>
+ *        lineSymbolID - {Integer} 线状符号的编码。<br>
+ *        lineWidth - {number}边线的宽度。<br>
+ *        markerAngle - {number}点状符号的旋转角度。<br>
+ *        markerSize - {number}点状符号的大小。<br>
+ *        markerSymbolID - {Integer} 点状符号的编码。
+ */
+var ServerStyle = function () {
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.markerSize -{number}
+     * @description 点状符号的大小。单位为毫米，精度为0.1，默认值为1.0。当该属性设置为0时，采用符号默认大小1.0显示。
+     *              当该属性设置为非法值时，交由服务器默认处理。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.lineWidth -{number}
+     * @description 边线的宽度。单位为毫米，精度到0.1，默认值为1.0。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.lineColor -{SuperMap.ServerColor}
+     * @description 矢量要素的边线颜色。默认为黑色。如果等级符号是点符号，点符号的颜色由lineColor控制
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.fillOpaqueRate -{number}
+     * @description 填充不透明度。合法值为0--100的数值。其中为0表示完全透明；
+     *              100表示完全不透明。赋值小于0时按照0处理，大于100时按照100处理。默认值为 100。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioX -{number}
+     * @description 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。它们的关系如下：设填充区域范围中心点的坐标为（x0, y0），
+     *              填充中心点的坐标为（x, y），填充区域范围的宽度为 a，水平偏移百分比为 dx，则 x=x0 + a*dx/100。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.fillGradientMode -{FillGradientMode}
+     * @description 渐变填充风格的渐变类型。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.fillBackOpaque -{boolean}
+     * @description 背景是否不透明。false 表示透明。默认值为 false。
+     */
+    function ServerStyle(options) {
+        _classCallCheck(this, ServerStyle);
+
+        this.fillBackColor = null;
+        this.fillBackOpaque = false;
+        this.fillForeColor = null;
+        this.fillGradientMode = null;
+        this.fillGradientAngle = 0;
+        this.fillGradientOffsetRatioX = 0;
+        this.fillGradientOffsetRatioY = 0;
+        this.fillOpaqueRate = 100;
+        this.fillSymbolID = 0;
+        this.lineColor = null;
+        this.lineSymbolID = 0;
+        this.lineWidth = 1;
+        this.markerAngle = 0;
+        this.markerSize = 1;
+        this.markerSymbolID = -1;
+        this.CLASS_NAME = "SuperMap.ServerStyle";
+
+        var me = this;
+        me.fillBackColor = new _ServerColor2.default(255, 255, 255);
+        me.fillForeColor = new _ServerColor2.default(255, 0, 0);
+        me.lineColor = new _ServerColor2.default(0, 0, 0);
+        if (options) {
+            _SuperMap2.default.Util.extend(this, options);
+        }
+    }
+
+    /**
+     * @function SuperMap.ServerStyle.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.markerSymbolID -{Integer}
+     * @description 点状符号的编码。此编码用于唯一标识各点状符号。默认为 -1。
+     *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.markerAngle -{number}
+     * @description 点状符号的旋转角度。以度为单位，精确到0.1度，逆时针方向为正方向，默认值为0。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.lineSymbolID -{Integer}
+     * @description 线状符号的编码。此编码用于唯一标识各普通填充风格的填充符号，默认值为0。
+     *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.fillSymbolID -{Integer}
+     * @description 填充符号的编码。此编码用于唯一标识各普通填充风格的填充符号。
+     *              关于填充符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY -{number}
+     * @function 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
+     *           设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.fillGradientAngle -{number}
+     * @description 渐变填充的旋转角度。单位为度，精确到0.1度，逆时针方向为正方向。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.fillForeColor -{SuperMap.ServerColor}
+     * @description 填充颜色。当填充模式为渐变填充时，该颜色为填充起始颜色。默认为红色。
+     */
+
+
+    /**
+     * @member SuperMap.ServerStyle.prototype.fillBackColor -{SuperMap.ServerColor}
+     * @description 填充背景颜色。当填充模式为渐变填充时，该颜色为填充终止色。默认为白色。
+     */
+
+
+    _createClass(ServerStyle, [{
+        key: 'destroy',
+        value: function destroy() {
+            var me = this;
+            if (me.fillBackColor) {
+                me.fillBackColor.destroy();
+                me.fillBackColor = null;
+            }
+            me.fillBackOpaque = null;
+
+            if (me.fillForeColor) {
+                me.fillForeColor.destroy();
+                me.fillForeColor = null;
+            }
+            me.fillGradientMode = null;
+            me.fillGradientAngle = null;
+            me.fillGradientOffsetRatioX = null;
+            me.fillGradientOffsetRatioY = null;
+            me.fillOpaqueRate = null;
+            me.fillSymbolID = null;
+            if (me.lineColor) {
+                me.lineColor.destroy();
+                me.lineColor = null;
+            }
+            me.lineSymbolID = null;
+            me.lineWidth = null;
+            me.markerAngle = null;
+            me.markerSize = null;
+            me.markerSymbolID = null;
+        }
+
+        /**
+         * @function SuperMap.ServerStyle.prototype.toServerJSONObject
+         * @description 转换成对应的 JSON 格式对象。
+         */
+
+    }, {
+        key: 'toServerJSONObject',
+        value: function toServerJSONObject() {
+            var styleObj = {};
+            styleObj = _SuperMap2.default.Util.copyAttributes(styleObj, this);
+            //暂时先忽略serverColor往Json的转换
+            return styleObj;
+        }
+
+        /**
+         * @function SuperMap.ServerStyle.fromJson
+         * @description 将JSON对象转换为 SuperMap.ServerStyle 对象。
+         * @param jsonObject - {Object} 要转换的 JSON 对象。
+         * @return {SuperMap.ServerStyle} 转化后的 SuperMap.ServerStyle 对象。
+         */
+
+    }], [{
+        key: 'fromJson',
+        value: function fromJson(jsonObject) {
+            if (!jsonObject) {
+                return;
+            }
+            return new _SuperMap2.default.ServerStyle({
+                fillBackColor: _ServerColor2.default.fromJson(jsonObject.fillBackColor),
+                fillBackOpaque: jsonObject.fillBackOpaque,
+                fillForeColor: _ServerColor2.default.fromJson(jsonObject.fillForeColor),
+                fillGradientMode: jsonObject.fillGradientMode,
+                fillGradientAngle: jsonObject.fillGradientAngle,
+                fillGradientOffsetRatioX: jsonObject.fillGradientOffsetRatioX,
+                fillGradientOffsetRatioY: jsonObject.fillGradientOffsetRatioY,
+                fillOpaqueRate: jsonObject.fillOpaqueRate,
+                fillSymbolID: jsonObject.fillSymbolID,
+                lineColor: _ServerColor2.default.fromJson(jsonObject.lineColor),
+                lineSymbolID: jsonObject.lineSymbolID,
+                lineWidth: jsonObject.lineWidth,
+                markerAngle: jsonObject.markerAngle,
+                markerSize: jsonObject.markerSize,
+                markerSymbolID: jsonObject.markerSymbolID
+            });
+        }
+    }]);
+
+    return ServerStyle;
+}();
+
+exports.default = ServerStyle;
+
+
+_SuperMap2.default.ServerStyle = ServerStyle;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1669,7 +3564,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(21);
+__webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1976,69 +3871,12 @@ _SuperMap2.default.Util.createImage = function (id, px, sz, imgURL, position, bo
 };
 
 /**
- * @description Bound to image load events.  For all images created with <createImage> or
- *     <createAlphaImageDiv>, this function will be bound to the load event.
- */
-_SuperMap2.default.Util.onImageLoad = function () {
-    // The complex check here is to solve issues described in #480.
-    // Every time a map view changes, it increments the 'viewRequestID' 
-    // property. As the requests for the images for the new map view are sent
-    // out, they are tagged with this unique viewRequestID. 
-    // 
-    // If an image has no viewRequestID property set, we display it regardless, 
-    // but if it does have a viewRequestID property, we check that it matches 
-    // the viewRequestID set on the map.
-    // 
-    // If the viewRequestID on the map has changed, that means that the user
-    // has changed the map view since this specific request was sent out, and
-    // therefore this tile does not need to be displayed (so we do not execute
-    // this code that turns its display on).
-    //
-    if (!this.viewRequestID || this.map && this.viewRequestID === this.map.viewRequestID) {
-        this.style.display = "";
-    }
-    _SuperMap2.default.Element.removeClass(this, "smImageLoadError");
-};
-
-/**
  * @memberOf SuperMap
  * @description How many times should we try to reload an image before giving up? Default is 0
  * @type {number}
  * @default 0
  */
 _SuperMap2.default.IMAGE_RELOAD_ATTEMPTS = 0;
-
-/**
- * @description onImageLoadError
- */
-_SuperMap2.default.Util.onImageLoadError = function () {
-    this._attempts = this._attempts ? this._attempts + 1 : 1;
-    if (this._attempts <= _SuperMap2.default.IMAGE_RELOAD_ATTEMPTS) {
-        var urls = this.urls;
-        if (urls && _SuperMap2.default.Util.isArray(urls) && urls.length > 1) {
-            var src = this.src.toString();
-            var current_url, k;
-            for (k = 0; current_url = urls[k]; k++) {
-                if (src.indexOf(current_url) !== -1) {
-                    break;
-                }
-            }
-            var guess = Math.floor(urls.length * Math.random());
-            var new_url = urls[guess];
-            k = 0;
-            while (new_url === current_url && k++ < 4) {
-                guess = Math.floor(urls.length * Math.random());
-                new_url = urls[guess];
-            }
-            this.src = src.replace(current_url, new_url);
-        } else {
-            this.src = this.src;
-        }
-    } else {
-        _SuperMap2.default.Element.addClass(this, "smImageLoadError");
-    }
-    this.style.display = "";
-};
 
 /**
  * @description  true if the png alpha hack is necessary and possible, false otherwise.
@@ -2980,127 +4818,6 @@ _SuperMap2.default.Util.isSupportCanvas = function () {
  */
 _SuperMap2.default.Util.supportCanvas = function () {
     return _SuperMap2.default.Util.isSupportCanvas;
-};
-
-/**
- * @description Renders the contentHTML offscreen to determine actual dimensions for
- *     popup sizing. As we need layout to determine dimensions the content
- *     is rendered -9999px to the left and absolute to ensure the
- *     scrollbars do not flicker
- * @param contentHTML
- * @param size - {SuperMap.Size} If either the 'w' or 'h' properties is
- *     specified, we fix that dimension of the div to be measured. This is
- *     useful in the case where we have a limit in one dimension and must
- *     therefore meaure the flow in the other dimension.
- * @param options - {Object}
- *
- * Allowed Options:
- *     displayClass - {string} Optional parameter.  A CSS class name(s) string
- *         to provide the CSS context of the rendered content.
- *     containerElement - {HTMLElement} Optional parameter. Insert the HTML to
- *         this node instead of the body root when calculating dimensions.
- *
- * @returns {SuperMap.Size}
- */
-_SuperMap2.default.Util.getRenderedDimensions = function (contentHTML, size, options) {
-
-    var w, h;
-
-    // create temp container div with restricted size
-    var container = document.createElement("div");
-    container.style.visibility = "hidden";
-
-    var containerElement = options && options.containerElement ? options.containerElement : document.body;
-
-    // Opera and IE7 can't handle a node with position:aboslute if it inherits
-    // position:absolute from a parent.
-    var parentHasPositionAbsolute = false;
-    var superContainer = null;
-    var parent = containerElement;
-    while (parent && parent.tagName.toLowerCase() !== "body") {
-        var parentPosition = _SuperMap2.default.Element.getStyle(parent, "position");
-        if (parentPosition === "absolute") {
-            parentHasPositionAbsolute = true;
-            break;
-        } else if (parentPosition && parentPosition !== "static") {
-            break;
-        }
-        parent = parent.parentNode;
-    }
-    /*if(parentHasPositionAbsolute && (containerElement.clientHeight === 0 ||
-        containerElement.clientWidth === 0) ){
-        superContainer = document.createElement("div");
-        superContainer.style.visibility = "hidden";
-        superContainer.style.position = "absolute";
-        superContainer.style.overflow = "visible";
-        superContainer.style.width = document.body.clientWidth + "px";
-        superContainer.style.height = document.body.clientHeight + "px";
-        superContainer.appendChild(container);
-    }*/
-    if (!parentHasPositionAbsolute) {
-        container.style.position = "absolute";
-    }
-
-    //fix a dimension, if specified.
-    if (size) {
-        if (size.w) {
-            w = size.w;
-            container.style.width = w + "px";
-        } else if (size.h) {
-            h = size.h;
-            container.style.height = h + "px";
-        }
-    }
-
-    //add css classes, if specified
-    if (options && options.displayClass) {
-        container.className = options.displayClass;
-    }
-
-    // create temp content div and assign content
-    var content = document.createElement("div");
-    content.innerHTML = contentHTML;
-
-    // we need overflow visible when calculating the size
-    content.style.overflow = "visible";
-    if (content.childNodes) {
-        for (var i = 0, l = content.childNodes.length; i < l; i++) {
-            if (!content.childNodes[i].style) continue;
-            content.childNodes[i].style.overflow = "visible";
-        }
-    }
-
-    // add content to restricted container 
-    container.appendChild(content);
-
-    // append container to body for rendering
-    containerElement.appendChild(container);
-
-    // append container to body for rendering
-    /*if (superContainer) {
-        containerElement.appendChild(superContainer);
-    } else {
-        containerElement.appendChild(container);
-    }*/
-    containerElement.appendChild(container);
-    // calculate scroll width of content and add corners and shadow width
-    if (!w) {
-        w = parseInt(content.scrollWidth);
-
-        // update container width to allow height to adjust
-        container.style.width = w + "px";
-    }
-    // capture height and add shadow and corner image widths
-    if (!h) {
-        h = parseInt(content.scrollHeight);
-    }
-
-    // remove elements
-    container.removeChild(content);
-
-    containerElement.removeChild(container);
-
-    return new _SuperMap2.default.Size(w, h);
 };
 
 /**
@@ -4428,1923 +6145,7 @@ _SuperMap2.default.Util.getTextBounds = function (style, text, element) {
 };
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _REST = __webpack_require__(1);
-
-var _CommonServiceBase2 = __webpack_require__(2);
-
-var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
-
-var _GeoJSON = __webpack_require__(6);
-
-var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.SpatialAnalystBase
- * @classdesc 空间分析服务基类。
- * @param url -{string} 地址d。
- * @param options -{Object} 参数。
- * @extends SuperMap.CommonServiceBase
- */
-var SpatialAnalystBase = function (_CommonServiceBase) {
-    _inherits(SpatialAnalystBase, _CommonServiceBase);
-
-    function SpatialAnalystBase(url, options) {
-        _classCallCheck(this, SpatialAnalystBase);
-
-        var _this = _possibleConstructorReturn(this, (SpatialAnalystBase.__proto__ || Object.getPrototypeOf(SpatialAnalystBase)).call(this, url, options));
-
-        _this.format = _REST.DataFormat.GEOJSON;
-        _this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
-
-        if (options && options.format) {
-            _this.format = options.format.toUpperCase();
-        }
-        return _this;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     */
-
-    /**
-     * @member SuperMap.SpatialAnalystBase.prototype.format -{string}
-     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式，参数格式为"ISERVER","GEOJSON",GEOJSON
-     */
-
-
-    _createClass(SpatialAnalystBase, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(SpatialAnalystBase.prototype.__proto__ || Object.getPrototypeOf(SpatialAnalystBase.prototype), 'destroy', this).call(this);
-            this.format = null;
-        }
-
-        /**
-         * @function SuperMap.SpatialAnalystBase.prototype.serviceProcessCompleted
-         * @description 分析完成，执行此方法。
-         * @param result - {Object} 服务器返回的结果对象。
-         */
-
-    }, {
-        key: 'serviceProcessCompleted',
-        value: function serviceProcessCompleted(result) {
-            var me = this,
-                analystResult;
-            result = _SuperMap2.default.Util.transformResult(result);
-            if (result && me.format === _REST.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
-                analystResult = me.toGeoJSONResult(result);
-            }
-            if (!analystResult) {
-                analystResult = result;
-            }
-            me.events.triggerEvent("processCompleted", { result: analystResult });
-        }
-
-        /**
-         * @function SuperMap.SpatialAnalystBase.prototype.toGeoJSONResult
-         * @description 将含有geometry的数据转换为geojson格式。
-         * @param result - {Object} 服务器返回的结果对象。
-         *
-         */
-
-    }, {
-        key: 'toGeoJSONResult',
-        value: function toGeoJSONResult(result) {
-            if (!result) {
-                return null;
-            }
-            var geoJSONFormat = new _GeoJSON2.default();
-            if (result.recordsets) {
-                for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
-                    if (recordsets[i].features) {
-                        recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-                    }
-                }
-            } else if (result.recordset && result.recordset.features) {
-                result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
-            }
-            if (result.resultGeometry) {
-                result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
-            }
-
-            return result;
-        }
-    }]);
-
-    return SpatialAnalystBase;
-}(_CommonServiceBase3.default);
-
-exports.default = SpatialAnalystBase;
-
-_SuperMap2.default.SpatialAnalystBase = SpatialAnalystBase;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _JSON = __webpack_require__(163);
-
-var _JSON2 = _interopRequireDefault(_JSON);
-
-var _Point = __webpack_require__(11);
-
-var _Point2 = _interopRequireDefault(_Point);
-
-var _MultiPoint = __webpack_require__(46);
-
-var _MultiPoint2 = _interopRequireDefault(_MultiPoint);
-
-var _LineString = __webpack_require__(23);
-
-var _LineString2 = _interopRequireDefault(_LineString);
-
-var _MultiLineString = __webpack_require__(62);
-
-var _MultiLineString2 = _interopRequireDefault(_MultiLineString);
-
-var _LinearRing = __webpack_require__(38);
-
-var _LinearRing2 = _interopRequireDefault(_LinearRing);
-
-var _Polygon = __webpack_require__(47);
-
-var _Polygon2 = _interopRequireDefault(_Polygon);
-
-var _MultiPolygon = __webpack_require__(63);
-
-var _MultiPolygon2 = _interopRequireDefault(_MultiPolygon);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.Format.GeoJSON
- * @description GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器.
- * @augments SuperMap.Format.JSON
- * @param options - {Object} 选项对象，
- */
-var GeoJSON = function (_JSONFormat) {
-    _inherits(GeoJSON, _JSONFormat);
-
-    function GeoJSON() {
-        var _ref;
-
-        var _temp, _this, _ret;
-
-        _classCallCheck(this, GeoJSON);
-
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GeoJSON.__proto__ || Object.getPrototypeOf(GeoJSON)).call.apply(_ref, [this].concat(args))), _this), _this.ignoreExtraDims = false, _this.parseCoords = {
-            /**
-             * @function SuperMap.Format.GeoJSON.parseCoords.point
-             * @description 将一组坐标成一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的一组坐标。
-             * @return {SuperMap.Geometry} 一个几何对象。
-             */
-            "point": function point(array) {
-                if (this.ignoreExtraDims == false && array.length != 2) {
-                    throw "Only 2D points are supported: " + array;
-                }
-                return new _Point2.default(array[0], array[1]);
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.parseCoords.multipoint
-             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
-             * @return {SuperMap.Geometry} 一个几何对象。
-             */
-            "multipoint": function multipoint(array) {
-                var points = [];
-                var p = null;
-                for (var i = 0, len = array.length; i < len; ++i) {
-                    try {
-                        p = this.parseCoords["point"].apply(this, [array[i]]);
-                    } catch (err) {
-                        throw err;
-                    }
-                    points.push(p);
-                }
-                return new _MultiPoint2.default(points);
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.parseCoords.linestring
-             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
-             * @return {SuperMap.Geometry} 一个几何对象。
-             */
-            "linestring": function linestring(array) {
-                var points = [];
-                var p = null;
-                for (var i = 0, len = array.length; i < len; ++i) {
-                    try {
-                        p = this.parseCoords["point"].apply(this, [array[i]]);
-                    } catch (err) {
-                        throw err;
-                    }
-                    points.push(p);
-                }
-                return new _LineString2.default(points);
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.parseCoords.multilinestring
-             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
-             * @return {SuperMap.Geometry} 一个几何对象。
-             */
-            "multilinestring": function multilinestring(array) {
-                var lines = [];
-                var l = null;
-                for (var i = 0, len = array.length; i < len; ++i) {
-                    try {
-                        l = this.parseCoords["linestring"].apply(this, [array[i]]);
-                    } catch (err) {
-                        throw err;
-                    }
-                    lines.push(l);
-                }
-                return new _MultiLineString2.default(lines);
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.parseCoords.polygon
-             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @return {SuperMap.Geometry} 一个几何对象。
-             */
-            "polygon": function polygon(array) {
-                var rings = [];
-                var r, l;
-                for (var i = 0, len = array.length; i < len; ++i) {
-                    try {
-                        l = this.parseCoords["linestring"].apply(this, [array[i]]);
-                    } catch (err) {
-                        throw err;
-                    }
-                    r = new _LinearRing2.default(l.components);
-                    rings.push(r);
-                }
-                return new _Polygon2.default(rings);
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.parseCoords.multipolygon
-             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
-             * @return {SuperMap.Geometry} 一个几何对象。
-             */
-            "multipolygon": function multipolygon(array) {
-                var polys = [];
-                var p = null;
-                for (var i = 0, len = array.length; i < len; ++i) {
-                    try {
-                        p = this.parseCoords["polygon"].apply(this, [array[i]]);
-                    } catch (err) {
-                        throw err;
-                    }
-                    polys.push(p);
-                }
-                return new _MultiPolygon2.default(polys);
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.parseCoords.box
-             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-             * @param array - {Object} GeoJSON片段中的坐标组数组。
-             * @return {SuperMap.Geometry} 一个几何对象。
-             */
-            "box": function box(array) {
-                if (array.length != 2) {
-                    throw "GeoJSON box coordinates must have 2 elements";
-                }
-                return new _Polygon2.default([new _LinearRing2.default([new _Point2.default(array[0][0], array[0][1]), new _Point2.default(array[1][0], array[0][1]), new _Point2.default(array[1][0], array[1][1]), new _Point2.default(array[0][0], array[1][1]), new _Point2.default(array[0][0], array[0][1])])]);
-            }
-
-        }, _this.extract = {
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.feature
-             * @description 返回一个表示单个要素对象的GeoJSON的一部分。
-             * @param feature - iServer要素对象
-             * @return {Object} 一个表示点的对象。
-             */
-            'feature': function feature(_feature) {
-                var geom = this.extract.geometry.apply(this, [_feature.geometry]);
-                var json = {
-                    "type": "Feature",
-                    "properties": this.createAttributes(_feature),
-                    "geometry": geom
-                };
-
-                if (_feature.geometry && _feature.geometry.type === 'TEXT') {
-                    json.properties.texts = _feature.geometry.texts;
-                    json.properties.textStyle = _feature.geometry.textStyle;
-                }
-                if (_feature.fid !== null) {
-                    json.id = _feature.fid;
-                }
-                if (_feature.ID !== null) {
-                    json.id = _feature.ID;
-                }
-                return json;
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.geometry
-             * @description 返回一个表示单个几何对象的GeoJSON的一部分。
-             * @param geometry -iServer 几何对象
-             * @return {Object} 一个表示几何体的对象。
-             */
-            'geometry': function geometry(_geometry) {
-                if (_geometry == null) {
-                    return null;
-                }
-                var geo = this.toGeometry(_geometry);
-                var geometryType = geo.type;
-                var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
-                geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
-                var json;
-                if (geometryType === "Collection") {
-                    json = {
-                        "type": "GeometryCollection",
-                        "geometries": data
-                    };
-                } else {
-                    json = {
-                        "type": geometryType,
-                        "coordinates": data
-                    };
-                }
-                return json;
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.point
-             * @description 从一个点对象中返回一个坐标组。
-             * @param point - {SuperMap.Geometry.Point} 一个点对象。
-             * @return {Array} 一个表示一个点的坐标组。
-             */
-            'point': function point(_point) {
-                var p = [_point.x, _point.y];
-                for (var name in _point) {
-                    if (name !== "x" && name !== "y" && !isNaN(_point[name])) {
-                        p.push(_point[name]);
-                    }
-                }
-                return p;
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.point
-             * @description 从一个文本对象中返回一个坐标组。
-             * @param geo 一个文本对象。
-             * @return {Array} 一个表示一个点的坐标组。
-             */
-            'text': function text(geo) {
-                return [geo.points[0].x, geo.points[0].y];
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.multipoint
-             * @description 从一个多点对象中返一个坐标组数组。
-             * @param multipoint - {SuperMap.Geometry.MultiPoint} 多点对象。
-             * @return {Array} 一个表示多点的坐标组数组。
-             */
-            'multipoint': function multipoint(_multipoint) {
-                var array = [];
-                for (var i = 0, len = _multipoint.components.length; i < len; ++i) {
-                    array.push(this.extract.point.apply(this, [_multipoint.components[i]]));
-                }
-                return array;
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.linestring
-             * @description 从一个线对象中返回一个坐标组数组。
-             * @param linestring - {SuperMap.Geometry.Linestring} 线对象。
-             * @return {Array} 一个表示线对象的坐标组数组。
-             */
-            'linestring': function linestring(_linestring) {
-                var array = [];
-                for (var i = 0, len = _linestring.components.length; i < len; ++i) {
-                    array.push(this.extract.point.apply(this, [_linestring.components[i]]));
-                }
-                return array;
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.multilinestring
-             * @description 从一个多线对象中返回一个线数组。
-             * @param multilinestring - {SuperMap.Geometry.MultiLinestring} 多线对象
-             *
-             * @return {Array} 一个表示多线的线数组。
-             */
-            'multilinestring': function multilinestring(_multilinestring) {
-                var array = [];
-                for (var i = 0, len = _multilinestring.components.length; i < len; ++i) {
-                    array.push(this.extract.linestring.apply(this, [{ components: _multilinestring.components[i] }]));
-                }
-                return array;
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.polygon
-             * @description 从一个面对象中返回一组线环。
-             * @polygon - {SuperMap.Geometry.Polygon} 面对象。
-             * @return {Array} 一组表示面的线环。
-             */
-            'polygon': function polygon(_polygon) {
-                var array = [];
-                for (var i = 0, len = _polygon.components.length; i < len; ++i) {
-                    array.push(this.extract.linestring.apply(this, [{ components: _polygon.components[i] }]));
-                }
-                return array;
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.multipolygon
-             * @description 从一个多面对象中返回一组面。
-             * @param multipolygon - {SuperMap.Geometry.MultiPolygon} 多面对象。
-             * @return {Array} 一组表示多面的面。
-             */
-            'multipolygon': function multipolygon(_multipolygon) {
-                var array = [];
-                for (var i = 0, len = _multipolygon.components.length; i < len; ++i) {
-                    array.push(this.extract.polygon.apply(this, [{ components: _multipolygon.components[i] }]));
-                }
-                return array;
-            },
-
-            /**
-             * @function SuperMap.Format.GeoJSON.extract.collection
-             * @description 从一个几何要素集合中一组几何要素数组。
-             * @param collection - {SuperMap.Geometry.Collection} 几何要素集合。
-             * @return {Array} 一组表示几何要素集合的几何要素数组。
-             */
-            'collection': function collection(_collection) {
-                var len = _collection.components.length;
-                var array = new Array(len);
-                for (var i = 0; i < len; ++i) {
-                    array[i] = this.extract.geometry.apply(this, [{
-                        type: "Collection",
-                        components: _collection.components[i]
-                    }]);
-                }
-                return array;
-            }
-        }, _this.CLASS_NAME = "SuperMap.Format.GeoJSON", _temp), _possibleConstructorReturn(_this, _ret);
-    }
-
-    /**
-     * APIProperty: ignoreExtraDims
-     * {Boolean} 忽略维度超过2的几何要素
-     */
-
-
-    _createClass(GeoJSON, [{
-        key: 'read',
-
-
-        /**
-         * @function SuperMap.Format.GeoJSON.read
-         * @description 反序列化一个 GeoJSON 字符串
-         *
-         * @param json - {string}  GeoJSON 字符串
-         * @param type - {string} 可选的字符串，它决定了输出的格式。
-         *     支持的值有："Geometry","Feature",和"FeatureCollection",
-         *     如果此值为null，则会使用默认值"FeaureCollection"。
-         * @param filter - {Function} 对象中每个层次每个键值对都会调用此函数得出一个结果。
-         *     每个值都会被filter函数的结果所替换掉。这个函数可被用来将某些对象转化成
-         *     某个类相应的对象，或者将日期字符串转化成Date对象。
-         *
-         * @return {Object}
-         *    返回值依赖于type参数的值。如果type等于"FeatureCollection"（默认值），
-         *     返回值将会是 <SuperMap.Feature.Vector> 数组。如果type为"Geometry",
-         *     输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>
-         *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是<SuperMap.Feature.Vector> 。
-         */
-        value: function read(json, type, filter) {
-            type = type ? type : "FeatureCollection";
-            var results = null;
-            var obj = null;
-            if (typeof json == "string") {
-                obj = _get(GeoJSON.prototype.__proto__ || Object.getPrototypeOf(GeoJSON.prototype), 'read', this).call(this, json, filter);
-            } else {
-                obj = json;
-            }
-            if (!obj) {
-                //SuperMap.Console.error("Bad JSON: " + json);
-            } else if (typeof obj.type != "string") {
-                //SuperMap.Console.error("Bad GeoJSON - no type: " + json);
-            } else if (this.isValidType(obj, type)) {
-                switch (type) {
-                    case "Geometry":
-                        try {
-                            results = this.parseGeometry(obj);
-                        } catch (err) {
-                            //SuperMap.Console.error(err);
-                        }
-                        break;
-                    case "Feature":
-                        try {
-                            results = this.parseFeature(obj);
-                            results.type = "Feature";
-                        } catch (err) {
-                            //SuperMap.Console.error(err);
-                        }
-                        break;
-                    case "FeatureCollection":
-                        // for type FeatureCollection, we allow input to be any type
-                        results = [];
-                        switch (obj.type) {
-                            case "Feature":
-                                try {
-                                    results.push(this.parseFeature(obj));
-                                } catch (err) {
-                                    results = null;
-                                    //SuperMap.Console.error(err);
-                                }
-                                break;
-                            case "FeatureCollection":
-                                for (var i = 0, len = obj.features.length; i < len; ++i) {
-                                    try {
-                                        results.push(this.parseFeature(obj.features[i]));
-                                    } catch (err) {
-                                        results = null;
-                                        // SuperMap.Console.error(err);
-                                    }
-                                }
-                                break;
-                            default:
-                                try {
-                                    var geom = this.parseGeometry(obj);
-                                    results.push(new _SuperMap2.default.Feature.Vector(geom));
-                                } catch (err) {
-                                    results = null;
-                                    //SuperMap.Console.error(err);
-                                }
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return results;
-        }
-
-        /**
-         *  @function SuperMap.Format.GeoJSON.isValidType
-         *  @description 检查一个GeoJSON对象是否和给定的类型相符的合法的对象。
-         *  @return {Boolean} GeoJSON是否是给定类型的合法对象。
-         */
-
-    }, {
-        key: 'isValidType',
-        value: function isValidType(obj, type) {
-            var valid = false;
-            switch (type) {
-                case "Geometry":
-                    if (_SuperMap2.default.Util.indexOf(["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon", "Box", "GeometryCollection"], obj.type) == -1) {
-                        // unsupported geometry type
-                        //SuperMap.Console.error("Unsupported geometry type: " +
-                        // obj.type);
-                    } else {
-                        valid = true;
-                    }
-                    break;
-                case "FeatureCollection":
-                    // allow for any type to be converted to a feature collection
-                    valid = true;
-                    break;
-                default:
-                    // for Feature types must match
-                    if (obj.type == type) {
-                        valid = true;
-                    } else {
-                        //SuperMap.Console.error("Cannot convert types from " +
-                        //obj.type + " to " + type);
-                    }
-            }
-            return valid;
-        }
-
-        /**
-         * @function SuperMap.Format.GeoJSON.parseFeature
-         * @description 将一个GeoJSON中的feature转化成<SuperMap.Feature.Vector>对象。
-         * @param obj - {Object} 从GeoJSON对象中创建一个对象。
-         * @return {SuperMap.Feature.Vector} 一个要素。
-         */
-
-    }, {
-        key: 'parseFeature',
-        value: function parseFeature(obj) {
-            var feature, geometry, attributes, bbox;
-            attributes = obj.properties ? obj.properties : {};
-            bbox = obj.geometry && obj.geometry.bbox || obj.bbox;
-            try {
-                geometry = this.parseGeometry(obj.geometry);
-            } catch (err) {
-                // deal with bad geometries
-                throw err;
-            }
-            feature = new _SuperMap2.default.Feature.Vector(geometry, attributes);
-            if (bbox) {
-                feature.bounds = _SuperMap2.default.Bounds.fromArray(bbox);
-            }
-            if (obj.id) {
-                feature.fid = obj.id;
-            }
-            return feature;
-        }
-
-        /**
-         * @function SuperMap.Format.GeoJSON.parseGeometry
-         * @description将一个GeoJSON中的几何要素转化成<SuperMap.Geometry>对象。
-         * @param obj - {Object} 从GeoJSON对象中创建一个对象。
-         * @return {SuperMap.Geometry} 一个几何要素。
-         */
-
-    }, {
-        key: 'parseGeometry',
-        value: function parseGeometry(obj) {
-            if (obj == null) {
-                return null;
-            }
-            var geometry,
-                collection = false;
-            if (obj.type == "GeometryCollection") {
-                if (!_SuperMap2.default.Util.isArray(obj.geometries)) {
-                    throw "GeometryCollection must have geometries array: " + obj;
-                }
-                var numGeom = obj.geometries.length;
-                var components = new Array(numGeom);
-                for (var i = 0; i < numGeom; ++i) {
-                    components[i] = this.parseGeometry.apply(this, [obj.geometries[i]]);
-                }
-                geometry = new _SuperMap2.default.Geometry.Collection(components);
-                collection = true;
-            } else {
-                if (!_SuperMap2.default.Util.isArray(obj.coordinates)) {
-                    throw "Geometry must have coordinates array: " + obj;
-                }
-                if (!this.parseCoords[obj.type.toLowerCase()]) {
-                    throw "Unsupported geometry type: " + obj.type;
-                }
-                try {
-                    geometry = this.parseCoords[obj.type.toLowerCase()].apply(this, [obj.coordinates]);
-                } catch (err) {
-                    // deal with bad coordinates
-                    throw err;
-                }
-            }
-            // We don't reproject collections because the children are reprojected
-            // for us when they are created.
-            if (this.internalProjection && this.externalProjection && !collection) {
-                geometry.transform(this.externalProjection, this.internalProjection);
-            }
-            return geometry;
-        }
-
-        /**
-         * Property: parseCoords
-         * 一个属性名对应着GeoJSON对象的几何类型的对象。每个属性其实都是一个实际上做解析用的方法。
-         */
-
-    }, {
-        key: 'write',
-
-
-        /**
-         * @function SuperMap.Format.GeoJSON.write
-         * @description 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
-         * @param obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
-         * @param pretty - {boolean} 是否使用换行和缩进来控制输出。默认值为false。
-         * @return {string} 一个GeoJSON字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
-         */
-        value: function write(obj, pretty) {
-            var geojson = {
-                "type": null
-            };
-            if (_SuperMap2.default.Util.isArray(obj)) {
-                geojson.type = "FeatureCollection";
-                var numFeatures = obj.length;
-                geojson.features = new Array(numFeatures);
-                for (var i = 0; i < numFeatures; ++i) {
-                    var element = obj[i];
-                    if (isGeometry(element)) {
-                        var feature = {};
-                        feature.geometry = element;
-                        geojson.features[i] = this.extract.feature.apply(this, [feature]);
-                    } else {
-                        geojson.features[i] = this.extract.feature.apply(this, [element]);
-                    }
-                }
-            } else if (isGeometry(obj)) {
-                var feature = {};
-                feature.geometry = obj;
-                geojson = this.extract.feature.apply(this, [feature]);
-            }
-
-            function isGeometry(input) {
-                return input.hasOwnProperty("parts") && input.hasOwnProperty("points");
-            }
-
-            return _get(GeoJSON.prototype.__proto__ || Object.getPrototypeOf(GeoJSON.prototype), 'write', this).call(this, geojson, pretty);
-        }
-
-        /**
-         * @function SuperMap.Format.GeoJSON.createCRSObject
-         * @description 从一个要素对象中创建一个坐标参考系对象。
-         * @param object - {SuperMap.Feature.Vector} 要素对象
-         * @return {Object} 一个可作为GeoJSON对象的crs属性使用的对象。
-         */
-
-    }, {
-        key: 'createCRSObject',
-        value: function createCRSObject(object) {
-            var proj = object.layer.projection.toString();
-            var crs = {};
-            if (proj.match(/epsg:/i)) {
-                var code = parseInt(proj.substring(proj.indexOf(":") + 1));
-                if (code == 4326) {
-                    crs = {
-                        "type": "name",
-                        "properties": {
-                            "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
-                        }
-                    };
-                } else {
-                    crs = {
-                        "type": "name",
-                        "properties": {
-                            "name": "EPSG:" + code
-                        }
-                    };
-                }
-            }
-            return crs;
-        }
-
-        /**
-         * Property: extract
-         * 一个属性名对应着GeoJSON类型的对象。其值为相应的实际的解析方法。
-         */
-
-    }, {
-        key: 'createAttributes',
-        value: function createAttributes(feature) {
-            if (!feature) {
-                return null;
-            }
-            var attr = {};
-            processFieldsAttributes(feature, attr);
-            var exceptKeys = ["fieldNames", "fieldValues", "geometry"];
-            for (var key in feature) {
-                if (exceptKeys.indexOf(key) > -1) {
-                    continue;
-                }
-                attr[key] = feature[key];
-            }
-
-            function processFieldsAttributes(feature, attributes) {
-                if (!(feature.hasOwnProperty("fieldNames") && feature.hasOwnProperty("fieldValues"))) {
-                    return;
-                }
-                var names = feature.fieldNames,
-                    values = feature.fieldValues;
-                for (var i in names) {
-                    attributes[names[i]] = values[i];
-                }
-            }
-
-            return attr;
-        }
-    }, {
-        key: 'toGeometry',
-        value: function toGeometry(geometry) {
-            var me = this,
-                geoType = geometry.type;
-            if (geoType === 'polygon') {
-                geoType = _REST.GeometryType.REGION;
-            }
-            switch (geoType.toUpperCase()) {
-                case _REST.GeometryType.POINT:
-                    return me.toGeoPoint(geometry);
-                case _REST.GeometryType.LINE:
-                    return me.toGeoLine(geometry);
-                case _REST.GeometryType.LINEM:
-                    return me.toGeoLinem(geometry);
-                case _REST.GeometryType.REGION:
-                    return me.toGeoRegion(geometry);
-                case _REST.GeometryType.POINTEPS:
-                    return me.toGeoPoint(geometry);
-                // case GeometryType.LINEEPS:
-                //     return me.toGeoLineEPS();
-                // case GeometryType.REGIONEPS:
-                //     return me.toGeoRegionEPS();
-                default:
-                    return geometry;
-            }
-        }
-
-        /**
-         * @function SuperMap.Format.GeoJSON.toGeoPoint
-         * @description 将服务端的点几何对象转换为几何对象
-         */
-
-    }, {
-        key: 'toGeoPoint',
-        value: function toGeoPoint(geometry) {
-            var geoPoints = geometry.points || [],
-                geoParts = geometry.parts || [geoPoints.length],
-                len = geoParts.length;
-            if (len < 1) {
-                return null;
-            }
-            if (len === 1) {
-                return { type: "Point", x: parseFloat(geoPoints[0].x), y: parseFloat(geoPoints[0].y) };
-            } else {
-                for (var i = 0, pointList = []; i < len; i++) {
-                    pointList.push({ x: parseFloat(geoPoints[i].x), y: parseFloat(geoPoints[i].y) });
-                }
-                return { type: "MultiPoint", components: pointList };
-            }
-        }
-
-        /**
-         *
-         * @function SuperMap.Format.GeoJSON.toGeoPoint
-         * @description 将服务端的线几何对象转换为几何对象。
-         */
-
-    }, {
-        key: 'toGeoLine',
-        value: function toGeoLine(geometry) {
-            var me = this,
-                geoPoints = geometry.points || [],
-                geoParts = geometry.parts || [geoPoints.length],
-                len = geoParts.length;
-            if (len < 1) {
-                return null;
-            }
-            if (len === 1) {
-                for (var i = 0, pointList = []; i < geoParts[0]; i++) {
-                    pointList.push({ x: parseFloat(geoPoints[i].x), y: parseFloat(geoPoints[i].y) });
-                }
-                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-                if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
-                    pointList.pop();
-                    pointList.push(pointList[0]);
-                }
-                return { type: "LineString", components: pointList };
-            } else {
-                for (var k = 0, lineList = []; k < len; k++) {
-                    for (var j = 0, pointArr = []; j < geoParts[k]; j++) {
-                        pointArr.push({ x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y) });
-                    }
-                    lineList.push(pointArr);
-                    geoPoints.splice(0, geoParts[k]);
-                }
-                return { type: "MultiLineString", components: lineList };
-            }
-        }
-
-        /**
-         *
-         * @function SuperMap.Format.GeoJSON.toGeoLinem
-         * @description 将服务端的路由线几何对象转换为几何对象。
-         */
-
-    }, {
-        key: 'toGeoLinem',
-        value: function toGeoLinem(geometry) {
-            var me = this,
-                geoPoints = geometry.points || [],
-                geoParts = geometry.parts || [geoPoints.length],
-                len = geoParts.length,
-                lineList = [],
-                type;
-            if (len < 1) {
-                return null;
-            }
-            for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
-                for (var j = 0; j < geoParts[i]; j++) {
-                    pointList.push({
-                        x: parseFloat(geoPoints[pointIndex + j].x),
-                        y: parseFloat(geoPoints[pointIndex + j].y),
-                        measure: parseFloat(geoPoints[pointIndex + j].measure)
-                    });
-                }
-                pointIndex += geoParts[i];
-                //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-                if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
-                    pointList.pop();
-                    pointList.push(pointList[0]);
-                }
-                lineList.push(pointList);
-                pointList = [];
-            }
-            return { type: "MultiLineString", components: lineList };
-        }
-
-        /**
-         *
-         * @function SuperMap.Format.GeoJSON.toGeoRegion
-         * @description 将服务端的面几何对象转换为几何对象。
-         */
-
-    }, {
-        key: 'toGeoRegion',
-        value: function toGeoRegion(geometry) {
-            var CCWArray = [],
-                geoPoints = geometry.points || [],
-                geoParts = geometry.parts || [geoPoints.length],
-                len = geoParts.length;
-            if (len < 1) {
-                return null;
-            }
-            var polygonArray = new Array();
-            for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
-                for (var j = 0; j < geoParts[i]; j++) {
-                    pointList.push({
-                        x: parseFloat(geoPoints[pointIndex + j].x),
-                        y: parseFloat(geoPoints[pointIndex + j].y)
-                    });
-                }
-
-                pointIndex += geoParts[i];
-                var linearRing = pointList.concat();
-                linearRing.pop();
-                linearRing.push(linearRing[0]);
-
-                if (this.isClockWise(linearRing) > 0) {
-                    CCWArray.push(linearRing);
-                } else {
-                    polygonArray.push([linearRing]);
-                }
-
-                if (i === len - 1) {
-                    var polyLength = polygonArray.length;
-                    if (!!polyLength) {
-                        polygonArray[polyLength - 1] = polygonArray[polyLength - 1].concat(CCWArray);
-                    } else {
-                        for (var k = 0, length = CCWArray.length; k < length; k++) {
-                            polygonArray.push([CCWArray[k]].concat());
-                        }
-                    }
-                }
-                pointList = [];
-            }
-            return { type: "MultiPolygon", components: polygonArray };
-        }
-    }, {
-        key: 'isClockWise',
-        value: function isClockWise(points) {
-            var length = points.length;
-            if (length < 3) {
-                return 0.0;
-            }
-            var s = points[0].y * (points[length - 1].x - points[1].x);
-            points.push(points[0]);
-            for (var i = 1; i < length; i++) {
-                s += points[i].y * (points[i - 1].x - points[i + 1].x);
-            }
-            return s * 0.5;
-        }
-    }, {
-        key: 'isPointsEquals',
-        value: function isPointsEquals(point1, point2) {
-            return point1.x === point2.x && point1.y === point2.y;
-        }
-    }]);
-
-    return GeoJSON;
-}(_JSON2.default);
-
-exports.default = GeoJSON;
-
-_SuperMap2.default.Format.GeoJSON = GeoJSON;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _Bounds = __webpack_require__(60);
-
-var _Bounds2 = _interopRequireDefault(_Bounds);
-
-var _Point = __webpack_require__(11);
-
-var _Point2 = _interopRequireDefault(_Point);
-
-var _MultiPoint = __webpack_require__(46);
-
-var _MultiPoint2 = _interopRequireDefault(_MultiPoint);
-
-var _LinearRing = __webpack_require__(38);
-
-var _LinearRing2 = _interopRequireDefault(_LinearRing);
-
-var _LineString = __webpack_require__(23);
-
-var _LineString2 = _interopRequireDefault(_LineString);
-
-var _MultiLineString = __webpack_require__(62);
-
-var _MultiLineString2 = _interopRequireDefault(_MultiLineString);
-
-var _Polygon = __webpack_require__(47);
-
-var _Polygon2 = _interopRequireDefault(_Polygon);
-
-var _MultiPolygon = __webpack_require__(63);
-
-var _MultiPolygon2 = _interopRequireDefault(_MultiPolygon);
-
-var _ServerStyle = __webpack_require__(8);
-
-var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
-
-var _Route = __webpack_require__(50);
-
-var _Route2 = _interopRequireDefault(_Route);
-
-var _Util = __webpack_require__(4);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/** * @private * @class SuperMap.ServerGeometry * @description 服务端几何对象类。 * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。 * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。 */
-var ServerGeometry = function () {
-
-  /*     * Constructor: SuperMap.ServerGeometry     * 服务端几何对象类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * id - {String} 服务端几何对象唯一标识符。     * style - {<SuperMap.ServerStyle>}  服务端几何对象的风格。     * parts - {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * points - {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * type - {<SuperMap.GeometryType>} 几何对象的类型。     */
-
-  /**     * APIProperty: type     * {<SuperMap.GeometryType>} 几何对象的类型(GeometryType)。     */
-
-  /**     * APIProperty: parts     * {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。     * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，     * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，     * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。     * 2.通常情况，一个简单几何对象的子对象就是它本身，     * 因此对于简单对象来说的该字段为长度为1的整型数组，     * 该字段的值就是这个简单对象节点的个数。     * 如果一个几何对象是由几个简单对象组合而成的，     * 例如，一个岛状几何对象由3个简单的多边形组成而成，     * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为3的整型数组，     * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。     */
-
-
-  /**     * APIProperty: id     * {String} 服务端几何对象唯一标识符。     */
-  function ServerGeometry(options) {
-    _classCallCheck(this, ServerGeometry);
-
-    this.id = 0;
-    this.style = null;
-    this.parts = null;
-    this.points = null;
-    this.type = null;
-    this.prjCoordSys = null;
-    this.CLASS_NAME = "SuperMap.ServerGeometry";
-
-    if (options) {
-      _Util.Util.extend(this, options);
-    }
-  }
-
-  /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */
-
-  /**     * APIProperty: prjCoordSys     * {Object}投影坐标参数,现仅在缓冲区分析中有效。     */
-
-  /**     * APIProperty: points     * {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，     * 该字段存放了组成几何对象的点坐标的数组。     * 对于简单的面对象，他的起点和终点的坐标点相同。     * 2.对于复杂的几何对象，根据 Parts 属性来确定每一个组成复杂几何对象的简单对象所对应的节点的个数，     * 从而确定 Points 字段中坐标对的分配归属问题。     */
-
-
-  /**     * APIProperty: style     * {<SuperMap.ServerStyle>} 服务端几何对象的风格(ServerStyle)。     */
-
-
-  _createClass(ServerGeometry, [{
-    key: 'destroy',
-    value: function destroy() {
-      var me = this;
-      me.id = null;
-      me.style = null;
-      me.parts = null;
-      me.partTopo = null;
-      me.points = null;
-      me.type = null;
-      me.prjCoordSys = null;
-    }
-
-    /**     * APIMethod: toGeometry     * 将服务端几何对象 ServerGeometry 转换为客户端几何对象 Geometry。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
-
-  }, {
-    key: 'toGeometry',
-    value: function toGeometry() {
-      var me = this,
-          geoType = me.type;
-      switch (geoType) {
-        case _REST.GeometryType.POINT:
-          return me.toGeoPoint();
-        case _REST.GeometryType.LINE:
-          return me.toGeoLine();
-        case _REST.GeometryType.LINEM:
-          return me.toGeoLinem();
-        case _REST.GeometryType.REGION:
-          return me.toGeoRegion();
-        case _REST.GeometryType.POINTEPS:
-          return me.toGeoPoint();
-        case _REST.GeometryType.LINEEPS:
-          return me.toGeoLineEPS();
-        case _REST.GeometryType.REGIONEPS:
-          return me.toGeoRegionEPS();
-      }
-    }
-
-    /**     * Method: toGeoPoint     * 将服务端的点几何对象转换为客户端几何对象。     * 包括 Point 、MultiPoint。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
-
-  }, {
-    key: 'toGeoPoint',
-    value: function toGeoPoint() {
-      var me = this,
-          geoParts = me.parts || [],
-          geoPoints = me.points || [],
-          len = geoParts.length;
-      if (len > 0) {
-        if (len === 1) {
-          return new _Point2.default(geoPoints[0].x, geoPoints[0].y);
-        } else {
-          for (var i = 0, pointList = []; i < len; i++) {
-            pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y));
-          }
-          return new _MultiPoint2.default(pointList);
-        }
-      } else {
-        return null;
-      }
-    }
-
-    /**     * Method: toGeoLine     * 将服务端的线几何对象转换为客户端几何对象。     * 包括LinearRing、LineString、MultiLineString。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
-
-  }, {
-    key: 'toGeoLine',
-    value: function toGeoLine() {
-      var me = this,
-          geoParts = me.parts || [],
-          geoPoints = me.points || [],
-          len = geoParts.length;
-      if (len > 0) {
-        if (len === 1) {
-          for (var i = 0, pointList = []; i < geoParts[0]; i++) {
-            pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y));
-          }
-          //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-          if (pointList[0].equals(pointList[geoParts[0] - 1])) {
-            return new _LinearRing2.default(pointList);
-          } else {
-            return new _LineString2.default(pointList);
-          }
-        } else {
-          for (var i = 0, lineList = []; i < len; i++) {
-            for (var j = 0, pointList = []; j < geoParts[i]; j++) {
-              pointList.push(new _Point2.default(geoPoints[j].x, geoPoints[j].y));
-            }
-            lineList.push(new _LineString2.default(pointList));
-            geoPoints.splice(0, geoParts[i]);
-          }
-          return new _MultiLineString2.default(lineList);
-        }
-      } else {
-        return null;
-      }
-    }
-
-    /**     * Method: toGeoLineEPS     * 将服务端的线几何对象转换为客户端几何对象。     * 包括LinearRing、LineString、MultiLineString。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
-
-  }, {
-    key: 'toGeoLineEPS',
-    value: function toGeoLineEPS() {
-      var me = this,
-          geoParts = me.parts || [],
-          geoPoints = me.points || [],
-          i,
-          j,
-          pointList,
-          lineList,
-          lineEPS,
-          len = geoParts.length;
-      if (len > 0) {
-        if (len === 1) {
-          for (i = 0, pointList = []; i < geoParts[0]; i++) {
-            pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y, geoPoints[i].type));
-          }
-          //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-          if (pointList[0].equals(pointList[geoParts[0] - 1])) {
-            lineEPS = _LineString2.default.createLineEPS(pointList);
-            return new _SuperMap2.default.Geometry.LineRing(lineEPS);
-          } else {
-            lineEPS = _LineString2.default.createLineEPS(pointList);
-            return new _LineString2.default(lineEPS);
-          }
-        } else {
-          for (i = 0, lineList = []; i < len; i++) {
-            for (j = 0, pointList = []; j < geoParts[i]; j++) {
-              pointList.push(new _Point2.default(geoPoints[j].x, geoPoints[j].y));
-            }
-            lineEPS = _LineString2.default.createLineEPS(pointList);
-            lineList.push(new _LineString2.default(lineEPS));
-            geoPoints.splice(0, geoParts[i]);
-          }
-          return new _MultiLineString2.default(lineList);
-        }
-      } else {
-        return null;
-      }
-    }
-
-    /**     * Method: toGeoLine     * 将服务端的路由线几何对象转换为客户端几何对象。     * 包括LinearRing、LineString、MultiLineString。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
-
-  }, {
-    key: 'toGeoLinem',
-    value: function toGeoLinem() {
-      var me = this;
-      return new _Route2.default.fromJson(me);
-    }
-
-    /**     * Method: toGeoRegion     * 将服务端的面几何对象转换为客户端几何对象。     * 类型为Polygon。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
-
-  }, {
-    key: 'toGeoRegion',
-    value: function toGeoRegion() {
-      var me = this,
-          geoParts = me.parts || [],
-          geoTopo = me.partTopo || [],
-          geoPoints = me.points || [],
-          len = geoParts.length;
-      if (len <= 0) {
-        return null;
-      }
-      var polygonArray = [];
-      var pointList = [];
-      if (len == 1) {
-        for (var i = 0; i < geoPoints.length; i++) {
-          pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y));
-        }
-        polygonArray.push(new _Polygon2.default([new _LinearRing2.default(pointList)]));
-        pointList = [];
-        return new _MultiPolygon2.default(polygonArray);
-      }
-      //处理复杂面
-      var CCWArray = [];
-      var areaArray = [];
-      var polygonArrayTemp = [];
-      //polyon岛洞标识数组，初始都是岛。
-      var CCWIdent = [];
-      for (var i = 0, pointIndex = 0; i < len; i++) {
-        for (var j = 0; j < geoParts[i]; j++) {
-          pointList.push(new _Point2.default(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y));
-        }
-        pointIndex += geoParts[i];
-        var polygon = new _Polygon2.default([new _LinearRing2.default(pointList)]);
-        pointList = [];
-        polygonArrayTemp.push(polygon);
-        CCWIdent.push(1);
-        areaArray.push(polygon.getArea());
-      }
-      //根据面积排序
-      ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
-      //iServer 9D新增字段
-      if (geoTopo.length === 0) {
-        //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
-        // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
-        // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
-        //目标polygon索引列表 -1标示没有被任何polygon包含，
-        var targetArray = [];
-        for (var i = 1; i < polygonArrayTemp.length; i++) {
-          for (var j = i - 1; j >= 0; j--) {
-            targetArray[i] = -1;
-            if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
-              CCWIdent[i] = CCWIdent[j] * -1;
-              if (CCWIdent[i] < 0) {
-                targetArray[i] = j;
-              }
-              break;
-            }
-          }
-        }
-        for (var i = 0; i < polygonArrayTemp.length; i++) {
-          if (CCWIdent[i] > 0) {
-            polygonArray.push(polygonArrayTemp[i]);
-          } else {
-            polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
-            //占位
-            polygonArray.push('');
-          }
-        }
-      } else {
-        //根据面积排序
-        //ServerGeometry.bubbleSort(areaArray, polygonArrayTemp,geoTopo);
-        var polygonArray = new Array();
-        for (var i = 0; i < polygonArrayTemp.length; i++) {
-          if (geoTopo[i] && geoTopo[i] == -1) {
-            CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
-          } else {
-            if (CCWArray.length > 0 && polygonArray.length > 0) {
-              polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
-              CCWArray = [];
-            }
-            polygonArray.push(polygonArrayTemp[i]);
-          }
-          if (i == len - 1) {
-            var polyLength = polygonArray.length;
-            if (!!polyLength) {
-              polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
-            } else {
-              for (var k = 0, length = CCWArray.length; k < length; k++) {
-                polygonArray.push(new _Polygon2.default(CCWArray));
-              }
-            }
-          }
-        }
-      }
-      return new _MultiPolygon2.default(polygonArray);
-    }
-
-    /**     * Method: toGeoRegionEPS     * 将服务端的面几何对象转换为客户端几何对象。     * 类型为Polygon。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
-
-  }, {
-    key: 'toGeoRegionEPS',
-    value: function toGeoRegionEPS() {
-      var me = this,
-          geoParts = me.parts || [],
-          geoTopo = me.partTopo || [],
-          geoPoints = me.points || [],
-          len = geoParts.length;
-
-      if (len <= 0) {
-        return null;
-      }
-      var polygonArray = [];
-      var pointList = [];
-      var lineEPS;
-      if (len == 1) {
-        for (var i = 0; i < geoPoints.length; i++) {
-          pointList.push(new _Point2.default(geoPoints[i].x, geoPoints[i].y));
-        }
-
-        lineEPS = _LineString2.default.createLineEPS(pointList);
-        polygonArray.push(new _Polygon2.default([new _LinearRing2.default(lineEPS)]));
-        pointList = [];
-        return new _MultiPolygon2.default(polygonArray);
-      }
-      //处理复杂面
-      var CCWArray = [];
-      var areaArray = [];
-      var polygonArrayTemp = [];
-      //polyon岛洞标识数组，初始都是岛。
-      var CCWIdent = [];
-      for (var i = 0, pointIndex = 0; i < len; i++) {
-        for (var j = 0; j < geoParts[i]; j++) {
-          pointList.push(new _Point2.default(geoPoints[pointIndex + j].x, geoPoints[pointIndex + j].y));
-        }
-        pointIndex += geoParts[i];
-
-        lineEPS = _LineString2.default.createLineEPS(pointList);
-        var polygon = new _Polygon2.default([new _LinearRing2.default(lineEPS)]);
-        pointList = [];
-        polygonArrayTemp.push(polygon);
-        CCWIdent.push(1);
-        areaArray.push(polygon.getArea());
-      }
-      //根据面积排序
-      ServerGeometry.bubbleSort(areaArray, polygonArrayTemp, geoTopo);
-      //iServer 9D新增字段
-      if (geoTopo.length === 0) {
-        //岛洞底层判断原则：将所有的子对象按照面积排序，面积最大的直接判定为岛（1），从面积次大的开始处理，
-        // 如果发现该对象在某个面积大于它的对象之中（即被包含），则根据包含它的对象的标识（1 or -1），指定其标识（-1 or 1），
-        // 依次处理完所有对象，就得到了一个标识数组，1表示岛，-1表示洞
-        //目标polygon索引列表 -1标示没有被任何polygon包含，
-        var targetArray = [];
-        for (var i = 1; i < polygonArrayTemp.length; i++) {
-          for (var j = i - 1; j >= 0; j--) {
-            targetArray[i] = -1;
-            if (polygonArrayTemp[j].getBounds().containsBounds(polygonArrayTemp[i].getBounds())) {
-              CCWIdent[i] = CCWIdent[j] * -1;
-              if (CCWIdent[i] < 0) {
-                targetArray[i] = j;
-              }
-              break;
-            }
-          }
-        }
-        for (var i = 0; i < polygonArrayTemp.length; i++) {
-          if (CCWIdent[i] > 0) {
-            polygonArray.push(polygonArrayTemp[i]);
-          } else {
-            polygonArray[targetArray[i]].components = polygonArray[targetArray[i]].components.concat(polygonArrayTemp[i].components);
-            //占位
-            polygonArray.push('');
-          }
-        }
-      } else {
-        //根据面积排序
-        var polygonArray = new Array();
-        for (var i = 0; i < polygonArrayTemp.length; i++) {
-          if (geoTopo[i] && geoTopo[i] == -1) {
-            CCWArray = CCWArray.concat(polygonArrayTemp[i].components);
-          } else {
-            if (CCWArray.length > 0 && polygonArray.length > 0) {
-              polygonArray[polygonArray.length - 1].components = polygonArray[polygonArray.length - 1].components.concat(CCWArray);
-              CCWArray = [];
-            }
-            polygonArray.push(polygonArrayTemp[i]);
-          }
-          if (i == len - 1) {
-            var polyLength = polygonArray.length;
-            if (!!polyLength) {
-              polygonArray[polyLength - 1].components = polygonArray[polyLength - 1].components.concat(CCWArray);
-            } else {
-              for (var k = 0, length = CCWArray.length; k < length; k++) {
-                polygonArray.push(new _Polygon2.default(CCWArray));
-              }
-            }
-          }
-        }
-      }
-      return new _MultiPolygon2.default(polygonArray);
-    }
-
-    /**     * Function: ServerGeometry.fromJson     * 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。     *     * Parameters:     * jsonObject - {Object} 要转换的 JSON 对象。     *     * Returns:     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。     */
-
-  }], [{
-    key: 'fromJson',
-    value: function fromJson(jsonObject) {
-      if (!jsonObject) {
-        return;
-      }
-      return new ServerGeometry({
-        id: jsonObject.id,
-        style: _ServerStyle2.default.fromJson(jsonObject.style),
-        parts: jsonObject.parts,
-        partTopo: jsonObject.partTopo,
-        points: jsonObject.points,
-        center: jsonObject.center,
-        length: jsonObject.length,
-        maxM: jsonObject.maxM,
-        minM: jsonObject.minM,
-        type: jsonObject.type
-      });
-    }
-  }, {
-    key: 'fromGeometry',
-
-
-    /**     * Function: ServerGeometry.fromGeometry     * 将客户端Geometry转换成服务端ServerGeometry。     *     * Parameters:     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。     *     * Returns:     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。     */
-    value: function fromGeometry(geometry) {
-      if (!geometry) {
-        return;
-      }
-      var id = 0,
-          parts = [],
-          points = [],
-          type = null,
-          icomponents = geometry.components,
-          className = geometry.CLASS_NAME,
-          prjCoordSys = { "epsgCode": geometry.SRID };
-
-      if (!isNaN(geometry.id)) {
-        id = geometry.id;
-      }
-      //坑爹的改法，没法，为了支持态势标绘，有时间就得全改
-      if (className != "SuperMap.Geometry.LinearRing" && className != "SuperMap.Geometry.LineString" && (geometry instanceof _MultiPoint2.default || geometry instanceof _MultiLineString2.default)) {
-        var ilen = icomponents.length;
-        for (var i = 0; i < ilen; i++) {
-          var partPointsCount = icomponents[i].getVertices().length;
-          parts.push(partPointsCount);
-          for (var j = 0; j < partPointsCount; j++) {
-            points.push(new _Point2.default(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
-          }
-        }
-        //这里className不是多点就全部是算线
-        type = className == "SuperMap.Geometry.MultiPoint" ? _REST.GeometryType.POINT : _REST.GeometryType.LINE;
-      } else if (geometry instanceof _MultiPolygon2.default) {
-        var ilen = icomponents.length;
-        for (var i = 0; i < ilen; i++) {
-          var polygon = icomponents[i],
-              linearRingOfPolygon = polygon.components,
-              linearRingOfPolygonLen = linearRingOfPolygon.length;
-          for (var j = 0; j < linearRingOfPolygonLen; j++) {
-            var partPointsCount = linearRingOfPolygon[j].getVertices().length + 1;
-            parts.push(partPointsCount);
-            for (var k = 0; k < partPointsCount - 1; k++) {
-              points.push(new _Point2.default(linearRingOfPolygon[j].getVertices()[k].x, linearRingOfPolygon[j].getVertices()[k].y));
-            }
-            points.push(new _Point2.default(linearRingOfPolygon[j].getVertices()[0].x, linearRingOfPolygon[j].getVertices()[0].y));
-          }
-        }
-        type = _REST.GeometryType.REGION;
-      } else if (geometry instanceof _Polygon2.default) {
-        var ilen = icomponents.length;
-        for (var i = 0; i < ilen; i++) {
-          var partPointsCount = icomponents[i].getVertices().length + 1;
-          parts.push(partPointsCount);
-          for (var j = 0; j < partPointsCount - 1; j++) {
-            points.push(new _Point2.default(icomponents[i].getVertices()[j].x, icomponents[i].getVertices()[j].y));
-          }
-          points.push(new _Point2.default(icomponents[i].getVertices()[0].x, icomponents[i].getVertices()[0].y));
-        }
-        type = _REST.GeometryType.REGION;
-      } else {
-        var geometryVerticesCount = geometry.getVertices().length;
-        for (var j = 0; j < geometryVerticesCount; j++) {
-          points.push(new _Point2.default(geometry.getVertices()[j].x, geometry.getVertices()[j].y));
-        }
-        if (geometry instanceof _LinearRing2.default) {
-          points.push(new _Point2.default(geometry.getVertices()[0].x, geometry.getVertices()[0].y));
-          geometryVerticesCount++;
-        }
-        parts.push(geometryVerticesCount);
-        type = geometry instanceof _Point2.default ? _REST.GeometryType.POINT : _REST.GeometryType.LINE;
-      }
-
-      return new ServerGeometry({
-        id: id,
-        style: null,
-        parts: parts,
-        points: points,
-        type: type,
-        prjCoordSys: prjCoordSys
-      });
-    }
-  }, {
-    key: 'IsClockWise',
-
-
-    /**     * Function: SuperMap.Geometry.IsClockWise     * 判断linearRing中的点的顺序，顺时针？逆时针     * 返回值大于0, 逆时针; 小于0, 顺时针     *     * Parameters:     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。     *     * Returns:     * {<Number>}。     */
-    value: function IsClockWise(points) {
-      var length = points.length;
-      if (length < 3) {
-        return 0.0;
-      }
-      var s = points[0].y * (points[length - 1].x - points[1].x);
-      points.push(points[0]);
-      for (var i = 1; i < length; i++) {
-        s += points[i].y * (points[i - 1].x - points[i + 1].x);
-      }
-      return s * 0.5;
-    }
-  }, {
-    key: 'bubbleSort',
-    value: function bubbleSort(areaArray, pointList, geoTopo) {
-      for (var i = 0; i < areaArray.length; i++) {
-        for (var j = 0; j < areaArray.length; j++) {
-          if (areaArray[i] > areaArray[j]) {
-            var d = areaArray[j];
-            areaArray[j] = areaArray[i];
-            areaArray[i] = d;
-            var b = pointList[j];
-            pointList[j] = pointList[i];
-            pointList[i] = b;
-            if (geoTopo && geoTopo.length > 0) {
-              var c = geoTopo[j];
-              geoTopo[j] = geoTopo[i];
-              geoTopo[i] = c;
-            }
-          }
-        }
-      }
-    }
-  }]);
-
-  return ServerGeometry;
-}();
-
-exports.default = ServerGeometry;
-
-_SuperMap2.default.ServerGeometry = ServerGeometry;
-
-/***/ }),
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _ServerColor = __webpack_require__(12);
-
-var _ServerColor2 = _interopRequireDefault(_ServerColor);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.ServerStyle
- * @classdesc 服务端矢量要素风格类。
- * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
- * @param options - {Object} 可选参数。如：<br>
- *        fillBackColor - {SuperMap.ServerColor} 填充背景颜色。<br>
- *        fillBackOpaque - {boolean} 背景是否不透明。<br>
- *        fillForeColor - {SuperMap.ServerColor} 填充颜色。<br>
- *        fillGradientMode - {FillGradientMode} 渐变填充风格的渐变类型。<br>
- *        fillGradientAngle - {number}渐变填充的旋转角度。<br>
- *        fillGradientOffsetRatioX - {number}渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
- *        fillGradientOffsetRatioY - {number}填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
- *        fillOpaqueRate - {number}填充不透明度。<br>
- *        fillSymbolID - {Integer} 填充符号的编码。<br>
- *        lineColor - {SuperMap.ServerColor} 矢量要素的边线颜色。<br>
- *        lineSymbolID - {Integer} 线状符号的编码。<br>
- *        lineWidth - {number}边线的宽度。<br>
- *        markerAngle - {number}点状符号的旋转角度。<br>
- *        markerSize - {number}点状符号的大小。<br>
- *        markerSymbolID - {Integer} 点状符号的编码。
- */
-var ServerStyle = function () {
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.markerSize -{number}
-     * @description 点状符号的大小。单位为毫米，精度为0.1，默认值为1.0。当该属性设置为0时，采用符号默认大小1.0显示。
-     *              当该属性设置为非法值时，交由服务器默认处理。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.lineWidth -{number}
-     * @description 边线的宽度。单位为毫米，精度到0.1，默认值为1.0。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.lineColor -{SuperMap.ServerColor}
-     * @description 矢量要素的边线颜色。默认为黑色。如果等级符号是点符号，点符号的颜色由lineColor控制
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.fillOpaqueRate -{number}
-     * @description 填充不透明度。合法值为0--100的数值。其中为0表示完全透明；
-     *              100表示完全不透明。赋值小于0时按照0处理，大于100时按照100处理。默认值为 100。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioX -{number}
-     * @description 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。它们的关系如下：设填充区域范围中心点的坐标为（x0, y0），
-     *              填充中心点的坐标为（x, y），填充区域范围的宽度为 a，水平偏移百分比为 dx，则 x=x0 + a*dx/100。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientMode -{FillGradientMode}
-     * @description 渐变填充风格的渐变类型。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.fillBackOpaque -{boolean}
-     * @description 背景是否不透明。false 表示透明。默认值为 false。
-     */
-    function ServerStyle(options) {
-        _classCallCheck(this, ServerStyle);
-
-        this.fillBackColor = null;
-        this.fillBackOpaque = false;
-        this.fillForeColor = null;
-        this.fillGradientMode = null;
-        this.fillGradientAngle = 0;
-        this.fillGradientOffsetRatioX = 0;
-        this.fillGradientOffsetRatioY = 0;
-        this.fillOpaqueRate = 100;
-        this.fillSymbolID = 0;
-        this.lineColor = null;
-        this.lineSymbolID = 0;
-        this.lineWidth = 1;
-        this.markerAngle = 0;
-        this.markerSize = 1;
-        this.markerSymbolID = -1;
-        this.CLASS_NAME = "SuperMap.ServerStyle";
-
-        var me = this;
-        me.fillBackColor = new _ServerColor2.default(255, 255, 255);
-        me.fillForeColor = new _ServerColor2.default(255, 0, 0);
-        me.lineColor = new _ServerColor2.default(0, 0, 0);
-        if (options) {
-            _SuperMap2.default.Util.extend(this, options);
-        }
-    }
-
-    /**
-     * @function SuperMap.ServerStyle.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.markerSymbolID -{Integer}
-     * @description 点状符号的编码。此编码用于唯一标识各点状符号。默认为 -1。
-     *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.markerAngle -{number}
-     * @description 点状符号的旋转角度。以度为单位，精确到0.1度，逆时针方向为正方向，默认值为0。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.lineSymbolID -{Integer}
-     * @description 线状符号的编码。此编码用于唯一标识各普通填充风格的填充符号，默认值为0。
-     *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.fillSymbolID -{Integer}
-     * @description 填充符号的编码。此编码用于唯一标识各普通填充风格的填充符号。
-     *              关于填充符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY -{number}
-     * @function 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
-     *           设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientAngle -{number}
-     * @description 渐变填充的旋转角度。单位为度，精确到0.1度，逆时针方向为正方向。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.fillForeColor -{SuperMap.ServerColor}
-     * @description 填充颜色。当填充模式为渐变填充时，该颜色为填充起始颜色。默认为红色。
-     */
-
-
-    /**
-     * @member SuperMap.ServerStyle.prototype.fillBackColor -{SuperMap.ServerColor}
-     * @description 填充背景颜色。当填充模式为渐变填充时，该颜色为填充终止色。默认为白色。
-     */
-
-
-    _createClass(ServerStyle, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            if (me.fillBackColor) {
-                me.fillBackColor.destroy();
-                me.fillBackColor = null;
-            }
-            me.fillBackOpaque = null;
-
-            if (me.fillForeColor) {
-                me.fillForeColor.destroy();
-                me.fillForeColor = null;
-            }
-            me.fillGradientMode = null;
-            me.fillGradientAngle = null;
-            me.fillGradientOffsetRatioX = null;
-            me.fillGradientOffsetRatioY = null;
-            me.fillOpaqueRate = null;
-            me.fillSymbolID = null;
-            if (me.lineColor) {
-                me.lineColor.destroy();
-                me.lineColor = null;
-            }
-            me.lineSymbolID = null;
-            me.lineWidth = null;
-            me.markerAngle = null;
-            me.markerSize = null;
-            me.markerSymbolID = null;
-        }
-
-        /**
-         * @function SuperMap.ServerStyle.prototype.toServerJSONObject
-         * @description 转换成对应的 JSON 格式对象。
-         */
-
-    }, {
-        key: 'toServerJSONObject',
-        value: function toServerJSONObject() {
-            var styleObj = {};
-            styleObj = _SuperMap2.default.Util.copyAttributes(styleObj, this);
-            //暂时先忽略serverColor往Json的转换
-            return styleObj;
-        }
-
-        /**
-         * @function SuperMap.ServerStyle.fromJson
-         * @description 将JSON对象转换为 SuperMap.ServerStyle 对象。
-         * @param jsonObject - {Object} 要转换的 JSON 对象。
-         * @return {SuperMap.ServerStyle} 转化后的 SuperMap.ServerStyle 对象。
-         */
-
-    }], [{
-        key: 'fromJson',
-        value: function fromJson(jsonObject) {
-            if (!jsonObject) {
-                return;
-            }
-            return new _SuperMap2.default.ServerStyle({
-                fillBackColor: _ServerColor2.default.fromJson(jsonObject.fillBackColor),
-                fillBackOpaque: jsonObject.fillBackOpaque,
-                fillForeColor: _ServerColor2.default.fromJson(jsonObject.fillForeColor),
-                fillGradientMode: jsonObject.fillGradientMode,
-                fillGradientAngle: jsonObject.fillGradientAngle,
-                fillGradientOffsetRatioX: jsonObject.fillGradientOffsetRatioX,
-                fillGradientOffsetRatioY: jsonObject.fillGradientOffsetRatioY,
-                fillOpaqueRate: jsonObject.fillOpaqueRate,
-                fillSymbolID: jsonObject.fillSymbolID,
-                lineColor: _ServerColor2.default.fromJson(jsonObject.lineColor),
-                lineSymbolID: jsonObject.lineSymbolID,
-                lineWidth: jsonObject.lineWidth,
-                markerAngle: jsonObject.markerAngle,
-                markerSize: jsonObject.markerSize,
-                markerSymbolID: jsonObject.markerSymbolID
-            });
-        }
-    }]);
-
-    return ServerStyle;
-}();
-
-exports.default = ServerStyle;
-
-
-_SuperMap2.default.ServerStyle = ServerStyle;
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6464,7 +6265,7 @@ exports.default = NetworkAnalystServiceBase;
 _SuperMap2.default.NetworkAnalystServiceBase = NetworkAnalystServiceBase;
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6480,11 +6281,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _JoinItem = __webpack_require__(48);
+var _JoinItem = __webpack_require__(32);
 
 var _JoinItem2 = _interopRequireDefault(_JoinItem);
 
-var _LinkItem = __webpack_require__(221);
+var _LinkItem = __webpack_require__(192);
 
 var _LinkItem2 = _interopRequireDefault(_LinkItem);
 
@@ -6571,7 +6372,7 @@ exports.default = FilterParameter;
 _SuperMap2.default.FilterParameter = FilterParameter;
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6589,19 +6390,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Geometry2 = __webpack_require__(61);
+var _Geometry2 = __webpack_require__(40);
 
 var _Geometry3 = _interopRequireDefault(_Geometry2);
 
-var _Projection = __webpack_require__(22);
-
-var _Projection2 = _interopRequireDefault(_Projection);
-
-var _Bounds = __webpack_require__(60);
+var _Bounds = __webpack_require__(39);
 
 var _Bounds2 = _interopRequireDefault(_Bounds);
 
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6875,28 +6672,6 @@ var Point = function (_Geometry) {
         }
 
         /**
-         * @function SuperMap.Geometry.Point.prototype.transform
-         * @description 投影转换。
-         * @param source - {SuperMap.Projection} 源对象投影。
-         * @param dest - {SuperMap.Projection} 目标对象投影。
-         *
-         * @returns {SuperMap.Geometry.Point}转换后的点对象。
-         * @example
-         * var point = new SuperMap.Geometry.Point(10,20);
-         * point.transform(new SuperMap.Projection("EPSG:4326"),new SuperMap.Projection("EPSG:900913"));
-         */
-
-    }, {
-        key: 'transform',
-        value: function transform(source, dest) {
-            if (source && dest) {
-                _Projection2.default.transform(this, source, dest);
-                this.bounds = null;
-            }
-            return this;
-        }
-
-        /**
          * @function SuperMap.Geometry.Point.prototype.destroy
          * @description 释放点对象的资源
          */
@@ -6933,7 +6708,7 @@ exports.default = Point;
 _SuperMap2.default.Geometry.Point = Point;
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7065,7 +6840,7 @@ exports.default = ServerColor;
 _SuperMap2.default.ServerColor = ServerColor;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7081,7 +6856,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ThemeMemoryData = __webpack_require__(256);
+var _ThemeMemoryData = __webpack_require__(227);
 
 var _ThemeMemoryData2 = _interopRequireDefault(_ThemeMemoryData);
 
@@ -7165,7 +6940,7 @@ exports.default = Theme;
 _SuperMap2.default.Theme = Theme;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7183,15 +6958,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Point = __webpack_require__(11);
+var _Point = __webpack_require__(10);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _Geometry2 = __webpack_require__(61);
+var _Geometry2 = __webpack_require__(40);
 
 var _Geometry3 = _interopRequireDefault(_Geometry2);
 
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7442,23 +7217,6 @@ var Collection = function (_Geometry) {
         }
 
         /**
-         * @function SuperMap.Geometry.Collection.prototype.getGeodesicArea
-         * @description 计算多边形投影到球面上的近似面积。
-         * @param projection - {SuperMap.Projection} 空间参考系统的几何坐标。如果没有设置，默认 WGS84。
-         * @returns {number} 几何图形的近似测地面积。
-         */
-
-    }, {
-        key: 'getGeodesicArea',
-        value: function getGeodesicArea(projection) {
-            var area = 0.0;
-            for (var i = 0, len = this.components.length; i < len; i++) {
-                area += this.components[i].getGeodesicArea(projection);
-            }
-            return area;
-        }
-
-        /**
          * @function SuperMap.Geometry.Collection.prototype.getCentroid
          * @description  计算几何图形集合的质心。
          * @param weighted -{Boolean} 执行getCentroid方法进行递归计算，返回此几何图形集合中的面积加权平均值。
@@ -7522,23 +7280,6 @@ var Collection = function (_Geometry) {
             }
 
             return new _Point2.default(xSum / areaSum, ySum / areaSum);
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.getGeodesicLength
-         * @description  计算投影到球面上的几何图形的近似测地长度。
-         * @param projection -{SuperMap.Projection} 空间参考系统的几何坐标。如果没有设置，默认 WGS84。
-         * @returns {number} 几何图形的近似测地长度。
-         */
-
-    }, {
-        key: 'getGeodesicLength',
-        value: function getGeodesicLength(projection) {
-            var length = 0.0;
-            for (var i = 0, len = this.components.length; i < len; i++) {
-                length += this.components[i].getGeodesicLength(projection);
-            }
-            return length;
         }
 
         /**
@@ -7649,27 +7390,6 @@ var Collection = function (_Geometry) {
         }
 
         /**
-         * @function SuperMap.Geometry.Collection.prototype.transform
-         * @description 投影转换。
-         * @param source - {SuperMap.Projection} 源对象投影。
-         * @param dest - {SuperMap.Projection} 目标对象投影。
-         * @returns {SuperMap.Geometry} this
-         */
-
-    }, {
-        key: 'transform',
-        value: function transform(source, dest) {
-            if (source && dest) {
-                for (var i = 0, len = this.components.length; i < len; i++) {
-                    var component = this.components[i];
-                    component.transform(source, dest);
-                }
-                this.bounds = null;
-            }
-            return this;
-        }
-
-        /**
          * @function SuperMap.Geometry.Collection.prototype.intersects
          * @description 判断输入的几何对象是否与当前几何对象相交。
          * @param geometry - {SuperMap.Geometry} 任意的几何类型。
@@ -7715,7 +7435,7 @@ exports.default = Collection;
 _SuperMap2.default.Geometry.Collection = Collection;
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7731,7 +7451,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
@@ -7870,7 +7590,7 @@ exports.default = QueryParameters;
 _SuperMap2.default.QueryParameters = QueryParameters;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7888,7 +7608,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(1);
 
-var _ServerColor = __webpack_require__(12);
+var _ServerColor = __webpack_require__(11);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
@@ -8124,7 +7844,7 @@ exports.default = ServerTextStyle;
 _SuperMap2.default.ServerTextStyle = ServerTextStyle;
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8140,7 +7860,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystResultSetting = __webpack_require__(263);
+var _TransportationAnalystResultSetting = __webpack_require__(234);
 
 var _TransportationAnalystResultSetting2 = _interopRequireDefault(_TransportationAnalystResultSetting);
 
@@ -8218,543 +7938,13 @@ exports.default = TransportationAnalystParameter;
 _SuperMap2.default.TransportationAnalystParameter = TransportationAnalystParameter;
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-module.exports = function(x) {
-  if (Math.abs(x) > 1) {
-    x = (x > 1) ? 1 : -1;
-  }
-  return Math.asin(x);
-};
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = function(eccent, sinphi, cosphi) {
-  var con = eccent * sinphi;
-  return cosphi / (Math.sqrt(1 - con * con));
-};
-
-/***/ }),
-/* 20 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = mapboxgl;
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = undefined;
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- *@namespace SuperMap
- */
-
-/**
- * @description In addition to the mandatory C and P parameters, an arbitrary number of
- * objects can be passed, which will extend C.
- * @memberOf SuperMap
- * @param C - {Object} the class that inherits
- * @param P - {Object} the superclass to inherit from
- */
-_SuperMap2.default.inherit = function (C, P) {
-    var F = function F() {};
-    F.prototype = P.prototype;
-    C.prototype = new F();
-    var i, l, o;
-    for (i = 2, l = arguments.length; i < l; i++) {
-        o = arguments[i];
-        if (typeof o === "function") {
-            o = o.prototype;
-        }
-        _SuperMap2.default.Util.extend(C.prototype, o);
-    }
-};
-
-/**
- * @description 实现多重继承
- * @memberOf SuperMap
- * @param ...mixins {Class|Object}继承的类
- */
-_SuperMap2.default.mixin = function () {
-    for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
-        mixins[_key] = arguments[_key];
-    }
-
-    var Mix = function Mix(options) {
-        _classCallCheck(this, Mix);
-
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-            for (var _iterator = mixins[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                var mixin = _step.value;
-
-                copyProperties(this, new mixin(options));
-            }
-        } catch (err) {
-            _didIteratorError = true;
-            _iteratorError = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion && _iterator.return) {
-                    _iterator.return();
-                }
-            } finally {
-                if (_didIteratorError) {
-                    throw _iteratorError;
-                }
-            }
-        }
-    };
-
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
-
-    try {
-
-        for (var _iterator2 = mixins[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var mixin = _step2.value;
-
-            copyProperties(Mix, mixin);
-            copyProperties(Mix.prototype, mixin.prototype);
-            copyProperties(Mix.prototype, new mixin());
-        }
-    } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                _iterator2.return();
-            }
-        } finally {
-            if (_didIteratorError2) {
-                throw _iteratorError2;
-            }
-        }
-    }
-
-    return Mix;
-
-    function copyProperties(target, source) {
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
-
-        try {
-            for (var _iterator3 = Reflect.ownKeys(source)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                var key = _step3.value;
-
-                if (key !== "constructor" && key !== "prototype" && key !== "name") {
-                    var desc = Object.getOwnPropertyDescriptor(source, key);
-                    Object.defineProperty(target, key, desc);
-                }
-            }
-        } catch (err) {
-            _didIteratorError3 = true;
-            _iteratorError3 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                    _iterator3.return();
-                }
-            } finally {
-                if (_didIteratorError3) {
-                    throw _iteratorError3;
-                }
-            }
-        }
-    }
-};
-
-/**
- * @name String
- * @memberOf SuperMap
- * @namespace
- * @description 字符串操作的一系列常用扩展函数.
- */
-var StringExt = exports.StringExt = _SuperMap2.default.String = {
-
-    /**
-     * @description 判断目标字符串是否以指定的子字符串开头.
-     * @param str - {string} 目标字符串.
-     * @param sub - {string} 查找的子字符串.
-     * @returns {Boolean} 目标字符串以指定的子字符串开头,则返回true;否则返回false.
-     */
-    startsWith: function startsWith(str, sub) {
-        return str.indexOf(sub) == 0;
-    },
-
-    /**
-     * @description 判断目标字符串是否包含指定的子字符串.
-     * @param str - {string} 目标字符串.
-     * @param sub - {string} 查找的子字符串.
-     * @returns {Boolean} 目标字符串中包含指定的子字符串,则返回true;否则返回false.
-     */
-    contains: function contains(str, sub) {
-        return str.indexOf(sub) != -1;
-    },
-
-    /**
-     * @description 删除一个字符串的开头和结尾处的所有空白字符.
-     * @param str - {string} (可能)存在空白字符填塞的字符串.
-     * @returns {string} 删除开头和结尾处空白字符后的字符串.
-     */
-    trim: function trim(str) {
-        return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-    },
-
-    /**
-     * @description 骆驼式("-")连字符的字符串处理.
-     * 例如: "chicken-head" becomes "chickenHead",
-     *       "-chicken-head" becomes "ChickenHead".
-     * @param str - {string} 要处理的字符串,原始内容不应被修改.
-     * @returns {string}
-     */
-    camelize: function camelize(str) {
-        var oStringList = str.split('-');
-        var camelizedString = oStringList[0];
-        for (var i = 1, len = oStringList.length; i < len; i++) {
-            var s = oStringList[i];
-            camelizedString += s.charAt(0).toUpperCase() + s.substring(1);
-        }
-        return camelizedString;
-    },
-
-    /**
-     * @description 提供带 ${token} 标记的字符串, 返回context对象属性中指定标记的属性值.
-     * @example
-     * 示例:
-     * (code)
-     * 1、template = "${value,getValue}";
-     *         context = {value: {getValue:function(){return Math.max.apply(null,argument);}}};
-     *         args = [2,23,12,36,21];
-     *       返回值:36
-     * (end)
-     * 示例:
-     * (code)
-     * 2、template = "$${{value,getValue}}";
-     *         context = {value: {getValue:function(){return Math.max.apply(null,argument);}}};
-     *         args = [2,23,12,36,21];
-     *       返回值:"${36}"
-     * (end)
-     * 示例:
-     * (code)
-     * 3、template = "${a,b}";
-     *         context = {a: {b:"format"}};
-     *         args = null;
-     *       返回值:"format"
-     * (end)
-     * 示例:
-     * (code)
-     * 3、template = "${a,b}";
-     *         context = null;
-     *         args = null;
-     *       返回值:"${a.b}"
-     * (end)
-     * @param template - {string} 带标记的字符串将要被替换.参数 template 格式为"${token}",此处的 token 标记会替换为 context["token"] 属性的值
-     * @param context - {Object} 带有属性的可选对象的属性用于匹配格式化字符串中的标记.如果该参数为空,将使用 window 对象.
-     * @param args - {Array} 可选参数传递给在context对象上找到的函数.
-     * @returns {string} 从 context 对象属性中替换字符串标记位的字符串.
-     */
-    format: function format(template, context, args) {
-        if (!context) {
-            context = window;
-        }
-
-        // Example matching:
-        // str   = ${foo.bar}
-        // match = foo.bar
-        var replacer = function replacer(str, match) {
-            var replacement;
-
-            // Loop through all subs. Example: ${a.b.c}
-            // 0 -> replacement = context[a];
-            // 1 -> replacement = context[a][b];
-            // 2 -> replacement = context[a][b][c];
-            var subs = match.split(/\.+/);
-            for (var i = 0; i < subs.length; i++) {
-                if (i == 0) {
-                    replacement = context;
-                }
-
-                replacement = replacement[subs[i]];
-            }
-
-            if (typeof replacement === "function") {
-                replacement = args ? replacement.apply(null, args) : replacement();
-            }
-
-            // If replacement is undefined, return the string 'undefined'.
-            // This is a workaround for a bugs in browsers not properly
-            // dealing with non-participating groups in regular expressions:
-            // http://blog.stevenlevithan.com/archives/npcg-javascript
-            if (typeof replacement == 'undefined') {
-                return 'undefined';
-            } else {
-                return replacement;
-            }
-        };
-
-        return template.replace(_SuperMap2.default.String.tokenRegEx, replacer);
-    },
-
-    /**
-     * @description Used to find tokens in a string.
-     * @example
-     * Examples: ${a}, ${a.b.c}, ${a-b}, ${5}
-     */
-    tokenRegEx: /\$\{([\w.]+?)\}/g,
-
-    /**
-     * @description Used to test strings as numbers.
-     */
-    numberRegEx: /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/,
-
-    /**
-     * @description 判断一个字符串是否只包含一个数值.
-     * @example
-     * (code)
-     * SuperMap.String.isNumeric("6.02e23") // true
-     * SuperMap.String.isNumeric("12 dozen") // false
-     * SuperMap.String.isNumeric("4") // true
-     * SuperMap.String.isNumeric(" 4 ") // false
-     * (end)
-     * @returns {Boolean} 字符串包含唯一的数值,返回true;否则返回false.
-     */
-    isNumeric: function isNumeric(value) {
-        return _SuperMap2.default.String.numberRegEx.test(value);
-    },
-
-    /**
-     * @description 把一个看似数值型的字符串转化为一个数值.
-     *
-     * @returns {Number|String} 如果能转换为数值则返回数值,否则返回字符串本身.
-     */
-    numericIf: function numericIf(value) {
-        return _SuperMap2.default.String.isNumeric(value) ? parseFloat(value) : value;
-    }
-
-};
-
-/**
- * @name Number
- * @memberOf SuperMap
- * @namespace
- * @description 数值操作的一系列常用扩展函数.
- */
-var NumberExt = exports.NumberExt = _SuperMap2.default.Number = {
-
-    /**
-     *  @description 格式化数字时默认的小数点分隔符.
-     */
-    decimalSeparator: ".",
-
-    /**
-     *  @description 格式化数字时默认的千位分隔符.
-     */
-    thousandsSeparator: ",",
-
-    /**
-     * @description 限制浮点数的有效数字位数.
-     * @param num - {number}
-     * @param sig - {Integer}
-     * @returns {number} 将数字四舍五入到指定数量的有效位数.
-     */
-    limitSigDigs: function limitSigDigs(num, sig) {
-        var fig = 0;
-        if (sig > 0) {
-            fig = parseFloat(num.toPrecision(sig));
-        }
-        return fig;
-    },
-
-    /**
-     * @description 数字格式化输出.
-     * @param num  - {number}
-     * @param dec  - {Integer} 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
-     * @param tsep - {string} 千位分隔符. 默认为",".
-     * @param dsep - {string} 小数点分隔符. 默认为".".
-     * @returns {string} 数字格式化后的字符串.
-     */
-    format: function format(num, dec, tsep, dsep) {
-        dec = typeof dec != "undefined" ? dec : 0;
-        tsep = typeof tsep != "undefined" ? tsep : _SuperMap2.default.Number.thousandsSeparator;
-        dsep = typeof dsep != "undefined" ? dsep : _SuperMap2.default.Number.decimalSeparator;
-
-        if (dec != null) {
-            num = parseFloat(num.toFixed(dec));
-        }
-
-        var parts = num.toString().split(".");
-        if (parts.length === 1 && dec == null) {
-            // integer where we do not want to touch the decimals
-            dec = 0;
-        }
-
-        var integer = parts[0];
-        if (tsep) {
-            var thousands = /(-?[0-9]+)([0-9]{3})/;
-            while (thousands.test(integer)) {
-                integer = integer.replace(thousands, "$1" + tsep + "$2");
-            }
-        }
-
-        var str;
-        if (dec == 0) {
-            str = integer;
-        } else {
-            var rem = parts.length > 1 ? parts[1] : "0";
-            if (dec != null) {
-                rem = rem + new Array(dec - rem.length + 1).join("0");
-            }
-            str = integer + dsep + rem;
-        }
-        return str;
-    }
-};
-
-if (!Number.prototype.limitSigDigs) {
-    /**
-     * APIMethod: Number.limitSigDigs
-     * 限制浮点数的有效数字位数.
-     * @param sig - {Integer}
-     * @returns {Integer} 将数字四舍五入到指定数量的有效位数.
-     *           如果传入值为 null、0、或者是负数, 返回值 0
-     */
-    Number.prototype.limitSigDigs = function (sig) {
-        return NumberExt.limitSigDigs(this, sig);
-    };
-}
-
-/**
- * @name Function
- * @memberOf SuperMap
- * @namespace
- * @description 函数操作的一系列常用扩展函数.
- */
-var FunctionExt = exports.FunctionExt = _SuperMap2.default.Function = {
-    /**
-     * @description 绑定函数到对象.方便创建this的作用域.
-     * @param func - {Function} 输入函数.
-     * @param object - {Object} 对象绑定到输入函数(作为输入函数的this对象).
-     * @returns {Function} object参数作为func函数的this对象.
-     */
-    bind: function bind(func, object) {
-        // create a reference to all arguments past the second one
-        var args = Array.prototype.slice.apply(arguments, [2]);
-        return function () {
-            // Push on any additional arguments from the actual function call.
-            // These will come after those sent to the bind call.
-            var newArgs = args.concat(Array.prototype.slice.apply(arguments, [0]));
-            return func.apply(object, newArgs);
-        };
-    },
-
-    /**
-     * @description 绑定函数到对象,在调用该函数时配置并使用事件对象作为第一个参数.
-     * @param func - {Function} 用于监听事件的函数.
-     * @param object - {Object} this 对象的引用.
-     * @returns {Function}
-     */
-    bindAsEventListener: function bindAsEventListener(func, object) {
-        return function (event) {
-            return func.call(object, event || window.event);
-        };
-    },
-
-    /**
-     * @description 该函数仅仅返回false.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
-     * @example
-     * document.onclick = SuperMap.Function.False;
-     * @returns {Boolean}
-     */
-    False: function False() {
-        return false;
-    },
-
-    /**
-     * @description 该函数仅仅返回true.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
-     * @example
-     * document.onclick = SuperMap.Function.True;
-     * @returns {Boolean}
-     */
-    True: function True() {
-        return true;
-    },
-
-    /**
-     * @description 可重用函数,仅仅返回"undefined".
-     * @returns {undefined}
-     */
-    Void: function Void() {}
-
-};
-
-/**
- * @name Array
- * @memberOf SuperMap
- * @namespace
- * @description 数组操作的一系列常用扩展函数.
- */
-var ArrayExt = exports.ArrayExt = _SuperMap2.default.Array = {
-
-    /**
-     * @description 过滤数组.提供了ECMA-262标准中Array.prototype.filter函数的扩展.
-     * @see {@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
-     * @param array - {Array} 要过滤的数组..
-     * @param callback - {Function} 数组中的每一个元素调用该函数.<br>
-     *     如果函数的返回值为true,该元素将包含在返回的数组中.该函数有三个参数: 数组中的元素,元素的索引,数组自身.<br>
-     *     如果设置了可选参数caller,在调用callback时,使用可选参数caller设置为callback的参数.<br>
-     * @param caller - {Object} 在调用callback时,使用可选参数caller设置为callback的参数.
-     * @returns {Array} callback函数返回true时的元素将作为返回数组中的元素.
-     */
-    filter: function filter(array, callback, caller) {
-        var selected = [];
-        if (Array.prototype.filter) {
-            selected = array.filter(callback, caller);
-        } else {
-            var len = array.length;
-            if (typeof callback != "function") {
-                throw new TypeError();
-            }
-            for (var i = 0; i < len; i++) {
-                if (i in array) {
-                    var val = array[i];
-                    if (callback.call(caller, val, i, array)) {
-                        selected.push(val);
-                    }
-                }
-            }
-        }
-        return selected;
-    }
-
-};
-
-/***/ }),
-/* 22 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8770,358 +7960,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _proj = __webpack_require__(291);
-
-var _proj2 = _interopRequireDefault(_proj);
-
-var _Util = __webpack_require__(4);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class  SuperMap.Projection
- * @classdesc 坐标转换类。这个类封装了与 proj4js 投影对象进行交互的几种方法。
- *
- * > 对于不支持或者用户想要自定义投影类型，可通过下载 proj4js 产品包，并引入产品包中的 proj4js.js
- * 实现自定义的投影转换。
- * > 目前 proj4js 支持的投影种类有：<br>
- * WGS84, EPSG:4326, EPSG:4269, EPSG:3875, EPSG:3785, EPSG4139,EPSG:4181, EPSG:4272, EPSG:4302, EPSG:21781,
- * EPSG:102113,EPSG:26591,EPSG:26912, EPSG:27200, EPSG:27563, EPSG:41001, EPSG:42304,EPSG:102067, EPSG:102757,
- * EPSG:102758, EPSG:900913, GOOGLE
- *
- * @param  projCode - {string} 投影编码。
- * @param  options - {Object} 设置图层上的的附加属性。
- *
- * @example
- * var geographic = new SuperMap.Projection("EPSG:4326");
- */
-var Projection = function () {
-
-    /**
-     * @member SuperMap.Projection.prototype.projCode -{string}
-     * @description 投影编码。
-     */
-    function Projection(projCode, options) {
-        _classCallCheck(this, Projection);
-
-        this.proj = null;
-        this.projCode = null;
-        this.titleRegEx = /\+title=[^\+]*/;
-        this.CLASS_NAME = "SuperMap.Projection";
-
-        _Util.Util.extend(this, options);
-        this.projCode = projCode;
-        if (window.Proj4js) {
-            this.proj = new _proj2.default(projCode);
-        }
-    }
-
-    /**
-     * @function SuperMap.Projection.prototype.getCode
-     * @description 获取SRS代码字符串。
-     * @returns {string} SRS代码。
-     */
-
-
-    /**
-     * @member SuperMap.Projection.prototype.titleRegEx -{RegExp}
-     * @description regular expression to strip the title from a proj4js definition
-     */
-
-
-    /**
-     * @member SuperMap.Projection.prototype.proj -{Object}
-     * @description Proj4js.Proj instance.
-     */
-
-
-    _createClass(Projection, [{
-        key: 'getCode',
-        value: function getCode() {
-            return this.proj ? this.proj.srsCode : this.projCode;
-        }
-
-        /**
-         * @function SuperMap.Projection.prototype.getUnits
-         * @description 获取投影的单位字符串。如果 proj4js 不可用则返回null。
-         * @returns {string} 获取的单位。
-         */
-
-    }, {
-        key: 'getUnits',
-        value: function getUnits() {
-            return this.proj ? this.proj.units : null;
-        }
-
-        /**
-         * @function SuperMap.Projection.prototype.toString
-         * @description 将投影转换为字符串(内部封装了getCode方法)
-         * @returns {string} 投影代码。
-         */
-
-    }, {
-        key: 'toString',
-        value: function toString() {
-            return this.getCode();
-        }
-
-        /**
-         * @function SuperMap.Projection.prototype.equals
-         * @description Test equality of two projection instances.  Determines equality based
-         *     soley on the projection code.
-         * @returns {Boolean} The two projections are equivalent.
-         */
-
-    }, {
-        key: 'equals',
-        value: function equals(projection) {
-            var p = projection,
-                equals = false;
-            if (p) {
-                if (!(p instanceof Projection)) {
-                    p = new Projection(p);
-                }
-                if (window.Proj4js && this.proj.defData && p.proj.defData) {
-                    equals = this.proj.defData.replace(this.titleRegEx, "") === p.proj.defData.replace(this.titleRegEx, "");
-                } else if (p.getCode) {
-                    var source = this.getCode(),
-                        target = p.getCode();
-                    equals = source === target || !!Projection.transforms[source] && Projection.transforms[source][target] === Projection.nullTransform;
-                }
-            }
-            return equals;
-        }
-
-        /**
-         * @function SuperMap.Projection.prototype.destroy
-         * @description Destroy projection object.
-         */
-
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-            delete this.proj;
-            delete this.projCode;
-        }
-
-        /**
-         * @member SuperMap.Projection.transforms
-         * @description Transforms is an object, with from properties, each of which may
-         * have a to property. This allows you to define projections without
-         * requiring support for proj4js to be included.<br>
-         *
-         * This object has keys which correspond to a 'source' projection object.  The
-         * keys should be strings, corresponding to the projection.getCode() value.
-         * Each source projection object should have a set of destination projection
-         * keys included in the object.<br>
-         *
-         * Each value in the destination object should be a transformation function,
-         * where the function is expected to be passed an object with a .x and a .y
-         * property.  The function should return the object, with the .x and .y
-         * transformed according to the transformation function.<br>
-         *
-         * > Note - Properties on this object should not be set directly.  To add a
-         *     transform method to this object, use the <addTransform> method.  For an
-         *     example of usage, see the SuperMap.Layer.SphericalMercator file.
-         */
-
-        /**
-         * @member SuperMap.Projection.defaults -{Object}
-         * @description 默认支持 EPSG:4326, CRS:84, urn:ogc:def:crs:EPSG:6.6:4326, EPSG:900913, EPSG:3857,
-         * EPSG:102113, EPSG:102100 投影间的转换。defaults 定义的关键字为坐标系统编码，相应的属性值为
-         * units, maxExtent(坐标系统的有效范围)和yx(当坐标系统有反向坐标轴时为true)
-         */
-
-    }], [{
-        key: 'addTransform',
-
-
-        /**
-         * @function SuperMap.Projection.addTransform
-         * @description 设置自定义投影转换方法。在proj4js库不可用或者自定义的投影需要处理时使用此方法。
-         * @param from - {string} 源投影代码。
-         * @param to - {string} 目标投影代码。
-         * @param method - {Function} 将作为参数的点的源投影转化为目标投影的方法。
-         */
-        value: function addTransform(from, to, method) {
-            if (method === Projection.nullTransform) {
-                var defaults = Projection.defaults[from];
-                if (defaults && !Projection.defaults[to]) {
-                    Projection.defaults[to] = defaults;
-                }
-            }
-            if (!Projection.transforms[from]) {
-                Projection.transforms[from] = {};
-            }
-            Projection.transforms[from][to] = method;
-        }
-    }, {
-        key: 'transform',
-
-
-        /**
-         * @function SuperMap.Projection.transform
-         * @description 点投影转换。
-         * @param point - {SuperMap.Geometry.Point| Object} 带有x,y坐标的点对象。
-         * @param source - {SuperMap.Projection} 源地图坐标系统。
-         * @param dest - {SuperMap.Projection} 目标地图坐标系统。
-         * @returns point - {object} 转换后的坐标。
-         */
-        value: function transform(point, source, dest) {
-            if (source && dest) {
-                if (!(source instanceof Projection)) {
-                    source = new Projection(source);
-                }
-                if (!(dest instanceof Projection)) {
-                    dest = new Projection(dest);
-                }
-                if (source.proj && dest.proj) {
-                    point = (0, _proj2.default)(source.proj, dest.proj, point);
-                } else {
-                    var sourceCode = source.getCode();
-                    var destCode = dest.getCode();
-                    var transforms = Projection.transforms;
-                    if (transforms[sourceCode] && transforms[sourceCode][destCode]) {
-                        transforms[sourceCode][destCode](point);
-                    }
-                }
-            }
-            return point;
-        }
-
-        /**
-         * @function SuperMap.Projection.nullTransform
-         * @description 空转换，有用的定义投影的别名时proj4js不可用：当proj4js不可用时，用来定义投影的别名。
-         * @example
-         * SuperMap.Projection.addTransform("EPSG:4326", "EPSG:3857",
-         *     SuperMap.Layer.SphericalMercator.projectForward);
-         * SuperMap.Projection.addTransform("EPSG:3857", "EPSG:3857",
-         *     SuperMap.Layer.SphericalMercator.projectInverse);
-         * SuperMap.Projection.addTransform("EPSG:3857", "EPSG:900913",
-         *     SuperMap.Projection.nullTransform);
-         * SuperMap.Projection.addTransform("EPSG:900913", "EPSG:3857",
-         *     SuperMap.Projection.nullTransform);
-         */
-
-    }]);
-
-    return Projection;
-}();
-
-Projection.transforms = {};
-Projection.defaults = {
-    "EPSG:4326": {
-        units: "degrees",
-        maxExtent: [-180, -90, 180, 90],
-        yx: true
-        //maxResolution:1.40625
-    },
-    "CRS:84": {
-        units: "degrees",
-        maxExtent: [-180, -90, 180, 90]
-    },
-    "EPSG:900913": {
-        units: "m",
-        maxExtent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
-    },
-    "EPSG:3857": {
-        units: "m",
-        maxExtent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
-    }
-};
-
-Projection.nullTransform = function (point) {
-    return point;
-};
-
-exports.default = Projection;
-
-_SuperMap2.default.Projection = Projection;
-/**
- * Note: Transforms for web mercator <-> geographic
- * SuperMap recognizes EPSG:3857, EPSG:900913, EPSG:102113 and EPSG:102100.
- * SuperMap originally started referring to EPSG:900913 as web mercator.
- * The EPSG has declared EPSG:3857 to be web mercator.
- * ArcGIS 10 recognizes the EPSG:3857, EPSG:102113, and EPSG:102100 as
- * equivalent.  See http://blogs.esri.com/Dev/blogs/arcgisserver/archive/2009/11/20/ArcGIS-Online-moving-to-Google-_2F00_-Bing-tiling-scheme_3A00_-What-does-this-mean-for-you_3F00_.aspx#12084.
- * For geographic, SuperMap recognizes EPSG:4326, CRS:84 and
- * urn:ogc:def:crs:EPSG:6.6:4326. SuperMap also knows about the reverse axis
- * order for EPSG:4326.
- */
-(function () {
-
-    var pole = 20037508.34;
-
-    function inverseMercator(xy) {
-        xy.x = 180 * xy.x / pole;
-        xy.y = 180 / Math.PI * (2 * Math.atan(Math.exp(xy.y / pole * Math.PI)) - Math.PI / 2);
-        return xy;
-    }
-
-    function forwardMercator(xy) {
-        xy.x = xy.x * pole / 180;
-        //xy.y = xy.y<-90?-89.99:xy.y;//经纬度转换为墨卡托，当纬度值小于-90时，转换后的结果为NaN，故不能超过范围
-        //xy.y = xy.y>90?89.99:xy.y;
-        xy.y = Math.log(Math.tan((90 + xy.y) * Math.PI / 360)) / Math.PI * pole;
-        return xy;
-    }
-
-    function map(base, codes) {
-        var add = Projection.addTransform;
-        var same = Projection.nullTransform;
-        var i, len, code, other, j;
-        for (i = 0, len = codes.length; i < len; ++i) {
-            code = codes[i];
-            add(base, code, forwardMercator);
-            add(code, base, inverseMercator);
-            for (j = i + 1; j < len; ++j) {
-                other = codes[j];
-                add(code, other, same);
-                add(other, code, same);
-            }
-        }
-    }
-
-    // list of equivalent codes for web mercator
-    var mercator = ["EPSG:900913", "EPSG:3857", "EPSG:102113", "EPSG:102100"],
-        geographic = ["CRS:84", "urn:ogc:def:crs:EPSG:6.6:4326", "EPSG:4326"],
-        i;
-    for (i = mercator.length - 1; i >= 0; --i) {
-        map(mercator[i], geographic);
-    }
-    for (i = geographic.length - 1; i >= 0; --i) {
-        map(geographic[i], mercator);
-    }
-})();
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _Point = __webpack_require__(11);
+var _Point = __webpack_require__(10);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _Collection = __webpack_require__(14);
+var _Collection = __webpack_require__(13);
 
 var _Collection2 = _interopRequireDefault(_Collection);
 
-var _Curve2 = __webpack_require__(161);
+var _Curve2 = __webpack_require__(132);
 
 var _Curve3 = _interopRequireDefault(_Curve2);
 
@@ -10868,7 +9715,7 @@ function GetBezierGap(pSrcPt, j) {
 }
 
 /***/ }),
-/* 24 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10960,7 +9807,7 @@ exports.default = DataReturnOption;
 _SuperMap2.default.DataReturnOption = DataReturnOption;
 
 /***/ }),
-/* 25 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11060,7 +9907,7 @@ exports.default = FacilityAnalyst3DParameters;
 _SuperMap2.default.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;
 
 /***/ }),
-/* 26 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11172,7 +10019,7 @@ exports.default = GetFeaturesParametersBase;
 _SuperMap2.default.GetFeaturesParametersBase = GetFeaturesParametersBase;
 
 /***/ }),
-/* 27 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11196,7 +10043,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -11382,7 +10229,7 @@ exports.default = GetFeaturesServiceBase;
 _SuperMap2.default.GetFeaturesServiceBase = GetFeaturesServiceBase;
 
 /***/ }),
-/* 28 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11601,7 +10448,7 @@ exports.default = InterpolationAnalystParameters;
 _SuperMap2.default.InterpolationAnalystParameters = InterpolationAnalystParameters;
 
 /***/ }),
-/* 29 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11623,7 +10470,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FetchRequest = __webpack_require__(41);
+var _FetchRequest = __webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11788,66 +10635,7 @@ exports.default = ProcessingServiceBase;
 _SuperMap2.default.ProcessingServiceBase = ProcessingServiceBase;
 
 /***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var HALF_PI = Math.PI/2;
-var sign = __webpack_require__(36);
-
-module.exports = function(x) {
-  return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
-};
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-module.exports = function(x) {
-  return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
-};
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-module.exports = function(x) {
-  return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
-};
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports) {
-
-module.exports = function(x) {
-  return (0.05859375 * x * x * (1 + 0.75 * x));
-};
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports) {
-
-module.exports = function(x) {
-  return (x * x * x * (35 / 3072));
-};
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-module.exports = function(e0, e1, e2, e3, phi) {
-  return (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi));
-};
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
-
-module.exports = function(x) {
-  return x<0 ? -1 : 1;
-};
-
-/***/ }),
-/* 37 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11863,264 +10651,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.Pixel
- * @classdesc 此类用x,y坐标描绘屏幕坐标（像素点）。
- * @param x - {number} x坐标，默认为0.0
- * @param y - {number} y坐标，默认为0.0
- * @param mode - {string} 坐标模式，默认为{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
- *
- * @example
- * //单独创建一个对象
- * var pixcel = new SuperMap.Pixel(100,50);
- *
- * //依据size创建
- *  var size = new SuperMap.Size(21,25);
- *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
- */
-var Pixel = function () {
-
-    /**
-     * @member SuperMap.Pixel.prototype.y -{number}
-     * @description y坐标，默认为0.0
-     */
-    function Pixel(x, y, mode) {
-        _classCallCheck(this, Pixel);
-
-        this.x = 0.0;
-        this.y = 0.0;
-        this.mode = null;
-        this.CLASS_NAME = "SuperMap.Pixel";
-
-        this.x = x ? parseFloat(x) : this.x;
-        this.y = y ? parseFloat(y) : this.y;
-        this.mode = mode;
-    }
-
-    /**
-     * @function SuperMap.Pixel.prototype. toString
-     * 返回此对象的字符串形式
-     * @example
-     *
-     * var pixcel = new SuperMap.Pixel(100,50);
-     * var str = pixcel.toString();
-     *
-     * @returns {string} 例如: "x=200.4,y=242.2"
-     */
-
-
-    /**
-     * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
-     * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
-     * 值有<br>
-     * * SuperMap.Pixel.Mode.LeftTop
-     * * SuperMap.Pixel.Mode.RightTop
-     * * SuperMap.Pixel.Mode.RightBottom
-     * * SuperMap.Pixel.Mode.LeftBottom
-     *
-     * 这四种 默认值为：SuperMap.Pixel.Mode.LeftTop
-     *
-     * @default SuperMap.Pixel.Mode.LeftTop
-     */
-
-
-    /**
-     * @member SuperMap.Pixel.prototype.x -{number}
-     * @description x坐标，默认为0.0
-     */
-
-
-    _createClass(Pixel, [{
-        key: "toString",
-        value: function toString() {
-            return "x=" + this.x + ",y=" + this.y;
-        }
-
-        /**
-         * @function SuperMap.Pixel.prototype. clone
-         * @description 克隆当前的 pixel 对象。
-         * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
-         * var pixcel2 = pixcel.clone();
-         * @returns {SuperMap.Pixel} 返回一个新的与当前 pixel 对象有相同x、y坐标的 pixel 对象。
-         */
-
-    }, {
-        key: "clone",
-        value: function clone() {
-            return new Pixel(this.x, this.y, this.mode);
-        }
-
-        /**
-         * @function SuperMap.Pixel.prototype. equals
-         * @description 比较两 pixel 是否相等
-         * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
-         * var pixcel2 = new SuperMap.Pixel(100,50);
-         * var isEquals = pixcel.equals(pixcel2);
-         *
-         * @param px - {SuperMap.Pixel} 用于比较相等的 pixel 对象。
-         * @returns {Boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
-         */
-
-    }, {
-        key: "equals",
-        value: function equals(px) {
-            var equals = false;
-            if (px != null) {
-                equals = this.x == px.x && this.y == px.y || isNaN(this.x) && isNaN(this.y) && isNaN(px.x) && isNaN(px.y);
-            }
-            return equals;
-        }
-
-        /**
-         * @function SuperMap.Pixel.prototype. distanceTo
-         * @description 返回两个 pixel 的距离。
-         * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
-         * var pixcel2 = new SuperMap.Pixel(110,30);
-         * var distance = pixcel.distanceTo(pixcel2);
-         *
-         * @param px - {SuperMap.Pixel} 用于计算的一个 pixel
-         * @returns {float} 作为参数传入的像素与当前像素点的距离。
-         */
-
-    }, {
-        key: "distanceTo",
-        value: function distanceTo(px) {
-            return Math.sqrt(Math.pow(this.x - px.x, 2) + Math.pow(this.y - px.y, 2));
-        }
-
-        /**
-         * @function SuperMap.Pixel.prototype. add
-         * @description 在原来像素坐标基础上，x值加上传入的x参数，y值加上传入的y参数。
-         * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
-         * //pixcel2是新的对象
-         * var pixcel2 = pixcel.add(20,30);
-         *
-         * @param x - {number} 传入的x值。
-         * @param y - {number} 传入的y值。
-         * @returns {SuperMap.Pixel} 返回一个新的pixel对象，该pixel是由当前的pixel与传
-         *      入的x,y相加得到。
-         */
-
-    }, {
-        key: "add",
-        value: function add(x, y) {
-            if (x == null || y == null) {
-                throw new TypeError('Pixel.add cannot receive null values');
-            }
-            return new Pixel(this.x + x, this.y + y);
-        }
-
-        /**
-         * @function SuperMap.Pixel.prototype. offset
-         * @description 通过传入的 {@link SuperMap.Pixel} 参数对原屏幕坐标进行偏移。
-         * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
-         * var pixcel2 = new SuperMap.Pixel(130,20);
-         * //pixcel3 是新的对象
-         * var pixcel3 = pixcel.offset(pixcel2);
-         *
-         * @param px - {SuperMap.Pixel}  传入的 <SuperMap.Pixel> 对象。
-         * @returns {SuperMap.Pixel} 返回一个新的pixel，该pixel是由当前的pixel对象的x，y
-         *      值与传入的Pixel对象的x，y值相加得到。
-         */
-
-    }, {
-        key: "offset",
-        value: function offset(px) {
-            var newPx = this.clone();
-            if (px) {
-                newPx = this.add(px.x, px.y);
-            }
-            return newPx;
-        }
-
-        /**
-         *
-         * @function SuperMap.Pixel.prototype. destroy
-         * @description 销毁此对象。
-         * 销毁后此对象的所有属性为null，而不是初始值。
-         * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
-         * pixcel.destroy();
-         */
-
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.x = null;
-            this.y = null;
-            this.mode = null;
-        }
-
-        /**
-         * @member SuperMap.Pixel.Mode
-         * @enum {string}
-         * @readonly
-         * @description 模式
-         *
-         * * SuperMap.Pixel.Mode.LeftTop 左上模式
-         * * SuperMap.Pixel.Mode.RightTop 右上模式
-         * * SuperMap.Pixel.Mode.RightBottom 右下模式
-         * * SuperMap.Pixel.Mode.LeftBottom 左下模式
-         */
-
-    }]);
-
-    return Pixel;
-}();
-
-Pixel.Mode = {
-    LeftTop: "lefttop",
-    RightTop: "righttop",
-    RightBottom: "rightbottom",
-    LeftBottom: "leftbottom"
-};
-exports.default = Pixel;
-
-_SuperMap2.default.Pixel = Pixel;
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _Collection = __webpack_require__(14);
+var _Collection = __webpack_require__(13);
 
 var _Collection2 = _interopRequireDefault(_Collection);
 
-var _LineString2 = __webpack_require__(23);
+var _LineString2 = __webpack_require__(18);
 
 var _LineString3 = _interopRequireDefault(_LineString2);
 
-var _Point = __webpack_require__(11);
+var _Point = __webpack_require__(10);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _Projection = __webpack_require__(22);
-
-var _Projection2 = _interopRequireDefault(_Projection);
-
-var _BaseTypes = __webpack_require__(21);
+var _BaseTypes = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12271,27 +10814,6 @@ var LinearRing = function (_LineString) {
         }
 
         /**
-         * @function SuperMap.Geometry.LinearRing.prototype.transform
-         * @description 投影转换。
-         * @param source - {SuperMap.Projection} 源对象投影。
-         * @param dest - {SuperMap.Projection} 目标对象投影。
-         * @returns {SuperMap.Geometry}
-         */
-
-    }, {
-        key: 'transform',
-        value: function transform(source, dest) {
-            if (source && dest) {
-                for (var i = 0, len = this.components.length; i < len - 1; i++) {
-                    var component = this.components[i];
-                    component.transform(source, dest);
-                }
-                this.bounds = null;
-            }
-            return this;
-        }
-
-        /**
          * @function SuperMap.Geometry.LinearRing.prototype.getCentroid
          * @description 获取几何对象的质心。
          * @returns {SuperMap.Geometry.Point} 几何图形的质心。
@@ -12352,37 +10874,6 @@ var LinearRing = function (_LineString) {
                     sum += (b.x + c.x) * (c.y - b.y);
                 }
                 area = -sum / 2.0;
-            }
-            return area;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LinearRing.prototype.getGeodesicArea
-         * @description 计算投影到球面上的几何对象的近似面积。 如果是沿顺时针方向的环则是正值，否则为负值。
-         * @param projection - {SuperMap.Projection} 空间参考系统的几何坐标。如果没有设置，默认 WGS84。
-         * @returns {float} 几何图形的近似测地面积。
-         */
-
-    }, {
-        key: 'getGeodesicArea',
-        value: function getGeodesicArea(projection) {
-            var ring = this; // so we can work with a clone if needed
-            if (projection) {
-                var gg = new _Projection2.default("EPSG:4326");
-                if (!gg.equals(projection)) {
-                    ring = this.clone().transform(projection, gg);
-                }
-            }
-            var area = 0.0;
-            var len = ring.components && ring.components.length;
-            if (len > 2) {
-                var p1, p2;
-                for (var i = 0; i < len - 1; i++) {
-                    p1 = ring.components[i];
-                    p2 = ring.components[i + 1];
-                    area += _SuperMap2.default.Util.rad(p2.x - p1.x) * (2 + Math.sin(_SuperMap2.default.Util.rad(p1.y)) + Math.sin(_SuperMap2.default.Util.rad(p2.y)));
-                }
-                area = area * 6378137.0 * 6378137.0 / 2.0;
             }
             return area;
         }
@@ -12532,7 +11023,7 @@ exports.default = LinearRing;
 _SuperMap2.default.Geometry.LinearRing = LinearRing;
 
 /***/ }),
-/* 39 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12554,11 +11045,11 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _QueryParameters = __webpack_require__(15);
+var _QueryParameters = __webpack_require__(14);
 
 var _QueryParameters2 = _interopRequireDefault(_QueryParameters);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -12751,7 +11242,7 @@ exports.default = QueryService;
 _SuperMap2.default.QueryService = QueryService;
 
 /***/ }),
-/* 40 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12769,15 +11260,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _UGCMapLayer2 = __webpack_require__(265);
+var _UGCMapLayer2 = __webpack_require__(236);
 
 var _UGCMapLayer3 = _interopRequireDefault(_UGCMapLayer2);
 
-var _JoinItem = __webpack_require__(48);
+var _JoinItem = __webpack_require__(32);
 
 var _JoinItem2 = _interopRequireDefault(_JoinItem);
 
-var _DatasetInfo = __webpack_require__(174);
+var _DatasetInfo = __webpack_require__(145);
 
 var _DatasetInfo2 = _interopRequireDefault(_DatasetInfo);
 
@@ -12926,7 +11417,7 @@ exports.default = UGCSubLayer;
 _SuperMap2.default.UGCSubLayer = UGCSubLayer;
 
 /***/ }),
-/* 41 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12939,11 +11430,11 @@ exports.FetchRequest = exports.Support = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _whatwgFetchImportable = __webpack_require__(152);
+var _whatwgFetchImportable = __webpack_require__(124);
 
 var _whatwgFetchImportable2 = _interopRequireDefault(_whatwgFetchImportable);
 
-var _fetchJsonp2 = __webpack_require__(151);
+var _fetchJsonp2 = __webpack_require__(123);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
@@ -13132,41 +11623,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
 };
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-var HALF_PI = Math.PI/2;
-module.exports = function(eccent, ts) {
-  var eccnth = 0.5 * eccent;
-  var con, dphi;
-  var phi = HALF_PI - 2 * Math.atan(ts);
-  for (var i = 0; i <= 15; i++) {
-    con = eccent * Math.sin(phi);
-    dphi = HALF_PI - 2 * Math.atan(ts * (Math.pow(((1 - con) / (1 + con)), eccnth))) - phi;
-    phi += dphi;
-    if (Math.abs(dphi) <= 0.0000000001) {
-      return phi;
-    }
-  }
-  //console.log("phi2z has NoConvergence");
-  return -9999;
-};
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports) {
-
-var HALF_PI = Math.PI/2;
-
-module.exports = function(eccent, phi, sinphi) {
-  var con = eccent * sinphi;
-  var com = 0.5 * eccent;
-  con = Math.pow(((1 - con) / (1 + con)), com);
-  return (Math.tan(0.5 * (HALF_PI - phi)) / con);
-};
-
-/***/ }),
-/* 44 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13175,352 +11632,7 @@ module.exports = function(eccent, phi, sinphi) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Event = undefined;
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _Util = __webpack_require__(4);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @name Event
- * @memberOf SuperMap
- * @namespace
- * @description 事件处理函数.
- */
-var Event = exports.Event = _SuperMap2.default.Event = {
-
-    /**
-     * @description  A hashtable cache of the event observers. Keyed by element._eventCacheID
-     * @type {Boolean}
-     * @default false
-     */
-    observers: false,
-
-    /**
-     * @description KEY_SPACE
-     * @type {number}
-     * @default 32
-     */
-    KEY_SPACE: 32,
-
-    /**
-     * @description KEY_BACKSPACE
-     * @type {number}
-     * @default 8
-     */
-    KEY_BACKSPACE: 8,
-
-    /**
-     * @description KEY_TAB
-     * @type {number}
-     * @default 9
-     */
-    KEY_TAB: 9,
-
-    /**
-     * @description KEY_RETURN
-     * @type {number}
-     * @default 13
-     */
-    KEY_RETURN: 13,
-
-    /**
-     * @description KEY_ESC
-     * @type {number}
-     * @default 27
-     */
-    KEY_ESC: 27,
-
-    /**
-     * @description KEY_LEFT
-     * @type {number}
-     * @default 37
-     */
-    KEY_LEFT: 37,
-
-    /**
-     * @description KEY_UP
-     * @type {number}
-     * @default 38
-     */
-    KEY_UP: 38,
-
-    /**
-     * @description KEY_RIGHT
-     * @type {number}
-     * @default 39
-     */
-    KEY_RIGHT: 39,
-
-    /**
-     * @description KEY_DOWN
-     * @type {number}
-     * @default 40
-     */
-    KEY_DOWN: 40,
-
-    /**
-     * @description KEY_DELETE
-     * @type {number}
-     * @default 46
-     */
-    KEY_DELETE: 46,
-
-    /**
-     * @description Cross browser event element detection.
-     * @param event - {Event}
-     * @returns {HTMLElement} The element that caused the event
-     */
-    element: function element(event) {
-        return event.target || event.srcElement;
-    },
-
-    /**
-     * @description Determine whether event was caused by a single touch
-     * @param event - {Event}
-     * @returns {Boolean}
-     */
-    isSingleTouch: function isSingleTouch(event) {
-        return event.touches && event.touches.length === 1;
-    },
-
-    /**
-     * @description Determine whether event was caused by a multi touch
-     * @param event - {Event}
-     * @returns {Boolean}
-     */
-    isMultiTouch: function isMultiTouch(event) {
-        return event.touches && event.touches.length > 1;
-    },
-
-    /**
-     * @description Determine whether event was caused by a left click.
-     * @param event - {Event}
-     * @returns {Boolean}
-     */
-    isLeftClick: function isLeftClick(event) {
-        return event.which && event.which === 1 || event.button && event.button === 1;
-    },
-
-    /**
-     * @description Determine whether event was caused by a right mouse click.
-     * @param event - {Event}
-     * @returns {Boolean}
-     */
-    isRightClick: function isRightClick(event) {
-        return event.which && event.which === 3 || event.button && event.button === 2;
-    },
-
-    /**
-     * @description Stops an event from propagating.
-     * @param event - {Event}
-     * @param allowDefault - {Boolean} If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
-     */
-    stop: function stop(event, allowDefault) {
-
-        if (!allowDefault) {
-            if (event.preventDefault) {
-                event.preventDefault();
-            } else {
-                event.returnValue = false;
-            }
-        }
-
-        if (event.stopPropagation) {
-            event.stopPropagation();
-        } else {
-            event.cancelBubble = true;
-        }
-    },
-
-    /**
-     * @param event - {Event}
-     * @param tagName - {string} html标签名
-     * @returns {HTMLElement} The first node with the given tagName, starting from the node the event was triggered on and traversing the DOM upwards
-     */
-    findElement: function findElement(event, tagName) {
-        var element = _SuperMap2.default.Event.element(event);
-        while (element.parentNode && (!element.tagName || element.tagName.toUpperCase() != tagName.toUpperCase())) {
-            element = element.parentNode;
-        }
-        return element;
-    },
-
-    /**
-     * @description 监听事件，注册事件处理方法。
-     * @param elementParam - {HTMLElement | string} 待监听的DOM对象或者其id标识。
-     * @param name - {string} 监听事件的类别名称。
-     * @param observer - {function} 注册的事件处理方法。
-     * @param useCapture - {Boolean} 是否捕获。
-     */
-    observe: function observe(elementParam, name, observer, useCapture) {
-        var element = _Util.Util.getElement(elementParam);
-        useCapture = useCapture || false;
-
-        if (name === 'keypress' && (navigator.appVersion.match(/Konqueror|Safari|KHTML/) || element.attachEvent)) {
-            name = 'keydown';
-        }
-
-        //if observers cache has not yet been created, create it
-        if (!this.observers) {
-            this.observers = {};
-        }
-
-        //if not already assigned, make a new unique cache ID
-        if (!element._eventCacheID) {
-            var idPrefix = "eventCacheID_";
-            if (element.id) {
-                idPrefix = element.id + "_" + idPrefix;
-            }
-            element._eventCacheID = _Util.Util.createUniqueID(idPrefix);
-        }
-
-        var cacheID = element._eventCacheID;
-
-        //if there is not yet a hash entry for this element, add one
-        if (!this.observers[cacheID]) {
-            this.observers[cacheID] = [];
-        }
-
-        //add a new observer to this element's list
-        this.observers[cacheID].push({
-            'element': element,
-            'name': name,
-            'observer': observer,
-            'useCapture': useCapture
-        });
-
-        //add the actual browser event listener
-        if (element.addEventListener) {
-            element.addEventListener(name, observer, useCapture);
-        } else if (element.attachEvent) {
-            element.attachEvent('on' + name, observer);
-        }
-    },
-
-    /**
-     * @description Given the id of an element to stop observing, cycle through the
-     *   element's cached observers, calling stopObserving on each one,
-     *   skipping those entries which can no longer be removed.
-     *
-     * @param elementParam - {HTMLElement | string}
-     */
-    stopObservingElement: function stopObservingElement(elementParam) {
-        var element = _Util.Util.getElement(elementParam);
-        var cacheID = element._eventCacheID;
-
-        this._removeElementObservers(_SuperMap2.default.Event.observers[cacheID]);
-    },
-
-    /*
-     * @param elementObservers - {Array<Object>} Array of (element, name,
-     *                                         observer, usecapture) objects,
-     *                                         taken directly from hashtable
-     */
-    _removeElementObservers: function _removeElementObservers(elementObservers) {
-        if (elementObservers) {
-            for (var i = elementObservers.length - 1; i >= 0; i--) {
-                var entry = elementObservers[i];
-                var args = new Array(entry.element, entry.name, entry.observer, entry.useCapture);
-                var removed = _SuperMap2.default.Event.stopObserving.apply(this, args);
-            }
-        }
-    },
-
-    /**
-     * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时
-     * 保持一致才能确保事件移除成功。
-     * @param elementParam - {HTMLElement | string} 被监听的DOM元素或者其id。
-     * @param name - {string} 需要移除的被监听事件名称。
-     * @param observer - {function} 需要移除的事件处理方法。
-     * @param useCapture - {Boolean} 是否捕获。
-     * @returns {Boolean} Whether or not the event observer was removed
-     */
-    stopObserving: function stopObserving(elementParam, name, observer, useCapture) {
-        useCapture = useCapture || false;
-
-        var element = _Util.Util.getElement(elementParam);
-        var cacheID = element._eventCacheID;
-
-        if (name === 'keypress') {
-            if (navigator.appVersion.match(/Konqueror|Safari|KHTML/) || element.detachEvent) {
-                name = 'keydown';
-            }
-        }
-
-        // find element's entry in this.observers cache and remove it
-        var foundEntry = false;
-        var elementObservers = _SuperMap2.default.Event.observers[cacheID];
-        if (elementObservers) {
-
-            // find the specific event type in the element's list
-            var i = 0;
-            while (!foundEntry && i < elementObservers.length) {
-                var cacheEntry = elementObservers[i];
-
-                if (cacheEntry.name === name && cacheEntry.observer === observer && cacheEntry.useCapture === useCapture) {
-
-                    elementObservers.splice(i, 1);
-                    if (elementObservers.length == 0) {
-                        delete _SuperMap2.default.Event.observers[cacheID];
-                    }
-                    foundEntry = true;
-                    break;
-                }
-                i++;
-            }
-        }
-
-        //actually remove the event listener from browser
-        if (foundEntry) {
-            if (element.removeEventListener) {
-                element.removeEventListener(name, observer, useCapture);
-            } else if (element && element.detachEvent) {
-                element.detachEvent('on' + name, observer);
-            }
-        }
-        return foundEntry;
-    },
-
-    /**
-     * @description Cycle through all the element entries in the events cache and call
-     *   stopObservingElement on each.
-     */
-    unloadCache: function unloadCache() {
-        // check for SuperMap.Event before checking for observers, because
-        // SuperMap.Event may be undefined in IE if no map instance was
-        // created
-        if (_SuperMap2.default.Event && _SuperMap2.default.Event.observers) {
-            for (var cacheID in _SuperMap2.default.Event.observers) {
-                var elementObservers = _SuperMap2.default.Event.observers[cacheID];
-                _SuperMap2.default.Event._removeElementObservers.apply(this, [elementObservers]);
-            }
-            _SuperMap2.default.Event.observers = false;
-        }
-    },
-
-    CLASS_NAME: "SuperMap.Event"
-};
-_SuperMap2.default.Event = Event;
-/* prevent memory leaks in IE */
-_SuperMap2.default.Event.observe(window, 'unload', _SuperMap2.default.Event.unloadCache, false);
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -13531,126 +11643,504 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @class  SuperMap.Size
- * @classdesc 此类描绘一对高宽值的实例。
- * @param  w -{number} 宽度，默认值为0.0
- * @param  h -{number} 高度 ，默认值为0.0
- *
- * @example
- * var size = new SuperMap.Size(31,46);
+ *@namespace SuperMap
  */
-var Size = function () {
 
-    /**
-     * @member SuperMap.Size.prototype.w -{number}
-     * @description  宽，默认值为0.0
-     */
-    function Size(w, h) {
-        _classCallCheck(this, Size);
+/**
+ * @description In addition to the mandatory C and P parameters, an arbitrary number of
+ * objects can be passed, which will extend C.
+ * @memberOf SuperMap
+ * @param C - {Object} the class that inherits
+ * @param P - {Object} the superclass to inherit from
+ */
+_SuperMap2.default.inherit = function (C, P) {
+    var F = function F() {};
+    F.prototype = P.prototype;
+    C.prototype = new F();
+    var i, l, o;
+    for (i = 2, l = arguments.length; i < l; i++) {
+        o = arguments[i];
+        if (typeof o === "function") {
+            o = o.prototype;
+        }
+        _SuperMap2.default.Util.extend(C.prototype, o);
+    }
+};
 
-        this.w = 0.0;
-        this.h = 0.0;
-        this.CLASS_NAME = "SuperMap.Size";
-
-        this.w = w ? parseFloat(w) : this.w;
-        this.h = w ? parseFloat(h) : this.h;
+/**
+ * @description 实现多重继承
+ * @memberOf SuperMap
+ * @param ...mixins {Class|Object}继承的类
+ */
+_SuperMap2.default.mixin = function () {
+    for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
+        mixins[_key] = arguments[_key];
     }
 
-    /**
-     * @function SuperMap.Size.prototype.toString
-     * @description 返回此对象的字符串形式
-     * @example
-     * var size = new SuperMap.Size(10,5);
-     * var str = size.toString();
-     * @returns {string} 例如："w=10,h=5"
-     */
+    var Mix = function Mix(options) {
+        _classCallCheck(this, Mix);
 
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
 
-    /**
-     * @member SuperMap.Size.prototype.h -{number}
-     * @description 高，默认值为0.0
-     */
+        try {
+            for (var _iterator = mixins[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var mixin = _step.value;
 
-
-    _createClass(Size, [{
-        key: "toString",
-        value: function toString() {
-            return "w=" + this.w + ",h=" + this.h;
-        }
-
-        /**
-         * @function SuperMap.Size.prototype.clone
-         * @description 克隆当前size对象.
-         * @example
-         * var size = new SuperMap.Size(31,46);
-         * var size2 = size.clone();
-         *
-         * @returns {SuperMap.Size}  返回一个新的与当前size对象有相同宽、高的Size对象。
-         */
-
-    }, {
-        key: "clone",
-        value: function clone() {
-            return new Size(this.w, this.h);
-        }
-
-        /**
-         *
-         * @function SuperMap.Size.prototype.equals
-         * @description 比较两个size对象是否相等。
-         * @example
-         * var size = new SuperMap.Size(31,46);
-         * var size2 = new SuperMap.Size(31,46);
-         * var isEquals = size.equals(size2);
-         *
-         * @param sz -{SuperMap.Size} 用于比较相等的Size对象。
-         * @returns {Boolean} 传入的size和当前size高宽相等，注意：如果传入的size为空则返回false
-         *
-         */
-
-    }, {
-        key: "equals",
-        value: function equals(sz) {
-            var equals = false;
-            if (sz != null) {
-                equals = this.w === sz.w && this.h === sz.h || isNaN(this.w) && isNaN(this.h) && isNaN(sz.w) && isNaN(sz.h);
+                copyProperties(this, new mixin(options));
             }
-            return equals;
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+    };
+
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+
+        for (var _iterator2 = mixins[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var mixin = _step2.value;
+
+            copyProperties(Mix, mixin);
+            copyProperties(Mix.prototype, mixin.prototype);
+            copyProperties(Mix.prototype, new mixin());
+        }
+    } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                _iterator2.return();
+            }
+        } finally {
+            if (_didIteratorError2) {
+                throw _iteratorError2;
+            }
+        }
+    }
+
+    return Mix;
+
+    function copyProperties(target, source) {
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+            for (var _iterator3 = Reflect.ownKeys(source)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                var key = _step3.value;
+
+                if (key !== "constructor" && key !== "prototype" && key !== "name") {
+                    var desc = Object.getOwnPropertyDescriptor(source, key);
+                    Object.defineProperty(target, key, desc);
+                }
+            }
+        } catch (err) {
+            _didIteratorError3 = true;
+            _iteratorError3 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                    _iterator3.return();
+                }
+            } finally {
+                if (_didIteratorError3) {
+                    throw _iteratorError3;
+                }
+            }
+        }
+    }
+};
+
+/**
+ * @name String
+ * @memberOf SuperMap
+ * @namespace
+ * @description 字符串操作的一系列常用扩展函数.
+ */
+var StringExt = exports.StringExt = _SuperMap2.default.String = {
+
+    /**
+     * @description 判断目标字符串是否以指定的子字符串开头.
+     * @param str - {string} 目标字符串.
+     * @param sub - {string} 查找的子字符串.
+     * @returns {Boolean} 目标字符串以指定的子字符串开头,则返回true;否则返回false.
+     */
+    startsWith: function startsWith(str, sub) {
+        return str.indexOf(sub) == 0;
+    },
+
+    /**
+     * @description 判断目标字符串是否包含指定的子字符串.
+     * @param str - {string} 目标字符串.
+     * @param sub - {string} 查找的子字符串.
+     * @returns {Boolean} 目标字符串中包含指定的子字符串,则返回true;否则返回false.
+     */
+    contains: function contains(str, sub) {
+        return str.indexOf(sub) != -1;
+    },
+
+    /**
+     * @description 删除一个字符串的开头和结尾处的所有空白字符.
+     * @param str - {string} (可能)存在空白字符填塞的字符串.
+     * @returns {string} 删除开头和结尾处空白字符后的字符串.
+     */
+    trim: function trim(str) {
+        return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    },
+
+    /**
+     * @description 骆驼式("-")连字符的字符串处理.
+     * 例如: "chicken-head" becomes "chickenHead",
+     *       "-chicken-head" becomes "ChickenHead".
+     * @param str - {string} 要处理的字符串,原始内容不应被修改.
+     * @returns {string}
+     */
+    camelize: function camelize(str) {
+        var oStringList = str.split('-');
+        var camelizedString = oStringList[0];
+        for (var i = 1, len = oStringList.length; i < len; i++) {
+            var s = oStringList[i];
+            camelizedString += s.charAt(0).toUpperCase() + s.substring(1);
+        }
+        return camelizedString;
+    },
+
+    /**
+     * @description 提供带 ${token} 标记的字符串, 返回context对象属性中指定标记的属性值.
+     * @example
+     * 示例:
+     * (code)
+     * 1、template = "${value,getValue}";
+     *         context = {value: {getValue:function(){return Math.max.apply(null,argument);}}};
+     *         args = [2,23,12,36,21];
+     *       返回值:36
+     * (end)
+     * 示例:
+     * (code)
+     * 2、template = "$${{value,getValue}}";
+     *         context = {value: {getValue:function(){return Math.max.apply(null,argument);}}};
+     *         args = [2,23,12,36,21];
+     *       返回值:"${36}"
+     * (end)
+     * 示例:
+     * (code)
+     * 3、template = "${a,b}";
+     *         context = {a: {b:"format"}};
+     *         args = null;
+     *       返回值:"format"
+     * (end)
+     * 示例:
+     * (code)
+     * 3、template = "${a,b}";
+     *         context = null;
+     *         args = null;
+     *       返回值:"${a.b}"
+     * (end)
+     * @param template - {string} 带标记的字符串将要被替换.参数 template 格式为"${token}",此处的 token 标记会替换为 context["token"] 属性的值
+     * @param context - {Object} 带有属性的可选对象的属性用于匹配格式化字符串中的标记.如果该参数为空,将使用 window 对象.
+     * @param args - {Array} 可选参数传递给在context对象上找到的函数.
+     * @returns {string} 从 context 对象属性中替换字符串标记位的字符串.
+     */
+    format: function format(template, context, args) {
+        if (!context) {
+            context = window;
         }
 
-        /**
-         *
-         * @function SuperMap.Size.prototype.destroy
-         * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
-         * @example
-         * var size = new SuperMap.Size(31,46);
-         * size.destroy();
-         */
+        // Example matching:
+        // str   = ${foo.bar}
+        // match = foo.bar
+        var replacer = function replacer(str, match) {
+            var replacement;
 
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.w = null;
-            this.h = null;
+            // Loop through all subs. Example: ${a.b.c}
+            // 0 -> replacement = context[a];
+            // 1 -> replacement = context[a][b];
+            // 2 -> replacement = context[a][b][c];
+            var subs = match.split(/\.+/);
+            for (var i = 0; i < subs.length; i++) {
+                if (i == 0) {
+                    replacement = context;
+                }
+
+                replacement = replacement[subs[i]];
+            }
+
+            if (typeof replacement === "function") {
+                replacement = args ? replacement.apply(null, args) : replacement();
+            }
+
+            // If replacement is undefined, return the string 'undefined'.
+            // This is a workaround for a bugs in browsers not properly
+            // dealing with non-participating groups in regular expressions:
+            // http://blog.stevenlevithan.com/archives/npcg-javascript
+            if (typeof replacement == 'undefined') {
+                return 'undefined';
+            } else {
+                return replacement;
+            }
+        };
+
+        return template.replace(_SuperMap2.default.String.tokenRegEx, replacer);
+    },
+
+    /**
+     * @description Used to find tokens in a string.
+     * @example
+     * Examples: ${a}, ${a.b.c}, ${a-b}, ${5}
+     */
+    tokenRegEx: /\$\{([\w.]+?)\}/g,
+
+    /**
+     * @description Used to test strings as numbers.
+     */
+    numberRegEx: /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/,
+
+    /**
+     * @description 判断一个字符串是否只包含一个数值.
+     * @example
+     * (code)
+     * SuperMap.String.isNumeric("6.02e23") // true
+     * SuperMap.String.isNumeric("12 dozen") // false
+     * SuperMap.String.isNumeric("4") // true
+     * SuperMap.String.isNumeric(" 4 ") // false
+     * (end)
+     * @returns {Boolean} 字符串包含唯一的数值,返回true;否则返回false.
+     */
+    isNumeric: function isNumeric(value) {
+        return _SuperMap2.default.String.numberRegEx.test(value);
+    },
+
+    /**
+     * @description 把一个看似数值型的字符串转化为一个数值.
+     *
+     * @returns {Number|String} 如果能转换为数值则返回数值,否则返回字符串本身.
+     */
+    numericIf: function numericIf(value) {
+        return _SuperMap2.default.String.isNumeric(value) ? parseFloat(value) : value;
+    }
+
+};
+
+/**
+ * @name Number
+ * @memberOf SuperMap
+ * @namespace
+ * @description 数值操作的一系列常用扩展函数.
+ */
+var NumberExt = exports.NumberExt = _SuperMap2.default.Number = {
+
+    /**
+     *  @description 格式化数字时默认的小数点分隔符.
+     */
+    decimalSeparator: ".",
+
+    /**
+     *  @description 格式化数字时默认的千位分隔符.
+     */
+    thousandsSeparator: ",",
+
+    /**
+     * @description 限制浮点数的有效数字位数.
+     * @param num - {number}
+     * @param sig - {Integer}
+     * @returns {number} 将数字四舍五入到指定数量的有效位数.
+     */
+    limitSigDigs: function limitSigDigs(num, sig) {
+        var fig = 0;
+        if (sig > 0) {
+            fig = parseFloat(num.toPrecision(sig));
         }
-    }]);
+        return fig;
+    },
 
-    return Size;
-}();
+    /**
+     * @description 数字格式化输出.
+     * @param num  - {number}
+     * @param dec  - {Integer} 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
+     * @param tsep - {string} 千位分隔符. 默认为",".
+     * @param dsep - {string} 小数点分隔符. 默认为".".
+     * @returns {string} 数字格式化后的字符串.
+     */
+    format: function format(num, dec, tsep, dsep) {
+        dec = typeof dec != "undefined" ? dec : 0;
+        tsep = typeof tsep != "undefined" ? tsep : _SuperMap2.default.Number.thousandsSeparator;
+        dsep = typeof dsep != "undefined" ? dsep : _SuperMap2.default.Number.decimalSeparator;
 
-exports.default = Size;
+        if (dec != null) {
+            num = parseFloat(num.toFixed(dec));
+        }
 
-_SuperMap2.default.Size = Size;
+        var parts = num.toString().split(".");
+        if (parts.length === 1 && dec == null) {
+            // integer where we do not want to touch the decimals
+            dec = 0;
+        }
+
+        var integer = parts[0];
+        if (tsep) {
+            var thousands = /(-?[0-9]+)([0-9]{3})/;
+            while (thousands.test(integer)) {
+                integer = integer.replace(thousands, "$1" + tsep + "$2");
+            }
+        }
+
+        var str;
+        if (dec == 0) {
+            str = integer;
+        } else {
+            var rem = parts.length > 1 ? parts[1] : "0";
+            if (dec != null) {
+                rem = rem + new Array(dec - rem.length + 1).join("0");
+            }
+            str = integer + dsep + rem;
+        }
+        return str;
+    }
+};
+
+if (!Number.prototype.limitSigDigs) {
+    /**
+     * APIMethod: Number.limitSigDigs
+     * 限制浮点数的有效数字位数.
+     * @param sig - {Integer}
+     * @returns {Integer} 将数字四舍五入到指定数量的有效位数.
+     *           如果传入值为 null、0、或者是负数, 返回值 0
+     */
+    Number.prototype.limitSigDigs = function (sig) {
+        return NumberExt.limitSigDigs(this, sig);
+    };
+}
+
+/**
+ * @name Function
+ * @memberOf SuperMap
+ * @namespace
+ * @description 函数操作的一系列常用扩展函数.
+ */
+var FunctionExt = exports.FunctionExt = _SuperMap2.default.Function = {
+    /**
+     * @description 绑定函数到对象.方便创建this的作用域.
+     * @param func - {Function} 输入函数.
+     * @param object - {Object} 对象绑定到输入函数(作为输入函数的this对象).
+     * @returns {Function} object参数作为func函数的this对象.
+     */
+    bind: function bind(func, object) {
+        // create a reference to all arguments past the second one
+        var args = Array.prototype.slice.apply(arguments, [2]);
+        return function () {
+            // Push on any additional arguments from the actual function call.
+            // These will come after those sent to the bind call.
+            var newArgs = args.concat(Array.prototype.slice.apply(arguments, [0]));
+            return func.apply(object, newArgs);
+        };
+    },
+
+    /**
+     * @description 绑定函数到对象,在调用该函数时配置并使用事件对象作为第一个参数.
+     * @param func - {Function} 用于监听事件的函数.
+     * @param object - {Object} this 对象的引用.
+     * @returns {Function}
+     */
+    bindAsEventListener: function bindAsEventListener(func, object) {
+        return function (event) {
+            return func.call(object, event || window.event);
+        };
+    },
+
+    /**
+     * @description 该函数仅仅返回false.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
+     * @example
+     * document.onclick = SuperMap.Function.False;
+     * @returns {Boolean}
+     */
+    False: function False() {
+        return false;
+    },
+
+    /**
+     * @description 该函数仅仅返回true.该函数主要是避免在IE8以下浏览中DOM事件句柄的匿名函数问题.
+     * @example
+     * document.onclick = SuperMap.Function.True;
+     * @returns {Boolean}
+     */
+    True: function True() {
+        return true;
+    },
+
+    /**
+     * @description 可重用函数,仅仅返回"undefined".
+     * @returns {undefined}
+     */
+    Void: function Void() {}
+
+};
+
+/**
+ * @name Array
+ * @memberOf SuperMap
+ * @namespace
+ * @description 数组操作的一系列常用扩展函数.
+ */
+var ArrayExt = exports.ArrayExt = _SuperMap2.default.Array = {
+
+    /**
+     * @description 过滤数组.提供了ECMA-262标准中Array.prototype.filter函数的扩展.
+     * @see {@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
+     * @param array - {Array} 要过滤的数组..
+     * @param callback - {Function} 数组中的每一个元素调用该函数.<br>
+     *     如果函数的返回值为true,该元素将包含在返回的数组中.该函数有三个参数: 数组中的元素,元素的索引,数组自身.<br>
+     *     如果设置了可选参数caller,在调用callback时,使用可选参数caller设置为callback的参数.<br>
+     * @param caller - {Object} 在调用callback时,使用可选参数caller设置为callback的参数.
+     * @returns {Array} callback函数返回true时的元素将作为返回数组中的元素.
+     */
+    filter: function filter(array, callback, caller) {
+        var selected = [];
+        if (Array.prototype.filter) {
+            selected = array.filter(callback, caller);
+        } else {
+            var len = array.length;
+            if (typeof callback != "function") {
+                throw new TypeError();
+            }
+            for (var i = 0; i < len; i++) {
+                if (i in array) {
+                    var val = array[i];
+                    if (callback.call(caller, val, i, array)) {
+                        selected.push(val);
+                    }
+                }
+            }
+        }
+        return selected;
+    }
+
+};
 
 /***/ }),
-/* 46 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -13659,7 +12149,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Collection2 = __webpack_require__(14);
+var _Collection2 = __webpack_require__(13);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
@@ -13682,54 +12172,54 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var multiPoint = new SuperMap.Geometry.MultiPoint([point1,point2]);
  */
 var MultiPoint = function (_Collection) {
-    _inherits(MultiPoint, _Collection);
+  _inherits(MultiPoint, _Collection);
 
-    function MultiPoint(components) {
-        _classCallCheck(this, MultiPoint);
+  function MultiPoint(components) {
+    _classCallCheck(this, MultiPoint);
 
-        var _this = _possibleConstructorReturn(this, (MultiPoint.__proto__ || Object.getPrototypeOf(MultiPoint)).call(this, components));
+    var _this = _possibleConstructorReturn(this, (MultiPoint.__proto__ || Object.getPrototypeOf(MultiPoint)).call(this, components));
 
-        _this.componentTypes = ["SuperMap.Geometry.Point"];
-        _this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
-        return _this;
+    _this.componentTypes = ["SuperMap.Geometry.Point"];
+    _this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
+    return _this;
+  }
+
+  /**
+   * @function SuperMap.Geometry.MultiPoint.prototype.addPoint
+   * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent}方法。
+   * @param point - {SuperMap.Geometry.Point} 添加的点。
+   * @param index - {integer} 可选的下标。
+   */
+
+
+  /**
+   * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
+   * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+   * @readonly
+   * @default ["{@link SuperMap.Geometry.Point}"]
+   */
+
+
+  _createClass(MultiPoint, [{
+    key: 'addPoint',
+    value: function addPoint(point, index) {
+      this.addComponent(point, index);
     }
 
     /**
-     * @function SuperMap.Geometry.MultiPoint.prototype.addPoint
-     * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent}方法。
-     * @param point - {SuperMap.Geometry.Point} 添加的点。
-     * @param index - {integer} 可选的下标。
+     * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
+     * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
+     * @param point - {SuperMap.Geometry.Point} 移除的点对象。
      */
 
+  }, {
+    key: 'removePoint',
+    value: function removePoint(point) {
+      this.removeComponent(point);
+    }
+  }]);
 
-    /**
-     * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.Point}"]
-     */
-
-
-    _createClass(MultiPoint, [{
-        key: 'addPoint',
-        value: function addPoint(point, index) {
-            this.addComponent(point, index);
-        }
-
-        /**
-         * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
-         * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
-         * @param point - {SuperMap.Geometry.Point} 移除的点对象。
-         */
-
-    }, {
-        key: 'removePoint',
-        value: function removePoint(point) {
-            this.removeComponent(point);
-        }
-    }]);
-
-    return MultiPoint;
+  return MultiPoint;
 }(_Collection3.default);
 
 exports.default = MultiPoint;
@@ -13737,7 +12227,7 @@ exports.default = MultiPoint;
 _SuperMap2.default.Geometry.MultiPoint = MultiPoint;
 
 /***/ }),
-/* 47 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13755,19 +12245,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Collection2 = __webpack_require__(14);
+var _Collection2 = __webpack_require__(13);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
-var _Point = __webpack_require__(11);
+var _Point = __webpack_require__(10);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _LineString = __webpack_require__(23);
+var _LineString = __webpack_require__(18);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
-var _LinearRing = __webpack_require__(38);
+var _LinearRing = __webpack_require__(25);
 
 var _LinearRing2 = _interopRequireDefault(_LinearRing);
 
@@ -14177,7 +12667,7 @@ exports.default = Polygon;
 _SuperMap2.default.Geometry.Polygon = Polygon;
 
 /***/ }),
-/* 48 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14307,7 +12797,7 @@ exports.default = JoinItem;
 _SuperMap2.default.JoinItem = JoinItem;
 
 /***/ }),
-/* 49 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14343,7 +12833,7 @@ exports.default = LabelMatrixCell;
 _SuperMap2.default.LabelMatrixCell = LabelMatrixCell;
 
 /***/ }),
-/* 50 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14359,11 +12849,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _PointWithMeasure = __webpack_require__(224);
+var _PointWithMeasure = __webpack_require__(195);
 
 var _PointWithMeasure2 = _interopRequireDefault(_PointWithMeasure);
 
-var _Collection2 = __webpack_require__(14);
+var _Collection2 = __webpack_require__(13);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
@@ -14619,7 +13109,7 @@ exports.default = Route;
 _SuperMap2.default.Route = Route;
 
 /***/ }),
-/* 51 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14635,7 +13125,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
@@ -14737,7 +13227,7 @@ exports.default = ThemeFlow;
 _SuperMap2.default.ThemeFlow = ThemeFlow;
 
 /***/ }),
-/* 52 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14755,35 +13245,35 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(13);
+var _Theme2 = __webpack_require__(12);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
-var _ThemeLabelItem = __webpack_require__(253);
+var _ThemeLabelItem = __webpack_require__(224);
 
 var _ThemeLabelItem2 = _interopRequireDefault(_ThemeLabelItem);
 
-var _ThemeLabelUniqueItem = __webpack_require__(255);
+var _ThemeLabelUniqueItem = __webpack_require__(226);
 
 var _ThemeLabelUniqueItem2 = _interopRequireDefault(_ThemeLabelUniqueItem);
 
-var _ThemeFlow = __webpack_require__(51);
+var _ThemeFlow = __webpack_require__(35);
 
 var _ThemeFlow2 = _interopRequireDefault(_ThemeFlow);
 
-var _ThemeOffset = __webpack_require__(53);
+var _ThemeOffset = __webpack_require__(37);
 
 var _ThemeOffset2 = _interopRequireDefault(_ThemeOffset);
 
-var _ThemeLabelText = __webpack_require__(254);
+var _ThemeLabelText = __webpack_require__(225);
 
 var _ThemeLabelText2 = _interopRequireDefault(_ThemeLabelText);
 
-var _ThemeLabelAlongLine = __webpack_require__(251);
+var _ThemeLabelAlongLine = __webpack_require__(222);
 
 var _ThemeLabelAlongLine2 = _interopRequireDefault(_ThemeLabelAlongLine);
 
-var _ThemeLabelBackground = __webpack_require__(252);
+var _ThemeLabelBackground = __webpack_require__(223);
 
 var _ThemeLabelBackground2 = _interopRequireDefault(_ThemeLabelBackground);
 
@@ -15142,7 +13632,7 @@ exports.default = ThemeLabel;
 _SuperMap2.default.ThemeLabel = ThemeLabel;
 
 /***/ }),
-/* 53 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15245,7 +13735,7 @@ exports.default = ThemeOffset;
 _SuperMap2.default.ThemeOffset = ThemeOffset;
 
 /***/ }),
-/* 54 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15362,111 +13852,7 @@ exports.default = ThiessenAnalystParameters;
 _SuperMap2.default.ThiessenAnalystParameters = ThiessenAnalystParameters;
 
 /***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var parseCode = __webpack_require__(292);
-var extend = __webpack_require__(59);
-var projections = __webpack_require__(293);
-var deriveConstants = __webpack_require__(288);
-
-function Projection(srsCode,callback) {
-  if (!(this instanceof Projection)) {
-    return new Projection(srsCode);
-  }
-  callback = callback || function(error){
-    if(error){
-      throw error;
-    }
-  };
-  var json = parseCode(srsCode);
-  if(typeof json !== 'object'){
-    callback(srsCode);
-    return;
-  }
-  var modifiedJSON = deriveConstants(json);
-  var ourProj = Projection.projections.get(modifiedJSON.projName);
-  if(ourProj){
-    extend(this, modifiedJSON);
-    extend(this, ourProj);
-    this.init();
-    callback(null, this);
-  }else{
-    callback(srsCode);
-  }
-}
-Projection.projections = projections;
-Projection.projections.start();
-module.exports = Projection;
-
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-module.exports = function(a, e, sinphi) {
-  var temp = e * sinphi;
-  return a / Math.sqrt(1 - temp * temp);
-};
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports) {
-
-module.exports = function(ml, e0, e1, e2, e3) {
-  var phi;
-  var dphi;
-
-  phi = ml / e0;
-  for (var i = 0; i < 15; i++) {
-    dphi = (ml - (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi))) / (e0 - 2 * e1 * Math.cos(2 * phi) + 4 * e2 * Math.cos(4 * phi) - 6 * e3 * Math.cos(6 * phi));
-    phi += dphi;
-    if (Math.abs(dphi) <= 0.0000000001) {
-      return phi;
-    }
-  }
-
-  //..reportError("IMLFN-CONV:Latitude failed to converge after 15 iterations");
-  return NaN;
-};
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports) {
-
-module.exports = function(eccent, sinphi) {
-  var con;
-  if (eccent > 1.0e-7) {
-    con = eccent * sinphi;
-    return ((1 - eccent * eccent) * (sinphi / (1 - con * con) - (0.5 / eccent) * Math.log((1 - con) / (1 + con))));
-  }
-  else {
-    return (2 * sinphi);
-  }
-};
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports) {
-
-module.exports = function(destination, source) {
-  destination = destination || {};
-  var value, property;
-  if (!source) {
-    return destination;
-  }
-  for (property in source) {
-    value = source[property];
-    if (value !== undefined) {
-      destination[property] = value;
-    }
-  }
-  return destination;
-};
-
-
-/***/ }),
-/* 60 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15482,35 +13868,31 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Size = __webpack_require__(45);
+var _Size = __webpack_require__(130);
 
 var _Size2 = _interopRequireDefault(_Size);
 
-var _Pixel = __webpack_require__(37);
+var _Pixel = __webpack_require__(41);
 
 var _Pixel2 = _interopRequireDefault(_Pixel);
 
-var _LonLat = __webpack_require__(158);
+var _LonLat = __webpack_require__(129);
 
 var _LonLat2 = _interopRequireDefault(_LonLat);
 
-var _Point = __webpack_require__(11);
+var _Point = __webpack_require__(10);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _LinearRing = __webpack_require__(38);
+var _LinearRing = __webpack_require__(25);
 
 var _LinearRing2 = _interopRequireDefault(_LinearRing);
 
-var _Polygon = __webpack_require__(47);
+var _Polygon = __webpack_require__(31);
 
 var _Polygon2 = _interopRequireDefault(_Polygon);
 
-var _Projection = __webpack_require__(22);
-
-var _Projection2 = _interopRequireDefault(_Projection);
-
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16159,39 +14541,6 @@ var Bounds = function () {
         }
 
         /**
-         * @function SuperMap.Bounds.prototype.transform
-         * @description 范围（Bounds）对象的投影转换。（在自身上做投影转换）
-         * @example
-         * var bounds1 = new SuperMap.Bounds(-180,-90,100,80);
-         * //这里bounds1 = bounds2
-         * var bounds2 = bounds1.transform(
-         *      new SuperMap.Projection("EPSG:4326"),
-         *      new SuperMap.Projection("EPSG:3857")
-         *  );
-         *
-         *
-         * @param source - {SuperMap.Projection} 源投影。
-         * @param dest   - {SuperMap.Projection} 目标投影。
-         * @returns {SuperMap.Bounds} 返回本身，用于链接操作.
-         */
-
-    }, {
-        key: 'transform',
-        value: function transform(source, dest) {
-            // clear cached center location
-            this.centerLonLat = null;
-            var ll = _Projection2.default.transform({ 'x': this.left, 'y': this.bottom }, source, dest);
-            var lr = _Projection2.default.transform({ 'x': this.right, 'y': this.bottom }, source, dest);
-            var ul = _Projection2.default.transform({ 'x': this.left, 'y': this.top }, source, dest);
-            var ur = _Projection2.default.transform({ 'x': this.right, 'y': this.top }, source, dest);
-            this.left = Math.min(ll.x, ul.x);
-            this.bottom = Math.min(ll.y, lr.y);
-            this.right = Math.max(lr.x, ur.x);
-            this.top = Math.max(ul.y, ur.y);
-            return this;
-        }
-
-        /**
          * @function SuperMap.Bounds.prototype.wrapDateLine
          * @description 将当前bounds移动到最大边界范围内部（所谓的内部是相交或者内部）
          * @example
@@ -16373,7 +14722,7 @@ exports.default = Bounds;
 _SuperMap2.default.Bounds = Bounds;
 
 /***/ }),
-/* 61 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16389,15 +14738,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _WKT = __webpack_require__(164);
+var _WKT = __webpack_require__(135);
 
 var _WKT2 = _interopRequireDefault(_WKT);
 
-var _Vector = __webpack_require__(160);
+var _Vector = __webpack_require__(131);
 
 var _Vector2 = _interopRequireDefault(_Vector);
 
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16870,7 +15219,7 @@ exports.default = Geometry;
 _SuperMap2.default.Geometry = Geometry;
 
 /***/ }),
-/* 62 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16886,11 +15235,252 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Collection2 = __webpack_require__(14);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.Pixel
+ * @classdesc 此类用x,y坐标描绘屏幕坐标（像素点）。
+ * @param x - {number} x坐标，默认为0.0
+ * @param y - {number} y坐标，默认为0.0
+ * @param mode - {string} 坐标模式，默认为{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+ *
+ * @example
+ * //单独创建一个对象
+ * var pixcel = new SuperMap.Pixel(100,50);
+ *
+ * //依据size创建
+ *  var size = new SuperMap.Size(21,25);
+ *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
+ */
+var Pixel = function () {
+
+    /**
+     * @member SuperMap.Pixel.prototype.y -{number}
+     * @description y坐标，默认为0.0
+     */
+    function Pixel(x, y, mode) {
+        _classCallCheck(this, Pixel);
+
+        this.x = 0.0;
+        this.y = 0.0;
+        this.mode = null;
+        this.CLASS_NAME = "SuperMap.Pixel";
+
+        this.x = x ? parseFloat(x) : this.x;
+        this.y = y ? parseFloat(y) : this.y;
+        this.mode = mode;
+    }
+
+    /**
+     * @function SuperMap.Pixel.prototype. toString
+     * 返回此对象的字符串形式
+     * @example
+     *
+     * var pixcel = new SuperMap.Pixel(100,50);
+     * var str = pixcel.toString();
+     *
+     * @returns {string} 例如: "x=200.4,y=242.2"
+     */
+
+
+    /**
+     * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
+     * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
+     * 值有<br>
+     * * SuperMap.Pixel.Mode.LeftTop
+     * * SuperMap.Pixel.Mode.RightTop
+     * * SuperMap.Pixel.Mode.RightBottom
+     * * SuperMap.Pixel.Mode.LeftBottom
+     *
+     * 这四种 默认值为：SuperMap.Pixel.Mode.LeftTop
+     *
+     * @default SuperMap.Pixel.Mode.LeftTop
+     */
+
+
+    /**
+     * @member SuperMap.Pixel.prototype.x -{number}
+     * @description x坐标，默认为0.0
+     */
+
+
+    _createClass(Pixel, [{
+        key: "toString",
+        value: function toString() {
+            return "x=" + this.x + ",y=" + this.y;
+        }
+
+        /**
+         * @function SuperMap.Pixel.prototype. clone
+         * @description 克隆当前的 pixel 对象。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = pixcel.clone();
+         * @returns {SuperMap.Pixel} 返回一个新的与当前 pixel 对象有相同x、y坐标的 pixel 对象。
+         */
+
+    }, {
+        key: "clone",
+        value: function clone() {
+            return new Pixel(this.x, this.y, this.mode);
+        }
+
+        /**
+         * @function SuperMap.Pixel.prototype. equals
+         * @description 比较两 pixel 是否相等
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = new SuperMap.Pixel(100,50);
+         * var isEquals = pixcel.equals(pixcel2);
+         *
+         * @param px - {SuperMap.Pixel} 用于比较相等的 pixel 对象。
+         * @returns {Boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
+         */
+
+    }, {
+        key: "equals",
+        value: function equals(px) {
+            var equals = false;
+            if (px != null) {
+                equals = this.x == px.x && this.y == px.y || isNaN(this.x) && isNaN(this.y) && isNaN(px.x) && isNaN(px.y);
+            }
+            return equals;
+        }
+
+        /**
+         * @function SuperMap.Pixel.prototype. distanceTo
+         * @description 返回两个 pixel 的距离。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = new SuperMap.Pixel(110,30);
+         * var distance = pixcel.distanceTo(pixcel2);
+         *
+         * @param px - {SuperMap.Pixel} 用于计算的一个 pixel
+         * @returns {float} 作为参数传入的像素与当前像素点的距离。
+         */
+
+    }, {
+        key: "distanceTo",
+        value: function distanceTo(px) {
+            return Math.sqrt(Math.pow(this.x - px.x, 2) + Math.pow(this.y - px.y, 2));
+        }
+
+        /**
+         * @function SuperMap.Pixel.prototype. add
+         * @description 在原来像素坐标基础上，x值加上传入的x参数，y值加上传入的y参数。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * //pixcel2是新的对象
+         * var pixcel2 = pixcel.add(20,30);
+         *
+         * @param x - {number} 传入的x值。
+         * @param y - {number} 传入的y值。
+         * @returns {SuperMap.Pixel} 返回一个新的pixel对象，该pixel是由当前的pixel与传
+         *      入的x,y相加得到。
+         */
+
+    }, {
+        key: "add",
+        value: function add(x, y) {
+            if (x == null || y == null) {
+                throw new TypeError('Pixel.add cannot receive null values');
+            }
+            return new Pixel(this.x + x, this.y + y);
+        }
+
+        /**
+         * @function SuperMap.Pixel.prototype. offset
+         * @description 通过传入的 {@link SuperMap.Pixel} 参数对原屏幕坐标进行偏移。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = new SuperMap.Pixel(130,20);
+         * //pixcel3 是新的对象
+         * var pixcel3 = pixcel.offset(pixcel2);
+         *
+         * @param px - {SuperMap.Pixel}  传入的 <SuperMap.Pixel> 对象。
+         * @returns {SuperMap.Pixel} 返回一个新的pixel，该pixel是由当前的pixel对象的x，y
+         *      值与传入的Pixel对象的x，y值相加得到。
+         */
+
+    }, {
+        key: "offset",
+        value: function offset(px) {
+            var newPx = this.clone();
+            if (px) {
+                newPx = this.add(px.x, px.y);
+            }
+            return newPx;
+        }
+
+        /**
+         *
+         * @function SuperMap.Pixel.prototype. destroy
+         * @description 销毁此对象。
+         * 销毁后此对象的所有属性为null，而不是初始值。
+         * @example
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * pixcel.destroy();
+         */
+
+    }, {
+        key: "destroy",
+        value: function destroy() {
+            this.x = null;
+            this.y = null;
+            this.mode = null;
+        }
+
+        /**
+         * @member SuperMap.Pixel.Mode
+         * @enum {string}
+         * @readonly
+         * @description 模式
+         *
+         * * SuperMap.Pixel.Mode.LeftTop 左上模式
+         * * SuperMap.Pixel.Mode.RightTop 右上模式
+         * * SuperMap.Pixel.Mode.RightBottom 右下模式
+         * * SuperMap.Pixel.Mode.LeftBottom 左下模式
+         */
+
+    }]);
+
+    return Pixel;
+}();
+
+Pixel.Mode = {
+    LeftTop: "lefttop",
+    RightTop: "righttop",
+    RightBottom: "rightbottom",
+    LeftBottom: "leftbottom"
+};
+exports.default = Pixel;
+
+_SuperMap2.default.Pixel = Pixel;
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _Collection2 = __webpack_require__(13);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
-var _LineString = __webpack_require__(23);
+var _LineString = __webpack_require__(18);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -17136,21 +15726,21 @@ exports.default = MultiLineString;
 _SuperMap2.default.Geometry.MultiLineString = MultiLineString;
 
 /***/ }),
-/* 63 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Collection2 = __webpack_require__(14);
+var _Collection2 = __webpack_require__(13);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
@@ -17180,27 +15770,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var multiPolygon1 = new SuperMap.Geometry.MultiPolygon([polygon1,polygon2]);
  */
 var MultiPolygon = function (_Collection) {
-    _inherits(MultiPolygon, _Collection);
+  _inherits(MultiPolygon, _Collection);
 
-    function MultiPolygon(components) {
-        _classCallCheck(this, MultiPolygon);
+  function MultiPolygon(components) {
+    _classCallCheck(this, MultiPolygon);
 
-        var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
+    var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
 
-        _this.componentTypes = ["SuperMap.Geometry.Polygon"];
-        _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
-        return _this;
-    }
+    _this.componentTypes = ["SuperMap.Geometry.Polygon"];
+    _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
+    return _this;
+  }
 
-    /**
-     * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.Polygon}"]
-     */
+  /**
+   * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
+   * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+   * @readonly
+   * @default ["{@link SuperMap.Geometry.Polygon}"]
+   */
 
 
-    return MultiPolygon;
+  return MultiPolygon;
 }(_Collection3.default);
 
 exports.default = MultiPolygon;
@@ -17208,7 +15798,7 @@ exports.default = MultiPolygon;
 _SuperMap2.default.Geometry.MultiPolygon = MultiPolygon;
 
 /***/ }),
-/* 64 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17241,23 +15831,10 @@ var Format = function () {
      * @member SuperMap.Format.prototype.data -{Object}
      * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
      */
-
-
-    /**
-     * @member SuperMap.Format.prototype.externalProjection -{SuperMap.Projection}
-     * @description 当设置了externalProjection和internalProjection参数，
-     *              format类会重新对其读到的或写出的几何图形进行投影。externalProjection
-     *              是read操作读到或write操作写出的投影内容。为了能够重新投影，针对某
-     *              一个投影的transformation方法必须是有效的。同时，我们可以使用proj4js
-     *              或自定义的transformation方法来进行支持。查看{SuperMap.Projection.addTransform}
-     *              以获取更多的信息。
-     */
     function Format(options) {
         _classCallCheck(this, Format);
 
         this.options = null;
-        this.externalProjection = null;
-        this.internalProjection = null;
         this.data = null;
         this.keepData = false;
         this.CLASS_NAME = "SuperMap.Format";
@@ -17276,17 +15853,6 @@ var Format = function () {
      * APIProperty: keepData
      * @member SuperMap.Format.prototype.keepData -{Object}
      * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
-     */
-
-
-    /**
-     * @member SuperMap.Format.prototype.internalProjection -{SuperMap.Projection}
-     * @description 当设置了externalProjection和internalProjection参数，
-     *              format类会重新对其读到的或写出的几何图形进行投影。internalProjection
-     *              是read操作返回或传给write操作的投影内容。为了能够重新投影，针对某
-     *              一个投影的transformation方法必须是有效的。同时，我们可以使用proj4js
-     *              或自定义的transformation方法来进行支持。查看{SuperMap.Projection.addTransform}
-     *              以获取更多的信息。
      */
 
 
@@ -17336,7 +15902,7 @@ exports.default = Format;
 _SuperMap2.default.Format = Format;
 
 /***/ }),
-/* 65 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17352,7 +15918,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _BufferSetting = __webpack_require__(167);
+var _BufferSetting = __webpack_require__(138);
 
 var _BufferSetting2 = _interopRequireDefault(_BufferSetting);
 
@@ -17411,7 +15977,7 @@ exports.default = BufferAnalystParameters;
 _SuperMap2.default.BufferAnalystParameters = BufferAnalystParameters;
 
 /***/ }),
-/* 66 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17479,7 +16045,7 @@ exports.default = OverlayAnalystParameters;
 _SuperMap2.default.OverlayAnalystParameters = OverlayAnalystParameters;
 
 /***/ }),
-/* 67 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17495,13 +16061,13 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _DataReturnOption = __webpack_require__(24);
+var _DataReturnOption = __webpack_require__(19);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
 var _REST = __webpack_require__(1);
 
-var _SurfaceAnalystParametersSetting = __webpack_require__(240);
+var _SurfaceAnalystParametersSetting = __webpack_require__(211);
 
 var _SurfaceAnalystParametersSetting2 = _interopRequireDefault(_SurfaceAnalystParametersSetting);
 
@@ -17594,7 +16160,7 @@ exports.default = SurfaceAnalystParameters;
 _SuperMap2.default.SurfaceAnalystParameters = SurfaceAnalystParameters;
 
 /***/ }),
-/* 68 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17610,11 +16176,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(13);
+var _Theme2 = __webpack_require__(12);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
@@ -17746,7 +16312,7 @@ exports.default = ThemeDotDensity;
 _SuperMap2.default.ThemeDotDensity = ThemeDotDensity;
 
 /***/ }),
-/* 69 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17764,19 +16330,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(13);
+var _Theme2 = __webpack_require__(12);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
-var _ThemeFlow = __webpack_require__(51);
+var _ThemeFlow = __webpack_require__(35);
 
 var _ThemeFlow2 = _interopRequireDefault(_ThemeFlow);
 
-var _ThemeOffset = __webpack_require__(53);
+var _ThemeOffset = __webpack_require__(37);
 
 var _ThemeOffset2 = _interopRequireDefault(_ThemeOffset);
 
-var _ThemeGraduatedSymbolStyle = __webpack_require__(242);
+var _ThemeGraduatedSymbolStyle = __webpack_require__(213);
 
 var _ThemeGraduatedSymbolStyle2 = _interopRequireDefault(_ThemeGraduatedSymbolStyle);
 
@@ -17975,7 +16541,7 @@ exports.default = ThemeGraduatedSymbol;
 _SuperMap2.default.ThemeGraduatedSymbol = ThemeGraduatedSymbol;
 
 /***/ }),
-/* 70 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17993,31 +16559,31 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(13);
+var _Theme2 = __webpack_require__(12);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
-var _ThemeFlow = __webpack_require__(51);
+var _ThemeFlow = __webpack_require__(35);
 
 var _ThemeFlow2 = _interopRequireDefault(_ThemeFlow);
 
-var _ThemeOffset = __webpack_require__(53);
+var _ThemeOffset = __webpack_require__(37);
 
 var _ThemeOffset2 = _interopRequireDefault(_ThemeOffset);
 
-var _ThemeGraphAxes = __webpack_require__(243);
+var _ThemeGraphAxes = __webpack_require__(214);
 
 var _ThemeGraphAxes2 = _interopRequireDefault(_ThemeGraphAxes);
 
-var _ThemeGraphSize = __webpack_require__(245);
+var _ThemeGraphSize = __webpack_require__(216);
 
 var _ThemeGraphSize2 = _interopRequireDefault(_ThemeGraphSize);
 
-var _ThemeGraphText = __webpack_require__(246);
+var _ThemeGraphText = __webpack_require__(217);
 
 var _ThemeGraphText2 = _interopRequireDefault(_ThemeGraphText);
 
-var _ThemeGraphItem = __webpack_require__(244);
+var _ThemeGraphItem = __webpack_require__(215);
 
 var _ThemeGraphItem2 = _interopRequireDefault(_ThemeGraphItem);
 
@@ -18416,7 +16982,7 @@ exports.default = ThemeGraph;
 _SuperMap2.default.ThemeGraph = ThemeGraph;
 
 /***/ }),
-/* 71 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18434,11 +17000,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(13);
+var _Theme2 = __webpack_require__(12);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
-var _ThemeRangeItem = __webpack_require__(258);
+var _ThemeRangeItem = __webpack_require__(229);
 
 var _ThemeRangeItem2 = _interopRequireDefault(_ThemeRangeItem);
 
@@ -18594,7 +17160,7 @@ exports.default = ThemeRange;
 _SuperMap2.default.ThemeRange = ThemeRange;
 
 /***/ }),
-/* 72 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18612,15 +17178,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(13);
+var _Theme2 = __webpack_require__(12);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
-var _ThemeUniqueItem = __webpack_require__(259);
+var _ThemeUniqueItem = __webpack_require__(230);
 
 var _ThemeUniqueItem2 = _interopRequireDefault(_ThemeUniqueItem);
 
@@ -18785,1435 +17351,13 @@ exports.default = ThemeUnique;
 _SuperMap2.default.ThemeUnique = ThemeUnique;
 
 /***/ }),
-/* 73 */
-/***/ (function(module, exports) {
-
-module.exports = function(phi, sphi, cphi, en) {
-  cphi *= sphi;
-  sphi *= sphi;
-  return (en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4]))));
-};
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports) {
-
-module.exports = function (array){
-  var out = {
-    x: array[0],
-    y: array[1]
-  };
-  if (array.length>2) {
-    out.z = array[2];
-  }
-  if (array.length>3) {
-    out.m = array[3];
-  }
-  return out;
-};
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var globals = __webpack_require__(289);
-var parseProj = __webpack_require__(76);
-var wkt = __webpack_require__(79);
-
-function defs(name) {
-  /*global console*/
-  var that = this;
-  if (arguments.length === 2) {
-    var def = arguments[1];
-    if (typeof def === 'string') {
-      if (def.charAt(0) === '+') {
-        defs[name] = parseProj(arguments[1]);
-      }
-      else {
-        defs[name] = wkt(arguments[1]);
-      }
-    } else {
-      defs[name] = def;
-    }
-  }
-  else if (arguments.length === 1) {
-    if (Array.isArray(name)) {
-      return name.map(function(v) {
-        if (Array.isArray(v)) {
-          defs.apply(that, v);
-        }
-        else {
-          defs(v);
-        }
-      });
-    }
-    else if (typeof name === 'string') {
-      if (name in defs) {
-        return defs[name];
-      }
-    }
-    else if ('EPSG' in name) {
-      defs['EPSG:' + name.EPSG] = name;
-    }
-    else if ('ESRI' in name) {
-      defs['ESRI:' + name.ESRI] = name;
-    }
-    else if ('IAU2000' in name) {
-      defs['IAU2000:' + name.IAU2000] = name;
-    }
-    else {
-      console.log(name);
-    }
-    return;
-  }
-
-
-}
-globals(defs);
-module.exports = defs;
-
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(283);
-var units = __webpack_require__(284);
-
-module.exports = function(defData) {
-  var self = {};
-  var paramObj = {};
-  defData.split("+").map(function(v) {
-    return v.trim();
-  }).filter(function(a) {
-    return a;
-  }).forEach(function(a) {
-    var split = a.split("=");
-    split.push(true);
-    paramObj[split[0].toLowerCase()] = split[1];
-  });
-  var paramName, paramVal, paramOutname;
-  var params = {
-    proj: 'projName',
-    datum: 'datumCode',
-    rf: function(v) {
-      self.rf = parseFloat(v);
-    },
-    lat_0: function(v) {
-      self.lat0 = v * D2R;
-    },
-    lat_1: function(v) {
-      self.lat1 = v * D2R;
-    },
-    lat_2: function(v) {
-      self.lat2 = v * D2R;
-    },
-    lat_ts: function(v) {
-      self.lat_ts = v * D2R;
-    },
-    lon_0: function(v) {
-      self.long0 = v * D2R;
-    },
-    lon_1: function(v) {
-      self.long1 = v * D2R;
-    },
-    lon_2: function(v) {
-      self.long2 = v * D2R;
-    },
-    alpha: function(v) {
-      self.alpha = parseFloat(v) * D2R;
-    },
-    lonc: function(v) {
-      self.longc = v * D2R;
-    },
-    x_0: function(v) {
-      self.x0 = parseFloat(v);
-    },
-    y_0: function(v) {
-      self.y0 = parseFloat(v);
-    },
-    k_0: function(v) {
-      self.k0 = parseFloat(v);
-    },
-    k: function(v) {
-      self.k0 = parseFloat(v);
-    },
-    a: function(v) {
-      self.a = parseFloat(v);
-    },
-    b: function(v) {
-      self.b = parseFloat(v);
-    },
-    r_a: function() {
-      self.R_A = true;
-    },
-    zone: function(v) {
-      self.zone = parseInt(v, 10);
-    },
-    south: function() {
-      self.utmSouth = true;
-    },
-    towgs84: function(v) {
-      self.datum_params = v.split(",").map(function(a) {
-        return parseFloat(a);
-      });
-    },
-    to_meter: function(v) {
-      self.to_meter = parseFloat(v);
-    },
-    units: function(v) {
-      self.units = v;
-      if (units[v]) {
-        self.to_meter = units[v].to_meter;
-      }
-    },
-    from_greenwich: function(v) {
-      self.from_greenwich = v * D2R;
-    },
-    pm: function(v) {
-      self.from_greenwich = (PrimeMeridian[v] ? PrimeMeridian[v] : parseFloat(v)) * D2R;
-    },
-    nadgrids: function(v) {
-      if (v === '@null') {
-        self.datumCode = 'none';
-      }
-      else {
-        self.nadgrids = v;
-      }
-    },
-    axis: function(v) {
-      var legalAxis = "ewnsud";
-      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
-        self.axis = v;
-      }
-    }
-  };
-  for (paramName in paramObj) {
-    paramVal = paramObj[paramName];
-    if (paramName in params) {
-      paramOutname = params[paramName];
-      if (typeof paramOutname === 'function') {
-        paramOutname(paramVal);
-      }
-      else {
-        self[paramOutname] = paramVal;
-      }
-    }
-    else {
-      self[paramName] = paramVal;
-    }
-  }
-  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
-    self.datumCode = self.datumCode.toLowerCase();
-  }
-  return self;
-};
-
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var e0fn = __webpack_require__(31);
-var e1fn = __webpack_require__(32);
-var e2fn = __webpack_require__(33);
-var e3fn = __webpack_require__(34);
-var mlfn = __webpack_require__(35);
-var adjust_lon = __webpack_require__(3);
-var HALF_PI = Math.PI/2;
-var EPSLN = 1.0e-10;
-var sign = __webpack_require__(36);
-var asinz = __webpack_require__(18);
-
-exports.init = function() {
-  this.e0 = e0fn(this.es);
-  this.e1 = e1fn(this.es);
-  this.e2 = e2fn(this.es);
-  this.e3 = e3fn(this.es);
-  this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
-};
-
-/**
-    Transverse Mercator Forward  - long/lat to x/y
-    long/lat in radians
-  */
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-
-  var delta_lon = adjust_lon(lon - this.long0);
-  var con;
-  var x, y;
-  var sin_phi = Math.sin(lat);
-  var cos_phi = Math.cos(lat);
-
-  if (this.sphere) {
-    var b = cos_phi * Math.sin(delta_lon);
-    if ((Math.abs(Math.abs(b) - 1)) < 0.0000000001) {
-      return (93);
-    }
-    else {
-      x = 0.5 * this.a * this.k0 * Math.log((1 + b) / (1 - b));
-      con = Math.acos(cos_phi * Math.cos(delta_lon) / Math.sqrt(1 - b * b));
-      if (lat < 0) {
-        con = -con;
-      }
-      y = this.a * this.k0 * (con - this.lat0);
-    }
-  }
-  else {
-    var al = cos_phi * delta_lon;
-    var als = Math.pow(al, 2);
-    var c = this.ep2 * Math.pow(cos_phi, 2);
-    var tq = Math.tan(lat);
-    var t = Math.pow(tq, 2);
-    con = 1 - this.es * Math.pow(sin_phi, 2);
-    var n = this.a / Math.sqrt(con);
-    var ml = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, lat);
-
-    x = this.k0 * n * al * (1 + als / 6 * (1 - t + c + als / 20 * (5 - 18 * t + Math.pow(t, 2) + 72 * c - 58 * this.ep2))) + this.x0;
-    y = this.k0 * (ml - this.ml0 + n * tq * (als * (0.5 + als / 24 * (5 - t + 9 * c + 4 * Math.pow(c, 2) + als / 30 * (61 - 58 * t + Math.pow(t, 2) + 600 * c - 330 * this.ep2))))) + this.y0;
-
-  }
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-/**
-    Transverse Mercator Inverse  -  x/y to long/lat
-  */
-exports.inverse = function(p) {
-  var con, phi;
-  var delta_phi;
-  var i;
-  var max_iter = 6;
-  var lat, lon;
-
-  if (this.sphere) {
-    var f = Math.exp(p.x / (this.a * this.k0));
-    var g = 0.5 * (f - 1 / f);
-    var temp = this.lat0 + p.y / (this.a * this.k0);
-    var h = Math.cos(temp);
-    con = Math.sqrt((1 - h * h) / (1 + g * g));
-    lat = asinz(con);
-    if (temp < 0) {
-      lat = -lat;
-    }
-    if ((g === 0) && (h === 0)) {
-      lon = this.long0;
-    }
-    else {
-      lon = adjust_lon(Math.atan2(g, h) + this.long0);
-    }
-  }
-  else { // ellipsoidal form
-    var x = p.x - this.x0;
-    var y = p.y - this.y0;
-
-    con = (this.ml0 + y / this.k0) / this.a;
-    phi = con;
-    for (i = 0; true; i++) {
-      delta_phi = ((con + this.e1 * Math.sin(2 * phi) - this.e2 * Math.sin(4 * phi) + this.e3 * Math.sin(6 * phi)) / this.e0) - phi;
-      phi += delta_phi;
-      if (Math.abs(delta_phi) <= EPSLN) {
-        break;
-      }
-      if (i >= max_iter) {
-        return (95);
-      }
-    } // for()
-    if (Math.abs(phi) < HALF_PI) {
-      var sin_phi = Math.sin(phi);
-      var cos_phi = Math.cos(phi);
-      var tan_phi = Math.tan(phi);
-      var c = this.ep2 * Math.pow(cos_phi, 2);
-      var cs = Math.pow(c, 2);
-      var t = Math.pow(tan_phi, 2);
-      var ts = Math.pow(t, 2);
-      con = 1 - this.es * Math.pow(sin_phi, 2);
-      var n = this.a / Math.sqrt(con);
-      var r = n * (1 - this.es) / con;
-      var d = x / (n * this.k0);
-      var ds = Math.pow(d, 2);
-      lat = phi - (n * tan_phi * ds / r) * (0.5 - ds / 24 * (5 + 3 * t + 10 * c - 4 * cs - 9 * this.ep2 - ds / 30 * (61 + 90 * t + 298 * c + 45 * ts - 252 * this.ep2 - 3 * cs)));
-      lon = adjust_lon(this.long0 + (d * (1 - ds / 6 * (1 + 2 * t + c - ds / 20 * (5 - 2 * c + 28 * t - 3 * cs + 8 * this.ep2 + 24 * ts))) / cos_phi));
-    }
-    else {
-      lat = HALF_PI * sign(y);
-      lon = this.long0;
-    }
-  }
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var D2R = 0.01745329251994329577;
-var R2D = 57.29577951308232088;
-var PJD_3PARAM = 1;
-var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(287);
-var adjust_axis = __webpack_require__(276);
-var proj = __webpack_require__(55);
-var toPoint = __webpack_require__(74);
-module.exports = function transform(source, dest, point) {
-  var wgs84;
-  if (Array.isArray(point)) {
-    point = toPoint(point);
-  }
-  function checkNotWGS(source, dest) {
-    return ((source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== "WGS84");
-  }
-
-  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
-  if (source.datum && dest.datum && (checkNotWGS(source, dest) || checkNotWGS(dest, source))) {
-    wgs84 = new proj('WGS84');
-    transform(source, wgs84, point);
-    source = wgs84;
-  }
-  // DGR, 2010/11/12
-  if (source.axis !== "enu") {
-    adjust_axis(source, false, point);
-  }
-  // Transform source points to long/lat, if they aren't already.
-  if (source.projName === "longlat") {
-    point.x *= D2R; // convert degrees to radians
-    point.y *= D2R;
-  }
-  else {
-    if (source.to_meter) {
-      point.x *= source.to_meter;
-      point.y *= source.to_meter;
-    }
-    source.inverse(point); // Convert Cartesian to longlat
-  }
-  // Adjust for the prime meridian if necessary
-  if (source.from_greenwich) {
-    point.x += source.from_greenwich;
-  }
-
-  // Convert datums if needed, and if possible.
-  point = datum_transform(source.datum, dest.datum, point);
-
-  // Adjust for the prime meridian if necessary
-  if (dest.from_greenwich) {
-    point.x -= dest.from_greenwich;
-  }
-
-  if (dest.projName === "longlat") {
-    // convert radians to decimal degrees
-    point.x *= R2D;
-    point.y *= R2D;
-  }
-  else { // else project
-    dest.forward(point);
-    if (dest.to_meter) {
-      point.x /= dest.to_meter;
-      point.y /= dest.to_meter;
-    }
-  }
-
-  // DGR, 2010/11/12
-  if (dest.axis !== "enu") {
-    adjust_axis(dest, true, point);
-  }
-
-  return point;
-};
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var D2R = 0.01745329251994329577;
-var extend = __webpack_require__(59);
-
-function mapit(obj, key, v) {
-  obj[key] = v.map(function(aa) {
-    var o = {};
-    sExpr(aa, o);
-    return o;
-  }).reduce(function(a, b) {
-    return extend(a, b);
-  }, {});
-}
-
-function sExpr(v, obj) {
-  var key;
-  if (!Array.isArray(v)) {
-    obj[v] = true;
-    return;
-  }
-  else {
-    key = v.shift();
-    if (key === 'PARAMETER') {
-      key = v.shift();
-    }
-    if (v.length === 1) {
-      if (Array.isArray(v[0])) {
-        obj[key] = {};
-        sExpr(v[0], obj[key]);
-      }
-      else {
-        obj[key] = v[0];
-      }
-    }
-    else if (!v.length) {
-      obj[key] = true;
-    }
-    else if (key === 'TOWGS84') {
-      obj[key] = v;
-    }
-    else {
-      obj[key] = {};
-      if (['UNIT', 'PRIMEM', 'VERT_DATUM'].indexOf(key) > -1) {
-        obj[key] = {
-          name: v[0].toLowerCase(),
-          convert: v[1]
-        };
-        if (v.length === 3) {
-          obj[key].auth = v[2];
-        }
-      }
-      else if (key === 'SPHEROID') {
-        obj[key] = {
-          name: v[0],
-          a: v[1],
-          rf: v[2]
-        };
-        if (v.length === 4) {
-          obj[key].auth = v[3];
-        }
-      }
-      else if (['GEOGCS', 'GEOCCS', 'DATUM', 'VERT_CS', 'COMPD_CS', 'LOCAL_CS', 'FITTED_CS', 'LOCAL_DATUM'].indexOf(key) > -1) {
-        v[0] = ['name', v[0]];
-        mapit(obj, key, v);
-      }
-      else if (v.every(function(aa) {
-        return Array.isArray(aa);
-      })) {
-        mapit(obj, key, v);
-      }
-      else {
-        sExpr(v, obj[key]);
-      }
-    }
-  }
-}
-
-function rename(obj, params) {
-  var outName = params[0];
-  var inName = params[1];
-  if (!(outName in obj) && (inName in obj)) {
-    obj[outName] = obj[inName];
-    if (params.length === 3) {
-      obj[outName] = params[2](obj[outName]);
-    }
-  }
-}
-
-function d2r(input) {
-  return input * D2R;
-}
-
-function cleanWKT(wkt) {
-  if (wkt.type === 'GEOGCS') {
-    wkt.projName = 'longlat';
-  }
-  else if (wkt.type === 'LOCAL_CS') {
-    wkt.projName = 'identity';
-    wkt.local = true;
-  }
-  else {
-    if (typeof wkt.PROJECTION === "object") {
-      wkt.projName = Object.keys(wkt.PROJECTION)[0];
-    }
-    else {
-      wkt.projName = wkt.PROJECTION;
-    }
-  }
-  if (wkt.UNIT) {
-    wkt.units = wkt.UNIT.name.toLowerCase();
-    if (wkt.units === 'metre') {
-      wkt.units = 'meter';
-    }
-    if (wkt.UNIT.convert) {
-      if (wkt.type === 'GEOGCS') {
-        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
-          wkt.to_meter = parseFloat(wkt.UNIT.convert, 10)*wkt.DATUM.SPHEROID.a;
-        }
-      } else {
-        wkt.to_meter = parseFloat(wkt.UNIT.convert, 10);
-      }
-    }
-  }
-
-  if (wkt.GEOGCS) {
-    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
-    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
-    //}
-    if (wkt.GEOGCS.DATUM) {
-      wkt.datumCode = wkt.GEOGCS.DATUM.name.toLowerCase();
-    }
-    else {
-      wkt.datumCode = wkt.GEOGCS.name.toLowerCase();
-    }
-    if (wkt.datumCode.slice(0, 2) === 'd_') {
-      wkt.datumCode = wkt.datumCode.slice(2);
-    }
-    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
-      wkt.datumCode = 'nzgd49';
-    }
-    if (wkt.datumCode === "wgs_1984") {
-      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
-        wkt.sphere = true;
-      }
-      wkt.datumCode = 'wgs84';
-    }
-    if (wkt.datumCode.slice(-6) === '_ferro') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 6);
-    }
-    if (wkt.datumCode.slice(-8) === '_jakarta') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 8);
-    }
-    if (~wkt.datumCode.indexOf('belge')) {
-      wkt.datumCode = "rnb72";
-    }
-    if (wkt.GEOGCS.DATUM && wkt.GEOGCS.DATUM.SPHEROID) {
-      wkt.ellps = wkt.GEOGCS.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
-      if (wkt.ellps.toLowerCase().slice(0, 13) === "international") {
-        wkt.ellps = 'intl';
-      }
-
-      wkt.a = wkt.GEOGCS.DATUM.SPHEROID.a;
-      wkt.rf = parseFloat(wkt.GEOGCS.DATUM.SPHEROID.rf, 10);
-    }
-    if (~wkt.datumCode.indexOf('osgb_1936')) {
-      wkt.datumCode = "osgb36";
-    }
-  }
-  if (wkt.b && !isFinite(wkt.b)) {
-    wkt.b = wkt.a;
-  }
-
-  function toMeter(input) {
-    var ratio = wkt.to_meter || 1;
-    return parseFloat(input, 10) * ratio;
-  }
-  var renamer = function(a) {
-    return rename(wkt, a);
-  };
-  var list = [
-    ['standard_parallel_1', 'Standard_Parallel_1'],
-    ['standard_parallel_2', 'Standard_Parallel_2'],
-    ['false_easting', 'False_Easting'],
-    ['false_northing', 'False_Northing'],
-    ['central_meridian', 'Central_Meridian'],
-    ['latitude_of_origin', 'Latitude_Of_Origin'],
-    ['latitude_of_origin', 'Central_Parallel'],
-    ['scale_factor', 'Scale_Factor'],
-    ['k0', 'scale_factor'],
-    ['latitude_of_center', 'Latitude_of_center'],
-    ['lat0', 'latitude_of_center', d2r],
-    ['longitude_of_center', 'Longitude_Of_Center'],
-    ['longc', 'longitude_of_center', d2r],
-    ['x0', 'false_easting', toMeter],
-    ['y0', 'false_northing', toMeter],
-    ['long0', 'central_meridian', d2r],
-    ['lat0', 'latitude_of_origin', d2r],
-    ['lat0', 'standard_parallel_1', d2r],
-    ['lat1', 'standard_parallel_1', d2r],
-    ['lat2', 'standard_parallel_2', d2r],
-    ['alpha', 'azimuth', d2r],
-    ['srsCode', 'name']
-  ];
-  list.forEach(renamer);
-  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === "Lambert_Azimuthal_Equal_Area")) {
-    wkt.long0 = wkt.longc;
-  }
-  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
-    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
-    wkt.lat_ts = wkt.lat1;
-  }
-}
-module.exports = function(wkt, self) {
-  var lisp = JSON.parse(("," + wkt).replace(/\s*\,\s*([A-Z_0-9]+?)(\[)/g, ',["$1",').slice(1).replace(/\s*\,\s*([A-Z_0-9]+?)\]/g, ',"$1"]').replace(/,\["VERTCS".+/,''));
-  var type = lisp.shift();
-  var name = lisp.shift();
-  lisp.unshift(['name', name]);
-  lisp.unshift(['type', type]);
-  lisp.unshift('output');
-  var obj = {};
-  sExpr(lisp, obj);
-  cleanWKT(obj.output);
-  return extend(self, obj.output);
-};
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports) {
-
-
-
-
-/**
- * UTM zones are grouped, and assigned to one of a group of 6
- * sets.
- *
- * {int} @private
- */
-var NUM_100K_SETS = 6;
-
-/**
- * The column letters (for easting) of the lower left value, per
- * set.
- *
- * {string} @private
- */
-var SET_ORIGIN_COLUMN_LETTERS = 'AJSAJS';
-
-/**
- * The row letters (for northing) of the lower left value, per
- * set.
- *
- * {string} @private
- */
-var SET_ORIGIN_ROW_LETTERS = 'AFAFAF';
-
-var A = 65; // A
-var I = 73; // I
-var O = 79; // O
-var V = 86; // V
-var Z = 90; // Z
-
-/**
- * Conversion of lat/lon to MGRS.
- *
- * @param {object} ll Object literal with lat and lon properties on a
- *     WGS84 ellipsoid.
- * @param {int} accuracy Accuracy in digits (5 for 1 m, 4 for 10 m, 3 for
- *      100 m, 2 for 1000 m or 1 for 10000 m). Optional, default is 5.
- * @return {string} the MGRS string for the given location and accuracy.
- */
-exports.forward = function(ll, accuracy) {
-  accuracy = accuracy || 5; // default accuracy 1m
-  return encode(LLtoUTM({
-    lat: ll[1],
-    lon: ll[0]
-  }), accuracy);
-};
-
-/**
- * Conversion of MGRS to lat/lon.
- *
- * @param {string} mgrs MGRS string.
- * @return {array} An array with left (longitude), bottom (latitude), right
- *     (longitude) and top (latitude) values in WGS84, representing the
- *     bounding box for the provided MGRS reference.
- */
-exports.inverse = function(mgrs) {
-  var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
-  if (bbox.lat && bbox.lon) {
-    return [bbox.lon, bbox.lat, bbox.lon, bbox.lat];
-  }
-  return [bbox.left, bbox.bottom, bbox.right, bbox.top];
-};
-
-exports.toPoint = function(mgrs) {
-  var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
-  if (bbox.lat && bbox.lon) {
-    return [bbox.lon, bbox.lat];
-  }
-  return [(bbox.left + bbox.right) / 2, (bbox.top + bbox.bottom) / 2];
-};
-/**
- * Conversion from degrees to radians.
- *
- * @private
- * @param {number} deg the angle in degrees.
- * @return {number} the angle in radians.
- */
-function degToRad(deg) {
-  return (deg * (Math.PI / 180.0));
-}
-
-/**
- * Conversion from radians to degrees.
- *
- * @private
- * @param {number} rad the angle in radians.
- * @return {number} the angle in degrees.
- */
-function radToDeg(rad) {
-  return (180.0 * (rad / Math.PI));
-}
-
-/**
- * Converts a set of Longitude and Latitude co-ordinates to UTM
- * using the WGS84 ellipsoid.
- *
- * @private
- * @param {object} ll Object literal with lat and lon properties
- *     representing the WGS84 coordinate to be converted.
- * @return {object} Object literal containing the UTM value with easting,
- *     northing, zoneNumber and zoneLetter properties, and an optional
- *     accuracy property in digits. Returns null if the conversion failed.
- */
-function LLtoUTM(ll) {
-  var Lat = ll.lat;
-  var Long = ll.lon;
-  var a = 6378137.0; //ellip.radius;
-  var eccSquared = 0.00669438; //ellip.eccsq;
-  var k0 = 0.9996;
-  var LongOrigin;
-  var eccPrimeSquared;
-  var N, T, C, A, M;
-  var LatRad = degToRad(Lat);
-  var LongRad = degToRad(Long);
-  var LongOriginRad;
-  var ZoneNumber;
-  // (int)
-  ZoneNumber = Math.floor((Long + 180) / 6) + 1;
-
-  //Make sure the longitude 180.00 is in Zone 60
-  if (Long === 180) {
-    ZoneNumber = 60;
-  }
-
-  // Special zone for Norway
-  if (Lat >= 56.0 && Lat < 64.0 && Long >= 3.0 && Long < 12.0) {
-    ZoneNumber = 32;
-  }
-
-  // Special zones for Svalbard
-  if (Lat >= 72.0 && Lat < 84.0) {
-    if (Long >= 0.0 && Long < 9.0) {
-      ZoneNumber = 31;
-    }
-    else if (Long >= 9.0 && Long < 21.0) {
-      ZoneNumber = 33;
-    }
-    else if (Long >= 21.0 && Long < 33.0) {
-      ZoneNumber = 35;
-    }
-    else if (Long >= 33.0 && Long < 42.0) {
-      ZoneNumber = 37;
-    }
-  }
-
-  LongOrigin = (ZoneNumber - 1) * 6 - 180 + 3; //+3 puts origin
-  // in middle of
-  // zone
-  LongOriginRad = degToRad(LongOrigin);
-
-  eccPrimeSquared = (eccSquared) / (1 - eccSquared);
-
-  N = a / Math.sqrt(1 - eccSquared * Math.sin(LatRad) * Math.sin(LatRad));
-  T = Math.tan(LatRad) * Math.tan(LatRad);
-  C = eccPrimeSquared * Math.cos(LatRad) * Math.cos(LatRad);
-  A = Math.cos(LatRad) * (LongRad - LongOriginRad);
-
-  M = a * ((1 - eccSquared / 4 - 3 * eccSquared * eccSquared / 64 - 5 * eccSquared * eccSquared * eccSquared / 256) * LatRad - (3 * eccSquared / 8 + 3 * eccSquared * eccSquared / 32 + 45 * eccSquared * eccSquared * eccSquared / 1024) * Math.sin(2 * LatRad) + (15 * eccSquared * eccSquared / 256 + 45 * eccSquared * eccSquared * eccSquared / 1024) * Math.sin(4 * LatRad) - (35 * eccSquared * eccSquared * eccSquared / 3072) * Math.sin(6 * LatRad));
-
-  var UTMEasting = (k0 * N * (A + (1 - T + C) * A * A * A / 6.0 + (5 - 18 * T + T * T + 72 * C - 58 * eccPrimeSquared) * A * A * A * A * A / 120.0) + 500000.0);
-
-  var UTMNorthing = (k0 * (M + N * Math.tan(LatRad) * (A * A / 2 + (5 - T + 9 * C + 4 * C * C) * A * A * A * A / 24.0 + (61 - 58 * T + T * T + 600 * C - 330 * eccPrimeSquared) * A * A * A * A * A * A / 720.0)));
-  if (Lat < 0.0) {
-    UTMNorthing += 10000000.0; //10000000 meter offset for
-    // southern hemisphere
-  }
-
-  return {
-    northing: Math.round(UTMNorthing),
-    easting: Math.round(UTMEasting),
-    zoneNumber: ZoneNumber,
-    zoneLetter: getLetterDesignator(Lat)
-  };
-}
-
-/**
- * Converts UTM coords to lat/long, using the WGS84 ellipsoid. This is a convenience
- * class where the Zone can be specified as a single string eg."60N" which
- * is then broken down into the ZoneNumber and ZoneLetter.
- *
- * @private
- * @param {object} utm An object literal with northing, easting, zoneNumber
- *     and zoneLetter properties. If an optional accuracy property is
- *     provided (in meters), a bounding box will be returned instead of
- *     latitude and longitude.
- * @return {object} An object literal containing either lat and lon values
- *     (if no accuracy was provided), or top, right, bottom and left values
- *     for the bounding box calculated according to the provided accuracy.
- *     Returns null if the conversion failed.
- */
-function UTMtoLL(utm) {
-
-  var UTMNorthing = utm.northing;
-  var UTMEasting = utm.easting;
-  var zoneLetter = utm.zoneLetter;
-  var zoneNumber = utm.zoneNumber;
-  // check the ZoneNummber is valid
-  if (zoneNumber < 0 || zoneNumber > 60) {
-    return null;
-  }
-
-  var k0 = 0.9996;
-  var a = 6378137.0; //ellip.radius;
-  var eccSquared = 0.00669438; //ellip.eccsq;
-  var eccPrimeSquared;
-  var e1 = (1 - Math.sqrt(1 - eccSquared)) / (1 + Math.sqrt(1 - eccSquared));
-  var N1, T1, C1, R1, D, M;
-  var LongOrigin;
-  var mu, phi1Rad;
-
-  // remove 500,000 meter offset for longitude
-  var x = UTMEasting - 500000.0;
-  var y = UTMNorthing;
-
-  // We must know somehow if we are in the Northern or Southern
-  // hemisphere, this is the only time we use the letter So even
-  // if the Zone letter isn't exactly correct it should indicate
-  // the hemisphere correctly
-  if (zoneLetter < 'N') {
-    y -= 10000000.0; // remove 10,000,000 meter offset used
-    // for southern hemisphere
-  }
-
-  // There are 60 zones with zone 1 being at West -180 to -174
-  LongOrigin = (zoneNumber - 1) * 6 - 180 + 3; // +3 puts origin
-  // in middle of
-  // zone
-
-  eccPrimeSquared = (eccSquared) / (1 - eccSquared);
-
-  M = y / k0;
-  mu = M / (a * (1 - eccSquared / 4 - 3 * eccSquared * eccSquared / 64 - 5 * eccSquared * eccSquared * eccSquared / 256));
-
-  phi1Rad = mu + (3 * e1 / 2 - 27 * e1 * e1 * e1 / 32) * Math.sin(2 * mu) + (21 * e1 * e1 / 16 - 55 * e1 * e1 * e1 * e1 / 32) * Math.sin(4 * mu) + (151 * e1 * e1 * e1 / 96) * Math.sin(6 * mu);
-  // double phi1 = ProjMath.radToDeg(phi1Rad);
-
-  N1 = a / Math.sqrt(1 - eccSquared * Math.sin(phi1Rad) * Math.sin(phi1Rad));
-  T1 = Math.tan(phi1Rad) * Math.tan(phi1Rad);
-  C1 = eccPrimeSquared * Math.cos(phi1Rad) * Math.cos(phi1Rad);
-  R1 = a * (1 - eccSquared) / Math.pow(1 - eccSquared * Math.sin(phi1Rad) * Math.sin(phi1Rad), 1.5);
-  D = x / (N1 * k0);
-
-  var lat = phi1Rad - (N1 * Math.tan(phi1Rad) / R1) * (D * D / 2 - (5 + 3 * T1 + 10 * C1 - 4 * C1 * C1 - 9 * eccPrimeSquared) * D * D * D * D / 24 + (61 + 90 * T1 + 298 * C1 + 45 * T1 * T1 - 252 * eccPrimeSquared - 3 * C1 * C1) * D * D * D * D * D * D / 720);
-  lat = radToDeg(lat);
-
-  var lon = (D - (1 + 2 * T1 + C1) * D * D * D / 6 + (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * eccPrimeSquared + 24 * T1 * T1) * D * D * D * D * D / 120) / Math.cos(phi1Rad);
-  lon = LongOrigin + radToDeg(lon);
-
-  var result;
-  if (utm.accuracy) {
-    var topRight = UTMtoLL({
-      northing: utm.northing + utm.accuracy,
-      easting: utm.easting + utm.accuracy,
-      zoneLetter: utm.zoneLetter,
-      zoneNumber: utm.zoneNumber
-    });
-    result = {
-      top: topRight.lat,
-      right: topRight.lon,
-      bottom: lat,
-      left: lon
-    };
-  }
-  else {
-    result = {
-      lat: lat,
-      lon: lon
-    };
-  }
-  return result;
-}
-
-/**
- * Calculates the MGRS letter designator for the given latitude.
- *
- * @private
- * @param {number} lat The latitude in WGS84 to get the letter designator
- *     for.
- * @return {char} The letter designator.
- */
-function getLetterDesignator(lat) {
-  //This is here as an error flag to show that the Latitude is
-  //outside MGRS limits
-  var LetterDesignator = 'Z';
-
-  if ((84 >= lat) && (lat >= 72)) {
-    LetterDesignator = 'X';
-  }
-  else if ((72 > lat) && (lat >= 64)) {
-    LetterDesignator = 'W';
-  }
-  else if ((64 > lat) && (lat >= 56)) {
-    LetterDesignator = 'V';
-  }
-  else if ((56 > lat) && (lat >= 48)) {
-    LetterDesignator = 'U';
-  }
-  else if ((48 > lat) && (lat >= 40)) {
-    LetterDesignator = 'T';
-  }
-  else if ((40 > lat) && (lat >= 32)) {
-    LetterDesignator = 'S';
-  }
-  else if ((32 > lat) && (lat >= 24)) {
-    LetterDesignator = 'R';
-  }
-  else if ((24 > lat) && (lat >= 16)) {
-    LetterDesignator = 'Q';
-  }
-  else if ((16 > lat) && (lat >= 8)) {
-    LetterDesignator = 'P';
-  }
-  else if ((8 > lat) && (lat >= 0)) {
-    LetterDesignator = 'N';
-  }
-  else if ((0 > lat) && (lat >= -8)) {
-    LetterDesignator = 'M';
-  }
-  else if ((-8 > lat) && (lat >= -16)) {
-    LetterDesignator = 'L';
-  }
-  else if ((-16 > lat) && (lat >= -24)) {
-    LetterDesignator = 'K';
-  }
-  else if ((-24 > lat) && (lat >= -32)) {
-    LetterDesignator = 'J';
-  }
-  else if ((-32 > lat) && (lat >= -40)) {
-    LetterDesignator = 'H';
-  }
-  else if ((-40 > lat) && (lat >= -48)) {
-    LetterDesignator = 'G';
-  }
-  else if ((-48 > lat) && (lat >= -56)) {
-    LetterDesignator = 'F';
-  }
-  else if ((-56 > lat) && (lat >= -64)) {
-    LetterDesignator = 'E';
-  }
-  else if ((-64 > lat) && (lat >= -72)) {
-    LetterDesignator = 'D';
-  }
-  else if ((-72 > lat) && (lat >= -80)) {
-    LetterDesignator = 'C';
-  }
-  return LetterDesignator;
-}
-
-/**
- * Encodes a UTM location as MGRS string.
- *
- * @private
- * @param {object} utm An object literal with easting, northing,
- *     zoneLetter, zoneNumber
- * @param {number} accuracy Accuracy in digits (1-5).
- * @return {string} MGRS string for the given UTM location.
- */
-function encode(utm, accuracy) {
-  // prepend with leading zeroes
-  var seasting = "00000" + utm.easting,
-    snorthing = "00000" + utm.northing;
-
-  return utm.zoneNumber + utm.zoneLetter + get100kID(utm.easting, utm.northing, utm.zoneNumber) + seasting.substr(seasting.length - 5, accuracy) + snorthing.substr(snorthing.length - 5, accuracy);
-}
-
-/**
- * Get the two letter 100k designator for a given UTM easting,
- * northing and zone number value.
- *
- * @private
- * @param {number} easting
- * @param {number} northing
- * @param {number} zoneNumber
- * @return the two letter 100k designator for the given UTM location.
- */
-function get100kID(easting, northing, zoneNumber) {
-  var setParm = get100kSetForZone(zoneNumber);
-  var setColumn = Math.floor(easting / 100000);
-  var setRow = Math.floor(northing / 100000) % 20;
-  return getLetter100kID(setColumn, setRow, setParm);
-}
-
-/**
- * Given a UTM zone number, figure out the MGRS 100K set it is in.
- *
- * @private
- * @param {number} i An UTM zone number.
- * @return {number} the 100k set the UTM zone is in.
- */
-function get100kSetForZone(i) {
-  var setParm = i % NUM_100K_SETS;
-  if (setParm === 0) {
-    setParm = NUM_100K_SETS;
-  }
-
-  return setParm;
-}
-
-/**
- * Get the two-letter MGRS 100k designator given information
- * translated from the UTM northing, easting and zone number.
- *
- * @private
- * @param {number} column the column index as it relates to the MGRS
- *        100k set spreadsheet, created from the UTM easting.
- *        Values are 1-8.
- * @param {number} row the row index as it relates to the MGRS 100k set
- *        spreadsheet, created from the UTM northing value. Values
- *        are from 0-19.
- * @param {number} parm the set block, as it relates to the MGRS 100k set
- *        spreadsheet, created from the UTM zone. Values are from
- *        1-60.
- * @return two letter MGRS 100k code.
- */
-function getLetter100kID(column, row, parm) {
-  // colOrigin and rowOrigin are the letters at the origin of the set
-  var index = parm - 1;
-  var colOrigin = SET_ORIGIN_COLUMN_LETTERS.charCodeAt(index);
-  var rowOrigin = SET_ORIGIN_ROW_LETTERS.charCodeAt(index);
-
-  // colInt and rowInt are the letters to build to return
-  var colInt = colOrigin + column - 1;
-  var rowInt = rowOrigin + row;
-  var rollover = false;
-
-  if (colInt > Z) {
-    colInt = colInt - Z + A - 1;
-    rollover = true;
-  }
-
-  if (colInt === I || (colOrigin < I && colInt > I) || ((colInt > I || colOrigin < I) && rollover)) {
-    colInt++;
-  }
-
-  if (colInt === O || (colOrigin < O && colInt > O) || ((colInt > O || colOrigin < O) && rollover)) {
-    colInt++;
-
-    if (colInt === I) {
-      colInt++;
-    }
-  }
-
-  if (colInt > Z) {
-    colInt = colInt - Z + A - 1;
-  }
-
-  if (rowInt > V) {
-    rowInt = rowInt - V + A - 1;
-    rollover = true;
-  }
-  else {
-    rollover = false;
-  }
-
-  if (((rowInt === I) || ((rowOrigin < I) && (rowInt > I))) || (((rowInt > I) || (rowOrigin < I)) && rollover)) {
-    rowInt++;
-  }
-
-  if (((rowInt === O) || ((rowOrigin < O) && (rowInt > O))) || (((rowInt > O) || (rowOrigin < O)) && rollover)) {
-    rowInt++;
-
-    if (rowInt === I) {
-      rowInt++;
-    }
-  }
-
-  if (rowInt > V) {
-    rowInt = rowInt - V + A - 1;
-  }
-
-  var twoLetter = String.fromCharCode(colInt) + String.fromCharCode(rowInt);
-  return twoLetter;
-}
-
-/**
- * Decode the UTM parameters from a MGRS string.
- *
- * @private
- * @param {string} mgrsString an UPPERCASE coordinate string is expected.
- * @return {object} An object literal with easting, northing, zoneLetter,
- *     zoneNumber and accuracy (in meters) properties.
- */
-function decode(mgrsString) {
-
-  if (mgrsString && mgrsString.length === 0) {
-    throw ("MGRSPoint coverting from nothing");
-  }
-
-  var length = mgrsString.length;
-
-  var hunK = null;
-  var sb = "";
-  var testChar;
-  var i = 0;
-
-  // get Zone number
-  while (!(/[A-Z]/).test(testChar = mgrsString.charAt(i))) {
-    if (i >= 2) {
-      throw ("MGRSPoint bad conversion from: " + mgrsString);
-    }
-    sb += testChar;
-    i++;
-  }
-
-  var zoneNumber = parseInt(sb, 10);
-
-  if (i === 0 || i + 3 > length) {
-    // A good MGRS string has to be 4-5 digits long,
-    // ##AAA/#AAA at least.
-    throw ("MGRSPoint bad conversion from: " + mgrsString);
-  }
-
-  var zoneLetter = mgrsString.charAt(i++);
-
-  // Should we check the zone letter here? Why not.
-  if (zoneLetter <= 'A' || zoneLetter === 'B' || zoneLetter === 'Y' || zoneLetter >= 'Z' || zoneLetter === 'I' || zoneLetter === 'O') {
-    throw ("MGRSPoint zone letter " + zoneLetter + " not handled: " + mgrsString);
-  }
-
-  hunK = mgrsString.substring(i, i += 2);
-
-  var set = get100kSetForZone(zoneNumber);
-
-  var east100k = getEastingFromChar(hunK.charAt(0), set);
-  var north100k = getNorthingFromChar(hunK.charAt(1), set);
-
-  // We have a bug where the northing may be 2000000 too low.
-  // How
-  // do we know when to roll over?
-
-  while (north100k < getMinNorthing(zoneLetter)) {
-    north100k += 2000000;
-  }
-
-  // calculate the char index for easting/northing separator
-  var remainder = length - i;
-
-  if (remainder % 2 !== 0) {
-    throw ("MGRSPoint has to have an even number \nof digits after the zone letter and two 100km letters - front \nhalf for easting meters, second half for \nnorthing meters" + mgrsString);
-  }
-
-  var sep = remainder / 2;
-
-  var sepEasting = 0.0;
-  var sepNorthing = 0.0;
-  var accuracyBonus, sepEastingString, sepNorthingString, easting, northing;
-  if (sep > 0) {
-    accuracyBonus = 100000.0 / Math.pow(10, sep);
-    sepEastingString = mgrsString.substring(i, i + sep);
-    sepEasting = parseFloat(sepEastingString) * accuracyBonus;
-    sepNorthingString = mgrsString.substring(i + sep);
-    sepNorthing = parseFloat(sepNorthingString) * accuracyBonus;
-  }
-
-  easting = sepEasting + east100k;
-  northing = sepNorthing + north100k;
-
-  return {
-    easting: easting,
-    northing: northing,
-    zoneLetter: zoneLetter,
-    zoneNumber: zoneNumber,
-    accuracy: accuracyBonus
-  };
-}
-
-/**
- * Given the first letter from a two-letter MGRS 100k zone, and given the
- * MGRS table set for the zone number, figure out the easting value that
- * should be added to the other, secondary easting value.
- *
- * @private
- * @param {char} e The first letter from a two-letter MGRS 100´k zone.
- * @param {number} set The MGRS table set for the zone number.
- * @return {number} The easting value for the given letter and set.
- */
-function getEastingFromChar(e, set) {
-  // colOrigin is the letter at the origin of the set for the
-  // column
-  var curCol = SET_ORIGIN_COLUMN_LETTERS.charCodeAt(set - 1);
-  var eastingValue = 100000.0;
-  var rewindMarker = false;
-
-  while (curCol !== e.charCodeAt(0)) {
-    curCol++;
-    if (curCol === I) {
-      curCol++;
-    }
-    if (curCol === O) {
-      curCol++;
-    }
-    if (curCol > Z) {
-      if (rewindMarker) {
-        throw ("Bad character: " + e);
-      }
-      curCol = A;
-      rewindMarker = true;
-    }
-    eastingValue += 100000.0;
-  }
-
-  return eastingValue;
-}
-
-/**
- * Given the second letter from a two-letter MGRS 100k zone, and given the
- * MGRS table set for the zone number, figure out the northing value that
- * should be added to the other, secondary northing value. You have to
- * remember that Northings are determined from the equator, and the vertical
- * cycle of letters mean a 2000000 additional northing meters. This happens
- * approx. every 18 degrees of latitude. This method does *NOT* count any
- * additional northings. You have to figure out how many 2000000 meters need
- * to be added for the zone letter of the MGRS coordinate.
- *
- * @private
- * @param {char} n Second letter of the MGRS 100k zone
- * @param {number} set The MGRS table set number, which is dependent on the
- *     UTM zone number.
- * @return {number} The northing value for the given letter and set.
- */
-function getNorthingFromChar(n, set) {
-
-  if (n > 'V') {
-    throw ("MGRSPoint given invalid Northing " + n);
-  }
-
-  // rowOrigin is the letter at the origin of the set for the
-  // column
-  var curRow = SET_ORIGIN_ROW_LETTERS.charCodeAt(set - 1);
-  var northingValue = 0.0;
-  var rewindMarker = false;
-
-  while (curRow !== n.charCodeAt(0)) {
-    curRow++;
-    if (curRow === I) {
-      curRow++;
-    }
-    if (curRow === O) {
-      curRow++;
-    }
-    // fixing a bug making whole application hang in this loop
-    // when 'n' is a wrong character
-    if (curRow > V) {
-      if (rewindMarker) { // making sure that this loop ends
-        throw ("Bad character: " + n);
-      }
-      curRow = A;
-      rewindMarker = true;
-    }
-    northingValue += 100000.0;
-  }
-
-  return northingValue;
-}
-
-/**
- * The function getMinNorthing returns the minimum northing value of a MGRS
- * zone.
- *
- * Ported from Geotrans' c Lattitude_Band_Value structure table.
- *
- * @private
- * @param {char} zoneLetter The MGRS zone to get the min northing for.
- * @return {number}
- */
-function getMinNorthing(zoneLetter) {
-  var northing;
-  switch (zoneLetter) {
-  case 'C':
-    northing = 1100000.0;
-    break;
-  case 'D':
-    northing = 2000000.0;
-    break;
-  case 'E':
-    northing = 2800000.0;
-    break;
-  case 'F':
-    northing = 3700000.0;
-    break;
-  case 'G':
-    northing = 4600000.0;
-    break;
-  case 'H':
-    northing = 5500000.0;
-    break;
-  case 'J':
-    northing = 6400000.0;
-    break;
-  case 'K':
-    northing = 7300000.0;
-    break;
-  case 'L':
-    northing = 8200000.0;
-    break;
-  case 'M':
-    northing = 9100000.0;
-    break;
-  case 'N':
-    northing = 0.0;
-    break;
-  case 'P':
-    northing = 800000.0;
-    break;
-  case 'Q':
-    northing = 1700000.0;
-    break;
-  case 'R':
-    northing = 2600000.0;
-    break;
-  case 'S':
-    northing = 3500000.0;
-    break;
-  case 'T':
-    northing = 4400000.0;
-    break;
-  case 'U':
-    northing = 5300000.0;
-    break;
-  case 'V':
-    northing = 6200000.0;
-    break;
-  case 'W':
-    northing = 7000000.0;
-    break;
-  case 'X':
-    northing = 7900000.0;
-    break;
-  default:
-    northing = -1.0;
-  }
-  if (northing >= 0.0) {
-    return northing;
-  }
-  else {
-    throw ("Invalid zone letter: " + zoneLetter);
-  }
-
-}
-
-
-/***/ }),
-/* 81 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
-/* 82 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20231,7 +17375,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TimeControlBase2 = __webpack_require__(162);
+var _TimeControlBase2 = __webpack_require__(133);
 
 var _TimeControlBase3 = _interopRequireDefault(_TimeControlBase2);
 
@@ -20462,7 +17606,7 @@ exports.default = TimeFlowControl;
 _SuperMap2.default.TimeFlowControl = TimeFlowControl;
 
 /***/ }),
-/* 83 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20484,13 +17628,13 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FetchRequest = __webpack_require__(41);
+var _FetchRequest = __webpack_require__(28);
 
-var _GeoCodingParameter = __webpack_require__(196);
+var _GeoCodingParameter = __webpack_require__(167);
 
 var _GeoCodingParameter2 = _interopRequireDefault(_GeoCodingParameter);
 
-var _GeoDecodingParameter = __webpack_require__(197);
+var _GeoDecodingParameter = __webpack_require__(168);
 
 var _GeoDecodingParameter2 = _interopRequireDefault(_GeoDecodingParameter);
 
@@ -20612,7 +17756,7 @@ exports.default = AddressMatchService;
 _SuperMap2.default.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 84 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20630,11 +17774,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _AreaSolarRadiationParameters = __webpack_require__(165);
+var _AreaSolarRadiationParameters = __webpack_require__(136);
 
 var _AreaSolarRadiationParameters2 = _interopRequireDefault(_AreaSolarRadiationParameters);
 
@@ -20731,7 +17875,7 @@ exports.default = AreaSolarRadiationService;
 _SuperMap2.default.AreaSolarRadiationService = AreaSolarRadiationService;
 
 /***/ }),
-/* 85 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20749,19 +17893,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _DatasetBufferAnalystParameters = __webpack_require__(173);
+var _DatasetBufferAnalystParameters = __webpack_require__(144);
 
 var _DatasetBufferAnalystParameters2 = _interopRequireDefault(_DatasetBufferAnalystParameters);
 
-var _GeometryBufferAnalystParameters = __webpack_require__(199);
+var _GeometryBufferAnalystParameters = __webpack_require__(170);
 
 var _GeometryBufferAnalystParameters2 = _interopRequireDefault(_GeometryBufferAnalystParameters);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -20894,7 +18038,7 @@ exports.default = BufferAnalystService;
 _SuperMap2.default.BufferAnalystService = BufferAnalystService;
 
 /***/ }),
-/* 86 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20912,11 +18056,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _BurstPipelineAnalystParameters = __webpack_require__(168);
+var _BurstPipelineAnalystParameters = __webpack_require__(139);
 
 var _BurstPipelineAnalystParameters2 = _interopRequireDefault(_BurstPipelineAnalystParameters);
 
@@ -21007,7 +18151,7 @@ exports.default = BurstPipelineAnalystService;
 _SuperMap2.default.BurstPipelineAnalystService = BurstPipelineAnalystService;
 
 /***/ }),
-/* 87 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21114,7 +18258,7 @@ exports.default = ChartFeatureInfoSpecsService;
 _SuperMap2.default.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService;
 
 /***/ }),
-/* 88 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21136,15 +18280,15 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _QueryParameters = __webpack_require__(15);
+var _QueryParameters = __webpack_require__(14);
 
 var _QueryParameters2 = _interopRequireDefault(_QueryParameters);
 
-var _ChartQueryParameters = __webpack_require__(170);
+var _ChartQueryParameters = __webpack_require__(141);
 
 var _ChartQueryParameters2 = _interopRequireDefault(_ChartQueryParameters);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -21340,7 +18484,7 @@ exports.default = ChartQueryService;
 _SuperMap2.default.ChartQueryService = ChartQueryService;
 
 /***/ }),
-/* 89 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21358,11 +18502,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ComputeWeightMatrixParameters = __webpack_require__(172);
+var _ComputeWeightMatrixParameters = __webpack_require__(143);
 
 var _ComputeWeightMatrixParameters2 = _interopRequireDefault(_ComputeWeightMatrixParameters);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
@@ -21484,7 +18628,7 @@ exports.default = ComputeWeightMatrixService;
 _SuperMap2.default.ComputeWeightMatrixService = ComputeWeightMatrixService;
 
 /***/ }),
-/* 90 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21796,7 +18940,7 @@ exports.default = DataFlowService;
 _SuperMap2.default.DataFlowService = DataFlowService;
 
 /***/ }),
-/* 91 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21814,11 +18958,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _DensityKernelAnalystParameters = __webpack_require__(179);
+var _DensityKernelAnalystParameters = __webpack_require__(150);
 
 var _DensityKernelAnalystParameters2 = _interopRequireDefault(_DensityKernelAnalystParameters);
 
@@ -21932,7 +19076,7 @@ exports.default = DensityAnalystService;
 _SuperMap2.default.DensityAnalystService = DensityAnalystService;
 
 /***/ }),
-/* 92 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21956,7 +19100,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _EditFeaturesParameters = __webpack_require__(180);
+var _EditFeaturesParameters = __webpack_require__(151);
 
 var _EditFeaturesParameters2 = _interopRequireDefault(_EditFeaturesParameters);
 
@@ -22094,7 +19238,7 @@ exports.default = EditFeaturesService;
 _SuperMap2.default.EditFeaturesService = EditFeaturesService;
 
 /***/ }),
-/* 93 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22114,7 +19258,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FacilityAnalystSinks3DParameters = __webpack_require__(181);
+var _FacilityAnalystSinks3DParameters = __webpack_require__(152);
 
 var _FacilityAnalystSinks3DParameters2 = _interopRequireDefault(_FacilityAnalystSinks3DParameters);
 
@@ -22211,7 +19355,7 @@ exports.default = FacilityAnalystSinks3DService;
 _SuperMap2.default.FacilityAnalystSinks3DService = FacilityAnalystSinks3DService;
 
 /***/ }),
-/* 94 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22233,7 +19377,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FacilityAnalystSources3DParameters = __webpack_require__(182);
+var _FacilityAnalystSources3DParameters = __webpack_require__(153);
 
 var _FacilityAnalystSources3DParameters2 = _interopRequireDefault(_FacilityAnalystSources3DParameters);
 
@@ -22323,7 +19467,7 @@ exports.default = FacilityAnalystSources3DService;
 _SuperMap2.default.FacilityAnalystSources3DService = FacilityAnalystSources3DService;
 
 /***/ }),
-/* 95 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22341,11 +19485,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _FacilityAnalystStreamParameters = __webpack_require__(183);
+var _FacilityAnalystStreamParameters = __webpack_require__(154);
 
 var _FacilityAnalystStreamParameters2 = _interopRequireDefault(_FacilityAnalystStreamParameters);
 
@@ -22441,7 +19585,7 @@ exports.default = FacilityAnalystStreamService;
 _SuperMap2.default.FacilityAnalystStreamService = FacilityAnalystStreamService;
 
 /***/ }),
-/* 96 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22463,7 +19607,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FacilityAnalystTracedown3DParameters = __webpack_require__(184);
+var _FacilityAnalystTracedown3DParameters = __webpack_require__(155);
 
 var _FacilityAnalystTracedown3DParameters2 = _interopRequireDefault(_FacilityAnalystTracedown3DParameters);
 
@@ -22549,7 +19693,7 @@ exports.default = FacilityAnalystTracedown3DService;
 _SuperMap2.default.FacilityAnalystTracedown3DService = FacilityAnalystTracedown3DService;
 
 /***/ }),
-/* 97 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22571,7 +19715,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FacilityAnalystTraceup3DParameters = __webpack_require__(185);
+var _FacilityAnalystTraceup3DParameters = __webpack_require__(156);
 
 var _FacilityAnalystTraceup3DParameters2 = _interopRequireDefault(_FacilityAnalystTraceup3DParameters);
 
@@ -22666,7 +19810,7 @@ exports.default = FacilityAnalystTraceup3DService;
 _SuperMap2.default.FacilityAnalystTraceup3DService = FacilityAnalystTraceup3DService;
 
 /***/ }),
-/* 98 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22688,7 +19832,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FacilityAnalystUpstream3DParameters = __webpack_require__(186);
+var _FacilityAnalystUpstream3DParameters = __webpack_require__(157);
 
 var _FacilityAnalystUpstream3DParameters2 = _interopRequireDefault(_FacilityAnalystUpstream3DParameters);
 
@@ -22774,7 +19918,7 @@ exports.default = FacilityAnalystUpstream3DService;
 _SuperMap2.default.FacilityAnalystUpstream3DService = FacilityAnalystUpstream3DService;
 
 /***/ }),
-/* 99 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22798,7 +19942,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _FieldStatisticsParameters = __webpack_require__(188);
+var _FieldStatisticsParameters = __webpack_require__(159);
 
 var _FieldStatisticsParameters2 = _interopRequireDefault(_FieldStatisticsParameters);
 
@@ -22925,7 +20069,7 @@ exports.default = FieldStatisticService;
 _SuperMap2.default.FieldStatisticService = FieldStatisticService;
 
 /***/ }),
-/* 100 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22943,15 +20087,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _FindClosestFacilitiesParameters = __webpack_require__(189);
+var _FindClosestFacilitiesParameters = __webpack_require__(160);
 
 var _FindClosestFacilitiesParameters2 = _interopRequireDefault(_FindClosestFacilitiesParameters);
 
@@ -23119,7 +20263,7 @@ exports.default = FindClosestFacilitiesService;
 _SuperMap2.default.FindClosestFacilitiesService = FindClosestFacilitiesService;
 
 /***/ }),
-/* 101 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23137,15 +20281,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _FindLocationParameters = __webpack_require__(190);
+var _FindLocationParameters = __webpack_require__(161);
 
 var _FindLocationParameters2 = _interopRequireDefault(_FindLocationParameters);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -23290,7 +20434,7 @@ exports.default = FindLocationService;
 _SuperMap2.default.FindLocationService = FindLocationService;
 
 /***/ }),
-/* 102 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23308,15 +20452,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _FindMTSPPathsParameters = __webpack_require__(191);
+var _FindMTSPPathsParameters = __webpack_require__(162);
 
 var _FindMTSPPathsParameters2 = _interopRequireDefault(_FindMTSPPathsParameters);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -23475,7 +20619,7 @@ exports.default = FindMTSPPathsService;
 _SuperMap2.default.FindMTSPPathsService = FindMTSPPathsService;
 
 /***/ }),
-/* 103 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23493,15 +20637,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _FindPathParameters = __webpack_require__(192);
+var _FindPathParameters = __webpack_require__(163);
 
 var _FindPathParameters2 = _interopRequireDefault(_FindPathParameters);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -23656,7 +20800,7 @@ exports.default = FindPathService;
 _SuperMap2.default.FindPathService = FindPathService;
 
 /***/ }),
-/* 104 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23674,15 +20818,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _FindServiceAreasParameters = __webpack_require__(193);
+var _FindServiceAreasParameters = __webpack_require__(164);
 
 var _FindServiceAreasParameters2 = _interopRequireDefault(_FindServiceAreasParameters);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -23840,7 +20984,7 @@ exports.default = FindServiceAreasService;
 _SuperMap2.default.FindServiceAreasService = FindServiceAreasService;
 
 /***/ }),
-/* 105 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23858,15 +21002,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _FindTSPPathsParameters = __webpack_require__(194);
+var _FindTSPPathsParameters = __webpack_require__(165);
 
 var _FindTSPPathsParameters2 = _interopRequireDefault(_FindTSPPathsParameters);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -24027,7 +21171,7 @@ exports.default = FindTSPPathsService;
 _SuperMap2.default.FindTSPPathsService = FindTSPPathsService;
 
 /***/ }),
-/* 106 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24045,11 +21189,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _GenerateSpatialDataParameters = __webpack_require__(195);
+var _GenerateSpatialDataParameters = __webpack_require__(166);
 
 var _GenerateSpatialDataParameters2 = _interopRequireDefault(_GenerateSpatialDataParameters);
 
@@ -24191,7 +21335,7 @@ exports.default = GenerateSpatialDataService;
 _SuperMap2.default.GenerateSpatialDataService = GenerateSpatialDataService;
 
 /***/ }),
-/* 107 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24209,11 +21353,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _GeoRelationAnalystParameters = __webpack_require__(198);
+var _GeoRelationAnalystParameters = __webpack_require__(169);
 
 var _GeoRelationAnalystParameters2 = _interopRequireDefault(_GeoRelationAnalystParameters);
 
@@ -24331,7 +21475,7 @@ exports.default = GeoRelationAnalystService;
 _SuperMap2.default.GeoRelationAnalystService = GeoRelationAnalystService;
 
 /***/ }),
-/* 108 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24349,11 +21493,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(27);
+var _GetFeaturesServiceBase = __webpack_require__(22);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
-var _GetFeaturesByBoundsParameters = __webpack_require__(203);
+var _GetFeaturesByBoundsParameters = __webpack_require__(174);
 
 var _GetFeaturesByBoundsParameters2 = _interopRequireDefault(_GetFeaturesByBoundsParameters);
 
@@ -24434,7 +21578,7 @@ exports.default = GetFeaturesByBoundsService;
 _SuperMap2.default.GetFeaturesByBoundsService = GetFeaturesByBoundsService;
 
 /***/ }),
-/* 109 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24452,11 +21596,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(27);
+var _GetFeaturesServiceBase = __webpack_require__(22);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
-var _GetFeaturesByBufferParameters = __webpack_require__(204);
+var _GetFeaturesByBufferParameters = __webpack_require__(175);
 
 var _GetFeaturesByBufferParameters2 = _interopRequireDefault(_GetFeaturesByBufferParameters);
 
@@ -24535,7 +21679,7 @@ exports.default = GetFeaturesByBufferService;
 _SuperMap2.default.GetFeaturesByBufferService = GetFeaturesByBufferService;
 
 /***/ }),
-/* 110 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24553,11 +21697,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(27);
+var _GetFeaturesServiceBase = __webpack_require__(22);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
-var _GetFeaturesByGeometryParameters = __webpack_require__(205);
+var _GetFeaturesByGeometryParameters = __webpack_require__(176);
 
 var _GetFeaturesByGeometryParameters2 = _interopRequireDefault(_GetFeaturesByGeometryParameters);
 
@@ -24638,7 +21782,7 @@ exports.default = GetFeaturesByGeometryService;
 _SuperMap2.default.GetFeaturesByGeometryService = GetFeaturesByGeometryService;
 
 /***/ }),
-/* 111 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24656,11 +21800,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(27);
+var _GetFeaturesServiceBase = __webpack_require__(22);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
-var _GetFeaturesByIDsParameters = __webpack_require__(206);
+var _GetFeaturesByIDsParameters = __webpack_require__(177);
 
 var _GetFeaturesByIDsParameters2 = _interopRequireDefault(_GetFeaturesByIDsParameters);
 
@@ -24740,7 +21884,7 @@ exports.default = GetFeaturesByIDsService;
 _SuperMap2.default.GetFeaturesByIDsService = GetFeaturesByIDsService;
 
 /***/ }),
-/* 112 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24758,11 +21902,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesServiceBase = __webpack_require__(27);
+var _GetFeaturesServiceBase = __webpack_require__(22);
 
 var _GetFeaturesServiceBase2 = _interopRequireDefault(_GetFeaturesServiceBase);
 
-var _GetFeaturesBySQLParameters = __webpack_require__(207);
+var _GetFeaturesBySQLParameters = __webpack_require__(178);
 
 var _GetFeaturesBySQLParameters2 = _interopRequireDefault(_GetFeaturesBySQLParameters);
 
@@ -24846,7 +21990,7 @@ exports.default = GetFeaturesBySQLService;
 _SuperMap2.default.GetFeaturesBySQLService = GetFeaturesBySQLService;
 
 /***/ }),
-/* 113 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24971,7 +22115,7 @@ exports.default = GetFieldsService;
 _SuperMap2.default.GetFieldsService = GetFieldsService;
 
 /***/ }),
-/* 114 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24993,7 +22137,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _GetGridCellInfosParameters = __webpack_require__(208);
+var _GetGridCellInfosParameters = __webpack_require__(179);
 
 var _GetGridCellInfosParameters2 = _interopRequireDefault(_GetGridCellInfosParameters);
 
@@ -25190,7 +22334,7 @@ exports.default = GetGridCellInfosService;
 _SuperMap2.default.GetGridCellInfosService = GetGridCellInfosService;
 
 /***/ }),
-/* 115 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25212,19 +22356,19 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _ServerTheme = __webpack_require__(231);
+var _ServerTheme = __webpack_require__(202);
 
 var _ServerTheme2 = _interopRequireDefault(_ServerTheme);
 
-var _Grid = __webpack_require__(209);
+var _Grid = __webpack_require__(180);
 
 var _Grid2 = _interopRequireDefault(_Grid);
 
-var _Image = __webpack_require__(210);
+var _Image = __webpack_require__(181);
 
 var _Image2 = _interopRequireDefault(_Image);
 
-var _Vector = __webpack_require__(268);
+var _Vector = __webpack_require__(239);
 
 var _Vector2 = _interopRequireDefault(_Vector);
 
@@ -25389,7 +22533,7 @@ exports.default = GetLayersInfoService;
 _SuperMap2.default.GetLayersInfoService = GetLayersInfoService;
 
 /***/ }),
-/* 116 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25407,27 +22551,27 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _InterpolationRBFAnalystParameters = __webpack_require__(214);
+var _InterpolationRBFAnalystParameters = __webpack_require__(185);
 
 var _InterpolationRBFAnalystParameters2 = _interopRequireDefault(_InterpolationRBFAnalystParameters);
 
-var _InterpolationDensityAnalystParameters = __webpack_require__(211);
+var _InterpolationDensityAnalystParameters = __webpack_require__(182);
 
 var _InterpolationDensityAnalystParameters2 = _interopRequireDefault(_InterpolationDensityAnalystParameters);
 
-var _InterpolationIDWAnalystParameters = __webpack_require__(212);
+var _InterpolationIDWAnalystParameters = __webpack_require__(183);
 
 var _InterpolationIDWAnalystParameters2 = _interopRequireDefault(_InterpolationIDWAnalystParameters);
 
-var _InterpolationKrigingAnalystParameters = __webpack_require__(213);
+var _InterpolationKrigingAnalystParameters = __webpack_require__(184);
 
 var _InterpolationKrigingAnalystParameters2 = _interopRequireDefault(_InterpolationKrigingAnalystParameters);
 
-var _InterpolationAnalystParameters = __webpack_require__(28);
+var _InterpolationAnalystParameters = __webpack_require__(23);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -25564,7 +22708,7 @@ exports.default = InterpolationAnalystService;
 _SuperMap2.default.InterpolationAnalystService = InterpolationAnalystService;
 
 /***/ }),
-/* 117 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25582,11 +22726,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(29);
+var _ProcessingServiceBase = __webpack_require__(24);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _KernelDensityJobParameter = __webpack_require__(215);
+var _KernelDensityJobParameter = __webpack_require__(186);
 
 var _KernelDensityJobParameter2 = _interopRequireDefault(_KernelDensityJobParameter);
 
@@ -25676,7 +22820,7 @@ exports.default = KernelDensityJobsService;
 _SuperMap2.default.KernelDensityJobsService = KernelDensityJobsService;
 
 /***/ }),
-/* 118 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25832,7 +22976,7 @@ exports.default = MapService;
 _SuperMap2.default.MapService = MapService;
 
 /***/ }),
-/* 119 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25850,11 +22994,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _MathExpressionAnalysisParameters = __webpack_require__(222);
+var _MathExpressionAnalysisParameters = __webpack_require__(193);
 
 var _MathExpressionAnalysisParameters2 = _interopRequireDefault(_MathExpressionAnalysisParameters);
 
@@ -25951,7 +23095,7 @@ exports.default = MathExpressionAnalysisService;
 _SuperMap2.default.MathExpressionAnalysisService = MathExpressionAnalysisService;
 
 /***/ }),
-/* 120 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25975,11 +23119,11 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _MeasureParameters = __webpack_require__(223);
+var _MeasureParameters = __webpack_require__(194);
 
 var _MeasureParameters2 = _interopRequireDefault(_MeasureParameters);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -26116,7 +23260,7 @@ exports.default = MeasureService;
 _SuperMap2.default.MeasureService = MeasureService;
 
 /***/ }),
-/* 121 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26134,15 +23278,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _DatasetOverlayAnalystParameters = __webpack_require__(175);
+var _DatasetOverlayAnalystParameters = __webpack_require__(146);
 
 var _DatasetOverlayAnalystParameters2 = _interopRequireDefault(_DatasetOverlayAnalystParameters);
 
-var _GeometryOverlayAnalystParameters = __webpack_require__(200);
+var _GeometryOverlayAnalystParameters = __webpack_require__(171);
 
 var _GeometryOverlayAnalystParameters2 = _interopRequireDefault(_GeometryOverlayAnalystParameters);
 
@@ -26259,7 +23403,7 @@ exports.default = OverlayAnalystService;
 _SuperMap2.default.OverlayAnalystService = OverlayAnalystService;
 
 /***/ }),
-/* 122 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26277,11 +23421,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryService2 = __webpack_require__(39);
+var _QueryService2 = __webpack_require__(26);
 
 var _QueryService3 = _interopRequireDefault(_QueryService2);
 
-var _QueryByBoundsParameters = __webpack_require__(225);
+var _QueryByBoundsParameters = __webpack_require__(196);
 
 var _QueryByBoundsParameters2 = _interopRequireDefault(_QueryByBoundsParameters);
 
@@ -26368,7 +23512,7 @@ exports.default = QueryByBoundsService;
 _SuperMap2.default.QueryByBoundsService = QueryByBoundsService;
 
 /***/ }),
-/* 123 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26386,15 +23530,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryService2 = __webpack_require__(39);
+var _QueryService2 = __webpack_require__(26);
 
 var _QueryService3 = _interopRequireDefault(_QueryService2);
 
-var _QueryByDistanceParameters = __webpack_require__(226);
+var _QueryByDistanceParameters = __webpack_require__(197);
 
 var _QueryByDistanceParameters2 = _interopRequireDefault(_QueryByDistanceParameters);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -26482,7 +23626,7 @@ exports.default = QueryByDistanceService;
 _SuperMap2.default.QueryByDistanceService = QueryByDistanceService;
 
 /***/ }),
-/* 124 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26500,15 +23644,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryService2 = __webpack_require__(39);
+var _QueryService2 = __webpack_require__(26);
 
 var _QueryService3 = _interopRequireDefault(_QueryService2);
 
-var _QueryByGeometryParameters = __webpack_require__(227);
+var _QueryByGeometryParameters = __webpack_require__(198);
 
 var _QueryByGeometryParameters2 = _interopRequireDefault(_QueryByGeometryParameters);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -26600,7 +23744,7 @@ exports.default = QueryByGeometryService;
 _SuperMap2.default.QueryByGeometryService = QueryByGeometryService;
 
 /***/ }),
-/* 125 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26618,11 +23762,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryService2 = __webpack_require__(39);
+var _QueryService2 = __webpack_require__(26);
 
 var _QueryService3 = _interopRequireDefault(_QueryService2);
 
-var _QueryBySQLParameters = __webpack_require__(228);
+var _QueryBySQLParameters = __webpack_require__(199);
 
 var _QueryBySQLParameters2 = _interopRequireDefault(_QueryBySQLParameters);
 
@@ -26719,7 +23863,7 @@ exports.default = QueryBySQLService;
 _SuperMap2.default.QueryBySQLService = QueryBySQLService;
 
 /***/ }),
-/* 126 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26737,11 +23881,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _RouteCalculateMeasureParameters = __webpack_require__(229);
+var _RouteCalculateMeasureParameters = __webpack_require__(200);
 
 var _RouteCalculateMeasureParameters2 = _interopRequireDefault(_RouteCalculateMeasureParameters);
 
@@ -26893,7 +24037,7 @@ exports.default = RouteCalculateMeasureService;
 _SuperMap2.default.RouteCalculateMeasureService = RouteCalculateMeasureService;
 
 /***/ }),
-/* 127 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26911,11 +24055,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _RouteLocatorParameters = __webpack_require__(230);
+var _RouteLocatorParameters = __webpack_require__(201);
 
 var _RouteLocatorParameters2 = _interopRequireDefault(_RouteLocatorParameters);
 
@@ -27067,7 +24211,7 @@ exports.default = RouteLocatorService;
 _SuperMap2.default.RouteLocatorService = RouteLocatorService;
 
 /***/ }),
-/* 128 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27089,7 +24233,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _SetLayerInfoParameters = __webpack_require__(232);
+var _SetLayerInfoParameters = __webpack_require__(203);
 
 var _SetLayerInfoParameters2 = _interopRequireDefault(_SetLayerInfoParameters);
 
@@ -27183,7 +24327,7 @@ exports.default = SetLayerInfoService;
 _SuperMap2.default.SetLayerInfoService = SetLayerInfoService;
 
 /***/ }),
-/* 129 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27205,7 +24349,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _SetLayerStatusParameters = __webpack_require__(233);
+var _SetLayerStatusParameters = __webpack_require__(204);
 
 var _SetLayerStatusParameters2 = _interopRequireDefault(_SetLayerStatusParameters);
 
@@ -27381,7 +24525,7 @@ exports.default = SetLayerStatusService;
 _SuperMap2.default.SetLayerStatusService = SetLayerStatusService;
 
 /***/ }),
-/* 130 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27403,7 +24547,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _SetLayersInfoParameters = __webpack_require__(234);
+var _SetLayersInfoParameters = __webpack_require__(205);
 
 var _SetLayersInfoParameters2 = _interopRequireDefault(_SetLayersInfoParameters);
 
@@ -27545,7 +24689,7 @@ exports.default = SetLayersInfoService;
 _SuperMap2.default.SetLayersInfoService = SetLayersInfoService;
 
 /***/ }),
-/* 131 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27563,11 +24707,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(29);
+var _ProcessingServiceBase = __webpack_require__(24);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _SingleObjectQueryJobsParameter = __webpack_require__(235);
+var _SingleObjectQueryJobsParameter = __webpack_require__(206);
 
 var _SingleObjectQueryJobsParameter2 = _interopRequireDefault(_SingleObjectQueryJobsParameter);
 
@@ -27657,7 +24801,7 @@ exports.default = SingleObjectQueryJobsService;
 _SuperMap2.default.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
-/* 132 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27679,7 +24823,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _StopQueryParameters = __webpack_require__(236);
+var _StopQueryParameters = __webpack_require__(207);
 
 var _StopQueryParameters2 = _interopRequireDefault(_StopQueryParameters);
 
@@ -27780,7 +24924,7 @@ exports.default = StopQueryService;
 _SuperMap2.default.StopQueryService = StopQueryService;
 
 /***/ }),
-/* 133 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27798,11 +24942,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(29);
+var _ProcessingServiceBase = __webpack_require__(24);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _SummaryMeshJobParameter = __webpack_require__(237);
+var _SummaryMeshJobParameter = __webpack_require__(208);
 
 var _SummaryMeshJobParameter2 = _interopRequireDefault(_SummaryMeshJobParameter);
 
@@ -27896,7 +25040,7 @@ exports.default = SummaryMeshJobsService;
 _SuperMap2.default.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 134 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27914,11 +25058,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(29);
+var _ProcessingServiceBase = __webpack_require__(24);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _SummaryRegionJobParameter = __webpack_require__(238);
+var _SummaryRegionJobParameter = __webpack_require__(209);
 
 var _SummaryRegionJobParameter2 = _interopRequireDefault(_SummaryRegionJobParameter);
 
@@ -28008,7 +25152,7 @@ exports.default = SummaryRegionJobsService;
 _SuperMap2.default.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 135 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28026,15 +25170,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _DatasetSurfaceAnalystParameters = __webpack_require__(176);
+var _DatasetSurfaceAnalystParameters = __webpack_require__(147);
 
 var _DatasetSurfaceAnalystParameters2 = _interopRequireDefault(_DatasetSurfaceAnalystParameters);
 
-var _GeometrySurfaceAnalystParameters = __webpack_require__(201);
+var _GeometrySurfaceAnalystParameters = __webpack_require__(172);
 
 var _GeometrySurfaceAnalystParameters2 = _interopRequireDefault(_GeometrySurfaceAnalystParameters);
 
@@ -28155,7 +25299,7 @@ exports.default = SurfaceAnalystService;
 _SuperMap2.default.SurfaceAnalystService = SurfaceAnalystService;
 
 /***/ }),
-/* 136 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28173,11 +25317,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _TerrainCurvatureCalculationParameters = __webpack_require__(241);
+var _TerrainCurvatureCalculationParameters = __webpack_require__(212);
 
 var _TerrainCurvatureCalculationParameters2 = _interopRequireDefault(_TerrainCurvatureCalculationParameters);
 
@@ -28274,7 +25418,7 @@ exports.default = TerrainCurvatureCalculationService;
 _SuperMap2.default.TerrainCurvatureCalculationService = TerrainCurvatureCalculationService;
 
 /***/ }),
-/* 137 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28296,7 +25440,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _ThemeParameters = __webpack_require__(257);
+var _ThemeParameters = __webpack_require__(228);
 
 var _ThemeParameters2 = _interopRequireDefault(_ThemeParameters);
 
@@ -28456,7 +25600,7 @@ exports.default = ThemeService;
 _SuperMap2.default.ThemeService = ThemeService;
 
 /***/ }),
-/* 138 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28474,19 +25618,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SpatialAnalystBase2 = __webpack_require__(5);
+var _SpatialAnalystBase2 = __webpack_require__(3);
 
 var _SpatialAnalystBase3 = _interopRequireDefault(_SpatialAnalystBase2);
 
-var _DatasetThiessenAnalystParameters = __webpack_require__(177);
+var _DatasetThiessenAnalystParameters = __webpack_require__(148);
 
 var _DatasetThiessenAnalystParameters2 = _interopRequireDefault(_DatasetThiessenAnalystParameters);
 
-var _GeometryThiessenAnalystParameters = __webpack_require__(202);
+var _GeometryThiessenAnalystParameters = __webpack_require__(173);
 
 var _GeometryThiessenAnalystParameters2 = _interopRequireDefault(_GeometryThiessenAnalystParameters);
 
-var _GeoJSON = __webpack_require__(6);
+var _GeoJSON = __webpack_require__(4);
 
 var _GeoJSON2 = _interopRequireDefault(_GeoJSON);
 
@@ -28628,7 +25772,7 @@ exports.default = ThiessenAnalystService;
 _SuperMap2.default.ThiessenAnalystService = ThiessenAnalystService;
 
 /***/ }),
-/* 139 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28725,7 +25869,7 @@ exports.default = TilesetsService;
 _SuperMap2.default.TilesetsService = TilesetsService;
 
 /***/ }),
-/* 140 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28747,7 +25891,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _TransferPathParameters = __webpack_require__(261);
+var _TransferPathParameters = __webpack_require__(232);
 
 var _TransferPathParameters2 = _interopRequireDefault(_TransferPathParameters);
 
@@ -28842,7 +25986,7 @@ exports.default = TransferPathService;
 _SuperMap2.default.TransferPathService = TransferPathService;
 
 /***/ }),
-/* 141 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28864,7 +26008,7 @@ var _CommonServiceBase2 = __webpack_require__(2);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _TransferSolutionParameters = __webpack_require__(262);
+var _TransferSolutionParameters = __webpack_require__(233);
 
 var _TransferSolutionParameters2 = _interopRequireDefault(_TransferSolutionParameters);
 
@@ -28972,7 +26116,7 @@ exports.default = TransferSolutionService;
 _SuperMap2.default.TransferSolutionService = TransferSolutionService;
 
 /***/ }),
-/* 142 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28990,11 +26134,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _UpdateEdgeWeightParameters = __webpack_require__(266);
+var _UpdateEdgeWeightParameters = __webpack_require__(237);
 
 var _UpdateEdgeWeightParameters2 = _interopRequireDefault(_UpdateEdgeWeightParameters);
 
@@ -29132,7 +26276,7 @@ exports.default = UpdateEdgeWeightService;
 _SuperMap2.default.UpdateEdgeWeightService = UpdateEdgeWeightService;
 
 /***/ }),
-/* 143 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29150,11 +26294,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _NetworkAnalystServiceBase = __webpack_require__(9);
+var _NetworkAnalystServiceBase = __webpack_require__(8);
 
 var _NetworkAnalystServiceBase2 = _interopRequireDefault(_NetworkAnalystServiceBase);
 
-var _UpdateTurnNodeWeightParameters = __webpack_require__(267);
+var _UpdateTurnNodeWeightParameters = __webpack_require__(238);
 
 var _UpdateTurnNodeWeightParameters2 = _interopRequireDefault(_UpdateTurnNodeWeightParameters);
 
@@ -29290,7 +26434,7 @@ exports.default = UpdateTurnNodeWeightService;
 _SuperMap2.default.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService;
 
 /***/ }),
-/* 144 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29308,11 +26452,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ProcessingServiceBase = __webpack_require__(29);
+var _ProcessingServiceBase = __webpack_require__(24);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _VectorClipJobsParameter = __webpack_require__(269);
+var _VectorClipJobsParameter = __webpack_require__(240);
 
 var _VectorClipJobsParameter2 = _interopRequireDefault(_VectorClipJobsParameter);
 
@@ -29402,7 +26546,7 @@ exports.default = VectorClipJobsService;
 _SuperMap2.default.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 145 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29418,7 +26562,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _elasticsearch = __webpack_require__(320);
+var _elasticsearch = __webpack_require__(247);
 
 var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
@@ -30161,7 +27305,7 @@ exports.default = ElasticSearch;
 _SuperMap2.default.ElasticSearch = ElasticSearch;
 
 /***/ }),
-/* 146 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30174,11 +27318,11 @@ exports.Logo = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _mapboxGl = __webpack_require__(20);
+var _mapboxGl = __webpack_require__(17);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
-var _iClient = __webpack_require__(319);
+var _iClient = __webpack_require__(246);
 
 var _iClient2 = _interopRequireDefault(_iClient);
 
@@ -30313,7 +27457,7 @@ _mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
 _mapboxGl2.default.supermap.LogoControl = Logo;
 
 /***/ }),
-/* 147 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30326,11 +27470,11 @@ exports.MapvLayer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _MapvRenderer = __webpack_require__(274);
+var _MapvRenderer = __webpack_require__(245);
 
 var _MapvRenderer2 = _interopRequireDefault(_MapvRenderer);
 
-var _mapboxGl = __webpack_require__(20);
+var _mapboxGl = __webpack_require__(17);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
@@ -30412,7 +27556,7 @@ _mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
 _mapboxGl2.default.supermap.MapvLayer = MapvLayer;
 
 /***/ }),
-/* 148 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30425,7 +27569,7 @@ exports.RankTheme3DLayer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _mapboxGl = __webpack_require__(20);
+var _mapboxGl = __webpack_require__(17);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
@@ -30828,7 +27972,7 @@ _mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
 _mapboxGl2.default.supermap.RankTheme3DLayer = RankTheme3DLayer;
 
 /***/ }),
-/* 149 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30839,7 +27983,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setPaintProperty = exports.setBackground = exports.getDefaultVectorTileStyle = undefined;
 
-var _mapboxGl = __webpack_require__(20);
+var _mapboxGl = __webpack_require__(17);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
@@ -30939,7 +28083,7 @@ _mapboxGl2.default.supermap.map.setBackground = setBackground;
 _mapboxGl2.default.supermap.map.setPaintProperty = setPaintProperty;
 
 /***/ }),
-/* 150 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30950,11 +28094,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MapvDataSet = undefined;
 
-var _mapboxGl = __webpack_require__(20);
+var _mapboxGl = __webpack_require__(17);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
-var _mapv = __webpack_require__(81);
+var _mapv = __webpack_require__(53);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31047,7 +28191,7 @@ var MapvDataSet = exports.MapvDataSet = {
 _mapboxGl2.default.supermap.MapvDataSet = MapvDataSet;
 
 /***/ }),
-/* 151 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31166,7 +28310,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 152 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31613,7 +28757,7 @@ var whatwgFetch = function (self) {
 module.exports = whatwgFetch;
 
 /***/ }),
-/* 153 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31740,7 +28884,7 @@ exports.default = Credential;
 _SuperMap2.default.Credential = Credential;
 
 /***/ }),
-/* 154 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31749,208 +28893,342 @@ _SuperMap2.default.Credential = Credential;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Element = undefined;
+exports.Event = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _BaseTypes = __webpack_require__(21);
-
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @name Element
+ * @name Event
  * @memberOf SuperMap
  * @namespace
- * @description SuperMap.Element实现元素的显示，隐藏，删除，取得高度，取得范围等功能。
+ * @description 事件处理函数.
  */
-var Element = exports.Element = _SuperMap2.default.Element = {
+var Event = exports.Event = _SuperMap2.default.Event = {
 
     /**
-     * @description 判断元素是否可见。
-     * @example
-     *  //element 必须是页面已经存在了的元素
-     * var visible = SuperMap.Element.visible(element);
-     * @param element - {HTMLElement} 要进行判断的元素。
-     * @returns {Boolean} 返回元素可见性。
+     * @description  A hashtable cache of the event observers. Keyed by element._eventCacheID
+     * @type {Boolean}
+     * @default false
      */
-    visible: function visible(element) {
-        return _Util.Util.getElement(element).style.display !== 'none';
+    observers: false,
+
+    /**
+     * @description KEY_SPACE
+     * @type {number}
+     * @default 32
+     */
+    KEY_SPACE: 32,
+
+    /**
+     * @description KEY_BACKSPACE
+     * @type {number}
+     * @default 8
+     */
+    KEY_BACKSPACE: 8,
+
+    /**
+     * @description KEY_TAB
+     * @type {number}
+     * @default 9
+     */
+    KEY_TAB: 9,
+
+    /**
+     * @description KEY_RETURN
+     * @type {number}
+     * @default 13
+     */
+    KEY_RETURN: 13,
+
+    /**
+     * @description KEY_ESC
+     * @type {number}
+     * @default 27
+     */
+    KEY_ESC: 27,
+
+    /**
+     * @description KEY_LEFT
+     * @type {number}
+     * @default 37
+     */
+    KEY_LEFT: 37,
+
+    /**
+     * @description KEY_UP
+     * @type {number}
+     * @default 38
+     */
+    KEY_UP: 38,
+
+    /**
+     * @description KEY_RIGHT
+     * @type {number}
+     * @default 39
+     */
+    KEY_RIGHT: 39,
+
+    /**
+     * @description KEY_DOWN
+     * @type {number}
+     * @default 40
+     */
+    KEY_DOWN: 40,
+
+    /**
+     * @description KEY_DELETE
+     * @type {number}
+     * @default 46
+     */
+    KEY_DELETE: 46,
+
+    /**
+     * @description Cross browser event element detection.
+     * @param event - {Event}
+     * @returns {HTMLElement} The element that caused the event
+     */
+    element: function element(event) {
+        return event.target || event.srcElement;
     },
 
     /**
-     * @description 切换传入的DOM元素的可见性。
-     * @example
-     *  //element1、element2 必须是页面已经存在了的元素
-     * //这里传入的数量可以是任意个数
-     * SuperMap.Element.toggle(element1,element2);
-     * @param element - {HTMLElement} DOM元素，用户可以传入任意数量的元素。
+     * @description Determine whether event was caused by a single touch
+     * @param event - {Event}
+     * @returns {Boolean}
      */
-    toggle: function toggle() {
-        for (var i = 0, len = arguments.length; i < len; i++) {
-            var element = _Util.Util.getElement(arguments[i]);
-            var display = Element.visible(element) ? 'none' : '';
-            element.style.display = display;
+    isSingleTouch: function isSingleTouch(event) {
+        return event.touches && event.touches.length === 1;
+    },
+
+    /**
+     * @description Determine whether event was caused by a multi touch
+     * @param event - {Event}
+     * @returns {Boolean}
+     */
+    isMultiTouch: function isMultiTouch(event) {
+        return event.touches && event.touches.length > 1;
+    },
+
+    /**
+     * @description Determine whether event was caused by a left click.
+     * @param event - {Event}
+     * @returns {Boolean}
+     */
+    isLeftClick: function isLeftClick(event) {
+        return event.which && event.which === 1 || event.button && event.button === 1;
+    },
+
+    /**
+     * @description Determine whether event was caused by a right mouse click.
+     * @param event - {Event}
+     * @returns {Boolean}
+     */
+    isRightClick: function isRightClick(event) {
+        return event.which && event.which === 3 || event.button && event.button === 2;
+    },
+
+    /**
+     * @description Stops an event from propagating.
+     * @param event - {Event}
+     * @param allowDefault - {Boolean} If true, we stop the event chain but still allow the default browser  behaviour (text selection, radio-button clicking, etc) Default false
+     */
+    stop: function stop(event, allowDefault) {
+
+        if (!allowDefault) {
+            if (event.preventDefault) {
+                event.preventDefault();
+            } else {
+                event.returnValue = false;
+            }
         }
-    },
 
-    /**
-     * @description 从DOM中删除指定的元素。（自动寻找到父元素，将当前元素删除）
-     * @example
-     * (start code)
-     *  //element 必须是页面已经存在了的元素
-     * SuperMap.Element.remove(element);
-     * @param element - {HTMLElement} 指定要删除的DOM元素。
-     */
-    remove: function remove(element) {
-        element = _Util.Util.getElement(element);
-        element.parentNode.removeChild(element);
-    },
-
-    /**
-     * @description 获取指定DOM元素的高度。
-     * @example
-     *  //element 必须是页面已经存在了的元素
-     * var height = SuperMap.Element.getHeight(element);
-     * @param element - {HTMLElement} 指定要获取高度的DOM元素。
-     * @returns {Integer} 指定DOM元素的高度。
-     */
-    getHeight: function getHeight(element) {
-        element = _Util.Util.getElement(element);
-        return element.offsetHeight;
-    },
-
-    /**
-     * @description 获取DOM元素是否设置了className（class ，用于修改CSS）
-     * @example
-     *  //element 必须是页面已经存在了的元素
-     *  //假设 element.className = "className"，那么 isHas = true
-     * var isHas = SuperMap.Element.hasClass(element,"className");
-     * @param element - {HTMLElement} DOM元素
-     * @param name - {string} 需要判定的DOM className
-     * @returns {Boolean} 返回DOM元素是否设置了 name这个className属性
-     */
-    hasClass: function hasClass(element, name) {
-        if (!element || !element.className) return false;
-        var names = element.className;
-        return !!names && new RegExp("(^|\\s)" + name + "(\\s|$)").test(names);
-    },
-
-    /**
-     * @description 给当前DOM元素的属性className上添加新的name（如果存在了，则不添加）
-     * @example
-     *  //element 必须是页面已经存在了的元素
-     * var element = SuperMap.Element.addClass(element,"className2");
-     *  //假设  element.className = "className1";
-     *  //添加后  element.className = "className1 className2";
-     * @param element - {HTMLElement} DOM元素
-     * @param name - {string} 需要新添加的 className
-     * @returns {HTMLElement} 返回添加后的DOM元素
-     */
-    addClass: function addClass(element, name) {
-        if (!element) return;
-        if (!Element.hasClass(element, name)) {
-            element.className += (element.className ? " " : "") + name;
-        }
-        return element;
-    },
-
-    /**
-     * @description 在当前DOM元素的属性 className 上移除name
-     * @example
-     *  //element 必须是页面已经存在了的元素
-     * var element = SuperMap.Element.removeClass(element,"className2");
-     *  //假设  element.className = "className1 className2";
-     *  //移除后 element.className = "className1";
-     * @param element - {HTMLElement} DOM元素
-     * @param name - {string} 需要移除的  className
-     * @returns {HTMLElement} 返回移除后的DOM元素
-     */
-    removeClass: function removeClass(element, name) {
-        if (!Element.hasClass(element, name)) return;
-        var names = element.className;
-        if (names) {
-            element.className = _SuperMap2.default.String.trim(names.replace(new RegExp("(^|\\s+)" + name + "(\\s+|$)"), " "));
-        }
-        return element;
-    },
-
-    /**
-     * @description 给DOM移除（存在了name）或添加（不存在）
-     * @example
-     * //element 必须是页面已经存在了的元素
-     * var element = SuperMap.Element.toggleClass(element,"className");
-     * @param element - {HTMLElement} DOM对象
-     * @param name - {string} 需要判定的className，存在就移除，不存在，就添加
-     * @returns {HTMLElement} 修改后的DOM对象
-     */
-    toggleClass: function toggleClass(element, name) {
-        if (Element.hasClass(element, name)) {
-            Element.removeClass(element, name);
+        if (event.stopPropagation) {
+            event.stopPropagation();
         } else {
-            Element.addClass(element, name);
+            event.cancelBubble = true;
+        }
+    },
+
+    /**
+     * @param event - {Event}
+     * @param tagName - {string} html标签名
+     * @returns {HTMLElement} The first node with the given tagName, starting from the node the event was triggered on and traversing the DOM upwards
+     */
+    findElement: function findElement(event, tagName) {
+        var element = _SuperMap2.default.Event.element(event);
+        while (element.parentNode && (!element.tagName || element.tagName.toUpperCase() != tagName.toUpperCase())) {
+            element = element.parentNode;
         }
         return element;
     },
 
     /**
-     * @description 获取指定DOM元素的某一样式的值。
-     * @example
-     *  //假设界面上有 < canvas id="example" width="150" height="220" style="background-color: #ff0000;">
-     *  var element = document.getElementById('example');
-     * var style = SuperMap.Element.getStyle(element,"background-color");
-     * //style = "rgb(255, 0, 0)";
-     * @param element - {HTMLElement} 指定获取样式的DOM元素。
-     * @param style - {string} 指定样式名称。
-     * @returns {Boolean|String} 返回指定的样式名称对应的样式值。
+     * @description 监听事件，注册事件处理方法。
+     * @param elementParam - {HTMLElement | string} 待监听的DOM对象或者其id标识。
+     * @param name - {string} 监听事件的类别名称。
+     * @param observer - {function} 注册的事件处理方法。
+     * @param useCapture - {Boolean} 是否捕获。
      */
-    getStyle: function getStyle(element, style) {
-        element = _Util.Util.getElement(element);
+    observe: function observe(elementParam, name, observer, useCapture) {
+        var element = _Util.Util.getElement(elementParam);
+        useCapture = useCapture || false;
 
-        var value = null;
-        if (element && element.style) {
-            value = element.style[_BaseTypes.StringExt.camelize(style)];
-            if (!value) {
-                if (document.defaultView && document.defaultView.getComputedStyle) {
-
-                    var css = document.defaultView.getComputedStyle(element, null);
-                    value = css ? css.getPropertyValue(style) : null;
-                } else if (element.currentStyle) {
-                    value = element.currentStyle[_BaseTypes.StringExt.camelize(style)];
-                }
-            }
-
-            var positions = ['left', 'top', 'right', 'bottom'];
-            if (window.opera && _Util.Util.indexOf(positions, style) !== -1 && Element.getStyle(element, 'position') === 'static') {
-                value = 'auto';
-            }
+        if (name === 'keypress' && (navigator.appVersion.match(/Konqueror|Safari|KHTML/) || element.attachEvent)) {
+            name = 'keydown';
         }
 
-        return value === 'auto' ? null : value;
+        //if observers cache has not yet been created, create it
+        if (!this.observers) {
+            this.observers = {};
+        }
+
+        //if not already assigned, make a new unique cache ID
+        if (!element._eventCacheID) {
+            var idPrefix = "eventCacheID_";
+            if (element.id) {
+                idPrefix = element.id + "_" + idPrefix;
+            }
+            element._eventCacheID = _Util.Util.createUniqueID(idPrefix);
+        }
+
+        var cacheID = element._eventCacheID;
+
+        //if there is not yet a hash entry for this element, add one
+        if (!this.observers[cacheID]) {
+            this.observers[cacheID] = [];
+        }
+
+        //add a new observer to this element's list
+        this.observers[cacheID].push({
+            'element': element,
+            'name': name,
+            'observer': observer,
+            'useCapture': useCapture
+        });
+
+        //add the actual browser event listener
+        if (element.addEventListener) {
+            element.addEventListener(name, observer, useCapture);
+        } else if (element.attachEvent) {
+            element.attachEvent('on' + name, observer);
+        }
     },
 
     /**
-     * @description 获取指定DOM元素位置信息。
-     * @example
-     * //假设界面上有 < canvas id="example" width="150" height="220" style="background-color: #ff0000;">
-     * var element = document.getElementById('example');
-     * var style = SuperMap.Element.getPosition(element);
-     * @param node - {HTMLElement} 指定获取样式的DOM元素。。
-     * @returns {Object} 返回指定的样式名称对应的位置信息。
+     * @description Given the id of an element to stop observing, cycle through the
+     *   element's cached observers, calling stopObserving on each one,
+     *   skipping those entries which can no longer be removed.
+     *
+     * @param elementParam - {HTMLElement | string}
      */
-    getPosition: function getPosition(node) {
-        var scrollx = document.documentElement.scrollLeft || document.body.scrollLeft,
-            scrollt = document.documentElement.scrollTop || document.body.scrollTop;
-        var pos = node.getBoundingClientRect();
-        return { top: pos.top + scrollt, right: pos.right + scrollx, bottom: pos.bottom + scrollt, left: pos.left + scrollx };
-    }
+    stopObservingElement: function stopObservingElement(elementParam) {
+        var element = _Util.Util.getElement(elementParam);
+        var cacheID = element._eventCacheID;
+
+        this._removeElementObservers(_SuperMap2.default.Event.observers[cacheID]);
+    },
+
+    /*
+     * @param elementObservers - {Array<Object>} Array of (element, name,
+     *                                         observer, usecapture) objects,
+     *                                         taken directly from hashtable
+     */
+    _removeElementObservers: function _removeElementObservers(elementObservers) {
+        if (elementObservers) {
+            for (var i = elementObservers.length - 1; i >= 0; i--) {
+                var entry = elementObservers[i];
+                var args = new Array(entry.element, entry.name, entry.observer, entry.useCapture);
+                var removed = _SuperMap2.default.Event.stopObserving.apply(this, args);
+            }
+        }
+    },
+
+    /**
+     * @description 移除事件监听和注册的事件处理方法。注意：事件的移除和监听相对应，移除时的各属性信息必须监听时
+     * 保持一致才能确保事件移除成功。
+     * @param elementParam - {HTMLElement | string} 被监听的DOM元素或者其id。
+     * @param name - {string} 需要移除的被监听事件名称。
+     * @param observer - {function} 需要移除的事件处理方法。
+     * @param useCapture - {Boolean} 是否捕获。
+     * @returns {Boolean} Whether or not the event observer was removed
+     */
+    stopObserving: function stopObserving(elementParam, name, observer, useCapture) {
+        useCapture = useCapture || false;
+
+        var element = _Util.Util.getElement(elementParam);
+        var cacheID = element._eventCacheID;
+
+        if (name === 'keypress') {
+            if (navigator.appVersion.match(/Konqueror|Safari|KHTML/) || element.detachEvent) {
+                name = 'keydown';
+            }
+        }
+
+        // find element's entry in this.observers cache and remove it
+        var foundEntry = false;
+        var elementObservers = _SuperMap2.default.Event.observers[cacheID];
+        if (elementObservers) {
+
+            // find the specific event type in the element's list
+            var i = 0;
+            while (!foundEntry && i < elementObservers.length) {
+                var cacheEntry = elementObservers[i];
+
+                if (cacheEntry.name === name && cacheEntry.observer === observer && cacheEntry.useCapture === useCapture) {
+
+                    elementObservers.splice(i, 1);
+                    if (elementObservers.length == 0) {
+                        delete _SuperMap2.default.Event.observers[cacheID];
+                    }
+                    foundEntry = true;
+                    break;
+                }
+                i++;
+            }
+        }
+
+        //actually remove the event listener from browser
+        if (foundEntry) {
+            if (element.removeEventListener) {
+                element.removeEventListener(name, observer, useCapture);
+            } else if (element && element.detachEvent) {
+                element.detachEvent('on' + name, observer);
+            }
+        }
+        return foundEntry;
+    },
+
+    /**
+     * @description Cycle through all the element entries in the events cache and call
+     *   stopObservingElement on each.
+     */
+    unloadCache: function unloadCache() {
+        // check for SuperMap.Event before checking for observers, because
+        // SuperMap.Event may be undefined in IE if no map instance was
+        // created
+        if (_SuperMap2.default.Event && _SuperMap2.default.Event.observers) {
+            for (var cacheID in _SuperMap2.default.Event.observers) {
+                var elementObservers = _SuperMap2.default.Event.observers[cacheID];
+                _SuperMap2.default.Event._removeElementObservers.apply(this, [elementObservers]);
+            }
+            _SuperMap2.default.Event.observers = false;
+        }
+    },
+
+    CLASS_NAME: "SuperMap.Event"
 };
+_SuperMap2.default.Event = Event;
+/* prevent memory leaks in IE */
+_SuperMap2.default.Event.observe(window, 'unload', _SuperMap2.default.Event.unloadCache, false);
 
 /***/ }),
-/* 155 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31968,15 +29246,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Pixel = __webpack_require__(37);
+var _Pixel = __webpack_require__(41);
 
 var _Pixel2 = _interopRequireDefault(_Pixel);
 
-var _Event = __webpack_require__(44);
+var _Event = __webpack_require__(126);
 
-var _BaseTypes = __webpack_require__(21);
+var _BaseTypes = __webpack_require__(29);
 
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32583,7 +29861,7 @@ _SuperMap2.default.Events = Events;
 _SuperMap2.default.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
 
 /***/ }),
-/* 156 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32599,11 +29877,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Marker = __webpack_require__(159);
-
-var _Marker2 = _interopRequireDefault(_Marker);
-
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32619,21 +29893,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Feature = function () {
 
     /**
+     * @member SuperMap.Feature.prototype.lonlat -{SuperMap.LonLat}
+     * @description lonlat
+     *
+     */
+
+
+    /**
      * @deprecated
-     * @member SuperMap.Feature.prototype.popupClass -{SuperMap.Class}
-     * @description 用来实例化新的弹出窗口。默认为{@link SuperMap.Popup.AnchoredBubble}
-     */
-
-
-    /**
-     * @member SuperMap.Feature.prototype.data -{Object}
-     * @description data
-     */
-
-
-    /**
-     * @member SuperMap.Feature.prototype.id -{String}
-     * @description id
+     * @member SuperMap.Feature.prototype.layer -{SuperMap.Layer}
+     * @description layer
      */
     function Feature(layer, lonlat, data) {
         _classCallCheck(this, Feature);
@@ -32642,9 +29911,6 @@ var Feature = function () {
         this.id = null;
         this.lonlat = null;
         this.data = null;
-        this.marker = null;
-        this.popupClass = null;
-        this.popup = null;
         this.CLASS_NAME = "SuperMap.Feature";
 
         this.layer = layer;
@@ -32660,29 +29926,14 @@ var Feature = function () {
 
 
     /**
-     * @deprecated
-     * @member SuperMap.Feature.prototype.popup -{SuperMap.Popup}
-     * @description popup
+     * @member SuperMap.Feature.prototype.data -{Object}
+     * @description data
      */
 
 
     /**
-     * @member SuperMap.Feature.prototype.marker -{SuperMap.Marker}
-     * @description marker
-     */
-
-
-    /**
-     * @member SuperMap.Feature.prototype.lonlat -{SuperMap.LonLat}
-     * @description lonlat
-     *
-     */
-
-
-    /**
-     * @deprecated
-     * @member SuperMap.Feature.prototype.layer -{SuperMap.Layer}
-     * @description layer
+     * @member SuperMap.Feature.prototype.id -{String}
+     * @description id
      */
 
 
@@ -32690,136 +29941,9 @@ var Feature = function () {
         key: 'destroy',
         value: function destroy() {
 
-            //remove the popup from the map
-            if (this.layer != null && this.layer.map != null) {
-                if (this.popup != null) {
-                    this.layer.map.removePopup(this.popup);
-                }
-            }
-            // remove the marker from the layer
-            if (this.layer != null && this.marker != null) {
-                this.layer.removeMarker(this.marker);
-            }
-
-            this.layer = null;
             this.id = null;
             this.lonlat = null;
             this.data = null;
-            if (this.marker != null) {
-                this.destroyMarker(this.marker);
-                this.marker = null;
-            }
-            if (this.popup != null) {
-                this.destroyPopup(this.popup);
-                this.popup = null;
-            }
-        }
-
-        /**
-         * @function SuperMap.Feature.prototype.onScreen
-         * @returns {Boolean} Whether or not the feature is currently visible on screen
-         *           (based on its 'lonlat' property)
-         */
-
-    }, {
-        key: 'onScreen',
-        value: function onScreen() {
-            var onScreen = false;
-            if (this.layer != null && this.layer.map != null) {
-                var screenBounds = this.layer.map.getExtent();
-                onScreen = screenBounds.containsLonLat(this.lonlat);
-            }
-            return onScreen;
-        }
-
-        /**
-         * @function SuperMap.Feature.prototype.createMarker
-         * @description Based on the data associated with the Feature, create and return a marker object.
-         * @returns {SuperMap.Marker} A Marker Object created from the 'lonlat' and 'icon' properties
-         *          set in this.data. If no 'lonlat' is set, returns null. If no
-         *          'icon' is set, SuperMap.Marker() will load the default image.
-         *
-         *          Note - this.marker is set to return value
-         *
-         */
-
-    }, {
-        key: 'createMarker',
-        value: function createMarker() {
-            if (this.lonlat != null) {
-                this.marker = new _Marker2.default(this.lonlat, this.data.icon);
-            }
-            return this.marker;
-        }
-
-        /**
-         * @function SuperMap.Feature.prototype.destroyMarker
-         * @description Destroys marker.
-         * If user overrides the createMarker() function, s/he should be able
-         *   to also specify an alternative function for destroying it
-         */
-
-    }, {
-        key: 'destroyMarker',
-        value: function destroyMarker() {
-            this.marker.destroy();
-        }
-
-        /**
-         * @function SuperMap.Feature.prototype.createPopup
-         * @description Creates a popup object created from the 'lonlat', 'popupSize',
-         *     and 'popupContentHTML' properties set in this.data. It uses
-         *     this.marker.icon as default anchor.<br>
-         *
-         *  If no 'lonlat' is set, returns null.<br>
-         *  If no this.marker has been created, no anchor is sent.<br>
-         *
-         *  Note - the returned popup object is 'owned' by the feature, so you
-         *      cannot use the popup's destroy method to discard the popup.
-         *      Instead, you must use the feature's destroyPopup.<br>
-         *
-         *  Note - this.popup is set to return value.<br>
-         * @param closeBox - {Boolean} create popup with closebox or not
-         * @returns {SuperMap.Popup} Returns the created popup, which is also set
-         *     as 'popup' property of this feature. Will be of whatever type
-         *     specified by this feature's 'popupClass' property, but must be
-         *     of type <SuperMap.Popup>.
-         *
-         */
-
-    }, {
-        key: 'createPopup',
-        value: function createPopup(closeBox) {
-            if (this.lonlat != null) {
-                if (!this.popup) {
-                    var anchor = this.marker ? this.marker.icon : null;
-                    var popupClass = this.popupClass ? this.popupClass : _SuperMap2.default.Popup.AnchoredBubble;
-                    this.popup = new popupClass(this.id + "_popup", this.lonlat, this.data.popupSize, this.data.popupContentHTML, anchor, closeBox);
-                }
-                if (this.data.overflow != null) {
-                    this.popup.contentDiv.style.overflow = this.data.overflow;
-                }
-
-                this.popup.feature = this;
-            }
-            return this.popup;
-        }
-
-        /**
-         * @function SuperMap.Feature.prototype.destroyPopup
-         * @description Destroys the popup created via createPopup.
-         *  As with the marker, if user overrides the createPopup() function, s/he
-         *   should also be able to override the destruction
-         */
-
-    }, {
-        key: 'destroyPopup',
-        value: function destroyPopup() {
-            if (this.popup) {
-                this.popup.feature = null;
-                this.popup.destroy();
-                this.popup = null;
-            }
         }
     }]);
 
@@ -32831,7 +29955,7 @@ exports.default = Feature;
 _SuperMap2.default.Feature = Feature;
 
 /***/ }),
-/* 157 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32847,278 +29971,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Event = __webpack_require__(44);
-
-var _Event2 = _interopRequireDefault(_Event);
-
-var _Size = __webpack_require__(45);
-
-var _Size2 = _interopRequireDefault(_Size);
-
-var _Pixel = __webpack_require__(37);
-
-var _Pixel2 = _interopRequireDefault(_Pixel);
-
-var _Element = __webpack_require__(154);
-
-var _Util = __webpack_require__(4);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.Icon
- * @classdesc 图标类，表示显示在屏幕上的图标，通常与 {@link SuperMap.Marker} 配合使用表示屏幕上显示的Marker。<br>
- *              Icon具有url,size和position属性。也包含偏移量属性，<br>
- *              可以提供作为一个固定的偏移量，也可以函数计算得到期望的偏移量。<br>
- * @param url - {string} 图标对应图片的url地址。
- * @param size - {SuperMap.Size} 指定图标的大小， 为 {@link SuperMap.Size} 对象。
- * @param offset - {SuperMap.Pixel} 指定图标的偏移量，为 {@link SuperMap.Pixel} 对象。
- * @param calculateOffset - {Function}  用于计算偏移量的方法。
- *
- * @example
- * var size = new SuperMap.Size(44, 33),
- * var offset = new SuperMap.Pixel(-(size.w/2), -size.h),
- * var icon = new SuperMap.Icon("../theme/images/marker.png", size, offset);
- */
-var Icon = function () {
-
-    /**
-     * @member SuperMap.Icon.prototype.imageDiv -{HTMLElement}
-     * @description imageDiv
-     */
-
-
-    /**
-     * @member SuperMap.Icon.prototype.offset -{SuperMap.Pixel}
-     * @description distance in pixels to offset the image when being rendered
-     */
-
-
-    /**
-     * @member SuperMap.Icon.prototype.eventTypes  -{string}
-     * @description image url
-     */
-    function Icon(url, size, offset, calculateOffset) {
-        _classCallCheck(this, Icon);
-
-        this.url = null;
-        this.size = null;
-        this.offset = null;
-        this.calculateOffset = null;
-        this.imageDiv = null;
-        this.px = null;
-        this.CLASS_NAME = "SuperMap.Icon";
-
-        this.url = url;
-        this.size = size ? size : new _Size2.default(20, 20);
-        this.offset = offset ? offset : new _Pixel2.default(-(this.size.w / 2), -(this.size.h / 2));
-        this.calculateOffset = calculateOffset;
-
-        var id = _Util.Util.createUniqueID("SM_icon_");
-        this.imageDiv = _Util.Util.createAlphaImageDiv(id);
-    }
-
-    /**
-     * @function SuperMap.Icon.prototype.destroy
-     * @description Nullify references and remove event listeners to prevent circular
-     * references and memory leaks
-     */
-
-
-    /**
-     * @member SuperMap.Icon.prototype.px -{SuperMap.Pixel}
-     * @description px
-     */
-
-
-    /**
-     * @member SuperMap.Icon.prototype.calculateOffset -{SuperMap.Pixel}
-     * @description Function to calculate the offset (based on the size)
-     */
-
-
-    /**
-     * @member SuperMap.Icon.prototype.size -{SuperMap.Size}
-     * @description size
-     */
-
-
-    _createClass(Icon, [{
-        key: 'destroy',
-        value: function destroy() {
-            // erase any drawn elements
-            this.erase();
-            _Event2.default.stopObservingElement(this.imageDiv.firstChild);
-            this.imageDiv.innerHTML = "";
-            this.imageDiv = null;
-        }
-
-        /**
-         * @function SuperMap.Icon.prototype.clone
-         * @returns {SuperMap.Icon} A fresh copy of the icon.
-         */
-
-    }, {
-        key: 'clone',
-        value: function clone() {
-            return new Icon(this.url, this.size, this.offset, this.calculateOffset);
-        }
-
-        /**
-         * @function SuperMap.Icon.prototype.setSize
-         * @param size - {SuperMap.Size}
-         */
-
-    }, {
-        key: 'setSize',
-        value: function setSize(size) {
-            if (size != null) {
-                this.size = size;
-            }
-            this.draw();
-        }
-
-        /**
-         * @function SuperMap.Icon.prototype.setUrl
-         * @param url - {string}
-         */
-
-    }, {
-        key: 'setUrl',
-        value: function setUrl(url) {
-            if (url != null) {
-                this.url = url;
-            }
-            this.draw();
-        }
-
-        /**
-         * @function SuperMap.Icon.prototype.draw
-         * @description Move the div to the given pixel.
-         * @param px - {SuperMap.Pixel}
-         * @returns {HTMLElement} A new DOM Image of this icon set at the location passed-in
-         */
-
-    }, {
-        key: 'draw',
-        value: function draw(px) {
-            _Util.Util.modifyAlphaImageDiv(this.imageDiv, null, null, this.size, this.url, "absolute");
-            this.imageDiv.style.cursor = "pointer";
-            this.moveTo(px);
-            return this.imageDiv;
-        }
-
-        /**
-         * @function SuperMap.Icon.prototype.erase
-         * @description Erase the underlying image element.
-         */
-
-    }, {
-        key: 'erase',
-        value: function erase() {
-            if (this.imageDiv != null && this.imageDiv.parentNode != null) {
-                _Element.Element.remove(this.imageDiv);
-            }
-        }
-
-        /**
-         * @function SuperMap.Icon.prototype.setOpacity
-         * @description Change the icon's opacity
-         * @param opacity - {float}
-         */
-
-    }, {
-        key: 'setOpacity',
-        value: function setOpacity(opacity) {
-            _Util.Util.modifyAlphaImageDiv(this.imageDiv, null, null, null, null, null, null, null, opacity);
-        }
-
-        /**
-         * @function SuperMap.Icon.prototype.moveTo
-         * @description move icon to passed in px.
-         * @param px - {SuperMap.Pixel}
-         */
-
-    }, {
-        key: 'moveTo',
-        value: function moveTo(px) {
-            //if no px passed in, use stored location
-            if (px != null) {
-                this.px = px;
-            }
-
-            if (this.imageDiv != null) {
-                if (this.px == null) {
-                    this.display(false);
-                } else {
-                    if (this.calculateOffset) {
-                        this.offset = this.calculateOffset(this.size);
-                    }
-                    var offsetPx = this.px.offset(this.offset);
-                    _Util.Util.modifyAlphaImageDiv(this.imageDiv, null, offsetPx);
-                }
-            }
-        }
-
-        /**
-         * @function SuperMap.Icon.prototype.display
-         * @description Hide or show the icon
-         * @param display - {Boolean}
-         */
-
-    }, {
-        key: 'display',
-        value: function display(_display) {
-            this.imageDiv.style.display = _display ? "" : "none";
-        }
-
-        /**
-         * @function SuperMap.Icon.prototype.isDrawn
-         * @returns {Boolean} 图标是否`重绘。
-         */
-
-    }, {
-        key: 'isDrawn',
-        value: function isDrawn() {
-            // nodeType 11 for ie, whose nodes *always* have a parentNode
-            // (of type document fragment)
-            var isDrawn = this.imageDiv && this.imageDiv.parentNode && this.imageDiv.parentNode.nodeType !== 11;
-
-            return isDrawn;
-        }
-    }]);
-
-    return Icon;
-}();
-
-exports.default = Icon;
-
-_SuperMap2.default.Icon = Icon;
-
-/***/ }),
-/* 158 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _Projection = __webpack_require__(22);
-
-var _Projection2 = _interopRequireDefault(_Projection);
-
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33253,31 +30106,6 @@ var LonLat = function () {
         }
 
         /**
-         * @function SuperMap.LonLat.prototype.transform
-         * @description 经纬度对象的投影转换。（在自身上做投影转换）
-         * @example
-         * var lonLat1 = new SuperMap.LonLat(100,50);
-         * //这里 lonLat1 = lonLat2
-         * var lonLat2 = lonLat1.transform(
-         *      new SuperMap.Projection("EPSG:4326"),
-         *      new SuperMap.Projection("EPSG:3857")
-         *  );
-         *
-         * @param source - {SuperMap.Projection} 源投影
-         * @param dest   - {SuperMap.Projection} 目标投影
-         * @returns {SuperMap.LonLat} 返回转换后的LonLat（坐标对象）。
-         */
-
-    }, {
-        key: 'transform',
-        value: function transform(source, dest) {
-            var point = _Projection2.default.transform({ 'x': this.lon, 'y': this.lat }, source, dest);
-            this.lon = point.x;
-            this.lat = point.y;
-            return this;
-        }
-
-        /**
          * @function SuperMap.LonLat.prototype.wrapDateLine
          * @description 通过传入的范围对象对坐标对象转换到该范围内。
          * 如果经度小于给定范围最小精度，则在原经度基础上加上范围宽度，
@@ -33375,7 +30203,7 @@ exports.default = LonLat;
 _SuperMap2.default.LonLat = LonLat;
 
 /***/ }),
-/* 159 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33391,311 +30219,124 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Icon = __webpack_require__(157);
-
-var _Icon2 = _interopRequireDefault(_Icon);
-
-var _Size = __webpack_require__(45);
-
-var _Size2 = _interopRequireDefault(_Size);
-
-var _Pixel = __webpack_require__(37);
-
-var _Pixel2 = _interopRequireDefault(_Pixel);
-
-var _Event = __webpack_require__(44);
-
-var _Event2 = _interopRequireDefault(_Event);
-
-var _BaseTypes = __webpack_require__(21);
-
-var _Util = __webpack_require__(4);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @class  SuperMap.Marker
- * @classdesc 标记覆盖物，对地图上的点进行标注，可以自定义选择标注的图标，需添加到 Markers 图层上显示。
- * @param lonlat - {SuperMap.LonLat} 当前标记的位置。
- * @param icon - {SuperMap.Icon}  当前标记的图标。
+ * @class  SuperMap.Size
+ * @classdesc 此类描绘一对高宽值的实例。
+ * @param  w -{number} 宽度，默认值为0.0
+ * @param  h -{number} 高度 ，默认值为0.0
  *
  * @example
- * var markers = new SuperMap.Layer.Markers( "Markers" );
- * map.addLayer(markers);
- *
- * var size = new SuperMap.Size(21,25);
- * var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
- * var icon = new SuperMap.Icon('..img/marker.png', size, offset);
- * markers.addMarker(new SuperMap.Marker(new SuperMap.LonLat(0,0),icon));
+ * var size = new SuperMap.Size(31,46);
  */
-var Marker = function () {
+var Size = function () {
 
     /**
-     * @member SuperMap.Marker.prototype.events -{SuperMap.Events}
-     * @description the event handler.
-     * @description 支持事件类型:
-     * * click - 当鼠标单击maker时触发此事件。
-     * * dblclick - 当鼠标双击maker时触发此事件。
-     * * mousedown - 当鼠标在maker上按下时触发此事件。
-     * * mouseup - 当鼠标在maker上按下并放开时触发此事件。
-     * * mousemove - 当鼠标移过maker时触发此事件。
-     * * mouseout - 当鼠标移出maker时触发此事件。
-     * * mouseover - 当鼠标移进maker时触发此事件。
-     * * rightclick -  当鼠标右键单击maker时触发此事件。
-     * * touchstart - 当在触摸屏上对marker开始进行触摸时触发此事件。
-     * * touchmove -  当在触摸屏上对marker进行触摸并移动时触发此事件。
-     * * touchend -  当在触摸屏上对marker触摸完成时触发此事件。
-     *
-     * @example
-     * //例如点击marker弹出popup
-     * var marker.events.on({
-     *    "click":openInfoWin,
-     *    "scope": marker
-     * });
-     *
-     * function openInfoWin(){
-     *    //doSomeThing
-     * }
+     * @member SuperMap.Size.prototype.w -{number}
+     * @description  宽，默认值为0.0
      */
+    function Size(w, h) {
+        _classCallCheck(this, Size);
 
+        this.w = 0.0;
+        this.h = 0.0;
+        this.CLASS_NAME = "SuperMap.Size";
 
-    /**
-     * @member SuperMap.Marker.prototype.icon -{SuperMap.Icon}
-     * @description The icon used by this marker.
-     */
-    function Marker(lonlat, icon) {
-        _classCallCheck(this, Marker);
-
-        this.icon = null;
-        this.lonlat = null;
-        this.events = null;
-        this.map = null;
-        this.CLASS_NAME = "SuperMap.Marker";
-
-        var t = this;
-        this.lonlat = lonlat;
-
-        var newIcon = icon ? icon.clone() : Marker.defaultIcon();
-        if (this.icon == null) {
-            this.icon = newIcon;
-        } else {
-            this.icon.url = newIcon.url;
-            this.icon.size = newIcon.size;
-            this.icon.offset = newIcon.offset;
-            this.icon.calculateOffset = newIcon.calculateOffset;
-        }
-        this.events = new Events(this, this.icon.imageDiv, ["rightclick"]);
-
-        var eventHandler = _BaseTypes.FunctionExt.bindAsEventListener(function (evt) {
-            if (evt.preventDefault) evt.preventDefault();
-            t.events.triggerEvent("rightclick", evt);
-            return false;
-        }, this.events);
-
-        _Event2.default.observe(this.icon.imageDiv, "contextmenu", eventHandler);
+        this.w = w ? parseFloat(w) : this.w;
+        this.h = w ? parseFloat(h) : this.h;
     }
 
     /**
-     * @function SuperMap.Marker.prototype.getLonLat
-     * @description 获取marker的当前坐标
-     * @returns {SuperMap.LonLat}
+     * @function SuperMap.Size.prototype.toString
+     * @description 返回此对象的字符串形式
+     * @example
+     * var size = new SuperMap.Size(10,5);
+     * var str = size.toString();
+     * @returns {string} 例如："w=10,h=5"
      */
 
 
     /**
-     * @member SuperMap.Marker.prototype.map -{Object}
-     * @description the map this marker is attached to
+     * @member SuperMap.Size.prototype.h -{number}
+     * @description 高，默认值为0.0
      */
 
 
-    /**
-     * @member SuperMap.Marker.prototype.lonlat -{SuperMap.LonLat}
-     * @description location of object
-     */
-
-
-    _createClass(Marker, [{
-        key: 'getLonLat',
-        value: function getLonLat() {
-            return this.lonlat;
+    _createClass(Size, [{
+        key: "toString",
+        value: function toString() {
+            return "w=" + this.w + ",h=" + this.h;
         }
 
         /**
-         * @function SuperMap.Marker.prototype.destroy
-         * @description 清除标记，需要首先移除图层上添加的标记，在标记内不能执行此操作，因为不知道标记连接到哪个图层。
+         * @function SuperMap.Size.prototype.clone
+         * @description 克隆当前size对象.
+         * @example
+         * var size = new SuperMap.Size(31,46);
+         * var size2 = size.clone();
+         *
+         * @returns {SuperMap.Size}  返回一个新的与当前size对象有相同宽、高的Size对象。
          */
 
     }, {
-        key: 'destroy',
+        key: "clone",
+        value: function clone() {
+            return new Size(this.w, this.h);
+        }
+
+        /**
+         *
+         * @function SuperMap.Size.prototype.equals
+         * @description 比较两个size对象是否相等。
+         * @example
+         * var size = new SuperMap.Size(31,46);
+         * var size2 = new SuperMap.Size(31,46);
+         * var isEquals = size.equals(size2);
+         *
+         * @param sz -{SuperMap.Size} 用于比较相等的Size对象。
+         * @returns {Boolean} 传入的size和当前size高宽相等，注意：如果传入的size为空则返回false
+         *
+         */
+
+    }, {
+        key: "equals",
+        value: function equals(sz) {
+            var equals = false;
+            if (sz != null) {
+                equals = this.w === sz.w && this.h === sz.h || isNaN(this.w) && isNaN(this.h) && isNaN(sz.w) && isNaN(sz.h);
+            }
+            return equals;
+        }
+
+        /**
+         *
+         * @function SuperMap.Size.prototype.destroy
+         * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
+         * @example
+         * var size = new SuperMap.Size(31,46);
+         * size.destroy();
+         */
+
+    }, {
+        key: "destroy",
         value: function destroy() {
-            // erase any drawn features
-            this.erase();
-
-            this.map = null;
-
-            this.events.destroy();
-            this.events = null;
-
-            if (this.icon != null) {
-                this.icon.destroy();
-                this.icon = null;
-            }
-        }
-
-        /**
-         * @function SuperMap.Marker.prototype.draw
-         * @description Calls draw on the icon, and returns that output.
-         * @param px - {SuperMap.Pixel}
-         * @returns {HTMLElement} A new DOM Image with this marker's icon set at the
-         * location passed-in
-         */
-
-    }, {
-        key: 'draw',
-        value: function draw(px) {
-            return this.icon.draw(px);
-        }
-
-        /**
-         * @function SuperMap.Marker.prototype.erase
-         * @description Erases any drawn elements for this marker.
-         */
-
-    }, {
-        key: 'erase',
-        value: function erase() {
-            if (this.icon != null) {
-                this.icon.erase();
-            }
-        }
-
-        /**
-         * @function SuperMap.Marker.prototype.moveTo
-         * @description Move the marker to the new location.
-         * @param px - {SuperMap.Pixel} the pixel position to move to
-         */
-
-    }, {
-        key: 'moveTo',
-        value: function moveTo(px) {
-            if (px != null && this.icon != null) {
-                this.icon.moveTo(px);
-            }
-            this.lonlat = this.map.getLonLatFromLayerPx(px);
-        }
-
-        /**
-         * @function SuperMap.Marker.prototype.isDrawn
-         * @description 获取标记是否绘制。
-         * @returns {Boolean} 标记是否被绘制。
-         */
-
-    }, {
-        key: 'isDrawn',
-        value: function isDrawn() {
-            var isDrawn = this.icon && this.icon.isDrawn();
-            return isDrawn;
-        }
-
-        /**
-         * @function SuperMap.Marker.prototype.onScreen
-         * @returns {Boolean} Whether or not the marker is currently visible on screen.
-         */
-
-    }, {
-        key: 'onScreen',
-        value: function onScreen() {
-            var onScreen = false;
-            if (this.map) {
-                var screenBounds = this.map.getExtent();
-                onScreen = screenBounds.containsLonLat(this.lonlat);
-            }
-            return onScreen;
-        }
-
-        /**
-         * @function SuperMap.Marker.prototype.inflate
-         * @description Englarges the markers icon by the specified ratio.
-         * @param inflate - {float} the ratio to enlarge the marker by (passing 2
-         *                   will double the size).
-         */
-
-    }, {
-        key: 'inflate',
-        value: function inflate(_inflate) {
-            if (this.icon) {
-                var newSize = new _Size2.default(this.icon.size.w * _inflate, this.icon.size.h * _inflate);
-                this.icon.setSize(newSize);
-            }
-        }
-
-        /**
-         * @function SuperMap.Marker.prototype.setOpacity
-         * @description Change the opacity of the marker by changin the opacity of its icon
-         * @param opacity - {float}  Specified as fraction (0.4, etc)
-         */
-
-    }, {
-        key: 'setOpacity',
-        value: function setOpacity(opacity) {
-            this.icon.setOpacity(opacity);
-        }
-
-        /**
-         * @function SuperMap.Marker.prototype.setUrl
-         * @description Change URL of the Icon Image.
-         * @param url - {string}
-         */
-
-    }, {
-        key: 'setUrl',
-        value: function setUrl(url) {
-            this.icon.setUrl(url);
-        }
-
-        /**
-         * @function SuperMap.Marker.prototype.display
-         * @description Hide or show the icon
-         * @param display - {Boolean}
-         */
-
-    }, {
-        key: 'display',
-        value: function display(_display) {
-            this.icon.display(_display);
-        }
-
-        /**
-         * @function SuperMap.Marker.defaultIcon
-         * @description Creates a default {@link SuperMap.Icon}.
-         * @returns {SuperMap.Icon} A default SuperMap.Icon to use for a marker
-         */
-
-    }], [{
-        key: 'defaultIcon',
-        value: function defaultIcon() {
-            var url = "";
-            var size = new _Size2.default(21, 25);
-            var calculateOffset = function calculateOffset(size) {
-                return new _Pixel2.default(-(size.w / 2), -size.h);
-            };
-
-            return new _Icon2.default(url, size, null, calculateOffset);
+            this.w = null;
+            this.h = null;
         }
     }]);
 
-    return Marker;
+    return Size;
 }();
 
-exports.default = Marker;
+exports.default = Size;
 
-
-_SuperMap2.default.Marker = Marker;
+_SuperMap2.default.Size = Size;
 
 /***/ }),
-/* 160 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33713,11 +30354,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Feature2 = __webpack_require__(156);
+var _Feature2 = __webpack_require__(128);
 
 var _Feature3 = _interopRequireDefault(_Feature2);
 
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34255,7 +30896,7 @@ exports.default = Vector;
 _SuperMap2.default.Feature.Vector = Vector;
 
 /***/ }),
-/* 161 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34271,15 +30912,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _MultiPoint2 = __webpack_require__(46);
+var _MultiPoint2 = __webpack_require__(30);
 
 var _MultiPoint3 = _interopRequireDefault(_MultiPoint2);
 
-var _Projection = __webpack_require__(22);
-
-var _Projection2 = _interopRequireDefault(_Projection);
-
-var _Util = __webpack_require__(4);
+var _Util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34338,37 +30975,6 @@ var Curve = function (_MultiPoint) {
             }
             return length;
         }
-
-        /**
-         * @function SuperMap.Geometry.Curve.prototype.getGeodesicLength
-         * @description 计算几何对象投影到球面上的近似大地测量长度。
-         * @param projection - {SuperMap.Projection} 空间参考系统的几何坐标。如果没有设置，默认 WGS84。
-         * @returns {number} 几何图形的近似大地测量长度，单位：meters。
-         */
-
-    }, {
-        key: 'getGeodesicLength',
-        value: function getGeodesicLength(projection) {
-            var geom = this; // so we can work with a clone if needed
-            if (projection) {
-                var gg = new _Projection2.default("EPSG:4326");
-                if (!gg.equals(projection)) {
-                    geom = this.clone().transform(projection, gg);
-                }
-            }
-            var length = 0.0;
-            if (geom.components && geom.components.length > 1) {
-                var p1, p2;
-                for (var i = 1, len = geom.components.length; i < len; i++) {
-                    p1 = geom.components[i - 1];
-                    p2 = geom.components[i];
-                    // this returns km and requires lon/lat properties
-                    length += _Util.Util.distVincenty({ lon: p1.x, lat: p1.y }, { lon: p2.x, lat: p2.y });
-                }
-            }
-            // convert to m
-            return length * 1000;
-        }
     }]);
 
     return Curve;
@@ -34379,7 +30985,7 @@ exports.default = Curve;
 _SuperMap2.default.Geometry.Curve = Curve;
 
 /***/ }),
-/* 162 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34890,7 +31496,7 @@ exports.default = TimeControlBase;
 _SuperMap2.default.TimeControlBase = TimeControlBase;
 
 /***/ }),
-/* 163 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34908,7 +31514,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Format2 = __webpack_require__(64);
+var _Format2 = __webpack_require__(44);
 
 var _Format3 = _interopRequireDefault(_Format2);
 
@@ -35231,7 +31837,7 @@ exports.default = JSONFormat;
 _SuperMap2.default.Format.JSON = JSONFormat;
 
 /***/ }),
-/* 164 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35241,15 +31847,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Format2 = __webpack_require__(64);
+var _Format2 = __webpack_require__(44);
 
 var _Format3 = _interopRequireDefault(_Format2);
 
@@ -35524,16 +32128,6 @@ var WKT = function (_Format) {
                 if (this.parse[type]) {
                     features = this.parse[type].apply(this, [str]);
                 }
-                if (this.internalProjection && this.externalProjection) {
-                    if (features && features.CLASS_NAME === "SuperMap.Feature.Vector") {
-                        features.geometry.transform(this.externalProjection, this.internalProjection);
-                    } else if (features && type !== "geometrycollection" && (typeof features === 'undefined' ? 'undefined' : _typeof(features)) === "object") {
-                        for (var i = 0, len = features.length; i < len; i++) {
-                            var component = features[i];
-                            component.geometry.transform(this.externalProjection, this.internalProjection);
-                        }
-                    }
-                }
             }
             return features;
         }
@@ -35587,10 +32181,6 @@ var WKT = function (_Format) {
             if (!this.extract[type]) {
                 return null;
             }
-            if (this.internalProjection && this.externalProjection) {
-                geometry = geometry.clone();
-                geometry.transform(this.internalProjection, this.externalProjection);
-            }
             var wktType = type === 'collection' ? 'GEOMETRYCOLLECTION' : type.toUpperCase();
             var data = wktType + '(' + this.extract[type].apply(this, [geometry]) + ')';
             return data;
@@ -35619,7 +32209,7 @@ exports.default = WKT;
 _SuperMap2.default.Format.WKT = WKT;
 
 /***/ }),
-/* 165 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35837,7 +32427,7 @@ exports.default = AreaSolarRadiationParameters;
 _SuperMap2.default.AreaSolarRadiationParameters = AreaSolarRadiationParameters;
 
 /***/ }),
-/* 166 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35911,7 +32501,7 @@ exports.default = BufferDistance;
 _SuperMap2.default.BufferDistance = BufferDistance;
 
 /***/ }),
-/* 167 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35929,7 +32519,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(1);
 
-var _BufferDistance = __webpack_require__(166);
+var _BufferDistance = __webpack_require__(137);
 
 var _BufferDistance2 = _interopRequireDefault(_BufferDistance);
 
@@ -36030,7 +32620,7 @@ exports.default = BufferSetting;
 _SuperMap2.default.BufferSetting = BufferSetting;
 
 /***/ }),
-/* 168 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36125,7 +32715,7 @@ exports.default = BurstPipelineAnalystParameters;
 _SuperMap2.default.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters;
 
 /***/ }),
-/* 169 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36247,7 +32837,7 @@ exports.default = ChartQueryFilterParameter;
 _SuperMap2.default.ChartQueryFilterParameter = ChartQueryFilterParameter;
 
 /***/ }),
-/* 170 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36263,7 +32853,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ChartQueryFilterParameter = __webpack_require__(169);
+var _ChartQueryFilterParameter = __webpack_require__(140);
 
 var _ChartQueryFilterParameter2 = _interopRequireDefault(_ChartQueryFilterParameter);
 
@@ -36428,7 +33018,7 @@ exports.default = ChartQueryParameters;
 _SuperMap2.default.ChartQueryParameters = ChartQueryParameters;
 
 /***/ }),
-/* 171 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36444,7 +33034,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerColor = __webpack_require__(12);
+var _ServerColor = __webpack_require__(11);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
@@ -36528,7 +33118,7 @@ exports.default = ColorDictionary;
 _SuperMap2.default.ColorDictionary = ColorDictionary;
 
 /***/ }),
-/* 172 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36544,11 +33134,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(17);
+var _TransportationAnalystParameter = __webpack_require__(16);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
-__webpack_require__(11);
+__webpack_require__(10);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36628,7 +33218,7 @@ exports.default = ComputeWeightMatrixParameters;
 _SuperMap2.default.ComputeWeightMatrixParameters = ComputeWeightMatrixParameters;
 
 /***/ }),
-/* 173 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36646,15 +33236,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _BufferAnalystParameters = __webpack_require__(65);
+var _BufferAnalystParameters = __webpack_require__(45);
 
 var _BufferAnalystParameters2 = _interopRequireDefault(_BufferAnalystParameters);
 
-var _DataReturnOption = __webpack_require__(24);
+var _DataReturnOption = __webpack_require__(19);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
@@ -36785,7 +33375,7 @@ exports.default = DatasetBufferAnalystParameters;
 _SuperMap2.default.DatasetBufferAnalystParameters = DatasetBufferAnalystParameters;
 
 /***/ }),
-/* 174 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36943,7 +33533,7 @@ exports.default = DatasetInfo;
 _SuperMap2.default.DatasetInfo = DatasetInfo;
 
 /***/ }),
-/* 175 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36961,19 +33551,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _DataReturnOption = __webpack_require__(24);
+var _DataReturnOption = __webpack_require__(19);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _OverlayAnalystParameters = __webpack_require__(66);
+var _OverlayAnalystParameters = __webpack_require__(46);
 
 var _OverlayAnalystParameters2 = _interopRequireDefault(_OverlayAnalystParameters);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -37165,7 +33755,7 @@ exports.default = DatasetOverlayAnalystParameters;
 _SuperMap2.default.DatasetOverlayAnalystParameters = DatasetOverlayAnalystParameters;
 
 /***/ }),
-/* 176 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37183,19 +33773,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _SurfaceAnalystParameters = __webpack_require__(67);
+var _SurfaceAnalystParameters = __webpack_require__(47);
 
 var _SurfaceAnalystParameters2 = _interopRequireDefault(_SurfaceAnalystParameters);
 
-var _DataReturnOption = __webpack_require__(24);
+var _DataReturnOption = __webpack_require__(19);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -37311,7 +33901,7 @@ exports.default = DatasetSurfaceAnalystParameters;
 _SuperMap2.default.DatasetSurfaceAnalystParameters = DatasetSurfaceAnalystParameters;
 
 /***/ }),
-/* 177 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37329,11 +33919,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ThiessenAnalystParameters = __webpack_require__(54);
+var _ThiessenAnalystParameters = __webpack_require__(38);
 
 var _ThiessenAnalystParameters2 = _interopRequireDefault(_ThiessenAnalystParameters);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -37433,7 +34023,7 @@ exports.default = DatasetThiessenAnalystParameters;
 _SuperMap2.default.DatasetThiessenAnalystParameters = DatasetThiessenAnalystParameters;
 
 /***/ }),
-/* 178 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37608,7 +34198,7 @@ exports.default = DatasourceConnectionInfo;
 _SuperMap2.default.DatasourceConnectionInfo = DatasourceConnectionInfo;
 
 /***/ }),
-/* 179 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37761,7 +34351,7 @@ exports.default = DensityKernelAnalystParameters;
 _SuperMap2.default.DensityKernelAnalystParameters = DensityKernelAnalystParameters;
 
 /***/ }),
-/* 180 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37779,7 +34369,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(1);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -37922,7 +34512,7 @@ exports.default = EditFeaturesParameters;
 _SuperMap2.default.EditFeaturesParameters = EditFeaturesParameters;
 
 /***/ }),
-/* 181 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37940,7 +34530,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(25);
+var _FacilityAnalyst3DParameters = __webpack_require__(20);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -37999,7 +34589,7 @@ exports.default = FacilityAnalystSinks3DParameters;
 _SuperMap2.default.FacilityAnalystSinks3DParameters = FacilityAnalystSinks3DParameters;
 
 /***/ }),
-/* 182 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38017,7 +34607,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(25);
+var _FacilityAnalyst3DParameters = __webpack_require__(20);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -38077,7 +34667,7 @@ exports.default = FacilityAnalystSources3DParameters;
 _SuperMap2.default.FacilityAnalystSources3DParameters = FacilityAnalystSources3DParameters;
 
 /***/ }),
-/* 183 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38182,7 +34772,7 @@ exports.default = FacilityAnalystStreamParameters;
 _SuperMap2.default.FacilityAnalystStreamParameters = FacilityAnalystStreamParameters;
 
 /***/ }),
-/* 184 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38200,7 +34790,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(25);
+var _FacilityAnalyst3DParameters = __webpack_require__(20);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -38257,7 +34847,7 @@ exports.default = FacilityAnalystTracedown3DParameters;
 _SuperMap2.default.FacilityAnalystTracedown3DParameters = FacilityAnalystTracedown3DParameters;
 
 /***/ }),
-/* 185 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38275,7 +34865,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(25);
+var _FacilityAnalyst3DParameters = __webpack_require__(20);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -38331,7 +34921,7 @@ exports.default = FacilityAnalystTraceup3DParameters;
 _SuperMap2.default.FacilityAnalystTraceup3DParameters = FacilityAnalystTraceup3DParameters;
 
 /***/ }),
-/* 186 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38349,7 +34939,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(25);
+var _FacilityAnalyst3DParameters = __webpack_require__(20);
 
 var _FacilityAnalyst3DParameters2 = _interopRequireDefault(_FacilityAnalyst3DParameters);
 
@@ -38417,7 +35007,7 @@ exports.default = FacilityAnalystUpstream3DParameters;
 _SuperMap2.default.FacilityAnalystUpstream3DParameters = FacilityAnalystUpstream3DParameters;
 
 /***/ }),
-/* 187 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38491,7 +35081,7 @@ exports.default = FieldParameters;
 _SuperMap2.default.FieldParameters = FieldParameters;
 
 /***/ }),
-/* 188 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38507,7 +35097,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FieldParameters2 = __webpack_require__(187);
+var _FieldParameters2 = __webpack_require__(158);
 
 var _FieldParameters3 = _interopRequireDefault(_FieldParameters2);
 
@@ -38581,7 +35171,7 @@ exports.default = FieldStatisticsParameters;
 _SuperMap2.default.FieldStatisticsParameters = FieldStatisticsParameters;
 
 /***/ }),
-/* 189 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38597,7 +35187,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(17);
+var _TransportationAnalystParameter = __webpack_require__(16);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -38726,7 +35316,7 @@ exports.default = FindClosestFacilitiesParameters;
 _SuperMap2.default.FindClosestFacilitiesParameters = FindClosestFacilitiesParameters;
 
 /***/ }),
-/* 190 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38742,7 +35332,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SupplyCenter = __webpack_require__(239);
+var _SupplyCenter = __webpack_require__(210);
 
 var _SupplyCenter2 = _interopRequireDefault(_SupplyCenter);
 
@@ -38843,7 +35433,7 @@ exports.default = FindLocationParameters;
 _SuperMap2.default.FindLocationParameters = FindLocationParameters;
 
 /***/ }),
-/* 191 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38859,7 +35449,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(17);
+var _TransportationAnalystParameter = __webpack_require__(16);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -38968,7 +35558,7 @@ exports.default = FindMTSPPathsParameters;
 _SuperMap2.default.FindMTSPPathsParameters = FindMTSPPathsParameters;
 
 /***/ }),
-/* 192 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38984,7 +35574,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(17);
+var _TransportationAnalystParameter = __webpack_require__(16);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -39088,7 +35678,7 @@ exports.default = FindPathParameters;
 _SuperMap2.default.FindPathParameters = FindPathParameters;
 
 /***/ }),
-/* 193 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39104,7 +35694,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(17);
+var _TransportationAnalystParameter = __webpack_require__(16);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -39224,7 +35814,7 @@ exports.default = FindServiceAreasParameters;
 _SuperMap2.default.FindServiceAreasParameters = FindServiceAreasParameters;
 
 /***/ }),
-/* 194 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39240,7 +35830,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(17);
+var _TransportationAnalystParameter = __webpack_require__(16);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -39339,7 +35929,7 @@ exports.default = FindTSPPathsParameters;
 _SuperMap2.default.FindTSPPathsParameters = FindTSPPathsParameters;
 
 /***/ }),
-/* 195 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39355,7 +35945,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _DataReturnOption = __webpack_require__(24);
+var _DataReturnOption = __webpack_require__(19);
 
 var _DataReturnOption2 = _interopRequireDefault(_DataReturnOption);
 
@@ -39505,7 +36095,7 @@ exports.default = GenerateSpatialDataParameters;
 _SuperMap2.default.GenerateSpatialDataParameters = GenerateSpatialDataParameters;
 
 /***/ }),
-/* 196 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39616,7 +36206,7 @@ exports.default = GeoCodingParameter;
 _SuperMap2.default.GeoCodingParameter = GeoCodingParameter;
 
 /***/ }),
-/* 197 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39749,7 +36339,7 @@ exports.default = GeoDecodingParameter;
 _SuperMap2.default.GeoDecodingParameter = GeoDecodingParameter;
 
 /***/ }),
-/* 198 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39767,7 +36357,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(1);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
@@ -39902,7 +36492,7 @@ exports.default = GeoRelationAnalystParameters;
 _SuperMap2.default.GeoRelationAnalystParameters = GeoRelationAnalystParameters;
 
 /***/ }),
-/* 199 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39920,11 +36510,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _BufferAnalystParameters = __webpack_require__(65);
+var _BufferAnalystParameters = __webpack_require__(45);
 
 var _BufferAnalystParameters2 = _interopRequireDefault(_BufferAnalystParameters);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -40026,7 +36616,7 @@ exports.default = GeometryBufferAnalystParameters;
 _SuperMap2.default.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters;
 
 /***/ }),
-/* 200 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40044,11 +36634,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _OverlayAnalystParameters = __webpack_require__(66);
+var _OverlayAnalystParameters = __webpack_require__(46);
 
 var _OverlayAnalystParameters2 = _interopRequireDefault(_OverlayAnalystParameters);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -40163,7 +36753,7 @@ exports.default = GeometryOverlayAnalystParameters;
 _SuperMap2.default.GeometryOverlayAnalystParameters = GeometryOverlayAnalystParameters;
 
 /***/ }),
-/* 201 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40181,7 +36771,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _SurfaceAnalystParameters = __webpack_require__(67);
+var _SurfaceAnalystParameters = __webpack_require__(47);
 
 var _SurfaceAnalystParameters2 = _interopRequireDefault(_SurfaceAnalystParameters);
 
@@ -40267,7 +36857,7 @@ exports.default = GeometrySurfaceAnalystParameters;
 _SuperMap2.default.GeometrySurfaceAnalystParameters = GeometrySurfaceAnalystParameters;
 
 /***/ }),
-/* 202 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40285,11 +36875,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ThiessenAnalystParameters = __webpack_require__(54);
+var _ThiessenAnalystParameters = __webpack_require__(38);
 
 var _ThiessenAnalystParameters2 = _interopRequireDefault(_ThiessenAnalystParameters);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -40383,7 +36973,7 @@ exports.default = GeometryThiessenAnalystParameters;
 _SuperMap2.default.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters;
 
 /***/ }),
-/* 203 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40403,11 +36993,11 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(1);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _GetFeaturesParametersBase = __webpack_require__(26);
+var _GetFeaturesParametersBase = __webpack_require__(21);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
@@ -40567,7 +37157,7 @@ exports.default = GetFeaturesByBoundsParameters;
 _SuperMap2.default.GetFeaturesByBoundsParameters = GetFeaturesByBoundsParameters;
 
 /***/ }),
-/* 204 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40585,15 +37175,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _GetFeaturesParametersBase = __webpack_require__(26);
+var _GetFeaturesParametersBase = __webpack_require__(21);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -40736,7 +37326,7 @@ exports.default = GetFeaturesByBufferParameters;
 _SuperMap2.default.GetFeaturesByBufferParameters = GetFeaturesByBufferParameters;
 
 /***/ }),
-/* 205 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40756,15 +37346,15 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(1);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _GetFeaturesParametersBase = __webpack_require__(26);
+var _GetFeaturesParametersBase = __webpack_require__(21);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
-var _ServerGeometry = __webpack_require__(7);
+var _ServerGeometry = __webpack_require__(5);
 
 var _ServerGeometry2 = _interopRequireDefault(_ServerGeometry);
 
@@ -40920,7 +37510,7 @@ exports.default = GetFeaturesByGeometryParameters;
 _SuperMap2.default.GetFeaturesByGeometryParameters = GetFeaturesByGeometryParameters;
 
 /***/ }),
-/* 206 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40938,11 +37528,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _GetFeaturesParametersBase = __webpack_require__(26);
+var _GetFeaturesParametersBase = __webpack_require__(21);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
@@ -41057,7 +37647,7 @@ exports.default = GetFeaturesByIDsParameters;
 _SuperMap2.default.GetFeaturesByIDsParameters = GetFeaturesByIDsParameters;
 
 /***/ }),
-/* 207 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41075,11 +37665,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _FilterParameter = __webpack_require__(10);
+var _FilterParameter = __webpack_require__(9);
 
 var _FilterParameter2 = _interopRequireDefault(_FilterParameter);
 
-var _GetFeaturesParametersBase = __webpack_require__(26);
+var _GetFeaturesParametersBase = __webpack_require__(21);
 
 var _GetFeaturesParametersBase2 = _interopRequireDefault(_GetFeaturesParametersBase);
 
@@ -41179,7 +37769,7 @@ exports.default = GetFeaturesBySQLParameters;
 _SuperMap2.default.GetFeaturesBySQLParameters = GetFeaturesBySQLParameters;
 
 /***/ }),
-/* 208 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41272,7 +37862,7 @@ exports.default = GetGridCellInfosParameters;
 _SuperMap2.default.GetGridCellInfosParameters = GetGridCellInfosParameters;
 
 /***/ }),
-/* 209 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41290,19 +37880,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _UGCSubLayer2 = __webpack_require__(40);
+var _UGCSubLayer2 = __webpack_require__(27);
 
 var _UGCSubLayer3 = _interopRequireDefault(_UGCSubLayer2);
 
-var _ServerColor = __webpack_require__(12);
+var _ServerColor = __webpack_require__(11);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
-var _ColorDictionary = __webpack_require__(171);
+var _ColorDictionary = __webpack_require__(142);
 
 var _ColorDictionary2 = _interopRequireDefault(_ColorDictionary);
 
@@ -41531,7 +38121,7 @@ exports.default = Grid;
 _SuperMap2.default.Grid = Grid;
 
 /***/ }),
-/* 210 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41549,11 +38139,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _UGCSubLayer2 = __webpack_require__(40);
+var _UGCSubLayer2 = __webpack_require__(27);
 
 var _UGCSubLayer3 = _interopRequireDefault(_UGCSubLayer2);
 
-var _ServerColor = __webpack_require__(12);
+var _ServerColor = __webpack_require__(11);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
@@ -41703,7 +38293,7 @@ exports.default = UGCImage;
 _SuperMap2.default.Image = UGCImage;
 
 /***/ }),
-/* 211 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41721,7 +38311,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _InterpolationAnalystParameters = __webpack_require__(28);
+var _InterpolationAnalystParameters = __webpack_require__(23);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -41804,7 +38394,7 @@ exports.default = InterpolationDensityAnalystParameters;
 _SuperMap2.default.InterpolationDensityAnalystParameters = InterpolationDensityAnalystParameters;
 
 /***/ }),
-/* 212 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41822,7 +38412,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _InterpolationAnalystParameters = __webpack_require__(28);
+var _InterpolationAnalystParameters = __webpack_require__(23);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -41943,7 +38533,7 @@ exports.default = InterpolationIDWAnalystParameters;
 _SuperMap2.default.InterpolationIDWAnalystParameters = InterpolationIDWAnalystParameters;
 
 /***/ }),
-/* 213 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41963,11 +38553,11 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(1);
 
-var _ThiessenAnalystParameters = __webpack_require__(54);
+var _ThiessenAnalystParameters = __webpack_require__(38);
 
 var _ThiessenAnalystParameters2 = _interopRequireDefault(_ThiessenAnalystParameters);
 
-var _InterpolationAnalystParameters = __webpack_require__(28);
+var _InterpolationAnalystParameters = __webpack_require__(23);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -42237,7 +38827,7 @@ exports.default = InterpolationKrigingAnalystParameters;
 _SuperMap2.default.InterpolationKrigingAnalystParameters = InterpolationKrigingAnalystParameters;
 
 /***/ }),
-/* 214 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42255,7 +38845,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _InterpolationAnalystParameters = __webpack_require__(28);
+var _InterpolationAnalystParameters = __webpack_require__(23);
 
 var _InterpolationAnalystParameters2 = _interopRequireDefault(_InterpolationAnalystParameters);
 
@@ -42421,7 +39011,7 @@ exports.default = InterpolationRBFAnalystParameters;
 _SuperMap2.default.InterpolationRBFAnalystParameters = InterpolationRBFAnalystParameters;
 
 /***/ }),
-/* 215 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42591,7 +39181,7 @@ exports.default = KernelDensityJobParameter;
 _SuperMap2.default.KernelDensityJobParameter = KernelDensityJobParameter;
 
 /***/ }),
-/* 216 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42607,7 +39197,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _LabelMatrixCell2 = __webpack_require__(49);
+var _LabelMatrixCell2 = __webpack_require__(33);
 
 var _LabelMatrixCell3 = _interopRequireDefault(_LabelMatrixCell2);
 
@@ -42719,7 +39309,7 @@ exports.default = LabelImageCell;
 _SuperMap2.default.LabelImageCell = LabelImageCell;
 
 /***/ }),
-/* 217 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42735,7 +39325,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(16);
+var _ServerTextStyle = __webpack_require__(15);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -42879,7 +39469,7 @@ exports.default = LabelMixedTextStyle;
 _SuperMap2.default.LabelMixedTextStyle = LabelMixedTextStyle;
 
 /***/ }),
-/* 218 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42895,11 +39485,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
-var _LabelMatrixCell2 = __webpack_require__(49);
+var _LabelMatrixCell2 = __webpack_require__(33);
 
 var _LabelMatrixCell3 = _interopRequireDefault(_LabelMatrixCell2);
 
@@ -42990,7 +39580,7 @@ exports.default = LabelSymbolCell;
 _SuperMap2.default.LabelSymbolCell = LabelSymbolCell;
 
 /***/ }),
-/* 219 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43006,11 +39596,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ThemeLabel = __webpack_require__(52);
+var _ThemeLabel = __webpack_require__(36);
 
 var _ThemeLabel2 = _interopRequireDefault(_ThemeLabel);
 
-var _LabelMatrixCell2 = __webpack_require__(49);
+var _LabelMatrixCell2 = __webpack_require__(33);
 
 var _LabelMatrixCell3 = _interopRequireDefault(_LabelMatrixCell2);
 
@@ -43091,7 +39681,7 @@ exports.default = LabelThemeCell;
 _SuperMap2.default.LabelThemeCell = LabelThemeCell;
 
 /***/ }),
-/* 220 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43224,7 +39814,7 @@ exports.default = LayerStatus;
 _SuperMap2.default.LayerStatus = LayerStatus;
 
 /***/ }),
-/* 221 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43240,7 +39830,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _DatasourceConnectionInfo = __webpack_require__(178);
+var _DatasourceConnectionInfo = __webpack_require__(149);
 
 var _DatasourceConnectionInfo2 = _interopRequireDefault(_DatasourceConnectionInfo);
 
@@ -43315,7 +39905,7 @@ exports.default = LinkItem;
 _SuperMap2.default.LinkItem = LinkItem;
 
 /***/ }),
-/* 222 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43491,7 +40081,7 @@ exports.default = MathExpressionAnalysisParameters;
 _SuperMap2.default.MathExpressionAnalysisParameters = MathExpressionAnalysisParameters;
 
 /***/ }),
-/* 223 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43597,7 +40187,7 @@ exports.default = MeasureParameters;
 _SuperMap2.default.MeasureParameters = MeasureParameters;
 
 /***/ }),
-/* 224 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43613,7 +40203,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Point2 = __webpack_require__(11);
+var _Point2 = __webpack_require__(10);
 
 var _Point3 = _interopRequireDefault(_Point2);
 
@@ -43747,7 +40337,7 @@ exports.default = PointWithMeasure;
 _SuperMap2.default.PointWithMeasure = PointWithMeasure;
 
 /***/ }),
-/* 225 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43765,7 +40355,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(15);
+var _QueryParameters2 = __webpack_require__(14);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -43854,7 +40444,7 @@ exports.default = QueryByBoundsParameters;
 _SuperMap2.default.QueryByBoundsParameters = QueryByBoundsParameters;
 
 /***/ }),
-/* 226 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43872,7 +40462,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(15);
+var _QueryParameters2 = __webpack_require__(14);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -43943,7 +40533,7 @@ exports.default = QueryByDistanceParameters;
 _SuperMap2.default.QueryByDistanceParameters = QueryByDistanceParameters;
 
 /***/ }),
-/* 227 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43961,7 +40551,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(15);
+var _QueryParameters2 = __webpack_require__(14);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -44064,7 +40654,7 @@ exports.default = QueryByGeometryParameters;
 _SuperMap2.default.QueryByGeometryParameters = QueryByGeometryParameters;
 
 /***/ }),
-/* 228 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44082,7 +40672,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(15);
+var _QueryParameters2 = __webpack_require__(14);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -44137,7 +40727,7 @@ exports.default = QueryBySQLParameters;
 _SuperMap2.default.QueryBySQLParameters = QueryBySQLParameters;
 
 /***/ }),
-/* 229 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44153,7 +40743,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Route = __webpack_require__(50);
+var _Route = __webpack_require__(34);
 
 var _Route2 = _interopRequireDefault(_Route);
 
@@ -44242,7 +40832,7 @@ exports.default = RouteCalculateMeasureParameters;
 _SuperMap2.default.RouteCalculateMeasureParameters = RouteCalculateMeasureParameters;
 
 /***/ }),
-/* 230 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44258,7 +40848,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Route = __webpack_require__(50);
+var _Route = __webpack_require__(34);
 
 var _Route2 = _interopRequireDefault(_Route);
 
@@ -44410,7 +41000,7 @@ exports.default = RouteLocatorParameters;
 _SuperMap2.default.RouteLocatorParameters = RouteLocatorParameters;
 
 /***/ }),
-/* 231 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44428,31 +41018,31 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ThemeLabel = __webpack_require__(52);
+var _ThemeLabel = __webpack_require__(36);
 
 var _ThemeLabel2 = _interopRequireDefault(_ThemeLabel);
 
-var _ThemeUnique = __webpack_require__(72);
+var _ThemeUnique = __webpack_require__(52);
 
 var _ThemeUnique2 = _interopRequireDefault(_ThemeUnique);
 
-var _ThemeGraph = __webpack_require__(70);
+var _ThemeGraph = __webpack_require__(50);
 
 var _ThemeGraph2 = _interopRequireDefault(_ThemeGraph);
 
-var _ThemeDotDensity = __webpack_require__(68);
+var _ThemeDotDensity = __webpack_require__(48);
 
 var _ThemeDotDensity2 = _interopRequireDefault(_ThemeDotDensity);
 
-var _ThemeGraduatedSymbol = __webpack_require__(69);
+var _ThemeGraduatedSymbol = __webpack_require__(49);
 
 var _ThemeGraduatedSymbol2 = _interopRequireDefault(_ThemeGraduatedSymbol);
 
-var _ThemeRange = __webpack_require__(71);
+var _ThemeRange = __webpack_require__(51);
 
 var _ThemeRange2 = _interopRequireDefault(_ThemeRange);
 
-var _UGCSubLayer2 = __webpack_require__(40);
+var _UGCSubLayer2 = __webpack_require__(27);
 
 var _UGCSubLayer3 = _interopRequireDefault(_UGCSubLayer2);
 
@@ -44591,7 +41181,7 @@ exports.default = ServerTheme;
 _SuperMap2.default.ServerTheme = ServerTheme;
 
 /***/ }),
-/* 232 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44683,7 +41273,7 @@ exports.default = SetLayerInfoParameters;
 _SuperMap2.default.SetLayerInfoParameters = SetLayerInfoParameters;
 
 /***/ }),
-/* 233 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44699,7 +41289,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _LayerStatus = __webpack_require__(220);
+var _LayerStatus = __webpack_require__(191);
 
 var _LayerStatus2 = _interopRequireDefault(_LayerStatus);
 
@@ -44799,7 +41389,7 @@ exports.default = SetLayerStatusParameters;
 _SuperMap2.default.SetLayerStatusParameters = SetLayerStatusParameters;
 
 /***/ }),
-/* 234 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44881,7 +41471,7 @@ exports.default = SetLayersInfoParameters;
 _SuperMap2.default.SetLayersInfoParameters = SetLayersInfoParameters;
 
 /***/ }),
-/* 235 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44986,7 +41576,7 @@ exports.default = SingleObjectQueryJobsParameter;
 _SuperMap2.default.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
 /***/ }),
-/* 236 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45055,7 +41645,7 @@ exports.default = StopQueryParameters;
 _SuperMap2.default.StopQueryParameters = StopQueryParameters;
 
 /***/ }),
-/* 237 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45224,7 +41814,7 @@ exports.default = SummaryMeshJobParameter;
 _SuperMap2.default.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 /***/ }),
-/* 238 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45437,7 +42027,7 @@ exports.default = SummaryRegionJobParameter;
 _SuperMap2.default.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 /***/ }),
-/* 239 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45553,7 +42143,7 @@ exports.default = SupplyCenter;
 _SuperMap2.default.SupplyCenter = SupplyCenter;
 
 /***/ }),
-/* 240 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45691,7 +42281,7 @@ exports.default = SurfaceAnalystParametersSetting;
 _SuperMap2.default.SurfaceAnalystParametersSetting = SurfaceAnalystParametersSetting;
 
 /***/ }),
-/* 241 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45824,7 +42414,7 @@ exports.default = TerrainCurvatureCalculationParameters;
 _SuperMap2.default.TerrainCurvatureCalculationParameters = TerrainCurvatureCalculationParameters;
 
 /***/ }),
-/* 242 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45840,7 +42430,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
@@ -45952,7 +42542,7 @@ exports.default = ThemeGraduatedSymbolStyle;
 _SuperMap2.default.ThemeGraduatedSymbolStyle = ThemeGraduatedSymbolStyle;
 
 /***/ }),
-/* 243 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45968,11 +42558,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerColor = __webpack_require__(12);
+var _ServerColor = __webpack_require__(11);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
-var _ServerTextStyle = __webpack_require__(16);
+var _ServerTextStyle = __webpack_require__(15);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -46090,7 +42680,7 @@ exports.default = ThemeGraphAxes;
 _SuperMap2.default.ThemeGraphAxes = ThemeGraphAxes;
 
 /***/ }),
-/* 244 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46106,7 +42696,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
@@ -46210,7 +42800,7 @@ exports.default = ThemeGraphItem;
 _SuperMap2.default.ThemeGraphItem = ThemeGraphItem;
 
 /***/ }),
-/* 245 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46300,7 +42890,7 @@ exports.default = ThemeGraphSize;
 _SuperMap2.default.ThemeGraphSize = ThemeGraphSize;
 
 /***/ }),
-/* 246 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46316,7 +42906,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(16);
+var _ServerTextStyle = __webpack_require__(15);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -46412,7 +43002,7 @@ exports.default = ThemeGraphText;
 _SuperMap2.default.ThemeGraphText = ThemeGraphText;
 
 /***/ }),
-/* 247 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46430,11 +43020,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(13);
+var _Theme2 = __webpack_require__(12);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
-var _ThemeGridRangeItem = __webpack_require__(248);
+var _ThemeGridRangeItem = __webpack_require__(219);
 
 var _ThemeGridRangeItem2 = _interopRequireDefault(_ThemeGridRangeItem);
 
@@ -46577,7 +43167,7 @@ exports.default = ThemeGridRange;
 _SuperMap2.default.ThemeGridRange = ThemeGridRange;
 
 /***/ }),
-/* 248 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46593,7 +43183,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerColor = __webpack_require__(12);
+var _ServerColor = __webpack_require__(11);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
@@ -46726,7 +43316,7 @@ exports.default = ThemeGridRangeItem;
 _SuperMap2.default.ThemeGridRangeItem = ThemeGridRangeItem;
 
 /***/ }),
-/* 249 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46744,15 +43334,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Theme2 = __webpack_require__(13);
+var _Theme2 = __webpack_require__(12);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
 
-var _ServerColor = __webpack_require__(12);
+var _ServerColor = __webpack_require__(11);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
-var _ThemeGridUniqueItem = __webpack_require__(250);
+var _ThemeGridUniqueItem = __webpack_require__(221);
 
 var _ThemeGridUniqueItem2 = _interopRequireDefault(_ThemeGridUniqueItem);
 
@@ -46890,7 +43480,7 @@ exports.default = ThemeGridUnique;
 _SuperMap2.default.ThemeGridUnique = ThemeGridUnique;
 
 /***/ }),
-/* 250 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46906,7 +43496,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerColor = __webpack_require__(12);
+var _ServerColor = __webpack_require__(11);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
@@ -47028,7 +43618,7 @@ exports.default = ThemeGridUniqueItem;
 _SuperMap2.default.ThemeGridUniqueItem = ThemeGridUniqueItem;
 
 /***/ }),
-/* 251 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47161,7 +43751,7 @@ exports.default = ThemeLabelAlongLine;
 _SuperMap2.default.ThemeLabelAlongLine = ThemeLabelAlongLine;
 
 /***/ }),
-/* 252 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47177,7 +43767,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
@@ -47268,7 +43858,7 @@ exports.default = ThemeLabelBackground;
 _SuperMap2.default.ThemeLabelBackground = ThemeLabelBackground;
 
 /***/ }),
-/* 253 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47284,7 +43874,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(16);
+var _ServerTextStyle = __webpack_require__(15);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -47403,7 +43993,7 @@ exports.default = ThemeLabelItem;
 _SuperMap2.default.ThemeLabelItem = ThemeLabelItem;
 
 /***/ }),
-/* 254 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47419,11 +44009,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(16);
+var _ServerTextStyle = __webpack_require__(15);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
-var _LabelMixedTextStyle = __webpack_require__(217);
+var _LabelMixedTextStyle = __webpack_require__(188);
 
 var _LabelMixedTextStyle2 = _interopRequireDefault(_LabelMixedTextStyle);
 
@@ -47557,7 +44147,7 @@ exports.default = ThemeLabelText;
 _SuperMap2.default.ThemeLabelText = ThemeLabelText;
 
 /***/ }),
-/* 255 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47573,7 +44163,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(16);
+var _ServerTextStyle = __webpack_require__(15);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -47697,7 +44287,7 @@ exports.default = ThemeLabelUniqueItem;
 _SuperMap2.default.ThemeLabelUniqueItem = ThemeLabelUniqueItem;
 
 /***/ }),
-/* 256 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47799,7 +44389,7 @@ exports.default = ThemeMemoryData;
 _SuperMap2.default.ThemeMemoryData = ThemeMemoryData;
 
 /***/ }),
-/* 257 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47815,51 +44405,51 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _JoinItem = __webpack_require__(48);
+var _JoinItem = __webpack_require__(32);
 
 var _JoinItem2 = _interopRequireDefault(_JoinItem);
 
-var _ThemeDotDensity = __webpack_require__(68);
+var _ThemeDotDensity = __webpack_require__(48);
 
 var _ThemeDotDensity2 = _interopRequireDefault(_ThemeDotDensity);
 
-var _ThemeGraduatedSymbol = __webpack_require__(69);
+var _ThemeGraduatedSymbol = __webpack_require__(49);
 
 var _ThemeGraduatedSymbol2 = _interopRequireDefault(_ThemeGraduatedSymbol);
 
-var _ThemeGraph = __webpack_require__(70);
+var _ThemeGraph = __webpack_require__(50);
 
 var _ThemeGraph2 = _interopRequireDefault(_ThemeGraph);
 
-var _ThemeLabel = __webpack_require__(52);
+var _ThemeLabel = __webpack_require__(36);
 
 var _ThemeLabel2 = _interopRequireDefault(_ThemeLabel);
 
-var _ThemeRange = __webpack_require__(71);
+var _ThemeRange = __webpack_require__(51);
 
 var _ThemeRange2 = _interopRequireDefault(_ThemeRange);
 
-var _ThemeUnique = __webpack_require__(72);
+var _ThemeUnique = __webpack_require__(52);
 
 var _ThemeUnique2 = _interopRequireDefault(_ThemeUnique);
 
-var _ThemeGridRange = __webpack_require__(247);
+var _ThemeGridRange = __webpack_require__(218);
 
 var _ThemeGridRange2 = _interopRequireDefault(_ThemeGridRange);
 
-var _ThemeGridUnique = __webpack_require__(249);
+var _ThemeGridUnique = __webpack_require__(220);
 
 var _ThemeGridUnique2 = _interopRequireDefault(_ThemeGridUnique);
 
-var _LabelImageCell = __webpack_require__(216);
+var _LabelImageCell = __webpack_require__(187);
 
 var _LabelImageCell2 = _interopRequireDefault(_LabelImageCell);
 
-var _LabelSymbolCell = __webpack_require__(218);
+var _LabelSymbolCell = __webpack_require__(189);
 
 var _LabelSymbolCell2 = _interopRequireDefault(_LabelSymbolCell);
 
-var _LabelThemeCell = __webpack_require__(219);
+var _LabelThemeCell = __webpack_require__(190);
 
 var _LabelThemeCell2 = _interopRequireDefault(_LabelThemeCell);
 
@@ -47980,7 +44570,7 @@ exports.default = ThemeParameters;
 _SuperMap2.default.ThemeParameters = ThemeParameters;
 
 /***/ }),
-/* 258 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47996,7 +44586,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
@@ -48135,7 +44725,7 @@ exports.default = ThemeRangeItem;
 _SuperMap2.default.ThemeRangeItem = ThemeRangeItem;
 
 /***/ }),
-/* 259 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48151,7 +44741,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
@@ -48274,7 +44864,7 @@ exports.default = ThemeUniqueItem;
 _SuperMap2.default.ThemeUniqueItem = ThemeUniqueItem;
 
 /***/ }),
-/* 260 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48427,7 +45017,7 @@ exports.default = TransferLine;
 _SuperMap2.default.TransferLine = TransferLine;
 
 /***/ }),
-/* 261 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48443,7 +45033,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransferLine = __webpack_require__(260);
+var _TransferLine = __webpack_require__(231);
 
 var _TransferLine2 = _interopRequireDefault(_TransferLine);
 
@@ -48522,7 +45112,7 @@ exports.default = TransferPathParameters;
 _SuperMap2.default.TransferPathParameters = TransferPathParameters;
 
 /***/ }),
-/* 262 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48690,7 +45280,7 @@ exports.default = TransferSolutionParameters;
 _SuperMap2.default.TransferSolutionParameters = TransferSolutionParameters;
 
 /***/ }),
-/* 263 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48780,7 +45370,7 @@ exports.default = TransportationAnalystResultSetting;
 _SuperMap2.default.TransportationAnalystResultSetting = TransportationAnalystResultSetting;
 
 /***/ }),
-/* 264 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48936,7 +45526,7 @@ exports.default = UGCLayer;
 _SuperMap2.default.UGCLayer = UGCLayer;
 
 /***/ }),
-/* 265 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48954,7 +45544,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _UGCLayer2 = __webpack_require__(264);
+var _UGCLayer2 = __webpack_require__(235);
 
 var _UGCLayer3 = _interopRequireDefault(_UGCLayer2);
 
@@ -49107,7 +45697,7 @@ exports.default = UGCMapLayer;
 _SuperMap2.default.UGCMapLayer = UGCMapLayer;
 
 /***/ }),
-/* 266 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49212,7 +45802,7 @@ exports.default = UpdateEdgeWeightParameters;
 _SuperMap2.default.UpdateEdgeWeightParameters = UpdateEdgeWeightParameters;
 
 /***/ }),
-/* 267 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49317,7 +45907,7 @@ exports.default = UpdateTurnNodeWeightParameters;
 _SuperMap2.default.UpdateTurnNodeWeightParameters = UpdateTurnNodeWeightParameters;
 
 /***/ }),
-/* 268 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49335,11 +45925,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _UGCSubLayer2 = __webpack_require__(40);
+var _UGCSubLayer2 = __webpack_require__(27);
 
 var _UGCSubLayer3 = _interopRequireDefault(_UGCSubLayer2);
 
-var _ServerStyle = __webpack_require__(8);
+var _ServerStyle = __webpack_require__(6);
 
 var _ServerStyle2 = _interopRequireDefault(_ServerStyle);
 
@@ -49435,7 +46025,7 @@ exports.default = Vector;
 _SuperMap2.default.Vector = Vector;
 
 /***/ }),
-/* 269 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49542,7 +46132,7 @@ exports.default = VectorClipJobsParameter;
 _SuperMap2.default.VectorClipJobsParameter = VectorClipJobsParameter;
 
 /***/ }),
-/* 270 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49614,7 +46204,7 @@ exports.default = KeyServiceParameter;
 _SuperMap2.default.KeyServiceParameter = KeyServiceParameter;
 
 /***/ }),
-/* 271 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49624,19 +46214,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerInfo = __webpack_require__(272);
+var _ServerInfo = __webpack_require__(243);
 
 var _ServerInfo2 = _interopRequireDefault(_ServerInfo);
 
-var _TokenServiceParameter = __webpack_require__(273);
+var _TokenServiceParameter = __webpack_require__(244);
 
 var _TokenServiceParameter2 = _interopRequireDefault(_TokenServiceParameter);
 
-var _KeyServiceParameter = __webpack_require__(270);
+var _KeyServiceParameter = __webpack_require__(241);
 
 var _KeyServiceParameter2 = _interopRequireDefault(_KeyServiceParameter);
 
-var _FetchRequest = __webpack_require__(41);
+var _FetchRequest = __webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49921,7 +46511,7 @@ _SuperMap2.default.SecurityManager.SSO = "https://sso.supermap.com";
 _SuperMap2.default.SecurityManager.ONLINE = "http://www.supermapol.com";
 
 /***/ }),
-/* 272 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50014,7 +46604,7 @@ exports.default = ServerInfo;
 _SuperMap2.default.ServerInfo = ServerInfo;
 
 /***/ }),
-/* 273 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50118,7 +46708,7 @@ exports.default = TokenServiceParameter;
 _SuperMap2.default.TokenServiceParameter = TokenServiceParameter;
 
 /***/ }),
-/* 274 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50132,11 +46722,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _mapboxGl = __webpack_require__(20);
+var _mapboxGl = __webpack_require__(17);
 
 var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
 
-var _mapv = __webpack_require__(81);
+var _mapv = __webpack_require__(53);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50465,4146 +47055,90 @@ var MapvRenderer = function (_BaseLayer) {
 exports.default = MapvRenderer;
 
 /***/ }),
-/* 275 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var mgrs = __webpack_require__(80);
-
-function Point(x, y, z) {
-  if (!(this instanceof Point)) {
-    return new Point(x, y, z);
-  }
-  if (Array.isArray(x)) {
-    this.x = x[0];
-    this.y = x[1];
-    this.z = x[2] || 0.0;
-  } else if(typeof x === 'object') {
-    this.x = x.x;
-    this.y = x.y;
-    this.z = x.z || 0.0;
-  } else if (typeof x === 'string' && typeof y === 'undefined') {
-    var coords = x.split(',');
-    this.x = parseFloat(coords[0], 10);
-    this.y = parseFloat(coords[1], 10);
-    this.z = parseFloat(coords[2], 10) || 0.0;
-  } else {
-    this.x = x;
-    this.y = y;
-    this.z = z || 0.0;
-  }
-  console.warn('proj4.Point will be removed in version 3, use proj4.toPoint');
-}
-
-Point.fromMGRS = function(mgrsStr) {
-  return new Point(mgrs.toPoint(mgrsStr));
-};
-Point.prototype.toMGRS = function(accuracy) {
-  return mgrs.forward([this.x, this.y], accuracy);
-};
-module.exports = Point;
-
-
-/***/ }),
-/* 276 */
-/***/ (function(module, exports) {
-
-module.exports = function(crs, denorm, point) {
-  var xin = point.x,
-    yin = point.y,
-    zin = point.z || 0.0;
-  var v, t, i;
-  for (i = 0; i < 3; i++) {
-    if (denorm && i === 2 && point.z === undefined) {
-      continue;
-    }
-    if (i === 0) {
-      v = xin;
-      t = 'x';
-    }
-    else if (i === 1) {
-      v = yin;
-      t = 'y';
-    }
-    else {
-      v = zin;
-      t = 'z';
-    }
-    switch (crs.axis[i]) {
-    case 'e':
-      point[t] = v;
-      break;
-    case 'w':
-      point[t] = -v;
-      break;
-    case 'n':
-      point[t] = v;
-      break;
-    case 's':
-      point[t] = -v;
-      break;
-    case 'u':
-      if (point[t] !== undefined) {
-        point.z = v;
-      }
-      break;
-    case 'd':
-      if (point[t] !== undefined) {
-        point.z = -v;
-      }
-      break;
-    default:
-      //console.log("ERROR: unknow axis ("+crs.axis[i]+") - check definition of "+crs.projName);
-      return null;
-    }
-  }
-  return point;
-};
-
-
-/***/ }),
-/* 277 */
-/***/ (function(module, exports) {
-
-var HALF_PI = Math.PI/2;
-
-module.exports = function(eccent, q) {
-  var temp = 1 - (1 - eccent * eccent) / (2 * eccent) * Math.log((1 - eccent) / (1 + eccent));
-  if (Math.abs(Math.abs(q) - temp) < 1.0E-6) {
-    if (q < 0) {
-      return (-1 * HALF_PI);
-    }
-    else {
-      return HALF_PI;
-    }
-  }
-  //var phi = 0.5* q/(1-eccent*eccent);
-  var phi = Math.asin(0.5 * q);
-  var dphi;
-  var sin_phi;
-  var cos_phi;
-  var con;
-  for (var i = 0; i < 30; i++) {
-    sin_phi = Math.sin(phi);
-    cos_phi = Math.cos(phi);
-    con = eccent * sin_phi;
-    dphi = Math.pow(1 - con * con, 2) / (2 * cos_phi) * (q / (1 - eccent * eccent) - sin_phi / (1 - con * con) + 0.5 / eccent * Math.log((1 - con) / (1 + con)));
-    phi += dphi;
-    if (Math.abs(dphi) <= 0.0000000001) {
-      return phi;
-    }
-  }
-
-  //console.log("IQSFN-CONV:Latitude failed to converge after 30 iterations");
-  return NaN;
-};
-
-/***/ }),
-/* 278 */
-/***/ (function(module, exports) {
-
-var C00 = 1;
-var C02 = 0.25;
-var C04 = 0.046875;
-var C06 = 0.01953125;
-var C08 = 0.01068115234375;
-var C22 = 0.75;
-var C44 = 0.46875;
-var C46 = 0.01302083333333333333;
-var C48 = 0.00712076822916666666;
-var C66 = 0.36458333333333333333;
-var C68 = 0.00569661458333333333;
-var C88 = 0.3076171875;
-
-module.exports = function(es) {
-  var en = [];
-  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
-  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
-  var t = es * es;
-  en[2] = t * (C44 - es * (C46 + es * C48));
-  t *= es;
-  en[3] = t * (C66 - es * C68);
-  en[4] = t * es * C88;
-  return en;
-};
-
-/***/ }),
-/* 279 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var pj_mlfn = __webpack_require__(73);
-var EPSLN = 1.0e-10;
-var MAX_ITER = 20;
-module.exports = function(arg, es, en) {
-  var k = 1 / (1 - es);
-  var phi = arg;
-  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
-    var s = Math.sin(phi);
-    var t = 1 - es * s * s;
-    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
-    //phi -= t * (t * Math.sqrt(t)) * k;
-    t = (pj_mlfn(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
-    phi -= t;
-    if (Math.abs(t) < EPSLN) {
-      return phi;
-    }
-  }
-  //..reportError("cass:pj_inv_mlfn: Convergence error");
-  return phi;
-};
-
-/***/ }),
-/* 280 */
-/***/ (function(module, exports) {
-
-module.exports = function(esinp, exp) {
-  return (Math.pow((1 - esinp) / (1 + esinp), exp));
-};
-
-/***/ }),
-/* 281 */
-/***/ (function(module, exports) {
-
-exports.wgs84 = {
-  towgs84: "0,0,0",
-  ellipse: "WGS84",
-  datumName: "WGS84"
-};
-exports.ch1903 = {
-  towgs84: "674.374,15.056,405.346",
-  ellipse: "bessel",
-  datumName: "swiss"
-};
-exports.ggrs87 = {
-  towgs84: "-199.87,74.79,246.62",
-  ellipse: "GRS80",
-  datumName: "Greek_Geodetic_Reference_System_1987"
-};
-exports.nad83 = {
-  towgs84: "0,0,0",
-  ellipse: "GRS80",
-  datumName: "North_American_Datum_1983"
-};
-exports.nad27 = {
-  nadgrids: "@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat",
-  ellipse: "clrk66",
-  datumName: "North_American_Datum_1927"
-};
-exports.potsdam = {
-  towgs84: "606.0,23.0,413.0",
-  ellipse: "bessel",
-  datumName: "Potsdam Rauenberg 1950 DHDN"
-};
-exports.carthage = {
-  towgs84: "-263.0,6.0,431.0",
-  ellipse: "clark80",
-  datumName: "Carthage 1934 Tunisia"
-};
-exports.hermannskogel = {
-  towgs84: "653.0,-212.0,449.0",
-  ellipse: "bessel",
-  datumName: "Hermannskogel"
-};
-exports.ire65 = {
-  towgs84: "482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15",
-  ellipse: "mod_airy",
-  datumName: "Ireland 1965"
-};
-exports.rassadiran = {
-  towgs84: "-133.63,-157.5,-158.62",
-  ellipse: "intl",
-  datumName: "Rassadiran"
-};
-exports.nzgd49 = {
-  towgs84: "59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993",
-  ellipse: "intl",
-  datumName: "New Zealand Geodetic Datum 1949"
-};
-exports.osgb36 = {
-  towgs84: "446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894",
-  ellipse: "airy",
-  datumName: "Airy 1830"
-};
-exports.s_jtsk = {
-  towgs84: "589,76,480",
-  ellipse: 'bessel',
-  datumName: 'S-JTSK (Ferro)'
-};
-exports.beduaram = {
-  towgs84: '-106,-87,188',
-  ellipse: 'clrk80',
-  datumName: 'Beduaram'
-};
-exports.gunung_segara = {
-  towgs84: '-403,684,41',
-  ellipse: 'bessel',
-  datumName: 'Gunung Segara Jakarta'
-};
-exports.rnb72 = {
-  towgs84: "106.869,-52.2978,103.724,-0.33657,0.456955,-1.84218,1",
-  ellipse: "intl",
-  datumName: "Reseau National Belge 1972"
-};
-
-/***/ }),
-/* 282 */
-/***/ (function(module, exports) {
-
-exports.MERIT = {
-  a: 6378137.0,
-  rf: 298.257,
-  ellipseName: "MERIT 1983"
-};
-exports.SGS85 = {
-  a: 6378136.0,
-  rf: 298.257,
-  ellipseName: "Soviet Geodetic System 85"
-};
-exports.GRS80 = {
-  a: 6378137.0,
-  rf: 298.257222101,
-  ellipseName: "GRS 1980(IUGG, 1980)"
-};
-exports.IAU76 = {
-  a: 6378140.0,
-  rf: 298.257,
-  ellipseName: "IAU 1976"
-};
-exports.airy = {
-  a: 6377563.396,
-  b: 6356256.910,
-  ellipseName: "Airy 1830"
-};
-exports.APL4 = {
-  a: 6378137,
-  rf: 298.25,
-  ellipseName: "Appl. Physics. 1965"
-};
-exports.NWL9D = {
-  a: 6378145.0,
-  rf: 298.25,
-  ellipseName: "Naval Weapons Lab., 1965"
-};
-exports.mod_airy = {
-  a: 6377340.189,
-  b: 6356034.446,
-  ellipseName: "Modified Airy"
-};
-exports.andrae = {
-  a: 6377104.43,
-  rf: 300.0,
-  ellipseName: "Andrae 1876 (Den., Iclnd.)"
-};
-exports.aust_SA = {
-  a: 6378160.0,
-  rf: 298.25,
-  ellipseName: "Australian Natl & S. Amer. 1969"
-};
-exports.GRS67 = {
-  a: 6378160.0,
-  rf: 298.2471674270,
-  ellipseName: "GRS 67(IUGG 1967)"
-};
-exports.bessel = {
-  a: 6377397.155,
-  rf: 299.1528128,
-  ellipseName: "Bessel 1841"
-};
-exports.bess_nam = {
-  a: 6377483.865,
-  rf: 299.1528128,
-  ellipseName: "Bessel 1841 (Namibia)"
-};
-exports.clrk66 = {
-  a: 6378206.4,
-  b: 6356583.8,
-  ellipseName: "Clarke 1866"
-};
-exports.clrk80 = {
-  a: 6378249.145,
-  rf: 293.4663,
-  ellipseName: "Clarke 1880 mod."
-};
-exports.clrk58 = {
-  a: 6378293.645208759,
-  rf: 294.2606763692654,
-  ellipseName: "Clarke 1858"
-};
-exports.CPM = {
-  a: 6375738.7,
-  rf: 334.29,
-  ellipseName: "Comm. des Poids et Mesures 1799"
-};
-exports.delmbr = {
-  a: 6376428.0,
-  rf: 311.5,
-  ellipseName: "Delambre 1810 (Belgium)"
-};
-exports.engelis = {
-  a: 6378136.05,
-  rf: 298.2566,
-  ellipseName: "Engelis 1985"
-};
-exports.evrst30 = {
-  a: 6377276.345,
-  rf: 300.8017,
-  ellipseName: "Everest 1830"
-};
-exports.evrst48 = {
-  a: 6377304.063,
-  rf: 300.8017,
-  ellipseName: "Everest 1948"
-};
-exports.evrst56 = {
-  a: 6377301.243,
-  rf: 300.8017,
-  ellipseName: "Everest 1956"
-};
-exports.evrst69 = {
-  a: 6377295.664,
-  rf: 300.8017,
-  ellipseName: "Everest 1969"
-};
-exports.evrstSS = {
-  a: 6377298.556,
-  rf: 300.8017,
-  ellipseName: "Everest (Sabah & Sarawak)"
-};
-exports.fschr60 = {
-  a: 6378166.0,
-  rf: 298.3,
-  ellipseName: "Fischer (Mercury Datum) 1960"
-};
-exports.fschr60m = {
-  a: 6378155.0,
-  rf: 298.3,
-  ellipseName: "Fischer 1960"
-};
-exports.fschr68 = {
-  a: 6378150.0,
-  rf: 298.3,
-  ellipseName: "Fischer 1968"
-};
-exports.helmert = {
-  a: 6378200.0,
-  rf: 298.3,
-  ellipseName: "Helmert 1906"
-};
-exports.hough = {
-  a: 6378270.0,
-  rf: 297.0,
-  ellipseName: "Hough"
-};
-exports.intl = {
-  a: 6378388.0,
-  rf: 297.0,
-  ellipseName: "International 1909 (Hayford)"
-};
-exports.kaula = {
-  a: 6378163.0,
-  rf: 298.24,
-  ellipseName: "Kaula 1961"
-};
-exports.lerch = {
-  a: 6378139.0,
-  rf: 298.257,
-  ellipseName: "Lerch 1979"
-};
-exports.mprts = {
-  a: 6397300.0,
-  rf: 191.0,
-  ellipseName: "Maupertius 1738"
-};
-exports.new_intl = {
-  a: 6378157.5,
-  b: 6356772.2,
-  ellipseName: "New International 1967"
-};
-exports.plessis = {
-  a: 6376523.0,
-  rf: 6355863.0,
-  ellipseName: "Plessis 1817 (France)"
-};
-exports.krass = {
-  a: 6378245.0,
-  rf: 298.3,
-  ellipseName: "Krassovsky, 1942"
-};
-exports.SEasia = {
-  a: 6378155.0,
-  b: 6356773.3205,
-  ellipseName: "Southeast Asia"
-};
-exports.walbeck = {
-  a: 6376896.0,
-  b: 6355834.8467,
-  ellipseName: "Walbeck"
-};
-exports.WGS60 = {
-  a: 6378165.0,
-  rf: 298.3,
-  ellipseName: "WGS 60"
-};
-exports.WGS66 = {
-  a: 6378145.0,
-  rf: 298.25,
-  ellipseName: "WGS 66"
-};
-exports.WGS7 = {
-  a: 6378135.0,
-  rf: 298.26,
-  ellipseName: "WGS 72"
-};
-exports.WGS84 = {
-  a: 6378137.0,
-  rf: 298.257223563,
-  ellipseName: "WGS 84"
-};
-exports.sphere = {
-  a: 6370997.0,
-  b: 6370997.0,
-  ellipseName: "Normal Sphere (r=6370997)"
-};
-
-/***/ }),
-/* 283 */
-/***/ (function(module, exports) {
-
-exports.greenwich = 0.0; //"0dE",
-exports.lisbon = -9.131906111111; //"9d07'54.862\"W",
-exports.paris = 2.337229166667; //"2d20'14.025\"E",
-exports.bogota = -74.080916666667; //"74d04'51.3\"W",
-exports.madrid = -3.687938888889; //"3d41'16.58\"W",
-exports.rome = 12.452333333333; //"12d27'8.4\"E",
-exports.bern = 7.439583333333; //"7d26'22.5\"E",
-exports.jakarta = 106.807719444444; //"106d48'27.79\"E",
-exports.ferro = -17.666666666667; //"17d40'W",
-exports.brussels = 4.367975; //"4d22'4.71\"E",
-exports.stockholm = 18.058277777778; //"18d3'29.8\"E",
-exports.athens = 23.7163375; //"23d42'58.815\"E",
-exports.oslo = 10.722916666667; //"10d43'22.5\"E"
-
-/***/ }),
-/* 284 */
-/***/ (function(module, exports) {
-
-exports.ft = {to_meter: 0.3048};
-exports['us-ft'] = {to_meter: 1200 / 3937};
-
-
-/***/ }),
-/* 285 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var proj = __webpack_require__(55);
-var transform = __webpack_require__(78);
-var wgs84 = proj('WGS84');
-
-function transformer(from, to, coords) {
-  var transformedArray;
-  if (Array.isArray(coords)) {
-    transformedArray = transform(from, to, coords);
-    if (coords.length === 3) {
-      return [transformedArray.x, transformedArray.y, transformedArray.z];
-    }
-    else {
-      return [transformedArray.x, transformedArray.y];
-    }
-  }
-  else {
-    return transform(from, to, coords);
-  }
-}
-
-function checkProj(item) {
-  if (item instanceof proj) {
-    return item;
-  }
-  if (item.oProj) {
-    return item.oProj;
-  }
-  return proj(item);
-}
-function proj4(fromProj, toProj, coord) {
-  fromProj = checkProj(fromProj);
-  var single = false;
-  var obj;
-  if (typeof toProj === 'undefined') {
-    toProj = fromProj;
-    fromProj = wgs84;
-    single = true;
-  }
-  else if (typeof toProj.x !== 'undefined' || Array.isArray(toProj)) {
-    coord = toProj;
-    toProj = fromProj;
-    fromProj = wgs84;
-    single = true;
-  }
-  toProj = checkProj(toProj);
-  if (coord) {
-    return transformer(fromProj, toProj, coord);
-  }
-  else {
-    obj = {
-      forward: function(coords) {
-        return transformer(fromProj, toProj, coords);
-      },
-      inverse: function(coords) {
-        return transformer(toProj, fromProj, coords);
-      }
-    };
-    if (single) {
-      obj.oProj = toProj;
-    }
-    return obj;
-  }
-}
-module.exports = proj4;
-
-/***/ }),
-/* 286 */
-/***/ (function(module, exports) {
-
-var HALF_PI = Math.PI/2;
-var PJD_3PARAM = 1;
-var PJD_7PARAM = 2;
-var PJD_GRIDSHIFT = 3;
-var PJD_WGS84 = 4; // WGS84 or equivalent
-var PJD_NODATUM = 5; // WGS84 or equivalent
-var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
-var AD_C = 1.0026000;
-var COS_67P5 = 0.38268343236508977;
-var datum = function(proj) {
-  if (!(this instanceof datum)) {
-    return new datum(proj);
-  }
-  this.datum_type = PJD_WGS84; //default setting
-  if (!proj) {
-    return;
-  }
-  if (proj.datumCode && proj.datumCode === 'none') {
-    this.datum_type = PJD_NODATUM;
-  }
-
-  if (proj.datum_params) {
-    this.datum_params = proj.datum_params.map(parseFloat);
-    if (this.datum_params[0] !== 0 || this.datum_params[1] !== 0 || this.datum_params[2] !== 0) {
-      this.datum_type = PJD_3PARAM;
-    }
-    if (this.datum_params.length > 3) {
-      if (this.datum_params[3] !== 0 || this.datum_params[4] !== 0 || this.datum_params[5] !== 0 || this.datum_params[6] !== 0) {
-        this.datum_type = PJD_7PARAM;
-        this.datum_params[3] *= SEC_TO_RAD;
-        this.datum_params[4] *= SEC_TO_RAD;
-        this.datum_params[5] *= SEC_TO_RAD;
-        this.datum_params[6] = (this.datum_params[6] / 1000000.0) + 1.0;
-      }
-    }
-  }
-
-  // DGR 2011-03-21 : nadgrids support
-  this.datum_type = proj.grids ? PJD_GRIDSHIFT : this.datum_type;
-
-  this.a = proj.a; //datum object also uses these values
-  this.b = proj.b;
-  this.es = proj.es;
-  this.ep2 = proj.ep2;
-  if (this.datum_type === PJD_GRIDSHIFT) {
-    this.grids = proj.grids;
-  }
-};
-datum.prototype = {
-
-
-  /****************************************************************/
-  // cs_compare_datums()
-  //   Returns TRUE if the two datums match, otherwise FALSE.
-  compare_datums: function(dest) {
-    if (this.datum_type !== dest.datum_type) {
-      return false; // false, datums are not equal
-    }
-    else if (this.a !== dest.a || Math.abs(this.es - dest.es) > 0.000000000050) {
-      // the tolerence for es is to ensure that GRS80 and WGS84
-      // are considered identical
-      return false;
-    }
-    else if (this.datum_type === PJD_3PARAM) {
-      return (this.datum_params[0] === dest.datum_params[0] && this.datum_params[1] === dest.datum_params[1] && this.datum_params[2] === dest.datum_params[2]);
-    }
-    else if (this.datum_type === PJD_7PARAM) {
-      return (this.datum_params[0] === dest.datum_params[0] && this.datum_params[1] === dest.datum_params[1] && this.datum_params[2] === dest.datum_params[2] && this.datum_params[3] === dest.datum_params[3] && this.datum_params[4] === dest.datum_params[4] && this.datum_params[5] === dest.datum_params[5] && this.datum_params[6] === dest.datum_params[6]);
-    }
-    else if (this.datum_type === PJD_GRIDSHIFT || dest.datum_type === PJD_GRIDSHIFT) {
-      //alert("ERROR: Grid shift transformations are not implemented.");
-      //return false
-      //DGR 2012-07-29 lazy ...
-      return this.nadgrids === dest.nadgrids;
-    }
-    else {
-      return true; // datums are equal
-    }
-  }, // cs_compare_datums()
-
-  /*
-   * The function Convert_Geodetic_To_Geocentric converts geodetic coordinates
-   * (latitude, longitude, and height) to geocentric coordinates (X, Y, Z),
-   * according to the current ellipsoid parameters.
-   *
-   *    Latitude  : Geodetic latitude in radians                     (input)
-   *    Longitude : Geodetic longitude in radians                    (input)
-   *    Height    : Geodetic height, in meters                       (input)
-   *    X         : Calculated Geocentric X coordinate, in meters    (output)
-   *    Y         : Calculated Geocentric Y coordinate, in meters    (output)
-   *    Z         : Calculated Geocentric Z coordinate, in meters    (output)
-   *
-   */
-  geodetic_to_geocentric: function(p) {
-    var Longitude = p.x;
-    var Latitude = p.y;
-    var Height = p.z ? p.z : 0; //Z value not always supplied
-    var X; // output
-    var Y;
-    var Z;
-
-    var Error_Code = 0; //  GEOCENT_NO_ERROR;
-    var Rn; /*  Earth radius at location  */
-    var Sin_Lat; /*  Math.sin(Latitude)  */
-    var Sin2_Lat; /*  Square of Math.sin(Latitude)  */
-    var Cos_Lat; /*  Math.cos(Latitude)  */
-
-    /*
-     ** Don't blow up if Latitude is just a little out of the value
-     ** range as it may just be a rounding issue.  Also removed longitude
-     ** test, it should be wrapped by Math.cos() and Math.sin().  NFW for PROJ.4, Sep/2001.
-     */
-    if (Latitude < -HALF_PI && Latitude > -1.001 * HALF_PI) {
-      Latitude = -HALF_PI;
-    }
-    else if (Latitude > HALF_PI && Latitude < 1.001 * HALF_PI) {
-      Latitude = HALF_PI;
-    }
-    else if ((Latitude < -HALF_PI) || (Latitude > HALF_PI)) {
-      /* Latitude out of range */
-      //..reportError('geocent:lat out of range:' + Latitude);
-      return null;
-    }
-
-    if (Longitude > Math.PI) {
-      Longitude -= (2 * Math.PI);
-    }
-    Sin_Lat = Math.sin(Latitude);
-    Cos_Lat = Math.cos(Latitude);
-    Sin2_Lat = Sin_Lat * Sin_Lat;
-    Rn = this.a / (Math.sqrt(1.0e0 - this.es * Sin2_Lat));
-    X = (Rn + Height) * Cos_Lat * Math.cos(Longitude);
-    Y = (Rn + Height) * Cos_Lat * Math.sin(Longitude);
-    Z = ((Rn * (1 - this.es)) + Height) * Sin_Lat;
-
-    p.x = X;
-    p.y = Y;
-    p.z = Z;
-    return Error_Code;
-  }, // cs_geodetic_to_geocentric()
-
-
-  geocentric_to_geodetic: function(p) {
-    /* local defintions and variables */
-    /* end-criterium of loop, accuracy of sin(Latitude) */
-    var genau = 1e-12;
-    var genau2 = (genau * genau);
-    var maxiter = 30;
-
-    var P; /* distance between semi-minor axis and location */
-    var RR; /* distance between center and location */
-    var CT; /* sin of geocentric latitude */
-    var ST; /* cos of geocentric latitude */
-    var RX;
-    var RK;
-    var RN; /* Earth radius at location */
-    var CPHI0; /* cos of start or old geodetic latitude in iterations */
-    var SPHI0; /* sin of start or old geodetic latitude in iterations */
-    var CPHI; /* cos of searched geodetic latitude */
-    var SPHI; /* sin of searched geodetic latitude */
-    var SDPHI; /* end-criterium: addition-theorem of sin(Latitude(iter)-Latitude(iter-1)) */
-    var At_Pole; /* indicates location is in polar region */
-    var iter; /* # of continous iteration, max. 30 is always enough (s.a.) */
-
-    var X = p.x;
-    var Y = p.y;
-    var Z = p.z ? p.z : 0.0; //Z value not always supplied
-    var Longitude;
-    var Latitude;
-    var Height;
-
-    At_Pole = false;
-    P = Math.sqrt(X * X + Y * Y);
-    RR = Math.sqrt(X * X + Y * Y + Z * Z);
-
-    /*      special cases for latitude and longitude */
-    if (P / this.a < genau) {
-
-      /*  special case, if P=0. (X=0., Y=0.) */
-      At_Pole = true;
-      Longitude = 0.0;
-
-      /*  if (X,Y,Z)=(0.,0.,0.) then Height becomes semi-minor axis
-       *  of ellipsoid (=center of mass), Latitude becomes PI/2 */
-      if (RR / this.a < genau) {
-        Latitude = HALF_PI;
-        Height = -this.b;
-        return;
-      }
-    }
-    else {
-      /*  ellipsoidal (geodetic) longitude
-       *  interval: -PI < Longitude <= +PI */
-      Longitude = Math.atan2(Y, X);
-    }
-
-    /* --------------------------------------------------------------
-     * Following iterative algorithm was developped by
-     * "Institut for Erdmessung", University of Hannover, July 1988.
-     * Internet: www.ife.uni-hannover.de
-     * Iterative computation of CPHI,SPHI and Height.
-     * Iteration of CPHI and SPHI to 10**-12 radian resp.
-     * 2*10**-7 arcsec.
-     * --------------------------------------------------------------
-     */
-    CT = Z / RR;
-    ST = P / RR;
-    RX = 1.0 / Math.sqrt(1.0 - this.es * (2.0 - this.es) * ST * ST);
-    CPHI0 = ST * (1.0 - this.es) * RX;
-    SPHI0 = CT * RX;
-    iter = 0;
-
-    /* loop to find sin(Latitude) resp. Latitude
-     * until |sin(Latitude(iter)-Latitude(iter-1))| < genau */
-    do {
-      iter++;
-      RN = this.a / Math.sqrt(1.0 - this.es * SPHI0 * SPHI0);
-
-      /*  ellipsoidal (geodetic) height */
-      Height = P * CPHI0 + Z * SPHI0 - RN * (1.0 - this.es * SPHI0 * SPHI0);
-
-      RK = this.es * RN / (RN + Height);
-      RX = 1.0 / Math.sqrt(1.0 - RK * (2.0 - RK) * ST * ST);
-      CPHI = ST * (1.0 - RK) * RX;
-      SPHI = CT * RX;
-      SDPHI = SPHI * CPHI0 - CPHI * SPHI0;
-      CPHI0 = CPHI;
-      SPHI0 = SPHI;
-    }
-    while (SDPHI * SDPHI > genau2 && iter < maxiter);
-
-    /*      ellipsoidal (geodetic) latitude */
-    Latitude = Math.atan(SPHI / Math.abs(CPHI));
-
-    p.x = Longitude;
-    p.y = Latitude;
-    p.z = Height;
-    return p;
-  }, // cs_geocentric_to_geodetic()
-
-  /** Convert_Geocentric_To_Geodetic
-   * The method used here is derived from 'An Improved Algorithm for
-   * Geocentric to Geodetic Coordinate Conversion', by Ralph Toms, Feb 1996
-   */
-  geocentric_to_geodetic_noniter: function(p) {
-    var X = p.x;
-    var Y = p.y;
-    var Z = p.z ? p.z : 0; //Z value not always supplied
-    var Longitude;
-    var Latitude;
-    var Height;
-
-    var W; /* distance from Z axis */
-    var W2; /* square of distance from Z axis */
-    var T0; /* initial estimate of vertical component */
-    var T1; /* corrected estimate of vertical component */
-    var S0; /* initial estimate of horizontal component */
-    var S1; /* corrected estimate of horizontal component */
-    var Sin_B0; /* Math.sin(B0), B0 is estimate of Bowring aux variable */
-    var Sin3_B0; /* cube of Math.sin(B0) */
-    var Cos_B0; /* Math.cos(B0) */
-    var Sin_p1; /* Math.sin(phi1), phi1 is estimated latitude */
-    var Cos_p1; /* Math.cos(phi1) */
-    var Rn; /* Earth radius at location */
-    var Sum; /* numerator of Math.cos(phi1) */
-    var At_Pole; /* indicates location is in polar region */
-
-    X = parseFloat(X); // cast from string to float
-    Y = parseFloat(Y);
-    Z = parseFloat(Z);
-
-    At_Pole = false;
-    if (X !== 0.0) {
-      Longitude = Math.atan2(Y, X);
-    }
-    else {
-      if (Y > 0) {
-        Longitude = HALF_PI;
-      }
-      else if (Y < 0) {
-        Longitude = -HALF_PI;
-      }
-      else {
-        At_Pole = true;
-        Longitude = 0.0;
-        if (Z > 0.0) { /* north pole */
-          Latitude = HALF_PI;
-        }
-        else if (Z < 0.0) { /* south pole */
-          Latitude = -HALF_PI;
-        }
-        else { /* center of earth */
-          Latitude = HALF_PI;
-          Height = -this.b;
-          return;
-        }
-      }
-    }
-    W2 = X * X + Y * Y;
-    W = Math.sqrt(W2);
-    T0 = Z * AD_C;
-    S0 = Math.sqrt(T0 * T0 + W2);
-    Sin_B0 = T0 / S0;
-    Cos_B0 = W / S0;
-    Sin3_B0 = Sin_B0 * Sin_B0 * Sin_B0;
-    T1 = Z + this.b * this.ep2 * Sin3_B0;
-    Sum = W - this.a * this.es * Cos_B0 * Cos_B0 * Cos_B0;
-    S1 = Math.sqrt(T1 * T1 + Sum * Sum);
-    Sin_p1 = T1 / S1;
-    Cos_p1 = Sum / S1;
-    Rn = this.a / Math.sqrt(1.0 - this.es * Sin_p1 * Sin_p1);
-    if (Cos_p1 >= COS_67P5) {
-      Height = W / Cos_p1 - Rn;
-    }
-    else if (Cos_p1 <= -COS_67P5) {
-      Height = W / -Cos_p1 - Rn;
-    }
-    else {
-      Height = Z / Sin_p1 + Rn * (this.es - 1.0);
-    }
-    if (At_Pole === false) {
-      Latitude = Math.atan(Sin_p1 / Cos_p1);
-    }
-
-    p.x = Longitude;
-    p.y = Latitude;
-    p.z = Height;
-    return p;
-  }, // geocentric_to_geodetic_noniter()
-
-  /****************************************************************/
-  // pj_geocentic_to_wgs84( p )
-  //  p = point to transform in geocentric coordinates (x,y,z)
-  geocentric_to_wgs84: function(p) {
-
-    if (this.datum_type === PJD_3PARAM) {
-      // if( x[io] === HUGE_VAL )
-      //    continue;
-      p.x += this.datum_params[0];
-      p.y += this.datum_params[1];
-      p.z += this.datum_params[2];
-
-    }
-    else if (this.datum_type === PJD_7PARAM) {
-      var Dx_BF = this.datum_params[0];
-      var Dy_BF = this.datum_params[1];
-      var Dz_BF = this.datum_params[2];
-      var Rx_BF = this.datum_params[3];
-      var Ry_BF = this.datum_params[4];
-      var Rz_BF = this.datum_params[5];
-      var M_BF = this.datum_params[6];
-      // if( x[io] === HUGE_VAL )
-      //    continue;
-      var x_out = M_BF * (p.x - Rz_BF * p.y + Ry_BF * p.z) + Dx_BF;
-      var y_out = M_BF * (Rz_BF * p.x + p.y - Rx_BF * p.z) + Dy_BF;
-      var z_out = M_BF * (-Ry_BF * p.x + Rx_BF * p.y + p.z) + Dz_BF;
-      p.x = x_out;
-      p.y = y_out;
-      p.z = z_out;
-    }
-  }, // cs_geocentric_to_wgs84
-
-  /****************************************************************/
-  // pj_geocentic_from_wgs84()
-  //  coordinate system definition,
-  //  point to transform in geocentric coordinates (x,y,z)
-  geocentric_from_wgs84: function(p) {
-
-    if (this.datum_type === PJD_3PARAM) {
-      //if( x[io] === HUGE_VAL )
-      //    continue;
-      p.x -= this.datum_params[0];
-      p.y -= this.datum_params[1];
-      p.z -= this.datum_params[2];
-
-    }
-    else if (this.datum_type === PJD_7PARAM) {
-      var Dx_BF = this.datum_params[0];
-      var Dy_BF = this.datum_params[1];
-      var Dz_BF = this.datum_params[2];
-      var Rx_BF = this.datum_params[3];
-      var Ry_BF = this.datum_params[4];
-      var Rz_BF = this.datum_params[5];
-      var M_BF = this.datum_params[6];
-      var x_tmp = (p.x - Dx_BF) / M_BF;
-      var y_tmp = (p.y - Dy_BF) / M_BF;
-      var z_tmp = (p.z - Dz_BF) / M_BF;
-      //if( x[io] === HUGE_VAL )
-      //    continue;
-
-      p.x = x_tmp + Rz_BF * y_tmp - Ry_BF * z_tmp;
-      p.y = -Rz_BF * x_tmp + y_tmp + Rx_BF * z_tmp;
-      p.z = Ry_BF * x_tmp - Rx_BF * y_tmp + z_tmp;
-    } //cs_geocentric_from_wgs84()
-  }
-};
-
-/** point object, nothing fancy, just allows values to be
-    passed back and forth by reference rather than by value.
-    Other point classes may be used as long as they have
-    x and y properties, which will get modified in the transform method.
-*/
-module.exports = datum;
-
-
-/***/ }),
-/* 287 */
-/***/ (function(module, exports) {
-
-var PJD_3PARAM = 1;
-var PJD_7PARAM = 2;
-var PJD_GRIDSHIFT = 3;
-var PJD_NODATUM = 5; // WGS84 or equivalent
-var SRS_WGS84_SEMIMAJOR = 6378137; // only used in grid shift transforms
-var SRS_WGS84_ESQUARED = 0.006694379990141316; //DGR: 2012-07-29
-module.exports = function(source, dest, point) {
-  var wp, i, l;
-
-  function checkParams(fallback) {
-    return (fallback === PJD_3PARAM || fallback === PJD_7PARAM);
-  }
-  // Short cut if the datums are identical.
-  if (source.compare_datums(dest)) {
-    return point; // in this case, zero is sucess,
-    // whereas cs_compare_datums returns 1 to indicate TRUE
-    // confusing, should fix this
-  }
-
-  // Explicitly skip datum transform by setting 'datum=none' as parameter for either source or dest
-  if (source.datum_type === PJD_NODATUM || dest.datum_type === PJD_NODATUM) {
-    return point;
-  }
-
-  //DGR: 2012-07-29 : add nadgrids support (begin)
-  var src_a = source.a;
-  var src_es = source.es;
-
-  var dst_a = dest.a;
-  var dst_es = dest.es;
-
-  var fallback = source.datum_type;
-  // If this datum requires grid shifts, then apply it to geodetic coordinates.
-  if (fallback === PJD_GRIDSHIFT) {
-    if (this.apply_gridshift(source, 0, point) === 0) {
-      source.a = SRS_WGS84_SEMIMAJOR;
-      source.es = SRS_WGS84_ESQUARED;
-    }
-    else {
-      // try 3 or 7 params transformation or nothing ?
-      if (!source.datum_params) {
-        source.a = src_a;
-        source.es = source.es;
-        return point;
-      }
-      wp = 1;
-      for (i = 0, l = source.datum_params.length; i < l; i++) {
-        wp *= source.datum_params[i];
-      }
-      if (wp === 0) {
-        source.a = src_a;
-        source.es = source.es;
-        return point;
-      }
-      if (source.datum_params.length > 3) {
-        fallback = PJD_7PARAM;
-      }
-      else {
-        fallback = PJD_3PARAM;
-      }
-    }
-  }
-  if (dest.datum_type === PJD_GRIDSHIFT) {
-    dest.a = SRS_WGS84_SEMIMAJOR;
-    dest.es = SRS_WGS84_ESQUARED;
-  }
-  // Do we need to go through geocentric coordinates?
-  if (source.es !== dest.es || source.a !== dest.a || checkParams(fallback) || checkParams(dest.datum_type)) {
-    //DGR: 2012-07-29 : add nadgrids support (end)
-    // Convert to geocentric coordinates.
-    source.geodetic_to_geocentric(point);
-    // CHECK_RETURN;
-    // Convert between datums
-    if (checkParams(source.datum_type)) {
-      source.geocentric_to_wgs84(point);
-      // CHECK_RETURN;
-    }
-    if (checkParams(dest.datum_type)) {
-      dest.geocentric_from_wgs84(point);
-      // CHECK_RETURN;
-    }
-    // Convert back to geodetic coordinates
-    dest.geocentric_to_geodetic(point);
-    // CHECK_RETURN;
-  }
-  // Apply grid shift to destination if required
-  if (dest.datum_type === PJD_GRIDSHIFT) {
-    this.apply_gridshift(dest, 1, point);
-    // CHECK_RETURN;
-  }
-
-  source.a = src_a;
-  source.es = src_es;
-  dest.a = dst_a;
-  dest.es = dst_es;
-
-  return point;
-};
-
-
-
-/***/ }),
-/* 288 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Datum = __webpack_require__(281);
-var Ellipsoid = __webpack_require__(282);
-var extend = __webpack_require__(59);
-var datum = __webpack_require__(286);
-var EPSLN = 1.0e-10;
-// ellipoid pj_set_ell.c
-var SIXTH = 0.1666666666666666667;
-/* 1/6 */
-var RA4 = 0.04722222222222222222;
-/* 17/360 */
-var RA6 = 0.02215608465608465608;
-module.exports = function(json) {
-  // DGR 2011-03-20 : nagrids -> nadgrids
-  if (json.datumCode && json.datumCode !== 'none') {
-    var datumDef = Datum[json.datumCode];
-    if (datumDef) {
-      json.datum_params = datumDef.towgs84 ? datumDef.towgs84.split(',') : null;
-      json.ellps = datumDef.ellipse;
-      json.datumName = datumDef.datumName ? datumDef.datumName : json.datumCode;
-    }
-  }
-  if (!json.a) { // do we have an ellipsoid?
-    var ellipse = Ellipsoid[json.ellps] ? Ellipsoid[json.ellps] : Ellipsoid.WGS84;
-    extend(json, ellipse);
-  }
-  if (json.rf && !json.b) {
-    json.b = (1.0 - 1.0 / json.rf) * json.a;
-  }
-  if (json.rf === 0 || Math.abs(json.a - json.b) < EPSLN) {
-    json.sphere = true;
-    json.b = json.a;
-  }
-  json.a2 = json.a * json.a; // used in geocentric
-  json.b2 = json.b * json.b; // used in geocentric
-  json.es = (json.a2 - json.b2) / json.a2; // e ^ 2
-  json.e = Math.sqrt(json.es); // eccentricity
-  if (json.R_A) {
-    json.a *= 1 - json.es * (SIXTH + json.es * (RA4 + json.es * RA6));
-    json.a2 = json.a * json.a;
-    json.b2 = json.b * json.b;
-    json.es = 0;
-  }
-  json.ep2 = (json.a2 - json.b2) / json.b2; // used in geocentric
-  if (!json.k0) {
-    json.k0 = 1.0; //default value
-  }
-  //DGR 2010-11-12: axis
-  if (!json.axis) {
-    json.axis = "enu";
-  }
-
-  if (!json.datum) {
-    json.datum = datum(json);
-  }
-  return json;
-};
-
-
-/***/ }),
-/* 289 */
-/***/ (function(module, exports) {
-
-module.exports = function(defs) {
-  defs('EPSG:4326', "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
-  defs('EPSG:4269', "+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees");
-  defs('EPSG:3857', "+title=WGS 84 / Pseudo-Mercator +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
-
-  defs.WGS84 = defs['EPSG:4326'];
-  defs['EPSG:3785'] = defs['EPSG:3857']; // maintain backward compat, official code is 3857
-  defs.GOOGLE = defs['EPSG:3857'];
-  defs['EPSG:900913'] = defs['EPSG:3857'];
-  defs['EPSG:102113'] = defs['EPSG:3857'];
-};
-
-
-/***/ }),
-/* 290 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var projs = [
-  __webpack_require__(77),
-  __webpack_require__(316),
-  __webpack_require__(315),
-  __webpack_require__(314),
-  __webpack_require__(313),
-  __webpack_require__(310),
-  __webpack_require__(304),
-  __webpack_require__(302),
-  __webpack_require__(296),
-  __webpack_require__(303),
-  __webpack_require__(294),
-  __webpack_require__(301),
-  __webpack_require__(297),
-  __webpack_require__(298),
-  __webpack_require__(311),
-  __webpack_require__(309),
-  __webpack_require__(307),
-  __webpack_require__(312),
-  __webpack_require__(308),
-  __webpack_require__(299),
-  __webpack_require__(317),
-  __webpack_require__(295)
-];
-module.exports = function(proj4){
-  projs.forEach(function(proj){
-    proj4.Proj.projections.add(proj);
-  });
-};
-
-/***/ }),
-/* 291 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var proj4 = __webpack_require__(285);
-proj4.defaultDatum = 'WGS84'; //default datum
-proj4.Proj = __webpack_require__(55);
-proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(275);
-proj4.toPoint = __webpack_require__(74);
-proj4.defs = __webpack_require__(75);
-proj4.transform = __webpack_require__(78);
-proj4.mgrs = __webpack_require__(80);
-proj4.version = __webpack_require__(318).version;
-__webpack_require__(290)(proj4);
-module.exports = proj4;
-
-/***/ }),
-/* 292 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var defs = __webpack_require__(75);
-var wkt = __webpack_require__(79);
-var projStr = __webpack_require__(76);
-function testObj(code){
-  return typeof code === 'string';
-}
-function testDef(code){
-  return code in defs;
-}
-function testWKT(code){
-  var codeWords = ['GEOGCS','GEOCCS','PROJCS','LOCAL_CS'];
-  return codeWords.reduce(function(a,b){
-    return a+1+code.indexOf(b);
-  },0);
-}
-function testProj(code){
-  return code[0] === '+';
-}
-function parse(code){
-  if (testObj(code)) {
-    //check to see if this is a WKT string
-    if (testDef(code)) {
-      return defs[code];
-    }
-    else if (testWKT(code)) {
-      return wkt(code);
-    }
-    else if (testProj(code)) {
-      return projStr(code);
-    }
-  }else{
-    return code;
-  }
-}
-
-module.exports = parse;
-
-/***/ }),
-/* 293 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var projs = [
-  __webpack_require__(306),
-  __webpack_require__(305)
-];
-var names = {};
-var projStore = [];
-
-function add(proj, i) {
-  var len = projStore.length;
-  if (!proj.names) {
-    console.log(i);
-    return true;
-  }
-  projStore[len] = proj;
-  proj.names.forEach(function(n) {
-    names[n.toLowerCase()] = len;
-  });
-  return this;
-}
-
-exports.add = add;
-
-exports.get = function(name) {
-  if (!name) {
-    return false;
-  }
-  var n = name.toLowerCase();
-  if (typeof names[n] !== 'undefined' && projStore[names[n]]) {
-    return projStore[names[n]];
-  }
-};
-exports.start = function() {
-  projs.forEach(add);
-};
-
-
-/***/ }),
-/* 294 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var EPSLN = 1.0e-10;
-var msfnz = __webpack_require__(19);
-var qsfnz = __webpack_require__(58);
-var adjust_lon = __webpack_require__(3);
-var asinz = __webpack_require__(18);
-exports.init = function() {
-
-  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
-    return;
-  }
-  this.temp = this.b / this.a;
-  this.es = 1 - Math.pow(this.temp, 2);
-  this.e3 = Math.sqrt(this.es);
-
-  this.sin_po = Math.sin(this.lat1);
-  this.cos_po = Math.cos(this.lat1);
-  this.t1 = this.sin_po;
-  this.con = this.sin_po;
-  this.ms1 = msfnz(this.e3, this.sin_po, this.cos_po);
-  this.qs1 = qsfnz(this.e3, this.sin_po, this.cos_po);
-
-  this.sin_po = Math.sin(this.lat2);
-  this.cos_po = Math.cos(this.lat2);
-  this.t2 = this.sin_po;
-  this.ms2 = msfnz(this.e3, this.sin_po, this.cos_po);
-  this.qs2 = qsfnz(this.e3, this.sin_po, this.cos_po);
-
-  this.sin_po = Math.sin(this.lat0);
-  this.cos_po = Math.cos(this.lat0);
-  this.t3 = this.sin_po;
-  this.qs0 = qsfnz(this.e3, this.sin_po, this.cos_po);
-
-  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
-    this.ns0 = (this.ms1 * this.ms1 - this.ms2 * this.ms2) / (this.qs2 - this.qs1);
-  }
-  else {
-    this.ns0 = this.con;
-  }
-  this.c = this.ms1 * this.ms1 + this.ns0 * this.qs1;
-  this.rh = this.a * Math.sqrt(this.c - this.ns0 * this.qs0) / this.ns0;
-};
-
-/* Albers Conical Equal Area forward equations--mapping lat,long to x,y
-  -------------------------------------------------------------------*/
-exports.forward = function(p) {
-
-  var lon = p.x;
-  var lat = p.y;
-
-  this.sin_phi = Math.sin(lat);
-  this.cos_phi = Math.cos(lat);
-
-  var qs = qsfnz(this.e3, this.sin_phi, this.cos_phi);
-  var rh1 = this.a * Math.sqrt(this.c - this.ns0 * qs) / this.ns0;
-  var theta = this.ns0 * adjust_lon(lon - this.long0);
-  var x = rh1 * Math.sin(theta) + this.x0;
-  var y = this.rh - rh1 * Math.cos(theta) + this.y0;
-
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-
-exports.inverse = function(p) {
-  var rh1, qs, con, theta, lon, lat;
-
-  p.x -= this.x0;
-  p.y = this.rh - p.y + this.y0;
-  if (this.ns0 >= 0) {
-    rh1 = Math.sqrt(p.x * p.x + p.y * p.y);
-    con = 1;
-  }
-  else {
-    rh1 = -Math.sqrt(p.x * p.x + p.y * p.y);
-    con = -1;
-  }
-  theta = 0;
-  if (rh1 !== 0) {
-    theta = Math.atan2(con * p.x, con * p.y);
-  }
-  con = rh1 * this.ns0 / this.a;
-  if (this.sphere) {
-    lat = Math.asin((this.c - con * con) / (2 * this.ns0));
-  }
-  else {
-    qs = (this.c - con * con) / this.ns0;
-    lat = this.phi1z(this.e3, qs);
-  }
-
-  lon = adjust_lon(theta / this.ns0 + this.long0);
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-
-/* Function to compute phi1, the latitude for the inverse of the
-   Albers Conical Equal-Area projection.
--------------------------------------------*/
-exports.phi1z = function(eccent, qs) {
-  var sinphi, cosphi, con, com, dphi;
-  var phi = asinz(0.5 * qs);
-  if (eccent < EPSLN) {
-    return phi;
-  }
-
-  var eccnts = eccent * eccent;
-  for (var i = 1; i <= 25; i++) {
-    sinphi = Math.sin(phi);
-    cosphi = Math.cos(phi);
-    con = eccent * sinphi;
-    com = 1 - con * con;
-    dphi = 0.5 * com * com / cosphi * (qs / (1 - eccnts) - sinphi / com + 0.5 / eccent * Math.log((1 - con) / (1 + con)));
-    phi = phi + dphi;
-    if (Math.abs(dphi) <= 1e-7) {
-      return phi;
-    }
-  }
-  return null;
-};
-exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
-
-
-/***/ }),
-/* 295 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var adjust_lon = __webpack_require__(3);
-var HALF_PI = Math.PI/2;
-var EPSLN = 1.0e-10;
-var mlfn = __webpack_require__(35);
-var e0fn = __webpack_require__(31);
-var e1fn = __webpack_require__(32);
-var e2fn = __webpack_require__(33);
-var e3fn = __webpack_require__(34);
-var gN = __webpack_require__(56);
-var asinz = __webpack_require__(18);
-var imlfn = __webpack_require__(57);
-exports.init = function() {
-  this.sin_p12 = Math.sin(this.lat0);
-  this.cos_p12 = Math.cos(this.lat0);
-};
-
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-  var sinphi = Math.sin(p.y);
-  var cosphi = Math.cos(p.y);
-  var dlon = adjust_lon(lon - this.long0);
-  var e0, e1, e2, e3, Mlp, Ml, tanphi, Nl1, Nl, psi, Az, G, H, GH, Hs, c, kp, cos_c, s, s2, s3, s4, s5;
-  if (this.sphere) {
-    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
-      //North Pole case
-      p.x = this.x0 + this.a * (HALF_PI - lat) * Math.sin(dlon);
-      p.y = this.y0 - this.a * (HALF_PI - lat) * Math.cos(dlon);
-      return p;
-    }
-    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
-      //South Pole case
-      p.x = this.x0 + this.a * (HALF_PI + lat) * Math.sin(dlon);
-      p.y = this.y0 + this.a * (HALF_PI + lat) * Math.cos(dlon);
-      return p;
-    }
-    else {
-      //default case
-      cos_c = this.sin_p12 * sinphi + this.cos_p12 * cosphi * Math.cos(dlon);
-      c = Math.acos(cos_c);
-      kp = c / Math.sin(c);
-      p.x = this.x0 + this.a * kp * cosphi * Math.sin(dlon);
-      p.y = this.y0 + this.a * kp * (this.cos_p12 * sinphi - this.sin_p12 * cosphi * Math.cos(dlon));
-      return p;
-    }
-  }
-  else {
-    e0 = e0fn(this.es);
-    e1 = e1fn(this.es);
-    e2 = e2fn(this.es);
-    e3 = e3fn(this.es);
-    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
-      //North Pole case
-      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
-      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
-      p.x = this.x0 + (Mlp - Ml) * Math.sin(dlon);
-      p.y = this.y0 - (Mlp - Ml) * Math.cos(dlon);
-      return p;
-    }
-    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
-      //South Pole case
-      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
-      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
-      p.x = this.x0 + (Mlp + Ml) * Math.sin(dlon);
-      p.y = this.y0 + (Mlp + Ml) * Math.cos(dlon);
-      return p;
-    }
-    else {
-      //Default case
-      tanphi = sinphi / cosphi;
-      Nl1 = gN(this.a, this.e, this.sin_p12);
-      Nl = gN(this.a, this.e, sinphi);
-      psi = Math.atan((1 - this.es) * tanphi + this.es * Nl1 * this.sin_p12 / (Nl * cosphi));
-      Az = Math.atan2(Math.sin(dlon), this.cos_p12 * Math.tan(psi) - this.sin_p12 * Math.cos(dlon));
-      if (Az === 0) {
-        s = Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
-      }
-      else if (Math.abs(Math.abs(Az) - Math.PI) <= EPSLN) {
-        s = -Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
-      }
-      else {
-        s = Math.asin(Math.sin(dlon) * Math.cos(psi) / Math.sin(Az));
-      }
-      G = this.e * this.sin_p12 / Math.sqrt(1 - this.es);
-      H = this.e * this.cos_p12 * Math.cos(Az) / Math.sqrt(1 - this.es);
-      GH = G * H;
-      Hs = H * H;
-      s2 = s * s;
-      s3 = s2 * s;
-      s4 = s3 * s;
-      s5 = s4 * s;
-      c = Nl1 * s * (1 - s2 * Hs * (1 - Hs) / 6 + s3 / 8 * GH * (1 - 2 * Hs) + s4 / 120 * (Hs * (4 - 7 * Hs) - 3 * G * G * (1 - 7 * Hs)) - s5 / 48 * GH);
-      p.x = this.x0 + c * Math.sin(Az);
-      p.y = this.y0 + c * Math.cos(Az);
-      return p;
-    }
-  }
-
-
-};
-
-exports.inverse = function(p) {
-  p.x -= this.x0;
-  p.y -= this.y0;
-  var rh, z, sinz, cosz, lon, lat, con, e0, e1, e2, e3, Mlp, M, N1, psi, Az, cosAz, tmp, A, B, D, Ee, F;
-  if (this.sphere) {
-    rh = Math.sqrt(p.x * p.x + p.y * p.y);
-    if (rh > (2 * HALF_PI * this.a)) {
-      return;
-    }
-    z = rh / this.a;
-
-    sinz = Math.sin(z);
-    cosz = Math.cos(z);
-
-    lon = this.long0;
-    if (Math.abs(rh) <= EPSLN) {
-      lat = this.lat0;
-    }
-    else {
-      lat = asinz(cosz * this.sin_p12 + (p.y * sinz * this.cos_p12) / rh);
-      con = Math.abs(this.lat0) - HALF_PI;
-      if (Math.abs(con) <= EPSLN) {
-        if (this.lat0 >= 0) {
-          lon = adjust_lon(this.long0 + Math.atan2(p.x, - p.y));
-        }
-        else {
-          lon = adjust_lon(this.long0 - Math.atan2(-p.x, p.y));
-        }
-      }
-      else {
-        /*con = cosz - this.sin_p12 * Math.sin(lat);
-        if ((Math.abs(con) < EPSLN) && (Math.abs(p.x) < EPSLN)) {
-          //no-op, just keep the lon value as is
-        } else {
-          var temp = Math.atan2((p.x * sinz * this.cos_p12), (con * rh));
-          lon = adjust_lon(this.long0 + Math.atan2((p.x * sinz * this.cos_p12), (con * rh)));
-        }*/
-        lon = adjust_lon(this.long0 + Math.atan2(p.x * sinz, rh * this.cos_p12 * cosz - p.y * this.sin_p12 * sinz));
-      }
-    }
-
-    p.x = lon;
-    p.y = lat;
-    return p;
-  }
-  else {
-    e0 = e0fn(this.es);
-    e1 = e1fn(this.es);
-    e2 = e2fn(this.es);
-    e3 = e3fn(this.es);
-    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
-      //North pole case
-      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
-      rh = Math.sqrt(p.x * p.x + p.y * p.y);
-      M = Mlp - rh;
-      lat = imlfn(M / this.a, e0, e1, e2, e3);
-      lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
-      p.x = lon;
-      p.y = lat;
-      return p;
-    }
-    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
-      //South pole case
-      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
-      rh = Math.sqrt(p.x * p.x + p.y * p.y);
-      M = rh - Mlp;
-
-      lat = imlfn(M / this.a, e0, e1, e2, e3);
-      lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
-      p.x = lon;
-      p.y = lat;
-      return p;
-    }
-    else {
-      //default case
-      rh = Math.sqrt(p.x * p.x + p.y * p.y);
-      Az = Math.atan2(p.x, p.y);
-      N1 = gN(this.a, this.e, this.sin_p12);
-      cosAz = Math.cos(Az);
-      tmp = this.e * this.cos_p12 * cosAz;
-      A = -tmp * tmp / (1 - this.es);
-      B = 3 * this.es * (1 - A) * this.sin_p12 * this.cos_p12 * cosAz / (1 - this.es);
-      D = rh / N1;
-      Ee = D - A * (1 + A) * Math.pow(D, 3) / 6 - B * (1 + 3 * A) * Math.pow(D, 4) / 24;
-      F = 1 - A * Ee * Ee / 2 - D * Ee * Ee * Ee / 6;
-      psi = Math.asin(this.sin_p12 * Math.cos(Ee) + this.cos_p12 * Math.sin(Ee) * cosAz);
-      lon = adjust_lon(this.long0 + Math.asin(Math.sin(Az) * Math.sin(Ee) / Math.cos(psi)));
-      lat = Math.atan((1 - this.es * F * this.sin_p12 / Math.sin(psi)) * Math.tan(psi) / (1 - this.es));
-      p.x = lon;
-      p.y = lat;
-      return p;
-    }
-  }
-
-};
-exports.names = ["Azimuthal_Equidistant", "aeqd"];
-
-
-/***/ }),
-/* 296 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var mlfn = __webpack_require__(35);
-var e0fn = __webpack_require__(31);
-var e1fn = __webpack_require__(32);
-var e2fn = __webpack_require__(33);
-var e3fn = __webpack_require__(34);
-var gN = __webpack_require__(56);
-var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(30);
-var imlfn = __webpack_require__(57);
-var HALF_PI = Math.PI/2;
-var EPSLN = 1.0e-10;
-exports.init = function() {
-  if (!this.sphere) {
-    this.e0 = e0fn(this.es);
-    this.e1 = e1fn(this.es);
-    this.e2 = e2fn(this.es);
-    this.e3 = e3fn(this.es);
-    this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
-  }
-};
-
-
-
-/* Cassini forward equations--mapping lat,long to x,y
-  -----------------------------------------------------------------------*/
-exports.forward = function(p) {
-
-  /* Forward equations
-      -----------------*/
-  var x, y;
-  var lam = p.x;
-  var phi = p.y;
-  lam = adjust_lon(lam - this.long0);
-
-  if (this.sphere) {
-    x = this.a * Math.asin(Math.cos(phi) * Math.sin(lam));
-    y = this.a * (Math.atan2(Math.tan(phi), Math.cos(lam)) - this.lat0);
-  }
-  else {
-    //ellipsoid
-    var sinphi = Math.sin(phi);
-    var cosphi = Math.cos(phi);
-    var nl = gN(this.a, this.e, sinphi);
-    var tl = Math.tan(phi) * Math.tan(phi);
-    var al = lam * Math.cos(phi);
-    var asq = al * al;
-    var cl = this.es * cosphi * cosphi / (1 - this.es);
-    var ml = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
-
-    x = nl * al * (1 - asq * tl * (1 / 6 - (8 - tl + 8 * cl) * asq / 120));
-    y = ml - this.ml0 + nl * sinphi / cosphi * asq * (0.5 + (5 - tl + 6 * cl) * asq / 24);
-
-
-  }
-
-  p.x = x + this.x0;
-  p.y = y + this.y0;
-  return p;
-};
-
-/* Inverse equations
-  -----------------*/
-exports.inverse = function(p) {
-  p.x -= this.x0;
-  p.y -= this.y0;
-  var x = p.x / this.a;
-  var y = p.y / this.a;
-  var phi, lam;
-
-  if (this.sphere) {
-    var dd = y + this.lat0;
-    phi = Math.asin(Math.sin(dd) * Math.cos(x));
-    lam = Math.atan2(Math.tan(x), Math.cos(dd));
-  }
-  else {
-    /* ellipsoid */
-    var ml1 = this.ml0 / this.a + y;
-    var phi1 = imlfn(ml1, this.e0, this.e1, this.e2, this.e3);
-    if (Math.abs(Math.abs(phi1) - HALF_PI) <= EPSLN) {
-      p.x = this.long0;
-      p.y = HALF_PI;
-      if (y < 0) {
-        p.y *= -1;
-      }
-      return p;
-    }
-    var nl1 = gN(this.a, this.e, Math.sin(phi1));
-
-    var rl1 = nl1 * nl1 * nl1 / this.a / this.a * (1 - this.es);
-    var tl1 = Math.pow(Math.tan(phi1), 2);
-    var dl = x * this.a / nl1;
-    var dsq = dl * dl;
-    phi = phi1 - nl1 * Math.tan(phi1) / rl1 * dl * dl * (0.5 - (1 + 3 * tl1) * dl * dl / 24);
-    lam = dl * (1 - dsq * (tl1 / 3 + (1 + 3 * tl1) * tl1 * dsq / 15)) / Math.cos(phi1);
-
-  }
-
-  p.x = adjust_lon(lam + this.long0);
-  p.y = adjust_lat(phi);
-  return p;
-
-};
-exports.names = ["Cassini", "Cassini_Soldner", "cass"];
-
-/***/ }),
-/* 297 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var adjust_lon = __webpack_require__(3);
-var qsfnz = __webpack_require__(58);
-var msfnz = __webpack_require__(19);
-var iqsfnz = __webpack_require__(277);
-/*
-  reference:  
-    "Cartographic Projection Procedures for the UNIX Environment-
-    A User's Manual" by Gerald I. Evenden,
-    USGS Open File Report 90-284and Release 4 Interim Reports (2003)
-*/
-exports.init = function() {
-  //no-op
-  if (!this.sphere) {
-    this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
-  }
-};
-
-
-/* Cylindrical Equal Area forward equations--mapping lat,long to x,y
-    ------------------------------------------------------------*/
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-  var x, y;
-  /* Forward equations
-      -----------------*/
-  var dlon = adjust_lon(lon - this.long0);
-  if (this.sphere) {
-    x = this.x0 + this.a * dlon * Math.cos(this.lat_ts);
-    y = this.y0 + this.a * Math.sin(lat) / Math.cos(this.lat_ts);
-  }
-  else {
-    var qs = qsfnz(this.e, Math.sin(lat));
-    x = this.x0 + this.a * this.k0 * dlon;
-    y = this.y0 + this.a * qs * 0.5 / this.k0;
-  }
-
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-/* Cylindrical Equal Area inverse equations--mapping x,y to lat/long
-    ------------------------------------------------------------*/
-exports.inverse = function(p) {
-  p.x -= this.x0;
-  p.y -= this.y0;
-  var lon, lat;
-
-  if (this.sphere) {
-    lon = adjust_lon(this.long0 + (p.x / this.a) / Math.cos(this.lat_ts));
-    lat = Math.asin((p.y / this.a) * Math.cos(this.lat_ts));
-  }
-  else {
-    lat = iqsfnz(this.e, 2 * p.y * this.k0 / this.a);
-    lon = adjust_lon(this.long0 + p.x / (this.a * this.k0));
-  }
-
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["cea"];
-
-
-/***/ }),
-/* 298 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(30);
-exports.init = function() {
-
-  this.x0 = this.x0 || 0;
-  this.y0 = this.y0 || 0;
-  this.lat0 = this.lat0 || 0;
-  this.long0 = this.long0 || 0;
-  this.lat_ts = this.lat_ts || 0;
-  this.title = this.title || "Equidistant Cylindrical (Plate Carre)";
-
-  this.rc = Math.cos(this.lat_ts);
-};
-
-
-// forward equations--mapping lat,long to x,y
-// -----------------------------------------------------------------
-exports.forward = function(p) {
-
-  var lon = p.x;
-  var lat = p.y;
-
-  var dlon = adjust_lon(lon - this.long0);
-  var dlat = adjust_lat(lat - this.lat0);
-  p.x = this.x0 + (this.a * dlon * this.rc);
-  p.y = this.y0 + (this.a * dlat);
-  return p;
-};
-
-// inverse equations--mapping x,y to lat/long
-// -----------------------------------------------------------------
-exports.inverse = function(p) {
-
-  var x = p.x;
-  var y = p.y;
-
-  p.x = adjust_lon(this.long0 + ((x - this.x0) / (this.a * this.rc)));
-  p.y = adjust_lat(this.lat0 + ((y - this.y0) / (this.a)));
-  return p;
-};
-exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
-
-
-/***/ }),
-/* 299 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var e0fn = __webpack_require__(31);
-var e1fn = __webpack_require__(32);
-var e2fn = __webpack_require__(33);
-var e3fn = __webpack_require__(34);
-var msfnz = __webpack_require__(19);
-var mlfn = __webpack_require__(35);
-var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(30);
-var imlfn = __webpack_require__(57);
-var EPSLN = 1.0e-10;
-exports.init = function() {
-
-  /* Place parameters in static storage for common use
-      -------------------------------------------------*/
-  // Standard Parallels cannot be equal and on opposite sides of the equator
-  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
-    return;
-  }
-  this.lat2 = this.lat2 || this.lat1;
-  this.temp = this.b / this.a;
-  this.es = 1 - Math.pow(this.temp, 2);
-  this.e = Math.sqrt(this.es);
-  this.e0 = e0fn(this.es);
-  this.e1 = e1fn(this.es);
-  this.e2 = e2fn(this.es);
-  this.e3 = e3fn(this.es);
-
-  this.sinphi = Math.sin(this.lat1);
-  this.cosphi = Math.cos(this.lat1);
-
-  this.ms1 = msfnz(this.e, this.sinphi, this.cosphi);
-  this.ml1 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat1);
-
-  if (Math.abs(this.lat1 - this.lat2) < EPSLN) {
-    this.ns = this.sinphi;
-  }
-  else {
-    this.sinphi = Math.sin(this.lat2);
-    this.cosphi = Math.cos(this.lat2);
-    this.ms2 = msfnz(this.e, this.sinphi, this.cosphi);
-    this.ml2 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat2);
-    this.ns = (this.ms1 - this.ms2) / (this.ml2 - this.ml1);
-  }
-  this.g = this.ml1 + this.ms1 / this.ns;
-  this.ml0 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
-  this.rh = this.a * (this.g - this.ml0);
-};
-
-
-/* Equidistant Conic forward equations--mapping lat,long to x,y
-  -----------------------------------------------------------*/
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-  var rh1;
-
-  /* Forward equations
-      -----------------*/
-  if (this.sphere) {
-    rh1 = this.a * (this.g - lat);
-  }
-  else {
-    var ml = mlfn(this.e0, this.e1, this.e2, this.e3, lat);
-    rh1 = this.a * (this.g - ml);
-  }
-  var theta = this.ns * adjust_lon(lon - this.long0);
-  var x = this.x0 + rh1 * Math.sin(theta);
-  var y = this.y0 + this.rh - rh1 * Math.cos(theta);
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-/* Inverse equations
-  -----------------*/
-exports.inverse = function(p) {
-  p.x -= this.x0;
-  p.y = this.rh - p.y + this.y0;
-  var con, rh1, lat, lon;
-  if (this.ns >= 0) {
-    rh1 = Math.sqrt(p.x * p.x + p.y * p.y);
-    con = 1;
-  }
-  else {
-    rh1 = -Math.sqrt(p.x * p.x + p.y * p.y);
-    con = -1;
-  }
-  var theta = 0;
-  if (rh1 !== 0) {
-    theta = Math.atan2(con * p.x, con * p.y);
-  }
-
-  if (this.sphere) {
-    lon = adjust_lon(this.long0 + theta / this.ns);
-    lat = adjust_lat(this.g - rh1 / this.a);
-    p.x = lon;
-    p.y = lat;
-    return p;
-  }
-  else {
-    var ml = this.g - rh1 / this.a;
-    lat = imlfn(ml, this.e0, this.e1, this.e2, this.e3);
-    lon = adjust_lon(this.long0 + theta / this.ns);
-    p.x = lon;
-    p.y = lat;
-    return p;
-  }
-
-};
-exports.names = ["Equidistant_Conic", "eqdc"];
-
-
-/***/ }),
-/* 300 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var FORTPI = Math.PI/4;
-var srat = __webpack_require__(280);
-var HALF_PI = Math.PI/2;
-var MAX_ITER = 20;
-exports.init = function() {
-  var sphi = Math.sin(this.lat0);
-  var cphi = Math.cos(this.lat0);
-  cphi *= cphi;
-  this.rc = Math.sqrt(1 - this.es) / (1 - this.es * sphi * sphi);
-  this.C = Math.sqrt(1 + this.es * cphi * cphi / (1 - this.es));
-  this.phic0 = Math.asin(sphi / this.C);
-  this.ratexp = 0.5 * this.C * this.e;
-  this.K = Math.tan(0.5 * this.phic0 + FORTPI) / (Math.pow(Math.tan(0.5 * this.lat0 + FORTPI), this.C) * srat(this.e * sphi, this.ratexp));
-};
-
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-
-  p.y = 2 * Math.atan(this.K * Math.pow(Math.tan(0.5 * lat + FORTPI), this.C) * srat(this.e * Math.sin(lat), this.ratexp)) - HALF_PI;
-  p.x = this.C * lon;
-  return p;
-};
-
-exports.inverse = function(p) {
-  var DEL_TOL = 1e-14;
-  var lon = p.x / this.C;
-  var lat = p.y;
-  var num = Math.pow(Math.tan(0.5 * lat + FORTPI) / this.K, 1 / this.C);
-  for (var i = MAX_ITER; i > 0; --i) {
-    lat = 2 * Math.atan(num * srat(this.e * Math.sin(p.y), - 0.5 * this.e)) - HALF_PI;
-    if (Math.abs(lat - p.y) < DEL_TOL) {
-      break;
-    }
-    p.y = lat;
-  }
-  /* convergence failed */
-  if (!i) {
-    return null;
-  }
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["gauss"];
-
-
-/***/ }),
-/* 301 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var adjust_lon = __webpack_require__(3);
-var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(18);
-
-/*
-  reference:
-    Wolfram Mathworld "Gnomonic Projection"
-    http://mathworld.wolfram.com/GnomonicProjection.html
-    Accessed: 12th November 2009
-  */
-exports.init = function() {
-
-  /* Place parameters in static storage for common use
-      -------------------------------------------------*/
-  this.sin_p14 = Math.sin(this.lat0);
-  this.cos_p14 = Math.cos(this.lat0);
-  // Approximation for projecting points to the horizon (infinity)
-  this.infinity_dist = 1000 * this.a;
-  this.rc = 1;
-};
-
-
-/* Gnomonic forward equations--mapping lat,long to x,y
-    ---------------------------------------------------*/
-exports.forward = function(p) {
-  var sinphi, cosphi; /* sin and cos value        */
-  var dlon; /* delta longitude value      */
-  var coslon; /* cos of longitude        */
-  var ksp; /* scale factor          */
-  var g;
-  var x, y;
-  var lon = p.x;
-  var lat = p.y;
-  /* Forward equations
-      -----------------*/
-  dlon = adjust_lon(lon - this.long0);
-
-  sinphi = Math.sin(lat);
-  cosphi = Math.cos(lat);
-
-  coslon = Math.cos(dlon);
-  g = this.sin_p14 * sinphi + this.cos_p14 * cosphi * coslon;
-  ksp = 1;
-  if ((g > 0) || (Math.abs(g) <= EPSLN)) {
-    x = this.x0 + this.a * ksp * cosphi * Math.sin(dlon) / g;
-    y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon) / g;
-  }
-  else {
-
-    // Point is in the opposing hemisphere and is unprojectable
-    // We still need to return a reasonable point, so we project 
-    // to infinity, on a bearing 
-    // equivalent to the northern hemisphere equivalent
-    // This is a reasonable approximation for short shapes and lines that 
-    // straddle the horizon.
-
-    x = this.x0 + this.infinity_dist * cosphi * Math.sin(dlon);
-    y = this.y0 + this.infinity_dist * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
-
-  }
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-
-exports.inverse = function(p) {
-  var rh; /* Rho */
-  var sinc, cosc;
-  var c;
-  var lon, lat;
-
-  /* Inverse equations
-      -----------------*/
-  p.x = (p.x - this.x0) / this.a;
-  p.y = (p.y - this.y0) / this.a;
-
-  p.x /= this.k0;
-  p.y /= this.k0;
-
-  if ((rh = Math.sqrt(p.x * p.x + p.y * p.y))) {
-    c = Math.atan2(rh, this.rc);
-    sinc = Math.sin(c);
-    cosc = Math.cos(c);
-
-    lat = asinz(cosc * this.sin_p14 + (p.y * sinc * this.cos_p14) / rh);
-    lon = Math.atan2(p.x * sinc, rh * this.cos_p14 * cosc - p.y * this.sin_p14 * sinc);
-    lon = adjust_lon(this.long0 + lon);
-  }
-  else {
-    lat = this.phic0;
-    lon = 0;
-  }
-
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["gnom"];
-
-
-/***/ }),
-/* 302 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var adjust_lon = __webpack_require__(3);
-exports.init = function() {
-  this.a = 6377397.155;
-  this.es = 0.006674372230614;
-  this.e = Math.sqrt(this.es);
-  if (!this.lat0) {
-    this.lat0 = 0.863937979737193;
-  }
-  if (!this.long0) {
-    this.long0 = 0.7417649320975901 - 0.308341501185665;
-  }
-  /* if scale not set default to 0.9999 */
-  if (!this.k0) {
-    this.k0 = 0.9999;
-  }
-  this.s45 = 0.785398163397448; /* 45 */
-  this.s90 = 2 * this.s45;
-  this.fi0 = this.lat0;
-  this.e2 = this.es;
-  this.e = Math.sqrt(this.e2);
-  this.alfa = Math.sqrt(1 + (this.e2 * Math.pow(Math.cos(this.fi0), 4)) / (1 - this.e2));
-  this.uq = 1.04216856380474;
-  this.u0 = Math.asin(Math.sin(this.fi0) / this.alfa);
-  this.g = Math.pow((1 + this.e * Math.sin(this.fi0)) / (1 - this.e * Math.sin(this.fi0)), this.alfa * this.e / 2);
-  this.k = Math.tan(this.u0 / 2 + this.s45) / Math.pow(Math.tan(this.fi0 / 2 + this.s45), this.alfa) * this.g;
-  this.k1 = this.k0;
-  this.n0 = this.a * Math.sqrt(1 - this.e2) / (1 - this.e2 * Math.pow(Math.sin(this.fi0), 2));
-  this.s0 = 1.37008346281555;
-  this.n = Math.sin(this.s0);
-  this.ro0 = this.k1 * this.n0 / Math.tan(this.s0);
-  this.ad = this.s90 - this.uq;
-};
-
-/* ellipsoid */
-/* calculate xy from lat/lon */
-/* Constants, identical to inverse transform function */
-exports.forward = function(p) {
-  var gfi, u, deltav, s, d, eps, ro;
-  var lon = p.x;
-  var lat = p.y;
-  var delta_lon = adjust_lon(lon - this.long0);
-  /* Transformation */
-  gfi = Math.pow(((1 + this.e * Math.sin(lat)) / (1 - this.e * Math.sin(lat))), (this.alfa * this.e / 2));
-  u = 2 * (Math.atan(this.k * Math.pow(Math.tan(lat / 2 + this.s45), this.alfa) / gfi) - this.s45);
-  deltav = -delta_lon * this.alfa;
-  s = Math.asin(Math.cos(this.ad) * Math.sin(u) + Math.sin(this.ad) * Math.cos(u) * Math.cos(deltav));
-  d = Math.asin(Math.cos(u) * Math.sin(deltav) / Math.cos(s));
-  eps = this.n * d;
-  ro = this.ro0 * Math.pow(Math.tan(this.s0 / 2 + this.s45), this.n) / Math.pow(Math.tan(s / 2 + this.s45), this.n);
-  p.y = ro * Math.cos(eps) / 1;
-  p.x = ro * Math.sin(eps) / 1;
-
-  if (!this.czech) {
-    p.y *= -1;
-    p.x *= -1;
-  }
-  return (p);
-};
-
-/* calculate lat/lon from xy */
-exports.inverse = function(p) {
-  var u, deltav, s, d, eps, ro, fi1;
-  var ok;
-
-  /* Transformation */
-  /* revert y, x*/
-  var tmp = p.x;
-  p.x = p.y;
-  p.y = tmp;
-  if (!this.czech) {
-    p.y *= -1;
-    p.x *= -1;
-  }
-  ro = Math.sqrt(p.x * p.x + p.y * p.y);
-  eps = Math.atan2(p.y, p.x);
-  d = eps / Math.sin(this.s0);
-  s = 2 * (Math.atan(Math.pow(this.ro0 / ro, 1 / this.n) * Math.tan(this.s0 / 2 + this.s45)) - this.s45);
-  u = Math.asin(Math.cos(this.ad) * Math.sin(s) - Math.sin(this.ad) * Math.cos(s) * Math.cos(d));
-  deltav = Math.asin(Math.cos(s) * Math.sin(d) / Math.cos(u));
-  p.x = this.long0 - deltav / this.alfa;
-  fi1 = u;
-  ok = 0;
-  var iter = 0;
-  do {
-    p.y = 2 * (Math.atan(Math.pow(this.k, - 1 / this.alfa) * Math.pow(Math.tan(u / 2 + this.s45), 1 / this.alfa) * Math.pow((1 + this.e * Math.sin(fi1)) / (1 - this.e * Math.sin(fi1)), this.e / 2)) - this.s45);
-    if (Math.abs(fi1 - p.y) < 0.0000000001) {
-      ok = 1;
-    }
-    fi1 = p.y;
-    iter += 1;
-  } while (ok === 0 && iter < 15);
-  if (iter >= 15) {
-    return null;
-  }
-
-  return (p);
-};
-exports.names = ["Krovak", "krovak"];
-
-
-/***/ }),
-/* 303 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var HALF_PI = Math.PI/2;
-var FORTPI = Math.PI/4;
-var EPSLN = 1.0e-10;
-var qsfnz = __webpack_require__(58);
-var adjust_lon = __webpack_require__(3);
-/*
-  reference
-    "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
-    The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
-  */
-
-exports.S_POLE = 1;
-exports.N_POLE = 2;
-exports.EQUIT = 3;
-exports.OBLIQ = 4;
-
-
-/* Initialize the Lambert Azimuthal Equal Area projection
-  ------------------------------------------------------*/
-exports.init = function() {
-  var t = Math.abs(this.lat0);
-  if (Math.abs(t - HALF_PI) < EPSLN) {
-    this.mode = this.lat0 < 0 ? this.S_POLE : this.N_POLE;
-  }
-  else if (Math.abs(t) < EPSLN) {
-    this.mode = this.EQUIT;
-  }
-  else {
-    this.mode = this.OBLIQ;
-  }
-  if (this.es > 0) {
-    var sinphi;
-
-    this.qp = qsfnz(this.e, 1);
-    this.mmf = 0.5 / (1 - this.es);
-    this.apa = this.authset(this.es);
-    switch (this.mode) {
-    case this.N_POLE:
-      this.dd = 1;
-      break;
-    case this.S_POLE:
-      this.dd = 1;
-      break;
-    case this.EQUIT:
-      this.rq = Math.sqrt(0.5 * this.qp);
-      this.dd = 1 / this.rq;
-      this.xmf = 1;
-      this.ymf = 0.5 * this.qp;
-      break;
-    case this.OBLIQ:
-      this.rq = Math.sqrt(0.5 * this.qp);
-      sinphi = Math.sin(this.lat0);
-      this.sinb1 = qsfnz(this.e, sinphi) / this.qp;
-      this.cosb1 = Math.sqrt(1 - this.sinb1 * this.sinb1);
-      this.dd = Math.cos(this.lat0) / (Math.sqrt(1 - this.es * sinphi * sinphi) * this.rq * this.cosb1);
-      this.ymf = (this.xmf = this.rq) / this.dd;
-      this.xmf *= this.dd;
-      break;
-    }
-  }
-  else {
-    if (this.mode === this.OBLIQ) {
-      this.sinph0 = Math.sin(this.lat0);
-      this.cosph0 = Math.cos(this.lat0);
-    }
-  }
-};
-
-/* Lambert Azimuthal Equal Area forward equations--mapping lat,long to x,y
-  -----------------------------------------------------------------------*/
-exports.forward = function(p) {
-
-  /* Forward equations
-      -----------------*/
-  var x, y, coslam, sinlam, sinphi, q, sinb, cosb, b, cosphi;
-  var lam = p.x;
-  var phi = p.y;
-
-  lam = adjust_lon(lam - this.long0);
-
-  if (this.sphere) {
-    sinphi = Math.sin(phi);
-    cosphi = Math.cos(phi);
-    coslam = Math.cos(lam);
-    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
-      y = (this.mode === this.EQUIT) ? 1 + cosphi * coslam : 1 + this.sinph0 * sinphi + this.cosph0 * cosphi * coslam;
-      if (y <= EPSLN) {
-        return null;
-      }
-      y = Math.sqrt(2 / y);
-      x = y * cosphi * Math.sin(lam);
-      y *= (this.mode === this.EQUIT) ? sinphi : this.cosph0 * sinphi - this.sinph0 * cosphi * coslam;
-    }
-    else if (this.mode === this.N_POLE || this.mode === this.S_POLE) {
-      if (this.mode === this.N_POLE) {
-        coslam = -coslam;
-      }
-      if (Math.abs(phi + this.phi0) < EPSLN) {
-        return null;
-      }
-      y = FORTPI - phi * 0.5;
-      y = 2 * ((this.mode === this.S_POLE) ? Math.cos(y) : Math.sin(y));
-      x = y * Math.sin(lam);
-      y *= coslam;
-    }
-  }
-  else {
-    sinb = 0;
-    cosb = 0;
-    b = 0;
-    coslam = Math.cos(lam);
-    sinlam = Math.sin(lam);
-    sinphi = Math.sin(phi);
-    q = qsfnz(this.e, sinphi);
-    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
-      sinb = q / this.qp;
-      cosb = Math.sqrt(1 - sinb * sinb);
-    }
-    switch (this.mode) {
-    case this.OBLIQ:
-      b = 1 + this.sinb1 * sinb + this.cosb1 * cosb * coslam;
-      break;
-    case this.EQUIT:
-      b = 1 + cosb * coslam;
-      break;
-    case this.N_POLE:
-      b = HALF_PI + phi;
-      q = this.qp - q;
-      break;
-    case this.S_POLE:
-      b = phi - HALF_PI;
-      q = this.qp + q;
-      break;
-    }
-    if (Math.abs(b) < EPSLN) {
-      return null;
-    }
-    switch (this.mode) {
-    case this.OBLIQ:
-    case this.EQUIT:
-      b = Math.sqrt(2 / b);
-      if (this.mode === this.OBLIQ) {
-        y = this.ymf * b * (this.cosb1 * sinb - this.sinb1 * cosb * coslam);
-      }
-      else {
-        y = (b = Math.sqrt(2 / (1 + cosb * coslam))) * sinb * this.ymf;
-      }
-      x = this.xmf * b * cosb * sinlam;
-      break;
-    case this.N_POLE:
-    case this.S_POLE:
-      if (q >= 0) {
-        x = (b = Math.sqrt(q)) * sinlam;
-        y = coslam * ((this.mode === this.S_POLE) ? b : -b);
-      }
-      else {
-        x = y = 0;
-      }
-      break;
-    }
-  }
-
-  p.x = this.a * x + this.x0;
-  p.y = this.a * y + this.y0;
-  return p;
-};
-
-/* Inverse equations
-  -----------------*/
-exports.inverse = function(p) {
-  p.x -= this.x0;
-  p.y -= this.y0;
-  var x = p.x / this.a;
-  var y = p.y / this.a;
-  var lam, phi, cCe, sCe, q, rho, ab;
-
-  if (this.sphere) {
-    var cosz = 0,
-      rh, sinz = 0;
-
-    rh = Math.sqrt(x * x + y * y);
-    phi = rh * 0.5;
-    if (phi > 1) {
-      return null;
-    }
-    phi = 2 * Math.asin(phi);
-    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
-      sinz = Math.sin(phi);
-      cosz = Math.cos(phi);
-    }
-    switch (this.mode) {
-    case this.EQUIT:
-      phi = (Math.abs(rh) <= EPSLN) ? 0 : Math.asin(y * sinz / rh);
-      x *= sinz;
-      y = cosz * rh;
-      break;
-    case this.OBLIQ:
-      phi = (Math.abs(rh) <= EPSLN) ? this.phi0 : Math.asin(cosz * this.sinph0 + y * sinz * this.cosph0 / rh);
-      x *= sinz * this.cosph0;
-      y = (cosz - Math.sin(phi) * this.sinph0) * rh;
-      break;
-    case this.N_POLE:
-      y = -y;
-      phi = HALF_PI - phi;
-      break;
-    case this.S_POLE:
-      phi -= HALF_PI;
-      break;
-    }
-    lam = (y === 0 && (this.mode === this.EQUIT || this.mode === this.OBLIQ)) ? 0 : Math.atan2(x, y);
-  }
-  else {
-    ab = 0;
-    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
-      x /= this.dd;
-      y *= this.dd;
-      rho = Math.sqrt(x * x + y * y);
-      if (rho < EPSLN) {
-        p.x = 0;
-        p.y = this.phi0;
-        return p;
-      }
-      sCe = 2 * Math.asin(0.5 * rho / this.rq);
-      cCe = Math.cos(sCe);
-      x *= (sCe = Math.sin(sCe));
-      if (this.mode === this.OBLIQ) {
-        ab = cCe * this.sinb1 + y * sCe * this.cosb1 / rho;
-        q = this.qp * ab;
-        y = rho * this.cosb1 * cCe - y * this.sinb1 * sCe;
-      }
-      else {
-        ab = y * sCe / rho;
-        q = this.qp * ab;
-        y = rho * cCe;
-      }
-    }
-    else if (this.mode === this.N_POLE || this.mode === this.S_POLE) {
-      if (this.mode === this.N_POLE) {
-        y = -y;
-      }
-      q = (x * x + y * y);
-      if (!q) {
-        p.x = 0;
-        p.y = this.phi0;
-        return p;
-      }
-      ab = 1 - q / this.qp;
-      if (this.mode === this.S_POLE) {
-        ab = -ab;
-      }
-    }
-    lam = Math.atan2(x, y);
-    phi = this.authlat(Math.asin(ab), this.apa);
-  }
-
-
-  p.x = adjust_lon(this.long0 + lam);
-  p.y = phi;
-  return p;
-};
-
-/* determine latitude from authalic latitude */
-exports.P00 = 0.33333333333333333333;
-exports.P01 = 0.17222222222222222222;
-exports.P02 = 0.10257936507936507936;
-exports.P10 = 0.06388888888888888888;
-exports.P11 = 0.06640211640211640211;
-exports.P20 = 0.01641501294219154443;
-
-exports.authset = function(es) {
-  var t;
-  var APA = [];
-  APA[0] = es * this.P00;
-  t = es * es;
-  APA[0] += t * this.P01;
-  APA[1] = t * this.P10;
-  t *= es;
-  APA[0] += t * this.P02;
-  APA[1] += t * this.P11;
-  APA[2] = t * this.P20;
-  return APA;
-};
-
-exports.authlat = function(beta, APA) {
-  var t = beta + beta;
-  return (beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t));
-};
-exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
-
-
-/***/ }),
-/* 304 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var EPSLN = 1.0e-10;
-var msfnz = __webpack_require__(19);
-var tsfnz = __webpack_require__(43);
-var HALF_PI = Math.PI/2;
-var sign = __webpack_require__(36);
-var adjust_lon = __webpack_require__(3);
-var phi2z = __webpack_require__(42);
-exports.init = function() {
-
-  // array of:  r_maj,r_min,lat1,lat2,c_lon,c_lat,false_east,false_north
-  //double c_lat;                   /* center latitude                      */
-  //double c_lon;                   /* center longitude                     */
-  //double lat1;                    /* first standard parallel              */
-  //double lat2;                    /* second standard parallel             */
-  //double r_maj;                   /* major axis                           */
-  //double r_min;                   /* minor axis                           */
-  //double false_east;              /* x offset in meters                   */
-  //double false_north;             /* y offset in meters                   */
-
-  if (!this.lat2) {
-    this.lat2 = this.lat1;
-  } //if lat2 is not defined
-  if (!this.k0) {
-    this.k0 = 1;
-  }
-  this.x0 = this.x0 || 0;
-  this.y0 = this.y0 || 0;
-  // Standard Parallels cannot be equal and on opposite sides of the equator
-  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
-    return;
-  }
-
-  var temp = this.b / this.a;
-  this.e = Math.sqrt(1 - temp * temp);
-
-  var sin1 = Math.sin(this.lat1);
-  var cos1 = Math.cos(this.lat1);
-  var ms1 = msfnz(this.e, sin1, cos1);
-  var ts1 = tsfnz(this.e, this.lat1, sin1);
-
-  var sin2 = Math.sin(this.lat2);
-  var cos2 = Math.cos(this.lat2);
-  var ms2 = msfnz(this.e, sin2, cos2);
-  var ts2 = tsfnz(this.e, this.lat2, sin2);
-
-  var ts0 = tsfnz(this.e, this.lat0, Math.sin(this.lat0));
-
-  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
-    this.ns = Math.log(ms1 / ms2) / Math.log(ts1 / ts2);
-  }
-  else {
-    this.ns = sin1;
-  }
-  if (isNaN(this.ns)) {
-    this.ns = sin1;
-  }
-  this.f0 = ms1 / (this.ns * Math.pow(ts1, this.ns));
-  this.rh = this.a * this.f0 * Math.pow(ts0, this.ns);
-  if (!this.title) {
-    this.title = "Lambert Conformal Conic";
-  }
-};
-
-
-// Lambert Conformal conic forward equations--mapping lat,long to x,y
-// -----------------------------------------------------------------
-exports.forward = function(p) {
-
-  var lon = p.x;
-  var lat = p.y;
-
-  // singular cases :
-  if (Math.abs(2 * Math.abs(lat) - Math.PI) <= EPSLN) {
-    lat = sign(lat) * (HALF_PI - 2 * EPSLN);
-  }
-
-  var con = Math.abs(Math.abs(lat) - HALF_PI);
-  var ts, rh1;
-  if (con > EPSLN) {
-    ts = tsfnz(this.e, lat, Math.sin(lat));
-    rh1 = this.a * this.f0 * Math.pow(ts, this.ns);
-  }
-  else {
-    con = lat * this.ns;
-    if (con <= 0) {
-      return null;
-    }
-    rh1 = 0;
-  }
-  var theta = this.ns * adjust_lon(lon - this.long0);
-  p.x = this.k0 * (rh1 * Math.sin(theta)) + this.x0;
-  p.y = this.k0 * (this.rh - rh1 * Math.cos(theta)) + this.y0;
-
-  return p;
-};
-
-// Lambert Conformal Conic inverse equations--mapping x,y to lat/long
-// -----------------------------------------------------------------
-exports.inverse = function(p) {
-
-  var rh1, con, ts;
-  var lat, lon;
-  var x = (p.x - this.x0) / this.k0;
-  var y = (this.rh - (p.y - this.y0) / this.k0);
-  if (this.ns > 0) {
-    rh1 = Math.sqrt(x * x + y * y);
-    con = 1;
-  }
-  else {
-    rh1 = -Math.sqrt(x * x + y * y);
-    con = -1;
-  }
-  var theta = 0;
-  if (rh1 !== 0) {
-    theta = Math.atan2((con * x), (con * y));
-  }
-  if ((rh1 !== 0) || (this.ns > 0)) {
-    con = 1 / this.ns;
-    ts = Math.pow((rh1 / (this.a * this.f0)), con);
-    lat = phi2z(this.e, ts);
-    if (lat === -9999) {
-      return null;
-    }
-  }
-  else {
-    lat = -HALF_PI;
-  }
-  lon = adjust_lon(theta / this.ns + this.long0);
-
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-
-exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal_Conic", "Lambert_Conformal_Conic_2SP", "lcc"];
-
-
-/***/ }),
-/* 305 */
-/***/ (function(module, exports) {
-
-exports.init = function() {
-  //no-op for longlat
-};
-
-function identity(pt) {
-  return pt;
-}
-exports.forward = identity;
-exports.inverse = identity;
-exports.names = ["longlat", "identity"];
-
-
-/***/ }),
-/* 306 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var msfnz = __webpack_require__(19);
-var HALF_PI = Math.PI/2;
-var EPSLN = 1.0e-10;
-var R2D = 57.29577951308232088;
-var adjust_lon = __webpack_require__(3);
-var FORTPI = Math.PI/4;
-var tsfnz = __webpack_require__(43);
-var phi2z = __webpack_require__(42);
-exports.init = function() {
-  var con = this.b / this.a;
-  this.es = 1 - con * con;
-  if(!('x0' in this)){
-    this.x0 = 0;
-  }
-  if(!('y0' in this)){
-    this.y0 = 0;
-  }
-  this.e = Math.sqrt(this.es);
-  if (this.lat_ts) {
-    if (this.sphere) {
-      this.k0 = Math.cos(this.lat_ts);
-    }
-    else {
-      this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
-    }
-  }
-  else {
-    if (!this.k0) {
-      if (this.k) {
-        this.k0 = this.k;
-      }
-      else {
-        this.k0 = 1;
-      }
-    }
-  }
-};
-
-/* Mercator forward equations--mapping lat,long to x,y
-  --------------------------------------------------*/
-
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-  // convert to radians
-  if (lat * R2D > 90 && lat * R2D < -90 && lon * R2D > 180 && lon * R2D < -180) {
-    return null;
-  }
-
-  var x, y;
-  if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
-    return null;
-  }
-  else {
-    if (this.sphere) {
-      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
-      y = this.y0 + this.a * this.k0 * Math.log(Math.tan(FORTPI + 0.5 * lat));
-    }
-    else {
-      var sinphi = Math.sin(lat);
-      var ts = tsfnz(this.e, lat, sinphi);
-      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
-      y = this.y0 - this.a * this.k0 * Math.log(ts);
-    }
-    p.x = x;
-    p.y = y;
-    return p;
-  }
-};
-
-
-/* Mercator inverse equations--mapping x,y to lat/long
-  --------------------------------------------------*/
-exports.inverse = function(p) {
-
-  var x = p.x - this.x0;
-  var y = p.y - this.y0;
-  var lon, lat;
-
-  if (this.sphere) {
-    lat = HALF_PI - 2 * Math.atan(Math.exp(-y / (this.a * this.k0)));
-  }
-  else {
-    var ts = Math.exp(-y / (this.a * this.k0));
-    lat = phi2z(this.e, ts);
-    if (lat === -9999) {
-      return null;
-    }
-  }
-  lon = adjust_lon(this.long0 + x / (this.a * this.k0));
-
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-
-exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
-
-
-/***/ }),
-/* 307 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var adjust_lon = __webpack_require__(3);
-/*
-  reference
-    "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
-    The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
-  */
-
-
-/* Initialize the Miller Cylindrical projection
-  -------------------------------------------*/
-exports.init = function() {
-  //no-op
-};
-
-
-/* Miller Cylindrical forward equations--mapping lat,long to x,y
-    ------------------------------------------------------------*/
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-  /* Forward equations
-      -----------------*/
-  var dlon = adjust_lon(lon - this.long0);
-  var x = this.x0 + this.a * dlon;
-  var y = this.y0 + this.a * Math.log(Math.tan((Math.PI / 4) + (lat / 2.5))) * 1.25;
-
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-/* Miller Cylindrical inverse equations--mapping x,y to lat/long
-    ------------------------------------------------------------*/
-exports.inverse = function(p) {
-  p.x -= this.x0;
-  p.y -= this.y0;
-
-  var lon = adjust_lon(this.long0 + p.x / this.a);
-  var lat = 2.5 * (Math.atan(Math.exp(0.8 * p.y / this.a)) - Math.PI / 4);
-
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["Miller_Cylindrical", "mill"];
-
-
-/***/ }),
-/* 308 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var adjust_lon = __webpack_require__(3);
-var EPSLN = 1.0e-10;
-exports.init = function() {};
-
-/* Mollweide forward equations--mapping lat,long to x,y
-    ----------------------------------------------------*/
-exports.forward = function(p) {
-
-  /* Forward equations
-      -----------------*/
-  var lon = p.x;
-  var lat = p.y;
-
-  var delta_lon = adjust_lon(lon - this.long0);
-  var theta = lat;
-  var con = Math.PI * Math.sin(lat);
-
-  /* Iterate using the Newton-Raphson method to find theta
-      -----------------------------------------------------*/
-  for (var i = 0; true; i++) {
-    var delta_theta = -(theta + Math.sin(theta) - con) / (1 + Math.cos(theta));
-    theta += delta_theta;
-    if (Math.abs(delta_theta) < EPSLN) {
-      break;
-    }
-  }
-  theta /= 2;
-
-  /* If the latitude is 90 deg, force the x coordinate to be "0 + false easting"
-       this is done here because of precision problems with "cos(theta)"
-       --------------------------------------------------------------------------*/
-  if (Math.PI / 2 - Math.abs(lat) < EPSLN) {
-    delta_lon = 0;
-  }
-  var x = 0.900316316158 * this.a * delta_lon * Math.cos(theta) + this.x0;
-  var y = 1.4142135623731 * this.a * Math.sin(theta) + this.y0;
-
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-exports.inverse = function(p) {
-  var theta;
-  var arg;
-
-  /* Inverse equations
-      -----------------*/
-  p.x -= this.x0;
-  p.y -= this.y0;
-  arg = p.y / (1.4142135623731 * this.a);
-
-  /* Because of division by zero problems, 'arg' can not be 1.  Therefore
-       a number very close to one is used instead.
-       -------------------------------------------------------------------*/
-  if (Math.abs(arg) > 0.999999999999) {
-    arg = 0.999999999999;
-  }
-  theta = Math.asin(arg);
-  var lon = adjust_lon(this.long0 + (p.x / (0.900316316158 * this.a * Math.cos(theta))));
-  if (lon < (-Math.PI)) {
-    lon = -Math.PI;
-  }
-  if (lon > Math.PI) {
-    lon = Math.PI;
-  }
-  arg = (2 * theta + Math.sin(2 * theta)) / Math.PI;
-  if (Math.abs(arg) > 1) {
-    arg = 1;
-  }
-  var lat = Math.asin(arg);
-
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["Mollweide", "moll"];
-
-
-/***/ }),
-/* 309 */
-/***/ (function(module, exports) {
-
-var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
-/*
-  reference
-    Department of Land and Survey Technical Circular 1973/32
-      http://www.linz.govt.nz/docs/miscellaneous/nz-map-definition.pdf
-    OSG Technical Report 4.1
-      http://www.linz.govt.nz/docs/miscellaneous/nzmg.pdf
-  */
-
-/**
- * iterations: Number of iterations to refine inverse transform.
- *     0 -> km accuracy
- *     1 -> m accuracy -- suitable for most mapping applications
- *     2 -> mm accuracy
- */
-exports.iterations = 1;
-
-exports.init = function() {
-  this.A = [];
-  this.A[1] = 0.6399175073;
-  this.A[2] = -0.1358797613;
-  this.A[3] = 0.063294409;
-  this.A[4] = -0.02526853;
-  this.A[5] = 0.0117879;
-  this.A[6] = -0.0055161;
-  this.A[7] = 0.0026906;
-  this.A[8] = -0.001333;
-  this.A[9] = 0.00067;
-  this.A[10] = -0.00034;
-
-  this.B_re = [];
-  this.B_im = [];
-  this.B_re[1] = 0.7557853228;
-  this.B_im[1] = 0;
-  this.B_re[2] = 0.249204646;
-  this.B_im[2] = 0.003371507;
-  this.B_re[3] = -0.001541739;
-  this.B_im[3] = 0.041058560;
-  this.B_re[4] = -0.10162907;
-  this.B_im[4] = 0.01727609;
-  this.B_re[5] = -0.26623489;
-  this.B_im[5] = -0.36249218;
-  this.B_re[6] = -0.6870983;
-  this.B_im[6] = -1.1651967;
-
-  this.C_re = [];
-  this.C_im = [];
-  this.C_re[1] = 1.3231270439;
-  this.C_im[1] = 0;
-  this.C_re[2] = -0.577245789;
-  this.C_im[2] = -0.007809598;
-  this.C_re[3] = 0.508307513;
-  this.C_im[3] = -0.112208952;
-  this.C_re[4] = -0.15094762;
-  this.C_im[4] = 0.18200602;
-  this.C_re[5] = 1.01418179;
-  this.C_im[5] = 1.64497696;
-  this.C_re[6] = 1.9660549;
-  this.C_im[6] = 2.5127645;
-
-  this.D = [];
-  this.D[1] = 1.5627014243;
-  this.D[2] = 0.5185406398;
-  this.D[3] = -0.03333098;
-  this.D[4] = -0.1052906;
-  this.D[5] = -0.0368594;
-  this.D[6] = 0.007317;
-  this.D[7] = 0.01220;
-  this.D[8] = 0.00394;
-  this.D[9] = -0.0013;
-};
-
-/**
-    New Zealand Map Grid Forward  - long/lat to x/y
-    long/lat in radians
-  */
-exports.forward = function(p) {
-  var n;
-  var lon = p.x;
-  var lat = p.y;
-
-  var delta_lat = lat - this.lat0;
-  var delta_lon = lon - this.long0;
-
-  // 1. Calculate d_phi and d_psi    ...                          // and d_lambda
-  // For this algorithm, delta_latitude is in seconds of arc x 10-5, so we need to scale to those units. Longitude is radians.
-  var d_phi = delta_lat / SEC_TO_RAD * 1E-5;
-  var d_lambda = delta_lon;
-  var d_phi_n = 1; // d_phi^0
-
-  var d_psi = 0;
-  for (n = 1; n <= 10; n++) {
-    d_phi_n = d_phi_n * d_phi;
-    d_psi = d_psi + this.A[n] * d_phi_n;
-  }
-
-  // 2. Calculate theta
-  var th_re = d_psi;
-  var th_im = d_lambda;
-
-  // 3. Calculate z
-  var th_n_re = 1;
-  var th_n_im = 0; // theta^0
-  var th_n_re1;
-  var th_n_im1;
-
-  var z_re = 0;
-  var z_im = 0;
-  for (n = 1; n <= 6; n++) {
-    th_n_re1 = th_n_re * th_re - th_n_im * th_im;
-    th_n_im1 = th_n_im * th_re + th_n_re * th_im;
-    th_n_re = th_n_re1;
-    th_n_im = th_n_im1;
-    z_re = z_re + this.B_re[n] * th_n_re - this.B_im[n] * th_n_im;
-    z_im = z_im + this.B_im[n] * th_n_re + this.B_re[n] * th_n_im;
-  }
-
-  // 4. Calculate easting and northing
-  p.x = (z_im * this.a) + this.x0;
-  p.y = (z_re * this.a) + this.y0;
-
-  return p;
-};
-
-
-/**
-    New Zealand Map Grid Inverse  -  x/y to long/lat
-  */
-exports.inverse = function(p) {
-  var n;
-  var x = p.x;
-  var y = p.y;
-
-  var delta_x = x - this.x0;
-  var delta_y = y - this.y0;
-
-  // 1. Calculate z
-  var z_re = delta_y / this.a;
-  var z_im = delta_x / this.a;
-
-  // 2a. Calculate theta - first approximation gives km accuracy
-  var z_n_re = 1;
-  var z_n_im = 0; // z^0
-  var z_n_re1;
-  var z_n_im1;
-
-  var th_re = 0;
-  var th_im = 0;
-  for (n = 1; n <= 6; n++) {
-    z_n_re1 = z_n_re * z_re - z_n_im * z_im;
-    z_n_im1 = z_n_im * z_re + z_n_re * z_im;
-    z_n_re = z_n_re1;
-    z_n_im = z_n_im1;
-    th_re = th_re + this.C_re[n] * z_n_re - this.C_im[n] * z_n_im;
-    th_im = th_im + this.C_im[n] * z_n_re + this.C_re[n] * z_n_im;
-  }
-
-  // 2b. Iterate to refine the accuracy of the calculation
-  //        0 iterations gives km accuracy
-  //        1 iteration gives m accuracy -- good enough for most mapping applications
-  //        2 iterations bives mm accuracy
-  for (var i = 0; i < this.iterations; i++) {
-    var th_n_re = th_re;
-    var th_n_im = th_im;
-    var th_n_re1;
-    var th_n_im1;
-
-    var num_re = z_re;
-    var num_im = z_im;
-    for (n = 2; n <= 6; n++) {
-      th_n_re1 = th_n_re * th_re - th_n_im * th_im;
-      th_n_im1 = th_n_im * th_re + th_n_re * th_im;
-      th_n_re = th_n_re1;
-      th_n_im = th_n_im1;
-      num_re = num_re + (n - 1) * (this.B_re[n] * th_n_re - this.B_im[n] * th_n_im);
-      num_im = num_im + (n - 1) * (this.B_im[n] * th_n_re + this.B_re[n] * th_n_im);
-    }
-
-    th_n_re = 1;
-    th_n_im = 0;
-    var den_re = this.B_re[1];
-    var den_im = this.B_im[1];
-    for (n = 2; n <= 6; n++) {
-      th_n_re1 = th_n_re * th_re - th_n_im * th_im;
-      th_n_im1 = th_n_im * th_re + th_n_re * th_im;
-      th_n_re = th_n_re1;
-      th_n_im = th_n_im1;
-      den_re = den_re + n * (this.B_re[n] * th_n_re - this.B_im[n] * th_n_im);
-      den_im = den_im + n * (this.B_im[n] * th_n_re + this.B_re[n] * th_n_im);
-    }
-
-    // Complex division
-    var den2 = den_re * den_re + den_im * den_im;
-    th_re = (num_re * den_re + num_im * den_im) / den2;
-    th_im = (num_im * den_re - num_re * den_im) / den2;
-  }
-
-  // 3. Calculate d_phi              ...                                    // and d_lambda
-  var d_psi = th_re;
-  var d_lambda = th_im;
-  var d_psi_n = 1; // d_psi^0
-
-  var d_phi = 0;
-  for (n = 1; n <= 9; n++) {
-    d_psi_n = d_psi_n * d_psi;
-    d_phi = d_phi + this.D[n] * d_psi_n;
-  }
-
-  // 4. Calculate latitude and longitude
-  // d_phi is calcuated in second of arc * 10^-5, so we need to scale back to radians. d_lambda is in radians.
-  var lat = this.lat0 + (d_phi * SEC_TO_RAD * 1E5);
-  var lon = this.long0 + d_lambda;
-
-  p.x = lon;
-  p.y = lat;
-
-  return p;
-};
-exports.names = ["New_Zealand_Map_Grid", "nzmg"];
-
-/***/ }),
-/* 310 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var tsfnz = __webpack_require__(43);
-var adjust_lon = __webpack_require__(3);
-var phi2z = __webpack_require__(42);
-var HALF_PI = Math.PI/2;
-var FORTPI = Math.PI/4;
-var EPSLN = 1.0e-10;
-
-/* Initialize the Oblique Mercator  projection
-    ------------------------------------------*/
-exports.init = function() {
-  this.no_off = this.no_off || false;
-  this.no_rot = this.no_rot || false;
-
-  if (isNaN(this.k0)) {
-    this.k0 = 1;
-  }
-  var sinlat = Math.sin(this.lat0);
-  var coslat = Math.cos(this.lat0);
-  var con = this.e * sinlat;
-
-  this.bl = Math.sqrt(1 + this.es / (1 - this.es) * Math.pow(coslat, 4));
-  this.al = this.a * this.bl * this.k0 * Math.sqrt(1 - this.es) / (1 - con * con);
-  var t0 = tsfnz(this.e, this.lat0, sinlat);
-  var dl = this.bl / coslat * Math.sqrt((1 - this.es) / (1 - con * con));
-  if (dl * dl < 1) {
-    dl = 1;
-  }
-  var fl;
-  var gl;
-  if (!isNaN(this.longc)) {
-    //Central point and azimuth method
-
-    if (this.lat0 >= 0) {
-      fl = dl + Math.sqrt(dl * dl - 1);
-    }
-    else {
-      fl = dl - Math.sqrt(dl * dl - 1);
-    }
-    this.el = fl * Math.pow(t0, this.bl);
-    gl = 0.5 * (fl - 1 / fl);
-    this.gamma0 = Math.asin(Math.sin(this.alpha) / dl);
-    this.long0 = this.longc - Math.asin(gl * Math.tan(this.gamma0)) / this.bl;
-
-  }
-  else {
-    //2 points method
-    var t1 = tsfnz(this.e, this.lat1, Math.sin(this.lat1));
-    var t2 = tsfnz(this.e, this.lat2, Math.sin(this.lat2));
-    if (this.lat0 >= 0) {
-      this.el = (dl + Math.sqrt(dl * dl - 1)) * Math.pow(t0, this.bl);
-    }
-    else {
-      this.el = (dl - Math.sqrt(dl * dl - 1)) * Math.pow(t0, this.bl);
-    }
-    var hl = Math.pow(t1, this.bl);
-    var ll = Math.pow(t2, this.bl);
-    fl = this.el / hl;
-    gl = 0.5 * (fl - 1 / fl);
-    var jl = (this.el * this.el - ll * hl) / (this.el * this.el + ll * hl);
-    var pl = (ll - hl) / (ll + hl);
-    var dlon12 = adjust_lon(this.long1 - this.long2);
-    this.long0 = 0.5 * (this.long1 + this.long2) - Math.atan(jl * Math.tan(0.5 * this.bl * (dlon12)) / pl) / this.bl;
-    this.long0 = adjust_lon(this.long0);
-    var dlon10 = adjust_lon(this.long1 - this.long0);
-    this.gamma0 = Math.atan(Math.sin(this.bl * (dlon10)) / gl);
-    this.alpha = Math.asin(dl * Math.sin(this.gamma0));
-  }
-
-  if (this.no_off) {
-    this.uc = 0;
-  }
-  else {
-    if (this.lat0 >= 0) {
-      this.uc = this.al / this.bl * Math.atan2(Math.sqrt(dl * dl - 1), Math.cos(this.alpha));
-    }
-    else {
-      this.uc = -1 * this.al / this.bl * Math.atan2(Math.sqrt(dl * dl - 1), Math.cos(this.alpha));
-    }
-  }
-
-};
-
-
-/* Oblique Mercator forward equations--mapping lat,long to x,y
-    ----------------------------------------------------------*/
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-  var dlon = adjust_lon(lon - this.long0);
-  var us, vs;
-  var con;
-  if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
-    if (lat > 0) {
-      con = -1;
-    }
-    else {
-      con = 1;
-    }
-    vs = this.al / this.bl * Math.log(Math.tan(FORTPI + con * this.gamma0 * 0.5));
-    us = -1 * con * HALF_PI * this.al / this.bl;
-  }
-  else {
-    var t = tsfnz(this.e, lat, Math.sin(lat));
-    var ql = this.el / Math.pow(t, this.bl);
-    var sl = 0.5 * (ql - 1 / ql);
-    var tl = 0.5 * (ql + 1 / ql);
-    var vl = Math.sin(this.bl * (dlon));
-    var ul = (sl * Math.sin(this.gamma0) - vl * Math.cos(this.gamma0)) / tl;
-    if (Math.abs(Math.abs(ul) - 1) <= EPSLN) {
-      vs = Number.POSITIVE_INFINITY;
-    }
-    else {
-      vs = 0.5 * this.al * Math.log((1 - ul) / (1 + ul)) / this.bl;
-    }
-    if (Math.abs(Math.cos(this.bl * (dlon))) <= EPSLN) {
-      us = this.al * this.bl * (dlon);
-    }
-    else {
-      us = this.al * Math.atan2(sl * Math.cos(this.gamma0) + vl * Math.sin(this.gamma0), Math.cos(this.bl * dlon)) / this.bl;
-    }
-  }
-
-  if (this.no_rot) {
-    p.x = this.x0 + us;
-    p.y = this.y0 + vs;
-  }
-  else {
-
-    us -= this.uc;
-    p.x = this.x0 + vs * Math.cos(this.alpha) + us * Math.sin(this.alpha);
-    p.y = this.y0 + us * Math.cos(this.alpha) - vs * Math.sin(this.alpha);
-  }
-  return p;
-};
-
-exports.inverse = function(p) {
-  var us, vs;
-  if (this.no_rot) {
-    vs = p.y - this.y0;
-    us = p.x - this.x0;
-  }
-  else {
-    vs = (p.x - this.x0) * Math.cos(this.alpha) - (p.y - this.y0) * Math.sin(this.alpha);
-    us = (p.y - this.y0) * Math.cos(this.alpha) + (p.x - this.x0) * Math.sin(this.alpha);
-    us += this.uc;
-  }
-  var qp = Math.exp(-1 * this.bl * vs / this.al);
-  var sp = 0.5 * (qp - 1 / qp);
-  var tp = 0.5 * (qp + 1 / qp);
-  var vp = Math.sin(this.bl * us / this.al);
-  var up = (vp * Math.cos(this.gamma0) + sp * Math.sin(this.gamma0)) / tp;
-  var ts = Math.pow(this.el / Math.sqrt((1 + up) / (1 - up)), 1 / this.bl);
-  if (Math.abs(up - 1) < EPSLN) {
-    p.x = this.long0;
-    p.y = HALF_PI;
-  }
-  else if (Math.abs(up + 1) < EPSLN) {
-    p.x = this.long0;
-    p.y = -1 * HALF_PI;
-  }
-  else {
-    p.y = phi2z(this.e, ts);
-    p.x = adjust_lon(this.long0 - Math.atan2(sp * Math.cos(this.gamma0) - vp * Math.sin(this.gamma0), Math.cos(this.bl * us / this.al)) / this.bl);
-  }
-  return p;
-};
-
-exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
-
-/***/ }),
-/* 311 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var e0fn = __webpack_require__(31);
-var e1fn = __webpack_require__(32);
-var e2fn = __webpack_require__(33);
-var e3fn = __webpack_require__(34);
-var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(30);
-var mlfn = __webpack_require__(35);
-var EPSLN = 1.0e-10;
-var gN = __webpack_require__(56);
-var MAX_ITER = 20;
-exports.init = function() {
-  /* Place parameters in static storage for common use
-      -------------------------------------------------*/
-  this.temp = this.b / this.a;
-  this.es = 1 - Math.pow(this.temp, 2); // devait etre dans tmerc.js mais n y est pas donc je commente sinon retour de valeurs nulles
-  this.e = Math.sqrt(this.es);
-  this.e0 = e0fn(this.es);
-  this.e1 = e1fn(this.es);
-  this.e2 = e2fn(this.es);
-  this.e3 = e3fn(this.es);
-  this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0); //si que des zeros le calcul ne se fait pas
-};
-
-
-/* Polyconic forward equations--mapping lat,long to x,y
-    ---------------------------------------------------*/
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-  var x, y, el;
-  var dlon = adjust_lon(lon - this.long0);
-  el = dlon * Math.sin(lat);
-  if (this.sphere) {
-    if (Math.abs(lat) <= EPSLN) {
-      x = this.a * dlon;
-      y = -1 * this.a * this.lat0;
-    }
-    else {
-      x = this.a * Math.sin(el) / Math.tan(lat);
-      y = this.a * (adjust_lat(lat - this.lat0) + (1 - Math.cos(el)) / Math.tan(lat));
-    }
-  }
-  else {
-    if (Math.abs(lat) <= EPSLN) {
-      x = this.a * dlon;
-      y = -1 * this.ml0;
-    }
-    else {
-      var nl = gN(this.a, this.e, Math.sin(lat)) / Math.tan(lat);
-      x = nl * Math.sin(el);
-      y = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, lat) - this.ml0 + nl * (1 - Math.cos(el));
-    }
-
-  }
-  p.x = x + this.x0;
-  p.y = y + this.y0;
-  return p;
-};
-
-
-/* Inverse equations
-  -----------------*/
-exports.inverse = function(p) {
-  var lon, lat, x, y, i;
-  var al, bl;
-  var phi, dphi;
-  x = p.x - this.x0;
-  y = p.y - this.y0;
-
-  if (this.sphere) {
-    if (Math.abs(y + this.a * this.lat0) <= EPSLN) {
-      lon = adjust_lon(x / this.a + this.long0);
-      lat = 0;
-    }
-    else {
-      al = this.lat0 + y / this.a;
-      bl = x * x / this.a / this.a + al * al;
-      phi = al;
-      var tanphi;
-      for (i = MAX_ITER; i; --i) {
-        tanphi = Math.tan(phi);
-        dphi = -1 * (al * (phi * tanphi + 1) - phi - 0.5 * (phi * phi + bl) * tanphi) / ((phi - al) / tanphi - 1);
-        phi += dphi;
-        if (Math.abs(dphi) <= EPSLN) {
-          lat = phi;
-          break;
-        }
-      }
-      lon = adjust_lon(this.long0 + (Math.asin(x * Math.tan(phi) / this.a)) / Math.sin(lat));
-    }
-  }
-  else {
-    if (Math.abs(y + this.ml0) <= EPSLN) {
-      lat = 0;
-      lon = adjust_lon(this.long0 + x / this.a);
-    }
-    else {
-
-      al = (this.ml0 + y) / this.a;
-      bl = x * x / this.a / this.a + al * al;
-      phi = al;
-      var cl, mln, mlnp, ma;
-      var con;
-      for (i = MAX_ITER; i; --i) {
-        con = this.e * Math.sin(phi);
-        cl = Math.sqrt(1 - con * con) * Math.tan(phi);
-        mln = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
-        mlnp = this.e0 - 2 * this.e1 * Math.cos(2 * phi) + 4 * this.e2 * Math.cos(4 * phi) - 6 * this.e3 * Math.cos(6 * phi);
-        ma = mln / this.a;
-        dphi = (al * (cl * ma + 1) - ma - 0.5 * cl * (ma * ma + bl)) / (this.es * Math.sin(2 * phi) * (ma * ma + bl - 2 * al * ma) / (4 * cl) + (al - ma) * (cl * mlnp - 2 / Math.sin(2 * phi)) - mlnp);
-        phi -= dphi;
-        if (Math.abs(dphi) <= EPSLN) {
-          lat = phi;
-          break;
-        }
-      }
-
-      //lat=phi4z(this.e,this.e0,this.e1,this.e2,this.e3,al,bl,0,0);
-      cl = Math.sqrt(1 - this.es * Math.pow(Math.sin(lat), 2)) * Math.tan(lat);
-      lon = adjust_lon(this.long0 + Math.asin(x * cl / this.a) / Math.sin(lat));
-    }
-  }
-
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["Polyconic", "poly"];
-
-/***/ }),
-/* 312 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var adjust_lon = __webpack_require__(3);
-var adjust_lat = __webpack_require__(30);
-var pj_enfn = __webpack_require__(278);
-var MAX_ITER = 20;
-var pj_mlfn = __webpack_require__(73);
-var pj_inv_mlfn = __webpack_require__(279);
-var HALF_PI = Math.PI/2;
-var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(18);
-exports.init = function() {
-  /* Place parameters in static storage for common use
-    -------------------------------------------------*/
-
-
-  if (!this.sphere) {
-    this.en = pj_enfn(this.es);
-  }
-  else {
-    this.n = 1;
-    this.m = 0;
-    this.es = 0;
-    this.C_y = Math.sqrt((this.m + 1) / this.n);
-    this.C_x = this.C_y / (this.m + 1);
-  }
-
-};
-
-/* Sinusoidal forward equations--mapping lat,long to x,y
-  -----------------------------------------------------*/
-exports.forward = function(p) {
-  var x, y;
-  var lon = p.x;
-  var lat = p.y;
-  /* Forward equations
-    -----------------*/
-  lon = adjust_lon(lon - this.long0);
-
-  if (this.sphere) {
-    if (!this.m) {
-      lat = this.n !== 1 ? Math.asin(this.n * Math.sin(lat)) : lat;
-    }
-    else {
-      var k = this.n * Math.sin(lat);
-      for (var i = MAX_ITER; i; --i) {
-        var V = (this.m * lat + Math.sin(lat) - k) / (this.m + Math.cos(lat));
-        lat -= V;
-        if (Math.abs(V) < EPSLN) {
-          break;
-        }
-      }
-    }
-    x = this.a * this.C_x * lon * (this.m + Math.cos(lat));
-    y = this.a * this.C_y * lat;
-
-  }
-  else {
-
-    var s = Math.sin(lat);
-    var c = Math.cos(lat);
-    y = this.a * pj_mlfn(lat, s, c, this.en);
-    x = this.a * lon * c / Math.sqrt(1 - this.es * s * s);
-  }
-
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-exports.inverse = function(p) {
-  var lat, temp, lon, s;
-
-  p.x -= this.x0;
-  lon = p.x / this.a;
-  p.y -= this.y0;
-  lat = p.y / this.a;
-
-  if (this.sphere) {
-    lat /= this.C_y;
-    lon = lon / (this.C_x * (this.m + Math.cos(lat)));
-    if (this.m) {
-      lat = asinz((this.m * lat + Math.sin(lat)) / this.n);
-    }
-    else if (this.n !== 1) {
-      lat = asinz(Math.sin(lat) / this.n);
-    }
-    lon = adjust_lon(lon + this.long0);
-    lat = adjust_lat(lat);
-  }
-  else {
-    lat = pj_inv_mlfn(p.y / this.a, this.es, this.en);
-    s = Math.abs(lat);
-    if (s < HALF_PI) {
-      s = Math.sin(lat);
-      temp = this.long0 + p.x * Math.sqrt(1 - this.es * s * s) / (this.a * Math.cos(lat));
-      //temp = this.long0 + p.x / (this.a * Math.cos(lat));
-      lon = adjust_lon(temp);
-    }
-    else if ((s - EPSLN) < HALF_PI) {
-      lon = this.long0;
-    }
-  }
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["Sinusoidal", "sinu"];
-
-/***/ }),
-/* 313 */
-/***/ (function(module, exports) {
-
-/*
-  references:
-    Formules et constantes pour le Calcul pour la
-    projection cylindrique conforme à axe oblique et pour la transformation entre
-    des systèmes de référence.
-    http://www.swisstopo.admin.ch/internet/swisstopo/fr/home/topics/survey/sys/refsys/switzerland.parsysrelated1.31216.downloadList.77004.DownloadFile.tmp/swissprojectionfr.pdf
-  */
-exports.init = function() {
-  var phy0 = this.lat0;
-  this.lambda0 = this.long0;
-  var sinPhy0 = Math.sin(phy0);
-  var semiMajorAxis = this.a;
-  var invF = this.rf;
-  var flattening = 1 / invF;
-  var e2 = 2 * flattening - Math.pow(flattening, 2);
-  var e = this.e = Math.sqrt(e2);
-  this.R = this.k0 * semiMajorAxis * Math.sqrt(1 - e2) / (1 - e2 * Math.pow(sinPhy0, 2));
-  this.alpha = Math.sqrt(1 + e2 / (1 - e2) * Math.pow(Math.cos(phy0), 4));
-  this.b0 = Math.asin(sinPhy0 / this.alpha);
-  var k1 = Math.log(Math.tan(Math.PI / 4 + this.b0 / 2));
-  var k2 = Math.log(Math.tan(Math.PI / 4 + phy0 / 2));
-  var k3 = Math.log((1 + e * sinPhy0) / (1 - e * sinPhy0));
-  this.K = k1 - this.alpha * k2 + this.alpha * e / 2 * k3;
-};
-
-
-exports.forward = function(p) {
-  var Sa1 = Math.log(Math.tan(Math.PI / 4 - p.y / 2));
-  var Sa2 = this.e / 2 * Math.log((1 + this.e * Math.sin(p.y)) / (1 - this.e * Math.sin(p.y)));
-  var S = -this.alpha * (Sa1 + Sa2) + this.K;
-
-  // spheric latitude
-  var b = 2 * (Math.atan(Math.exp(S)) - Math.PI / 4);
-
-  // spheric longitude
-  var I = this.alpha * (p.x - this.lambda0);
-
-  // psoeudo equatorial rotation
-  var rotI = Math.atan(Math.sin(I) / (Math.sin(this.b0) * Math.tan(b) + Math.cos(this.b0) * Math.cos(I)));
-
-  var rotB = Math.asin(Math.cos(this.b0) * Math.sin(b) - Math.sin(this.b0) * Math.cos(b) * Math.cos(I));
-
-  p.y = this.R / 2 * Math.log((1 + Math.sin(rotB)) / (1 - Math.sin(rotB))) + this.y0;
-  p.x = this.R * rotI + this.x0;
-  return p;
-};
-
-exports.inverse = function(p) {
-  var Y = p.x - this.x0;
-  var X = p.y - this.y0;
-
-  var rotI = Y / this.R;
-  var rotB = 2 * (Math.atan(Math.exp(X / this.R)) - Math.PI / 4);
-
-  var b = Math.asin(Math.cos(this.b0) * Math.sin(rotB) + Math.sin(this.b0) * Math.cos(rotB) * Math.cos(rotI));
-  var I = Math.atan(Math.sin(rotI) / (Math.cos(this.b0) * Math.cos(rotI) - Math.sin(this.b0) * Math.tan(rotB)));
-
-  var lambda = this.lambda0 + I / this.alpha;
-
-  var S = 0;
-  var phy = b;
-  var prevPhy = -1000;
-  var iteration = 0;
-  while (Math.abs(phy - prevPhy) > 0.0000001) {
-    if (++iteration > 20) {
-      //...reportError("omercFwdInfinity");
-      return;
-    }
-    //S = Math.log(Math.tan(Math.PI / 4 + phy / 2));
-    S = 1 / this.alpha * (Math.log(Math.tan(Math.PI / 4 + b / 2)) - this.K) + this.e * Math.log(Math.tan(Math.PI / 4 + Math.asin(this.e * Math.sin(phy)) / 2));
-    prevPhy = phy;
-    phy = 2 * Math.atan(Math.exp(S)) - Math.PI / 2;
-  }
-
-  p.x = lambda;
-  p.y = phy;
-  return p;
-};
-
-exports.names = ["somerc"];
-
-
-/***/ }),
-/* 314 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var HALF_PI = Math.PI/2;
-var EPSLN = 1.0e-10;
-var sign = __webpack_require__(36);
-var msfnz = __webpack_require__(19);
-var tsfnz = __webpack_require__(43);
-var phi2z = __webpack_require__(42);
-var adjust_lon = __webpack_require__(3);
-exports.ssfn_ = function(phit, sinphi, eccen) {
-  sinphi *= eccen;
-  return (Math.tan(0.5 * (HALF_PI + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen));
-};
-
-exports.init = function() {
-  this.coslat0 = Math.cos(this.lat0);
-  this.sinlat0 = Math.sin(this.lat0);
-  if (this.sphere) {
-    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
-      this.k0 = 0.5 * (1 + sign(this.lat0) * Math.sin(this.lat_ts));
-    }
-  }
-  else {
-    if (Math.abs(this.coslat0) <= EPSLN) {
-      if (this.lat0 > 0) {
-        //North pole
-        //trace('stere:north pole');
-        this.con = 1;
-      }
-      else {
-        //South pole
-        //trace('stere:south pole');
-        this.con = -1;
-      }
-    }
-    this.cons = Math.sqrt(Math.pow(1 + this.e, 1 + this.e) * Math.pow(1 - this.e, 1 - this.e));
-    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
-      this.k0 = 0.5 * this.cons * msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts)) / tsfnz(this.e, this.con * this.lat_ts, this.con * Math.sin(this.lat_ts));
-    }
-    this.ms1 = msfnz(this.e, this.sinlat0, this.coslat0);
-    this.X0 = 2 * Math.atan(this.ssfn_(this.lat0, this.sinlat0, this.e)) - HALF_PI;
-    this.cosX0 = Math.cos(this.X0);
-    this.sinX0 = Math.sin(this.X0);
-  }
-};
-
-// Stereographic forward equations--mapping lat,long to x,y
-exports.forward = function(p) {
-  var lon = p.x;
-  var lat = p.y;
-  var sinlat = Math.sin(lat);
-  var coslat = Math.cos(lat);
-  var A, X, sinX, cosX, ts, rh;
-  var dlon = adjust_lon(lon - this.long0);
-
-  if (Math.abs(Math.abs(lon - this.long0) - Math.PI) <= EPSLN && Math.abs(lat + this.lat0) <= EPSLN) {
-    //case of the origine point
-    //trace('stere:this is the origin point');
-    p.x = NaN;
-    p.y = NaN;
-    return p;
-  }
-  if (this.sphere) {
-    //trace('stere:sphere case');
-    A = 2 * this.k0 / (1 + this.sinlat0 * sinlat + this.coslat0 * coslat * Math.cos(dlon));
-    p.x = this.a * A * coslat * Math.sin(dlon) + this.x0;
-    p.y = this.a * A * (this.coslat0 * sinlat - this.sinlat0 * coslat * Math.cos(dlon)) + this.y0;
-    return p;
-  }
-  else {
-    X = 2 * Math.atan(this.ssfn_(lat, sinlat, this.e)) - HALF_PI;
-    cosX = Math.cos(X);
-    sinX = Math.sin(X);
-    if (Math.abs(this.coslat0) <= EPSLN) {
-      ts = tsfnz(this.e, lat * this.con, this.con * sinlat);
-      rh = 2 * this.a * this.k0 * ts / this.cons;
-      p.x = this.x0 + rh * Math.sin(lon - this.long0);
-      p.y = this.y0 - this.con * rh * Math.cos(lon - this.long0);
-      //trace(p.toString());
-      return p;
-    }
-    else if (Math.abs(this.sinlat0) < EPSLN) {
-      //Eq
-      //trace('stere:equateur');
-      A = 2 * this.a * this.k0 / (1 + cosX * Math.cos(dlon));
-      p.y = A * sinX;
-    }
-    else {
-      //other case
-      //trace('stere:normal case');
-      A = 2 * this.a * this.k0 * this.ms1 / (this.cosX0 * (1 + this.sinX0 * sinX + this.cosX0 * cosX * Math.cos(dlon)));
-      p.y = A * (this.cosX0 * sinX - this.sinX0 * cosX * Math.cos(dlon)) + this.y0;
-    }
-    p.x = A * cosX * Math.sin(dlon) + this.x0;
-  }
-  //trace(p.toString());
-  return p;
-};
-
-
-//* Stereographic inverse equations--mapping x,y to lat/long
-exports.inverse = function(p) {
-  p.x -= this.x0;
-  p.y -= this.y0;
-  var lon, lat, ts, ce, Chi;
-  var rh = Math.sqrt(p.x * p.x + p.y * p.y);
-  if (this.sphere) {
-    var c = 2 * Math.atan(rh / (0.5 * this.a * this.k0));
-    lon = this.long0;
-    lat = this.lat0;
-    if (rh <= EPSLN) {
-      p.x = lon;
-      p.y = lat;
-      return p;
-    }
-    lat = Math.asin(Math.cos(c) * this.sinlat0 + p.y * Math.sin(c) * this.coslat0 / rh);
-    if (Math.abs(this.coslat0) < EPSLN) {
-      if (this.lat0 > 0) {
-        lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
-      }
-      else {
-        lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
-      }
-    }
-    else {
-      lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(c), rh * this.coslat0 * Math.cos(c) - p.y * this.sinlat0 * Math.sin(c)));
-    }
-    p.x = lon;
-    p.y = lat;
-    return p;
-  }
-  else {
-    if (Math.abs(this.coslat0) <= EPSLN) {
-      if (rh <= EPSLN) {
-        lat = this.lat0;
-        lon = this.long0;
-        p.x = lon;
-        p.y = lat;
-        //trace(p.toString());
-        return p;
-      }
-      p.x *= this.con;
-      p.y *= this.con;
-      ts = rh * this.cons / (2 * this.a * this.k0);
-      lat = this.con * phi2z(this.e, ts);
-      lon = this.con * adjust_lon(this.con * this.long0 + Math.atan2(p.x, - 1 * p.y));
-    }
-    else {
-      ce = 2 * Math.atan(rh * this.cosX0 / (2 * this.a * this.k0 * this.ms1));
-      lon = this.long0;
-      if (rh <= EPSLN) {
-        Chi = this.X0;
-      }
-      else {
-        Chi = Math.asin(Math.cos(ce) * this.sinX0 + p.y * Math.sin(ce) * this.cosX0 / rh);
-        lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(ce), rh * this.cosX0 * Math.cos(ce) - p.y * this.sinX0 * Math.sin(ce)));
-      }
-      lat = -1 * phi2z(this.e, Math.tan(0.5 * (HALF_PI + Chi)));
-    }
-  }
-  p.x = lon;
-  p.y = lat;
-
-  //trace(p.toString());
-  return p;
-
-};
-exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant B)"];
-
-
-/***/ }),
-/* 315 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var gauss = __webpack_require__(300);
-var adjust_lon = __webpack_require__(3);
-exports.init = function() {
-  gauss.init.apply(this);
-  if (!this.rc) {
-    return;
-  }
-  this.sinc0 = Math.sin(this.phic0);
-  this.cosc0 = Math.cos(this.phic0);
-  this.R2 = 2 * this.rc;
-  if (!this.title) {
-    this.title = "Oblique Stereographic Alternative";
-  }
-};
-
-exports.forward = function(p) {
-  var sinc, cosc, cosl, k;
-  p.x = adjust_lon(p.x - this.long0);
-  gauss.forward.apply(this, [p]);
-  sinc = Math.sin(p.y);
-  cosc = Math.cos(p.y);
-  cosl = Math.cos(p.x);
-  k = this.k0 * this.R2 / (1 + this.sinc0 * sinc + this.cosc0 * cosc * cosl);
-  p.x = k * cosc * Math.sin(p.x);
-  p.y = k * (this.cosc0 * sinc - this.sinc0 * cosc * cosl);
-  p.x = this.a * p.x + this.x0;
-  p.y = this.a * p.y + this.y0;
-  return p;
-};
-
-exports.inverse = function(p) {
-  var sinc, cosc, lon, lat, rho;
-  p.x = (p.x - this.x0) / this.a;
-  p.y = (p.y - this.y0) / this.a;
-
-  p.x /= this.k0;
-  p.y /= this.k0;
-  if ((rho = Math.sqrt(p.x * p.x + p.y * p.y))) {
-    var c = 2 * Math.atan2(rho, this.R2);
-    sinc = Math.sin(c);
-    cosc = Math.cos(c);
-    lat = Math.asin(cosc * this.sinc0 + p.y * sinc * this.cosc0 / rho);
-    lon = Math.atan2(p.x * sinc, rho * this.cosc0 * cosc - p.y * this.sinc0 * sinc);
-  }
-  else {
-    lat = this.phic0;
-    lon = 0;
-  }
-
-  p.x = lon;
-  p.y = lat;
-  gauss.inverse.apply(this, [p]);
-  p.x = adjust_lon(p.x + this.long0);
-  return p;
-};
-
-exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea","Oblique Stereographic Alternative"];
-
-
-/***/ }),
-/* 316 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var D2R = 0.01745329251994329577;
-var tmerc = __webpack_require__(77);
-exports.dependsOn = 'tmerc';
-exports.init = function() {
-  if (!this.zone) {
-    return;
-  }
-  this.lat0 = 0;
-  this.long0 = ((6 * Math.abs(this.zone)) - 183) * D2R;
-  this.x0 = 500000;
-  this.y0 = this.utmSouth ? 10000000 : 0;
-  this.k0 = 0.9996;
-
-  tmerc.init.apply(this);
-  this.forward = tmerc.forward;
-  this.inverse = tmerc.inverse;
-};
-exports.names = ["Universal Transverse Mercator System", "utm"];
-
-
-/***/ }),
-/* 317 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var adjust_lon = __webpack_require__(3);
-var HALF_PI = Math.PI/2;
-var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(18);
-/* Initialize the Van Der Grinten projection
-  ----------------------------------------*/
-exports.init = function() {
-  //this.R = 6370997; //Radius of earth
-  this.R = this.a;
-};
-
-exports.forward = function(p) {
-
-  var lon = p.x;
-  var lat = p.y;
-
-  /* Forward equations
-    -----------------*/
-  var dlon = adjust_lon(lon - this.long0);
-  var x, y;
-
-  if (Math.abs(lat) <= EPSLN) {
-    x = this.x0 + this.R * dlon;
-    y = this.y0;
-  }
-  var theta = asinz(2 * Math.abs(lat / Math.PI));
-  if ((Math.abs(dlon) <= EPSLN) || (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN)) {
-    x = this.x0;
-    if (lat >= 0) {
-      y = this.y0 + Math.PI * this.R * Math.tan(0.5 * theta);
-    }
-    else {
-      y = this.y0 + Math.PI * this.R * -Math.tan(0.5 * theta);
-    }
-    //  return(OK);
-  }
-  var al = 0.5 * Math.abs((Math.PI / dlon) - (dlon / Math.PI));
-  var asq = al * al;
-  var sinth = Math.sin(theta);
-  var costh = Math.cos(theta);
-
-  var g = costh / (sinth + costh - 1);
-  var gsq = g * g;
-  var m = g * (2 / sinth - 1);
-  var msq = m * m;
-  var con = Math.PI * this.R * (al * (g - msq) + Math.sqrt(asq * (g - msq) * (g - msq) - (msq + asq) * (gsq - msq))) / (msq + asq);
-  if (dlon < 0) {
-    con = -con;
-  }
-  x = this.x0 + con;
-  //con = Math.abs(con / (Math.PI * this.R));
-  var q = asq + g;
-  con = Math.PI * this.R * (m * q - al * Math.sqrt((msq + asq) * (asq + 1) - q * q)) / (msq + asq);
-  if (lat >= 0) {
-    //y = this.y0 + Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
-    y = this.y0 + con;
-  }
-  else {
-    //y = this.y0 - Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
-    y = this.y0 - con;
-  }
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-/* Van Der Grinten inverse equations--mapping x,y to lat/long
-  ---------------------------------------------------------*/
-exports.inverse = function(p) {
-  var lon, lat;
-  var xx, yy, xys, c1, c2, c3;
-  var a1;
-  var m1;
-  var con;
-  var th1;
-  var d;
-
-  /* inverse equations
-    -----------------*/
-  p.x -= this.x0;
-  p.y -= this.y0;
-  con = Math.PI * this.R;
-  xx = p.x / con;
-  yy = p.y / con;
-  xys = xx * xx + yy * yy;
-  c1 = -Math.abs(yy) * (1 + xys);
-  c2 = c1 - 2 * yy * yy + xx * xx;
-  c3 = -2 * c1 + 1 + 2 * yy * yy + xys * xys;
-  d = yy * yy / c3 + (2 * c2 * c2 * c2 / c3 / c3 / c3 - 9 * c1 * c2 / c3 / c3) / 27;
-  a1 = (c1 - c2 * c2 / 3 / c3) / c3;
-  m1 = 2 * Math.sqrt(-a1 / 3);
-  con = ((3 * d) / a1) / m1;
-  if (Math.abs(con) > 1) {
-    if (con >= 0) {
-      con = 1;
-    }
-    else {
-      con = -1;
-    }
-  }
-  th1 = Math.acos(con) / 3;
-  if (p.y >= 0) {
-    lat = (-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
-  }
-  else {
-    lat = -(-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
-  }
-
-  if (Math.abs(xx) < EPSLN) {
-    lon = this.long0;
-  }
-  else {
-    lon = adjust_lon(this.long0 + Math.PI * (xys - 1 + Math.sqrt(1 + 2 * (xx * xx - yy * yy) + xys * xys)) / 2 / xx);
-  }
-
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
-
-/***/ }),
-/* 318 */
-/***/ (function(module, exports) {
-
-module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
-
-/***/ }),
-/* 319 */
+/* 246 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0ZC1lM2I5MzJlMGE4Y2QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5q1HM0AAAF/ElEQVR42tSabYhUVRjHZ7W01C1uaCRW4F3oi9SXCUnwQ9gsGUFvOEtQH1bLu5VS9sbYh5KicjYt29qiGQwVg2xWWKgocob91AvC+CWsoJqB3qHMSdTMpZyeU/+Df07n3pk7997Z6cBv99z7nHvOvf/z/pxJNZvNVI/jCKXmv6EquAmVkxPSlvtp2GItr0/96fFQForChJAWDiVYTkMYMu4XBFcYjLOwWS3sNwmn8NGzZ0h4Flv/zwIdchAnh/slCGmmKUNIBzYPaXOUr0vPuEjD71JAPh7l61embzinhV3V8nnCGmGT8LwlzSL8/yUh4Tfjo9T/CgnCIYNKycA2Qq21AcHU/VHE80Idoo3Qs0W6p0UtUnkZvEMDeVcCyqxEafF7hL8Qf0oYsIj+lfC9cH1CwhchWAGCtZO+AooQOkdC1Km1VtCb63StW73uFSzgKFUkNwBbmZGGmqowhvg8ZNpH9oXChcIcYRdeNomgxLkaH+S1SGubAxyIpFv+Zp+0DYjrAS00j/dem2VGEl6FJ4Qa4quEu8j2hTCJ+GJhe4JjfQMf6JCYPPbysMPxBlp0BUKOogEF9Rg9/heNvNKYfM0KsZUZaYxX4STGrzJa+zbhPeFH2DcK10KItcI+pI0rVElwXl1ULaKnIJhDw0oRQpTQc1zcbwRU8ATy4DR6yMlTzwkqMziEWHvubJ4Nk4ZtHdnqwvwY17xq3Z4FjrG+z2Kdrdf2ZSGD+xlLPh6t1R0jP9fI22ZzKI92yvQl7EbmBxI4S7Y+vIAOL87QZqsc5uNnssxZIcfYjXT9snCR7jjobidp+FkxA2v+Cq1QervMDmp4P7Xs3YZtE9kOC3P/By6JGaETl8ElwueYTNTDq4UDsKnd7YfCNbT239LF1udS72xYJt1UWxNfN4IIP4bWuTpEja01JtMFZFsm/AHbtHBlDE6yasA4moYTrUbvdBTXHqUrAH4uSadbyzF+vbBM2IsNkS3MNa5305JxqfA02T4TnkX8XOH1mPw8ruVejpxbI9hZD2Cz1U7LdrrUvjP/WfZinNZhr6V27hP+FPZh9aLvLxVO4DllX0G2OcKnlO/DCblxaz6uXBtmi+8mBaP3/SP8IuEIiTRoPPQm2TaEmEyXo0JU+F0YiPFD0hhOsiE/vqeEVwyTgF8L51OilcIZ2I4Ll5NttvAJPfukUeB2sk0ZPSbKIUUJpCII7+DasWy08uhNNazT0wGHI7mAtB7KqMKm38HhDdAUibTVKGicbB8YAqrJ9DRsp43JdB4qUof1HQrPE6XTQWu3Ce/inVzjXhXpMiTwUYugNVQ+p80jrUsV5EH0POKeuXO9QjhFq5GryNYvfEMCDhsftYVsB9ETtG0V9ZjfhCURhbcJFpfwVZ9jvhxsLHwTYtp2svlWQw3vXL8UnqHVSIG8l8ex+tHhBXgjddgqHEZ8ufAA2aaEnYgrF/KrPXrEmMUqZ9THLW06xhoBaVueQpkug+ewOUphE3Qv2Q5gGamXYa+QbVq4O+DQ5FHyZqrjxNt7UHh9uuRa0F7HjCF8o9PCTOGnscM7g2u1Hl9C9oeEnxC/1ajZg8JLiM9Hj9GHJseMShwL2DO0G5yEWn3Zh1QUods5CPkIoqlwAZxhXMsb6HrcEPBxchhdJ6wj29vCW4hfLOzo8J3rltYX50nXQAATSf/K4DEaGlTLvplsk/QCpoD60EQ7gLYZc8H9wq+I3yncEOEcNhuz6HWf3XEiwU/4Y8YEqVp2P10rt+8REvBGw026i4aDcbL9jF8r8Blmf4fCOzhViiscskygXRdehf3CO4hfigmTBXyQrl8TFtD1IzQX3CbcQrY3hPcRv4z8OmHPXwchVNln2MmE7BX6VwIFi/he6uxvb6JM3m0fdqvx/ATidxg2JeC7VDErAw5NzGfvwRJVheEIQ8Mg/pdwIM+UOmi9Q8ivCsrIy0tF+wVbEcLrd3Pb2XisEb4Tdlhsi4WP4RBbaLGrHfC3PrvMIezy9rTpGm5lz9LOMG15xvFxD/j5gjzjjDbMOzk+9zzt3v5bgAEAibzFeFHVgYkAAAAASUVORK5CYII="
 
 /***/ }),
-/* 320 */
+/* 247 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 321 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(111);
-__webpack_require__(112);
-__webpack_require__(108);
-__webpack_require__(109);
-__webpack_require__(110);
-__webpack_require__(92);
-__webpack_require__(113);
-__webpack_require__(99);
-__webpack_require__(114);
-__webpack_require__(84);
-__webpack_require__(85);
-__webpack_require__(91);
-__webpack_require__(106);
-__webpack_require__(107);
-__webpack_require__(116);
-__webpack_require__(119);
-__webpack_require__(121);
-__webpack_require__(126);
-__webpack_require__(127);
-__webpack_require__(135);
-__webpack_require__(136);
-__webpack_require__(138);
-__webpack_require__(117);
-__webpack_require__(133);
-__webpack_require__(131);
-__webpack_require__(134);
-__webpack_require__(144);
 __webpack_require__(83);
-__webpack_require__(115);
-__webpack_require__(118);
-__webpack_require__(88);
-__webpack_require__(123);
-__webpack_require__(124);
-__webpack_require__(125);
-__webpack_require__(122);
-__webpack_require__(139);
-__webpack_require__(120);
-__webpack_require__(87);
-__webpack_require__(128);
-__webpack_require__(130);
-__webpack_require__(129);
-__webpack_require__(137);
+__webpack_require__(84);
+__webpack_require__(80);
+__webpack_require__(81);
 __webpack_require__(82);
-__webpack_require__(145);
-__webpack_require__(90);
+__webpack_require__(64);
+__webpack_require__(85);
+__webpack_require__(71);
 __webpack_require__(86);
-__webpack_require__(89);
-__webpack_require__(95);
-__webpack_require__(100);
-__webpack_require__(101);
-__webpack_require__(102);
-__webpack_require__(103);
-__webpack_require__(104);
-__webpack_require__(105);
-__webpack_require__(142);
-__webpack_require__(143);
+__webpack_require__(56);
+__webpack_require__(57);
+__webpack_require__(63);
+__webpack_require__(78);
+__webpack_require__(79);
+__webpack_require__(88);
+__webpack_require__(91);
 __webpack_require__(93);
-__webpack_require__(94);
+__webpack_require__(98);
+__webpack_require__(99);
+__webpack_require__(107);
+__webpack_require__(108);
+__webpack_require__(110);
+__webpack_require__(89);
+__webpack_require__(105);
+__webpack_require__(103);
+__webpack_require__(106);
+__webpack_require__(116);
+__webpack_require__(55);
+__webpack_require__(87);
+__webpack_require__(90);
+__webpack_require__(60);
+__webpack_require__(95);
 __webpack_require__(96);
 __webpack_require__(97);
-__webpack_require__(98);
-__webpack_require__(132);
-__webpack_require__(140);
-__webpack_require__(141);
-__webpack_require__(147);
-__webpack_require__(150);
-__webpack_require__(149);
-__webpack_require__(148);
-module.exports = __webpack_require__(146);
+__webpack_require__(94);
+__webpack_require__(111);
+__webpack_require__(92);
+__webpack_require__(59);
+__webpack_require__(100);
+__webpack_require__(102);
+__webpack_require__(101);
+__webpack_require__(109);
+__webpack_require__(54);
+__webpack_require__(117);
+__webpack_require__(62);
+__webpack_require__(58);
+__webpack_require__(61);
+__webpack_require__(67);
+__webpack_require__(72);
+__webpack_require__(73);
+__webpack_require__(74);
+__webpack_require__(75);
+__webpack_require__(76);
+__webpack_require__(77);
+__webpack_require__(114);
+__webpack_require__(115);
+__webpack_require__(65);
+__webpack_require__(66);
+__webpack_require__(68);
+__webpack_require__(69);
+__webpack_require__(70);
+__webpack_require__(104);
+__webpack_require__(112);
+__webpack_require__(113);
+__webpack_require__(119);
+__webpack_require__(122);
+__webpack_require__(121);
+__webpack_require__(120);
+module.exports = __webpack_require__(118);
 
 
 /***/ })

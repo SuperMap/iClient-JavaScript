@@ -5,7 +5,6 @@ import LonLat from './LonLat';
 import Point from './geometry/Point';
 import LinearRing from './geometry/LinearRing';
 import Polygon from './geometry/Polygon';
-import Projection from './Projection';
 import {Util} from './Util';
 
 /**
@@ -617,40 +616,6 @@ export default class Bounds {
         quadrant += (lonlat.lon < center.lon) ? "l" : "r";
 
         return quadrant;
-    }
-
-    /**
-     * @function SuperMap.Bounds.prototype.transform
-     * @description 范围（Bounds）对象的投影转换。（在自身上做投影转换）
-     * @example
-     * var bounds1 = new SuperMap.Bounds(-180,-90,100,80);
-     * //这里bounds1 = bounds2
-     * var bounds2 = bounds1.transform(
-     *      new SuperMap.Projection("EPSG:4326"),
-     *      new SuperMap.Projection("EPSG:3857")
-     *  );
-     *
-     *
-     * @param source - {SuperMap.Projection} 源投影。
-     * @param dest   - {SuperMap.Projection} 目标投影。
-     * @returns {SuperMap.Bounds} 返回本身，用于链接操作.
-     */
-    transform(source, dest) {
-        // clear cached center location
-        this.centerLonLat = null;
-        var ll = Projection.transform(
-            {'x': this.left, 'y': this.bottom}, source, dest);
-        var lr = Projection.transform(
-            {'x': this.right, 'y': this.bottom}, source, dest);
-        var ul = Projection.transform(
-            {'x': this.left, 'y': this.top}, source, dest);
-        var ur = Projection.transform(
-            {'x': this.right, 'y': this.top}, source, dest);
-        this.left = Math.min(ll.x, ul.x);
-        this.bottom = Math.min(ll.y, lr.y);
-        this.right = Math.max(lr.x, ur.x);
-        this.top = Math.max(ul.y, ur.y);
-        return this;
     }
 
     /**

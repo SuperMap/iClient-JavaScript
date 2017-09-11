@@ -1,6 +1,5 @@
 ﻿import SuperMap from '../../SuperMap';
 import Geometry from '../Geometry';
-import Projection from '../Projection';
 import Bounds from '../Bounds';
 import {Util} from '../Util';
 
@@ -229,26 +228,6 @@ export default class Point extends Geometry {
             intersect = geometry.intersects(this);
         }
         return intersect;
-    }
-
-    /**
-     * @function SuperMap.Geometry.Point.prototype.transform
-     * @description 投影转换。
-     * @param source - {SuperMap.Projection} 源对象投影。
-     * @param dest - {SuperMap.Projection} 目标对象投影。
-     *
-     * @returns {SuperMap.Geometry.Point}转换后的点对象。
-     * @example
-     * var point = new SuperMap.Geometry.Point(10,20);
-     * point.transform(new SuperMap.Projection("EPSG:4326"),new SuperMap.Projection("EPSG:900913"));
-     */
-    transform(source, dest) {
-        if ((source && dest)) {
-            Projection.transform(
-                this, source, dest);
-            this.bounds = null;
-        }
-        return this;
     }
 
     /**

@@ -15,28 +15,6 @@ export default  class Format {
     options = null;
 
     /**
-     * @member SuperMap.Format.prototype.externalProjection -{SuperMap.Projection}
-     * @description 当设置了externalProjection和internalProjection参数，
-     *              format类会重新对其读到的或写出的几何图形进行投影。externalProjection
-     *              是read操作读到或write操作写出的投影内容。为了能够重新投影，针对某
-     *              一个投影的transformation方法必须是有效的。同时，我们可以使用proj4js
-     *              或自定义的transformation方法来进行支持。查看{SuperMap.Projection.addTransform}
-     *              以获取更多的信息。
-     */
-    externalProjection = null;
-
-    /**
-     * @member SuperMap.Format.prototype.internalProjection -{SuperMap.Projection}
-     * @description 当设置了externalProjection和internalProjection参数，
-     *              format类会重新对其读到的或写出的几何图形进行投影。internalProjection
-     *              是read操作返回或传给write操作的投影内容。为了能够重新投影，针对某
-     *              一个投影的transformation方法必须是有效的。同时，我们可以使用proj4js
-     *              或自定义的transformation方法来进行支持。查看{SuperMap.Projection.addTransform}
-     *              以获取更多的信息。
-     */
-    internalProjection = null;
-
-    /**
      * @member SuperMap.Format.prototype.data -{Object}
      * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
      */

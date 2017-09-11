@@ -2,7 +2,6 @@
 import Collection from './Collection';
 import LineString from './LineString';
 import Point from './Point';
-import Projection from '../Projection';
 import {NumberExt} from '../BaseTypes';
 
 /**
@@ -125,24 +124,6 @@ export default class LinearRing extends LineString {
     }
 
     /**
-     * @function SuperMap.Geometry.LinearRing.prototype.transform
-     * @description 投影转换。
-     * @param source - {SuperMap.Projection} 源对象投影。
-     * @param dest - {SuperMap.Projection} 目标对象投影。
-     * @returns {SuperMap.Geometry}
-     */
-    transform(source, dest) {
-        if (source && dest) {
-            for (var i = 0, len = this.components.length; i < len - 1; i++) {
-                var component = this.components[i];
-                component.transform(source, dest);
-            }
-            this.bounds = null;
-        }
-        return this;
-    }
-
-    /**
      * @function SuperMap.Geometry.LinearRing.prototype.getCentroid
      * @description 获取几何对象的质心。
      * @returns {SuperMap.Geometry.Point} 几何图形的质心。
@@ -197,36 +178,6 @@ export default class LinearRing extends LineString {
                 sum += (b.x + c.x) * (c.y - b.y);
             }
             area = -sum / 2.0;
-        }
-        return area;
-    }
-
-    /**
-     * @function SuperMap.Geometry.LinearRing.prototype.getGeodesicArea
-     * @description 计算投影到球面上的几何对象的近似面积。 如果是沿顺时针方向的环则是正值，否则为负值。
-     * @param projection - {SuperMap.Projection} 空间参考系统的几何坐标。如果没有设置，默认 WGS84。
-     * @returns {float} 几何图形的近似测地面积。
-     */
-    getGeodesicArea(projection) {
-        var ring = this;  // so we can work with a clone if needed
-        if (projection) {
-            var gg = new Projection("EPSG:4326");
-            if (!gg.equals(projection)) {
-                ring = this.clone().transform(projection, gg);
-            }
-        }
-        var area = 0.0;
-        var len = ring.components && ring.components.length;
-        if (len > 2) {
-            var p1, p2;
-            for (var i = 0; i < len - 1; i++) {
-                p1 = ring.components[i];
-                p2 = ring.components[i + 1];
-                area += SuperMap.Util.rad(p2.x - p1.x) *
-                    (2 + Math.sin(SuperMap.Util.rad(p1.y)) +
-                        Math.sin(SuperMap.Util.rad(p2.y)));
-            }
-            area = area * 6378137.0 * 6378137.0 / 2.0;
         }
         return area;
     }

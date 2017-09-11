@@ -317,32 +317,6 @@ SuperMap.Util.createImage = function (id, px, sz, imgURL, position, border,
 };
 
 /**
- * @description Bound to image load events.  For all images created with <createImage> or
- *     <createAlphaImageDiv>, this function will be bound to the load event.
- */
-SuperMap.Util.onImageLoad = function () {
-    // The complex check here is to solve issues described in #480.
-    // Every time a map view changes, it increments the 'viewRequestID' 
-    // property. As the requests for the images for the new map view are sent
-    // out, they are tagged with this unique viewRequestID. 
-    // 
-    // If an image has no viewRequestID property set, we display it regardless, 
-    // but if it does have a viewRequestID property, we check that it matches 
-    // the viewRequestID set on the map.
-    // 
-    // If the viewRequestID on the map has changed, that means that the user
-    // has changed the map view since this specific request was sent out, and
-    // therefore this tile does not need to be displayed (so we do not execute
-    // this code that turns its display on).
-    //
-    if (!this.viewRequestID ||
-        (this.map && this.viewRequestID === this.map.viewRequestID)) {
-        this.style.display = "";
-    }
-    SuperMap.Element.removeClass(this, "smImageLoadError");
-};
-
-/**
  * @memberOf SuperMap
  * @description How many times should we try to reload an image before giving up? Default is 0
  * @type {number}
@@ -350,37 +324,6 @@ SuperMap.Util.onImageLoad = function () {
  */
 SuperMap.IMAGE_RELOAD_ATTEMPTS = 0;
 
-/**
- * @description onImageLoadError
- */
-SuperMap.Util.onImageLoadError = function () {
-    this._attempts = (this._attempts) ? (this._attempts + 1) : 1;
-    if (this._attempts <= SuperMap.IMAGE_RELOAD_ATTEMPTS) {
-        var urls = this.urls;
-        if (urls && SuperMap.Util.isArray(urls) && urls.length > 1) {
-            var src = this.src.toString();
-            var current_url, k;
-            for (k = 0; current_url = urls[k]; k++) {
-                if (src.indexOf(current_url) !== -1) {
-                    break;
-                }
-            }
-            var guess = Math.floor(urls.length * Math.random());
-            var new_url = urls[guess];
-            k = 0;
-            while (new_url === current_url && k++ < 4) {
-                guess = Math.floor(urls.length * Math.random());
-                new_url = urls[guess];
-            }
-            this.src = src.replace(current_url, new_url);
-        } else {
-            this.src = this.src;
-        }
-    } else {
-        SuperMap.Element.addClass(this, "smImageLoadError");
-    }
-    this.style.display = "";
-};
 
 /**
  * @description  true if the png alpha hack is necessary and possible, false otherwise.
@@ -499,7 +442,6 @@ SuperMap.Util.createAlphaImageDiv = function (id, px, sz, imgURL,
 
     return div;
 };
-
 
 /**
  * @description Creates a new hashtable and copies over all the keys from the
@@ -1347,128 +1289,6 @@ SuperMap.Util.isSupportCanvas = (function () {
  */
 SuperMap.Util.supportCanvas = function () {
     return SuperMap.Util.isSupportCanvas;
-};
-
-/**
- * @description Renders the contentHTML offscreen to determine actual dimensions for
- *     popup sizing. As we need layout to determine dimensions the content
- *     is rendered -9999px to the left and absolute to ensure the
- *     scrollbars do not flicker
- * @param contentHTML
- * @param size - {SuperMap.Size} If either the 'w' or 'h' properties is
- *     specified, we fix that dimension of the div to be measured. This is
- *     useful in the case where we have a limit in one dimension and must
- *     therefore meaure the flow in the other dimension.
- * @param options - {Object}
- *
- * Allowed Options:
- *     displayClass - {string} Optional parameter.  A CSS class name(s) string
- *         to provide the CSS context of the rendered content.
- *     containerElement - {HTMLElement} Optional parameter. Insert the HTML to
- *         this node instead of the body root when calculating dimensions.
- *
- * @returns {SuperMap.Size}
- */
-SuperMap.Util.getRenderedDimensions = function (contentHTML, size, options) {
-
-    var w, h;
-
-    // create temp container div with restricted size
-    var container = document.createElement("div");
-    container.style.visibility = "hidden";
-
-    var containerElement = (options && options.containerElement)
-        ? options.containerElement : document.body;
-
-    // Opera and IE7 can't handle a node with position:aboslute if it inherits
-    // position:absolute from a parent.
-    var parentHasPositionAbsolute = false;
-    var superContainer = null;
-    var parent = containerElement;
-    while (parent && parent.tagName.toLowerCase() !== "body") {
-        var parentPosition = SuperMap.Element.getStyle(parent, "position");
-        if (parentPosition === "absolute") {
-            parentHasPositionAbsolute = true;
-            break;
-        } else if (parentPosition && parentPosition !== "static") {
-            break;
-        }
-        parent = parent.parentNode;
-    }
-    /*if(parentHasPositionAbsolute && (containerElement.clientHeight === 0 ||
-        containerElement.clientWidth === 0) ){
-        superContainer = document.createElement("div");
-        superContainer.style.visibility = "hidden";
-        superContainer.style.position = "absolute";
-        superContainer.style.overflow = "visible";
-        superContainer.style.width = document.body.clientWidth + "px";
-        superContainer.style.height = document.body.clientHeight + "px";
-        superContainer.appendChild(container);
-    }*/
-    if (!parentHasPositionAbsolute) {
-        container.style.position = "absolute";
-    }
-
-    //fix a dimension, if specified.
-    if (size) {
-        if (size.w) {
-            w = size.w;
-            container.style.width = w + "px";
-        } else if (size.h) {
-            h = size.h;
-            container.style.height = h + "px";
-        }
-    }
-
-    //add css classes, if specified
-    if (options && options.displayClass) {
-        container.className = options.displayClass;
-    }
-
-    // create temp content div and assign content
-    var content = document.createElement("div");
-    content.innerHTML = contentHTML;
-
-    // we need overflow visible when calculating the size
-    content.style.overflow = "visible";
-    if (content.childNodes) {
-        for (var i = 0, l = content.childNodes.length; i < l; i++) {
-            if (!content.childNodes[i].style) continue;
-            content.childNodes[i].style.overflow = "visible";
-        }
-    }
-
-    // add content to restricted container 
-    container.appendChild(content);
-
-    // append container to body for rendering
-    containerElement.appendChild(container);
-
-    // append container to body for rendering
-    /*if (superContainer) {
-        containerElement.appendChild(superContainer);
-    } else {
-        containerElement.appendChild(container);
-    }*/
-    containerElement.appendChild(container);
-    // calculate scroll width of content and add corners and shadow width
-    if (!w) {
-        w = parseInt(content.scrollWidth);
-
-        // update container width to allow height to adjust
-        container.style.width = w + "px";
-    }
-    // capture height and add shadow and corner image widths
-    if (!h) {
-        h = parseInt(content.scrollHeight);
-    }
-
-    // remove elements
-    container.removeChild(content);
-
-    containerElement.removeChild(container);
-
-    return new SuperMap.Size(w, h);
 };
 
 /**

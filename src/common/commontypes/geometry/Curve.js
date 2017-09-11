@@ -1,6 +1,5 @@
 ﻿import SuperMap from '../../SuperMap';
 import MultiPoint from './MultiPoint';
-import Projection from '../Projection';
 import {Util} from '../Util';
 
 /**
@@ -40,36 +39,6 @@ export default class Curve extends MultiPoint {
             }
         }
         return length;
-    }
-
-    /**
-     * @function SuperMap.Geometry.Curve.prototype.getGeodesicLength
-     * @description 计算几何对象投影到球面上的近似大地测量长度。
-     * @param projection - {SuperMap.Projection} 空间参考系统的几何坐标。如果没有设置，默认 WGS84。
-     * @returns {number} 几何图形的近似大地测量长度，单位：meters。
-     */
-    getGeodesicLength(projection) {
-        var geom = this;  // so we can work with a clone if needed
-        if (projection) {
-            var gg = new Projection("EPSG:4326");
-            if (!gg.equals(projection)) {
-                geom = this.clone().transform(projection, gg);
-            }
-        }
-        var length = 0.0;
-        if (geom.components && (geom.components.length > 1)) {
-            var p1, p2;
-            for (var i = 1, len = geom.components.length; i < len; i++) {
-                p1 = geom.components[i - 1];
-                p2 = geom.components[i];
-                // this returns km and requires lon/lat properties
-                length += Util.distVincenty(
-                    {lon: p1.x, lat: p1.y}, {lon: p2.x, lat: p2.y}
-                );
-            }
-        }
-        // convert to m
-        return length * 1000;
     }
 
     CLASS_NAME = "SuperMap.Geometry.Curve"

@@ -213,12 +213,6 @@ export default class GeoJSON extends JSONFormat {
                 throw err;
             }
         }
-        // We don't reproject collections because the children are reprojected
-        // for us when they are created.
-        if (this.internalProjection && this.externalProjection && !collection) {
-            geometry.transform(this.externalProjection,
-                this.internalProjection);
-        }
         return geometry;
     }
 

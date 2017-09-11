@@ -210,20 +210,6 @@ export default class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.getGeodesicArea
-     * @description 计算多边形投影到球面上的近似面积。
-     * @param projection - {SuperMap.Projection} 空间参考系统的几何坐标。如果没有设置，默认 WGS84。
-     * @returns {number} 几何图形的近似测地面积。
-     */
-    getGeodesicArea(projection) {
-        var area = 0.0;
-        for (var i = 0, len = this.components.length; i < len; i++) {
-            area += this.components[i].getGeodesicArea(projection);
-        }
-        return area;
-    }
-
-    /**
      * @function SuperMap.Geometry.Collection.prototype.getCentroid
      * @description  计算几何图形集合的质心。
      * @param weighted -{Boolean} 执行getCentroid方法进行递归计算，返回此几何图形集合中的面积加权平均值。
@@ -281,20 +267,6 @@ export default class Collection extends Geometry {
         }
 
         return new Point(xSum / areaSum, ySum / areaSum);
-    }
-
-    /**
-     * @function SuperMap.Geometry.Collection.prototype.getGeodesicLength
-     * @description  计算投影到球面上的几何图形的近似测地长度。
-     * @param projection -{SuperMap.Projection} 空间参考系统的几何坐标。如果没有设置，默认 WGS84。
-     * @returns {number} 几何图形的近似测地长度。
-     */
-    getGeodesicLength(projection) {
-        var length = 0.0;
-        for (var i = 0, len = this.components.length; i < len; i++) {
-            length += this.components[i].getGeodesicLength(projection);
-        }
-        return length;
     }
 
     /**
@@ -389,24 +361,6 @@ export default class Collection extends Geometry {
             }
         }
         return equivalent;
-    }
-
-    /**
-     * @function SuperMap.Geometry.Collection.prototype.transform
-     * @description 投影转换。
-     * @param source - {SuperMap.Projection} 源对象投影。
-     * @param dest - {SuperMap.Projection} 目标对象投影。
-     * @returns {SuperMap.Geometry} this
-     */
-    transform(source, dest) {
-        if (source && dest) {
-            for (var i = 0, len = this.components.length; i < len; i++) {
-                var component = this.components[i];
-                component.transform(source, dest);
-            }
-            this.bounds = null;
-        }
-        return this;
     }
 
     /**

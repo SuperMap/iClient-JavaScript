@@ -42,21 +42,6 @@ export default class WKT extends Format {
             if (this.parse[type]) {
                 features = this.parse[type].apply(this, [str]);
             }
-            if (this.internalProjection && this.externalProjection) {
-                if (features &&
-                    features.CLASS_NAME === "SuperMap.Feature.Vector") {
-                    features.geometry.transform(this.externalProjection,
-                        this.internalProjection);
-                } else if (features &&
-                    type !== "geometrycollection" &&
-                    typeof features === "object") {
-                    for (var i = 0, len = features.length; i < len; i++) {
-                        var component = features[i];
-                        component.geometry.transform(this.externalProjection,
-                            this.internalProjection);
-                    }
-                }
-            }
         }
         return features;
     }
@@ -104,10 +89,6 @@ export default class WKT extends Format {
         var type = geometry.CLASS_NAME.split('.')[2].toLowerCase();
         if (!this.extract[type]) {
             return null;
-        }
-        if (this.internalProjection && this.externalProjection) {
-            geometry = geometry.clone();
-            geometry.transform(this.internalProjection, this.externalProjection);
         }
         var wktType = type === 'collection' ? 'GEOMETRYCOLLECTION' : type.toUpperCase();
         var data = wktType + '(' + this.extract[type].apply(this, [geometry]) + ')';

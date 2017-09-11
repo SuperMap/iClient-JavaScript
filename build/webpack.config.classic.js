@@ -29,7 +29,6 @@ module.exports = {
         rules: [{
             test: /\.js/,
             loader: 'babel-loader',
-            exclude: /node_modules[\/\\]proj4/,
             query: {
                 presets: ['es2015'],
                 plugins: [
