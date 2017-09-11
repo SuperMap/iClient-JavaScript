@@ -33970,9 +33970,9 @@ var WebMap = function (_ol$Observable) {
                         }
                         me.createLayer(type, layerInfo);
                     }
-                    me.dispatchEvent({ type: _olDebug2.default.supermap.WebMap.EventType.WEBMAPLOADEND, value: this.map });
+                    me.dispatchEvent({ type: _olDebug2.default.supermap.WebMap.EventType.WEBMAPLOADEND, value: this });
                 });
-                view.fit(options.extent);
+                view.fit(viewOptions.extent);
             }
         }
     }, {
@@ -33986,9 +33986,6 @@ var WebMap = function (_ol$Observable) {
          * @param options -{Object} 创建图层所需参数
          */
         value: function addLayer(layer, options) {
-            if (!this.map) {
-                this.createMap(options);
-            }
             return this.map.addLayer(layer);
         }
     }, {
@@ -34012,18 +34009,6 @@ var WebMap = function (_ol$Observable) {
                 //todo 火星
             }
             return 'EPSG:' + epsgCode;
-        }
-
-        /**
-         * @function ol.supermap.WebMap.prototype.createMap
-         * @description 创建地图
-         * @param options - {Object} 创建地图所需参数
-         */
-
-    }, {
-        key: 'createMap',
-        value: function createMap(options) {
-            if (!this.map) {}
         }
 
         /**

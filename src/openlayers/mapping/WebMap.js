@@ -110,9 +110,9 @@ export default class WebMap extends ol.Observable {
                     }
                     me.createLayer(type, layerInfo);
                 }
-                me.dispatchEvent({type: ol.supermap.WebMap.EventType.WEBMAPLOADEND, value: this.map});
+                me.dispatchEvent({type: ol.supermap.WebMap.EventType.WEBMAPLOADEND, value: this});
             })
-            view.fit(options.extent);
+            view.fit(viewOptions.extent);
 
         }
 
@@ -126,9 +126,6 @@ export default class WebMap extends ol.Observable {
      * @param options -{Object} 创建图层所需参数
      */
     addLayer(layer, options) {
-        if (!this.map) {
-            this.createMap(options);
-        }
         return this.map.addLayer(layer);
     }
 
@@ -151,17 +148,6 @@ export default class WebMap extends ol.Observable {
             //todo 火星
         }
         return 'EPSG:' + epsgCode;
-    }
-
-    /**
-     * @function ol.supermap.WebMap.prototype.createMap
-     * @description 创建地图
-     * @param options - {Object} 创建地图所需参数
-     */
-    createMap(options) {
-        if (!this.map) {
-
-        }
     }
 
     /**
