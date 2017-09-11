@@ -23,6 +23,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
     },
 
     get: function (url, params, options) {
+        options = options||{};
         var type = 'GET';
         url = this._processUrl(url,options);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
@@ -39,6 +40,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
     },
 
     delete: function (url, params, options) {
+        options = options||{};
         var type = 'DELETE';
         url = this._processUrl(url,options);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
@@ -49,10 +51,12 @@ export var FetchRequest = SuperMap.FetchRequest = {
     },
 
     post: function (url, params, options) {
+        options = options||{};
         return this._fetch(this._processUrl(url,options), params, options, 'POST');
     },
 
     put: function (url, params, options) {
+        options = options||{};
         return this._fetch(this._processUrl(url,options), params, options, 'PUT');
     },
     urlIsLong : function (url){
@@ -83,7 +87,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
             return url;
         }
 
-        if (url.indexOf('.json') === -1) {
+        if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
             if (url.indexOf("?") < 0) {
                 url += '.json'
             } else {

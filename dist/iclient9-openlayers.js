@@ -8227,6 +8227,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     get: function get(url, params, options) {
+        options = options || {};
         var type = 'GET';
         url = this._processUrl(url, options);
         url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
@@ -8243,6 +8244,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     delete: function _delete(url, params, options) {
+        options = options || {};
         var type = 'DELETE';
         url = this._processUrl(url, options);
         url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
@@ -8253,10 +8255,12 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     post: function post(url, params, options) {
+        options = options || {};
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
     },
 
     put: function put(url, params, options) {
+        options = options || {};
         return this._fetch(this._processUrl(url, options), params, options, 'PUT');
     },
     urlIsLong: function urlIsLong(url) {
@@ -8287,7 +8291,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
             return url;
         }
 
-        if (url.indexOf('.json') === -1) {
+        if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
             if (url.indexOf("?") < 0) {
                 url += '.json';
             } else {
@@ -9025,10 +9029,40 @@ _SuperMap2.default.SecurityManager = {
      * @param url -{string} 网站地址
      * @param newTab -{boolean}是否新窗口打开
      */
-    loginPortal: function loginPortal(url, newTab) {
+    loginiPortal: function loginiPortal(url, username, password) {
         var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "web/login" : "/web/login";
-        this._open(url, newTab);
+        url += end === "/" ? "web/login.json" : "/web/login.json";
+        var loginInfo = {
+            username: username && username.toString(),
+            password: password && password.toString()
+        };
+        loginInfo = JSON.stringify(loginInfo);
+        var requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            withCredentials: true
+        };
+        return _FetchRequest.FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+            return response.json();
+        });
+    },
+    logoutiPortal: function logoutiPortal(url) {
+        var end = url.substr(url.length - 1, 1);
+        url += end === "/" ? "services/security/logout" : "/services/security/logout";
+
+        var requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            withCredentials: true,
+            withoutFormatSuffix: true
+        };
+        return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
+            return true;
+        }).catch(function () {
+            return false;
+        });
     },
 
     /**
@@ -15472,9 +15506,9 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
                         return response.json();
                     }).then(function (job) {
                         me.events.triggerEvent("processRunning", { id: job.id, state: job.state });
-                        if (job.state.runState === 'LOST') {
+                        if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
                             clearInterval(id);
-                            me.events.triggerEvent("processFailed", { error: job.state.errorMsg });
+                            me.events.triggerEvent("processFailed", { error: job.state.errorMsg, state: job.state.runState });
                         }
                         if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
                             clearInterval(id);
@@ -19959,7 +19993,7 @@ _SuperMap2.default.Size = Size;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -19991,54 +20025,54 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var multiPoint = new SuperMap.Geometry.MultiPoint([point1,point2]);
  */
 var MultiPoint = function (_Collection) {
-  _inherits(MultiPoint, _Collection);
+    _inherits(MultiPoint, _Collection);
 
-  function MultiPoint(components) {
-    _classCallCheck(this, MultiPoint);
+    function MultiPoint(components) {
+        _classCallCheck(this, MultiPoint);
 
-    var _this = _possibleConstructorReturn(this, (MultiPoint.__proto__ || Object.getPrototypeOf(MultiPoint)).call(this, components));
+        var _this = _possibleConstructorReturn(this, (MultiPoint.__proto__ || Object.getPrototypeOf(MultiPoint)).call(this, components));
 
-    _this.componentTypes = ["SuperMap.Geometry.Point"];
-    _this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
-    return _this;
-  }
-
-  /**
-   * @function SuperMap.Geometry.MultiPoint.prototype.addPoint
-   * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent}方法。
-   * @param point - {SuperMap.Geometry.Point} 添加的点。
-   * @param index - {integer} 可选的下标。
-   */
-
-
-  /**
-   * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
-   * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-   * @readonly
-   * @default ["{@link SuperMap.Geometry.Point}"]
-   */
-
-
-  _createClass(MultiPoint, [{
-    key: 'addPoint',
-    value: function addPoint(point, index) {
-      this.addComponent(point, index);
+        _this.componentTypes = ["SuperMap.Geometry.Point"];
+        _this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
+        return _this;
     }
 
     /**
-     * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
-     * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
-     * @param point - {SuperMap.Geometry.Point} 移除的点对象。
+     * @function SuperMap.Geometry.MultiPoint.prototype.addPoint
+     * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent}方法。
+     * @param point - {SuperMap.Geometry.Point} 添加的点。
+     * @param index - {integer} 可选的下标。
      */
 
-  }, {
-    key: 'removePoint',
-    value: function removePoint(point) {
-      this.removeComponent(point);
-    }
-  }]);
 
-  return MultiPoint;
+    /**
+     * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
+     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+     * @readonly
+     * @default ["{@link SuperMap.Geometry.Point}"]
+     */
+
+
+    _createClass(MultiPoint, [{
+        key: 'addPoint',
+        value: function addPoint(point, index) {
+            this.addComponent(point, index);
+        }
+
+        /**
+         * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
+         * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
+         * @param point - {SuperMap.Geometry.Point} 移除的点对象。
+         */
+
+    }, {
+        key: 'removePoint',
+        value: function removePoint(point) {
+            this.removeComponent(point);
+        }
+    }]);
+
+    return MultiPoint;
 }(_Collection3.default);
 
 exports.default = MultiPoint;
@@ -24573,6 +24607,644 @@ _olDebug2.default.supermap.MapService = MapService;
 "use strict";
 
 
+module.exports = function (phi, sphi, cphi, en) {
+  cphi *= sphi;
+  sphi *= sphi;
+  return en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4])));
+};
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (array) {
+  var out = {
+    x: array[0],
+    y: array[1]
+  };
+  if (array.length > 2) {
+    out.z = array[2];
+  }
+  if (array.length > 3) {
+    out.m = array[3];
+  }
+  return out;
+};
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var globals = __webpack_require__(158);
+var parseProj = __webpack_require__(86);
+var wkt = __webpack_require__(89);
+
+function defs(name) {
+  /*global console*/
+  var that = this;
+  if (arguments.length === 2) {
+    var def = arguments[1];
+    if (typeof def === 'string') {
+      if (def.charAt(0) === '+') {
+        defs[name] = parseProj(arguments[1]);
+      } else {
+        defs[name] = wkt(arguments[1]);
+      }
+    } else {
+      defs[name] = def;
+    }
+  } else if (arguments.length === 1) {
+    if (Array.isArray(name)) {
+      return name.map(function (v) {
+        if (Array.isArray(v)) {
+          defs.apply(that, v);
+        } else {
+          defs(v);
+        }
+      });
+    } else if (typeof name === 'string') {
+      if (name in defs) {
+        return defs[name];
+      }
+    } else if ('EPSG' in name) {
+      defs['EPSG:' + name.EPSG] = name;
+    } else if ('ESRI' in name) {
+      defs['ESRI:' + name.ESRI] = name;
+    } else if ('IAU2000' in name) {
+      defs['IAU2000:' + name.IAU2000] = name;
+    } else {
+      console.log(name);
+    }
+    return;
+  }
+}
+globals(defs);
+module.exports = defs;
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var D2R = 0.01745329251994329577;
+var PrimeMeridian = __webpack_require__(152);
+var _units = __webpack_require__(153);
+
+module.exports = function (defData) {
+  var self = {};
+  var paramObj = {};
+  defData.split("+").map(function (v) {
+    return v.trim();
+  }).filter(function (a) {
+    return a;
+  }).forEach(function (a) {
+    var split = a.split("=");
+    split.push(true);
+    paramObj[split[0].toLowerCase()] = split[1];
+  });
+  var paramName, paramVal, paramOutname;
+  var params = {
+    proj: 'projName',
+    datum: 'datumCode',
+    rf: function rf(v) {
+      self.rf = parseFloat(v);
+    },
+    lat_0: function lat_0(v) {
+      self.lat0 = v * D2R;
+    },
+    lat_1: function lat_1(v) {
+      self.lat1 = v * D2R;
+    },
+    lat_2: function lat_2(v) {
+      self.lat2 = v * D2R;
+    },
+    lat_ts: function lat_ts(v) {
+      self.lat_ts = v * D2R;
+    },
+    lon_0: function lon_0(v) {
+      self.long0 = v * D2R;
+    },
+    lon_1: function lon_1(v) {
+      self.long1 = v * D2R;
+    },
+    lon_2: function lon_2(v) {
+      self.long2 = v * D2R;
+    },
+    alpha: function alpha(v) {
+      self.alpha = parseFloat(v) * D2R;
+    },
+    lonc: function lonc(v) {
+      self.longc = v * D2R;
+    },
+    x_0: function x_0(v) {
+      self.x0 = parseFloat(v);
+    },
+    y_0: function y_0(v) {
+      self.y0 = parseFloat(v);
+    },
+    k_0: function k_0(v) {
+      self.k0 = parseFloat(v);
+    },
+    k: function k(v) {
+      self.k0 = parseFloat(v);
+    },
+    a: function a(v) {
+      self.a = parseFloat(v);
+    },
+    b: function b(v) {
+      self.b = parseFloat(v);
+    },
+    r_a: function r_a() {
+      self.R_A = true;
+    },
+    zone: function zone(v) {
+      self.zone = parseInt(v, 10);
+    },
+    south: function south() {
+      self.utmSouth = true;
+    },
+    towgs84: function towgs84(v) {
+      self.datum_params = v.split(",").map(function (a) {
+        return parseFloat(a);
+      });
+    },
+    to_meter: function to_meter(v) {
+      self.to_meter = parseFloat(v);
+    },
+    units: function units(v) {
+      self.units = v;
+      if (_units[v]) {
+        self.to_meter = _units[v].to_meter;
+      }
+    },
+    from_greenwich: function from_greenwich(v) {
+      self.from_greenwich = v * D2R;
+    },
+    pm: function pm(v) {
+      self.from_greenwich = (PrimeMeridian[v] ? PrimeMeridian[v] : parseFloat(v)) * D2R;
+    },
+    nadgrids: function nadgrids(v) {
+      if (v === '@null') {
+        self.datumCode = 'none';
+      } else {
+        self.nadgrids = v;
+      }
+    },
+    axis: function axis(v) {
+      var legalAxis = "ewnsud";
+      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
+        self.axis = v;
+      }
+    }
+  };
+  for (paramName in paramObj) {
+    paramVal = paramObj[paramName];
+    if (paramName in params) {
+      paramOutname = params[paramName];
+      if (typeof paramOutname === 'function') {
+        paramOutname(paramVal);
+      } else {
+        self[paramOutname] = paramVal;
+      }
+    } else {
+      self[paramName] = paramVal;
+    }
+  }
+  if (typeof self.datumCode === 'string' && self.datumCode !== "WGS84") {
+    self.datumCode = self.datumCode.toLowerCase();
+  }
+  return self;
+};
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var e0fn = __webpack_require__(33);
+var e1fn = __webpack_require__(34);
+var e2fn = __webpack_require__(35);
+var e3fn = __webpack_require__(36);
+var mlfn = __webpack_require__(37);
+var adjust_lon = __webpack_require__(5);
+var HALF_PI = Math.PI / 2;
+var EPSLN = 1.0e-10;
+var sign = __webpack_require__(38);
+var asinz = __webpack_require__(23);
+
+exports.init = function () {
+  this.e0 = e0fn(this.es);
+  this.e1 = e1fn(this.es);
+  this.e2 = e2fn(this.es);
+  this.e3 = e3fn(this.es);
+  this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
+};
+
+/**
+    Transverse Mercator Forward  - long/lat to x/y
+    long/lat in radians
+  */
+exports.forward = function (p) {
+  var lon = p.x;
+  var lat = p.y;
+
+  var delta_lon = adjust_lon(lon - this.long0);
+  var con;
+  var x, y;
+  var sin_phi = Math.sin(lat);
+  var cos_phi = Math.cos(lat);
+
+  if (this.sphere) {
+    var b = cos_phi * Math.sin(delta_lon);
+    if (Math.abs(Math.abs(b) - 1) < 0.0000000001) {
+      return 93;
+    } else {
+      x = 0.5 * this.a * this.k0 * Math.log((1 + b) / (1 - b));
+      con = Math.acos(cos_phi * Math.cos(delta_lon) / Math.sqrt(1 - b * b));
+      if (lat < 0) {
+        con = -con;
+      }
+      y = this.a * this.k0 * (con - this.lat0);
+    }
+  } else {
+    var al = cos_phi * delta_lon;
+    var als = Math.pow(al, 2);
+    var c = this.ep2 * Math.pow(cos_phi, 2);
+    var tq = Math.tan(lat);
+    var t = Math.pow(tq, 2);
+    con = 1 - this.es * Math.pow(sin_phi, 2);
+    var n = this.a / Math.sqrt(con);
+    var ml = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, lat);
+
+    x = this.k0 * n * al * (1 + als / 6 * (1 - t + c + als / 20 * (5 - 18 * t + Math.pow(t, 2) + 72 * c - 58 * this.ep2))) + this.x0;
+    y = this.k0 * (ml - this.ml0 + n * tq * (als * (0.5 + als / 24 * (5 - t + 9 * c + 4 * Math.pow(c, 2) + als / 30 * (61 - 58 * t + Math.pow(t, 2) + 600 * c - 330 * this.ep2))))) + this.y0;
+  }
+  p.x = x;
+  p.y = y;
+  return p;
+};
+
+/**
+    Transverse Mercator Inverse  -  x/y to long/lat
+  */
+exports.inverse = function (p) {
+  var con, phi;
+  var delta_phi;
+  var i;
+  var max_iter = 6;
+  var lat, lon;
+
+  if (this.sphere) {
+    var f = Math.exp(p.x / (this.a * this.k0));
+    var g = 0.5 * (f - 1 / f);
+    var temp = this.lat0 + p.y / (this.a * this.k0);
+    var h = Math.cos(temp);
+    con = Math.sqrt((1 - h * h) / (1 + g * g));
+    lat = asinz(con);
+    if (temp < 0) {
+      lat = -lat;
+    }
+    if (g === 0 && h === 0) {
+      lon = this.long0;
+    } else {
+      lon = adjust_lon(Math.atan2(g, h) + this.long0);
+    }
+  } else {
+    // ellipsoidal form
+    var x = p.x - this.x0;
+    var y = p.y - this.y0;
+
+    con = (this.ml0 + y / this.k0) / this.a;
+    phi = con;
+    for (i = 0; true; i++) {
+      delta_phi = (con + this.e1 * Math.sin(2 * phi) - this.e2 * Math.sin(4 * phi) + this.e3 * Math.sin(6 * phi)) / this.e0 - phi;
+      phi += delta_phi;
+      if (Math.abs(delta_phi) <= EPSLN) {
+        break;
+      }
+      if (i >= max_iter) {
+        return 95;
+      }
+    } // for()
+    if (Math.abs(phi) < HALF_PI) {
+      var sin_phi = Math.sin(phi);
+      var cos_phi = Math.cos(phi);
+      var tan_phi = Math.tan(phi);
+      var c = this.ep2 * Math.pow(cos_phi, 2);
+      var cs = Math.pow(c, 2);
+      var t = Math.pow(tan_phi, 2);
+      var ts = Math.pow(t, 2);
+      con = 1 - this.es * Math.pow(sin_phi, 2);
+      var n = this.a / Math.sqrt(con);
+      var r = n * (1 - this.es) / con;
+      var d = x / (n * this.k0);
+      var ds = Math.pow(d, 2);
+      lat = phi - n * tan_phi * ds / r * (0.5 - ds / 24 * (5 + 3 * t + 10 * c - 4 * cs - 9 * this.ep2 - ds / 30 * (61 + 90 * t + 298 * c + 45 * ts - 252 * this.ep2 - 3 * cs)));
+      lon = adjust_lon(this.long0 + d * (1 - ds / 6 * (1 + 2 * t + c - ds / 20 * (5 - 2 * c + 28 * t - 3 * cs + 8 * this.ep2 + 24 * ts))) / cos_phi);
+    } else {
+      lat = HALF_PI * sign(y);
+      lon = this.long0;
+    }
+  }
+  p.x = lon;
+  p.y = lat;
+  return p;
+};
+exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var D2R = 0.01745329251994329577;
+var R2D = 57.29577951308232088;
+var PJD_3PARAM = 1;
+var PJD_7PARAM = 2;
+var datum_transform = __webpack_require__(156);
+var adjust_axis = __webpack_require__(145);
+var proj = __webpack_require__(56);
+var toPoint = __webpack_require__(84);
+module.exports = function transform(source, dest, point) {
+  var wgs84;
+  if (Array.isArray(point)) {
+    point = toPoint(point);
+  }
+  function checkNotWGS(source, dest) {
+    return (source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== "WGS84";
+  }
+
+  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
+  if (source.datum && dest.datum && (checkNotWGS(source, dest) || checkNotWGS(dest, source))) {
+    wgs84 = new proj('WGS84');
+    transform(source, wgs84, point);
+    source = wgs84;
+  }
+  // DGR, 2010/11/12
+  if (source.axis !== "enu") {
+    adjust_axis(source, false, point);
+  }
+  // Transform source points to long/lat, if they aren't already.
+  if (source.projName === "longlat") {
+    point.x *= D2R; // convert degrees to radians
+    point.y *= D2R;
+  } else {
+    if (source.to_meter) {
+      point.x *= source.to_meter;
+      point.y *= source.to_meter;
+    }
+    source.inverse(point); // Convert Cartesian to longlat
+  }
+  // Adjust for the prime meridian if necessary
+  if (source.from_greenwich) {
+    point.x += source.from_greenwich;
+  }
+
+  // Convert datums if needed, and if possible.
+  point = datum_transform(source.datum, dest.datum, point);
+
+  // Adjust for the prime meridian if necessary
+  if (dest.from_greenwich) {
+    point.x -= dest.from_greenwich;
+  }
+
+  if (dest.projName === "longlat") {
+    // convert radians to decimal degrees
+    point.x *= R2D;
+    point.y *= R2D;
+  } else {
+    // else project
+    dest.forward(point);
+    if (dest.to_meter) {
+      point.x /= dest.to_meter;
+      point.y /= dest.to_meter;
+    }
+  }
+
+  // DGR, 2010/11/12
+  if (dest.axis !== "enu") {
+    adjust_axis(dest, true, point);
+  }
+
+  return point;
+};
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var D2R = 0.01745329251994329577;
+var extend = __webpack_require__(60);
+
+function mapit(obj, key, v) {
+  obj[key] = v.map(function (aa) {
+    var o = {};
+    sExpr(aa, o);
+    return o;
+  }).reduce(function (a, b) {
+    return extend(a, b);
+  }, {});
+}
+
+function sExpr(v, obj) {
+  var key;
+  if (!Array.isArray(v)) {
+    obj[v] = true;
+    return;
+  } else {
+    key = v.shift();
+    if (key === 'PARAMETER') {
+      key = v.shift();
+    }
+    if (v.length === 1) {
+      if (Array.isArray(v[0])) {
+        obj[key] = {};
+        sExpr(v[0], obj[key]);
+      } else {
+        obj[key] = v[0];
+      }
+    } else if (!v.length) {
+      obj[key] = true;
+    } else if (key === 'TOWGS84') {
+      obj[key] = v;
+    } else {
+      obj[key] = {};
+      if (['UNIT', 'PRIMEM', 'VERT_DATUM'].indexOf(key) > -1) {
+        obj[key] = {
+          name: v[0].toLowerCase(),
+          convert: v[1]
+        };
+        if (v.length === 3) {
+          obj[key].auth = v[2];
+        }
+      } else if (key === 'SPHEROID') {
+        obj[key] = {
+          name: v[0],
+          a: v[1],
+          rf: v[2]
+        };
+        if (v.length === 4) {
+          obj[key].auth = v[3];
+        }
+      } else if (['GEOGCS', 'GEOCCS', 'DATUM', 'VERT_CS', 'COMPD_CS', 'LOCAL_CS', 'FITTED_CS', 'LOCAL_DATUM'].indexOf(key) > -1) {
+        v[0] = ['name', v[0]];
+        mapit(obj, key, v);
+      } else if (v.every(function (aa) {
+        return Array.isArray(aa);
+      })) {
+        mapit(obj, key, v);
+      } else {
+        sExpr(v, obj[key]);
+      }
+    }
+  }
+}
+
+function rename(obj, params) {
+  var outName = params[0];
+  var inName = params[1];
+  if (!(outName in obj) && inName in obj) {
+    obj[outName] = obj[inName];
+    if (params.length === 3) {
+      obj[outName] = params[2](obj[outName]);
+    }
+  }
+}
+
+function d2r(input) {
+  return input * D2R;
+}
+
+function cleanWKT(wkt) {
+  if (wkt.type === 'GEOGCS') {
+    wkt.projName = 'longlat';
+  } else if (wkt.type === 'LOCAL_CS') {
+    wkt.projName = 'identity';
+    wkt.local = true;
+  } else {
+    if (_typeof(wkt.PROJECTION) === "object") {
+      wkt.projName = Object.keys(wkt.PROJECTION)[0];
+    } else {
+      wkt.projName = wkt.PROJECTION;
+    }
+  }
+  if (wkt.UNIT) {
+    wkt.units = wkt.UNIT.name.toLowerCase();
+    if (wkt.units === 'metre') {
+      wkt.units = 'meter';
+    }
+    if (wkt.UNIT.convert) {
+      if (wkt.type === 'GEOGCS') {
+        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
+          wkt.to_meter = parseFloat(wkt.UNIT.convert, 10) * wkt.DATUM.SPHEROID.a;
+        }
+      } else {
+        wkt.to_meter = parseFloat(wkt.UNIT.convert, 10);
+      }
+    }
+  }
+
+  if (wkt.GEOGCS) {
+    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
+    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
+    //}
+    if (wkt.GEOGCS.DATUM) {
+      wkt.datumCode = wkt.GEOGCS.DATUM.name.toLowerCase();
+    } else {
+      wkt.datumCode = wkt.GEOGCS.name.toLowerCase();
+    }
+    if (wkt.datumCode.slice(0, 2) === 'd_') {
+      wkt.datumCode = wkt.datumCode.slice(2);
+    }
+    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
+      wkt.datumCode = 'nzgd49';
+    }
+    if (wkt.datumCode === "wgs_1984") {
+      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
+        wkt.sphere = true;
+      }
+      wkt.datumCode = 'wgs84';
+    }
+    if (wkt.datumCode.slice(-6) === '_ferro') {
+      wkt.datumCode = wkt.datumCode.slice(0, -6);
+    }
+    if (wkt.datumCode.slice(-8) === '_jakarta') {
+      wkt.datumCode = wkt.datumCode.slice(0, -8);
+    }
+    if (~wkt.datumCode.indexOf('belge')) {
+      wkt.datumCode = "rnb72";
+    }
+    if (wkt.GEOGCS.DATUM && wkt.GEOGCS.DATUM.SPHEROID) {
+      wkt.ellps = wkt.GEOGCS.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
+      if (wkt.ellps.toLowerCase().slice(0, 13) === "international") {
+        wkt.ellps = 'intl';
+      }
+
+      wkt.a = wkt.GEOGCS.DATUM.SPHEROID.a;
+      wkt.rf = parseFloat(wkt.GEOGCS.DATUM.SPHEROID.rf, 10);
+    }
+    if (~wkt.datumCode.indexOf('osgb_1936')) {
+      wkt.datumCode = "osgb36";
+    }
+  }
+  if (wkt.b && !isFinite(wkt.b)) {
+    wkt.b = wkt.a;
+  }
+
+  function toMeter(input) {
+    var ratio = wkt.to_meter || 1;
+    return parseFloat(input, 10) * ratio;
+  }
+  var renamer = function renamer(a) {
+    return rename(wkt, a);
+  };
+  var list = [['standard_parallel_1', 'Standard_Parallel_1'], ['standard_parallel_2', 'Standard_Parallel_2'], ['false_easting', 'False_Easting'], ['false_northing', 'False_Northing'], ['central_meridian', 'Central_Meridian'], ['latitude_of_origin', 'Latitude_Of_Origin'], ['latitude_of_origin', 'Central_Parallel'], ['scale_factor', 'Scale_Factor'], ['k0', 'scale_factor'], ['latitude_of_center', 'Latitude_of_center'], ['lat0', 'latitude_of_center', d2r], ['longitude_of_center', 'Longitude_Of_Center'], ['longc', 'longitude_of_center', d2r], ['x0', 'false_easting', toMeter], ['y0', 'false_northing', toMeter], ['long0', 'central_meridian', d2r], ['lat0', 'latitude_of_origin', d2r], ['lat0', 'standard_parallel_1', d2r], ['lat1', 'standard_parallel_1', d2r], ['lat2', 'standard_parallel_2', d2r], ['alpha', 'azimuth', d2r], ['srsCode', 'name']];
+  list.forEach(renamer);
+  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === "Lambert_Azimuthal_Equal_Area")) {
+    wkt.long0 = wkt.longc;
+  }
+  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
+    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
+    wkt.lat_ts = wkt.lat1;
+  }
+}
+module.exports = function (wkt, self) {
+  var lisp = JSON.parse(("," + wkt).replace(/\s*\,\s*([A-Z_0-9]+?)(\[)/g, ',["$1",').slice(1).replace(/\s*\,\s*([A-Z_0-9]+?)\]/g, ',"$1"]').replace(/,\["VERTCS".+/, ''));
+  var type = lisp.shift();
+  var name = lisp.shift();
+  lisp.unshift(['name', name]);
+  lisp.unshift(['type', type]);
+  lisp.unshift('output');
+  var obj = {};
+  sExpr(lisp, obj);
+  cleanWKT(obj.output);
+  return extend(self, obj.output);
+};
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 /**
  * UTM zones are grouped, and assigned to one of a group of 6
  * sets.
@@ -25287,644 +25959,6 @@ function getMinNorthing(zoneLetter) {
     throw "Invalid zone letter: " + zoneLetter;
   }
 }
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (phi, sphi, cphi, en) {
-  cphi *= sphi;
-  sphi *= sphi;
-  return en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4])));
-};
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (array) {
-  var out = {
-    x: array[0],
-    y: array[1]
-  };
-  if (array.length > 2) {
-    out.z = array[2];
-  }
-  if (array.length > 3) {
-    out.m = array[3];
-  }
-  return out;
-};
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var globals = __webpack_require__(158);
-var parseProj = __webpack_require__(87);
-var wkt = __webpack_require__(90);
-
-function defs(name) {
-  /*global console*/
-  var that = this;
-  if (arguments.length === 2) {
-    var def = arguments[1];
-    if (typeof def === 'string') {
-      if (def.charAt(0) === '+') {
-        defs[name] = parseProj(arguments[1]);
-      } else {
-        defs[name] = wkt(arguments[1]);
-      }
-    } else {
-      defs[name] = def;
-    }
-  } else if (arguments.length === 1) {
-    if (Array.isArray(name)) {
-      return name.map(function (v) {
-        if (Array.isArray(v)) {
-          defs.apply(that, v);
-        } else {
-          defs(v);
-        }
-      });
-    } else if (typeof name === 'string') {
-      if (name in defs) {
-        return defs[name];
-      }
-    } else if ('EPSG' in name) {
-      defs['EPSG:' + name.EPSG] = name;
-    } else if ('ESRI' in name) {
-      defs['ESRI:' + name.ESRI] = name;
-    } else if ('IAU2000' in name) {
-      defs['IAU2000:' + name.IAU2000] = name;
-    } else {
-      console.log(name);
-    }
-    return;
-  }
-}
-globals(defs);
-module.exports = defs;
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(152);
-var _units = __webpack_require__(153);
-
-module.exports = function (defData) {
-  var self = {};
-  var paramObj = {};
-  defData.split("+").map(function (v) {
-    return v.trim();
-  }).filter(function (a) {
-    return a;
-  }).forEach(function (a) {
-    var split = a.split("=");
-    split.push(true);
-    paramObj[split[0].toLowerCase()] = split[1];
-  });
-  var paramName, paramVal, paramOutname;
-  var params = {
-    proj: 'projName',
-    datum: 'datumCode',
-    rf: function rf(v) {
-      self.rf = parseFloat(v);
-    },
-    lat_0: function lat_0(v) {
-      self.lat0 = v * D2R;
-    },
-    lat_1: function lat_1(v) {
-      self.lat1 = v * D2R;
-    },
-    lat_2: function lat_2(v) {
-      self.lat2 = v * D2R;
-    },
-    lat_ts: function lat_ts(v) {
-      self.lat_ts = v * D2R;
-    },
-    lon_0: function lon_0(v) {
-      self.long0 = v * D2R;
-    },
-    lon_1: function lon_1(v) {
-      self.long1 = v * D2R;
-    },
-    lon_2: function lon_2(v) {
-      self.long2 = v * D2R;
-    },
-    alpha: function alpha(v) {
-      self.alpha = parseFloat(v) * D2R;
-    },
-    lonc: function lonc(v) {
-      self.longc = v * D2R;
-    },
-    x_0: function x_0(v) {
-      self.x0 = parseFloat(v);
-    },
-    y_0: function y_0(v) {
-      self.y0 = parseFloat(v);
-    },
-    k_0: function k_0(v) {
-      self.k0 = parseFloat(v);
-    },
-    k: function k(v) {
-      self.k0 = parseFloat(v);
-    },
-    a: function a(v) {
-      self.a = parseFloat(v);
-    },
-    b: function b(v) {
-      self.b = parseFloat(v);
-    },
-    r_a: function r_a() {
-      self.R_A = true;
-    },
-    zone: function zone(v) {
-      self.zone = parseInt(v, 10);
-    },
-    south: function south() {
-      self.utmSouth = true;
-    },
-    towgs84: function towgs84(v) {
-      self.datum_params = v.split(",").map(function (a) {
-        return parseFloat(a);
-      });
-    },
-    to_meter: function to_meter(v) {
-      self.to_meter = parseFloat(v);
-    },
-    units: function units(v) {
-      self.units = v;
-      if (_units[v]) {
-        self.to_meter = _units[v].to_meter;
-      }
-    },
-    from_greenwich: function from_greenwich(v) {
-      self.from_greenwich = v * D2R;
-    },
-    pm: function pm(v) {
-      self.from_greenwich = (PrimeMeridian[v] ? PrimeMeridian[v] : parseFloat(v)) * D2R;
-    },
-    nadgrids: function nadgrids(v) {
-      if (v === '@null') {
-        self.datumCode = 'none';
-      } else {
-        self.nadgrids = v;
-      }
-    },
-    axis: function axis(v) {
-      var legalAxis = "ewnsud";
-      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
-        self.axis = v;
-      }
-    }
-  };
-  for (paramName in paramObj) {
-    paramVal = paramObj[paramName];
-    if (paramName in params) {
-      paramOutname = params[paramName];
-      if (typeof paramOutname === 'function') {
-        paramOutname(paramVal);
-      } else {
-        self[paramOutname] = paramVal;
-      }
-    } else {
-      self[paramName] = paramVal;
-    }
-  }
-  if (typeof self.datumCode === 'string' && self.datumCode !== "WGS84") {
-    self.datumCode = self.datumCode.toLowerCase();
-  }
-  return self;
-};
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var e0fn = __webpack_require__(33);
-var e1fn = __webpack_require__(34);
-var e2fn = __webpack_require__(35);
-var e3fn = __webpack_require__(36);
-var mlfn = __webpack_require__(37);
-var adjust_lon = __webpack_require__(5);
-var HALF_PI = Math.PI / 2;
-var EPSLN = 1.0e-10;
-var sign = __webpack_require__(38);
-var asinz = __webpack_require__(23);
-
-exports.init = function () {
-  this.e0 = e0fn(this.es);
-  this.e1 = e1fn(this.es);
-  this.e2 = e2fn(this.es);
-  this.e3 = e3fn(this.es);
-  this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
-};
-
-/**
-    Transverse Mercator Forward  - long/lat to x/y
-    long/lat in radians
-  */
-exports.forward = function (p) {
-  var lon = p.x;
-  var lat = p.y;
-
-  var delta_lon = adjust_lon(lon - this.long0);
-  var con;
-  var x, y;
-  var sin_phi = Math.sin(lat);
-  var cos_phi = Math.cos(lat);
-
-  if (this.sphere) {
-    var b = cos_phi * Math.sin(delta_lon);
-    if (Math.abs(Math.abs(b) - 1) < 0.0000000001) {
-      return 93;
-    } else {
-      x = 0.5 * this.a * this.k0 * Math.log((1 + b) / (1 - b));
-      con = Math.acos(cos_phi * Math.cos(delta_lon) / Math.sqrt(1 - b * b));
-      if (lat < 0) {
-        con = -con;
-      }
-      y = this.a * this.k0 * (con - this.lat0);
-    }
-  } else {
-    var al = cos_phi * delta_lon;
-    var als = Math.pow(al, 2);
-    var c = this.ep2 * Math.pow(cos_phi, 2);
-    var tq = Math.tan(lat);
-    var t = Math.pow(tq, 2);
-    con = 1 - this.es * Math.pow(sin_phi, 2);
-    var n = this.a / Math.sqrt(con);
-    var ml = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, lat);
-
-    x = this.k0 * n * al * (1 + als / 6 * (1 - t + c + als / 20 * (5 - 18 * t + Math.pow(t, 2) + 72 * c - 58 * this.ep2))) + this.x0;
-    y = this.k0 * (ml - this.ml0 + n * tq * (als * (0.5 + als / 24 * (5 - t + 9 * c + 4 * Math.pow(c, 2) + als / 30 * (61 - 58 * t + Math.pow(t, 2) + 600 * c - 330 * this.ep2))))) + this.y0;
-  }
-  p.x = x;
-  p.y = y;
-  return p;
-};
-
-/**
-    Transverse Mercator Inverse  -  x/y to long/lat
-  */
-exports.inverse = function (p) {
-  var con, phi;
-  var delta_phi;
-  var i;
-  var max_iter = 6;
-  var lat, lon;
-
-  if (this.sphere) {
-    var f = Math.exp(p.x / (this.a * this.k0));
-    var g = 0.5 * (f - 1 / f);
-    var temp = this.lat0 + p.y / (this.a * this.k0);
-    var h = Math.cos(temp);
-    con = Math.sqrt((1 - h * h) / (1 + g * g));
-    lat = asinz(con);
-    if (temp < 0) {
-      lat = -lat;
-    }
-    if (g === 0 && h === 0) {
-      lon = this.long0;
-    } else {
-      lon = adjust_lon(Math.atan2(g, h) + this.long0);
-    }
-  } else {
-    // ellipsoidal form
-    var x = p.x - this.x0;
-    var y = p.y - this.y0;
-
-    con = (this.ml0 + y / this.k0) / this.a;
-    phi = con;
-    for (i = 0; true; i++) {
-      delta_phi = (con + this.e1 * Math.sin(2 * phi) - this.e2 * Math.sin(4 * phi) + this.e3 * Math.sin(6 * phi)) / this.e0 - phi;
-      phi += delta_phi;
-      if (Math.abs(delta_phi) <= EPSLN) {
-        break;
-      }
-      if (i >= max_iter) {
-        return 95;
-      }
-    } // for()
-    if (Math.abs(phi) < HALF_PI) {
-      var sin_phi = Math.sin(phi);
-      var cos_phi = Math.cos(phi);
-      var tan_phi = Math.tan(phi);
-      var c = this.ep2 * Math.pow(cos_phi, 2);
-      var cs = Math.pow(c, 2);
-      var t = Math.pow(tan_phi, 2);
-      var ts = Math.pow(t, 2);
-      con = 1 - this.es * Math.pow(sin_phi, 2);
-      var n = this.a / Math.sqrt(con);
-      var r = n * (1 - this.es) / con;
-      var d = x / (n * this.k0);
-      var ds = Math.pow(d, 2);
-      lat = phi - n * tan_phi * ds / r * (0.5 - ds / 24 * (5 + 3 * t + 10 * c - 4 * cs - 9 * this.ep2 - ds / 30 * (61 + 90 * t + 298 * c + 45 * ts - 252 * this.ep2 - 3 * cs)));
-      lon = adjust_lon(this.long0 + d * (1 - ds / 6 * (1 + 2 * t + c - ds / 20 * (5 - 2 * c + 28 * t - 3 * cs + 8 * this.ep2 + 24 * ts))) / cos_phi);
-    } else {
-      lat = HALF_PI * sign(y);
-      lon = this.long0;
-    }
-  }
-  p.x = lon;
-  p.y = lat;
-  return p;
-};
-exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var D2R = 0.01745329251994329577;
-var R2D = 57.29577951308232088;
-var PJD_3PARAM = 1;
-var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(156);
-var adjust_axis = __webpack_require__(145);
-var proj = __webpack_require__(56);
-var toPoint = __webpack_require__(85);
-module.exports = function transform(source, dest, point) {
-  var wgs84;
-  if (Array.isArray(point)) {
-    point = toPoint(point);
-  }
-  function checkNotWGS(source, dest) {
-    return (source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== "WGS84";
-  }
-
-  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
-  if (source.datum && dest.datum && (checkNotWGS(source, dest) || checkNotWGS(dest, source))) {
-    wgs84 = new proj('WGS84');
-    transform(source, wgs84, point);
-    source = wgs84;
-  }
-  // DGR, 2010/11/12
-  if (source.axis !== "enu") {
-    adjust_axis(source, false, point);
-  }
-  // Transform source points to long/lat, if they aren't already.
-  if (source.projName === "longlat") {
-    point.x *= D2R; // convert degrees to radians
-    point.y *= D2R;
-  } else {
-    if (source.to_meter) {
-      point.x *= source.to_meter;
-      point.y *= source.to_meter;
-    }
-    source.inverse(point); // Convert Cartesian to longlat
-  }
-  // Adjust for the prime meridian if necessary
-  if (source.from_greenwich) {
-    point.x += source.from_greenwich;
-  }
-
-  // Convert datums if needed, and if possible.
-  point = datum_transform(source.datum, dest.datum, point);
-
-  // Adjust for the prime meridian if necessary
-  if (dest.from_greenwich) {
-    point.x -= dest.from_greenwich;
-  }
-
-  if (dest.projName === "longlat") {
-    // convert radians to decimal degrees
-    point.x *= R2D;
-    point.y *= R2D;
-  } else {
-    // else project
-    dest.forward(point);
-    if (dest.to_meter) {
-      point.x /= dest.to_meter;
-      point.y /= dest.to_meter;
-    }
-  }
-
-  // DGR, 2010/11/12
-  if (dest.axis !== "enu") {
-    adjust_axis(dest, true, point);
-  }
-
-  return point;
-};
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var D2R = 0.01745329251994329577;
-var extend = __webpack_require__(60);
-
-function mapit(obj, key, v) {
-  obj[key] = v.map(function (aa) {
-    var o = {};
-    sExpr(aa, o);
-    return o;
-  }).reduce(function (a, b) {
-    return extend(a, b);
-  }, {});
-}
-
-function sExpr(v, obj) {
-  var key;
-  if (!Array.isArray(v)) {
-    obj[v] = true;
-    return;
-  } else {
-    key = v.shift();
-    if (key === 'PARAMETER') {
-      key = v.shift();
-    }
-    if (v.length === 1) {
-      if (Array.isArray(v[0])) {
-        obj[key] = {};
-        sExpr(v[0], obj[key]);
-      } else {
-        obj[key] = v[0];
-      }
-    } else if (!v.length) {
-      obj[key] = true;
-    } else if (key === 'TOWGS84') {
-      obj[key] = v;
-    } else {
-      obj[key] = {};
-      if (['UNIT', 'PRIMEM', 'VERT_DATUM'].indexOf(key) > -1) {
-        obj[key] = {
-          name: v[0].toLowerCase(),
-          convert: v[1]
-        };
-        if (v.length === 3) {
-          obj[key].auth = v[2];
-        }
-      } else if (key === 'SPHEROID') {
-        obj[key] = {
-          name: v[0],
-          a: v[1],
-          rf: v[2]
-        };
-        if (v.length === 4) {
-          obj[key].auth = v[3];
-        }
-      } else if (['GEOGCS', 'GEOCCS', 'DATUM', 'VERT_CS', 'COMPD_CS', 'LOCAL_CS', 'FITTED_CS', 'LOCAL_DATUM'].indexOf(key) > -1) {
-        v[0] = ['name', v[0]];
-        mapit(obj, key, v);
-      } else if (v.every(function (aa) {
-        return Array.isArray(aa);
-      })) {
-        mapit(obj, key, v);
-      } else {
-        sExpr(v, obj[key]);
-      }
-    }
-  }
-}
-
-function rename(obj, params) {
-  var outName = params[0];
-  var inName = params[1];
-  if (!(outName in obj) && inName in obj) {
-    obj[outName] = obj[inName];
-    if (params.length === 3) {
-      obj[outName] = params[2](obj[outName]);
-    }
-  }
-}
-
-function d2r(input) {
-  return input * D2R;
-}
-
-function cleanWKT(wkt) {
-  if (wkt.type === 'GEOGCS') {
-    wkt.projName = 'longlat';
-  } else if (wkt.type === 'LOCAL_CS') {
-    wkt.projName = 'identity';
-    wkt.local = true;
-  } else {
-    if (_typeof(wkt.PROJECTION) === "object") {
-      wkt.projName = Object.keys(wkt.PROJECTION)[0];
-    } else {
-      wkt.projName = wkt.PROJECTION;
-    }
-  }
-  if (wkt.UNIT) {
-    wkt.units = wkt.UNIT.name.toLowerCase();
-    if (wkt.units === 'metre') {
-      wkt.units = 'meter';
-    }
-    if (wkt.UNIT.convert) {
-      if (wkt.type === 'GEOGCS') {
-        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
-          wkt.to_meter = parseFloat(wkt.UNIT.convert, 10) * wkt.DATUM.SPHEROID.a;
-        }
-      } else {
-        wkt.to_meter = parseFloat(wkt.UNIT.convert, 10);
-      }
-    }
-  }
-
-  if (wkt.GEOGCS) {
-    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
-    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
-    //}
-    if (wkt.GEOGCS.DATUM) {
-      wkt.datumCode = wkt.GEOGCS.DATUM.name.toLowerCase();
-    } else {
-      wkt.datumCode = wkt.GEOGCS.name.toLowerCase();
-    }
-    if (wkt.datumCode.slice(0, 2) === 'd_') {
-      wkt.datumCode = wkt.datumCode.slice(2);
-    }
-    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
-      wkt.datumCode = 'nzgd49';
-    }
-    if (wkt.datumCode === "wgs_1984") {
-      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
-        wkt.sphere = true;
-      }
-      wkt.datumCode = 'wgs84';
-    }
-    if (wkt.datumCode.slice(-6) === '_ferro') {
-      wkt.datumCode = wkt.datumCode.slice(0, -6);
-    }
-    if (wkt.datumCode.slice(-8) === '_jakarta') {
-      wkt.datumCode = wkt.datumCode.slice(0, -8);
-    }
-    if (~wkt.datumCode.indexOf('belge')) {
-      wkt.datumCode = "rnb72";
-    }
-    if (wkt.GEOGCS.DATUM && wkt.GEOGCS.DATUM.SPHEROID) {
-      wkt.ellps = wkt.GEOGCS.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
-      if (wkt.ellps.toLowerCase().slice(0, 13) === "international") {
-        wkt.ellps = 'intl';
-      }
-
-      wkt.a = wkt.GEOGCS.DATUM.SPHEROID.a;
-      wkt.rf = parseFloat(wkt.GEOGCS.DATUM.SPHEROID.rf, 10);
-    }
-    if (~wkt.datumCode.indexOf('osgb_1936')) {
-      wkt.datumCode = "osgb36";
-    }
-  }
-  if (wkt.b && !isFinite(wkt.b)) {
-    wkt.b = wkt.a;
-  }
-
-  function toMeter(input) {
-    var ratio = wkt.to_meter || 1;
-    return parseFloat(input, 10) * ratio;
-  }
-  var renamer = function renamer(a) {
-    return rename(wkt, a);
-  };
-  var list = [['standard_parallel_1', 'Standard_Parallel_1'], ['standard_parallel_2', 'Standard_Parallel_2'], ['false_easting', 'False_Easting'], ['false_northing', 'False_Northing'], ['central_meridian', 'Central_Meridian'], ['latitude_of_origin', 'Latitude_Of_Origin'], ['latitude_of_origin', 'Central_Parallel'], ['scale_factor', 'Scale_Factor'], ['k0', 'scale_factor'], ['latitude_of_center', 'Latitude_of_center'], ['lat0', 'latitude_of_center', d2r], ['longitude_of_center', 'Longitude_Of_Center'], ['longc', 'longitude_of_center', d2r], ['x0', 'false_easting', toMeter], ['y0', 'false_northing', toMeter], ['long0', 'central_meridian', d2r], ['lat0', 'latitude_of_origin', d2r], ['lat0', 'standard_parallel_1', d2r], ['lat1', 'standard_parallel_1', d2r], ['lat2', 'standard_parallel_2', d2r], ['alpha', 'azimuth', d2r], ['srsCode', 'name']];
-  list.forEach(renamer);
-  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === "Lambert_Azimuthal_Equal_Area")) {
-    wkt.long0 = wkt.longc;
-  }
-  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
-    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
-    wkt.lat_ts = wkt.lat1;
-  }
-}
-module.exports = function (wkt, self) {
-  var lisp = JSON.parse(("," + wkt).replace(/\s*\,\s*([A-Z_0-9]+?)(\[)/g, ',["$1",').slice(1).replace(/\s*\,\s*([A-Z_0-9]+?)\]/g, ',"$1"]').replace(/,\["VERTCS".+/, ''));
-  var type = lisp.shift();
-  var name = lisp.shift();
-  lisp.unshift(['name', name]);
-  lisp.unshift(['type', type]);
-  lisp.unshift('output');
-  var obj = {};
-  sExpr(lisp, obj);
-  cleanWKT(obj.output);
-  return extend(self, obj.output);
-};
 
 /***/ }),
 /* 91 */
@@ -26760,7 +26794,7 @@ _SuperMap2.default.Geometry.MultiLineString = MultiLineString;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _SuperMap = __webpack_require__(0);
@@ -26797,27 +26831,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var multiPolygon1 = new SuperMap.Geometry.MultiPolygon([polygon1,polygon2]);
  */
 var MultiPolygon = function (_Collection) {
-  _inherits(MultiPolygon, _Collection);
+    _inherits(MultiPolygon, _Collection);
 
-  function MultiPolygon(components) {
-    _classCallCheck(this, MultiPolygon);
+    function MultiPolygon(components) {
+        _classCallCheck(this, MultiPolygon);
 
-    var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
+        var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
 
-    _this.componentTypes = ["SuperMap.Geometry.Polygon"];
-    _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
-    return _this;
-  }
+        _this.componentTypes = ["SuperMap.Geometry.Polygon"];
+        _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
+        return _this;
+    }
 
-  /**
-   * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
-   * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-   * @readonly
-   * @default ["{@link SuperMap.Geometry.Polygon}"]
-   */
+    /**
+     * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
+     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+     * @readonly
+     * @default ["{@link SuperMap.Geometry.Polygon}"]
+     */
 
 
-  return MultiPolygon;
+    return MultiPolygon;
 }(_Collection3.default);
 
 exports.default = MultiPolygon;
@@ -39410,7 +39444,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var mgrs = __webpack_require__(83);
+var mgrs = __webpack_require__(90);
 
 function Point(x, y, z) {
   if (!(this instanceof Point)) {
@@ -39580,7 +39614,7 @@ module.exports = function (es) {
 "use strict";
 
 
-var pj_mlfn = __webpack_require__(84);
+var pj_mlfn = __webpack_require__(83);
 var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
 module.exports = function (arg, es, en) {
@@ -39963,7 +39997,7 @@ exports['us-ft'] = { to_meter: 1200 / 3937 };
 
 
 var proj = __webpack_require__(56);
-var transform = __webpack_require__(89);
+var transform = __webpack_require__(88);
 var wgs84 = proj('WGS84');
 
 function transformer(from, to, coords) {
@@ -40611,7 +40645,7 @@ module.exports = function (defs) {
 "use strict";
 
 
-var projs = [__webpack_require__(88), __webpack_require__(185), __webpack_require__(184), __webpack_require__(183), __webpack_require__(182), __webpack_require__(179), __webpack_require__(173), __webpack_require__(171), __webpack_require__(165), __webpack_require__(172), __webpack_require__(163), __webpack_require__(170), __webpack_require__(166), __webpack_require__(167), __webpack_require__(180), __webpack_require__(178), __webpack_require__(176), __webpack_require__(181), __webpack_require__(177), __webpack_require__(168), __webpack_require__(186), __webpack_require__(164)];
+var projs = [__webpack_require__(87), __webpack_require__(185), __webpack_require__(184), __webpack_require__(183), __webpack_require__(182), __webpack_require__(179), __webpack_require__(173), __webpack_require__(171), __webpack_require__(165), __webpack_require__(172), __webpack_require__(163), __webpack_require__(170), __webpack_require__(166), __webpack_require__(167), __webpack_require__(180), __webpack_require__(178), __webpack_require__(176), __webpack_require__(181), __webpack_require__(177), __webpack_require__(168), __webpack_require__(186), __webpack_require__(164)];
 module.exports = function (proj4) {
   projs.forEach(function (proj) {
     proj4.Proj.projections.add(proj);
@@ -40630,10 +40664,10 @@ proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = __webpack_require__(56);
 proj4.WGS84 = new proj4.Proj('WGS84');
 proj4.Point = __webpack_require__(144);
-proj4.toPoint = __webpack_require__(85);
-proj4.defs = __webpack_require__(86);
-proj4.transform = __webpack_require__(89);
-proj4.mgrs = __webpack_require__(83);
+proj4.toPoint = __webpack_require__(84);
+proj4.defs = __webpack_require__(85);
+proj4.transform = __webpack_require__(88);
+proj4.mgrs = __webpack_require__(90);
 proj4.version = __webpack_require__(434).version;
 __webpack_require__(159)(proj4);
 module.exports = proj4;
@@ -40645,9 +40679,9 @@ module.exports = proj4;
 "use strict";
 
 
-var defs = __webpack_require__(86);
-var wkt = __webpack_require__(90);
-var projStr = __webpack_require__(87);
+var defs = __webpack_require__(85);
+var wkt = __webpack_require__(89);
+var projStr = __webpack_require__(86);
 function testObj(code) {
   return typeof code === 'string';
 }
@@ -42824,7 +42858,7 @@ var adjust_lon = __webpack_require__(5);
 var adjust_lat = __webpack_require__(32);
 var pj_enfn = __webpack_require__(147);
 var MAX_ITER = 20;
-var pj_mlfn = __webpack_require__(84);
+var pj_mlfn = __webpack_require__(83);
 var pj_inv_mlfn = __webpack_require__(148);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
@@ -43239,7 +43273,7 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 var D2R = 0.01745329251994329577;
-var tmerc = __webpack_require__(88);
+var tmerc = __webpack_require__(87);
 exports.dependsOn = 'tmerc';
 exports.init = function () {
   if (!this.zone) {
@@ -81097,7 +81131,7 @@ _SuperMap2.default.LevelRenderer.Tool.Math = Math;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -81118,272 +81152,272 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var Matrix = function () {
 
-  /**
-   * Constructor: SuperMap.LevelRenderer.Tool.Matrix
-   * 构造函数。
-   *
-   */
-  function Matrix() {
-    _classCallCheck(this, Matrix);
+    /**
+     * Constructor: SuperMap.LevelRenderer.Tool.Matrix
+     * 构造函数。
+     *
+     */
+    function Matrix() {
+        _classCallCheck(this, Matrix);
 
-    this.ArrayCtor = null;
-    this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Matrix";
+        this.ArrayCtor = null;
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Matrix";
 
-    this.ArrayCtor = typeof Float32Array === 'undefined' ? Array : Float32Array;
-  }
-
-  /**
-   * APIMethod: create
-   * 创建一个单位矩阵。
-   *
-   * Returns:
-   * {Float32Array|Array.<Number>} 单位矩阵。
-   */
-
-
-  /**
-   * Property: ArrayCtor
-   * {Object} 数组类型控制
-   */
-
-
-  _createClass(Matrix, [{
-    key: 'create',
-    value: function create() {
-      var ArrayCtor = this.ArrayCtor;
-
-      var out = new ArrayCtor(6);
-      this.identity(out);
-
-      return out;
+        this.ArrayCtor = typeof Float32Array === 'undefined' ? Array : Float32Array;
     }
 
     /**
-     * APIMethod: identity
-     * 设置矩阵为单位矩阵。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
+     * APIMethod: create
+     * 创建一个单位矩阵。
      *
      * Returns:
      * {Float32Array|Array.<Number>} 单位矩阵。
      */
 
-  }, {
-    key: 'identity',
-    value: function identity(out) {
-      out[0] = 1;
-      out[1] = 0;
-      out[2] = 0;
-      out[3] = 1;
-      out[4] = 0;
-      out[5] = 0;
-      return out;
-    }
 
     /**
-     * APIMethod: copy
-     * 复制矩阵。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * m - {Float32Array|Array.<Number>} 原始矩阵。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 克隆矩阵。
+     * Property: ArrayCtor
+     * {Object} 数组类型控制
      */
 
-  }, {
-    key: 'copy',
-    value: function copy(out, m) {
-      out[0] = m[0];
-      out[1] = m[1];
-      out[2] = m[2];
-      out[3] = m[3];
-      out[4] = m[4];
-      out[5] = m[5];
-      return out;
-    }
 
-    /**
-     * APIMethod: mul
-     * 矩阵相乘。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * m1 - {Float32Array|Array.<Number>} 矩阵m1。
-     * m2- {Float32Array|Array.<Number>} 矩阵m2。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+    _createClass(Matrix, [{
+        key: 'create',
+        value: function create() {
+            var ArrayCtor = this.ArrayCtor;
 
-  }, {
-    key: 'mul',
-    value: function mul(out, m1, m2) {
-      out[0] = m1[0] * m2[0] + m1[2] * m2[1];
-      out[1] = m1[1] * m2[0] + m1[3] * m2[1];
-      out[2] = m1[0] * m2[2] + m1[2] * m2[3];
-      out[3] = m1[1] * m2[2] + m1[3] * m2[3];
-      out[4] = m1[0] * m2[4] + m1[2] * m2[5] + m1[4];
-      out[5] = m1[1] * m2[4] + m1[3] * m2[5] + m1[5];
-      return out;
-    }
+            var out = new ArrayCtor(6);
+            this.identity(out);
 
-    /**
-     * APIMethod: translate
-     * 平移变换。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * v- {Float32Array|Array.<Number>} 平移参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+            return out;
+        }
 
-  }, {
-    key: 'translate',
-    value: function translate(out, a, v) {
-      out[0] = a[0];
-      out[1] = a[1];
-      out[2] = a[2];
-      out[3] = a[3];
-      out[4] = a[4] + v[0];
-      out[5] = a[5] + v[1];
-      return out;
-    }
+        /**
+         * APIMethod: identity
+         * 设置矩阵为单位矩阵。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 单位矩阵。
+         */
 
-    /**
-     * APIMethod: rotate
-     * 旋转变换。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * rad- {Float32Array|Array.<Number>} 旋转参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+    }, {
+        key: 'identity',
+        value: function identity(out) {
+            out[0] = 1;
+            out[1] = 0;
+            out[2] = 0;
+            out[3] = 1;
+            out[4] = 0;
+            out[5] = 0;
+            return out;
+        }
 
-  }, {
-    key: 'rotate',
-    value: function rotate(out, a, rad) {
-      var aa = a[0];
-      var ac = a[2];
-      var atx = a[4];
-      var ab = a[1];
-      var ad = a[3];
-      var aty = a[5];
-      var st = Math.sin(rad);
-      var ct = Math.cos(rad);
+        /**
+         * APIMethod: copy
+         * 复制矩阵。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * m - {Float32Array|Array.<Number>} 原始矩阵。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 克隆矩阵。
+         */
 
-      out[0] = aa * ct + ab * st;
-      out[1] = -aa * st + ab * ct;
-      out[2] = ac * ct + ad * st;
-      out[3] = -ac * st + ct * ad;
-      out[4] = ct * atx + st * aty;
-      out[5] = ct * aty - st * atx;
-      return out;
-    }
+    }, {
+        key: 'copy',
+        value: function copy(out, m) {
+            out[0] = m[0];
+            out[1] = m[1];
+            out[2] = m[2];
+            out[3] = m[3];
+            out[4] = m[4];
+            out[5] = m[5];
+            return out;
+        }
 
-    /**
-     * APIMethod: scale
-     * 缩放变换。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * v- {Float32Array|Array.<Number>} 缩放参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+        /**
+         * APIMethod: mul
+         * 矩阵相乘。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * m1 - {Float32Array|Array.<Number>} 矩阵m1。
+         * m2- {Float32Array|Array.<Number>} 矩阵m2。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-  }, {
-    key: 'scale',
-    value: function scale(out, a, v) {
-      var vx = v[0];
-      var vy = v[1];
-      out[0] = a[0] * vx;
-      out[1] = a[1] * vy;
-      out[2] = a[2] * vx;
-      out[3] = a[3] * vy;
-      out[4] = a[4] * vx;
-      out[5] = a[5] * vy;
-      return out;
-    }
+    }, {
+        key: 'mul',
+        value: function mul(out, m1, m2) {
+            out[0] = m1[0] * m2[0] + m1[2] * m2[1];
+            out[1] = m1[1] * m2[0] + m1[3] * m2[1];
+            out[2] = m1[0] * m2[2] + m1[2] * m2[3];
+            out[3] = m1[1] * m2[2] + m1[3] * m2[3];
+            out[4] = m1[0] * m2[4] + m1[2] * m2[5] + m1[4];
+            out[5] = m1[1] * m2[4] + m1[3] * m2[5] + m1[5];
+            return out;
+        }
 
-    /**
-     * APIMethod: invert
-     * 求逆矩阵。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+        /**
+         * APIMethod: translate
+         * 平移变换。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         * v- {Float32Array|Array.<Number>} 平移参数。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-  }, {
-    key: 'invert',
-    value: function invert(out, a) {
-      var aa = a[0];
-      var ac = a[2];
-      var atx = a[4];
-      var ab = a[1];
-      var ad = a[3];
-      var aty = a[5];
+    }, {
+        key: 'translate',
+        value: function translate(out, a, v) {
+            out[0] = a[0];
+            out[1] = a[1];
+            out[2] = a[2];
+            out[3] = a[3];
+            out[4] = a[4] + v[0];
+            out[5] = a[5] + v[1];
+            return out;
+        }
 
-      var det = aa * ad - ab * ac;
-      if (!det) {
-        return null;
-      }
-      det = 1.0 / det;
+        /**
+         * APIMethod: rotate
+         * 旋转变换。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         * rad- {Float32Array|Array.<Number>} 旋转参数。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-      out[0] = ad * det;
-      out[1] = -ab * det;
-      out[2] = -ac * det;
-      out[3] = aa * det;
-      out[4] = (ac * aty - ad * atx) * det;
-      out[5] = (ab * atx - aa * aty) * det;
-      return out;
-    }
+    }, {
+        key: 'rotate',
+        value: function rotate(out, a, rad) {
+            var aa = a[0];
+            var ac = a[2];
+            var atx = a[4];
+            var ab = a[1];
+            var ad = a[3];
+            var aty = a[5];
+            var st = Math.sin(rad);
+            var ct = Math.cos(rad);
 
-    /**
-     * APIMethod: mulVector
-     * 矩阵左乘向量。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * v- {Float32Array|Array.<Number>} 缩放参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+            out[0] = aa * ct + ab * st;
+            out[1] = -aa * st + ab * ct;
+            out[2] = ac * ct + ad * st;
+            out[3] = -ac * st + ct * ad;
+            out[4] = ct * atx + st * aty;
+            out[5] = ct * aty - st * atx;
+            return out;
+        }
 
-  }, {
-    key: 'mulVector',
-    value: function mulVector(out, a, v) {
-      var aa = a[0];
-      var ac = a[2];
-      var atx = a[4];
-      var ab = a[1];
-      var ad = a[3];
-      var aty = a[5];
+        /**
+         * APIMethod: scale
+         * 缩放变换。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         * v- {Float32Array|Array.<Number>} 缩放参数。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-      out[0] = v[0] * aa + v[1] * ac + atx;
-      out[1] = v[0] * ab + v[1] * ad + aty;
+    }, {
+        key: 'scale',
+        value: function scale(out, a, v) {
+            var vx = v[0];
+            var vy = v[1];
+            out[0] = a[0] * vx;
+            out[1] = a[1] * vy;
+            out[2] = a[2] * vx;
+            out[3] = a[3] * vy;
+            out[4] = a[4] * vx;
+            out[5] = a[5] * vy;
+            return out;
+        }
 
-      return out;
-    }
-  }]);
+        /**
+         * APIMethod: invert
+         * 求逆矩阵。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-  return Matrix;
+    }, {
+        key: 'invert',
+        value: function invert(out, a) {
+            var aa = a[0];
+            var ac = a[2];
+            var atx = a[4];
+            var ab = a[1];
+            var ad = a[3];
+            var aty = a[5];
+
+            var det = aa * ad - ab * ac;
+            if (!det) {
+                return null;
+            }
+            det = 1.0 / det;
+
+            out[0] = ad * det;
+            out[1] = -ab * det;
+            out[2] = -ac * det;
+            out[3] = aa * det;
+            out[4] = (ac * aty - ad * atx) * det;
+            out[5] = (ab * atx - aa * aty) * det;
+            return out;
+        }
+
+        /**
+         * APIMethod: mulVector
+         * 矩阵左乘向量。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         * v- {Float32Array|Array.<Number>} 缩放参数。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
+
+    }, {
+        key: 'mulVector',
+        value: function mulVector(out, a, v) {
+            var aa = a[0];
+            var ac = a[2];
+            var atx = a[4];
+            var ab = a[1];
+            var ad = a[3];
+            var aty = a[5];
+
+            out[0] = v[0] * aa + v[1] * ac + atx;
+            out[1] = v[0] * ab + v[1] * ad + aty;
+
+            return out;
+        }
+    }]);
+
+    return Matrix;
 }();
 
 exports.default = Matrix;
@@ -87193,8 +87227,8 @@ function ServerInfo(type, options) {
     if (!this.server) {
         console.error('server url require is not  undefined');
     }
-    var patten = /http:\/\/([^\/]+)/i;
-    this.server = this.server.match(patten)[0];
+    // var patten = /http:\/\/([^\/]+)/i;
+    //this.server = this.server.match(patten)[0];
 
     var tokenServiceSuffix = "/services/security/tokens.json";
     if (this.type === _REST.ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
@@ -94487,108 +94521,7 @@ _olDebug2.default.supermap.VectorTileStyles = VectorTileStyles;
 /* 434 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"_from": "proj4@2.3.15",
-	"_id": "proj4@2.3.15",
-	"_inBundle": false,
-	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
-	"_location": "/proj4",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "version",
-		"registry": true,
-		"raw": "proj4@2.3.15",
-		"name": "proj4",
-		"escapedName": "proj4",
-		"rawSpec": "2.3.15",
-		"saveSpec": null,
-		"fetchSpec": "2.3.15"
-	},
-	"_requiredBy": [
-		"/"
-	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
-	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
-	"_spec": "proj4@2.3.15",
-	"_where": "F:\\dev\\iClient",
-	"author": "",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
-	},
-	"bundleDependencies": false,
-	"contributors": [
-		{
-			"name": "Mike Adair",
-			"email": "madair@dmsolutions.ca"
-		},
-		{
-			"name": "Richard Greenwood",
-			"email": "rich@greenwoodmap.com"
-		},
-		{
-			"name": "Calvin Metcalf",
-			"email": "calvin.metcalf@gmail.com"
-		},
-		{
-			"name": "Richard Marsden",
-			"url": "http://www.winwaed.com"
-		},
-		{
-			"name": "T. Mittan"
-		},
-		{
-			"name": "D. Steinwand"
-		},
-		{
-			"name": "S. Nelson"
-		}
-	],
-	"dependencies": {
-		"mgrs": "~0.0.2"
-	},
-	"deprecated": false,
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"devDependencies": {
-		"browserify": "~12.0.1",
-		"chai": "~1.8.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"grunt": "~0.4.2",
-		"grunt-browserify": "~4.0.1",
-		"grunt-cli": "~0.1.13",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~0.8.0",
-		"grunt-contrib-uglify": "~0.11.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"istanbul": "~0.2.4",
-		"mocha": "~1.17.1",
-		"tin": "~0.4.0"
-	},
-	"directories": {
-		"test": "test",
-		"doc": "docs"
-	},
-	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"jam": {
-		"main": "dist/proj4.js",
-		"include": [
-			"dist/proj4.js",
-			"README.md",
-			"AUTHORS",
-			"LICENSE.md"
-		]
-	},
-	"license": "MIT",
-	"main": "lib/index.js",
-	"name": "proj4",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
-	},
-	"scripts": {
-		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
-	},
-	"version": "2.3.15"
-};
+module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 435 */

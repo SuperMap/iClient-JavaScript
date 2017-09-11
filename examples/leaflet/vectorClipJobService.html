@@ -24,7 +24,7 @@
     L.supermap.tiledMapLayer(mapURL).addTo(map);
     processingService = L.supermap.processingService(processingUrl);
     if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
+        SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090/iserver', token);
     }
     initForm();
     bindClick();

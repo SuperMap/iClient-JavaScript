@@ -36,12 +36,28 @@
                                 <div class="form-group">
                                     <label for="loginUrl_iportal" class="col-md-2 control-label">服务地址</label>
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" id="loginUrl_iportal" placeholder="服务域名/IP+端口">
+                                        <input type="text" class="form-control" id="loginUrl_iportal"
+                                               placeholder="服务域名/IP+端口">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username_iportal" class="col-md-2 control-label">用户名</label>
+
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="username_login">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password_iportal" class="col-md-2 control-label">密码</label>
+
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" id="password_login">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12 text-center">
                                         <a class="btn btn-success" onclick="loginPortal()">登录</a>
+                                        <a class="btn btn-success" onclick="logoutPortal()">登出</a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -60,7 +76,8 @@
                                 <div class="form-group">
                                     <label for="serviceUrlToken_iportal" class="col-md-2 control-label">服务地址</label>
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" id="serviceUrlToken_iportal" placeholder="服务域名/IP+端口">
+                                        <input type="text" class="form-control" id="serviceUrlToken_iportal"
+                                               placeholder="服务域名/IP+端口">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -130,7 +147,8 @@
                                 <div class="form-group">
                                     <label for="tokenServiceUrl_iportal" class="col-md-2 control-label">服务地址</label>
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" id="tokenServiceUrl_iportal" placeholder="http://localhost:8090/web/services/32">
+                                        <input type="text" class="form-control" id="tokenServiceUrl_iportal"
+                                               placeholder="http://localhost:8090/web/services/32">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -158,7 +176,8 @@
                                 <div class="form-group">
                                     <label for="serviceUrl_iportal" class="col-md-2 control-label">服务地址</label>
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" id="serviceUrl_iportal" placeholder="iPortal私有地图服务地址">
+                                        <input type="text" class="form-control" id="serviceUrl_iportal"
+                                               placeholder="iPortal私有地图服务地址">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -221,7 +240,7 @@
 <script>
 
     $(document).ready(function () {
-        $("#loginUrl_iportal").val("http://support.supermap.com.cn:8092");
+        $("#loginUrl_iportal").val("http://localhost:8090/iportal");
         $("#tokenServiceUrl_iportal").val("http://support.supermap.com.cn:8092/web/services/32");
         $("#token_iportal").val("_Bo_ksR9DC56MvnAXc6liuhAdWmmt1SuoLX758QIeBJUvteLqHqUeeHnQ6OU0i0VBoN5FjNP_SOQ2o1xyudBjA..");
 
@@ -234,10 +253,24 @@
     /*登录*/
     function loginPortal() {
         var loginUrl = $("#loginUrl_iportal").val();
+        var userName = $('#username_login').val();
+        var password = $('#password_login').val();
         if (!checkUrl(loginUrl)) {
             return;
         }
-        SuperMap.SecurityManager.loginPortal(loginUrl, true);
+        SuperMap.SecurityManager.loginiPortal(loginUrl, userName, password).then(function (result) {
+            if(result.succeed)
+                window.alert("登录成功")
+        });
+    }
+    /*登出*/
+    function logoutPortal() {
+        var loginUrl = $("#loginUrl_iportal").val();
+        SuperMap.SecurityManager.logoutiPortal(loginUrl).then(function (succeed) {
+            if (succeed) {
+                window.alert("登出成功")
+            }
+        });
     }
 
 

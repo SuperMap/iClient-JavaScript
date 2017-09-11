@@ -132,10 +132,42 @@ SuperMap.SecurityManager = {
      * @param url -{string} 网站地址
      * @param newTab -{boolean}是否新窗口打开
      */
-    loginPortal: function (url, newTab) {
+    loginiPortal: function (url, username, password) {
         var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "web/login" : "/web/login";
-        this._open(url, newTab);
+        url += end === "/" ? "web/login.json" : "/web/login.json";
+        var loginInfo = {
+            username: username && username.toString(),
+            password: password && password.toString()
+        };
+        loginInfo = JSON.stringify(loginInfo);
+        var requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            withCredentials: true
+        };
+        return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+            return response.json();
+        });
+
+    },
+    logoutiPortal: function (url) {
+        var end = url.substr(url.length - 1, 1);
+        url += end === "/" ? "services/security/logout" : "/services/security/logout";
+
+        var requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            withCredentials: true,
+            withoutFormatSuffix: true
+        };
+        return FetchRequest.get(url, "", requestOptions).then(function () {
+            return true;
+        }).catch(function () {
+            return false;
+        });
+
     },
 
     /**

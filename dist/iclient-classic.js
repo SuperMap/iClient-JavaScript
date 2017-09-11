@@ -1317,9 +1317,9 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
                         return response.json();
                     }).then(function (job) {
                         me.events.triggerEvent("processRunning", { id: job.id, state: job.state });
-                        if (job.state.runState === 'LOST') {
+                        if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
                             clearInterval(id);
-                            me.events.triggerEvent("processFailed", { error: job.state.errorMsg });
+                            me.events.triggerEvent("processFailed", { error: job.state.errorMsg, state: job.state.runState });
                         }
                         if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
                             clearInterval(id);
@@ -1882,6 +1882,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     get: function get(url, params, options) {
+        options = options || {};
         var type = 'GET';
         url = this._processUrl(url, options);
         url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
@@ -1898,6 +1899,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     delete: function _delete(url, params, options) {
+        options = options || {};
         var type = 'DELETE';
         url = this._processUrl(url, options);
         url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
@@ -1908,10 +1910,12 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     post: function post(url, params, options) {
+        options = options || {};
         return this._fetch(this._processUrl(url, options), params, options, 'POST');
     },
 
     put: function put(url, params, options) {
+        options = options || {};
         return this._fetch(this._processUrl(url, options), params, options, 'PUT');
     },
     urlIsLong: function urlIsLong(url) {
@@ -1942,7 +1946,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
             return url;
         }
 
-        if (url.indexOf('.json') === -1) {
+        if (url.indexOf('.json') === -1 && !options.withoutFormatSuffix) {
             if (url.indexOf("?") < 0) {
                 url += '.json';
             } else {
@@ -12093,10 +12097,40 @@ _SuperMap2.default.SecurityManager = {
      * @param url -{string} 网站地址
      * @param newTab -{boolean}是否新窗口打开
      */
-    loginPortal: function loginPortal(url, newTab) {
+    loginiPortal: function loginiPortal(url, username, password) {
         var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "web/login" : "/web/login";
-        this._open(url, newTab);
+        url += end === "/" ? "web/login.json" : "/web/login.json";
+        var loginInfo = {
+            username: username && username.toString(),
+            password: password && password.toString()
+        };
+        loginInfo = JSON.stringify(loginInfo);
+        var requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            withCredentials: true
+        };
+        return _FetchRequest.FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+            return response.json();
+        });
+    },
+    logoutiPortal: function logoutiPortal(url) {
+        var end = url.substr(url.length - 1, 1);
+        url += end === "/" ? "services/security/logout" : "/services/security/logout";
+
+        var requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            withCredentials: true,
+            withoutFormatSuffix: true
+        };
+        return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
+            return true;
+        }).catch(function () {
+            return false;
+        });
     },
 
     /**
@@ -12270,8 +12304,8 @@ function ServerInfo(type, options) {
     if (!this.server) {
         console.error('server url require is not  undefined');
     }
-    var patten = /http:\/\/([^\/]+)/i;
-    this.server = this.server.match(patten)[0];
+    // var patten = /http:\/\/([^\/]+)/i;
+    //this.server = this.server.match(patten)[0];
 
     var tokenServiceSuffix = "/services/security/tokens.json";
     if (this.type === _REST.ServerType.ISERVER && this.server.indexOf("iserver") < 0) {

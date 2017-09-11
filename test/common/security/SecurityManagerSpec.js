@@ -11,24 +11,24 @@ describe('testSecurityManager', function () {
 
     it("registerServers", function () {
         var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
-            server: "http://localhost:8092",
+            server: "http://localhost:8092/iportal",
         });
         SuperMap.SecurityManager.registerServers([serverInfo]);
         expect(JSON.stringify(SuperMap.SecurityManager.servers[serverInfo.server])).toBe(JSON.stringify(serverInfo));
     });
 
     it("generateToken", function () {
-        var url = "http://localhost:78989";
+        var url = "http://localhost:78989/iportal";
         var param = new SuperMap.TokenServiceParameter();
         var result = SuperMap.SecurityManager.generateToken(url, param);
         expect(result).toBeUndefined();
     });
 
     it("registerToken", function () {
-        var url = "http://localhost:8092/web/services/32";
+        var url = "http://localhost:8092/iportal/web/services/32";
         var token = "_Bo_ksR9DC56MvnAXc6liuhAdWmmt1SuoLX758QIeBJUvteLqHqUeeHnQ6OU0i0VBoN5FjNP_SOQ2o1xyudBjA..";
         SuperMap.SecurityManager.registerToken(url, token);
-        var result = SuperMap.SecurityManager.getToken('http://localhost:8092');
+        var result = SuperMap.SecurityManager.getToken('http://localhost:8092/iportal');
         expect(result).not.toBeNull();
         expect(result).toBe(token);
 
@@ -58,10 +58,10 @@ describe('testSecurityManager', function () {
     });
 
     it("getToken", function () {
-        var url = "http://localhost:8091";
+        var url = "http://localhost:8091/iportal";
         var token = "_Ro_ksR9DC56MvnAXc6liuhAdWmmt1SuoLX758QIeBJUvteLqHqUeeHnQ6OU0i0VBoN5FjNP_SOQ2o1xyudBjA..";
         SuperMap.SecurityManager.registerToken(url, token);
-        url = "http://localhost:8091/web/services/32";
+        url = "http://localhost:8091/iportal/web/services/32";
         var result = SuperMap.SecurityManager.getToken(url);
         expect(result).not.toBeNull();
         expect(result).toBe(token);
@@ -82,10 +82,9 @@ describe('testSecurityManager', function () {
         SuperMap.SecurityManager.loginOnline(callbackLocation, newTab);
     });
 
-    it("loginPortal", function () {
-        var newTab = false;
-        var url = 'http://localhost:8092/';
-        SuperMap.SecurityManager.loginPortal(url, newTab);
+    it("loginiPortal", function () {
+        var url = 'http://localhost:8092';
+        SuperMap.SecurityManager.loginiPortal(url, "admin","admin");
     });
 
     it("destroyAllCredentials", function () {

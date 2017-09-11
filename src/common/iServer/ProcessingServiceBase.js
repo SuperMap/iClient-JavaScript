@@ -94,9 +94,9 @@ export default class ProcessingServiceBase extends CommonServiceBase {
                         return response.json();
                     }).then(function (job) {
                     me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
-                    if (job.state.runState === 'LOST') {
+                    if (job.state.runState === 'LOST' || job.state.runState === 'KILLED'|| job.state.runState === 'FAILED') {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", {error: job.state.errorMsg});
+                        me.events.triggerEvent("processFailed", {error: job.state.errorMsg, state: job.state.runState});
                     }
                     if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
                         clearInterval(id);
