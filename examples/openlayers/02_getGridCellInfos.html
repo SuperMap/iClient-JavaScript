@@ -59,12 +59,12 @@
             duration: 250
         }
     }));
-    var map, baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/世界地图_Day",
-        url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/data-world/rest/data";
+    var map, baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/世界地图_Day",
+            url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-            .extend([new ol.supermap.control.Logo()]),
+                .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [0, 0],
             zoom: 3,
@@ -75,19 +75,24 @@
     var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: baseUrl
-
         }),
         projection: 'EPSG:4326'
     });
     map.addLayer(layer);
 
     map.on("click", function (evt) {
+        var x = evt.coordinate[0];
+        var y = evt.coordinate[1];
+        if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
+            return;
+        }
         var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
-            X: evt.coordinate[0],
-            Y: evt.coordinate[1]
+            X: x,
+            Y: y
         });
+
         new ol.supermap.GridCellInfosService(url).getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
             if (!serviceResult.result) {
                 return;
