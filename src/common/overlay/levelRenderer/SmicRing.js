@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Shape from './Shape';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicRing
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicRing
  * 圆环。
  *
  * Inherits from:

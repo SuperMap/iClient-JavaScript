@@ -5,7 +5,8 @@ import Vector from './Vector';
 import './LevelRenderer';
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.ComputeBoundingBox
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.ComputeBoundingBox
  * LevelRenderer 工具-图形 Bounds 计算
  *
  */

@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Group from './Group';
 
 /**
- * Class: SuperMap.LevelRenderer.Storage
+ * @private
+ * @class  SuperMap.LevelRenderer.Storage
  * 内容（图像）仓库 (M) 。
  */
 export default class Storage {

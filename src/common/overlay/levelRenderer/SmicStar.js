@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Shape from './Shape';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicStar
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicStar
  * n 角星（n>3）。
  *
  * Inherits from:

@@ -5,7 +5,8 @@ import '../../commontypes/Util';
 import './SUtil';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape
  * 图形（shape）基类。
  *
  * Inherits from:

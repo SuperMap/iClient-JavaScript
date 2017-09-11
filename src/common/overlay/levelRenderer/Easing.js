@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import './Animation';
 
 /**
- * Class: SuperMap.LevelRenderer.Animation.easing
+ * @private
+ * @class  SuperMap.LevelRenderer.Animation.easing
  * 缓动
  */
 // 缓动代码来自 https://github.com/sole/tween.js/blob/master/src/Tween.js

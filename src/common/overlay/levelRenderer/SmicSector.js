@@ -3,7 +3,8 @@ import Shape from './Shape';
 import './SUtil';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicSector
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicSector
  * 扇形。
  *
  * Inherits from:

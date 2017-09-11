@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import ShapeParameters from './ShapeParameters';
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Rectangle
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Rectangle
  * 矩形参数对象。
  *
  * Inherits:

@@ -5542,10 +5542,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** * @class SuperMap.ServerGeometry * @description 服务端几何对象类。 * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。 * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。 */
+/** * @private * @class SuperMap.ServerGeometry * @description 服务端几何对象类。 * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。 * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。 */
 var ServerGeometry = function () {
 
-  /**     * Constructor: SuperMap.ServerGeometry     * 服务端几何对象类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * id - {String} 服务端几何对象唯一标识符。     * style - {<SuperMap.ServerStyle>}  服务端几何对象的风格。     * parts - {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * points - {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * type - {<SuperMap.GeometryType>} 几何对象的类型。     */
+  /*     * Constructor: SuperMap.ServerGeometry     * 服务端几何对象类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * id - {String} 服务端几何对象唯一标识符。     * style - {<SuperMap.ServerStyle>}  服务端几何对象的风格。     * parts - {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * points - {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * type - {<SuperMap.GeometryType>} 几何对象的类型。     */
 
   /**     * APIProperty: type     * {<SuperMap.GeometryType>} 几何对象的类型(GeometryType)。     */
 
@@ -6076,7 +6076,6 @@ var ServerGeometry = function () {
 }();
 
 exports.default = ServerGeometry;
-
 
 _SuperMap2.default.ServerGeometry = ServerGeometry;
 
@@ -35233,26 +35232,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Format.WKT
- * 用于读写常见文本的类。通过 <SuperMap.Format.WKT> 构造器来创建一个新
+ * @class SuperMap.Format.WKT
+ * @classdesc 用于读写常见文本的类。通过 <SuperMap.Format.WKT> 构造器来创建一个新
  *      的实例。
- *
- * Inherits from:
- *  - <SuperMap.Format>
+ * @extends SuperMap.Format
+ * @param options - {Object} 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
  */
 var WKT = function (_Format) {
     _inherits(WKT, _Format);
 
-    /**
-     * Constructor: SuperMap.Format.WKT
-     * 创建一个新的WKT解析器。
-     *
-     * Parameters:
-     * options - {Object} 可选的选项对象，其属性将被设置到实例。
-     *
-     * Returns:
-     * {<SuperMap.Format.WKT>} 新的WKT解析器。
-     */
     function WKT(options) {
         _classCallCheck(this, WKT);
 
@@ -35262,7 +35250,7 @@ var WKT = function (_Format) {
             /**
              * Return a space delimited string of point coordinates.
              * @param {SuperMap.Geometry.Point} point
-             * @returns {String} A string of coordinates representing the point
+             * @returns  {String} A string of coordinates representing the point
              */
             'point': function point(_point) {
                 return _point.x + ' ' + _point.y;
@@ -35271,7 +35259,7 @@ var WKT = function (_Format) {
             /**
              * Return a comma delimited string of point coordinates from a multipoint.
              * @param {SuperMap.Geometry.MultiPoint} multipoint
-             * @returns {String} A string of point coordinate strings representing
+             * @returns  {String} A string of point coordinate strings representing
              *                  the multipoint
              */
             'multipoint': function multipoint(_multipoint) {
@@ -35286,7 +35274,7 @@ var WKT = function (_Format) {
             /**
              * Return a comma delimited string of point coordinates from a line.
              * @param {SuperMap.Geometry.LineString} linestring
-             * @returns {String} A string of point coordinate strings representing
+             * @returns  {String} A string of point coordinate strings representing
              *                  the linestring
              */
             'linestring': function linestring(_linestring) {
@@ -35301,7 +35289,7 @@ var WKT = function (_Format) {
             /**
              * Return a comma delimited string of linestring strings from a multilinestring.
              * @param {SuperMap.Geometry.MultiLineString} multilinestring
-             * @returns {String} A string of of linestring strings representing
+             * @returns  {String} A string of of linestring strings representing
              *                  the multilinestring
              */
             'multilinestring': function multilinestring(_multilinestring) {
@@ -35316,7 +35304,7 @@ var WKT = function (_Format) {
             /**
              * Return a comma delimited string of linear ring arrays from a polygon.
              * @param {SuperMap.Geometry.Polygon} polygon
-             * @returns {String} An array of linear ring arrays representing the polygon
+             * @returns  {String} An array of linear ring arrays representing the polygon
              */
             'polygon': function polygon(_polygon) {
                 var array = [];
@@ -35330,7 +35318,7 @@ var WKT = function (_Format) {
             /**
              * Return an array of polygon arrays from a multipolygon.
              * @param {SuperMap.Geometry.MultiPolygon} multipolygon
-             * @returns {String} An array of polygon arrays representing
+             * @returns  {String} An array of polygon arrays representing
              *                  the multipolygon
              */
             'multipolygon': function multipolygon(_multipolygon) {
@@ -35345,7 +35333,7 @@ var WKT = function (_Format) {
             /**
              * Return the WKT portion between 'GEOMETRYCOLLECTION(' and ')' for an <SuperMap.Geometry.Collection>
              * @param {SuperMap.Geometry.Collection} collection
-             * @returns {String} internal WKT representation of the collection
+             * @returns  {String} internal WKT representation of the collection
              */
             'collection': function collection(_collection) {
                 var array = [];
@@ -35359,7 +35347,7 @@ var WKT = function (_Format) {
             /**
              * Return point feature given a point WKT fragment.
              * @param {String} str A WKT fragment representing the point
-             * @returns {SuperMap.Feature.Vector} A point feature
+             * @returns  {SuperMap.Feature.Vector} A point feature
              * @private
              */
             'point': function point(str) {
@@ -35370,7 +35358,7 @@ var WKT = function (_Format) {
             /**
              * Return a multipoint feature given a multipoint WKT fragment.
              * @param {String} A WKT fragment representing the multipoint
-             * @returns {SuperMap.Feature.Vector} A multipoint feature
+             * @returns  {SuperMap.Feature.Vector} A multipoint feature
              * @private
              */
             'multipoint': function multipoint(str) {
@@ -35387,7 +35375,7 @@ var WKT = function (_Format) {
             /**
              * Return a linestring feature given a linestring WKT fragment.
              * @param {String} A WKT fragment representing the linestring
-             * @returns {SuperMap.Feature.Vector} A linestring feature
+             * @returns  {SuperMap.Feature.Vector} A linestring feature
              * @private
              */
             'linestring': function linestring(str) {
@@ -35402,7 +35390,7 @@ var WKT = function (_Format) {
             /**
              * Return a multilinestring feature given a multilinestring WKT fragment.
              * @param {String} A WKT fragment representing the multilinestring
-             * @returns {SuperMap.Feature.Vector} A multilinestring feature
+             * @returns  {SuperMap.Feature.Vector} A multilinestring feature
              * @private
              */
             'multilinestring': function multilinestring(str) {
@@ -35419,7 +35407,7 @@ var WKT = function (_Format) {
             /**
              * Return a polygon feature given a polygon WKT fragment.
              * @param {String} A WKT fragment representing the polygon
-             * @returns {SuperMap.Feature.Vector} A polygon feature
+             * @returns  {SuperMap.Feature.Vector} A polygon feature
              * @private
              */
             'polygon': function polygon(str) {
@@ -35438,7 +35426,7 @@ var WKT = function (_Format) {
             /**
              * Return a multipolygon feature given a multipolygon WKT fragment.
              * @param {String} A WKT fragment representing the multipolygon
-             * @returns {SuperMap.Feature.Vector} A multipolygon feature
+             * @returns  {SuperMap.Feature.Vector} A multipolygon feature
              * @private
              */
             'multipolygon': function multipolygon(str) {
@@ -35455,7 +35443,7 @@ var WKT = function (_Format) {
             /**
              * Return an array of features given a geometrycollection WKT fragment.
              * @param {String} A WKT fragment representing the geometrycollection
-             * @returns {Array} An array of SuperMap.Feature.Vector
+             * @returns  {Array} An array of SuperMap.Feature.Vector
              * @private
              */
             'geometrycollection': function geometrycollection(str) {
@@ -35483,17 +35471,13 @@ var WKT = function (_Format) {
     }
 
     /**
-     * Method: read
-     * Deserialize a WKT string and return a vector feature or an
+     * @function SuperMap.Format.WKT.prototype.read
+     * @description Deserialize a WKT string and return a vector feature or an
      * array of vector features.  Supports WKT for POINT, MULTIPOINT,
      * LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, and
      * GEOMETRYCOLLECTION.
-     *
-     * Parameters:
-     * wkt - {String} A WKT string
-     *
-     * Returns:
-     * {SuperMap.Feature.Vector|Array} A feature or array of features for
+     * @param wkt - {string} A WKT string
+     * @returns {SuperMap.Feature.Vector|Array} A feature or array of features for
      * GEOMETRYCOLLECTION WKT.
      */
 
@@ -35525,15 +35509,10 @@ var WKT = function (_Format) {
         }
 
         /**
-         * Method: write
-         * Serialize a feature or array of features into a WKT string.
-         *
-         * Parameters:
-         * features - {SuperMap.Feature.Vector|Array} A feature or array of
-         *            features
-         *
-         * Returns:
-         * {String} The WKT string representation of the input geometries
+         * @function SuperMap.Format.WKT.prototype.write
+         * @description Serialize a feature or array of features into a WKT string.
+         * @param features - {SuperMap.Feature.Vector|Array} A feature or array of features
+         * @returns {string} The WKT string representation of the input geometries
          */
 
     }, {
@@ -35565,14 +35544,10 @@ var WKT = function (_Format) {
         }
 
         /**
-         * Method: extractGeometry
-         * Entry point to construct the WKT for a single Geometry object.
-         *
-         * Parameters:
-         * geometry - {<SuperMap.Geometry.Geometry>}
-         *
-         * Returns:
-         * {String} A WKT string of representing the geometry
+         * @function SuperMap.Format.WKT.prototype.extractGeometry
+         * @description Entry point to construct the WKT for a single Geometry object.
+         * @param geometry - {SuperMap.Geometry}
+         * @returns {string} A WKT string of representing the geometry
          */
 
     }, {
@@ -35592,13 +35567,15 @@ var WKT = function (_Format) {
         }
 
         /**
-         * Object with properties corresponding to the geometry types.
+         * @private
+         * @description Object with properties corresponding to the geometry types.
          * Property values are functions that do the actual data extraction.
          */
 
 
         /**
-         * Object with properties corresponding to the geometry types.
+         * @private
+         * @description Object with properties corresponding to the geometry types.
          * Property values are functions that do the actual parsing.
          */
 
@@ -46615,7 +46592,7 @@ var ThemeGridRangeItem = function () {
 
 
     /**
-     * @member @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
+     * @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
      * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
      */
     function ThemeGridRangeItem(options) {

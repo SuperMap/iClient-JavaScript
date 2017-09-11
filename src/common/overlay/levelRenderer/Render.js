@@ -1,5 +1,6 @@
 /**
- * Class: SuperMap.LevelRenderer.Render
+ * @private
+ * @class SuperMap.LevelRenderer.Render
  * Render 接口类，对外可用的所有接口都在这里。内部使用
  * 非 get 接口统一返回 this 对象，支持链式调用。
  *
@@ -64,7 +65,7 @@ export default class Render {
      */
     _needsRefreshNextFrame = null;
 
-    /**
+    /*
      * Constructor: SuperMap.LevelRenderer.Render
      * 构造函数。
      *

@@ -1,7 +1,8 @@
 import SuperMap from '../../SuperMap';
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Vector
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Vector
  * LevelRenderer 二维向量类
  *
  */

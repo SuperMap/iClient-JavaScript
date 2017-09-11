@@ -22,7 +22,7 @@ export default  class ThemeGridRangeItem {
     caption = null;
 
     /**
-     * @member @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
+     * @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
      * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
      */
     color = null;

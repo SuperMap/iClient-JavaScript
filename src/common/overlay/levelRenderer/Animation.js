@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Eventful from './Eventful';
 
 /**
- * Class: SuperMap.LevelRenderer.Animation
+ * @private
+ * @class  SuperMap.LevelRenderer.Animation
  * 动画主类, 调度和管理所有动画控制器。
  *
  * Inherits from:
@@ -349,7 +350,8 @@ export default class Animation extends Eventful {
 SuperMap.LevelRenderer.Animation = Animation;
 
 /**
- * Class: SuperMap.LevelRenderer.Animation.Animator
+ * @private
+ * @class  SuperMap.LevelRenderer.Animation.Animator
  *
  */
 SuperMap.LevelRenderer.Animation.Animator = class Animator {

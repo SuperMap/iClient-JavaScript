@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Shape from './Shape';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicPolygon
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicPolygon
  * 多边形。
  *
  * Inherits from:

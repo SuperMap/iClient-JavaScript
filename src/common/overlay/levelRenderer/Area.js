@@ -3,7 +3,8 @@ import Util from './Util';
 import Curve from './Curve';
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Area
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Area
  * LevelRenderer 工具-图形范围判断
  *
  */

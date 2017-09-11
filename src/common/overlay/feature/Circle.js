@@ -1,14 +1,9 @@
 import SuperMap from '../../SuperMap';
 import ShapeParameters from './ShapeParameters';
 
-
 /**
- * @requires SuperMap.Feature.ShapeParameters.js
- *
- */
-
-/**
- * Class: SuperMap.Feature.ShapeParameters.Circle
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Circle
  * 圆形参数对象。
  *
  * Inherits:

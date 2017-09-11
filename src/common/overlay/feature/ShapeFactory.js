@@ -23,7 +23,8 @@ import {Util} from '../../commontypes/Util';
 import '../../commontypes/Feature';
 
 /**
- * Class: SuperMap.Feature.ShapeFactory
+ * @private
+ * @class  SuperMap.Feature.ShapeFactory
  * 图形工厂类。
  *
  * 目前支持创建的图形有：

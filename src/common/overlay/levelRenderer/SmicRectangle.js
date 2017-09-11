@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Shape from './Shape';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicRectangle
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicRectangle
  * 矩形。
  *
  * Inherits from:

@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import ShapeParameters from './ShapeParameters';
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Line
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Line
  * 线参数对象。
  *
  * Inherits:

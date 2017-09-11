@@ -1,7 +1,8 @@
 import SuperMap from '../../SuperMap';
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Matrix
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Matrix
  * LevelRenderer 工具-3x2矩阵操作类
  *
  */

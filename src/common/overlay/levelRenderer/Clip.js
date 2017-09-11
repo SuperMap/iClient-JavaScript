@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import './Animation';
 
 /**
- * Class: SuperMap.LevelRenderer.Animation.Clip
+ * @private
+ * @class  SuperMap.LevelRenderer.Animation.Clip
  * 动画片段
  *
  */

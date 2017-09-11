@@ -1,7 +1,8 @@
 import SuperMap from '../../SuperMap';
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Http
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Http
  * LevelRenderer 工具-Http
  *
  */

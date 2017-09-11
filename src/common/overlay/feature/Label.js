@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import ShapeParameters from './ShapeParameters';
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Label
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Label
  * 标签参数对象。
  *
  * Inherits:

@@ -5,7 +5,8 @@ import Transformable from './Transformable';
 import './Util';
 
 /**
- * Class: SuperMap.LevelRenderer.Group
+ * @private
+ * @class  SuperMap.LevelRenderer.Group
  * Group 是一个容器，可以插入子节点，Group 的变换也会被应用到子节点上。
  *
  * Inherits from:

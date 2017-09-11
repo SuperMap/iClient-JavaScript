@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Shape from './Shape';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicEllipse
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicEllipse
  * 椭圆。
  *
  * Inherits from:

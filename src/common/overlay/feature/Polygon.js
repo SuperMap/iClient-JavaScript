@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import ShapeParameters from './ShapeParameters';
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Polygon
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Polygon
  * 面参数对象。
  *
  * Inherits:

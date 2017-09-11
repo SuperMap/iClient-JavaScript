@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import './SUtil';
 
 /**
- * Class: SuperMap.LevelRenderer.Transformable
+ * @private
+ * @class  SuperMap.LevelRenderer.Transformable
  * 可变换超类，所有支持 Canvas Transform 变换操作的类均是此类的子类。
  *
  * 此类不可实例化。

@@ -3,7 +3,8 @@ import '../../commontypes/Util';
 import './Util';
 
 /**
- * Class: SuperMap.LevelRenderer.Painter
+ * @private
+ * @class  SuperMap.LevelRenderer.Painter
  * Painter 绘图模块。
  */
 export default class Painter {
@@ -936,15 +937,16 @@ export default class Painter {
 }
 SuperMap.LevelRenderer.Painter = Painter;
 
+import Transformable from './Transformable';
+
 /**
- * Class: SuperMap.LevelRenderer.Painter.Layer
+ * @private
+ * @class SuperMap.LevelRenderer.Painter.Layer
  * 绘制层类。
  *
  * Inherits from:
  *  - <SuperMap.LevelRenderer.Transformable>
  */
-import Transformable from './Transformable';
-
 class PaintLayer extends Transformable {
 
     /**

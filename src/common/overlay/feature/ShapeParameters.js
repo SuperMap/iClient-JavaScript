@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import '../../commontypes/Feature';
 
 /**
- * Class: SuperMap.Feature.ShapeParameters
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters
  * 图形参数基类，此类不可实例化
  */
 export default class ShapeParameters {

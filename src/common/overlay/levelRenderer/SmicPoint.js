@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Shape from './Shape';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicPoint
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicPoint
  * 点。
  *
  * Inherits from:

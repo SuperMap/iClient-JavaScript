@@ -11,7 +11,8 @@ import SuperMap from '../../SuperMap';
 import {Util} from '../../commontypes/Util';
 
 /**
- * Class: SuperMap.LevelRenderer
+ * @private
+ * @class  SuperMap.LevelRenderer
  * LevelRenderer 渲染器。
  *
  */

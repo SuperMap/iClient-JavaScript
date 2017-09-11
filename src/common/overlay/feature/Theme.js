@@ -3,7 +3,8 @@ import {Util} from '../../commontypes/Util';
 import '../../commontypes/Feature';
 
 /**
- * Class: SuperMap.Feature.Theme
+ * @private
+ * @class  SuperMap.Feature.Theme
  * 专题要素基类，此类不可实例化。
  */
 export default class Theme {

@@ -1,7 +1,8 @@
 import SuperMap from '../../SuperMap';
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Env
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Env
  * 环境识别
  *
  */

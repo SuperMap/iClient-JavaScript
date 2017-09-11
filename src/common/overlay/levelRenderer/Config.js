@@ -1,5 +1,8 @@
 import SuperMap from '../../SuperMap';
 
+/**
+ * @private
+ */
 // LevelRenderer 配置
 SuperMap.LevelRenderer.Config = {};
 

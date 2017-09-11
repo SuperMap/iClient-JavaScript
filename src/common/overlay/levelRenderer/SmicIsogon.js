@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Shape from './Shape';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicIsogon
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicIsogon
  * 正多边形。
  *
  * Inherits from:

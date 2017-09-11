@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Shape from './Shape';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicImage
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicImage
  * 图片绘制。
  *
  * Inherits from:

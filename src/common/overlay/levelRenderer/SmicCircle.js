@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Shape from './Shape';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicCircle
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicCircle
  * 圆形
  *
  * Inherits from:

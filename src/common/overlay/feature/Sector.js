@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import ShapeParameters from './ShapeParameters';
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Sector
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Sector
  * 扇形参数对象。
  *
  * Inherits:

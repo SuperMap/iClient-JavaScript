@@ -3,7 +3,8 @@ import Eventful from './Eventful';
 import './Config';
 
 /**
- * Class: SuperMap.LevelRenderer.Handler
+ * @private
+ * @class  SuperMap.LevelRenderer.Handler
  * Handler 控制模块。
  *
  * Inherits from:

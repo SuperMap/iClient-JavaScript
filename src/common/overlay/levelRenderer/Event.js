@@ -1,7 +1,8 @@
 import SuperMap from '../../SuperMap';
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Event
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Event
  * LevelRenderer 工具-事件辅助类
  *
  */

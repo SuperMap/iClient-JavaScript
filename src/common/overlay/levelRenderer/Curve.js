@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import Vector from './Vector';
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Curve
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Curve
  * LevelRenderer 工具-曲线
  *
  */

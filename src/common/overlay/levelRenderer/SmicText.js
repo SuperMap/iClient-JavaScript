@@ -3,7 +3,8 @@ import Shape from './Shape';
 import './SUtil';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicText
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicText
  * 文本。
  *
  * Inherits from:

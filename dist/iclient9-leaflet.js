@@ -4578,10 +4578,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** * @class SuperMap.ServerGeometry * @description 服务端几何对象类。 * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。 * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。 */
+/** * @private * @class SuperMap.ServerGeometry * @description 服务端几何对象类。 * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。 * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。 */
 var ServerGeometry = function () {
 
-  /**     * Constructor: SuperMap.ServerGeometry     * 服务端几何对象类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * id - {String} 服务端几何对象唯一标识符。     * style - {<SuperMap.ServerStyle>}  服务端几何对象的风格。     * parts - {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * points - {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * type - {<SuperMap.GeometryType>} 几何对象的类型。     */
+  /*     * Constructor: SuperMap.ServerGeometry     * 服务端几何对象类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * id - {String} 服务端几何对象唯一标识符。     * style - {<SuperMap.ServerStyle>}  服务端几何对象的风格。     * parts - {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * points - {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * type - {<SuperMap.GeometryType>} 几何对象的类型。     */
 
   /**     * APIProperty: type     * {<SuperMap.GeometryType>} 几何对象的类型(GeometryType)。     */
 
@@ -5112,7 +5112,6 @@ var ServerGeometry = function () {
 }();
 
 exports["default"] = ServerGeometry;
-
 
 _SuperMap2["default"].ServerGeometry = ServerGeometry;
 
@@ -6470,7 +6469,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape
  * 图形（shape）基类。
  *
  * Inherits from:
@@ -8486,7 +8486,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.Feature.ShapeParameters
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters
  * 图形参数基类，此类不可实例化
  */
 var ShapeParameters = function () {
@@ -12519,7 +12520,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer
+ * @private
+ * @class  SuperMap.LevelRenderer
  * LevelRenderer 渲染器。
  *
  */
@@ -12984,7 +12986,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Util
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Util
  * LevelRenderer 基础工具类
  *
  */
@@ -16527,7 +16530,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Eventful
+ * @private
+ * @class  SuperMap.LevelRenderer.Eventful
  * 事件分发器超类，所有支持事件处理的类均是此类的子类。
  *
  * 此类不可实例化。
@@ -20724,7 +20728,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Animation
+ * @private
+ * @class  SuperMap.LevelRenderer.Animation
  * 动画主类, 调度和管理所有动画控制器。
  *
  * Inherits from:
@@ -21085,7 +21090,8 @@ exports["default"] = Animation;
 _SuperMap2["default"].LevelRenderer.Animation = Animation;
 
 /**
- * Class: SuperMap.LevelRenderer.Animation.Animator
+ * @private
+ * @class  SuperMap.LevelRenderer.Animation.Animator
  *
  */
 _SuperMap2["default"].LevelRenderer.Animation.Animator = function () {
@@ -21524,7 +21530,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Curve
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Curve
  * LevelRenderer 工具-曲线
  *
  */
@@ -22181,7 +22188,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Transformable
+ * @private
+ * @class  SuperMap.LevelRenderer.Transformable
  * 可变换超类，所有支持 Canvas Transform 变换操作的类均是此类的子类。
  *
  * 此类不可实例化。
@@ -22490,7 +22498,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Vector
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Vector
  * LevelRenderer 二维向量类
  *
  */
@@ -26339,6 +26348,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
+ * @private
  * @class SuperMap.ServerFeature
  * 服务端矢量要素类。
  * 该类描述了服务端返回的矢量要素的相关信息，包括字段和几何信息。
@@ -28530,7 +28540,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.Feature.Theme
+ * @private
+ * @class  SuperMap.Feature.Theme
  * 专题要素基类，此类不可实例化。
  */
 var Theme = function () {
@@ -28693,7 +28704,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicPolygon
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicPolygon
  * 多边形。
  *
  * Inherits from:
@@ -44321,26 +44333,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Format.WKT
- * 用于读写常见文本的类。通过 <SuperMap.Format.WKT> 构造器来创建一个新
+ * @class SuperMap.Format.WKT
+ * @classdesc 用于读写常见文本的类。通过 <SuperMap.Format.WKT> 构造器来创建一个新
  *      的实例。
- *
- * Inherits from:
- *  - <SuperMap.Format>
+ * @extends SuperMap.Format
+ * @param options - {Object} 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
  */
 var WKT = function (_Format) {
     _inherits(WKT, _Format);
 
-    /**
-     * Constructor: SuperMap.Format.WKT
-     * 创建一个新的WKT解析器。
-     *
-     * Parameters:
-     * options - {Object} 可选的选项对象，其属性将被设置到实例。
-     *
-     * Returns:
-     * {<SuperMap.Format.WKT>} 新的WKT解析器。
-     */
     function WKT(options) {
         _classCallCheck(this, WKT);
 
@@ -44350,7 +44351,7 @@ var WKT = function (_Format) {
             /**
              * Return a space delimited string of point coordinates.
              * @param {SuperMap.Geometry.Point} point
-             * @returns {String} A string of coordinates representing the point
+             * @returns  {String} A string of coordinates representing the point
              */
             'point': function point(_point) {
                 return _point.x + ' ' + _point.y;
@@ -44359,7 +44360,7 @@ var WKT = function (_Format) {
             /**
              * Return a comma delimited string of point coordinates from a multipoint.
              * @param {SuperMap.Geometry.MultiPoint} multipoint
-             * @returns {String} A string of point coordinate strings representing
+             * @returns  {String} A string of point coordinate strings representing
              *                  the multipoint
              */
             'multipoint': function multipoint(_multipoint) {
@@ -44374,7 +44375,7 @@ var WKT = function (_Format) {
             /**
              * Return a comma delimited string of point coordinates from a line.
              * @param {SuperMap.Geometry.LineString} linestring
-             * @returns {String} A string of point coordinate strings representing
+             * @returns  {String} A string of point coordinate strings representing
              *                  the linestring
              */
             'linestring': function linestring(_linestring) {
@@ -44389,7 +44390,7 @@ var WKT = function (_Format) {
             /**
              * Return a comma delimited string of linestring strings from a multilinestring.
              * @param {SuperMap.Geometry.MultiLineString} multilinestring
-             * @returns {String} A string of of linestring strings representing
+             * @returns  {String} A string of of linestring strings representing
              *                  the multilinestring
              */
             'multilinestring': function multilinestring(_multilinestring) {
@@ -44404,7 +44405,7 @@ var WKT = function (_Format) {
             /**
              * Return a comma delimited string of linear ring arrays from a polygon.
              * @param {SuperMap.Geometry.Polygon} polygon
-             * @returns {String} An array of linear ring arrays representing the polygon
+             * @returns  {String} An array of linear ring arrays representing the polygon
              */
             'polygon': function polygon(_polygon) {
                 var array = [];
@@ -44418,7 +44419,7 @@ var WKT = function (_Format) {
             /**
              * Return an array of polygon arrays from a multipolygon.
              * @param {SuperMap.Geometry.MultiPolygon} multipolygon
-             * @returns {String} An array of polygon arrays representing
+             * @returns  {String} An array of polygon arrays representing
              *                  the multipolygon
              */
             'multipolygon': function multipolygon(_multipolygon) {
@@ -44433,7 +44434,7 @@ var WKT = function (_Format) {
             /**
              * Return the WKT portion between 'GEOMETRYCOLLECTION(' and ')' for an <SuperMap.Geometry.Collection>
              * @param {SuperMap.Geometry.Collection} collection
-             * @returns {String} internal WKT representation of the collection
+             * @returns  {String} internal WKT representation of the collection
              */
             'collection': function collection(_collection) {
                 var array = [];
@@ -44447,7 +44448,7 @@ var WKT = function (_Format) {
             /**
              * Return point feature given a point WKT fragment.
              * @param {String} str A WKT fragment representing the point
-             * @returns {SuperMap.Feature.Vector} A point feature
+             * @returns  {SuperMap.Feature.Vector} A point feature
              * @private
              */
             'point': function point(str) {
@@ -44458,7 +44459,7 @@ var WKT = function (_Format) {
             /**
              * Return a multipoint feature given a multipoint WKT fragment.
              * @param {String} A WKT fragment representing the multipoint
-             * @returns {SuperMap.Feature.Vector} A multipoint feature
+             * @returns  {SuperMap.Feature.Vector} A multipoint feature
              * @private
              */
             'multipoint': function multipoint(str) {
@@ -44475,7 +44476,7 @@ var WKT = function (_Format) {
             /**
              * Return a linestring feature given a linestring WKT fragment.
              * @param {String} A WKT fragment representing the linestring
-             * @returns {SuperMap.Feature.Vector} A linestring feature
+             * @returns  {SuperMap.Feature.Vector} A linestring feature
              * @private
              */
             'linestring': function linestring(str) {
@@ -44490,7 +44491,7 @@ var WKT = function (_Format) {
             /**
              * Return a multilinestring feature given a multilinestring WKT fragment.
              * @param {String} A WKT fragment representing the multilinestring
-             * @returns {SuperMap.Feature.Vector} A multilinestring feature
+             * @returns  {SuperMap.Feature.Vector} A multilinestring feature
              * @private
              */
             'multilinestring': function multilinestring(str) {
@@ -44507,7 +44508,7 @@ var WKT = function (_Format) {
             /**
              * Return a polygon feature given a polygon WKT fragment.
              * @param {String} A WKT fragment representing the polygon
-             * @returns {SuperMap.Feature.Vector} A polygon feature
+             * @returns  {SuperMap.Feature.Vector} A polygon feature
              * @private
              */
             'polygon': function polygon(str) {
@@ -44526,7 +44527,7 @@ var WKT = function (_Format) {
             /**
              * Return a multipolygon feature given a multipolygon WKT fragment.
              * @param {String} A WKT fragment representing the multipolygon
-             * @returns {SuperMap.Feature.Vector} A multipolygon feature
+             * @returns  {SuperMap.Feature.Vector} A multipolygon feature
              * @private
              */
             'multipolygon': function multipolygon(str) {
@@ -44543,7 +44544,7 @@ var WKT = function (_Format) {
             /**
              * Return an array of features given a geometrycollection WKT fragment.
              * @param {String} A WKT fragment representing the geometrycollection
-             * @returns {Array} An array of SuperMap.Feature.Vector
+             * @returns  {Array} An array of SuperMap.Feature.Vector
              * @private
              */
             'geometrycollection': function geometrycollection(str) {
@@ -44571,17 +44572,13 @@ var WKT = function (_Format) {
     }
 
     /**
-     * Method: read
-     * Deserialize a WKT string and return a vector feature or an
+     * @function SuperMap.Format.WKT.prototype.read
+     * @description Deserialize a WKT string and return a vector feature or an
      * array of vector features.  Supports WKT for POINT, MULTIPOINT,
      * LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, and
      * GEOMETRYCOLLECTION.
-     *
-     * Parameters:
-     * wkt - {String} A WKT string
-     *
-     * Returns:
-     * {SuperMap.Feature.Vector|Array} A feature or array of features for
+     * @param wkt - {string} A WKT string
+     * @returns {SuperMap.Feature.Vector|Array} A feature or array of features for
      * GEOMETRYCOLLECTION WKT.
      */
 
@@ -44613,15 +44610,10 @@ var WKT = function (_Format) {
         }
 
         /**
-         * Method: write
-         * Serialize a feature or array of features into a WKT string.
-         *
-         * Parameters:
-         * features - {SuperMap.Feature.Vector|Array} A feature or array of
-         *            features
-         *
-         * Returns:
-         * {String} The WKT string representation of the input geometries
+         * @function SuperMap.Format.WKT.prototype.write
+         * @description Serialize a feature or array of features into a WKT string.
+         * @param features - {SuperMap.Feature.Vector|Array} A feature or array of features
+         * @returns {string} The WKT string representation of the input geometries
          */
 
     }, {
@@ -44653,14 +44645,10 @@ var WKT = function (_Format) {
         }
 
         /**
-         * Method: extractGeometry
-         * Entry point to construct the WKT for a single Geometry object.
-         *
-         * Parameters:
-         * geometry - {<SuperMap.Geometry.Geometry>}
-         *
-         * Returns:
-         * {String} A WKT string of representing the geometry
+         * @function SuperMap.Format.WKT.prototype.extractGeometry
+         * @description Entry point to construct the WKT for a single Geometry object.
+         * @param geometry - {SuperMap.Geometry}
+         * @returns {string} A WKT string of representing the geometry
          */
 
     }, {
@@ -44680,13 +44668,15 @@ var WKT = function (_Format) {
         }
 
         /**
-         * Object with properties corresponding to the geometry types.
+         * @private
+         * @description Object with properties corresponding to the geometry types.
          * Property values are functions that do the actual data extraction.
          */
 
 
         /**
-         * Object with properties corresponding to the geometry types.
+         * @private
+         * @description Object with properties corresponding to the geometry types.
          * Property values are functions that do the actual parsing.
          */
 
@@ -64041,7 +64031,7 @@ var ThemeGridRangeItem = function () {
 
 
     /**
-     * @member @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
+     * @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
      * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
      */
     function ThemeGridRangeItem(options) {
@@ -70928,12 +70918,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @requires SuperMap.Feature.ShapeParameters.js
- *
- */
-
-/**
- * Class: SuperMap.Feature.ShapeParameters.Circle
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Circle
  * 圆形参数对象。
  *
  * Inherits:
@@ -71061,7 +71047,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Image
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Image
  * 图片参数对象。
  *
  * Inherits:
@@ -71232,7 +71219,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Label
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Label
  * 标签参数对象。
  *
  * Inherits:
@@ -71344,7 +71332,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Line
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Line
  * 线参数对象。
  *
  * Inherits:
@@ -71443,7 +71432,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Point
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Point
  * 点参数对象。
  *
  * Inherits:
@@ -71553,7 +71543,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Polygon
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Polygon
  * 面参数对象。
  *
  * Inherits:
@@ -71660,7 +71651,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Rectangle
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Rectangle
  * 矩形参数对象。
  *
  * Inherits:
@@ -71782,7 +71774,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Sector
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Sector
  * 扇形参数对象。
  *
  * Inherits:
@@ -72007,7 +72000,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.Feature.ShapeFactory
+ * @private
+ * @class  SuperMap.Feature.ShapeFactory
  * 图形工厂类。
  *
  * 目前支持创建的图形有：
@@ -72920,7 +72914,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Area
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Area
  * LevelRenderer 工具-图形范围判断
  *
  */
@@ -74044,7 +74039,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Animation.Clip
+ * @private
+ * @class  SuperMap.LevelRenderer.Animation.Clip
  * 动画片段
  *
  */
@@ -74212,7 +74208,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Color
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Color
  * LevelRenderer 工具-颜色辅助类
  *
  */
@@ -75615,7 +75612,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.ComputeBoundingBox
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.ComputeBoundingBox
  * LevelRenderer 工具-图形 Bounds 计算
  *
  */
@@ -75856,6 +75854,9 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+/**
+ * @private
+ */
 // LevelRenderer 配置
 _SuperMap2["default"].LevelRenderer.Config = {};
 
@@ -75959,7 +75960,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Animation.easing
+ * @private
+ * @class  SuperMap.LevelRenderer.Animation.easing
  * 缓动
  */
 // 缓动代码来自 https://github.com/sole/tween.js/blob/master/src/Tween.js
@@ -76456,7 +76458,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Env
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Env
  * 环境识别
  *
  */
@@ -76561,7 +76564,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Event
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Event
  * LevelRenderer 工具-事件辅助类
  *
  */
@@ -76694,7 +76698,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Group
+ * @private
+ * @class  SuperMap.LevelRenderer.Group
  * Group 是一个容器，可以插入子节点，Group 的变换也会被应用到子节点上。
  *
  * Inherits from:
@@ -77066,7 +77071,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Handler
+ * @private
+ * @class  SuperMap.LevelRenderer.Handler
  * Handler 控制模块。
  *
  * Inherits from:
@@ -78248,7 +78254,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Http
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Http
  * LevelRenderer 工具-Http
  *
  */
@@ -78341,7 +78348,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Log
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Log
  * LevelRenderer 工具-日志
  *
  */
@@ -78407,7 +78415,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Math
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Math
  * LevelRenderer 工具-数学辅助类
  *
  */
@@ -78534,7 +78543,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Matrix
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Matrix
  * LevelRenderer 工具-3x2矩阵操作类
  *
  */
@@ -78846,7 +78856,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Painter
+ * @private
+ * @class  SuperMap.LevelRenderer.Painter
  * Painter 绘图模块。
  */
 var Painter = function () {
@@ -79796,13 +79807,13 @@ exports["default"] = Painter;
 _SuperMap2["default"].LevelRenderer.Painter = Painter;
 
 /**
- * Class: SuperMap.LevelRenderer.Painter.Layer
+ * @private
+ * @class SuperMap.LevelRenderer.Painter.Layer
  * 绘制层类。
  *
  * Inherits from:
  *  - <SuperMap.LevelRenderer.Transformable>
  */
-
 var PaintLayer = function (_Transformable) {
     _inherits(PaintLayer, _Transformable);
 
@@ -80125,7 +80136,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Class: SuperMap.LevelRenderer.Render
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @private
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @class SuperMap.LevelRenderer.Render
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Render 接口类，对外可用的所有接口都在这里。内部使用
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * 非 get 接口统一返回 this 对象，支持链式调用。
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       *
@@ -80164,7 +80176,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Render = function () {
 
-    /**
+    /*
      * Constructor: SuperMap.LevelRenderer.Render
      * 构造函数。
      *
@@ -80943,7 +80955,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicBrokenLine
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicBrokenLine
  * 折线(ic)。
  *
  * Inherits from:
@@ -81261,7 +81274,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicCircle
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicCircle
  * 圆形
  *
  * Inherits from:
@@ -81459,7 +81473,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicEllipse
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicEllipse
  * 椭圆。
  *
  * Inherits from:
@@ -81662,7 +81677,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicImage
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicImage
  * 图片绘制。
  *
  * Inherits from:
@@ -81958,7 +81974,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicIsogon
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicIsogon
  * 正多边形。
  *
  * Inherits from:
@@ -82166,7 +82183,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicPoint
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicPoint
  * 点。
  *
  * Inherits from:
@@ -82356,7 +82374,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicRectangle
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicRectangle
  * 矩形。
  *
  * Inherits from:
@@ -82639,7 +82658,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicRing
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicRing
  * 圆环。
  *
  * Inherits from:
@@ -82829,7 +82849,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicSector
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicSector
  * 扇形。
  *
  * Inherits from:
@@ -83074,7 +83095,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicStar
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicStar
  * n 角星（n>3）。
  *
  * Inherits from:
@@ -83311,7 +83333,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicText
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicText
  * 文本。
  *
  * Inherits from:
@@ -83900,7 +83923,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.LevelRenderer.Storage
+ * @private
+ * @class  SuperMap.LevelRenderer.Storage
  * 内容（图像）仓库 (M) 。
  */
 var Storage = function () {

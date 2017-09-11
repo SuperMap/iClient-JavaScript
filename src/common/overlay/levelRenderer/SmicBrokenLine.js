@@ -4,7 +4,8 @@ import SmicPolygon from './SmicPolygon';
 import './SUtil';
 
 /**
- * Class: SuperMap.LevelRenderer.Shape.SmicBrokenLine
+ * @private
+ * @class  SuperMap.LevelRenderer.Shape.SmicBrokenLine
  * 折线(ic)。
  *
  * Inherits from:

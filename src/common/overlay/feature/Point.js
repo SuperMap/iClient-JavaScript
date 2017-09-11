@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import ShapeParameters from './ShapeParameters';
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Point
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Point
  * 点参数对象。
  *
  * Inherits:

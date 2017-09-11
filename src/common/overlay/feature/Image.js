@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import ShapeParameters from './ShapeParameters';
 
 /**
- * Class: SuperMap.Feature.ShapeParameters.Image
+ * @private
+ * @class  SuperMap.Feature.ShapeParameters.Image
  * 图片参数对象。
  *
  * Inherits:

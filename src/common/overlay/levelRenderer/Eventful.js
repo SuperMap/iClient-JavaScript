@@ -2,7 +2,8 @@ import SuperMap from '../../SuperMap';
 import '../levelRenderer/LevelRenderer';
 
 /**
- * Class: SuperMap.LevelRenderer.Eventful
+ * @private
+ * @class  SuperMap.LevelRenderer.Eventful
  * 事件分发器超类，所有支持事件处理的类均是此类的子类。
  *
  * 此类不可实例化。

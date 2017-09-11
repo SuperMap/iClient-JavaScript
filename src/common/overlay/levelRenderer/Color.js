@@ -3,7 +3,8 @@ import Util from './Util';
 import './LevelRenderer';
 
 /**
- * Class: SuperMap.LevelRenderer.Tool.Color
+ * @private
+ * @class  SuperMap.LevelRenderer.Tool.Color
  * LevelRenderer 工具-颜色辅助类
  *
  */
