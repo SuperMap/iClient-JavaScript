@@ -198,6 +198,7 @@ export var StringExt = SuperMap.String = {
 
     /**
      * @description Used to find tokens in a string.
+     * @default  /\$\{([\w.]+?)\}/g
      * @example
      * Examples: ${a}, ${a.b.c}, ${a-b}, ${5}
      */
@@ -205,6 +206,7 @@ export var StringExt = SuperMap.String = {
 
     /**
      * @description Used to test strings as numbers.
+     * @default  /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/
      */
     numberRegEx: /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/,
 
@@ -226,7 +228,7 @@ export var StringExt = SuperMap.String = {
     /**
      * @description 把一个看似数值型的字符串转化为一个数值.
      *
-     * @returns {Number|String} 如果能转换为数值则返回数值,否则返回字符串本身.
+     * @returns {number|string} 如果能转换为数值则返回数值,否则返回字符串本身.
      */
     numericIf: function (value) {
         return SuperMap.String.isNumeric(value) ? parseFloat(value) : value;
@@ -244,18 +246,22 @@ export var NumberExt = SuperMap.Number = {
 
     /**
      *  @description 格式化数字时默认的小数点分隔符.
+     *  @constant
+     *  @default "."
      */
     decimalSeparator: ".",
 
     /**
      *  @description 格式化数字时默认的千位分隔符.
+     *  @constant
+     *  @default ","
      */
     thousandsSeparator: ",",
 
     /**
      * @description 限制浮点数的有效数字位数.
      * @param num - {number}
-     * @param sig - {Integer}
+     * @param sig - {integer}
      * @returns {number} 将数字四舍五入到指定数量的有效位数.
      */
     limitSigDigs: function (num, sig) {
@@ -269,7 +275,7 @@ export var NumberExt = SuperMap.Number = {
     /**
      * @description 数字格式化输出.
      * @param num  - {number}
-     * @param dec  - {Integer} 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
+     * @param dec  - {integer} 数字的小数部分四舍五入到指定的位数.默认为 0. 设置为null值时小数部分不变.
      * @param tsep - {string} 千位分隔符. 默认为",".
      * @param dsep - {string} 小数点分隔符. 默认为".".
      * @returns {string} 数字格式化后的字符串.
@@ -317,8 +323,8 @@ if (!Number.prototype.limitSigDigs) {
     /**
      * APIMethod: Number.limitSigDigs
      * 限制浮点数的有效数字位数.
-     * @param sig - {Integer}
-     * @returns {Integer} 将数字四舍五入到指定数量的有效位数.
+     * @param sig - {integer}
+     * @returns {integer} 将数字四舍五入到指定数量的有效位数.
      *           如果传入值为 null、0、或者是负数, 返回值 0
      */
     Number.prototype.limitSigDigs = function (sig) {

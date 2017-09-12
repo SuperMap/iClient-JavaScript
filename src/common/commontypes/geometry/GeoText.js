@@ -32,10 +32,6 @@ import {Util} from '../Util';
  *   stroke: true,
  *   strokeColor:"#8B7B8B"
  * };
- * var vectorLayer = new SuperMap.Layer.Vector("Label",{strategies: [strategy]});
- * map.addLayers([vectorLayer]);
- *
- * vectorLayer.addFeatures([geotextFeature]);
  * (end)
  */
 export default class GeoText extends Geometry {
