@@ -26,21 +26,6 @@ export default class Curve extends MultiPoint {
         super(points);
     }
 
-    /**
-     * @function SuperMap.Geometry.Curve.prototype.getLength
-     * @description 获取曲线的总长度。
-     * @returns {number} 曲线对象的长度。
-     */
-    getLength() {
-        var length = 0.0;
-        if (this.components && (this.components.length > 1)) {
-            for (var i = 1, len = this.components.length; i < len; i++) {
-                length += this.components[i - 1].distanceTo(this.components[i]);
-            }
-        }
-        return length;
-    }
-
     CLASS_NAME = "SuperMap.Geometry.Curve"
 }
 SuperMap.Geometry.Curve = Curve;

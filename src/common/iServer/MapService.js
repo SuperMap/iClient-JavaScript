@@ -19,11 +19,11 @@ import CommonServiceBase from './CommonServiceBase';
  * @param options - {Object} 参数 。
  * eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class MapService extends CommonServiceBase {
+export default class MapService extends CommonServiceBase {
 
     /**
-     * @member  SuperMap.MapService.prototype.projection -{SuperMap.Projection} or {string}
-     * @description 根据投影参数获取地图状态信息。
+     * @member  SuperMap.MapService.prototype.projection -{string}
+     * @description 根据投影参数获取地图状态信息。如"EPSG:4326"
      */
     projection = null;
 
@@ -37,13 +37,14 @@ export default  class MapService extends CommonServiceBase {
         me.url += ".json";
 
         if (me.projection) {
-            if (typeof me.projection === "string") {
-                me.projection = new SuperMap.Projection(me.projection);
-            }
-
-            var arr = me.projection.getCode().split(":");
-            if (arr instanceof Array && arr.length === 2) {
-                me.url += "?prjCoordSys={\"epsgCode\":" + arr[1] + "}";
+            var arr = me.projection.split(":");
+            if (arr instanceof Array) {
+                if (arr.length === 2) {
+                    me.url += "?prjCoordSys={\"epsgCode\":" + arr[1] + "}";
+                }
+                if (arr.length === 1) {
+                    me.url += "?prjCoordSys={\"epsgCode\":" + arr[0] + "}";
+                }
             }
         }
     }

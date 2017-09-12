@@ -3528,14 +3528,6 @@ _SuperMap2.default.Util.copyAttributesWithClip = function (destination, source, 
 };
 
 /**
- * @description 设置该应用为移动端应用。
- * @param isApp - {Boolean}  是否是移动项目。
- *
- */
-_SuperMap2.default.Util.setApp = function (isApp) {
-    _SuperMap2.default.isApp = !!isApp;
-};
-/**
  * @description 克隆一份Object对象
  * @param obj - {Object}  需要克隆的对象。
  * @returns {Object} 返回对象的拷贝对象，注意是新的对象，不是指向

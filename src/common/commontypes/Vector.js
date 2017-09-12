@@ -78,38 +78,6 @@ export default class Vector extends Feature {
      */
     url = null;
 
-    /**
-     * @member SuperMap.Feature.Vector.prototype.renderIntent -{string}
-     * @description Feature要素即被被渲染的样式状态，对应StyleMap中的状态定义的可选值。
-     */
-    renderIntent = "default";
-
-    /**
-     * @member SuperMap.Feature.Vector.prototype.modified -{Object}
-     * @description 一个具有可以被改变的原始几何形状和属性，被 <SuperMap.Control.ModifyFeature> 写入。
-     * 应用程序可以在attributes中设置原始的能被修改的属性，需要注意的是，
-     * 应用程序需要在使用某个对象及其属性前检测这个对象及其 attributes 属性是否创建，用 ModifyFeature
-     * 改变之后，这个对象如下所示：
-     *
-     * (code)
-     * {
-     *     geometry: >Object
-     * }
-     * (end)
-     *
-     * 当应用程序需要对要素的 attributes 进行修改，则需要如下设置 attributes：
-     *
-     * (code)
-     * {
-     *     attributes: {
-     *         myAttribute: "original"
-     *     }
-     * }
-     * (end)
-     *
-     */
-    modified = null;
-
     constructor(geometry, attributes, style) {
         super(null, null, attributes);
         this.lonlat = null;
@@ -133,7 +101,6 @@ export default class Vector extends Feature {
         }
 
         this.geometry = null;
-        this.modified = null;
         super.destroy();
     }
 
@@ -148,139 +115,6 @@ export default class Vector extends Feature {
             this.geometry ? this.geometry.clone() : null,
             this.attributes,
             this.style);
-    }
-
-    /**
-     * @function SuperMap.Feature.Vector.prototype.onScreen
-     * @description Determine whether the feature is within the map viewport.  This method
-     *     tests for an intersection between the geometry and the viewport
-     *     bounds.  If a more effecient but less precise geometry bounds
-     *     intersection is desired, call the method with the boundsOnly
-     *     parameter true.
-     * @param boundsOnly - {Boolean} Only test whether a feature's bounds intersects
-     *     the viewport bounds.  Default is false.  If false, the feature's
-     *     geometry must intersect the viewport for onScreen to return true.
-     * @returns {Boolean} The feature is currently visible on screen (optionally
-     *     based on its bounds if boundsOnly is true).
-     */
-    onScreen(boundsOnly) {
-        var onScreen = false;
-        if (this.layer && this.layer.map) {
-            var screenBounds = this.layer.map.getExtent();
-            if (boundsOnly) {
-                var featureBounds = this.geometry.getBounds();
-                onScreen = screenBounds.intersectsBounds(featureBounds);
-            } else {
-                var screenPoly = screenBounds.toGeometry();
-                onScreen = screenPoly.intersects(this.geometry);
-            }
-        }
-        return onScreen;
-    }
-
-    /**
-     * @function SuperMap.Feature.Vector.prototype.getVisibility
-     * @description Determine whether the feature is displayed or not. It may not displayed<br>
-     *
-     * because:<br>
-     *  - its style display property is set to 'none',
-     *  - it doesn't belong to any layer,
-     *  - the styleMap creates a symbolizer with display property set to 'none' for it,
-     *  - the layer which it belongs to is not visible.
-     * @returns {Boolean} The feature is currently displayed.
-     */
-    getVisibility() {
-        return !(this.style && this.style.display === 'none' ||
-            !this.layer ||
-            this.layer && this.layer.styleMap &&
-            this.layer.styleMap.createSymbolizer(this, this.renderIntent).display === 'none' ||
-            this.layer && !this.layer.getVisibility());
-    }
-
-    /**
-     * @function SuperMap.Feature.Vector.prototype.createMarker
-     * @description HACK - we need to decide if all vector features should be able to
-     *     create markers
-     * @returns {SuperMap.Marker} For now just returns null
-     */
-    createMarker() {
-        return null;
-    }
-
-    /**
-     * @function SuperMap.Feature.Vector.prototype.destroyMarker
-     * @description HACK - we need to decide if all vector features should be able to
-     *     delete markers <br>
-     *
-     * If user overrides the createMarker() function, s/he should be able
-     *   to also specify an alternative function for destroying it
-     */
-    destroyMarker() {
-        // pass
-    }
-
-    /**
-     * @function SuperMap.Feature.Vector.prototype.createPopup
-     * @description HACK - we need to decide if all vector features should be able to
-     *     create popups
-     * @returns {SuperMap.Popup} For now just returns null
-     */
-    createPopup() {
-        return null;
-    }
-
-    /**
-     * @function SuperMap.Feature.Vector.prototype.atPoint
-     * @description Determins whether the feature intersects with the specified location.
-     * @param lonlat - {SuperMap.LonLat}
-     * @param toleranceLon - {float} Optional tolerance in Geometric Coords
-     * @param toleranceLat - {float} Optional tolerance in Geographic Coords
-     * @returns {Boolean} Whether or not the feature is at the specified location
-     */
-    atPoint(lonlat, toleranceLon, toleranceLat) {
-        var atPoint = false;
-        if (this.geometry) {
-            atPoint = this.geometry.atPoint(lonlat, toleranceLon,
-                toleranceLat);
-        }
-        return atPoint;
-    }
-
-    /**
-     * @function SuperMap.Feature.Vector.prototype.destroyPopup
-     * @description HACK - we need to decide if all vector features should be able to
-     * delete popups
-     */
-    destroyPopup() {
-        // pass
-    }
-
-    /**
-     * @function SuperMap.Feature.Vector.prototype.move
-     * @description Moves the feature and redraws it at its new location
-     * @param location - {SuperMap.LonLat|SuperMap.Pixel} the
-     *         location to which to move the feature.
-     */
-    move(location) {
-
-        if (!this.layer || !this.geometry.move) {
-            //do nothing if no layer or immoveable geometry
-            return undefined;
-        }
-
-        var pixel;
-        if (location.CLASS_NAME === "SuperMap.LonLat") {
-            pixel = this.layer.getViewPortPxFromLonLat(location);
-        } else {
-            pixel = location;
-        }
-
-        var lastPixel = this.layer.getViewPortPxFromLonLat(this.geometry.getBounds().getCenterLonLat());
-        var res = this.layer.map.getResolution();
-        this.geometry.move(res * (pixel.x - lastPixel.x),
-            res * (lastPixel.y - pixel.y));
-        this.layer.drawFeature(this);
-        return lastPixel;
     }
 
     /**

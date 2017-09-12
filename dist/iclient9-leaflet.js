@@ -2641,14 +2641,6 @@ _SuperMap2["default"].Util.copyAttributesWithClip = function (destination, sourc
 };
 
 /**
- * @description 设置该应用为移动端应用。
- * @param isApp - {Boolean}  是否是移动项目。
- *
- */
-_SuperMap2["default"].Util.setApp = function (isApp) {
-    _SuperMap2["default"].isApp = !!isApp;
-};
-/**
  * @description 克隆一份Object对象
  * @param obj - {Object}  需要克隆的对象。
  * @returns {Object} 返回对象的拷贝对象，注意是新的对象，不是指向
@@ -5756,7 +5748,7 @@ _SuperMap2["default"].LevelRenderer.Shape = Shape;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -5797,287 +5789,145 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var point = new SuperMap.Geometry.Point(-111.04, 45.68);
  */
 var Point = function (_Geometry) {
-    _inherits(Point, _Geometry);
+  _inherits(Point, _Geometry);
 
-    /**
-     * @member SuperMap.Geometry.Point.prototype.tag -{string}
-     * @description  用来存储额外的属性，比如差值分析中的Z值。
-     */
-
-
-    /**
-     * @member SuperMap.Geometry.Point.prototype.x -{float}
-     * @description 横坐标。
-     */
-    function Point(x, y, type, tag) {
-        _classCallCheck(this, Point);
-
-        var _this = _possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this, x, y, type, tag));
-
-        _this.x = null;
-        _this.y = null;
-        _this.tag = null;
-        _this.type = null;
-        _this.CLASS_NAME = "SuperMap.Geometry.Point";
+  /**
+   * @member SuperMap.Geometry.Point.prototype.tag -{string}
+   * @description  用来存储额外的属性，比如差值分析中的Z值。
+   */
 
 
-        _this.x = parseFloat(x);
-        _this.y = parseFloat(y);
-        if (tag || tag == 0) {
-            _this.tag = parseFloat(tag);
-        }
-        _this.type = type || "NONE";
-        return _this;
+  /**
+   * @member SuperMap.Geometry.Point.prototype.x -{float}
+   * @description 横坐标。
+   */
+  function Point(x, y, type, tag) {
+    _classCallCheck(this, Point);
+
+    var _this = _possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this, x, y, type, tag));
+
+    _this.x = null;
+    _this.y = null;
+    _this.tag = null;
+    _this.type = null;
+    _this.CLASS_NAME = "SuperMap.Geometry.Point";
+
+
+    _this.x = parseFloat(x);
+    _this.y = parseFloat(y);
+    if (tag || tag == 0) {
+      _this.tag = parseFloat(tag);
+    }
+    _this.type = type || "NONE";
+    return _this;
+  }
+
+  /**
+   * @function SuperMap.Geometry.Point.prototype.clone
+   * @description 克隆点对象。
+   * @returns {SuperMap.Geometry.Point} 克隆后的点对象。
+   */
+
+
+  /**
+   * @member SuperMap.Geometry.Point.prototype.tag -{string}
+   * @description  用来存储点的类型
+   */
+
+
+  /**
+   * @member SuperMap.Geometry.Point.prototype.y -{float}
+   * @description 纵坐标。
+   */
+
+
+  _createClass(Point, [{
+    key: 'clone',
+    value: function clone(obj) {
+      if (obj == null) {
+        obj = new Point(this.x, this.y);
+      }
+
+      // catch any randomly tagged-on properties
+      _Util.Util.applyDefaults(obj, this);
+
+      return obj;
     }
 
     /**
-     * @function SuperMap.Geometry.Point.prototype.clone
-     * @description 克隆点对象。
-     * @returns {SuperMap.Geometry.Point} 克隆后的点对象。
+     * @function SuperMap.Geometry.Point.prototype.calculateBounds
+     * @description 计算点对象的范围。
      */
 
+  }, {
+    key: 'calculateBounds',
+    value: function calculateBounds() {
+      this.bounds = new _Bounds2["default"](this.x, this.y, this.x, this.y);
+    }
 
     /**
-     * @member SuperMap.Geometry.Point.prototype.tag -{string}
-     * @description  用来存储点的类型
+     * @function SuperMap.Geometry.Point.prototype.equals
+     * @description 判断两个点对象是否相等。如果两个点对象具有相同的坐标，则认为是相等的。
+     * @example
+     * var point= new SuperMap.Geometry.Point(00);
+     * var point1={x:0y:0};
+     * var result= point.equals(point1);
+     * @param geom - {SuperMap.Geometry.Point} 需要判断的点对象。
+     *
+     * @returns {Boolean} 两个点对象是否相等（true为相等，false为不等）。
      */
 
+  }, {
+    key: 'equals',
+    value: function equals(geom) {
+      var equals = false;
+      if (geom != null) {
+        equals = this.x === geom.x && this.y === geom.y || isNaN(this.x) && isNaN(this.y) && isNaN(geom.x) && isNaN(geom.y);
+      }
+      return equals;
+    }
 
     /**
-     * @member SuperMap.Geometry.Point.prototype.y -{float}
-     * @description 纵坐标。
+     * @function SuperMap.Geometry.Point.prototype.toShortString
+     * @returns {string} 字符串代表点对象。(ex. <i>"5 42"</i>)
      */
 
+  }, {
+    key: 'toShortString',
+    value: function toShortString() {
+      return this.x + ", " + this.y;
+    }
 
-    _createClass(Point, [{
-        key: 'clone',
-        value: function clone(obj) {
-            if (obj == null) {
-                obj = new Point(this.x, this.y);
-            }
+    /**
+     * @function SuperMap.Geometry.Point.prototype.destroy
+     * @description 释放点对象的资源
+     */
 
-            // catch any randomly tagged-on properties
-            _Util.Util.applyDefaults(obj, this);
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      this.x = null;
+      this.y = null;
+      this.tag = null;
+      _get(Point.prototype.__proto__ || Object.getPrototypeOf(Point.prototype), 'destroy', this).call(this);
+    }
 
-            return obj;
-        }
+    /**
+     * @function SuperMap.Geometry.Point.prototype.getVertices
+     * @description 返回点对象的所有顶点的列表。
+     * @param nodes - {Boolean} 对于点对象此参数不起作用，直接返回点。
+     *
+     * @returns {Array} 几何图形的顶点列表。
+     */
 
-        /**
-         * @function SuperMap.Geometry.Point.prototype.calculateBounds
-         * @description 计算点对象的范围。
-         */
+  }, {
+    key: 'getVertices',
+    value: function getVertices(nodes) {
+      return [this];
+    }
+  }]);
 
-    }, {
-        key: 'calculateBounds',
-        value: function calculateBounds() {
-            this.bounds = new _Bounds2["default"](this.x, this.y, this.x, this.y);
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.distanceTo
-         * @description 计算两个点对象间的最小距离（x-y平面坐标系下）。
-         * @param geometry - {SuperMap.Geometry} 目标点对象。
-         * @param options - {Object} 计算距离时需要设置的可选属性。有效的选项取决于特定的几何类型。<br>
-         *
-         * Valid options:<br>
-         * details - {Boolean} 返回距离计算的细节。默认为false。<br>
-         * edge - {Boolean} 计算一个几何对象到目标几何对象边缘的最近距离。默认为true。 如果设为true，
-         * 一个几何对象完全包含在目标几何对象中时，调用distanceTo返回非零结果，如果false，两个几何对象相交情况下
-         * 调用distanceTo结果返回0，而且如果false，将不返距离。
-         *
-         * @returns {number | Object} 返回一个几何对象到目标几何对象的距离。
-         */
-
-    }, {
-        key: 'distanceTo',
-        value: function distanceTo(geometry, options) {
-            var edge = !(options && options.edge === false);
-            var details = edge && options && options.details;
-            var distance, x0, y0, x1, y1, result;
-            if (geometry instanceof Point) {
-                x0 = this.x;
-                y0 = this.y;
-                x1 = geometry.x;
-                y1 = geometry.y;
-                distance = Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));
-                result = !details ? distance : { x0: x0, y0: y0, x1: x1, y1: y1, distance: distance };
-            } else {
-                result = geometry.distanceTo(this, options);
-                if (details) {
-                    // switch coord order since this geom is target
-                    result = {
-                        x0: result.x1, y0: result.y1,
-                        x1: result.x0, y1: result.y0,
-                        distance: result.distance
-                    };
-                }
-            }
-            return result;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.equals
-         * @description 判断两个点对象是否相等。如果两个点对象具有相同的坐标，则认为是相等的。
-         * @example
-         * var point= new SuperMap.Geometry.Point(00);
-         * var point1={x:0y:0};
-         * var result= point.equals(point1);
-         * @param geom - {SuperMap.Geometry.Point} 需要判断的点对象。
-         *
-         * @returns {Boolean} 两个点对象是否相等（true为相等，false为不等）。
-         */
-
-    }, {
-        key: 'equals',
-        value: function equals(geom) {
-            var equals = false;
-            if (geom != null) {
-                equals = this.x === geom.x && this.y === geom.y || isNaN(this.x) && isNaN(this.y) && isNaN(geom.x) && isNaN(geom.y);
-            }
-            return equals;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.toShortString
-         * @returns {string} 字符串代表点对象。(ex. <i>"5 42"</i>)
-         */
-
-    }, {
-        key: 'toShortString',
-        value: function toShortString() {
-            return this.x + ", " + this.y;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.move
-         * @description 沿着x、y轴的正方向上按照给定的位移移动点对象，move 不仅改变了几何对象的位置并且清理了边界缓存。
-         * @param x - {float} x轴正方向上的偏移量。
-         * @param  y - {float} y轴正方向上偏移量。
-         * @example
-         * var point = new SuperMap.Geometry.Point(1020);
-         * var dx = 10*Math.random();
-         * var dy = 10*Math.random();
-         * point.move(dxdy);
-         */
-
-    }, {
-        key: 'move',
-        value: function move(x, y) {
-            this.x = this.x + x;
-            this.y = this.y + y;
-            this.clearBounds();
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.rotate
-         * @description 围绕中心点旋转点对象。
-         * @param angle - {float} 旋转角的度数（沿着x轴正方向的逆时针方向）。
-         * @param origin - {SuperMap.Geometry.Point} 旋转的中心点 。
-         * @example
-         * var point = new SuperMap.Geometry.Point(1020);
-         * var rotateOrigin = new SuperMap.Geometry.Point(510);
-         * point.rotate(360rotateOrigin);
-         */
-
-    }, {
-        key: 'rotate',
-        value: function rotate(angle, origin) {
-            angle *= Math.PI / 180;
-            var radius = this.distanceTo(origin);
-            var theta = angle + Math.atan2(this.y - origin.y, this.x - origin.x);
-            this.x = origin.x + radius * Math.cos(theta);
-            this.y = origin.y + radius * Math.sin(theta);
-            this.clearBounds();
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.getCentroid
-         * @description 获取点对象的质心。
-         * @returns {SuperMap.Geometry.Point} 点对象的质心。
-         */
-
-    }, {
-        key: 'getCentroid',
-        value: function getCentroid() {
-            return new Point(this.x, this.y);
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.resize
-         * @description 调整几何对象相对于原点的大小。
-         * @param scale - {float} resize之后到原点的距离与resize之前到原点的距离比。
-         * @param origin - {SuperMap.Geometry.Point} 调整的起始点。
-         * @param ratio - {float} 点对象自身x与y的比值：ratio=x/y，默认的比例为1，不推荐设置。
-         *
-         * @returns {SuperMap.Geometry} - 当前几何对象。
-         * @example
-         * var point = new SuperMap.Geometry.Point(1010);
-         * var origin = new SuperMap.Geometry.Point(00);
-         * point.resize(2origin4);
-         */
-
-    }, {
-        key: 'resize',
-        value: function resize(scale, origin, ratio) {
-            ratio = ratio == undefined ? 1 : ratio;
-            //所有的线和面最终都是控制点
-            this.x = origin.x + scale * ratio * (this.x - origin.x);
-
-            this.y = origin.y + scale * (this.y - origin.y);
-            this.clearBounds();
-            return this;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.intersects
-         * @description 判断两个几何对象是否相交。
-         * @param geometry - {SuperMap.Geometry} 任意类型的几何对象。
-         *
-         * @returns {Boolean} 传入的几何对象与当前几何对象相交。
-         */
-
-    }, {
-        key: 'intersects',
-        value: function intersects(geometry) {
-            var intersect = false;
-            if (geometry.CLASS_NAME === "SuperMap.Geometry.Point") {
-                intersect = this.equals(geometry);
-            } else {
-                intersect = geometry.intersects(this);
-            }
-            return intersect;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.destroy
-         * @description 释放点对象的资源
-         */
-
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-            this.x = null;
-            this.y = null;
-            this.tag = null;
-            _get(Point.prototype.__proto__ || Object.getPrototypeOf(Point.prototype), 'destroy', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.getVertices
-         * @description 返回点对象的所有顶点的列表。
-         * @param nodes - {Boolean} 对于点对象此参数不起作用，直接返回点。
-         *
-         * @returns {Array} 几何图形的顶点列表。
-         */
-
-    }, {
-        key: 'getVertices',
-        value: function getVertices(nodes) {
-            return [this];
-        }
-    }]);
-
-    return Point;
+  return Point;
 }(_Geometry3["default"]);
 
 exports["default"] = Point;
@@ -7146,22 +6996,6 @@ var Collection = function (_Geometry) {
         }
 
         /**
-         * @function SuperMap.Geometry.Collection.prototype.getLength
-         * @description 计算几何对象长度。
-         * @returns {number} 几何对象长度（所有几何对象长度总和）。
-         */
-
-    }, {
-        key: 'getLength',
-        value: function getLength() {
-            var length = 0.0;
-            for (var i = 0, len = this.components.length; i < len; i++) {
-                length += this.components[i].getLength();
-            }
-            return length;
-        }
-
-        /**
          * @function SuperMap.Geometry.Collection.prototype.getArea
          * @description 计算几何对象的面积。注意，这个方法在 <SuperMap.Geometry.Polygon> 类中需要重写。
          * @returns {number} 几何图形的面积，是几何对象中所有组成部分的面积之和。
@@ -7175,153 +7009,6 @@ var Collection = function (_Geometry) {
                 area += this.components[i].getArea();
             }
             return area;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.getCentroid
-         * @description  计算几何图形集合的质心。
-         * @param weighted -{Boolean} 执行getCentroid方法进行递归计算，返回此几何图形集合中的面积加权平均值。
-         * @returns {SuperMap.Geometry.Point} 质心。
-         */
-
-    }, {
-        key: 'getCentroid',
-        value: function getCentroid(weighted) {
-            if (!weighted) {
-                return this.components.length && this.components[0].getCentroid();
-            }
-            var len = this.components.length;
-            if (!len) {
-                return false;
-            }
-
-            var areas = [];
-            var centroids = [];
-            var areaSum = 0;
-            var minArea = Number.MAX_VALUE;
-            var component;
-            for (var i = 0; i < len; ++i) {
-                component = this.components[i];
-                var area = component.getArea();
-                var centroid = component.getCentroid(true);
-                if (isNaN(area) || isNaN(centroid.x) || isNaN(centroid.y)) {
-                    continue;
-                }
-                areas.push(area);
-                areaSum += area;
-                minArea = area < minArea && area > 0 ? area : minArea;
-                centroids.push(centroid);
-            }
-            len = areas.length;
-            if (areaSum === 0) {
-                // all the components in this collection have 0 area
-                // probably a collection of points -- weight all the points the same
-                for (var i = 0; i < len; ++i) {
-                    areas[i] = 1;
-                }
-                areaSum = areas.length;
-            } else {
-                // normalize all the areas where the smallest area will get
-                // a value of 1
-                for (var i = 0; i < len; ++i) {
-                    areas[i] /= minArea;
-                }
-                areaSum /= minArea;
-            }
-
-            var xSum = 0,
-                ySum = 0,
-                centroid,
-                area;
-            for (var i = 0; i < len; ++i) {
-                centroid = centroids[i];
-                area = areas[i];
-                xSum += centroid.x * area;
-                ySum += centroid.y * area;
-            }
-
-            return new _Point2["default"](xSum / areaSum, ySum / areaSum);
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.move
-         * @description  沿着x、y轴的正方向上按照给定的位移移动几何图形，move 不仅改变了几何图形的位置并且清理了边界缓存。
-         * @param x -{number} x轴正方向上移动的距离。
-         * @param y - {number} y轴正方向上移动的距离。
-         */
-
-    }, {
-        key: 'move',
-        value: function move(x, y) {
-            for (var i = 0, len = this.components.length; i < len; i++) {
-                this.components[i].move(x, y);
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.rotate
-         * @description 围绕中心点旋转几何图形。
-         * @param angle -{number} 旋转角的度数（沿着x轴正方向逆时针测量）。
-         * @param origin - {SuperMap.Geometry.Point} 旋转中心点。
-         */
-
-    }, {
-        key: 'rotate',
-        value: function rotate(angle, origin) {
-            for (var i = 0, len = this.components.length; i < len; ++i) {
-                this.components[i].rotate(angle, origin);
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.resize
-         * @description  调整几何对象大小。
-         * @param scale - {number} 几何图形缩放的比例系数，是几何图形维数的两倍。（如，对于线来说将以线2倍的长度拉长，对于多边形来说，将以面积的4倍变化）。
-         * @param origin - {SuperMap.Geometry.Point} 调整大小选定的起始原点。
-         * @param ratio - {number} 可选的xy的比例，默认的比例为1。
-         * @returns {SuperMap.Geometry} 几何图形。
-         */
-
-    }, {
-        key: 'resize',
-        value: function resize(scale, origin, ratio) {
-            for (var i = 0; i < this.components.length; ++i) {
-                this.components[i].resize(scale, origin, ratio);
-            }
-            return this;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.distanceTo
-         * @description 计算两个几个图形间的最小距离（x-y平面坐标系下）。
-         * @param geometry - {SuperMap.Geometry} 目标几何图形。
-         * @param options - {Object} 距离计算需要设置的可选属性。有效的选项取决于特定的几何类型。<br>
-         *     details - {Boolean} 返回距离计算的细节。默认为false。<br>
-         *     edge - {Boolean} 计算一个几何图形到目标几何图形边缘的最近距离。默认为true。<br>
-         *     如果设为true，一个几何图形完全包含在目标几何图形中时，调用distanceTo返回非零结果，<br>
-         *     如果false，两个几何图形相交情况下调用distanceTo结果返回0，而且如果false，将不返距离值。
-         * @returns {(number | Object)} 返回一个几何图形到目标几何图形的距离。
-         */
-
-    }, {
-        key: 'distanceTo',
-        value: function distanceTo(geometry, options) {
-            var edge = !(options && options.edge === false);
-            var details = edge && options && options.details;
-            var result, best, distance;
-            var min = Number.POSITIVE_INFINITY;
-            for (var i = 0, len = this.components.length; i < len; ++i) {
-                result = this.components[i].distanceTo(geometry, options);
-                distance = details ? result.distance : result;
-                if (distance < min) {
-                    min = distance;
-                    best = result;
-                    if (min == 0) {
-                        break;
-                    }
-                }
-            }
-            return best;
         }
 
         /**
@@ -7348,26 +7035,6 @@ var Collection = function (_Geometry) {
                 }
             }
             return equivalent;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.intersects
-         * @description 判断输入的几何对象是否与当前几何对象相交。
-         * @param geometry - {SuperMap.Geometry} 任意的几何类型。
-         * @returns {Boolean} 输入几何对象与当前几何对象相交。
-         */
-
-    }, {
-        key: 'intersects',
-        value: function intersects(geometry) {
-            var intersect = false;
-            for (var i = 0, len = this.components.length; i < len; ++i) {
-                intersect = geometry.intersects(this.components[i]);
-                if (intersect) {
-                    break;
-                }
-            }
-            return intersect;
         }
 
         /**
@@ -8557,69 +8224,6 @@ var LineString = function (_Curve) {
         }
 
         /**
-         * @function SuperMap.Geometry.LineString.prototype.intersects
-         * @description 判断两个几何图形是否相交。
-         * @param geometry - {SuperMap.Geometry} 任意的几何类型。
-         * @returns {Boolean} 输入几何图形与当前几何图形是否相交。
-         */
-
-    }, {
-        key: 'intersects',
-        value: function intersects(geometry) {
-            var intersect = false;
-            var type = geometry.CLASS_NAME;
-            if (type === "SuperMap.Geometry.LineString" || type === "SuperMap.Geometry.LinearRing" || type === "SuperMap.Geometry.Point") {
-                var segs1 = this.getSortedSegments();
-                var segs2;
-                if (type === "SuperMap.Geometry.Point") {
-                    segs2 = [{
-                        x1: geometry.x, y1: geometry.y,
-                        x2: geometry.x, y2: geometry.y
-                    }];
-                } else {
-                    segs2 = geometry.getSortedSegments();
-                }
-                var seg1, seg1x1, seg1x2, seg1y1, seg1y2, seg2, seg2y1, seg2y2;
-                // sweep right
-                outer: for (var i = 0, len = segs1.length; i < len; ++i) {
-                    seg1 = segs1[i];
-                    seg1x1 = seg1.x1;
-                    seg1x2 = seg1.x2;
-                    seg1y1 = seg1.y1;
-                    seg1y2 = seg1.y2;
-                    inner: for (var j = 0, jlen = segs2.length; j < jlen; ++j) {
-                        seg2 = segs2[j];
-                        if (seg2.x1 > seg1x2) {
-                            // seg1 still left of seg2
-                            break;
-                        }
-                        if (seg2.x2 < seg1x1) {
-                            // seg2 still left of seg1
-                            continue;
-                        }
-                        seg2y1 = seg2.y1;
-                        seg2y2 = seg2.y2;
-                        if (Math.min(seg2y1, seg2y2) > Math.max(seg1y1, seg1y2)) {
-                            // seg2 above seg1
-                            continue;
-                        }
-                        if (Math.max(seg2y1, seg2y2) < Math.min(seg1y1, seg1y2)) {
-                            // seg2 below seg1
-                            continue;
-                        }
-                        if (_SuperMap2["default"].Geometry.segmentsIntersect(seg1, seg2)) {
-                            intersect = true;
-                            break outer;
-                        }
-                    }
-                }
-            } else {
-                intersect = geometry.intersects(this);
-            }
-            return intersect;
-        }
-
-        /**
          * @function SuperMap.Geometry.LineString.prototype.getSortedSegments
          * @returns {Array} An array of segment objects.  Segment objects have properties
          *     x1 y1 x2 and y2.  The start point is represented by x1 and y1.
@@ -8663,231 +8267,6 @@ var LineString = function (_Curve) {
         }
 
         /**
-         * @function SuperMap.Geometry.LineString.prototype.splitWithSegment
-         * @description Split this geometry with the given segment.
-         * @param seg - {Object} An object with x1 y1 x2 and y2 properties referencing
-         *     segment endpoint coordinates.
-         * @param options - {Object} Properties of this object will be used to determine
-         *     how the split is conducted.<br>
-         * Valid options:<br>
-         * edge - {Boolean} Allow splitting when only edges intersect.  Default is
-         *     true.  If false a vertex on the source segment must be within the
-         *     tolerance distance of the intersection to be considered a split.<br>
-         * tolerance - {number} If a non-null value is provided intersections
-         *     within the tolerance distance of one of the source segment's
-         *     endpoints will be assumed to occur at the endpoint.
-         *
-         * @returns {Object} An object with *lines* and *points* properties.  If the given
-         *     segment intersects this linestring the lines array will reference
-         *     geometries that result from the split.  The points array will contain
-         *     all intersection points.  Intersection points are sorted along the
-         *     segment (in order from x1y1 to x2y2).
-         */
-
-    }, {
-        key: 'splitWithSegment',
-        value: function splitWithSegment(seg, options) {
-            var edge = !(options && options.edge === false);
-            var tolerance = options && options.tolerance;
-            var lines = [];
-            var verts = this.getVertices();
-            var points = [];
-            var intersections = [];
-            var split = false;
-            var vert1, vert2, point;
-            var node, vertex, target;
-            var interOptions = { point: true, tolerance: tolerance };
-            var result = null;
-            for (var i = 0, stop = verts.length - 2; i <= stop; ++i) {
-                vert1 = verts[i];
-                points.push(vert1.clone());
-                vert2 = verts[i + 1];
-                target = { x1: vert1.x, y1: vert1.y, x2: vert2.x, y2: vert2.y };
-                point = _SuperMap2["default"].Geometry.segmentsIntersect(seg, target, interOptions);
-                if (point instanceof _Point2["default"]) {
-                    if (point.x === seg.x1 && point.y === seg.y1 || point.x === seg.x2 && point.y === seg.y2 || point.equals(vert1) || point.equals(vert2)) {
-                        vertex = true;
-                    } else {
-                        vertex = false;
-                    }
-                    if (vertex || edge) {
-                        // push intersections different than the previous
-                        if (!point.equals(intersections[intersections.length - 1])) {
-                            intersections.push(point.clone());
-                        }
-                        if (i === 0) {
-                            if (point.equals(vert1)) {
-                                continue;
-                            }
-                        }
-                        if (point.equals(vert2)) {
-                            continue;
-                        }
-                        split = true;
-                        if (!point.equals(vert1)) {
-                            points.push(point);
-                        }
-                        lines.push(new LineString(points));
-                        points = [point.clone()];
-                    }
-                }
-            }
-            if (split) {
-                points.push(vert2.clone());
-                lines.push(new LineString(points));
-            }
-            if (intersections.length > 0) {
-                // sort intersections along segment
-                var xDir = seg.x1 < seg.x2 ? 1 : -1;
-                var yDir = seg.y1 < seg.y2 ? 1 : -1;
-                result = {
-                    lines: lines,
-                    points: intersections.sort(function (p1, p2) {
-                        return xDir * p1.x - xDir * p2.x || yDir * p1.y - yDir * p2.y;
-                    })
-                };
-            }
-            return result;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.prototype.split
-         * @description Use this geometry (the source) to attempt to split a target geometry.
-         * @param target - {SuperMap.Geometry} The target geometry.
-         * @param options - {Object} Properties of this object will be used to determine
-         *     how the split is conducted.
-         *
-         * Valid options:
-         * mutual - {Boolean} Split the source geometry in addition to the target
-         *     geometry.  Default is false.
-         * edge - {Boolean} Allow splitting when only edges intersect.  Default is
-         *     true.  If false a vertex on the source must be within the tolerance
-         *     distance of the intersection to be considered a split.
-         * tolerance - {number} If a non-null value is provided intersections
-         *     within the tolerance distance of an existing vertex on the source
-         *     will be assumed to occur at the vertex.
-         *
-         * @returns {Array} A list of geometries (of this same type as the target) that
-         *     result from splitting the target with the source geometry.  The
-         *     source and target geometry will remain unmodified.  If no split
-         *     results null will be returned.  If mutual is true and a split
-         *     results return will be an array of two arrays - the first will be
-         *     all geometries that result from splitting the source geometry and
-         *     the second will be all geometries that result from splitting the
-         *     target geometry.
-         */
-
-    }, {
-        key: 'split',
-        value: function split(target, options) {
-            var results = null;
-            var mutual = options && options.mutual;
-            var sourceSplit, targetSplit, sourceParts, targetParts;
-            if (target instanceof LineString) {
-                var verts = this.getVertices();
-                var vert1, vert2, seg, splits, lines, point;
-                var points = [];
-                sourceParts = [];
-                for (var i = 0, stop = verts.length - 2; i <= stop; ++i) {
-                    vert1 = verts[i];
-                    vert2 = verts[i + 1];
-                    seg = {
-                        x1: vert1.x, y1: vert1.y,
-                        x2: vert2.x, y2: vert2.y
-                    };
-                    targetParts = targetParts || [target];
-                    if (mutual) {
-                        points.push(vert1.clone());
-                    }
-                    for (var j = 0; j < targetParts.length; ++j) {
-                        splits = targetParts[j].splitWithSegment(seg, options);
-                        if (splits) {
-                            // splice in new features
-                            lines = splits.lines;
-                            if (lines.length > 0) {
-                                lines.unshift(j, 1);
-                                Array.prototype.splice.apply(targetParts, lines);
-                                j += lines.length - 2;
-                            }
-                            if (mutual) {
-                                for (var k = 0, len = splits.points.length; k < len; ++k) {
-                                    point = splits.points[k];
-                                    if (!point.equals(vert1)) {
-                                        points.push(point);
-                                        sourceParts.push(new LineString(points));
-                                        if (point.equals(vert2)) {
-                                            points = [];
-                                        } else {
-                                            points = [point.clone()];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if (mutual && sourceParts.length > 0 && points.length > 0) {
-                    points.push(vert2.clone());
-                    sourceParts.push(new LineString(points));
-                }
-            } else {
-                results = target.splitWith(this, options);
-            }
-            if (targetParts && targetParts.length > 1) {
-                targetSplit = true;
-            } else {
-                targetParts = [];
-            }
-            if (sourceParts && sourceParts.length > 1) {
-                sourceSplit = true;
-            } else {
-                sourceParts = [];
-            }
-            if (targetSplit || sourceSplit) {
-                if (mutual) {
-                    results = [sourceParts, targetParts];
-                } else {
-                    results = targetParts;
-                }
-            }
-            return results;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.prototype.splitWith
-         * @description Split this geometry (the target) with the given geometry (the source).
-         * @param geometry - {SuperMap.Geometry} A geometry used to split this
-         *     geometry (the source).
-         * @param options - {Object} Properties of this object will be used to determine
-         *     how the split is conducted.
-         *
-         * Valid options:
-         * mutual - {Boolean} Split the source geometry in addition to the target
-         *     geometry.  Default is false.
-         * edge - {Boolean} Allow splitting when only edges intersect.  Default is
-         *     true.  If false a vertex on the source must be within the tolerance
-         *     distance of the intersection to be considered a split.
-         * tolerance - {number} If a non-null value is provided intersections
-         *     within the tolerance distance of an existing vertex on the source
-         *     will be assumed to occur at the vertex.
-         *
-         * @returns {Array} A list of geometries (of this same type as the target) that
-         *     result from splitting the target with the source geometry.  The
-         *     source and target geometry will remain unmodified.  If no split
-         *     results null will be returned.  If mutual is true and a split
-         *     results return will be an array of two arrays - the first will be
-         *     all geometries that result from splitting the source geometry and
-         *     the second will be all geometries that result from splitting the
-         *     target geometry.
-         */
-
-    }, {
-        key: 'splitWith',
-        value: function splitWith(geometry, options) {
-            return geometry.split(this, options);
-        }
-
-        /**
          * @function SuperMap.Geometry.LineString.prototype.getVertices
          * @description 返回几何图形的所有顶点的列表。
          * @param nodes - {Boolean} 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点
@@ -8910,1029 +8289,6 @@ var LineString = function (_Curve) {
         }
 
         /**
-         * @function SuperMap.Geometry.LineString.prototype.distanceTo
-         * @description 计算两个几个图形间的最小距离（x-y平面坐标系下）。
-         * @param geometry - {SuperMap.Geometry} 目标几何图形。
-         * @param options - {Object}距离计算需要设置的可选属性。有效的选项取决于特定的几何类型。
-         *
-         * Valid options:
-         * details - {Boolean} 返回距离计算的细节，默认为false。
-         * edge - {Boolean} 计算一个几何图形到目标几何图形边缘的最近距离，默认为true。 如果设为true，
-         * 一个几何图形完全包含在目标几何图形中时，调用distanceTo返回非零结果，如果false，两个几何图形相交情况下
-         * 调用distanceTo结果返回0，而且如果false，将不返距离。
-         * @returns {number | Object} 返回一个几何图形到目标几何图形的距离。
-         */
-
-    }, {
-        key: 'distanceTo',
-        value: function distanceTo(geometry, options) {
-            var edge = !(options && options.edge === false);
-            var details = edge && options && options.details;
-            var result,
-                best = {};
-            var min = Number.POSITIVE_INFINITY;
-            if (geometry instanceof _Point2["default"]) {
-                var segs = this.getSortedSegments();
-                var x = geometry.x;
-                var y = geometry.y;
-                var seg;
-                for (var i = 0, len = segs.length; i < len; ++i) {
-                    seg = segs[i];
-                    result = Supermap.Geometry.distanceToSegment(geometry, seg);
-                    if (result.distance < min) {
-                        min = result.distance;
-                        best = result;
-                        if (min === 0) {
-                            break;
-                        }
-                    } else {
-                        // if distance increases and we cross y0 to the right of x0, no need to keep looking.
-                        if (seg.x2 > x && (y > seg.y1 && y < seg.y2 || y < seg.y1 && y > seg.y2)) {
-                            break;
-                        }
-                    }
-                }
-                if (details) {
-                    best = {
-                        distance: best.distance,
-                        x0: best.x, y0: best.y,
-                        x1: x, y1: y
-                    };
-                } else {
-                    best = best.distance;
-                }
-            } else if (geometry instanceof LineString) {
-                var segs0 = this.getSortedSegments();
-                var segs1 = geometry.getSortedSegments();
-                var seg0, seg1, intersection, x0, y0;
-                var len1 = segs1.length;
-                var interOptions = { point: true };
-                outer: for (var i = 0, len = segs0.length; i < len; ++i) {
-                    seg0 = segs0[i];
-                    x0 = seg0.x1;
-                    y0 = seg0.y1;
-                    for (var j = 0; j < len1; ++j) {
-                        seg1 = segs1[j];
-                        intersection = Supermap.Geometry.segmentsIntersect(seg0, seg1, interOptions);
-                        if (intersection) {
-                            min = 0;
-                            best = {
-                                distance: 0,
-                                x0: intersection.x, y0: intersection.y,
-                                x1: intersection.x, y1: intersection.y
-                            };
-                            break outer;
-                        } else {
-                            result = Supermap.Geometry.distanceToSegment({ x: x0, y: y0 }, seg1);
-                            if (result.distance < min) {
-                                min = result.distance;
-                                best = {
-                                    distance: min,
-                                    x0: x0, y0: y0,
-                                    x1: result.x, y1: result.y
-                                };
-                            }
-                        }
-                    }
-                }
-                if (!details) {
-                    best = best.distance;
-                }
-                if (min !== 0) {
-                    // check the final vertex in this line's sorted segments
-                    if (seg0) {
-                        result = geometry.distanceTo(new _Point2["default"](seg0.x2, seg0.y2), options);
-                        var dist = details ? result.distance : result;
-                        if (dist < min) {
-                            if (details) {
-                                best = {
-                                    distance: min,
-                                    x0: result.x1, y0: result.y1,
-                                    x1: result.x0, y1: result.y0
-                                };
-                            } else {
-                                best = dist;
-                            }
-                        }
-                    }
-                }
-            } else {
-                best = geometry.distanceTo(this, options);
-                // swap since target comes from this line
-                if (details) {
-                    best = {
-                        distance: best.distance,
-                        x0: best.x1, y0: best.y1,
-                        x1: best.x0, y1: best.y0
-                    };
-                }
-            }
-            return best;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.prototype.simplify
-         * @description 这个函数返回一个简化的线串，基于道格拉斯 - 普克简化算法进行简化。
-         * @param tolerance - {number} 地图单位上的简化的阈值。
-         * @returns {SuperMap.Geometry.LineString} 被简化的线串。
-         */
-
-    }, {
-        key: 'simplify',
-        value: function simplify(tolerance) {
-            if (this && this !== null) {
-                var points = this.getVertices();
-                if (points.length < 3) {
-                    return this;
-                }
-
-                var compareNumbers;
-                a, b;
-                {
-                    return a - b;
-                }
-                ;
-
-                var firstPoint = 0;
-                var lastPoint = points.length - 1;
-                var pointIndexsToKeep = [];
-
-                /**
-                 * Private function calculating the perpendicular distance
-                 * TODO: check whether SuperMap.Geometry.LineString::distanceTo() is faster or slower
-                 */
-                var perpendicularDistance;
-                point1, point2, point;
-                {
-                    //Area = |(1/2)(x1y2 + x2y3 + x3y1 - x2y1 - x3y2 - x1y3)|   *Area of triangle
-                    //Base = v((x1-x2)²+(x1-x2)²)                               *Base of Triangle*
-                    //Area = .5*Base*H                                          *Solve for height
-                    //Height = Area/.5/Base
-
-                    var area = Math.abs(0.5 * (point1.x * point2.y + point2.x * point.y + point.x * point1.y - point2.x * point1.y - point.x * point2.y - point1.x * point.y));
-                    var bottom = Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
-                    var height = area / bottom * 2;
-
-                    return height;
-                }
-                ;
-
-                /**
-                 * Private function doing the Douglas-Peucker reduction
-                 */
-                var douglasPeuckerReduction;
-                points, firstPoint, lastPoint, tolerance;
-                {
-                    var maxDistance = 0;
-                    var indexFarthest = 0;
-
-                    for (var index = firstPoint, distance; index < lastPoint; index++) {
-                        distance = perpendicularDistance(points[firstPoint], points[lastPoint], points[index]);
-                        if (distance > maxDistance) {
-                            maxDistance = distance;
-                            indexFarthest = index;
-                        }
-                    }
-
-                    if (maxDistance > tolerance && indexFarthest !== firstPoint) {
-                        //Add the largest point that exceeds the tolerance
-                        pointIndexsToKeep.push(indexFarthest);
-                        douglasPeuckerReduction(points, firstPoint, indexFarthest, tolerance);
-                        douglasPeuckerReduction(points, indexFarthest, lastPoint, tolerance);
-                    }
-                }
-                ;
-
-                //Add the first and last index to the keepers
-                pointIndexsToKeep.push(firstPoint);
-                pointIndexsToKeep.push(lastPoint);
-
-                //The first and the last point cannot be the same
-                while (points[firstPoint].equals(points[lastPoint])) {
-                    lastPoint--;
-                    //Addition: the first point not equal to first point in the LineString is kept as well
-                    pointIndexsToKeep.push(lastPoint);
-                }
-
-                douglasPeuckerReduction(points, firstPoint, lastPoint, tolerance);
-                var returnPoints = [];
-                pointIndexsToKeep.sort(compareNumbers);
-                for (var index = 0; index < pointIndexsToKeep.length; index++) {
-                    returnPoints.push(points[pointIndexsToKeep[index]]);
-                }
-                return new LineString(returnPoints);
-            } else {
-                return this;
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.createCurve
-         * @description 创建扇形对象。
-         * @param points - {Array<SuperMap.Geometry.Point>} 曲线经过的点串。
-         * @param method - {String} 曲线类型，目前支持的有："lanczos""cubic""linear"默认为"lanczos"。
-         * @param filterSize - {number} 曲线平滑曲度，在2~10之间的数值，默认为10，不支持method为"linear"的类型。
-         * @param lineLength - {number} 曲线拟合的线数目，默认是80。
-         * 备注：需要依赖Smooth.js
-         * @returns {SuperMap.Geometry.LineString} 几何线对象
-         * @example
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(11983722.73153942864.5449));
-         * points.push(new SuperMap.Geometry.Point(11986722.7315 3946864.5449));
-         * points.push(new SuperMap.Geometry.Point(11989722.7315 3949864.5449));
-         * var curve = SuperMap.Geometry.LineString.createCurve(points);
-         */
-
-    }], [{
-        key: 'createCurve',
-        value: function createCurve(points, method, filterSize, lineLength) {
-            var methodCurve = "lanczos";
-            if (method != undefined) methodCurve = method;
-
-            var filterSizeCurve = 10;
-            if (filterSize != undefined) filterSizeCurve = filterSize;
-
-            var smoothConfig = {
-                method: methodCurve,
-                clip: 'mirror',
-                lanczosFilterSize: filterSizeCurve,
-                cubicTension: 0
-            };
-
-            var pp = [];
-            for (var i = 0; i < points.length; i++) {
-                pp.push([points[i].x, points[i].y]);
-            }
-
-            var distance;
-            a, b;
-            {
-                return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
-            }
-
-            var averageLineLengthCurve = 80;
-            if (lineLength != undefined) averageLineLengthCurve = lineLength;
-
-            var pointList = [];
-            var averageLineLength, du, end, pieceCount, pieceLength, s, start, t, u, _ref, _ref2, _ref3;
-            averageLineLength = distance(pp[0], pp[pp.length - 1]) / averageLineLengthCurve;
-            pieceCount = 2;
-            s = Smooth(pp, smoothConfig);
-            for (t = 0, _ref = 1 / pieceCount; t < 1; t += _ref) {
-                _ref2 = [s(i + t), s(i + t + 1 / pieceCount)], start = _ref2[0], end = _ref2[1];
-                pieceLength = distance(start, end);
-                du = averageLineLength / pieceLength;
-                for (u = 0, _ref3 = 1 / pieceCount; 0 <= _ref3 ? u < _ref3 : u > _ref3; u += du) {
-                    var p = s(i + t + u);
-                    pointList.push(new _Point2["default"](p[0], p[1]));
-                }
-            }
-
-            var p = s(i + 1);
-            pointList.push(new _Point2["default"](p[0], p[1]));
-
-            return new LineString(pointList);
-        }
-    }, {
-        key: 'createBspline',
-
-
-        /**
-         * @function SuperMap.Geometry.LineString.createBspline
-         * @description 创建B样条曲线。此曲线会穿过所有的点。
-         * @param points - {Array<SuperMap.Geometry.Point>} 曲线经过的点串。
-         * @param filterSize - {number} 曲线平滑曲度，默认为10。
-         * @returns {SuperMap.Geometry.LineString} 几何线对象
-         * @example
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(116, 39.4));
-         * points.push(new SuperMap.Geometry.Point(118, 39.8));
-         * points.push(new SuperMap.Geometry.Point(119, 39));
-         *
-         * var curve = SuperMap.Geometry.LineString.createBspline(points,5);
-         */
-        value: function createBspline(points, filterSize) {
-            //一个点无效，至少需要两个点
-            if (points.length < 2) {
-                return null;
-            }
-            //曲线内部的所有点数组
-            var pointListDraw = [];
-            //设置曲线平滑曲度
-            var k = 10;
-            if (filterSize != undefined) {
-                k = filterSize;
-            }
-            var i, j, a0, a1, a2, dt, t1, t2;
-            var t_x, t_y;
-            dt = 1.0 / k;
-            //计算起始点，
-            var value = Math.sqrt((Math.pow(points[1].x - points[0].x, 2) + Math.pow(points[1].y - points[0].y, 2)) / 2); //取的点数组中前两个点粗略计算出的一个值
-            //此为第一个控制点，此点以后可能会开放出来
-            var pointFirst = new _Point2["default"](points[0].x - value, points[0].y - value);
-            //初始化一个点数组，存放所有的控制点
-            var pointListControl = [];
-            //第一个控制点也就是起始点pointFirst
-            pointListControl[0] = pointFirst;
-            //循环用户传进的点数组
-            for (i = 0; i < points.length - 1; i++) {
-                //定义一个零时数组，只需要三个元素，后期用于调用贝茨曲线划线（由首尾两个挤出点和中间的控制点组成的）
-                var pointList = [];
-                //
-                pointList[0] = points[i];
-                //由前一个控制点和当前的点生成的后一个控制点
-                var point = new _Point2["default"](points[i].x * 2 - pointListControl[i].x, points[i].y * 2 - pointListControl[i].y);
-                pointList[1] = point;
-                pointListControl[i + 1] = point;
-                pointList[2] = points[i + 1];
-                //将此控制点存起来
-                pointListDraw.push(pointList[0]);
-                //生成当前曲线中的所有点
-                for (j = 0; j <= k; j++) {
-                    t1 = j * dt;
-                    t2 = t1 * t1;
-
-                    a0 = (t2 - 2 * t1 + 1) / 2.0;
-                    a1 = (2 * t1 - 2 * t2 + 1) / 2.0;
-                    a2 = t2 / 2.0;
-
-                    t_x = a0 * pointList[0].x + a1 * pointList[1].x + a2 * pointList[2].x;
-                    t_y = a0 * pointList[0].y + a1 * pointList[1].y + a2 * pointList[2].y;
-                    pointListDraw.push(new _Point2["default"](t_x, t_y));
-                }
-            }
-            //将最后一个用户的点存进去才能达到曲线通过所有的点
-            pointListDraw.push(points[points.length - 1]);
-            return new LineString(pointListDraw);
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.createBezier1
-         * @description 创建1次贝塞尔曲线。
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
-         * @param precision -{number} 拆分精度，表示贝塞尔曲线上任意两点间横向或纵向的最大距离。
-         *                     决定贝塞尔曲线的平滑程度。取值越小曲线越平滑。取值为大于1的整数。
-         * @param part -{number} 平滑度。取值越大，曲线越平滑。取值为大于1的整数。
-         * @returns {SuperMap.Geometry.LineString} 几何线对象
-         * @example
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050));
-         * points.push(new SuperMap.Geometry.Point(260));
-         * points.push(new SuperMap.Geometry.Point(820));
-         *
-         * var bezier = SuperMap.Geometry.LineString.createBezier1(points 20);
-         */
-
-    }, {
-        key: 'createBezier1',
-        value: function createBezier1(points, precision, part) {
-            if (part) {
-                return LineString.createBezier3(points, part);
-            }
-            //获取待拆分的点
-            var bezierPts = [];
-            for (var m = 0; m < points.length; m++) {
-                bezierPts[m] = points[m];
-            }
-            //获取输入点的数量
-            var i;
-            var k;
-            var j = 0;
-            var bExit;
-            var count = bezierPts.length;
-            var ptBuffer = [];
-            var ok = true;
-            while (ok) {
-                bExit = true;
-                //贝塞尔分解是按4个点为一组进行的，所以小于4个点就再不进行分解
-                for (i = 0; i < count - 3; i += 3) {
-                    //对输入点数组进行分解
-                    //判断bezierPts[i]到bezierPts[i+4]是否达到精度
-                    if (GetBezierGap(bezierPts, i) > precision) {
-                        bExit = false;
-                        //对未达到精度的bezierPts[i]到bezierPts[i+4]进行计算，得到新的ptBuffer点数组
-                        InciseBezier(bezierPts, i, ptBuffer);
-                        //去除已使用过的2个控制点
-                        bezierPts.splice(i + 1, 2);
-                        //将本次计算得到的5个新的点插入到bezierPts[i]位置之后，得到新的bezierPts点数组
-                        for (k = 0; k < 5; k++) {
-                            bezierPts.splice(i + 1 + k, 0, ptBuffer[k + 1]);
-                        }
-                        //bezierPts[i]到bezierPts[i+4]没有达到精度，所以不能跳过，i需回归初始
-                        i -= 3;
-                        count = bezierPts.length;
-                    }
-                    if (bExit) break;
-                }
-                //对分解得出的新bezierPts点数组进行优化，除去相同的点
-                while (j < count - 1) {
-                    if (bezierPts[j] === bezierPts[j + 1]) {
-                        bezierPts.splice(j + 1, 1);
-                        count--;
-                    }
-                    j++;
-                }
-                ok = false;
-            }
-
-            return new LineString(bezierPts);
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.calculatePointsFBZ2
-         * @description 计算2次贝塞尔曲线的点
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串（必须为三个点）。
-         * @param part -{number} 平滑度。取值越大，曲线越平滑。取值为大于1的整数。
-         * @returns {Array<SuperMap.Geometry.Point>} 2次贝塞尔曲线的所有点
-         */
-
-    }, {
-        key: 'calculatePointsFBZ2',
-        value: function calculatePointsFBZ2(points, part) {
-            if (!part) part = 20;
-
-            //获取待拆分的点
-            var bezierPts = [];
-            var scale = 0.05;
-            if (part > 0) {
-                scale = 1 / part;
-            }
-
-            for (var i = 0; i < points.length - 2;) {
-                //起始点
-                var pointS = points[i];
-                //控制点
-                var pointC = points[i + 1];
-                //结束点
-                var pointE = points[i + 2];
-
-                bezierPts.push(pointS);
-                for (var t = 0; t < 1;) {
-                    //二次贝塞尔曲线公式
-                    var x = (1 - t) * (1 - t) * pointS.x + 2 * t * (1 - t) * pointC.x + t * t * pointE.x;
-                    var y = (1 - t) * (1 - t) * pointS.y + 2 * t * (1 - t) * pointC.y + t * t * pointE.y;
-                    var point = new _Point2["default"](x, y);
-                    bezierPts.push(point);
-                    t += scale;
-                }
-
-                i += 2;
-                if (i >= points.length) {
-                    bezierPts.push(pointS);
-                }
-            }
-
-            //需要判定一下最后一个点是否存在
-            var poRE = bezierPts[bezierPts.length - 1];
-            var popE = points[points.length - 1];
-            if (!poRE.equals(popE)) {
-                bezierPts.push(popE.clone());
-            }
-
-            return bezierPts;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.calculatePointsFBZ3
-         * 计算3次贝塞尔曲线的点
-         *
-         * points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串(四个)。
-         * part -{number} 平滑度。取值越大，曲线越平滑。取值为大于1的整数。
-         * @returns {Array<SuperMap.Geometry.Point>} 3次贝塞尔曲线的所有点
-         */
-
-    }, {
-        key: 'calculatePointsFBZ3',
-        value: function calculatePointsFBZ3(points, part) {
-            if (!part) part = 20;
-            //获取待拆分的点
-            var bezierPts = [];
-            var scale = 0.05;
-
-            if (part > 0) {
-                scale = 1 / part;
-            }
-
-            for (var i = 0; i < points.length - 3;) {
-                //起始点
-                var pointS = points[i];
-                //第一个控制点
-                var pointC1 = points[i + 1];
-                //第二个控制点
-                var pointC2 = points[i + 2];
-                //结束点
-                var pointE = points[i + 3];
-
-                bezierPts.push(pointS);
-                for (var t = 0; t < 1;) {
-                    //三次贝塞尔曲线公式
-                    var x = (1 - t) * (1 - t) * (1 - t) * pointS.x + 3 * t * (1 - t) * (1 - t) * pointC1.x + 3 * t * t * (1 - t) * pointC2.x + t * t * t * pointE.x;
-                    var y = (1 - t) * (1 - t) * (1 - t) * pointS.y + 3 * t * (1 - t) * (1 - t) * pointC1.y + 3 * t * t * (1 - t) * pointC2.y + t * t * t * pointE.y;
-                    var point = new _Point2["default"](x, y);
-                    bezierPts.push(point);
-                    t += scale;
-                }
-
-                i += 3;
-                if (i >= points.length) {
-                    bezierPts.push(pointS);
-                }
-            }
-
-            //需要判定一下最后一个点是否存在
-            var poRE = bezierPts[bezierPts.length - 1];
-            var popE = points[points.length - 1];
-            if (!poRE.equals(popE)) {
-                bezierPts.push(popE.clone());
-            }
-            return bezierPts;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.calculatePointsFBZN
-         * @description 计算N次贝塞尔曲线的插值点
-         * 计算N次贝塞尔曲线需要N+1个点也就是传入 points ，得到的是points.length-1次贝塞尔曲线
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
-         * @param part -{number} 平滑度。取值越大，曲线越平滑。取值为大于1的整数。
-         * @returns {Array<SuperMap.Geometry.Point>} N次贝塞尔曲线的所有点
-         */
-
-    }, {
-        key: 'calculatePointsFBZN',
-        value: function calculatePointsFBZN(points, part) {
-            if (!part) part = points.length * 8;
-
-            //获取待拆分的点
-            var bezierPts = [];
-            var scale = 0.05;
-            if (part > 0) {
-                scale = 1 / part;
-            }
-            for (var t = 0; t <= 1;) {
-                var x = 0;
-                var y = 0;
-                var n = points.length;
-                for (var i = 0; i < points.length; i++) {
-                    var b = LineString.BEZ(n - 1, i, t);
-                    x += points[i].x * b;
-                    y += points[i].y * b;
-                }
-                var point = new _Point2["default"](x, y);
-                bezierPts.push(point);
-                t += scale;
-            }
-            //需要判定一下最后一个点是否存在
-            var poRE = bezierPts[bezierPts.length - 1];
-            var popE = points[points.length - 1];
-            if (!poRE.equals(popE)) {
-                bezierPts.push(popE.clone());
-            }
-            return bezierPts;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.createBezier2
-         * @description 创建2次贝塞尔曲线。
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串（必须为三个点）。
-         * @param part -{number} 平滑度。取值越大，曲线越平滑。取值为大于1的整数。
-         * @returns {SuperMap.Geometry.LineString} 几何线对象
-         * @example
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050));
-         * points.push(new SuperMap.Geometry.Point(260));
-         *
-         * var bezier = SuperMap.Geometry.LineString.createBezier2(points 20);
-         */
-
-    }, {
-        key: 'createBezier2',
-        value: function createBezier2(points, part) {
-
-            var bezierPts = LineString.calculatePointsFBZ2(points, part);
-            return new LineString(bezierPts);
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.createBezier3
-         * @description 创建3次贝塞尔曲线。
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。(必须为四个点)
-         * @param precision -{number} 拆分精度，表示贝塞尔曲线上任意两点间横向或纵向的最大距离。
-         *                     决
-         * @returns {SuperMap.Geometry.LineString} 几何线对象
-         * @example
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050));
-         * points.push(new SuperMap.Geometry.Point(260));
-         * points.push(new SuperMap.Geometry.Point(820));
-         *
-         * var bezier = SuperMap.Geometry.LineString.createBezier3(points 20);
-         */
-
-    }, {
-        key: 'createBezier3',
-        value: function createBezier3(points, part) {
-
-            var bezierPts = LineString.calculatePointsFBZ3(points, part);
-            return new LineString(bezierPts);
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.createBezier
-         * @description 创建3次贝塞尔曲线。
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
-         * @param precision -{number} 拆分精度，表示贝塞尔曲线上任意两点间横向或纵向的最大距离。
-         *                     决定贝塞尔曲线的平滑程度。取值越小曲线越平滑。取值为大于1的整数。
-         * @returns {SuperMap.Geometry.LineString} 几何线对象
-         * @example
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050));
-         * points.push(new SuperMap.Geometry.Point(260));
-         * points.push(new SuperMap.Geometry.Point(820));
-         *
-         * var bezier = SuperMap.Geometry.LineString.createBezier(points1);
-         */
-
-    }, {
-        key: 'createBezier',
-        value: function createBezier(points, precision) {
-            //获取待拆分的点
-            var bezierPts = [];
-            for (var m = 0; m < points.length; m++) {
-                bezierPts[m] = points[m];
-            }
-            //获取输入点的数量
-            var i,
-                k,
-                j = 0,
-                bExit,
-                count = bezierPts.length;
-            var ptBuffer = [];
-            while (true) {
-                bExit = true;
-                //贝塞尔分解是按4个点为一组进行的，所以小于4个点就再不进行分解
-                for (i = 0; i < count - 3; i += 3) {
-                    //对输入点数组进行分解
-                    //判断bezierPts[i]到bezierPts[i+4]是否达到精度
-                    if (GetBezierGap(bezierPts, i) > precision) {
-                        bExit = false;
-                        //对未达到精度的bezierPts[i]到bezierPts[i+4]进行计算，得到新的ptBuffer点数组
-                        InciseBezier(bezierPts, i, ptBuffer);
-                        //去除已使用过的2个控制点
-                        bezierPts.splice(i + 1, 2);
-                        //将本次计算得到的5个新的点插入到bezierPts[i]位置之后，得到新的bezierPts点数组
-                        for (k = 0; k < 5; k++) {
-                            bezierPts.splice(i + 1 + k, 0, ptBuffer[k + 1]);
-                        }
-                        //bezierPts[i]到bezierPts[i+4]没有达到精度，所以不能跳过，i需回归初始
-                        i -= 3;
-                        count = bezierPts.length;
-                    }
-                    if (bExit) break;
-                }
-                //对分解得出的新bezierPts点数组进行优化，除去相同的点
-                while (j < count - 1) {
-                    if (bezierPts[j] === bezierPts[j + 1]) {
-                        bezierPts.splice(j + 1, 1);
-                        count--;
-                    }
-                    j++;
-                }
-                //返回分解完成的新的bezierPts点数组
-                return new LineString(bezierPts);
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.createBezierN
-         * @description 创建N次贝塞尔曲线。
-         * 创建N次贝塞尔曲线需要N+1个点也就是传入 points ，得到的是points.length-1次贝塞尔曲线
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
-         * @param part -{number} 平滑度。取值越大，曲线越平滑。取值为大于1的整数，默认为20。
-         * @returns {SuperMap.Geometry.LineString} 几何线对象
-         * @example
-         * //创建3次贝塞尔曲线
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050));
-         * points.push(new SuperMap.Geometry.Point(260));
-         * points.push(new SuperMap.Geometry.Point(820));
-         *
-         * var bezier = SuperMap.Geometry.LineString.createBezierN(points 20);
-         * //创建4次贝塞尔曲线
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050));
-         * points.push(new SuperMap.Geometry.Point(260));
-         * points.push(new SuperMap.Geometry.Point(820));
-         * points.push(new SuperMap.Geometry.Point(5020));
-         *
-         * var bezier = SuperMap.Geometry.LineString.createBezierN(points 30);
-         * ......
-         */
-
-    }, {
-        key: 'createBezierN',
-        value: function createBezierN(points, part) {
-            var bezierPts = LineString.calculatePointsFBZN(points, part);
-            return new LineString(bezierPts);
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.BEZ
-         * @description 基函数
-         * @param n -{number}
-         * @param k -{number}
-         * @param t -{number} 0-1之间的一个数，
-         * @returns {number} 基函数的值
-         *
-         */
-
-    }, {
-        key: 'BEZ',
-        value: function BEZ(n, k, t) {
-            return LineString.combSort(n, k) * Math.pow(t, k) * Math.pow(1 - t, n - k);
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.combSort
-         * @description 组合排序计算从1*2*...*n/(1*2*...*k*1*2*...*(n-k))的值
-         * @param n -{number} 贝塞尔曲线的次数n
-         * @param k -{number} 小于N的一个数k
-         * @returns {number} 组合排序的值
-         *
-         */
-
-    }, {
-        key: 'combSort',
-        value: function combSort(n, k) {
-            var son = LineString.factorial(n);
-            var mother = LineString.factorial(k) * LineString.factorial(n - k);
-            return son / mother;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.factorial
-         * @description 阶乘计算从1*2*3*4*...*n的值
-         * @param n -{number}
-         * @returns {number} 阶乘的值
-         *
-         */
-
-    }, {
-        key: 'factorial',
-        value: function factorial(n) {
-            var result = 1;
-            for (var i = 1; i <= n; i++) {
-                result *= i;
-            }
-            return result;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.calculateCardinalPoints
-         * @description 创建Cardinal控制点。
-         * 利用输入的点数组计算出相应的Cardinal控制点，再使用贝塞尔曲线3创建经过所有Cardinal控制点的圆滑曲线。
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
-         * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的Cardinal控制点。
-         * @example
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050));
-         * points.push(new SuperMap.Geometry.Point(260));
-         * points.push(new SuperMap.Geometry.Point(820));
-         *
-         * var cardinal = SuperMap.Geometry.LineString.createCloseCardinal(points);
-         */
-
-    }, {
-        key: 'calculateCardinalPoints',
-        value: function calculateCardinalPoints(points) {
-            if (points == null || points.length < 3) {
-                return points;
-            }
-            //定义传入的点数组，将在点数组中央（每两个点）插入两个控制点
-            var cPoints = points;
-            //包含输入点和控制点的数组
-            var cardinalPoints = [];
-
-            //这些都是相关资料测出的经验数值
-            //定义张力系数，取值在0<t<0.5
-            var t = 0.4;
-            //为端点张力系数因子，取值在0<b<1
-            var b = 0.5;
-            //误差控制，是一个大于等于0的数，用于三点非常趋近与一条直线时，减少计算量
-            var e = 0.005;
-
-            //传入的点数量，至少有三个，n至少为2
-            var n = cPoints.length - 1;
-            //从开始遍历到倒数第二个，其中倒数第二个用于计算起点（终点）的插值控制点
-
-            for (var k = 0; k <= n + 1 - 3; k++) {
-                //三个基础输入点
-                var p0 = cPoints[k];
-                var p1 = cPoints[k + 1];
-                var p2 = cPoints[k + 2];
-                //定义p1的左控制点和右控制点
-                var p1l = new _Point2["default"]();
-                var p1r = new _Point2["default"]();
-                //通过p0、p1、p2计算p1点的做控制点p1l和又控制点p1r
-                //计算向量p0_p1和p1_p2
-                var p0_p1 = new _Point2["default"](p1.x - p0.x, p1.y - p0.y);
-                var p1_p2 = new _Point2["default"](p2.x - p1.x, p2.y - p1.y);
-                //并计算模
-                var d01 = Math.sqrt(p0_p1.x * p0_p1.x + p0_p1.y * p0_p1.y);
-                var d12 = Math.sqrt(p1_p2.x * p1_p2.x + p1_p2.y * p1_p2.y);
-                //向量单位化
-                var p0_p1_1 = new _Point2["default"](p0_p1.x / d01, p0_p1.y / d01);
-                var p1_p2_1 = new _Point2["default"](p1_p2.x / d12, p1_p2.y / d12);
-                //计算向量p0_p1和p1_p2的夹角平分线向量
-                var p0_p1_p2 = new _Point2["default"](p0_p1_1.x + p1_p2_1.x, p0_p1_1.y + p1_p2_1.y);
-                //计算向量 p0_p1_p2 的模
-                var d012 = Math.sqrt(p0_p1_p2.x * p0_p1_p2.x + p0_p1_p2.y * p0_p1_p2.y);
-                //单位化向量p0_p1_p2
-                var p0_p1_p2_1 = new _Point2["default"](p0_p1_p2.x / d012, p0_p1_p2.y / d012);
-                //判断p0、p1、p2是否共线，这里判定向量p0_p1和p1_p2的夹角的余弦和1的差值小于e就认为三点共线
-                var cosE_p0p1p2 = (p0_p1_1.x * p1_p2_1.x + p0_p1_1.y * p1_p2_1.y) / 1;
-                //共线
-                if (Math.abs(1 - cosE_p0p1p2) < e) {
-                    //计算p1l的坐标
-                    p1l.x = p1.x - p1_p2_1.x * d01 * t;
-                    p1l.y = p1.y - p1_p2_1.y * d01 * t;
-                    //计算p1r的坐标
-                    p1r.x = p1.x + p0_p1_1.x * d12 * t;
-                    p1r.y = p1.y + p0_p1_1.y * d12 * t;
-                }
-                //非共线
-                else {
-                        //计算p1l的坐标
-                        p1l.x = p1.x - p0_p1_p2_1.x * d01 * t;
-                        p1l.y = p1.y - p0_p1_p2_1.y * d01 * t;
-                        //计算p1r的坐标
-                        p1r.x = p1.x + p0_p1_p2_1.x * d12 * t;
-                        p1r.y = p1.y + p0_p1_p2_1.y * d12 * t;
-                    }
-                //记录下这三个控制点
-                cardinalPoints[k * 3 + 2 + 0] = p1l;
-                cardinalPoints[k * 3 + 2 + 1] = p1;
-                cardinalPoints[k * 3 + 2 + 2] = p1r;
-
-                //当为起始点时需要计算第一个点的右控制点
-                if (k == 0) {
-                    //定义p0的右控制点
-                    var p0r = new _Point2["default"]();
-
-                    //计算向量p0_p1l
-                    var po_p1l = new _Point2["default"](p1l.x - p0.x, p1l.y - p0.y);
-                    //计算模
-                    var d01l = Math.sqrt(po_p1l.x * po_p1l.x + po_p1l.y * po_p1l.y);
-                    //单位化
-                    var po_p1l_1 = new _Point2["default"](po_p1l.x / d01l, po_p1l.y / d01l);
-                    //计算p0r
-                    p0r.x = p0.x + po_p1l_1.x * d01 * t * b;
-                    p0r.y = p0.y + po_p1l_1.y * d01 * t * b;
-
-                    cardinalPoints[k * 3 + 0] = p0;
-                    cardinalPoints[k * 3 + 1] = p0r;
-                }
-                //当为倒数第三个点时需要计算最后点的左控制点
-                if (k == n + 1 - 3) {
-                    //定义 p2的做控制点p2l
-                    var p2l = new _Point2["default"]();
-
-                    //计算向量p2_p1r
-                    var p2_p1r = new _Point2["default"](p1r.x - p2.x, p1r.y - p2.y);
-                    //并取模
-                    var d21r = Math.sqrt(p2_p1r.x * p2_p1r.x + p2_p1r.y * p2_p1r.y);
-                    //单位化
-                    var p2_p1r_1 = new _Point2["default"](p2_p1r.x / d21r, p2_p1r.y / d21r);
-                    //计算p2l
-                    p2l.x = p2.x + p2_p1r_1.x * d12 * t * b;
-                    p2l.y = p2.y + p2_p1r_1.y * d12 * t * b;
-
-                    cardinalPoints[k * 3 + 2 + 3] = p2l;
-                    cardinalPoints[k * 3 + 2 + 4] = p2;
-                }
-            }
-            return cardinalPoints;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LineString.createCloseCardinal
-         * @description 创建闭合Cardinal的控制点。
-         * 利用输入的点数组计算出相应的Cardinal控制点，再使用贝塞尔曲线3创建经过所有Cardinal控制点的圆滑闭合曲线。
-         * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
-         * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的Cardinal控制点。
-         * @example
-         * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050));
-         * points.push(new SuperMap.Geometry.Point(260));
-         * points.push(new SuperMap.Geometry.Point(820));
-         *
-         * var cardinal = SuperMap.Geometry.LineString.createCloseCardinal(points);
-         */
-
-    }, {
-        key: 'createCloseCardinal',
-        value: function createCloseCardinal(points) {
-            if (points == null || points.length < 3) {
-                return points;
-            }
-            //获取起点，作为终点，以闭合曲线。
-            var lastP = points[0];
-            points.push(lastP);
-
-            //定义传入的点数组，将在点数组中央（每两个点）插入两个控制点
-            var cPoints = points;
-            //包含输入点和控制点的数组
-            var cardinalPoints = [];
-
-            //至少三个点以上
-            //这些都是相关资料测出的经验数值
-            //定义张力系数，取值在0<t<0.5
-            var t = 0.4;
-            //为端点张力系数因子，取值在0<b<1
-            var b = 0.5;
-            //误差控制，是一个大于等于0的数，用于三点非常趋近与一条直线时，减少计算量
-            var e = 0.005;
-
-            //传入的点数量，至少有三个，n至少为2
-            var n = cPoints.length - 1;
-            //从开始遍历到倒数第二个，其中倒数第二个用于计算起点（终点）的插值控制点
-            for (var k = 0; k <= n - 1; k++) {
-                //计算起点（终点）的左右控制点
-                if (k == n - 1) {
-                    //三个基础输入点
-                    var p0 = cPoints[n - 1];
-                    var p1 = cPoints[0];
-                    var p2 = cPoints[1];
-                } else {
-                    var p0 = cPoints[k];
-                    var p1 = cPoints[k + 1];
-                    var p2 = cPoints[k + 2];
-                }
-
-                //定义p1的左控制点和右控制点
-                var p1l = new _Point2["default"]();
-                var p1r = new _Point2["default"]();
-                //通过p0、p1、p2计算p1点的做控制点p1l和又控制点p1r
-                //计算向量p0_p1和p1_p2
-                var p0_p1 = new _Point2["default"](p1.x - p0.x, p1.y - p0.y);
-                var p1_p2 = new _Point2["default"](p2.x - p1.x, p2.y - p1.y);
-                //并计算模
-                var d01 = Math.sqrt(p0_p1.x * p0_p1.x + p0_p1.y * p0_p1.y);
-                var d12 = Math.sqrt(p1_p2.x * p1_p2.x + p1_p2.y * p1_p2.y);
-                //向量单位化
-                var p0_p1_1 = new _Point2["default"](p0_p1.x / d01, p0_p1.y / d01);
-                var p1_p2_1 = new _Point2["default"](p1_p2.x / d12, p1_p2.y / d12);
-                //计算向量p0_p1和p1_p2的夹角平分线向量
-                var p0_p1_p2 = new _Point2["default"](p0_p1_1.x + p1_p2_1.x, p0_p1_1.y + p1_p2_1.y);
-                //计算向量 p0_p1_p2 的模
-                var d012 = Math.sqrt(p0_p1_p2.x * p0_p1_p2.x + p0_p1_p2.y * p0_p1_p2.y);
-                //单位化向量p0_p1_p2
-                var p0_p1_p2_1 = new _Point2["default"](p0_p1_p2.x / d012, p0_p1_p2.y / d012);
-                //判断p0、p1、p2是否共线，这里判定向量p0_p1和p1_p2的夹角的余弦和1的差值小于e就认为三点共线
-                var cosE_p0p1p2 = (p0_p1_1.x * p1_p2_1.x + p0_p1_1.y * p1_p2_1.y) / 1;
-                //共线
-                if (Math.abs(1 - cosE_p0p1p2) < e) {
-                    //计算p1l的坐标
-                    p1l.x = p1.x - p1_p2_1.x * d01 * t;
-                    p1l.y = p1.y - p1_p2_1.y * d01 * t;
-                    //计算p1r的坐标
-                    p1r.x = p1.x + p0_p1_1.x * d12 * t;
-                    p1r.y = p1.y + p0_p1_1.y * d12 * t;
-                }
-                //非共线
-                else {
-                        //计算p1l的坐标
-                        p1l.x = p1.x - p0_p1_p2_1.x * d01 * t;
-                        p1l.y = p1.y - p0_p1_p2_1.y * d01 * t;
-                        //计算p1r的坐标
-                        p1r.x = p1.x + p0_p1_p2_1.x * d12 * t;
-                        p1r.y = p1.y + p0_p1_p2_1.y * d12 * t;
-                    }
-
-                //记录起点（终点）的左右插值控制点及倒数第二个控制点
-                if (k == n - 1) {
-                    cardinalPoints[0] = p1;
-                    cardinalPoints[1] = p1r;
-                    cardinalPoints[(n - 2) * 3 + 2 + 3] = p1l;
-                    cardinalPoints[(n - 2) * 3 + 2 + 4] = cPoints[n];
-                } else {
-                    //记录下这三个控制点
-                    cardinalPoints[k * 3 + 2 + 0] = p1l;
-                    cardinalPoints[k * 3 + 2 + 1] = p1;
-                    cardinalPoints[k * 3 + 2 + 2] = p1r;
-                }
-            }
-            return cardinalPoints;
-        }
-
-        /**
          * @function SuperMap.Geometry.LineString.calculateCircle
          * @description 三点画圆弧
          * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
@@ -9946,7 +8302,7 @@ var LineString = function (_Curve) {
          * var circle = SuperMap.Geometry.LineString.calculateCircle(points);
          */
 
-    }, {
+    }], [{
         key: 'calculateCircle',
         value: function calculateCircle(points) {
             if (points.length < 3) {
@@ -10141,26 +8497,6 @@ var LineString = function (_Curve) {
             return [list, i];
         }
     }, {
-        key: 'createLineCurve',
-        value: function createLineCurve(list, i, len, points) {
-            if (i == 0) {
-                var bezierPtsObj = LineString.addPointEPS(points, i, len, 'LTypeCurve');
-                Array.prototype.push.apply(list, bezierPtsObj[0]);
-                i = bezierPtsObj[1] + 1;
-            } else if (i == len - 1) {
-                var bezierP = [points[i - 1], points[i]],
-                    bezierPts = LineString.calculatePointsFBZN(bezierP);
-                Array.prototype.push.apply(list, bezierPts);
-                i++;
-            } else {
-                var bezierPtsObj = LineString.addPointEPS(points, i, len, 'LTypeCurve');
-                list.pop();
-                Array.prototype.push.apply(list, bezierPtsObj[0]);
-                i = bezierPtsObj[1] + 1;
-            }
-            return [list, i];
-        }
-    }, {
         key: 'addPointEPS',
         value: function addPointEPS(points, i, len, type) {
             var bezierP = [],
@@ -10188,63 +8524,6 @@ exports["default"] = LineString;
 
 
 _SuperMap2["default"].Geometry.LineString = LineString;
-
-/**
- * @private
- * @function InciseBezier
- * 拆分贝赛尔曲线单元
- *
- * pSrcPt -{Array<SuperMap.Geometry.Point>} 传入的待拆分点数组。
- * j - {number} 本次拆分的首点位置，从pSrcPt[j]（包括此点）点向后取4个点进行本次拆分。
- * pDstPt -{Array<SuperMap.Geometry.Point>} 将4个点拆分成7个点，pDstPt是包含此7个点的结果点数组。
- */
-function InciseBezier(pSrcPt, j, pDstPt) {
-    var buffer = [];
-    buffer[0] = [];
-    buffer[1] = [];
-    buffer[2] = [];
-    var i;
-    for (i = 0; i < 3; i++) {
-        buffer[0][i] = new _Point2["default"]();
-        buffer[0][i].x = (pSrcPt[j + i].x + pSrcPt[j + i + 1].x) / 2;
-        buffer[0][i].y = (pSrcPt[j + i].y + pSrcPt[j + i + 1].y) / 2;
-    }
-    for (i = 0; i < 2; i++) {
-        buffer[1][i] = new _Point2["default"]();
-        buffer[1][i].x = (buffer[0][i].x + buffer[0][i + 1].x) / 2;
-        buffer[1][i].y = (buffer[0][i].y + buffer[0][i + 1].y) / 2;
-    }
-
-    buffer[2][0] = new _Point2["default"]();
-    buffer[2][0].x = (buffer[1][0].x + buffer[1][1].x) / 2;
-    buffer[2][0].y = (buffer[1][0].y + buffer[1][1].y) / 2;
-    //将输入的四个点拆分成7个点
-    pDstPt[0] = pSrcPt[j];
-    pDstPt[1] = buffer[0][0];
-    pDstPt[2] = buffer[1][0];
-    pDstPt[3] = buffer[2][0];
-    pDstPt[4] = buffer[1][1];
-    pDstPt[5] = buffer[0][2];
-    pDstPt[6] = pSrcPt[j + 3];
-    return true;
-}
-
-/**
- * @private
- * @function GetBezierGap
- * 计算贝赛尔曲线两个顶点的纵向和横向的最大距离，结果用来判断是否达到拆分精度
- *
- * pSrcPt -{Array<SuperMap.Geometry.Point>} 传入的待拆分点数组。
- * j - {number} 本次拆分的首点位置，从pSrcPt[j]（包括此点）点向后取4个点进行距离计算
- */
-function GetBezierGap(pSrcPt, j) {
-    var gap = 0;
-    for (var i = 1; i < 4; i++) {
-        if (Math.abs(pSrcPt[j + i].x - pSrcPt[j + i - 1].x) > gap) gap = Math.abs(pSrcPt[j + i].x - pSrcPt[j + i - 1].x);
-        if (Math.abs(pSrcPt[j + i].y - pSrcPt[j + i - 1].y) > gap) gap = Math.abs(pSrcPt[j + i].y - pSrcPt[j + i - 1].y);
-    }
-    return gap;
-}
 
 /***/ }),
 /* 26 */
@@ -12813,98 +11092,6 @@ var LinearRing = function (_LineString) {
         }
 
         /**
-         * @function SuperMap.Geometry.LinearRing.prototype.move
-         * @description 沿着给定的x、y轴正方向按照给定的位移移动一个几何图形，move 不仅改变了几何图形的位置并且清理了边界缓存。
-         * @param x - {float} x轴正方向上的偏移量。
-         * @param y - {float} y轴正方向上的偏移量。
-         */
-
-    }, {
-        key: 'move',
-        value: function move(x, y) {
-            for (var i = 0, len = this.components.length; i < len - 1; i++) {
-                this.components[i].move(x, y);
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.LinearRing.prototype.rotate
-         * @description 围绕中心点旋转几何图形。
-         * @param angle - {float} 旋转角的度数（沿着x轴正方向的逆时针方向）。
-         * @param origin - {SuperMap.Geometry.Point} 旋转中心点。
-         */
-
-    }, {
-        key: 'rotate',
-        value: function rotate(angle, origin) {
-            for (var i = 0, len = this.components.length; i < len - 1; ++i) {
-                this.components[i].rotate(angle, origin);
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.LinearRing.prototype.resize
-         * @description 调整几何对象的大小。
-         * @param scale - {float} 几何图形缩放的比例系数，是几何图形维数的两倍。
-         * （如：对于线来说将以线2倍的长度拉长，对于多边形来说，将以面积的4倍变化）。
-         * @param origin - {SuperMap.Geometry.Point} 调整大小选定的起始原点。
-         * @param ratio - {float} 可选的xy的比例，默认的比例为1。
-         * @returns {SuperMap.Geometry} - 当前的几何对象。
-         */
-
-    }, {
-        key: 'resize',
-        value: function resize(scale, origin, ratio) {
-            for (var i = 0, len = this.components.length; i < len - 1; ++i) {
-                this.components[i].resize(scale, origin, ratio);
-            }
-            return this;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LinearRing.prototype.getCentroid
-         * @description 获取几何对象的质心。
-         * @returns {SuperMap.Geometry.Point} 几何图形的质心。
-         */
-
-    }, {
-        key: 'getCentroid',
-        value: function getCentroid() {
-            if (this.components) {
-                var len = this.components.length;
-                if (len > 0 && len <= 2) {
-                    return this.components.clone();
-                } else if (len > 2) {
-                    var sumX = 0.0;
-                    var sumY = 0.0;
-                    var x0 = this.components[0].x;
-                    var y0 = this.components[0].y;
-                    var area = -1 * this.getArea();
-                    if (area != 0) {
-                        for (var i = 0; i < len - 1; i++) {
-                            var b = this.components[i];
-                            var c = this.components[i + 1];
-                            sumX += (b.x + c.x - 2 * x0) * ((b.x - x0) * (c.y - y0) - (c.x - x0) * (b.y - y0));
-                            sumY += (b.y + c.y - 2 * y0) * ((b.x - x0) * (c.y - y0) - (c.x - x0) * (b.y - y0));
-                        }
-                        var x = x0 + sumX / (6 * area);
-                        var y = y0 + sumY / (6 * area);
-                    } else {
-                        for (var i = 0; i < len - 1; i++) {
-                            sumX += this.components[i].x;
-                            sumY += this.components[i].y;
-                        }
-                        var x = sumX / (len - 1);
-                        var y = sumY / (len - 1);
-                    }
-                    return new _Point2["default"](x, y);
-                } else {
-                    return null;
-                }
-            }
-        }
-
-        /**
          * @function SuperMap.Geometry.LinearRing.prototype.getArea
          * @description 获得当前几何对象区域大小，如果是沿顺时针方向的环则是正值，否则为负值。
          * @returns {float} 环的面积。
@@ -12924,128 +11111,6 @@ var LinearRing = function (_LineString) {
                 area = -sum / 2.0;
             }
             return area;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LinearRing.prototype.containsPoint
-         * @description Test if a point is inside a linear ring.  For the case where a point
-         *     is coincident with a linear ring edge returns 1.  Otherwise
-         *     returns boolean.
-         * @param point - {SuperMap.Geometry.Point}
-         * @returns {Boolean | number} The point is inside the linear ring.  Returns 1 if
-         *     the point is coincident with an edge.  Returns boolean otherwise.
-         */
-
-    }, {
-        key: 'containsPoint',
-        value: function containsPoint(point) {
-            var approx = _BaseTypes.NumberExt.limitSigDigs;
-            var digs = 14;
-            var px = approx(point.x, digs);
-            var py = approx(point.y, digs);
-
-            function getX(y, x1, y1, x2, y2) {
-                return (y - y2) * ((x2 - x1) / (y2 - y1)) + x2;
-            }
-
-            var numSeg = this.components.length - 1;
-            var start, end, x1, y1, x2, y2, cx, cy;
-            var crosses = 0;
-            for (var i = 0; i < numSeg; ++i) {
-                start = this.components[i];
-                x1 = approx(start.x, digs);
-                y1 = approx(start.y, digs);
-                end = this.components[i + 1];
-                x2 = approx(end.x, digs);
-                y2 = approx(end.y, digs);
-
-                /**
-                 * The following conditions enforce five edge-crossing rules:
-                 *    1. points coincident with edges are considered contained;
-                 *    2. an upward edge includes its starting endpoint, and
-                 *    excludes its final endpoint;
-                 *    3. a downward edge excludes its starting endpoint, and
-                 *    includes its final endpoint;
-                 *    4. horizontal edges are excluded; and
-                 *    5. the edge-ray intersection point must be strictly right
-                 *    of the point P.
-                 */
-                if (y1 === y2) {
-                    // horizontal edge
-                    if (py === y1) {
-                        // point on horizontal line
-                        if (x1 <= x2 && px >= x1 && px <= x2 || // right or vert
-                        x1 >= x2 && px <= x1 && px >= x2) {
-                            // left or vert
-                            // point on edge
-                            crosses = -1;
-                            break;
-                        }
-                    }
-                    // ignore other horizontal edges
-                    continue;
-                }
-                cx = approx(getX(py, x1, y1, x2, y2), digs);
-                if (cx === px) {
-                    // point on line
-                    if (y1 < y2 && py >= y1 && py <= y2 || // upward
-                    y1 > y2 && py <= y1 && py >= y2) {
-                        // downward
-                        // point on edge
-                        crosses = -1;
-                        break;
-                    }
-                }
-                if (cx <= px) {
-                    // no crossing to the right
-                    continue;
-                }
-                if (x1 !== x2 && (cx < Math.min(x1, x2) || cx > Math.max(x1, x2))) {
-                    // no crossing
-                    continue;
-                }
-                if (y1 < y2 && py >= y1 && py < y2 || // upward
-                y1 > y2 && py < y1 && py >= y2) {
-                    // downward
-                    ++crosses;
-                }
-            }
-            var contained = crosses === -1 ?
-            // on edge
-            1 :
-            // even (out) or odd (in)
-            !!(crosses & 1);
-
-            return contained;
-        }
-
-        /**
-         * @function SuperMap.Geometry.LinearRing.prototype.intersects
-         * @description 判断输入的几何图形是否与当前几何图形相交。
-         * @param geometry - {SuperMap.Geometry} 任意的几何对象。
-         * @returns {Boolean} 输入几何图形与当前的目标几何图形相交。
-         */
-
-    }, {
-        key: 'intersects',
-        value: function intersects(geometry) {
-            var intersect = false;
-            if (geometry.CLASS_NAME === "SuperMap.Geometry.Point") {
-                intersect = this.containsPoint(geometry);
-            } else if (geometry.CLASS_NAME === "SuperMap.Geometry.LineString") {
-                intersect = geometry.intersects(this);
-            } else if (geometry.CLASS_NAME === "SuperMap.Geometry.LinearRing") {
-                intersect = _LineString3["default"].prototype.intersects.apply(this, [geometry]);
-            } else {
-                // check for component intersections
-                for (var i = 0, len = geometry.components.length; i < len; ++i) {
-                    intersect = geometry.components[i].intersects(this);
-                    if (intersect) {
-                        break;
-                    }
-                }
-            }
-            return intersect;
         }
 
         /**
@@ -15490,19 +13555,6 @@ var Geometry = function () {
 
 
         /**
-         * @function SuperMap.Geometry.prototype.distanceTo
-         * @description 计算两个几个图形间的最小距离（x-y平面坐标系下）。
-         * （需要在子类中实现此方法）
-         * @param geometry - {SuperMap.Geometry} 目标几何图形.
-         * @param options - {Object} 距离计算需要设计的可选属性。有效的选项取决于特定的几何类型。
-         * @returns {number | Object} 两个几个图形间的距离。
-         */
-
-    }, {
-        key: 'distanceTo',
-        value: function distanceTo(geometry, options) {}
-
-        /**
          * @function SuperMap.Geometry.prototype.getVertices
          * @description 返回几何图形的所有顶点的列表。（需要在子类中实现此方法）
          * @param nodes - {Boolean} 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
@@ -15512,49 +13564,6 @@ var Geometry = function () {
     }, {
         key: 'getVertices',
         value: function getVertices(nodes) {}
-
-        /**
-         * @function SuperMap.Geometry.prototype.atPoint
-         * @description 确定坐标是否在几何对象的范围内。
-         *
-         * @param lonlat -{SuperMap.LonLat}
-         * @param toleranceLon - {float} 可选参数，经度的偏移。
-         * @param toleranceLat - {float}  可选参数，纬度的偏移。
-         *
-         * @returns {Boolean} 判断传入的坐标是否在指定的范围内 。
-         *
-         */
-
-    }, {
-        key: 'atPoint',
-        value: function atPoint(lonlat, toleranceLon, toleranceLat) {
-            var atPoint = false;
-            var bounds = this.getBounds();
-            if (bounds != null && lonlat != null) {
-
-                var dX = toleranceLon != null ? toleranceLon : 0;
-                var dY = toleranceLat != null ? toleranceLat : 0;
-
-                var toleranceBounds = new _SuperMap2["default"].Bounds(this.bounds.left - dX, this.bounds.bottom - dY, this.bounds.right + dX, this.bounds.top + dY);
-
-                atPoint = toleranceBounds.containsLonLat(lonlat);
-            }
-            return atPoint;
-        }
-
-        /**
-         * @function SuperMap.Geometry.prototype.getLength
-         * @description 计算几何对象的长度 ，此方法需要在子类中定义  。
-         * @returns {float} The length of the collection by summing its parts
-         */
-
-    }, {
-        key: 'getLength',
-        value: function getLength() {
-            //to be overridden by geometries that actually have a length
-            //
-            return 0.0;
-        }
 
         /**
          * @function SuperMap.Geometry.prototype.getArea
@@ -15568,18 +13577,6 @@ var Geometry = function () {
             //to be overridden by geometries that actually have an area
             //
             return 0.0;
-        }
-
-        /**
-         * @function SuperMap.Geometry.prototype.getCentroid
-         * @description 计算几何图形的质心。（需要在子类中实现此方法）
-         * @returns {SuperMap.Geometry.Point} 采集的质心。
-         */
-
-    }, {
-        key: 'getCentroid',
-        value: function getCentroid() {
-            return null;
         }
 
         /**
@@ -15599,203 +13596,6 @@ var Geometry = function () {
                 string = Object.prototype.toString.call(this);
             }
             return string;
-        }
-
-        /**
-         * @function SuperMap.Geometry.fromWKT
-         * @description 从一个给定的字符串生成一个geometry对象，需要引入SuperMap.Format.WKT，该方法方可生效。
-         * @example
-         * var geometry= new SuperMap.Geometry.fromWKT("POINT(0 0)");
-         * geometry.x=0;
-         *
-         * @param wkt - {string} 描述geometry信息的字符串(A string representing the geometry in Well-Known Text.)
-         * @returns {SuperMap.Geometry} 适当类型的geometry对象(A geometry of the appropriate class).
-         */
-
-    }], [{
-        key: 'fromWKT',
-        value: function fromWKT(wkt) {
-            var geom;
-            if (_WKT2["default"]) {
-                var format = Geometry.fromWKT.format;
-                if (!format) {
-                    format = new _WKT2["default"]();
-                    Geometry.fromWKT.format = format;
-                }
-                var result = format.read(wkt);
-                if (result instanceof _Vector2["default"]) {
-                    geom = result.geometry;
-                } else if (_Util.Util.isArray(result)) {
-                    var len = result.length;
-                    var components = new Array(len);
-                    for (var i = 0; i < len; ++i) {
-                        components[i] = result[i].geometry;
-                    }
-                    geom = new Geometry.Collection(components);
-                }
-            }
-            return geom;
-        }
-
-        /**
-         * @function SuperMap.Geometry.prototype.SuperMap.Geometry.segmentsIntersect
-         * @description 线段相交。
-         * 该方法是判断两条线段是否相交。计算并返回相交的point。如果seg1.x2 >= seg2.x1 || seg2.x2 >= seg1.x1 ，该方法明显不会被调用。
-         *
-         * @param seg1 - {Object}
-         *     该对象包含的属性是 x1 y1 x2和y2。
-         *     起始点是 由x1 and y1构成，终点是有x2 and y2组成，必须满足的是x1 < x2。
-         *
-         * @param seg2 - {Object}
-         *     该对象包含的属性是 x1 y1 x2和y2。
-         *     起始点是 由x1 and y1构成，终点是有x2 and y2组成，必须满足的是x1 < x2。
-         * @param options - {Object} Optional properties for calculating the intersection.
-         *  该对象是判断是否计算相交的点。<br>
-         *
-         * Valid options:<br>
-         * point - {Boolean} 返回相交点。如果设置为false，说明实际的相交点不需要计算出来。如果设置为true并且这两条线段相交，返回相交的点 。
-         *     如果设置为true，但是两条线段不相交，返回false。如果设置为true，但是两条线段平行，则返回true。<br>
-         * tolerance - {Number} 如果设置该值不为空，两条线段在容线的范围内，则会被当作相交。此外，如果point这个属性为true，计算相交的容线距离终点端点将返回而不是计算相交。
-         *
-         * @returns {Boolean | SuperMap.Geometry.Point}
-         *     返回线之间是否相交，如果设置点属性为true的话，会返回相交的点坐标。如果点为true，线重合，将会返回true（相交的等于最短的线）。
-         */
-
-    }, {
-        key: 'segmentsIntersect',
-        value: function segmentsIntersect(seg1, seg2, options) {
-            var point = options && options.point;
-            var tolerance = options && options.tolerance;
-            var intersection = false;
-            var x11_21 = seg1.x1 - seg2.x1;
-            var y11_21 = seg1.y1 - seg2.y1;
-            var x12_11 = seg1.x2 - seg1.x1;
-            var y12_11 = seg1.y2 - seg1.y1;
-            var y22_21 = seg2.y2 - seg2.y1;
-            var x22_21 = seg2.x2 - seg2.x1;
-            var d = y22_21 * x12_11 - x22_21 * y12_11;
-            var n1 = x22_21 * y11_21 - y22_21 * x11_21;
-            var n2 = x12_11 * y11_21 - y12_11 * x11_21;
-            if (d == 0) {
-                // parallel
-                if (n1 == 0 && n2 == 0) {
-                    // coincident
-                    intersection = true;
-                }
-            } else {
-                var along1 = n1 / d;
-                var along2 = n2 / d;
-                if (along1 >= 0 && along1 <= 1 && along2 >= 0 && along2 <= 1) {
-                    // intersect
-                    if (!point) {
-                        intersection = true;
-                    } else {
-                        // calculate the intersection point
-                        var x = seg1.x1 + along1 * x12_11;
-                        var y = seg1.y1 + along1 * y12_11;
-                        intersection = new Geometry.Point(x, y);
-                    }
-                }
-            }
-            if (tolerance) {
-                var dist;
-                if (intersection) {
-                    if (point) {
-                        var segs = [seg1, seg2];
-                        var seg, x, y;
-                        // check segment endpoints for proximity to intersection
-                        // set intersection to first endpoint within the tolerance
-                        outer: for (var i = 0; i < 2; ++i) {
-                            seg = segs[i];
-                            for (var j = 1; j < 3; ++j) {
-                                x = seg["x" + j];
-                                y = seg["y" + j];
-                                dist = Math.sqrt(Math.pow(x - intersection.x, 2) + Math.pow(y - intersection.y, 2));
-                                if (dist < tolerance) {
-                                    intersection.x = x;
-                                    intersection.y = y;
-                                    break outer;
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    // no calculated intersection, but segments could be within
-                    // the tolerance of one another
-                    var segs = [seg1, seg2];
-                    var source, target, x, y, p, result;
-                    // check segment endpoints for proximity to intersection
-                    // set intersection to first endpoint within the tolerance
-                    outer: for (var i = 0; i < 2; ++i) {
-                        source = segs[i];
-                        target = segs[(i + 1) % 2];
-                        for (var j = 1; j < 3; ++j) {
-                            p = { x: source["x" + j], y: source["y" + j] };
-                            result = Geometry.distanceToSegment(p, target);
-                            if (result.distance < tolerance) {
-                                if (point) {
-                                    intersection = new Geometry.Point(p.x, p.y);
-                                } else {
-                                    intersection = true;
-                                }
-                                break outer;
-                            }
-                        }
-                    }
-                }
-            }
-            return intersection;
-        }
-
-        /**
-         * @function SuperMap.Geometry.distanceToSegment
-         * @description 计算点到直线的距离
-         *
-         * @param point - {Object} 一个点包含x和y坐标。
-         * @param segment - {Object} 一个对象包含 x1 y1 x2 and y2坐标。
-         * @example
-         *        var point={
-         *         x:0
-         *          y:13
-         *          } 
-         *            seg1={
-         *             x1:6
-         *             y1:5
-         *            x2:6
-         *            y2:12
-         *       } ;
-         *       var geo=SuperMap.Geometry.distanceToSegment(pointseg1);
-         *
-         * @returns {Object} 返回的是点到直线的最短距离，以及点与直线最短距离相交的点坐标（xy）。
-         */
-
-    }, {
-        key: 'distanceToSegment',
-        value: function distanceToSegment(point, segment) {
-            var x0 = point.x;
-            var y0 = point.y;
-            var x1 = segment.x1;
-            var y1 = segment.y1;
-            var x2 = segment.x2;
-            var y2 = segment.y2;
-            var dx = x2 - x1;
-            var dy = y2 - y1;
-            var along = (dx * (x0 - x1) + dy * (y0 - y1)) / (Math.pow(dx, 2) + Math.pow(dy, 2));
-            var x, y;
-            if (along <= 0.0) {
-                x = x1;
-                y = y1;
-            } else if (along >= 1.0) {
-                x = x2;
-                y = y2;
-            } else {
-                x = x1 + along * dx;
-                y = y1 + along * dy;
-            }
-            return {
-                distance: Math.sqrt(Math.pow(x - x0, 2) + Math.pow(y - y0, 2)),
-                x: x, y: y
-            };
         }
     }]);
 
@@ -16154,8 +13954,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
 var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
@@ -16237,339 +14035,6 @@ var Polygon = function (_Collection) {
                 }
             }
             return area;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Polygon.prototype.getGeodesicArea
-         * @description 计算投影到球面上的多边形近似面积。
-         * @param projection - {SuperMap.Projection} 空间参考系统的几何坐标。如果没有设置，默认 WGS84。
-         * @returns {float} 多边形近似测地面积。
-         */
-
-    }, {
-        key: 'getGeodesicArea',
-        value: function getGeodesicArea(projection) {
-            var area = 0.0;
-            if (this.components && this.components.length > 0) {
-                area += Math.abs(this.components[0].getGeodesicArea(projection));
-                for (var i = 1, len = this.components.length; i < len; i++) {
-                    area -= Math.abs(this.components[i].getGeodesicArea(projection));
-                }
-            }
-            return area;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Polygon.prototype.containsPoint
-         * @description Test if a point is inside a polygon.  Points on a polygon edge are
-         *     considered inside.
-         * @param point - {SuperMap.Geometry.Point}
-         * @returns {Boolean | number} The point is inside the polygon.  Returns 1 if the
-         *     point is on an edge.  Returns boolean otherwise.
-         */
-
-    }, {
-        key: 'containsPoint',
-        value: function containsPoint(point) {
-            var numRings = this.components.length;
-            var contained = false;
-            if (numRings > 0) {
-                // check exterior ring - 1 means on edge, boolean otherwise
-                contained = this.components[0].containsPoint(point);
-                if (contained !== 1) {
-                    if (contained && numRings > 1) {
-                        // check interior rings
-                        var hole;
-                        for (var i = 1; i < numRings; ++i) {
-                            hole = this.components[i].containsPoint(point);
-                            if (hole) {
-                                if (hole === 1) {
-                                    // on edge
-                                    contained = 1;
-                                } else {
-                                    // in hole
-                                    contained = false;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            return contained;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Polygon.prototype.intersects
-         * @description 判断两个几何对象是否相交。
-         * @param geometry - {SuperMap.Geometry} 任何类型的几何对象。
-         * @returns {Boolean} 两个几何对象是否相交。
-         */
-
-    }, {
-        key: 'intersects',
-        value: function intersects(geometry) {
-            var intersect = false;
-            var i, len;
-            if (geometry.CLASS_NAME === "SuperMap.Geometry.Point") {
-                intersect = this.containsPoint(geometry);
-            } else if (geometry.CLASS_NAME === "SuperMap.Geometry.LineString" || geometry.CLASS_NAME === "SuperMap.Geometry.LinearRing") {
-                // check if rings/linestrings intersect
-                for (i = 0, len = this.components.length; i < len; ++i) {
-                    intersect = geometry.intersects(this.components[i]);
-                    if (intersect) {
-                        break;
-                    }
-                }
-                if (!intersect) {
-                    // check if this poly contains points of the ring/linestring
-                    for (i = 0, len = geometry.components.length; i < len; ++i) {
-                        intersect = this.containsPoint(geometry.components[i]);
-                        if (intersect) {
-                            break;
-                        }
-                    }
-                }
-            } else {
-                for (i = 0, len = geometry.components.length; i < len; ++i) {
-                    intersect = this.intersects(geometry.components[i]);
-                    if (intersect) {
-                        break;
-                    }
-                }
-            }
-            // check case where this poly is wholly contained by another
-            if (!intersect && geometry.CLASS_NAME === "SuperMap.Geometry.Polygon") {
-                // exterior ring points will be contained in the other geometry
-                var ring = this.components[0];
-                for (i = 0, len = ring.components.length; i < len; ++i) {
-                    intersect = geometry.containsPoint(ring.components[i]);
-                    if (intersect) {
-                        break;
-                    }
-                }
-            }
-            return intersect;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Polygon.prototype.distanceTo
-         * @description 计算两个几何对象间的最小距离（x-y平面坐标系下）。
-         * @param geometry - {SuperMap.Geometry} 目标几何对象。
-         * @param options - {Object} 距离计算需要设置的可选属性。<br>
-         *
-         * Valid options:<br>
-         * details - {Boolean} 返回距离计算的细节。默认为false。<br>
-         * edge - {Boolean} 计算一个几何对象到目标几何对象边缘的最近距离。默认为true。 如果设为true，<br>
-         * 一个几何图形完全包含在目标几何对象中时，调用distanceTo返回非零结果，如果false，两个几何对象相交情况下
-         * 调用distanceTo结果返回0，而且如果false，将不返距离。
-         * @returns {number | Object} 返回一个几何对象到目标几何对象的距离。
-         */
-
-    }, {
-        key: 'distanceTo',
-        value: function distanceTo(geometry, options) {
-            var edge = !(options && options.edge === false);
-            var result;
-            // this is the case where we might not be looking for distance to edge
-            if (!edge && this.intersects(geometry)) {
-                result = 0;
-            } else {
-                result = _get(Polygon.prototype.__proto__ || Object.getPrototypeOf(Polygon.prototype), 'distanceTo', this).call(this, geometry, options);
-            }
-            return result;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Polygon.createRegularPolygon
-         * @description 创建 RegularPolygon 对象。
-         * @param origin - {SuperMap.Geometry.Point} 多边形的中心 。
-         * @param radius - {float} 半径。
-         * @param sides - {integer} 边数，20个近似一个圆。
-         * @param rotation - {float} 旋转角度，单位为degrees。
-         * @example
-         * var sides = 50;
-         * var origin = new SuperMap.Geometry.Point(50);
-         * var polygon = SuperMap.Geometry.Polygon.createRegularPolygon(origin6sides270);
-         */
-
-    }], [{
-        key: 'createRegularPolygon',
-        value: function createRegularPolygon(origin, radius, sides, rotation) {
-            var angle = Math.PI * (1 / sides - 1 / 2);
-            if (rotation) {
-                angle += rotation / 180 * Math.PI;
-            }
-            var rotatedAngle, x, y;
-            var points = [];
-            for (var i = 0; i < sides; ++i) {
-                rotatedAngle = angle + i * 2 * Math.PI / sides;
-                x = origin.x + radius * Math.cos(rotatedAngle);
-                y = origin.y + radius * Math.sin(rotatedAngle);
-                points.push(new _Point2["default"](x, y));
-            }
-            var ring = new _LinearRing2["default"](points);
-            return new Polygon([ring]);
-        }
-    }, {
-        key: 'createRegularPolygonCurve',
-
-
-        /**
-         * @function SuperMap.Geometry.Polygon.createRegularPolygonCurve
-         * @description 创建扇形对象。
-         * @param origin - {SuperMap.Geometry.Point} 多边形的中心 。
-         * @param radius - {float} 半径。
-         * @param sides - {integer} 边数，50个近似一个扇形。
-         * @param r - {integer}
-         * @param angel - {float} 旋转角度，单位为degrees。沿着x轴正方向的逆时针方向。
-         * @param resolution - {float} 当前地图的分辨率.,固定大小下输入，其他情况不需要此参数
-         * 备注：Geometry内部单位均为地理单位，默认用户输入的参数也为地理单位，如果传入resolution，则半径则为
-         * 为像素单位，内部会根据像素值和分辨率获取地理大小后在进行构造Geometry，但最终的Geometry均为地理单位。
-         * @returns {SuperMap.Geometry.Polygon} 几何面对象。
-         * @example
-         * var sides = 50;
-         * var origin = new SuperMap.Geometry.Point(5,0);
-         * var polygon = SuperMap.Geometry.Polygon.createRegularPolygonCurve(origin,6,sides,270);
-         */
-        value: function createRegularPolygonCurve(origin, radius, sides, r, angel, resolution) {
-            if (resolution == undefined) resolution = 1;
-
-            var rR = r * Math.PI / (180 * sides);
-
-            var rotatedAngle, x, y;
-            var points = [];
-            for (var i = 0; i < sides; ++i) {
-                rotatedAngle = rR * i;
-                x = origin.x + radius * resolution * Math.cos(rotatedAngle);
-                y = origin.y + radius * resolution * Math.sin(rotatedAngle);
-                points.push(new _Point2["default"](x, y));
-            }
-            rotatedAngle = r * Math.PI / 180;
-            x = origin.x + radius * resolution * Math.cos(rotatedAngle);
-            y = origin.y + radius * resolution * Math.sin(rotatedAngle);
-            points.push(new _Point2["default"](x, y));
-
-            points.push(origin);
-
-            var ring = new _LinearRing2["default"](points);
-            ring.rotate(parseFloat(angel), origin);
-            var geo = new Polygon([ring]);
-            geo.origin = origin;
-            geo.radius = radius;
-            geo.r = r;
-            geo.angel = angel;
-            geo.sides = sides;
-            geo.polygonType = "Curve";
-            return geo;
-        }
-    }, {
-        key: 'createRegularPolygonTriangle',
-
-
-        /**
-         * @function SuperMap.Geometry.Polygon.createRegularPolygonTriangle
-         * @description 创建4G三角形,电信行业4G专业符号形容类似为：-▷。
-         * @param origin - {SuperMap.Geometry.Point} 三角形的原点 。
-         * @param height - {Float} 外接矩形的高度。
-         * @param width - {Float} 外接矩形的宽度。
-         * @param lineLength - {Float} 线长度。
-         * @param angel - {Float} 旋转角度，单位为degrees,沿着x轴正方向的逆时针方向.。
-         * @param resolution - {Float} 当前地图的分辨率.,固定大小下输入，其他情况不需要此参数
-         * 备注：Geometry内部单位均为地理单位，默认用户输入的参数也为地理单位，如果传入resolution，则height、width、lineLength则为
-         * 为像素单位，内部会根据像素值和分辨率获取地理大小后在进行构造Geometry，但最终的Geometry均为地理单位。
-         * @returns {SuperMap.Geometry.Collection} 几何对象集合，面对象&线对象。
-         */
-        value: function createRegularPolygonTriangle(origin, height, width, lineLength, angel, resolution) {
-            if (resolution == undefined) resolution = 1;
-
-            var lineList = [];
-            lineList.push(origin);
-            lineList.push(new _Point2["default"](origin.x + lineLength * resolution, origin.y));
-            var geoline = new _LineString2["default"](lineList);
-            geoline.rotate(parseFloat(angel), origin);
-
-            var triangleList = [];
-            triangleList.push(new _Point2["default"](origin.x + height * resolution, origin.y));
-            triangleList.push(new _Point2["default"](origin.x + lineLength * resolution, origin.y + width * resolution / 2));
-            triangleList.push(new _Point2["default"](origin.x + lineLength * resolution, origin.y - width * resolution / 2));
-            var geoTriangle = new _LinearRing2["default"](triangleList);
-            geoTriangle.rotate(parseFloat(angel), origin);
-            var geo = new _Collection3["default"]([geoline, geoTriangle]);
-            geo.origin = origin;
-            geo.height = height;
-            geo.width = width;
-            geo.lineLength = lineLength;
-            geo.angel = angel;
-            geo.polygonType = "Triangle";
-            return geo;
-        }
-    }, {
-        key: 'createBsplinesurface',
-
-
-        /**
-         * @function SuperMap.Geometry.Polygon.createBsplinesurface
-         * @description 创建3G B样条曲面，电信3G专业符号，由B样条曲线模拟生成。
-         * @param origin - {SuperMap.Geometry.Point} 曲面的原点 。
-         * @param height - {float} 外接矩形的高度。
-         * @param width - {float} 外接矩形的宽度。
-         * @param angel - {float} 旋转角度，单位为degrees，沿着x轴正方向的逆时针方向。
-         * @param resolution - {float} 当前地图的分辨率，固定大小下输入，其他情况不需要此参数。
-         * @param k - {number} 递推次数，可以控制曲线的光滑度。
-         * 备注：Geometry内部单位均为地理单位，默认用户输入的参数也为地理单位，如果传入resolution，则height、width
-         * 为像素单位，内部会根据像素值和分辨率获取地理大小后在进行构造Geometry，但最终的Geometry均为地理单位。
-         * @returns {SuperMap.Geometry.Polygon} 几何面对象。
-         */
-        value: function createBsplinesurface(origin, height, width, angel, resolution, k) {
-            if (resolution == undefined) resolution = 1;
-
-            if (k == undefined) k = 10;
-
-            var pointList = [];
-            pointList.push(origin);
-            pointList.push(origin);
-
-            pointList.push(new _Point2["default"](origin.x + height * resolution * 2 / 3, origin.y + width * resolution / 2));
-            pointList.push(new _Point2["default"](origin.x + height * resolution, origin.y + width * resolution / 2));
-            pointList.push(new _Point2["default"](origin.x + height * resolution, origin.y - width * resolution / 2));
-            pointList.push(new _Point2["default"](origin.x + height * resolution * 2 / 3, origin.y - width * resolution / 2));
-
-            pointList.push(origin);
-            pointList.push(origin);
-
-            var pointList2 = [];
-            var i, j, a0, a1, a2, dt, t1, t2;
-            var t_x, t_y;
-            var n = pointList.length;
-            dt = 1.0 / k;
-
-            pointList2.push(new _Point2["default"]((pointList[0].x + pointList[1].x) / 2, (pointList[0].y + pointList[1].y) / 2));
-
-            for (i = 1; i < n - 1; i++) {
-                for (j = 0; j <= k; j++) {
-                    t1 = j * dt;
-                    t2 = t1 * t1;
-
-                    a0 = (t2 - 2 * t1 + 1) / 2.0;
-                    a1 = (2 * t1 - 2 * t2 + 1) / 2.0;
-                    a2 = t2 / 2.0;
-
-                    t_x = a0 * pointList[i - 1].x + a1 * pointList[i].x + a2 * pointList[i + 1].x;
-                    t_y = a0 * pointList[i - 1].y + a1 * pointList[i].y + a2 * pointList[i + 1].y;
-                    pointList2.push(new _Point2["default"](t_x, t_y));
-                }
-            }
-
-            var ring = new _LinearRing2["default"](pointList2);
-            ring.rotate(parseFloat(angel), origin);
-            var geo = new _Collection3["default"]([ring]);
-            geo.origin = origin;
-            geo.height = height;
-            geo.width = width;
-            geo.angel = angel;
-            geo.polygonType = "Bspline";
-            return geo;
         }
     }]);
 
@@ -22386,12 +19851,6 @@ var Vector = function (_Feature) {
     _inherits(Vector, _Feature);
 
     /**
-     * @member SuperMap.Feature.Vector.prototype.renderIntent -{string}
-     * @description Feature要素即被被渲染的样式状态，对应StyleMap中的状态定义的可选值。
-     */
-
-
-    /**
      * @member SuperMap.Feature.Vector.prototype.style -{Object}
      * @description 要素的样式属性，地图查询返回的feature的style，8C变为null。
      */
@@ -22422,8 +19881,6 @@ var Vector = function (_Feature) {
         _this.state = null;
         _this.style = null;
         _this.url = null;
-        _this.renderIntent = "default";
-        _this.modified = null;
         _this.CLASS_NAME = "SuperMap.Feature.Vector";
 
         _this.lonlat = null;
@@ -22440,32 +19897,6 @@ var Vector = function (_Feature) {
     /**
      * @function SuperMap.Feature.Vector.prototype.destroy
      * @description nullify references to prevent circular references and memory leaks
-     */
-
-
-    /**
-     * @member SuperMap.Feature.Vector.prototype.modified -{Object}
-     * @description 一个具有可以被改变的原始几何形状和属性，被 <SuperMap.Control.ModifyFeature> 写入。
-     * 应用程序可以在attributes中设置原始的能被修改的属性，需要注意的是，
-     * 应用程序需要在使用某个对象及其属性前检测这个对象及其 attributes 属性是否创建，用 ModifyFeature
-     * 改变之后，这个对象如下所示：
-     *
-     * (code)
-     * {
-     *     geometry: >Object
-     * }
-     * (end)
-     *
-     * 当应用程序需要对要素的 attributes 进行修改，则需要如下设置 attributes：
-     *
-     * (code)
-     * {
-     *     attributes: {
-     *         myAttribute: "original"
-     *     }
-     * }
-     * (end)
-     *
      */
 
 
@@ -22502,7 +19933,6 @@ var Vector = function (_Feature) {
             }
 
             this.geometry = null;
-            this.modified = null;
             _get(Vector.prototype.__proto__ || Object.getPrototypeOf(Vector.prototype), 'destroy', this).call(this);
         }
 
@@ -22517,157 +19947,6 @@ var Vector = function (_Feature) {
         key: 'clone',
         value: function clone() {
             return new Vector(this.geometry ? this.geometry.clone() : null, this.attributes, this.style);
-        }
-
-        /**
-         * @function SuperMap.Feature.Vector.prototype.onScreen
-         * @description Determine whether the feature is within the map viewport.  This method
-         *     tests for an intersection between the geometry and the viewport
-         *     bounds.  If a more effecient but less precise geometry bounds
-         *     intersection is desired call the method with the boundsOnly
-         *     parameter true.
-         * @param boundsOnly - {Boolean} Only test whether a feature's bounds intersects
-         *     the viewport bounds.  Default is false.  If false the feature's
-         *     geometry must intersect the viewport for onScreen to return true.
-         * @returns {Boolean} The feature is currently visible on screen (optionally
-         *     based on its bounds if boundsOnly is true).
-         */
-
-    }, {
-        key: 'onScreen',
-        value: function onScreen(boundsOnly) {
-            var onScreen = false;
-            if (this.layer && this.layer.map) {
-                var screenBounds = this.layer.map.getExtent();
-                if (boundsOnly) {
-                    var featureBounds = this.geometry.getBounds();
-                    onScreen = screenBounds.intersectsBounds(featureBounds);
-                } else {
-                    var screenPoly = screenBounds.toGeometry();
-                    onScreen = screenPoly.intersects(this.geometry);
-                }
-            }
-            return onScreen;
-        }
-
-        /**
-         * @function SuperMap.Feature.Vector.prototype.getVisibility
-         * @description Determine whether the feature is displayed or not. It may not displayed<br>
-         *
-         * because:<br>
-         *  - its style display property is set to 'none'
-         *  - it doesn't belong to any layer
-         *  - the styleMap creates a symbolizer with display property set to 'none' for it
-         *  - the layer which it belongs to is not visible.
-         * @returns {Boolean} The feature is currently displayed.
-         */
-
-    }, {
-        key: 'getVisibility',
-        value: function getVisibility() {
-            return !(this.style && this.style.display === 'none' || !this.layer || this.layer && this.layer.styleMap && this.layer.styleMap.createSymbolizer(this, this.renderIntent).display === 'none' || this.layer && !this.layer.getVisibility());
-        }
-
-        /**
-         * @function SuperMap.Feature.Vector.prototype.createMarker
-         * @description HACK - we need to decide if all vector features should be able to
-         *     create markers
-         * @returns {SuperMap.Marker} For now just returns null
-         */
-
-    }, {
-        key: 'createMarker',
-        value: function createMarker() {
-            return null;
-        }
-
-        /**
-         * @function SuperMap.Feature.Vector.prototype.destroyMarker
-         * @description HACK - we need to decide if all vector features should be able to
-         *     delete markers <br>
-         *
-         * If user overrides the createMarker() function s/he should be able
-         *   to also specify an alternative function for destroying it
-         */
-
-    }, {
-        key: 'destroyMarker',
-        value: function destroyMarker() {}
-        // pass
-
-
-        /**
-         * @function SuperMap.Feature.Vector.prototype.createPopup
-         * @description HACK - we need to decide if all vector features should be able to
-         *     create popups
-         * @returns {SuperMap.Popup} For now just returns null
-         */
-
-    }, {
-        key: 'createPopup',
-        value: function createPopup() {
-            return null;
-        }
-
-        /**
-         * @function SuperMap.Feature.Vector.prototype.atPoint
-         * @description Determins whether the feature intersects with the specified location.
-         * @param lonlat - {SuperMap.LonLat}
-         * @param toleranceLon - {float} Optional tolerance in Geometric Coords
-         * @param toleranceLat - {float} Optional tolerance in Geographic Coords
-         * @returns {Boolean} Whether or not the feature is at the specified location
-         */
-
-    }, {
-        key: 'atPoint',
-        value: function atPoint(lonlat, toleranceLon, toleranceLat) {
-            var atPoint = false;
-            if (this.geometry) {
-                atPoint = this.geometry.atPoint(lonlat, toleranceLon, toleranceLat);
-            }
-            return atPoint;
-        }
-
-        /**
-         * @function SuperMap.Feature.Vector.prototype.destroyPopup
-         * @description HACK - we need to decide if all vector features should be able to
-         * delete popups
-         */
-
-    }, {
-        key: 'destroyPopup',
-        value: function destroyPopup() {}
-        // pass
-
-
-        /**
-         * @function SuperMap.Feature.Vector.prototype.move
-         * @description Moves the feature and redraws it at its new location
-         * @param location - {SuperMap.LonLat|SuperMap.Pixel} the
-         *         location to which to move the feature.
-         */
-
-    }, {
-        key: 'move',
-        value: function move(location) {
-
-            if (!this.layer || !this.geometry.move) {
-                //do nothing if no layer or immoveable geometry
-                return undefined;
-            }
-
-            var pixel;
-            if (location.CLASS_NAME === "SuperMap.LonLat") {
-                pixel = this.layer.getViewPortPxFromLonLat(location);
-            } else {
-                pixel = location;
-            }
-
-            var lastPixel = this.layer.getViewPortPxFromLonLat(this.geometry.getBounds().getCenterLonLat());
-            var res = this.layer.map.getResolution();
-            this.geometry.move(res * (pixel.x - lastPixel.x), res * (lastPixel.y - pixel.y));
-            this.layer.drawFeature(this);
-            return lastPixel;
         }
 
         /**
@@ -22887,10 +20166,8 @@ _SuperMap2["default"].Feature.Vector = Vector;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
@@ -22926,219 +20203,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *  ]);
  */
 var MultiLineString = function (_Collection) {
-    _inherits(MultiLineString, _Collection);
+  _inherits(MultiLineString, _Collection);
 
-    function MultiLineString(components) {
-        _classCallCheck(this, MultiLineString);
+  function MultiLineString(components) {
+    _classCallCheck(this, MultiLineString);
 
-        var _this = _possibleConstructorReturn(this, (MultiLineString.__proto__ || Object.getPrototypeOf(MultiLineString)).call(this, components));
+    var _this = _possibleConstructorReturn(this, (MultiLineString.__proto__ || Object.getPrototypeOf(MultiLineString)).call(this, components));
 
-        _this.componentTypes = ["SuperMap.Geometry.LineString"];
-        _this.CLASS_NAME = "SuperMap.Geometry.MultiLineString";
-        return _this;
-    }
+    _this.componentTypes = ["SuperMap.Geometry.LineString"];
+    _this.CLASS_NAME = "SuperMap.Geometry.MultiLineString";
+    return _this;
+  }
 
-    /**
-     * @function SuperMap.Geometry.MultiLineString.prototype.split
-     * @description Use this geometry (the source) to attempt to split a target geometry.
-     * @param geometry - {SuperMap.Geometry} The target geometry.
-     * @param options - {Object} Properties of this object will be used to determine
-     *     how the split is conducted.<br>
-     *
-     * Valid options:<br>
-     * mutual - {Boolean} Split the source geometry in addition to the target
-     *     geometry.  Default is false.<br>
-     * edge - {Boolean} Allow splitting when only edges intersect.  Default is
-     *     true.  If false, a vertex on the source must be within the tolerance
-     *     distance of the intersection to be considered a split.<br>
-     * tolerance - {Number} If a non-null value is provided, intersections
-     *     within the tolerance distance of an existing vertex on the source
-     *     will be assumed to occur at the vertex.
-     * @returns {Array} A list of geometries (of this same type as the target) that
-     *     result from splitting the target with the source geometry.  The
-     *     source and target geometry will remain unmodified.  If no split
-     *     results, null will be returned.  If mutual is true and a split
-     *     results, return will be an array of two arrays - the first will be
-     *     all geometries that result from splitting the source geometry and
-     *     the second will be all geometries that result from splitting the
-     *     target geometry.
-     */
+  /**
+   * @member SuperMap.Geometry.MultiLineString.prototype.componentTypes -{Array<string>}
+   * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+   * @readonly
+   * @default ["{@link SuperMap.Geometry.LineString}"]
+   */
 
 
-    /**
-     * @member SuperMap.Geometry.MultiLineString.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.LineString}"]
-     */
-
-
-    _createClass(MultiLineString, [{
-        key: 'split',
-        value: function split(geometry, options) {
-            var results = null;
-            var mutual = options && options.mutual;
-            var splits, sourceLine, sourceLines, sourceSplit, targetSplit;
-            var sourceParts = [];
-            var targetParts = [geometry];
-            for (var i = 0, len = this.components.length; i < len; ++i) {
-                sourceLine = this.components[i];
-                sourceSplit = false;
-                for (var j = 0; j < targetParts.length; ++j) {
-                    splits = sourceLine.split(targetParts[j], options);
-                    if (splits) {
-                        if (mutual) {
-                            sourceLines = splits[0];
-                            for (var k = 0, klen = sourceLines.length; k < klen; ++k) {
-                                if (k === 0 && sourceParts.length) {
-                                    sourceParts[sourceParts.length - 1].addComponent(sourceLines[k]);
-                                } else {
-                                    sourceParts.push(new MultiLineString([sourceLines[k]]));
-                                }
-                            }
-                            sourceSplit = true;
-                            splits = splits[1];
-                        }
-                        if (splits.length) {
-                            // splice in new target parts
-                            splits.unshift(j, 1);
-                            Array.prototype.splice.apply(targetParts, splits);
-                            break;
-                        }
-                    }
-                }
-                if (!sourceSplit) {
-                    // source line was not hit
-                    if (sourceParts.length) {
-                        // add line to existing multi
-                        sourceParts[sourceParts.length - 1].addComponent(sourceLine.clone());
-                    } else {
-                        // create a fresh multi
-                        sourceParts = [new MultiLineString(sourceLine.clone())];
-                    }
-                }
-            }
-            if (sourceParts && sourceParts.length > 1) {
-                sourceSplit = true;
-            } else {
-                sourceParts = [];
-            }
-            if (targetParts && targetParts.length > 1) {
-                targetSplit = true;
-            } else {
-                targetParts = [];
-            }
-            if (sourceSplit || targetSplit) {
-                if (mutual) {
-                    results = [sourceParts, targetParts];
-                } else {
-                    results = targetParts;
-                }
-            }
-            return results;
-        }
-
-        /**
-         * @function SuperMap.Geometry.MultiLineString.prototype.splitWith
-         * @description Split this geometry (the target) with the given geometry (the source).
-         * @param geometry - {SuperMap.Geometry} A geometry used to split this geometry (the source).
-         * @param options - {Object} Properties of this object will be used to determine
-         *     how the split is conducted.<br>
-         *
-         * Valid options:<br>
-         * mutual - {Boolean} Split the source geometry in addition to the target
-         *     geometry.  Default is false.<br>
-         * edge - {Boolean} Allow splitting when only edges intersect.  Default is
-         *     true.  If false a vertex on the source must be within the tolerance
-         *     distance of the intersection to be considered a split.<br>
-         * tolerance - {Number} If a non-null value is provided intersections
-         *     within the tolerance distance of an existing vertex on the source
-         *     will be assumed to occur at the vertex.
-         *
-         * @returns {Array} A list of geometries (of this same type as the target) that
-         *     result from splitting the target with the source geometry.  The
-         *     source and target geometry will remain unmodified.  If no split
-         *     results null will be returned.  If mutual is true and a split
-         *     results return will be an array of two arrays - the first will be
-         *     all geometries that result from splitting the source geometry and
-         *     the second will be all geometries that result from splitting the
-         *     target geometry.
-         */
-
-    }, {
-        key: 'splitWith',
-        value: function splitWith(geometry, options) {
-            var results = null;
-            var mutual = options && options.mutual;
-            var splits, targetLine, sourceLines, sourceSplit, targetSplit, sourceParts, targetParts;
-            if (geometry instanceof _LineString2["default"]) {
-                targetParts = [];
-                sourceParts = [geometry];
-                for (var i = 0, len = this.components.length; i < len; ++i) {
-                    targetSplit = false;
-                    targetLine = this.components[i];
-                    for (var j = 0; j < sourceParts.length; ++j) {
-                        splits = sourceParts[j].split(targetLine, options);
-                        if (splits) {
-                            if (mutual) {
-                                sourceLines = splits[0];
-                                if (sourceLines.length) {
-                                    // splice in new source parts
-                                    sourceLines.unshift(j, 1);
-                                    Array.prototype.splice.apply(sourceParts, sourceLines);
-                                    j += sourceLines.length - 2;
-                                }
-                                splits = splits[1];
-                                if (splits.length === 0) {
-                                    splits = [targetLine.clone()];
-                                }
-                            }
-                            for (var k = 0, klen = splits.length; k < klen; ++k) {
-                                if (k === 0 && targetParts.length) {
-                                    targetParts[targetParts.length - 1].addComponent(splits[k]);
-                                } else {
-                                    targetParts.push(new MultiLineString([splits[k]]));
-                                }
-                            }
-                            targetSplit = true;
-                        }
-                    }
-                    if (!targetSplit) {
-                        // target component was not hit
-                        if (targetParts.length) {
-                            // add it to any existing multi-line
-                            targetParts[targetParts.length - 1].addComponent(targetLine.clone());
-                        } else {
-                            // or start with a fresh multi-line
-                            targetParts = [new MultiLineString([targetLine.clone()])];
-                        }
-                    }
-                }
-            } else {
-                results = geometry.split(this);
-            }
-            if (sourceParts && sourceParts.length > 1) {
-                sourceSplit = true;
-            } else {
-                sourceParts = [];
-            }
-            if (targetParts && targetParts.length > 1) {
-                targetSplit = true;
-            } else {
-                targetParts = [];
-            }
-            if (sourceSplit || targetSplit) {
-                if (mutual) {
-                    results = [sourceParts, targetParts];
-                } else {
-                    results = targetParts;
-                }
-            }
-            return results;
-        }
-    }]);
-
-    return MultiLineString;
+  return MultiLineString;
 }(_Collection3["default"]);
 
 exports["default"] = MultiLineString;
@@ -39635,10 +36720,8 @@ _SuperMap2["default"].Size = Size;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
@@ -39669,47 +36752,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var curve = new SuperMap.Geometry.Curve([point1,point2]);
  */
 var Curve = function (_MultiPoint) {
-    _inherits(Curve, _MultiPoint);
+  _inherits(Curve, _MultiPoint);
 
-    function Curve(points) {
-        _classCallCheck(this, Curve);
+  function Curve(points) {
+    _classCallCheck(this, Curve);
 
-        var _this = _possibleConstructorReturn(this, (Curve.__proto__ || Object.getPrototypeOf(Curve)).call(this, points));
+    var _this = _possibleConstructorReturn(this, (Curve.__proto__ || Object.getPrototypeOf(Curve)).call(this, points));
 
-        _this.componentTypes = ["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"];
-        _this.CLASS_NAME = "SuperMap.Geometry.Curve";
-        return _this;
-    }
+    _this.componentTypes = ["SuperMap.Geometry.Point", "SuperMap.PointWithMeasure"];
+    _this.CLASS_NAME = "SuperMap.Geometry.Curve";
+    return _this;
+  }
 
-    /**
-     * @function SuperMap.Geometry.Curve.prototype.getLength
-     * @description 获取曲线的总长度。
-     * @returns {number} 曲线对象的长度。
-     */
-
-
-    /**
-     * @member SuperMap.Geometry.Curve.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.Point}", "{@link SuperMap.PointWithMeasure}"]
-     */
+  /**
+   * @member SuperMap.Geometry.Curve.prototype.componentTypes -{Array<string>}
+   * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+   * @readonly
+   * @default ["{@link SuperMap.Geometry.Point}", "{@link SuperMap.PointWithMeasure}"]
+   */
 
 
-    _createClass(Curve, [{
-        key: 'getLength',
-        value: function getLength() {
-            var length = 0.0;
-            if (this.components && this.components.length > 1) {
-                for (var i = 1, len = this.components.length; i < len; i++) {
-                    length += this.components[i - 1].distanceTo(this.components[i]);
-                }
-            }
-            return length;
-        }
-    }]);
-
-    return Curve;
+  return Curve;
 }(_MultiPoint3["default"]);
 
 exports["default"] = Curve;
@@ -39862,17 +36925,6 @@ var GeoText = function (_Geometry) {
         }
 
         /**
-         * @description 获取标签对象的质心。
-         * @returns {SuperMap.Geometry.Point} 标签对象的质心。
-         */
-
-    }, {
-        key: 'getCentroid',
-        value: function getCentroid() {
-            return new _Point2["default"](this.x, this.y);
-        }
-
-        /**
          * @function SuperMap.Geometry.GeoText.prototype.clone
          * @description 克隆标签对象。
          * @returns {SuperMap.Geometry.GeoText} 克隆后的标签对象。
@@ -39897,320 +36949,6 @@ var GeoText = function (_Geometry) {
         key: 'calculateBounds',
         value: function calculateBounds() {
             this.bounds = new _Bounds2["default"](this.x, this.y, this.x, this.y);
-        }
-
-        /**
-         * @function SuperMap.Geometry.GeoText.prototype.getLabelPxBoundsByLabel
-         * @description 根据绘制好的标签获取文字标签的像素范围，参数的单位是像素；此方法相对于 getLabelPxBoundsByText 效率较低，但支持所有格式的文本。
-         * @param locationPixel - {Object} 标签的位置点，该对象含有属性x(横坐标)，属性y(纵坐标)。
-         * @param labelWidth - {string} 标签的宽度，如：“90px”。
-         * @param labelHight - {string}  标签的高度。
-         * @param style - {Object}  标签的style。
-         *
-         * @returns {SuperMap.Bounds}  标签的像素范围。
-         */
-
-    }, {
-        key: 'getLabelPxBoundsByLabel',
-        value: function getLabelPxBoundsByLabel(locationPixel, labelWidth, labelHight, style) {
-            var labelPxBounds, left, bottom, top, right;
-            var locationPx = _Util.Util.cloneObject(locationPixel);
-
-            //计算文本行数
-            var theText = style.label || this.text;
-            var textRows = theText.split('\n');
-            var laberRows = textRows.length;
-
-            //处理文字对齐
-            labelWidth = parseFloat(labelWidth);
-            labelHight = parseFloat(labelHight);
-            if (laberRows > 1) {
-                labelHight = parseFloat(labelHight) * laberRows;
-            }
-            if (style.labelAlign && style.labelAlign !== "cm") {
-                switch (style.labelAlign) {
-                    case "lt":
-                        locationPx.x += labelWidth / 2;
-                        locationPx.y += labelHight / 2;
-                        break;
-                    case "lm":
-                        locationPx.x += labelWidth / 2;
-                        break;
-                    case "lb":
-                        locationPx.x += labelWidth / 2;
-                        locationPx.y -= labelHight / 2;
-                        break;
-                    case "ct":
-                        locationPx.y += labelHight / 2;
-                        break;
-                    case "cb":
-                        locationPx.y -= labelHight / 2;
-                        break;
-                    case "rt":
-                        locationPx.x -= labelWidth / 2;
-                        locationPx.y += labelHight / 2;
-                        break;
-                    case "rm":
-                        locationPx.x -= labelWidth / 2;
-                        break;
-                    case "rb":
-                        locationPx.x -= labelWidth / 2;
-                        locationPx.y -= labelHight / 2;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            this.bsInfo.h = labelHight;
-            this.bsInfo.w = labelWidth;
-
-            //bounds的四边
-            left = locationPx.x - parseFloat(labelWidth) / 2;
-            bottom = locationPx.y + parseFloat(labelHight) / 2;
-            right = locationPx.x + parseFloat(labelWidth) / 2;
-            top = locationPx.y - parseFloat(labelHight) / 2;
-
-            labelPxBounds = new _Bounds2["default"](left, bottom, right, top);
-
-            return labelPxBounds;
-        }
-
-        /**
-         * @function SuperMap.Geometry.GeoText.prototype.getLabelPxBoundsByText
-         * @description 根据文本内容获取文字标签的像素范围
-         *
-         * @param locationPixel - {Object} 标签的位置点，该对象含有属性x(横坐标)，属性y(纵坐标)。
-         * @param style - {Object} 标签的样式
-         *
-         * @returns {SuperMap.Bounds}  标签的像素范围。
-         */
-
-    }, {
-        key: 'getLabelPxBoundsByText',
-        value: function getLabelPxBoundsByText(locationPixel, style) {
-            var labelPxBounds, left, bottom, top, right;
-            var labelSize = this.getLabelPxSize(style);
-            var locationPx = _Util.Util.cloneObject(locationPixel);
-
-            //处理文字对齐
-            if (style.labelAlign && style.labelAlign !== "cm") {
-                switch (style.labelAlign) {
-                    case "lt":
-                        locationPx.x += labelSize.w / 2;
-                        locationPx.y += labelSize.h / 2;
-                        break;
-                    case "lm":
-                        locationPx.x += labelSize.w / 2;
-                        break;
-                    case "lb":
-                        locationPx.x += labelSize.w / 2;
-                        locationPx.y -= labelSize.h / 2;
-                        break;
-                    case "ct":
-                        locationPx.y += labelSize.h / 2;
-                        break;
-                    case "cb":
-                        locationPx.y -= labelSize.h / 2;
-                        break;
-                    case "rt":
-                        locationPx.x -= labelSize.w / 2;
-                        locationPx.y += labelSize.h / 2;
-                        break;
-                    case "rm":
-                        locationPx.x -= labelSize.w / 2;
-                        break;
-                    case "rb":
-                        locationPx.x -= labelSize.w / 2;
-                        locationPx.y -= labelSize.h / 2;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            this.bsInfo.h = labelSize.h;
-            this.bsInfo.w = labelSize.w;
-
-            left = locationPx.x - labelSize.w / 2;
-            bottom = locationPx.y + labelSize.h / 2;
-            //处理斜体字
-            if (style.fontStyle && style.fontStyle && style.fontStyle === "italic") {
-                right = locationPx.x + labelSize.w / 2 + parseInt(parseFloat(style.fontSize) / 2);
-            } else {
-                right = locationPx.x + labelSize.w / 2;
-            }
-            top = locationPx.y - labelSize.h / 2;
-
-            labelPxBounds = new _Bounds2["default"](left, bottom, right, top);
-
-            return labelPxBounds;
-        }
-
-        /**
-         * @function SuperMap.Geometry.GeoText.prototype.getLabelPxSize
-         * @description 获取label的像素大小
-         *
-         * @param style - {Object} 标签样式。
-         *
-         * @returns {Object} 标签大小对象，属性w表示标签的宽度，属性h表示标签的高度。
-         */
-
-    }, {
-        key: 'getLabelPxSize',
-        value: function getLabelPxSize(style) {
-            var text,
-                //文本内容
-            fontSize,
-                //字体大小
-            spacing = 1,
-                //两个字符间的间距（单位：px）
-            lineSpacing = 0.2,
-                bgstrokeWidth = parseFloat(style.strokeWidth); //标签背景框边框的宽度
-
-            text = style.label || this.text;
-            if (style.fontSize) {
-                fontSize = parseFloat(style.fontSize);
-            } else {
-                return null;
-            }
-
-            //标签宽高
-            var labelW, labelH;
-
-            var textRows = text.split('\n');
-            var numRows = textRows.length;
-
-            if (numRows > 1) {
-                labelH = fontSize * numRows + numRows + bgstrokeWidth + lineSpacing * fontSize;
-            } else {
-                labelH = fontSize + bgstrokeWidth + lineSpacing * fontSize + 1;
-            }
-
-            //取最大宽度
-            labelW = 0;
-            if (this.labelWTmp && labelW < this.labelWTmp) {
-                labelW = this.labelWTmp;
-            }
-            for (var i = 0; i < numRows; i++) {
-                var textCharC = this.getTextCount(textRows[i]);
-                var labelWTmp = this.labelWTmp = _Util.Util.getTextBounds(style, textRows[i], this.element).textWidth + textCharC.textC * spacing + bgstrokeWidth;
-                if (labelW < labelWTmp) {
-                    labelW = labelWTmp;
-                }
-            }
-
-            var labelSize = new Object(); //标签大小
-            labelSize.h = labelH;
-            labelSize.w = labelW;
-
-            return labelSize;
-        }
-
-        /**
-         * @function SuperMap.Geometry.GeoText.prototype.getBoundsByText
-         * @description 获取文字地理范围。
-         */
-
-    }, {
-        key: 'getBoundsByText',
-        value: function getBoundsByText(map, style) {
-            this.labelWTmp = null;
-            var tempStyle = {};
-            tempStyle = _Util.Util.copyAttributes(tempStyle, style);
-            tempStyle.label = this.text;
-            tempStyle.fontSize = parseFloat(tempStyle.fontSize);
-            if (tempStyle.fontSize < 12) {
-                tempStyle.fontSize = 12;
-            }
-            tempStyle.fontSize = tempStyle.fontSize.toString() + "px";
-
-            if (tempStyle.fontPercent === undefined) {
-                tempStyle.fontPercent = 100;
-            }
-            if (tempStyle.fontPercent < 0) {
-                tempStyle.fontPercent = 0;
-            }
-            if (tempStyle.fontPercent > 400) {
-                tempStyle.fontPercent = 400;
-            }
-
-            if (tempStyle.fontSpace === undefined) {
-                tempStyle.fontSpace = 0;
-            }
-            if (tempStyle.fontSpace > 30) {
-                tempStyle.fontSpace = 30;
-            }
-            if (tempStyle.fontSpace < 0) {
-                tempStyle.fontSpace = 0;
-            }
-
-            var locationPixel = map.getPixelFromLonLat(new _LonLat2["default"](this.x, this.y));
-            var pixelBounds = this.getLabelPxBoundsByText(locationPixel, tempStyle);
-            var extendWidth = (pixelBounds.getWidth() + tempStyle.fontSpace * (this.text.length - 1)) * (tempStyle.fontPercent / 100) - pixelBounds.getWidth();
-            if (tempStyle.labelAlign && (tempStyle.labelAlign === "lt" || tempStyle.labelAlign === "lm" || tempStyle.labelAlign === "lb")) {
-                pixelBounds.right += extendWidth;
-            } else if (tempStyle.labelAlign && (tempStyle.labelAlign === "rt" || tempStyle.labelAlign === "rm" || tempStyle.labelAlign === "rb")) {
-                pixelBounds.left -= extendWidth;
-            } else if (tempStyle.labelAlign && (tempStyle.labelAlign === "ct" || tempStyle.labelAlign === "cm" || tempStyle.labelAlign === "cb")) {
-                pixelBounds.left -= extendWidth / 2;
-                pixelBounds.right += extendWidth / 2;
-            }
-
-            var ltLonLat = map.getLonLatFromPixel(new _Pixel2["default"](pixelBounds.left, pixelBounds.top));
-            var rbLonLat = map.getLonLatFromPixel(new _Pixel2["default"](pixelBounds.right, pixelBounds.bottom));
-
-            var boundsNoRotation = new _Bounds2["default"](ltLonLat.lon, rbLonLat.lat, rbLonLat.lon, ltLonLat.lat);
-
-            if (tempStyle.labelRotation) {
-                var rectBounds = [];
-                rectBounds.push(new _Point2["default"](boundsNoRotation.left, boundsNoRotation.top));
-                rectBounds.push(new _Point2["default"](boundsNoRotation.right, boundsNoRotation.top));
-                rectBounds.push(new _Point2["default"](boundsNoRotation.right, boundsNoRotation.bottom));
-                rectBounds.push(new _Point2["default"](boundsNoRotation.left, boundsNoRotation.bottom));
-
-                for (var i = 0; i < rectBounds.length; i++) {
-                    rectBounds[i].rotate(-tempStyle.labelRotation, new _Point2["default"](this.x, this.y));
-                }
-
-                var rectGeo = new _LineString2["default"](rectBounds);
-                return rectGeo.getBounds();
-            } else {
-                return boundsNoRotation;
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.GeoText.prototype.getTextCount
-         * @description 获取text中的字符个数。
-         * @param text - {string} 字符串。
-         * @returns {Object} 字符个数统计结果，属性cnC表示中文字符个数，属性enC表示英文字符个数，属性textC表示字符总个数。
-         */
-
-    }, {
-        key: 'getTextCount',
-        value: function getTextCount(text) {
-            var textCharCount = new Object();
-
-            var cnCount = 0;
-            var enCount = 0;
-
-            for (var i = 0; i < text.length; i++) {
-                if (text.charCodeAt(i) > 255) {
-                    //遍历判断字符串中每个字符的Unicode码,大于255则为中文
-                    cnCount++;
-                } else {
-                    enCount++;
-                }
-            }
-            //中午字符个数
-            textCharCount.cnC = cnCount;
-            //英文字符个数
-            textCharCount.enC = enCount;
-            //字符总个数
-            textCharCount.textC = text.length;
-
-            return textCharCount;
         }
     }]);
 
@@ -54949,13 +51687,14 @@ var MapService = function (_CommonServiceBase) {
         me.url += ".json";
 
         if (me.projection) {
-            if (typeof me.projection === "string") {
-                me.projection = new _SuperMap2["default"].Projection(me.projection);
-            }
-
-            var arr = me.projection.getCode().split(":");
-            if (arr instanceof Array && arr.length === 2) {
-                me.url += "?prjCoordSys={\"epsgCode\":" + arr[1] + "}";
+            var arr = me.projection.split(":");
+            if (arr instanceof Array) {
+                if (arr.length === 2) {
+                    me.url += "?prjCoordSys={\"epsgCode\":" + arr[1] + "}";
+                }
+                if (arr.length === 1) {
+                    me.url += "?prjCoordSys={\"epsgCode\":" + arr[0] + "}";
+                }
             }
         }
         return _this;
@@ -54968,8 +51707,8 @@ var MapService = function (_CommonServiceBase) {
 
 
     /**
-     * @member  SuperMap.MapService.prototype.projection -{SuperMap.Projection} or {string}
-     * @description 根据投影参数获取地图状态信息。
+     * @member  SuperMap.MapService.prototype.projection -{string}
+     * @description 根据投影参数获取地图状态信息。如"EPSG:4326"
      */
 
 

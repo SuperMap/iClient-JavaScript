@@ -184,19 +184,6 @@ export default class Collection extends Geometry {
     }
 
     /**
-     * @function SuperMap.Geometry.Collection.prototype.getLength
-     * @description 计算几何对象长度。
-     * @returns {number} 几何对象长度（所有几何对象长度总和）。
-     */
-    getLength() {
-        var length = 0.0;
-        for (var i = 0, len = this.components.length; i < len; i++) {
-            length += this.components[i].getLength();
-        }
-        return length;
-    }
-
-    /**
      * @function SuperMap.Geometry.Collection.prototype.getArea
      * @description 计算几何对象的面积。注意，这个方法在 <SuperMap.Geometry.Polygon> 类中需要重写。
      * @returns {number} 几何图形的面积，是几何对象中所有组成部分的面积之和。
@@ -207,135 +194,6 @@ export default class Collection extends Geometry {
             area += this.components[i].getArea();
         }
         return area;
-    }
-
-    /**
-     * @function SuperMap.Geometry.Collection.prototype.getCentroid
-     * @description  计算几何图形集合的质心。
-     * @param weighted -{Boolean} 执行getCentroid方法进行递归计算，返回此几何图形集合中的面积加权平均值。
-     * @returns {SuperMap.Geometry.Point} 质心。
-     */
-    getCentroid(weighted) {
-        if (!weighted) {
-            return this.components.length && this.components[0].getCentroid();
-        }
-        var len = this.components.length;
-        if (!len) {
-            return false;
-        }
-
-        var areas = [];
-        var centroids = [];
-        var areaSum = 0;
-        var minArea = Number.MAX_VALUE;
-        var component;
-        for (var i = 0; i < len; ++i) {
-            component = this.components[i];
-            var area = component.getArea();
-            var centroid = component.getCentroid(true);
-            if (isNaN(area) || isNaN(centroid.x) || isNaN(centroid.y)) {
-                continue;
-            }
-            areas.push(area);
-            areaSum += area;
-            minArea = (area < minArea && area > 0) ? area : minArea;
-            centroids.push(centroid);
-        }
-        len = areas.length;
-        if (areaSum === 0) {
-            // all the components in this collection have 0 area
-            // probably a collection of points -- weight all the points the same
-            for (var i = 0; i < len; ++i) {
-                areas[i] = 1;
-            }
-            areaSum = areas.length;
-        } else {
-            // normalize all the areas where the smallest area will get
-            // a value of 1
-            for (var i = 0; i < len; ++i) {
-                areas[i] /= minArea;
-            }
-            areaSum /= minArea;
-        }
-
-        var xSum = 0, ySum = 0, centroid, area;
-        for (var i = 0; i < len; ++i) {
-            centroid = centroids[i];
-            area = areas[i];
-            xSum += centroid.x * area;
-            ySum += centroid.y * area;
-        }
-
-        return new Point(xSum / areaSum, ySum / areaSum);
-    }
-
-    /**
-     * @function SuperMap.Geometry.Collection.prototype.move
-     * @description  沿着x、y轴的正方向上按照给定的位移移动几何图形，move 不仅改变了几何图形的位置并且清理了边界缓存。
-     * @param x -{number} x轴正方向上移动的距离。
-     * @param y - {number} y轴正方向上移动的距离。
-     */
-    move(x, y) {
-        for (var i = 0, len = this.components.length; i < len; i++) {
-            this.components[i].move(x, y);
-        }
-    }
-
-    /**
-     * @function SuperMap.Geometry.Collection.prototype.rotate
-     * @description 围绕中心点旋转几何图形。
-     * @param angle -{number} 旋转角的度数（沿着x轴正方向逆时针测量）。
-     * @param origin - {SuperMap.Geometry.Point} 旋转中心点。
-     */
-    rotate(angle, origin) {
-        for (var i = 0, len = this.components.length; i < len; ++i) {
-            this.components[i].rotate(angle, origin);
-        }
-    }
-
-    /**
-     * @function SuperMap.Geometry.Collection.prototype.resize
-     * @description  调整几何对象大小。
-     * @param scale - {number} 几何图形缩放的比例系数，是几何图形维数的两倍。（如，对于线来说将以线2倍的长度拉长，对于多边形来说，将以面积的4倍变化）。
-     * @param origin - {SuperMap.Geometry.Point} 调整大小选定的起始原点。
-     * @param ratio - {number} 可选的x,y的比例，默认的比例为1。
-     * @returns {SuperMap.Geometry} 几何图形。
-     */
-    resize(scale, origin, ratio) {
-        for (var i = 0; i < this.components.length; ++i) {
-            this.components[i].resize(scale, origin, ratio);
-        }
-        return this;
-    }
-
-    /**
-     * @function SuperMap.Geometry.Collection.prototype.distanceTo
-     * @description 计算两个几个图形间的最小距离（x-y平面坐标系下）。
-     * @param geometry - {SuperMap.Geometry} 目标几何图形。
-     * @param options - {Object} 距离计算需要设置的可选属性。有效的选项取决于特定的几何类型。<br>
-     *     details - {Boolean} 返回距离计算的细节。默认为false。<br>
-     *     edge - {Boolean} 计算一个几何图形到目标几何图形边缘的最近距离。默认为true。<br>
-     *     如果设为true，一个几何图形完全包含在目标几何图形中时，调用distanceTo返回非零结果，<br>
-     *     如果false，两个几何图形相交情况下调用distanceTo结果返回0，而且如果false，将不返距离值。
-     * @returns {(number | Object)} 返回一个几何图形到目标几何图形的距离。
-     */
-    distanceTo(geometry, options) {
-        var edge = !(options && options.edge === false);
-        var details = edge && options && options.details;
-        var result, best, distance;
-        var min = Number.POSITIVE_INFINITY;
-        for (var i = 0, len = this.components.length; i < len; ++i) {
-            result = this.components[i].distanceTo(geometry, options);
-            distance = details ? result.distance : result;
-            if (distance < min) {
-                min = distance;
-                best = result;
-                if (min == 0) {
-                    break;
-                }
-            }
-        }
-        return best;
     }
 
     /**
@@ -363,22 +221,6 @@ export default class Collection extends Geometry {
         return equivalent;
     }
 
-    /**
-     * @function SuperMap.Geometry.Collection.prototype.intersects
-     * @description 判断输入的几何对象是否与当前几何对象相交。
-     * @param geometry - {SuperMap.Geometry} 任意的几何类型。
-     * @returns {Boolean} 输入几何对象与当前几何对象相交。
-     */
-    intersects(geometry) {
-        var intersect = false;
-        for (var i = 0, len = this.components.length; i < len; ++i) {
-            intersect = geometry.intersects(this.components[i]);
-            if (intersect) {
-                break;
-            }
-        }
-        return intersect;
-    }
 
     /**
      * @function SuperMap.Geometry.Collection.prototype.getVertices

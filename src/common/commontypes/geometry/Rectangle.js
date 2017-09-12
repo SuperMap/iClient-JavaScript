@@ -68,16 +68,6 @@ export default class Rectangle extends Geometry {
 
 
     /**
-     * @function SuperMap.Geometry.Rectangle.prototype.getLength
-     * @description 获取矩形对象的周长
-     * @returns {float} 矩形对象的长度。
-     */
-    getLength() {
-        var length = (2 * this.width) + (2 * this.height);
-        return length;
-    }
-
-    /**
      * @function SuperMap.Geometry.Rectangle.prototype.getArea
      * @description 获取矩形对象的面积。
      * @returns {float} 矩形对象面积。
@@ -85,29 +75,6 @@ export default class Rectangle extends Geometry {
     getArea() {
         var area = this.width * this.height;
         return area;
-    }
-
-    /**
-     * @function SuperMap.Geometry.Rectangle.prototype.move
-     * @description 沿着x、y轴的正方向上按照给定的位移移动矩形对象
-     * @param x - {float} x轴正方向上的偏移量。
-     * @param y - {float} y轴正方向上偏移量。
-     */
-    move(x, y) {
-        this.x = this.x + x;
-        this.y = this.y + y;
-        this.calculateBounds();
-    }
-
-    /**
-     * @function SuperMap.Geometry.Rectangle.prototype.getCentroid
-     * @description 获取几何对象的质心。
-     * @returns {SuperMap.Geometry.Point} 几何图形的质心。
-     */
-    getCentroid() {
-        var centroidX = this.x + this.width / 2,
-            centroidY = this.y + this.height / 2;
-        return new Point(centroidX, centroidY);
     }
 
     CLASS_NAME = "SuperMap.Geometry.Rectangle"
