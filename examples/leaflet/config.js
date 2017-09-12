@@ -381,7 +381,19 @@ var exampleConfig = {
             }
         }
     },
-
+    "clientSpatialAnalyst": {
+        name: "客户端分析",
+        content: {
+            "Turf": {
+                name: "Turf",
+                content: [{
+                    name: "空间分析",
+                    thumbnail: "l_turf_transformation.png",
+                    fileName: "turf_transformation"
+                }]
+            }
+        }
+    },
     "viz": {
         name: "可视化",
         content: {
@@ -583,14 +595,6 @@ var exampleConfig = {
                     thumbnail: "l_rankSymbolThemeLayer.png",
                     fileName: "rankSymbolThemeLayer"
                 }]
-            },
-            "Turf": {
-                name: "Turf",
-                content: [{
-                    name: "空间分析",
-                    thumbnail: "l_turf_transformation.png",
-                    fileName: "turf_transformation"
-                }]
             }
         }
     },
@@ -694,6 +698,7 @@ var sideBarIconConfig = {
     "ElasticSearch": "fa-tasks",
     "plot": "fa-edit",
     "control": "fa-sliders",
+    "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
     "OGC": "fa-globe",
     "mapping": "fa-send"
@@ -712,6 +717,7 @@ var exampleIconConfig = {
     "ElasticSearch": "fa-tasks",
     "plot": "fa-edit",
     "control": "fa-sliders",
+    "clientSpatialAnalyst": "fa-object-group",
     "viz": "fa-map",
     "OGC": "fa-globe",
     "mapping": "fa-send"
