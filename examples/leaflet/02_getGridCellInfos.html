@@ -10,8 +10,8 @@
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
     var map, marker,
-        baseUrl = host + "/iserver/services/map-world/rest/maps/世界地图_Day",
-        url = host + "/iserver/services/data-world/rest/data";
+            baseUrl = host + "/iserver/services/map-world/rest/maps/世界地图_Day",
+            url = host + "/iserver/services/data-world/rest/data";
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
@@ -22,28 +22,33 @@
     L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
 
     map.on("click", function (evt) {
+        var x = evt.latlng.lng;
+        var y = evt.latlng.lat;
+        if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
+            return;
+        }
         var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
-            X: evt.latlng.lng,
-            Y: evt.latlng.lat
+            X: x,
+            Y: y
         });
         L.supermap
-            .gridCellInfosService(url)
-            .getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
-                if (!serviceResult.result) {
-                    return;
-                }
-                if (marker) {
-                    marker.setLatLng(evt.latlng);
-                } else {
-                    marker = L.marker(evt.latlng).addTo(map);
-                }
-                var innerHTML = "栅格查询结果: " + "<br>" + "column: " + serviceResult.result.column + "<br>";
-                innerHTML += "row: " + serviceResult.result.row + "<br>";
-                innerHTML += "value: " + serviceResult.result.value + "<br>";
-                marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
-            });
+                .gridCellInfosService(url)
+                .getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
+                    if (!serviceResult.result) {
+                        return;
+                    }
+                    if (marker) {
+                        marker.setLatLng(evt.latlng);
+                    } else {
+                        marker = L.marker(evt.latlng).addTo(map);
+                    }
+                    var innerHTML = "栅格查询结果: " + "<br>" + "column: " + serviceResult.result.column + "<br>";
+                    innerHTML += "row: " + serviceResult.result.row + "<br>";
+                    innerHTML += "value: " + serviceResult.result.value + "<br>";
+                    marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
+                });
     });
 </script>
 </body>

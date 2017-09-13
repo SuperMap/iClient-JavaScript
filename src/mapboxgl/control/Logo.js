@@ -90,9 +90,20 @@ export class Logo {
     };
 
     _extend(dest) {
-        for (var index = 0; index < arguments.length; index++) {
-            for (var j = 0; j < arguments[index].length; j++) {
-                dest[j] = src[j];
+        for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
+            var arg = Object.getOwnPropertyNames(arguments)[index];
+            if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+                continue;
+            }
+            var obj = arguments[arg];
+            if (obj) {
+                for (var j = 0; j < Object.getOwnPropertyNames(obj).length; j++) {
+                    var key = Object.getOwnPropertyNames(obj)[j];
+                    if (arg == "caller" || arg == "callee" || arg == "length" || arg == "arguments") {
+                        continue;
+                    }
+                    dest[key] = obj[key];
+                }
             }
         }
         return dest;
