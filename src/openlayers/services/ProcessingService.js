@@ -80,7 +80,7 @@ export default class ProcessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.ProcessingService.prototype.addKernelDensityJob
-     * @function 新建一个密度分析。
+     * @description 新建一个密度分析。
      * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
@@ -248,7 +248,7 @@ export default class ProcessingService extends ServiceBase {
 
     /**
      * @function ol.supermap.ProcessingService.prototype.addQueryJob
-     * @function 新建一个单对象查询分析。
+     * @description 新建一个单对象查询分析。
      * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。

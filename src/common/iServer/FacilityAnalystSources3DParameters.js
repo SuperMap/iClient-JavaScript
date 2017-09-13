@@ -23,7 +23,8 @@ export default class FacilityAnalystSources3DParameters extends FacilityAnalyst3
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystSources3DParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

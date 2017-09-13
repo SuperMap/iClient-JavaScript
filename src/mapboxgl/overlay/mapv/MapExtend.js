@@ -4,7 +4,8 @@ mapboxgl.supermap = mapboxgl.supermap || {};
 mapboxgl.supermap.map = mapboxgl.supermap.map || {};
 
 /**
- * 配置默认底图样式
+ * @class mapboxgl.supermap.map.getDefaultVectorTileStyle
+ * @description 配置默认底图样式
  */
 export var getDefaultVectorTileStyle = function (urlTemplate, options) {
     options = options || {};
@@ -39,7 +40,8 @@ export var getDefaultVectorTileStyle = function (urlTemplate, options) {
 };
 
 /**
- * 设置地图背景
+ * @class mapboxgl.supermap.map.setBackground
+ * @description 设置地图背景
  */
 export var setBackground = function (map, color) {
     if (color && map) {
@@ -54,7 +56,8 @@ export var setBackground = function (map, color) {
 };
 
 /**
- * 设置图层风格
+ * @class mapboxgl.supermap.map.setPaintProperty
+ * @description  设置图层风格
  * @param map
  * @param layerIds
  * @param type

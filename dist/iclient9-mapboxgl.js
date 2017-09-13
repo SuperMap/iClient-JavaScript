@@ -13797,7 +13797,7 @@ _SuperMap2.default.Geometry.MultiLineString = MultiLineString;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _SuperMap = __webpack_require__(0);
@@ -13834,27 +13834,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var multiPolygon1 = new SuperMap.Geometry.MultiPolygon([polygon1,polygon2]);
  */
 var MultiPolygon = function (_Collection) {
-    _inherits(MultiPolygon, _Collection);
+  _inherits(MultiPolygon, _Collection);
 
-    function MultiPolygon(components) {
-        _classCallCheck(this, MultiPolygon);
+  function MultiPolygon(components) {
+    _classCallCheck(this, MultiPolygon);
 
-        var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
+    var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
 
-        _this.componentTypes = ["SuperMap.Geometry.Polygon"];
-        _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
-        return _this;
-    }
+    _this.componentTypes = ["SuperMap.Geometry.Polygon"];
+    _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
+    return _this;
+  }
 
-    /**
-     * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.Polygon}"]
-     */
+  /**
+   * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
+   * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+   * @readonly
+   * @default ["{@link SuperMap.Geometry.Polygon}"]
+   */
 
 
-    return MultiPolygon;
+  return MultiPolygon;
 }(_Collection3.default);
 
 exports.default = MultiPolygon;
@@ -26231,7 +26231,8 @@ _mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
 _mapboxGl2.default.supermap.map = _mapboxGl2.default.supermap.map || {};
 
 /**
- * 配置默认底图样式
+ * @class mapboxgl.supermap.map.getDefaultVectorTileStyle
+ * @description 配置默认底图样式
  */
 var getDefaultVectorTileStyle = exports.getDefaultVectorTileStyle = function getDefaultVectorTileStyle(urlTemplate, options) {
     options = options || {};
@@ -26266,7 +26267,8 @@ var getDefaultVectorTileStyle = exports.getDefaultVectorTileStyle = function get
 };
 
 /**
- * 设置地图背景
+ * @class mapboxgl.supermap.map.setBackground
+ * @description 设置地图背景
  */
 var setBackground = exports.setBackground = function setBackground(map, color) {
     if (color && map) {
@@ -26281,7 +26283,8 @@ var setBackground = exports.setBackground = function setBackground(map, color) {
 };
 
 /**
- * 设置图层风格
+ * @class mapboxgl.supermap.map.setPaintProperty
+ * @description  设置图层风格
  * @param map
  * @param layerIds
  * @param type
@@ -33467,7 +33470,8 @@ var FacilityAnalystSources3DParameters = function (_FacilityAnalyst3DPar) {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystSources3DParameters.prototype.destroy
+     * @override
      */
 
 
@@ -35917,7 +35921,7 @@ var GetFeaturesByBoundsParameters = function (_GetFeaturesParameter) {
         }
 
         /**
-         * @function: SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
+         * @function SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
          * @description 将SuperMap.GetFeaturesByBoundsParameters对象参数转换为JSON字符串。
          * @param params - {SuperMap.GetFeaturesByBoundsParameters} 范围查询参数。
          * @return  {string} 转化后的JSON字符串。

@@ -40261,6 +40261,7 @@ var GeoText = function (_Geometry) {
         }
 
         /**
+         * @function SuperMap.Geometry.GeoText.prototype.getCentroid
          * @description 获取标签对象的质心。
          * @returns {SuperMap.Geometry.Point} 标签对象的质心。
          */
@@ -46534,7 +46535,8 @@ var FacilityAnalystSources3DParameters = function (_FacilityAnalyst3DPar) {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystSources3DParameters.prototype.destroy
+     * @override
      */
 
 
@@ -51118,7 +51120,7 @@ var GetFeaturesByBoundsParameters = function (_GetFeaturesParameter) {
         }
 
         /**
-         * @function: SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
+         * @function SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
          * @description 将SuperMap.GetFeaturesByBoundsParameters对象参数转换为JSON字符串。
          * @param params - {SuperMap.GetFeaturesByBoundsParameters} 范围查询参数。
          * @return  {string} 转化后的JSON字符串。

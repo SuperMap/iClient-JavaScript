@@ -89,7 +89,7 @@ export default class GetFeaturesByBoundsParameters extends GetFeaturesParameters
     }
 
     /**
-     * @function: SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
+     * @function SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
      * @description 将SuperMap.GetFeaturesByBoundsParameters对象参数转换为JSON字符串。
      * @param params - {SuperMap.GetFeaturesByBoundsParameters} 范围查询参数。
      * @return  {string} 转化后的JSON字符串。

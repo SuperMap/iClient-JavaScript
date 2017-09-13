@@ -85,6 +85,7 @@ export default class GeoText extends Geometry {
     }
 
     /**
+     * @function SuperMap.Geometry.GeoText.prototype.getCentroid
      * @description 获取标签对象的质心。
      * @returns {SuperMap.Geometry.Point} 标签对象的质心。
      */

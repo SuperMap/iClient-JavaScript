@@ -32982,7 +32982,7 @@ var ProcessingService = function (_ServiceBase) {
 
         /**
          * @function ol.supermap.ProcessingService.prototype.addKernelDensityJob
-         * @function 新建一个密度分析。
+         * @description 新建一个密度分析。
          * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
          * @param callback - {function} 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
@@ -33174,7 +33174,7 @@ var ProcessingService = function (_ServiceBase) {
 
         /**
          * @function ol.supermap.ProcessingService.prototype.addQueryJob
-         * @function 新建一个单对象查询分析。
+         * @description 新建一个单对象查询分析。
          * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
          * @param callback - {function} 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
@@ -37123,6 +37123,7 @@ var GeoText = function (_Geometry) {
         }
 
         /**
+         * @function SuperMap.Geometry.GeoText.prototype.getCentroid
          * @description 获取标签对象的质心。
          * @returns {SuperMap.Geometry.Point} 标签对象的质心。
          */
@@ -43396,7 +43397,8 @@ var FacilityAnalystSources3DParameters = function (_FacilityAnalyst3DPar) {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystSources3DParameters.prototype.destroy
+     * @override
      */
 
 
@@ -47980,7 +47982,7 @@ var GetFeaturesByBoundsParameters = function (_GetFeaturesParameter) {
         }
 
         /**
-         * @function: SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
+         * @function SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
          * @description 将SuperMap.GetFeaturesByBoundsParameters对象参数转换为JSON字符串。
          * @param params - {SuperMap.GetFeaturesByBoundsParameters} 范围查询参数。
          * @return  {string} 转化后的JSON字符串。
