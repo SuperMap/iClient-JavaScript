@@ -35,26 +35,29 @@ SuperMap.mixin = function (...mixins) {
 
     class Mix {
         constructor(options) {
-            for (let mixin of mixins) {
-                copyProperties(this, new mixin(options));
+            for (var index = 0; index < mixins.length; index++) {
+                copyProperties(this, new mixins[index](options));
             }
         }
     }
-
-    for (let mixin of mixins) {
+    for (var index = 0; index < mixins.length; index++) {
+        var mixin = mixins[index];
         copyProperties(Mix, mixin);
         copyProperties(Mix.prototype, mixin.prototype);
         copyProperties(Mix.prototype, new mixin());
     }
-
     return Mix;
 
     function copyProperties(target, source) {
-        for (let key of Reflect.ownKeys(source)) {
+        var ownKeys = Object.getOwnPropertyNames(source);
+        if (Object.getOwnPropertySymbols) {
+            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source));
+        }
+        for (var index = 0; index < ownKeys.length; index++) {
+            var key = ownKeys[index];
             if (key !== "constructor"
                 && key !== "prototype"
-                && key !== "name"
-            ) {
+                && key !== "name"&& key !== "length") {
                 let desc = Object.getOwnPropertyDescriptor(source, key);
                 Object.defineProperty(target, key, desc);
             }

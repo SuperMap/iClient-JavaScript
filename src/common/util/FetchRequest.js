@@ -1,3 +1,4 @@
+import "./PromisePolyfill"
 import fetch from 'whatwg-fetch-importable'
 import fetchJsonp from 'fetch-jsonp';
 import SuperMap from '../SuperMap';

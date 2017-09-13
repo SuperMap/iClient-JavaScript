@@ -373,9 +373,9 @@ export class RankTheme3DLayer {
     }
 
     _extend(dest) {
-        for (const src of arguments) {
-            for (const k in src) {
-                dest[k] = src[k];
+        for (var index = 0; index < arguments.length; index++) {
+            for (var j = 0; j < arguments[index].length; j++) {
+                dest[j] = src[j];
             }
         }
         return dest;
