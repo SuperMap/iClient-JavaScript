@@ -1,3 +1,4 @@
+
 {
     "opts": {
         "recurse": true,
@@ -15,6 +16,9 @@
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service.js?$",
         "include": [
             "src/common","src/leaflet"
+        ],
+        "exclude": [
+            "src/common/overlay/feature","src/common/overlay/levelRenderer"
         ]
     },
     "plugins": ["plugins/markdown","../plugins/factoryFunction","../plugins/linkdoc"],

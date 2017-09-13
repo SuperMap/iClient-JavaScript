@@ -13,6 +13,9 @@
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base|Parameters.js?$",
         "include": [
             "src/classic"
+        ],
+        "exclude": [
+            "src/common/overlay/feature","src/common/overlay/levelRenderer"
         ]
     },
     "plugins": ["plugins/markdown"],
