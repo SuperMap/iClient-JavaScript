@@ -3,7 +3,7 @@ import {baiduMapLayer} from 'mapv';
 
 /**
  * @class SuperMap.MapVRenderer
- * @classdesc 地图渲染类
+ * @classdesc MapV渲染器。
  * @private
  * @extends mapv.MapVBaseLayer
  * @param map - {SuperMap.Map} 待渲染的地图

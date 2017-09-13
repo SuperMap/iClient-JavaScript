@@ -6,13 +6,15 @@ import GetFeaturesByBufferParameters from './GetFeaturesByBufferParameters';
  * @class SuperMap.GetFeaturesByBufferService
  * @classdesc 数据服务中数据集缓冲区查询服务类。
  * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，
- * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
+ * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param options - {Object} 可选参数。如：<br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @extends SuperMap.GetFeaturesServiceBase
- * @example 例如：
- * var myGetFeaturesByBufferService = new   SuperMap.GetFeaturesByBufferService(url, {
+ * @example
+ * var myGetFeaturesByBufferService = new SuperMap.GetFeaturesByBufferService(url, {
  *     eventListeners: {
  *           "processCompleted": GetFeaturesCompleted,
  *           "processFailed": GetFeaturesError
@@ -38,8 +40,7 @@ export default  class GetFeaturesByBufferService extends GetFeaturesServiceBase 
 
     /**
      * @function SuperMap.GetFeaturesByBufferService.prototype.getJsonParameters
-     * @description 将查询参数转化为 JSON 字符串。
-     * 在本类中重写此方法，可以实现不同种类的查询（IDs, SQL, Buffer, Geometry等）。
+     * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（IDs, SQL, Buffer, Geometry等）。
      * @param params {SuperMap.GetFeaturesByBufferParameters}
      * @return {Object} 转化后的 JSON 字符串。
      */

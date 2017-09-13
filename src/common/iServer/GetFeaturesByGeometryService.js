@@ -5,14 +5,15 @@ import GetFeaturesByGeometryParameters from './GetFeaturesByGeometryParameters';
 /**
  * @class SuperMap.GetFeaturesByGeometryService
  * @classdesc 数据集几何查询服务类,查询与指定几何对象符合一定空间关系的矢量要素。
- * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，:</br>
- * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；:</br>
+ * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务。
+ * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
- * @param options - {Object} 可選参数。如:</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。</br>
+ * @param options - {Object} 可选参数。如:</br>
+ *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @extends SuperMap.GetFeaturesServiceBase
- * @example 例如：
- * (start code)
+ * @example
  * var myService = new SuperMap.GetFeaturesByGeometryService(url, {
      *     eventListeners: {
      *           "processCompleted": getFeatureCompleted,
@@ -21,8 +22,6 @@ import GetFeaturesByGeometryParameters from './GetFeaturesByGeometryParameters';
      * });
  * function getFeatureCompleted(object){//todo};
  * function getFeatureError(object){//todo}
- * (end)
- *
  */
 export default  class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
 

@@ -6,7 +6,7 @@ import Util from  '../core/Util';
 
 /**
  * @class ol.source.TileSuperMapRest
- * @classdesc 对接iServer地图TileImage服务
+ * @classdesc SuperMap iServer TileImage图层源。
  * @param options - {Object} 可选参数。如：<br>
  *        url - {string} 服务地址。<br>
  *        attributions - {string} 版权描述信息。<br>
@@ -89,6 +89,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             }
             return newUrl;
         }
+
         /**
          * @function  ol.source.TileSuperMapRest.prototype.getAllRequestParams
          * @description 获取全部请求参数
@@ -139,6 +140,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
             return params;
         }
+
         /**
          * @function  ol.source.TileSuperMapRest.prototype.getFullRequestUrl
          * @description 获取完整的请求地址
@@ -150,6 +152,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             }
             return this._layerUrl || createLayerUrl.call(this);
         }
+
         /**
          * @function  ol.source.TileSuperMapRest.prototype.createLayerUrl
          * @description 获取新建图层地址
@@ -158,6 +161,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             this._layerUrl = layerUrl + getRequestParamString.call(this);
             return this._layerUrl;
         }
+
         /**
          * @function  ol.source.TileSuperMapRest.prototype.getRequestParamString
          * @description 获取请求参数的字符串

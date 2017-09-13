@@ -1,7 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.supermap.MapvCanvasLayer
- * @classdesc Mapv地图画布图层类
+ * @classdesc Mapv渲染器。
  * @private
  * @param options - {Object} 可选参数。如：<br>
  *        paneName - {string} 窗口名。<br>

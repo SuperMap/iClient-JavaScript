@@ -2,7 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 import DataFlowService  from "../services/DataFlowService";
 /**
  * @class ol.source.DataFlow
- * @classdesc 数据流
+ * @classdesc 实时数据图层源。
  * @param opt_options -{Object} 参数
  * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
  */

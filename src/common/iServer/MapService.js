@@ -6,18 +6,18 @@ import CommonServiceBase from './CommonServiceBase';
  * @classdesc 地图信息服务类。
  * @extends SuperMap.CommonServiceBase
  * @example
- * (start code)
  * var myMapService = new SuperMap.MapService(url, {
-     * eventListeners:{
-     *     "processCompleted": MapServiceCompleted,
-     *       "processFailed": MapServiceFailed
-     *       }
-     * });
- * (end)
+ * eventListeners:{
+ *     "processCompleted": MapServiceCompleted,
+ *       "processFailed": MapServiceFailed
+ *       }
+ * });
  *
  * @param url - {string} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
- * @param options - {Object} 参数 。
- * eventListeners - {Object} 需要被注册的监听器对象。
+ * @param options - {Object} 可选参数 。如：<br>
+ *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 export default class MapService extends CommonServiceBase {
 

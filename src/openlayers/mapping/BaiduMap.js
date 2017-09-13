@@ -1,7 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.source.BaiduMap
- * @classdesc 百度地图
+ * @classdesc 百度地图图层源。
  * @param opt_options - {Object} 创建地图参数可选参数：<br>
  *        url - {string} 服务地址。<br>
  *        attributions - {string} 版权描述信息。<br>

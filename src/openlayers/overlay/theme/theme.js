@@ -11,7 +11,7 @@ import "../../../common/overlay/levelRenderer/Render";
 
 /**
  * @class ol.source.Theme
- * @classdesc 专题
+ * @classdesc 专题图基类。
  * @private
  * @param name - {string} 名称
  * @param opt_options -{Object} 可选构造参数。如：

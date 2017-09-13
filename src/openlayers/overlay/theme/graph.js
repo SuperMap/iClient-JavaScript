@@ -14,7 +14,7 @@ import Theme from './theme';
 
 /**
  * @class ol.source.Graph
- * @classdesc 图表类
+ * @classdesc 统计专题图图层基类。
  * @private
  * @param chartsType -{string} 图表类别
  * @param name - {string} 图层名称

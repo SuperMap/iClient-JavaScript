@@ -6,7 +6,7 @@ import  Util from '../core/Util';
 
 /**
  * @class ol.source.ImageSuperMapRest
- * @classdesc SuperMap UGC 对接iServer地图Image资源。
+ * @classdesc SuperMap iServer Image图层源。
  * @param options - {Object} 服务参数：<br>
  *        url - {string} 服务地址。<br>
  *        attributions - {string} 版权描述信息。<br>
@@ -195,6 +195,7 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         });
         return options;
     }
+
     /**
      * @function ol.source.ImageSuperMapRest.createTileGrid
      * @param extent - {number} 长度

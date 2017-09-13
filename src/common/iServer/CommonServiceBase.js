@@ -9,11 +9,9 @@ import '../security/SecurityManager';
  * @classdesc 对接iServer各种服务的Service的基类。
  * @param url - {string} 服务地址。
  * @param options - {Object} 可选参数。如：<br>
- *        events - {SuperMap.Events} 处理所有事件的对象。<br>
- *        eventListeners - {Object} 事件监听器对象。<br>
+ *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。
+ *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
 export default class CommonServiceBase {
 

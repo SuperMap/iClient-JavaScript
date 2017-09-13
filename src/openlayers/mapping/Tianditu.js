@@ -2,7 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 
 /**
  * @class ol.source.Tianditu
- * @classdesc 天地图
+ * @classdesc 天地图图层源。
  * @param opt_options - {Object} 参数。
  *        url - {string} 服务地址。<br>
  *        attributions - {string} 版权描述信息。<br>

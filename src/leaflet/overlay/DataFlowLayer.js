@@ -3,9 +3,9 @@ import {DataFlowService} from "../services/DataFlowService";
 
 /**
  * @class L.supermap.dataFlowLayer
- * @classdesc 数据流图层
+ * @classdesc 实时数据图层源
  * @extends L.GeoJSON{@linkdoc-leaflet/#geojson}
- * @param url - {string} 数据流图层服务地址
+ * @param url - {string} 实时数据图层服务地址
  * @param options - {Object} 设置图层参数。如：<br>
  *        geometry - {Object} GeoJSON几何对象<br>
  *        prjCoordSys - {Object} 投影坐标对象。<br>

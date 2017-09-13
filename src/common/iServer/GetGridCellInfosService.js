@@ -4,19 +4,19 @@ import GetGridCellInfosParameters from './GetGridCellInfosParameters';
 
 /**
  * @class SuperMap.GetGridCellInfosService
- * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息
+ * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息。
  * @param url - {string} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
  * @param options - {Object} 可選参数。如:</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  * @extends SuperMap.CommonServiceBase
- * @example  例如：
- * (start code)
+ * @example
  * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
-     *     "processCompleted": queryCompleted,
-     *     "processFailed": queryError
-     *     }
-     * });
- * (end)
+ *     "processCompleted": queryCompleted,
+ *     "processFailed": queryError
+ *     }
+ * });
  *
  */
 export default  class GetGridCellInfosService extends CommonServiceBase {

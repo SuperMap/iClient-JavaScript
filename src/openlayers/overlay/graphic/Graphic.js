@@ -2,7 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 
 /**
  * @class ol.Graphic
- * @classdesc 地理几何对象类
+ * @classdesc 高效率点图层点要素类。
  * @param geometry - {Object} 几何对象
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}
  */

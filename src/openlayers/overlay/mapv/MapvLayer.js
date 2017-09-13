@@ -4,7 +4,7 @@ import {baiduMapLayer} from "mapv";
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
  * @class ol.supermap.MapvLayer
- * @classdesc 网络图层类。
+ * @classdesc MapV图层类。
  * @private
  * @param map - {Object} 地图
  * @param dataSet - {Object} 数据集

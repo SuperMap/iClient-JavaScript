@@ -4,7 +4,7 @@ import Util from '../core/Util';
 
 /**
  * @class ol.source.Mapv
- * @classdesc MapV服务
+ * @classdesc MapV图层源。
  * @param opt_options -{Object} 参数
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */

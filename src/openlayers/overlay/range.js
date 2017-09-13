@@ -6,7 +6,7 @@ import Vector from '../../common/overlay/ThemeVector';
 
 /**
  * @class ol.source.Range
- * @classdesc 分段专题图类
+ * @classdesc 分段专题图图层源。
  * @param name - {string} 名称
  * @param opt_options -{Object} 参数。
  * @extends ol.source.GeoFeature

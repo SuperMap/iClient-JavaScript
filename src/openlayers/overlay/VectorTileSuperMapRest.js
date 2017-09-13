@@ -6,7 +6,7 @@ ol.supermap = ol.supermap || {};
 
 /**
  * @class ol.source.VectorTileSuperMapRest
- * @classdesc 矢量瓦片REST服务
+ * @classdesc 矢量瓦片图层源。
  * @param options -{Object} 参数。
  * @extends ol.source.VectorTile{@linkdoc-openlayers/ol.source.VectorTile}
  */

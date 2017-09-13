@@ -8,24 +8,24 @@ import FieldStatisticsParameters from './FieldStatisticsParameters';
  * @classdesc 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为:http://localhost:8090/iserver/services/data-world/rest/data 即可。
- * @param options - {Object} 参数。
- *        eventListeners - {Object} 需要被注册的监听器对象。</br>
+ * @param options - {Object} 可选参数。</br>
+ *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  *        datasource - {string} 数据集所在的数据源名称。</br>
  *        dataset - {string} 数据集名称。</br>
  *        field - {string} 查询统计的目标字段名称。</br>
  *        statisticMode - {StatisticMode} 字段查询统计的方法类型。</br>
  * @example
- * (start code)
  * var myService = new SuperMap.FieldStatisticService(url, {eventListeners: {
-     *     "processCompleted": fieldStatisticCompleted,
-     *     "processFailed": fieldStatisticError
-     *     }，
-     *     datasource: "World",
-     *     dataset: "Countries",
-     *     field: "SmID",
-     *     statisticMode: StatisticMode.AVERAGE
-     * };
- * (end)
+ *     "processCompleted": fieldStatisticCompleted,
+ *     "processFailed": fieldStatisticError
+ *     }，
+ *     datasource: "World",
+ *     dataset: "Countries",
+ *     field: "SmID",
+ *     statisticMode: StatisticMode.AVERAGE
+ * };
  */
 
 
@@ -87,7 +87,7 @@ export default  class FieldStatisticService extends CommonServiceBase {
         var me = this,
             end = me.url.substr(me.url.length - 1, 1),
             fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
-            me.url += (end == "/") ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
+        me.url += (end == "/") ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
 
         me.request({
             method: "GET",

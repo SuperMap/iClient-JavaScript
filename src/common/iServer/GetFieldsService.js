@@ -5,20 +5,20 @@ import CommonServiceBase from './CommonServiceBase';
  * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
  * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param options - {Object} 可選参数。如:</br>
- *        eventListeners - {Object} 需要被注册的监听器对象。</br>
+ *        eventListeners - {Object} 事件监听器对象。有processCompleted属性可传入处理完成后的回调函数。processFailed属性传入处理失败后的回调函数。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  *        datasource - {string}</br>
  *        dataset - {string}</br>
  * @extends SuperMap.CommonServiceBase
- * @example 例如：
- * (start code)
+ * @example
  * var myService = new SuperMap.GetFieldsService(url, {eventListeners: {
-     *     "processCompleted": getFieldsCompleted,
-     *     "processFailed": getFieldsError
-     *     },
-     *     datasource: "World",
-     *     dataset: "Countries"
-     * };
- * (end)
+ *     "processCompleted": getFieldsCompleted,
+ *     "processFailed": getFieldsError
+ *     },
+ *     datasource: "World",
+ *     dataset: "Countries"
+ * };
  *
  */
 export default  class GetFieldsService extends CommonServiceBase {
@@ -62,7 +62,7 @@ export default  class GetFieldsService extends CommonServiceBase {
         var me = this,
             end = me.url.substr(me.url.length - 1, 1),
             datasetURL = "datasources/" + me.datasource + "/datasets/" + me.dataset;
-            me.url += (end == "/") ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
+        me.url += (end == "/") ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
 
         me.request({
             method: "GET",
