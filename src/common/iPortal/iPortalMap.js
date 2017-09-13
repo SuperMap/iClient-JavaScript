@@ -3,7 +3,7 @@ import IPortalServiceBase from './iPortalServiceBase';
 
 /**
  * @class SuperMap.iPortalMap
- * @classdesc iPortal地图编辑
+ * @classdesc iPortal地图服务类
  * @param mapUrl -{string}  地图地址
  * @param params -{Object}  服务参数
  * @extends SuperMap.iPortalServiceBase

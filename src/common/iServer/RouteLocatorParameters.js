@@ -10,11 +10,11 @@ import Route from './Route';
  * @param options - {Object} 可选参数。如:</br>
  *        sourceRoute -  {Object} 【必选参数】路由对象。路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString。</br>
  *        type -  {string} 【必选参数】类型：点 or 线。</br>
- *        measure - {double} 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
- *        offset - {double} 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>
+ *        measure - {float} 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
+ *        offset - {float} 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>
  *        isIgnoreGap - {boolean} 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
- *        startMeasure - {double} 定位线的起始M值。只当路由对象定位线时有意义。</br>
- *        endMeasure -  {double} 定位线的终止M值。只当路由对象定位线时有意义。</br>
+ *        startMeasure - {float} 定位线的起始M值。只当路由对象定位线时有意义。</br>
+ *        endMeasure -  {float} 定位线的终止M值。只当路由对象定位线时有意义。</br>
  */
 export default class RouteLocatorParameters {
     /**
@@ -53,13 +53,13 @@ export default class RouteLocatorParameters {
     type = null;
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.measure -{double}
+     * @member SuperMap.RouteLocatorParameters.prototype.measure -{float}
      * @description 必选参数,定位点的M值。只当路由对象定位点时有意义。
      */
     measure = null;
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.offset -{double}
+     * @member SuperMap.RouteLocatorParameters.prototype.offset -{float}
      * @description 定位点偏移量。只当路由对象定位点时有意义，默认为0。
      */
     offset = 0;
@@ -71,13 +71,13 @@ export default class RouteLocatorParameters {
     isIgnoreGap = false;
 
     /**
-     *  @member SuperMap.RouteLocatorParameters.prototype.startMeasure -{double}
+     *  @member SuperMap.RouteLocatorParameters.prototype.startMeasure -{float}
      *  @description 定位线的起始M值。只当路由对象定位线时有意义。
      */
     startMeasure = null;
 
     /**
-     *  @member SuperMap.RouteLocatorParameters.prototype.endMeasure -{double}
+     *  @member SuperMap.RouteLocatorParameters.prototype.endMeasure -{float}
      *  @description 定位线的终止M值。只当路由对象定位线时有意义。
      */
     endMeasure = null;

@@ -9,7 +9,7 @@ import {OverlayOperationType} from '../REST';
 export default class OverlayAnalystParameters {
 
     /**
-     * @member SuperMap.OverlayAnalystParameters.prototype.operation -{OverlayOperationType}
+     * @member SuperMap.OverlayAnalystParameters.prototype.operation -{SuperMap.OverlayOperationType}
      * @description 指定叠加分析操作类型。
      */
     operation = OverlayOperationType.UNION;

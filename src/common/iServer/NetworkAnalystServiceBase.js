@@ -9,13 +9,13 @@ import CommonServiceBase  from './CommonServiceBase';
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 网络分析服务地址
  * @param options - {Object} 网络分析可选参数。如：<br>
- *        format - {string} 查询结果返回格式
+ *        format - {{@link SuperMap.DataFormat}} 查询结果返回格式
  *
  */
 export default  class NetworkAnalystServiceBase extends CommonServiceBase {
 
     /**
-     * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{string}
+     * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{SuperMap.DataFormat}
      * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *              参数格式为"ISERVER","GEOJSON"
      * @default "GEOJSON"

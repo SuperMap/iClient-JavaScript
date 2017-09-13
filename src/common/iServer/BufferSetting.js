@@ -7,10 +7,10 @@ import BufferDistance from './BufferDistance';
  * @classdesc 缓冲区分析通用设置类。
  * @param options - {Object} 缓冲区分析设置可选参数。如：<br>
  *         endType - {SuperMap.BufferEndType} 缓冲区端点枚举值。<br>
- *         leftDistance - {@link SuperMap.BufferDistance} 左侧缓冲距离。<br>
- *         rightDistance - {@link SuperMap.BufferDistance} 右侧缓冲距离。<br>
+ *         leftDistance - {{@link SuperMap.BufferDistance}} 左侧缓冲距离。<br>
+ *         rightDistance - {{@link SuperMap.BufferDistance}} 右侧缓冲距离。<br>
  *         semicircleLineSegment - {number} 圆头缓冲圆弧处线段的个数。<br>
- *         radiusUnit - {Enum} 缓冲半径单位。
+ *         radiusUnit - {{@link SuperMap.Unit}} 缓冲半径单位。
  */
 export default class BufferSetting {
     /**
@@ -42,7 +42,7 @@ export default class BufferSetting {
     semicircleLineSegment = 4;
 
     /**
-     * @member SuperMap.BufferSetting.prototype.radiusUnit - {Enum}
+     * @member SuperMap.BufferSetting.prototype.radiusUnit - {SuperMap.Unit}
      * @description 缓冲半径单位，默认值为SuperMap.Unit.METER，还可以是SuperMap.Unit.MILIMETER、SuperMap.Unit.CENTIMETER、SuperMap.Unit.DECIMETER、SuperMap.Unit.KILOMETER、SuperMap.Unit.FOOT、SuperMap.Unit.INCH、SuperMap.Unit.MILE、SuperMap.Unit.YARD。仅对DatasetBufferAnalyst有效
      */
     radiusUnit = Unit.METER;

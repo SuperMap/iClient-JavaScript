@@ -8,8 +8,8 @@ import Route from './Route';
  *        sourceRoute - {Object} 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。</br>
  *        point - {Object} 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
  *                点坐标对象可以是:SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
- *        tolerance - {double} 【可选参数】容限值。</br>
- *        isIgnoreGap - {double}  【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
+ *        tolerance - {float} 【可选参数】容限值。</br>
+ *        isIgnoreGap - {float}  【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
  */
 export default class RouteCalculateMeasureParameters {
 
@@ -28,7 +28,7 @@ export default class RouteCalculateMeasureParameters {
     point = null;
 
     /**
-     * @member SuperMap.RouteCalculateMeasureParameters.prototype.tolerance -{double}
+     * @member SuperMap.RouteCalculateMeasureParameters.prototype.tolerance -{float}
      * @description 【可选参数】容限值。
      */
     tolerance = null;

@@ -10,14 +10,14 @@ import ServerGeometry from './ServerGeometry';
  * @param options - {Object} 可选参数。如：</br>
  *        operateDataset - {string} 叠加分析中操作数据集的名称。必设字段。</br>
  *        operateDatasetFields - {Array<string>} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
- *        operateDatasetFilter - {@link SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。</br>
+ *        operateDatasetFilter - {{@link SuperMap.FilterParameter}} 设置操作数据集中空间对象过滤条件。</br>
  *        operateRegions - {Array<Object>} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
  *        sourceDataset - {string} 叠加分析中源数据集的名称。必设字段。</br>
  *        sourceDatasetFields - {Array<string>} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
- *        sourceDatasetFilter - {@link SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。</br>
+ *        sourceDatasetFilter - {{@link SuperMap.FilterParameter}} 设置源数据集中空间对象过滤条件。</br>
  *        tolerance - {integer} 容限。</br>
- *        operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
- *        resultSetting - {@link SuperMap.DataReturnOption} 结果返回设置类。</br>
+ *        operation -  {{@link SuperMap.OverlayOperationType}} 叠加操作枚举值。</br>
+ *        resultSetting - {{@link SuperMap.DataReturnOption}} 结果返回设置类。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
 export default class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {

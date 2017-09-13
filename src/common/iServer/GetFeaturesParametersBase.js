@@ -4,7 +4,7 @@
  * @classdesc 要素查询参数基类
  * @param options - {Object} 参数。如：<br>
  *        datasetNames - {Array<string>} 数据集集合中的数据集名称列表。</br>
- *        returnContent - {@link SuperMap.FilterParameter} 是否直接返回查询结果。</br>
+ *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {integer} 查询结果的最小索引号。</br>
  *        toIndex - {integer} 查询结果的最大索引号。</br>
  */

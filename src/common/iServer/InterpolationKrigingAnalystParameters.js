@@ -61,7 +61,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。<br>
  *        zValueScale - {number} 用于进行插值分析值的缩放比率，默认值为1。<br>
  *        resolution - {number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。<br>
- *        filterQueryParameter - {@link SuperMap.FilterParameter} 属性过滤条件。<br>
+ *        filterQueryParameter - {{@link SuperMap.FilterParameter}} 属性过滤条件。<br>
  *        outputDatasetName - {string} 插值分析结果数据集的名称，必设参数。<br>
  *        outputDatasourceName - {string} 插值分析结果数据源的名称。必设参数<br>
  *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。<br>
@@ -105,7 +105,7 @@ export default class InterpolationKrigingAnalystParameters extends Interpolation
 
     /**
      * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.mean - {number}
-     * @description【简单克吕金】方式下，插值字段的平均值。
+     * @description 【简单克吕金】方式下，插值字段的平均值。
      * 即采样点插值字段值总和除以采样点数目。
      */
     mean = null;
@@ -164,7 +164,7 @@ export default class InterpolationKrigingAnalystParameters extends Interpolation
 
     /**
      * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.expectedCount - {number}
-     * @description【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
+     * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
      * 【定长查找】方式下，设置查找的最小点数，默认值为12。
      */
     expectedCount = 12;

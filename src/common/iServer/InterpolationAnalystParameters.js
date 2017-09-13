@@ -1,4 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
+import ClipParameter from './ClipParameter';
 import {PixelFormat} from '../REST';
 
 /**
@@ -10,10 +11,10 @@ import {PixelFormat} from '../REST';
  *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。</br>
  *        zValueScale - {number} 用于进行插值分析值的缩放比率，默认为1。</br>
  *        resolution - {number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
- *        filterQueryParameter - {@link SuperMap.FilterParameter} 属性过滤条件。</br>
+ *        filterQueryParameter - {{@link SuperMap.FilterParameter}} 属性过滤条件。</br>
  *        outputDatasetName - {string} 插值分析结果数据集的名称。</br>
  *        outputDatasourceName - {string} 插值分析结果数据源的名称。</br>
- *        pixelFormat - {SuperMap.PixelFormat} 指定结果栅格数据集存储的像素格式。</br>
+ *        pixelFormat - {{@link SuperMap.PixelFormat}} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 用于做插值分析的数据源中数据集的名称。</br>
  *        inputPoints - {Array <Object>} 用于做插值分析的离散点集合。点类型可以是：SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  *        InterpolationAnalystType - {string} 插值分析类型（dataset或geometry），默认为dataset 。</br>
@@ -109,7 +110,7 @@ export default class InterpolationAnalystParameters {
     InterpolationAnalystType = "dataset";
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.clipParam - {SuperMap.ClipParameter}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.clipParam - {Object}
      * @description 对插值分析结果进行裁剪的参数。
      */
     clipParam = null;
