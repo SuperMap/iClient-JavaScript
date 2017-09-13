@@ -12,7 +12,7 @@
         "includePattern": ".+\\.js?$",
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base|Parameters.js?$",
         "include": [
-            "src/classic"
+            "src/classic","src/common/thirdparty"
         ],
         "exclude": [
             "src/common/overlay/feature","src/common/overlay/levelRenderer"

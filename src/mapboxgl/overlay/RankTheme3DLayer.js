@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl';
 
 /**
  * @class mapboxgl.supermap.RankTheme3DLayer
- * @classdesc mapbox gl分段专题图
+ * @classdesc 三维分段专题图
  * @param  id -{string} 专题图图层id
  * @param  map -{object} mapbox gl地图对象
  * @param  layerOptions -{Object} 专题图图层配置项<br>
