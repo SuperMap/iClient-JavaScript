@@ -8,8 +8,7 @@
     "disqus":"",
     "tags": {
         "allowUnknownTags": true,
-        "linkdoc-leaflet":"http://leafletjs.com/reference-1.0.3.html",
-	"linkdoc-htmlExtension":true
+        "linkdoc-leaflet":"http://leafletjs.com/reference-1.0.3.html"
     },
     "source": {
         "includePattern": ".+\\.js?$",

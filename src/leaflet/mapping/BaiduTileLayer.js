@@ -7,11 +7,11 @@ import L from "leaflet";
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{string} 切片地址
  * @param options -{Object} 切片参数。如：<br>
- *        minZoom - {number} 最小缩放级别
- *        maxZoom - {number} 最大缩放级别
- *        bounds - {L.bounds} 显示范围
- *        retina - {L.Browser} 浏览器显示分辨率
- *        attribution - {string} 版权信息
+ *        minZoom - {number} 最小缩放级别 <br>
+ *        maxZoom - {number} 最大缩放级别 <br>
+ *        bounds - {[L.LatLngBounds]{@linkdoc-leaflet/#latlngbounds}} 显示范围 <br>
+ *        retina - {[L.Browser]{@linkdoc-leaflet/#browser}} 浏览器显示分辨率 <br>
+ *        attribution - {string} 版权信息 <br>
  */
 export var BaiduTileLayer = L.TileLayer.extend({
 

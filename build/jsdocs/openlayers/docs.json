@@ -7,8 +7,7 @@
     "disqus":"",
     "tags": {
         "allowUnknownTags": true,
-        "linkdoc-openlayers":"https://openlayers.org/en/latest/apidoc/",
-        "linkdoc-htmlExtension":true
+        "linkdoc-openlayers":"https://openlayers.org/en/latest/apidoc/"
     },
     "source": {
         "includePattern": ".+\\.js?$",

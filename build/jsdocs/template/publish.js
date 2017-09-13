@@ -206,31 +206,7 @@ function attachModuleSymbols(doclets, modules) {
 function buildNav(members) {
     var nav = [];
 
-    if (members.namespaces.length) {
-        _.each(members.namespaces, function (v) {
-            nav.push({
-                type: 'namespace',
-                longname: v.longname,
-                name: v.name,
-                members: find({
-                    kind: 'member',
-                    memberof: v.longname
-                }),
-                methods: find({
-                    kind: 'function',
-                    memberof: v.longname
-                }),
-                typedefs: find({
-                    kind: 'typedef',
-                    memberof: v.longname
-                }),
-                events: find({
-                    kind: 'event',
-                    memberof: v.longname
-                })
-            });
-        });
-    }
+
 
     if (members.classes.length) {
         _.each(members.classes, function (v) {
@@ -257,7 +233,31 @@ function buildNav(members) {
             });
         });
     }
-
+    if (members.namespaces.length) {
+        _.each(members.namespaces, function (v) {
+            nav.push({
+                type: 'namespace',
+                longname: v.longname,
+                name: v.name,
+                members: find({
+                    kind: 'member',
+                    memberof: v.longname
+                }),
+                methods: find({
+                    kind: 'function',
+                    memberof: v.longname
+                }),
+                typedefs: find({
+                    kind: 'typedef',
+                    memberof: v.longname
+                }),
+                events: find({
+                    kind: 'event',
+                    memberof: v.longname
+                })
+            });
+        });
+    }
     return nav;
 }
 
