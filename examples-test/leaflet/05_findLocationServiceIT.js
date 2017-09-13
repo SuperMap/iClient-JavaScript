@@ -20,7 +20,7 @@ module.exports = {
             this.assert.equal(result.value.length, 372, "expect Number of findLocationService result to be 372, actual is " + result.value.length);
         });
         //测试版权点击的正确性
-        commonTools.verifyCopyrightOfLeaflet(browser);
+        //commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }

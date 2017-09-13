@@ -20,7 +20,7 @@ module.exports = {
         var info = "查询到的里程为\ 200\ 的点";
         browser.expect.element('.leaflet-tooltip.leaflet-zoom-animated.leaflet-tooltip-top').text.to.equal(info);
         //测试版权点击的正确性
-        commonTools.verifyCopyrightOfLeaflet(browser);
+        //commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }

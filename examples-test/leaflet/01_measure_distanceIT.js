@@ -17,7 +17,7 @@ module.exports = {
             browser.waitForElementNotPresent('.leaflet-popup-content', 10000);
         });
         //测试版权点击的正确性
-        commonTools.verifyCopyrightOfLeaflet(browser);
+        //commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }

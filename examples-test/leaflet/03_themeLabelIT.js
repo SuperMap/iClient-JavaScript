@@ -16,7 +16,7 @@ module.exports = {
             this.assert.equal(result.value.length, 2, "expect Number of leaflet-tile-container to be 2, actual is " + result.value.length);
         });
         //测试版权点击的正确性
-        commonTools.verifyCopyrightOfLeaflet(browser);
+        //commonTools.verifyCopyrightOfLeaflet(browser);
         browser.end();
     }
 };

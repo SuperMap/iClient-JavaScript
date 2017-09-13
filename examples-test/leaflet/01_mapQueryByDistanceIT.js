@@ -19,7 +19,7 @@ module.exports = {
             browser.assert.ok(result.value.length > 0, "expect Number of query result to be greater than 0, actual is " + result.value.length);
         });
         //测试版权点击的正确性
-        commonTools.verifyCopyrightOfLeaflet(browser);
+        //commonTools.verifyCopyrightOfLeaflet(browser);
         browser.pause(1000);
         browser.end();
     }
