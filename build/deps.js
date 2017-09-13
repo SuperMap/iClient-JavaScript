@@ -467,9 +467,9 @@ deps = {
 
             "Baidu": {
                 "name": "百度图层",
-                "src": ['./src/openlayers/mapping/Baidu.js'],
+                "src": ['./src/openlayers/mapping/BaiduMap.js'],
                 "modules": [{
-                    "name": "ol.source.Baidu",
+                    "name": "ol.source.BaiduMap",
                     "des": "百度地图"
                 }]
             },

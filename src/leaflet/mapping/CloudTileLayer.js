@@ -3,10 +3,10 @@ import L from "leaflet";
 
 /**
  * @class L.supermap.cloudTileLayer
- * @classdesc 云端切片图层类。
+ * @classdesc 超图云服务图层。
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
- * @param defaultURL -{string} 默认图层地址
- * @param options -{Object} 云端切片图层可选参数。如：<br>
+ * @param url -{string} 服务地址，默认为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}
+ * @param options -{Object} 图层可选参数。如：<br>
  *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
  *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
  *        transparent - {number}设置透明度。<br>
@@ -40,7 +40,7 @@ export var CloudTileLayer = L.TileLayer.extend({
         type: "web",
         minZoom: 3,
         maxZoom: 18,
-        attribution: "Map Data ©2013 SuperMap - GS(2011)6014号-data©Navinfo with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
 
     },
 

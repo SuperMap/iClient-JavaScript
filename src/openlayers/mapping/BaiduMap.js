@@ -1,6 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
 /**
- * @class ol.source.Baidu
+ * @class ol.source.BaiduMap
  * @classdesc 百度地图
  * @param opt_options - {Object} 创建地图参数可选参数：<br>
  *        url - {string} 服务地址。<br>
@@ -11,13 +11,13 @@ import ol from 'openlayers/dist/ol-debug';
  *        opaque - {boolean} 是否透明。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
-export default class Baidu extends ol.source.TileImage {
+export default class BaiduMap extends ol.source.TileImage {
     constructor(opt_options) {
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({
                 html: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
             });
-        var tileGrid = ol.source.Baidu.defaultTileGrid();
+        var tileGrid = ol.source.BaiduMap.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ?
             options.crossOrigin : 'anonymous';
 
@@ -57,7 +57,7 @@ export default class Baidu extends ol.source.TileImage {
     }
 
     /**
-     * @function ol.source.Baidu.defaultTileGrid
+     * @function ol.source.BaiduMap.defaultTileGrid
      * @description 获取默认瓦片格网
      * @return {ol.tilegrid.TileGrid}
      */
@@ -72,4 +72,4 @@ export default class Baidu extends ol.source.TileImage {
     }
 
 }
-ol.source.Baidu = Baidu;
+ol.source.BaiduMap = BaiduMap;

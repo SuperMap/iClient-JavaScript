@@ -1,9 +1,9 @@
 import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.source.SuperMapCloud
- * @classdesc 超图云
+ * @classdesc 超图云地图
  * @param opt_options - {Object} 可选参数：如：<br>
- *        url - {string} 服务地址。<br>
+ *        url - {string} 服务地址。默认地址为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z} <br>
  *        attributions - {string} 版权描述信息。<br>
  *        cacheSize - {number} 缓冲大小。<br>
  *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
@@ -17,7 +17,7 @@ export default class SuperMapCloud extends ol.source.XYZ {
         var options = opt_options || {};
 
         var attributions = options.attributions || new ol.Attribution({
-                html: "Map Data ©2013 SuperMap - GS(2011)6014号-data©Navinfo with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
             });
         var mapName = options.mapName || 'quanguo';
         var mapType = options.mapType || 'web';

@@ -25293,7 +25293,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @class ol.source.Baidu
+ * @class ol.source.BaiduMap
  * @classdesc 百度地图
  * @param opt_options - {Object} 创建地图参数可选参数：<br>
  *        url - {string} 服务地址。<br>
@@ -25304,23 +25304,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        opaque - {boolean} 是否透明。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
-var Baidu = function (_ol$source$TileImage) {
-    _inherits(Baidu, _ol$source$TileImage);
+var BaiduMap = function (_ol$source$TileImage) {
+    _inherits(BaiduMap, _ol$source$TileImage);
 
-    function Baidu(opt_options) {
-        _classCallCheck(this, Baidu);
+    function BaiduMap(opt_options) {
+        _classCallCheck(this, BaiduMap);
 
         var options = opt_options || {};
         var attributions = options.attributions || new _olDebug2.default.Attribution({
             html: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
         });
-        var tileGrid = _olDebug2.default.source.Baidu.defaultTileGrid();
+        var tileGrid = _olDebug2.default.source.BaiduMap.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
 
         var url = options.url !== undefined ? options.url : "http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408";
         var hidpi = options.hidpi || (window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI) > 1;
         url = url.replace('{styles}', hidpi ? 'ph' : 'pl');
-        return _possibleConstructorReturn(this, (Baidu.__proto__ || Object.getPrototypeOf(Baidu)).call(this, {
+        return _possibleConstructorReturn(this, (BaiduMap.__proto__ || Object.getPrototypeOf(BaiduMap)).call(this, {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: crossOrigin,
@@ -25349,13 +25349,13 @@ var Baidu = function (_ol$source$TileImage) {
     }
 
     /**
-     * @function ol.source.Baidu.defaultTileGrid
+     * @function ol.source.BaiduMap.defaultTileGrid
      * @description 获取默认瓦片格网
      * @return {ol.tilegrid.TileGrid}
      */
 
 
-    _createClass(Baidu, null, [{
+    _createClass(BaiduMap, null, [{
         key: 'defaultTileGrid',
         value: function defaultTileGrid() {
             var tileGird = new _olDebug2.default.tilegrid.TileGrid({
@@ -25368,12 +25368,12 @@ var Baidu = function (_ol$source$TileImage) {
         }
     }]);
 
-    return Baidu;
+    return BaiduMap;
 }(_olDebug2.default.source.TileImage);
 
-exports.default = Baidu;
+exports.default = BaiduMap;
 
-_olDebug2.default.source.Baidu = Baidu;
+_olDebug2.default.source.BaiduMap = BaiduMap;
 
 /***/ }),
 /* 88 */
@@ -25673,9 +25673,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class ol.source.SuperMapCloud
- * @classdesc 超图云
+ * @classdesc 超图云地图
  * @param opt_options - {Object} 可选参数：如：<br>
- *        url - {string} 服务地址。<br>
+ *        url - {string} 服务地址。默认地址为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z} <br>
  *        attributions - {string} 版权描述信息。<br>
  *        cacheSize - {number} 缓冲大小。<br>
  *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
@@ -26607,7 +26607,7 @@ var WebMap = function (_ol$Observable) {
                     viewOptions.zoom = 3 + viewOptions.zoom;
                     viewOptions.minZoom = 3;
                     layer = new _olDebug2.default.layer.Tile({
-                        source: new _olDebug2.default.source.Baidu()
+                        source: new _olDebug2.default.source.BaiduMap()
                     });
                     break;
                 case 'BING':

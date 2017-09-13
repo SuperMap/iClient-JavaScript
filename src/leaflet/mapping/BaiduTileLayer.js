@@ -3,7 +3,7 @@ import L from "leaflet";
 
 /**
  * @class L.supermap.baiduTileLayer
- * @classdesc 百度切片图层类。
+ * @classdesc 百度地图图层。
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{string} 切片地址
  * @param options -{Object} 切片参数。如：<br>

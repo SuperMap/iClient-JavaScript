@@ -38,7 +38,7 @@ SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户�
     <td><p>丰富地图，iSevrer REST MAP、互联网地图</p>
         [ol.source.TileSuperMapRest](ol.source.TileSuperMapRest.html)<br>
         [ol.source.ImageSuperMapRest](ol.source.ImageSuperMapRest.html)<br>
-        [ol.source.Baidu](ol.source.Baidu.html)<br>
+        [ol.source.BaiduMap](ol.source.BaiduMap.html)<br>
         [ol.source.Tianditu](ol.source.Tianditu.html)<br>
          ......</td>
     <td><p></p>

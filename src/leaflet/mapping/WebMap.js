@@ -7,12 +7,12 @@ import {NonEarthCRS} from "../core/NonEarthCRS"
 
 /**
  * @class L.supermap.webmap
- * @classdesc 网络图层类。
+ * @classdesc 对接iPortal/Online地图类。
  * @extends L.LayerGroup{@linkdoc-leaflet/#layergroup}
- * @param id - {number}网络图层id。
- * @param options - {Object} 图层可选参数。如：<br>
- *        map - {string} 地图。<br>
- *        server - {string} 服务地址。<br>
+ * @param id - {number}iPortal/Online地图id。
+ * @param options - {Object} 可选参数。如：<br>
+ *        map - {string} 地图容器id。<br>
+ *        server - {string} iPortal/Online服务地址。默认为 http://www.supermapol.com <br>
  *        featureLayerPopupEnable - {boolean} 是否启动要素图层提示框。<br>
  *        featureLayerPopup - {string} 提示框提示信息。<br>
  *        credentialValue - {string} 证书值。<br>

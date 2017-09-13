@@ -4,7 +4,7 @@ import {WMTSLayer} from "./TileLayer.WMTS";
 
 /**
  * @class L.supermap.tiandituTileLayer
- * @classdesc 天地图切片图层类。
+ * @classdesc 天地图图层类。
  * @extends L.supermap.wmtsLayer
  * @param defaultURL -{string} 默认图层地址
  * @param options -{Object} 切片图层参数。如：<br>

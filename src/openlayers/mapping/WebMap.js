@@ -243,7 +243,7 @@ export default class WebMap extends ol.Observable {
                 viewOptions.zoom = 3 + viewOptions.zoom;
                 viewOptions.minZoom = 3;
                 layer = new ol.layer.Tile({
-                    source: new ol.source.Baidu()
+                    source: new ol.source.BaiduMap()
                 });
                 break;
             case 'BING':

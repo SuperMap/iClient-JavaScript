@@ -28248,7 +28248,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.baiduTileLayer
- * @classdesc 百度切片图层类。
+ * @classdesc 百度地图图层。
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{string} 切片地址
  * @param options -{Object} 切片参数。如：<br>
@@ -28328,10 +28328,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.cloudTileLayer
- * @classdesc 云端切片图层类。
+ * @classdesc 超图云服务图层。
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
- * @param defaultURL -{string} 默认图层地址
- * @param options -{Object} 云端切片图层可选参数。如：<br>
+ * @param url -{string} 服务地址，默认为 http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}
+ * @param options -{Object} 图层可选参数。如：<br>
  *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
  *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
  *        transparent - {number}设置透明度。<br>
@@ -28365,7 +28365,7 @@ var CloudTileLayer = exports.CloudTileLayer = _leaflet2["default"].TileLayer.ext
         type: "web",
         minZoom: 3,
         maxZoom: 18,
-        attribution: "Map Data ©2013 SuperMap - GS(2011)6014号-data©Navinfo with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
 
     },
 
@@ -28609,7 +28609,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.tiandituTileLayer
- * @classdesc 天地图切片图层类。
+ * @classdesc 天地图图层类。
  * @extends L.supermap.wmtsLayer
  * @param defaultURL -{string} 默认图层地址
  * @param options -{Object} 切片图层参数。如：<br>
@@ -28676,12 +28676,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 /**
  * @class L.supermap.webmap
- * @classdesc 网络图层类。
+ * @classdesc 对接iPortal/Online地图类。
  * @extends L.LayerGroup{@linkdoc-leaflet/#layergroup}
- * @param id - {number}网络图层id。
- * @param options - {Object} 图层可选参数。如：<br>
- *        map - {string} 地图。<br>
- *        server - {string} 服务地址。<br>
+ * @param id - {number}iPortal/Online地图id。
+ * @param options - {Object} 可选参数。如：<br>
+ *        map - {string} 地图容器id。<br>
+ *        server - {string} iPortal/Online服务地址。默认为 http://www.supermapol.com <br>
  *        featureLayerPopupEnable - {boolean} 是否启动要素图层提示框。<br>
  *        featureLayerPopup - {string} 提示框提示信息。<br>
  *        credentialValue - {string} 证书值。<br>
