@@ -122,7 +122,7 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
                 tileCoord, this.tmpExtent_);
             var tileSize = ol.size.toSize(
                 this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-            return layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}";
+            return encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
         }
 
         super({

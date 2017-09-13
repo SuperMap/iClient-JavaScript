@@ -9777,6 +9777,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     _fetch: function _fetch(url, params, options, type) {
+        url = encodeURI(url);
         options = options || {};
         options.headers = options.headers || {};
         if (!options.headers['Content-Type']) {
@@ -9805,6 +9806,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     _fetchJsonp: function _fetchJsonp(url, options) {
+        url = encodeURI(url);
         options = options || {};
         return (0, _fetchJsonp3.default)(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
             return response;
@@ -13801,7 +13803,7 @@ _SuperMap2.default.Geometry.MultiLineString = MultiLineString;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _SuperMap = __webpack_require__(0);
@@ -13838,27 +13840,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var multiPolygon1 = new SuperMap.Geometry.MultiPolygon([polygon1,polygon2]);
  */
 var MultiPolygon = function (_Collection) {
-  _inherits(MultiPolygon, _Collection);
+    _inherits(MultiPolygon, _Collection);
 
-  function MultiPolygon(components) {
-    _classCallCheck(this, MultiPolygon);
+    function MultiPolygon(components) {
+        _classCallCheck(this, MultiPolygon);
 
-    var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
+        var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
 
-    _this.componentTypes = ["SuperMap.Geometry.Polygon"];
-    _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
-    return _this;
-  }
+        _this.componentTypes = ["SuperMap.Geometry.Polygon"];
+        _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
+        return _this;
+    }
 
-  /**
-   * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
-   * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-   * @readonly
-   * @default ["{@link SuperMap.Geometry.Polygon}"]
-   */
+    /**
+     * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
+     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+     * @readonly
+     * @default ["{@link SuperMap.Geometry.Polygon}"]
+     */
 
 
-  return MultiPolygon;
+    return MultiPolygon;
 }(_Collection3.default);
 
 exports.default = MultiPolygon;

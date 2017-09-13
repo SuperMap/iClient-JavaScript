@@ -211,7 +211,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             var scale = Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
-            return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale;
+            return encodeURI(layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
         }
 
     }

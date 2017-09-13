@@ -83,7 +83,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         var scale = this.getScaleFromCoords(coords);
         var layerUrl = this._getLayerUrl();
         var tileUrl = layerUrl + "&scale=" + scale + "&x=" + coords.x + "&y=" + coords.y;
-        return tileUrl;
+        return encodeURI(tileUrl);
     },
 
     /**

@@ -80,7 +80,7 @@ export var ImageMapLayer = L.TileLayer.extend({
             nw = this._crs.project(tileBounds.getNorthWest()),
             se = this._crs.project(tileBounds.getSouthEast());
         var tileUrl = this._layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + nw.x + ",\"y\":" + se.y + "},\"rightTop\" : {\"x\":" + se.x + ",\"y\":" + nw.y + "}}";
-        return tileUrl;
+        return encodeURI(tileUrl);
     },
 
     _initLayerUrl: function () {

@@ -6359,6 +6359,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     _fetch: function _fetch(url, params, options, type) {
+        url = encodeURI(url);
         options = options || {};
         options.headers = options.headers || {};
         if (!options.headers['Content-Type']) {
@@ -6387,6 +6388,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     _fetchJsonp: function _fetchJsonp(url, options) {
+        url = encodeURI(url);
         options = options || {};
         return (0, _fetchJsonp3.default)(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
             return response;
@@ -21801,7 +21803,7 @@ _SuperMap2.default.Geometry.MultiLineString = MultiLineString;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _SuperMap = __webpack_require__(0);
@@ -21838,27 +21840,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var multiPolygon1 = new SuperMap.Geometry.MultiPolygon([polygon1,polygon2]);
  */
 var MultiPolygon = function (_Collection) {
-  _inherits(MultiPolygon, _Collection);
+    _inherits(MultiPolygon, _Collection);
 
-  function MultiPolygon(components) {
-    _classCallCheck(this, MultiPolygon);
+    function MultiPolygon(components) {
+        _classCallCheck(this, MultiPolygon);
 
-    var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
+        var _this = _possibleConstructorReturn(this, (MultiPolygon.__proto__ || Object.getPrototypeOf(MultiPolygon)).call(this, components));
 
-    _this.componentTypes = ["SuperMap.Geometry.Polygon"];
-    _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
-    return _this;
-  }
+        _this.componentTypes = ["SuperMap.Geometry.Polygon"];
+        _this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
+        return _this;
+    }
 
-  /**
-   * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
-   * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-   * @readonly
-   * @default ["{@link SuperMap.Geometry.Polygon}"]
-   */
+    /**
+     * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
+     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+     * @readonly
+     * @default ["{@link SuperMap.Geometry.Polygon}"]
+     */
 
 
-  return MultiPolygon;
+    return MultiPolygon;
 }(_Collection3.default);
 
 exports.default = MultiPolygon;
@@ -28194,7 +28196,7 @@ var ImageSuperMapRest = function (_ol$source$TileImage) {
             }
             var tileExtent = this.tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
             var tileSize = _olDebug2.default.size.toSize(this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-            return layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}";
+            return encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
         }
 
         return _possibleConstructorReturn(this, (ImageSuperMapRest.__proto__ || Object.getPrototypeOf(ImageSuperMapRest)).call(this, {
@@ -28777,7 +28779,7 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
             var scale = _Util2.default.resolutionToScale(resolution, dpi, unit);
             var tileSize = _olDebug2.default.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
-            return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale;
+            return encodeURI(layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
         }
 
         return _this;
@@ -72741,7 +72743,7 @@ _SuperMap2.default.LevelRenderer.Tool.Math = Math;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -72762,272 +72764,272 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var Matrix = function () {
 
-  /**
-   * Constructor: SuperMap.LevelRenderer.Tool.Matrix
-   * 构造函数。
-   *
-   */
-  function Matrix() {
-    _classCallCheck(this, Matrix);
+    /**
+     * Constructor: SuperMap.LevelRenderer.Tool.Matrix
+     * 构造函数。
+     *
+     */
+    function Matrix() {
+        _classCallCheck(this, Matrix);
 
-    this.ArrayCtor = null;
-    this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Matrix";
+        this.ArrayCtor = null;
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Matrix";
 
-    this.ArrayCtor = typeof Float32Array === 'undefined' ? Array : Float32Array;
-  }
-
-  /**
-   * APIMethod: create
-   * 创建一个单位矩阵。
-   *
-   * Returns:
-   * {Float32Array|Array.<Number>} 单位矩阵。
-   */
-
-
-  /**
-   * Property: ArrayCtor
-   * {Object} 数组类型控制
-   */
-
-
-  _createClass(Matrix, [{
-    key: 'create',
-    value: function create() {
-      var ArrayCtor = this.ArrayCtor;
-
-      var out = new ArrayCtor(6);
-      this.identity(out);
-
-      return out;
+        this.ArrayCtor = typeof Float32Array === 'undefined' ? Array : Float32Array;
     }
 
     /**
-     * APIMethod: identity
-     * 设置矩阵为单位矩阵。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
+     * APIMethod: create
+     * 创建一个单位矩阵。
      *
      * Returns:
      * {Float32Array|Array.<Number>} 单位矩阵。
      */
 
-  }, {
-    key: 'identity',
-    value: function identity(out) {
-      out[0] = 1;
-      out[1] = 0;
-      out[2] = 0;
-      out[3] = 1;
-      out[4] = 0;
-      out[5] = 0;
-      return out;
-    }
 
     /**
-     * APIMethod: copy
-     * 复制矩阵。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * m - {Float32Array|Array.<Number>} 原始矩阵。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 克隆矩阵。
+     * Property: ArrayCtor
+     * {Object} 数组类型控制
      */
 
-  }, {
-    key: 'copy',
-    value: function copy(out, m) {
-      out[0] = m[0];
-      out[1] = m[1];
-      out[2] = m[2];
-      out[3] = m[3];
-      out[4] = m[4];
-      out[5] = m[5];
-      return out;
-    }
 
-    /**
-     * APIMethod: mul
-     * 矩阵相乘。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * m1 - {Float32Array|Array.<Number>} 矩阵m1。
-     * m2- {Float32Array|Array.<Number>} 矩阵m2。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+    _createClass(Matrix, [{
+        key: 'create',
+        value: function create() {
+            var ArrayCtor = this.ArrayCtor;
 
-  }, {
-    key: 'mul',
-    value: function mul(out, m1, m2) {
-      out[0] = m1[0] * m2[0] + m1[2] * m2[1];
-      out[1] = m1[1] * m2[0] + m1[3] * m2[1];
-      out[2] = m1[0] * m2[2] + m1[2] * m2[3];
-      out[3] = m1[1] * m2[2] + m1[3] * m2[3];
-      out[4] = m1[0] * m2[4] + m1[2] * m2[5] + m1[4];
-      out[5] = m1[1] * m2[4] + m1[3] * m2[5] + m1[5];
-      return out;
-    }
+            var out = new ArrayCtor(6);
+            this.identity(out);
 
-    /**
-     * APIMethod: translate
-     * 平移变换。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * v- {Float32Array|Array.<Number>} 平移参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+            return out;
+        }
 
-  }, {
-    key: 'translate',
-    value: function translate(out, a, v) {
-      out[0] = a[0];
-      out[1] = a[1];
-      out[2] = a[2];
-      out[3] = a[3];
-      out[4] = a[4] + v[0];
-      out[5] = a[5] + v[1];
-      return out;
-    }
+        /**
+         * APIMethod: identity
+         * 设置矩阵为单位矩阵。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 单位矩阵。
+         */
 
-    /**
-     * APIMethod: rotate
-     * 旋转变换。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * rad- {Float32Array|Array.<Number>} 旋转参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+    }, {
+        key: 'identity',
+        value: function identity(out) {
+            out[0] = 1;
+            out[1] = 0;
+            out[2] = 0;
+            out[3] = 1;
+            out[4] = 0;
+            out[5] = 0;
+            return out;
+        }
 
-  }, {
-    key: 'rotate',
-    value: function rotate(out, a, rad) {
-      var aa = a[0];
-      var ac = a[2];
-      var atx = a[4];
-      var ab = a[1];
-      var ad = a[3];
-      var aty = a[5];
-      var st = Math.sin(rad);
-      var ct = Math.cos(rad);
+        /**
+         * APIMethod: copy
+         * 复制矩阵。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * m - {Float32Array|Array.<Number>} 原始矩阵。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 克隆矩阵。
+         */
 
-      out[0] = aa * ct + ab * st;
-      out[1] = -aa * st + ab * ct;
-      out[2] = ac * ct + ad * st;
-      out[3] = -ac * st + ct * ad;
-      out[4] = ct * atx + st * aty;
-      out[5] = ct * aty - st * atx;
-      return out;
-    }
+    }, {
+        key: 'copy',
+        value: function copy(out, m) {
+            out[0] = m[0];
+            out[1] = m[1];
+            out[2] = m[2];
+            out[3] = m[3];
+            out[4] = m[4];
+            out[5] = m[5];
+            return out;
+        }
 
-    /**
-     * APIMethod: scale
-     * 缩放变换。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * v- {Float32Array|Array.<Number>} 缩放参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+        /**
+         * APIMethod: mul
+         * 矩阵相乘。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * m1 - {Float32Array|Array.<Number>} 矩阵m1。
+         * m2- {Float32Array|Array.<Number>} 矩阵m2。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-  }, {
-    key: 'scale',
-    value: function scale(out, a, v) {
-      var vx = v[0];
-      var vy = v[1];
-      out[0] = a[0] * vx;
-      out[1] = a[1] * vy;
-      out[2] = a[2] * vx;
-      out[3] = a[3] * vy;
-      out[4] = a[4] * vx;
-      out[5] = a[5] * vy;
-      return out;
-    }
+    }, {
+        key: 'mul',
+        value: function mul(out, m1, m2) {
+            out[0] = m1[0] * m2[0] + m1[2] * m2[1];
+            out[1] = m1[1] * m2[0] + m1[3] * m2[1];
+            out[2] = m1[0] * m2[2] + m1[2] * m2[3];
+            out[3] = m1[1] * m2[2] + m1[3] * m2[3];
+            out[4] = m1[0] * m2[4] + m1[2] * m2[5] + m1[4];
+            out[5] = m1[1] * m2[4] + m1[3] * m2[5] + m1[5];
+            return out;
+        }
 
-    /**
-     * APIMethod: invert
-     * 求逆矩阵。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+        /**
+         * APIMethod: translate
+         * 平移变换。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         * v- {Float32Array|Array.<Number>} 平移参数。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-  }, {
-    key: 'invert',
-    value: function invert(out, a) {
-      var aa = a[0];
-      var ac = a[2];
-      var atx = a[4];
-      var ab = a[1];
-      var ad = a[3];
-      var aty = a[5];
+    }, {
+        key: 'translate',
+        value: function translate(out, a, v) {
+            out[0] = a[0];
+            out[1] = a[1];
+            out[2] = a[2];
+            out[3] = a[3];
+            out[4] = a[4] + v[0];
+            out[5] = a[5] + v[1];
+            return out;
+        }
 
-      var det = aa * ad - ab * ac;
-      if (!det) {
-        return null;
-      }
-      det = 1.0 / det;
+        /**
+         * APIMethod: rotate
+         * 旋转变换。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         * rad- {Float32Array|Array.<Number>} 旋转参数。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-      out[0] = ad * det;
-      out[1] = -ab * det;
-      out[2] = -ac * det;
-      out[3] = aa * det;
-      out[4] = (ac * aty - ad * atx) * det;
-      out[5] = (ab * atx - aa * aty) * det;
-      return out;
-    }
+    }, {
+        key: 'rotate',
+        value: function rotate(out, a, rad) {
+            var aa = a[0];
+            var ac = a[2];
+            var atx = a[4];
+            var ab = a[1];
+            var ad = a[3];
+            var aty = a[5];
+            var st = Math.sin(rad);
+            var ct = Math.cos(rad);
 
-    /**
-     * APIMethod: mulVector
-     * 矩阵左乘向量。
-     *
-     * Parameters:
-     * out - {Float32Array|Array.<Number>} 单位矩阵。
-     * a - {Float32Array|Array.<Number>} 矩阵。
-     * v- {Float32Array|Array.<Number>} 缩放参数。
-     *
-     * Returns:
-     * {Float32Array|Array.<Number>} 结果矩阵。
-     */
+            out[0] = aa * ct + ab * st;
+            out[1] = -aa * st + ab * ct;
+            out[2] = ac * ct + ad * st;
+            out[3] = -ac * st + ct * ad;
+            out[4] = ct * atx + st * aty;
+            out[5] = ct * aty - st * atx;
+            return out;
+        }
 
-  }, {
-    key: 'mulVector',
-    value: function mulVector(out, a, v) {
-      var aa = a[0];
-      var ac = a[2];
-      var atx = a[4];
-      var ab = a[1];
-      var ad = a[3];
-      var aty = a[5];
+        /**
+         * APIMethod: scale
+         * 缩放变换。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         * v- {Float32Array|Array.<Number>} 缩放参数。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-      out[0] = v[0] * aa + v[1] * ac + atx;
-      out[1] = v[0] * ab + v[1] * ad + aty;
+    }, {
+        key: 'scale',
+        value: function scale(out, a, v) {
+            var vx = v[0];
+            var vy = v[1];
+            out[0] = a[0] * vx;
+            out[1] = a[1] * vy;
+            out[2] = a[2] * vx;
+            out[3] = a[3] * vy;
+            out[4] = a[4] * vx;
+            out[5] = a[5] * vy;
+            return out;
+        }
 
-      return out;
-    }
-  }]);
+        /**
+         * APIMethod: invert
+         * 求逆矩阵。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
 
-  return Matrix;
+    }, {
+        key: 'invert',
+        value: function invert(out, a) {
+            var aa = a[0];
+            var ac = a[2];
+            var atx = a[4];
+            var ab = a[1];
+            var ad = a[3];
+            var aty = a[5];
+
+            var det = aa * ad - ab * ac;
+            if (!det) {
+                return null;
+            }
+            det = 1.0 / det;
+
+            out[0] = ad * det;
+            out[1] = -ab * det;
+            out[2] = -ac * det;
+            out[3] = aa * det;
+            out[4] = (ac * aty - ad * atx) * det;
+            out[5] = (ab * atx - aa * aty) * det;
+            return out;
+        }
+
+        /**
+         * APIMethod: mulVector
+         * 矩阵左乘向量。
+         *
+         * Parameters:
+         * out - {Float32Array|Array.<Number>} 单位矩阵。
+         * a - {Float32Array|Array.<Number>} 矩阵。
+         * v- {Float32Array|Array.<Number>} 缩放参数。
+         *
+         * Returns:
+         * {Float32Array|Array.<Number>} 结果矩阵。
+         */
+
+    }, {
+        key: 'mulVector',
+        value: function mulVector(out, a, v) {
+            var aa = a[0];
+            var ac = a[2];
+            var atx = a[4];
+            var ab = a[1];
+            var ad = a[3];
+            var aty = a[5];
+
+            out[0] = v[0] * aa + v[1] * ac + atx;
+            out[1] = v[0] * ab + v[1] * ad + aty;
+
+            return out;
+        }
+    }]);
+
+    return Matrix;
 }();
 
 exports.default = Matrix;
