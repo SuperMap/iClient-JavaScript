@@ -52,7 +52,7 @@ describe('leaflet_TiledMapLayer', function () {
         var tileUrl = tiledMapLayerObject.getTileUrl(coords);
         var tileUrlArray = tileUrl.split('?');
         expect(tileUrlArray[0]).toBe('http://localhost:8090/iserver/services/map-china400/rest/maps/China/tileImage.png');
-        expect(tileUrlArray[1]).toBe('width=256&height=256&redirect=false&transparent=false&cacheEnabled=true&prjCoordSys={"epsgCode":3857}&origin={"x":-20037508.342789244,"y":20037508.342789244}&overlapDisplayed=false&scale=3.3803271432053105e-9&x=1&y=4');
+        expect(tileUrlArray[1]).toBe('width=256&height=256&redirect=false&transparent=false&cacheEnabled=true&prjCoordSys=%7B%22epsgCode%22:3857%7D&origin=%7B%22x%22:-20037508.342789244,%22y%22:20037508.342789244%7D&overlapDisplayed=false&scale=3.3803271432053105e-9&x=1&y=4');
         var scale = tiledMapLayerObject.getScale(1);
         expect(scale).toBe(3.3803271432053105e-9);
     });
