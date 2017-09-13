@@ -110,7 +110,6 @@ export var FetchRequest = SuperMap.FetchRequest = {
     },
 
     _fetch: function (url, params, options, type) {
-        url = encodeURI(url);
         options = options || {};
         options.headers = options.headers || {};
         if (!options.headers['Content-Type']) {
@@ -139,7 +138,6 @@ export var FetchRequest = SuperMap.FetchRequest = {
     },
 
     _fetchJsonp: function (url, options) {
-        url = encodeURI(url);
         options = options || {};
         return fetchJsonp(url, {method: 'GET', timeout: options.timeout})
             .then(function (response) {

@@ -9777,7 +9777,6 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     _fetch: function _fetch(url, params, options, type) {
-        url = encodeURI(url);
         options = options || {};
         options.headers = options.headers || {};
         if (!options.headers['Content-Type']) {
@@ -9806,7 +9805,6 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
 
     _fetchJsonp: function _fetchJsonp(url, options) {
-        url = encodeURI(url);
         options = options || {};
         return (0, _fetchJsonp3.default)(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
             return response;
