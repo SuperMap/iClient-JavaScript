@@ -4,25 +4,13 @@ import Point from '../commontypes/geometry/Point';
 /**
  * @class SuperMap.PointWithMeasure
  * @classdesc 路由点类。路由点是指具有线性度量值(Measure)的二维地理坐标点。
- * @param options - {Object} 可选参数。如:</br>.
+ * @param options - {Object} 可选参数。如:</br>
  *        measure - {number}度量值，即路由对象属性值 M。</br>
  *        x - {number}获取当前点对象在地理坐标系下的 X 坐标值。</br>
  *        y - {number}获取当前点对象在地理坐标系下的 Y 坐标值。</br>
  * @extends SuperMap.Geometry.Point
  */
 export default class PointWithMeasure extends Point {
-
-    /**
-     * @member SuperMap.PointWithMeasure.prototype.x -{number}
-     * @description 获取当前点对象在地理坐标系下的 X 坐标值。
-     */
-    x = null;
-
-    /**
-     * @member SuperMap.PointWithMeasure.prototype.y -{number}
-     * @description 获取当前点对象在地理坐标系下的 Y 坐标值。
-     */
-    y = null;
 
     /**
      * @member SuperMap.PointWithMeasure.prototype.measure -{number}
@@ -41,7 +29,7 @@ export default class PointWithMeasure extends Point {
      * @function SuperMap.PointWithMeasure.prototype.equals
      * @description 判断两个路由点对象是否相等。如果两个路由点对象具有相同的坐标以及度量值，则认为是相等的。
      * @param geom - {SuperMap.PointWithMeasure} 需要判断的路由点对象。
-     * @return {Boolean} 两个路由点对象是否相等（true为相等，false为不等）。
+     * @return {boolean} 两个路由点对象是否相等（true为相等，false为不等）。
      */
     equals(geom) {
         var equals = false;
@@ -83,7 +71,7 @@ export default class PointWithMeasure extends Point {
 
     /**
      * @function SuperMap.PointWithMeasure.fromJson
-     * @description 将 JSON 对象转换为  SuperMap.PointWithMeasure 对象。
+     * @description 将 JSON 对象转换为{@link SuperMap.PointWithMeasure} 对象。
      * @param jsonObject - {Object} JSON 对象表示的路由点。
      * @return {SuperMap.PointWithMeasure} 转化后的 PointWithMeasure 对象。
      */

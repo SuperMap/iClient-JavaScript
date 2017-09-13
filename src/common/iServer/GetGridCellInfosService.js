@@ -59,7 +59,8 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetGridCellInfosService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

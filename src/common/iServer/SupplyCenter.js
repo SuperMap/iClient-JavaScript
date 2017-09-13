@@ -5,9 +5,9 @@
  * @classdesc 资源供给中心类。在资源分配和选址分区分析两个功能中使用。
  * @param options - {Object} 可选参数。如：<br>
  *        maxWeight - {number}资源供给中心的最大耗费值，必设参数。<br>
- *        nodeID - {Integer} 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。<br>
+ *        nodeID - {integer} 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。<br>
  *        resourceValue - {number}资源供给中心能提供的最大服务量或商品数量，必设参数。<br>
- *        type - {SuperMap.SupplyCenterType} 资源供给中心点的类型常量。
+ *        type - {{@link SuperMap.SupplyCenterType}} 资源供给中心点的类型常量。
  */
 export default  class SupplyCenter {
 
@@ -20,7 +20,7 @@ export default  class SupplyCenter {
     maxWeight = null;
 
     /**
-     * @member SuperMap.SupplyCenter.prototype.nodeID -{Integer}
+     * @member SuperMap.SupplyCenter.prototype.nodeID -{integer}
      * @description 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。
      */
     nodeID = null;
@@ -60,6 +60,7 @@ export default  class SupplyCenter {
      * @function SuperMap.SupplyCenter.fromJson
      * @description 将服务端JSON对象转换成当前客户端对象
      * @param jsonObject - {Object} 要转换的 JSON 对象。
+     * @return{SuperMap.SupplyCenter} SupplyCenter对象
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

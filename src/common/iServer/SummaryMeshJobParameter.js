@@ -8,10 +8,10 @@ import {StatisticAnalystMode, SummaryType} from '../REST'
  *        datasetName -{string} 数据集名。<br>
  *        query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
  *        resolution -{number}分辨率。<br>
- *        statisticModes -{string} 分析模式。<br>
+ *        statisticModes -{{@link SuperMap.StatisticAnalystMode}} 分析模式。<br>
  *        meshType -{number}分析类型。<br>
  *        fields -{number}权重索引。<br>
- *        type -{string} 聚合类型。
+ *        type -{{@link SuperMap.SummaryType}} 聚合类型。
  */
 export default class SummaryMeshJobParameter {
 
@@ -72,7 +72,8 @@ export default class SummaryMeshJobParameter {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.SummaryMeshJobParameter.destroy
+     * @override
      */
     destroy() {
         this.datasetName = null;

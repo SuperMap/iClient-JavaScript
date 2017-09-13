@@ -4,6 +4,8 @@ import OnlineServiceBase from './OnlineServiceBase';
 /**
  * @class SuperMap.OnlineData
  * @classdesc Online myData服务
+ * @param serviceRootUrl -{string} 服务根地址
+ * @param options -{string} 服务相关参数
  */
 export default  class OnlineData extends OnlineServiceBase {
     //MD5
@@ -79,6 +81,7 @@ export default  class OnlineData extends OnlineServiceBase {
     /**
      * @function SuperMap.OnlineData.prototype.getPublishedServices
      * @description 获取数据发布的所有服务
+     * @returns {Object} 数据发布的所有服务
      */
     getPublishedServices() {
         return this.dataItemServices;
@@ -87,6 +90,7 @@ export default  class OnlineData extends OnlineServiceBase {
     /**
      * @function SuperMap.OnlineData.prototype.getAuthorizeSetting
      * @description 获取数据的权限信息
+     * @returns {Object} 权限信息
      */
     getAuthorizeSetting() {
         return this.authorizeSetting;

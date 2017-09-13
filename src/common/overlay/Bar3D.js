@@ -185,14 +185,15 @@ export default  class Bar3D extends Graph {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.Feature.Theme.Bar3D.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Bar.prototype.assembleShapes
+     * @function SuperMap.Feature.Theme.Bar3D.prototype.assembleShapes
      * @description 图形装配实现（扩展接口）
      */
     assembleShapes() {
@@ -354,7 +355,7 @@ export default  class Bar3D extends Graph {
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Bar.prototype.calculateXShapeInfo
+     * @function SuperMap.Feature.Theme.Bar3D.prototype.calculateXShapeInfo
      * @description 计算 X 轴方向上的图形信息，此信息是一个对象，包含两个属性，
      *              属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
      *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。

@@ -6,8 +6,8 @@ import ServerStyle from './ServerStyle';
  * @class SuperMap.Vector
  * @classdesc UGC 矢量图层类。
  * @extends SuperMap.UGCSubLayer
- * @param options - {Object} 可选参数。如：<br>
- *        style - {SuperMap.ServerStyle} 矢量图层的风格。
+ * @param options - {Object} 可选参数。如：
+ *        style - {{@link SuperMap.ServerStyle}} 矢量图层的风格。
  */
 
 export default  class Vector extends UGCSubLayer {
@@ -24,7 +24,8 @@ export default  class Vector extends UGCSubLayer {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.Vector.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
@@ -47,6 +48,7 @@ export default  class Vector extends UGCSubLayer {
     /**
      * @function SuperMap.Vector.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         var jsonObject = SuperMap.toServerJSONObject();

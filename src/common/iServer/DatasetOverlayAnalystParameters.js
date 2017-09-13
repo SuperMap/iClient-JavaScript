@@ -100,7 +100,8 @@ export default class DatasetOverlayAnalystParameters extends OverlayAnalystParam
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.DatasetOverlayAnalystParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

@@ -17,7 +17,7 @@ export default class SingleObjectQueryJobsService extends ProcessingServiceBase 
     }
 
     /**
-     *@inheritDoc
+     *@override
      */
     destroy() {
         super.destroy();

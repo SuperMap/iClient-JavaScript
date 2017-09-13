@@ -20,7 +20,8 @@ export default  class FacilityAnalystStreamService extends NetworkAnalystService
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystStreamService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

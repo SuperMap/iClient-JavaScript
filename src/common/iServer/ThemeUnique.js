@@ -7,16 +7,16 @@ import {ColorGradientType} from '../REST';
 
 /**
  * @class SuperMap.ThemeUnique
- * @classdesc 单值专题图。<br>
- *              单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。单值专题图多用于具有分类属性的地图上，
+ * @classdesc 单值专题图。
+ * @description 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。单值专题图多用于具有分类属性的地图上，
  *              比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。尤其是有交叉或重叠现象时，此类不推荐使用，例如：民族分布区等。
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
- *        items - {Array<SuperMap.ThemeUniqueItem>} 单值专题图子项类数组。<br>
+ *        items - {Array<{@link SuperMap.ThemeUniqueItem}>} 单值专题图子项类数组。<br>
  *        uniqueExpression - {string} 用于制作单值专题图的字段或字段表达式。<br>
- *        defaultStyle - {SuperMap.ServerStyle} 未参与单值专题图制作的对象的显示风格。<br>
- *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。<br>
- *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
+ *        defaultStyle - {{@link SuperMap.ServerStyle}} 未参与单值专题图制作的对象的显示风格。<br>
+ *        colorGradientType - {{@link SuperMap.ColorGradientType}} 渐变颜色枚举类。<br>
+ *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
 export default class ThemeUnique extends Theme {
 
@@ -62,7 +62,8 @@ export default class ThemeUnique extends Theme {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.ThemeUnique.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
@@ -89,6 +90,7 @@ export default class ThemeUnique extends Theme {
     /**
      * @function SuperMap.ThemeUnique.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         var obj = {};
@@ -110,10 +112,10 @@ export default class ThemeUnique extends Theme {
     }
 
     /**
-     * @function SuperMap.ThemeUniquefromObj
+     * @function SuperMap.ThemeUnique.fromObj
      * @description 从传入对象获取单值专题图类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeUnique}
+     * @return {SuperMap.ThemeUnique} ThemeUnique对象
      */
     static fromObj(obj) {
         var res = new ThemeUnique();

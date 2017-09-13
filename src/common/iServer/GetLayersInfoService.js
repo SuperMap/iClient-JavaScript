@@ -33,7 +33,8 @@ export default  class GetLayersInfoService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetLayersInfoService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

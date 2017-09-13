@@ -3,12 +3,12 @@ import TimeControlBase from './TimeControlBase';
 
 /**
  * @class SuperMap.TimeFlowControl
- * @classdesc 时间管理类。<br>
- *              此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
+ * @classdesc 时间管理类。
+ * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
  *              如设置起始时间为1000，结束时间是2000，步长设置为1，
  *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
  * @extends SuperMap.TimeControlBase
- * @param callback - {Function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
+ * @param callback - {function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
  * @param options - {Object} 该类开放的可选属性。如：<br>
  *        speed - {number}步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
  *        frequency -  {number} 刷新频率(单位ms)，默认为1000ms。<br>
@@ -17,10 +17,10 @@ import TimeControlBase from './TimeControlBase';
  *        repeat - {boolean} 是否重复循环。默认为true。<br>
  *        reverse - {boolean} 是否反向。默认为false。
  */
-export default  class TimeFlowControl extends TimeControlBase {
+export default class TimeFlowControl extends TimeControlBase {
 
     /**
-     * @member callback -{Function}
+     * @member SuperMap.TimeFlowControl.prototype.callback -{function}
      * @description 每次刷新执行的回调函数
      */
     callback = null;
@@ -42,8 +42,8 @@ export default  class TimeFlowControl extends TimeControlBase {
                     },
                     fBound = function () {
                         return fToBind.apply(this instanceof fNOP && oThis
-                                ? this
-                                : oThis,
+                            ? this
+                            : oThis,
                             aArgs.concat(Array.prototype.slice.call(arguments)));
                     };
                 fNOP.prototype = this.prototype;
@@ -61,7 +61,8 @@ export default  class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.TimeFlowControl.prototype.updateOptions
+     * @override
      */
     updateOptions(options) {
         options = options || {};
@@ -70,7 +71,8 @@ export default  class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.TimeFlowControl.prototype.start
+     * @override
      */
     start() {
         var me = this;
@@ -94,7 +96,8 @@ export default  class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.TimeFlowControl.prototype.stop
+     * @override
      */
     stop() {
         super.stop();
@@ -110,7 +113,8 @@ export default  class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.TimeFlowControl.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
@@ -132,7 +136,8 @@ export default  class TimeFlowControl extends TimeControlBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.TimeFlowControl.prototype.update
+     * @override
      */
     update() {
         var me = this;

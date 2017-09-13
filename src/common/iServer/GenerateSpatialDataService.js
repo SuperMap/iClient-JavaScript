@@ -57,7 +57,8 @@ export default  class GenerateSpatialDataService extends SpatialAnalystBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GenerateSpatialDataService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

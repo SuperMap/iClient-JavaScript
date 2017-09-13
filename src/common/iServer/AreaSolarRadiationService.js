@@ -27,7 +27,8 @@ export default  class AreaSolarRadiationService extends SpatialAnalystBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.AreaSolarRadiationService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

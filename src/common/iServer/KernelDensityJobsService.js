@@ -17,7 +17,8 @@ export default class KernelDensityJobsService extends ProcessingServiceBase {
     }
 
     /**
-     *@inheritDoc
+     * @function SuperMap.KernelDensityJobsService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

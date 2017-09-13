@@ -7,7 +7,7 @@ import {SpatialQueryMode} from '../REST'
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
  *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
- *         mode -{SuperMap.SpatialQueryMode} 空间查询模式 。 <br>
+ *         mode -{{@link SuperMap.SpatialQueryMode}} 空间查询模式 。 <br>
  */
 export default  class SingleObjectQueryJobsParameter {
 

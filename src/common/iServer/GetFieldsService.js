@@ -43,7 +43,8 @@ export default  class GetFieldsService extends CommonServiceBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFieldsService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

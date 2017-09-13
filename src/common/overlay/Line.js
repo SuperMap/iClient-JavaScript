@@ -107,7 +107,8 @@ export default  class Line extends Graph {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.Feature.Theme.Line.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

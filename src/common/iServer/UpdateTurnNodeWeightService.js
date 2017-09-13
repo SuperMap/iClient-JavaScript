@@ -25,7 +25,7 @@ export default  class UpdateTurnNodeWeightService extends NetworkAnalystServiceB
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

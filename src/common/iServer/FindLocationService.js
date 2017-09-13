@@ -31,7 +31,8 @@ export default class FindLocationService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FindLocationService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

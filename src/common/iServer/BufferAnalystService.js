@@ -40,7 +40,8 @@ export default  class BufferAnalystService extends SpatialAnalystBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.BufferAnalystService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

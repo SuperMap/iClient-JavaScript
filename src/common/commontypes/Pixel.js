@@ -33,14 +33,14 @@ export default class Pixel {
      * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
      * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
      * 值有<br>
-     * * SuperMap.Pixel.Mode.LeftTop
-     * * SuperMap.Pixel.Mode.RightTop
-     * * SuperMap.Pixel.Mode.RightBottom
-     * * SuperMap.Pixel.Mode.LeftBottom
+     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightTop}
+     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightBottom}
+     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
      *
-     * 这四种 默认值为：SuperMap.Pixel.Mode.LeftTop
+     * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
      *
-     * @default SuperMap.Pixel.Mode.LeftTop
+     * @default {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
      */
     mode = null;
 
@@ -51,8 +51,8 @@ export default class Pixel {
     }
 
     /**
-     * @function SuperMap.Pixel.prototype. toString
-     * 返回此对象的字符串形式
+     * @function SuperMap.Pixel.prototype.toString
+     * @description 返回此对象的字符串形式
      * @example
      *
      * var pixcel = new SuperMap.Pixel(100,50);
@@ -65,7 +65,7 @@ export default class Pixel {
     }
 
     /**
-     * @function SuperMap.Pixel.prototype. clone
+     * @function SuperMap.Pixel.prototype.clone
      * @description 克隆当前的 pixel 对象。
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
@@ -77,7 +77,7 @@ export default class Pixel {
     }
 
     /**
-     * @function SuperMap.Pixel.prototype. equals
+     * @function SuperMap.Pixel.prototype.equals
      * @description 比较两 pixel 是否相等
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
@@ -97,7 +97,7 @@ export default class Pixel {
     }
 
     /**
-     * @function SuperMap.Pixel.prototype. distanceTo
+     * @function SuperMap.Pixel.prototype.distanceTo
      * @description 返回两个 pixel 的距离。
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
@@ -115,7 +115,7 @@ export default class Pixel {
     }
 
     /**
-     * @function SuperMap.Pixel.prototype. add
+     * @function SuperMap.Pixel.prototype.add
      * @description 在原来像素坐标基础上，x值加上传入的x参数，y值加上传入的y参数。
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
@@ -135,7 +135,7 @@ export default class Pixel {
     }
 
     /**
-     * @function SuperMap.Pixel.prototype. offset
+     * @function SuperMap.Pixel.prototype.offset
      * @description 通过传入的 {@link SuperMap.Pixel} 参数对原屏幕坐标进行偏移。
      * @example
      * var pixcel = new SuperMap.Pixel(100,50);
@@ -157,7 +157,7 @@ export default class Pixel {
 
     /**
      *
-     * @function SuperMap.Pixel.prototype. destroy
+     * @function SuperMap.Pixel.prototype.destroy
      * @description 销毁此对象。
      * 销毁后此对象的所有属性为null，而不是初始值。
      * @example

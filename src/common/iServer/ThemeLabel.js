@@ -14,22 +14,22 @@ import {LabelOverLengthMode} from '../REST';
  * @classdesc 标签专题图类。
  * @extends SuperMap.Theme
  * @param  options - {Object} 可选参数。如：<br>
- *         alongLine - {SuperMap.ThemeLabelAlongLine} 标签沿线标注方向样式类。<br>
- *         background - {SuperMap.ThemeLabelBackground} 标签专题图中标签的背景风格类。<br>
- *         flow - {SuperMap.ThemeFlow} 标签专题图标签流动显示与牵引线设置类。<br>
- *         items - {Array<SuperMap.ThemeUniqueItem>} 分段标签专题图的子项数组。<br>
+ *         alongLine - {{@link SuperMap.ThemeLabelAlongLine}} 标签沿线标注方向样式类。<br>
+ *         background - {{@link SuperMap.ThemeLabelBackground}} 标签专题图中标签的背景风格类。<br>
+ *         flow - {{@link SuperMap.ThemeFlow}} 标签专题图标签流动显示与牵引线设置类。<br>
+ *         items - {Array<{@link SuperMap.ThemeUniqueItem}>} 分段标签专题图的子项数组。<br>
  *         labelExpression - {string} 标注字段表达式。<br>
- *         labelOverLengthMode - {SuperMap.LabelOverLengthMode} 标签专题图中超长标签的处理模式枚举类。<br>
- *         matrixCells - {Array<SuperMap.LabelMatrixCell>} 矩阵标签元素数组。<br>
+ *         labelOverLengthMode - {{@link SuperMap.LabelOverLengthMode}} 标签专题图中超长标签的处理模式枚举类。<br>
+ *         matrixCells - {Array<{@link SuperMap.LabelMatrixCell}>} 矩阵标签元素数组。<br>
  *         maxLabelLength - {number}标签在每一行显示的最大长度。<br>
  *         numericPrecision - {number}通过该字段设置其显示的精度。<br>
- *         offset - {SuperMap.ThemeOffset} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
+ *         offset - {{@link SuperMap.ThemeOffset}} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
  *         overlapAvoided - {boolean} 是否允许以文本避让方式显示文本。<br>
  *         rangeExpression - {string} 制作分段标签专题的分段字段或字段表达式。<br>
  *         smallGeometryLabeled - {boolean} 是否显示长度大于被标注对象本身长度的标签。<br>
- *         text - {SuperMap.ThemeLabelText} 标签中文本风格。<br>
+ *         text - {{@link SuperMap.ThemeLabelText}} 标签中文本风格。<br>
  *         textSpace - {number} 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。<br>
- *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
+ *         memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
 export default class ThemeLabel extends Theme {
 
@@ -161,7 +161,8 @@ export default class ThemeLabel extends Theme {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.ThemeLabel.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
@@ -217,6 +218,7 @@ export default class ThemeLabel extends Theme {
     /**
      * @function SuperMap.ThemeLabel.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         var obj = {};
@@ -273,7 +275,7 @@ export default class ThemeLabel extends Theme {
      * @function SuperMap.ThemeLabel.fromObj
      * @description 从传入对象获取标签专题图类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeLabel}
+     * @return {SuperMap.ThemeLabel} ThemeLabel对象
      */
     static fromObj(obj) {
         if (!obj) return;

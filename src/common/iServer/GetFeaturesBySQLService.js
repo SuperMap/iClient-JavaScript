@@ -34,7 +34,8 @@ export default  class GetFeaturesBySQLService extends GetFeaturesServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFeaturesBySQLService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

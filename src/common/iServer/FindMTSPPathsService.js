@@ -32,7 +32,8 @@ export default  class FindMTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FindMTSPPathsService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

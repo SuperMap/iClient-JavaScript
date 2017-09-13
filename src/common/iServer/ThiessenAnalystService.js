@@ -46,7 +46,7 @@ export default  class ThiessenAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

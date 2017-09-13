@@ -41,7 +41,8 @@ export default class GeometrySurfaceAnalystParameters extends SurfaceAnalystPara
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GeometrySurfaceAnalystParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

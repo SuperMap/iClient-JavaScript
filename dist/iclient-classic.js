@@ -92,9 +92,9 @@ module.exports = SuperMap;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.ServerType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.DataFormat = undefined;
+exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -103,1074 +103,1015 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- *服务请求返回结果数据类型
- *  GEOJSON: "GEOJSON",
- *  ISERVER: "ISERVER"
+ * @name DataFormat
+ * @memberOf SuperMap
+ * @description 服务请求返回结果数据类型
+ *
+ * @property {string} GEOJSON  GEOJSON
+ * @property {string} ISERVER  ISERVER
  */
 var DataFormat = exports.DataFormat = _SuperMap2.default.DataFormat = {
-    GEOJSON: "GEOJSON",
-    ISERVER: "ISERVER"
+  GEOJSON: "GEOJSON",
+  ISERVER: "ISERVER"
 };
 
 /**
- * Constant: GeometryType
- * {Object} 几何对象枚举类。
- * 该类定义了一系列几何对象类型。
+ * @name ServerType
+ * @memberOf SuperMap
+ * @description 服务器类型
  *
- * LINE: "LINE",
+ * @property {string} ISERVER  ISERVER
+ * @property {string} IPORTAL  IPORTAL
+ * @property {string} ONLINE  ONLINE
+ */
+var ServerType = exports.ServerType = _SuperMap2.default.ServerType = {
+  ISERVER: "ISERVER",
+  IPORTAL: "IPORTAL",
+  ONLINE: "ONLINE"
+};
+
+/**
+ * @name GeometryType
+ * @memberOf SuperMap
+ * @description 几何对象枚举,定义了一系列几何对象类型。
  *
- * LINEM: "LINEM",
- *
- * POINT: "POINT",
- *
- * REGION: "REGION",
- *
- * ELLIPSE: "ELLIPSE",
- *
- * CIRCLE: "CIRCLE",
- *
- * TEXT: "TEXT",
- *
- * UNKNOWN: "UNKNOWN".
+ * @property {string} LINE  LINE
+ * @property {string} LINEM  LINEM
+ * @property {string} POINT  POINT
+ * @property {string} REGION  REGION
+ * @property {string} ELLIPSE  ELLIPSE
+ * @property {string} CIRCLE  CIRCLE
+ * @property {string} TEXT  TEXT
+ * @property {string} UNKNOWN  UNKNOWN
  */
 var GeometryType = exports.GeometryType = _SuperMap2.default.GeometryType = {
-    LINE: "LINE",
-    LINEM: "LINEM",
-    POINT: "POINT",
-    REGION: "REGION",
-    ELLIPSE: "ELLIPSE",
-    CIRCLE: "CIRCLE",
-    TEXT: "TEXT",
-    UNKNOWN: "UNKNOWN"
+  LINE: "LINE",
+  LINEM: "LINEM",
+  POINT: "POINT",
+  REGION: "REGION",
+  ELLIPSE: "ELLIPSE",
+  CIRCLE: "CIRCLE",
+  TEXT: "TEXT",
+  UNKNOWN: "UNKNOWN"
 };
 
 /**
- * Constant: QueryOption
- * {Object} 查询结果类型枚举类。
- * 该类描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
+ * @name QueryOption
+ * @memberOf SuperMap
+ * @description 查询结果类型枚举,描述查询结果返回类型，包括只返回属性、只返回几何实体以及返回属性和几何实体。
  *
- * ATTRIBUTE: "ATTRIBUTE",
- *
- * ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
- *
- * GEOMETRY: "GEOMETRY".
+ * @property {string} ATTRIBUTE  ATTRIBUTE
+ * @property {string} ATTRIBUTEANDGEOMETRY  ATTRIBUTEANDGEOMETRY
+ * @property {string} GEOMETRY  GEOMETRY
  */
 var QueryOption = exports.QueryOption = _SuperMap2.default.QueryOption = {
-    ATTRIBUTE: "ATTRIBUTE",
-    ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
-    GEOMETRY: "GEOMETRY"
+  ATTRIBUTE: "ATTRIBUTE",
+  ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
+  GEOMETRY: "GEOMETRY"
 };
 
 /**
- * Constant: JoinType
- * {Object} 关联查询时的关联类型常量。
+ * @name JoinType
+ * @memberOf SuperMap
+ * @description 关联查询时的关联类型常量。
  * 该类定义了两个表之间的连接类型常量，决定了对两个表之间进行连接查询时，查询结果中得到的记录的情况。
  *
- * INNERJOIN: "INNERJOIN",
- *
- * LEFTJOIN: "LEFTJOIN".
+ * @property {string} INNERJOIN  INNERJOIN
+ * @property {string} LEFTJOIN  LEFTJOIN
  */
 var JoinType = exports.JoinType = _SuperMap2.default.JoinType = {
-    INNERJOIN: "INNERJOIN",
-    LEFTJOIN: "LEFTJOIN"
+  INNERJOIN: "INNERJOIN",
+  LEFTJOIN: "LEFTJOIN"
 };
 
 /**
- * Constant: SpatialQueryMode
- * {Object} 空间查询模式枚举类。
- * 该类定义了空间查询操作模式常量。
+ * @name SpatialQueryMode
+ * @memberOf SuperMap
+ * @description  空间查询模式枚举。该类定义了空间查询操作模式常量。
  *
- * CONTAIN: "CONTAIN",
- *
- * CROSS: "CROSS",
- *
- * DISJOINT: "DISJOINT",
- *
- * IDENTITY: "IDENTITY",
- *
- * INTERSECT: "INTERSECT",
- *
- * NONE: "NONE",
- *
- * OVERLAP: "OVERLAP",
- *
- * TOUCH: "TOUCH",
- *
- * WITHIN: "WITHIN".
+ * @property {string} CONTAIN  CONTAIN
+ * @property {string} CROSS  CROSS
+ * @property {string} DISJOINT  DISJOINT
+ * @property {string} IDENTITY  IDENTITY
+ * @property {string} INTERSECT  INTERSECT
+ * @property {string} NONE  NONE
+ * @property {string} OVERLAP  OVERLAP
+ * @property {string} TOUCH  TOUCH
+ * @property {string} WITHIN  WITHIN
  */
 var SpatialQueryMode = exports.SpatialQueryMode = _SuperMap2.default.SpatialQueryMode = {
-    CONTAIN: "CONTAIN",
-    CROSS: "CROSS",
-    DISJOINT: "DISJOINT",
-    IDENTITY: "IDENTITY",
-    INTERSECT: "INTERSECT",
-    NONE: "NONE",
-    OVERLAP: "OVERLAP",
-    TOUCH: "TOUCH",
-    WITHIN: "WITHIN"
+  CONTAIN: "CONTAIN",
+  CROSS: "CROSS",
+  DISJOINT: "DISJOINT",
+  IDENTITY: "IDENTITY",
+  INTERSECT: "INTERSECT",
+  NONE: "NONE",
+  OVERLAP: "OVERLAP",
+  TOUCH: "TOUCH",
+  WITHIN: "WITHIN"
 };
 
 /**
- * Constant: SpatialRelationType
- * {Object} 数据集对象间的空间关系枚举类。
+ * @name SpatialRelationType
+ * @memberOf SuperMap
+ * @description  数据集对象间的空间关系枚举。
  * 该类定义了数据集对象间的空间关系类型常量。
  *
- * 包含关系
- * CONTAIN: "CONTAIN",
- *
- * 相交关系
- * INTERSECT: "INTERSECT",
- *
- * 被包含关系
- * WITHIN: "WITHIN"。
+ * @property {string} CONTAIN 包含关系 CONTAIN  CONTAIN
+ * @property {string} INTERSECT 相交关系 INTERSECT  INTERSECT
+ * @property {string} INTERSECT 被包含关系 WITHIN  WITHIN
  */
 var SpatialRelationType = exports.SpatialRelationType = _SuperMap2.default.SpatialRelationType = {
-    CONTAIN: "CONTAIN",
-    INTERSECT: "INTERSECT",
-    WITHIN: "WITHIN"
+  CONTAIN: "CONTAIN",
+  INTERSECT: "INTERSECT",
+  WITHIN: "WITHIN"
 };
 
 /**
- * Constant: MeasureMode
- * {Object} 量算模式枚举类。
+ * @name MeasureMode
+ * @memberOf SuperMap
+ * @property {string} DISTANCE DISTANCE
+ * @property {string} AREA AREA
+ * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
- *
- * DISTANCE: "DISTANCE",
- *
- * AREA: "AREA".
  */
 var MeasureMode = exports.MeasureMode = _SuperMap2.default.MeasureMode = {
-    DISTANCE: "DISTANCE",
-    AREA: "AREA"
+  DISTANCE: "DISTANCE",
+  AREA: "AREA"
 };
 
 /**
- * Constant: Unit
- * {Object} 距离单位枚举类。
+ * @name Unit
+ * @memberOf SuperMap
+ * @description  距离单位枚举。
  * 该类定义了一系列距离单位类型。
  *
- * METER: "METER",
- *
- * KILOMETER: "KILOMETER",
- *
- * MILE: "MILE",
- *
- * YARD: "YARD",
- *
- * DEGREE: "DEGREE",
- *
- * MILLIMETER: "MILLIMETER",
- *
- * CENTIMETER: "CENTIMETER",
- *
- * INCH: "INCH",
- *
- * DECIMETER: "DECIMETER",
- *
- * FOOT: "FOOT",
- *
- * SECOND: "SECOND",
- *
- * MINUTE: "MINUTE",
- *
- * RADIAN: "RADIAN".
+ * @property {string} METER  METER
+ * @property {string} KILOMETER  KILOMETER
+ * @property {string} MILE  MILE
+ * @property {string} YARD  YARD
+ * @property {string} DEGREE  DEGREE
+ * @property {string} MILLIMETER  MILLIMETER
+ * @property {string} CENTIMETER  CENTIMETER
+ * @property {string} INCH  INCH
+ * @property {string} DECIMETER  DECIMETER
+ * @property {string} FOOT  FOOT
+ * @property {string} SECOND  SECOND
+ * @property {string} MINUTE  MINUTE
+ * @property {string} RADIAN  RADIAN
  */
 var Unit = exports.Unit = _SuperMap2.default.Unit = {
-    METER: "METER",
-    KILOMETER: "KILOMETER",
-    MILE: "MILE",
-    YARD: "YARD",
-    DEGREE: "DEGREE",
-    MILLIMETER: "MILLIMETER",
-    CENTIMETER: "CENTIMETER",
-    INCH: "INCH",
-    DECIMETER: "DECIMETER",
-    FOOT: "FOOT",
-    SECOND: "SECOND",
-    MINUTE: "MINUTE",
-    RADIAN: "RADIAN"
+  METER: "METER",
+  KILOMETER: "KILOMETER",
+  MILE: "MILE",
+  YARD: "YARD",
+  DEGREE: "DEGREE",
+  MILLIMETER: "MILLIMETER",
+  CENTIMETER: "CENTIMETER",
+  INCH: "INCH",
+  DECIMETER: "DECIMETER",
+  FOOT: "FOOT",
+  SECOND: "SECOND",
+  MINUTE: "MINUTE",
+  RADIAN: "RADIAN"
 };
 
 /**
- * Constant: EngineType
- * {Object} 数据源引擎类型枚举类。
+ * @name EngineType
+ * @memberOf SuperMap
+ * @description  数据源引擎类型枚举。
  *
- * IMAGEPLUGINS: "IMAGEPLUGINS",
- *
- * OGC: "OGC",
- *
- * ORACLEPLUS: "ORACLEPLUS",
- *
- * SDBPLUS: "SDBPLUS",
- *
- * SQLPLUS: "SQLPLUS",
- *
- * UDB: "UDB"。
+ * @property {string} IMAGEPLUGINS  IMAGEPLUGINS
+ * @property {string} OGC  OGC
+ * @property {string} ORACLEPLUS  ORACLEPLUS
+ * @property {string} SDBPLUS  SDBPLUS
+ * @property {string} SQLPLUS  SQLPLUS
+ * @property {string} UDB  UDB
  */
 var EngineType = exports.EngineType = _SuperMap2.default.EngineType = {
-    IMAGEPLUGINS: "IMAGEPLUGINS",
-    OGC: "OGC",
-    ORACLEPLUS: "ORACLEPLUS",
-    SDBPLUS: "SDBPLUS",
-    SQLPLUS: "SQLPLUS",
-    UDB: "UDB"
+  IMAGEPLUGINS: "IMAGEPLUGINS",
+  OGC: "OGC",
+  ORACLEPLUS: "ORACLEPLUS",
+  SDBPLUS: "SDBPLUS",
+  SQLPLUS: "SQLPLUS",
+  UDB: "UDB"
 };
 
 /**
- * Constant: ThemeGraphTextFormat
- * {Object } 统计专题图文本显示格式枚举类。
+ * @name ThemeGraphTextFormat
+ * @memberOf SuperMap
+ * @description  统计专题图文本显示格式枚举。
  *
- * CAPTION: "CAPTION",
- *
- * CAPTION_PERCENT: "CAPTION_PERCENT",
- *
- * CAPTION_VALUE: "CAPTION_VALUE",
- *
- * PERCENT: "PERCENT",
- *
- * VALUE: "VALUE".
+ * @property {string} CAPTION  CAPTION
+ * @property {string} CAPTION_PERCENT  CAPTION_PERCENT
+ * @property {string} CAPTION_VALUE  CAPTION_VALUE
+ * @property {string} PERCENT  PERCENT
+ * @property {string} VALUE  VALUE
  */
 var ThemeGraphTextFormat = exports.ThemeGraphTextFormat = _SuperMap2.default.ThemeGraphTextFormat = {
-    CAPTION: "CAPTION",
-    CAPTION_PERCENT: "CAPTION_PERCENT",
-    CAPTION_VALUE: "CAPTION_VALUE",
-    PERCENT: "PERCENT",
-    VALUE: "VALUE"
+  CAPTION: "CAPTION",
+  CAPTION_PERCENT: "CAPTION_PERCENT",
+  CAPTION_VALUE: "CAPTION_VALUE",
+  PERCENT: "PERCENT",
+  VALUE: "VALUE"
 };
 
 /**
- * Constant: ThemeGraphType
- * {Object} 统计专题图类型枚举类。
+ * @name ThemeGraphType
+ * @memberOf SuperMap
+ * @description  统计专题图类型枚举。
  *
- * AREA: "AREA",
- *
- * BAR: "BAR",
- *
- * BAR3D: "BAR3D",
- *
- * LINE: "LINE",
- *
- * PIE: "PIE",
- *
- * PIE3D: "PIE3D",
- *
- * POINT: "POINT",
- *
- * RING: "RING",
- *
- * ROSE: "ROSE",
- *
- * ROSE3D: "ROSE3D",
- *
- * STACK_BAR: "STACK_BAR",
- *
- * STACK_BAR3D: "STACK_BAR3D",
- *
- * STEP: "STEP".
+ * @property {string} AREA  AREA
+ * @property {string} BAR  BAR
+ * @property {string} BAR3D  BAR3D
+ * @property {string} LINE  LINE
+ * @property {string} PIE  PIE
+ * @property {string} PIE3D  PIE3D
+ * @property {string} POINT  POINT
+ * @property {string} RING  RING
+ * @property {string} ROSE  ROSE
+ * @property {string} ROSE3D  ROSE3D
+ * @property {string} STACK_BAR  STACK_BAR
+ * @property {string} STACK_BAR3D  STACK_BAR3D
+ * @property {string} STEP  STEP
  */
 var ThemeGraphType = exports.ThemeGraphType = _SuperMap2.default.ThemeGraphType = {
-    AREA: "AREA",
-    BAR: "BAR",
-    BAR3D: "BAR3D",
-    LINE: "LINE",
-    PIE: "PIE",
-    PIE3D: "PIE3D",
-    POINT: "POINT",
-    RING: "RING",
-    ROSE: "ROSE",
-    ROSE3D: "ROSE3D",
-    STACK_BAR: "STACK_BAR",
-    STACK_BAR3D: "STACK_BAR3D",
-    STEP: "STEP"
+  AREA: "AREA",
+  BAR: "BAR",
+  BAR3D: "BAR3D",
+  LINE: "LINE",
+  PIE: "PIE",
+  PIE3D: "PIE3D",
+  POINT: "POINT",
+  RING: "RING",
+  ROSE: "ROSE",
+  ROSE3D: "ROSE3D",
+  STACK_BAR: "STACK_BAR",
+  STACK_BAR3D: "STACK_BAR3D",
+  STEP: "STEP"
 };
 
 /**
- * Constant: GraphAxesTextDisplayMode
- * {Object} 统计专题图坐标轴文本显示模式。
- * ALL: "ALL", 显示全部文本
+ * @name GraphAxesTextDisplayMode
+ * @memberOf SuperMap
+ * @description  统计专题图坐标轴文本显示模式。
  *
- * NONE: "NONE", 没有显示
- *
- * YAXES: "YAXES". 显示Y轴的文本
+ * @property {string} ALL  ALL, 显示全部文本
+ * @property {string} NONE  NONE, 没有显示
+ * @property {string} YAXES  YAXES. 显示Y轴的文本
  */
 var GraphAxesTextDisplayMode = exports.GraphAxesTextDisplayMode = _SuperMap2.default.GraphAxesTextDisplayMode = {
-    ALL: "ALL",
-    NONE: "NONE",
-    YAXES: "YAXES"
+  ALL: "ALL",
+  NONE: "NONE",
+  YAXES: "YAXES"
 };
 
 /**
- * Constant: GraduatedMode
- * {Object} 专题图分级模式枚举类。 CONSTANT: "CONSTANT",
+ * @name GraduatedMode
+ * @memberOf SuperMap
+ * @description  专题图分级模式枚举。
  *
- * LOGARITHM: "LOGARITHM",
- *
- * SQUAREROOT: "SQUAREROOT".
+ * @property {string} CONSTANT  CONSTANT
+ * @property {string} LOGARITHM  LOGARITHM
+ * @property {string} SQUAREROOT  SQUAREROOT
  */
 var GraduatedMode = exports.GraduatedMode = _SuperMap2.default.GraduatedMode = {
-    CONSTANT: "CONSTANT",
-    LOGARITHM: "LOGARITHM",
-    SQUAREROOT: "SQUAREROOT"
+  CONSTANT: "CONSTANT",
+  LOGARITHM: "LOGARITHM",
+  SQUAREROOT: "SQUAREROOT"
 };
 
 /**
- * Constant: RangeMode
- * {Object} 范围分段专题图分段方式枚举类。
+ * @name RangeMode
+ * @memberOf SuperMap
+ * @description  范围分段专题图分段方式枚举。
  *
- * CUSTOMINTERVAL: "CUSTOMINTERVAL",
- *
- * EQUALINTERVAL: "EQUALINTERVAL",
- *
- * LOGARITHM: "LOGARITHM",
- *
- * QUANTILE: "QUANTILE",
- *
- * SQUAREROOT: "SQUAREROOT",
- *
- * STDDEVIATION: "STDDEVIATION".
+ * @property {string} CUSTOMINTERVAL  CUSTOMINTERVAL
+ * @property {string} EQUALINTERVAL  EQUALINTERVAL
+ * @property {string} LOGARITHM  LOGARITHM
+ * @property {string} QUANTILE  QUANTILE
+ * @property {string} SQUAREROOT  SQUAREROOT
+ * @property {string} STDDEVIATION  STDDEVIATION
  */
 var RangeMode = exports.RangeMode = _SuperMap2.default.RangeMode = {
-    CUSTOMINTERVAL: "CUSTOMINTERVAL",
-    EQUALINTERVAL: "EQUALINTERVAL",
-    LOGARITHM: "LOGARITHM",
-    QUANTILE: "QUANTILE",
-    SQUAREROOT: "SQUAREROOT",
-    STDDEVIATION: "STDDEVIATION"
+  CUSTOMINTERVAL: "CUSTOMINTERVAL",
+  EQUALINTERVAL: "EQUALINTERVAL",
+  LOGARITHM: "LOGARITHM",
+  QUANTILE: "QUANTILE",
+  SQUAREROOT: "SQUAREROOT",
+  STDDEVIATION: "STDDEVIATION"
 };
 
 /**
- * Constant: ThemeType
- * {Object} 专题图类型枚举类。
+ * @name ThemeType
+ * @memberOf SuperMap
+ * @description  专题图类型枚举。
  *
- * DOTDENSITY: "DOTDENSITY",
- *
- * GRADUATEDSYMBOL: "GRADUATEDSYMBOL",
- *
- * GRAPH: "GRAPH",
- *
- * LABEL: "LABEL",
- *
- * RANGE: "RANGE",
- *
- * UNIQUE: "UNIQUE".
+ * @property {string} DOTDENSITY  DOTDENSITY
+ * @property {string} GRADUATEDSYMBOL  GRADUATEDSYMBOL
+ * @property {string} GRAPH  GRAPH
+ * @property {string} LABEL  LABEL
+ * @property {string} RANGE  RANGE
+ * @property {string} UNIQUE  UNIQUE
  */
 var ThemeType = exports.ThemeType = _SuperMap2.default.ThemeType = {
-    DOTDENSITY: "DOTDENSITY",
-    GRADUATEDSYMBOL: "GRADUATEDSYMBOL",
-    GRAPH: "GRAPH",
-    LABEL: "LABEL",
-    RANGE: "RANGE",
-    UNIQUE: "UNIQUE"
+  DOTDENSITY: "DOTDENSITY",
+  GRADUATEDSYMBOL: "GRADUATEDSYMBOL",
+  GRAPH: "GRAPH",
+  LABEL: "LABEL",
+  RANGE: "RANGE",
+  UNIQUE: "UNIQUE"
 };
 
 /**
- * Constant: ColorGradientType
- * {Object} 渐变颜色枚举类。
+ * @name ColorGradientType
+ * @memberOf SuperMap
+ * @description  渐变颜色枚举。
  *
- * BLACK_WHITE: "BLACKWHITE",
- *
- * BLUE_BLACK: "BLUEBLACK",
- *
- * BLUE_RED : "BLUERED",
- *
- * BLUE_WHITE: "BLUEWHITE",
- *
- * CYAN_BLACK: "CYANBLACK",
- *
- * CYAN_BLUE: "CYANBLUE",
- *
- * CYAN_GREEN: "CYANGREEN",
- *
- * CYAN_WHITE: "CYANWHITE",
- *
- * GREEN_BLACK: "GREENBLACK",
- *
- * GREEN_BLUE: "GREENBLUE",
- *
- * GREEN_ORANGE_VIOLET: "GREENORANGEVIOLET",
- *
- * GREEN_RED: "GREENRED",
- *
- * GREEN_WHITE: "GREENWHITE",
- *
- * PINK_BLACK: "PINKBLACK",
- *
- * PINK_BLUE: "PINKBLUE",
- *
- * PINK_RED: "PINKRED",
- *
- * PINK_WHITE: "PINKWHITE",
- *
- * RAIN_BOW: "RAINBOW",
- *
- * RED_BLACK: "REDBLACK",
- *
- * RED_WHITE: "REDWHITE",
- *
- * SPECTRUM: "SPECTRUM",
- *
- * TERRAIN: "TERRAIN",
- *
- * YELLOW_BLACK: "YELLOWBLACK",
- *
- * YELLOW_BLUE: "YELLOWBLUE",
- *
- * YELLOW_GREEN: "YELLOWGREEN",
- *
- * YELLOW_RED: "YELLOWRED",
- *
- * YELLOW_WHITE: "YELLOWWHITE".
+ * @property {string} BLACK_WHITE  BLACKWHITE
+ * @property {string} BLUE_BLACK  BLUEBLACK
+ * @property {string} BLUE_RED   BLUERED
+ * @property {string} BLUE_WHITE  BLUEWHITE
+ * @property {string} CYAN_BLACK  CYANBLACK
+ * @property {string} CYAN_BLUE  CYANBLUE
+ * @property {string} CYAN_GREEN  CYANGREEN
+ * @property {string} CYAN_WHITE  CYANWHITE
+ * @property {string} GREEN_BLACK  GREENBLACK
+ * @property {string} GREEN_BLUE  GREENBLUE
+ * @property {string} GREEN_ORANGE_VIOLET  GREENORANGEVIOLET
+ * @property {string} GREEN_RED  GREENRED
+ * @property {string} GREEN_WHITE  GREENWHITE
+ * @property {string} PINK_BLACK  PINKBLACK
+ * @property {string} PINK_BLUE  PINKBLUE
+ * @property {string} PINK_RED  PINKRED
+ * @property {string} PINK_WHITE  PINKWHITE
+ * @property {string} RAIN_BOW  RAINBOW
+ * @property {string} RED_BLACK  REDBLACK
+ * @property {string} RED_WHITE  REDWHITE
+ * @property {string} SPECTRUM  SPECTRUM
+ * @property {string} TERRAIN  TERRAIN
+ * @property {string} YELLOW_BLACK  YELLOWBLACK
+ * @property {string} YELLOW_BLUE  YELLOWBLUE
+ * @property {string} YELLOW_GREEN  YELLOWGREEN
+ * @property {string} YELLOW_RED  YELLOWRED
+ * @property {string} YELLOW_WHITE  YELLOWWHITE
  */
 var ColorGradientType = exports.ColorGradientType = _SuperMap2.default.ColorGradientType = {
-    BLACK_WHITE: "BLACKWHITE",
-    BLUE_BLACK: "BLUEBLACK",
-    BLUE_RED: "BLUERED",
-    BLUE_WHITE: "BLUEWHITE",
-    CYAN_BLACK: "CYANBLACK",
-    CYAN_BLUE: "CYANBLUE",
-    CYAN_GREEN: "CYANGREEN",
-    CYAN_WHITE: "CYANWHITE",
-    GREEN_BLACK: "GREENBLACK",
-    GREEN_BLUE: "GREENBLUE",
-    GREEN_ORANGE_VIOLET: "GREENORANGEVIOLET",
-    GREEN_RED: "GREENRED",
-    GREEN_WHITE: "GREENWHITE",
-    PINK_BLACK: "PINKBLACK",
-    PINK_BLUE: "PINKBLUE",
-    PINK_RED: "PINKRED",
-    PINK_WHITE: "PINKWHITE",
-    RAIN_BOW: "RAINBOW",
-    RED_BLACK: "REDBLACK",
-    RED_WHITE: "REDWHITE",
-    SPECTRUM: "SPECTRUM",
-    TERRAIN: "TERRAIN",
-    YELLOW_BLACK: "YELLOWBLACK",
-    YELLOW_BLUE: "YELLOWBLUE",
-    YELLOW_GREEN: "YELLOWGREEN",
-    YELLOW_RED: "YELLOWRED",
-    YELLOW_WHITE: "YELLOWWHITE"
+  BLACK_WHITE: "BLACKWHITE",
+  BLUE_BLACK: "BLUEBLACK",
+  BLUE_RED: "BLUERED",
+  BLUE_WHITE: "BLUEWHITE",
+  CYAN_BLACK: "CYANBLACK",
+  CYAN_BLUE: "CYANBLUE",
+  CYAN_GREEN: "CYANGREEN",
+  CYAN_WHITE: "CYANWHITE",
+  GREEN_BLACK: "GREENBLACK",
+  GREEN_BLUE: "GREENBLUE",
+  GREEN_ORANGE_VIOLET: "GREENORANGEVIOLET",
+  GREEN_RED: "GREENRED",
+  GREEN_WHITE: "GREENWHITE",
+  PINK_BLACK: "PINKBLACK",
+  PINK_BLUE: "PINKBLUE",
+  PINK_RED: "PINKRED",
+  PINK_WHITE: "PINKWHITE",
+  RAIN_BOW: "RAINBOW",
+  RED_BLACK: "REDBLACK",
+  RED_WHITE: "REDWHITE",
+  SPECTRUM: "SPECTRUM",
+  TERRAIN: "TERRAIN",
+  YELLOW_BLACK: "YELLOWBLACK",
+  YELLOW_BLUE: "YELLOWBLUE",
+  YELLOW_GREEN: "YELLOWGREEN",
+  YELLOW_RED: "YELLOWRED",
+  YELLOW_WHITE: "YELLOWWHITE"
 };
 
 /**
- * Constant: TextAlignment
- * {Object} 文本对齐枚举类。
+ * @name TextAlignment
+ * @memberOf SuperMap
+ * @description  文本对齐枚举。
  *
- * TOPLEFT: "TOPLEFT",
- *
- * TOPCENTER: "TOPCENTER",
- *
- * TOPRIGHT: "TOPRIGHT",
- *
- * BASELINELEFT: "BASELINELEFT",
- *
- * BASELINECENTER: "BASELINECENTER",
- *
- * BASELINERIGHT: "BASELINERIGHT",
- *
- * BOTTOMLEFT: "BOTTOMLEFT",
- *
- * BOTTOMCENTER: "BOTTOMCENTER",
- *
- * BOTTOMRIGHT: "BOTTOMRIGHT",
- *
- * MIDDLELEFT: "MIDDLELEFT",
- *
- * MIDDLECENTER: "MIDDLECENTER",
- *
- * MIDDLERIGHT: "MIDDLERIGHT".
+ * @property {string} TOPLEFT  TOPLEFT
+ * @property {string} TOPCENTER  TOPCENTER
+ * @property {string} TOPRIGHT  TOPRIGHT
+ * @property {string} BASELINELEFT  BASELINELEFT
+ * @property {string} BASELINECENTER  BASELINECENTER
+ * @property {string} BASELINERIGHT  BASELINERIGHT
+ * @property {string} BOTTOMLEFT  BOTTOMLEFT
+ * @property {string} BOTTOMCENTER  BOTTOMCENTER
+ * @property {string} BOTTOMRIGHT  BOTTOMRIGHT
+ * @property {string} MIDDLELEFT  MIDDLELEFT
+ * @property {string} MIDDLECENTER  MIDDLECENTER
+ * @property {string} MIDDLERIGHT  MIDDLERIGHT
  */
 var TextAlignment = exports.TextAlignment = _SuperMap2.default.TextAlignment = {
-    TOPLEFT: "TOPLEFT",
-    TOPCENTER: "TOPCENTER",
-    TOPRIGHT: "TOPRIGHT",
-    BASELINELEFT: "BASELINELEFT",
-    BASELINECENTER: "BASELINECENTER",
-    BASELINERIGHT: "BASELINERIGHT",
-    BOTTOMLEFT: "BOTTOMLEFT",
-    BOTTOMCENTER: "BOTTOMCENTER",
-    BOTTOMRIGHT: "BOTTOMRIGHT",
-    MIDDLELEFT: "MIDDLELEFT",
-    MIDDLECENTER: "MIDDLECENTER",
-    MIDDLERIGHT: "MIDDLERIGHT"
+  TOPLEFT: "TOPLEFT",
+  TOPCENTER: "TOPCENTER",
+  TOPRIGHT: "TOPRIGHT",
+  BASELINELEFT: "BASELINELEFT",
+  BASELINECENTER: "BASELINECENTER",
+  BASELINERIGHT: "BASELINERIGHT",
+  BOTTOMLEFT: "BOTTOMLEFT",
+  BOTTOMCENTER: "BOTTOMCENTER",
+  BOTTOMRIGHT: "BOTTOMRIGHT",
+  MIDDLELEFT: "MIDDLELEFT",
+  MIDDLECENTER: "MIDDLECENTER",
+  MIDDLERIGHT: "MIDDLERIGHT"
 };
 
 /**
- * Constant: FillGradientMode
- * {Object} 渐变填充风格的渐变类型枚举类。
+ * @name FillGradientMode
+ * @memberOf SuperMap
+ * @description  渐变填充风格的渐变类型枚举。
  *
- * NONE: "NONE",
- *
- * LINEAR: "LINEAR",
- *
- * RADIAL: "RADIAL",
- *
- * CONICAL: "CONICAL",
- *
- * SQUARE: "SQUARE".
+ * @property {string} NONE  NONE
+ * @property {string} LINEAR  LINEAR
+ * @property {string} RADIAL  RADIAL
+ * @property {string} CONICAL  CONICAL
+ * @property {string} SQUARE  SQUARE
  */
 var FillGradientMode = exports.FillGradientMode = _SuperMap2.default.FillGradientMode = {
-    NONE: "NONE",
-    LINEAR: "LINEAR",
-    RADIAL: "RADIAL",
-    CONICAL: "CONICAL",
-    SQUARE: "SQUARE"
+  NONE: "NONE",
+  LINEAR: "LINEAR",
+  RADIAL: "RADIAL",
+  CONICAL: "CONICAL",
+  SQUARE: "SQUARE"
 };
 
 /**
- * Constant: AlongLineDirection
- * {Object} 标签沿线标注方向枚举类。
+ * @name AlongLineDirection
+ * @memberOf SuperMap
+ * @name AlongLineDirection
+ * @memberOf SuperMap
+ * @description  标签沿线标注方向枚举。
  *
- * NORMAL: "ALONG_LINE_NORMAL",
- *
- * LB_TO_RT: "LEFT_BOTTOM_TO_RIGHT_TOP",
- *
- * LT_TO_RB: "LEFT_TOP_TO_RIGHT_BOTTOM",
- *
- * RB_TO_LT: "RIGHT_BOTTOM_TO_LEFT_TOP",
- *
- * RT_TO_LB: "RIGHT_TOP_TO_LEFT_BOTTOM".
+ * @property {string} NORMAL  ALONG_LINE_NORMAL
+ * @property {string} LB_TO_RT  LEFT_BOTTOM_TO_RIGHT_TOP
+ * @property {string} LT_TO_RB  LEFT_TOP_TO_RIGHT_BOTTOM
+ * @property {string} RB_TO_LT  RIGHT_BOTTOM_TO_LEFT_TOP
+ * @property {string} RT_TO_LB  RIGHT_TOP_TO_LEFT_BOTTOM
  */
 var AlongLineDirection = exports.AlongLineDirection = _SuperMap2.default.AlongLineDirection = {
-    NORMAL: "ALONG_LINE_NORMAL",
-    LB_TO_RT: "LEFT_BOTTOM_TO_RIGHT_TOP",
-    LT_TO_RB: "LEFT_TOP_TO_RIGHT_BOTTOM",
-    RB_TO_LT: "RIGHT_BOTTOM_TO_LEFT_TOP",
-    RT_TO_LB: "RIGHT_TOP_TO_LEFT_BOTTOM"
+  NORMAL: "ALONG_LINE_NORMAL",
+  LB_TO_RT: "LEFT_BOTTOM_TO_RIGHT_TOP",
+  LT_TO_RB: "LEFT_TOP_TO_RIGHT_BOTTOM",
+  RB_TO_LT: "RIGHT_BOTTOM_TO_LEFT_TOP",
+  RT_TO_LB: "RIGHT_TOP_TO_LEFT_BOTTOM"
 };
 
 /**
- * Constant: LabelBackShape
- * {Object} 标签专题图中标签背景的形状枚举类。
+ * @name LabelBackShape
+ * @memberOf SuperMap
+ * @description  标签专题图中标签背景的形状枚举。
  *
- * DIAMOND: "DIAMOND",
- *
- * ELLIPSE: "ELLIPSE",
- *
- * MARKER: "MARKER",
- *
- * NONE: "NONE",
- *
- * RECT: "RECT",
- *
- * ROUNDRECT: "ROUNDRECT",
- *
- * TRIANGLE: "TRIANGLE".
+ * @property {string} DIAMOND  DIAMOND
+ * @property {string} ELLIPSE  ELLIPSE
+ * @property {string} MARKER  MARKER
+ * @property {string} NONE  NONE
+ * @property {string} RECT  RECT
+ * @property {string} ROUNDRECT  ROUNDRECT
+ * @property {string} TRIANGLE  TRIANGLE
  */
 var LabelBackShape = exports.LabelBackShape = _SuperMap2.default.LabelBackShape = {
-    DIAMOND: "DIAMOND",
-    ELLIPSE: "ELLIPSE",
-    MARKER: "MARKER",
-    NONE: "NONE",
-    RECT: "RECT",
-    ROUNDRECT: "ROUNDRECT",
-    TRIANGLE: "TRIANGLE"
+  DIAMOND: "DIAMOND",
+  ELLIPSE: "ELLIPSE",
+  MARKER: "MARKER",
+  NONE: "NONE",
+  RECT: "RECT",
+  ROUNDRECT: "ROUNDRECT",
+  TRIANGLE: "TRIANGLE"
 };
 
 /**
- * Constant: LabelOverLengthMode
- * {Object} 标签专题图中超长标签的处理模式枚举类。
+ * @name LabelOverLengthMode
+ * @memberOf SuperMap
+ * @description  标签专题图中超长标签的处理模式枚举。
  *
- * NEWLINE: "NEWLINE",
- *
- * NONE: "NONE",
- *
- * OMIT: "OMIT".
+ * @property {string} NEWLINE  NEWLINE
+ * @property {string} NONE  NONE
+ * @property {string} OMIT  OMIT
  */
 var LabelOverLengthMode = exports.LabelOverLengthMode = _SuperMap2.default.LabelOverLengthMode = {
-    NEWLINE: "NEWLINE",
-    NONE: "NONE",
-    OMIT: "OMIT"
+  NEWLINE: "NEWLINE",
+  NONE: "NONE",
+  OMIT: "OMIT"
 };
 
 /**
- * Constant: DirectionType
- * {Object} 网络分析中方向枚举类。
+ * @name DirectionType
+ * @memberOf SuperMap
+ * @description  网络分析中方向枚举。
  * 在行驶引导子项中使用。
  *
- * EAST: "EAST",
- *
- * NONE: "NONE",
- *
- * NORTH: "NORTH",
- *
- * SOURTH: "SOURTH",
- *
- * WEST: "WEST".
+ * @property {string} EAST  EAST
+ * @property {string} NONE  NONE
+ * @property {string} NORTH  NORTH
+ * @property {string} SOURTH  SOURTH
+ * @property {string} WEST  WEST
  */
 var DirectionType = exports.DirectionType = _SuperMap2.default.DirectionType = {
-    EAST: "EAST",
-    NONE: "NONE",
-    NORTH: "NORTH",
-    SOURTH: "SOURTH",
-    WEST: "WEST"
+  EAST: "EAST",
+  NONE: "NONE",
+  NORTH: "NORTH",
+  SOURTH: "SOURTH",
+  WEST: "WEST"
 };
 
 /**
- * Constant: SideType
- * {Object} 行驶位置枚举类。
+ * @name SideType
+ * @memberOf SuperMap
+ * @description  行驶位置枚举。
  * 表示在行驶在路的左边、右边或者路上的枚举,该类用在行驶导引子项类中。
  *
- * LEFT: "LEFT",
- *
- * MIDDLE: "MIDDLE",
- *
- * NONE: "NONE",
- *
- * RIGHT: "RIGHT".
+ * @property {string} LEFT  LEFT
+ * @property {string} MIDDLE  MIDDLE
+ * @property {string} NONE  NONE
+ * @property {string} RIGHT  RIGHT
  */
 var SideType = exports.SideType = _SuperMap2.default.SideType = {
-    LEFT: "LEFT",
-    MIDDLE: "MIDDLE",
-    NONE: "NONE",
-    RIGHT: "RIGHT"
+  LEFT: "LEFT",
+  MIDDLE: "MIDDLE",
+  NONE: "NONE",
+  RIGHT: "RIGHT"
 };
 
 /**
- * Constant: SupplyCenterType
- * {Object} 资源供给中心类型枚举类。
- * 该枚举类定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
+ * @name SupplyCenterType
+ * @memberOf SuperMap
+ * @description  资源供给中心类型枚举。
+ * 该枚举定义了网络分析中资源中心点的类型，主要用于资源分配和选址分区。
  * 资源供给中心点的类型包括非中心，固定中心和可选中心。固定中心用于资源分配分析； 固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
  *
- * FIXEDCENTER: "FIXEDCENTER",
- *
- * NULL: "NULL",
- *
- * OPTIONALCENTER: "OPTIONALCENTER".
+ * @property {string} FIXEDCENTER  FIXEDCENTER
+ * @property {string} NULL  NULL
+ * @property {string} OPTIONALCENTER  OPTIONALCENTER
  */
 var SupplyCenterType = exports.SupplyCenterType = _SuperMap2.default.SupplyCenterType = {
-    FIXEDCENTER: "FIXEDCENTER",
-    NULL: "NULL",
-    OPTIONALCENTER: "OPTIONALCENTER"
+  FIXEDCENTER: "FIXEDCENTER",
+  NULL: "NULL",
+  OPTIONALCENTER: "OPTIONALCENTER"
 };
 
 /**
- * Constant: TurnType
- * {Object} 转弯方向枚举类。
+ * @name TurnType
+ * @memberOf SuperMap
+ * @description  转弯方向枚举。
  * 用在行驶引导子项类中，表示转弯的方向。
  *
- * AHEAD: "AHEAD",
- *
- * BACK: "BACK",
- *
- * END: "END",
- *
- * LEFT: "LEFT",
- *
- * NONE: "NONE",
- *
- * RIGHT: "RIGHT".
+ * @property {string} AHEAD  AHEAD
+ * @property {string} BACK  BACK
+ * @property {string} END  END
+ * @property {string} LEFT  LEFT
+ * @property {string} NONE  NONE
+ * @property {string} RIGHT  RIGHT
  */
 var TurnType = exports.TurnType = _SuperMap2.default.TurnType = {
-    AHEAD: "AHEAD",
-    BACK: "BACK",
-    END: "END",
-    LEFT: "LEFT",
-    NONE: "NONE",
-    RIGHT: "RIGHT"
+  AHEAD: "AHEAD",
+  BACK: "BACK",
+  END: "END",
+  LEFT: "LEFT",
+  NONE: "NONE",
+  RIGHT: "RIGHT"
 };
 
 /**
- * Constant: BufferEndType
- * {Object} 缓冲区分析BufferEnd类型。
+ * @name BufferEndType
+ * @memberOf SuperMap
+ * @description  缓冲区分析BufferEnd类型。
  *
- * FLAT: "FLAT",
- *
- * ROUND: "ROUND".
+ * @property {string} FLAT  FLAT
+ * @property {string} ROUND  ROUND
  */
 var BufferEndType = exports.BufferEndType = _SuperMap2.default.BufferEndType = {
-    FLAT: "FLAT",
-    ROUND: "ROUND"
+  FLAT: "FLAT",
+  ROUND: "ROUND"
 };
 
 /**
- * Constant: OverlayOperationType
- * {Object} 叠加分析类型枚举。
+ * @name OverlayOperationType
+ * @memberOf SuperMap
+ * @description  叠加分析类型枚举。
  *
- * CLIP: "CLIP",
- *
- * ERASE: "ERASE",
- *
- * IDENTITY: "IDENTITY",
- *
- * INTERSECT: "INTERSECT",
- *
- * UNION: "UNION",
- *
- * UPDATE: "UPDATE",
- *
- * XOR: "XOR".
+ * @property {string} CLIP  CLIP
+ * @property {string} ERASE  ERASE
+ * @property {string} IDENTITY  IDENTITY
+ * @property {string} INTERSECT  INTERSECT
+ * @property {string} UNION  UNION
+ * @property {string} UPDATE  UPDATE
+ * @property {string} XOR  XOR
  */
 var OverlayOperationType = exports.OverlayOperationType = _SuperMap2.default.OverlayOperationType = {
-    CLIP: "CLIP",
-    ERASE: "ERASE",
-    IDENTITY: "IDENTITY",
-    INTERSECT: "INTERSECT",
-    UNION: "UNION",
-    UPDATE: "UPDATE",
-    XOR: "XOR"
+  CLIP: "CLIP",
+  ERASE: "ERASE",
+  IDENTITY: "IDENTITY",
+  INTERSECT: "INTERSECT",
+  UNION: "UNION",
+  UPDATE: "UPDATE",
+  XOR: "XOR"
 };
 
 /**
- * Constant: SmoothMethod
- * {Object} 光滑方法枚举类。
+ * @name SmoothMethod
+ * @memberOf SuperMap
+ * @description  光滑方法枚举。
  * 用于从Grid 或DEM数据生成等值线或等值面时对等值线或者等值面的边界线进行平滑处理的方法。
  *
- * BSPLINE: "BSPLINE",
- *
- * POLISH: "POLISH".
+ * @property {string} BSPLINE  BSPLINE
+ * @property {string} POLISH  POLISH
  */
 var SmoothMethod = exports.SmoothMethod = _SuperMap2.default.SmoothMethod = {
-    BSPLINE: "BSPLINE",
-    POLISH: "POLISH"
+  BSPLINE: "BSPLINE",
+  POLISH: "POLISH"
 };
 
 /**
- * Constant: SurfaceAnalystMethod
- * {Object} 表面分析方法枚举类。
+ * @name SurfaceAnalystMethod
+ * @memberOf SuperMap
+ * @description  表面分析方法枚举。
  * 通过对数据进行表面分析，能够挖掘原始数据所包含的信息，使某些细节明显化，易于分析。
  *
- * ISOLINE: "ISOLINE",
- *
- * ISOREGION: "ISOREGION".
+ * @property {string} ISOLINE  ISOLINE
+ * @property {string} ISOREGION  ISOREGION
  */
 var SurfaceAnalystMethod = exports.SurfaceAnalystMethod = _SuperMap2.default.SurfaceAnalystMethod = {
-    ISOLINE: "ISOLINE",
-    ISOREGION: "ISOREGION"
+  ISOLINE: "ISOLINE",
+  ISOREGION: "ISOREGION"
 };
 /**
- * Constant: DataReturnMode
- * {Object} 数据返回模式枚举类。
- * 该枚举类用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
+ * @name DataReturnMode
+ * @memberOf SuperMap
+ * @description  数据返回模式枚举。
+ * 该枚举用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
  *
- * DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
- *
- * DATASET_ONLY: "DATASET_ONLY",
- *
- * RECORDSET_ONLY: "RECORDSET_ONLY".
+ * @property {string} DATASET_AND_RECORDSET  DATASET_AND_RECORDSET
+ * @property {string} DATASET_ONLY  DATASET_ONLY
+ * @property {string} RECORDSET_ONLY  RECORDSET_ONLY
  */
 var DataReturnMode = exports.DataReturnMode = _SuperMap2.default.DataReturnMode = {
-    DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
-    DATASET_ONLY: "DATASET_ONLY",
-    RECORDSET_ONLY: "RECORDSET_ONLY"
+  DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
+  DATASET_ONLY: "DATASET_ONLY",
+  RECORDSET_ONLY: "RECORDSET_ONLY"
 };
 
 /**
- * Constant: EditType
- * {Object} 要素集更新模式枚举类。
- * 该枚举类用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * @name EditType
+ * @memberOf SuperMap
+ * @description  要素集更新模式枚举。
+ * 该枚举用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  *
- * ADD: "add",
- *
- * UPDATE: "update",
- *
- * DELETE: "delete".
+ * @property {string} ADD  add
+ * @property {string} UPDATE  update
+ * @property {string} DELETE  delete
  */
 var EditType = exports.EditType = _SuperMap2.default.EditType = {
-    ADD: "add",
-    UPDATE: "update",
-    DELETE: "delete"
+  ADD: "add",
+  UPDATE: "update",
+  DELETE: "delete"
 };
 
 /**
- * Constant: TransferTactic
- * {Object} 公交换乘策略枚举类。
- * 该枚举类用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
+ * @name TransferTactic
+ * @memberOf SuperMap
+ * @description  公交换乘策略枚举。
+ * 该枚举用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
  *
- * LESS_TIME: "LESS_TIME",
- *
- * LESS_TRANSFER: "LESS_TRANSFER",
- *
- * LESS_WALK: "LESS_WALK",
- *
- * MIN_DISTANCE: "MIN_DISTANCE"
+ * @property {string} LESS_TIME  LESS_TIME
+ * @property {string} LESS_TRANSFER  LESS_TRANSFER
+ * @property {string} LESS_WALK  LESS_WALK
+ * @property {string} MIN_DISTANCE  MIN_DISTANCE
  */
 var TransferTactic = exports.TransferTactic = _SuperMap2.default.TransferTactic = {
-    LESS_TIME: "LESS_TIME",
-    LESS_TRANSFER: "LESS_TRANSFER",
-    LESS_WALK: "LESS_WALK",
-    MIN_DISTANCE: "MIN_DISTANCE"
+  LESS_TIME: "LESS_TIME",
+  LESS_TRANSFER: "LESS_TRANSFER",
+  LESS_WALK: "LESS_WALK",
+  MIN_DISTANCE: "MIN_DISTANCE"
 };
 
 /**
- * Constant: TransferPreference
- * {Object} 公交换乘策略枚举类。
- * 该枚举类用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
+ * @name TransferPreference
+ * @memberOf SuperMap
+ * @description  公交换乘策略枚举。
+ * 该枚举用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
  *
- * BUS: "BUS",
- *
- * SUBWAY: "SUBWAY",
- *
- * NO_SUBWAY: "NO_SUBWAY",
- *
- * NONE: "NONE"
+ * @property {string} BUS  BUS
+ * @property {string} SUBWAY  SUBWAY
+ * @property {string} NO_SUBWAY  NO_SUBWAY
+ * @property {string} NONE  NONE
  */
 var TransferPreference = exports.TransferPreference = _SuperMap2.default.TransferPreference = {
-    BUS: "BUS",
-    SUBWAY: "SUBWAY",
-    NO_SUBWAY: "NO_SUBWAY",
-    NONE: "NONE"
+  BUS: "BUS",
+  SUBWAY: "SUBWAY",
+  NO_SUBWAY: "NO_SUBWAY",
+  NONE: "NONE"
 };
 
 /**
- * Constant: GridType
- * {Object} 地图背景格网类型枚举类。
+ * @name GridType
+ * @memberOf SuperMap
+ * @description  地图背景格网类型枚举。
  *
- * CROSS: "CROSS",
- *
- * GRID: "GRID",
- *
- * POINT: "POINT"
+ * @property {string} CROSS  CROSS
+ * @property {string} GRID  GRID
+ * @property {string} POINT  POINT
  */
 var GridType = exports.GridType = _SuperMap2.default.GridType = {
-    CROSS: "CROSS",
-    GRID: "GRID",
-    POINT: "POINT"
+  CROSS: "CROSS",
+  GRID: "GRID",
+  POINT: "POINT"
 };
 
 /**
- * Constant: ColorSpaceType
- * {Object} 色彩空间枚举。
+ * @name ColorSpaceType
+ * @memberOf SuperMap
+ * @description  色彩空间枚举。
  * 由于成色原理的不同，决定了显示器、投影仪这类靠色光直接合成颜色的颜色设备和打印机、
  * 印刷机这类靠使用颜料的印刷设备在生成颜色方式上的区别。
  * 针对上述不同成色方式，SuperMap 提供两种色彩空间，
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
  *
- * CMYK: "CMYK",
- *
- * RGB: "RGB"
+ * @property {string} CMYK  CMYK
+ * @property {string} RGB  RGB
  */
 var ColorSpaceType = exports.ColorSpaceType = _SuperMap2.default.ColorSpaceType = {
-    CMYK: "CMYK",
-    RGB: "RGB"
+  CMYK: "CMYK",
+  RGB: "RGB"
 };
 
 /**
- * Constant: LayerType
- * {Object} 图层类型。
+ * @name LayerType
+ * @memberOf SuperMap
+ * @description  图层类型。
  *
- * UGC: "UGC",
- *
- * WMS: "WMS"
- *
- * WFS: "WFS",
- *
- * CUSTOM: "CUSTOM"
+ * @property {string} UGC  UGC
+ * @property {string} WMS  WMS
+ * @property {string} WFS  WFS
+ * @property {string} CUSTOM  CUSTOM
  */
 var LayerType = exports.LayerType = _SuperMap2.default.LayerType = {
-    UGC: "UGC",
-    WMS: "WMS",
-    WFS: "WFS",
-    CUSTOM: "CUSTOM"
+  UGC: "UGC",
+  WMS: "WMS",
+  WFS: "WFS",
+  CUSTOM: "CUSTOM"
 
 };
 
 /**
- * Constant: StatisticMode
- * {Object} 字段统计方法类型。
+ * @name UGCLayerType
+ * @memberOf SuperMap
+ * @description  UGC图层类型。
  *
- * AVERAGE: "AVERAGE", 统计所选字段的平均值
+ * @property {string} THEME  THEME
+ * @property {string} VECTOR  VECTOR
+ * @property {string} GRID  GRID
+ * @property {string} IMAGE  IMAGE
+ */
+var UGCLayerType = exports.UGCLayerType = _SuperMap2.default.UGCLayerType = {
+  THEME: "THEME",
+  VECTOR: "VECTOR",
+  GRID: "GRID",
+  IMAGE: "IMAGE"
+
+};
+
+/**
+ * @name StatisticMode
+ * @memberOf SuperMap
+ * @description  字段统计方法类型。
  *
- * MAX: "MAX", 统计所选字段的最大值
- *
- * MIN: "MIN", 统计所选字段的最小值
- *
- * STDDEVIATION: "STDDEVIATION", 统计所选字段的标准差
- *
- * SUM: "SUM", 统计所选字段的总和
- *
- * VARIANCE: "VARIANCE", 统计所选字段的方差
+ * @property {string} AVERAGE  AVERAGE, 统计所选字段的平均值
+ * @property {string} MAX  MAX, 统计所选字段的最大值
+ * @property {string} MIN  MIN, 统计所选字段的最小值
+ * @property {string} STDDEVIATION  STDDEVIATION, 统计所选字段的标准差
+ * @property {string} SUM  SUM, 统计所选字段的总和
+ * @property {string} VARIANCE  VARIANCE, 统计所选字段的方差
  */
 var StatisticMode = exports.StatisticMode = _SuperMap2.default.StatisticMode = {
-    AVERAGE: "AVERAGE",
-    MAX: "MAX",
-    MIN: "MIN",
-    STDDEVIATION: "STDDEVIATION",
-    SUM: "SUM",
-    VARIANCE: "VARIANCE"
+  AVERAGE: "AVERAGE",
+  MAX: "MAX",
+  MIN: "MIN",
+  STDDEVIATION: "STDDEVIATION",
+  SUM: "SUM",
+  VARIANCE: "VARIANCE"
 };
 
 /**
- * Constant: PixelFormat
- * {Object} 栅格与影像数据存储的像素格式枚举类。
+ * @name PixelFormat
+ * @memberOf SuperMap
+ * @description  栅格与影像数据存储的像素格式枚举。
  *
- * BIT16: "BIT16", 每个像元用16个比特(即2个字节)表示
- *
- * BIT32: "BIT32", 每个像元用32个比特(即4个字节)表示
- *
- * BIT64: "BIT64", 每个像元用64个比特(即8个字节)表示，只提供给栅格数据集使用
- *
- * SINGLE: "SINGLE", 每个像元用4个字节来表示，只提供给栅格数据集使用
- *
- * DOUBLE: "DOUBLE", 每个像元用8个字节来表示，只提供给栅格数据集使用
- *
- * UBIT1: "UBIT1", 每个像元用1个比特表示
- *
- * UBIT4: "UBIT4", 每个像元用4个比特来表示
- *
- * UBIT8: "UBIT8", 每个像元用8个比特(即1个字节)来表示
- *
- * UBIT24: "UBIT24", 每个像元用24个比特(即3个字节)来表示
- *
- * UBIT32: "UBIT32", 每个像元用32个比特(即4个字节)来表示
+ * @property {string} BIT16  BIT16, 每个像元用16个比特(即2个字节)表示
+ * @property {string} BIT32  BIT32, 每个像元用32个比特(即4个字节)表示
+ * @property {string} BIT64  BIT64, 每个像元用64个比特(即8个字节)表示，只提供给栅格数据集使用
+ * @property {string} SINGLE  SINGLE, 每个像元用4个字节来表示，只提供给栅格数据集使用
+ * @property {string} DOUBLE  DOUBLE, 每个像元用8个字节来表示，只提供给栅格数据集使用
+ * @property {string} UBIT1  UBIT1, 每个像元用1个比特表示
+ * @property {string} UBIT4  UBIT4, 每个像元用4个比特来表示
+ * @property {string} UBIT8  UBIT8, 每个像元用8个比特(即1个字节)来表示
+ * @property {string} UBIT24  UBIT24, 每个像元用24个比特(即3个字节)来表示
+ * @property {string} UBIT32  UBIT32, 每个像元用32个比特(即4个字节)来表示
  */
 var PixelFormat = exports.PixelFormat = _SuperMap2.default.PixelFormat = {
-    BIT16: "BIT16",
-    BIT32: "BIT32",
-    BIT64: "BIT64",
-    SINGLE: "SINGLE",
-    DOUBLE: "DOUBLE",
-    UBIT1: "UBIT1",
-    UBIT4: "UBIT4",
-    UBIT8: "UBIT8",
-    UBIT24: "UBIT24",
-    UBIT32: "UBIT32"
+  BIT16: "BIT16",
+  BIT32: "BIT32",
+  BIT64: "BIT64",
+  SINGLE: "SINGLE",
+  DOUBLE: "DOUBLE",
+  UBIT1: "UBIT1",
+  UBIT4: "UBIT4",
+  UBIT8: "UBIT8",
+  UBIT24: "UBIT24",
+  UBIT32: "UBIT32"
 };
 
 /**
- * Constant: SearchMode
- * {Object} 内插时使用的样本点的查找方式枚举
+ * @name SearchMode
+ * @memberOf SuperMap
+ * @description  内插时使用的样本点的查找方式枚举
  *
- * KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT", 使用 KDTREE 的固定点数方式查找参与内插分析的点
- *
- * KDTREE_FIXED_RADIUS: "KDTREE_FIXED_RADIUS", 使用 KDTREE 的定长方式查找参与内插分析的点
- *
- * NONE: "NONE", 不进行查找，使用所有的输入点进行内插分析
- *
- * QUADTREE: "QUADTREE", 使用 QUADTREE 方式查找参与内插分析的点，仅对样条（RBF）插值和普通克吕金（Kriging）有用
+ * @property {string} KDTREE_FIXED_COUNT  KDTREE_FIXED_COUNT, 使用 KDTREE 的固定点数方式查找参与内插分析的点
+ * @property {string} KDTREE_FIXED_RADIUS  KDTREE_FIXED_RADIUS, 使用 KDTREE 的定长方式查找参与内插分析的点
+ * @property {string} NONE  NONE, 不进行查找，使用所有的输入点进行内插分析
+ * @property {string} QUADTREE  QUADTREE, 使用 QUADTREE 方式查找参与内插分析的点，仅对样条（RBF）插值和普通克吕金（Kriging）有用
  */
 var SearchMode = exports.SearchMode = _SuperMap2.default.SearchMode = {
-    KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
-    KDTREE_FIXED_RADIUS: "KDTREE_FIXED_RADIUS",
-    NONE: "NONE",
-    QUADTREE: "QUADTREE"
+  KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
+  KDTREE_FIXED_RADIUS: "KDTREE_FIXED_RADIUS",
+  NONE: "NONE",
+  QUADTREE: "QUADTREE"
 };
 
 /**
- * Constant: InterpolationAlgorithmType
- * {Object} 插值分析的算法的类型
+ * @name InterpolationAlgorithmType
+ * @memberOf SuperMap
+ * @description  插值分析的算法的类型
  *
- * KRIGING: "KRIGING", 普通克吕金插值法
- *
- * SimpleKriging: "SimpleKriging", 简单克吕金插值法
- *
- * UniversalKriging: "UniversalKriging", 泛克吕金插值法
+ * @property {string} KRIGING  KRIGING, 普通克吕金插值法
+ * @property {string} SimpleKriging  SimpleKriging, 简单克吕金插值法
+ * @property {string} UniversalKriging  UniversalKriging, 泛克吕金插值法
  */
 var InterpolationAlgorithmType = exports.InterpolationAlgorithmType = _SuperMap2.default.InterpolationAlgorithmType = {
-    KRIGING: "KRIGING",
-    SimpleKriging: "SimpleKriging",
-    UniversalKriging: "UniversalKriging"
+  KRIGING: "KRIGING",
+  SimpleKriging: "SimpleKriging",
+  UniversalKriging: "UniversalKriging"
 };
 
 /**
- * Constant: VariogramMode
- * {Object} 克吕金（Kriging）插值时的半变函数类型枚举
+ * @name VariogramMode
+ * @memberOf SuperMap
+ * @description  克吕金（Kriging）插值时的半变函数类型枚举
  *
- * EXPONENTIAL: "EXPONENTIAL", 指数函数（Exponential Variogram Mode）
- *
- * GAUSSIAN: "GAUSSIAN",  高斯函数（Gaussian Variogram Mode）
- *
- * SPHERICAL: "SPHERICAL", 球型函数（Spherical Variogram Mode）
+ * @property {string} EXPONENTIAL  EXPONENTIAL, 指数函数（Exponential Variogram Mode）
+ * @property {string} GAUSSIAN  GAUSSIAN,  高斯函数（Gaussian Variogram Mode）
+ * @property {string} SPHERICAL  SPHERICAL, 球型函数（Spherical Variogram Mode）
  */
 var VariogramMode = exports.VariogramMode = _SuperMap2.default.VariogramMode = {
-    EXPONENTIAL: "EXPONENTIAL",
-    GAUSSIAN: "GAUSSIAN",
-    SPHERICAL: "SPHERICAL"
+  EXPONENTIAL: "EXPONENTIAL",
+  GAUSSIAN: "GAUSSIAN",
+  SPHERICAL: "SPHERICAL"
 };
 
 /**
- * Constant: Exponent
- * {Object} 定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
+ * @name Exponent
+ * @memberOf SuperMap
+ * @description  定义了泛克吕金（UniversalKriging）插值时样点数据中趋势面方程的阶数
  *
- * EXP1: "EXP1", 阶数为1
- *
- * EXP2: "EXP2", 阶数为2
+ * @property {string} EXP1  EXP1, 阶数为1
+ * @property {string} EXP2  EXP2, 阶数为2
  */
 var Exponent = exports.Exponent = _SuperMap2.default.Exponent = {
-    EXP1: "EXP1",
-    EXP2: "EXP2"
+  EXP1: "EXP1",
+  EXP2: "EXP2"
 };
-var ServerType = exports.ServerType = _SuperMap2.default.ServerType = {
-    ISERVER: "ISERVER",
-    IPORTAL: "IPORTAL",
-    ONLINE: "ONLINE"
-};
+
 /**
- * token申请的客户端标识类型
- * @type {{IP: string, REFERER: string, REQUESTIP: string, NONE: string}}
+ * @name ClientType
+ * @memberOf SuperMap
+ * @description token申请的客户端标识类型
+ *
+ * @property {string} IP  IP
+ * @property {string} REFERER  Referer
+ * @property {string} REQUESTIP  RequestIP
+ * @property {string} NONE  NONE
+ * @property {string} SERVER  SERVER
+ * @property {string} WEB  WEB
  */
 var ClientType = exports.ClientType = _SuperMap2.default.ClientType = {
-    IP: "IP",
-    REFERER: "Referer",
-    REQUESTIP: "RequestIP",
-    NONE: "NONE",
-    SERVER: "SERVER",
-    WEB: "WEB"
+  IP: "IP",
+  REFERER: "Referer",
+  REQUESTIP: "RequestIP",
+  NONE: "NONE",
+  SERVER: "SERVER",
+  WEB: "WEB"
 };
+
 /**
- * 客户端专题图图表类型
- * @type {{BAR: string, BAR3D: string, CIRCLE: string, PIE: string, POINT: string, LINE: string, RING: string}}
+ * @name ChartType
+ * @memberOf SuperMap
+ * @description 客户端专题图图表类型
+ *
+ * @property {string} BAR  Bar
+ * @property {string} BAR3D  Bar3D
+ * @property {string} CIRCLE  Circle
+ * @property {string} PIE  Pie
+ * @property {string} POINT  Point
+ * @property {string} LINE  Line
+ * @property {string} RING  Ring
  */
 var ChartType = exports.ChartType = _SuperMap2.default.ChartType = {
-    BAR: "Bar",
-    BAR3D: "Bar3D",
-    CIRCLE: "Circle",
-    PIE: "Pie",
-    POINT: "Point",
-    LINE: "Line",
-    RING: "Ring"
+  BAR: "Bar",
+  BAR3D: "Bar3D",
+  CIRCLE: "Circle",
+  PIE: "Pie",
+  POINT: "Point",
+  LINE: "Line",
+  RING: "Ring"
 };
+
 /**
- * 裁剪分析模式
- * @type {{CLIP: string, INTERSECT: string}}
+ * @name ClipAnalystMode
+ * @memberOf SuperMap
+ * @description  裁剪分析模式
+ *
+ * @property {string} CLIP  clip
+ * @property {string} INTERSECT  intersect
  */
 var ClipAnalystMode = exports.ClipAnalystMode = _SuperMap2.default.ClipAnalystMode = {
-    CLIP: "clip",
-    INTERSECT: "intersect"
+  CLIP: "clip",
+  INTERSECT: "intersect"
 };
 /**
- * 分布式分析面积单位
- * @type {{SQUAREMETER: string, SQUAREKILOMETER: string, HECTARE: string, ARE: string, ACRE: string, SQUAREFOOT: string, SQUAREYARD: string, SQUAREMILE: string}}
+ * @name AnalystAreaUnit
+ * @memberOf SuperMap
+ * @description 分布式分析面积单位
+ *
+ * @property {string} SQUAREMETER  SquareMeter
+ * @property {string} SQUAREKILOMETER   SquareKiloMeter
+ * @property {string} HECTARE  Hectare
+ * @property {string} ARE   Are
+ * @property {string} ACRE   Acre
+ * @property {string} SQUAREFOOT   SquareFoot
+ * @property {string} SQUAREYARD   SquareYard
+ * @property {string} SQUAREMILE   SquareMile
  */
 var AnalystAreaUnit = exports.AnalystAreaUnit = _SuperMap2.default.AnalystAreaUnit = {
-    "SQUAREMETER": "SquareMeter",
-    "SQUAREKILOMETER": "SquareKiloMeter",
-    "HECTARE": "Hectare",
-    "ARE": "Are",
-    "ACRE": "Acre",
-    "SQUAREFOOT": "SquareFoot",
-    "SQUAREYARD": "SquareYard",
-    "SQUAREMILE": "SquareMile"
+  "SQUAREMETER": "SquareMeter",
+  "SQUAREKILOMETER": "SquareKiloMeter",
+  "HECTARE": "Hectare",
+  "ARE": "Are",
+  "ACRE": "Acre",
+  "SQUAREFOOT": "SquareFoot",
+  "SQUAREYARD": "SquareYard",
+  "SQUAREMILE": "SquareMile"
 };
 /**
- * 分布式分析单位
- * @type {{METER: string, KILOMETER: string, YARD: string, FOOT: string, MILE: string}}
+ * @name AnalystSizeUnit
+ * @memberOf SuperMap
+ * @description 分布式分析单位
+ *
+ * @property {string} METER   Meter
+ * @property {string} KILOMETER   Kilometer
+ * @property {string} YARD   Yard
+ * @property {string} FOOT   Foot
+ * @property {string} MILE   Mile
  */
 var AnalystSizeUnit = exports.AnalystSizeUnit = _SuperMap2.default.AnalystSizeUnit = {
-    "METER": "Meter",
-    "KILOMETER": "Kilometer",
-    "YARD": "Yard",
-    "FOOT": "Foot",
-    "MILE": "Mile"
+  "METER": "Meter",
+  "KILOMETER": "Kilometer",
+  "YARD": "Yard",
+  "FOOT": "Foot",
+  "MILE": "Mile"
 };
 /**
- * 分布式分析统计模式
- * @type {{MAX: string, MIN: string, AVERAGE: string, SUM: string, VARIANCE: string, STDDEVIATION: string}}
+ * @name StatisticAnalystMode
+ * @memberOf SuperMap
+ * @description 分布式分析统计模式
+ *
+ * @property {string} MAX   max
+ * @property {string} MIN   min
+ * @property {string} AVERAGE   average
+ * @property {string} SUM   sum
+ * @property {string} VARIANCE   variance
+ * @property {string} STDDEVIATION   stdDeviation
  */
 var StatisticAnalystMode = exports.StatisticAnalystMode = _SuperMap2.default.StatisticAnalystMode = {
-    "MAX": "max",
-    "MIN": "min",
-    "AVERAGE": "average",
-    "SUM": "sum",
-    "VARIANCE": "variance",
-    "STDDEVIATION": "stdDeviation"
+  "MAX": "max",
+  "MIN": "min",
+  "AVERAGE": "average",
+  "SUM": "sum",
+  "VARIANCE": "variance",
+  "STDDEVIATION": "stdDeviation"
 };
 /**
- * 分布式分析聚合类型
- * @type {{SUMMARYMESH: string, SUMMARYREGION: string}}
+ * @name SummaryType
+ * @memberOf SuperMap
+ * @description 分布式分析聚合类型
+ *
+ * @property {string} SUMMARYMESH   SUMMARYMESH
+ * @property {string} SUMMARYREGION SUMMARYREGION
  */
 var SummaryType = exports.SummaryType = _SuperMap2.default.SummaryType = {
-    "SUMMARYMESH": "SUMMARYMESH",
-    "SUMMARYREGION": "SUMMARYREGION"
+  "SUMMARYMESH": "SUMMARYMESH",
+  "SUMMARYREGION": "SUMMARYREGION"
 
 };
 
@@ -1213,9 +1154,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 分布式分析服务地址。
  * @param options - {Object} 参数。如：<br>
- *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        events - {{@link SuperMap.Events}} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        serverType - {{@link ServerType}} 服务器类型，iServer|iPortal|Online。<br>
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
@@ -1243,7 +1184,8 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.ProcessingServiceBase.prototype.destroy
+     * @override
      */
 
 
@@ -1415,13 +1357,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var CommonServiceBase = function () {
 
     /*
-     * Property: _processFailed
-     * {Function} 请求参数中失败回调函数。
+     * @member SuperMap.CommonServiceBase.prototype_processFailed -{function}
+     * @description 请求参数中失败回调函数。
      */
 
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.POLLING_TIMES -{Integer}
+     * @member SuperMap.CommonServiceBase.prototype.POLLING_TIMES -{integer}
      * @description 默认请求失败次数。
      */
 
@@ -1526,13 +1468,13 @@ var CommonServiceBase = function () {
 
 
     /*
-     * @member SuperMap.CommonServiceBase.prototype._processSuccess -{Function}
+     * @member SuperMap.CommonServiceBase.prototype._processSuccess -{function}
      * @description 请求参数中成功回调函数。
      */
 
 
     /**
-     *  @member SuperMap.CommonServiceBase.prototype.totalTimes -{Integer}
+     *  @member SuperMap.CommonServiceBase.prototype.totalTimes -{integer}
      *  @description 实际请求失败次数。
      */
 
@@ -3678,7 +3620,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
 
 
@@ -4581,12 +4523,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.TimeFlowControl
- * @classdesc 时间管理类。<br>
- *              此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
+ * @classdesc 时间管理类。
+ * @description 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
  *              如设置起始时间为1000，结束时间是2000，步长设置为1，
  *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
  * @extends SuperMap.TimeControlBase
- * @param callback - {Function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
+ * @param callback - {function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
  * @param options - {Object} 该类开放的可选属性。如：<br>
  *        speed - {number}步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
  *        frequency -  {number} 刷新频率(单位ms)，默认为1000ms。<br>
@@ -4637,12 +4579,13 @@ var TimeFlowControl = function (_TimeControlBase) {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.TimeFlowControl.prototype.updateOptions
+     * @override
      */
 
 
     /**
-     * @member callback -{Function}
+     * @member SuperMap.TimeFlowControl.prototype.callback -{function}
      * @description 每次刷新执行的回调函数
      */
 
@@ -4655,7 +4598,8 @@ var TimeFlowControl = function (_TimeControlBase) {
         }
 
         /**
-         * @inheritDoc
+         * @function SuperMap.TimeFlowControl.prototype.start
+         * @override
          */
 
     }, {
@@ -4681,7 +4625,8 @@ var TimeFlowControl = function (_TimeControlBase) {
         }
 
         /**
-         * @inheritDoc
+         * @function SuperMap.TimeFlowControl.prototype.stop
+         * @override
          */
 
     }, {
@@ -4699,7 +4644,8 @@ var TimeFlowControl = function (_TimeControlBase) {
         }
 
         /**
-         * @inheritDoc
+         * @function SuperMap.TimeFlowControl.prototype.destroy
+         * @override
          */
 
     }, {
@@ -4726,7 +4672,8 @@ var TimeFlowControl = function (_TimeControlBase) {
         }
 
         /**
-         * @inheritDoc
+         * @function SuperMap.TimeFlowControl.prototype.update
+         * @override
          */
 
     }, {
@@ -8422,8 +8369,8 @@ var Pixel = function () {
     }
 
     /**
-     * @function SuperMap.Pixel.prototype. toString
-     * 返回此对象的字符串形式
+     * @function SuperMap.Pixel.prototype.toString
+     * @description 返回此对象的字符串形式
      * @example
      *
      * var pixcel = new SuperMap.Pixel(100,50);
@@ -8437,14 +8384,14 @@ var Pixel = function () {
      * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
      * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
      * 值有<br>
-     * * SuperMap.Pixel.Mode.LeftTop
-     * * SuperMap.Pixel.Mode.RightTop
-     * * SuperMap.Pixel.Mode.RightBottom
-     * * SuperMap.Pixel.Mode.LeftBottom
+     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightTop}
+     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightBottom}
+     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
      *
-     * 这四种 默认值为：SuperMap.Pixel.Mode.LeftTop
+     * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
      *
-     * @default SuperMap.Pixel.Mode.LeftTop
+     * @default {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
      */
 
 
@@ -8461,7 +8408,7 @@ var Pixel = function () {
         }
 
         /**
-         * @function SuperMap.Pixel.prototype. clone
+         * @function SuperMap.Pixel.prototype.clone
          * @description 克隆当前的 pixel 对象。
          * @example
          * var pixcel = new SuperMap.Pixel(100,50);
@@ -8476,7 +8423,7 @@ var Pixel = function () {
         }
 
         /**
-         * @function SuperMap.Pixel.prototype. equals
+         * @function SuperMap.Pixel.prototype.equals
          * @description 比较两 pixel 是否相等
          * @example
          * var pixcel = new SuperMap.Pixel(100,50);
@@ -8498,7 +8445,7 @@ var Pixel = function () {
         }
 
         /**
-         * @function SuperMap.Pixel.prototype. distanceTo
+         * @function SuperMap.Pixel.prototype.distanceTo
          * @description 返回两个 pixel 的距离。
          * @example
          * var pixcel = new SuperMap.Pixel(100,50);
@@ -8516,7 +8463,7 @@ var Pixel = function () {
         }
 
         /**
-         * @function SuperMap.Pixel.prototype. add
+         * @function SuperMap.Pixel.prototype.add
          * @description 在原来像素坐标基础上，x值加上传入的x参数，y值加上传入的y参数。
          * @example
          * var pixcel = new SuperMap.Pixel(100,50);
@@ -8539,7 +8486,7 @@ var Pixel = function () {
         }
 
         /**
-         * @function SuperMap.Pixel.prototype. offset
+         * @function SuperMap.Pixel.prototype.offset
          * @description 通过传入的 {@link SuperMap.Pixel} 参数对原屏幕坐标进行偏移。
          * @example
          * var pixcel = new SuperMap.Pixel(100,50);
@@ -8564,7 +8511,7 @@ var Pixel = function () {
 
         /**
          *
-         * @function SuperMap.Pixel.prototype. destroy
+         * @function SuperMap.Pixel.prototype.destroy
          * @description 销毁此对象。
          * 销毁后此对象的所有属性为null，而不是初始值。
          * @example
@@ -8637,14 +8584,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        endTime - {number}的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
  *        repeat - {boolean} 是否重复循环。默认为true。<br>
  *        reverse - {boolean} 是否反向。默认为false。<br>
- *        geoFence - {SuperMap.Geometry} 地理围栏。
  */
 var TimeControlBase = function () {
 
-    /*
-     * Constant: EVENT_TYPES
-     * {Array<String>}
-     * 此类支持的事件类型。
+    /**
+     * @private
+     * @member SuperMap.TimeControlBase.prototype.EVENT_TYPES -{Array<string>}
+     * @description 此类支持的事件类型。
      *
      */
 
@@ -8721,6 +8667,7 @@ var TimeControlBase = function () {
 
 
     /**
+     * @private
      * @member SuperMap.TimeControlBase.prototype.events -{SuperMap.Events}
      * @description 事件
      */
@@ -8861,7 +8808,7 @@ var TimeControlBase = function () {
          * @function SuperMap.TimeControlBase.prototype.setSpeed
          * @description 设置步长。
          * @param speed - {number}步长，必须为非负数，默认为1
-         * @return {Boolean} true代表设置成功，false设置失败（speed小于0时失败）
+         * @return {boolean} true代表设置成功，false设置失败（speed小于0时失败）
          */
 
     }, {
@@ -8890,8 +8837,8 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setFrequency
          * @description 设置刷新频率。
-         * @param speed - {number}刷新频率，单位为ms，默认为1s
-         * @return {Boolean} true代表设置成功，false设置失败（frequency小于0时失败）
+         * @param frequency - {number}刷新频率，单位为ms，默认为1s
+         * @return {boolean} true代表设置成功，false设置失败（frequency小于0时失败）
          */
 
     }, {
@@ -8921,7 +8868,7 @@ var TimeControlBase = function () {
          * @function SuperMap.TimeControlBase.prototype.setStartTime
          * @description 设置起始时间，设置完成后如果当前时间小于起始时间，则从起始时间开始
          * @param startTime - {number}需要设置的起始时间
-         * @return {Boolean} true代表设置成功，false设置失败（startTime 大于结束时间时失败）
+         * @return {boolean} true代表设置成功，false设置失败（startTime 大于结束时间时失败）
          */
 
     }, {
@@ -8958,7 +8905,7 @@ var TimeControlBase = function () {
          * @function SuperMap.TimeControlBase.prototype.setEndTime
          * @description 设置结束时间，设置完成后如果当前时间大于结束，则从起始时间开始
          * @param endTime - {number}需要设置的结束时间
-         * @return {Boolean} true代表设置成功，false设置失败（endTime 小于开始时间时失败）
+         * @return {boolean} true代表设置成功，false设置失败（endTime 小于开始时间时失败）
          */
 
     }, {
@@ -8995,7 +8942,7 @@ var TimeControlBase = function () {
          * @function SuperMap.TimeControlBase.prototype.setCurrentTime
          * @description 设置当前时间
          * @param currentTime - {number}需要设置的当前时间
-         * @return {Boolean} true代表设置成功，false设置失败
+         * @return {boolean} true代表设置成功，false设置失败
          */
 
     }, {
@@ -9040,7 +8987,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.getRepeat
          * @description 获取是否重复循环，默认是true。
-         * @return {Boolean} 返回是否重复循环
+         * @return {boolean} 返回是否重复循环
          */
 
     }, {
@@ -9064,7 +9011,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.getReverse
          * @description 获取是否反向，默认是false。
-         * @return {Boolean} 返回是否反向
+         * @return {boolean} 返回是否反向
          */
 
     }, {
@@ -9076,7 +9023,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.getRunning
          * @description 获取运行状态
-         * @return {Boolean} true代表正在运行，false发表没有运行
+         * @return {boolean} true代表正在运行，false发表没有运行
          */
 
     }, {
@@ -9178,7 +9125,8 @@ var AddressMatchService = function (_CommonServiceBase) {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.AddressMatchService.prototype.destroy
+     * @override
      */
 
 
@@ -9739,7 +9687,8 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
     }
 
     /**
-     *@inheritDoc
+     * @function SuperMap.KernelDensityJobsService.prototype.destroy
+     * @override
      */
 
 
@@ -9823,7 +9772,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
  *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
- *         mode -{SuperMap.SpatialQueryMode} 空间查询模式 。 <br>
+ *         mode -{{@link SuperMap.SpatialQueryMode}} 空间查询模式 。 <br>
  */
 var SingleObjectQueryJobsParameter = function () {
 
@@ -9956,7 +9905,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     }
 
     /**
-     *@inheritDoc
+     *@override
      */
 
 
@@ -10041,10 +9990,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        datasetName -{string} 数据集名。<br>
  *        query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
  *        resolution -{number}分辨率。<br>
- *        statisticModes -{string} 分析模式。<br>
+ *        statisticModes -{{@link SuperMap.StatisticAnalystMode}} 分析模式。<br>
  *        meshType -{number}分析类型。<br>
  *        fields -{number}权重索引。<br>
- *        type -{string} 聚合类型。
+ *        type -{{@link SuperMap.SummaryType}} 聚合类型。
  */
 var SummaryMeshJobParameter = function () {
 
@@ -10089,7 +10038,8 @@ var SummaryMeshJobParameter = function () {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.SummaryMeshJobParameter.destroy
+     * @override
      */
 
 
@@ -10241,7 +10191,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
 
 
@@ -10325,17 +10275,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>
  *         sumShape -{boolean} 是否统计长度或面积。 <br>
- *         query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+ *         query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
  *         standardSummaryFields -{boolean} 以标准属字段统计。 <br>
  *         standardFields -{string} 以标准属字段统计的字段名称。 <br>
- *         standardStatisticModes -{string} 以标准属字段统计的统计模式。 <br>
+ *         standardStatisticModes -{{@link SuperMap.StatisticAnalystMode}} 以标准属字段统计的统计模式。 <br>
  *         weightedSummaryFields -{boolean} 以权重字段统计。 <br>
  *         weightedFields -{string} 以权重字段统计的字段名称。 <br>
- *         weightedStatisticModes -{string} 以权重字段统计的统计模式。 <br>
+ *         weightedStatisticModes -{{@link SuperMap.StatisticAnalystMode}} 以权重字段统计的统计模式。 <br>
  *         resolution -{number}网格大小。 <br>
  *         meshType -{number}网格面汇总类型。 <br>
- *         meshSizeUnit -{string} 网格大小单位。 <br>
- *         type -{string} 汇总类型。 <br>
+ *         meshSizeUnit -{{@link SuperMap.AnalystSizeUnit}} 网格大小单位。 <br>
+ *         type -{{@link SuperMap.SummaryType}} 汇总类型。 <br>
  */
 var SummaryRegionJobParameter = function () {
 
@@ -10566,7 +10516,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
     }
 
     /**
-     *@inheritDoc
+     *@override
      */
 
 
@@ -10650,7 +10600,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
  *         datasetOverlay -{string} 裁剪对象数据集。 <br>
- *         mode -{SuperMap.SpatialQueryMode} 裁剪分析模式 。 <br>
+ *         mode -{{@link SuperMap.ClipAnalystMode}} 裁剪分析模式 。 <br>
  */
 var VectorClipJobsParameter = function () {
 
@@ -10785,7 +10735,7 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
     }
 
     /**
-     *@inheritDoc
+     *@override
      */
 
 
@@ -10940,21 +10890,20 @@ var _FetchRequest = __webpack_require__(5);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class SuperMap.SecurityManager
- * @classdesc
- *  安全管理中心
- *  提供iServer,iPortal,Online统一权限认证管理
- *  使用说明：
- *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
- *  SuperMap.SecurityManager.registerKey注册凭据。
- *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
+ * @name SecurityManager
+ * @memberOf SuperMap
+ * @namespace
+ * @description 安全管理中心，提供iServer,iPortal,Online统一权限认证管理
+ *  > 使用说明：
+ *  > 创建任何一个服务之前调用{@link SuperMap.SecurityManager.registerToken}或
+ *  > {@link SuperMap.SecurityManager.registerKey}注册凭据。
+ *  > 发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
  */
 _SuperMap2.default.SecurityManager = {
 
     INNER_WINDOW_WIDTH: 600,
     INNER_WINDOW_HEIGHT: 600,
     /**
-     * @function SuperMap.SecurityManager.prototype.generateToken
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
      * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
@@ -10971,7 +10920,6 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.registerServers
      * @description 注册安全服务器相关信息
      * @param serverInfos -{SuperMap.ServerInfo} 服务器信息
      */
@@ -10987,10 +10935,9 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.registerToken
      * @description 服务请求都会自动带上这个token
      * @param url {string} -服务器域名+端口：如http://localhost:8090
-     * @param token -{string}
+     * @param token -{string} token
      */
     registerToken: function registerToken(url, token) {
         this.tokens = this.tokens || {};
@@ -11002,10 +10949,9 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.registerKey
      * @description 注册key,ids为数组(存在一个key对应多个服务)
      * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key -{string}
+     * @param key -{string} key
      */
     registerKey: function registerKey(ids, key) {
         this.keys = this.keys || {};
@@ -11021,9 +10967,9 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.getServerInfo
-     * @description 获取服务信息
+     * @description 获取服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
+     * @returns {SuperMap.ServerInfo} 服务器信息
      */
     getServerInfo: function getServerInfo(url) {
         this.servers = this.servers || {};
@@ -11031,9 +10977,9 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.getToken
-     * @description token按照域名存储
-     * @param url -{string}-服务器域名+端口，如：http://localhost:8092
+     * @description 根据Url获取token
+     * @param url -{string} 服务器域名+端口，如：http://localhost:8092
+     * @returns {string} token
      */
     getToken: function getToken(url) {
         if (!url) {
@@ -11044,6 +10990,11 @@ _SuperMap2.default.SecurityManager = {
         return this.tokens[domain];
     },
 
+    /**
+     * @description 根据Url获取key
+     * @param id -{string} id
+     * @returns {string} key
+     */
     getKey: function getKey(id) {
         this.keys = this.keys || {};
         var key = this._getUrlRestString(id) || id;
@@ -11051,7 +11002,6 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.loginOnline
      * @description Online登录验证
      * @param callbackLocation -{string} 跳转位置
      * @param newTab -{boolean}是否新窗口打开
@@ -11062,10 +11012,11 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.loginPortal
      * @description iPortal登录验证
-     * @param url -{string} 网站地址
-     * @param newTab -{boolean}是否新窗口打开
+     * @param url -{string} iportal首页地址
+     * @param username -{string} 用户名
+     * @param password -{string} 密码
+     * @returns {Promise}
      */
     loginiPortal: function loginiPortal(url, username, password) {
         var end = url.substr(url.length - 1, 1);
@@ -11085,6 +11036,12 @@ _SuperMap2.default.SecurityManager = {
             return response.json();
         });
     },
+
+    /**
+     * @description iPortal登录验证
+     * @param url -{string} iportal首页地址
+     * @returns {Promise}
+     */
     logoutiPortal: function logoutiPortal(url) {
         var end = url.substr(url.length - 1, 1);
         url += end === "/" ? "services/security/logout" : "/services/security/logout";
@@ -11104,13 +11061,12 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.loginManager
      * @description iManager登录验证
-     * @param url -{String} iManager地址。<br>
+     * @param url -{string} iManager地址。<br>
      *                      地址参数为iManager首页地址，如： http://localhost:8390/imanager<br>
      * @param loginInfoParams -{Object} iManager 登录参数<br>
-     *        userName -{String} 用户名<br>
-     *        password-{String} 密码
+     *        userName -{string} 用户名<br>
+     *        password-{string} 密码
      * @param options -{Object} <br>
      *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
      * @return {Promise}
@@ -11145,7 +11101,6 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.destroyAllCredentials
      * @description 清空全部验证信息
      */
     destroyAllCredentials: function destroyAllCredentials() {
@@ -11154,7 +11109,6 @@ _SuperMap2.default.SecurityManager = {
         this.servers = null;
     },
     /**
-     * @function SuperMap.SecurityManager.prototype.destroyToken
      * @description 清空令牌信息
      */
     destroyToken: function destroyToken(url) {
@@ -11168,7 +11122,6 @@ _SuperMap2.default.SecurityManager = {
         }
     },
     /**
-     * @function SuperMap.SecurityManager.prototype.destroyToken
      * @description 清空服务授权码
      */
     destroyKey: function destroyKey(id) {
@@ -11246,7 +11199,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param type - {string} 服务器类型
  * @param options - {Object} 服务器信息相关可选参数。如：<br>
  *        server - {string} 服务器地址,如：http://supermapiserver:8090/iserver<br>
- *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+ *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json<br>
  *        keyServiceUrl - {string} 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
  */
 var ServerInfo =
@@ -11257,7 +11210,7 @@ var ServerInfo =
  */
 
 /**
- * @member SuperMap.ServerInfo.prototype.type -{SuperMap.ServerType}
+ * @member SuperMap.ServerInfo.prototype.type -{ServerType}
  * @description 服务器类型
  */
 function ServerInfo(type, options) {
@@ -11338,7 +11291,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.TokenServiceParameter
  * @classdesc token申请参数
- * @param options - {Object} 参数。
+ * @param options - {Object} token申请参数。
  */
 var TokenServiceParameter = function () {
     /**

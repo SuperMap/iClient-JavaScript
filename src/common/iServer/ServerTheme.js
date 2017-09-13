@@ -41,7 +41,8 @@ export default  class ServerTheme extends UGCSubLayer {
 
 
     /**
-     * @inheritdoc
+     * @function SuperMap.ServerTheme.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

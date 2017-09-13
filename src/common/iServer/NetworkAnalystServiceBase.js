@@ -4,6 +4,7 @@ import CommonServiceBase  from './CommonServiceBase';
 
 /**
  * @class SuperMap.NetworkAnalystServiceBase
+ * @classdesc 网络分析服务基类。
  * @description 网络分析服务基类。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 网络分析服务地址
@@ -16,7 +17,8 @@ export default  class NetworkAnalystServiceBase extends CommonServiceBase {
     /**
      * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{string}
      * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-     *              参数格式为"ISERVER","GEOJSON",GEOJSON
+     *              参数格式为"ISERVER","GEOJSON"
+     * @default "GEOJSON"
      */
     format = DataFormat.GEOJSON;
 
@@ -57,6 +59,7 @@ export default  class NetworkAnalystServiceBase extends CommonServiceBase {
      * @function SuperMap.NetworkAnalystServiceBase.prototype.toGeoJSONResult
      * @description 将含有geometry的数据转换为geojson格式。只处理结果中的路由，由子类实现
      * @param result - {Object} 服务器返回的结果对象。
+     * @return{Object} geojson对象
      */
     toGeoJSONResult(result) {
         return null;

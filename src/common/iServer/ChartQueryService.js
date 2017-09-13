@@ -90,7 +90,8 @@ export default class ChartQueryService extends CommonServiceBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.ChartQueryService.prototype.destroy
+     * @override
      */
     destroy() {
         var me = this;

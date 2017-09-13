@@ -30,7 +30,8 @@ export default class GeometryThiessenAnalystParameters extends ThiessenAnalystPa
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GeometryThiessenAnalystParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

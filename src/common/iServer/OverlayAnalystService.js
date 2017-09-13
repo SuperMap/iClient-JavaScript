@@ -40,7 +40,7 @@ export default  class OverlayAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

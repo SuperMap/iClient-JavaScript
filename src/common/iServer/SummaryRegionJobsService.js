@@ -17,7 +17,7 @@ export default class SummaryRegionJobsService extends ProcessingServiceBase {
     }
 
     /**
-     *@inheritDoc
+     *@override
      */
     destroy() {
         super.destroy();

@@ -1,7 +1,7 @@
 import SuperMap from '../SuperMap';
 import '../security/SecurityManager';
-import iPortalServicesQueryParam from './OnlineQueryDatasParameter';
-import iPortalServiceBase from './OnlineData';
+import OnlineQueryDatasParameter from './OnlineQueryDatasParameter';
+import OnlineData from './OnlineData';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
@@ -49,7 +49,7 @@ export default class Online {
     /**
      * @function SuperMap.Online.prototype.queryDatas
      * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
-     * @param parameter -｛SuperMap.OnlineQueryDatasParameter｝myDatas服务资源查询参数
+     * @param parameter -{SuperMap.OnlineQueryDatasParameter} myDatas服务资源查询参数
      * @returns {Promise}
      */
     queryDatas(parameter) {

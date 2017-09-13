@@ -30,7 +30,7 @@ export default class QueryByDistanceService extends QueryService {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

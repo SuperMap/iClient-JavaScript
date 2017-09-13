@@ -13,18 +13,21 @@ export default class ServerColor {
     /**
      * @member SuperMap.ServerColor.prototype.red -{number}
      * @description 获取或设置红色值,默认值为255。
+     * @default 255
      */
     red = 255;
 
     /**
      * @member SuperMap.ServerColor.prototype.green -{number}
      * @description 获取或设置绿色值,默认值为0。
+     * @default 0
      */
     green = 0;
 
     /**
      * @member SuperMap.ServerColor.prototype.blue -{number}
      * @description 获取或设置蓝色值,默认值为0。
+     * @default 0
      */
     blue = 0;
 
@@ -67,7 +70,7 @@ export default class ServerColor {
      * @function SuperMap.ServerColor.formJson
      * @description 将JSON对象转化为ServerColor对象。
      * @param jsonObject - {Object} 要转换的JSON对象
-     * @return { SuperMap.ServerColor} 转化后的ServerColor对象。
+     * @return{SuperMap.ServerColor} 转化后的ServerColor对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

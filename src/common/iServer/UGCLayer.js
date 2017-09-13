@@ -1,16 +1,17 @@
 ﻿import SuperMap from '../SuperMap';
+import {UGCLayerType} from '../REST';
 
 /**
  * @class SuperMap.UGCLayer
  * @classdesc UGC 图层类。
  * @param options - {Object} 可选参数。如：<br>
- *        bounds - {SuperMap.Bounds} 图层范围。<br>
+ *        bounds - {{@link SuperMap.Bounds}} 图层范围。<br>
  *        caption - {string} 图层的标题。<br>
  *        description - {string} 图层的描述信息。<br>
  *        name - {string} 图层的名称。<br>
  *        queryable - {boolean} 图层中的对象是否可以查询。<br>
  *        subUGCLayers - {boolean} 是否允许图层的符号大小随图缩放。<br>
- *        type - {SuperMap.UGCLayerType} 图层类型。<br>
+ *        type - {{@link SuperMap.UGCLayerType}} 图层类型。<br>
  *        visible - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
  */
 export default class UGCLayer {
@@ -95,6 +96,7 @@ export default class UGCLayer {
     /**
      * @function SuperMap.UGCLayer.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return{Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var jsonObject = {};

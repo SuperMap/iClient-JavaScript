@@ -77,7 +77,7 @@ export class MapVLayer extends SuperMap.Layer {
 
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         this.dataSet = null;

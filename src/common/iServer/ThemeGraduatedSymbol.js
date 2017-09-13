@@ -12,11 +12,11 @@ import {GraduatedMode} from '../REST';
  * @param options - {Object} 可选参数。如：<br>
  *        baseValue - {number}等级符号专题图的基准值，单位同专题变量的单位。<br>
  *        expression - {string} 等级符号专题图的字段或字段表达式。<br>
- *        flow - {SuperMap.ThemeFlow} 等级符号专题图符号流动显示与牵引线设置类。<br>
- *        graduatedMode - {SuperMap.GraduatedMode} 等级符号专题图分级模式。<br>
- *        offset - {SuperMap.ThemeOffset} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
- *        style - {SuperMap.ThemeGraduatedSymbolStyle} 用于设置等级符号图正负和零值显示风格。<br>
- *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
+ *        flow - {{@link SuperMap.ThemeFlow}} 等级符号专题图符号流动显示与牵引线设置类。<br>
+ *        graduatedMode - {{@link SuperMap.GraduatedMode}} 等级符号专题图分级模式。<br>
+ *        offset - {{@link SuperMap.ThemeOffset}} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
+ *        style - {{@link SuperMap.ThemeGraduatedSymbolStyle}} 用于设置等级符号图正负和零值显示风格。<br>
+ *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
 export default  class ThemeGraduatedSymbol extends Theme {
 
@@ -114,6 +114,7 @@ export default  class ThemeGraduatedSymbol extends Theme {
     /**
      * @function SuperMap.ThemeGraduatedSymbol.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return{Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};
@@ -146,7 +147,7 @@ export default  class ThemeGraduatedSymbol extends Theme {
      * @function SuperMap.ThemeGraduatedSymbol.fromObj
      * @description 从传入对象获取等级符号专题图。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGraduatedSymbol}
+     * @return {SuperMap.ThemeGraduatedSymbol} 等级符号专题图对象
      */
     static fromObj(obj) {
         if (!obj) return;

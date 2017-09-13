@@ -3,14 +3,14 @@ import ServerStyle from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeRangeItem
- * @classdesc 范围分段专题图子项类。<br>
- *              在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
+ * @classdesc 范围分段专题图子项类。
+ * @description 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
  *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
  * @param options - {Object} 可选参数。如：<br>
  *        caption - {string} 分段专题图子项的标题。<br>
  *        end - {number}分段专题图子项的终止值。<br>
  *        start - {number}分段专题图子项的起始值。<br>
- *        style - {SuperMap.ServerStyle} 分段专题图子项的风格。<br>
+ *        style - {{@link SuperMap.ServerStyle}} 分段专题图子项的风格。<br>
  *        visible - {boolean} 分段专题图子项是否可见。
  */
 export default  class ThemeRangeItem {
@@ -79,6 +79,7 @@ export default  class ThemeRangeItem {
     /**
      * @function SuperMap.ThemeRangeItem.prototypetoServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         var obj = {};
@@ -95,7 +96,7 @@ export default  class ThemeRangeItem {
      * @function SuperMap.ThemeRangeItem.fromObj
      * @description 从传入对象获取范围分段专题图子项类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeRangeItem}
+     * @return {SuperMap.ThemeRangeItem} ThemeRangeItem对象
      */
     static fromObj(obj) {
         if (!obj) return;

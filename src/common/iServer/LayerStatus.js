@@ -59,6 +59,7 @@ export default class LayerStatus {
     /**
      * @function SuperMap.LayerStatus.prototype.toJSON
      * @description 生成对应的json。
+     * @return {Object} 对应的json
      */
     toJSON() {
         var json = '{';

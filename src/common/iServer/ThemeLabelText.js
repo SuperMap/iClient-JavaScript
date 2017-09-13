@@ -11,8 +11,8 @@ import LabelMixedTextStyle from './LabelMixedTextStyle';
  *        maxTextWidth - {number}标签中文本的最大宽度。<br>
  *        minTextHeight - {number}标签中文本的最小高度。<br>
  *        minTextWidth - {number}标签中文本的最小宽度。<br>
- *        uniformStyle - {SuperMap.ServerTextStyle} 统一文本风格。<br>
- *        uniformMixedStyle - {SuperMap.LabelMixedTextStyle} 标签专题图统一的文本复合风格。
+ *        uniformStyle - {{@link SuperMap.ServerTextStyle}} 统一文本风格。<br>
+ *        uniformMixedStyle - {{@link SuperMap.LabelMixedTextStyle}} 标签专题图统一的文本复合风格。
  */
 export default  class ThemeLabelText {
 
@@ -92,7 +92,7 @@ export default  class ThemeLabelText {
      * @function SuperMap.ThemeLabelText.fromObj
      * @description 从传入对象获取标签中文本风格类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeLabelText}
+     * @return {SuperMap.ThemeLabelText} ThemeLabelText对象
      */
     static fromObj(obj) {
         if (!obj) return;

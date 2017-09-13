@@ -7,7 +7,7 @@ import ServerColor from './ServerColor';
  *              栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。<br>
  * @param options - {Object} 可选参数。如：<br>
  *        caption - {string} 栅格单值专题图子项的名称。<br>
- *        color - {SuperMap.ServerColor} 栅格单值专题图子项的显示颜色。<br>
+ *        color - {{@link SuperMap.ServerColor}} 栅格单值专题图子项的显示颜色。<br>
  *        unique - {number}栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。<br>
  *        visible - {boolean} 栅格单值专题图子项是否可见。
  */
@@ -64,6 +64,7 @@ export default  class ThemeGridUniqueItem {
     /**
      * @function SuperMap.ThemeGridUniqueItem.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         var obj = {};
@@ -80,7 +81,7 @@ export default  class ThemeGridUniqueItem {
      * @function SuperMap.ThemeGridUniqueItem.fromObj
      * @description 从传入对象获取栅格单值专题图子项类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGridUniqueItem}
+     * @return {SuperMap.ThemeGridUniqueItem} ThemeGridUniqueItem对象
      */
     static fromObj(obj) {
         var res = new ThemeGridUniqueItem();

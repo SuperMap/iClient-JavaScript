@@ -21,7 +21,8 @@ export default class ChartFeatureInfoSpecsService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.ChartFeatureInfoSpecsService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

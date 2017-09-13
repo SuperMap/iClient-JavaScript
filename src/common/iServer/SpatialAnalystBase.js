@@ -24,8 +24,8 @@ export default class SpatialAnalystBase extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
-     *
+     * @function SuperMap.SpatialAnalystBase.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

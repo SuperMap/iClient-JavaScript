@@ -35,7 +35,7 @@ export default  class StopQueryService extends CommonServiceBase {
     }
 
     /**
-     *@inheritDoc
+     *@override
      */
     destroy() {
         super.destroy();

@@ -52,7 +52,8 @@ export default  class GeoRelationAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GeoRelationAnalystService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

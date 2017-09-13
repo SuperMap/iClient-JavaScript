@@ -31,7 +31,8 @@ export default  class FindPathService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FindPathService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

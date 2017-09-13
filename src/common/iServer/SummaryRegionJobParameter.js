@@ -7,17 +7,17 @@ import {StatisticAnalystMode, SummaryType, AnalystSizeUnit} from '../REST'
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>
  *         sumShape -{boolean} 是否统计长度或面积。 <br>
- *         query -{SuperMap.Bounds} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+ *         query -{Object} 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
  *         standardSummaryFields -{boolean} 以标准属字段统计。 <br>
  *         standardFields -{string} 以标准属字段统计的字段名称。 <br>
- *         standardStatisticModes -{string} 以标准属字段统计的统计模式。 <br>
+ *         standardStatisticModes -{{@link SuperMap.StatisticAnalystMode}} 以标准属字段统计的统计模式。 <br>
  *         weightedSummaryFields -{boolean} 以权重字段统计。 <br>
  *         weightedFields -{string} 以权重字段统计的字段名称。 <br>
- *         weightedStatisticModes -{string} 以权重字段统计的统计模式。 <br>
+ *         weightedStatisticModes -{{@link SuperMap.StatisticAnalystMode}} 以权重字段统计的统计模式。 <br>
  *         resolution -{number}网格大小。 <br>
  *         meshType -{number}网格面汇总类型。 <br>
- *         meshSizeUnit -{string} 网格大小单位。 <br>
- *         type -{string} 汇总类型。 <br>
+ *         meshSizeUnit -{{@link SuperMap.AnalystSizeUnit}} 网格大小单位。 <br>
+ *         type -{{@link SuperMap.SummaryType}} 汇总类型。 <br>
  */
 export default class SummaryRegionJobParameter {
 

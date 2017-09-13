@@ -69,7 +69,7 @@ export default  class RouteCalculateMeasureService extends SpatialAnalystBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

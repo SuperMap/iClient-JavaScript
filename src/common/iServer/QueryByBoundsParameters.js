@@ -9,14 +9,14 @@ import QueryParameters from './QueryParameters';
  *         customParams - {string} 自定义参数，供扩展使用。<br>
  *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
  *         expectCount - {number}期望返回结果记录个数。<br>
- *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br>
- *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br>
- *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br>
+ *         networkType - {{@link SuperMap.GeometryType}} 网络数据集对应的查询类型。<br>
+ *         queryOption - {{@link SuperMap.QueryOption}} 查询结果类型枚举类。<br>
+ *         queryParams - {Array<{@link SuperMap.FilterParameter}>} 查询过滤条件参数数组。<br>
  *         startRecord - {number}查询起始记录号。<br>
  *         holdTime - {number}资源在服务端保存的时间。<br>
  *         returnCustomResult -{boolean} 仅供三维使用。<br>
  *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
- *         bounds - {SuperMap.Bounds} 指定的查询范围。<br>
+ *         bounds - {{@link SuperMap.Bounds}} 指定的查询范围。<br>
  *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
  */
 export default class QueryByBoundsParameters extends QueryParameters {

@@ -6,6 +6,7 @@ import FetchRequest from '../util/FetchRequest';
 /**
  * @class SuperMap.OnlineServiceBase
  * @classdesc Online服务基类(使用key作为权限限制的类需要实现此类)
+ * @param options -{Object} 服务参数
  */
 export default class OnlineServiceBase {
 
@@ -19,10 +20,10 @@ export default class OnlineServiceBase {
     /**
      * @function SuperMap.OnlineServiceBase.prototype.request
      * @description 请求online服务
-     * @param method - {function}
+     * @param method - {string} 请求方式, 'get','put','post','delete'
      * @param url - {string} 服务地址
-     * @param param
-     * @param requestOptions
+     * @param param -{Object} Url查询参数
+     * @param requestOptions -{Object} http请求参数, 比如请求头，超时时间等
      * @return {Promise}
      */
     request(method, url, param, requestOptions) {

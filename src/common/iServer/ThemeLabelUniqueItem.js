@@ -3,8 +3,8 @@ import ServerTextStyle from './ServerTextStyle';
 
 /**
  * @class SuperMap.ThemeLabelUniqueItem
- * @classdesc 单值标签专题图的子项。<br>
- *              标签专题图用专题值对点、线、面等对象做标注，值得注意的是，单值标签专题图允许用户通过 uniqueExpression <br>
+ * @classdesc 单值标签专题图的子项
+ * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，单值标签专题图允许用户通过 uniqueExpression <br>
  *              字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，<br>
  *              每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
  * @param options - {Object} 可选参数。如：<br>
@@ -13,7 +13,7 @@ import ServerTextStyle from './ServerTextStyle';
  *        offsetX - {number}标签在X方向偏移量。<br>
  *        offsetY - {number}标签在Y方向偏移量。<br>
  *        visible - {boolean} 标签专题图子项是否可见。<br>
- *        style - {SuperMap.ServerTextStyle} 标签专题图子项文本的显示风格。
+ *        style - {{@link SuperMap.ServerTextStyle}} 标签专题图子项文本的显示风格。
  */
 export default  class ThemeLabelUniqueItem {
 
@@ -83,7 +83,7 @@ export default  class ThemeLabelUniqueItem {
      * @function SuperMap.ThemeLabelUniqueItem.fromObj
      * @description 从传入对象获取单值标签专题图的子项类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeLabelUniqueItem}
+     * @return {SuperMap.ThemeLabelUniqueItem} ThemeLabelUniqueItem对象
      */
     static fromObj(obj) {
         if (!obj) return;

@@ -6,11 +6,11 @@ import {TransferPreference, TransferTactic} from '../REST';
  * @classdesc 交通换乘方案查询参数类。
  * @param options - {Object} 参数。如:</br>
  *        solutionCount - {boolean} 乘车方案的数量。默认为6。</br>
- *        transferTactic - {SuperMap.TransferTactic} 交通换乘策略类型，
+ *        transferTactic - {{@link SuperMap.TransferTactic}} 交通换乘策略类型，
  *                      包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
- *        transferPreference - {SuperMap.TransferPreference} 乘车偏好枚举。</br>
+ *        transferPreference - {{@link SuperMap.TransferPreference}} 乘车偏好枚举。</br>
  *        walkingRatio - {Array<number>} 步行与公交的消耗权重比，默认值为 10。</br>
- *        points - {Array<number>} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
+ *        points - {Array<Object>|Array<number>} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
  *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
  *        evadeLines - {Array<number>} 避让路线的ID，默认为null。</br>
  *        evadeStops - {Array<number>} 避让站点的ID，默认为null。</br>
@@ -28,13 +28,13 @@ export default class TransferSolutionParameters {
     solutionCount = 6;
     /**
      * @member SuperMap.TransferSolutionParameters.prototype.transferPreference -{SuperMap.TransferPreference}
-     *  @description 乘车偏好枚举。默认为SuperMap.TransferPreference.NONE
+     *  @description 乘车偏好枚举。默认为{@link TransferPreference|SuperMap.TransferPreference.NONE}
      */
     transferPreference = TransferPreference.NONE;
 
     /**
      *  @member SuperMap.TransferSolutionParameters.prototype.transferTactic - {SuperMap.TransferTactic}
-     *  @description 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。默认为SuperMap.TransferTactic.LESS_TIME
+     *  @description 交通换乘策略类型，包括时间最短、距离最短、最少换乘、最少步行四种选择。默认为{@link TransferTactic|SuperMap.TransferTactic.LESS_TIME}
      */
     transferTactic = TransferTactic.LESS_TIME;
 
@@ -57,7 +57,7 @@ export default class TransferSolutionParameters {
     walkingRatio = null;
 
     /**
-     *  @member SuperMap.TransferSolutionParameters.prototype.points - {Array<String>}|{Array<Object>}
+     *  @member SuperMap.TransferSolutionParameters.prototype.points - {Array<string>|{Array<Object>}
      *  @description 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
      *  两种查询方式：
      *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；

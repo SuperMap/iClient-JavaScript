@@ -6,7 +6,7 @@ import ThemeMemoryData from './ThemeMemoryData';
  * @classdesc 专题图基类。
  * @param  type - {string} 专题图类型。
  * @param options - {Object} 可选参数。如：<br>
- *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
+ *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
 export default class Theme {
 
@@ -50,6 +50,7 @@ export default class Theme {
     /**
      * @function SuperMap.Theme.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         //return 子类实现

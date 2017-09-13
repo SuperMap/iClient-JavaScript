@@ -19,7 +19,8 @@ export default  class BurstPipelineAnalystService extends NetworkAnalystServiceB
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.BurstPipelineAnalystService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

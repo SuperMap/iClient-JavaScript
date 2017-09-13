@@ -29,7 +29,8 @@ export default  class Circle extends RankSymbol {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.Feature.Theme.Circle.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

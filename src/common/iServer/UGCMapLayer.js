@@ -1,5 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import UGCLayer from './UGCLayer';
+import OverlapDisplayedOptions from './OverlapDisplayedOptions';
 
 /**
  * @class SuperMap.UGCMapLayer
@@ -10,14 +11,14 @@ import UGCLayer from './UGCLayer';
  *        maxScale - {number}地图最大比例尺。<br>
  *        minScale - {number}地图最小比例尺。<br>
  *        minVisibleGeometrySize - {number}几何对象的最小可见大小，以像素为单位。<br>
- *        opaqueRate - {Integer} 图层的不透明度。<br>
+ *        opaqueRate - {integer} 图层的不透明度。<br>
  *        symbolScalable - {boolean} 是否允许图层的符号大小随图缩放。<br>
  *        symbolScale - {number}图层的符号缩放基准比例尺。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。<br>
- *        overlapDisplayedOptions - {SuperMap.OverlapDisplayedOptions} 地图的压盖过滤显示选项，当
+ *        overlapDisplayedOptions - {{@link SuperMap.OverlapDisplayedOptions}} 地图的压盖过滤显示选项，当
  *                                   overlapDisplayed 为 false 时有效。
  */
-export default  class UGCMapLayer extends UGCLayer {
+export default class UGCMapLayer extends UGCLayer {
 
     /**
      * @member SuperMap.UGCMapLayer.prototype.completeLineSymbolDisplayed -{boolean}
@@ -44,7 +45,7 @@ export default  class UGCMapLayer extends UGCLayer {
     minVisibleGeometrySize = null;
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.opaqueRate -{Integer}
+     * @member SuperMap.UGCMapLayer.prototype.opaqueRate -{integer}
      * @description 图层的不透明度。
      */
     opaqueRate = null;
@@ -82,7 +83,8 @@ export default  class UGCMapLayer extends UGCLayer {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.UGCMapLayer.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
@@ -103,6 +105,7 @@ export default  class UGCMapLayer extends UGCLayer {
     /**
      * @function SuperMap.UGCMapLayer.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return{Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         return super.toServerJSONObject();

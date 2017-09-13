@@ -6,10 +6,10 @@ import ServerStyle from './ServerStyle';
  * @classdesc 等级符号专题图正负零值显示风格类
  * @param options - {Object} 可选参数。如：<br>
  *        negativeDisplayed - {boolean} 是否显示负值。默认为 false。<br>
- *        negativeStyle - {SuperMap.ServerStyle} 负值的等级符号风格。<br>
- *        positiveStyle - {SuperMap.ServerStyle}  正值的等级符号风格。<br>
+ *        negativeStyle - {{@link SuperMap.ServerStyle}} 负值的等级符号风格。<br>
+ *        positiveStyle - {{@link SuperMap.ServerStyle}}  正值的等级符号风格。<br>
  *        zeroDisplayed - {boolean} 是否显示0值。默认为 false。<br>
- *        zeroStyle - {SuperMap.ServerStyle} 0值的等级符号风格。
+ *        zeroStyle - {{@link SuperMap.ServerStyle}} 0值的等级符号风格。
  */
 export default  class ThemeGraduatedSymbolStyle {
 
@@ -69,7 +69,7 @@ export default  class ThemeGraduatedSymbolStyle {
      * @function SuperMap.ThemeGraduatedSymbolStyle.fromObj
      * @description 从传入对象获取等级符号专题图正负零值显示风格类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGraduatedSymbolStyle}
+     * @return {SuperMap.ThemeGraduatedSymbolStyle} ThemeGraduatedSymbolStyle对象
      */
     static fromObj(obj) {
         if (!obj) return;

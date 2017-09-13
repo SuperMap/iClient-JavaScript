@@ -66,7 +66,8 @@ export default  class FieldStatisticService extends CommonServiceBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FieldStatisticService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

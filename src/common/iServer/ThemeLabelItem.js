@@ -3,8 +3,8 @@ import ServerTextStyle from './ServerTextStyle';
 
 /**
  * @class SuperMap.ThemeLabelItem
- * @classdesc 分段标签专题图的子项。<br>
- *              标签专题图用专题值对点、线、面等对象做标注，值得注意的是，分段标签专题图允许用户通过 rangeExpression <br>
+ * @classdesc 分段标签专题图的子项。
+ * @description 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，分段标签专题图允许用户通过 rangeExpression <br>
  *              字段指定用于分段的数值型字段，同一范围段内的标签具有相同的显示风格，其中每一个范围段就是一个专题图子项，<br>
  *              每一个子项都具有其名称、风格、起始值和终止值。注意：每个分段所表示的范围为 [Start, End)。例如：标签专题图的分段点有两个子项，<br>
  *              他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 SuperMap.ThemeLabelItem[0].start=0，<br>
@@ -14,7 +14,7 @@ import ServerTextStyle from './ServerTextStyle';
  *        end - {number}标签专题图子项的终止值。<br>
  *        start - {number}标签专题图子项的分段起始值。<br>
  *        visible - {boolean} 标签专题图子项是否可见。<br>
- *        style - {SuperMap.ServerTextStyle} 标签专题图子项文本的显示风格。
+ *        style - {{@link SuperMap.ServerTextStyle}} 标签专题图子项文本的显示风格。
  */
 export default  class ThemeLabelItem {
 
@@ -80,7 +80,7 @@ export default  class ThemeLabelItem {
      * @function SuperMap.ThemeLabelItem.fromObj
      * @description 从传入对象获取分段标签专题图的子项类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeLabelItem}
+     * @return {SuperMap.ThemeLabelItem} ThemeLabelItem对象
      */
     static fromObj(obj) {
         if (!obj) return;

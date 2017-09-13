@@ -27,7 +27,7 @@ export default  class UpdateEdgeWeightService extends NetworkAnalystServiceBase 
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

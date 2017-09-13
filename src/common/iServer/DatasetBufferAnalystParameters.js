@@ -59,7 +59,8 @@ export default  class DatasetBufferAnalystParameters extends BufferAnalystParame
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.DatasetBufferAnalystParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

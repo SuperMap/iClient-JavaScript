@@ -11,25 +11,25 @@ import {Util} from '../commontypes/Util';
  */
 export default class ServerFeature {
 
-    /**
+    /*
      * APIProperty: fieldNames
      * {Array(String)} 矢量要素的属性字段名集合。
      */
     fieldNames = null;
 
-    /**
+    /*
      * APIProperty: fieldValues
      * {Array(String)} 矢量要素的属性字段值集合。
      */
     fieldValues = null;
 
-    /**
+    /*
      * APIProperty: geometry
      * {<SuperMap.ServerGeometry>} 矢量要素的几何信息。
      */
     geometry = null;
 
-    /**
+    /*
      * Constructor: SuperMap.ServerFeature
      * 服务端矢量要素类构造函数。
      *
@@ -47,7 +47,8 @@ export default class ServerFeature {
         }
     }
 
-    /**
+    /*
+     * @function SuperMap.ServerFeature.prototype.destroy
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -61,7 +62,7 @@ export default class ServerFeature {
         }
     }
 
-    /**
+    /*
      * APIMethod: toFeature
      * 将服务端矢量要素 ServerFeature 转换为客户端矢量要素 Feature。
      *
@@ -88,7 +89,7 @@ export default class ServerFeature {
         return feature;
     }
 
-    /**
+    /*
      * Function: SuperMap.ServerFeature.fromJson
      * 将 JSON 对象表示服务端矢量要素转换为 ServerFeature
      *

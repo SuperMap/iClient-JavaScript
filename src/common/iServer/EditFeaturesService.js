@@ -51,7 +51,8 @@ export default class EditFeaturesService extends CommonServiceBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.EditFeaturesService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

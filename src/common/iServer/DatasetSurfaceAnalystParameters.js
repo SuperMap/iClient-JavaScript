@@ -49,7 +49,8 @@ export default class DatasetSurfaceAnalystParameters extends SurfaceAnalystParam
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.DatasetSurfaceAnalystParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

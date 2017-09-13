@@ -58,7 +58,7 @@ export default class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.initBroadcast
      * @description 初始化广播
-     * @returns {SuperMap.DataFlowService}
+     * @return{SuperMap.DataFlowService}
      */
     initBroadcast() {
         var me = this;
@@ -179,7 +179,8 @@ export default class DataFlowService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.DataFlowService.prototype.destroy
+     * @override
      */
     destroy() {
         SuperMap.CommonServiceBase.prototype.destroy.apply(this, arguments);

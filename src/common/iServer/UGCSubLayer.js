@@ -9,13 +9,13 @@ import {LayerType} from '../REST';
  * @classdesc 地图服务图层属性信息类，影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
  * @extends SuperMap.UGCMapLayer
  * @param options - {Object} 可选参数。如：<br>
- *        datasetInfo - {SuperMap.DatasetInfo} 数据集信息。<br>
+ *        datasetInfo - {{@link SuperMap.DatasetInfo}} 数据集信息。<br>
  *        displayFilter - {string} 图层显示过滤条件。<br>
- *        joinItems - {SuperMap.JoinItem} 连接信息类。<br>
+ *        joinItems - {{@link SuperMap.JoinItem}} 连接信息类。<br>
  *        representationField - {string} 存储制图表达信息的字段。<br>
- *        ugcLayerType - {SuperMap.LayerType} 图层类型
+ *        ugcLayerType - {{@link SuperMap.LayerType}} 图层类型
  */
-export default  class UGCSubLayer extends UGCMapLayer {
+export default class UGCSubLayer extends UGCMapLayer {
 
     /**
      * @member SuperMap.UGCSubLayer.prototype.datasetInfo -{SuperMap.DatasetInfo}
@@ -78,7 +78,8 @@ export default  class UGCSubLayer extends UGCMapLayer {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.UGCSubLayer.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
@@ -89,6 +90,7 @@ export default  class UGCSubLayer extends UGCMapLayer {
     /**
      * @function SuperMap.UGCSubLayer.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return{Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var jsonObject = super.toServerJSONObject();

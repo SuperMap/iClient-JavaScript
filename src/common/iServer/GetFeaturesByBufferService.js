@@ -29,7 +29,8 @@ export default  class GetFeaturesByBufferService extends GetFeaturesServiceBase 
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFeaturesByBufferService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

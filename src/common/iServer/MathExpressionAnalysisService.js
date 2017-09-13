@@ -27,7 +27,7 @@ export default  class MathExpressionAnalysisService extends SpatialAnalystBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

@@ -17,7 +17,7 @@ export default class VectorClipJobsService extends ProcessingServiceBase {
     }
 
     /**
-     *@inheritDoc
+     *@override
      */
     destroy() {
         super.destroy();

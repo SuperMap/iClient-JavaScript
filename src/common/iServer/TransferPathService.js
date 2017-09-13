@@ -24,7 +24,7 @@ export default  class TransferPathService extends CommonServiceBase {
         super(url, options);
     }
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

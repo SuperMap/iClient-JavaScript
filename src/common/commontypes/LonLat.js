@@ -99,7 +99,7 @@ export default class LonLat {
      * var isEquals = lonLat1.equals(lonLat2);
      *
      * @param ll - {SuperMap.LonLat} 需要进行比较的坐标对象。
-     * @returns {Boolean} 如果LonLat对象的经纬度和传入的经纬度一致则返回true,不一
+     * @returns {boolean} 如果LonLat对象的经纬度和传入的经纬度一致则返回true,不一
      *      致或传入的ll参数为NULL则返回false。
      */
     equals(ll) {

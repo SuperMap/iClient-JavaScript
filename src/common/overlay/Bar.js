@@ -95,7 +95,8 @@ export default  class Bar extends Graph {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.Feature.Theme.Bar.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

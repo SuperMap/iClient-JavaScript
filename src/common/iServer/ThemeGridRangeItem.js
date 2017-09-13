@@ -3,17 +3,17 @@ import ServerColor from './ServerColor';
 
 /**
  * @class SuperMap.ThemeGridRangeItem
- * @classdesc 栅格分段专题图子项类。<br>
- *            在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
+ * @classdesc 栅格分段专题图子项类。
+ * @description  在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
  *            本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
  * @param options - {Object} 可选参数。如：<br>
  *        caption - {string} 栅格分段专题图子项的标题。<br>
- *        color - {SuperMap.ServerColor}栅格分段专题图中每一个分段专题图子项的对应的颜色。<br>
+ *        color - {{@link SuperMap.ServerColor}}栅格分段专题图中每一个分段专题图子项的对应的颜色。<br>
  *        end - {number}栅格分段专题图子项的终止值。<br>
  *        start - {number}栅格分段专题图子项的起始值。<br>
  *        visible - {boolean} 栅格分段专题图子项是否可见。
  */
-export default  class ThemeGridRangeItem {
+export default class ThemeGridRangeItem {
 
     /**
      * @member SuperMap.ThemeGridRangeItem.prototype.caption -{string}
@@ -74,6 +74,7 @@ export default  class ThemeGridRangeItem {
     /**
      * @function SuperMap.ThemeGridRangeItem.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};
@@ -90,7 +91,7 @@ export default  class ThemeGridRangeItem {
      * @function SuperMap.ThemeGridRangeItem.fromObj
      * @description 从传入对象获取栅格分段专题图子项类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGridRangeItem}
+     * @return {SuperMap.ThemeGridRangeItem} ThemeGridRangeItem对象
      */
     static fromObj(obj) {
         if (!obj) return;

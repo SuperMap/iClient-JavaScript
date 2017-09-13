@@ -21,7 +21,7 @@ export default class SummaryMeshJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

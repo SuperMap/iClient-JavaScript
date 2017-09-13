@@ -15,11 +15,11 @@ import ServerTextStyle from './ServerTextStyle';
  *                 字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，可以看出索引号为0的字符（即“珠” ）在第一个分段内，
  *                 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
  * @param options - {Object} 可选参数。如：<br>
- *        defaultStyle - {SuperMap.ServerTextStyle} 默认的文本复合风格。<br>
+ *        defaultStyle - {{@link SuperMap.ServerTextStyle}} 默认的文本复合风格。<br>
  *        separator - {string} 文本的分隔符。<br>
  *        separatorEnabled - Boolean} 文本的分隔符是否有效。<br>
  *        splitIndexes - {Array<number>} 分段索引值，分段索引值用来对文本中的字符进行分段。<br>
- *        styles - {Array<SuperMap.ServerTextStyle>} 文本样式集合。
+ *        styles - {Array<{@link SuperMap.ServerTextStyle}>} 文本样式集合。
  */
 export default class LabelMixedTextStyle {
 

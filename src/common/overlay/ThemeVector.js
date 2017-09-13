@@ -144,7 +144,8 @@ export default class ThemeVector extends ThemeFeature {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.Feature.Theme.Vector.prototype.destroy
+     * @override
      */
     destroy() {
         this.style = null;

@@ -28,7 +28,8 @@ export default  class FacilityAnalystTraceup3DService extends CommonServiceBase 
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystTraceup3DService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

@@ -31,7 +31,8 @@ export default  class GetFeaturesByIDsService extends GetFeaturesServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFeaturesByIDsService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

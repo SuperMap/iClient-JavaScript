@@ -69,7 +69,8 @@ export default class GetFeaturesByBoundsParameters extends GetFeaturesParameters
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFeaturesByBoundsParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
@@ -90,7 +91,7 @@ export default class GetFeaturesByBoundsParameters extends GetFeaturesParameters
     }
 
     /**
-     * @function: SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
+     * @function SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
      * @description 将<SuperMap.GetFeaturesByBoundsParameters>对象参数转换为json字符串。
      * @param params - {SuperMap.GetFeaturesByBoundsParameters} 范围查询参数。
      * @return  {string} 转化后的 json字符串。

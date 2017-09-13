@@ -31,7 +31,8 @@ export default  class FindServiceAreasService extends NetworkAnalystServiceBase 
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FindServiceAreasService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

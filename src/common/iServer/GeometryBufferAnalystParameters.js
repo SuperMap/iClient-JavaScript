@@ -33,7 +33,8 @@ export default class GeometryBufferAnalystParameters extends BufferAnalystParame
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GeometryBufferAnalystParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

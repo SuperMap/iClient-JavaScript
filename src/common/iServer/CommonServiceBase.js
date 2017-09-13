@@ -80,26 +80,26 @@ export default class CommonServiceBase {
     options = null;
 
     /**
-     *  @member SuperMap.CommonServiceBase.prototype.totalTimes -{Integer}
+     *  @member SuperMap.CommonServiceBase.prototype.totalTimes -{integer}
      *  @description 实际请求失败次数。
      */
     totalTimes = null;
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.POLLING_TIMES -{Integer}
+     * @member SuperMap.CommonServiceBase.prototype.POLLING_TIMES -{integer}
      * @description 默认请求失败次数。
      */
     POLLING_TIMES = 3;
 
     /*
-     * @member SuperMap.CommonServiceBase.prototype._processSuccess -{Function}
+     * @member SuperMap.CommonServiceBase.prototype._processSuccess -{function}
      * @description 请求参数中成功回调函数。
      */
     _processSuccess = null;
 
     /*
-     * Property: _processFailed
-     * {Function} 请求参数中失败回调函数。
+     * @member SuperMap.CommonServiceBase.prototype_processFailed -{function}
+     * @description 请求参数中失败回调函数。
      */
     _processFailed = null;
 

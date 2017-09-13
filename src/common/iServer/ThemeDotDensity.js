@@ -5,6 +5,7 @@ import ServerStyle from './ServerStyle';
 /**
  * @class SuperMap.ThemeDotDensity
  * @classdesc 点密度专题图。<br>
+ * @description
  *              点密度专题图用一定大小、形状相同的点表示现象分布范围、数量特征和分布密度。点的多少和所代表的意义由地图的内容确定。<br>
  *              点密度专题图利用图层的某一数值属性信息（专题值）映射为不同等级，每一级别使用不同数量或表现为密度的点符号来表示。<br>
  *              该专题值在各个分区内的分布情况，体现不同区域的相对数量差异。多用于具有数量特征的地图上，<br>
@@ -14,9 +15,9 @@ import ServerStyle from './ServerStyle';
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
  *        dotExpression - {string} 创建点密度专题图的字段或字段表达式。<br>
- *        style - {SuperMap.ServerStyle} 点密度专题图中点的风格。<br>
+ *        style - {{@link SuperMap.ServerStyle}} 点密度专题图中点的风格。<br>
  *        value - {string} 专题图中每一个点所代表的数值。<br>
- *        memoryData - {SuperMap.REST.ThemeMemoryData} 专题图内存数据。
+ *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
 export default  class ThemeDotDensity extends Theme {
 
@@ -69,6 +70,7 @@ export default  class ThemeDotDensity extends Theme {
     /**
      * @function SuperMap.ThemeDotDensity.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return{Object} 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         var obj = {};
@@ -85,7 +87,7 @@ export default  class ThemeDotDensity extends Theme {
      * @function SuperMap.ThemeDotDensity.fromObj
      * @description 从传入对象获取点密度专题图中点的风格。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeDotDensity}
+     * @return {SuperMap.ThemeDotDensity} ThemeDotDensity对象
      */
     static fromObj(obj) {
         if (!obj) return;

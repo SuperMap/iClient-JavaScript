@@ -19,7 +19,8 @@ export default  class FacilityAnalystUpstream3DService extends CommonServiceBase
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystUpstream3DService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

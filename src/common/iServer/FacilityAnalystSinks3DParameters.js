@@ -24,7 +24,8 @@ export default  class FacilityAnalystSinks3DParameters extends FacilityAnalyst3D
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystSinks3DParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

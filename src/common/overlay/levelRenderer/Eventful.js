@@ -18,7 +18,7 @@ export default class Eventful {
     _handlers = {};
 
 
-    /**
+    /*
      * Constructor: SuperMap.LevelRenderer.Eventful
      * 构造函数。
      *

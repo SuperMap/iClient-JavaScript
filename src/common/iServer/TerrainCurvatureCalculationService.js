@@ -26,7 +26,7 @@ export default  class TerrainCurvatureCalculationService extends SpatialAnalystB
     }
 
     /**
-     *@inheritDoc
+     *@override
      */
     destroy() {
         super.destroy();

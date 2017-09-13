@@ -30,7 +30,8 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.ComputeWeightMatrixService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

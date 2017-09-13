@@ -18,7 +18,7 @@ export default  class TilesetsService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

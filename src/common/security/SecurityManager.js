@@ -5,21 +5,20 @@ import KeyServiceParameter from './KeyServiceParameter';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
- * @class SuperMap.SecurityManager
- * @classdesc
- *  安全管理中心
- *  提供iServer,iPortal,Online统一权限认证管理
- *  使用说明：
- *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
- *  SuperMap.SecurityManager.registerKey注册凭据。
- *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
+ * @name SecurityManager
+ * @memberOf SuperMap
+ * @namespace
+ * @description 安全管理中心，提供iServer,iPortal,Online统一权限认证管理
+ *  > 使用说明：
+ *  > 创建任何一个服务之前调用{@link SuperMap.SecurityManager.registerToken}或
+ *  > {@link SuperMap.SecurityManager.registerKey}注册凭据。
+ *  > 发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
  */
 SuperMap.SecurityManager = {
 
     INNER_WINDOW_WIDTH: 600,
     INNER_WINDOW_HEIGHT: 600,
     /**
-     * @function SuperMap.SecurityManager.prototype.generateToken
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
      * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
@@ -36,7 +35,6 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.registerServers
      * @description 注册安全服务器相关信息
      * @param serverInfos -{SuperMap.ServerInfo} 服务器信息
      */
@@ -52,10 +50,9 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.registerToken
      * @description 服务请求都会自动带上这个token
      * @param url {string} -服务器域名+端口：如http://localhost:8090
-     * @param token -{string}
+     * @param token -{string} token
      */
     registerToken: function (url, token) {
         this.tokens = this.tokens || {};
@@ -67,10 +64,9 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.registerKey
      * @description 注册key,ids为数组(存在一个key对应多个服务)
      * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key -{string}
+     * @param key -{string} key
      */
     registerKey: function (ids, key) {
         this.keys = this.keys || {};
@@ -86,9 +82,9 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.getServerInfo
-     * @description 获取服务信息
+     * @description 获取服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
+     * @returns {SuperMap.ServerInfo} 服务器信息
      */
     getServerInfo: function (url) {
         this.servers = this.servers || {};
@@ -96,9 +92,9 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.getToken
-     * @description token按照域名存储
-     * @param url -{string}-服务器域名+端口，如：http://localhost:8092
+     * @description 根据Url获取token
+     * @param url -{string} 服务器域名+端口，如：http://localhost:8092
+     * @returns {string} token
      */
     getToken: function (url) {
         if (!url) {
@@ -109,6 +105,11 @@ SuperMap.SecurityManager = {
         return this.tokens[domain];
     },
 
+    /**
+     * @description 根据Url获取key
+     * @param id -{string} id
+     * @returns {string} key
+     */
     getKey: function (id) {
         this.keys = this.keys || {};
         var key = this._getUrlRestString(id) || id;
@@ -116,7 +117,6 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.loginOnline
      * @description Online登录验证
      * @param callbackLocation -{string} 跳转位置
      * @param newTab -{boolean}是否新窗口打开
@@ -127,10 +127,11 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.loginPortal
      * @description iPortal登录验证
-     * @param url -{string} 网站地址
-     * @param newTab -{boolean}是否新窗口打开
+     * @param url -{string} iportal首页地址
+     * @param username -{string} 用户名
+     * @param password -{string} 密码
+     * @returns {Promise}
      */
     loginiPortal: function (url, username, password) {
         var end = url.substr(url.length - 1, 1);
@@ -151,6 +152,12 @@ SuperMap.SecurityManager = {
         });
 
     },
+
+    /**
+     * @description iPortal登录验证
+     * @param url -{string} iportal首页地址
+     * @returns {Promise}
+     */
     logoutiPortal: function (url) {
         var end = url.substr(url.length - 1, 1);
         url += end === "/" ? "services/security/logout" : "/services/security/logout";
@@ -171,13 +178,12 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.loginManager
      * @description iManager登录验证
-     * @param url -{String} iManager地址。<br>
+     * @param url -{string} iManager地址。<br>
      *                      地址参数为iManager首页地址，如： http://localhost:8390/imanager<br>
      * @param loginInfoParams -{Object} iManager 登录参数<br>
-     *        userName -{String} 用户名<br>
-     *        password-{String} 密码
+     *        userName -{string} 用户名<br>
+     *        password-{string} 密码
      * @param options -{Object} <br>
      *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
      * @return {Promise}
@@ -212,7 +218,6 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * @function SuperMap.SecurityManager.prototype.destroyAllCredentials
      * @description 清空全部验证信息
      */
     destroyAllCredentials: function () {
@@ -221,7 +226,6 @@ SuperMap.SecurityManager = {
         this.servers = null;
     },
     /**
-     * @function SuperMap.SecurityManager.prototype.destroyToken
      * @description 清空令牌信息
      */
     destroyToken: function (url) {
@@ -235,7 +239,6 @@ SuperMap.SecurityManager = {
         }
     },
     /**
-     * @function SuperMap.SecurityManager.prototype.destroyToken
      * @description 清空服务授权码
      */
     destroyKey: function (id) {

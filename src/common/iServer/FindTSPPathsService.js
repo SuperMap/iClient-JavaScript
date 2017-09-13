@@ -33,7 +33,8 @@ export default  class FindTSPPathsService extends NetworkAnalystServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FindTSPPathsService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

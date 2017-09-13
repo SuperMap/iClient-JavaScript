@@ -31,7 +31,8 @@ export default  class FacilityAnalystSinks3DService extends CommonServiceBase {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystSinks3DService.prototype.destroy
+     * @override
      */
     destroy() {
         SuperMap.CommonServiceBase.prototype.destroy.apply(this, arguments);

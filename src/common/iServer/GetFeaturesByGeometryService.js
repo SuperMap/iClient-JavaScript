@@ -31,7 +31,8 @@ export default  class GetFeaturesByGeometryService extends GetFeaturesServiceBas
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFeaturesByGeometryService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

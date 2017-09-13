@@ -64,7 +64,7 @@ export default  class RouteLocatorService extends SpatialAnalystBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

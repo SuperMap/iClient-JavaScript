@@ -28,7 +28,7 @@ export default  class QueryByBoundsService extends QueryService {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

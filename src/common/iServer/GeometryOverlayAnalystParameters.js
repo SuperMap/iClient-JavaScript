@@ -48,7 +48,8 @@ export default class GeometryOverlayAnalystParameters extends OverlayAnalystPara
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GeometryOverlayAnalystParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

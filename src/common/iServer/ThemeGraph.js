@@ -16,16 +16,17 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  * @param options - {Object} 参数。<br>
  *        barWidth - {number}柱状专题图中每一个柱的宽度。<br>
  *        flow - {SuperMap.ThemeFlow} 统计专题图流动显示与牵引线设置。<br>
- *        graduatedMode - {SuperMap.GraduatedMode} 统计图中地理要素的值与图表尺寸间的映射关系。<br>
- *        graphAxes - {SuperMap.ThemeGraphAxes} 统计图中坐标轴样式相关信息。<br>
- *        graphSize - {SuperMap.ThemeGraphSize} 统计符号的最大最小尺寸。<br>
+ *        graduatedMode - {{@link SuperMap.GraduatedMode}} 统计图中地理要素的值与图表尺寸间的映射关系。<br>
+ *        graphAxes - {{@link SuperMap.ThemeGraphAxes}} 统计图中坐标轴样式相关信息。<br>
+ *        graphSize - {{@link SuperMap.ThemeGraphSize}} 统计符号的最大最小尺寸。<br>
  *        graphSizeFixed - {boolean} 缩放地图时统计图符号是否固定大小。<br>
- *        graphText - {SuperMap.ThemeGraphText} 统计图上的文字是否可以见以及文字标注风格。<br>
- *        graphType - {SuperMap.ThemeGraphType} 统计专题图类型。<br>
- *        items - {Array<SuperMap.ThemeGraphItem>} 统计专题图子项集合。<br>
- *        memoryKeys - {Array<Integer>} 以内存数组方式制作专题图时的键数组。<br>
+ *        graphText - {{@link SuperMap.ThemeGraphText}} 统计图上的文字是否可以见以及文字标注风格。<br>
+ *        graphAxesTextDisplayMode -{{@link SuperMap.GraphAxesTextDisplayMode}} 统计专题图坐标轴文本显示模式 。默认值 SuperMap.GraphAxesTextDisplayMode.NONE。
+ *        graphType - {{@link SuperMap.ThemeGraphType}} 统计专题图类型。<br>
+ *        items - {Array<{@link SuperMap.ThemeGraphItem}>} 统计专题图子项集合。<br>
+ *        memoryKeys - {Array<integer>} 以内存数组方式制作专题图时的键数组。<br>
  *        negativeDisplayed - {boolean} 专题图中是否显示属性为负值的数据。<br>
- *        offset - {SuperMap.ThemeOffset} 统计图相对于要素内点的偏移量。<br>
+ *        offset - {{@link SuperMap.ThemeOffset}} 统计图相对于要素内点的偏移量。<br>
  *        overlapAvoided - {boolean} 统计图是否采用避让方式显示。<br>
  *        roseAngle - {number}统计图中玫瑰图或三维玫瑰图用于等分的角度。<br>
  *        startAngle - {number}饼状统计图扇形的起始角度。
@@ -47,7 +48,7 @@ export default class ThemeGraph extends Theme {
     flow = null;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.graduatedMode -{GraduatedMode}
+     * @member SuperMap.ThemeGraph.prototype.graduatedMode -{SuperMap.GraduatedMode}
      * @description 统计图中地理要素的值与图表尺寸间的映射关系（常数、对数、平方根），即分级方式。
      *              默认值为 SuperMap.GraduatedMode.CONSTANT。
      *              分级主要是为了减少制作统计专题图中数据大小之间的差异，使得统计图的视觉效果比较好，同时不同类别之间的比较也还是有意义的。
@@ -56,13 +57,13 @@ export default class ThemeGraph extends Theme {
     graduatedMode = GraduatedMode.CONSTANT;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.graphAxes -{ThemeGraphAxes}
+     * @member SuperMap.ThemeGraph.prototype.graphAxes -{SuperMap.ThemeGraphAxes}
      * @description 用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
      */
     graphAxes = null;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.graphSize -{ThemeGraphSize}
+     * @member SuperMap.ThemeGraph.prototype.graphSize -{SuperMap.ThemeGraphSize}
      * @description 用于设置统计符号的最大最小尺寸。
      */
     graphSize = null;
@@ -101,7 +102,7 @@ export default class ThemeGraph extends Theme {
     items = null;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.memoryKeys -{Array<Integer>}
+     * @member SuperMap.ThemeGraph.prototype.memoryKeys -{Array<integer>}
      * @description 以内存数组方式制作专题图时的键数组。<br>
      *              键数组内的数值代表 SmID 值，它与 SuperMap.ThemeGraphItem 类中的值数组（SuperMap.ThemeGraphItem.memoryDoubleValues）要关联起来应用。<br>
      *              键数组中数值的个数必须要与值数组的数值个数一致。值数组中的值将代替原来的专题值来制作统计专题图。<br>
@@ -229,7 +230,8 @@ export default class ThemeGraph extends Theme {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.ThemeGraph.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
@@ -284,6 +286,7 @@ export default class ThemeGraph extends Theme {
     /**
      * @function SuperMap.ThemeGraph.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} 对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};
@@ -332,7 +335,7 @@ export default class ThemeGraph extends Theme {
      * @function SuperMap.ThemeGraph.fromObj
      * @description 从传入对象获取统计专题图类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGraph}
+     * @return {SuperMap.ThemeGraph} ThemeGraph对象
      */
     static fromObj(obj) {
         var res = new ThemeGraph();

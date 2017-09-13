@@ -7,14 +7,14 @@ import ServerColor from './ServerColor';
  * @classdesc 服务端文本风格类
  * @description 该类用于定义文本风格的相关属性。
  * @param options - {Object} 可选参数。如：<br>
- *        align - {TextAlignment} 文本的对齐方式。<br>
- *        backColor - {SuperMap.ServerColor} 文本的背景色。<br>
- *        foreColor - {SuperMap.ServerColor} 文本的前景色。<br>
+ *        align - {{@link SuperMap.TextAlignment}} 文本的对齐方式。<br>
+ *        backColor - {{@link SuperMap.ServerColor}} 文本的背景色。<br>
+ *        foreColor - {{@link SuperMap.ServerColor}} 文本的前景色。<br>
  *        backOpaque - {boolean} 文本背景是否不透明。<br>
  *        sizeFixed - {boolean} 文本大小是否固定。<br>
  *        fontHeight - {number}文本字体的高度。<br>
  *        fontWidth - {number}文本字体的宽度。<br>
- *        fontWeight - {Integer} 文本字体的磅数。<br>
+ *        fontWeight - {integer} 文本字体的磅数。<br>
  *        fontName - {string} 文本字体的名称。<br>
  *        bold - {boolean} 文本是否为粗体字。<br>
  *        italic - {boolean}文本是否采用斜体。<br>
@@ -29,7 +29,7 @@ import ServerColor from './ServerColor';
 export default class ServerTextStyle {
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.align -{TextAlignment}
+     * @member SuperMap.ServerTextStyle.prototype.align -{SuperMap.TextAlignment}
      * @description 文本的对齐方式。默认为 SuperMap.TextAlignment.BASELINECENTER（基准线居中对齐）。
      */
     align = TextAlignment.BASELINECENTER;
@@ -72,7 +72,7 @@ export default class ServerTextStyle {
     fontWidth = 0;
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.fontWeight -{Integer}
+     * @member SuperMap.ServerTextStyle.prototype.fontWeight -{integer}
      * @description 文本字体的磅数。表示粗体的具体数值。取值范围为从0－900之间的整百数，默认值为400。
      */
     fontWeight = 400;

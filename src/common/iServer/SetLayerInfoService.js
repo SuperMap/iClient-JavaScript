@@ -29,7 +29,7 @@ export default  class SetLayerInfoService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

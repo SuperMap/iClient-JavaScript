@@ -24,7 +24,8 @@ export default  class FacilityAnalystSources3DService extends CommonServiceBase 
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystSources3DService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

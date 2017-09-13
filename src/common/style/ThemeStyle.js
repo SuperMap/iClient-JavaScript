@@ -3,7 +3,7 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.ThemeStyle
  * @classdesc 客户端专题图风格类
- * @param options -{Object} 参数
+ * @param options -{Object} 客户端专题图风格参数
  *
  */
 export default  class ThemeStyle {

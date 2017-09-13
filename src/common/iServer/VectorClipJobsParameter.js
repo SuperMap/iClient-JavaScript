@@ -7,7 +7,7 @@ import {ClipAnalystMode} from '../REST';
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{string} 数据集名。 <br>
  *         datasetOverlay -{string} 裁剪对象数据集。 <br>
- *         mode -{SuperMap.SpatialQueryMode} 裁剪分析模式 。 <br>
+ *         mode -{{@link SuperMap.ClipAnalystMode}} 裁剪分析模式 。 <br>
  */
 export default class VectorClipJobsParameter {
 

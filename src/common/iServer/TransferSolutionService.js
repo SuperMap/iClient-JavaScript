@@ -29,7 +29,7 @@ export default  class TransferSolutionService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

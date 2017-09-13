@@ -37,7 +37,8 @@ export default  class GetFeaturesBySQLParameters extends GetFeaturesParametersBa
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFeaturesBySQLParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

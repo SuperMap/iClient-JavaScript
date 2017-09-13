@@ -40,7 +40,8 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FindClosestFacilitiesService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

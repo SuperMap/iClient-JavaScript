@@ -31,7 +31,7 @@ export default  class ThemeService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

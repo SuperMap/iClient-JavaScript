@@ -30,7 +30,8 @@ export default  class GetFeaturesByBoundsService extends GetFeaturesServiceBase 
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFeaturesByBoundsService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

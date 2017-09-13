@@ -5,17 +5,17 @@ import {RangeMode, ColorGradientType} from '../REST';
 
 /**
  * @class SuperMap.ThemeGridRange
- * @classdesc 栅格分段专题图。<br>
- *              栅格分段专题图，是将所有单元格的值按照某种分段方式分成多个范围段，值在同一个范围段中的单元格使用相同的颜色进行显示。<br>
+ * @classdesc 栅格分段专题图。
+ * @description 栅格分段专题图，是将所有单元格的值按照某种分段方式分成多个范围段，值在同一个范围段中的单元格使用相同的颜色进行显示。<br>
  *              栅格分段专题图一般用来反映连续分布现象的数量或程度特征。比如某年的全国降水量分布图，将各气象站点的观测值经过内插之后生成的栅格数据进行分段显示。<br>
  *              该类类似于分段专题图类，不同点在于分段专题图的操作对象是矢量数据，而栅格分段专题图的操作对象是栅格数据。<br>
  * @extends SuperMap.Theme
  * @param options - {Object} 参数。<br>
- *        items - {Array<SuperMap.ThemeGridRangeItem>} 栅格分段专题图子项数组。<br>
+ *        items - {Array<{@link SuperMap.ThemeGridRangeItem}>} 栅格分段专题图子项数组。<br>
  *        reverseColor - {boolean} 是否对栅格分段专题图中分段的颜色风格进行反序显示。<br>
- *        rangeMode - {SuperMap.RangeMode} 分段专题图的分段模式。<br>
+ *        rangeMode - {{@link SuperMap.RangeMode}} 分段专题图的分段模式。<br>
  *        rangeParameter - {number}分段参数。<br>
- *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。
+ *        colorGradientType - {{@link SuperMap.ColorGradientType}} 渐变颜色枚举类。
  */
 export default class ThemeGridRange extends Theme {
 
@@ -66,7 +66,8 @@ export default class ThemeGridRange extends Theme {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.ThemeGridRange.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
@@ -90,7 +91,7 @@ export default class ThemeGridRange extends Theme {
      * @function SuperMap.ThemeGridRange.fromObj
      * @description 从传入对象获取栅格分段专题图。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGridRange}
+     * @return {SuperMap.ThemeGridRange} ThemeGridRange对象
      */
     static fromObj(obj) {
         if (!obj) return;

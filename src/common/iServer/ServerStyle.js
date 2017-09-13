@@ -6,21 +6,21 @@ import ServerColor from './ServerColor';
  * @classdesc 服务端矢量要素风格类。
  * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
  * @param options - {Object} 可选参数。如：<br>
- *        fillBackColor - {SuperMap.ServerColor} 填充背景颜色。<br>
+ *        fillBackColor - {{@link SuperMap.ServerColor}} 填充背景颜色。<br>
  *        fillBackOpaque - {boolean} 背景是否不透明。<br>
- *        fillForeColor - {SuperMap.ServerColor} 填充颜色。<br>
- *        fillGradientMode - {FillGradientMode} 渐变填充风格的渐变类型。<br>
+ *        fillForeColor - {{@link SuperMap.ServerColor}} 填充颜色。<br>
+ *        fillGradientMode - {{@link SuperMap.FillGradientMode}} 渐变填充风格的渐变类型。<br>
  *        fillGradientAngle - {number}渐变填充的旋转角度。<br>
  *        fillGradientOffsetRatioX - {number}渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
  *        fillGradientOffsetRatioY - {number}填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
  *        fillOpaqueRate - {number}填充不透明度。<br>
- *        fillSymbolID - {Integer} 填充符号的编码。<br>
- *        lineColor - {SuperMap.ServerColor} 矢量要素的边线颜色。<br>
- *        lineSymbolID - {Integer} 线状符号的编码。<br>
+ *        fillSymbolID - {integer} 填充符号的编码。<br>
+ *        lineColor - {{@link SuperMap.ServerColor}} 矢量要素的边线颜色。<br>
+ *        lineSymbolID - {integer} 线状符号的编码。<br>
  *        lineWidth - {number}边线的宽度。<br>
  *        markerAngle - {number}点状符号的旋转角度。<br>
  *        markerSize - {number}点状符号的大小。<br>
- *        markerSymbolID - {Integer} 点状符号的编码。
+ *        markerSymbolID - {integer} 点状符号的编码。
  */
 export default class ServerStyle {
 
@@ -43,7 +43,7 @@ export default class ServerStyle {
     fillForeColor = null;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientMode -{FillGradientMode}
+     * @member SuperMap.ServerStyle.prototype.fillGradientMode -{SuperMap.FillGradientMode}
      * @description 渐变填充风格的渐变类型。
      */
     fillGradientMode = null;
@@ -63,7 +63,7 @@ export default class ServerStyle {
 
     /**
      * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY -{number}
-     * @function 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
+     * @description 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
      *           设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
      */
     fillGradientOffsetRatioY = 0;
@@ -76,7 +76,7 @@ export default class ServerStyle {
     fillOpaqueRate = 100;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillSymbolID -{Integer}
+     * @member SuperMap.ServerStyle.prototype.fillSymbolID -{integer}
      * @description 填充符号的编码。此编码用于唯一标识各普通填充风格的填充符号。
      *              关于填充符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
      */
@@ -89,7 +89,7 @@ export default class ServerStyle {
     lineColor = null;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.lineSymbolID -{Integer}
+     * @member SuperMap.ServerStyle.prototype.lineSymbolID -{integer}
      * @description 线状符号的编码。此编码用于唯一标识各普通填充风格的填充符号，默认值为0。
      *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
      */
@@ -115,7 +115,7 @@ export default class ServerStyle {
     markerSize = 1;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.markerSymbolID -{Integer}
+     * @member SuperMap.ServerStyle.prototype.markerSymbolID -{integer}
      * @description 点状符号的编码。此编码用于唯一标识各点状符号。默认为 -1。
      *              关于线状符号的样式与对应的 ID 号请在 SuperMap 桌面软件中查找。
      */
@@ -167,6 +167,7 @@ export default class ServerStyle {
     /**
      * @function SuperMap.ServerStyle.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return{Object } 对应的 JSON 格式对象
      */
     toServerJSONObject() {
         var styleObj = {};
@@ -179,7 +180,7 @@ export default class ServerStyle {
      * @function SuperMap.ServerStyle.fromJson
      * @description 将JSON对象转换为 SuperMap.ServerStyle 对象。
      * @param jsonObject - {Object} 要转换的 JSON 对象。
-     * @return {SuperMap.ServerStyle} 转化后的 SuperMap.ServerStyle 对象。
+     * @return{SuperMap.ServerStyle} 转化后的 SuperMap.ServerStyle 对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

@@ -39,7 +39,8 @@ export default class DatasetThiessenAnalystParameters extends ThiessenAnalystPar
     }
 
     /**
-     *@inheritDoc
+     * @function SuperMap.DatasetThiessenAnalystParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

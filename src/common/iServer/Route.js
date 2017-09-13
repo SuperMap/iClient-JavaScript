@@ -25,18 +25,19 @@ export default  class Route extends Collection {
 
     /**
      * @member SuperMap.Route.prototype.center -{number}
+     * @description 路由对象的中心点
      */
     center = null;
 
     /**
      * @member SuperMap.Route.prototype.style -{string}
+     * @description 路由对象的样式
      */
     style = null;
 
     /**
      * @member SuperMap.Route.prototype.length -{number}
-     * @description 路由对象的长度。
-     * 单位与数据集的单位相同。
+     * @description 路由对象的长度。单位与数据集的单位相同。
      */
     length = null;
 
@@ -86,7 +87,9 @@ export default  class Route extends Collection {
     type = null;
 
     /**
-     * @member SuperMap.Route.prototype.componentTypes -{string}
+     * @member SuperMap.Route.prototype.componentTypes -{Array<string>}
+     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+     * @default ["{@link SuperMap.Geometry.LinearRing}", "{@link SuperMap.Geometry.LineString}"];
      */
     componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
 
@@ -102,6 +105,7 @@ export default  class Route extends Collection {
      *
      * @function SuperMap.Route.prototype.toJson
      * @description 转换为json对象。
+     * @return{Object} json对象
      */
     toJson() {
         var result = "{";
@@ -151,7 +155,8 @@ export default  class Route extends Collection {
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.Route.prototype.destroy
+     * @override
      */
     destroy() {
         var me = this;
@@ -173,7 +178,7 @@ export default  class Route extends Collection {
      * @function SuperMap.Route.fromJson
      * @description  将 JSON 对象转换为 SuperMap.Route 对象。
      * @param jsonObject - {Object} JSON 对象表示的路由对象。
-     * @return {SuperMap.Route} 转化后的 Route 对象。
+     * @return{SuperMap.Route} 转化后的 Route 对象。
      */
     static fromJson(jsonObject) {
         if (!jsonObject) {

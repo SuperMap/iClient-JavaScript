@@ -8,9 +8,9 @@ import {FetchRequest} from '../util/FetchRequest';
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 分布式分析服务地址。
  * @param options - {Object} 参数。如：<br>
- *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        events - {{@link SuperMap.Events}} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        serverType - {{@link ServerType}} 服务器类型，iServer|iPortal|Online。<br>
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
@@ -31,7 +31,8 @@ export default class ProcessingServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.ProcessingServiceBase.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

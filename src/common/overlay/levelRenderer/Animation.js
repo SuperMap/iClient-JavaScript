@@ -3,11 +3,9 @@ import Eventful from './Eventful';
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Animation
- * 动画主类, 调度和管理所有动画控制器。
- *
- * Inherits from:
- *  - <SuperMap.LevelRenderer.Eventful>
+ * @class SuperMap.LevelRenderer.Animation
+ * @classdesc 动画主类, 调度和管理所有动画控制器。
+ * @extends SuperMap.LevelRenderer.Eventful
  */
 export default class Animation extends Eventful {
 
@@ -46,7 +44,7 @@ export default class Animation extends Eventful {
      */
     _time = 0;
 
-    /**
+    /*
      * Constructor: SuperMap.LevelRenderer.Animation
      * 构造函数。
      *
@@ -351,8 +349,7 @@ SuperMap.LevelRenderer.Animation = Animation;
 
 /**
  * @private
- * @class  SuperMap.LevelRenderer.Animation.Animator
- *
+ * @class SuperMap.LevelRenderer.Animation.Animator
  */
 SuperMap.LevelRenderer.Animation.Animator = class Animator {
 
@@ -416,7 +413,7 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
      */
     _clipList = [];
 
-    /**
+    /*
      * Constructor: SuperMap.LevelRenderer.Animation.Animator
      * 构造函数。
      *

@@ -44,7 +44,8 @@ export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBa
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFeaturesByIDsParameters.destroy
+     * @override
      */
     destroy() {
         super.destroy();

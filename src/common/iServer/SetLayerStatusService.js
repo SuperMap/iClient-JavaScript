@@ -30,7 +30,7 @@ export default  class SetLayerStatusService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @override
      */
     destroy() {
         super.destroy();

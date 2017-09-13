@@ -20,7 +20,8 @@ export default  class FacilityAnalystTracedown3DParameters extends FacilityAnaly
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.FacilityAnalystTracedown3DParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

@@ -6,12 +6,12 @@ import {ServerType} from '../REST';
  * @param type - {string} 服务器类型
  * @param options - {Object} 服务器信息相关可选参数。如：<br>
  *        server - {string} 服务器地址,如：http://supermapiserver:8090/iserver<br>
- *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+ *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json<br>
  *        keyServiceUrl - {string} 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
  */
 export default class ServerInfo {
     /**
-     * @member SuperMap.ServerInfo.prototype.type -{SuperMap.ServerType}
+     * @member SuperMap.ServerInfo.prototype.type -{ServerType}
      * @description 服务器类型
      */
     type = null;

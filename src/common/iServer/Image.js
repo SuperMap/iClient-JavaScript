@@ -78,7 +78,8 @@ export default class UGCImage extends UGCSubLayer {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.Image.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

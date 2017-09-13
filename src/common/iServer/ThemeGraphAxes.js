@@ -6,11 +6,11 @@ import ServerTextStyle from './ServerTextStyle';
  * @class SuperMap.ThemeGraphAxes
  * @classdesc 统计专题图坐标轴样式类。
  * @param  options - {Object} 可选参数。<br>
- *         axesColor - {SuperMap.ServerColor} 坐标轴颜色。<br>
+ *         axesColor - {{@link SuperMap.ServerColor}} 坐标轴颜色。<br>
  *         axesDisplayed - {boolean} 是否显示坐标轴。<br>
  *         axesGridDisplayed - {boolean} 是否在统计图坐标轴上显示网格。<br>
  *         axesTextDisplayed - {boolean} 是否显示坐标轴的文本标注。<br>
- *         axesTextStyle - {SuperMap.ServerTextStyle} 统计符号的最大最小尺寸。
+ *         axesTextStyle - {{@link SuperMap.ServerTextStyle}} 统计符号的最大最小尺寸。
  */
 export default  class ThemeGraphAxes {
 
@@ -77,7 +77,7 @@ export default  class ThemeGraphAxes {
      * @function SuperMap.ThemeGraphAxes.fromObj
      * @description 从传入对象获取统计专题图坐标轴样式类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.ThemeGraphAxes}
+     * @return {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象
      */
     static fromObj(obj) {
         if (!obj) return;

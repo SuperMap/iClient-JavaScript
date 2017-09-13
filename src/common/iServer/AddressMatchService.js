@@ -17,7 +17,8 @@ export default class AddressMatchService extends CommonServiceBase {
     }
 
     /**
-     * @inheritDoc
+     * @function SuperMap.AddressMatchService.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();

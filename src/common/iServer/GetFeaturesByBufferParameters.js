@@ -59,7 +59,8 @@ export default class GetFeaturesByBufferParameters extends GetFeaturesParameters
 
 
     /**
-     * @inheritDoc
+     * @function SuperMap.GetFeaturesByBufferParameters.prototype.destroy
+     * @override
      */
     destroy() {
         super.destroy();
