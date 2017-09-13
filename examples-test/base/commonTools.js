@@ -214,6 +214,7 @@ var commonTools = ({
         browser.pause(1000);
         browser.windowHandles(function (result) {
             browser.switchWindow(result.value[1]);
+            browser.pause(1000);
             browser.assert.urlEquals('http://iclient.supermapol.com/');
             browser.closeWindow();
             browser.switchWindow(result.value[0]);
@@ -224,6 +225,7 @@ var commonTools = ({
         browser.pause(1000);
         browser.windowHandles(function (result) {
             browser.switchWindow(result.value[1]);
+            browser.pause(1000);
             browser.assert.urlEquals('http://support.supermap.com.cn/product/iServer.aspx');
             browser.closeWindow();
             browser.switchWindow(result.value[0]);
@@ -234,6 +236,7 @@ var commonTools = ({
         browser.pause(1000);
         browser.windowHandles(function (result) {
             browser.switchWindow(result.value[1]);
+            browser.pause(1000);
             browser.assert.urlEquals('http://iclient.supermapol.com/');
             browser.closeWindow();
             browser.switchWindow(result.value[0]);
