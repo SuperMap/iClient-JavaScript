@@ -18,16 +18,15 @@ import UpdateTurnNodeWeightService from  '../../common/iServer/UpdateTurnNodeWei
  * @classdesc 网络分析服务类
  * @augments  L.supermap.ServiceBase
  * @example
- *      L.supermap.networkAnalystService(url)
- *      .findPath(params,function(result){
- *           //doSomething
- *      })
+ * L.supermap.networkAnalystService(url)
+ *  .findPath(params,function(result){
+ *     //doSomething
+ * })
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param options - {Object} 互服务时所需可选参数。如：<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
- *        eventListeners - {Object} 需要被注册的监听器对象。
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  */
 export var NetworkAnalystService = ServiceBase.extend({
 
@@ -40,6 +39,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
      * @param params -{SuperMap.BurstPipelineAnalystParameters} 爆管分析服务参数类
      * @param callback -{function} 回调函数
+     * @return {this}
      */
     burstPipelineAnalyst: function (params, callback) {
         var me = this;
@@ -60,6 +60,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @description 耗费矩阵分析服务:根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
      * @param params - {SuperMap.ComputeWeightMatrixParameters} 耗费矩阵分析服务参数类
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     computeWeightMatrix: function (params, callback) {
         var me = this;
@@ -81,6 +82,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param params - {SuperMap.FindClosestFacilitiesParameters} 最近设施分析服务参数类
      * @param callback -{function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @return {this}
      */
     findClosestFacilities: function (params, callback, resultFormat) {
         var me = this;
@@ -103,6 +105,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param params - {SuperMap.FacilityAnalystStreamParameters} 上游/下游 关键设施查找资源服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @return {this}
      */
     streamFacilityAnalyst: function (params, callback, resultFormat) {
         var me = this;
@@ -125,6 +128,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param params - {SuperMap.FindLocationParameters} 选址分区分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @return {this}
      */
     findLocation: function (params, callback, resultFormat) {
         var me = this;
@@ -147,6 +151,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param params - {SuperMap.FindPathParameters} 最佳路径分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）
+     * @return {this}
      */
     findPath: function (params, callback, resultFormat) {
         var me = this;
@@ -169,6 +174,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param params - {SuperMap.FindTSPPathsParameters} 旅行商分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @return {this}
      */
     findTSPPaths: function (params, callback, resultFormat) {
         var me = this;
@@ -191,6 +197,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param params - {SuperMap.FindMTSPPathsParameters} 多旅行商分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @return {this}
      */
     findMTSPPaths: function (params, callback, resultFormat) {
         var me = this;
@@ -213,6 +220,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @param params - {SuperMap.FindServiceAreasParameters} 服务区分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @return {this}
      */
     findServiceAreas: function (params, callback, resultFormat) {
         var me = this;
@@ -234,6 +242,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @description 更新边的耗费权重服务
      * @param params - {SuperMap.UpdateEdgeWeightParameters} 更新边的耗费权重服务参数类
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     updateEdgeWeight: function (params, callback) {
         var me = this;
@@ -254,6 +263,7 @@ export var NetworkAnalystService = ServiceBase.extend({
      * @description 转向耗费权重更新服务
      * @param params - {SuperMap.UpdateTurnNodeWeightParameters} 转向耗费权重更新服务参数类
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     updateTurnNodeWeight: function (params, callback) {
         var me = this;

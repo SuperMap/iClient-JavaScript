@@ -5,9 +5,8 @@ import L from "leaflet";
  * @class L.supermap.themeFeature
  * @classdesc 客户端专题图要素类。
  *            支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
- * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
- * @param geometry - {L.supermap.graphic} 要素图形
+ * @param geometry - {L.Path|L.Point|L.LatLng} 要素图形
  * @param attributes - {Object} 要素属性
  */
 export var ThemeFeature = L.Class.extend({
@@ -19,7 +18,8 @@ export var ThemeFeature = L.Class.extend({
 
     /**
      * @function L.supermap.themeFeature.prototype.toFeature
-     * @description 转为矢量要素
+     * @description 转为内部矢量要素
+     * @return {SuperMap.Feature.Vector} 内部矢量要素
      */
     toFeature: function () {
         var geometry = this.geometry;
@@ -45,7 +45,7 @@ export var ThemeFeature = L.Class.extend({
 
     /**
      * @function L.supermap.themeFeature.prototype.reverseLatLngs
-     * @description 反算坐标
+     * @description 坐标反转
      * @param latlngs - {L.latlng} 坐标值
      */
     reverseLatLngs: function (latlngs) {

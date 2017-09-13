@@ -17,10 +17,10 @@ export class AddressMatchService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.code
-     * @description 编码
-     * @param params - {string} 编码参数
+     * @description 正向匹配
+     * @param params - {SuperMap.GeoCodingParameter} 正向匹配参数
      * @param callback - {function} 回调函数
-     * @return {SuperMap.REST.AddressMatchService} 返回正向匹配地址
+     * @return {this}
      */
     code(params, callback) {
         var me = this;
@@ -38,10 +38,10 @@ export class AddressMatchService extends CommonServiceBase {
 
     /**
      * @function SuperMap.REST.AddressMatchService.prototype.decode
-     * @description 解码
-     * @param params - {string} 编码参数
+     * @description 反向匹配
+     * @param params - {SuperMap.GeoDeCodingParameter} 反向匹配参数
      * @param callback - {function} 回调函数
-     * @return {SuperMap.REST.AddressMatchService} 返回反向匹配地址
+     * @return {this}
      */
     decode(params, callback) {
         var me = this;

@@ -28,7 +28,7 @@ import CommontypesConversion from '../core/CommontypesConversion';
  *      })
  * @param url -{string} 空间分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
 export var SpatialAnalystService = ServiceBase.extend({
 

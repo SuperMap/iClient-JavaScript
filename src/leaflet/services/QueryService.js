@@ -13,11 +13,11 @@ import CommontypesConversion from '../core/CommontypesConversion';
  * @extends L.supermap.ServiceBase
  * @param url - {string} 地图查询服务访问地址。
  * @param - options - {Object} 服务交互时所需的可选参数。如：<br>
- *          serverType - {string} 服务来源 iServer|iPortal|online
+ *          serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  * @example
- *      L.supermap.queryService(url).queryByBounds(param,function(result){
- *          //doSomething
- *      })
+ * L.supermap.queryService(url).queryByBounds(param,function(result){
+ *   //doSomething
+ * })
  */
 export var QueryService = ServiceBase.extend({
 
@@ -31,6 +31,7 @@ export var QueryService = ServiceBase.extend({
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
      * @param callback -{function} 回掉函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @return {this}
      */
     queryByBounds: function (params, callback, resultFormat) {
         var me = this;
@@ -54,6 +55,7 @@ export var QueryService = ServiceBase.extend({
      * @param params - {SuperMap.QueryByDistanceParameters} Distance查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+     * @return {this}
      */
     queryByDistance: function (params, callback, resultFormat) {
         var me = this;
@@ -77,6 +79,7 @@ export var QueryService = ServiceBase.extend({
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
      * @param callback -{function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+     * @return {this}
      */
     queryBySQL: function (params, callback, resultFormat) {
         var me = this;
@@ -100,6 +103,7 @@ export var QueryService = ServiceBase.extend({
      * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @return {this}
      */
     queryByGeometry: function (params, callback, resultFormat) {
         var me = this;

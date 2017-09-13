@@ -3,8 +3,9 @@ import L from "leaflet";
 L.Projection = {};
 
 /**
+ * @private
  * @class L.Projection.NonProjection
- * @classdesc 非投影坐标对象
+ * @classdesc 平面无投影对象
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param bounds - {L.bounds} 坐标范围
  */
@@ -29,13 +30,16 @@ export var nonProjection = function (bounds) {
 
 /**
  * @class L.CRS.NonEarthCRS
- * @classdesc 非地球坐标对象
+ * @classdesc 平面无投影坐标类
  * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {Object} 构建非地球坐标对象参数
+ * @param options - {Object} 构建平面无投影坐标对象参数<br>
+ *        origin - {Object} 原点<br>
+ *        bounds - {[L.bounds]{@linkdoc-leaflet/#bounds}|Array<number>} 范围<br>
+ *        resolutions - {Array<number>} 分辨率
  */
 export var NonEarthCRS = L.Class.extend({
 
-    /**
+    /*
      * @member L.CRS.NonEarthCRS.prototype.includes -{Object}
      * @description 包含的坐标对象，默认为：L.CRS。
      */

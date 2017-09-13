@@ -4,12 +4,20 @@ import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
 
 /**
  * @class L.supermap.uniqueThemeLayer
- * @classdesc 客户端单值专题图。<br>
- *            单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格<br>
+ * @classdesc 客户端单值专题图
+ * @description 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格<br>
  *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
  * @extends L.supermap.GeoFeatureThemeLayer
  * @param name - {string} 专题图层名
- * @param options - {Object} 可选参数
+ * @param options - {Object} 可选参数<br>
+ *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2。<br>
+ *        isHoverAble - {boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
+ *        isMultiHover - {boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>
+ *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
+ *        isAllowFeatureStyle - {boolean} 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ *                                        默认值为： false，禁止对专题要素使用数据（feature）的 style。
+ *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
+ *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  */
 export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
 
@@ -33,9 +41,11 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.uniqueThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style
-     * @param feat {L.feature} 用户要素数据
+     * @param feat {SuperMap.Feature.Vector} 用户要素数据
+     * @return {Array<SuperMap.ThemeStyle>}
      */
     getStyleByData: function (feat) {
         var me = this,

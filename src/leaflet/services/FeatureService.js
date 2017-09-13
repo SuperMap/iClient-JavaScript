@@ -1,14 +1,15 @@
 import L from "leaflet";
 import SuperMap from '../../common/SuperMap';
 import {ServiceBase} from './ServiceBase';
-import * as Util from  '../core/Util';
-import GetFeaturesByIDsService from'../../common/iServer/GetFeaturesByIDsService';
-import GetFeaturesBySQLService from'../../common/iServer/GetFeaturesBySQLService';
-import GetFeaturesByBoundsService from'../../common/iServer/GetFeaturesByBoundsService';
-import GetFeaturesByBufferService from'../../common/iServer/GetFeaturesByBufferService';
+import * as Util from '../core/Util';
+import GetFeaturesByIDsService from '../../common/iServer/GetFeaturesByIDsService';
+import GetFeaturesBySQLService from '../../common/iServer/GetFeaturesBySQLService';
+import GetFeaturesByBoundsService from '../../common/iServer/GetFeaturesByBoundsService';
+import GetFeaturesByBufferService from '../../common/iServer/GetFeaturesByBufferService';
 import GetFeaturesByGeometryService from '../../common/iServer/GetFeaturesByGeometryService';
 import EditFeaturesService from '../../common/iServer/EditFeaturesService' ;
 import CommontypesConversion from '../core/CommontypesConversion';
+
 /**
  * @class L.supermap.featureService
  * @classdesc 要素数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
@@ -20,7 +21,7 @@ import CommontypesConversion from '../core/CommontypesConversion';
  * @extends L.supermap.ServiceBase
  * @param url - {string} 要素数据集服务地址
  * @param options - {Object} 创建要素数据集服务类可选参数。如：<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
 export var FeatureService = ServiceBase.extend({
 
@@ -34,6 +35,7 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByIDsParameters} ID 查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @return {this}
      */
     getFeaturesByIDs: function (params, callback, resultFormat) {
         var me = this;
@@ -56,6 +58,7 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByBoundsParameters} 数据集范围查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @return {this}
      */
     getFeaturesByBounds: function (params, callback, resultFormat) {
         var me = this;
@@ -77,6 +80,7 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByBufferParameters} 数据服务中数据集缓冲区查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @return {this}
      */
     getFeaturesByBuffer: function (params, callback, resultFormat) {
         var me = this;
@@ -98,6 +102,7 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesBySQLParameters} 数据服务中数据集SQL查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @return {this}
      */
     getFeaturesBySQL: function (params, callback, resultFormat) {
         var me = this;
@@ -119,6 +124,7 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByGeometryParameters} 数据集几何查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
+     * @return {this}
      */
     getFeaturesByGeometry: function (params, callback, resultFormat) {
         var me = this;
@@ -139,6 +145,7 @@ export var FeatureService = ServiceBase.extend({
      * @description 地物编辑服务
      * @param params {SuperMap.EditFeaturesParameters} 数据服务中数据集添加、修改、删除参数类
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     editFeatures: function (params, callback) {
 
@@ -172,7 +179,7 @@ export var FeatureService = ServiceBase.extend({
         params.toIndex = params.toIndex ? params.toIndex : -1;
         params.isUseBatch = (params.isUseBatch == null) ? false : params.isUseBatch;
         if (params.bounds) {
-            params.bounds =CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds = CommontypesConversion.toSuperMapBounds(params.bounds);
         }
         if (params.geometry) {
             params.geometry = Util.toSuperMapGeometry(params.geometry);

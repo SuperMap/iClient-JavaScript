@@ -4,9 +4,10 @@ import L from "leaflet";
 import {ServerType, Unit} from "../../common/REST";
 import * as Util from "../core/Util";
 import ServerGeometry from '../../common/iServer/ServerGeometry';
+
 /**
  * @class L.supermap.tiledMapLayer
- * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用TileImage资源出图.
+ * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用TileImage资源出图.
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @example
  *      L.superMap.tiledMapLayer(url).addTo(map);
@@ -21,8 +22,8 @@ import ServerGeometry from '../../common/iServer/ServerGeometry';
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
  *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
  *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
- *        crs - {L.Proj.CRS} 坐标系统类。<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
  */
 export var TiledMapLayer = L.TileLayer.extend({
@@ -62,6 +63,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.tiledMapLayer.prototype.onAdd
      * @description 添加地图。
      * @param map - {L.map} 待添加的影像地图参数
@@ -73,9 +75,9 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.getTileUrl
-     * @description 获取瓦片地址
-     * @param coords - {Object} x,y,z索引对象
-     * @return {string} 返回地址
+     * @description 根据行列号获取瓦片地址
+     * @param coords - {Object} 行列号
+     * @return {string} 瓦片地址
      */
     getTileUrl: function (coords) {
         var scale = this.getScaleFromCoords(coords);
@@ -86,8 +88,9 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.getScale
-     * @description 获取比例尺
+     * @description 根据缩放级别获取比例尺
      * @param zoom - {number} 缩放级别
+     * @return {number} 比例尺
      */
     getScale: function (zoom) {
         var me = this;
@@ -98,8 +101,9 @@ export var TiledMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.tiledMapLayer.prototype.getScaleFromCoords
-     * @description 通过坐标值获取比例尺
-     * @param coords - {Object} 坐标对象参数
+     * @description 通过行列号获取比例尺
+     * @param coords - {Object} 行列号
+     * @return {number} 比例尺
      */
     getScaleFromCoords: function (coords) {
         var me = this, scale;
@@ -113,6 +117,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.tiledMapLayer.prototype.getDefaultScale
      * @description 获取默认比例尺信息
      * @param coords - {Object} 坐标对象参数
@@ -147,7 +152,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     /**
      * @function L.supermap.tiledMapLayer.prototype.setTileSetsInfo
      * @description 设置瓦片集信息
-     * @param tileSets - {Array<Object>} 瓦片对象集
+     * @param tileSets - {Object} 瓦片对象集
      */
     setTileSetsInfo: function (tileSets) {
         this.tileSets = tileSets;
@@ -219,6 +224,7 @@ export var TiledMapLayer = L.TileLayer.extend({
      * @function L.supermap.tiledMapLayer.prototype.mergeTileVersionParam
      * @description 更改URL请求参数中的切片版本号,并重绘
      * @param version - {string} 切片版本号
+     * @return {boolean} 是否成功
      */
     mergeTileVersionParam: function (version) {
         if (version) {

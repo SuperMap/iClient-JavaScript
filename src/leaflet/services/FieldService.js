@@ -12,7 +12,7 @@ import FieldStatisticService from '../../common/iServer/FieldStatisticService';
  *   });
  * @param url - {string} 字段服务地址
  * @param options - {Object} 字段服务类可选参数。如：<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        dataSourceName - {string} 数据资源名称 <br>
  *        dataSetName - {string} 数据集名称
  */
@@ -27,6 +27,7 @@ export var  FieldService = ServiceBase.extend({
      * @description 字段查询服务
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     getFields: function (params,callback) {
         var me = this;
@@ -49,6 +50,7 @@ export var  FieldService = ServiceBase.extend({
      * @description 字段统计服务
      * @param params {SuperMap.FieldStatisticsParameters} 字段统计信息查询参数类
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     getFieldStatisticsInfo: function (params, callback) {
         var me = this,

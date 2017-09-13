@@ -7,7 +7,7 @@ import "../core/Base"
  * @description L.supermap服务基类
  * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 可选参数。如：<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
 export var ServiceBase = L.Evented.extend({
 

@@ -57,7 +57,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
-     * @param features - {L.features} 待填加得要素
+     * @param features - {JSONObject|L.supermap.themeFeature} 待填加的要素
      */
     addFeatures: function (features) {
         //数组

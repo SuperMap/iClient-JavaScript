@@ -4,7 +4,7 @@ import echarts  from "echarts";
 
 /**
  * @class L.supermap.echartsLayer
- * @classdesc 图表地图图层类。
+ * @classdesc 百度ECharts图层类。
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param echartsOptions - {Object} 图表参数
  * @param options - {Object} 可选图层参数。<br>
@@ -59,6 +59,7 @@ export var EchartsLayer = L.Layer.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.echartsLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图

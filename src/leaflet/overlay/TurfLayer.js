@@ -151,7 +151,7 @@ export var TurfLayer = L.GeoJSON.extend({
     },
 
     /**
-     * @function ol.source.turf.prototype.process
+     * @function L.supermap.turfLayer.prototype.process
      * @description 执行Turf.js提供的相关空间分析方法
      * @param type -{string} Turf.js提供的空间分析方法名
      * @param args -{Object} Turf.js提供的空间分析方法对应的参数对象

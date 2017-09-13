@@ -1,6 +1,6 @@
 ﻿import L from "leaflet";
 import {ServiceBase} from './ServiceBase';
-import GetGridCellInfosService from  '../../common/iServer/GetGridCellInfosService';
+import GetGridCellInfosService from '../../common/iServer/GetGridCellInfosService';
 
 /**
  * @class L.supermap.gridCellInfosService
@@ -13,7 +13,7 @@ import GetGridCellInfosService from  '../../common/iServer/GetGridCellInfosServi
  *      })
  * @param url - {string} 数据栅格查询服务地址
  * @param options - {Object} 数据栅格查询服务类可选参数。如：<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  */
 export var GridCellInfosService = ServiceBase.extend({
 
@@ -25,6 +25,7 @@ export var GridCellInfosService = ServiceBase.extend({
      * @function L.supermap.gridCellInfosService.prototype.getGridCellInfos
      * @param params {SuperMap.GetGridCellInfosParameters} 数据服务栅格查询参数类
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     getGridCellInfos: function (params, callback) {
         if (!params) {

@@ -12,15 +12,13 @@ import FacilityAnalystUpstream3DService from '../../common/iServer/FacilityAnaly
  * @classdesc 3D网络分析服务类
  * @extends L.supermap.ServiceBase
  * @example
- *      L.supermap.networkAnalyst3DService(url)
- *      .sinksFacilityAnalyst(params,function(result){
- *           //doSomething
- *      })
+ * L.supermap.networkAnalyst3DService(url)
+ *  .sinksFacilityAnalyst(params,function(result){
+ *     //doSomething
+ * })
  * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
- *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
- *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
- * @param options - {Object} 互服务时所需可选参数。如：<br>
- *        eventListeners - {Object} 需要被注册的监听器对象
+ *                      "http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param options - {Object} 服务所需可选参数
  */
 export var NetworkAnalyst3DService = ServiceBase.extend({
 
@@ -33,6 +31,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 汇查找服务
      * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     sinksFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -53,6 +52,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 源查找服务
      * @param params -{SuperMap.FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找服务)
      * @param callback - {function} 回调函数
+     *  @return {this}
      */
     sourcesFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -73,6 +73,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 上游追踪资源服务
      * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
      * @param callback - {function} 回调函数
+     *  @return {this}
      */
     traceUpFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -93,6 +94,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 下游追踪资源服务
      * @param params {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     traceDownFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -113,6 +115,7 @@ export var NetworkAnalyst3DService = ServiceBase.extend({
      * @description 上游关键设施查找服务
      * @param params -{SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找服务参数类
      * @param callback - {function} 回调函数
+     * @return {this}
      */
     upstreamFacilityAnalyst: function (params, callback) {
         var me = this;

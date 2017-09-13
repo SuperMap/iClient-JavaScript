@@ -16,8 +16,8 @@ import L from "leaflet";
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
  *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
  *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
- *        crs - {L.Proj.CRS} 坐标系统类。<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
  *        minZoom - {number} 最小缩放级别。<br>
  *        maxZoom - {number} 最大缩放级别。<br>
@@ -28,15 +28,15 @@ export var CloudTileLayer = L.TileLayer.extend({
     defaultURL: 'http://t2.supermapcloud.com/FileService/image',
 
     options: {
-    /**
-     * @member L.supermap.cloudTileLayer.prototype.options -{String}
-     * @description 地图名称，默认为 quanguo。
-     */
+        /**
+         * @member L.supermap.cloudTileLayer.prototype.options -{String}
+         * @description 地图名称，默认为 quanguo。
+         */
         mapName: "quanguo",
-    /**
-     * @member L.supermap.cloudTileLayer.prototype.type -{{String} }
-     * @description 地图投影。
-     */
+        /**
+         * @member L.supermap.cloudTileLayer.prototype.type -{{String} }
+         * @description 地图投影。
+         */
         type: "web",
         minZoom: 3,
         maxZoom: 18,

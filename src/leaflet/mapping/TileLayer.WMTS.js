@@ -16,8 +16,8 @@ import L from "leaflet";
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
  *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
  *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
- *        crs - {L.Proj.CRS} 坐标系统类。<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。
  */
 export var WMTSLayer = L.TileLayer.extend({
@@ -41,8 +41,9 @@ export var WMTSLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.wmtsLayer.prototype.getTileUrl
-     * @description 获取切片图层地址
-     * @param coords - {Object} 切片图层坐标参数对象
+     * @description 根据行列号获取切片地址
+     * @param coords - {Object} 行列号
+     * @return {string} 切片地址
      */
     getTileUrl: function (coords) { // (Point, Number) -> String
         var zoom = this._getZoomForUrl();

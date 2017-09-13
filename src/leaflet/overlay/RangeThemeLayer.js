@@ -5,7 +5,7 @@ import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
 /**
  * @class L.supermap.rangeThemeLayer
  * @classdesc 范围分段专题图。
- *            范围分段专题图对数据（<SuperMap.Feature.Vector>）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
+ * @description 范围分段专题图对数据（<{@link SuperMap.Feature.Vector}>）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
  *            分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @extends L.supermap.GeoFeatureThemeLayer
  * @param name - {string} 图层名
@@ -43,7 +43,8 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
     /**
      * @function L.supermap.rangeThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style
-     * @param feat - {L.feature} 用户要素数据
+     * @param feat - {SuperMap.Feature.Vector} 矢量要素对象
+     * @return {Array<SuperMap.ThemeStyle>} 专题要素的 Style
      */
     getStyleByData: function (feat) {
         var me = this,

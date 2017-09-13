@@ -5,20 +5,20 @@ import './graphic/Graphic';
 
 /**
  * @class L.supermap.graphicLayer
- * @classdesc 图形组合类。
+ * @classdesc 高效率点图层类。
  * @extends L.Path{@linkdoc-leaflet/#path}
- * @param graphics - {Object} 图形成员
+ * @param graphics - {Object} 图形对象
  * @param options - {Object} 可选参数。如：<br>
- *        stroke - {boolean}
- *        color - {string} 颜色
- *        weight - {number}宽带
- *        opacity - {number}透明度
- *        lineCap - {string} 线帽形状
- *        lineJoin - {string} 线条交汇边角形状
- *        fill - {boolean} 是否填充
- *        fillColor - {string} 填充色
- *        fillOpacity - {number}填充透明度
- *        fillRule - {string} 填充形状
+ *        stroke - {boolean} <br>
+ *        color - {string} 颜色<br>
+ *        weight - {number} 线宽<br>
+ *        opacity - {number}透明度 <br>
+ *        lineCap - {string} 线帽形状<br>
+ *        lineJoin - {string} 线条交汇边角形状<br>
+ *        fill - {boolean} 是否填充<br>
+ *        fillColor - {string} 填充色<br>
+ *        fillOpacity - {number}填充透明度<br>
+ *        fillRule - {string} 填充规则<br>
  *        radius - {number}半径
  */
 export var GraphicLayer = L.Path.extend({
@@ -30,18 +30,20 @@ export var GraphicLayer = L.Path.extend({
         },
 
         /**
+         * @private
          * @function L.supermap.graphicLayer.prototype.getEvents
          * @description 获取事件
-         * @return {{click: L.supermap.graphicLayer._handleClick}}
+         * @return {Object}
          */
         getEvents: function () {
             var events = {
                 click: this._handleClick
-            }
+            };
             return events;
         },
 
         /**
+         * @private
          * @function L.supermap.graphicLayer.prototype.onAdd
          * @description 添加图形
          */

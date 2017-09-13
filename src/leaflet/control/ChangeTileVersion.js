@@ -6,7 +6,7 @@ import {MapService} from "../services/MapService";
 
 /**
  * @class L.supermap.control.changeTileVersion
- * @classdesc 版本切换控件(目前仅支持IE10及以上)
+ * @classdesc 版本切换控件,支持IE10及以上
  * @extends L.Control{@linkdoc-leaflet/#control}
  * @example
  * L.supermap.control.changeTileVersion({
@@ -15,15 +15,15 @@ import {MapService} from "../services/MapService";
  *      orientation: "horizontal"
  *  }).addTo(map);
  * @param options -{Object} logo控件配置项</br>
- *        layer - {L.layer} 绑定的底图图层</br>
+ *        layer - {[L.Layer]{@linkdoc-leaflet/#layer}} 绑定的底图图层</br>
  *        position - {string} 控件位置 继承自leaflet control</br>
  *        title - {string} 鼠标滑过时提示</br>
- *        tooltip - {string} /tooltip提示显示位置 top | right | bottom | left</br>
+ *        tooltip - {string} tooltip提示显示位置 top | right | bottom | left</br>
  *        collapsed - {boolean} 是否折叠。<br>
- *        nextText - {string} 下一个版本的按钮布局
- *        lastText - {string} 上一个版本的按钮布局
- *        ico - {string} 控件显示的logo
- *        orientation - {string} 方向horizontal|vertical
+ *        nextText - {string} 下一个版本的按钮布局</br>
+ *        lastText - {string} 上一个版本的按钮布局</br>
+ *        ico - {string} 控件显示的logo</br>
+ *        orientation - {string} 方向horizontal|vertical</br>
  *        switch - {boolean} 是否显示上/下一个版本切换控件
  */
 export var ChangeTileVersion = L.Control.extend({
@@ -52,6 +52,7 @@ export var ChangeTileVersion = L.Control.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.control.changeTileVersion.prototype.onAdd
      * @description 添加控件
      */
@@ -80,7 +81,7 @@ export var ChangeTileVersion = L.Control.extend({
      * @function L.supermap.control.changeTileVersion.prototype.setVersionName
      * @description  设置版本号
      * @param content - {string} 版本信息
-     * @return {L.supermap.control.changeTileVersion} 返回改变后的版本
+     * @return {this} 返回改变后的版本
      */
     setVersionName: function (content) {
         var value = content;
@@ -95,7 +96,7 @@ export var ChangeTileVersion = L.Control.extend({
      * @function L.supermap.control.changeTileVersion.prototype.setToolTip
      * @description 设置提示信息
      * @param tooltip - {HTMLElement|String} 要需要设置的提示信息
-     * @return {L.supermap.control.changeTileVersion}
+     * @return {this}
      */
     setToolTip: function (tooltip) {
         this.tooltip.innerHTML = tooltip;
@@ -141,7 +142,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.update
      * @description 更新缓存切片集及进度条长度
-     * @param tileVersions - {number}待更新的切片版本
+     * @param tileVersions - {number}待更新的切片版本号
      */
     update: function (tileVersions) {
         this.tileVersions = tileVersions;
@@ -156,6 +157,7 @@ export var ChangeTileVersion = L.Control.extend({
         var me = this;
         if (me.options.layer) {
             new MapService(me.options.layer._url).getTilesets(getTilesInfoSucceed);
+
             function getTilesInfoSucceed(info) {
                 me.options.layer.setTileSetsInfo(info.result);
             }
@@ -176,7 +178,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.nextTilesVersion
      * @description 下一个版本,第一次不进行加减，是无版本的状态
-     * @return {L.supermap.control.changeTileVersion}
+     * @return {this}
      */
     nextTilesVersion: function () {
         if (this.firstLoad) {

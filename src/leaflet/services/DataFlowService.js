@@ -1,15 +1,15 @@
-
 import L from "leaflet";
 import SuperMap from '../../common/SuperMap';
 import {ServiceBase} from './ServiceBase';
 import DataFlow from '../../common/iServer/DataFlowService';
+
 /**
  * @class L.supermap.dataFlowService
  * @classdesc 实时数据服务类
  * @extends L.supermap.ServiceBase
  * @param url - {string} 实时数据服务地址
  * @param options - {Object} 加载实时数据可选参数。如：<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
  *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
@@ -27,7 +27,7 @@ export var DataFlowService = ServiceBase.extend({
         options = options || {};
         L.setOptions(this, options);
         if (options.projection) {
-            this.options.prjCoordSys = new SuperMap.Projection(options.projection);
+            this.options.prjCoordSys = options.projection;
         }
         ServiceBase.prototype.initialize.call(this, url, options);
         this.dataFlow = new DataFlow(url, options);
@@ -47,7 +47,7 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.initBroadcast
      * @description 初始化广播
-     * @returns {L.supermap.DataFlowService}
+     * @returns {this}
      */
     initBroadcast: function () {
         this.dataFlow.initBroadcast();
@@ -57,7 +57,7 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.broadcast
      * @description 加载广播数据
-     * @param obj {JSON} json格式的要素数据
+     * @param obj {JSONObject} json格式的要素数据
      */
     broadcast: function (obj) {
         this.dataFlow.broadcast(obj);
@@ -66,34 +66,19 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
-     * @return {L.supermap.DataFlowService}
+     * @returns {this}
      */
     initSubscribe: function () {
         this.dataFlow.initSubscribe();
         return this;
     },
 
-    /**
-     * @function L.supermap.dataFlowService.prototype.setPrjCoordSys
-     * @description 设置动态投影坐标
-     * @param prjCoordSys -{Object} 动态投影参数
-     * @return {L.supermap.DataFlowService}
-     */
-    setPrjCoordSys: function (prjCoordSys) {
-        if (!prj) {
-            return;
-        }
-        var prj = new SuperMap.Projection(options.projection);
-        this.dataFlow.setPrjCoordSys(prj);
-        this.options.prjCoordSys = prj;
-        return this;
-    },
 
     /**
      * @function L.supermap.dataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param excludeField - {Object} 排除字段
-     * @return {L.supermap.DataFlowService}
+     * @returns {this}
      */
     setExcludeField: function (excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -103,9 +88,9 @@ export var DataFlowService = ServiceBase.extend({
 
     /**
      * @function L.supermap.dataFlowService.prototype.setGeometry
-     * @description 设置添加的几何要素数据
-     * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
-     * @return {L.supermap.DataFlowService}
+     * @description 设置添加的GeoJSON几何要素数据
+     * @param geometry - {Array<Object>} 设置增添的GeoJSON几何要素对象数组。
+     * @returns {this}
      */
     setGeometry: function (geometry) {
         this.dataFlow.setGeometry(geometry);

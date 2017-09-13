@@ -13,8 +13,7 @@ import CommonMatchAddressService from'../../common/iServer/AddressMatchService';
  *          //doSomething
  *      })
  * @param url - {string} 地址匹配服务地址
- * @param options {Object} 地址匹配服务可选参数。如：<br>
- *        data - {number}
+ * @param options {Object} 地址匹配服务可选参数。如：data - {number}
  *
  */
 export var AddressMatchService = ServiceBase.extend({

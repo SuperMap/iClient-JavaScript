@@ -6,15 +6,14 @@ import SuperMapThemeService from '../../common/iServer/ThemeService';
  * @classdesc 专题图服务类
  * @extends L.supermap.ServiceBase
  * @example
- *      L.supermap.themeService(url,{
- *            projection:projection
- *      }).getThemeInfo(params,function(result){
- *           //doSomething
- *      });
+ * L.supermap.themeService(url,{
+ *      projection:projection
+ *  }).getThemeInfo(params,function(result){
+ *      //doSomething
+ * });
  * @param url - {string} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        eventListeners - {Object} 需要被注册的监听器对象。<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。
  */
 export var ThemeService = ServiceBase.extend({
 
@@ -27,7 +26,7 @@ export var ThemeService = ServiceBase.extend({
      * @description 获取专题图信息
      * @param params - {SuperMap.ThemeParameters} 专题图参数类
      * @param callback - {function} 回调函数
-     * @return {L.supermap.ThemeService}
+     * @return {this}
      */
     getThemeInfo: function (params, callback) {
         var me = this;

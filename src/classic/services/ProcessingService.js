@@ -13,12 +13,12 @@ import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
  * @augments SuperMap.CommonServiceBase
  * @example
  * 用法：
- *      new SuperMap.REST.ProcessingService(url,options)
- *      .getKernelDensityJobs(function(result){
- *          //doSomething
- *      })
+ * new SuperMap.REST.ProcessingService(url,options)
+ *    .getKernelDensityJobs(function(result){
+ *       //doSomething
+ * })
  * @param url -{string} 分布式分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数
+ * @param options - {Object} 可选参数
  */
 export class ProcessingService extends CommonServiceBase {
 
@@ -36,7 +36,7 @@ export class ProcessingService extends CommonServiceBase {
      * @description 获取密度分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     getKernelDensityJobs(callback, resultFormat) {
         var me = this,
@@ -60,7 +60,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     getKernelDensityJob(id, callback, resultFormat) {
         var me = this,
@@ -85,7 +85,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     addKernelDensityJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
@@ -118,7 +118,7 @@ export class ProcessingService extends CommonServiceBase {
      * @description 获取点聚合分析的列表。
      * @param callback - {function}  请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     getSummaryMeshJobs(callback, resultFormat) {
         var me = this,
@@ -142,7 +142,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     getSummaryMeshJob(id, callback, resultFormat) {
         var me = this,
@@ -167,7 +167,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     addSummaryMeshJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
@@ -200,7 +200,7 @@ export class ProcessingService extends CommonServiceBase {
      * @description 获取单对象查询分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     getQueryJobs(callback, resultFormat) {
         var me = this,
@@ -224,7 +224,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     getQueryJob(id, callback, resultFormat) {
         var me = this,
@@ -249,7 +249,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     addQueryJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
@@ -282,7 +282,7 @@ export class ProcessingService extends CommonServiceBase {
      * @description 获取区域汇总分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     getSummaryRegionJobs(callback, resultFormat) {
         var me = this,
@@ -306,7 +306,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param id - {string}区域汇总分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     getSummaryRegionJob(id, callback, resultFormat) {
         var me = this,
@@ -331,7 +331,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.REST.ProcessingService}
+     * @return {this}
      */
     addSummaryRegionJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);
@@ -364,7 +364,7 @@ export class ProcessingService extends CommonServiceBase {
      * @description 获取矢量裁剪分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.ProcessingService}
+     * @return {this}
      */
     getVectorClipJobs(callback, resultFormat) {
         var me = this,
@@ -388,7 +388,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.ProcessingService}
+     * @return {this}
      */
     getVectorClipJob(id, callback, resultFormat) {
         var me = this,
@@ -413,7 +413,7 @@ export class ProcessingService extends CommonServiceBase {
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {SuperMap.ProcessingService}
+     * @return {this}
      */
     addVectorClipJob(params, callback, seconds, resultFormat) {
         var me = this, format = me._processFormat(resultFormat);

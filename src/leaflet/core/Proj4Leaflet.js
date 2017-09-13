@@ -4,12 +4,13 @@
 import L from "leaflet";
 import proj4 from "proj4";
 import {getMeterPerMapUnit} from "./Util";
+
 window.Proj4js = proj4;
 L.Proj = {};
 
 L.Proj._isProj4Obj = function (a) {
     return (typeof a.inverse !== 'undefined' &&
-    typeof a.forward !== 'undefined');
+        typeof a.forward !== 'undefined');
 };
 
 /**
@@ -82,7 +83,7 @@ L.Proj.Projection = L.Class.extend({
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param srsCode -{string} proj srsCode。
  * @param options -{Object} options。可选参数：<br>
- *                     def -{string} 投影的proj4定义。
+ *                     def -{string} 投影的proj4定义。<br>
  *                     origin -{Array|L.Point} 原点。必填<br>
  *                     scales -{Array} 比例尺数组 <br>
  *                     scaleDenominators -{Array} 比例尺分母数组 <br>
@@ -170,6 +171,7 @@ export var CRS = L.Class.extend({
      * @function L.Proj.CRS.prototype.scale
      * @description 通过缩放级别获取比例尺值
      * @param zoom - {number}缩放级别
+     * @return 比例尺值
      */
     scale: function (zoom) {
         var iZoom = Math.floor(zoom),
@@ -191,8 +193,9 @@ export var CRS = L.Class.extend({
 
     /**
      * @function L.Proj.CRS.prototype.zoom
-     * @description 通过比例尺获取当前空前范围
+     * @description 根据比例尺返回缩放级别
      * @param scale - {number}比例尺
+     * @return {number} 缩放级别
      */
     zoom: function (scale) {
         // Find closest number in this._scales, down

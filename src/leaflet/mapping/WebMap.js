@@ -35,6 +35,7 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.defaultFeatureLayerPopup
      * @description 默认图层弹出框
      * @param layer -{L.Layer} 指定图层
+     * @return {string} 图层弹出框内容
      */
     defaultFeatureLayerPopup: function (layer) {
         return layer.feature.properties.attributes.title + ":" + layer.feature.properties.attributes.description;
@@ -50,7 +51,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @function L.supermap.webmap.prototype.load
-     * @description 登陆窗口后添加地图图层
+     * @description 登陆后添加地图图层
      */
     load: function () {
         if (this.options.server.indexOf('http://') < 0 && this.options.server.indexOf('https://') < 0) {
@@ -79,6 +80,7 @@ export var WebMap = L.LayerGroup.extend({
      * @param layer - {L.Layer} 待添加的图层
      * @param isBaseLayer -{boolean} 是否为底图层
      * @param options - {Object} 创建地图的可选参数
+     * @return {this}
      */
     addLayerWrapper: function (layer, isBaseLayer, options) {
         if (isBaseLayer) {
@@ -198,6 +200,7 @@ export var WebMap = L.LayerGroup.extend({
      * @param dpi - {number}屏幕分辨率
      * @param units - {string} 地图的单位
      * @param datum - {SuperMap.Datum} 大地参照系类
+     * @return {Array<number>}
      */
     getResolutionsFromScales: function (scales, dpi, units, datum) {
         var resolutions = [];
@@ -310,6 +313,7 @@ export var WebMap = L.LayerGroup.extend({
      * @description 创建天地图图层
      * @param layerInfo - {Object} 图层信息
      * @param epsgCode - {number}epsg编码
+     * @return {L.supermap.tiandituTileLayer}
      */
     createTiandituLayer: function (layerInfo, epsgCode) {
         var proj = epsgCode === 4326 ? "c" : "w";
@@ -337,6 +341,7 @@ export var WebMap = L.LayerGroup.extend({
      * @description 创建图标图层
      * @param layerInfo - {Object} 图层信息
      * @param crs - {Object} 坐标对象
+     * @return {L.Layer}
      */
     createMarkersLayer: function (layerInfo, crs) {
         var markers = layerInfo.markers || [];
@@ -375,6 +380,7 @@ export var WebMap = L.LayerGroup.extend({
      * @description 创建矢量要素图层
      * @param layerInfo - {Object} 图层信息
      * @param crs - {Object} 坐标对象
+     * @return {L.Layer}
      */
     createVectorLayer: function (layerInfo, crs) {
         var style = layerInfo.style,

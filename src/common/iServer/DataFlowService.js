@@ -118,17 +118,6 @@ export default class DataFlowService extends CommonServiceBase {
         return this;
     }
 
-    /**
-     * @function SuperMap.DataFlowService.prototype.setPrjCoordSys
-     * @description 设置动态投影坐标
-     * @param prjCoordSys -{Object} 动态投影参数
-     * @return {SuperMap.DataFlowService}
-     */
-    setPrjCoordSys(prjCoordSys) {
-        this.prjCoordSys = prjCoordSys;
-        this.subscribeWebSocket.send(this._getFilterParams());
-        return this;
-    }
 
     /**
      * @function SuperMap.DataFlowService.prototype.setExcludeField

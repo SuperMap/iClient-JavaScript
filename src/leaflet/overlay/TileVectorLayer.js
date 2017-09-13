@@ -8,7 +8,7 @@ import SuperMap from '../../common/SuperMap';
 /**
  * @class L.supermap.tiledVectorLayer
  * @classdesc SuperMap iServer的矢量瓦片图层
- * @extends L.superMap.VectorGrid
+ * @extends L.supermap.VectorGrid
  * @example
  *      L.supermap.tiledVectorLayer(url).addTo(map);
  * @param url - {string} 图层数据服务地址
@@ -72,6 +72,7 @@ export var TileVectorLayer = VectorGrid.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.tiledVectorLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
@@ -85,6 +86,7 @@ export var TileVectorLayer = VectorGrid.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.tiledVectorLayer.prototype.initLayersInfo
      * @description 获取服务器layers资源下的风格信息(当CartoCSS中不存在相应图层渲染信息时使用)
      */
@@ -162,7 +164,7 @@ export var TileVectorLayer = VectorGrid.extend({
         return layerInfo_simple;
     },
 
-    /**
+    /*
      * @function L.supermap.tiledVectorLayer.prototype.getVectorStylesFromServer
      * @description 等待服务器的carto返回之后拼接本地配置的cartoCSS,并调用onAdd出图
      */
@@ -189,14 +191,24 @@ export var TileVectorLayer = VectorGrid.extend({
         });
     },
 
+    /**
+     * @private
+     * @function L.supermap.tiledVectorLayer.prototype.setServerCartoCSS
+     * @description 设置服务端获取到的cartoCSS样式,cartoCSS请求回来之后自动调用
+     */
     setServerCartoCSS: function (cartoCSSStr) {
         this.cartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, true);
     },
+    /**
+     * @function L.supermap.tiledVectorLayer.prototype.setClientCartoCSS
+     * @description 客户端设置cartoCSS样式
+     */
     setClientCartoCSS: function (cartoCSSStr) {
         this.cartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, false);
     },
 
     /**
+     * @private
      * @function L.supermap.tiledVectorLayer.prototype.getVectorTileLayerStyle
      * @description 获取图层风格信息，当CartoCSS中包含有对该图层的渲染信息时，优先获取,否则获取layers资源下layerSytle的渲染信息
      * @param coords - {Object} 图层坐标参数对象
@@ -263,6 +275,7 @@ export var TileVectorLayer = VectorGrid.extend({
      * @function L.supermap.tiledVectorLayer.prototype.getScale
      * @description 通过缩放级别获取比例尺
      * @param zoom - {number}缩放级别
+     * @return {number} 比例尺
      */
     getScale: function (zoom) {
         var me = this;
@@ -273,8 +286,9 @@ export var TileVectorLayer = VectorGrid.extend({
 
     /**
      * @function L.supermap.tiledVectorLayer.prototype.getScaleFromCoords
-     * @description 通过坐标获取比例尺
-     * @param coords - {Object} 图层坐标参数对象
+     * @description 通过行列号获取比例尺
+     * @param coords - {Object} 行列号
+     * @return {number} 比例尺
      */
     getScaleFromCoords: function (coords) {
         var me = this, scale;
@@ -288,9 +302,11 @@ export var TileVectorLayer = VectorGrid.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.tiledVectorLayer.prototype.getDefaultScale
-     * @description 获取默认比例尺
-     * @param coords - {Object} 图层坐标参数对象
+     * @description 根据行列号获取默认比例尺
+     * @param coords - {Object} 行列号
+     * @return {number} 默认比例尺
      */
     getDefaultScale: function (coords) {
         var me = this, crs = me._crs;

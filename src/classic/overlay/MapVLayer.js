@@ -37,7 +37,8 @@ export class MapVLayer extends SuperMap.Layer {
     canvas = null;
 
     /**
-     * @member SuperMap.Layer.MapVLayer.prototype.canvasContext -{Canvas}
+     * @private
+     * @member SuperMap.Layer.MapVLayer.prototype.canvasContext -{CanvasContext}
      * @description MapV图主绘制对象。
      */
     canvasContext = null;
@@ -49,9 +50,9 @@ export class MapVLayer extends SuperMap.Layer {
      * 但目前本图层webgl渲染不能正确显示，待解决
      *
      * @param name
-     * @param options 有两个参数
-     *        dataSet: mapv 的dataSet对象
-     *        options: mapv 绘图风格配置信息
+     * @param options 有两个参数<br>
+     *  * dataSet: mapv 的dataSet对象
+     *  * options: mapv 绘图风格配置信息
      */
     constructor(name, options) {
         super(name, options);
@@ -77,6 +78,7 @@ export class MapVLayer extends SuperMap.Layer {
 
 
     /**
+     * @function SuperMap.Layer.MapVLayer.prototype.destroy
      * @override
      */
     destroy() {
@@ -95,8 +97,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.addData
      * @description 追加数据
-     * @param dataSet - {MapV.DataSet} 追加数据集
-     * @param options - {MapV.options} 追加的数据参数
+     * @param dataSet - {mapv.DataSet} mapv数据集
+     * @param options - {Object} mapv绘图参数
      */
     addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
@@ -106,8 +108,8 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.
      * @description 设置数据
-     * @param dataSet {MapV.DataSet} 追加数据集
-     * @param options {MapV.options} 追加的数据参数
+     * @param dataSet {mapv.DataSet} mapv数据集
+     * @param options {Object} mapv绘图参数
      */
     setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
@@ -116,8 +118,8 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.getData
-     * @description 获取数据集
-     * @return {SuperMap.Layer.MapVLayer.prototype.dataSet}
+     * @description 获取数据
+     * @return {mapv.DataSet} mapv数据集
      */
     getData() {
         if (this.renderer) {
@@ -132,11 +134,11 @@ export class MapVLayer extends SuperMap.Layer {
      * @param filter - {string} 过滤条件
      * @example
      *  filter=function(data){
-     *         if(data.id="1"){
-     *            return true
-     *         }
-     *         return false;
-     *     }
+     *    if(data.id="1"){
+     *      return true
+     *    }
+     *    return false;
+     *  }
      */
     removeData(filter) {
         this.renderer && this.renderer.removeData(filter);

@@ -4,15 +4,13 @@ import logoSrc from '../../common/control/img/iClient.png'
 
 /**
  * @class L.supermap.control.logo
- * @classdesc Logo控件。</br>
- *            map初始化的配置项为logoControl，如果为true，则显示控件；否则不显示该控件。目前默认显示。
+ * @classdesc Logo控件。
+ * @description map初始化的配置项为logoControl，如果为true，则显示控件；否则不显示该控件。目前默认显示。
  * @extends L.Control{@linkdoc-leaflet/#control}
  * @example
- * (start code)
  *  L.supermap.control.Logo({
  *      imageUrl: xxx,//非必填项
  *  }).addTo(map);
- * (end)
  * @param options -{Object} logo控件配置项</br>
  *        imageUrl - {string} logo图片地址</br>
  *        width - {string} logo图片宽</br>
@@ -37,9 +35,11 @@ export var Logo = L.Control.extend({
     },
 
     /**
-     * @function L.supermap.control.Logo.prototype.onAdd
+     * @private
+     * @function L.supermap.control.logo.prototype.onAdd
+     * @override
      * @description 添加一个logo
-     * @return {div} 返回创建得logo
+     * @return {div} 返回创建logo的div
      */
     onAdd: function () {
         var div = L.DomUtil.create('div', 'iclient-leaflet-logo');

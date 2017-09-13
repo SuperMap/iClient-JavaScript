@@ -5,7 +5,7 @@ import ServerGeometry from '../../common/iServer/ServerGeometry';
 
 /**
  * @class L.supermap.imageMapLayer
- * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用Image资源出图
+ * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)。使用Image资源出图
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @example
  *      L.superMap.imageMapLayer(url).addTo(map);
@@ -20,8 +20,8 @@ import ServerGeometry from '../../common/iServer/ServerGeometry';
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
  *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
  *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
- *        crs - {L.Proj.CRS} 坐标系统类。<br>
- *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
+ *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。
  */
 export var ImageMapLayer = L.TileLayer.extend({
@@ -57,6 +57,7 @@ export var ImageMapLayer = L.TileLayer.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.imageMapLayer.prototype.onAdd
      * @description 添加影像地图。
      * @param map - {L.map} 待添加的影像地图参数
@@ -69,9 +70,9 @@ export var ImageMapLayer = L.TileLayer.extend({
 
     /**
      * @function L.supermap.imageMapLayer.prototype.getTileUrl
-     * @description 获取影像图层地址
-     * @param coords - {Object} 影像图层坐标参数对象
-     * @return {String} 返回地址
+     * @description 根据行列号获取切片地址
+     * @param coords - {Object} 行列号
+     * @return {String} 切片地址
      */
     getTileUrl: function (coords) {
         //使用ViewBounds出图

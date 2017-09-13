@@ -7,7 +7,7 @@ import {DataFlowService} from "../services/DataFlowService";
  * @extends L.GeoJSON{@linkdoc-leaflet/#geojson}
  * @param url - {string} 数据流图层服务地址
  * @param options - {Object} 设置图层参数。如：<br>
- *        geometry - {SuperMap.Geometry} 几何要素。<br>
+ *        geometry - {Object} GeoJSON几何对象<br>
  *        prjCoordSys - {Object} 投影坐标对象。<br>
  *        excludeField - {string} 排除字段。<br>
  *        idField - {string} id字段。
@@ -37,6 +37,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.dataFlowLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
@@ -60,6 +61,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.dataFlowLayer.prototype.onRemove
      * @description 删除指定地图
      * @param map - {L.map} 待删除的地图
@@ -68,16 +70,6 @@ export var DataFlowLayer = L.GeoJSON.extend({
         this.dataService.unSubscribe();
     },
 
-    /**
-     * @function L.supermap.dataFlowLayer.prototype.setPrjCoordSys
-     * @description 设置地图投影坐标系统
-     * @param prjCoordSys - {Object} 投影坐标系统
-     */
-    setPrjCoordSys: function (prjCoordSys) {
-        this.dataService.setPrjCoordSys(prjCoordSys);
-        this.options.prjCoordSys = prjCoordSys;
-        return this;
-    },
 
     /**
      * @function L.supermap.dataFlowLayer.prototype.setExcludeField
@@ -93,7 +85,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
     /**
      * @function L.supermap.dataFlowLayer.prototype.setGeometry
      * @description 设置集合要素
-     * @param geometry - {L.Geometry} 待设置的几何要素
+     * @param geometry - {Object} 待设置的GeoJSON几何要素对象
      */
     setGeometry: function (geometry) {
         this.dataService.setGeometry(geometry);
