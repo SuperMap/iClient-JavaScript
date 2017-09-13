@@ -6,31 +6,31 @@ import SuperMap from '../SuperMap';
  * @param options - {Object} 可选参数。如:</br>
  *        datasetName - {string} 数据集名称。</br>
  *        dataSourceName - {string} 数据源名称</br>
- *        X - {Integer} 要查询的地理位置X轴。</br>
- *        Y - {Integer} 要查询的地理位置Y轴。
+ *        X - {integer} 要查询的地理位置X轴。</br>
+ *        Y - {integer} 要查询的地理位置Y轴。
  */
 export default  class GetGridCellInfosParameters {
     /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
+     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName - {string}
      * @description 数据集名称。
      */
     datasetName = null;
 
     /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
+     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName - {string}
      * @description  数据源名称。
      */
     dataSourceName = null;
 
     /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
-     * @description 要查询的地理位置X轴
+     * @member SuperMap.GetGridCellInfosParameters.prototype.X - {integer}
+     * @description 要查询的地理位置X轴。
      */
     X = null;
 
     /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
-     * @description 要查询的地理位置Y轴
+     * @member SuperMap.GetGridCellInfosParameters.prototype.Y - {integer}
+     * @description 要查询的地理位置Y轴。
      */
     Y = null;
 

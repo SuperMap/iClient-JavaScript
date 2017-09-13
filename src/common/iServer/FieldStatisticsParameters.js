@@ -4,16 +4,16 @@ import FieldParameters from './FieldParameters';
 /**
  * @class SuperMap.FieldStatisticsParameters
  * @classdesc 字段统计信息查询参数类。
- * @param options - {Object} 参数。如：<br>
+ * @param options - {Object} 可选参数。如:<br>
  *         datasource - {string} 数据源名称。<br>
- *        dataset -{string} 数据集名称。
+ *        dataset - {string} 数据集名称。<br>
  *        fieldName - {string} 字段名。<br>
- *        statisticMode -{String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>>} 字段统计方法类型。
+ *        statisticMode - {String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>>} 字段统计方法类型。
  * @extends SuperMap.FieldParameters
  */
 export default  class FieldStatisticsParameters extends FieldParameters{
     /**
-     * @member SuperMap.FieldStatisticsParameters.prototype.fieldName -{string}
+     * @member SuperMap.FieldStatisticsParameters.prototype.fieldName - {string}
      * @description 字段名
      */
     fieldName = null;

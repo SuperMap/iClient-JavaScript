@@ -3,46 +3,35 @@ import Graph from './Graph';
 
 /**
  * @class SuperMap.Feature.Theme.RankSymbol
- * @classdesc 符号专题要素基类，此类定义了符号专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
+ * @classdesc 符号专题要素基类。
+ * @description 此类定义了符号专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
  * 符号专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.RankSymbol::setting> 的基础属性只有 5 个，
  * 它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
  * 此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
  * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
- * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。
+ * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
  * @param setting - {Object} 图表配置对象，必设参数。
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  *
  * @extends SuperMap.Feature.Theme.Graph
  *
  */
-export default  class RankSymbol extends Graph {
+export default class RankSymbol extends Graph {
     /**
      * @member SuperMap.Feature.Theme.RankSymbol.prototype.setting -{Object}
      * @description 符号配置对象，该对象控制着图表的可视化显示。
      * 下面是此配置对象的 5 个基础可设属性：</br>
      * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
-     * XOffset - {number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
-     * YOffset - {number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
+     * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
+     * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
      * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-     * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+     * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
      * 除了以上 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
      * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
      */
     setting = null;
 
-
-    /*
-     * @function SuperMap.Feature.Theme.RankSymbol.prototype.constructor
-     * @description 创建一个矢量专题要素。
-     * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
-     * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
-     * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。
-     * @param setting - {Object} 图表配置对象，必设参数。
-     * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
-     *
-     * @return -{SuperMap.Feature.Theme.RankSymbol} 返回一个统计专题要素。
-     */
     constructor(data, layer, fields, setting, lonlat, options) {
         super(data, layer, fields, setting, lonlat, options);
 
@@ -83,11 +72,11 @@ export default  class RankSymbol extends Graph {
      * 在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。
      * 调用此函数关系到 setting 对象的以下属性</br>
      * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
-     * XOffset - {number}  专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
-     * YOffset - {number}  专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
+     * XOffset - {number} 专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
+     * YOffset - {number} 专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
      * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-     * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
-     * @returns- {boolean} 初始化参数是否成功。
+     * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+     * @returns {boolean} 初始化参数是否成功。
      */
     initBaseParameter() {
         // 参数初始化是否成功

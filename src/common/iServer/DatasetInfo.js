@@ -1,4 +1,5 @@
-﻿import  SuperMap from '../SuperMap';
+﻿import SuperMap from '../SuperMap';
+
 /**
  * @class SuperMap.DatasetInfo
  * @classdesc 数据集信息类。
@@ -10,69 +11,69 @@
  *              目前版本支持的数据集主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
  *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  * @param options - {Object} 可选参数。如：<br>
- *        bounds - {SuperMap.Bounds} 数据集范围，该字段只读。<br>
+ *        bounds - {@link SuperMap.Bounds} 数据集范围，该字段只读。<br>
  *        dataSourceName - {string} 数据源名称，该字段只读。<br>
  *        description - {string} 数据集的描述信息。<br>
  *        encodeType - {string} 数据集存储时的压缩编码方式，该字段只读。<br>
  *        isReadOnly - {boolean} 数据集是否为只读。<br>
  *        name - {string} 数据集名称，该字段必须且只读。<br>
- *        prjCoordSys - {SuperMap.Projection} 数据集的投影信息。<br>
+ *        prjCoordSys - {@link SuperMap.Projection} 数据集的投影信息。<br>
  *        tableName - {string} 表名，该字段只读。<br>
  *        type - {string} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
  *                        网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  */
-export default  class DatasetInfo {
+export default class DatasetInfo {
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.bounds -{SuperMap.Bounds}
+     * @member SuperMap.DatasetInfo.prototype.bounds - {SuperMap.Bounds}
      * @description 数据集范围，该字段只读。
      */
     bounds = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.dataSourceName -{string}
+     * @member SuperMap.DatasetInfo.prototype.dataSourceName - {string}
      * @description 数据源名称，该字段只读。
      */
     dataSourceName = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.description -{string}
+     * @member SuperMap.DatasetInfo.prototype.description - {string}
      * @description 数据集的描述信息。
      */
     description = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.encodeType -{string}
+     * @member SuperMap.DatasetInfo.prototype.encodeType - {string}
      * @description 数据集存储时的压缩编码方式，该字段只读。
      */
     encodeType = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.isReadOnly -{boolean}
+     * @member SuperMap.DatasetInfo.prototype.isReadOnly - {boolean}
      * @description 数据集是否为只读。
      */
     isReadOnly = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.name -{string}
+     * @member SuperMap.DatasetInfo.prototype.name - {string}
      * @description 数据集名称，该字段必须且只读。
      */
     name = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.prjCoordSys -{SuperMap.Projection}
+     * @member SuperMap.DatasetInfo.prototype.prjCoordSys - {SuperMap.Projection}
      * @description 数据集的投影信息。
      */
     prjCoordSys = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.tableName -{string}
+     * @member SuperMap.DatasetInfo.prototype.tableName - {string}
      * @description 表名，该字段只读。
      */
     tableName = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.type -{string}
+     * @member SuperMap.DatasetInfo.prototype.type - {string}
      * @description 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
      *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
      */
@@ -98,6 +99,7 @@ export default  class DatasetInfo {
     /**
      * @function SuperMap.DatasetInfo.prototype.toServerJSONObject
      * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} JSON对象。
      */
     toServerJSONObject() {
         var dataObj = {};

@@ -9,67 +9,67 @@ import {GridType} from '../REST';
  * @class SuperMap.Grid
  * @classdesc UGC 栅格图层类。
  * @extends SuperMap.UGCSubLayer
- * @param options - {Object} 可选参数参数。如：<br>
+ * @param options - {Object} 可选参数。如：<br>
  *        colorDictionary - {Array<Object>} 颜色对照表对象。<br>
- *        brightness - {Integer} Grid 图层的亮度。<br>
+ *        brightness - {integer} Grid 图层的亮度。<br>
  *        colorGradientType - {boolean} 文本压盖时是否显示压盖的文本对象。<br>
- *        colors - {SuperMap.ServerColor} 颜色表对象。<br>
- *        contrast - {Integer} Grid 图层的对比度。<br>
+ *        colors - {@link SuperMap.ServerColor} 颜色表对象。<br>
+ *        contrast - {integer} Grid 图层的对比度。<br>
  *        gridType - {SuperMap.GridType} 格网类型。<br>
  *        horizontalSpacing - {number}格网水平间隔大小。<br>
  *        sizeFixed - {boolean} 格网是否固定大小，如果不固定大小，则格网随着地图缩放。<br>
- *        solidStyle - {SuperMap.ServerStyle} 格网实线的样式。<br>
- *        specialColor - {SuperMap.ServerColor} 栅格数据集无值数据的颜色。<br>
+ *        solidStyle - {@link SuperMap.ServerStyle} 格网实线的样式。<br>
+ *        specialColor - {@link SuperMap.ServerColor} 栅格数据集无值数据的颜色。<br>
  *        specialValue - {number}图层的特殊值。<br>
  *        specialValueTransparent - {boolean} 图层的特殊值（specialValue）所处区域是否透明。<br>
- *        verticalSpacing - {number}格网垂直间隔大小。
+ *        verticalSpacing - {number} 格网垂直间隔大小。
  */
 export default class Grid extends UGCSubLayer {
 
     /**
-     * @member SuperMap.Grid.prototype.colorDictionarys -{Array<SuperMap.ColorDictionary>}
+     * @member SuperMap.Grid.prototype.colorDictionarys - {Array<SuperMap.ColorDictionary>}
      * @description 颜色对照表对象。
      */
     colorDictionarys = null;
 
     /**
-     * @member SuperMap.Grid.prototype.brightness -{Integer}
+     * @member SuperMap.Grid.prototype.brightness - {integer}
      * @description Grid 图层的亮度。
      */
     brightness = null;
 
     /**
-     * @member SuperMap.Grid.prototype.colorGradientType -{SuperMap.ColorGradientType}
-     * @description 渐变颜色枚举值
+     * @member SuperMap.Grid.prototype.colorGradientType - {SuperMap.ColorGradientType}
+     * @description 渐变颜色枚举值。
      */
     colorGradientType = null;
 
     /**
-     * @member SuperMap.Grid.prototype.colors -{SuperMap.ServerColor}
+     * @member SuperMap.Grid.prototype.colors - {SuperMap.ServerColor}
      * @description 颜色表对象。
      */
     colors = null;
 
     /**
-     * @member SuperMap.Grid.prototype.contrast -{Integer}
+     * @member SuperMap.Grid.prototype.contrast - {integer}
      * @description Grid 图层的对比度。
      */
     contrast = null;
 
     /**
-     * @member SuperMap.Grid.prototype.dashStyle -{SuperMap.ServerStyle}
+     * @member SuperMap.Grid.prototype.dashStyle - {SuperMap.ServerStyle}
      * @description 栅格数据集特殊值数据的颜色。
      */
     dashStyle = null;
 
     /**
-     * @member SuperMap.Grid.prototype.gridType -{SuperMap.GridType}
+     * @member SuperMap.Grid.prototype.gridType - {SuperMap.GridType}
      * @description 格网类型。
      */
     gridType = null;
 
     /**
-     * @member SuperMap.Grid.prototype.horizontalSpacing -{number}
+     * @member SuperMap.Grid.prototype.horizontalSpacing - {number}
      * @description 格网水平间隔大小。
      */
     horizontalSpacing = null;
@@ -81,32 +81,32 @@ export default class Grid extends UGCSubLayer {
     sizeFixed = null;
 
     /**
-     * @member SuperMap.Grid.prototype.solidStyle -{SuperMap.ServerStyle}
+     * @member SuperMap.Grid.prototype.solidStyle - {SuperMap.ServerStyle}
      * @description 格网实线的样式。
      */
     solidStyle = null;
 
     /**
-     * @member SuperMap.Grid.prototype.specialColor -{SuperMap.ServerColor}
+     * @member SuperMap.Grid.prototype.specialColor - {SuperMap.ServerColor}
      * @description 栅格数据集无值数据的颜色。
      */
     specialColor = null;
 
     /**
-     * @member SuperMap.Grid.prototype.specialValue -{number}
+     * @member SuperMap.Grid.prototype.specialValue - {number}
      * @description 图层的特殊值。
      */
     specialValue = null;
 
     /**
-     * @member SuperMap.Grid.prototype.specialValueTransparent -{boolean}
+     * @member SuperMap.Grid.prototype.specialValueTransparent - {boolean}
      * @description 图层的特殊值（specialValue）所处区域是否透明。
      */
     specialValueTransparent = null;
 
     /**
-     * @member SuperMap.Grid.prototype.verticalSpacing
-     * @description {number} 格网垂直间隔大小。
+     * @member SuperMap.Grid.prototype.verticalSpacing - {number}
+     * @description 格网垂直间隔大小。
      */
     verticalSpacing = null;
 
@@ -126,7 +126,7 @@ export default class Grid extends UGCSubLayer {
 
     /**
      * @function SuperMap.Grid.prototype.fromJson
-     * @description 将服务端JSON对象转换成当前客户端对象
+     * @description 将服务端JSON对象转换成当前客户端对象。
      * @param jsonObject - {Object} 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
@@ -165,7 +165,8 @@ export default class Grid extends UGCSubLayer {
 
     /**
      * @function SuperMap.Grid.prototype.toServerJSONObject
-     * @description 转换成对应的 JSON 格式对象。
+     * @description 转换成对应的JSON对象。
+     * @return JSON对象。
      */
     toServerJSONObject() {
         var jsonObject = super.toServerJSONObject();

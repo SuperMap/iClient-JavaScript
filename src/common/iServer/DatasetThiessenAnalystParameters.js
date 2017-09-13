@@ -4,9 +4,9 @@ import ServerGeometry from './ServerGeometry';
 
 /**
  * @class SuperMap.DatasetThiessenAnalystParameters
- * @classdesc 数据集泰森多边形分析参数类
+ * @classdesc 数据集泰森多边形分析参数类。
  * @param options - {Object} 可选参数。如:</br>
- *        filterQueryParameter - {SuperMap.FilterParameter} 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
+ *        filterQueryParameter - {@link SuperMap.FilterParameter} 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
  * @extends SuperMap.ThiessenAnalystParameters
  */
 export default class DatasetThiessenAnalystParameters extends ThiessenAnalystParameters {
@@ -15,19 +15,16 @@ export default class DatasetThiessenAnalystParameters extends ThiessenAnalystPar
      * @member SuperMap.DatasetThiessenAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
      * @description 过滤条件，对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
      * @example
-     * (start code)
-     * filterQueryParameter的使用方法如：
-     *  filterQueryParameter = new SuperMap.FilterParameter({
+     *  var filterQueryParameter = new SuperMap.FilterParameter({
      *   name: "Countries@World",
      *   attributeFilter: "SmID>100"
      *  });
-     * (end)
      */
     filterQueryParameter = null;
 
     /**
      * @member SuperMap.DatasetThiessenAnalystParameters.prototype.dataset -{string}
-     * @description 数据集名称待分析的数据集名称，请使用‘datasetName@datasourceName’格式来表示。
+     * @description 数据集名称待分析的数据集名称，请使用"datasetName@datasourceName"格式来表示。
      */
     dataset = null;
 
@@ -53,9 +50,10 @@ export default class DatasetThiessenAnalystParameters extends ThiessenAnalystPar
 
     /**
      * @function SuperMap.DatasetThiessenAnalystParameters.toObject
-     * @param datasetThiessenAnalystParameters -{Object} 泰森多边形分析服务参数。
-     * @param tempObj - {Object} 目标对象。
-     * @description 生成泰森多边形分析服务对象。
+     * @param datasetThiessenAnalystParameters -{SuperMap.DatasetThiessenAnalystParameters} 泰森多边形分析服务参数类。
+     * @param tempObj - {SuperMap.DatasetThiessenAnalystParameters} 泰森多边形分析服务参数对象。
+     * @description 将泰森多边形分析服务参数对象转换为JSON对象。
+     * @return JSON对象。
      */
     static toObject(datasetThiessenAnalystParameters, tempObj) {
         for (var name in datasetThiessenAnalystParameters) {

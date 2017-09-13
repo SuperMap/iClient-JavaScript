@@ -344,9 +344,9 @@ if (!Number.prototype.limitSigDigs) {
 export var FunctionExt = SuperMap.Function = {
     /**
      * @description 绑定函数到对象.方便创建this的作用域.
-     * @param func - {Function} 输入函数.
+     * @param func - {function} 输入函数.
      * @param object - {Object} 对象绑定到输入函数(作为输入函数的this对象).
-     * @returns {Function} object参数作为func函数的this对象.
+     * @returns {function} object参数作为func函数的this对象.
      */
     bind: function (func, object) {
         // create a reference to all arguments past the second one
@@ -363,9 +363,9 @@ export var FunctionExt = SuperMap.Function = {
 
     /**
      * @description 绑定函数到对象,在调用该函数时配置并使用事件对象作为第一个参数.
-     * @param func - {Function} 用于监听事件的函数.
+     * @param func - {function} 用于监听事件的函数.
      * @param object - {Object} this 对象的引用.
-     * @returns {Function}
+     * @returns {function}
      */
     bindAsEventListener: function (func, object) {
         return function (event) {
@@ -414,7 +414,7 @@ export var ArrayExt = SuperMap.Array = {
      * @description 过滤数组.提供了ECMA-262标准中Array.prototype.filter函数的扩展.
      * @see {@link http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter}
      * @param array - {Array} 要过滤的数组..
-     * @param callback - {Function} 数组中的每一个元素调用该函数.<br>
+     * @param callback - {function} 数组中的每一个元素调用该函数.<br>
      *     如果函数的返回值为true,该元素将包含在返回的数组中.该函数有三个参数: 数组中的元素,元素的索引,数组自身.<br>
      *     如果设置了可选参数caller,在调用callback时,使用可选参数caller设置为callback的参数.<br>
      * @param caller - {Object} 在调用callback时,使用可选参数caller设置为callback的参数.

@@ -2,20 +2,16 @@ import SuperMap from '../SuperMap';
 
 /**
  * @class SuperMap.CartoCSS
- * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象
+ * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象。
  * @param cartoStr - {string} CartoCSS样式表字符串
  * @example
- * (code)
- * var cartocss=[
- * "@color:#111;",
- * "#China_Railway_L__China400::two{",
- * "line-color:@color;",
- * "line-width:2",
- * "}"
- * ].join("/n");
- * var carto=new SuperMap.CartoCSS(cartocss);
- * me.cartoShaders=carto.getShaders();
- * (end)
+ * var cartocss = "@provinceLineColor:#ddd;
+ *                 #China_Provinces_L___China400{
+ *                      line-dasharray:10,10;
+ *                      line-color:@provinceLineColor;
+ *                      line-width:1;
+ *                 }";
+ * new SuperMap.CartoCSS(cartocss);
  */
 export default class CartoCSS {
     env = null;
@@ -1019,7 +1015,6 @@ export default class CartoCSS {
      * @description 获取CartoCSS着色器
      * @return {Array} 着色器集
      * @example
-     * (code)
      *   //shaders的结构大概如下：
      *   var shaders=[
      *   {
@@ -1039,7 +1034,6 @@ export default class CartoCSS {
      *       1:{property:"line-width",value:function(attribute,zoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
      *   }
      *   ];
-     * (end)
      */
     getShaders() {
         return this.shaders;

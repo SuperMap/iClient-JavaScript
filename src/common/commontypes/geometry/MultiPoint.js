@@ -5,7 +5,7 @@ import Collection from './Collection';
  * @class SuperMap.Geometry.MultiPoint
  * @classdesc 几何对象多点类。
  * @extends {SuperMap.Geometry.Collection}
- * @param components - {Array<SuperMap.Geometry.Point>}点对象数组。
+ * @param components - {Array<SuperMap.Geometry.Point>} 点对象数组。
  * @example
  * var point1 = new SuperMap.Geometry.Point(5,6);
  * var poine2 = new SuperMap.Geometry.Point(7,8);

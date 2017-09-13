@@ -2,8 +2,8 @@ import SuperMap from '../SuperMap';
 
 /**
  * @class SuperMap.iManagerCreateNodeParam
- * @classdesc iManager 创建节点参数
- * @param params -{Object} iManager创建节点参数
+ * @classdesc iManager 创建节点参数。
+ * @param params - {Object} iManager创建节点参数。
  *
  */
 export default class IManagerCreateNodeParam {

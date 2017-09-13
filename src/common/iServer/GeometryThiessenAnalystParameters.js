@@ -5,20 +5,16 @@ import ServerGeometry from './ServerGeometry';
 /**
  * @class SuperMap.GeometryThiessenAnalystParameters
  * @constructs SuperMap.GeometryThiessenAnalystParameters
- * @classdesc
- * 几何对象泰森多边形分析参数类
- * 对指定的某个几何对象做泰森多边形分析。通过该类可以指定要做泰森多边形分析的几何对象、返回数据集名称等。
+ * @classdesc 几何对象泰森多边形分析参数类。对指定的某个几何对象做泰森多边形分析。通过该类可以指定要做泰森多边形分析的几何对象、返回数据集名称等。
  * @param options - {Object} 可选参数。如:</br>
- *        points - {Array<Point>}|{Array} 使用点数组进行分析时使用的几何对象。</br>
- *                 点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
+ *         points - {Array<Object>} 使用点数组进行分析时使用的几何对象。点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  * @extends SuperMap.ThiessenAnalystParameters
  */
 
 export default class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters {
     /**
      * @member SuperMap.GeometryThiessenAnalystParameters.prototype.points -{Array<Object>}|{Array}
-     * @description 使用点数组进行分析时使用的几何对象。</br>
-     * 点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
+     * @description 使用点数组进行分析时使用的几何对象。点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
      */
     points = null;
 
@@ -46,9 +42,10 @@ export default class GeometryThiessenAnalystParameters extends ThiessenAnalystPa
 
     /**
      * @function SuperMap.GeometryThiessenAnalystParameters.toObject
-     * @param geometryThiessenAnalystParameters -{Object} 几何对象泰森多边形分析参数。
-     * @param tempObj - {Object} 目标对象
-     * @description 生成几何对象泰森多边形分析对象
+     * @param geometryThiessenAnalystParameters - {SuperMap.GeometryThiessenAnalystParameters} 几何对象泰森多边形分析参数类。
+     * @param tempObj - {SuperMap.GeometryThiessenAnalystParameters} 几何对象泰森多边形分析参数对象。
+     * @description 将几何对象泰森多边形分析参数对象转换为JSON对象。
+     * @return {Object} JSON对象。
      */
     static toObject(geometryThiessenAnalystParameters, tempObj) {
         for (var name in geometryThiessenAnalystParameters) {

@@ -6,7 +6,7 @@ import {ClientType} from '../REST';
  * @param options - {Object} 参数。如：<br>
  *        name - {string} 申请服务名称。<br>
  *        serviceIds - {number}服务ID。<br>
- *        clientType - {ClientType} 服务端类型。<br>
+ *        clientType - {SuperMap.ClientType} 服务端类型。<br>
  *        limitation - {number}有效期
  */
 export default class KeyServiceParameter {

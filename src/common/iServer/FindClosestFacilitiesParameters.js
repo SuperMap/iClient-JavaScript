@@ -4,71 +4,67 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
 /**
  * @class SuperMap.FindClosestFacilitiesParameters
  * @classdesc 最近设施分析参数类。
- * @param options - {Object} 可选参数。</br>
- *         event - {Object/Integer} 事件点，一般为需要获得服务设施服务的事件位置，必设字段。</br>
+ * @param options - {Object} 可选参数。如:</br>
+ *         event - {Object/integer} 事件点，一般为需要获得服务设施服务的事件位置，必设字段。
  *                  点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
- *         expectFacilityCount - {Integer} 要查找的设施点数量。默认值为1。</br>
- *         facilities - {Array<Object>|Array<number>} 设施点集合，一般为提供服务的服务设施位置，必设字段。</br>
+ *         expectFacilityCount - {integer} 要查找的设施点数量。默认值为1。</br>
+ *         facilities - {Array<Object>|Array<number>} 设施点集合，一般为提供服务的服务设施位置，必设字段。
  *                       点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  *         fromEvent - {boolean} 是否从事件点到设施点进行查找。</br>
  *         isAnalyzeById - {boolean} 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。</br>
- *         maxWeight - {number}查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。</br>
- *         parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。</br>
+ *         maxWeight - {number} 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。</br>
+ *         parameter - {@link SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 export default class FindClosestFacilitiesParameters {
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.event -{Object}
-     * @description 事件点，一般为需要获得服务设施服务的事件位置，必设字段。</br>
-     *              点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
-     *              可以通过两种方式赋予事件点：当该类中字段 isAnalyzeById = true 时，应输入事件点 ID 号；当 isAnalyzeById = false 时，应输入事件点坐标。</br>
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.event - {Object}
+     * @description 事件点，一般为需要获得服务设施服务的事件位置，必设字段。点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
+     *              可以通过两种方式赋予事件点：当该类中字段 isAnalyzeById = true 时，应输入事件点 ID 号；当 isAnalyzeById = false 时，应输入事件点坐标。
      */
     event = null;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.expectFacilityCount -{number}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.expectFacilityCount - {number}
      * @description 要查找的设施点数量。默认值为1。
      */
     expectFacilityCount = 1;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.facilities -{Array<Object>|Array<number>}
-     * @description 设施点集合，一般为提供服务的服务设施位置，必设字段。</br>
-     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.facilities - {Array<Object>|Array<number>}
+     * @description 设施点集合，一般为提供服务的服务设施位置，必设字段。点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
      *              可以通过两种方式赋予设施点：当该类中字段 isAnalyzeById = true 时，应输入设施点 ID 号；当 isAnalyzeById = false 时，应输入设施点坐标。
      */
     facilities = null;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.fromEvent -{boolean}
-     * @description 是否从事件点到设施点进行查找。</br>
-     *              最近设施分析主要是通过设施点和事件点之间最优的路线来分析在一定范围内哪个或哪些设施与事件点有最优路线的关系。</br>
-     *              这个行走线路是通过网络图层进行网络分析算法计算出来的两点间的最优路线。
-     *              由于存在从 A 点到 B 点与从 B 点到 A 点的耗费不一样的情况，因此起止点不同可能会得到不同的最优路线。
-     *              因此在进行最近设施分析之前，需要设置获取的最优路线的方向，即是以事件点作为起点到最近设施点的方向分析，还是以最近设施点为起点到事件点的方向分析。
-     *              如果需要以事件点作为起点到设施点方向进行查找，设置该字段值为 true；默认为 false，表示从设施点到事件点进行查找。
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.fromEvent - {boolean}
+     * @description 是否从事件点到设施点进行查找。最近设施分析主要是通过设施点和事件点之间最优的路线来分析在一定范围内哪个或哪些设施与事件点有最优路线的关系。
+     *              这个行走线路是通过网络图层进行网络分析算法计算出来的两点间的最优路线。由于存在从 A 点到 B 点与从 B 点到 A 点的耗费不一样的情况，因此起止点
+     *              不同可能会得到不同的最优路线。因此在进行最近设施分析之前，需要设置获取的最优路线的方向，即是以事件点作为起点到最近设施点的方向分析，还是以最
+     *              近设施点为起点到事件点的方向分析。如果需要以事件点作为起点到设施点方向进行查找，设置该字段值为 true；默认为 false，表示从设施点到事件点进行查找。
      */
     fromEvent = false;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.isAnalyzeById -{boolean}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.isAnalyzeById - {boolean}
      * @description 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
      */
     isAnalyzeById = false;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.maxWeight -{number}
-     * @description 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。</br>
-     *              例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。
-     *              那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.maxWeight - {number}
+     * @description 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
+     *               例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。
+     *               那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
      */
     maxWeight = 0;
 
     /**
      * @member SuperMap.FindClosestFacilitiesParameters.prototype.parameter {SuperMap.TransportationAnalystParameter}
-     * @description 交通网络分析通用参数。</br>
-     *              通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。</br>
-     *              它为 SuperMap.TransportationAnalystParameter 类型，虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
+     * @description 交通网络分析通用参数。通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。
+     *              它为 SuperMap.TransportationAnalystParameter 类型，虽然为可选参数，但是如果不设置其中的 resultSetting 字段，
+     *              则返回结果空间信息等都为空。
      */
     parameter = null;
 

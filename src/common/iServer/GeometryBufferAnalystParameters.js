@@ -5,19 +5,19 @@ import ServerGeometry from './ServerGeometry';
  * @class SuperMap.GeometryBufferAnalystParameters
  * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
- * @param options - {Object} 可选参数。如:</br>
+ * @param options - {@link SuperMap.Geometry} 可选参数。如:</br>
  *        sourceGeometry - {Object} 要做缓冲区分析的几何对象。必设字段。</br>
  *              点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
  *              线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
  *              面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。</br>
- *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
+ *        bufferSetting - {@link SuperMap.BufferSetting} 设置缓冲区通用参数。
  * @extends SuperMap.BufferAnalystParameters
  */
 export default class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 
     /**
      * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry
-     * @description 要做缓冲区分析的几何对象。必设字段。。</br>
+     * @description 要做缓冲区分析的几何对象。必设字段。</br>
      * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
      * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
      * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
@@ -47,9 +47,10 @@ export default class GeometryBufferAnalystParameters extends BufferAnalystParame
 
     /**
      * @function SuperMap.GeometryBufferAnalystParameters.toObject
-     * @param geometryBufferAnalystParameters -{Object} 几何对象缓冲区分析参数
-     * @param tempObj - {Object} 目标对象
-     * @description 生成几何对象缓冲区分析对象
+     * @param geometryBufferAnalystParameters - {SuperMap.GeometryBufferAnalystParameters} 几何对象缓冲区分析参数类。
+     * @param tempObj - {SuperMap.GeometryBufferAnalystParameters} 几何对象缓冲区分析参数对象。
+     * @description 将几何对象缓冲区分析参数对象转换为JSON对象。
+     * @return {Object} JSON对象。
      */
     static toObject(geometryBufferAnalystParameters, tempObj) {
         for (var name in geometryBufferAnalystParameters) {

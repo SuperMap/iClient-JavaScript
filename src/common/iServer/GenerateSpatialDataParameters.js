@@ -15,30 +15,30 @@ import DataReturnOption from './DataReturnOption';
  *        measureOffsetField - {string} 刻度偏移量字段。</br>
  *        errorInfoField - {string} 错误信息字段，直接写入原事件表，用于描述事件未能生成对应的点或线时的错误信息。</br>
  *        retainedFields - {Array<string>} 欲保留到结果空间数据中的字段集合（系统字段除外）。</br>
- *        dataReturnOption - {SuperMap.DataReturnOption} 设置数据返回的最大记录。</br>
+ *        dataReturnOption - {@link SuperMap.DataReturnOption} 设置数据返回的最大记录。
  */
 export default  class GenerateSpatialDataParameters {
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.routeTable -{string}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.routeTable - {string}
      * @description 路由数据集。
      */
     routeTable = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.routeIDField -{string}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.routeIDField - {string}
      * @description 路由数据集的标识字段。
      */
     routeIDField = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.eventTable -{string}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.eventTable - {string}
      * @description 用于生成空间数据的事件表名。
      */
     eventTable = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.eventRouteIDField -{string}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.eventRouteIDField - {string}
      * @description 用于生成空间数据的事件表的路由标识字段。
      */
     eventRouteIDField = null;
@@ -50,31 +50,31 @@ export default  class GenerateSpatialDataParameters {
     measureField = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.measureStartField -{string}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.measureStartField - {string}
      * @description 用于生成空间数据的事件表的起始刻度字段，只有当事件为线事件的时候该属性才有意义。
      */
     measureStartField = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.measureEndField -{string}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.measureEndField - {string}
      * @description 用于生成空间数据的事件表的终止刻度字段，只有当事件为线事件的时候该属性才有意义。
      */
     measureEndField = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.measureOffsetField -{string}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.measureOffsetField - {string}
      * @description 刻度偏移量字段。
      */
     measureOffsetField = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.errorInfoField -{string}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.errorInfoField - {string}
      * @description 错误信息字段，直接写入原事件表，用于描述事件未能生成对应的点或线时的错误信息。
      */
     errorInfoField = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.retainedFields -{Array<string>}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.retainedFields - {Array<string>}
      * @description 欲保留到结果空间数据中的字段集合（系统字段除外）。
      * 生成空间数据时，无论是否指定保留字段，路由 ID 字段、刻度偏移量字段、刻度值字段（点事件为刻度字段，线事件是起始和终止刻度字段）都会保留到结果空间数据中；
      * 如果没有指定 retainedFields 参数或者retainedFields 参数数组长度为0，则返回所有用户字段。
@@ -82,7 +82,7 @@ export default  class GenerateSpatialDataParameters {
     retainedFields = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.dataReturnOption -{SuperMap.DataReturnOption}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.dataReturnOption - {SuperMap.DataReturnOption}
      * @description 设置数据返回的选项。
      */
     dataReturnOption = null;

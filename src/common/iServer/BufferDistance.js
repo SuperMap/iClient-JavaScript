@@ -1,12 +1,13 @@
 ﻿import SuperMap from '../SuperMap';
+
 /**
  * @class SuperMap.BufferDistance
  * @classdesc 缓冲区分析的缓冲距离类。通过该类可以设置缓冲区分析的缓冲距离，距离可以是数值也可以是数值型的字段表达式。
- * @param options - {string} 缓冲区分析可选参数。如：<br>
- *        exp -{string} 以数值型的字段表达式作为缓冲区分析的距离值。<br>
- *        value -{number}以数值作为缓冲区分析的距离值。默认为100，单位：米。
+ * @param options - {Object} 缓冲区分析可选参数。如：<br>
+ *         exp - {string} 以数值型的字段表达式作为缓冲区分析的距离值。<br>
+ *         value - {number}以数值作为缓冲区分析的距离值。默认为100，单位：米。
  */
-export default  class BufferDistance {
+export default class BufferDistance {
 
     /**
      * @member SuperMap.BufferDistance.prototype.exp -{string}

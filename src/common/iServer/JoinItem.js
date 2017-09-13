@@ -6,7 +6,7 @@
  * @param options - {Object} 可選参数。如:</br>
  *        foreignTableName - {string} 外部表的名称。</br>
  *        joinFilter - {string} 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。</br>
- *        joinType - {JoinType} 两个表之间连接类型。</br>
+ *        joinType - {SuperMap.JoinType} 两个表之间连接类型。</br>
  * @example 下面以SQL查询说明joinItem的使用方法：
  *(start code)
  *   function queryBySQL() {

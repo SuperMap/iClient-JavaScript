@@ -1,16 +1,43 @@
 import SuperMap from '../SuperMap';
-
 /**
  * @class SuperMap.ThemeStyle
  * @classdesc 客户端专题图风格类
- * @param options -{Object} 客户端专题图风格参数
- *
+ * @param options -{Object} 可选参数。如：<br>
+ *         fill - {boolean} 是否填充，不需要填充则设置为 false，默认值为 true。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。<br>
+ *         fillColor - {string} 十六进制填充颜色。默认值为 "#000000"。<br>
+ *         fillOpacity - {number} 填充不透明度。取值范围[0, 1]，默认值 1。<br>
+ *         stroke - {boolean} 是否描边，不需要描边则设置为false，默认值为 false。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。<br>
+ *         strokeColor - {string} 十六进制描边颜色。默认值为 "#000000"。<br>
+ *         strokeOpacity - {number} 描边的不透明度。取值范围[0, 1]，默认值 1。<br>
+ *         strokeWidth - {number} 线宽度/描边宽度，默认值 1。<br>
+ *         strokeLinecap - {string} 线帽样式。strokeLinecap 有三种类型 “butt", "round", "square"; 默认为"butt"。<br>
+ *         strokeLineJoin - {string} 线段连接样式。strokeLineJoin 有三种类型 “miter", "round", "bevel"; 默认为"miter"。<br>
+ *         strokeDashstyle - {string} 虚线类型。strokeDashstyle 有八种类型 “dot",“dash",“dashot",“longdash",“longdashdot",“solid", "dashed", "dotted"。默认值 "solid"。solid 表示实线。<br>
+ *         pointRadius - {number} 点半径，默认为 6 （像素）。<br>
+ *         shadowBlur - {number} 阴影模糊度，（大于 0 有效; 默认值 0）。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。<br>
+ *         shadowColor - {string} 阴影颜色; 默认值 '#000000'。注：请将 shadowColor 属性与 shadowBlur 属性一起使用，来创建阴影。<br>
+ *         shadowOffsetX - {number} 阴影 X 方向偏移值; 默认值 0。<br>
+ *         shadowOffsetY - {number} 阴影 Y 方向偏移值; 默认值 0。<br>
+ *         label - {string} 专题要素附加文本标签内容。<br>
+ *         fontColor - {string} 附加文本字体颜色。<br>
+ *         fontSize - {number} 附加文本字体大小。默认值 12，单位是像素。<br>
+ *         fontStyle - {string} 附加文本字体样式。可设值："normal", "italic", "oblique"; 默认值："normal"。<br>
+ *         fontVariant - {string} 附加文本字体变体。可设值："normal", "small-caps"; 默认值："normal"。<br>
+ *         fontWeight - {string} 附加文本字体粗细。可设值："normal", "bold", "bolder", "lighter"; 默认值："normal"。<br>
+ *         fontFamily - {string} 附加文本字体系列。fontFamily 值是字体族名称或/及类族名称的一个优先表，每个值逗号分割，
+ *                               浏览器会使用它可识别的第一个可以使用具体的字体名称（"times"、"courier"、"arial"）或字体系列名称
+ *                               （"serif"、"sans-serif"、"cursive"、"fantasy"、"monospace"）。默认值："arial,sans-serif"。<br>
+ *         labelPosition - {string} 附加文本位置, 可以是 'inside', 'left', 'right', 'top', 'bottom'; 默认值 'top'。<br>
+ *         labelAlign - {string} 附加文本水平对齐。可以是 'left', 'right', 'center'; 默认值 'center'。<br>
+ *         labelBaseline - {string} 附加文本垂直对齐。 可以是 'top', 'bottom', 'middle';默认值 'middle'。<br>
+ *         labelXOffset - {number} 附加文本在x轴方向的偏移量; 默认值 0。<br>
+ *         labelYOffset - {number} 附加文本在y轴方向的偏移量; 默认值 0。<br>
  */
-export default  class ThemeStyle {
+export default class ThemeStyle {
+
     /**
-     * @member SuperMap.ThemeStyle.prototype.fill -{boolean}
-     * @description 是否填充，不需要填充则设置为 false，默认值为 true。
-     *  此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。
+     * @member SuperMap.ThemeStyle.prototype.fill - {boolean}
+     * @description 是否填充，不需要填充则设置为 false，默认值为 true。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。
      */
     fill = true;
     /**
@@ -25,13 +52,12 @@ export default  class ThemeStyle {
     fillOpacity = 1;
     /**
      * @member SuperMap.ThemeStyle.prototype.stroke -{boolean}
-     * @description  是否描边，不需要描边则设置为false，默认值为 false。
-     *  此属性与 fill 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。
+     * @description  是否描边，不需要描边则设置为false，默认值为 false。如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。
      */
     stroke = false;
     /**
      * @member SuperMap.ThemeStyle.prototype.strokeColor -{string}
-     * @description  十六进制描边颜色
+     * @description  十六进制描边颜色。默认值为 "#000000"。
      */
     strokeColor = "#000000";
     /**
@@ -141,13 +167,13 @@ export default  class ThemeStyle {
      * @member SuperMap.ThemeStyle.prototype.labelXOffset -{number}
      * @description  附加文本在x轴方向的偏移量。
      */
-    labelXOffset = "miter";
+    labelXOffset = 0;
     /**
      * @member SuperMap.ThemeStyle.prototype.labelYOffset -{number}
      * @description 附加文本在y轴方向的偏移量。
      */
     labelYOffset = 0;
-    
+
     constructor(options) {
         options = options || {};
         SuperMap.Util.extend(this, options);

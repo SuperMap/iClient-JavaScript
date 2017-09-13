@@ -16,13 +16,13 @@ import Graph from './Graph';
  *              width - {number} 专题要素（图表）宽度，必设参数。</br>
  *              height - {number} 专题要素（图表）高度，必设参数。</br>
  *              codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
- *              XOffset - {number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
- *              YOffset - {number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
+ *              XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
+ *              YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
  *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 25, 20, 20]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
  *              decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
  *              useBackground - {boolean} 是否使用图表背景框，默认使用。</br>
  *              backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
- *              backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
+ *              backgroundRadius - {Array<number>} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
  *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。</br>
  *              bar3DParameter - {number} 3D 柱状参数，3d柱形正面相对于背面向 x 轴和 y 轴负方向偏移的绝对值，默认值：10。</br>
  *              useAxis - {boolean} 是否使用坐标轴，默认使用坐标轴。</br>
@@ -35,7 +35,7 @@ import Graph from './Graph';
  *              axisXLabels - {Array<string>} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，否则沿数据视图框下面条边等距排布标签。</br>
  *              axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
  *              axisXLabelsOffset - {Array<number>} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：-10；数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：10。</br>
- *              useXReferenceLine - {Boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
+ *              useXReferenceLine - {boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
  *              xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
  *              axis3DParameter - {number} 3D 坐标轴参数，此属性值在大于等于 15 时有效，默认值：20。</br>
  *              barFaceStyle - {Object} 3d 柱状图柱条正面基础 style，此参数控制柱条正面基础样式，优先级低于 barFaceStyleByFields 和 barFaceStyleByCodomain。此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style>。</br>
@@ -91,9 +91,6 @@ import Graph from './Graph';
  *  }
  * ]
  *
- *
- *
- *
  * @example
  * // barSideStyleByCodomain 用法示例如下：
  * // barSideStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
@@ -132,8 +129,6 @@ import Graph from './Graph';
  *  }
  * ]
  *
- *
- *
  * @example
  * // barTopStyleByCodomain 用法示例如下：
  * // barTopStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
@@ -171,12 +166,7 @@ import Graph from './Graph';
  *      }
  *  }
  * ]
- *
-
- *
  */
-
-
 
 export default  class Bar3D extends Graph {
 
@@ -194,7 +184,7 @@ export default  class Bar3D extends Graph {
 
     /**
      * @function SuperMap.Feature.Theme.Bar3D.prototype.assembleShapes
-     * @description 图形装配实现（扩展接口）
+     * @description 图形装配实现（扩展接口）。
      */
     assembleShapes() {
         // 图表配置对象

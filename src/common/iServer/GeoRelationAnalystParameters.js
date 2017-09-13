@@ -4,69 +4,68 @@ import FilterParameter from './FilterParameter';
 /**
  * @class SuperMap.GeoRelationAnalystParameters
  * @classdesc
- * 空间关系分析服务参数类。
- * 使用该类可以为空间关系分析服务提供所需的参数信息。
+ * 空间关系分析服务参数类。使用该类可以为空间关系分析服务提供所需的参数信息。
  * @param options - {Object} 可选参数。如:</br>
- *        sourceFilter - {SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
- *        referenceFilter - {SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
+ *        sourceFilter - {@link SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
+ *        referenceFilter - {@link SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
  *        spatialRelationType - {SuperMap.SpatialRelationType} 指定的空间关系类型。</br>
  *        isBorderInside - {boolean} 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。</br>
  *        returnFeature - {boolean} 是否返回Feature信息。</br>
  *        returnGeoRelatedOnly - {boolean} 仅返回满足指定空间关系的空间对象，默认为 True。</br>
- *        startRecord - {Integer} 分析结果起始记录位置，默认为0。</br>
- *        expectCount - {Integer} 空间关系分析期望返回结果记录数，默认为500条，如果实际不足500条结果则返回所有分析结果。</br>
+ *        startRecord - {integer} 分析结果起始记录位置，默认为0。</br>
+ *        expectCount - {integer} 空间关系分析期望返回结果记录数，默认为500条，如果实际不足500条结果则返回所有分析结果。</br>
  */
 export default class GeoRelationAnalystParameters {
     /**
-     *  @member SuperMap.GeoRelationAnalystParameters.prototype.dataset -{string}
+     *  @member SuperMap.GeoRelationAnalystParameters.prototype.dataset - {string}
      *  @description 源数据集名称。
      */
     dataset = null;
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.sourceFilter -{SuperMap.FilterParameter}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.sourceFilter - {SuperMap.FilterParameter}
      * @description 空间关系分析中的源数据集查询参数。仅 ids、attributeFilter 和 fields 字段有效。
      */
     sourceFilter = null;
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.referenceFilter -{SuperMap.FilterParameter}
-     * @description空间关系分析中的参考数据集查询参数。仅 name, ids, attributeFilter和 fields 字段有效。
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.referenceFilter - {SuperMap.FilterParameter}
+     * @description 空间关系分析中的参考数据集查询参数。仅 name, ids, attributeFilter和 fields 字段有效。
      */
     referenceFilter = null;
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.spatialRelationType -{SuperMap.SpatialRelationType}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.spatialRelationType - {SuperMap.SpatialRelationType}
      * @description 指定的空间关系类型。
      */
     spatialRelationType = null;
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.isBorderInside -{boolean}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.isBorderInside - {boolean}
      * @description 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。
      */
     isBorderInside = null;
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnFeature -{boolean}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnFeature - {boolean}
      * @description 是否返回Feature信息。
      */
     returnFeature = null;
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnGeoRelatedOnly -{boolean}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnGeoRelatedOnly - {boolean}
      * @description 是否仅返回满足指定空间关系的空间对象，默认为 True。
      */
     returnGeoRelatedOnly = null;
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnGeoRelatedOnly -{Integer}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnGeoRelatedOnly - {integer}
      * @description 分析结果起始记录位置，默认为0。
      */
     startRecord = 0;
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.expectCount -{Integer}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.expectCount - {integer}
      * @description 空间关系分析期望返回结果记录数，默认为500条，如果实际不足500条结果则返回所有分析结果。
      */
     expectCount = 500;

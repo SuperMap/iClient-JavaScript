@@ -1,16 +1,16 @@
 ﻿import SuperMap from '../SuperMap';
 import Format from './Format';
+
 /**
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
  * @extends SuperMap.Format
- * @param options - {Object} 选项对象，其属性会被直接设置到JSON实例。
  */
-export default  class JSONFormat extends Format {
+export default class JSONFormat extends Format {
 
     /**
-     * @member SuperMap.Format.JSON.prototype.indent -{string}
-     * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次；
+     * @member SuperMap.Format.JSON.prototype.indent - {string}
+     * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次。
      */
     indent = "    ";
 
@@ -21,27 +21,26 @@ export default  class JSONFormat extends Format {
     space = " ";
 
     /**
-     * @member SuperMap.Format.JSON.prototype.newline -{string}
+     * @member SuperMap.Format.JSON.prototype.newline - {string}
      * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
      */
     newline = "\n";
 
     /**
-     * @member SuperMap.Format.JSON.prototype.level -{Integer}
+     * @member SuperMap.Format.JSON.prototype.level - {integer}
      * @description 用于格式化输出, 表示的是缩进级别。
      */
     level = 0;
 
     /**
-     * @member SuperMap.Format.JSON.prototype.pretty -{boolean}
-     * @description 是否在序列化的时候使用额外的空格控制结构。在 <write> 方法中使用
-     *              默认值为false。
+     * @member SuperMap.Format.JSON.prototype.pretty - {boolean}
+     * @description 是否在序列化的时候使用额外的空格控制结构。在write方法中使用，默认值为false。
      */
     pretty = false;
 
     /**
-     * @member SuperMap.Format.JSON.prototype.nativeJSON -{boolean}
-     * @description 判断浏览器是否原生支持JSON格式数据；
+     * @member SuperMap.Format.JSON.prototype.nativeJSON - {boolean}
+     * @description 判断浏览器是否原生支持JSON格式数据。
      */
     nativeJSON = (function () {
         return !!(window.JSON && typeof JSON.parse === "function" && typeof JSON.stringify === "function");
@@ -51,7 +50,7 @@ export default  class JSONFormat extends Format {
      * @function SuperMap.Format.JSON.prototype.read
      * @description 将一个符合json结构的字符串进行解析。
      * @param json - {string} 符合json结构的字符串。
-     * @param filter - {Function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
+     * @param filter - {function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
      * @return {Object} 对象，数组，字符串或数字。
      */
     read(json, filter) {
@@ -76,7 +75,7 @@ export default  class JSONFormat extends Format {
      * @function SuperMap.Format.JSON.prototype.write
      * @description 序列化一个对象到一个符合JSON格式的字符串。
      * @param value - {object}|{string}|<Array>|{number}|{boolean} 需要被序列化的对象，数组，字符串，数字，布尔值。
-     * @param pretty -{boolean}
+     * @param pretty - {boolean}
      * @return {string} 符合JSON格式的字符串。
      *
      */
@@ -131,15 +130,14 @@ export default  class JSONFormat extends Format {
 
     /**
      * @member SuperMap.Format.JSON.prototype.serialize
-     * @description Object with properties corresponding to the serializable data types.
-     *              Property values are functions that do the actual serializing.
+     * @description 提供一些类型对象转JSON字符串的方法。
      */
     serialize = {
         /**
          * @function SuperMap.Format.JSON.serialize.object
-         * @description Transform an object into a JSON string.
-         * @param object - {Object} The object to be serialized.
-         * @return {string} A JSON string representing the object.
+         * @description 把对象转换为JSON字符串。
+         * @param object - {Object} 可序列化的对象。
+         * @return {string} JSON字符串。
          */
         'object': function (object) {
             // three special objects that we want to treat differently
@@ -182,9 +180,9 @@ export default  class JSONFormat extends Format {
 
         /**
          * @function SuperMap.Format.JSON.serialize.array
-         * @description Transform an array into a JSON string.
-         * @param array - {Array} The array to be serialized
-         * @return {string} A JSON string representing the array.
+         * @description 把数组转换成JSON字符串。
+         * @param array - {Array} 可序列化的数组。
+         * @return {string} JSON字符串。
          */
         'array': function (array) {
             var json;
@@ -210,9 +208,9 @@ export default  class JSONFormat extends Format {
 
         /**
          * @function SuperMap.Format.JSON.serialize.string
-         * @description Transform a string into a JSON string.
-         * @param string - {string} The string to be serialized
-         * @return {string} A JSON string representing the string.
+         * @description 把字符串转换成JSON字符串。
+         * @param string - {string} 可序列化的字符串。
+         * @return {string} JSON字符串。
          */
         'string': function (string) {
             // If the string contains no control characters, no quote characters, and no
@@ -230,24 +228,24 @@ export default  class JSONFormat extends Format {
             };
             if (/["\\\x00-\x1f]/.test(string)) {
                 return '"' + string.replace(/([\x00-\x1f\\"])/g, function (a, b) {
-                        var c = m[b];
-                        if (c) {
-                            return c;
-                        }
-                        c = b.charCodeAt();
-                        return '\\u00' +
-                            Math.floor(c / 16).toString(16) +
-                            (c % 16).toString(16);
-                    }) + '"';
+                    var c = m[b];
+                    if (c) {
+                        return c;
+                    }
+                    c = b.charCodeAt();
+                    return '\\u00' +
+                        Math.floor(c / 16).toString(16) +
+                        (c % 16).toString(16);
+                }) + '"';
             }
             return '"' + string + '"';
         },
 
         /**
          * @function SuperMap.Format.JSON.serialize.number
-         * @description Transform a number into a JSON string.
-         * @param number - {number}The number to be serialized.
-         * @return {string} A JSON string representing the number.
+         * @description 把数字转换成JSON字符串。
+         * @param number - {number} 可序列化的数字。
+         * @return {string} JSON字符串。
          */
         'number': function (number) {
             return isFinite(number) ? String(number) : "null";
@@ -265,9 +263,9 @@ export default  class JSONFormat extends Format {
 
         /**
          * @function SuperMap.Format.JSON.serialize.object
-         * @description Transform a date into a JSON string.
-         * @param date - {Date} The date to be serialized.
-         * @return {string} A JSON string representing the date.
+         * @description 将日期对象转换成JSON字符串。
+         * @param date - {Date} 可序列化的日期对象。
+         * @return {string} JSON字符串。
          */
         'date': function (date) {
             function format(number) {

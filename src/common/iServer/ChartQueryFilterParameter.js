@@ -1,15 +1,16 @@
-import  SuperMap from '../SuperMap';
+import SuperMap from '../SuperMap';
+
 /**
  * @class SuperMap.ChartQueryFilterParameter
  * @classdesc 海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
  * @param options - {Object} 可选参数。如：<br>
- *        isQueryPoint - {boolean} 是否查询点。
- *        isQueryLine  - {boolean} 是否查询线。
- *        isQueryRegion  - {boolean} 是否查询面。
- *        attributeFilter - {string} 属性字段过滤条件。
+ *        isQueryPoint - {boolean} 是否查询点。<br>
+ *        isQueryLine  - {boolean} 是否查询线。<br>
+ *        isQueryRegion  - {boolean} 是否查询面。<br>
+ *        attributeFilter - {string} 属性字段过滤条件。<br>
  *        chartFeatureInfoSpecCode - {number}查询的物标代号。
  */
-export default  class ChartQueryFilterParameter {
+export default class ChartQueryFilterParameter {
 
     /**
      * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint -{boolean}

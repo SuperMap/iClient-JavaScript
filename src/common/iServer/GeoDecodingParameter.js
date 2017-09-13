@@ -1,17 +1,18 @@
 import SuperMap from '../SuperMap';
+
 /**
  * @class SuperMap.GeoDecodingParameter
  * @classdesc 地理反向匹配参数类。
- * @param options - {Object} 参数。如：<br>
- *        x - {number}查询位置的横坐标。<br>
- *        y - {number}查询位置的纵坐标。<br>
- *        fromIndex - {number}设置返回对象的起始索引值。<br>
- *        filters -{Array} 过滤字段，限定查询区域。<br>
- *        prjCoordSys -{string} 查询结果的坐标系。<br>
- *        maxReturn -{number}最大返回结果数。<br>
- *        geoDecodingRadius -{number}查询半径。
+ * @param options - {Object}可选参数。如:<br>
+ *        x - {number} 查询位置的横坐标。<br>
+ *        y - {number} 查询位置的纵坐标。<br>
+ *        fromIndex - {number} 设置返回对象的起始索引值。<br>
+ *        filters - {Array<string>} 过滤字段，限定查询区域。<br>
+ *        prjCoordSys - {string} 查询结果的坐标系。<br>
+ *        maxReturn - {number} 最大返回结果数。<br>
+ *        geoDecodingRadius - {number} 查询半径。
  */
-export default  class GeoDecodingParameter {
+export default class GeoDecodingParameter {
     /**
      * @member SuperMap.GeoDecodingParameter.prototype.x - {number}
      * @description 查询位置的横坐标。
@@ -36,25 +37,25 @@ export default  class GeoDecodingParameter {
     toIndex = null;
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.filters -{Array}
+     * @member SuperMap.GeoDecodingParameter.prototype.filters - {Array<string>}
      * @description 过滤字段，限定查询区域。
      */
     filters = null;
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys -{string}
+     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys - {string}
      * @description 查询结果的坐标系。
      */
     prjCoordSys = null;
 
     /**
-     *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn -{number}
+     *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn - {number}
      *  @description 最大返回结果数。
      */
     maxReturn = null;
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius -{number}
+     * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius - {number}
      * @description 查询半径。
      */
     geoDecodingRadius = null;

@@ -9,69 +9,57 @@ import {ColorSpaceType} from '../REST';
  * @extends SuperMap.UGCSubLayer
  * @param options - {Object} 可选参数。如：<br>
  *        colorSpaceType - {SuperMap.ColorSpaceType} 返回影像图层的色彩显示模式。<br>
- *        brightness - {Integer} 影像图层的亮度。<br>
- *        displayBandIndexes - {Array<Integer>} 返回当前影像图层显示的波段索引。<br>
- *        contrast - {Integer} 影像图层的对比度。<br>
+ *        brightness - {integer} 影像图层的亮度。<br>
+ *        displayBandIndexes - {Array<integer>} 返回当前影像图层显示的波段索引。<br>
+ *        contrast - {integer} 影像图层的对比度。<br>
  *        transparent - {boolean} 是否背景透明。<br>
- *        transparentColor - {SuperMap.ServerColor} 返回背景透明色。<br>
- *        transparentColorTolerance - {Integer} 背景透明色容限。
+ *        transparentColor - {@link SuperMap.ServerColor} 返回背景透明色。<br>
+ *        transparentColorTolerance - {integer} 背景透明色容限。
  */
 export default class UGCImage extends UGCSubLayer {
 
     /**
-     * @member SuperMap.Image.prototype.brightness -{Integer}
+     * @member SuperMap.Image.prototype.brightness - {integer}
      * @description 影像图层的亮度。
      */
     brightness = null;
 
     /**
-     * @member SuperMap.Image.prototype.colorSpaceType -{SuperMap.ColorSpaceType}
+     * @member SuperMap.Image.prototype.colorSpaceType - {SuperMap.ColorSpaceType}
      * @description 返回影像图层的色彩显示模式。
      */
     colorSpaceType = null;
 
     /**
-     * @member SuperMap.Image.prototype.contrast -{Integer}
+     * @member SuperMap.Image.prototype.contrast - {integer}
      * @description 影像图层的对比度。
      */
     contrast = null;
 
     /**
-     * @member SuperMap.Image.prototype.displayBandIndexes {Array<Integer>}
+     * @member SuperMap.Image.prototype.displayBandIndexes - {Array<integer>}
      * @description 返回当前影像图层显示的波段索引。
      */
     displayBandIndexes = null;
 
     /**
-     * @member SuperMap.Image.prototype.transparent -{boolean}
+     * @member SuperMap.Image.prototype.transparent - {boolean}
      * @description 是否背景透明。
      */
     transparent = null;
 
     /**
-     * @member SuperMap.Image.prototype.transparentColor -{SuperMap.ServerColor}
+     * @member SuperMap.Image.prototype.transparentColor - {SuperMap.ServerColor}
      * @description 返回背景透明色。
      */
     transparentColor = null;
 
     /**
-     * @member SuperMap.Image.prototype.transparentColorTolerance -{Integer}
+     * @member SuperMap.Image.prototype.transparentColorTolerance - {integer}
      * @description 背景透明色容限。
      */
     transparentColorTolerance = null;
 
-    /*
-     * @function SuperMap.Image.prototype.constructor
-     * @description UGC 影像图层类构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        colorSpaceType - {SuperMap.ColorSpaceType} 返回影像图层的色彩显示模式。<br>
-     *        brightness - {Integer} 影像图层的亮度。<br>
-     *        displayBandIndexes - {Array<Integer>} 返回当前影像图层显示的波段索引。<br>
-     *        contrast - {Integer} 影像图层的对比度。<br>
-     *        transparent - {boolean} 是否背景透明。<br>
-     *        transparentColor - {SuperMap.ServerColor} 返回背景透明色。<br>
-     *        transparentColorTolerance - {Integer} 背景透明色容限。
-     */
     constructor(options) {
         options = options || {};
         super(options);
@@ -88,7 +76,7 @@ export default class UGCImage extends UGCSubLayer {
 
     /**
      * @function SuperMap.Image.prototype.fromJson
-     * @description 将服务端JSON对象转换成当前客户端对象
+     * @description 将服务端JSON对象转换成当前客户端对象。
      * @param jsonObject - {Object} 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {

@@ -1,12 +1,15 @@
-import SuperMap  from '../../SuperMap';
+import SuperMap from '../../SuperMap';
 import Elasticsearch from 'elasticsearch';
 
 /**
  * @class SuperMap.ElasticSearch
- * @classdesc ElasticSearch服务
- *              通用参数设置请参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-conventions.html
- * @param url - {string} 地址
- * @param options - {Object} 参数
+ * @classdesc ElasticSearch服务类。
+ * @param url - {string} ElasticSearch服务地址。
+ * @param options - {Object} 可选参数。如:</br>
+ *         change - {function} 服务器返回数据后执行的函数。</br>
+ *         openGeoFence - {boolean} 是否开启地理围栏验证，默认为不开启。</br>
+ *         outOfGeoFence - {function} 数据超出地理围栏后执行的函数。</br>
+ *         geoFence - {Object} 地理围栏。</br>
  */
 
 export default class ElasticSearch {
@@ -22,7 +25,7 @@ export default class ElasticSearch {
     client = null;
     /**
      *  @member SuperMap.ElasticSearch.prototype.change -{function}
-     *  @description 服务器返回数据后执行的操作
+     *  @description 服务器返回数据后执行的函数
      */
     change = null;
     /**
@@ -32,7 +35,7 @@ export default class ElasticSearch {
     openGeoFence = false;
     /**
      *  @member SuperMap.ElasticSearch.prototype.outOfGeoFence -{function}
-     *  @description 数据超出地理围栏后执行的操作
+     *  @description 数据超出地理围栏后执行的函数
      */
     outOfGeoFence = null;
 
@@ -95,6 +98,7 @@ export default class ElasticSearch {
     setGeoFence(geoFence) {
         this.geoFence = geoFence;
     }
+
     /**
      * @function  SuperMap.ElasticSearch.prototype.bulk
      * @description 批量操作API，允许执行多个索引/删除操作。</br>
@@ -106,6 +110,7 @@ export default class ElasticSearch {
     bulk(params, callback) {
         return this.client.bulk(params, callback);
     }
+
     /**
      * @function  SuperMap.ElasticSearch.prototype.clearScroll
      * @description 通过指定scroll参数进行查询来清除已经创建的scroll请求。</br>
@@ -189,6 +194,7 @@ export default class ElasticSearch {
     deleteTemplate(params, callback) {
         return this.client.deleteTemplate(params, callback);
     }
+
     /**
      * @function  SuperMap.ElasticSearch.prototype.exists
      * @description 检查给定文档是否存在。</br>

@@ -12,27 +12,27 @@ export default class Feature {
 
     /**
      * @deprecated
-     * @member SuperMap.Feature.prototype.layer -{SuperMap.Layer}
-     * @description layer
+     * @member SuperMap.Feature.prototype.layer - {SuperMap.Layer}
+     * @description 图层。
      */
     layer = null;
 
     /**
-     * @member SuperMap.Feature.prototype.id -{String}
-     * @description id
+     * @member SuperMap.Feature.prototype.id - {string}
+     * @description 要素id。
      */
     id = null;
 
     /**
-     * @member SuperMap.Feature.prototype.lonlat -{SuperMap.LonLat}
-     * @description lonlat
+     * @member SuperMap.Feature.prototype.lonlat - {SuperMap.LonLat}
+     * @description 经纬度。
      *
      */
     lonlat = null;
 
     /**
-     * @member SuperMap.Feature.prototype.data -{Object}
-     * @description data
+     * @member SuperMap.Feature.prototype.data - {Object}
+     * @description 数据对象。
      */
     data = null;
 
@@ -45,10 +45,9 @@ export default class Feature {
 
     /**
      * @function SuperMap.Feature.prototype.destroy
-     * @description nullify references to prevent circular references and memory leaks
+     * @description 释放相关资源。
      */
     destroy() {
-
         this.id = null;
         this.lonlat = null;
         this.data = null;

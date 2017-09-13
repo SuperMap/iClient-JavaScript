@@ -1,21 +1,22 @@
 ﻿import SuperMap from '../SuperMap';
 import BufferAnalystParameters from './BufferAnalystParameters';
 import DataReturnOption from './DataReturnOption';
-import FilterParameter  from './FilterParameter';
+import FilterParameter from './FilterParameter';
+
 /**
  * @class SuperMap.DatasetBufferAnalystParameters
- * @classdesc  数据集缓冲区分析参数类
+ * @classdesc  数据集缓冲区分析参数类。
  * @param options - {Object} 可选参数。如：</br>
  *        dataset - {string} 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。</br>
- *        filterQueryParameter - {SuperMap.FilterParameter} 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析。</br>
- *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
+ *        filterQueryParameter - {@link SuperMap.FilterParameter} 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析。</br>
+ *        resultSetting - {@link SuperMap.DataReturnOption} 结果返回设置类。</br>
  *        isAttributeRetained - {boolean} 是否保留进行缓冲区分析的对象的字段属性，默认为 true。当 isUnion 字段为 false 时该字段有效。</br>
  *        isUnion - {boolean} 是否将缓冲区与源记录集中的对象合并后返回。对于面对象而言，要求源数据集中的面对象不相交。默认为 false。</br>
- *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。</br>
+ *        bufferSetting - {@link SuperMap.BufferSetting} 设置缓冲区通用参数。</br>
  *
  * @extends SuperMap.BufferAnalystParameters
  */
-export default  class DatasetBufferAnalystParameters extends BufferAnalystParameters {
+export default class DatasetBufferAnalystParameters extends BufferAnalystParameters {
     /**
      * @member SuperMap.DatasetBufferAnalystParameters.prototype.dataset -{string}
      * @description 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
@@ -77,11 +78,13 @@ export default  class DatasetBufferAnalystParameters extends BufferAnalystParame
         me.isAttributeRetained = null;
         me.isUnion = null;
     }
+
     /**
      * @function SuperMap.DatasetBufferAnalystParameters.toObject
-     * @param datasetBufferAnalystParameters -{Object} 数据集缓冲区分析参数
-     * @param tempObj - {Object} 目标对象
-     * @description 生成数据集缓冲区分析对象
+     * @param datasetBufferAnalystParameters - {SuperMap.DatasetBufferAnalystParameters} 数据集缓冲区分析参数类。
+     * @param tempObj - {SuperMap.DatasetBufferAnalystParameters} 数据集缓冲区分析参数对象。
+     * @description 将数据集缓冲区分析参数对象转换为JSON对象。
+     * @return {Object} JSON对象。
      */
     static toObject(datasetBufferAnalystParameters, tempObj) {
         for (var name in datasetBufferAnalystParameters) {
