@@ -18,3 +18,7 @@ require('./openlayers/mapping/ImageSuperMapRestSpec.js');
 
 /*openlayers -- control*/
 require('./openlayers/control/ChangeTileVersionSpec');
+
+/*openlayers -- core*/
+require('./openlayers/core/UtilSpec');
+

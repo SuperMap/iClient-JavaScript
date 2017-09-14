@@ -73,17 +73,14 @@ require('./common/iServer/ThiessenAnalystServiceSpec.js');
 require('./common/iServer/TilesetsServiceSpec.js');
 require('./common/iServer/TransferPathServiceSpec.js');
 require('./common/iServer/TransferSolutionServiceSpec.js');
-
 require('./common/iServer/UpdateEdgeWeightServiceSpec.js');
 require('./common/iServer/UpdateTurnNodeWeightServiceSpec.js');
+
 require('./common/format/JSONSpec.js');
 require('./common/control/TimeControlBaseSpec.js');
 require('./common/control/TimeFlowControlSpec.js');
 require('./common/security/SecurityManagerSpec.js');
 require('./common/iServer/RouteSpec.js');
 
-
-
-
-
-
+require('./common/overlay/levelRenderer/AreaSpec.js');
+require('./common/overlay/levelRenderer/ColorSpec.js');
