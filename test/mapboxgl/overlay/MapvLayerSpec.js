@@ -1,6 +1,7 @@
 var mapboxgl = require('mapbox-gl');
 var mapv = require('mapv');
 window.mapv = mapv;
+window.mapboxgl = mapboxgl;
 require('../../../src/mapboxgl/overlay/MapvLayer');
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
@@ -88,7 +89,7 @@ describe('mapboxgl_MapVLayer', function () {
     });
 
     it('constructor test', function (done) {
-        setTimeout(function(){
+        setTimeout(function () {
             expect(mapvLayer).not.toBeNull();
             expect(mapvLayer.canvas).not.toBeNull();
             expect(mapvLayer.map).not.toBeNull();
@@ -98,7 +99,7 @@ describe('mapboxgl_MapVLayer', function () {
             expect(mapvLayer.renderer).not.toBeNull();
             expect(mapvLayer.renderer.context).toBe("2d");
             done();
-        },6000);
+        }, 6000);
     });
 
     it('getTopLeft test', function () {

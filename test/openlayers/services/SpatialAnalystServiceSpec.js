@@ -129,7 +129,7 @@ describe('openlayers_SpatialAnalystService', function () {
                 expect(serviceResults.type).toBe('processCompleted');
                 expect(serviceResults.result.dataset).not.toBeNull();
                 done();
-            }, 15000);
+            }, 30000);
         });
         //反距离加权插值分析
         it('interpolationAnalysis_IDW_dataset test', function (done) {
@@ -159,7 +159,7 @@ describe('openlayers_SpatialAnalystService', function () {
                 expect(serviceResults.type).toBe('processCompleted');
                 expect(serviceResults.result.dataset).not.toBeNull();
                 done();
-            }, 15000);
+            }, 30000);
         });
         //离散点插值分析
         it('interpolationAnalysis_IDW_geometry test', function (done) {
@@ -221,7 +221,7 @@ describe('openlayers_SpatialAnalystService', function () {
                 expect(serviceResults.type).toBe('processCompleted');
                 expect(serviceResults.result.dataset).not.toBeNull();
                 done();
-            }, 15000);
+            }, 30000);
         });
     });
 
