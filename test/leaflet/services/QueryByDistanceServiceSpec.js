@@ -36,14 +36,14 @@ describe('leaflet_testQueryService_queryByDistance', function () {
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.customResponse).toBeNull();
-                expect(serviceResult.result.currentCount).toEqual(1);
-                expect(serviceResult.result.totalCount).toEqual(1);
+                expect(serviceResult.result.currentCount).toBeGreaterThan(0);
+                expect(serviceResult.result.totalCount).toBeGreaterThan(0);
                 expect(serviceResult.result.recordsets.length).toBeGreaterThan(0);
                 expect(serviceResult.result.recordsets[0].datasetName).toBe("Capitals@World");
                 expect(serviceResult.result.recordsets[0].fieldCaptions.length).toEqual(16);
                 expect(serviceResult.result.recordsets[0].fieldTypes.length).toEqual(16);
                 expect(serviceResult.result.recordsets[0].features.type).toBe("FeatureCollection");
-                expect(serviceResult.result.recordsets[0].features.features.length).toEqual(1);
+                expect(serviceResult.result.recordsets[0].features.features.length).toBeGreaterThan(0);
                 for (var i = 0; i < serviceResult.result.recordsets[0].features.features.length; i++) {
                     expect(serviceResult.result.recordsets[0].features.features[i].type).toBe("Feature");
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.type).toBe("Point");
