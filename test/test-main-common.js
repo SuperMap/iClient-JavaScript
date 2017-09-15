@@ -66,6 +66,7 @@ require('./common/iServer/RouteLocatorServiceSpec.js');
 require('./common/iServer/SetLayerStatusServiceSpec.js');
 require('./common/iServer/StopQueryServiceSpec.js');
 //require('./common/iServer/SurfaceAnalystServiceSpec.js');        //待开发将等值线LinearRing添加到GeoJason后再补充对应测试
+require('./common/iServer/ServerGeometrySpec.js');
 
 require('./common/iServer/TerrainCurvatureCalculationServiceSpec.js');
 require('./common/iServer/ThemeServiceSpec.js');
