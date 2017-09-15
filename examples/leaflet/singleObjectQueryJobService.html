@@ -74,6 +74,9 @@
 
     function bindClick() {
         $('#btn').on('click', function () {
+            if ($('#msg_container')[0]) {
+                $('#msg_container').remove();
+            }
             showLoader();
             if (map && layer) {
                 map.removeLayer(layer);

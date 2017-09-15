@@ -155,6 +155,9 @@
     }
 
     $('#btn').on('click', function () {
+        if ($('#msg_container')[0]) {
+            $('#msg_container').remove();
+        }
         showLoader();
         if (map && resultLayer) {
             map.removeLayer(resultLayer);

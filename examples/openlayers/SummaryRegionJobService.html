@@ -124,19 +124,19 @@
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
     var layer,
-        processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
-        mapURL = host + "/iserver/services/map-world/rest/maps/World",
-        token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
-        map = new ol.Map({
-            target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
-            view: new ol.View({
-                center: [-73.95, 40.75],
-                zoom: 12,
-                projection: 'EPSG:4326'
-            })
-        });
+            processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+            mapURL = host + "/iserver/services/map-world/rest/maps/World",
+            token = 'yurnlSeWak-vh77nAh73yrW_cHDTDJrfZxCVl7-h3GhMSMSNTPjvH7ykQviXfH1tOQ2ckJtUt6J9RY32GFNa6Q..',
+            map = new ol.Map({
+                target: 'map',
+                controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                        .extend([new ol.supermap.control.Logo()]),
+                view: new ol.View({
+                    center: [-73.95, 40.75],
+                    zoom: 12,
+                    projection: 'EPSG:4326'
+                })
+            });
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: mapURL,
@@ -176,6 +176,9 @@
     }
 
     $('#btn').on('click', function () {
+        if ($('#msg_container')[0]) {
+            $('#msg_container').remove();
+        }
         showLoader();
         if (map && layer) {
             map.removeLayer(layer);
@@ -227,9 +230,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg'></p></strong></div>");
+                    "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                    "<strong><p id='msg'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);
