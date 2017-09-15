@@ -87,3 +87,4 @@ require('./common/overlay/levelRenderer/AreaSpec.js');
 require('./common/overlay/levelRenderer/ColorSpec.js');
 
 require('./common/commonTypes/geometry/LineStringSpec.js');
+require('./common/overlay/levelRenderer/CurveSpec.js');
