@@ -1,4 +1,4 @@
-require('../../../src/openlayers/overlay/range');
+require('../../../src/openlayers/overlay/Range');
 
 describe('openlayers_testRange', function () {
     var originalTimeout, map;

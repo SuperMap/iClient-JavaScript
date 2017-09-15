@@ -1,4 +1,4 @@
-require('../../../../src/openlayers/overlay/theme/themeFeature');
+require('../../../../src/openlayers/overlay/theme/ThemeFeature');
 
 describe('openlayers_testthemeFeature', function () {
     var originalTimeout, map;

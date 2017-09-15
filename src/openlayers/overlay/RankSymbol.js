@@ -1,6 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
-import Graph from './theme/graph';
+import Graph from './theme/Graph';
 
 /**
  * @class ol.source.RankSymbol

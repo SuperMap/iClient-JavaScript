@@ -1,4 +1,4 @@
-require('../../../../src/openlayers/overlay/theme/geoFeature');
+require('../../../../src/openlayers/overlay/theme/GeoFeature');
 
 describe('openlayers_testgeoFeature', function () {
     var originalTimeout, map;

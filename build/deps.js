@@ -696,9 +696,9 @@ deps = {
             "Theme": {
                 "name": "专题图",
                 "src": [
-                    "./src/openlayers/overlay/unique.js",
-                    "./src/openlayers/overlay/range.js",
-                    "./src/openlayers/overlay/rankSymbol.js",
+                    "./src/openlayers/overlay/Unique.js",
+                    "./src/openlayers/overlay/Range.js",
+                    "./src/openlayers/overlay/RankSymbol.js",
                 ],
                 "modules": [{
                     "name": "ol.source.Unique",
@@ -714,7 +714,7 @@ deps = {
             "Mapv": {
                 "name": "Mapv",
                 "src": [
-                    "./src/openlayers/overlay/mapv.js",
+                    "./src/openlayers/overlay/Mapv.js",
                 ],
                 "modules": [{
                     "name": "ol.source.Mapv",
@@ -724,7 +724,7 @@ deps = {
             "Turf": {
                 "name": "Turf",
                 "src": [
-                    "./src/openlayers/overlay/turf.js",
+                    "./src/openlayers/overlay/Turf.js",
                 ],
                 "modules": [{
                     "name": "ol.source.Turf",

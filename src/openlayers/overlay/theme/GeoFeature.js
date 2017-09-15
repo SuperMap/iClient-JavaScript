@@ -1,6 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../../common/SuperMap';
-import Theme from './theme';
+import Theme from './Theme';
 import Vector from '../../../common/overlay/ThemeVector';
 /**
  * @class ol.source.GeoFeature

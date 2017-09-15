@@ -1,6 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
-import GeoFeature from './theme/geoFeature';
+import GeoFeature from './theme/GeoFeature';
 import ServerFeature from '../../common/iServer/ServerFeature';
 import Vector from '../../common/overlay/ThemeVector';
 

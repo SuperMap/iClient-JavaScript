@@ -10,7 +10,7 @@ import '../../../common/overlay/Ring';
 import '../../../common/overlay/ThemeVector';
 import '../../../common/style/ThemeStyle';
 import SuperMap from '../../../common/SuperMap';
-import Theme from './theme';
+import Theme from './Theme';
 
 /**
  * @class ol.source.Graph

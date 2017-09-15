@@ -22364,9 +22364,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _theme = __webpack_require__(82);
+var _Theme2 = __webpack_require__(82);
 
-var _theme2 = _interopRequireDefault(_theme);
+var _Theme3 = _interopRequireDefault(_Theme2);
 
 var _ThemeVector = __webpack_require__(39);
 
@@ -22475,7 +22475,7 @@ var GeoFeature = function (_Theme) {
         key: 'removeFeatures',
         value: function removeFeatures(features) {
             this.clearCache();
-            _theme2.default.prototype.removeFeatures.apply(this, arguments);
+            _Theme3.default.prototype.removeFeatures.apply(this, arguments);
         }
 
         /**
@@ -22487,7 +22487,7 @@ var GeoFeature = function (_Theme) {
         key: 'removeAllFeatures',
         value: function removeAllFeatures() {
             this.clearCache();
-            _theme2.default.prototype.removeAllFeatures.apply(this, arguments);
+            _Theme3.default.prototype.removeAllFeatures.apply(this, arguments);
         }
 
         /**
@@ -22594,7 +22594,7 @@ var GeoFeature = function (_Theme) {
     }, {
         key: 'canvasFunctionInternal_',
         value: function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            return _theme2.default.prototype.canvasFunctionInternal_.apply(this, arguments);
+            return _Theme3.default.prototype.canvasFunctionInternal_.apply(this, arguments);
         }
 
         /**
@@ -22675,7 +22675,7 @@ var GeoFeature = function (_Theme) {
     }]);
 
     return GeoFeature;
-}(_theme2.default);
+}(_Theme3.default);
 
 exports.default = GeoFeature;
 
@@ -22710,9 +22710,9 @@ var _ServerFeature = __webpack_require__(70);
 
 var _ServerFeature2 = _interopRequireDefault(_ServerFeature);
 
-var _themeFeature = __webpack_require__(366);
+var _ThemeFeature = __webpack_require__(366);
 
-var _themeFeature2 = _interopRequireDefault(_themeFeature);
+var _ThemeFeature2 = _interopRequireDefault(_ThemeFeature);
 
 var _LonLat = __webpack_require__(44);
 
@@ -23266,7 +23266,7 @@ var Theme = function (_ol$source$ImageCanva) {
     }, {
         key: 'toiClientFeature',
         value: function toiClientFeature(feature) {
-            if (feature instanceof _themeFeature2.default) {
+            if (feature instanceof _ThemeFeature2.default) {
                 return feature.toFeature();
             }
             return new _ServerFeature2.default.fromJson(feature).toFeature();
@@ -27180,6 +27180,885 @@ var _olDebug = __webpack_require__(2);
 
 var _olDebug2 = _interopRequireDefault(_olDebug);
 
+var _MapvLayer = __webpack_require__(364);
+
+var _MapvLayer2 = _interopRequireDefault(_MapvLayer);
+
+var _Util = __webpack_require__(9);
+
+var _Util2 = _interopRequireDefault(_Util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class ol.source.Mapv
+ * @classdesc MapV图层源。
+ * @param opt_options -{Object} 参数
+ * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
+ */
+var Mapv = function (_ol$source$ImageCanva) {
+    _inherits(Mapv, _ol$source$ImageCanva);
+
+    function Mapv(opt_options) {
+        _classCallCheck(this, Mapv);
+
+        var options = opt_options ? opt_options : {};
+
+        var _this = _possibleConstructorReturn(this, (Mapv.__proto__ || Object.getPrototypeOf(Mapv)).call(this, {
+            attributions: options.attributions || new _olDebug2.default.Attribution({
+                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+            }),
+            canvasFunction: canvasFunctionInternal_,
+            logo: options.logo,
+            projection: options.projection,
+            ratio: options.ratio,
+            resolutions: options.resolutions,
+            state: options.state
+        }));
+
+        _this.map = opt_options.map;
+        _this.dataSet = opt_options.dataSet;
+        _this.mapvOptions = opt_options.mapvOptions;
+
+        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+            var mapWidth = size[0] * pixelRatio;
+            var mapHeight = size[1] * pixelRatio;
+            var width = this.map.getSize()[0] * pixelRatio;
+            var height = this.map.getSize()[1] * pixelRatio;
+            if (!this.layer) {
+                this.layer = new _MapvLayer2.default(this.map, this.dataSet, this.mapvOptions, mapWidth, mapHeight, this);
+            }
+            this.layer.pixelRatio = pixelRatio;
+            this.layer.offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
+            if (!this.rotate) {
+                this.rotate = this.map.getView().getRotation();
+            } else {
+                if (this.rotate !== this.map.getView().getRotation()) {
+                    this.layer.canvasLayer.resize(mapWidth, mapHeight);
+                    this.rotate = this.map.getView().getRotation();
+                }
+            }
+            var canvas = this.layer.canvasLayer.canvas;
+            if (!this.layer.isEnabledTime()) {
+                this.layer.canvasLayer.resize(mapWidth, mapHeight);
+                this.layer.canvasLayer.draw();
+            }
+            if (!this.context) {
+                this.context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
+            }
+            var canvas2 = this.context.canvas;
+            this.context.clearRect(0, 0, canvas2.width, canvas2.height);
+            canvas2.width = mapWidth;
+            canvas2.height = mapHeight;
+            canvas2.style.width = mapWidth + "px";
+            canvas2.style.height = mapHeight + "px";
+            this.context.drawImage(canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
+            if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
+                this.resolution = resolution;
+                this.extent = extent;
+            }
+            return this.context.canvas;
+        }
+        return _this;
+    }
+
+    /**
+     * @function ol.source.Mapv.prototype.update
+     * @description 更新数据
+     * @param options -{Object} 要更新的参数
+     */
+
+
+    _createClass(Mapv, [{
+        key: 'update',
+        value: function update(options) {
+            this.layer.update(options);
+            this.changed();
+        }
+    }]);
+
+    return Mapv;
+}(_olDebug2.default.source.ImageCanvas);
+
+exports.default = Mapv;
+
+
+_olDebug2.default.source.Mapv = Mapv;
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _olDebug = __webpack_require__(2);
+
+var _olDebug2 = _interopRequireDefault(_olDebug);
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _GeoFeature2 = __webpack_require__(81);
+
+var _GeoFeature3 = _interopRequireDefault(_GeoFeature2);
+
+var _ServerFeature = __webpack_require__(70);
+
+var _ServerFeature2 = _interopRequireDefault(_ServerFeature);
+
+var _ThemeVector = __webpack_require__(39);
+
+var _ThemeVector2 = _interopRequireDefault(_ThemeVector);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class ol.source.Range
+ * @classdesc 分段专题图图层源。
+ * @param name - {string} 名称
+ * @param opt_options -{Object} 参数。
+ * @extends ol.source.GeoFeature
+ */
+var Range = function (_GeoFeature) {
+    _inherits(Range, _GeoFeature);
+
+    function Range(name, opt_options) {
+        _classCallCheck(this, Range);
+
+        var _this = _possibleConstructorReturn(this, (Range.__proto__ || Object.getPrototypeOf(Range)).call(this, name, opt_options));
+
+        _this.map = opt_options.map;
+        _this.features = opt_options.features;
+        _this.style = opt_options.style;
+        _this.isHoverAble = opt_options.isHoverAble;
+        _this.highlightStyle = opt_options.highlightStyle;
+        _this.themeField = opt_options.themeField;
+        _this.styleGroups = opt_options.styleGroups;
+
+        //添加features
+        var features = _this.features;
+        if (!_SuperMap2.default.Util.isArray(features)) {
+            features = [features];
+        }
+        var event = { features: features };
+        var ret = _this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
+        if (ret === false) {
+            return _possibleConstructorReturn(_this);
+        }
+        features = event.features;
+        var featuresFailAdded = [];
+        var toFeatures = [];
+        for (var i = 0, len = features.length; i < len; i++) {
+            toFeatures.push(new _ServerFeature2.default.fromJson(features[i]).toFeature());
+        }
+        _this.features = toFeatures;
+        var succeed = featuresFailAdded.length == 0 ? true : false;
+        _this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
+        if (!_this.isCustomSetMaxCacheCount) {
+            _this.maxCacheCount = _this.features.length * 5;
+        }
+        return _this;
+    }
+
+    /**
+     * @function ol.source.Range.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    _createClass(Range, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.style = null;
+            this.themeField = null;
+            this.styleGroups = null;
+            _GeoFeature3.default.prototype.destroy.apply(this, arguments);
+        }
+
+        /**
+         * @private
+         * @function ol.source.Range.prototype.createThematicFeature
+         * @description 创建专题图要素
+         * @param feature -{Object} 要创建的专题图形要素
+         */
+
+    }, {
+        key: 'createThematicFeature',
+        value: function createThematicFeature(feature) {
+            //赋 style
+            var style = this.getStyleByData(feature);
+            //创建专题要素时的可选参数
+            var options = {};
+            options.nodesClipPixel = this.nodesClipPixel;
+            options.isHoverAble = this.isHoverAble;
+            options.isMultiHover = this.isMultiHover;
+            options.isClickAble = this.isClickAble;
+            options.highlightStyle = _SuperMap2.default.Feature.ShapeFactory.transformStyle(this.highlightStyle);
+
+            //将数据转为专题要素（Vector）
+            var thematicFeature = new _ThemeVector2.default(feature, this, _SuperMap2.default.Feature.ShapeFactory.transformStyle(style), options);
+
+            //直接添加图形到渲染器
+            for (var m = 0; m < thematicFeature.shapes.length; m++) {
+                this.renderer.addShape(thematicFeature.shapes[m]);
+            }
+
+            return thematicFeature;
+        }
+
+        /**
+         * @private
+         * @function ol.source.Range.prototype.getStyleByData
+         * @description 通过数据获取style
+         * @param fea -{Object} 要素数据
+         */
+
+    }, {
+        key: 'getStyleByData',
+        value: function getStyleByData(fea) {
+            var style = {};
+            var feature = fea;
+            style = _SuperMap2.default.Util.copyAttributesWithClip(style, this.style);
+            if (this.themeField && this.styleGroups && this.styleGroups.length > 0 && feature.attributes) {
+                var Sf = this.themeField;
+                var Attrs = feature.attributes;
+                var Gro = this.styleGroups;
+                var isSfInAttrs = false; //指定的 themeField 是否是 feature 的属性字段之一
+                var attr = null; //属性值
+
+                for (var property in Attrs) {
+                    if (Sf === property) {
+                        isSfInAttrs = true;
+                        attr = Attrs[property];
+                        break;
+                    }
+                }
+                //判断属性值是否属于styleGroups的某一个范围，以便对获取分组 style
+                if (isSfInAttrs) {
+                    for (var i = 0, len = Gro.length; i < len; i++) {
+                        if (attr >= Gro[i].start && attr < Gro[i].end) {
+                            //feature.style = SuperMap.Util.copyAttributes(feature.style, this.defaultStyle);
+                            var sty1 = Gro[i].style;
+                            style = _SuperMap2.default.Util.copyAttributesWithClip(style, sty1);
+                        }
+                    }
+                }
+            }
+            if (feature.style && this.isAllowFeatureStyle === true) {
+                style = _SuperMap2.default.Util.copyAttributesWithClip(feature.style);
+            }
+            return style;
+        }
+    }, {
+        key: 'canvasFunctionInternal_',
+        value: function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+            return _GeoFeature3.default.prototype.canvasFunctionInternal_.apply(this, arguments);
+        }
+    }]);
+
+    return Range;
+}(_GeoFeature3.default);
+
+exports.default = Range;
+
+
+_olDebug2.default.source.Range = Range;
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _olDebug = __webpack_require__(2);
+
+var _olDebug2 = _interopRequireDefault(_olDebug);
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _Graph2 = __webpack_require__(365);
+
+var _Graph3 = _interopRequireDefault(_Graph2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class ol.source.RankSymbol
+ * @classdesc 等级符号专题图图层源。
+ * @param name - {string} 专题图层名
+ * @param symbolType -{string} 标志类型
+ * @param opt_options -{Object} 参数
+ * @extends ol.source.Graph
+ */
+var RankSymbol = function (_Graph) {
+    _inherits(RankSymbol, _Graph);
+
+    function RankSymbol(name, symbolType, opt_options) {
+        _classCallCheck(this, RankSymbol);
+
+        var _this = _possibleConstructorReturn(this, (RankSymbol.__proto__ || Object.getPrototypeOf(RankSymbol)).call(this, name, symbolType, opt_options));
+
+        _this.symbolType = symbolType;
+        _this.symbolSetting = opt_options.symbolSetting;
+        _this.themeField = opt_options.themeField;
+        _this.features = opt_options.features;
+
+        var features = _this.features;
+        if (!_SuperMap2.default.Util.isArray(features)) {
+            features = [features];
+        }
+        var event = { features: features };
+        var ret = _this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
+        if (ret === false) {
+            return _possibleConstructorReturn(_this);
+        }
+        features = event.features;
+        var toFeatures = [];
+        var featuresFailAdded = [];
+        for (var i = 0, len = features.length; i < len; i++) {
+            toFeatures.push(_this.toiClientFeature(features[i]));
+        }
+        _this.features = toFeatures;
+        var succeed = featuresFailAdded.length == 0 ? true : false;
+        _this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
+        return _this;
+    }
+
+    /**
+     * @function ol.source.RankSymbol.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    _createClass(RankSymbol, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.symbolType = null;
+            this.symbolSetting = null;
+            this.themeField = null;
+            _SuperMap2.default.Layer.Graph.prototype.destroy.apply(this, arguments);
+        }
+
+        /**
+         * @function ol.source.RankSymbol.prototype.setSymbolType
+         * @description 设置标志符号
+         * @param symbolType -{string} 符号类型
+         */
+
+    }, {
+        key: 'setSymbolType',
+        value: function setSymbolType(symbolType) {
+            this.symbolType = symbolType;
+            this.redraw();
+        }
+
+        /**
+         * @private
+         * @function ol.source.RankSymbol.prototype.createThematicFeature
+         * @description 创建专题图形要素
+         * @param feature -{Object} 要创建的专题图形要素
+         */
+
+    }, {
+        key: 'createThematicFeature',
+        value: function createThematicFeature(feature) {
+            var thematicFeature;
+            // 检查图形创建条件并创建图形
+            if (_SuperMap2.default.Feature.Theme[this.symbolType] && this.themeField && this.symbolSetting) {
+                thematicFeature = new _SuperMap2.default.Feature.Theme[this.symbolType](feature, this, [this.themeField], this.symbolSetting);
+            }
+            // thematicFeature 是否创建成功
+            if (!thematicFeature) return false;
+            // 对专题要素执行图形装载
+            thematicFeature.assembleShapes();
+            return thematicFeature;
+        }
+    }, {
+        key: 'canvasFunctionInternal_',
+        value: function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+            return _Graph3.default.prototype.canvasFunctionInternal_.apply(this, arguments);
+        }
+    }]);
+
+    return RankSymbol;
+}(_Graph3.default);
+
+exports.default = RankSymbol;
+
+
+_olDebug2.default.source.RankSymbol = RankSymbol;
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _olDebug = __webpack_require__(2);
+
+var _olDebug2 = _interopRequireDefault(_olDebug);
+
+var _turf = __webpack_require__(374);
+
+var _turf2 = _interopRequireDefault(_turf);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class ol.source.Turf
+ * @classdesc Turf.js图层源。
+ * @param opt_options -{Object} 参数
+ * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
+ */
+var Turf = function (_ol$source$Vector) {
+    _inherits(Turf, _ol$source$Vector);
+
+    function Turf(opt_options) {
+        _classCallCheck(this, Turf);
+
+        var options = opt_options ? opt_options : {};
+
+        var _this = _possibleConstructorReturn(this, (Turf.__proto__ || Object.getPrototypeOf(Turf)).call(this, {
+            attributions: options.attributions || new _olDebug2.default.Attribution({
+                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+            }),
+            features: options.features,
+            format: options.format,
+            extent: options.extent,
+            logo: options.logo,
+            projection: options.projection,
+            wrapX: options.wrapX
+        }));
+
+        _this.turfMap = {
+            "Measurement.along": ["line", "distance", "units"],
+            "Measurement.area": ["geojson"],
+            "Measurement.bbox": ["geojson"],
+            "Measurement.bboxPolygon": ["bbox"],
+            "Measurement.bearing": ["start", "end", "final"],
+            "Measurement.center": ["geojson", "properties"],
+            "Measurement.centerOfMass": ["geojson", "properties"],
+            "Measurement.centroid": ["geojson", "properties"],
+            "Measurement.destination": ["origin", "distance", "bearing", "units"],
+            "Measurement.distance": ["from", "to", "units"],
+            "Measurement.envelope": ["geojson"],
+            "Measurement.lineDistance": ["geojson", "units"],
+            "Measurement.midpoint": ["point1", "point2"],
+            "Measurement.pointOnSurface": ["fc"],
+            "Measurement.polygonTangents": ["point", "polygon"],
+            "Measurement.rhumbBearing": ["start", "end", "final"],
+            "Measurement.rhumbDestination": ["origin", "distance", "bearing", "units"],
+            "Measurement.rhumbDistance": ["from", "to", "units"],
+            "Measurement.square": ["bbox"],
+            "Measurement.greatCircle": ["start", "end", "properties", "npoints", "offset"],
+            "CoordinateMutation.flip": ["geojson", "mutate"],
+            "CoordinateMutation.rewind": ["geojson", "reverse", "mutate"],
+            "CoordinateMutation.round": ["num", "precision"],
+            "CoordinateMutation.truncate": ["geojson", "precision", "coordinates", "mutate"],
+            "Transformation.bboxClip": ["feature", "bbox"],
+            "Transformation.bezier": ["line", "resolution", "sharpness"],
+            "Transformation.buffer": ["geojson", "radius", "units", "steps"],
+            "Transformation.circle": ["center", "radius", "steps", "units", "properties"],
+            "Transformation.clone": ["geojson", "cloneAll"],
+            "Transformation.concave": ["points", "maxEdge", "units"],
+            "Transformation.convex": ["feature"],
+            "Transformation.difference": ["polygon1", "polygon2"],
+            "Transformation.dissolve": ["featureCollection", "propertyName"],
+            "Transformation.intersect": ["poly1", "poly2"],
+            "Transformation.lineOffset": ["geojson", "distance", "units"],
+            "Transformation.simplify": ["feature", "tolerance", "highQuality"],
+            "Transformation.tesselate": ["poly"],
+            "Transformation.transformRotate": ["geojson", "angle", "pivot", "mutate"],
+            "Transformation.transformTranslate": ["geojson", "distance", "direction", "units", "zTranslation", "mutate"],
+            "Transformation.transformScale": ["geojson", "factor", "origin", "mutate"],
+            "Transformation.union": ["A"],
+            "featureConversion.combine": ["fc"],
+            "featureConversion.explode": ["geojson"],
+            "featureConversion.flatten": ["geojson"],
+            "featureConversion.lineStringToPolygon": ["lines", "properties", "autoComplete", "orderCoords"],
+            "featureConversion.polygonize": ["geojson"],
+            "featureConversion.polygonToLineString": ["polygon", "properties"],
+            "Misc.kinks": ["featureIn"],
+            "Misc.lineArc": ["center", "radius", "bearing1", "bearing2", "steps", "units"],
+            "Misc.lineChunk": ["geojson", "segmentLength", "units", "reverse"],
+            "Misc.lineIntersect": ["line1", "line2"],
+            "Misc.lineOverlap": ["line1", "line2"],
+            "Misc.lineSegment": ["geojson"],
+            "Misc.lineSlice": ["startPt", "stopPt", "line"],
+            "Misc.lineSliceAlong": ["line", "startDist", "stopDist", "units"],
+            "Misc.lineSplit": ["line", "splitter"],
+            "Misc.mask": ["polygon", "mask"],
+            "Misc.pointOnLine": ["lines", "pt", "units"],
+            "Misc.sector": ["center", "radius", "bearing1", "bearing2", "steps", "units"],
+            "Misc.unkinkPolygon": ["geojson"],
+            "Helper.featureCollection": ["features"],
+            "Helper.feature": ["geometry", "properties"],
+            "Helper.geometryCollection": ["geometries", "properties"],
+            "Helper.lineString": ["coordinates", "properties"],
+            "Helper.multiLineString": ["coordinates", "properties"],
+            "Helper.multiPoint": ["coordinates", "properties"],
+            "Helper.multiPolygon": ["coordinates", "properties"],
+            "Helper.point": ["coordinates", "properties"],
+            "Helper.polygon": ["coordinates", "properties"],
+            "Data.random": ["type", "count", "options"],
+            "Data.sample": ["featurecollection", "num"],
+            "Interpolation.interpolate": ["points", "cellSize", "gridType", "property", "units", "weight"],
+            "Interpolation.isobands": ["pointGrid", "breaks", "zProperty", "options"],
+            "Interpolation.isolines": ["pointGrid", "breaks", "zProperty", "propertiesToAllIsolines", "propertiesPerIsoline"],
+            "Interpolation.planepoint": ["point", "triangle"],
+            "Interpolation.tin": ["points", "z"],
+            "Interpolation.idw": ["controlPoints", "valueField", "weight", "cellWidth", "units"],
+            "Joins.inside": ["point", "polygon", "ignoreBoundary"],
+            "Joins.within": ["points", "polygons"],
+            "Joins.tag": ["points", "polygons", "field", "outField"],
+            "Grids.hexGrid": ["bbox", "cellDiameter", "units", "triangles"],
+            "Grids.pointGrid": ["bbox", "cellSide", "units", "centered", "bboxIsMask"],
+            "Grids.squareGrid": ["bbox", "cellSize", "units", "completelyWithin"],
+            "Grids.triangleGrid": ["bbox", "cellSize", "units"],
+            "Classification.nearest": ["targetPoint", "points"],
+            "Aggregation.collect": ["polygons", "points", "inProperty", "outProperty"],
+            "Aggregation.clustersDbscan": ["points", "maxDistance", "units", "minPoints"],
+            "Aggregation.clustersKmeans": ["points", "numberOfClusters", "mutate"],
+            "Meta.coordAll": ["geojson"],
+            "Meta.coordEach": ["geojson", "callback", "excludeWrapCoord"],
+            "Meta.coordReduce": ["geojson", "callback", "initialValue", "excludeWrapCoord"],
+            "Meta.featureEach": ["geojson", "callback"],
+            "Meta.featureReduce": ["geojson", "callback", "initialValue"],
+            "Meta.flattenEach": ["geojson", "callback"],
+            "Meta.flattenReduce": ["geojson", "callback", "initialValue"],
+            "Meta.getCoord": ["obj"],
+            "Meta.getCoords": ["obj"],
+            "Meta.getGeom": ["obj"],
+            "Meta.getGeomType": ["obj"],
+            "Meta.geomEach": ["geojson", "callback"],
+            "Meta.geomReduce": ["geojson", "callback", "initialValue"],
+            "Meta.propEach": ["geojson", "callback"],
+            "Meta.propReduce": ["geojson", "callback", "initialValue"],
+            "Meta.segmentEach": ["geojson", "callback"],
+            "Meta.segmentReduce": ["geojson", "callback", "initialValue"],
+            "Meta.getCluster": ["geojson", "filter"],
+            "Meta.clusterEach": ["geojson", "property", "callback"],
+            "Meta.clusterReduce": ["geojson", "property", "callback", "initialValue"],
+            "Assertions.collectionOf": ["featureCollection", "type", "name"],
+            "Assertions.containsNumber": ["coordinates"],
+            "Assertions.geojsonType": ["value", "type", "name"],
+            "Assertions.featureOf": ["feature", "type", "name"],
+            "Booleans.booleanClockwise": ["line"],
+            "Booleans.booleanContains": ["feature1", "feature2"],
+            "Booleans.booleanCrosses": ["feature1", "feature2"],
+            "Booleans.booleanDisjoint": ["feature1", "feature2"],
+            "Booleans.booleanOverlap": ["feature1", "feature2"],
+            "Booleans.booleanPointOnLine": ["point", "linestring", "ignoreEndVertices"],
+            "UnitConversion.bearingToAngle": ["bearing"],
+            "UnitConversion.convertArea": ["area", "originalUnit", "finalUnit"],
+            "UnitConversion.convertDistance": ["distance", "originalUnit", "finalUnit"],
+            "UnitConversion.degrees2radians": ["degrees"],
+            "UnitConversion.distanceToRadians": ["distance", "units"],
+            "UnitConversion.distanceToDegrees": ["distance", "units"],
+            "UnitConversion.radiansToDistance": ["radians", "units"],
+            "UnitConversion.radians2degrees": ["radians"]
+        };
+        return _this;
+    }
+
+    /**
+     * @function ol.source.turf.prototype.process
+     * @description 执行Turf.js提供的相关空间分析方法
+     * @param type -{string} Turf.js提供的空间分析方法名
+     * @param args -{Object} Turf.js提供的空间分析方法对应的参数对象
+     * @param callback -{function} 空间分析完成执行的回调函数，返回执行的结果
+     * @param addFeaturesToMap -{boolean} 是否添加到map
+     */
+
+
+    _createClass(Turf, [{
+        key: 'process',
+        value: function process(type, args, callback, addFeaturesToMap) {
+            var result = _turf2.default[type.split('.')[1]].apply(this, this.parse(type, args));
+            var features = null;
+            try {
+                features = new _olDebug2.default.format.GeoJSON().readFeatures(result);
+            } catch (e) {
+                if (callback) {
+                    callback(result);
+                }
+                return;
+            }
+            addFeaturesToMap = addFeaturesToMap || true;
+            if (addFeaturesToMap) {
+                this.addFeatures(features);
+            }
+            if (callback) {
+                callback(result);
+            }
+        }
+    }, {
+        key: 'parse',
+        value: function parse(type, args) {
+            if (type === 'Transformation.union') {
+                return args['A'];
+            }
+            var result = [];
+            var tempArgs = this.turfMap[type];
+            if (tempArgs) {
+                tempArgs.map(function (key) {
+                    result.push(args[key]);
+                });
+            }
+            return result;
+        }
+    }]);
+
+    return Turf;
+}(_olDebug2.default.source.Vector);
+
+exports.default = Turf;
+
+_olDebug2.default.source.Turf = Turf;
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _olDebug = __webpack_require__(2);
+
+var _olDebug2 = _interopRequireDefault(_olDebug);
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _GeoFeature2 = __webpack_require__(81);
+
+var _GeoFeature3 = _interopRequireDefault(_GeoFeature2);
+
+var _ThemeVector = __webpack_require__(39);
+
+var _ThemeVector2 = _interopRequireDefault(_ThemeVector);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class ol.source.Unique
+ * @classdesc 单值专题图图层源。
+ * @param name - {String} 图层名称
+ * @param opt_options -{Object} 参数。
+ * @extends ol.source.GeoFeature
+ */
+var Unique = function (_GeoFeature) {
+    _inherits(Unique, _GeoFeature);
+
+    function Unique(name, opt_options) {
+        _classCallCheck(this, Unique);
+
+        var _this = _possibleConstructorReturn(this, (Unique.__proto__ || Object.getPrototypeOf(Unique)).call(this, name, opt_options));
+
+        _this.themeField = opt_options.themeField;
+        _this.style = opt_options.style;
+        _this.styleGroups = opt_options.styleGroups;
+        _this.isHoverAble = opt_options.isHoverAble;
+        _this.highlightStyle = opt_options.highlightStyle;
+        _this.features = opt_options.features;
+
+        var features = _this.features;
+        if (!_SuperMap2.default.Util.isArray(features)) {
+            features = [features];
+        }
+        var event = { features: features };
+        _this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
+        features = event.features;
+        var featuresFailAdded = [];
+        var toFeatures = [];
+        for (var i = 0, len = features.length; i < len; i++) {
+            toFeatures.push(_this.toiClientFeature(features[i]));
+        }
+        _this.features = toFeatures;
+        var succeed = featuresFailAdded.length == 0 ? true : false;
+        _this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
+        if (!_this.isCustomSetMaxCacheCount) {
+            _this.maxCacheCount = _this.features.length * 5;
+        }
+        return _this;
+    }
+
+    /**
+     * @function ol.source.Unique.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    _createClass(Unique, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.style = null;
+            this.themeField = null;
+            this.styleGroups = null;
+            _GeoFeature3.default.prototype.destroy.apply(this, arguments);
+        }
+        /**
+         * @private
+         * @function ol.source.Unique.prototype.createThematicFeature
+         * @description 创建专题要素。
+         * @param feature -{Object} 要素
+         */
+
+    }, {
+        key: 'createThematicFeature',
+        value: function createThematicFeature(feature) {
+            var style = this.getStyleByData(feature);
+            //创建专题要素时的可选参数
+            var options = {};
+            options.nodesClipPixel = this.nodesClipPixel;
+            options.isHoverAble = this.isHoverAble;
+            options.isMultiHover = this.isMultiHover;
+            options.isClickAble = this.isClickAble;
+            options.highlightStyle = _SuperMap2.default.Feature.ShapeFactory.transformStyle(this.highlightStyle);
+            //将数据转为专题要素（Vector）
+            var thematicFeature = new _ThemeVector2.default(feature, this, _SuperMap2.default.Feature.ShapeFactory.transformStyle(style), options);
+            //直接添加图形到渲染器
+            for (var m = 0; m < thematicFeature.shapes.length; m++) {
+                this.renderer.addShape(thematicFeature.shapes[m]);
+            }
+            return thematicFeature;
+        }
+
+        /**
+         * @private
+         * @function ol.source.Unique.prototype.getStyleByData
+         * @description 根据用户数据（feature）设置专题要素的 Style
+         * @param fea {Object} 用户要素数据
+         */
+
+    }, {
+        key: 'getStyleByData',
+        value: function getStyleByData(fea) {
+            var style = {};
+            var feature = fea;
+            style = _SuperMap2.default.Util.copyAttributesWithClip(style, this.style);
+            if (this.themeField && this.styleGroups && this.styleGroups.length > 0 && feature.attributes) {
+                var tf = this.themeField;
+                var Attrs = feature.attributes;
+                var Gro = this.styleGroups;
+                var isSfInAttrs = false; //指定的 themeField 是否是 feature 的属性字段之一
+                var attr = null; //属性值
+                for (var property in Attrs) {
+                    if (tf === property) {
+                        isSfInAttrs = true;
+                        attr = Attrs[property];
+                        break;
+                    }
+                }
+                //判断属性值是否属于styleGroups的某一个范围，以便对获取分组 style
+                if (isSfInAttrs) {
+                    for (var i = 0, len = Gro.length; i < len; i++) {
+                        if (attr.toString() === Gro[i].value.toString()) {
+                            //feature.style = SuperMap.Util.copyAttributes(feature.style, this.defaultStyle);
+                            var sty1 = Gro[i].style;
+                            style = _SuperMap2.default.Util.copyAttributesWithClip(style, sty1);
+                        }
+                    }
+                }
+            }
+            if (feature.style && this.isAllowFeatureStyle === true) {
+                style = _SuperMap2.default.Util.copyAttributesWithClip(feature.style);
+            }
+            return style;
+        }
+    }, {
+        key: 'canvasFunctionInternal_',
+        value: function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+            return _GeoFeature3.default.prototype.canvasFunctionInternal_.apply(this, arguments);
+        }
+    }]);
+
+    return Unique;
+}(_GeoFeature3.default);
+
+exports.default = Unique;
+
+
+_olDebug2.default.source.Unique = Unique;
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _olDebug = __webpack_require__(2);
+
+var _olDebug2 = _interopRequireDefault(_olDebug);
+
 var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
@@ -27477,885 +28356,6 @@ var VectorTileSuperMapRest = function (_ol$source$VectorTile) {
 exports.default = VectorTileSuperMapRest;
 
 _olDebug2.default.source.VectorTileSuperMapRest = VectorTileSuperMapRest;
-
-/***/ }),
-/* 98 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _olDebug = __webpack_require__(2);
-
-var _olDebug2 = _interopRequireDefault(_olDebug);
-
-var _MapvLayer = __webpack_require__(364);
-
-var _MapvLayer2 = _interopRequireDefault(_MapvLayer);
-
-var _Util = __webpack_require__(9);
-
-var _Util2 = _interopRequireDefault(_Util);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class ol.source.Mapv
- * @classdesc MapV图层源。
- * @param opt_options -{Object} 参数
- * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
- */
-var Mapv = function (_ol$source$ImageCanva) {
-    _inherits(Mapv, _ol$source$ImageCanva);
-
-    function Mapv(opt_options) {
-        _classCallCheck(this, Mapv);
-
-        var options = opt_options ? opt_options : {};
-
-        var _this = _possibleConstructorReturn(this, (Mapv.__proto__ || Object.getPrototypeOf(Mapv)).call(this, {
-            attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
-            }),
-            canvasFunction: canvasFunctionInternal_,
-            logo: options.logo,
-            projection: options.projection,
-            ratio: options.ratio,
-            resolutions: options.resolutions,
-            state: options.state
-        }));
-
-        _this.map = opt_options.map;
-        _this.dataSet = opt_options.dataSet;
-        _this.mapvOptions = opt_options.mapvOptions;
-
-        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            var mapWidth = size[0] * pixelRatio;
-            var mapHeight = size[1] * pixelRatio;
-            var width = this.map.getSize()[0] * pixelRatio;
-            var height = this.map.getSize()[1] * pixelRatio;
-            if (!this.layer) {
-                this.layer = new _MapvLayer2.default(this.map, this.dataSet, this.mapvOptions, mapWidth, mapHeight, this);
-            }
-            this.layer.pixelRatio = pixelRatio;
-            this.layer.offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
-            if (!this.rotate) {
-                this.rotate = this.map.getView().getRotation();
-            } else {
-                if (this.rotate !== this.map.getView().getRotation()) {
-                    this.layer.canvasLayer.resize(mapWidth, mapHeight);
-                    this.rotate = this.map.getView().getRotation();
-                }
-            }
-            var canvas = this.layer.canvasLayer.canvas;
-            if (!this.layer.isEnabledTime()) {
-                this.layer.canvasLayer.resize(mapWidth, mapHeight);
-                this.layer.canvasLayer.draw();
-            }
-            if (!this.context) {
-                this.context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
-            }
-            var canvas2 = this.context.canvas;
-            this.context.clearRect(0, 0, canvas2.width, canvas2.height);
-            canvas2.width = mapWidth;
-            canvas2.height = mapHeight;
-            canvas2.style.width = mapWidth + "px";
-            canvas2.style.height = mapHeight + "px";
-            this.context.drawImage(canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
-            if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
-                this.resolution = resolution;
-                this.extent = extent;
-            }
-            return this.context.canvas;
-        }
-        return _this;
-    }
-
-    /**
-     * @function ol.source.Mapv.prototype.update
-     * @description 更新数据
-     * @param options -{Object} 要更新的参数
-     */
-
-
-    _createClass(Mapv, [{
-        key: 'update',
-        value: function update(options) {
-            this.layer.update(options);
-            this.changed();
-        }
-    }]);
-
-    return Mapv;
-}(_olDebug2.default.source.ImageCanvas);
-
-exports.default = Mapv;
-
-
-_olDebug2.default.source.Mapv = Mapv;
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _olDebug = __webpack_require__(2);
-
-var _olDebug2 = _interopRequireDefault(_olDebug);
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _geoFeature = __webpack_require__(81);
-
-var _geoFeature2 = _interopRequireDefault(_geoFeature);
-
-var _ServerFeature = __webpack_require__(70);
-
-var _ServerFeature2 = _interopRequireDefault(_ServerFeature);
-
-var _ThemeVector = __webpack_require__(39);
-
-var _ThemeVector2 = _interopRequireDefault(_ThemeVector);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class ol.source.Range
- * @classdesc 分段专题图图层源。
- * @param name - {string} 名称
- * @param opt_options -{Object} 参数。
- * @extends ol.source.GeoFeature
- */
-var Range = function (_GeoFeature) {
-    _inherits(Range, _GeoFeature);
-
-    function Range(name, opt_options) {
-        _classCallCheck(this, Range);
-
-        var _this = _possibleConstructorReturn(this, (Range.__proto__ || Object.getPrototypeOf(Range)).call(this, name, opt_options));
-
-        _this.map = opt_options.map;
-        _this.features = opt_options.features;
-        _this.style = opt_options.style;
-        _this.isHoverAble = opt_options.isHoverAble;
-        _this.highlightStyle = opt_options.highlightStyle;
-        _this.themeField = opt_options.themeField;
-        _this.styleGroups = opt_options.styleGroups;
-
-        //添加features
-        var features = _this.features;
-        if (!_SuperMap2.default.Util.isArray(features)) {
-            features = [features];
-        }
-        var event = { features: features };
-        var ret = _this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
-        if (ret === false) {
-            return _possibleConstructorReturn(_this);
-        }
-        features = event.features;
-        var featuresFailAdded = [];
-        var toFeatures = [];
-        for (var i = 0, len = features.length; i < len; i++) {
-            toFeatures.push(new _ServerFeature2.default.fromJson(features[i]).toFeature());
-        }
-        _this.features = toFeatures;
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        _this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
-        if (!_this.isCustomSetMaxCacheCount) {
-            _this.maxCacheCount = _this.features.length * 5;
-        }
-        return _this;
-    }
-
-    /**
-     * @function ol.source.Range.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    _createClass(Range, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.style = null;
-            this.themeField = null;
-            this.styleGroups = null;
-            _geoFeature2.default.prototype.destroy.apply(this, arguments);
-        }
-
-        /**
-         * @private
-         * @function ol.source.Range.prototype.createThematicFeature
-         * @description 创建专题图要素
-         * @param feature -{Object} 要创建的专题图形要素
-         */
-
-    }, {
-        key: 'createThematicFeature',
-        value: function createThematicFeature(feature) {
-            //赋 style
-            var style = this.getStyleByData(feature);
-            //创建专题要素时的可选参数
-            var options = {};
-            options.nodesClipPixel = this.nodesClipPixel;
-            options.isHoverAble = this.isHoverAble;
-            options.isMultiHover = this.isMultiHover;
-            options.isClickAble = this.isClickAble;
-            options.highlightStyle = _SuperMap2.default.Feature.ShapeFactory.transformStyle(this.highlightStyle);
-
-            //将数据转为专题要素（Vector）
-            var thematicFeature = new _ThemeVector2.default(feature, this, _SuperMap2.default.Feature.ShapeFactory.transformStyle(style), options);
-
-            //直接添加图形到渲染器
-            for (var m = 0; m < thematicFeature.shapes.length; m++) {
-                this.renderer.addShape(thematicFeature.shapes[m]);
-            }
-
-            return thematicFeature;
-        }
-
-        /**
-         * @private
-         * @function ol.source.Range.prototype.getStyleByData
-         * @description 通过数据获取style
-         * @param fea -{Object} 要素数据
-         */
-
-    }, {
-        key: 'getStyleByData',
-        value: function getStyleByData(fea) {
-            var style = {};
-            var feature = fea;
-            style = _SuperMap2.default.Util.copyAttributesWithClip(style, this.style);
-            if (this.themeField && this.styleGroups && this.styleGroups.length > 0 && feature.attributes) {
-                var Sf = this.themeField;
-                var Attrs = feature.attributes;
-                var Gro = this.styleGroups;
-                var isSfInAttrs = false; //指定的 themeField 是否是 feature 的属性字段之一
-                var attr = null; //属性值
-
-                for (var property in Attrs) {
-                    if (Sf === property) {
-                        isSfInAttrs = true;
-                        attr = Attrs[property];
-                        break;
-                    }
-                }
-                //判断属性值是否属于styleGroups的某一个范围，以便对获取分组 style
-                if (isSfInAttrs) {
-                    for (var i = 0, len = Gro.length; i < len; i++) {
-                        if (attr >= Gro[i].start && attr < Gro[i].end) {
-                            //feature.style = SuperMap.Util.copyAttributes(feature.style, this.defaultStyle);
-                            var sty1 = Gro[i].style;
-                            style = _SuperMap2.default.Util.copyAttributesWithClip(style, sty1);
-                        }
-                    }
-                }
-            }
-            if (feature.style && this.isAllowFeatureStyle === true) {
-                style = _SuperMap2.default.Util.copyAttributesWithClip(feature.style);
-            }
-            return style;
-        }
-    }, {
-        key: 'canvasFunctionInternal_',
-        value: function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            return _geoFeature2.default.prototype.canvasFunctionInternal_.apply(this, arguments);
-        }
-    }]);
-
-    return Range;
-}(_geoFeature2.default);
-
-exports.default = Range;
-
-
-_olDebug2.default.source.Range = Range;
-
-/***/ }),
-/* 100 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _olDebug = __webpack_require__(2);
-
-var _olDebug2 = _interopRequireDefault(_olDebug);
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _graph = __webpack_require__(365);
-
-var _graph2 = _interopRequireDefault(_graph);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class ol.source.RankSymbol
- * @classdesc 等级符号专题图图层源。
- * @param name - {string} 专题图层名
- * @param symbolType -{string} 标志类型
- * @param opt_options -{Object} 参数
- * @extends ol.source.Graph
- */
-var RankSymbol = function (_Graph) {
-    _inherits(RankSymbol, _Graph);
-
-    function RankSymbol(name, symbolType, opt_options) {
-        _classCallCheck(this, RankSymbol);
-
-        var _this = _possibleConstructorReturn(this, (RankSymbol.__proto__ || Object.getPrototypeOf(RankSymbol)).call(this, name, symbolType, opt_options));
-
-        _this.symbolType = symbolType;
-        _this.symbolSetting = opt_options.symbolSetting;
-        _this.themeField = opt_options.themeField;
-        _this.features = opt_options.features;
-
-        var features = _this.features;
-        if (!_SuperMap2.default.Util.isArray(features)) {
-            features = [features];
-        }
-        var event = { features: features };
-        var ret = _this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
-        if (ret === false) {
-            return _possibleConstructorReturn(_this);
-        }
-        features = event.features;
-        var toFeatures = [];
-        var featuresFailAdded = [];
-        for (var i = 0, len = features.length; i < len; i++) {
-            toFeatures.push(_this.toiClientFeature(features[i]));
-        }
-        _this.features = toFeatures;
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        _this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
-        return _this;
-    }
-
-    /**
-     * @function ol.source.RankSymbol.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    _createClass(RankSymbol, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.symbolType = null;
-            this.symbolSetting = null;
-            this.themeField = null;
-            _SuperMap2.default.Layer.Graph.prototype.destroy.apply(this, arguments);
-        }
-
-        /**
-         * @function ol.source.RankSymbol.prototype.setSymbolType
-         * @description 设置标志符号
-         * @param symbolType -{string} 符号类型
-         */
-
-    }, {
-        key: 'setSymbolType',
-        value: function setSymbolType(symbolType) {
-            this.symbolType = symbolType;
-            this.redraw();
-        }
-
-        /**
-         * @private
-         * @function ol.source.RankSymbol.prototype.createThematicFeature
-         * @description 创建专题图形要素
-         * @param feature -{Object} 要创建的专题图形要素
-         */
-
-    }, {
-        key: 'createThematicFeature',
-        value: function createThematicFeature(feature) {
-            var thematicFeature;
-            // 检查图形创建条件并创建图形
-            if (_SuperMap2.default.Feature.Theme[this.symbolType] && this.themeField && this.symbolSetting) {
-                thematicFeature = new _SuperMap2.default.Feature.Theme[this.symbolType](feature, this, [this.themeField], this.symbolSetting);
-            }
-            // thematicFeature 是否创建成功
-            if (!thematicFeature) return false;
-            // 对专题要素执行图形装载
-            thematicFeature.assembleShapes();
-            return thematicFeature;
-        }
-    }, {
-        key: 'canvasFunctionInternal_',
-        value: function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            return _graph2.default.prototype.canvasFunctionInternal_.apply(this, arguments);
-        }
-    }]);
-
-    return RankSymbol;
-}(_graph2.default);
-
-exports.default = RankSymbol;
-
-
-_olDebug2.default.source.RankSymbol = RankSymbol;
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _olDebug = __webpack_require__(2);
-
-var _olDebug2 = _interopRequireDefault(_olDebug);
-
-var _turf = __webpack_require__(374);
-
-var _turf2 = _interopRequireDefault(_turf);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class ol.source.Turf
- * @classdesc Turf.js图层源。
- * @param opt_options -{Object} 参数
- * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
- */
-var Turf = function (_ol$source$Vector) {
-    _inherits(Turf, _ol$source$Vector);
-
-    function Turf(opt_options) {
-        _classCallCheck(this, Turf);
-
-        var options = opt_options ? opt_options : {};
-
-        var _this = _possibleConstructorReturn(this, (Turf.__proto__ || Object.getPrototypeOf(Turf)).call(this, {
-            attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
-            }),
-            features: options.features,
-            format: options.format,
-            extent: options.extent,
-            logo: options.logo,
-            projection: options.projection,
-            wrapX: options.wrapX
-        }));
-
-        _this.turfMap = {
-            "Measurement.along": ["line", "distance", "units"],
-            "Measurement.area": ["geojson"],
-            "Measurement.bbox": ["geojson"],
-            "Measurement.bboxPolygon": ["bbox"],
-            "Measurement.bearing": ["start", "end", "final"],
-            "Measurement.center": ["geojson", "properties"],
-            "Measurement.centerOfMass": ["geojson", "properties"],
-            "Measurement.centroid": ["geojson", "properties"],
-            "Measurement.destination": ["origin", "distance", "bearing", "units"],
-            "Measurement.distance": ["from", "to", "units"],
-            "Measurement.envelope": ["geojson"],
-            "Measurement.lineDistance": ["geojson", "units"],
-            "Measurement.midpoint": ["point1", "point2"],
-            "Measurement.pointOnSurface": ["fc"],
-            "Measurement.polygonTangents": ["point", "polygon"],
-            "Measurement.rhumbBearing": ["start", "end", "final"],
-            "Measurement.rhumbDestination": ["origin", "distance", "bearing", "units"],
-            "Measurement.rhumbDistance": ["from", "to", "units"],
-            "Measurement.square": ["bbox"],
-            "Measurement.greatCircle": ["start", "end", "properties", "npoints", "offset"],
-            "CoordinateMutation.flip": ["geojson", "mutate"],
-            "CoordinateMutation.rewind": ["geojson", "reverse", "mutate"],
-            "CoordinateMutation.round": ["num", "precision"],
-            "CoordinateMutation.truncate": ["geojson", "precision", "coordinates", "mutate"],
-            "Transformation.bboxClip": ["feature", "bbox"],
-            "Transformation.bezier": ["line", "resolution", "sharpness"],
-            "Transformation.buffer": ["geojson", "radius", "units", "steps"],
-            "Transformation.circle": ["center", "radius", "steps", "units", "properties"],
-            "Transformation.clone": ["geojson", "cloneAll"],
-            "Transformation.concave": ["points", "maxEdge", "units"],
-            "Transformation.convex": ["feature"],
-            "Transformation.difference": ["polygon1", "polygon2"],
-            "Transformation.dissolve": ["featureCollection", "propertyName"],
-            "Transformation.intersect": ["poly1", "poly2"],
-            "Transformation.lineOffset": ["geojson", "distance", "units"],
-            "Transformation.simplify": ["feature", "tolerance", "highQuality"],
-            "Transformation.tesselate": ["poly"],
-            "Transformation.transformRotate": ["geojson", "angle", "pivot", "mutate"],
-            "Transformation.transformTranslate": ["geojson", "distance", "direction", "units", "zTranslation", "mutate"],
-            "Transformation.transformScale": ["geojson", "factor", "origin", "mutate"],
-            "Transformation.union": ["A"],
-            "featureConversion.combine": ["fc"],
-            "featureConversion.explode": ["geojson"],
-            "featureConversion.flatten": ["geojson"],
-            "featureConversion.lineStringToPolygon": ["lines", "properties", "autoComplete", "orderCoords"],
-            "featureConversion.polygonize": ["geojson"],
-            "featureConversion.polygonToLineString": ["polygon", "properties"],
-            "Misc.kinks": ["featureIn"],
-            "Misc.lineArc": ["center", "radius", "bearing1", "bearing2", "steps", "units"],
-            "Misc.lineChunk": ["geojson", "segmentLength", "units", "reverse"],
-            "Misc.lineIntersect": ["line1", "line2"],
-            "Misc.lineOverlap": ["line1", "line2"],
-            "Misc.lineSegment": ["geojson"],
-            "Misc.lineSlice": ["startPt", "stopPt", "line"],
-            "Misc.lineSliceAlong": ["line", "startDist", "stopDist", "units"],
-            "Misc.lineSplit": ["line", "splitter"],
-            "Misc.mask": ["polygon", "mask"],
-            "Misc.pointOnLine": ["lines", "pt", "units"],
-            "Misc.sector": ["center", "radius", "bearing1", "bearing2", "steps", "units"],
-            "Misc.unkinkPolygon": ["geojson"],
-            "Helper.featureCollection": ["features"],
-            "Helper.feature": ["geometry", "properties"],
-            "Helper.geometryCollection": ["geometries", "properties"],
-            "Helper.lineString": ["coordinates", "properties"],
-            "Helper.multiLineString": ["coordinates", "properties"],
-            "Helper.multiPoint": ["coordinates", "properties"],
-            "Helper.multiPolygon": ["coordinates", "properties"],
-            "Helper.point": ["coordinates", "properties"],
-            "Helper.polygon": ["coordinates", "properties"],
-            "Data.random": ["type", "count", "options"],
-            "Data.sample": ["featurecollection", "num"],
-            "Interpolation.interpolate": ["points", "cellSize", "gridType", "property", "units", "weight"],
-            "Interpolation.isobands": ["pointGrid", "breaks", "zProperty", "options"],
-            "Interpolation.isolines": ["pointGrid", "breaks", "zProperty", "propertiesToAllIsolines", "propertiesPerIsoline"],
-            "Interpolation.planepoint": ["point", "triangle"],
-            "Interpolation.tin": ["points", "z"],
-            "Interpolation.idw": ["controlPoints", "valueField", "weight", "cellWidth", "units"],
-            "Joins.inside": ["point", "polygon", "ignoreBoundary"],
-            "Joins.within": ["points", "polygons"],
-            "Joins.tag": ["points", "polygons", "field", "outField"],
-            "Grids.hexGrid": ["bbox", "cellDiameter", "units", "triangles"],
-            "Grids.pointGrid": ["bbox", "cellSide", "units", "centered", "bboxIsMask"],
-            "Grids.squareGrid": ["bbox", "cellSize", "units", "completelyWithin"],
-            "Grids.triangleGrid": ["bbox", "cellSize", "units"],
-            "Classification.nearest": ["targetPoint", "points"],
-            "Aggregation.collect": ["polygons", "points", "inProperty", "outProperty"],
-            "Aggregation.clustersDbscan": ["points", "maxDistance", "units", "minPoints"],
-            "Aggregation.clustersKmeans": ["points", "numberOfClusters", "mutate"],
-            "Meta.coordAll": ["geojson"],
-            "Meta.coordEach": ["geojson", "callback", "excludeWrapCoord"],
-            "Meta.coordReduce": ["geojson", "callback", "initialValue", "excludeWrapCoord"],
-            "Meta.featureEach": ["geojson", "callback"],
-            "Meta.featureReduce": ["geojson", "callback", "initialValue"],
-            "Meta.flattenEach": ["geojson", "callback"],
-            "Meta.flattenReduce": ["geojson", "callback", "initialValue"],
-            "Meta.getCoord": ["obj"],
-            "Meta.getCoords": ["obj"],
-            "Meta.getGeom": ["obj"],
-            "Meta.getGeomType": ["obj"],
-            "Meta.geomEach": ["geojson", "callback"],
-            "Meta.geomReduce": ["geojson", "callback", "initialValue"],
-            "Meta.propEach": ["geojson", "callback"],
-            "Meta.propReduce": ["geojson", "callback", "initialValue"],
-            "Meta.segmentEach": ["geojson", "callback"],
-            "Meta.segmentReduce": ["geojson", "callback", "initialValue"],
-            "Meta.getCluster": ["geojson", "filter"],
-            "Meta.clusterEach": ["geojson", "property", "callback"],
-            "Meta.clusterReduce": ["geojson", "property", "callback", "initialValue"],
-            "Assertions.collectionOf": ["featureCollection", "type", "name"],
-            "Assertions.containsNumber": ["coordinates"],
-            "Assertions.geojsonType": ["value", "type", "name"],
-            "Assertions.featureOf": ["feature", "type", "name"],
-            "Booleans.booleanClockwise": ["line"],
-            "Booleans.booleanContains": ["feature1", "feature2"],
-            "Booleans.booleanCrosses": ["feature1", "feature2"],
-            "Booleans.booleanDisjoint": ["feature1", "feature2"],
-            "Booleans.booleanOverlap": ["feature1", "feature2"],
-            "Booleans.booleanPointOnLine": ["point", "linestring", "ignoreEndVertices"],
-            "UnitConversion.bearingToAngle": ["bearing"],
-            "UnitConversion.convertArea": ["area", "originalUnit", "finalUnit"],
-            "UnitConversion.convertDistance": ["distance", "originalUnit", "finalUnit"],
-            "UnitConversion.degrees2radians": ["degrees"],
-            "UnitConversion.distanceToRadians": ["distance", "units"],
-            "UnitConversion.distanceToDegrees": ["distance", "units"],
-            "UnitConversion.radiansToDistance": ["radians", "units"],
-            "UnitConversion.radians2degrees": ["radians"]
-        };
-        return _this;
-    }
-
-    /**
-     * @function ol.source.turf.prototype.process
-     * @description 执行Turf.js提供的相关空间分析方法
-     * @param type -{string} Turf.js提供的空间分析方法名
-     * @param args -{Object} Turf.js提供的空间分析方法对应的参数对象
-     * @param callback -{function} 空间分析完成执行的回调函数，返回执行的结果
-     * @param addFeaturesToMap -{boolean} 是否添加到map
-     */
-
-
-    _createClass(Turf, [{
-        key: 'process',
-        value: function process(type, args, callback, addFeaturesToMap) {
-            var result = _turf2.default[type.split('.')[1]].apply(this, this.parse(type, args));
-            var features = null;
-            try {
-                features = new _olDebug2.default.format.GeoJSON().readFeatures(result);
-            } catch (e) {
-                if (callback) {
-                    callback(result);
-                }
-                return;
-            }
-            addFeaturesToMap = addFeaturesToMap || true;
-            if (addFeaturesToMap) {
-                this.addFeatures(features);
-            }
-            if (callback) {
-                callback(result);
-            }
-        }
-    }, {
-        key: 'parse',
-        value: function parse(type, args) {
-            if (type === 'Transformation.union') {
-                return args['A'];
-            }
-            var result = [];
-            var tempArgs = this.turfMap[type];
-            if (tempArgs) {
-                tempArgs.map(function (key) {
-                    result.push(args[key]);
-                });
-            }
-            return result;
-        }
-    }]);
-
-    return Turf;
-}(_olDebug2.default.source.Vector);
-
-exports.default = Turf;
-
-_olDebug2.default.source.Turf = Turf;
-
-/***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _olDebug = __webpack_require__(2);
-
-var _olDebug2 = _interopRequireDefault(_olDebug);
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _geoFeature = __webpack_require__(81);
-
-var _geoFeature2 = _interopRequireDefault(_geoFeature);
-
-var _ThemeVector = __webpack_require__(39);
-
-var _ThemeVector2 = _interopRequireDefault(_ThemeVector);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class ol.source.Unique
- * @classdesc 单值专题图图层源。
- * @param name - {String} 图层名称
- * @param opt_options -{Object} 参数。
- * @extends ol.source.GeoFeature
- */
-var Unique = function (_GeoFeature) {
-    _inherits(Unique, _GeoFeature);
-
-    function Unique(name, opt_options) {
-        _classCallCheck(this, Unique);
-
-        var _this = _possibleConstructorReturn(this, (Unique.__proto__ || Object.getPrototypeOf(Unique)).call(this, name, opt_options));
-
-        _this.themeField = opt_options.themeField;
-        _this.style = opt_options.style;
-        _this.styleGroups = opt_options.styleGroups;
-        _this.isHoverAble = opt_options.isHoverAble;
-        _this.highlightStyle = opt_options.highlightStyle;
-        _this.features = opt_options.features;
-
-        var features = _this.features;
-        if (!_SuperMap2.default.Util.isArray(features)) {
-            features = [features];
-        }
-        var event = { features: features };
-        _this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
-        features = event.features;
-        var featuresFailAdded = [];
-        var toFeatures = [];
-        for (var i = 0, len = features.length; i < len; i++) {
-            toFeatures.push(_this.toiClientFeature(features[i]));
-        }
-        _this.features = toFeatures;
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        _this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
-        if (!_this.isCustomSetMaxCacheCount) {
-            _this.maxCacheCount = _this.features.length * 5;
-        }
-        return _this;
-    }
-
-    /**
-     * @function ol.source.Unique.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    _createClass(Unique, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.style = null;
-            this.themeField = null;
-            this.styleGroups = null;
-            _geoFeature2.default.prototype.destroy.apply(this, arguments);
-        }
-        /**
-         * @private
-         * @function ol.source.Unique.prototype.createThematicFeature
-         * @description 创建专题要素。
-         * @param feature -{Object} 要素
-         */
-
-    }, {
-        key: 'createThematicFeature',
-        value: function createThematicFeature(feature) {
-            var style = this.getStyleByData(feature);
-            //创建专题要素时的可选参数
-            var options = {};
-            options.nodesClipPixel = this.nodesClipPixel;
-            options.isHoverAble = this.isHoverAble;
-            options.isMultiHover = this.isMultiHover;
-            options.isClickAble = this.isClickAble;
-            options.highlightStyle = _SuperMap2.default.Feature.ShapeFactory.transformStyle(this.highlightStyle);
-            //将数据转为专题要素（Vector）
-            var thematicFeature = new _ThemeVector2.default(feature, this, _SuperMap2.default.Feature.ShapeFactory.transformStyle(style), options);
-            //直接添加图形到渲染器
-            for (var m = 0; m < thematicFeature.shapes.length; m++) {
-                this.renderer.addShape(thematicFeature.shapes[m]);
-            }
-            return thematicFeature;
-        }
-
-        /**
-         * @private
-         * @function ol.source.Unique.prototype.getStyleByData
-         * @description 根据用户数据（feature）设置专题要素的 Style
-         * @param fea {Object} 用户要素数据
-         */
-
-    }, {
-        key: 'getStyleByData',
-        value: function getStyleByData(fea) {
-            var style = {};
-            var feature = fea;
-            style = _SuperMap2.default.Util.copyAttributesWithClip(style, this.style);
-            if (this.themeField && this.styleGroups && this.styleGroups.length > 0 && feature.attributes) {
-                var tf = this.themeField;
-                var Attrs = feature.attributes;
-                var Gro = this.styleGroups;
-                var isSfInAttrs = false; //指定的 themeField 是否是 feature 的属性字段之一
-                var attr = null; //属性值
-                for (var property in Attrs) {
-                    if (tf === property) {
-                        isSfInAttrs = true;
-                        attr = Attrs[property];
-                        break;
-                    }
-                }
-                //判断属性值是否属于styleGroups的某一个范围，以便对获取分组 style
-                if (isSfInAttrs) {
-                    for (var i = 0, len = Gro.length; i < len; i++) {
-                        if (attr.toString() === Gro[i].value.toString()) {
-                            //feature.style = SuperMap.Util.copyAttributes(feature.style, this.defaultStyle);
-                            var sty1 = Gro[i].style;
-                            style = _SuperMap2.default.Util.copyAttributesWithClip(style, sty1);
-                        }
-                    }
-                }
-            }
-            if (feature.style && this.isAllowFeatureStyle === true) {
-                style = _SuperMap2.default.Util.copyAttributesWithClip(feature.style);
-            }
-            return style;
-        }
-    }, {
-        key: 'canvasFunctionInternal_',
-        value: function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            return _geoFeature2.default.prototype.canvasFunctionInternal_.apply(this, arguments);
-        }
-    }]);
-
-    return Unique;
-}(_geoFeature2.default);
-
-exports.default = Unique;
-
-
-_olDebug2.default.source.Unique = Unique;
 
 /***/ }),
 /* 103 */
@@ -81556,9 +81556,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _theme = __webpack_require__(82);
+var _Theme2 = __webpack_require__(82);
 
-var _theme2 = _interopRequireDefault(_theme);
+var _Theme3 = _interopRequireDefault(_Theme2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -81624,7 +81624,7 @@ var Graph = function (_Theme) {
             this.themeFields = null;
             this.overlayWeightField = null;
             this.isOverLay = null;
-            _theme2.default.prototype.destroy.apply(this, arguments);
+            _Theme3.default.prototype.destroy.apply(this, arguments);
             // charts  cache 为缓存，需要在父类destory后置为null（父类destory中有方法会初始化缓存参数）
             this.charts = null;
             this.cache = null;
@@ -82001,12 +82001,12 @@ var Graph = function (_Theme) {
     }, {
         key: 'canvasFunctionInternal_',
         value: function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            return _theme2.default.prototype.canvasFunctionInternal_.apply(this, arguments);
+            return _Theme3.default.prototype.canvasFunctionInternal_.apply(this, arguments);
         }
     }]);
 
     return Graph;
-}(_theme2.default);
+}(_Theme3.default);
 
 exports.default = Graph;
 
@@ -83191,12 +83191,12 @@ __webpack_require__(87);
 __webpack_require__(61);
 __webpack_require__(95);
 __webpack_require__(96);
-__webpack_require__(97);
 __webpack_require__(102);
-__webpack_require__(99);
-__webpack_require__(100);
-__webpack_require__(98);
 __webpack_require__(101);
+__webpack_require__(98);
+__webpack_require__(99);
+__webpack_require__(97);
+__webpack_require__(100);
 __webpack_require__(88);
 module.exports = __webpack_require__(60);
 
