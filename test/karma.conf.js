@@ -22,7 +22,7 @@ module.exports = function (config) {
                     plugins: ['transform-class-properties','istanbul']
                 }],
                 require('browserify-css'),
-                require('browserify-imgify')
+                require('browserify-imgify'),
             ]
         },
 
@@ -58,7 +58,15 @@ module.exports = function (config) {
             '../src/openlayers/**/*.js',
             '../src/openlayers/overlay/**/*.js',
             /***测试文件***/
-            './test-main-openlayers.js'
+            './test-main-openlayers.js',
+
+            /***mapboxgl***/
+            {pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false},
+            '../src/mapboxgl/**/*.js',
+            '../src/mapboxgl/overlay/**/*.js',
+            /***测试文件***/
+            './test-main-mapboxgl.js',
+
         ],
 
         // list of files to exclude 测试时排除的文件
@@ -92,6 +100,12 @@ module.exports = function (config) {
             '../src/openlayers/overlay/**/*.js': ['browserify'],
             './openlayers/**/*Spec.js': ['browserify'],
             './test-main-openlayers.js': ['browserify'],
+
+            '../node_modules/mapbox-gl/dist/mapbox-gl-dev.js': ['browserify'],
+            '../src/mapboxgl/**/*.js': ['browserify'],
+            '../src/mapboxgl/overlay/**/*.js': ['browserify'],
+            './mapboxgl/**/*Spec.js': ['browserify'],
+            './test-main-mapboxgl.js': ['browserify'],
         },
 
         // test results reporter to use

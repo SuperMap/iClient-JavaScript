@@ -84,3 +84,5 @@ require('./common/iServer/RouteSpec.js');
 
 require('./common/overlay/levelRenderer/AreaSpec.js');
 require('./common/overlay/levelRenderer/ColorSpec.js');
+
+require('./common/commonTypes/geometry/LineStringSpec.js');
