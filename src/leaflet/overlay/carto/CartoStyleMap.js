@@ -114,7 +114,7 @@ L.supermap.ServerStyleMap = {
         leafletStyle: "markerSize",
         type: "number",
         unit: "mm",
-        defaultValue: 2.4,
+        defaultValue: 2.4
     },
 
     /**
@@ -125,8 +125,7 @@ L.supermap.ServerStyleMap = {
         leafletStyle: "color",
         type: "color",
         defaultValue: "#000000"
-    },
-
+    }
 };
 
 /**

@@ -20,7 +20,7 @@ ol.supermap = ol.supermap || {};
 export default class WebMap extends ol.Observable {
 
     EventType = {
-        WEBMAPLOADEND: 'webmaploadend',
+        WEBMAPLOADEND: 'webmaploadend'
     }
 
     constructor(id, options) {
@@ -471,5 +471,5 @@ export default class WebMap extends ol.Observable {
 
 ol.supermap.WebMap = WebMap;
 ol.supermap.WebMap.EventType = {
-    WEBMAPLOADEND: 'webmaploadend',
+    WEBMAPLOADEND: 'webmaploadend'
 };

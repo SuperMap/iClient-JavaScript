@@ -30,7 +30,7 @@ export var MapvDataSet = {
                     geometry: {
                         type: 'Point',
                         coordinates: data.geometry.coordinates
-                    },
+                    }
                 });
                 return data;
             });
@@ -85,6 +85,6 @@ export var MapvDataSet = {
             });
             return new DataSet(timeData);
         }
-    },
+    }
 };
 mapboxgl.supermap.MapvDataSet = MapvDataSet;

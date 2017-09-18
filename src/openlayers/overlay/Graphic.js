@@ -68,7 +68,7 @@ export default class Graphic extends ol.source.ImageCanvas {
                             fill: new ol.style.Fill({
                                 color: 'rgba(0, 153, 255, 1)'
                             }),
-                            stroke: style.getStroke(),
+                            stroke: style.getStroke()
                         });
                     }
                     style = me.highLightStyle || defaultHighLightStyle;

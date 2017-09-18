@@ -471,7 +471,7 @@ export var ProcessingService = ServiceBase.extend({
             params.query = CommontypesConversion.toSuperMapBounds(params.query);
         }
         return params;
-    },
+    }
 });
 export var processingService = function (url, options) {
     return new ProcessingService(url, options);

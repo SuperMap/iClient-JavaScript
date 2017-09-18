@@ -17,7 +17,7 @@ export default class DataFlow extends ol.source.Vector {
             ws: options.ws,
             geometry: options.geometry,
             prjCoordSys: options.prjCoordSys,
-            excludeField: options.excludeField,
+            excludeField: options.excludeField
         });
         this.idField=options.idField||'id';
         this.dataService = new DataFlowService(options.ws, {

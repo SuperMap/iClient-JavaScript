@@ -31,7 +31,7 @@ export var Logo = L.Control.extend({
         //logo图片高
         height: null,
         //logo图片失效时显示文本
-        alt: "SuperMap iClient",
+        alt: "SuperMap iClient"
     },
 
     /**

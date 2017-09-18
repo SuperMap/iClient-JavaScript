@@ -245,6 +245,6 @@ export var VectorTile = L.Class.extend({
             default:
                 break;
         }
-    },
+    }
 
 });

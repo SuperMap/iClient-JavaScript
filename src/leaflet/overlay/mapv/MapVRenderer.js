@@ -210,7 +210,7 @@ export default class MapVRenderer extends BaseLayer {
                 var worldPoint = map.latLngToAccurateContainerPoint(L.latLng(coordinate[1], coordinate[0]));
                 var pixel = {
                     x: worldPoint.x - offset.x,
-                    y: worldPoint.y - offset.y,
+                    y: worldPoint.y - offset.y
                 };
                 return [pixel.x, pixel.y];
             }
@@ -232,7 +232,7 @@ export default class MapVRenderer extends BaseLayer {
         var worldPoint = map.latLngToContainerPoint(L.latLng(0, 0));
         var pixel = {
             x: worldPoint.x - offset.x,
-            y: worldPoint.y - offset.y,
+            y: worldPoint.y - offset.y
         };
         this.drawContext(context, new mapv.DataSet(data), self.options, pixel);
 

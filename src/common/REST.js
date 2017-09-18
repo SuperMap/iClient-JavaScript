@@ -979,7 +979,7 @@ export var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
     "KILOMETER": "Kilometer",
     "YARD": "Yard",
     "FOOT": "Foot",
-    "MILE": "Mile",
+    "MILE": "Mile"
 };
 /**
  * @name StatisticAnalystMode
@@ -1011,6 +1011,5 @@ export var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
  */
 export var SummaryType = SuperMap.SummaryType = {
     "SUMMARYMESH": "SUMMARYMESH",
-    "SUMMARYREGION": "SUMMARYREGION",
-
+    "SUMMARYREGION": "SUMMARYREGION"
 };

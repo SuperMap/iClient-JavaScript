@@ -478,7 +478,7 @@ export default class StyleUtils {
                     image: new ol.style.Icon({
                         src: pointStyle.externalGraphic,
                         opacity: pointStyle.graphicOpacity,
-                        size: [pointStyle.graphicWidth, pointStyle.graphicHeight],
+                        size: [pointStyle.graphicWidth, pointStyle.graphicHeight]
                         //anchor: [-pointStyle.graphicXOffset / pointStyle.graphicWidth, -pointStyle.graphicYOffset / pointStyle.graphicHeight]
                     })
                 });

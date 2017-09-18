@@ -136,7 +136,7 @@ export var TurfLayer = L.GeoJSON.extend({
         "UnitConversion.distanceToRadians": ["distance", "units"],
         "UnitConversion.distanceToDegrees": ["distance", "units"],
         "UnitConversion.radiansToDistance": ["radians", "units"],
-        "UnitConversion.radians2degrees": ["radians"],
+        "UnitConversion.radians2degrees": ["radians"]
     },
 
     options: {

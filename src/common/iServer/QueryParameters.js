@@ -7,7 +7,7 @@ import {GeometryType, QueryOption} from '../REST';
  * @classdesc 查询参数基类。距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
  * @param options - {Object} 可选参数。如：<br>
  *         customParams - {string} 自定义参数，供扩展使用。<br>
- *         prjCoordSys - {Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
+ *         prjCoordSys - {Object} 自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
  *         expectCount - {number}期望返回结果记录个数。<br>
  *         networkType - {{@link SuperMap.GeometryType}} 网络数据集对应的查询类型。<br>
  *         queryOption - {{@link SuperMap.QueryOption}} 查询结果类型枚举类。<br>
@@ -26,7 +26,7 @@ export default  class QueryParameters {
 
     /**
      * @member SuperMap.QueryParameters.prototype.prjCoordSys -{Object}
-     * @description 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}
+     * @description 自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}
      */
     prjCoordSys = null;
 

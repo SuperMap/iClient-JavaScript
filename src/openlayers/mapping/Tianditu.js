@@ -99,7 +99,7 @@ export default class Tianditu extends ol.source.WMTS {
             resolutions: tdt_Mercator_resolutions,
             matrixIds: matrixIds,
             origin: [-20037508.3427892, 20037508.3427892],
-            minZoom: 1,
+            minZoom: 1
         });
         return tileGird;
     }

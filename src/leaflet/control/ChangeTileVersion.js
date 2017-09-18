@@ -48,7 +48,7 @@ export var ChangeTileVersion = L.Control.extend({
         //方向horizontal|vertical
         orientation: 'horizontal',
         //是否显示上/下一个版本切换控件
-        switch: true,
+        switch: true
     },
 
     /**

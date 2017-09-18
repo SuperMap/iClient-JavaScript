@@ -36,7 +36,7 @@ export var AddressMatchService = ServiceBase.extend({
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback
-            },
+            }
         });
         addressMatchService.code(me.url + '/geocoding', params);
         return me;
@@ -56,11 +56,11 @@ export var AddressMatchService = ServiceBase.extend({
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback
-            },
+            }
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
         return me;
-    },
+    }
 
 });
 

@@ -276,7 +276,7 @@ export var WebMap = L.LayerGroup.extend({
                         layer: layerName,
                         style: "default",
                         tilematrixSet: identifier,
-                        format: "image/png",
+                        format: "image/png"
                     }
                 );
                 break;
@@ -329,7 +329,7 @@ export var WebMap = L.LayerGroup.extend({
         var layer = L.supermap.tiandituTileLayer(wmtsURL,
             {
                 layer: type,
-                tilematrixSet: proj,
+                tilematrixSet: proj
             }
         );
         return layer;
@@ -366,7 +366,7 @@ export var WebMap = L.LayerGroup.extend({
             },
             coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
                 return that.cartoCSSToLeaflet.getStyleFromiPortalMarker(geoJsonFeature.properties.icon);
-            },
+            }
         });
         if (this.options.featureLayerPopupEnable) {
             layer.bindPopup(this.options.featureLayerPopup || this.defaultFeatureLayerPopup)

@@ -222,7 +222,7 @@ export var MapVLayer = L.Layer.extend({
     },
     _render: function () {
         this.render();
-    },
+    }
 
 });
 
@@ -241,5 +241,5 @@ L.Map.include({
         var projectedPoint = this.project(L.latLng(latlng));
         var layerPoint = projectedPoint._subtract(this.getPixelOrigin());
         return L.point(layerPoint).add(this._getMapPanePos());
-    },
+    }
 });

@@ -30,7 +30,7 @@ export class AddressMatchService extends CommonServiceBase {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback
-            },
+            }
         });
         addressMatchService.code(me.url + '/geocoding', params);
         return me;

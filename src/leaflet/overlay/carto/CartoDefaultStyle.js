@@ -18,7 +18,7 @@ export var DefaultStyle = L.supermap.DefaultStyle = {
         color: "rgba(255,255,255,0)",
         fillColor: "rgba(80,80,80,1)",
         weight: 1,
-        globalAlpha: 1,
+        globalAlpha: 1
     },
 
     /**
@@ -30,7 +30,7 @@ export var DefaultStyle = L.supermap.DefaultStyle = {
         color: "#cc3333",
         weight: 1,
         radius: 3,
-        opacity: 1,
+        opacity: 1
     },
 
     /**
@@ -45,8 +45,7 @@ export var DefaultStyle = L.supermap.DefaultStyle = {
 
         dashOffset: 0,
         dashArray: [],
-        opacity: 1,
-
+        opacity: 1
     },
 
     /**
@@ -62,6 +61,6 @@ export var DefaultStyle = L.supermap.DefaultStyle = {
         dashOffset: 0,
         opacity: 1,
         fillOpacity: 1,
-        dashArray: [],
+        dashArray: []
     }
 };

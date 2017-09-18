@@ -135,7 +135,7 @@ export default class Turf extends ol.source.Vector {
         "UnitConversion.distanceToRadians": ["distance", "units"],
         "UnitConversion.distanceToDegrees": ["distance", "units"],
         "UnitConversion.radiansToDistance": ["radians", "units"],
-        "UnitConversion.radians2degrees": ["radians"],
+        "UnitConversion.radians2degrees": ["radians"]
     }
 
     constructor(opt_options) {

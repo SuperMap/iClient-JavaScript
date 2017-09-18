@@ -20,7 +20,7 @@ export var DataFlowService = ServiceBase.extend({
     options: {
         geometry: null,
         prjCoordSys: null,
-        excludeField: null,
+        excludeField: null
     },
 
     initialize: function (url, options) {
@@ -116,7 +116,7 @@ export var DataFlowService = ServiceBase.extend({
 
     _defaultEvent: function (e) {
         this.fire(e.eventType || e.type, e);
-    },
+    }
 });
 
 export var dataFlowService = function (url, options) {

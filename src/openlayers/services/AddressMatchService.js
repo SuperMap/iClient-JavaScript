@@ -35,7 +35,7 @@ export default class AddressMatchService extends ServiceBase {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback
-            },
+            }
         });
         addressMatchService.code(me.url + '/geocoding', params);
         return me;
@@ -55,7 +55,7 @@ export default class AddressMatchService extends ServiceBase {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback
-            },
+            }
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
         return me;
