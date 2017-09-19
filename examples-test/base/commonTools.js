@@ -1,7 +1,7 @@
 var fs = require('fs');
-var path = require('path');
+var PNG = require('pngjs').PNG;
 var getPixels = require("get-pixels");
-var images = require('images');
+var size = require('image-size');
 var n = 0; //截图次数
 
 var commonTools = ({
@@ -42,12 +42,14 @@ var commonTools = ({
         browser.pause(5000);
         browser.saveScreenshot(screenShotPath, function () {
             console.log('Screenshot has been saved , now start to get StdTile from Screenshot');
-            var totalWidth = images(screenShotPath).width();
-            var totalHeight = images(screenShotPath).height();
-            var offX = (totalWidth - width) / 2 + offsetX;
-            var offY = (totalHeight - height) / 2 - offsetY;
-            commonTools.getTileFromScreenshot(screenShotPath, offX, offY, width, height, tileTestPath);
-            console.log('get StdTile completed');
+            size(screenShotPath, function (err, dimensions) {
+                var totalWidth = dimensions.width;
+                var totalHeight = dimensions.height;
+                var offX = (totalWidth - width) / 2 + offsetX;
+                var offY = (totalHeight - height) / 2 - offsetY;
+                commonTools.getTileFromScreenshot(screenShotPath, offX, offY, width, height, tileTestPath);
+                console.log('get StdTile completed');
+            });
         });
         browser.pause(2000, function () {
             commonTools.deleteFolders('./examples-test/temp');
@@ -77,12 +79,14 @@ var commonTools = ({
         browser.pause(5000);
         browser.saveScreenshot(screenShotPath, function () {
             console.log('start to get test tile');
-            var totalWidth = images(screenShotPath).width();
-            var totalHeight = images(screenShotPath).height();
-            var offX = (totalWidth - width) / 2 + offsetX;
-            var offY = (totalHeight - height) / 2 - offsetY;
-            commonTools.getTileFromScreenshot(screenShotPath, offX, offY, width, height, tileTestPath);
-            console.log('get test tile completed');
+            size(screenShotPath, function (err, dimensions) {
+                var totalWidth = dimensions.width;
+                var totalHeight = dimensions.height;
+                var offX = (totalWidth - width) / 2 + offsetX;
+                var offY = (totalHeight - height) / 2 - offsetY;
+                commonTools.getTileFromScreenshot(screenShotPath, offX, offY, width, height, tileTestPath);
+                console.log('get test tile completed');
+            });
         });
         browser.pause(5000, function () {
             console.log('start to compare test tile with standard tile');
@@ -95,7 +99,11 @@ var commonTools = ({
      * offX, offY: Offset relative to the top-left corner
      * */
     getTileFromScreenshot: function (sourceImagePath, offX, offY, width, height, tilePath) {
-        images(images(sourceImagePath), offX, offY, width, height).save(tilePath);
+        var dst = new PNG({width: width, height: height});
+        fs.createReadStream(sourceImagePath).pipe(new PNG()).on('parsed', function () {
+            this.bitblt(dst, offX, offY, width, height, 0, 0);
+            dst.pack().pipe(fs.createWriteStream(tilePath));
+        });
     },
 
     /*
