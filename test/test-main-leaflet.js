@@ -19,6 +19,19 @@ require('./leaflet/services/QueryByGeometryServiceSpec.js');
 
 require('./leaflet/services/ThemeServiceSpec.js');
 
+require('./leaflet/services/SurfaceAnalysisSpec.js');
+require('./leaflet/services/BufferAnalysisSpec.js');
+require('./leaflet/services/DensityAnalysisSpec.js');
+require('./leaflet/services/InterpolationAnalysisSpec.js');
+require('./leaflet/services/MathExpressionAnalysisSpec.js');
+require('./leaflet/services/OverlayAnalysisSpec.js');
+require('./leaflet/services/RouteLocateSpec.js');
+require('./leaflet/services/TerrainCurvatureCalculateSpec.js');
+require('./leaflet/services/ThiessenAnalysisSpec.js');
+require('./leaflet/services/RouteCalculateMeasureSpec.js');
+require('./leaflet/services/GenerateSpatialDataSpec.js');
+//require('./leaflet/services/LayerInfoServiceSpec.js');
+
 /*leaflet -- overlay*/
 require('./leaflet/overlay/RankSymbolThemeLayerSpec.js');
 require('./leaflet/overlay/TileVectorLayerSpec.js');
