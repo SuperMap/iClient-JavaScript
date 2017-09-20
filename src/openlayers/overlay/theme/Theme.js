@@ -22,6 +22,17 @@ export default class Theme extends ol.source.ImageCanvas {
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
 
+        super({
+            attributions: options.attributions || new ol.Attribution({
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+            }),
+            canvasFunction: canvasFunctionInternal_,
+            logo: options.logo,
+            projection: options.projection,
+            ratio: options.ratio,
+            resolutions: options.resolutions,
+            state: options.state
+        });
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
             this.pixelRatio = pixelRatio;
             var mapWidth = size[0] * pixelRatio;
@@ -65,17 +76,7 @@ export default class Theme extends ol.source.ImageCanvas {
             return this.context.canvas;
         }
 
-        super({
-            attributions: options.attributions || new ol.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
-            }),
-            canvasFunction: canvasFunctionInternal_,
-            logo: options.logo,
-            projection: options.projection,
-            ratio: options.ratio,
-            resolutions: options.resolutions,
-            state: options.state
-        });
+
         this.canvasFunctionInternal_ = canvasFunctionInternal_;
         this.EVENT_TYPES = ["loadstart", "loadend", "loadcancel",
             "visibilitychanged", "move", "moveend", "added", "removed",

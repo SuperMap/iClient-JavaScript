@@ -5187,7 +5187,7 @@ var Collection = function (_Geometry) {
     }, {
         key: 'clone',
         value: function clone() {
-            var geometry = eval("new " + this.CLASS_NAME + "()");
+            var geometry = new Collection();
             for (var i = 0, len = this.components.length; i < len; i++) {
                 geometry.addComponent(this.components[i].clone());
             }

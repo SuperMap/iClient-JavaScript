@@ -106,24 +106,6 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         if (options.cacheEnabled === true && options.tileversion) {
             layerUrl += "tileversion=" + options.tileversion;
         }
-        /*
-         * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
-         * @param tileCoord - {Object} 瓦片坐标系
-         * @param pixelRatio - {Object} 像素密度
-         * @param projection - {string} 投影参考系
-         * @description 瓦片地址参数
-         * @return {string} 返回瓦片地址参数
-         */
-        function tileUrlFunction(tileCoord, pixelRatio, projection) {
-            if (!this.tileGrid) {
-                this.tileGrid = this.getTileGridForProjection(projection);
-            }
-            var tileExtent = this.tileGrid.getTileCoordExtent(
-                tileCoord, this.tmpExtent_);
-            var tileSize = ol.size.toSize(
-                this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-            return encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
-        }
 
         super({
             attributions: options.attributions,
@@ -145,6 +127,25 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
             cacheEnabled: options.cacheEnabled,
             layersID: options.layersID
         });
+
+        /*
+         * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
+         * @param tileCoord - {Object} 瓦片坐标系
+         * @param pixelRatio - {Object} 像素密度
+         * @param projection - {string} 投影参考系
+         * @description 瓦片地址参数
+         * @return {string} 返回瓦片地址参数
+         */
+        function tileUrlFunction(tileCoord, pixelRatio, projection) {
+            if (!this.tileGrid) {
+                this.tileGrid = this.getTileGridForProjection(projection);
+            }
+            var tileExtent = this.tileGrid.getTileCoordExtent(
+                tileCoord, this.tmpExtent_);
+            var tileSize = ol.size.toSize(
+                this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
+            return encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
+        }
     }
 
     /**

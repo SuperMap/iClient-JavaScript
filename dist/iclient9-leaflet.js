@@ -2678,56 +2678,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * @private
- * @class SuperMap.ServerGeometry
- * @description 服务端几何对象类。
- * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。
- * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
- */
+/** * @private * @class SuperMap.ServerGeometry * @description 服务端几何对象类。 * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。 * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。 */
 var ServerGeometry = function () {
 
-  /*
-     * Constructor: SuperMap.ServerGeometry
-     * 服务端几何对象类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * id - {String} 服务端几何对象唯一标识符。
-     * style - {<SuperMap.ServerStyle>}  服务端几何对象的风格。
-     * parts - {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。
-     * points - {Array(<Point>)} 组成几何对象的节点的坐标对数组。
-     * type - {<SuperMap.GeometryType>} 几何对象的类型。
-     */
+  /*     * Constructor: SuperMap.ServerGeometry     * 服务端几何对象类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * id - {String} 服务端几何对象唯一标识符。     * style - {<SuperMap.ServerStyle>}  服务端几何对象的风格。     * parts - {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * points - {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * type - {<SuperMap.GeometryType>} 几何对象的类型。     */
 
-  /*
-     * APIProperty: type
-     * {<SuperMap.GeometryType>} 几何对象的类型(GeometryType)。
-     */
+  /*     * APIProperty: type     * {<SuperMap.GeometryType>} 几何对象的类型(GeometryType)。     */
 
-  /*
-     * APIProperty: parts
-     * {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。
-     * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。
-     * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，
-     * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，
-     * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。
-     * 2.通常情况，一个简单几何对象的子对象就是它本身，
-     * 因此对于简单对象来说的该字段为长度为1的整型数组，
-     * 该字段的值就是这个简单对象节点的个数。
-     * 如果一个几何对象是由几个简单对象组合而成的，
-     * 例如，一个岛状几何对象由3个简单的多边形组成而成，
-     * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为3的整型数组，
-     * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。
-     */
+  /*     * APIProperty: parts     * {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。     * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。     * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，     * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，     * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。     * 2.通常情况，一个简单几何对象的子对象就是它本身，     * 因此对于简单对象来说的该字段为长度为1的整型数组，     * 该字段的值就是这个简单对象节点的个数。     * 如果一个几何对象是由几个简单对象组合而成的，     * 例如，一个岛状几何对象由3个简单的多边形组成而成，     * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为3的整型数组，     * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。     */
 
 
-  /*
-     * APIProperty: id
-     * {String} 服务端几何对象唯一标识符。
-     */
+  /*     * APIProperty: id     * {String} 服务端几何对象唯一标识符。     */
   function ServerGeometry(options) {
     _classCallCheck(this, ServerGeometry);
 
@@ -2744,31 +2705,14 @@ var ServerGeometry = function () {
     }
   }
 
-  /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
-     */
+  /*     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */
 
-  /*
-     * APIProperty: prjCoordSys
-     * {Object}投影坐标参数,现仅在缓冲区分析中有效。
-     */
+  /*     * APIProperty: prjCoordSys     * {Object}投影坐标参数,现仅在缓冲区分析中有效。     */
 
-  /*
-     * APIProperty: points
-     * {Array(<Point>)} 组成几何对象的节点的坐标对数组。
-     * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，
-     * 该字段存放了组成几何对象的点坐标的数组。
-     * 对于简单的面对象，他的起点和终点的坐标点相同。
-     * 2.对于复杂的几何对象，根据 Parts 属性来确定每一个组成复杂几何对象的简单对象所对应的节点的个数，
-     * 从而确定 Points 字段中坐标对的分配归属问题。
-     */
+  /*     * APIProperty: points     * {Array(<Point>)} 组成几何对象的节点的坐标对数组。     * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，     * 该字段存放了组成几何对象的点坐标的数组。     * 对于简单的面对象，他的起点和终点的坐标点相同。     * 2.对于复杂的几何对象，根据 Parts 属性来确定每一个组成复杂几何对象的简单对象所对应的节点的个数，     * 从而确定 Points 字段中坐标对的分配归属问题。     */
 
 
-  /*
-     * APIProperty: style
-     * {<SuperMap.ServerStyle>} 服务端几何对象的风格(ServerStyle)。
-     */
+  /*     * APIProperty: style     * {<SuperMap.ServerStyle>} 服务端几何对象的风格(ServerStyle)。     */
 
 
   _createClass(ServerGeometry, [{
@@ -2784,13 +2728,7 @@ var ServerGeometry = function () {
       me.prjCoordSys = null;
     }
 
-    /*
-     * APIMethod: toGeometry
-     * 将服务端几何对象 ServerGeometry 转换为客户端几何对象 Geometry。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
-     */
+    /*     * APIMethod: toGeometry     * 将服务端几何对象 ServerGeometry 转换为客户端几何对象 Geometry。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
 
   }, {
     key: 'toGeometry',
@@ -2815,14 +2753,7 @@ var ServerGeometry = function () {
       }
     }
 
-    /*
-     * Method: toGeoPoint
-     * 将服务端的点几何对象转换为客户端几何对象。
-     * 包括 Point 、MultiPoint。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
-     */
+    /*     * Method: toGeoPoint     * 将服务端的点几何对象转换为客户端几何对象。     * 包括 Point 、MultiPoint。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
 
   }, {
     key: 'toGeoPoint',
@@ -2845,14 +2776,7 @@ var ServerGeometry = function () {
       }
     }
 
-    /*
-     * Method: toGeoLine
-     * 将服务端的线几何对象转换为客户端几何对象。
-     * 包括LinearRing、LineString、MultiLineString。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
-     */
+    /*     * Method: toGeoLine     * 将服务端的线几何对象转换为客户端几何对象。     * 包括LinearRing、LineString、MultiLineString。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
 
   }, {
     key: 'toGeoLine',
@@ -2887,14 +2811,7 @@ var ServerGeometry = function () {
       }
     }
 
-    /*
-     * Method: toGeoLineEPS
-     * 将服务端的线几何对象转换为客户端几何对象。
-     * 包括LinearRing、LineString、MultiLineString。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
-     */
+    /*     * Method: toGeoLineEPS     * 将服务端的线几何对象转换为客户端几何对象。     * 包括LinearRing、LineString、MultiLineString。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
 
   }, {
     key: 'toGeoLineEPS',
@@ -2937,14 +2854,7 @@ var ServerGeometry = function () {
       }
     }
 
-    /*
-     * Method: toGeoLine
-     * 将服务端的路由线几何对象转换为客户端几何对象。
-     * 包括LinearRing、LineString、MultiLineString。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
-     */
+    /*     * Method: toGeoLine     * 将服务端的路由线几何对象转换为客户端几何对象。     * 包括LinearRing、LineString、MultiLineString。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
 
   }, {
     key: 'toGeoLinem',
@@ -2953,14 +2863,7 @@ var ServerGeometry = function () {
       return new _Route2["default"].fromJson(me);
     }
 
-    /*
-     * Method: toGeoRegion
-     * 将服务端的面几何对象转换为客户端几何对象。
-     * 类型为Polygon。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
-     */
+    /*     * Method: toGeoRegion     * 将服务端的面几何对象转换为客户端几何对象。     * 类型为Polygon。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
 
   }, {
     key: 'toGeoRegion',
@@ -3059,14 +2962,7 @@ var ServerGeometry = function () {
       return new _MultiPolygon2["default"](polygonArray);
     }
 
-    /*
-     * Method: toGeoRegionEPS
-     * 将服务端的面几何对象转换为客户端几何对象。
-     * 类型为Polygon。
-     *
-     * Returns
-     * {<SuperMap.Geometry>} 转换后的客户端几何对象。
-     */
+    /*     * Method: toGeoRegionEPS     * 将服务端的面几何对象转换为客户端几何对象。     * 类型为Polygon。     *     * Returns     * {<SuperMap.Geometry>} 转换后的客户端几何对象。     */
 
   }, {
     key: 'toGeoRegionEPS',
@@ -3170,16 +3066,7 @@ var ServerGeometry = function () {
       return new _MultiPolygon2["default"](polygonArray);
     }
 
-    /*
-     * Function: ServerGeometry.fromJson
-     * 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。
-     *
-     * Parameters:
-     * jsonObject - {Object} 要转换的 JSON 对象。
-     *
-     * Returns:
-     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。
-     */
+    /*     * Function: ServerGeometry.fromJson     * 将 JSON 对象表示服务端几何对象转换为 ServerGeometry。     *     * Parameters:     * jsonObject - {Object} 要转换的 JSON 对象。     *     * Returns:     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。     */
 
   }], [{
     key: 'fromJson',
@@ -3204,17 +3091,7 @@ var ServerGeometry = function () {
     key: 'fromGeometry',
 
 
-    /*
-     * Function: ServerGeometry.fromGeometry
-     * 将客户端Geometry转换成服务端ServerGeometry。
-     *
-     * Parameters:
-     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。
-
-     *
-     * Returns:
-     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。
-     */
+    /*     * Function: ServerGeometry.fromGeometry     * 将客户端Geometry转换成服务端ServerGeometry。     *     * Parameters:     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。     *     * Returns:     * {<SuperMap.ServerGeometry>} 转化后的 ServerGeometry 对象。     */
     value: function fromGeometry(geometry) {
       if (!geometry) {
         return;
@@ -3295,18 +3172,7 @@ var ServerGeometry = function () {
     key: 'IsClockWise',
 
 
-    /*
-     * Function: SuperMap.Geometry.IsClockWise
-     * 判断linearRing中的点的顺序，顺时针？逆时针
-     * 返回值大于0, 逆时针; 小于0, 顺时针
-     *
-     * Parameters:
-     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。
-
-     *
-     * Returns:
-     * {<Number>}。
-     */
+    /*     * Function: SuperMap.Geometry.IsClockWise     * 判断linearRing中的点的顺序，顺时针？逆时针     * 返回值大于0, 逆时针; 小于0, 顺时针     *     * Parameters:     * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。     *     * Returns:     * {<Number>}。     */
     value: function IsClockWise(points) {
       var length = points.length;
       if (length < 3) {
@@ -6221,56 +6087,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * @class SuperMap.FilterParameter
- * @classdesc 查询过滤条件参数类。该类用于设置查询数据集的查询过滤参数。
- * @param options - {Object} 可选参数。如:<br>
- *        attributeFilter - {string} 属性过滤条件。</br>
- *        name - {string} 查询数据集名称或者图层名称。</br>
- *        joinItems - {Array<{@link SuperMap.JoinItem}>} 与外部表的连接信息 SuperMap.JoinItem 数组。</br>
- *        linkItems - {Array<{@link SuperMap.LinkItem}>} 与外部表的关联信息 SuperMap.LinkItem 数组。</br>
- *        ids - {Array<string>} 查询 id 数组，即属性表中的 SmID 值。</br>
- *        orderBy - {string} 查询排序的字段, orderBy 的字段须为数值型的。</br>
- *        groupBy - {string} 查询分组条件的字段。</br>
- *        fields - {Array<string>} 查询字段数组。</br>
- */
+/** * @class SuperMap.FilterParameter * @classdesc 查询过滤条件参数类。该类用于设置查询数据集的查询过滤参数。 * @param options - {Object} 可选参数。如:<br> *        attributeFilter - {string} 属性过滤条件。</br> *        name - {string} 查询数据集名称或者图层名称。</br> *        joinItems - {Array<{@link SuperMap.JoinItem}>} 与外部表的连接信息 SuperMap.JoinItem 数组。</br> *        linkItems - {Array<{@link SuperMap.LinkItem}>} 与外部表的关联信息 SuperMap.LinkItem 数组。</br> *        ids - {Array<string>} 查询 id 数组，即属性表中的 SmID 值。</br> *        orderBy - {string} 查询排序的字段, orderBy 的字段须为数值型的。</br> *        groupBy - {string} 查询分组条件的字段。</br> *        fields - {Array<string>} 查询字段数组。</br> */
 var FilterParameter = function () {
 
-  /**
-     * @member SuperMap.FilterParameter.prototype.groupBy - {string}
-     * @description 查询分组条件的字段。
-     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，
-     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。
-     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；
-     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。
-     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，
-     * 分别表示某个城市所属的洲和国家。
-     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；
-     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。
-     */
+  /**     * @member SuperMap.FilterParameter.prototype.groupBy - {string}     * @description 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。     */
 
 
-  /**
-     * @member SuperMap.FilterParameter.prototype.ids -{Array<string>}
-     * @description 查询 id 数组，即属性表中的 SmID 值。
-     */
+  /**     * @member SuperMap.FilterParameter.prototype.ids -{Array<string>}     * @description 查询 id 数组，即属性表中的 SmID 值。     */
 
 
-  /**
-     * @member SuperMap.FilterParameter.prototype.joinItems - {Array<SuperMap.JoinItem>}
-     * @description 与外部表的连接信息 SuperMap.JoinItem 数组。
-     */
+  /**     * @member SuperMap.FilterParameter.prototype.joinItems - {Array<SuperMap.JoinItem>}     * @description 与外部表的连接信息 SuperMap.JoinItem 数组。     */
 
 
-  /**
-     * @member SuperMap.FilterParameter.prototype.attributeFilter - {string}
-     * @description 属性过滤条件。
-     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，
-     * attributeFilter 就是其中的“条件表达式”。
-     * 该字段的用法为 attributeFilter = "过滤条件"。
-     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；
-     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。
-     */
+  /**     * @member SuperMap.FilterParameter.prototype.attributeFilter - {string}     * @description 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。     */
   function FilterParameter(options) {
     _classCallCheck(this, FilterParameter);
 
@@ -6289,48 +6118,19 @@ var FilterParameter = function () {
     }
   }
 
-  /**
-     * @function SuperMap.FilterParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
+  /**     * @function SuperMap.FilterParameter.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
-  /**
-     * @member SuperMap.FilterParameter.prototype.fields - {Array<string>}
-     * @description 查询字段数组，如果不设置则使用系统返回的所有字段。
-     */
+  /**     * @member SuperMap.FilterParameter.prototype.fields - {Array<string>}     * @description 查询字段数组，如果不设置则使用系统返回的所有字段。     */
 
 
-  /**
-     * @member SuperMap.FilterParameter.prototype.orderBy - {string}
-     * @description 查询排序的字段,orderBy的字段须为数值型的。
-     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，
-     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。
-     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；
-     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。
-     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，
-     * 分别表示国家的面积和1994年的各国人口数量。
-     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；
-     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。
-     */
+  /**     * @member SuperMap.FilterParameter.prototype.orderBy - {string}     * @description 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。     */
 
 
-  /**
-     * @member SuperMap.FilterParameter.prototype.linkItems - {Array<SuperMap.LinkItem>}
-     * @description 与外部表的关联信息 LinkItem 数组。
-     */
+  /**     * @member SuperMap.FilterParameter.prototype.linkItems - {Array<SuperMap.LinkItem>}     * @description 与外部表的关联信息 LinkItem 数组。     */
 
 
-  /**
-     * @member SuperMap.FilterParameter.prototype.name - {string}
-     * @description 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。
-     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，
-     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。
-     * 因为一个地图的图层可能是来自于不同数据源的数据集，
-     * 而不同的数据源中可能存在同名的数据集，
-     * 使用数据集名称不能唯一的确定数据集，
-     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。
-     */
+  /**     * @member SuperMap.FilterParameter.prototype.name - {string}     * @description 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。     */
 
 
   _createClass(FilterParameter, [{
@@ -6854,7 +6654,7 @@ var Collection = function (_Geometry) {
     }, {
         key: 'clone',
         value: function clone() {
-            var geometry = eval("new " + this.CLASS_NAME + "()");
+            var geometry = new Collection();
             for (var i = 0, len = this.components.length; i < len; i++) {
                 geometry.addComponent(this.components[i].clone());
             }
@@ -8969,40 +8769,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * @class SuperMap.TransportationAnalystParameter
- * @classdesc 交通网络分析通用参数类。
- * @description该类主要用来提供交通网络分析所需的通用参数。
- * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。
- * @param options - {Object} 可选参数。如:</br>
- *        barrierEdgeIDs - {Array<number>} 网络分析中障碍弧段的 ID 数组。</br>
- *        barrierNodeIDs - {Array<number>} 网络分析中障碍点的 ID 数组。</br>
- *        barrierPoints - {Array<Point>} 网络分析中 Point2D 类型的障碍点数组。</br>
- *                         点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
- *        weightFieldName - {string} 阻力字段的名称。</br>
- *        turnWeightField - {string} 转向权重字段的名称。</br>
- *        resultSetting - {{@link SuperMap.TransportationAnalystResultSetting}} 分析结果返回内容。
- */
+/** * @class SuperMap.TransportationAnalystParameter * @classdesc 交通网络分析通用参数类。 * @description该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 * @param options - {Object} 可选参数。如:</br> *        barrierEdgeIDs - {Array<number>} 网络分析中障碍弧段的 ID 数组。</br> *        barrierNodeIDs - {Array<number>} 网络分析中障碍点的 ID 数组。</br> *        barrierPoints - {Array<Point>} 网络分析中 Point2D 类型的障碍点数组。</br> *                         点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br> *        weightFieldName - {string} 阻力字段的名称。</br> *        turnWeightField - {string} 转向权重字段的名称。</br> *        resultSetting - {{@link SuperMap.TransportationAnalystResultSetting}} 分析结果返回内容。 */
 var TransportationAnalystParameter = function () {
 
-  /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.turnWeightField -{string}
-     * @description 转向权重字段的名称。
-     */
+  /**     * @member SuperMap.TransportationAnalystParameter.prototype.turnWeightField -{string}     * @description 转向权重字段的名称。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.barrierPoints -{Array<Point>}
-     * @description 网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
-     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。
-     */
+  /**     * @member SuperMap.TransportationAnalystParameter.prototype.barrierPoints -{Array<Point>}     * @description 网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。</br>     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.barrierEdgeIDs -{Array<number>}
-     * @description 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。
-     */
+  /**     * @member SuperMap.TransportationAnalystParameter.prototype.barrierEdgeIDs -{Array<number>}     * @description 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */
   function TransportationAnalystParameter(options) {
     _classCallCheck(this, TransportationAnalystParameter);
 
@@ -9022,29 +8798,16 @@ var TransportationAnalystParameter = function () {
     _SuperMap2["default"].Util.extend(this, options);
   }
 
-  /**
-     * @function SuperMap.TransportationAnalystParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
+  /**     * @function SuperMap.TransportationAnalystParameter.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
-  /**
-     *  @member SuperMap.TransportationAnalystParameter.prototype.resultSetting -{SuperMap.TransportationAnalystResultSetting}
-     *  @description 分析结果返回内容。
-     */
+  /**     *  @member SuperMap.TransportationAnalystParameter.prototype.resultSetting -{SuperMap.TransportationAnalystResultSetting}     *  @description 分析结果返回内容。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.weightFieldName -{string}
-     * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。
-     * 该字段默值为服务器发布的所有耗费字段的第一个字段。
-     */
+  /**     * @member SuperMap.TransportationAnalystParameter.prototype.weightFieldName -{string}     * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.barrierNodeIDs -{Array<number>}
-     * @description 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。
-     */
+  /**     * @member SuperMap.TransportationAnalystParameter.prototype.barrierNodeIDs -{Array<number>}     * @description 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */
 
 
   _createClass(TransportationAnalystParameter, [{
@@ -52512,93 +52275,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * @class SuperMap.LinkItem
- * @constructs SuperMap.LinkItem
- * @classdesc 关联信息类。
- * @description 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表,
- *              矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。使用LinkItem时，
- *              空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。{@link SuperMap.LinkItem}
- *              只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 {@link SuperMap.LinkItem};另外，用于建立关联关系的两个表可以不在同一个数据源下。<br>
- *
- *                  注意：
- *                    1. 使用 {@link SuperMap.LinkItem} 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段；<br>
- *                    2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。
- * @param options - {Object} 参数。</br>
- *        datasourceConnectionInfo - {{@link SuperMap.DatasourceConnectionInfo}} 关联的外部数据源信息。</br>
- *        foreignKeys - {Array<string>} 主空间数据集的外键。</br>
- *        foreignTable - {string} 关联的外部属性表的名称。</br>
- *        linkFields - {Array<string>} 欲保留的外部属性表的字段。</br>
- *        linkFilter - {string} 与外部属性表的连接条件。</br>
- *        name - {string} 此关联信息对象的名称。</br>
- *        primaryKeys - {Array<string>} 需要关联的外部属性表的主键。</br>
- * @example 下面以SQL查询说明linkitem的使用方法：
- *  function queryBySQL() {
- *      // 设置关联的外部数据库信息,alias表示数据库别名
- *      var dc = new SuperMap.DatasourceConnectionInfo({
- *          dataBase: "RelQuery",
- *          server: "192.168.168.39",
- *          user: "sa",
- *          password: "map",
- *          driver: "SQL Server",
- *          connect: true,
- *          OpenLinkTable: false,
- *          alias: "RelQuery",
- *          engineType: EngineType.SQLPLUS,
- *          readOnly: false,
- *          exclusive: false
- *      });
- *     // 设置关联信息
- *      var linkItem = new SuperMap.LinkItem({
- *          datasourceConnectionInfo: dc,
- *          foreignKeys: ["name"],
- *          foreignTable: "Pop_2011",
- *          linkFields: ["SmID as Pid","pop"],
- *          name: "link",
- *          primatryKeys: ["name"],
- *      });
- *      // 设置查询参数，在查询参数中添加linkItem关联条件信息
- *      var queryParam, queryBySQLParams, queryBySQLService;
- *      queryParam = new SuperMap.FilterParameter({
- *          name: "Province@RelQuery",
- *          fields: ["SmID","name"],
- *          attributeFilter: "SmID<7",
- *          linkItems: [linkItem]
- *       }),
- *      queryBySQLParams = new SuperMap.QueryBySQLParameters({
- *           queryParams: [queryParam]
- *              }),
- *      queryBySQLService = new SuperMap.QueryBySQLService(url, {
-     *          eventListeners: {
-     *              "processCompleted": processCompleted,
-     *              "processFailed": processFailed
-     *              }
-     *      });
-     *      queryBySQLService.processAsync(queryBySQLParams);
-     *  }
- *  function processCompleted(queryEventArgs) {//todo}
- *  function processFailed(e) {//todo}
- *
- */
+/** * @class SuperMap.LinkItem * @constructs SuperMap.LinkItem * @classdesc 关联信息类。 * @description 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表, *              矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。使用LinkItem时， *              空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。{@link SuperMap.LinkItem} *              只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 {@link SuperMap.LinkItem};另外，用于建立关联关系的两个表可以不在同一个数据源下。<br> * *                  注意： *                    1. 使用 {@link SuperMap.LinkItem} 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段；<br> *                    2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。 * @param options - {Object} 参数。</br> *        datasourceConnectionInfo - {{@link SuperMap.DatasourceConnectionInfo}} 关联的外部数据源信息。</br> *        foreignKeys - {Array<string>} 主空间数据集的外键。</br> *        foreignTable - {string} 关联的外部属性表的名称。</br> *        linkFields - {Array<string>} 欲保留的外部属性表的字段。</br> *        linkFilter - {string} 与外部属性表的连接条件。</br> *        name - {string} 此关联信息对象的名称。</br> *        primaryKeys - {Array<string>} 需要关联的外部属性表的主键。</br> * @example 下面以SQL查询说明linkitem的使用方法： *  function queryBySQL() { *      // 设置关联的外部数据库信息,alias表示数据库别名 *      var dc = new SuperMap.DatasourceConnectionInfo({ *          dataBase: "RelQuery", *          server: "192.168.168.39", *          user: "sa", *          password: "map", *          driver: "SQL Server", *          connect: true, *          OpenLinkTable: false, *          alias: "RelQuery", *          engineType: EngineType.SQLPLUS, *          readOnly: false, *          exclusive: false *      }); *     // 设置关联信息 *      var linkItem = new SuperMap.LinkItem({ *          datasourceConnectionInfo: dc, *          foreignKeys: ["name"], *          foreignTable: "Pop_2011", *          linkFields: ["SmID as Pid","pop"], *          name: "link", *          primatryKeys: ["name"], *      }); *      // 设置查询参数，在查询参数中添加linkItem关联条件信息 *      var queryParam, queryBySQLParams, queryBySQLService; *      queryParam = new SuperMap.FilterParameter({ *          name: "Province@RelQuery", *          fields: ["SmID","name"], *          attributeFilter: "SmID<7", *          linkItems: [linkItem] *       }), *      queryBySQLParams = new SuperMap.QueryBySQLParameters({ *           queryParams: [queryParam] *              }), *      queryBySQLService = new SuperMap.QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  } *  function processCompleted(queryEventArgs) {//todo} *  function processFailed(e) {//todo} * */
 var LinkItem = function () {
 
-  /**
-     * @member SuperMap.LinkItem.prototype.name -{string}
-     * @description 此关联信息对象的名称。
-     */
+  /**     * @member SuperMap.LinkItem.prototype.name -{string}     * @description 此关联信息对象的名称。     */
 
 
-  /**
-     * @member SuperMap.LinkItem.prototype.linkFields - {Array<string>}
-     * @description 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返
-     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。
-     */
+  /**     * @member SuperMap.LinkItem.prototype.linkFields - {Array<string>}     * @description 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */
 
 
-  /**
-     * @member SuperMap.LinkItem.prototype.foreignKeys -{Array<string>}
-     * @description 主空间数据集的外键。
-     */
+  /**     * @member SuperMap.LinkItem.prototype.foreignKeys -{Array<string>}     * @description 主空间数据集的外键。     */
   function LinkItem(options) {
     _classCallCheck(this, LinkItem);
 
@@ -52616,34 +52302,19 @@ var LinkItem = function () {
     }
   }
 
-  /**
-     * @function SuperMap.LinkItem.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
+  /**     * @function SuperMap.LinkItem.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
-  /**
-     * @member SuperMap.LinkItem.prototype.primaryKeys -{Array<string>}
-     * @description 需要关联的外部属性表的主键。
-     */
+  /**     * @member SuperMap.LinkItem.prototype.primaryKeys -{Array<string>}     * @description 需要关联的外部属性表的主键。     */
 
 
-  /**
-     * @member SuperMap.LinkItem.prototype.linkFilter -{string}
-     * @description 与外部属性表的连接条件。
-     */
+  /**     * @member SuperMap.LinkItem.prototype.linkFilter -{string}     * @description 与外部属性表的连接条件。     */
 
 
-  /**
-     * @member SuperMap.LinkItem.prototype.foreignTable - {string}
-     * @description 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。
-     */
+  /**     * @member SuperMap.LinkItem.prototype.foreignTable - {string}     * @description 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */
 
 
-  /**
-     * @member SuperMap.LinkItem.prototype.datasourceConnectionInfo -{SuperMap.DatasourceConnectionInfo}
-     * @description 关联的外部数据源信息 。
-     */
+  /**     * @member SuperMap.LinkItem.prototype.datasourceConnectionInfo -{SuperMap.DatasourceConnectionInfo}     * @description 关联的外部数据源信息 。     */
 
 
   _createClass(LinkItem, [{
@@ -54103,50 +53774,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/**
- * @class SuperMap.QueryByDistanceParameters
- * @classdesc Distance 查询参数类。
- *               该类用于设置 Distance 查询的相关参数。
- * @extends SuperMap.QueryParameters
- * @param options - {Object} 可选参数。如：<br>
- *         customParams - {string} 自定义参数，供扩展使用。<br>
- *         prjCoordSys -{Object} 自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
- *         expectCount - {number}期望返回结果记录个数。<br>
- *         networkType - {{@link SuperMap.GeometryType}} 网络数据集对应的查询类型。<br>
- *         queryOption - {{@link SuperMap.QueryOption}} 查询结果类型枚举类。<br>
- *         queryParams - {Array<{@link SuperMap.FilterParameter}>} 查询过滤条件参数数组。<br>
- *         startRecord - {number}查询起始记录号。<br>
- *         holdTime - {number}资源在服务端保存的时间。<br>
- *         returnCustomResult -{boolean} 仅供三维使用。<br>
- *         distance - {number}查询距离。<br>
- *         geometry - {Object} 用于查询的几何对象。<br>
- *                   点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
- *                   线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
- *                   面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br>
- *         isNearest - {boolean} 是否为最近距离查询。<br>
- *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
- */
+/** * @class SuperMap.QueryByDistanceParameters * @classdesc Distance 查询参数类。 *               该类用于设置 Distance 查询的相关参数。 * @extends SuperMap.QueryParameters * @param options - {Object} 可选参数。如：<br> *         customParams - {string} 自定义参数，供扩展使用。<br> *         prjCoordSys -{Object} 自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br> *         expectCount - {number}期望返回结果记录个数。<br> *         networkType - {{@link SuperMap.GeometryType}} 网络数据集对应的查询类型。<br> *         queryOption - {{@link SuperMap.QueryOption}} 查询结果类型枚举类。<br> *         queryParams - {Array<{@link SuperMap.FilterParameter}>} 查询过滤条件参数数组。<br> *         startRecord - {number}查询起始记录号。<br> *         holdTime - {number}资源在服务端保存的时间。<br> *         returnCustomResult -{boolean} 仅供三维使用。<br> *         distance - {number}查询距离。<br> *         geometry - {Object} 用于查询的几何对象。<br> *                   点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br> *                   线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br> *                   面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br> *         isNearest - {boolean} 是否为最近距离查询。<br> *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。 */
 var QueryByDistanceParameters = function (_QueryParameters) {
   _inherits(QueryByDistanceParameters, _QueryParameters);
 
-  /**
-     * @member SuperMap.QueryByDistanceParameters.prototype.isNearest -{boolean}
-     * @description 是否为最近距离查询。<br>
-     *               建议该属性与 expectCount （继承自 {@link SuperMap.QueryParameters}）属性联合使用。<br>
-     *               当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），<br>
-     *               则查找结果为查询总记录中距离中心最近的expectCount个地物。<br>
-     *               当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），<br>
-     *               则查找结果为从查询总记录中随机抽取的expectCount个地物。<br>
-     *               目前查询结果不支持按远近距离排序。
-     */
+  /**     * @member SuperMap.QueryByDistanceParameters.prototype.isNearest -{boolean}     * @description 是否为最近距离查询。<br>     *               建议该属性与 expectCount （继承自 {@link SuperMap.QueryParameters}）属性联合使用。<br>     *               当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），<br>     *               则查找结果为查询总记录中距离中心最近的expectCount个地物。<br>     *               当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），<br>     *               则查找结果为从查询总记录中随机抽取的expectCount个地物。<br>     *               目前查询结果不支持按远近距离排序。     */
 
 
-  /**
-     * @member SuperMap.QueryByDistanceParameters.prototype.distance -{number}
-     * @description 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。
-     *               当查找最近地物时，该属性无效。
-     * @default 0
-     */
+  /**     * @member SuperMap.QueryByDistanceParameters.prototype.distance -{number}     * @description 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     *               当查找最近地物时，该属性无效。     * @default 0     */
   function QueryByDistanceParameters(options) {
     _classCallCheck(this, QueryByDistanceParameters);
 
@@ -54165,27 +53800,13 @@ var QueryByDistanceParameters = function (_QueryParameters) {
     return _this;
   }
 
-  /**
-     * @function SuperMap.QueryByDistanceParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
+  /**     * @function SuperMap.QueryByDistanceParameters.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
-  /**
-     * @member SuperMap.QueryByDistanceParameters.prototype.returnContent -{boolean}
-     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
-     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
-     *               为 false，则返回的是查询结果资源的 URI。默认为 true。
-     */
+  /**     * @member SuperMap.QueryByDistanceParameters.prototype.returnContent -{boolean}     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>     *               为 false，则返回的是查询结果资源的 URI。默认为 true。     */
 
 
-  /**
-     * @member SuperMap.QueryByDistanceParameters.prototype.geometry
-     * @description 用于查询的地理对象，必设属性。<br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
-     */
+  /**     * @member SuperMap.QueryByDistanceParameters.prototype.geometry     * @description 用于查询的地理对象，必设属性。<br>     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON     */
 
 
   _createClass(QueryByDistanceParameters, [{
@@ -54598,23 +54219,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/**
- * @class SuperMap.QueryBySQLParameters
- * @classdesc SQL 查询参数类。
- *               该类用于设置 SQL 查询的相关参数。
- * @extends SuperMap.QueryParameters
- * @param options - {Object} 可选参数。如：<br>
- *         customParams - {string} 自定义参数，供扩展使用。<br>
- *         prjCoordSys -{Object} 自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
- *         expectCount - {number}期望返回结果记录个数。<br>
- *         networkType - {{@link SuperMap.GeometryType}} 网络数据集对应的查询类型。<br>
- *         queryOption - {{@link SuperMap.QueryOption}} 查询结果类型枚举类。<br>
- *         queryParams - {Array<{@link SuperMap.FilterParameter}>} 查询过滤条件参数数组。<br>
- *         startRecord - {number}查询起始记录号。<br>
- *         holdTime - {number}资源在服务端保存的时间。<br>
- *         returnCustomResult -{boolean} 仅供三维使用。<br>
- *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
- */
+/** * @class SuperMap.QueryBySQLParameters * @classdesc SQL 查询参数类。 *               该类用于设置 SQL 查询的相关参数。 * @extends SuperMap.QueryParameters * @param options - {Object} 可选参数。如：<br> *         customParams - {string} 自定义参数，供扩展使用。<br> *         prjCoordSys -{Object} 自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br> *         expectCount - {number}期望返回结果记录个数。<br> *         networkType - {{@link SuperMap.GeometryType}} 网络数据集对应的查询类型。<br> *         queryOption - {{@link SuperMap.QueryOption}} 查询结果类型枚举类。<br> *         queryParams - {Array<{@link SuperMap.FilterParameter}>} 查询过滤条件参数数组。<br> *         startRecord - {number}查询起始记录号。<br> *         holdTime - {number}资源在服务端保存的时间。<br> *         returnCustomResult -{boolean} 仅供三维使用。<br> *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。 */
 var QueryBySQLParameters = function (_QueryParameters) {
   _inherits(QueryBySQLParameters, _QueryParameters);
 
@@ -54633,19 +54238,10 @@ var QueryBySQLParameters = function (_QueryParameters) {
     return _this;
   }
 
-  /**
-     * @function SuperMap.QueryBySQLParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
+  /**     * @function SuperMap.QueryBySQLParameters.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
-  /**
-     * @member SuperMap.QueryBySQLParameters.prototype.returnContent -{boolean}
-     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
-     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
-     *               为 false，则返回的是查询结果资源的 URI。默认为 true。
-     * @default true
-     */
+  /**     * @member SuperMap.QueryBySQLParameters.prototype.returnContent -{boolean}     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>     *               为 false，则返回的是查询结果资源的 URI。默认为 true。     * @default true     */
 
 
   _createClass(QueryBySQLParameters, [{
@@ -61633,44 +61229,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * @class SuperMap.TransportationAnalystResultSetting
- * @classdesc 交通网络分析结果参数类。
- * @description 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。
- * @param options - {Object} 可选参数。如:</br>
- *        returnEdgeFeatures - {boolean} 是否在分析结果中包含弧段要素集合。</br>
- *        returnEdgeGeometry - {boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。</br>
- *        returnEdgeIDs - {boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。</br>
- *        returnNodeFeatures - {boolean} 是否在分析结果中包含结点要素集合。</br>
- *        returnNodeGeometry - {boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。</br>
- *        returnNodeIDs - {boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。</br>
- *        returnPathGuides - {boolean} 返回分析结果中是否包含行驶导引集合。</br>
- *        returnRoutes - {boolean} 返回分析结果中是否包含路由对象的集合。
- */
+/** * @class SuperMap.TransportationAnalystResultSetting * @classdesc 交通网络分析结果参数类。 * @description 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 * @param options - {Object} 可选参数。如:</br> *        returnEdgeFeatures - {boolean} 是否在分析结果中包含弧段要素集合。</br> *        returnEdgeGeometry - {boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。</br> *        returnEdgeIDs - {boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。</br> *        returnNodeFeatures - {boolean} 是否在分析结果中包含结点要素集合。</br> *        returnNodeGeometry - {boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。</br> *        returnNodeIDs - {boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。</br> *        returnPathGuides - {boolean} 返回分析结果中是否包含行驶导引集合。</br> *        returnRoutes - {boolean} 返回分析结果中是否包含路由对象的集合。 */
 var TransportationAnalystResultSetting = function () {
 
-  /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnPathGuides -{boolean}
-     * @description 返回分析结果中是否包含行驶导引集合。
-     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnPathGuides -{boolean}     * @description 返回分析结果中是否包含行驶导引集合。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeGeometry -{boolean}
-     * @description 返回的结点要素集合中是否包含几何对象信息。默认为 false。
-     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeGeometry -{boolean}     * @description 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeIDs -{boolean}
-     * @description 返回结果中是否包含经过弧段 ID 集合。默认为 false。
-     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeIDs -{boolean}     * @description 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeFeatures -{boolean}
-     * @description 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。
-     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeFeatures -{boolean}     * @description 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */
   function TransportationAnalystResultSetting(options) {
     _classCallCheck(this, TransportationAnalystResultSetting);
 
@@ -61690,35 +61261,19 @@ var TransportationAnalystResultSetting = function () {
     _SuperMap2["default"].Util.extend(this, options);
   }
 
-  /**
-     * @function SuperMap.TransportationAnalystResultSetting.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
+  /**     * @function SuperMap.TransportationAnalystResultSetting.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnRoutes -{boolean}
-     * @description 返回分析结果中是否包含路由对象的集合。
-     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnRoutes -{boolean}     * @description 返回分析结果中是否包含路由对象的集合。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeIDs -{boolean}
-     * @description 返回结果中是否包含经过结点 ID 集合。默认为 false。
-     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeIDs -{boolean}     * @description 返回结果中是否包含经过结点 ID 集合。默认为 false。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeFeatures -{boolean}
-     * @description 是否在分析结果中包含结点要素集合。
-     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。
-     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeFeatures -{boolean}     * @description 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */
 
 
-  /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeGeometry -{boolean}
-     * @description 返回的弧段要素集合中是否包含几何对象信息。默认为 false。
-     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeGeometry -{boolean}     * @description 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */
 
 
   _createClass(TransportationAnalystResultSetting, [{
