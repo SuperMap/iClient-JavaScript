@@ -258,40 +258,4 @@ describe('leaflet_testGraphThemeLayer', function () {
         expect(graphThemeLayer.charts.length).toEqual(0);
         expect(graphThemeLayer.cache).toEqual(Object({}));
     });
-
-    it('createThematicFeature', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
-        graphThemeLayer.addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
-            width: 240,
-            height: 100,
-            codomain: [0, 40000],
-            barStyle: {fillOpacity: 0.7},
-            barHoverStyle: {fillOpacity: 1},
-            xShapeBlank: [10, 10, 10],
-            axisYTick: 4,
-            axisYLabels: ["4万", "3万", "2万", "1万", "0"],
-            axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
-            backgroundStyle: {fillColor: "#CCE8CF"},
-            backgroundRadius: [5, 5, 5, 5],
-            showShadow: true,
-            barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
-            barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
-        };
-        var provinceInfo = chinaConsumptionLevel[0];
-        var geo = new SuperMap.Geometry.Point(provinceInfo[1], provinceInfo[2]);
-        var attrs = {};
-        attrs.NAME = provinceInfo[0];
-        attrs.CON2009 = provinceInfo[3];
-        attrs.CON2010 = provinceInfo[4];
-        attrs.CON2011 = provinceInfo[5];
-        attrs.CON2012 = provinceInfo[6];
-        attrs.CON2013 = provinceInfo[7];
-        var feature = new SuperMap.Feature.Vector(geo, attrs);
-        graphThemeLayer.createThematicFeature(feature);
-        expect(graphThemeLayer).not.toBeNull();
-        graphThemeLayer.clear();
-    });
-
 });
