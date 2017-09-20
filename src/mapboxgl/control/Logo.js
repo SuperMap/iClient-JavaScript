@@ -1,5 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import logoSrc from '../../common/control/img/iClient.png'
+import '../core/Base';
 
 /**
  * @class mapboxgl.supermap.LogoControl
@@ -109,6 +110,4 @@ export class Logo {
         return dest;
     };
 }
-
-mapboxgl.supermap = mapboxgl.supermap || {};
 mapboxgl.supermap.LogoControl = Logo;

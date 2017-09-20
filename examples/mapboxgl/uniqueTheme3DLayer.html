@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>土地利用类型单值专题图(3D)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=0.5,maximum-scale=1,user-scalable=no"/>
+    <style>
+        .mapboxgl-popup {
+            cursor: auto;
+        }
+
+        .mapboxgl-popup-tip {
+            border-top-color: rgba(0, 0, 0, 0.8) !important;
+        }
+
+        .mapboxgl-popup-content {
+            color: whitesmoke;
+            background-color: rgba(0, 0, 0, 0.8) !important;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+<script>
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
+    var dataUrl = host + "/iserver/services/data-jingjin/rest/data";
+
+    var center = [116.640545, 40.531714], themeField = "LANDTYPE", popup;
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: center,
+        zoom: 7
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.on('load', function () {
+        buildThemeLayer();
+    });
+
+    function buildThemeLayer() {
+        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: new SuperMap.FilterParameter({
+                name: "Jingjin",
+                attributeFilter: "SMID > -1"
+            }),
+            toIndex: 500,
+            datasetNames: ["Jingjin:Landuse_R"]
+        });
+
+        var queryFeatures = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+            eventListeners: {
+                processCompleted: function (serviceResult) {
+                    if (serviceResult.error) {
+                        alert("error:" + JSON.stringify(serviceResult.error));
+                        return;
+                    }
+                    var result = serviceResult.result;
+                    if (result.features) {
+                        createThemeLayer(result.features)
+                    }
+                }
+            },
+            format: SuperMap.DataFormat.GEOJSON
+        });
+        queryFeatures.processAsync(getFeatureBySQLParams);
+    }
+
+    //创建专题图图层
+    function createThemeLayer(data) {
+        popup = new mapboxgl.Popup({closeOnClick: true}).addTo(map);
+        var themeLayer = new mapboxgl.supermap.UniqueTheme3DLayer("uniqueThemeLayer", {
+            height: 6000,
+            enableHighlight: true,
+            themeField: themeField,
+            colorStops: [
+                ["草地", "#C1FFC1"], ["城市", "#CD7054"], ["灌丛", "#7CCD7C"], ["旱地", "#EE9A49"],
+                ["湖泊水库", "#8EE5EE"], ["经济林", "#548B54"], ["沙漠", "#DEB887"], ["水浇地", "#E0FFFF"],
+                ["水田", "#388E8E"], ["用材林", "#556B2F"], ["沼泽", "#2F4F4F"]
+            ],
+
+            // 显示图例
+            showLegend: true,
+            legendTitle: "土地利用类型"
+        });
+        themeLayer.setHighlightStyleOptions({callback: highlightCallback}).setData(data).addTo(map);
+        map.easeTo({
+            pitch: 60,
+            bearing: 0,
+        })
+    }
+
+    //设置高亮图层提示
+    function highlightCallback(features, evt) {
+        var ft = features && features[0];
+        if (ft && ft.properties) {
+            var content = "<span>土地类型: " + ft.properties[themeField] + "</span><br>";
+            content += "<span>土地面积: " + ft.properties["AREA"] + "平方公里</span><br>";
+            popup.addTo(map);
+            popup.setLngLat(evt.lngLat);
+            popup.setHTML(content);
+        }
+        map.on('mouseout', function () {
+            popup.remove();
+        });
+    }
+
+</script>
+</body>
+</html>

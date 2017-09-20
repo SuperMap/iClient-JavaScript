@@ -1,5 +1,6 @@
 import MapvRenderer from "./mapv/MapvRenderer";
 import mapboxgl from 'mapbox-gl';
+import '../core/Base';
 
 /**
  * @class mapboxgl.supermap.MapvLayer
@@ -60,6 +61,4 @@ export class MapvLayer {
     }
 
 }
-
-mapboxgl.supermap = mapboxgl.supermap || {};
 mapboxgl.supermap.MapvLayer = MapvLayer;

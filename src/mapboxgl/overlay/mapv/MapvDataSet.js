@@ -1,7 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import {DataSet, utilCurve} from "mapv";
-
-mapboxgl.supermap = mapboxgl.supermap || {};
+import '../../core/Base';
 
 export var MapvDataSet = {
 

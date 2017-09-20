@@ -1,6 +1,5 @@
 import mapboxgl from 'mapbox-gl';
-
-mapboxgl.supermap = mapboxgl.supermap || {};
+import '../../core/Base';
 mapboxgl.supermap.map = mapboxgl.supermap.map || {};
 
 /**

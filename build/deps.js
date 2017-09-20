@@ -1102,11 +1102,15 @@ deps = {
             "ThemeLayer": {
                 "name": "ThemeLayer",
                 "src": [
-                    "./src/mapboxgl/overlay/RankTheme3DLayer.js"
+                    "./src/mapboxgl/overlay/RangeTheme3DLayer.js",
+                    "./src/mapboxgl/overlay/UniqueTheme3DLayer.js"
                 ],
                 "modules": [{
-                    "name": "mapboxgl.supermap.RankTheme3DLayer",
-                    "des": "分段专题图"
+                    "name": "mapboxgl.supermap.RangeTheme3DLayer",
+                    "des": "三维分段专题图"
+                },{
+                    "name": "mapboxgl.supermap.UniqueTheme3DLayer",
+                    "des": "三维单值专题图"
                 }]
             }
         },

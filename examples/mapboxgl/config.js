@@ -31,8 +31,8 @@ var exampleConfig = {
                     name: "ID查询",
                     thumbnail: "mb_getFeatureByIDs.png",
                     fileName: "02_getFeatureByIDs"
-                }
-                ]},
+                }]
+            },
             "theme": {
                 name: "专题图",
                 content: [{
@@ -183,6 +183,21 @@ var exampleConfig = {
                         name: "北京村庄分布图",
                         thumbnail: "mapvBeijingVillage.png",
                         fileName: "mapvBeijingVillage"
+                    }
+                ]
+            },
+            "Theme3D": {
+                name: "三维专题图",
+                content: [
+                    {
+                        name: "单值专题图",
+                        thumbnail: "theme_3Dlayer_unique.png",
+                        fileName: "uniqueTheme3DLayer"
+                    },
+                    {
+                        name: "分段专题图",
+                        thumbnail: "theme_3Dlayer_range.png",
+                        fileName: "rangeTheme3DLayer"
                     }
                 ]
             }
