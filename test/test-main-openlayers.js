@@ -3,12 +3,12 @@ require('./openlayers/services/SpatialAnalystServiceSpec.js');
 
 /*openlayers -- overlay*/
 require('./openlayers/overlay/MapvSpec.js');
-require('./openlayers/overlay/rangeSpec.js');
+require('./openlayers/overlay/RangeSpec.js');
 require('./openlayers/overlay/VectorTileSuperMapRestSpec.js');
-require('./openlayers/overlay/theme/geoFeatureSpec.js');
-require('./openlayers/overlay/theme/graphSpec.js');
-require('./openlayers/overlay/theme/themeFeatureSpec.js');
-require('./openlayers/overlay/theme/themeSpec.js');
+require('./openlayers/overlay/theme/GeoFeatureSpec.js');
+require('./openlayers/overlay/theme/GraphSpec.js');
+require('./openlayers/overlay/theme/ThemeFeatureSpec.js');
+require('./openlayers/overlay/theme/ThemeSpec.js');
 
 /*openlayers -- mapping*/
 require('./openlayers/mapping/ImageSuperMapRestSpec.js');

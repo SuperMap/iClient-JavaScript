@@ -1,6 +1,6 @@
 require('../../../../src/openlayers/overlay/theme/GeoFeature');
 
-describe('openlayers_testgeoFeature', function () {
+describe('openlayers_testGeoFeature', function () {
     var originalTimeout, map;
     beforeAll(function () {
         testDiv = window.document.createElement("div");
