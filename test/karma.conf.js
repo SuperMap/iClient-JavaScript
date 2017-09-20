@@ -22,7 +22,7 @@ module.exports = function (config) {
                     plugins: ['transform-class-properties','istanbul']
                 }],
                 require('browserify-css'),
-                require('browserify-imgify'),
+                require('browserify-imgify')
             ]
         },
 
@@ -31,18 +31,20 @@ module.exports = function (config) {
         files: [
             /***测试文件***/
             './tool/**.js',
+
             /***classic的源码***/
             /*由于除了classic其他都不依赖于8c,所以classic 的引入放在最后，以免被common覆盖*/
             {pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-15221.js', include: false},
             {pattern: '../src/classic/libs/Lang/*.js', include: false},
             {pattern: '../src/classic/theme/default/*.css', include: false},
-            /***测试文件***/
+            /**测试文件**/
             './test-main-classic.js',
+
             /***common的源码***/
             '../src/common/**/*.js',
             '../src/common/commontypes/**/*.js',
             '../src/common/overlay/**/*.js',
-            /***测试文件***/
+            /**测试文件**/
             './test-main-common.js',
 
             /***leaflet的源码***/
@@ -50,22 +52,23 @@ module.exports = function (config) {
             {pattern: '../src/leaflet/**/**/*.css', include: false},
             '../src/leaflet/**/*.js',
             '../src/leaflet/overlay/**/*.js',
-            /***测试文件***/
+            /**测试文件**/
             './test-main-leaflet.js',
+
             /***openlayers的源码***/
             {pattern: '../node_modules/openlayers/dist/ol-debug.css', include: false},
             {pattern: '../src/openlayers/**/**/*.css', include: false},
             '../src/openlayers/**/*.js',
             '../src/openlayers/overlay/**/*.js',
-            /***测试文件***/
+            /**测试文件**/
             './test-main-openlayers.js',
 
             /***mapboxgl***/
             {pattern: '../node_modules/mapbox-gl/dist/mapbox-gl.css', include: false},
             '../src/mapboxgl/**/*.js',
             '../src/mapboxgl/overlay/**/*.js',
-            /***测试文件***/
-            './test-main-mapboxgl.js',
+            /**测试文件**/
+            './test-main-mapboxgl.js'
 
         ],
 
@@ -105,7 +108,7 @@ module.exports = function (config) {
             '../src/mapboxgl/**/*.js': ['browserify'],
             '../src/mapboxgl/overlay/**/*.js': ['browserify'],
             './mapboxgl/**/*Spec.js': ['browserify'],
-            './test-main-mapboxgl.js': ['browserify'],
+            './test-main-mapboxgl.js': ['browserify']
         },
 
         // test results reporter to use
