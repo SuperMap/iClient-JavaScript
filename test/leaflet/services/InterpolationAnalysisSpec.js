@@ -66,7 +66,7 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 15000);
+        }, 20000);
 
     });
 });
