@@ -45,6 +45,6 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', function () 
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000);
+        }, 10000);
     });
 });
