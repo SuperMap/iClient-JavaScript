@@ -37,12 +37,18 @@
                 </div>
             </div>
             <p>
-            <div class="input-group">
+            <div id="meshTypeS" class="input-group">
                 <span class="input-group-addon">网格面汇总类型<span title="必填字段" style="color: red;"> * </span>　　</span>
                 <select class="form-control" id="meshType" name="clientType">
                     <option value="0" selected="selected">四边形网格</option>
                     <option value="1">六边形网格</option>
                 </select>
+            </div>
+            <p>
+            <div id="regionDatasetS" class="input-group">
+                <span class="input-group-addon">汇总数据集<span title="必填字段" style="color: red;"> * </span>　　</span>
+                <input id="regionDataset" type="text" class="form-control"
+                       value="samples_processing_newyorkZone_R"/>
             </div>
             <p>
             <div class="input-group">
@@ -92,12 +98,12 @@
             <p>
         </div>
 
-        <div class="input-group">
+        <div id="resolutionS" class="input-group">
             <span class="input-group-addon">网格大小　　　　　</span>
             <input id="resolution" type="text" class="form-control" value="100"/>
         </div>
         <p>
-        <div class="input-group">
+        <div id="meshSizeUnitS" class="input-group">
             <span class="input-group-addon">网格大小单位　　　</span>
             <select class="form-control" id="meshSizeUnit" name="clientType">
                 <option value="Meter" selected="selected">Meter</option>
@@ -156,6 +162,19 @@
         }
         $("#weightS").hide();
     });
+    $("#type").change(function (e) {
+        if (e.target.selectedIndex === 0) {
+            $("#meshTypeS").show();
+            $("#resolutionS").show();
+            $("#meshSizeUnitS").show();
+            $("#regionDatasetS").hide();
+            return;
+        }
+        $("#meshTypeS").hide();
+        $("#resolutionS").hide();
+        $("#meshSizeUnitS").hide();
+        $("#regionDatasetS").show();
+    });
     var processingService = new ol.supermap.ProcessingService(processingsUrl);
     var info = new ol.control.Control({element: popup});
     info.setMap(map);
@@ -185,7 +204,7 @@
         }
         var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
             datasetName: $('#datasetName').val(),
-            regionDataset: $('#type option:selected').attr('value') === 'SUMMARYREGION' ? $('#datasetName').val() : undefined,
+            regionDataset: $('#regionDataset').val(),
             type: $('#type option:selected').attr('value'),
             meshType: $('#meshType option:selected').attr('value'),
             query: getQuery(),

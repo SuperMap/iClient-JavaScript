@@ -39,12 +39,16 @@
                 "<option value='SUMMARYMESH' selected='selected'>网格面汇总</option>" +
                 "<option value='SUMMARYREGION'>多边形汇总</option>" +
                 "</select></div></div><p>" +
-                "<div class='input-group'>" +
+                "<div id='meshTypeS' class='input-group'>" +
                 "<span class='input-group-addon'>网格面汇总类型<span title='必填字段' style='color: red;'> * </span>　　</span>" +
                 "<select class='form-control' id='meshType' name='clientType'>" +
                 "<option value='0' selected='selected'>四边形网格</option>" +
                 "<option value='1'>六边形网格</option>" +
-                "</select></div><p><div class='input-group'>" +
+                "</select></div><p>" +
+                "<div id='regionDatasetS'' class='input-group'>" +
+                "<span class='input-group-addon'>汇总数据集<span title='必填字段' style='color: red;'> * </span>　　</span>" +
+                "<input id='regionDataset' type='text' class='form-control' value='samples_processing_newyorkZone_R'/>" +
+                "</div><p><div class='input-group'>" +
                 "<span class='input-group-addon'>分析范围　　　　　</span>" +
                 "<input id='query' type='text' class='form-control' value='-74.050,40.650,-73.850,40.850'/>" +
                 "</div><p><p><div class='input-group'>" +
@@ -64,10 +68,10 @@
                 "<input id='weightedStatisticModes' type='text' class='form-control' value='max'/>" +
                 "</div><p><div class='input-group'><span class='input-group-addon'>权重字段名<span title='必填字段' style='color: red;'> * </span>　　　　</span>" +
                 "<input id='weightedFields' type='text' class='form-control' value='LocationID'/>" +
-                "</div><p></div><div class='input-group'>" +
+                "</div><p></div><div id='resolutionS' class='input-group'>" +
                 "<span class='input-group-addon'>网格大小　　　　　</span>" +
                 "<input id='resolution' type='text' class='form-control' value='100'/>" +
-                "</div><p><div class='input-group'><span class='input-group-addon'>网格大小单位　　　</span>" +
+                "</div><p><div id='meshSizeUnitS' class='input-group'><span class='input-group-addon'>网格大小单位　　　</span>" +
                 "<select class='form-control' id='meshSizeUnit' name='clientType'>" +
                 "<option value='Meter' selected='selected'>Meter</option>" +
                 "<option value='Kilometer'>Kilometer</option>" +
@@ -98,6 +102,19 @@
         }
         $("#weightS").hide();
     });
+    $("#type").change(function (e) {
+        if (e.target.selectedIndex === 0) {
+            $("#meshTypeS").show();
+            $("#resolutionS").show();
+            $("#meshSizeUnitS").show();
+            $("#regionDatasetS").hide();
+            return;
+        }
+        $("#meshTypeS").hide();
+        $("#resolutionS").hide();
+        $("#meshSizeUnitS").hide();
+        $("#regionDatasetS").show();
+    });
     var processingService = new L.supermap.processingService(processingUrl);
     if (!window.isLocal) {
         SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090/iserver', token);
@@ -125,7 +142,7 @@
         }
         var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
             datasetName: $('#datasetName').val(),
-            regionDataset: $('#type option:selected').attr('value') === 'SUMMARYREGION' ? $('#datasetName').val() : undefined,
+            regionDataset: $('#regionDataset').val(),
             type: $('#type option:selected').attr('value'),
             meshType: $('#meshType option:selected').attr('value'),
             query: getQuery(),
