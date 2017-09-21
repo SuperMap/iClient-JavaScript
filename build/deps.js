@@ -1103,15 +1103,28 @@ deps = {
                 "name": "ThemeLayer",
                 "src": [
                     "./src/mapboxgl/overlay/RangeTheme3DLayer.js",
-                    "./src/mapboxgl/overlay/UniqueTheme3DLayer.js"
+                    "./src/mapboxgl/overlay/UniqueTheme3DLayer.js",
+                    "./src/mapboxgl/overlay/RangeThemeLayer.js",
+                    "./src/mapboxgl/overlay/UniqueThemeLayer.js",
+                    "./src/mapboxgl/overlay/RankSymbolThemeLayer.js",
                 ],
                 "modules": [{
-                    "name": "mapboxgl.supermap.RangeTheme3DLayer",
+                    "name": "mapboxgl.supermap.RankTheme3DLayer",
                     "des": "三维分段专题图"
-                },{
+                }, {
                     "name": "mapboxgl.supermap.UniqueTheme3DLayer",
                     "des": "三维单值专题图"
+                }, {
+                    "name": "mapboxgl.supermap.RangeThemeLayer",
+                    "des": "分段专题图"
+                }, {
+                    "name": "mapboxgl.supermap.UniqueThemeLayer",
+                    "des": "单值专题图"
+                }, {
+                    "name": "mapboxgl.supermap.RankSymbolThemeLayer",
+                    "des": "等级符号专题图"
                 }]
+
             }
         },
         "Control": {

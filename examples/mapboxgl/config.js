@@ -186,6 +186,31 @@ var exampleConfig = {
                     }
                 ]
             },
+            "Theme2D": {
+                name: "二维专题图",
+                content: [
+                    {
+                        name: "单值专题图",
+                        thumbnail: "uniqueThemeLayer.png",
+                        fileName: "uniqueThemeLayer"
+                    },
+                    {
+                        name: "分段专题图",
+                        thumbnail: "rangeThemeLayer.png",
+                        fileName: "rangeThemeLayer"
+                    },
+                    {
+                        name: "等级符号专题图",
+                        thumbnail: "rankSymbolThemeLayer.png",
+                        fileName: "rankSymbolThemeLayer"
+                    },
+                    {
+                        name: "柱状图",
+                        thumbnail: "barThemeLayer.png",
+                        fileName: "barThemeLayer"
+                    }
+                ]
+            },
             "Theme3D": {
                 name: "三维专题图",
                 content: [
