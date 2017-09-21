@@ -1657,15 +1657,21 @@ var CommonServiceBase = function () {
                 timeout: options.async ? 0 : null,
                 proxy: options.proxy
             }).then(function (response) {
-                return response.text();
+                if (response.text) {
+                    return response.text();
+                }
+                return response.json();
             }).then(function (text) {
-                var result = new _SuperMap2.default.Format.JSON().read(text);
-                if (!result) {
-                    result = { error: text };
+                var result = text;
+                if (typeof text === "string") {
+                    result = new _SuperMap2.default.Format.JSON().read(text);
+                }
+                if (!result || result.error || result.code >= 300 && result.code !== 304) {
+                    result = { error: result };
                 }
                 if (result.error) {
                     var failure = options.scope ? _SuperMap2.default.Function.bind(options.failure, options.scope) : options.failure;
-                    failure(result.error);
+                    failure(result);
                 } else {
                     result.succeed = result.succeed == undefined ? true : result.succeed;
                     var success = options.scope ? _SuperMap2.default.Function.bind(options.success, options.scope) : options.success;

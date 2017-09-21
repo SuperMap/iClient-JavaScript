@@ -97,14 +97,14 @@ export default class EditFeaturesParameters {
 
             features = {ids: params.IDs};
         } else {
-            if (params.features === null) return;
-
-            len = params.features.length;
             features = [];
-            for (var i = 0; i < len; i++) {
-                feature = params.features[i];
-                feature.geometry = ServerGeometry.fromGeometry(feature.geometry);
-                features.push(feature);
+            if (params.features){
+                len = params.features.length;
+                for (var i = 0; i < len; i++) {
+                    feature = params.features[i];
+                    feature.geometry = ServerGeometry.fromGeometry(feature.geometry);
+                    features.push(feature);
+                }
             }
         }
 

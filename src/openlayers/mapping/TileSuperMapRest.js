@@ -2,7 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import ServerGeometry from '../../common/iServer/ServerGeometry';
 import '../../common/security/SecurityManager';
-import Util from  '../core/Util';
+import Util from '../core/Util';
 
 /**
  * @class ol.source.TileSuperMapRest
@@ -31,9 +31,6 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
         var layerUrl = options.url + "/tileImage.png?";
         options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
-        //为url添加安全认证信息片段
-        layerUrl = appendCredential(layerUrl, options.serverType);
-
         super({
             attributions: options.attributions,
             cacheSize: options.cacheSize,
@@ -159,6 +156,8 @@ export default class TileSuperMapRest extends ol.source.TileImage {
          */
         function createLayerUrl() {
             this._layerUrl = layerUrl + getRequestParamString.call(this);
+            //为url添加安全认证信息片段
+            this._layerUrl = appendCredential(this._layerUrl, options.serverType);
             return this._layerUrl;
         }
 

@@ -308,6 +308,14 @@ var exampleConfig = {
                     fileName: "iportalWebMap"
                 }]
             },
+            "ip_security": {
+                name: "安全",
+                content: [{
+                    name: "安全认证",
+                    thumbnail: "ol_iportalSecurity.png",
+                    fileName: "iPortalSecurity"
+                }]
+            },
             "ip_querymaps": {
                 name: "地图列表",
                 content: [{
@@ -327,6 +335,14 @@ var exampleConfig = {
                     name: "2014当了一回背包客",
                     thumbnail: "ol_onlineWebMap.png",
                     fileName: "onlineWebMap"
+                }]
+            },
+            "ol_security": {
+                name: "安全",
+                content: [{
+                    name: "安全认证",
+                    thumbnail: "ol_onlineSecurity.png",
+                    fileName: "onlineSecurity"
                 }]
             }
         }

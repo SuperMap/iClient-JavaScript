@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Online SecurityManager使用示例</title>
     <script type="text/javascript" include="bootstrap-css,jquery" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .panel {
             margin-bottom: 0;
@@ -113,6 +113,7 @@
     </div>
 </div>
 <script>
+
     //若示例与SuperMap Online不在同一域下，欲查看示例效果请打开该句注释
     //SuperMap.Support.cors = false;
     $(document).ready(function () {
@@ -120,6 +121,7 @@
         $('#key_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
         $("#serviceUrlMap_online").val("http://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
         $('#mapKey_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
+
     });
 
     /*登录*/
@@ -137,7 +139,7 @@
         if (!checkUrl(serviceUrl)) {
             return;
         }
-        L.supermap.mapService(serviceUrl, {
+        new ol.supermap.MapService(serviceUrl, {
             serverType: SuperMap.ServerType.ONLINE
         }).getMapInfo(function (json) {
             if (json.error) {
@@ -174,15 +176,25 @@
         }
         SuperMap.SecurityManager.registerKey(mapUrl, key);
 
-        var onlineMap = L.map('online_map', {
-            crs: L.CRS.EPSG4326,
-            center: [30, 104],
-            maxZoom: 18,
-            zoom: 1
+        var map = new ol.Map({
+            target: 'online_map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [0, 0],
+                maxZoom: 18,
+                zoom: 2,
+                projection: 'EPSG:4326'
+            }),
         });
-        L.supermap.tiledMapLayer(mapUrl, {
-            serverType: SuperMap.ServerType.ONLINE
-        }).addTo(onlineMap);
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+                serverType: SuperMap.ServerType.ONLINE,
+                url: mapUrl
+            }),
+            projection: 'EPSG:4326'
+        });
+        map.addLayer(layer);
     }
 
     /*出图 end*/

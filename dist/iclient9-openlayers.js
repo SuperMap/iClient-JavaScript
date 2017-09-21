@@ -1464,15 +1464,21 @@ var CommonServiceBase = function () {
                 timeout: options.async ? 0 : null,
                 proxy: options.proxy
             }).then(function (response) {
-                return response.text();
+                if (response.text) {
+                    return response.text();
+                }
+                return response.json();
             }).then(function (text) {
-                var result = new _SuperMap2.default.Format.JSON().read(text);
-                if (!result) {
-                    result = { error: text };
+                var result = text;
+                if (typeof text === "string") {
+                    result = new _SuperMap2.default.Format.JSON().read(text);
+                }
+                if (!result || result.error || result.code >= 300 && result.code !== 304) {
+                    result = { error: result };
                 }
                 if (result.error) {
                     var failure = options.scope ? _SuperMap2.default.Function.bind(options.failure, options.scope) : options.failure;
-                    failure(result.error);
+                    failure(result);
                 } else {
                     result.succeed = result.succeed == undefined ? true : result.succeed;
                     var success = options.scope ? _SuperMap2.default.Function.bind(options.success, options.scope) : options.success;
@@ -25862,8 +25868,6 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
 
         var layerUrl = options.url + "/tileImage.png?";
         options.serverType = options.serverType || _SuperMap2.default.ServerType.ISERVER;
-        //为url添加安全认证信息片段
-        layerUrl = appendCredential(layerUrl, options.serverType);
 
         var _this = _possibleConstructorReturn(this, (TileSuperMapRest.__proto__ || Object.getPrototypeOf(TileSuperMapRest)).call(this, {
             attributions: options.attributions,
@@ -25891,6 +25895,7 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
         //当前切片在切片集中的index
         _this.tileSetsIndex = -1;
         _this.tempIndex = -1;
+
         function appendCredential(url, serverType) {
             var newUrl = url,
                 credential,
@@ -25992,6 +25997,8 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
          */
         function createLayerUrl() {
             this._layerUrl = layerUrl + getRequestParamString.call(this);
+            //为url添加安全认证信息片段
+            this._layerUrl = appendCredential(this._layerUrl, options.serverType);
             return this._layerUrl;
         }
 
@@ -40052,14 +40059,14 @@ var EditFeaturesParameters = function () {
 
                 features = { ids: params.IDs };
             } else {
-                if (params.features === null) return;
-
-                len = params.features.length;
                 features = [];
-                for (var i = 0; i < len; i++) {
-                    feature = params.features[i];
-                    feature.geometry = _ServerGeometry2.default.fromGeometry(feature.geometry);
-                    features.push(feature);
+                if (params.features) {
+                    len = params.features.length;
+                    for (var i = 0; i < len; i++) {
+                        feature = params.features[i];
+                        feature.geometry = _ServerGeometry2.default.fromGeometry(feature.geometry);
+                        features.push(feature);
+                    }
                 }
             }
 

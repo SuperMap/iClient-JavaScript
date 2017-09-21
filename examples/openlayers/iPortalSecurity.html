@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>iPortal SecurityManager使用示例</title>
     <script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
 
     <style>
         .panel {
@@ -250,7 +250,6 @@
         $('#key_iportal').val("CBIrkfXEAjydLrfp364qgM3P");
         $("#serviceUrlMap_iportal").val("http://support.supermap.com.cn:8099/ywutslmu/iserver/services/map-china400/rest/maps/China_4326");
         $('#mapKey_iportal').val("CBIrkfXEAjydLrfp364qgM3P");
-
     });
 
     /*登录*/
@@ -276,7 +275,6 @@
             }
         });
     }
-
 
     /*登录 end*/
 
@@ -353,7 +351,7 @@
         if (!checkUrl(url)) {
             return;
         }
-        L.supermap.mapService(url, {
+        new ol.supermap.MapService(url, {
             serverType: SuperMap.ServerType.IPORTAL
         }).getMapInfo(function (json) {
             if (json.error) {
@@ -381,15 +379,25 @@
         }
         SuperMap.SecurityManager.registerKey(mapUrl, key);
 
-        var onlineMap = L.map('iportal_map', {
-            crs: L.CRS.EPSG4326,
-            center: [30, 104],
-            maxZoom: 18,
-            zoom: 2
+        var map = new ol.Map({
+            target: 'iportal_map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [0, 0],
+                maxZoom: 18,
+                zoom: 2,
+                projection: 'EPSG:4326'
+            }),
         });
-        L.supermap.tiledMapLayer(mapUrl, {
-            serverType: SuperMap.ServerType.IPORTAL
-        }).addTo(onlineMap);
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+                serverType: SuperMap.ServerType.IPORTAL,
+                url: mapUrl
+            }),
+            projection: 'EPSG:4326'
+        });
+        map.addLayer(layer);
     }
 
     /*出图 end*/
