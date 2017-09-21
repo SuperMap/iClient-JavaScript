@@ -1474,7 +1474,11 @@ var CommonServiceBase = function () {
                     result = new _SuperMap2.default.Format.JSON().read(text);
                 }
                 if (!result || result.error || result.code >= 300 && result.code !== 304) {
-                    result = { error: result };
+                    if (result && result.error) {
+                        result = { error: result.error };
+                    } else {
+                        result = { error: result };
+                    }
                 }
                 if (result.error) {
                     var failure = options.scope ? _SuperMap2.default.Function.bind(options.failure, options.scope) : options.failure;
@@ -25895,7 +25899,6 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
         //当前切片在切片集中的index
         _this.tileSetsIndex = -1;
         _this.tempIndex = -1;
-
         function appendCredential(url, serverType) {
             var newUrl = url,
                 credential,

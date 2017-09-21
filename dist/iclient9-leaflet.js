@@ -1474,7 +1474,11 @@ var CommonServiceBase = function () {
                     result = new _SuperMap2["default"].Format.JSON().read(text);
                 }
                 if (!result || result.error || result.code >= 300 && result.code !== 304) {
-                    result = { error: result };
+                    if (result && result.error) {
+                        result = { error: result.error };
+                    } else {
+                        result = { error: result };
+                    }
                 }
                 if (result.error) {
                     var failure = options.scope ? _SuperMap2["default"].Function.bind(options.failure, options.scope) : options.failure;

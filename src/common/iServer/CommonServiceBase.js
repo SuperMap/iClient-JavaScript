@@ -314,7 +314,11 @@ export default class CommonServiceBase {
                 result = new SuperMap.Format.JSON().read(text);
             }
             if (!result || result.error || result.code >= 300 && result.code !== 304) {
-                result = {error: result};
+                if (result && result.error) {
+                    result = {error: result.error};
+                } else {
+                    result = {error: result};
+                }
             }
             if (result.error) {
                 var failure = (options.scope) ? SuperMap.Function.bind(options.failure, options.scope) : options.failure;
@@ -325,7 +329,7 @@ export default class CommonServiceBase {
                 success(result);
             }
 
-        });
+        })
     }
 
     CLASS_NAME = "SuperMap.CommonServiceBase";
