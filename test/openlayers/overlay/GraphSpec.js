@@ -1,4 +1,4 @@
-require('../../../../src/openlayers/overlay/theme/Graph');
+require('../../../src/openlayers/overlay/Graph');
 require('../../../tool/chinaConsumptionLevel');
 
 var url = GlobeParameter.China4326URL;

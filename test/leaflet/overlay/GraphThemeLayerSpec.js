@@ -1,4 +1,4 @@
-require('../../../../src/leaflet/overlay/theme/GraphThemeLayer');
+require('../../../src/leaflet/overlay/GraphThemeLayer');
 require('../../../tool/chinaConsumptionLevel');
 
 var options = {
