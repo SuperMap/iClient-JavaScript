@@ -98,7 +98,8 @@
 
             // 显示图例
             showLegend: true,
-            legendTitle: "土地利用类型"
+            legendTitle: "土地利用类型",
+            legendOrientation: 'vertical'
         });
         themeLayer.setHighlightStyleOptions({callback: highlightCallback}).setData(data).addTo(map);
         map.easeTo({
@@ -110,6 +111,9 @@
     //设置高亮图层提示
     function highlightCallback(features, evt) {
         var ft = features && features[0];
+        if (!ft) {
+            popup.remove();
+        }
         if (ft && ft.properties) {
             var content = "<span>土地类型: " + ft.properties[themeField] + "</span><br>";
             content += "<span>土地面积: " + ft.properties["AREA"] + "平方公里</span><br>";

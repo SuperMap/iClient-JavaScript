@@ -67,6 +67,7 @@ export class RangeTheme3DLayer extends Theme3DLayer {
             'fill-extrusion-color': {
                 'stops': this.colorStops,
                 'property': this.themeField || this.heightField,
+                'type': 'interval',
                 'base': reg.test(this.base) ? this.base : 1
             },
             'fill-extrusion-opacity': opacity
@@ -77,6 +78,8 @@ export class RangeTheme3DLayer extends Theme3DLayer {
                 'property': this.heightField || 'height',
                 'base': reg.test(this.base) ? this.base : 1
             }
+        } else if (this.height) {
+            options['fill-extrusion-height'] = this.height;
         } else {
             options['fill-extrusion-height'] = {
                 'property': this.heightField || 'height',
@@ -113,47 +116,31 @@ export class RangeTheme3DLayer extends Theme3DLayer {
     _createLegendElement() {
         var len = this.colorStops && this.colorStops.length || 0;
         //颜色分段对应标识
-        var colorGalleryElement = "<ul>";
-        var valueGalleryElement = "<ul>";
-        for (var i = 0; i < len; i++) {
+        var legendListElement = "<ul>";
+        var i;
+        for (i = 0; i < len; i++) {
             var value = this.colorStops[i][0];
-            this.legendRatio = (this.legendRatio == null) ? 1 : this.legendRatio;
-            value = value * this.legendRatio;
             var text = this._getWrapperText(value);
-            var color = this.colorStops[i][1];
-            colorGalleryElement += "<li style='background-color:" + color + ";'></li>";
-            valueGalleryElement += "<li>" + text + "</li>";
-        }
-        colorGalleryElement += "</ul>";
-        valueGalleryElement += "</ul>";
-        return colorGalleryElement + valueGalleryElement;
-    }
+            if (i === len - 1) {
+                text = "> " + text;
+            } else {
+                var next = this._getWrapperText(this.colorStops[i + 1][0]);
+                text = text + "-" + next;
+            }
 
-    _legendCSSStyle() {
-        return `.legend ul { 
-            clear: both; 
-            overflow: auto; 
-            padding: 0; 
-            margin: 0; 
-            height: 100%; 
-            display: block; 
-            list-style: none; 
-            box-sizing: border-box; 
-            -webkit-font-smoothing: antialiased; 
-        } 
-        .legend li { 
-            float: left; 
-            width: 50px; 
-            height: 28px; 
-            overflow: hidden; 
-            text-overflow: clip; 
-            padding: 0 4px; 
-            line-height: 28px;`;
+            var color = this.colorStops[i][1];
+
+            legendListElement += "<li><span style='background-color:" + color + ";'></span><span>" + text + "</span></li>";
+        }
+        legendListElement += "</ul>";
+        return legendListElement;
     }
 
     _getWrapperText(number) {
+        var value = number * ((this.legendRatio == null) ? 1 : parseFloat(this.legendRatio));
+
         //单个颜色值宽度为60px,最大只能完全显示1000000，否则就超出宽度，则显示以为k计数单位的值
-        var num = parseFloat(number);
+        var num = parseFloat(value);
         if (num % 1000000 <= 1000000) {
             return num.toString();
         }

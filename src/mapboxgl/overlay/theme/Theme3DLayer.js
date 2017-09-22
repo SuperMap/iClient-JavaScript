@@ -11,12 +11,13 @@ import '../../core/Base';
  *             enableHighlight -{boolean} 是否开启高亮,默认false<br>
  *             highlight -{Object} 高亮颜色,默认"#ADA91E"<br>
  *             baseHeightField -{string} 数据中表示基础高度的字段<br>
- *
+ *             height -{number} 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度<br>
  *             heightField -{string} 数据中表示高度的字段<br>
  *             themeField -{string} 专题展示的字段<br>
  *             showLegend -{boolean} 是否显示图例,默认显示<br>
  *             legendTitle -{string} 图例标题<br>
- *             legendTheme -{string} 图例主题，取值：'light','dark'<br>
+ *             legendTheme -{string} 图例主题，取值：'light','dark',默认：'light'<br>
+ *             legendOrientation -{string} 图例方向，取值：'horizontal','vertical'，默认：'horizontal'<br>
  *             legendPosition -{string} 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'<br>
  */
 export class Theme3DLayer {
@@ -62,6 +63,12 @@ export class Theme3DLayer {
     baseHeightField = null;
 
     /**
+     * @member  mapboxgl.supermap.Theme3DLayer.prototype.height -{number}
+     * @description 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度
+     */
+    height = null;
+
+    /**
      * @member  mapboxgl.supermap.Theme3DLayer.prototype.heightField -{string}
      * @description 数据中表示高度的字段
      */
@@ -91,6 +98,13 @@ export class Theme3DLayer {
      * @default 'light'
      */
     legendTheme = 'light';
+
+    /**
+     * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendOrientation -{string}
+     * @description 图例方向，取值：'horizontal','vertical'，默认：'horizontal'
+     * @default 'horizontal'
+     */
+    legendOrientation = 'horizontal';
     /**
      * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendPosition -{string}
      * @description 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'
@@ -113,11 +127,13 @@ export class Theme3DLayer {
      * *          opacity -{number} 图层透明度，默认1<br>
      *            parseNumber -{boolean} 是否预处理数据，将数据转换为number，默认false<br>
      *            baseHeightField -{string} 数据中表示基础高度的字段<br>
+     *            height -{number} 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度<br>
      *            heightField -{string} 数据中表示高度的字段<br>
      *            themeField -{string} 专题展示的字段<br>
      *            showLegend -{boolean} 是否显示图例,默认显示<br>
      *            legendTitle -{string} 图例标题<br>
-     *            legendTheme -{string} 图例主题，取值：'light','dark'<br>
+     *            legendTheme -{string} 图例主题，取值：'light','dark',默认：'light'<br>
+     *            legendOrientation -{string} 图例方向，取值：'horizontal','vertical'，默认：'horizontal'<br>
      *            legendPosition -{string} 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'<br>
      * @returns {this}
      */
@@ -182,6 +198,7 @@ export class Theme3DLayer {
         if (!this.map) {
             return this;
         }
+
         this.show();
         return this;
     }
@@ -266,7 +283,11 @@ export class Theme3DLayer {
             if (me.legendTheme === 'dark') {
                 theme = 'legend-dark';
             }
-            this._container.className = className + theme;
+            var orientation = ' legend-horizontal';
+            if (me.legendOrientation === 'vertical') {
+                orientation = ' legend-vertical';
+            }
+            this._container.className = className + theme + orientation;
 
             if (html) {
                 this._container.innerHTML = html;
@@ -296,7 +317,7 @@ export class Theme3DLayer {
     _addLayer() {
         var paintOptions = this.getLayerStyleOptions();
         var id = this.id ? this.id : "theme3DLayer";
-        var sourceId = id + 'Source';
+        var sourceId = this.sourceId = id + 'Source';
         if (!this.map.getSource(sourceId)) {
             this.map.addSource(sourceId, {
                 'type': 'geojson',
@@ -344,22 +365,43 @@ export class Theme3DLayer {
 
         var me = this;
         var canvas = document.querySelector('.mapboxgl-canvas-container.mapboxgl-interactive');
+        var featureId;
         map.on('mousemove', function (e) {
             canvas.style.cursor = 'auto';
+
             var features = map.queryRenderedFeatures(e.point, {layers: [me.id]});
             if (me.highlight && me.highlight.callback) {
                 me.highlight.callback(features, e);
             }
-            var ft = features && features[0];
-            if (ft && ft.toJSON) {
-                map.getSource('highlight').setData(ft.toJSON())
+
+            if (!features || features.length < 1) {
+                me._clearHighlight.call(me);
+                return;
             }
-        }).on('mouseout', function () {
-            map.getSource('highlight').setData({
+
+            var id = features[0].id;
+            if (featureId === id) {
+                return;
+            }
+            featureId = id;
+            me._clearHighlight.call(me);
+            var sourceFeatures = map.querySourceFeatures(me.sourceId, {filter: ['==', '$id', id]});
+            var i, len = sourceFeatures.length;
+            var geoFeatures = {'type': 'FeatureCollection', 'features': []};
+            for (i = 0; i < len; i++) {
+                geoFeatures['features'].push(sourceFeatures[i].toJSON());
+            }
+            map.getSource('highlight').setData(geoFeatures);
+        });
+    }
+
+    _clearHighlight() {
+        if (this.map) {
+            this.map.getSource('highlight').setData({
                 "type": "FeatureCollection",
                 "features": []
             })
-        });
+        }
     }
 
     _appendLegendCSSStyle() {
@@ -399,15 +441,77 @@ export class Theme3DLayer {
         }
         .legend-content{
             padding:6px 10px;
-        }`;
+        }
+        `;
         legendStyle.innerHTML = baseStyle + this._legendCSSStyle();
         document.getElementsByTagName('head')[0].appendChild(legendStyle);
     }
 
     //各种图层对应的自己的图例的样式
     _legendCSSStyle() {
-        //子类实现
-        return "";
+        //子类可重写实现
+        return `
+        .legend ul {
+            padding: 0;
+            margin: 0 16px;
+            height: 100%;
+            display: block;
+            list-style: none;
+        }
+
+        .legend li {
+            vertical-align: middle;
+        }
+
+        .legend li span:first-child {
+            vertical-align: middle;
+        }
+
+        .legend li span:last-child {
+            line-height: 28px;
+            max-width: 200px;
+            vertical-align: middle;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -ms-text-overflow: ellipsis;
+        }
+
+        .legend-vertical li {
+            height: 28px;
+        }
+
+        .legend-vertical li span:first-child {
+            display: inline-block;
+            width: 60px;
+            height: 100%;
+        }
+
+        .legend-vertical li span:last-child {
+            display: inline-block;
+            margin-left: 16px;
+            height: 100%;
+        }
+
+        .legend-horizontal li {
+            height: 56px;
+            float: left;
+        }
+
+        .legend-horizontal li span:first-child {
+            display: block;
+            width: 100%;
+            height: 50%;
+        }
+
+        .legend-horizontal li span:last-child {
+            display: block;
+            vertical-align: middle;
+            width: 60px;
+            height: 50%;
+            text-align: center;
+        }
+        `;
     }
 
     _extend(dest) {

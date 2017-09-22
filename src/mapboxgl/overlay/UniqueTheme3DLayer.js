@@ -12,12 +12,6 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
 export class UniqueTheme3DLayer extends Theme3DLayer {
 
     /**
-     * @member  mapboxgl.supermap.UniqueTheme3DLayer.prototype.height -{number}
-     * @description 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度
-     */
-    height = null;
-
-    /**
      * @member  mapboxgl.supermap.UniqueTheme3DLayer.prototype.colorStops -{Array}
      * @description 数据颜色数组，如[["绿地","#CD7054"],["道路","#AD1283"]]
      */
@@ -95,36 +89,6 @@ export class UniqueTheme3DLayer extends Theme3DLayer {
         }
         legendListElement += "</ul>";
         return legendListElement;
-    }
-
-    _legendCSSStyle() {
-        return `
-        .legend ul {
-            padding: 0;
-            margin: 0 16px;
-            height: 100%;
-            display: block;
-            list-style: none;
-        }
-
-        .legend li {
-            height: 28px;
-            vertical-align: middle;
-        }
-
-        .legend li span:first-child {
-            display: inline-block;
-            width: 60px;
-            height: 100%;
-            vertical-align: middle;
-        }
-
-        .legend li span:last-child {
-            margin-left: 16px;
-            line-height: 28px;
-            display: inline-block;
-            vertical-align: middle;
-        }`;
     }
 }
 

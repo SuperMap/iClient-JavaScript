@@ -220,6 +220,50 @@ SuperMap.Util.modifyDOMElement = function (element, id, px, sz, position,
     }
 };
 
+
+/**
+ * @description Takes an object and copies any properties that don't exist from
+ *     another properties, by analogy with SuperMap.Util.extend() from
+ *     Prototype.js.
+ *
+ * @param to -{Object} The destination object.
+ * @param from -{Object} The source object.  Any properties of this object that
+ *     are undefined in the to object will be set on the to object.
+ *
+ * @return {Object} A reference to the to object.  Note that the to argument is modified
+ *     in place and returned by this function.
+ */
+SuperMap.Util.applyDefaults = function (to, from) {
+    to = to || {};
+    /*
+     * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
+     * prototype object" when calling hawOwnProperty if the source object is an
+     * instance of window.Event.
+     */
+    var fromIsEvt = typeof window.Event === "function"
+        && from instanceof window.Event;
+
+    for (var key in from) {
+        if (to[key] === undefined ||
+            (!fromIsEvt && from.hasOwnProperty
+                && from.hasOwnProperty(key) && !to.hasOwnProperty(key))) {
+            to[key] = from[key];
+        }
+    }
+    /**
+     * IE doesn't include the toString property when iterating over an object's
+     * properties with the for(property in object) syntax.  Explicitly check if
+     * the source has its own toString property.
+     */
+    if (!fromIsEvt && from && from.hasOwnProperty
+        && from.hasOwnProperty('toString') && !to.hasOwnProperty('toString')) {
+        to.toString = from.toString;
+    }
+
+    return to;
+};
+
+
 /**
  * @param params - {Object} 参数对象。
  * @return {string} HTTP的GEI请求中的参数字符串。
