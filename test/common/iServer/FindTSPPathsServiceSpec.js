@@ -68,14 +68,36 @@ describe('testFindTSPPathsService_processAsync',function(){
                 expect(analystResult[0].edgeFeatures).not.toBeNull();
                 expect(analystResult[0].edgeFeatures.type).toEqual("FeatureCollection");
                 expect(analystResult[0].edgeFeatures.features).not.toBeNull();
-                expect(analystResult[0].edgeFeatures.features[0].type).toEqual("Feature");
-                expect(analystResult[0].edgeFeatures.features[0].geometry).not.toBeNull();
+                expect(analystResult[0].edgeFeatures.features.length).toBeGreaterThan(0);
+                for(var i = 0;i<analystResult[0].edgeFeatures.features.length;i++){
+                    expect(analystResult[0].edgeFeatures.features[i].type).toBe("Feature");
+                    expect(analystResult[0].edgeFeatures.features[i].geometry).not.toBeNull();
+                    expect(analystResult[0].edgeFeatures.features[i].id).not.toBeNull();
+                    expect(analystResult[0].edgeFeatures.features[i].properties).not.toBeNull();
+                }
+                expect(analystResult[0].edgeFeatures.features[0].id).toEqual(2886);
+                expect(analystResult[0].edgeFeatures.features[0].geometry.type).toBe("LineString");
+                expect(analystResult[0].edgeFeatures.features[0].geometry.coordinates.length).toBeGreaterThan(0);
                 expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(2886);
                 expect(analystResult[0].nodeFeatures).not.toBeNull();
+                expect(analystResult[0].nodeFeatures.type).toEqual("FeatureCollection");
+                expect(analystResult[0].nodeFeatures.features).not.toBeNull();
+                expect(analystResult[0].nodeFeatures.features.length).toBeGreaterThan(0);
+                for(var j = 0;j<analystResult[0].edgeFeatures.features.length;j++){
+                    expect(analystResult[0].nodeFeatures.features[j].type).toBe("Feature");
+                    expect(analystResult[0].nodeFeatures.features[j].geometry).not.toBeNull();
+                    expect(analystResult[0].nodeFeatures.features[j].id).not.toBeNull();
+                    expect(analystResult[0].nodeFeatures.features[j].properties).not.toBeNull();
+                }
+                expect(analystResult[0].nodeFeatures.features[0].id).toEqual(3030);
+                expect(analystResult[0].nodeFeatures.features[0].geometry.type).toBe("Point");
+                expect(analystResult[0].nodeFeatures.features[0].geometry.coordinates.length).toBeGreaterThan(0);
                 expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(3030);
                 expect(analystResult[0].pathGuideItems).not.toBeNull();
+                expect(analystResult[0].pathGuideItems.type).toBe("FeatureCollection");
+                expect(analystResult[0].pathGuideItems.features.length).toBeGreaterThan(0);
                 expect(analystResult[0].route).not.toBeNull();
-
+                expect(analystResult[0].route.type).toBe("Feature");
                 findTSPPathsService.destroy();
                 expect(findTSPPathsService.EVENT_TYPES).toBeNull();
                 expect(findTSPPathsService.events).toBeNull();
@@ -121,11 +143,10 @@ describe('testFindTSPPathsService_processAsync',function(){
 
         setTimeout(function(){
             try{
+                expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 findTSPPathsService.destroy();
-                expect(findTSPPathsService.EVENT_TYPES).toBeNull();
-                expect(findTSPPathsService.events).toBeNull();
                 parameter.destroy();
                 done();
             }catch (exception){
@@ -168,11 +189,10 @@ describe('testFindTSPPathsService_processAsync',function(){
 
         setTimeout(function(){
             try{
+                expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 findTSPPathsService.destroy();
-                expect(findTSPPathsService.EVENT_TYPES).toBeNull();
-                expect(findTSPPathsService.events).toBeNull();
                 parameter.destroy();
                 done();
             }catch (exception){
@@ -189,14 +209,12 @@ describe('testFindTSPPathsService_processAsync',function(){
     it('parameterNull',function(done){
         var findTSPPathsService = initFindTSPPathService();
         findTSPPathsService.processAsync();
-
         setTimeout(function(){
             try{
+                expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 findTSPPathsService.destroy();
-                expect(findTSPPathsService.EVENT_TYPES).toBeNull();
-                expect(findTSPPathsService.events).toBeNull();
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
@@ -238,10 +256,10 @@ describe('testFindTSPPathsService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                expect(serviceFailedEventArgsSystem.error).toEqual("tsppath");
+                expect(serviceFailedEventArgsSystem.type).toBe("processFailed");
+                expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
+                expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 findTSPPathsService.destroy();
-                expect(findTSPPathsService.EVENT_TYPES).toBeNull();
-                expect(findTSPPathsService.events).toBeNull();
                 parameter.destroy();
                 done();
             }catch (exception){

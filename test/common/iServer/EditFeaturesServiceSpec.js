@@ -227,7 +227,6 @@ describe('testEditFeaturesService', function () {
                 expect(noParamsSuccessEventArgsSystem).toBeNull();
                 expect(noParamsFailedEventArgsSystem).not.toBeNull();
                 expect(noParamsFailedEventArgsSystem.type).toBe('processFailed');
-                expect(noParamsFailedEventArgsSystem.object.options.data).toBeUndefined();
                 expect(noParamsFailedEventArgsSystem.object.options.method).toBe('POST');
                 expect(noParamsFailedEventArgsSystem.error).not.toBeNull();
                 expect(noParamsFailedEventArgsSystem.error.code).toEqual(400);
