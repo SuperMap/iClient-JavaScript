@@ -291,7 +291,7 @@ var exampleConfig = {
                 name: "实时数据",
                 content: [{
                     name: "实时数据",
-                    thumbnail: "dataflow.png",
+                    thumbnail: "dataflow.gif",
                     fileName: "dataFlowService"
                 }]
             },
@@ -395,7 +395,7 @@ var exampleConfig = {
                 name: "动画要素图",
                 content: [{
                     name: "动画点",
-                    thumbnail: "ol_animationFeature.png",
+                    thumbnail: "ol_animationFeature.gif",
                     fileName: "07_AnimationFeature"
                 }]
             },
@@ -449,15 +449,15 @@ var exampleConfig = {
                     fileName: "mapvNycTaxi"
                 }, {
                     name: "强边界图",
-                    thumbnail: "mapvForceEdgeBuilding.png",
+                    thumbnail: "mapvForceEdgeBuilding.gif",
                     fileName: "mapvForceEdgeBuilding"
                 }, {
                     name: "迁徙图",
-                    thumbnail: "mapvQianxiTime.png",
+                    thumbnail: "mapvQianxiTime.gif",
                     fileName: "mapvQianxiTime"
                 }, {
                     name: "动态轨迹",
-                    thumbnail: "mapvPolylineTime.png",
+                    thumbnail: "mapvPolylineTime.gif",
                     fileName: "mapvPolylineTime"
                 }, {
                     name: "强度线",

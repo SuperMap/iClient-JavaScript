@@ -126,7 +126,7 @@ var exampleConfig = {
                     },
                     {
                         name: "模拟迁徙图",
-                        thumbnail: "echarts_geoline.png",
+                        thumbnail: "echarts_geoline.gif",
                         fileName: "echarts_geoline"
                     },
                     {
@@ -151,7 +151,7 @@ var exampleConfig = {
                     },
                     {
                         name: "强边界图",
-                        thumbnail: "mapvForceEdgeBuilding.png",
+                        thumbnail: "mapvForceEdgeBuilding.gif",
                         fileName: "mapvForceEdgeBuilding"
                     },
                     {
@@ -166,17 +166,17 @@ var exampleConfig = {
                     },
                     {
                         name: "动态轨迹",
-                        thumbnail: "mapvPolylineTime.png",
+                        thumbnail: "mapvPolylineTime.gif",
                         fileName: "mapvPolylineTime"
                     },
                     {
                         name: "迁徙时序图",
-                        thumbnail: "mapvQianxiTime.png",
+                        thumbnail: "mapvQianxiTime.gif",
                         fileName: "mapvQianxiTime"
                     },
                     {
                         name: "迁徙图",
-                        thumbnail: "mapvQianxi.png",
+                        thumbnail: "mapvQianxi.gif",
                         fileName: "mapvQianxi"
                     },
                     {
@@ -236,7 +236,7 @@ var exampleConfig = {
                 content: [
                     {
                         name: "GTC2017",
-                        thumbnail: "gtc2017.png",
+                        thumbnail: "gtc2017.gif",
                         fileName: "GTC2017"
                     }
                 ]

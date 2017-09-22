@@ -295,7 +295,7 @@ var exampleConfig = {
                 name: "实时数据",
                 content: [{
                     name: "实时数据",
-                    thumbnail: "dataflow.png",
+                    thumbnail: "dataflow.gif",
                     fileName: "dataFlowService"
                 }]
             },
@@ -379,11 +379,11 @@ var exampleConfig = {
                 name: "可视化",
                 content: [{
                     name: "热力/格网图",
-                    thumbnail: "l_ESHeatMap.png",
+                    thumbnail: "l_ESHeatMap.gif",
                     fileName: "ESHeatMap"
                 }, {
                     name: "航班监控",
-                    thumbnail: "l_PlanesMonitor.png",
+                    thumbnail: "l_PlanesMonitor.gif",
                     fileName: "PlanesMonitor"
                 }]
             }
@@ -421,7 +421,7 @@ var exampleConfig = {
                 name: "动画",
                 content: [{
                     name: "闪烁点",
-                    thumbnail: "l_pulse.png",
+                    thumbnail: "l_pulse.gif",
                     fileName: "12_pulse"
                 }]
             },
@@ -455,7 +455,7 @@ var exampleConfig = {
                     },
                     {
                         name: "迁徙图",
-                        thumbnail: "l_echartsGeoLines.png",
+                        thumbnail: "l_echartsGeoLines.gif",
                         fileName: "echartsGeoLines"
                     },
                     {
@@ -470,7 +470,7 @@ var exampleConfig = {
                     },
                     {
                         name: "线特效",
-                        thumbnail: "l_echartsLinesEffect.png",
+                        thumbnail: "l_echartsLinesEffect.gif",
                         fileName: "echartsLinesEffect"
                     },
                     {
@@ -512,15 +512,15 @@ var exampleConfig = {
                     fileName: "mapVLayerCSVCar"
                 }, {
                     name: "强边界图",
-                    thumbnail: "l_mapvLayer_forceEdgeBunding.png",
+                    thumbnail: "l_mapvLayer_forceEdgeBunding.gif",
                     fileName: "mapVLayerForceEdgeBunding"
                 }, {
                     name: "迁徙图",
-                    thumbnail: "l_mapvLayer_qianxi.png",
+                    thumbnail: "l_mapvLayer_qianxi.gif",
                     fileName: "mapVLayerQianxi"
                 }, {
                     name: "动态轨迹",
-                    thumbnail: "l_mapvLayer_polylineTime.png",
+                    thumbnail: "l_mapvLayer_polylineTime.gif",
                     fileName: "mapVLayerPolylineTime"
                 }, {
                     name: "简单线",
