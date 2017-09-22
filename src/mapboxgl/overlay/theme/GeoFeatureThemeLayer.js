@@ -1,14 +1,14 @@
 import mapboxgl from 'mapbox-gl';
 import SuperMap from '../../../common/SuperMap';
-import Theme from './Theme';
+import Theme from './ThemeLayer';
 import Vector from '../../../common/overlay/ThemeVector';
 /**
- * @class mapboxgl.supermap.GeoFeature
- * @classdesc 地理几何专题要素型专题图层基类。
+ * @class mapboxgl.supermap.GeoFeatureThemeLayer
+ * @classdesc 地理几何专题要素型专题图层。
  * @private
  * @param name - {string} 图层名
  * @param opt_options - {Object} 参数。
- * @extends mapboxgl.supermap.Theme
+ * @extends mapboxgl.supermap.ThemeLayer
  */
 
 export default class GeoFeature extends Theme {
@@ -29,7 +29,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.destroy
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -47,7 +47,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.addFeatures
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加要素
      * @param features - {Object} 要素对象
      */
@@ -76,7 +76,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.removeFeatures
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.removeFeatures
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      * @param features - {Object} 要删除的要素对象
      */
@@ -86,7 +86,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.removeAllFeatures
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -95,7 +95,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.redrawThematicFeatures
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      * @param extent - {mapboxgl.LngLatBounds} 重绘的范围。
      */
@@ -168,7 +168,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.createThematicFeature
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.createThematicFeature
      * @description 创建专题要素。
      * @param feature - {SuperMap.Feature.Vector} 要素对象。
      */
@@ -194,7 +194,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.clearCache
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.clearCache
      * @description 清除缓存。
      */
     clearCache() {
@@ -203,7 +203,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.clear
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.clear
      * @description  清除的内容包括数据（features） 、专题要素、缓存。
      */
     clear() {
@@ -214,7 +214,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.getCacheCount
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.getCacheCount
      * @description 获取当前缓存数量。
      * @return {number} 当前缓存数量。
      */
@@ -223,7 +223,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.setMaxCacheCount
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @param cacheCount - {number} 缓存总数
      * @description 设置最大缓存条数。
      */
@@ -235,7 +235,7 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeature.prototype.setMaxCacheCount
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @param featureID - {number} 要素ID。
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      */
@@ -255,4 +255,4 @@ export default class GeoFeature extends Theme {
     }
 
 }
-mapboxgl.supermap.GeoFeature = GeoFeature;
+mapboxgl.supermap.GeoFeatureThemeLayer = GeoFeature;

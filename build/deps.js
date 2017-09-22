@@ -384,7 +384,8 @@ deps = {
                 "src": [
                     './src/leaflet/overlay/UniqueThemeLayer.js',
                     './src/leaflet/overlay/RangeThemeLayer.js',
-                    './src/leaflet/overlay/RankSymbolThemeLayer.js'
+                    './src/leaflet/overlay/RankSymbolThemeLayer.js',
+                    './src/leaflet/overlay/GraphThemeLayer.js',
                 ],
                 "modules": [{
                     "name": "L.supermap.uniqueThemeLayer",
@@ -395,6 +396,9 @@ deps = {
                 }, {
                     "name": "L.supermap.rankSymbolThemeLayer",
                     "des": "符号等级专题图效果"
+                }, {
+                    "name": "L.supermap.garphThemeLayer",
+                    "des": "统计专题图效果"
                 }]
             },
             "MapV": {
@@ -699,6 +703,7 @@ deps = {
                     "./src/openlayers/overlay/Unique.js",
                     "./src/openlayers/overlay/Range.js",
                     "./src/openlayers/overlay/RankSymbol.js",
+                    "./src/openlayers/overlay/Graph.js",
                 ],
                 "modules": [{
                     "name": "ol.source.Unique",
@@ -709,6 +714,9 @@ deps = {
                 }, {
                     "name": "ol.source.Range",
                     "des": "分段专题图效果"
+                }, {
+                    "name": "ol.source.Graph",
+                    "des": "统计专题图效果"
                 }]
             },
             "Mapv": {
@@ -1107,6 +1115,7 @@ deps = {
                     "./src/mapboxgl/overlay/RangeThemeLayer.js",
                     "./src/mapboxgl/overlay/UniqueThemeLayer.js",
                     "./src/mapboxgl/overlay/RankSymbolThemeLayer.js",
+                    "./src/mapboxgl/overlay/GraphThemeLayer.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.RankTheme3DLayer",
@@ -1123,6 +1132,9 @@ deps = {
                 }, {
                     "name": "mapboxgl.supermap.RankSymbolThemeLayer",
                     "des": "等级符号专题图"
+                }, {
+                    "name": "mapboxgl.supermap.GraphThemeLayer",
+                    "des": "统计专题图"
                 }]
 
             }

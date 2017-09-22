@@ -3,106 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <title>分段专题图</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style type="text/css">
-        /*图例 style*/
-        .legend {
-            position: absolute;
-            right: 10px;
-            top: 350px;
-            width: 250px;
-            text-align: center;
-            border: 2px solid #D6E3F1;
-            background: #FFF;
-            z-index: 1000;
-            display: none;
-        }
-
-        .legendTitle {
-            background: #1E90FF;
-        }
-
-        .legendContent {
-            padding-left: 15px;
-            padding-right: 15px;
-            height: 160px;
-            display: block;
-            overflow-y: auto;
-        }
-
-        .legendItemHeader {
-            top: 5px;
-            width: 100px;
-            height: 18px;
-            text-align: center;
-        }
-
+        .legendItemHeader,
         .legendItemValue {
-            top: 5px;
             width: 120px;
-            text-align: center;
             height: 18px;
+            font-size: 14px;
         }
-
-        /*信息框 style*/
-        #infoBox {
-            border: 2px solid #D6E3F1;
-            position: absolute;
-            right: 10px;
-            top: 250px;
-            width: 250px;
-            z-index: 999;
-            display: none;
-        }
-
-        <!--</style>
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<div id="map" style="width: 100%;height:100%"></div>
-<div>
-    <div id="mapLegend" class="legend">
-        <div class="legendTitle">
-            <span>图例</span>
+<div id="map" style="width: 100%;height:100%">
+    <div style="z-index: 100;position: relative;width: 272px;float:right">
+        <div id="infoBox" class="panel panel-primary infoPane"
+             style="width:272px;margin-top: 250px;position: absolute;fontSize:14px;display: none;float:right">
+            <div class="panel-heading">
+                <h5 class='panel-title text-center'>属性表</h5>
+            </div>
+            <div id="infoContent" class="panel-body content">
+            </div>
         </div>
-        <div class="legendContent">
-            <table>
-                <tr>
-                    <td class="legendItemHeader">人口密度(1999年)</td>
-                    <td class="legendItemValue">颜色</td>
-                </tr>
-                <tr>
-                    <td class="legendItemHeader">0 - 0.02</td>
-                    <td class="legendItemValue" style="background: #FDE2CA"></td>
-                </tr>
-                <tr>
-                    <td class="legendItemHeader">0.02 - 0.04</td>
-                    <td class="legendItemValue" style="background: #FACE9C"></td>
-                </tr>
-                <tr>
-                    <td class="legendItemHeader">0.04 - 0.06</td>
-                    <td class="legendItemValue" style="background: #F09C42"></td>
-                </tr>
-                <tr>
-                    <td class="legendItemHeader">0.06 - 0.1</td>
-                    <td class="legendItemValue" style="background: #D0770B"></td>
-                </tr>
-                <tr>
-                    <td class="legendItemHeader">0.1 - 0.2</td>
-                    <td class="legendItemValue" style="background: #945305"></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div id="infoBox">
-        <div style="text-align: center;background: #1E90FF"> 属性表</div>
-        <div id="infoContent" style="overflow-y: auto; padding: 5px; background-color: #FFFFFF">
+        <div class="panel panel-primary legend" style="width:272px;margin-top: 400px;position: absolute;float:right">
+            <div id="mapLegend" class="panel-heading">
+                <h5 class='panel-title text-center'>
+                    <span>图例</span>
+                </h5>
+            </div>
+            <div class="panel-body text-center">
+                <table>
+                    <tr>
+                        <td class="legendItemHeader">土地类型</td>
+                        <td class="legendItemValue">颜色</td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">草地</td>
+                        <td class="legendItemValue" style="background: #C1FFC1"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">城市</td>
+                        <td class="legendItemValue" style="background: #CD7054"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">灌丛</td>
+                        <td class="legendItemValue" style="background: #7CCD7C"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">旱地</td>
+                        <td class="legendItemValue" style="background: #EE9A49"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">湖泊水库</td>
+                        <td class="legendItemValue" style="background: #8EE5EE"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">经济林</td>
+                        <td class="legendItemValue" style="background: #548B54"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">沙漠</td>
+                        <td class="legendItemValue" style="background: #DEB887"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">水浇地</td>
+                        <td class="legendItemValue" style="background: #E0FFFF"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">水田</td>
+                        <td class="legendItemValue" style="background: #388E8E"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">用材林</td>
+                        <td class="legendItemValue" style="background: #556B2F"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">沼泽</td>
+                        <td class="legendItemValue" style="background: #2F4F4F"></td>
+                    </tr>
+                    <tr>
+                        <td class="legendItemHeader">缺省风格</td>
+                        <td class="legendItemValue" style="background: #ABABAB"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
     var map, themeSource
-    baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
-        url2 = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/data-jingjin/rest/data",
+    baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        url2 = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090") + "/iserver/services/data-jingjin/rest/data",
         extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
@@ -143,18 +134,18 @@
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;
         if (result && result.features) {
-            addThemeLayer(result.features);
+            addThemeLayer();
+            themeSource.addFeatures(result.features);
             //显示图例
             document.getElementById("mapLegend").style.display = "block";
         }
     }
 
-    function addThemeLayer(features) {
+    function addThemeLayer() {
         themeSource = new ol.source.Range("ThemeLayer",
             {
                 map: map,
                 attributions: " ",
-                features: features,
                 style: {
                     shadowBlur: 16,
                     shadowColor: "#000000",

@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import SuperMap from '../../common/SuperMap';
-import Graph from './theme/Graph';
+import Graph from './GraphThemeLayer';
 
 /**
  * @class mapboxgl.supermap.RankSymbolThemeLayer
@@ -8,7 +8,7 @@ import Graph from './theme/Graph';
  * @param name - {string} 图层名。
  * @param symbolType -{string} 符号类型。
  * @param opt_options -{Object} 参数。
- * @extends mapboxgl.supermap.Graph
+ * @extends mapboxgl.supermap.GraphThemeLayer
  */
 export default class RankSymbol extends Graph {
 

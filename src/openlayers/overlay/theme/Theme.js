@@ -34,6 +34,12 @@ export default class Theme extends ol.source.ImageCanvas {
             state: options.state
         });
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+            if (!this.context) {
+                this.context = Util.createCanvasContext2D(mapWidth, mapHeight);
+            }
+            if (!this.features) {
+                return this.context.canvas;
+            }
             this.pixelRatio = pixelRatio;
             var mapWidth = size[0] * pixelRatio;
             var mapHeight = size[1] * pixelRatio;
@@ -62,9 +68,6 @@ export default class Theme extends ol.source.ImageCanvas {
             copyHighLightContext.drawImage(highlightCanvas, 0, 0, highlightCanvas.width, highlightCanvas.height, 0, 0, mapWidth, mapHeight);
 
             this.redrawThematicFeatures(extent);
-            if (!this.context) {
-                this.context = Util.createCanvasContext2D(mapWidth, mapHeight);
-            }
             var canvas = this.context.canvas;
             this.context.clearRect(0, 0, canvas.width, canvas.height);
             canvas.width = mapWidth;
@@ -81,10 +84,8 @@ export default class Theme extends ol.source.ImageCanvas {
         this.EVENT_TYPES = ["loadstart", "loadend", "loadcancel",
             "visibilitychanged", "move", "moveend", "added", "removed",
             "tileloaded", "beforefeaturesadded", "featuresadded", "featuresremoved"];
-        this.imageTransform = [1, 0, 0, 1, 0, 0];
         this.features = [];
         this.TFEvents = [];
-        this.highLightCanvas = null;
         this.map = options.map;
         var size = this.map.getSize();
         this.div = document.createElement('div');
@@ -325,7 +326,7 @@ export default class Theme extends ol.source.ImageCanvas {
      * @param event - {string} 事件名称。
      */
     fire(type, event) {
-        if(!this.offset){
+        if (!this.offset) {
             return;
         }
         event = event.originalEvent;

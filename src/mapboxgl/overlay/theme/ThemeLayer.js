@@ -11,7 +11,7 @@ import "../../../common/overlay/levelRenderer/Render";
 
 /**
  * @private
- * @class mapboxgl.supermap.Theme
+ * @class mapboxgl.supermap.ThemeLayer
  * @classdesc 专题图基类。
  * @param name - {string} 图层名。
  * @param options -{Object} 参数。
@@ -46,7 +46,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.destroyFeatures
+     * @function mapboxgl.supermap.ThemeLayer.prototype.destroyFeatures
      * @description 销毁某个要素
      * @param features -{Object} 将被销毁的要素
      */
@@ -64,7 +64,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.setOpacity
+     * @function mapboxgl.supermap.ThemeLayer.prototype.setOpacity
      * @description 设置图层的不透明度,取值[0-1]之间。
      * @param opacity - {number} 不透明度
      */
@@ -82,7 +82,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.addFeatures
+     * @function mapboxgl.supermap.ThemeLayer.prototype.addFeatures
      * @param features -{Array<Object>} 需要添加的数据
      * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
@@ -93,7 +93,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.removeFeatures
+     * @function mapboxgl.supermap.ThemeLayer.prototype.removeFeatures
      * @param features - {Array<SuperMap.Feature.Vector>} 要删除feature的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      *              参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
@@ -139,7 +139,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.removeAllFeatures
+     * @function mapboxgl.supermap.ThemeLayer.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
@@ -151,7 +151,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.getFeatures
+     * @function mapboxgl.supermap.ThemeLayer.prototype.getFeatures
      * @description 查看当前图层中的有效数据。
      * @return {SuperMap.Feature.Vector} 用户加入图层的有效数据。
      */
@@ -165,7 +165,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.getFeatureBy
+     * @function mapboxgl.supermap.ThemeLayer.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
      *              返回此 feature（并且只返回第一个）。
      * @param property - {string} feature 的某个属性名称。
@@ -184,7 +184,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.getFeatureById
+     * @function mapboxgl.supermap.ThemeLayer.prototype.getFeatureById
      * @description 通过给定一个 id，返回对应的矢量要素。
      * @param featureId - {string} 矢量要素的属性 id。
      * @return {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
@@ -194,7 +194,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.getFeaturesByAttribute
+     * @function mapboxgl.supermap.ThemeLayer.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param attrName - {string} 属性的 key。
      * @param attrValue - {string} 矢量要素的属性 id。
@@ -215,7 +215,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.redrawThematicFeatures
+     * @function mapboxgl.supermap.ThemeLayer.prototype.redrawThematicFeatures
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
      * @param extent - {mapboxgl.LngLatBounds} 重绘的范围。
      */
@@ -256,7 +256,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.addTFEvents
+     * @function mapboxgl.supermap.ThemeLayer.prototype.addTFEvents
      * @description 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
      */
     addTFEvents() {
@@ -268,7 +268,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.getLocalXY
+     * @function mapboxgl.supermap.ThemeLayer.prototype.getLocalXY
      * @description 获取坐标系统
      * @param coordinate - {Object} 坐标位置。
      */
@@ -286,7 +286,7 @@ export default class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.Theme.prototype.scale
+     * @function mapboxgl.supermap.ThemeLayer.prototype.scale
      * @description 转为 iClient 要素
      * @param feature 待转要素
      */
@@ -327,4 +327,4 @@ export default class Theme {
     }
 
 }
-mapboxgl.supermap.Theme = Theme;
+mapboxgl.supermap.ThemeLayer = Theme;

@@ -15,36 +15,34 @@ export default class Range extends GeoFeature {
 
     constructor(name, opt_options) {
         super(name, opt_options);
-        this.map = opt_options.map;
-        this.features = opt_options.features;
         this.style = opt_options.style;
         this.isHoverAble = opt_options.isHoverAble;
         this.highlightStyle = opt_options.highlightStyle;
         this.themeField = opt_options.themeField;
         this.styleGroups = opt_options.styleGroups;
 
-        //添加features
-        var features = this.features;
-        if (!(SuperMap.Util.isArray(features))) {
-            features = [features];
-        }
-        var event = {features: features};
-        var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: event});
-        if (ret === false) {
-            return;
-        }
-        features = event.features;
-        var featuresFailAdded = [];
-        var toFeatures = [];
-        for (var i = 0, len = features.length; i < len; i++) {
-            toFeatures.push(new ServerFeature.fromJson(features[i]).toFeature());
-        }
-        this.features = toFeatures;
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
-        if (!this.isCustomSetMaxCacheCount) {
-            this.maxCacheCount = this.features.length * 5;
-        }
+        // //添加features
+        // var features = this.features;
+        // if (!(SuperMap.Util.isArray(features))) {
+        //     features = [features];
+        // }
+        // var event = {features: features};
+        // var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: event});
+        // if (ret === false) {
+        //     return;
+        // }
+        // features = event.features;
+        // var featuresFailAdded = [];
+        // var toFeatures = [];
+        // for (var i = 0, len = features.length; i < len; i++) {
+        //     toFeatures.push(new ServerFeature.fromJson(features[i]).toFeature());
+        // }
+        // this.features = toFeatures;
+        // var succeed = featuresFailAdded.length == 0 ? true : false;
+        // this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
+        // if (!this.isCustomSetMaxCacheCount) {
+        //     this.maxCacheCount = this.features.length * 5;
+        // }
     }
 
     /**

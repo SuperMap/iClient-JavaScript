@@ -1,6 +1,6 @@
 import L from "leaflet";
 import SuperMap from '../../common/SuperMap';
-import {GraphThemeLayer} from './theme/GraphThemeLayer';
+import {GraphThemeLayer} from './GraphThemeLayer';
 
 /**
  * @class L.supermap.rankSymbolThemeLayer

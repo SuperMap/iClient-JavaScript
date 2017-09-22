@@ -19,26 +19,6 @@ export default class Unique extends GeoFeature {
         this.styleGroups = opt_options.styleGroups;
         this.isHoverAble = opt_options.isHoverAble;
         this.highlightStyle = opt_options.highlightStyle;
-        this.features = opt_options.features;
-
-        var features = this.features;
-        if (!(SuperMap.Util.isArray(features))) {
-            features = [features];
-        }
-        var event = {features: features};
-        this.dispatchEvent({type: 'beforefeaturesadded', value: event});
-        features = event.features;
-        var featuresFailAdded = [];
-        var toFeatures = [];
-        for (var i = 0, len = features.length; i < len; i++) {
-            toFeatures.push(this.toiClientFeature(features[i]));
-        }
-        this.features = toFeatures;
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
-        if (!this.isCustomSetMaxCacheCount) {
-            this.maxCacheCount = this.features.length * 5;
-        }
     }
 
     /**

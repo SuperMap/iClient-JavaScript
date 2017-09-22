@@ -1,15 +1,15 @@
 import mapboxgl from 'mapbox-gl';
 import SuperMap from '../../common/SuperMap';
-import GeoFeature from './theme/GeoFeature';
+import GeoFeature from './theme/GeoFeatureThemeLayer';
 import ServerFeature from '../../common/iServer/ServerFeature';
 import Vector from '../../common/overlay/ThemeVector';
 
 /**
  * @class mapboxgl.supermap.UniqueThemeLayer
- * @classdesc 分段专题图层。
+ * @classdesc  单值专题图层。
  * @param name - {string} 图层名。
  * @param opt_options -{Object} 参数。
- * @extends mapboxgl.supermap.GeoFeature
+ * @extends mapboxgl.supermap.GeoFeatureThemeLayer
  */
 export default class Unique extends GeoFeature {
 

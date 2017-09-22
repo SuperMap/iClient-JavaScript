@@ -1,25 +1,24 @@
-import ol from 'openlayers/dist/ol-debug';
-import '../../../common/REST';
-import '../../../common/overlay/Bar';
-import '../../../common/overlay/Bar3D';
-import '../../../common/overlay/Circle';
-import '../../../common/overlay/Pie';
-import '../../../common/overlay/Point';
-import '../../../common/overlay/Line';
-import '../../../common/overlay/Ring';
-import '../../../common/overlay/ThemeVector';
-import '../../../common/style/ThemeStyle';
-import SuperMap from '../../../common/SuperMap';
-import Theme from './Theme';
+import mapboxgl from 'mapbox-gl';
+import '../../common/REST';
+import '../../common/overlay/Bar';
+import '../../common/overlay/Bar3D';
+import '../../common/overlay/Circle';
+import '../../common/overlay/Pie';
+import '../../common/overlay/Point';
+import '../../common/overlay/Line';
+import '../../common/overlay/Ring';
+import '../../common/overlay/ThemeVector';
+import '../../common/style/ThemeStyle';
+import SuperMap from '../../common/SuperMap';
+import Theme from './theme/ThemeLayer';
 
 /**
- * @class ol.source.Graph
- * @classdesc 统计专题图图层基类。
- * @private
+ * @class mapboxgl.supermap.GraphThemeLayer
+ * @classdesc 统计专题图层。
+ * @param name - {string} 图层名。
  * @param chartsType -{string} 图表类别
- * @param name - {string} 图层名称
- * @param opt_options - {Object} 参数
- * @extends ol.source.Theme
+ * @param opt_options - {Object} 参数。
+ * @extends mapboxgl.supermap.ThemeLayer
  */
 export default class Graph extends Theme {
 
@@ -35,7 +34,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.destroy
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -51,7 +50,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.setChartsType
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
      * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
      */
@@ -61,8 +60,8 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.addFeatures
-     * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.addFeatures
+     * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象。
      * @param features - {Object} 待填加得要素
      */
     addFeatures(features) {
@@ -71,7 +70,7 @@ export default class Graph extends Theme {
             features = [features];
         }
         var event = {features: features};
-        var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: event});
+        var ret = mapboxgl.Evented.prototype.fire('beforefeaturesadded', event);
         if (ret === false) {
             return;
         }
@@ -81,24 +80,22 @@ export default class Graph extends Theme {
             this.features.push(this.toiClientFeature(features[i]));
         }
         var succeed = featuresFailAdded.length == 0 ? true : false;
-        this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
+        mapboxgl.Evented.prototype.fire('featuresadded', {features: featuresFailAdded, succeed: succeed});
         //绘制专题要素
         if (this.renderer) {
-            this.redrawThematicFeatures(this.map.getView().calculateExtent());
+            this.redrawThematicFeatures(this.map.getBounds());
         }
     }
 
     /**
-     * @function ol.source.Graph.prototype.redrawThematicFeatures
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
-     * @param extent - {Object} 重绘的范围
-     * @param zoomChanged - {string} 重绘的范围
-     * @param dragging - {boolean} 重绘的范围
-     *
+     * @param extent - {mapboxgl.LngLatBounds} 重绘的范围
      */
-    redrawThematicFeatures(extent, zoomChanged, dragging) {
+    redrawThematicFeatures(extent) {
+        this.clearCache();
         //清除当前所有可视元素
         this.renderer.clearAll();
         var features = this.features;
@@ -108,8 +105,8 @@ export default class Graph extends Theme {
             var feaBounds = feature.geometry.getBounds();
             //剔除当前视图（地理）范围以外的数据
             if (extent) {
-                var bounds = new SuperMap.Bounds(extent[0], extent[1], extent[2], extent[3]);
-                if (!bounds.intersectsBounds(feaBounds)) continue;
+                var bounds = new SuperMap.Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
+                // if (!bounds.intersectsBounds(feaBounds)) continue;
             }
             var cache = this.cache;
             // 用 feature id 做缓存标识
@@ -134,7 +131,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.createThematicFeature
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.createThematicFeature
      * @description  向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象
      * @param feature - {Object} 待填加得要素
      *
@@ -153,7 +150,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.drawCharts
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.drawCharts
      * @description 绘制图表。包含压盖处理。
      *
      */
@@ -200,8 +197,8 @@ export default class Graph extends Theme {
         else {
             // 压盖判断所需 chartsBounds 集合
             var chartsBounds = [];
-            var extent = this.map.getView().calculateExtent();
-            var mapBounds = new SuperMap.Bounds(extent[0], extent[1], extent[2], extent[3]);
+            var extent = this.map.getBounds();
+            var mapBounds = new SuperMap.Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
             if (mapBounds) {
                 // 获取地图像素 bounds
                 var mapPxLT = this.getLocalXY(new SuperMap.LonLat(mapBounds.left, mapBounds.top));
@@ -220,7 +217,7 @@ export default class Graph extends Theme {
                     }, {"x": cbs.right, "y": cbs.top}, {"x": cbs.left, "y": cbs.top}];
                     // 地图范围外不绘制
                     if (mBounds) {
-                        if (!this.isChartInMap(mBounds, cBounds)) continue;
+                        // if (!this.isChartInMap(mBounds, cBounds)) continue;
                     }
                     // 是否压盖
                     var isOL = false;
@@ -253,7 +250,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.getShapesByFeatureID
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.getShapesByFeatureID
      * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param featureID - {number} 要素ID。
      */
@@ -273,7 +270,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.isQuadrilateralOverLap
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.isQuadrilateralOverLap
      * @description  判断两个四边形是否有压盖。
      * @param quadrilateral - {Array<Object>} 四边形节点数组。
      * @param quadrilateral2 - {Array<Object>} 第二个四边形节点数组。
@@ -314,7 +311,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.isPointInPoly
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.isPointInPoly
      * @description  判断一个点是否在多边形里面。(射线法)
      * @param pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
      * @param poly - {Array<Object>} 多边形节点数组。
@@ -328,7 +325,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.isChartInMap
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.isChartInMap
      * @description  判断图表是否在地图里。
      * @param mapPxBounds - {SuperMap.Bounds} 地图像素范围。
      * @param chartPxBounds - {Array<Object>} 图表范围的四边形节点数组。
@@ -348,7 +345,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.clearCache
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.clearCache
      * @description  清除缓存
      */
     clearCache() {
@@ -357,7 +354,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.removeFeatures
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.removeFeatures
      * @description  从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature
      * @param features - {Object} 要删除的要素
      */
@@ -367,7 +364,7 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.removeAllFeatures
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.removeAllFeatures
      * @description  移除所有的要素
      */
     removeAllFeatures() {
@@ -376,20 +373,20 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function ol.source.Graph.prototype.redraw
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.redraw
      * @description  重绘该图层
      */
     redraw() {
         this.clearCache();
         if (this.renderer) {
-            this.redrawThematicFeatures(this.map.getView().calculateExtent());
+            this.redrawThematicFeatures(this.map.getBounds());
             return true;
         }
         return false
     }
 
     /**
-     * @function ol.source.Graph.prototype.clear
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.clear
      * @description  清除的内容包括数据（features） 、专题要素、缓存。
      */
     clear() {
@@ -400,9 +397,5 @@ export default class Graph extends Theme {
         this.removeAllFeatures();
         this.clearCache();
     }
-
-    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-        return Theme.prototype.canvasFunctionInternal_.apply(this, arguments);
-    }
 }
-ol.source.Graph = Graph;
+mapboxgl.supermap.GraphThemeLayer = Graph;
