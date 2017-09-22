@@ -294,6 +294,14 @@ var exampleConfig = {
                     thumbnail: "dataflow.png",
                     fileName: "dataFlowService"
                 }]
+            },
+            "security": {
+                name: "安全",
+                content: [{
+                    name: "安全认证",
+                    thumbnail: "ol_iserver_security.png",
+                    fileName: "iServerSecurity"
+                }]
             }
         }
     },

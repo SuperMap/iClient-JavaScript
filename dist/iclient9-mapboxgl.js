@@ -67097,6 +67097,55 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
+     * @description iServer登录验证
+     * @param url -{string} iServer首页地址，如：http://localhost:8090/iserver
+     * @param username -{string} 用户名
+     * @param password -{string} 密码
+     * @param rememberme -{boolean} 是否记住
+     * @returns {Promise}
+     */
+    loginiServer: function loginiServer(url, username, password, rememberme) {
+        var end = url.substr(url.length - 1, 1);
+        url += end === "/" ? "services/security/login.json" : "/services/security/login.json";
+        var loginInfo = {
+            username: username && username.toString(),
+            password: password && password.toString(),
+            rememberme: rememberme
+        };
+        loginInfo = JSON.stringify(loginInfo);
+        var requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            }
+        };
+        return _FetchRequest.FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+            return response.json();
+        });
+    },
+
+    /**
+     * @description iServer登出
+     * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
+     * @returns {Promise}
+     */
+    logoutiServer: function logoutiServer(url) {
+        var end = url.substr(url.length - 1, 1);
+        url += end === "/" ? "services/security/logout" : "/services/security/logout";
+
+        var requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            withoutFormatSuffix: true
+        };
+        return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
+            return true;
+        }).catch(function (ex) {
+            return false;
+        });
+    },
+
+    /**
      * @description Online登录验证
      * @param callbackLocation -{string} 跳转位置
      * @param newTab -{boolean}是否新窗口打开
@@ -67133,7 +67182,7 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     * @description iPortal登录验证
+     * @description iPortal登出
      * @param url -{string} iportal首页地址
      * @returns {Promise}
      */

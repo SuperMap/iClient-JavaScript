@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>iServer 安全认证示例</title>
+    <script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+</head>
+<body style=" margin: 0;overflow: auto;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div class="container">
+    <div class="page-header">
+        <h4>iServer 安全认证示例</h4>
+    </div>
+    <div class="row">
+        <table class="table table-bordered col-md-6">
+            <thead>
+            <tr>
+                <th class="text-center">功能</th>
+                <th class="text-center">示例</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--登录-->
+            <tr>
+                <td class="text-center text-success">登录</td>
+                <td>
+                    <div class="col-md-10 col-md-offset-1">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="loginUrl_iserver" class="col-md-2 control-label">服务地址</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="loginUrl_iserver"
+                                               placeholder="iServer首页地址,如：http://localhost:8090/iserver">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username_login" class="col-md-2 control-label">用户名</label>
+
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="username_login">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password_login" class="col-md-2 control-label">密码</label>
+
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" id="password_login">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <a class="btn btn-success" onclick="loginiServer()">登录</a>
+                                        <a class="btn btn-success" onclick="logoutiServer()">登出</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+
+            <!--token 申请-->
+            <tr>
+                <td class="text-center text-success">token申请</td>
+                <td>
+                    <div class="col-md-10 col-md-offset-1">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="serviceUrlToken_iserver" class="col-md-2 control-label">服务地址</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="serviceUrlToken_iserver"
+                                               placeholder="iServer首页地址,如：http://localhost:8090/iserver">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username_iserver" class="col-md-2 control-label">用户名</label>
+
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="username_iserver">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password_iserver" class="col-md-2 control-label">密码</label>
+
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" id="password_iserver">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clientType_iserver" class="col-md-2 control-label">客户端标识</label>
+
+                                    <div class="col-md-8">
+                                        <select class="form-control" id="clientType_iserver" name="clientType">
+                                            <option value="Referer" selected="selected">HTTP Referer</option>
+                                            <option value="IP">客户端IP</option>
+                                            <option value="RequestIP">当前请求的IP</option>
+                                            <option value="NONE">无客户端限制</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="referer_iserver" class="col-md-2 control-label">Referer/IP/空</label>
+
+                                    <div class="col-md-8">
+                                        <input class="form-control" id="referer_iserver">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="expiration_iserver" class="col-md-2 control-label">有效期</label>
+
+                                    <div class="col-md-8">
+                                        <select class="form-control" id="expiration_iserver" name="expiration">
+                                            <option value="60" selected="selected">1小时</option>
+                                            <option value="1440">1天</option>
+                                            <option value="10080">1星期</option>
+                                            <option value="43200">1月</option>
+                                            <option value="525600">1年</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <a class="btn btn-success" onclick="generateiServerToken()">申请token</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- 注册token -->
+            <tr>
+                <td class="text-center text-success">token授权访问私有服务</td>
+                <td>
+                    <div class="col-md-10 col-md-offset-1">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="tokenServiceUrl_iserver" class="col-md-2 control-label">服务地址</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="tokenServiceUrl_iserver"
+                                               placeholder="http://localhost:8090/web/services/32">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="token_iserver" class="col-md-2 control-label">token</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="token_iserver">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 text-center">
+                                    <a class="btn btn-success" onclick="registeriServerTokenAndRequestService()">访问</a>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <!-- 出图 -->
+            <tr>
+                <td class="text-center text-success">token授权出图</td>
+                <td>
+                    <div class="col-md-10 col-md-offset-1">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="serviceUrlMap_iserver" class="col-md-2 control-label">服务地址</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="serviceUrlMap_iserver">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mapToken_iserver" class="col-md-2 control-label">token</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="mapToken_iserver">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12  text-center">
+                                        <a class="btn btn-success" onclick="showMapWithToken()">出图</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="row">
+                        <div class="col-md-12  text-center">
+                            <div class="col-md-12" id="iserver_map" style=" height: 300px;"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $("#loginUrl_iserver").val("http://localhost:8090/iserver");
+
+        $("#serviceUrlToken_iserver").val("http://localhost:8090/iserver");
+
+        $("#tokenServiceUrl_iserver").val("http://localhost:8090/iserver/services/map-china400/rest/maps/China");
+        $("#token_iserver").val("EKqSsPg1gVJgm26RaA-o_h0hfuwS6qtn9uw-EjTqS4c10x9a0hv0h-EcTm5gct9gxqhAexDnp9LDGNTtIkAKvQ..");
+
+        $("#serviceUrlMap_iserver").val("http://localhost:8090/iserver/services/map-china400/rest/maps/China");
+        $('#mapToken_iserver').val("EKqSsPg1gVJgm26RaA-o_h0hfuwS6qtn9uw-EjTqS4c10x9a0hv0h-EcTm5gct9gxqhAexDnp9LDGNTtIkAKvQ..");
+
+    });
+
+    /*登录*/
+    function loginiServer() {
+        var loginUrl = $("#loginUrl_iserver").val();
+        var userName = $('#username_login').val();
+        var password = $('#password_login').val();
+        if (!checkUrl(loginUrl)) {
+            return;
+        }
+        SuperMap.SecurityManager
+            .loginiServer(loginUrl, userName, password)
+            .then(function (result) {
+                console.log(JSON.stringify(result));
+                if (result.succeed) {
+                    window.alert("登录成功")
+                } else {
+                    window.alert("登录失败")
+                }
+            });
+    }
+
+    /*登录 end*/
+
+    /*登出*/
+    function logoutiServer() {
+        var loginUrl = $("#loginUrl_iserver").val();
+        SuperMap.SecurityManager
+            .logoutiServer(loginUrl)
+            .then(function (succeed) {
+                if (succeed) {
+                    window.alert("登出成功")
+                } else {
+                    window.alert("登出失败")
+                }
+            });
+    }
+
+
+    /*登出 end*/
+
+    /*申请token*/
+    function generateiServerToken() {
+        var serverTokenUrl = $("#serviceUrlToken_iserver").val();
+        if (!checkUrl(serverTokenUrl)) {
+            return;
+        }
+        var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.ISERVER, {
+            server: serverTokenUrl
+        });
+        SuperMap.SecurityManager.registerServers([serverInfo]);
+        var userName = $('#username_iserver').val();
+        var password = $('#password_iserver').val();
+        var clientType = $('#clientType_iserver').val();
+        var referer = $('#referer_iserver').val();
+        var expiration = $('#expiration_iserver').val();
+        SuperMap.SecurityManager.generateToken(serverTokenUrl, new SuperMap.TokenServiceParameter({
+            userName: userName,
+            password: password,
+            clientType: clientType,
+            referer: referer,
+            ip: referer,
+            expiration: expiration
+        })).then(function (result) {
+            alert(result);
+        });
+    }
+
+    /*申请token end*/
+
+    /*token访问服务*/
+    function registeriServerTokenAndRequestService() {
+        var token = $('#token_iserver').val();
+        var serviceUrl = getiServerTokenServiceUrl();
+        if (!checkUrl(serviceUrl)) {
+            return;
+        }
+        SuperMap.SecurityManager.destroyToken(serviceUrl);
+        //使用前要先注册token,如果为该地址注册过则不用重复注册
+        SuperMap.SecurityManager.registerToken(serviceUrl, token);
+        new ol.supermap.MapService(serviceUrl)
+            .getMapInfo(function (json) {
+                if (json.error) {
+                    alert(JSON.stringify(json.error))
+                } else {
+                    alert(JSON.stringify(json.result))
+                }
+            });
+    }
+
+    function getiServerTokenServiceUrl() {
+        return $("#tokenServiceUrl_iserver").val();
+    }
+
+    /*token访问服务 end*/
+
+    /*出图*/
+    function showMapWithToken() {
+        var token = $('#mapToken_iserver').val();
+        var mapUrl = $('#serviceUrlMap_iserver').val();
+        if (!checkUrl(mapUrl)) {
+            return;
+        }
+        //使用前要先注册token,如果为该地址注册过则不用重复注册
+        SuperMap.SecurityManager.registerToken(mapUrl, token);
+
+
+        var map = new ol.Map({
+            target: 'iserver_map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [104, 30],
+                maxZoom: 18,
+                zoom: 2,
+            }),
+        });
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest({
+                url: mapUrl
+            }),
+        });
+        map.addLayer(layer);
+    }
+
+    /*出图 end*/
+
+    function checkUrl(url) {
+        if (url === "") {
+            alert("请填写URL");
+            return false;
+        }
+        return true;
+    }
+
+
+</script>
+</body>
+</html>
