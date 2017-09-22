@@ -6,7 +6,7 @@ require('./openlayers/overlay/MapvSpec.js');
 require('./openlayers/overlay/RangeSpec.js');
 require('./openlayers/overlay/VectorTileSuperMapRestSpec.js');
 require('./openlayers/overlay/theme/GeoFeatureSpec.js');
-require('./openlayers/overlay/theme/GraphSpec.js');
+require('./openlayers/overlay/GraphSpec.js');
 require('./openlayers/overlay/theme/ThemeFeatureSpec.js');
 require('./openlayers/overlay/theme/ThemeSpec.js');
 

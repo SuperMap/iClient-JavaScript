@@ -34,7 +34,7 @@ require('./leaflet/overlay/RangeThemeLayerSpec.js');
 require('./leaflet/overlay/RankSymbolThemeLayerSpec.js');
 require('./leaflet/overlay/TileVectorLayerSpec.js');
 require('./leaflet/overlay/UniqueThemeLayerSpec.js');
-require('./leaflet/overlay/theme/GraphThemeLayerSpec.js');
+require('./leaflet/overlay/GraphThemeLayerSpec.js');
 //require('./leaflet/overlay/DataFlowlayerSpec.js');
 
 /*leaflet -- mapping*/
