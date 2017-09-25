@@ -14,13 +14,6 @@ import CommonServiceBase from './CommonServiceBase';
  */
 export default class DataFlowService extends CommonServiceBase {
 
-    /*
-     * @constant EVENT_TYPES
-     * {Array<string>}
-     * 此类支持的事件类型
-     */
-    //EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"];
-
     /**
      * @member SuperMap.DataFlowService.prototype.geometry -{Aarry<Object>}
      * @description 设置增添的几何要素对象数组。
@@ -40,8 +33,13 @@ export default class DataFlowService extends CommonServiceBase {
     excludeField = null;
 
     constructor(url, options) {
-        options=options||{};
-        options.EVENT_TYPES=["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"]
+        options = options || {};
+        /*
+         * @constant EVENT_TYPES
+         * {Array<string>}
+         * 此类支持的事件类型
+         */
+        options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"]
         super(url, options);
 
         var me = this;
@@ -215,7 +213,8 @@ export default class DataFlowService extends CommonServiceBase {
         if ("WebSocket" in window) {
             return new WebSocket(url);
         } else if ("MozWebSocket" in window) {
-            return new MozWebSocket(url);
+            var mozWebSocket = window.MozWebSocket;
+            return new mozWebSocket(url);
         } else {
             console.log("no WebSocket");
             return null;

@@ -1,7 +1,9 @@
 import '../core/Base';
 import '../../common/security/SecurityManager';
+import SuperMap from '../../common/SuperMap';
 import L from "leaflet";
 import {ServerType, Unit} from "../../common/REST";
+import Credential from "../../common/commontypes/Credential";
 import * as Util from "../core/Util";
 import {Util as CommonUtil} from "../../common/commontypes/Util";
 import ServerGeometry from '../../common/iServer/ServerGeometry';
@@ -317,25 +319,25 @@ export var TiledMapLayer = L.TileLayer.extend({
     _appendCredential: function (url) {
         var newUrl = url, credential, value;
         switch (this.options.serverType) {
-            case SuperMap.ServerType.ISERVER:
+            case ServerType.ISERVER:
                 value = SuperMap.SecurityManager.getToken(url);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 break;
-            case SuperMap.ServerType.IPORTAL:
+            case ServerType.IPORTAL:
                 value = SuperMap.SecurityManager.getToken(url);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
                     value = SuperMap.SecurityManager.getKey(url);
-                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case SuperMap.ServerType.ONLINE:
+            case ServerType.ONLINE:
                 value = SuperMap.SecurityManager.getKey(url);
-                credential = value ? new SuperMap.Credential(value, "key") : null;
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
                 value = SuperMap.SecurityManager.getToken(url);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         if (credential) {
