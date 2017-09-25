@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import {baiduMapLayer} from "mapv";
+import {baiduMapLayer, DataSet} from "mapv";
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -234,7 +234,7 @@ export default class MapVRenderer extends BaseLayer {
             x: worldPoint.x - offset.x,
             y: worldPoint.y - offset.y
         };
-        this.drawContext(context, new mapv.DataSet(data), self.options, pixel);
+        this.drawContext(context, new DataSet(data), self.options, pixel);
 
         self.options.updateCallback && self.options.updateCallback(time);
     }

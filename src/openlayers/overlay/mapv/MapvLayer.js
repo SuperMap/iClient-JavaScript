@@ -1,6 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
 import MapvCanvasLayer from './MapvCanvasLayer';
-import {baiduMapLayer} from "mapv";
+import {baiduMapLayer,DataSet} from "mapv";
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
  * @class ol.supermap.MapvLayer
@@ -200,7 +200,7 @@ export default class MapvLayer extends BaiduMapLayer {
         self.processData(data);
         self.options._size = self.options.size;
         var pixel = map.getPixelFromCoordinate([0, 0]);
-        this.drawContext(context, new mapv.DataSet(data), self.options, {x: pixel[0], y: pixel[1]});
+        this.drawContext(context, new DataSet(data), self.options, {x: pixel[0], y: pixel[1]});
         if (self.isEnabledTime()) {
             this.source.changed();
         }

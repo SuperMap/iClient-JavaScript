@@ -344,6 +344,7 @@ export var WebMap = L.LayerGroup.extend({
      * @return {L.Layer}
      */
     createMarkersLayer: function (layerInfo, crs) {
+        var that = this;
         var markers = layerInfo.markers || [];
         //style = layerInfo.style,
         //opacity = layerInfo.opacity,

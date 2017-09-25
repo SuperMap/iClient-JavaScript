@@ -169,7 +169,7 @@ export class Theme3DLayer {
         }
         me.parseNumber && me.data && me.data.features && me.data.features.map(function (val, index) {
             if (me.baseHeightField && val.properties[me.baseHeightField]) {
-                val.properties[baseHeightField] = parseFloat(val.properties[baseHeightField]);
+                val.properties[me.baseHeightField] = parseFloat(val.properties[me.baseHeightField]);
             }
             if (me.heightField && val.properties[me.heightField]) {
                 val.properties[me.heightField] = parseFloat(val.properties[me.heightField]);

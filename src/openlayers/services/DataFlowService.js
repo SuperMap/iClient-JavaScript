@@ -72,22 +72,6 @@ export default class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.setPrjCoordSys
-     * @description 设置动态投影坐标
-     * @param prjCoordSys -{Object} 动态投影参数
-     * @return {ol.supermap.DataFlowService}
-     */
-    setPrjCoordSys(prjCoordSys) {
-        if (!prj) {
-            return;
-        }
-        var prj = new SuperMap.Projection(options.projection);
-        this.dataFlow.setPrjCoordSys(prj);
-        this.options.prjCoordSys = prj;
-        return this;
-    }
-
-    /**
      * @function ol.supermap.DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param excludeField - {Object} 排除字段

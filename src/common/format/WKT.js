@@ -218,7 +218,7 @@ export default class WKT extends Format {
          */
         'point': function (str) {
             var coords = SuperMap.String.trim(str).split(this.regExes.spaces);
-            return new SuperMap.Feature.Vector(new Supermap.Point(coords[0], coords[1])
+            return new SuperMap.Feature.Vector(new SuperMap.Geometry.Point(coords[0], coords[1])
             );
         },
 
@@ -237,7 +237,7 @@ export default class WKT extends Format {
                 components.push(this.parse.point.apply(this, [point]).geometry);
             }
             return new SuperMap.Feature.Vector(
-                new Supermap.MultiPoint(components)
+                new SuperMap.Geometry.MultiPoint(components)
             );
         },
 
@@ -254,7 +254,7 @@ export default class WKT extends Format {
                 components.push(this.parse.point.apply(this, [points[i]]).geometry);
             }
             return new SuperMap.Feature.Vector(
-                new Supermap.LineString(components)
+                new SuperMap.Geometry.LineString(components)
             );
         },
 
@@ -273,7 +273,7 @@ export default class WKT extends Format {
                 components.push(this.parse.linestring.apply(this, [line]).geometry);
             }
             return new SuperMap.Feature.Vector(
-                new Supermap.MultiLineString(components)
+                new SuperMap.Geometry.MultiLineString(components)
             );
         },
 
@@ -290,11 +290,11 @@ export default class WKT extends Format {
             for (var i = 0, len = rings.length; i < len; ++i) {
                 ring = rings[i].replace(this.regExes.trimParens, '$1');
                 linestring = this.parse.linestring.apply(this, [ring]).geometry;
-                linearring = new Supermap.LinearRing(linestring.components);
+                linearring = new SuperMap.LinearRing(linestring.components);
                 components.push(linearring);
             }
             return new SuperMap.Feature.Vector(
-                new Supermap.Polygon(components)
+                new SuperMap.Geometry.Polygon(components)
             );
         },
 
@@ -314,7 +314,7 @@ export default class WKT extends Format {
                 components.push(this.parse.polygon.apply(this, [polygon]).geometry);
             }
             return new SuperMap.Feature.Vector(
-                new Supermap.MultiPolygon(components)
+                new SuperMap.Geometry.MultiPolygon(components)
             );
         },
 

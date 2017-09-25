@@ -6873,7 +6873,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
             if (data && data.get) {
                 _data = data.get();
             }
-            this.dataSet = this.dataSet || new mapv.DataSet();
+            this.dataSet = this.dataSet || new _mapv.DataSet();
             this.dataSet.set(_data);
             this.update({ options: options });
         }
@@ -7032,7 +7032,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
                 self.options._width = self.options.width;
             }
 
-            this.drawContext(context, new mapv.DataSet(data), self.options, worldPoint);
+            this.drawContext(context, new _mapv.DataSet(data), self.options, worldPoint);
 
             self.options.updateCallback && self.options.updateCallback(time);
         }

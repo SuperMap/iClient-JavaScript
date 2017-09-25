@@ -1,5 +1,5 @@
 import SuperMap from '../../SuperMap';
-import {baiduMapLayer} from 'mapv';
+import {baiduMapLayer,DataSet} from 'mapv';
 
 /**
  * @class SuperMap.MapVRenderer
@@ -122,7 +122,7 @@ export default class MapVRenderer extends MapVBaseLayer {
         if (data && data.get) {
             _data = data.get();
         }
-        this.dataSet = this.dataSet || new mapv.DataSet();
+        this.dataSet = this.dataSet || new DataSet();
         this.dataSet.set(_data);
         this.update({options: options});
     }
@@ -265,7 +265,7 @@ export default class MapVRenderer extends MapVBaseLayer {
             self.options._width = self.options.width;
         }
 
-        this.drawContext(context, new mapv.DataSet(data), self.options, worldPoint);
+        this.drawContext(context, new DataSet(data), self.options, worldPoint);
 
         self.options.updateCallback && self.options.updateCallback(time);
     }

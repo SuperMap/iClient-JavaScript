@@ -34,6 +34,8 @@ export default class Theme extends ol.source.ImageCanvas {
             state: options.state
         });
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+            var mapWidth = size[0] * pixelRatio;
+            var mapHeight = size[1] * pixelRatio;
             if (!this.context) {
                 this.context = Util.createCanvasContext2D(mapWidth, mapHeight);
             }
@@ -41,8 +43,7 @@ export default class Theme extends ol.source.ImageCanvas {
                 return this.context.canvas;
             }
             this.pixelRatio = pixelRatio;
-            var mapWidth = size[0] * pixelRatio;
-            var mapHeight = size[1] * pixelRatio;
+
             var width = this.map.getSize()[0] * pixelRatio;
             var height = this.map.getSize()[1] * pixelRatio;
             this.offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];

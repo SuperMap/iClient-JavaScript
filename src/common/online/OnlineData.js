@@ -53,7 +53,7 @@ export default  class OnlineData extends OnlineServiceBase {
 
     //TODO 目前并没有对接服务支持的所有操作，日后需要补充完整
     constructor(serviceRootUrl, options) {
-        super(serviceUrl);
+        super(serviceRootUrl);
         var me = this;
         options = options || {};
         SuperMap.Util.extend(me, options);

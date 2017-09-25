@@ -3,6 +3,7 @@ import '../../common/security/SecurityManager';
 import L from "leaflet";
 import {ServerType, Unit} from "../../common/REST";
 import * as Util from "../core/Util";
+import {Util as CommonUtil} from "../../common/commontypes/Util";
 import ServerGeometry from '../../common/iServer/ServerGeometry';
 
 /**
@@ -283,7 +284,7 @@ export var TiledMapLayer = L.TileLayer.extend({
 
         if (options.clipRegionEnabled && options.clipRegion instanceof L.Path) {
             options.clipRegion = Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = SuperMap.Util.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
+            options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
             params["clipRegionEnabled"] = options.clipRegionEnabled;
             params["clipRegion"] = JSON.stringify(options.clipRegion);
         }

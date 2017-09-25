@@ -5,7 +5,9 @@
  * 非 get 接口统一返回 this 对象，支持链式调用。
  *
  */
+import SuperMap from '../../SuperMap';
 import LevelRenderer from './LevelRenderer';
+import Util from '../../commontypes/Util';
 import Storage from './Storage';
 import Painter from './Painter';
 import Handler from './Handler';
