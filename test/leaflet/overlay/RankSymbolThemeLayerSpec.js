@@ -1,5 +1,5 @@
 require('../../../src/leaflet/overlay/UniqueThemeLayer');
-require('../../tool/chinaConsumptionLevel');
+require('../../resources/chinaConsumptionLevel');
 
 var China4326URL = GlobeParameter.China4326URL;
 

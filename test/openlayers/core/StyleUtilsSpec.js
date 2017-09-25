@@ -1,7 +1,7 @@
 require('../../../src/openlayers/core/StyleUtils.js');
-require('../../tool/china_cartoCSS.js');
-require('../../tool/china_layers.js');
-require('../../tool/iPortal_maps.js');
+require('../../resources/china_cartoCSS.js');
+require('../../resources/china_layers.js');
+require('../../resources/iPortal_maps.js');
 var fetch=require('whatwg-fetch-importable');
 
 var StyleUtils = ol.supermap.StyleUtils;

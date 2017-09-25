@@ -1,5 +1,5 @@
 require('../../../src/leaflet/overlay/GraphThemeLayer');
-require('../../tool/chinaConsumptionLevel');
+require('../../resources/chinaConsumptionLevel');
 
 var options = {
     isOverLay: true
