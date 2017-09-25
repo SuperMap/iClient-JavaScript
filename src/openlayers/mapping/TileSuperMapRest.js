@@ -330,7 +330,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             if (mapJSONObj.coordUnit === SuperMap.Unit.DEGREE) {
                 unit = SuperMap.Unit.DEGREE;
             }
-            if (mapJSONObj.visibleScales.length > 0) {
+            if (mapJSONObj.visibleScalesEnabled && mapJSONObj.visibleScales && mapJSONObj.visibleScales.length > 0) {
                 for (var i = 0; i < mapJSONObj.visibleScales.length; i++) {
                     resolutions.push(Util.scaleToResolution(mapJSONObj.visibleScales[i], dpi, unit));
                 }
