@@ -34,22 +34,6 @@ export default class Graph extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphThemeLayer.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-    destroy() {
-        this.chartsType = null;
-        this.chartsSetting = null;
-        this.themeFields = null;
-        this.overlayWeightField = null;
-        this.isOverLay = null;
-        Theme.prototype.destroy.apply(this, arguments);
-        // charts  cache 为缓存，需要在父类destory后置为null（父类destory中有方法会初始化缓存参数）
-        this.charts = null;
-        this.cache = null;
-    }
-
-    /**
      * @function mapboxgl.supermap.GraphThemeLayer.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
      * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。

@@ -17732,32 +17732,13 @@ var Graph = function (_Theme) {
     }
 
     /**
-     * @function mapboxgl.supermap.GraphThemeLayer.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function mapboxgl.supermap.GraphThemeLayer.prototype.setChartsType
+     * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
+     * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
      */
 
 
     _createClass(Graph, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.chartsType = null;
-            this.chartsSetting = null;
-            this.themeFields = null;
-            this.overlayWeightField = null;
-            this.isOverLay = null;
-            _ThemeLayer2.default.prototype.destroy.apply(this, arguments);
-            // charts  cache 为缓存，需要在父类destory后置为null（父类destory中有方法会初始化缓存参数）
-            this.charts = null;
-            this.cache = null;
-        }
-
-        /**
-         * @function mapboxgl.supermap.GraphThemeLayer.prototype.setChartsType
-         * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
-         * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
-         */
-
-    }, {
         key: 'setChartsType',
         value: function setChartsType(chartsType) {
             this.chartsType = chartsType;
@@ -21222,34 +21203,13 @@ var GeoFeature = function (_Theme) {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.addFeatures
+     * @description 添加要素
+     * @param features - {Object} 要素对象
      */
 
 
     _createClass(GeoFeature, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.maxCacheCount = null;
-            this.isCustomSetMaxCacheCount = null;
-            this.nodesClipPixel = null;
-            this.isHoverAble = null;
-            this.isMultiHover = null;
-            this.isClickAble = null;
-            this.cache = null;
-            this.cacheFields = null;
-            this.style = null;
-            this.highlightStyle = null;
-            this.isAllowFeatureStyle = null;
-        }
-
-        /**
-         * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.addFeatures
-         * @description 添加要素
-         * @param features - {Object} 要素对象
-         */
-
-    }, {
         key: 'addFeatures',
         value: function addFeatures(features) {
             //数组
@@ -32940,28 +32900,14 @@ var Range = function (_GeoFeature) {
     }
 
     /**
-     * @function mapboxgl.supermap.RangeThemeLayer.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @private
+     * @function mapboxgl.supermap.RangeThemeLayer.prototype.createThematicFeature
+     * @description 创建专题图要素
+     * @param feature -{Object} 要创建的专题图形要素
      */
 
 
     _createClass(Range, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.style = null;
-            this.themeField = null;
-            this.styleGroups = null;
-            _GeoFeatureThemeLayer2.default.prototype.destroy.apply(this, arguments);
-        }
-
-        /**
-         * @private
-         * @function mapboxgl.supermap.RangeThemeLayer.prototype.createThematicFeature
-         * @description 创建专题图要素
-         * @param feature -{Object} 要创建的专题图形要素
-         */
-
-    }, {
         key: 'createThematicFeature',
         value: function createThematicFeature(feature) {
             //赋 style
@@ -33094,27 +33040,13 @@ var RankSymbol = function (_Graph) {
     }
 
     /**
-     * @function mapboxgl.supermap.RankSymbolThemeLayer.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function mapboxgl.supermap.RankSymbolThemeLayer.prototype.setSymbolType
+     * @description 设置标志符号
+     * @param symbolType -{string} 符号类型
      */
 
 
     _createClass(RankSymbol, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.symbolType = null;
-            this.symbolSetting = null;
-            this.themeField = null;
-            _SuperMap2.default.Layer.Graph.prototype.destroy.apply(this, arguments);
-        }
-
-        /**
-         * @function mapboxgl.supermap.RankSymbolThemeLayer.prototype.setSymbolType
-         * @description 设置标志符号
-         * @param symbolType -{string} 符号类型
-         */
-
-    }, {
         key: 'setSymbolType',
         value: function setSymbolType(symbolType) {
             this.symbolType = symbolType;
@@ -33356,28 +33288,14 @@ var Unique = function (_GeoFeature) {
     }
 
     /**
-     * @function mapboxgl.supermap.UniqueThemeLayer.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @private
+     * @function mapboxgl.supermap.UniqueThemeLayer.prototype.createThematicFeature
+     * @description 创建专题图要素
+     * @param feature - {Object} 要创建的专题图形要素
      */
 
 
     _createClass(Unique, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.style = null;
-            this.themeField = null;
-            this.styleGroups = null;
-            _GeoFeatureThemeLayer2.default.prototype.destroy.apply(this, arguments);
-        }
-
-        /**
-         * @private
-         * @function mapboxgl.supermap.UniqueThemeLayer.prototype.createThematicFeature
-         * @description 创建专题图要素
-         * @param feature - {Object} 要创建的专题图形要素
-         */
-
-    }, {
         key: 'createThematicFeature',
         value: function createThematicFeature(feature) {
             //赋 style

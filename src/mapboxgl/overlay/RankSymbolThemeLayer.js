@@ -20,17 +20,6 @@ export default class RankSymbol extends Graph {
     }
 
     /**
-     * @function mapboxgl.supermap.RankSymbolThemeLayer.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-    destroy() {
-        this.symbolType = null;
-        this.symbolSetting = null;
-        this.themeField = null;
-        SuperMap.Layer.Graph.prototype.destroy.apply(this, arguments);
-    }
-
-    /**
      * @function mapboxgl.supermap.RankSymbolThemeLayer.prototype.setSymbolType
      * @description 设置标志符号
      * @param symbolType -{string} 符号类型

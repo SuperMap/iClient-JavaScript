@@ -29,24 +29,6 @@ export default class GeoFeature extends Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-    destroy() {
-        this.maxCacheCount = null;
-        this.isCustomSetMaxCacheCount = null;
-        this.nodesClipPixel = null;
-        this.isHoverAble = null;
-        this.isMultiHover = null;
-        this.isClickAble = null;
-        this.cache = null;
-        this.cacheFields = null;
-        this.style = null;
-        this.highlightStyle = null;
-        this.isAllowFeatureStyle = null;
-    }
-
-    /**
      * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加要素
      * @param features - {Object} 要素对象

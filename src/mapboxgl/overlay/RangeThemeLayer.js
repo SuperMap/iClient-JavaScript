@@ -23,17 +23,6 @@ export default class Range extends GeoFeature {
     }
 
     /**
-     * @function mapboxgl.supermap.RangeThemeLayer.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-    destroy() {
-        this.style = null;
-        this.themeField = null;
-        this.styleGroups = null;
-        GeoFeature.prototype.destroy.apply(this, arguments);
-    }
-
-    /**
      * @private
      * @function mapboxgl.supermap.RangeThemeLayer.prototype.createThematicFeature
      * @description 创建专题图要素
