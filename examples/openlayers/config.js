@@ -359,19 +359,6 @@ var exampleConfig = {
         name: "iManager",
         content: null
     },
-    "clientSpatialAnalyst": {
-        name: "客户端分析",
-        content: {
-            "Turf": {
-                name: "Turf",
-                content: [{
-                    name: "空间分析",
-                    thumbnail: "turf_transformation.png",
-                    fileName: "turf_transformation"
-                }]
-            }
-        }
-    },
     "viz": {
         name: "可视化",
         content: {
@@ -578,6 +565,19 @@ var exampleConfig = {
                     name: "拖拽",
                     thumbnail: "dragFeatures.png",
                     fileName: "dragFeatures"
+                }]
+            }
+        }
+    },
+    "clientSpatialAnalyst": {
+        name: "客户端分析",
+        content: {
+            "Turf": {
+                name: "Turf",
+                content: [{
+                    name: "空间分析",
+                    thumbnail: "turf_transformation.png",
+                    fileName: "turf_transformation"
                 }]
             }
         }

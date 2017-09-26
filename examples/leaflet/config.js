@@ -389,19 +389,6 @@ var exampleConfig = {
             }
         }
     },
-    "clientSpatialAnalyst": {
-        name: "客户端分析",
-        content: {
-            "Turf": {
-                name: "Turf",
-                content: [{
-                    name: "空间分析",
-                    thumbnail: "l_turf_transformation.png",
-                    fileName: "turf_transformation"
-                }]
-            }
-        }
-    },
     "viz": {
         name: "可视化",
         content: {
@@ -619,6 +606,19 @@ var exampleConfig = {
                     name: "捕捉与修改",
                     thumbnail: "l_snapAndModify.png",
                     fileName: "snapAndModify"
+                }]
+            }
+        }
+    },
+    "clientSpatialAnalyst": {
+        name: "客户端分析",
+        content: {
+            "Turf": {
+                name: "Turf",
+                content: [{
+                    name: "空间分析",
+                    thumbnail: "l_turf_transformation.png",
+                    fileName: "turf_transformation"
                 }]
             }
         }
