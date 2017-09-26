@@ -37,7 +37,7 @@
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'leaflet')) {
             inputCSS("http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css");
-            inputScript("http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js");
+            inputScript("http://cdn.bootcss.com/leaflet/1.0.3/leaflet-src.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
@@ -52,7 +52,7 @@
             inputScript("http://cdn.bootcss.com/elasticsearch/13.0.1/elasticsearch.min.js");
         }
         if (!inArray(excludes, 'iclient9-leaflet')) {
-            inputScript("../../dist/iclient9-leaflet.min.js");
+            inputScript("../../dist/iclient9-leaflet.js");
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
             inputCSS("../../dist/iclient9-leaflet.min.css");

@@ -5,6 +5,7 @@ import L from "leaflet";
 import proj4 from "proj4";
 import {getMeterPerMapUnit} from "./Util";
 
+window.proj4 = proj4;
 window.Proj4js = proj4;
 L.Proj = {};
 
@@ -126,9 +127,7 @@ export var CRS = L.Class.extend({
         L.Util.setOptions(this, options);
         this.code = code;
         this.transformation = this.options.transformation;
-        if (this.options.bounds) {
 
-        }
         if (this.options.bounds) {
             this.options.bounds = L.bounds(this.options.bounds);
         }

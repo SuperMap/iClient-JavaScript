@@ -17858,9 +17858,17 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
     getDefaultScale: function getDefaultScale(coords) {
         var me = this,
             crs = me._crs;
+        if (crs.options && crs.options.scaleDenominators) {
+            return 1.0 / crs.options.scaleDenominators[coords.z];
+        }
+        if (crs.options && crs.options.scales) {
+            return crs.options.scales[coords.z];
+        }
         var resolution;
         if (crs.options && crs.options.resolutions) {
             resolution = crs.options.resolutions[coords.z];
+        } else if (crs._scales) {
+            resolution = 1 / crs._scales[coords.z];
         } else {
             var tileBounds = me._tileCoordsToBounds(coords);
             var ne = crs.project(tileBounds.getNorthEast());
@@ -84490,10 +84498,11 @@ var _Util = __webpack_require__(24);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-window.Proj4js = _proj2["default"]; /**
-                                  * Inspired by https://github.com/kartena/Proj4Leaflet
-                                  */
+window.proj4 = _proj2["default"]; /**
+                                * Inspired by https://github.com/kartena/Proj4Leaflet
+                                */
 
+window.Proj4js = _proj2["default"];
 _leaflet2["default"].Proj = {};
 
 _leaflet2["default"].Proj._isProj4Obj = function (a) {
@@ -84613,7 +84622,7 @@ var CRS = exports.CRS = _leaflet2["default"].Class.extend({
         _leaflet2["default"].Util.setOptions(this, options);
         this.code = code;
         this.transformation = this.options.transformation;
-        if (this.options.bounds) {}
+
         if (this.options.bounds) {
             this.options.bounds = _leaflet2["default"].bounds(this.options.bounds);
         }

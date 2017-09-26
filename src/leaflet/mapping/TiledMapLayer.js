@@ -127,9 +127,17 @@ export var TiledMapLayer = L.TileLayer.extend({
      */
     getDefaultScale: function (coords) {
         var me = this, crs = me._crs;
+        if (crs.options && crs.options.scaleDenominators) {
+            return 1.0 / crs.options.scaleDenominators[coords.z];
+        }
+        if (crs.options && crs.options.scales) {
+            return crs.options.scales[coords.z];
+        }
         var resolution;
         if (crs.options && crs.options.resolutions) {
             resolution = crs.options.resolutions[coords.z];
+        } else if (crs._scales) {
+            resolution = 1 / crs._scales[coords.z];
         } else {
             var tileBounds = me._tileCoordsToBounds(coords);
             var ne = crs.project(tileBounds.getNorthEast());
