@@ -59,7 +59,7 @@ export default class AddressMatchService extends ServiceBase {
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
         return me;
-    };
+    }
 
 }
 ol.supermap.AddressMatchService = AddressMatchService;

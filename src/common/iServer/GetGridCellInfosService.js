@@ -53,7 +53,7 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
-        if (!!options) {
+        if (options) {
             SuperMap.Util.extend(this, options);
         }
     }

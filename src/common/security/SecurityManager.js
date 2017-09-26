@@ -136,7 +136,7 @@ SuperMap.SecurityManager = {
         var requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
+            }
         };
         return FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
             return response.json();

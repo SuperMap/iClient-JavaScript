@@ -407,8 +407,7 @@ export default class Theme extends ol.source.ImageCanvas {
                 }
             }
             this.TFEvents = newtfEs;
-        }
-        else {
+        } else {
             this.renderer.un(event, cb);
         }
     }

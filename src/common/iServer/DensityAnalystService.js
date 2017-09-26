@@ -1,6 +1,7 @@
 import SuperMap from '../SuperMap';
 import SpatialAnalystBase from './SpatialAnalystBase';
 import DensityKernelAnalystParameters from './DensityKernelAnalystParameters';
+
 /**
  * @class SuperMap.DensityAnalystService
  * @classdesc
@@ -21,7 +22,7 @@ import DensityKernelAnalystParameters from './DensityKernelAnalystParameters';
  * (end)
  *
  */
-export default  class DensityAnalystService extends SpatialAnalystBase {
+export default class DensityAnalystService extends SpatialAnalystBase {
 
     /**
      * @member SuperMap.DensityAnalystService.prototype.mode -{string}
@@ -55,12 +56,9 @@ export default  class DensityAnalystService extends SpatialAnalystBase {
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
-        if (end === '/') {
-
-        } else {
+        if (end !== '/') {
             me.url += "/";
         }
-
         var parameterObject = new Object();
 
         if (parameter instanceof SuperMap.DensityKernelAnalystParameters) {

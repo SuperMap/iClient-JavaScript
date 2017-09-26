@@ -20,7 +20,7 @@ import AreaSolarRadiationParameters from './AreaSolarRadiationParameters';
  * (end)
  *
  */
-export default  class AreaSolarRadiationService extends SpatialAnalystBase {
+export default class AreaSolarRadiationService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -43,9 +43,7 @@ export default  class AreaSolarRadiationService extends SpatialAnalystBase {
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
-        if (end === '/') {
-
-        } else {
+        if (end !== '/') {
             me.url += "/";
         }
 

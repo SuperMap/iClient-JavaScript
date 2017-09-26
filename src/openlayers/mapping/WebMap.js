@@ -117,7 +117,7 @@ export default class WebMap extends ol.Observable {
         }
 
 
-    };
+    }
 
     /**
      * @function ol.supermap.WebMap.prototype.addLayer
@@ -293,7 +293,6 @@ export default class WebMap extends ol.Observable {
                 break;
             default:
                 throw new Error('unSupported Layer Type');
-                break;
         }
         if (layer) {
             this.addLayer(layer, viewOptions);
@@ -346,9 +345,9 @@ export default class WebMap extends ol.Observable {
             "http://t{0-7}.tianditu.com/{type}_{proj}/wmts?";
         var type = layerInfo.type.split('_')[1].toLowerCase();
         if (layerInfo.layerType === 'OVERLAY_LAYER') {
-            if (type == "vec") type = "cva"
-            if (type == "img") type = "cia"
-            if (type == "ter") type = "cta"
+            if (type == "vec") {type = "cva"}
+            if (type == "img") {type = "cia"}
+            if (type == "ter") {type = "cta"}
         }
         tdtURL = tdtURL.replace("{type}", type).replace("{proj}", proj);
         var layer = new ol.layer.Tile({

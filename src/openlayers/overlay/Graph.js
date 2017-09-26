@@ -108,7 +108,9 @@ export default class Graph extends Theme {
             //剔除当前视图（地理）范围以外的数据
             if (extent) {
                 var bounds = new SuperMap.Bounds(extent[0], extent[1], extent[2], extent[3]);
-                if (!bounds.intersectsBounds(feaBounds)) continue;
+                if (!bounds.intersectsBounds(feaBounds)) {
+                    continue;
+                }
             }
             var cache = this.cache;
             // 用 feature id 做缓存标识
@@ -145,7 +147,9 @@ export default class Graph extends Theme {
             thematicFeature = new SuperMap.Feature.Theme[this.chartsType](feature, this, this.themeFields, this.chartsSetting);
         }
         // thematicFeature 是否创建成功
-        if (!thematicFeature) return false;
+        if (!thematicFeature) {
+            return false;
+        }
         // 对专题要素执行图形装载
         thematicFeature.assembleShapes();
         return thematicFeature;
@@ -158,28 +162,27 @@ export default class Graph extends Theme {
      */
     drawCharts() {
         // 判断 rendere r就绪
-        if (!this.renderer) return;
+        if (!this.renderer) {
+            return;
+        }
         var charts = this.charts;
         // 图表权重值处理
         if (this.overlayWeightField) {
             charts.sort(function (cs, ce) {
                 if (typeof(cs["__overlayWeight"]) == "undefined" && typeof(ce["__overlayWeight"]) == "undefined") {
                     return 0;
-                }
-                else if (typeof(cs["__overlayWeight"]) != "undefined" && typeof(ce["__overlayWeight"]) == "undefined") {
+                } else if (typeof(cs["__overlayWeight"]) != "undefined" && typeof(ce["__overlayWeight"]) == "undefined") {
                     return -1;
-                }
-                else if (typeof(cs["__overlayWeight"]) == "undefined" && typeof(ce["__overlayWeight"]) != "undefined") {
+                } else if (typeof(cs["__overlayWeight"]) == "undefined" && typeof(ce["__overlayWeight"]) != "undefined") {
                     return 1;
-                }
-                else if (typeof(cs["__overlayWeight"]) != "undefined" && typeof(ce["__overlayWeight"]) != "undefined") {
+                } else if (typeof(cs["__overlayWeight"]) != "undefined" && typeof(ce["__overlayWeight"]) != "undefined") {
                     if (parseFloat(cs["__overlayWeight"]) < parseFloat(ce["__overlayWeight"])) {
                         return 1;
-                    }
-                    else {
+                    } else {
                         return -1;
                     }
                 }
+                return 0;
             });
         }
         // 不进行避让
@@ -195,8 +198,7 @@ export default class Graph extends Theme {
                     this.renderer.addShape(shapes_m[n]);
                 }
             }
-        }
-        else {
+        } else {
             // 压盖判断所需 chartsBounds 集合
             var chartsBounds = [];
             var extent = this.map.getView().calculateExtent();
@@ -219,12 +221,14 @@ export default class Graph extends Theme {
                     }, {"x": cbs.right, "y": cbs.top}, {"x": cbs.left, "y": cbs.top}];
                     // 地图范围外不绘制
                     if (mBounds) {
-                        if (!this.isChartInMap(mBounds, cBounds)) continue;
+                        if (!this.isChartInMap(mBounds, cBounds)) {
+                            continue;
+                        }
                     }
                     // 是否压盖
                     var isOL = false;
                     if (i !== 0) {
-                        for (var j = 0; j < chartsBounds.length; j++) {
+                        for (let j = 0; j < chartsBounds.length; j++) {
                             //压盖判断
                             if (this.isQuadrilateralOverLap(cBounds, chartsBounds[j])) {
                                 isOL = true;
@@ -234,13 +238,12 @@ export default class Graph extends Theme {
                     }
                     if (isOL) {
                         continue;
-                    }
-                    else {
+                    } else {
                         chartsBounds.push(cBounds);
                     }
                     // 添加图形
                     var shapes = chart.shapes;
-                    for (var j = 0, slen = shapes.length; j < slen; j++) {
+                    for (let j = 0, slen = shapes.length; j < slen; j++) {
                         shapes[j].refOriginalPosition = shapeROP;
                         this.renderer.addShape(shapes[j]);
                     }
@@ -280,28 +283,30 @@ export default class Graph extends Theme {
     isQuadrilateralOverLap(quadrilateral, quadrilateral2) {
         var quadLen = quadrilateral.length,
             quad2Len = quadrilateral2.length;
-        if (quadLen !== 5 || quad2Len !== 5) return null;//不是四边形
+        if (quadLen !== 5 || quad2Len !== 5) {
+            return null;
+        }//不是四边形
 
         var OverLap = false;
         //如果两四边形互不包含对方的节点，则两个四边形不相交
-        for (var i = 0; i < quadLen; i++) {
+        for (let i = 0; i < quadLen; i++) {
             if (this.isPointInPoly(quadrilateral[i], quadrilateral2)) {
                 OverLap = true;
                 break;
             }
         }
-        for (var i = 0; i < quad2Len; i++) {
+        for (let i = 0; i < quad2Len; i++) {
             if (this.isPointInPoly(quadrilateral2[i], quadrilateral)) {
                 OverLap = true;
                 break;
             }
         }
         //加上两矩形十字相交的情况
-        for (var i = 0; i < quadLen - 1; i++) {
+        for (let i = 0; i < quadLen - 1; i++) {
             if (OverLap) {
                 break;
             }
-            for (var j = 0; j < quad2Len - 1; j++) {
+            for (let j = 0; j < quad2Len - 1; j++) {
                 var isLineIn = SuperMap.Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     OverLap = true;
@@ -319,10 +324,11 @@ export default class Graph extends Theme {
      * @param poly - {Array<Object>} 多边形节点数组。
      */
     isPointInPoly(pt, poly) {
-        for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
+        for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {
             ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
             && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
             && (isIn = !isIn);
+        }
         return isIn;
     }
 

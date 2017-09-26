@@ -96,8 +96,7 @@ export default class LevelRenderer {
     dispose(zr) {
         if (zr) {
             zr.dispose();
-        }
-        else {
+        } else {
             for (var key in SuperMap.LevelRenderer._instances) {
                 SuperMap.LevelRenderer._instances[key].dispose();
             }

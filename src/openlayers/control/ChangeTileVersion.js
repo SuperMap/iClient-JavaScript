@@ -1,6 +1,7 @@
 import './css/ChangeTileVersion.css';
 import ol from 'openlayers/dist/ol-debug';
 import MapService from "../services/MapService"
+
 ol.supermap = ol.supermap || {};
 ol.supermap.control = ol.supermap.control || {};
 
@@ -67,6 +68,7 @@ export default class ChangeTileVersion extends ol.control.Control {
         if (options.layer) {
             this.setLayer(options.layer);
         }
+
         /*
          * @function ol.supermap.control.ChangeTileVersion.prototype.initLayout
          * @description 初始化
@@ -135,11 +137,9 @@ export default class ChangeTileVersion extends ol.control.Control {
             if (window.matchMedia("screen and (-webkit-min-device-pixel-ratio:0)").matches && options.orientation == 'vertical') {
                 this.slider.style.width = 170 + 'px';
                 this._sliderContainer.style.height = 170 + 'px';
-            }
-            else if (options.orientation == 'vertical') {
+            } else if (options.orientation == 'vertical') {
                 this._sliderContainer.style.height = 170 + 'px';
-            }
-            else {
+            } else {
                 this._sliderContainer.style.width = 150 + 'px';
             }
 
@@ -343,10 +343,9 @@ export default class ChangeTileVersion extends ol.control.Control {
     getTileSetsInfo() {
         var me = this;
         if (me.options.layer) {
-            new MapService(me.options.layer._url).getTilesets(getTilesInfoSucceed);
-            function getTilesInfoSucceed(info) {
+            new MapService(me.options.layer._url).getTilesets(function getTilesInfoSucceed(info) {
                 me.options.layer.setTileSetsInfo(info.result);
-            }
+            });
         }
         return me;
     }

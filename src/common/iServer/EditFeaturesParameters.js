@@ -93,7 +93,7 @@ export default class EditFeaturesParameters {
             editType = params.editType;
 
         if (editType === SuperMap.EditType.DELETE) {
-            if (params.IDs === null) return;
+            if (params.IDs === null) {return;}
 
             features = {ids: params.IDs};
         } else {

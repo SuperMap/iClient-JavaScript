@@ -190,6 +190,7 @@ export default class Turf extends ol.source.Vector {
         if (tempArgs) {
             tempArgs.map(function (key) {
                 result.push(args[key]);
+                return args[key];
             });
         }
         return result;

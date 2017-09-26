@@ -150,7 +150,7 @@ export default  class ThemeGraduatedSymbol extends Theme {
      * @return {SuperMap.ThemeGraduatedSymbol} 等级符号专题图对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new SuperMap.ThemeGraduatedSymbol();
         SuperMap.Util.copy(res, obj);
         res.flow = ThemeFlow.fromObj(obj);

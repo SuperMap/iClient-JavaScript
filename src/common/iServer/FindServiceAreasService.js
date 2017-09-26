@@ -24,7 +24,7 @@ import GeoJSON from '../format/GeoJSON';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象
  */
-export default  class FindServiceAreasService extends NetworkAnalystServiceBase {
+export default class FindServiceAreasService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -78,13 +78,17 @@ export default  class FindServiceAreasService extends NetworkAnalystServiceBase 
             len = params ? params.length : 0;
 
         if (isAnalyzeById === false) {
-            for (var i = 0; i < len; i++) {
-                if (i > 0) jsonString += ",";
+            for (let i = 0; i < len; i++) {
+                if (i > 0) {
+                    jsonString += ",";
+                }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
         } else if (isAnalyzeById == true) {
-            for (var i = 0; i < len; i++) {
-                if (i > 0) jsonString += ",";
+            for (let i = 0; i < len; i++) {
+                if (i > 0) {
+                    jsonString += ",";
+                }
                 jsonString += params[i];
             }
         }
@@ -115,6 +119,7 @@ export default  class FindServiceAreasService extends NetworkAnalystServiceBase 
             if (serviceArea.routes) {
                 serviceArea.routes = JSON.parse(geoJSONFormat.write(serviceArea.routes));
             }
+            return serviceArea;
         });
 
         return result;

@@ -75,11 +75,9 @@ export default class GeometryOverlayAnalystParameters extends OverlayAnalystPara
         for (var name in geometryOverlayAnalystParameters) {
             if (name === "sourceGeometry") {
                 tempObj.sourceGeometry = ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.sourceGeometry);
-            }
-            else if (name === "operateGeometry") {
+            } else if (name === "operateGeometry") {
                 tempObj.operateGeometry = ServerGeometry.fromGeometry(geometryOverlayAnalystParameters.operateGeometry);
-            }
-            else {
+            } else {
                 tempObj[name] = geometryOverlayAnalystParameters[name];
             }
         }

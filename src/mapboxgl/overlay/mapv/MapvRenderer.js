@@ -14,10 +14,10 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  */
 export default class MapvRenderer extends BaseLayer {
     constructor(map, layer, dataSet, options) {
+        super(map, dataSet, options);
         if (!BaseLayer) {
             return;
         }
-        super(map, dataSet, options);
         this.map = map;
         var self = this;
         options = options || {};

@@ -69,8 +69,8 @@ export default class ThemeVector extends ThemeFeature {
     constructor(data, layer, style, options, shapeOptions) {
         super(data, layer);
         //数据的 geometry 属性必须存在且类型是 SuperMap.Geometry 或其子类的类型
-        if (!data.geometry) return;
-        if (!(data.geometry instanceof SuperMap.Geometry)) return;
+        if (!data.geometry) {return;}
+        if (!(data.geometry instanceof SuperMap.Geometry)) {return;}
         this.style = style ? style : {};
         this.data = data;
         this.layer = layer;
@@ -94,36 +94,26 @@ export default class ThemeVector extends ThemeFeature {
         //将地理要素转为专题要素
         if (geometry instanceof SuperMap.Geometry.LinearRing) {
             this.lineToTF(geometry);
-        }
-        else if (geometry instanceof SuperMap.Geometry.LineString) {
+        } else if (geometry instanceof SuperMap.Geometry.LineString) {
             this.lineToTF(geometry);
-        }
-        else if (geometry instanceof SuperMap.Geometry.Curve) {
+        } else if (geometry instanceof SuperMap.Geometry.Curve) {
             //独立几何体
-        }
-        else if (geometry instanceof SuperMap.Geometry.MultiPoint) {
+        } else if (geometry instanceof SuperMap.Geometry.MultiPoint) {
             this.multiPointToTF(geometry);
-        }
-        else if (geometry instanceof SuperMap.Geometry.MultiLineString) {
+        } else if (geometry instanceof SuperMap.Geometry.MultiLineString) {
 
             this.multiLineStringToTF(geometry);
-        }
-        else if (geometry instanceof SuperMap.Geometry.MultiPolygon) {
+        } else if (geometry instanceof SuperMap.Geometry.MultiPolygon) {
             this.multiPolygonToTF(geometry);
-        }
-        else if (geometry instanceof SuperMap.Geometry.Polygon) {
+        } else if (geometry instanceof SuperMap.Geometry.Polygon) {
             this.polygonToTF(geometry);
-        }
-        else if (geometry instanceof SuperMap.Geometry.Collection) {
+        } else if (geometry instanceof SuperMap.Geometry.Collection) {
             //独立几何体
-        }
-        else if (geometry instanceof SuperMap.Geometry.Point) {
+        } else if (geometry instanceof SuperMap.Geometry.Point) {
             this.pointToTF(geometry);
-        }
-        else if (geometry instanceof SuperMap.Geometry.Rectangle) {
+        } else if (geometry instanceof SuperMap.Geometry.Rectangle) {
             this.rectangleToTF(geometry);
-        }
-        else if (geometry instanceof SuperMap.Geometry.GeoText) {
+        } else if (geometry instanceof SuperMap.Geometry.GeoText) {
             this.geoTextToTF(geometry);
         }
 
@@ -175,7 +165,7 @@ export default class ThemeVector extends ThemeFeature {
             //抽稀 - 2 px
             if (pointList.length > 0) {
                 var lastLocalXY = pointList[pointList.length - 1];
-                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
+                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) {continue;}
             }
 
             //使用参考点
@@ -259,7 +249,7 @@ export default class ThemeVector extends ThemeFeature {
             //抽稀
             if (pointList.length > 0) {
                 var lastLocalXY = pointList[pointList.length - 1];
-                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
+                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) {continue;}
             }
 
             //使用参考点
@@ -388,7 +378,7 @@ export default class ThemeVector extends ThemeFeature {
      */
     polygonToTF(geometry) {
         var components = geometry.components;
-        ;
+        
 
         //节点像素坐标
         var localLX = [];
@@ -421,14 +411,13 @@ export default class ThemeVector extends ThemeFeature {
                     //抽稀 - 2 px
                     if (pointList.length > 0) {
                         var lastLocalXY = pointList[pointList.length - 1];
-                        if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
+                        if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) {continue;}
                     }
 
                     //使用参考点
                     pointList.push(refLocal);
                 }
-            }
-            else {
+            } else {
                 // 其它 component 作为岛洞
                 holePolygonPointList = [];
 
@@ -442,7 +431,7 @@ export default class ThemeVector extends ThemeFeature {
                     //抽稀 - 2 px
                     if (holePolygonPointList.length > 0) {
                         var lastXY = holePolygonPointList[holePolygonPointList.length - 1];
-                        if ((Math.abs(lastXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastXY[1] - refLocal[1]) <= nCPx)) continue;
+                        if ((Math.abs(lastXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastXY[1] - refLocal[1]) <= nCPx)) {continue;}
                     }
 
                     //使用参考点

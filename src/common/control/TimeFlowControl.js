@@ -44,7 +44,7 @@ export default class TimeFlowControl extends TimeControlBase {
                         return fToBind.apply(this instanceof fNOP && oThis
                             ? this
                             : oThis,
-                            aArgs.concat(Array.prototype.slice.call(arguments)));
+                        aArgs.concat(Array.prototype.slice.call(arguments)));
                     };
                 fNOP.prototype = this.prototype;
                 fBound.prototype = new fNOP();
@@ -162,10 +162,7 @@ export default class TimeFlowControl extends TimeControlBase {
                 me.currentTime = me.startTime;
                 me.oldTime = me.currentTime;
                 me.start();
-
-            }
-            //否则时间递增
-            else {
+            } else {////否则时间递增
                 me.oldTime = me.currentTime;
                 me.currentTime += me.speed;
             }
@@ -185,9 +182,7 @@ export default class TimeFlowControl extends TimeControlBase {
 
                 me.oldTime = me.endTime;
                 me.currentTime = me.oldTime;
-            }
-            //否则时间递减
-            else {
+            } else {////否则时间递减
                 me.currentTime = me.oldTime;
                 me.oldTime -= me.speed;
             }

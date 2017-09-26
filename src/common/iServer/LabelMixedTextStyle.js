@@ -99,7 +99,7 @@ export default class LabelMixedTextStyle {
      * @return {SuperMap.LabelMixedTextStyle}
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new LabelMixedTextStyle();
         var stys = obj.styles;
         SuperMap.Util.copy(res, obj);

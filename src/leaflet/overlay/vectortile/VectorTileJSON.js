@@ -75,26 +75,22 @@ export var VectorTileJSON = L.Class.extend({
             newFeature = (tags && tags.texts) ?
                 scope._createFeature(id, VectorFeatureType.TEXT, [coords], tags) :
                 scope._createFeature(id, VectorFeatureType.POINT, [coords], tags);
-        }
-        else if (type === 'MultiPoint') {
+        } else if (type === 'MultiPoint') {
             newFeature = scope._createFeature(id, VectorFeatureType.POINT, coords, tags);
-        }
-        else if (type === 'LineString') {
+        } else if (type === 'LineString') {
             newFeature = scope._createFeature(id, VectorFeatureType.LINE, [coords], tags);
-        }
-        else if (type === 'MultiLineString' || type === 'Polygon') {
+        } else if (type === 'MultiLineString' || type === 'Polygon') {
             rings = [];
             for (i = 0; i < coords.length; i++) {
                 projectedRing = coords[i];
-                if (type === 'Polygon') projectedRing.outer = (i === 0);
+                if (type === 'Polygon') {projectedRing.outer = (i === 0);}
                 rings.push(projectedRing);
             }
             var featureType = (type === 'Polygon') ?
                 VectorFeatureType.REGION :
                 VectorFeatureType.LINE;
             newFeature = scope._createFeature(id, featureType, rings, tags);
-        }
-        else if (type === 'MultiPolygon') {
+        } else if (type === 'MultiPolygon') {
             rings = [];
             for (i = 0; i < coords.length; i++) {
                 for (j = 0; j < coords[i].length; j++) {

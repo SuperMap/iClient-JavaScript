@@ -4,8 +4,8 @@ import fetchJsonp from 'fetch-jsonp';
 import SuperMap from '../SuperMap';
 
 export var Support = SuperMap.Support = SuperMap.Support || {
-        cors: (window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest())
-    };
+    cors: (window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest())
+};
 export var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;

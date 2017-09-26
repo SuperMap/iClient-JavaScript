@@ -84,7 +84,7 @@ export default class ServerFeature {
             geo = me.geometry.toGeometry();
         }
         feature = new Vector(geo, attr);
-        if (me.geometry && me.geometry.id) feature.fid = me.geometry.id;
+        if (me.geometry && me.geometry.id) {feature.fid = me.geometry.id;}
 
         return feature;
     }

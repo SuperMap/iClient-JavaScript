@@ -45,7 +45,7 @@ export default class Http {
         /* jshint ignore:start */
         var xhr = window.XMLHttpRequest
             ? new XMLHttpRequest()
-            : new ActiveXObject('Microsoft.XMLHTTP');
+            : new window.ActiveXObject('Microsoft.XMLHTTP');
         xhr.open('GET', url, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {

@@ -53,11 +53,11 @@ export default class RankSymbol extends Graph {
             thematicFeature = new SuperMap.Feature.Theme[this.symbolType](feature, this, [this.themeField], this.symbolSetting);
         }
         // thematicFeature 是否创建成功
-        if (!thematicFeature) return false;
+        if (!thematicFeature) {return false;}
         // 对专题要素执行图形装载
         thematicFeature.assembleShapes();
         return thematicFeature;
-    };
+    }
 
     canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
         return Graph.prototype.canvasFunctionInternal_.apply(this, arguments);

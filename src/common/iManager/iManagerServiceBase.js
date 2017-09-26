@@ -27,11 +27,11 @@ export default class IManagerServiceBase {
      */
     request(method, url, param, requestOptions) {
         requestOptions = requestOptions || {
-                headers: {
-                    'Accept': '*/*',
-                    'Content-Type': 'application/json'
-                }
-            };
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            }
+        };
         if (!requestOptions.hasOwnProperty("withCredentials")) {
             requestOptions['withCredentials'] = true;
         }

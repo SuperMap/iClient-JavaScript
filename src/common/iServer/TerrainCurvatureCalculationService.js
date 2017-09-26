@@ -1,6 +1,7 @@
 import SuperMap from '../SuperMap';
 import SpatialAnalystBase from './SpatialAnalystBase';
 import TerrainCurvatureCalculationParameters from './TerrainCurvatureCalculationParameters';
+
 /**
  * @class SuperMap.TerrainCurvatureCalculationService
  * @classdesc 地形曲率计算服务类。
@@ -19,7 +20,7 @@ import TerrainCurvatureCalculationParameters from './TerrainCurvatureCalculation
  * (end)
  *
  */
-export default  class TerrainCurvatureCalculationService extends SpatialAnalystBase {
+export default class TerrainCurvatureCalculationService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -41,9 +42,7 @@ export default  class TerrainCurvatureCalculationService extends SpatialAnalystB
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
-        if (end === '/') {
-
-        } else {
+        if (end !== '/') {
             me.url += "/";
         }
 

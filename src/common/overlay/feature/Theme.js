@@ -57,9 +57,9 @@ export default class Theme {
      * {<SuperMap.Feature.Theme>} 返回一个专题要素。
      */
     constructor(data, layer) {
-        if (!data) return;
+        if (!data) {return;}
         // layer 必须已经添加到地图, 且已初始化渲染器
-        if (!layer || !layer.map || !layer.renderer) return;
+        if (!layer || !layer.map || !layer.renderer) {return;}
 
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
@@ -100,16 +100,14 @@ export default class Theme {
         var extent = this.layer.map.getExtent();
 
         if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
-            var x = (coordinate.x / resolution + (-extent.left / resolution));
-            var y = ((extent.top / resolution) - coordinate.y / resolution);
+            let x = (coordinate.x / resolution + (-extent.left / resolution));
+            let y = ((extent.top / resolution) - coordinate.y / resolution);
             return [x, y];
-        }
-        else if (coordinate instanceof SuperMap.LonLat) {
-            var x = (coordinate.lon / resolution + (-extent.left / resolution));
-            var y = ((extent.top / resolution) - coordinate.lat / resolution);
+        } else if (coordinate instanceof SuperMap.LonLat) {
+            let x = (coordinate.lon / resolution + (-extent.left / resolution));
+            let y = ((extent.top / resolution) - coordinate.lat / resolution);
             return [x, y];
-        }
-        else {
+        } else {
             return null;
         }
     }

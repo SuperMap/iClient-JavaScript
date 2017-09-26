@@ -24,9 +24,9 @@ module.exports = {
     externals: {
         'openlayers/dist/ol-debug': 'ol',
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
-        'mapv':  "function(){try{return mapv}catch(e){return {}}}()",
+        'mapv': "function(){try{return mapv}catch(e){return {}}}()",
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
-        '@turf/turf':  "function(){try{return turf}catch(e){return {}}}()",
+        '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
     },
 
     module: {
@@ -40,6 +40,14 @@ module.exports = {
                     limit: 30000
                 }
             }]
+        }, {
+            test: [/\.js$/],
+            exclude: /node_modules/,
+            enforce: 'pre',
+            loader: 'eslint-loader',
+            options: {
+                failOnError: true
+            }
         }, {
             test: /\.js$/,
             exclude: /classic/,
@@ -61,6 +69,7 @@ module.exports = {
     },
     plugins: [
         new webpack.BannerPlugin(banner),
-        new ExtractTextPlugin('/../dist/' + packageName + ".css")
+        new ExtractTextPlugin('/../dist/' + packageName + ".css"),
+        new webpack.NoEmitOnErrorsPlugin()
     ]
 };

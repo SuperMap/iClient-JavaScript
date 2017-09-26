@@ -26,7 +26,7 @@ import GeoJSON from '../format/GeoJSON';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class FindTSPPathsService extends NetworkAnalystServiceBase {
+export default class FindTSPPathsService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -76,14 +76,19 @@ export default  class FindTSPPathsService extends NetworkAnalystServiceBase {
         var jsonParameters = "", nodesString, i, len, nodes;
         if (params.isAnalyzeById === false) {
             for (nodesString = "[", i = 0, nodes = params.nodes, len = nodes.length; i < len; i++) {
-                if (i > 0) nodesString += ",";
+                if (i > 0) {
+                    nodesString += ",";
+                }
                 nodesString += '{"x":' + nodes[i].x + ',"y":' + nodes[i].y + '}';
             }
             nodesString += ']';
             jsonParameters += nodesString;
         } else if (params.isAnalyzeById == true) {
-            for (var nodeIDsString = "[", i = 0, nodes = params.nodes, len = nodes.length; i < len; i++) {
-                if (i > 0) nodeIDsString += ",";
+            let nodeIDsString = "[", nodes = params.nodes, len = nodes.length;
+            for (let i = 0; i < len; i++) {
+                if (i > 0) {
+                    nodeIDsString += ",";
+                }
                 nodeIDsString += nodes[i];
             }
             nodeIDsString += ']';

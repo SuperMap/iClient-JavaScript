@@ -58,8 +58,7 @@ export default class JSONFormat extends Format {
         if (this.nativeJSON) {
             try {
                 object = JSON.parse(json, filter);
-            }
-            catch (e) {
+            } catch (e) {
                 // Fall through if the regexp test fails.
             }
         }
@@ -226,6 +225,7 @@ export default class JSONFormat extends Format {
                 '"': '\\"',
                 '\\': '\\\\'
             };
+            /*eslint-disable no-control-regex*/
             if (/["\\\x00-\x1f]/.test(string)) {
                 return '"' + string.replace(/([\x00-\x1f\\"])/g, function (a, b) {
                     var c = m[b];

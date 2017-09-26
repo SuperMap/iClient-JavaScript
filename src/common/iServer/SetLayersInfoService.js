@@ -76,7 +76,7 @@ export default  class SetLayersInfoService extends CommonServiceBase {
         me.url += ".json?";
         var layers = params.subLayers.layers,
             len = layers.length;
-        for (var i in layers) {
+        for (let i in layers) {
             if (layers[i].ugcLayerType === "GRID") {
                 var colorDictionary = {};
                 var colorDics = layers[i].colorDictionarys;
@@ -89,7 +89,7 @@ export default  class SetLayersInfoService extends CommonServiceBase {
             delete layers[i].colorDictionarys;
         }
 
-        for (var i = 0; i < len; i++) {
+        for (let i = 0; i < len; i++) {
             if (layers[i].toJsonObject) {
                 //将图层信息转换成服务端能识别的简单json对象
                 subLayers.push(layers[i].toJsonObject());

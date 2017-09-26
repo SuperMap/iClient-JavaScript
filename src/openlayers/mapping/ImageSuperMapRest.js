@@ -179,11 +179,11 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
                 unit = SuperMap.Unit.DEGREE;
             }
             if (mapJSONObj.visibleScales.length > 0) {
-                for (var i = 0; i < mapJSONObj.visibleScales.length; i++) {
+                for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
                     resolutions.push(Util.scaleToResolution(mapJSONObj.visibleScales[i], dpi, unit));
                 }
             } else {
-                for (var i = 0; i < level; i++) {
+                for (let i = 0; i < level; i++) {
                     resolutions.push(maxReolution / Math.pow(2, i));
                 }
             }
@@ -215,12 +215,12 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
             tileSize: tileSize
         });
         return new ol.tilegrid.TileGrid({
-                extent: extent,
-                minZoom: minZoom,
-                origin: origin,
-                resolutions: tilegrid.getResolutions(),
-                tileSize: tilegrid.getTileSize()
-            }
+            extent: extent,
+            minZoom: minZoom,
+            origin: origin,
+            resolutions: tilegrid.getResolutions(),
+            tileSize: tilegrid.getTileSize()
+        }
         );
     }
 }

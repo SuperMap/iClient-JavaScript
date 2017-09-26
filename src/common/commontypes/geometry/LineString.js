@@ -126,7 +126,6 @@ export default class LineString extends Curve {
             dRotationBegin = 0,
             dRotationAngle = 0,
             nSegmentCount = 72,
-            centerPoint = {},
             circlePoints = [];
 
         var KTan13 = (p3.y - p1.y) / (p3.x - p1.x);
@@ -287,7 +286,7 @@ export default class LineString extends Curve {
 
     static createLineArc(list, i, len, points) {
         if (i == 0) {
-            var bezierPtsObj = LineString.addPointEPS(points, i, len, 'LTypeArc');
+            let bezierPtsObj = LineString.addPointEPS(points, i, len, 'LTypeArc');
             Array.prototype.push.apply(list, bezierPtsObj[0]);
             i = bezierPtsObj[1] + 1;
         } else if (i == len - 1) {
@@ -296,7 +295,7 @@ export default class LineString extends Curve {
             Array.prototype.push.apply(list, bezierPts);
             i++;
         } else {
-            var bezierPtsObj = LineString.addPointEPS(points, i, len, 'LTypeArc');
+            let bezierPtsObj = LineString.addPointEPS(points, i, len, 'LTypeArc');
             list.pop();
             Array.prototype.push.apply(list, bezierPtsObj[0]);
             i = bezierPtsObj[1] + 1;
@@ -313,10 +312,11 @@ export default class LineString extends Curve {
         } else {
             Array.prototype.push.apply(bezierP, [points[i - 1], points[i], points[i + 1]]);
         }
+        var bezierPts;
         if (type == 'LTypeCurve') {
-            var bezierPts = LineString.calculatePointsFBZN(bezierP);
+            bezierPts = LineString.calculatePointsFBZN(bezierP);
         } else if (type == 'LTypeArc') {
-            var bezierPts = LineString.calculateCircle(bezierP);
+            bezierPts = LineString.calculateCircle(bezierP);
         }
         return [bezierPts, j];
     }

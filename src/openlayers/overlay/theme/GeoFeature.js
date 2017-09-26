@@ -123,7 +123,7 @@ export default class GeoFeature extends Theme {
             //剔除当前视图（地理）范围以外的数据
             if (extent) {
                 var bounds = new SuperMap.Bounds(extent[0], extent[1], extent[2], extent[3]);
-                if (!bounds.intersectsBounds(feaBounds)) continue;
+                if (!bounds.intersectsBounds(feaBounds)) {continue;}
             }
 
             //缓存字段
@@ -134,8 +134,7 @@ export default class GeoFeature extends Theme {
             //判断专题要素缓存是否存在
             if (cache[fields]) {
                 cache[fields].updateAndAddShapes();
-            }
-            else {
+            } else {
                 //如果专题要素缓存不存在，创建专题要素
                 thematicFeature = this.createThematicFeature(features[i]);
 

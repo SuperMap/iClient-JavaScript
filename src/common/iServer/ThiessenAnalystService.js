@@ -30,7 +30,7 @@ import GeoJSON from '../format/GeoJSON';
  * (end)
  *
  */
-export default  class ThiessenAnalystService extends SpatialAnalystBase {
+export default class ThiessenAnalystService extends SpatialAnalystBase {
     /**
      * @member SuperMap.ThiessenAnalystService.prototype.mode -{string}
      * @description 缓冲区分析类型
@@ -63,9 +63,7 @@ export default  class ThiessenAnalystService extends SpatialAnalystBase {
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
-        if (end === '/') {
-
-        } else {
+        if (end !== '/') {
             me.url += "/";
         }
 
@@ -73,8 +71,7 @@ export default  class ThiessenAnalystService extends SpatialAnalystBase {
             me.mode = "datasets";
             me.url += 'datasets/' + parameter.dataset + '/thiessenpolygon';
             DatasetThiessenAnalystParameters.toObject(parameter, parameterObject);
-        }
-        else if (parameter instanceof GeometryThiessenAnalystParameters) {
+        } else if (parameter instanceof GeometryThiessenAnalystParameters) {
             me.mode = "geometry";
             me.url += 'geometry/thiessenpolygon';
             GeometryThiessenAnalystParameters.toObject(parameter, parameterObject);

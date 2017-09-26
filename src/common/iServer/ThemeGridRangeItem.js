@@ -94,7 +94,7 @@ export default class ThemeGridRangeItem {
      * @return {SuperMap.ThemeGridRangeItem} ThemeGridRangeItem对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new ThemeGridRangeItem();
         SuperMap.Util.copy(res, obj);
         res.color = ServerColor.fromJson(obj.color);

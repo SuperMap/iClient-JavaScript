@@ -215,10 +215,10 @@ export default class Area {
                     area.pointList, area.lineWidth, x, y
                 );
             // 扩展折线
-            case 'smicbroken-line':
+            case 'smicbroken-line': {
                 // SMIC-修改 - start
-                var icX = x;
-                var icY = y;
+                let icX = x;
+                let icY = y;
                 if (shape.refOriginalPosition) {
                     icX = x - shape.refOriginalPosition[0];
                     icY = y - shape.refOriginalPosition[1];
@@ -226,6 +226,7 @@ export default class Area {
                 return this.isInsideBrokenLine(
                     area.pointList, area.lineWidth, icX, icY
                 );
+            }
             //初始代码：
             //      return isInsideBrokenLine(
             //          area.pointList, area.lineWidth, x, y
@@ -236,9 +237,9 @@ export default class Area {
                 return this.isInsideRing(
                     area.x, area.y, area.r0, area.r, x, y
                 );
-            case 'smicring':
-                var areaX = area.x;
-                var areaY = area.y;
+            case 'smicring': {
+                let areaX = area.x;
+                let areaY = area.y;
                 if (shape.refOriginalPosition) {
                     areaX = area.x + shape.refOriginalPosition[0];
                     areaY = area.y + shape.refOriginalPosition[1];
@@ -246,16 +247,17 @@ export default class Area {
                 return this.isInsideRing(
                     areaX, areaY, area.r0, area.r, x, y
                 );
+            }
             // 圆形
             case 'circle':
                 return this.isInsideCircle(
                     area.x, area.y, area.r, x, y
                 );
             // 扩展-点
-            case 'smicpoint':
+            case 'smicpoint': {
                 // SMIC-修改 - start
-                var icX = x;
-                var icY = y;
+                let icX = x;
+                let icY = y;
                 if (shape.refOriginalPosition) {
                     icX = x - shape.refOriginalPosition[0];
                     icY = y - shape.refOriginalPosition[1];
@@ -263,13 +265,14 @@ export default class Area {
                 return this.isInsideCircle(
                     area.x, area.y, area.r, icX, icY
                 );
+            }
             //初始代码：
             //  无
             // SMIC-修改 - end
             // 扇形
-            case 'sector':
-                var startAngle = area.startAngle * Math.PI / 180;
-                var endAngle = area.endAngle * Math.PI / 180;
+            case 'sector': {
+                let startAngle = area.startAngle * Math.PI / 180;
+                let endAngle = area.endAngle * Math.PI / 180;
                 if (!area.clockWise) {
                     startAngle = -startAngle;
                     endAngle = -endAngle;
@@ -280,20 +283,21 @@ export default class Area {
                     !area.clockWise,
                     x, y
                 );
+            }
             //初始代码：
             //  无
             // SMIC-增加 - end
             // 扇形
-            case 'smicsector':
-                var startAngle = area.startAngle * Math.PI / 180;
-                var endAngle = area.endAngle * Math.PI / 180;
+            case 'smicsector': {
+                let startAngle = area.startAngle * Math.PI / 180;
+                let endAngle = area.endAngle * Math.PI / 180;
                 if (!area.clockWise) {
                     startAngle = -startAngle;
                     endAngle = -endAngle;
                 }
 
-                var areaX = area.x;
-                var areaY = area.y;
+                let areaX = area.x;
+                let areaY = area.y;
                 if (shape.refOriginalPosition) {
                     areaX = area.x + shape.refOriginalPosition[0];
                     areaY = area.y + shape.refOriginalPosition[1];
@@ -305,6 +309,7 @@ export default class Area {
                     !area.clockWise,
                     x, y
                 );
+            }
             // 多边形
             case 'path':
                 return this.isInsidePath(
@@ -318,10 +323,10 @@ export default class Area {
             case 'smicisogon':
                 return this.isInsidePolygon(area.pointList, x, y);
             // 扩展多边形
-            case 'smicpolygon':
+            case 'smicpolygon': {
                 // SMIC-修改 - start
-                var icX = x;
-                var icY = y;
+                let icX = x;
+                let icY = y;
                 if (shape.refOriginalPosition) {
                     icX = x - shape.refOriginalPosition[0];
                     icY = y - shape.refOriginalPosition[1];
@@ -345,14 +350,13 @@ export default class Area {
                     // 捕获判断
                     if (isOnBase === true && isOnHole === false) {
                         return true;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
-                }
-                else {
+                } else {
                     return this.isInsidePolygon(area.pointList, icX, icY);
                 }
+            }
             // 初始代码：
             //  无
             // SMIC-修改 - end
@@ -372,14 +376,14 @@ export default class Area {
             // SMIC-修改 - end
             // 矩形
             case 'rectangle':
-            // 图片
             case 'image':
+                // 图片
                 return this.isInsideRect(
                     area.x, area.y, area.width, area.height, x, y
                 );
-            case 'smicimage':
-                var areaX = area.x;
-                var areaY = area.y;
+            case 'smicimage': {
+                let areaX = area.x;
+                let areaY = area.y;
                 if (shape.refOriginalPosition) {
                     areaX = area.x + shape.refOriginalPosition[0];
                     areaY = area.y + shape.refOriginalPosition[1];
@@ -387,6 +391,7 @@ export default class Area {
                 return this.isInsideRect(
                     areaX, areaY, area.width, area.height, x, y
                 );
+            }
             //// 扩展矩形
             //case 'smicpolygon':
             //    // SMIC-修改 - start
@@ -480,8 +485,7 @@ export default class Area {
         if (x0 !== x1) {
             _a = (y0 - y1) / (x0 - x1);
             _b = (x0 * y1 - x1 * y0) / (x0 - x1);
-        }
-        else {
+        } else {
             return Math.abs(x - x0) <= _l / 2;
         }
         var tmp = _a * x - y + _b;
@@ -630,14 +634,14 @@ export default class Area {
      * 图形 BrokenLine 是否包含鼠标位置, true表示坐标处在图形内。
      */
     isInsideBrokenLine(points, lineWidth, x, y) {
-        var lineWidth = Math.max(lineWidth, 10);
+        var _lineWidth = Math.max(lineWidth, 10);
         for (var i = 0, l = points.length - 1; i < l; i++) {
             var x0 = points[i][0];
             var y0 = points[i][1];
             var x1 = points[i + 1][0];
             var y1 = points[i + 1][1];
 
-            if (this.isInsideLine(x0, y0, x1, y1, lineWidth, x, y)) {
+            if (this.isInsideLine(x0, y0, x1, y1, _lineWidth, x, y)) {
                 return true;
             }
         }
@@ -741,8 +745,7 @@ export default class Area {
         var nRoots = curve.cubicRootAt(y0, y1, y2, y3, y, roots);
         if (nRoots === 0) {
             return 0;
-        }
-        else {
+        } else {
             var w = 0;
             var nExtrema = -1;
             var y0_, y1_;
@@ -766,20 +769,16 @@ export default class Area {
                     // 分成三段单调函数
                     if (t < extrema[0]) {
                         w += y0_ < y0 ? 1 : -1;
-                    }
-                    else if (t < extrema[1]) {
+                    } else if (t < extrema[1]) {
                         w += y1_ < y0_ ? 1 : -1;
-                    }
-                    else {
+                    } else {
                         w += y3 < y1_ ? 1 : -1;
                     }
-                }
-                else {
+                } else {
                     // 分成两段单调函数
                     if (t < extrema[0]) {
                         w += y0_ < y0 ? 1 : -1;
-                    }
-                    else {
+                    } else {
                         w += y3 < y0_ ? 1 : -1;
                     }
                 }
@@ -805,28 +804,25 @@ export default class Area {
         var nRoots = curve.quadraticRootAt(y0, y1, y2, y, roots);
         if (nRoots === 0) {
             return 0;
-        }
-        else {
+        } else {
             var t = curve.quadraticExtremum(y0, y1, y2);
             if (t >= 0 && t <= 1) {
                 var w = 0;
                 var y_ = curve.quadraticAt(y0, y1, y2, t);
-                for (var i = 0; i < nRoots; i++) {
-                    var x_ = curve.quadraticAt(x0, x1, x2, roots[i]);
+                for (let i = 0; i < nRoots; i++) {
+                    let x_ = curve.quadraticAt(x0, x1, x2, roots[i]);
                     if (x_ > x) {
                         continue;
                     }
                     if (roots[i] < t) {
                         w += y_ < y0 ? 1 : -1;
-                    }
-                    else {
+                    } else {
                         w += y2 < y_ ? 1 : -1;
                     }
                 }
                 return w;
-            }
-            else {
-                var x_ = curve.quadraticAt(x0, x1, x2, roots[0]);
+            } else {
+                let x_ = curve.quadraticAt(x0, x1, x2, roots[0]);
                 if (x_ > x) {
                     return 0;
                 }
@@ -847,7 +843,7 @@ export default class Area {
         if (y > r || y < -r) {
             return 0;
         }
-        var tmp = Math.sqrt(r * r - y * y);
+        let tmp = Math.sqrt(r * r - y * y);
         roots[0] = -tmp;
         roots[1] = tmp;
 
@@ -864,7 +860,7 @@ export default class Area {
         }
 
         if (anticlockwise) {
-            var tmp = startAngle;
+            let tmp = startAngle;
             startAngle = this.normalizeRadian(endAngle);
             endAngle = this.normalizeRadian(tmp);
         } else {
@@ -876,11 +872,11 @@ export default class Area {
         }
 
         var w = 0;
-        for (var i = 0; i < 2; i++) {
+        for (let i = 0; i < 2; i++) {
             var x_ = roots[i];
             if (x_ + cx > x) {
-                var angle = Math.atan2(y, x_);
-                var dir = anticlockwise ? 1 : -1;
+                let angle = Math.atan2(y, x_);
+                let dir = anticlockwise ? 1 : -1;
                 if (angle < 0) {
                     angle = PI2 + angle;
                 }

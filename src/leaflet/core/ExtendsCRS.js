@@ -18,7 +18,7 @@ export var BaiduCRS = L.CRS.Baidu = L.extend({}, L.CRS.EPSG3857, {
 
 var tdt_WGS84_resolutions = [];
 
-for (var i = 0; i < 20; i++) {
+for (let i = 0; i < 20; i++) {
     tdt_WGS84_resolutions.push(0.703125 * 2 / (Math.pow(2, i)));
 }
 
@@ -33,7 +33,7 @@ export var TianDiTu_WGS84CRS = L.CRS.TianDiTu_WGS84 = L.Proj.CRS("EPSG:4326",{
 });
 
 var tdt_Mercator_resolutions = [];
-for (var i = 0; i < 20; i++) {
+for (let i = 0; i < 20; i++) {
     tdt_Mercator_resolutions.push(78271.5169640203125 * 2 / (Math.pow(2, i)));
 }
 

@@ -73,7 +73,7 @@ export default class SmicEllipse extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
     }
 
 
@@ -97,7 +97,7 @@ export default class SmicEllipse extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var k = 0.5522848;
@@ -132,14 +132,13 @@ export default class SmicEllipse extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var lineWidth;
         if (style.brushType == 'stroke' || style.brushType == 'fill') {
             lineWidth = style.lineWidth || 1;
-        }
-        else {
+        } else {
             lineWidth = 0;
         }
         style.__rect = {

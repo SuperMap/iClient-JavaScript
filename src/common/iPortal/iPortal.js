@@ -41,6 +41,7 @@ export default class IPortal extends IPortalServiceBase {
             var services = [];
             result.content.map(function (serviceJsonObj) {
                 services.push(new IPortalService(serviceUrl, serviceJsonObj));
+                return serviceJsonObj;
             });
             return services;
         });
@@ -70,6 +71,7 @@ export default class IPortal extends IPortalServiceBase {
             var maps = [];
             result.content.map(function (mapJsonObj) {
                 maps.push(new IPortalMap(mapsUrl + "/" + mapJsonObj.id, mapJsonObj));
+                return mapJsonObj;
             });
             mapRetult.content = maps;
             mapRetult.currentPage = result.currentPage;

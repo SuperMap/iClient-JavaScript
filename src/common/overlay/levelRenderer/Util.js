@@ -91,8 +91,7 @@ export default class Util {
                 for (var i = 0, len = source.length; i < len; i++) {
                     result[i] = this.clone(source[i]);
                 }
-            }
-            else if (!BUILTIN_OBJECT[Object.prototype.toString.call(source)]) {
+            } else if (!BUILTIN_OBJECT[Object.prototype.toString.call(source)]) {
                 result = {};
                 for (var key in source) {
                     if (source.hasOwnProperty(key)) {
@@ -133,8 +132,7 @@ export default class Util {
                     source[key],
                     overwrite
                 );
-            }
-            else if (overwrite || !(key in target)) {
+            } else if (overwrite || !(key in target)) {
                 // 否则只处理overwrite为true，或者在目标对象中没有此属性的情况
                 target[key] = source[key];
             }

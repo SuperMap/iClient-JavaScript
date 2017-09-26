@@ -80,7 +80,7 @@ export default  class UpdateEdgeWeightService extends NetworkAnalystServiceBase 
         }
         var paramStr = "";
         for (var attr in params) {
-            if (params[attr] === "" || params[attr] === "edgeWeight") continue;
+            if (params[attr] === "" || params[attr] === "edgeWeight") {continue;}
             switch (attr) {
                 case "edgeId":
                     paramStr += "/edgeweight/" + params[attr];

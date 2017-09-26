@@ -25,7 +25,7 @@ import GeometrySurfaceAnalystParameters from './GeometrySurfaceAnalystParameters
  * (end)
  *
  */
-export default  class SurfaceAnalystService extends SpatialAnalystBase {
+export default class SurfaceAnalystService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -70,17 +70,17 @@ export default  class SurfaceAnalystService extends SpatialAnalystBase {
         var parameterObject = {};
         var me = this, end;
         if (params instanceof DatasetSurfaceAnalystParameters) {
-            var end = me.url.substr(me.url.length - 1, 1);
+            end = me.url.substr(me.url.length - 1, 1);
             me.url += (end === "/") ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() +
-            ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
-            params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
+                ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
+                params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
             DatasetSurfaceAnalystParameters.toObject(params, parameterObject);
             jsonParameters = SuperMap.Util.toJSON(parameterObject);
         } else if (params instanceof GeometrySurfaceAnalystParameters) {
             end = me.url.substr(me.url.length - 1, 1);
             me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-            ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-            ".json?returnContent=true";
+                ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
+                ".json?returnContent=true";
             jsonParameters = SuperMap.Util.toJSON(params);
         } else {
             return;

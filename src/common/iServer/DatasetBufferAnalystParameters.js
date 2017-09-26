@@ -91,13 +91,11 @@ export default class DatasetBufferAnalystParameters extends BufferAnalystParamet
             if (name === "bufferSetting") {
                 datasetBufferAnalystParameters.bufferSetting.radiusUnit = datasetBufferAnalystParameters.bufferSetting.radiusUnit.toUpperCase();
                 tempObj.bufferAnalystParameter = datasetBufferAnalystParameters.bufferSetting;
-            }
-            else if (name === "resultSetting") {
+            } else if (name === "resultSetting") {
                 tempObj.dataReturnOption = datasetBufferAnalystParameters.resultSetting;
-            }
-            else if (name === "dataset") {
-            }
-            else {
+            } else if (name === "dataset") {
+                continue;
+            } else {
                 tempObj[name] = datasetBufferAnalystParameters[name];
             }
         }

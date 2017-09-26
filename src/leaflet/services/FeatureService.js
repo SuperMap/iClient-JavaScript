@@ -195,6 +195,7 @@ export var FeatureService = ServiceBase.extend({
             if (L.Util.isArray(params.features)) {
                 params.features.map(function (feature) {
                     features.push(me._createServerFeature(feature));
+                    return feature;
                 });
             } else {
                 features.push(me._createServerFeature(params.features));

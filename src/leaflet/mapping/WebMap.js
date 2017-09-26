@@ -300,7 +300,6 @@ export var WebMap = L.LayerGroup.extend({
                 break;
             default:
                 throw new Error('unSupported Layer Type');
-                break;
         }
         if (layer) {
             this.addLayerWrapper(layer, isBaseLayer, mapOptions);
@@ -321,9 +320,15 @@ export var WebMap = L.LayerGroup.extend({
             "http://t{s}.tianditu.com/{type}_{proj}/wmts?";
         var type = layerInfo.type.split('_')[1].toLowerCase();
         if (layerInfo.layerType === 'OVERLAY_LAYER') {
-            if (type == "vec") type = "cva"
-            if (type == "img") type = "cia"
-            if (type == "ter") type = "cta"
+            if (type == "vec") {
+                type = "cva"
+            }
+            if (type == "img") {
+                type = "cia"
+            }
+            if (type == "ter") {
+                type = "cta"
+            }
         }
         wmtsURL = wmtsURL.replace("{type}", type).replace("{proj}", proj);
         var layer = L.supermap.tiandituTileLayer(wmtsURL,

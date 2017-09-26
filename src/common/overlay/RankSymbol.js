@@ -83,7 +83,7 @@ export default class RankSymbol extends Graph {
         var isSuccess = true;
 
         // setting 属性是否已成功赋值
-        if (!this.setting) return false;
+        if (!this.setting) {return false;}
         var sets = this.setting;
 
         // 图表偏移

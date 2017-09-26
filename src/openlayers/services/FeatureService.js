@@ -195,6 +195,7 @@ export default class FeatureService extends ServiceBase {
             if (Util.isArray(params.features)) {
                 params.features.map(function (feature) {
                     features.push(me._createServerFeature(feature));
+                    return feature;
                 });
             } else {
                 features.push(me._createServerFeature(params.features));

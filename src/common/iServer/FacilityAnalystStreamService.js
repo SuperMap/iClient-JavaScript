@@ -44,24 +44,19 @@ export default  class FacilityAnalystStreamService extends NetworkAnalystService
         if (params.queryType === 0) {
             me.url = me.url + ((end === "/") ? "upstreamcirticalfaclilities" :
                 "/upstreamcirticalfaclilities") +".json?";
-        }
-        else if (params.queryType === 1) {
+        } else if (params.queryType === 1) {
             me.url = me.url + ((end === "/") ? "downstreamcirticalfaclilities" :
                 "/downstreamcirticalfaclilities") +".json?";
-        }
-        else return;
+        } else {return;}
 
         jsonObject = {
             sourceNodeIDs: params.sourceNodeIDs,
             isUncertainDirectionValid: params.isUncertainDirectionValid
         };
 
-        if (params.edgeID !== null && params.nodeID !== null) return;
-        if (params.edgeID === null && params.nodeID === null) return;
-        if (params.edgeID !== null)
-            jsonObject.edgeID = params.edgeID;
-        else
-            jsonObject.nodeID = params.nodeID;
+        if (params.edgeID !== null && params.nodeID !== null) {return;}
+        if (params.edgeID === null && params.nodeID === null) {return;}
+        if (params.edgeID !== null) {jsonObject.edgeID = params.edgeID;} else {jsonObject.nodeID = params.nodeID;}
 
         me.request({
             method: "GET",

@@ -74,7 +74,7 @@ export default class SmicSector extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
     }
 
     /**
@@ -96,7 +96,7 @@ export default class SmicSector extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var x = style.x + __OP[0];   // 圆心x
@@ -160,7 +160,7 @@ export default class SmicSector extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var min0 = SuperMap.LevelRenderer.Util_vector.create();

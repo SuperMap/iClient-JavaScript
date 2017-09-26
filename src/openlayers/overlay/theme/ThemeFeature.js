@@ -24,17 +24,17 @@ export default class ThemeFeature {
             geometry = new SuperMap.Geometry.Point(geometry.getCoordinates()[0], geometry.getCoordinates()[1]);
         }
         if (geometry instanceof ol.geom.LineString) {
-            var coords = geometry.getCoordinates();
-            var points = [];
-            for (var i = 0; i < coords.length; i++) {
+            let coords = geometry.getCoordinates();
+            let points = [];
+            for (let i = 0; i < coords.length; i++) {
                 points.push(new SuperMap.Geometry.Point(coords[i][0], coords[i][1]));
             }
             geometry = new SuperMap.Geometry.LineString(points);
         }
         if (geometry instanceof ol.geom.Polygon) {
-            var coords = geometry.getCoordinates();
-            var points = [];
-            for (var i = 0; i < coords.length; i++) {
+            let coords = geometry.getCoordinates();
+            let points = [];
+            for (let i = 0; i < coords.length; i++) {
                 points.push(new SuperMap.Geometry.Point(coords[i][0], coords[i][1]));
             }
             var linearRings = new SuperMap.Geometry.LinearRing(points);

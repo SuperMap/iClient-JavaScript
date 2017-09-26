@@ -2,6 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import '../../common/security/SecurityManager';
 import './vectortile/VectorTileStyles';
+
 ol.supermap = ol.supermap || {};
 
 /**
@@ -28,6 +29,7 @@ export default class VectorTileSuperMapRest extends ol.source.VectorTile {
         //为url添加安全认证信息片段
         options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
         layerUrl = appendCredential(layerUrl, options.serverType);
+
         function appendCredential(url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {
@@ -153,14 +155,18 @@ export default class VectorTileSuperMapRest extends ol.source.VectorTile {
                                     startIndex += partPointsLength;
                                 }
                                 feature.geometry.points = points;
-                            })
+                                return feature;
+                            });
+                            return recordset;
                         });
                         tileFeatureJson.recordsets.map(function (recordset) {
                             recordset.features.map(function (feature) {
                                 feature.layerName = recordset.layerName;
                                 feature.type = feature.geometry.type;
                                 features.push(feature);
-                            })
+                                return feature;
+                            });
+                            return recordset;
                         });
                         features = tile.getFormat().readFeatures(ol.supermap.Util.toGeoJSON(features));
                     }
@@ -206,11 +212,11 @@ export default class VectorTileSuperMapRest extends ol.source.VectorTile {
             }
             if (mapJSONObj.visibleScales.length > 0) {
                 var scales = initScales(mapJSONObj);
-                for (var i = 0; i < scales.length; i++) {
+                for (let i = 0; i < scales.length; i++) {
                     resolutions.push(ol.supermap.Util.scaleToResolution(scales[i], dpi, unit));
                 }
             } else {
-                for (var i = 0; i < level; i++) {
+                for (let i = 0; i < level; i++) {
                     resolutions.push(maxReolution / Math.pow(2, i));
                 }
             }
@@ -231,8 +237,8 @@ export default class VectorTileSuperMapRest extends ol.source.VectorTile {
             viewBounds = new SuperMap.Bounds(viewBounds.left, viewBounds.bottom, viewBounds.right, viewBounds.top);
             viewer = new SuperMap.Size(viewer.rightBottom.x, viewer.rightBottom.y);
             coordUnit = coordUnit.toLowerCase();
+            datumAxis = datumAxis || 6378137;
             var units = coordUnit;
-            var datumAxis = datumAxis || 6378137;
             var dpi = SuperMap.Util.calculateDpi(viewBounds, viewer, scale, units, datumAxis);
             var resolutions = _resolutionsFromScales(scales);
             var len = resolutions.length;

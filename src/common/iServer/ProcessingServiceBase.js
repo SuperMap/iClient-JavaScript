@@ -94,19 +94,19 @@ export default class ProcessingServiceBase extends CommonServiceBase {
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
-                    me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
-                    if (job.state.runState === 'LOST' || job.state.runState === 'KILLED'|| job.state.runState === 'FAILED') {
+                        me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
+                        if (job.state.runState === 'LOST' || job.state.runState === 'KILLED'|| job.state.runState === 'FAILED') {
+                            clearInterval(id);
+                            me.events.triggerEvent("processFailed", {error: job.state.errorMsg, state: job.state.runState});
+                        }
+                        if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
+                            clearInterval(id);
+                            me.events.triggerEvent("processCompleted", {result: job});
+                        }
+                    }).catch(function (e) {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", {error: job.state.errorMsg, state: job.state.runState});
-                    }
-                    if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
-                        clearInterval(id);
-                        me.events.triggerEvent("processCompleted", {result: job});
-                    }
-                }).catch(function (e) {
-                    clearInterval(id);
-                    me.events.triggerEvent("processFailed", {error: e});
-                });
+                        me.events.triggerEvent("processFailed", {error: e});
+                    });
             }, seconds);
         }
     }

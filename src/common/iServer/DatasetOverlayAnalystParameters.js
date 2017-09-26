@@ -141,8 +141,8 @@ export default class DatasetOverlayAnalystParameters extends OverlayAnalystParam
     static toObject(datasetOverlayAnalystParameters, tempObj) {
         for (var name in datasetOverlayAnalystParameters) {
             if (name === "sourceDataset") {
-            }
-            else if (name === "operateRegions") {
+                continue;
+            } else if (name === "operateRegions") {
                 tempObj.operateRegions = [];
                 var ors = datasetOverlayAnalystParameters.operateRegions;
                 for (var index in ors) {
@@ -150,15 +150,13 @@ export default class DatasetOverlayAnalystParameters extends OverlayAnalystParam
                         tempObj.operateRegions[index] = ServerGeometry.fromGeometry(ors[index]);
                     }
                 }
-            }
-            else if (name === "resultSetting") {
+            } else if (name === "resultSetting") {
                 tempObj.dataReturnOption = datasetOverlayAnalystParameters.resultSetting;
-            }
-            else {
+            } else {
                 tempObj[name] = datasetOverlayAnalystParameters[name];
             }
         }
-    };
+    }
 
     CLASS_NAME = "SuperMap.DatasetOverlayAnalystParameters"
 }

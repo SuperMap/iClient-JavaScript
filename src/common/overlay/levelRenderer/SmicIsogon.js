@@ -56,7 +56,7 @@ export default class SmicIsogon extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
     }
 
 
@@ -80,7 +80,7 @@ export default class SmicIsogon extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var sin = SuperMap.LevelRenderer.Util_math.sin;
@@ -105,7 +105,7 @@ export default class SmicIsogon extends Shape {
         // 记录边界点，用于判断insight
         var pointList = style.pointList = [];
         pointList.push([xStart, yStart]);
-        for (var i = 0, end = n - 1; i < end; i++) {
+        for (let i = 0, end = n - 1; i < end; i++) {
             pointList.push([x + r * cos(deg), y + r * sin(deg)]);
             deg += dStep;
         }
@@ -113,7 +113,7 @@ export default class SmicIsogon extends Shape {
 
         // 绘制
         ctx.moveTo(pointList[0][0], pointList[0][1]);
-        for (var i = 0; i < pointList.length; i++) {
+        for (let i = 0; i < pointList.length; i++) {
             ctx.lineTo(pointList[i][0], pointList[i][1]);
         }
         ctx.closePath();
@@ -137,14 +137,13 @@ export default class SmicIsogon extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var lineWidth;
         if (style.brushType == 'stroke' || style.brushType == 'fill') {
             lineWidth = style.lineWidth || 1;
-        }
-        else {
+        } else {
             lineWidth = 0;
         }
         style.__rect = {

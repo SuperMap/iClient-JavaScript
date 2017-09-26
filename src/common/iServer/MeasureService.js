@@ -83,8 +83,7 @@ export default class MeasureService extends CommonServiceBase {
             if (typeof (params.prjCoordSys) === "object") {
                 prjCodeTemp = params.prjCoordSys.projCode;
                 prjCoordSysTemp = '{"epsgCode"' + prjCodeTemp.substring(prjCodeTemp.indexOf(":"), prjCodeTemp.length) + "}";
-            }
-            else if (typeof (params.prjCoordSys) === "string") {
+            } else if (typeof (params.prjCoordSys) === "string") {
                 prjCoordSysTemp = '{"epsgCode"' + params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"), params.prjCoordSys.length) + "}";
             }
             paramsTemp = {
@@ -92,8 +91,7 @@ export default class MeasureService extends CommonServiceBase {
                 "unit": params.unit,
                 "prjCoordSys": prjCoordSysTemp
             };
-        }
-        else {
+        } else {
             paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit};
         }
 

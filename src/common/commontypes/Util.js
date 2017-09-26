@@ -160,8 +160,7 @@ SuperMap.Util.removeItem = function (array, item) {
 SuperMap.Util.indexOf = function (array, obj) {
     if (array == null) {
         return -1;
-    }
-    else {
+    } else {
         // use the build-in function if available.
         if (typeof array.indexOf === "function") {
             return array.indexOf(obj);
@@ -287,8 +286,7 @@ SuperMap.Util.getParameterString = function (params) {
                     );
                 }
                 encodedValue = encodedItemArray.join(",");
-            }
-            else {
+            } else {
                 /* value is a string; simply encode */
                 encodedValue = encodeURIComponent(value);
             }
@@ -752,17 +750,18 @@ SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, dat
     //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
     datumAxis = datumAxis || 6378137;
     coordUnit = coordUnit || "degrees";
+    var dpi;
     if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
-        var num1 = rvbWidth / rvWidth,
+        let num1 = rvbWidth / rvWidth,
             num2 = rvbHeight / rvHeight,
-            resolution = num1 > num2 ? num1 : num2,
-            dpi = 0.0254 * ratio / resolution / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
-        return dpi;
+            resolution = num1 > num2 ? num1 : num2;
+        dpi = 0.0254 * ratio / resolution / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
+
     } else {
-        var resolution = rvbWidth / rvWidth,
-            dpi = 0.0254 * ratio / resolution / scale / ratio;
-        return dpi;
+        let resolution = rvbWidth / rvWidth;
+        dpi = 0.0254 * ratio / resolution / scale / ratio;
     }
+    return dpi;
 };
 
 /**
@@ -813,13 +812,14 @@ SuperMap.Util.toJSON = function (obj) {
             }
             if (typeof objInn === "object") {
                 if (objInn.length) {
-                    var arr = [];
-                    for (var i = 0, len = objInn.length; i < len; i++)
+                    let arr = [];
+                    for (let i = 0, len = objInn.length; i < len; i++) {
                         arr.push(SuperMap.Util.toJSON(objInn[i]));
+                    }
                     return "[" + arr.join(",") + "]";
                 }
-                var arr = [];
-                for (var attr in objInn) {
+                let arr = [];
+                for (let attr in objInn) {
                     //为解决SuperMap.Geometry类型头json时堆栈溢出的问题，attr == "parent"时不进行json转换
                     if (typeof objInn[attr] !== "function" && attr !== "CLASS_NAME" && attr !== "parent") {
                         arr.push("'" + attr + "':" + SuperMap.Util.toJSON(objInn[attr]));
@@ -897,12 +897,7 @@ SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, coordUnit, 
  */
 SuperMap.Util.transformResult = function (result) {
     if (result.responseText && typeof result.responseText === "string") {
-        //支持JSON对象的浏览器Firefox 3.1 + ，IE 8 RC1 +
-        if (typeof JSON != 'undefined' && JSON.parse) {
-            result = JSON.parse(result.responseText);
-        } else {
-            result = eval("(" + result.responseText + ")");
-        }
+        result = JSON.parse(result.responseText);
     }
     return result;
 };
@@ -967,24 +962,26 @@ SuperMap.Util.copyAttributesWithClip = function (destination, source, clip) {
  */
 SuperMap.Util.cloneObject = function (obj) {
     // Handle the 3 simple types, and null or undefined
-    if (null === obj || "object" !== typeof obj) return obj;
+    if (null === obj || "object" !== typeof obj) {
+        return obj;
+    }
 
     // Handle Date
     if (obj instanceof Date) {
-        var copy = new Date();
+        let copy = new Date();
         copy.setTime(obj.getTime());
         return copy;
     }
 
     // Handle Array
     if (obj instanceof Array) {
-        var copy = obj.slice(0);
+        let copy = obj.slice(0);
         return copy;
     }
 
     // Handle Object
     if (obj instanceof Object) {
-        var copy = {};
+        let copy = {};
         for (var attr in obj) {
             if (obj.hasOwnProperty(attr)) {
                 copy[attr] = SuperMap.Util.cloneObject(obj[attr]);
@@ -1018,12 +1015,10 @@ SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
 
         if (k1 >= 0 && k2 <= 1 && k1 <= 1 && k2 >= 0) {
             intersectValue = new SuperMap.Geometry.Point(a1.x + k1 * (a2.x - a1.x), a1.y + k1 * (a2.y - a1.y));
-        }
-        else {
+        } else {
             intersectValue = "No Intersection";
         }
-    }
-    else {
+    } else {
 
         if (b == 0 && a == 0) {
             var maxy = Math.max(a1.y, a2.y);
@@ -1033,13 +1028,11 @@ SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
             if (((b1.y >= miny && b1.y <= maxy) || (b2.y >= miny && b2.y <= maxy)) &&
                 (b1.x >= minx && b1.x <= maxx) || (b2.x >= minx && b2.x <= maxx)) {
                 intersectValue = "Coincident";//重合
-            }
-            else {
+            } else {
                 intersectValue = "Parallel";//平行
             }
 
-        }
-        else {
+        } else {
             intersectValue = "Parallel";//平行
         }
     }
@@ -1057,9 +1050,15 @@ SuperMap.Util.getTextBounds = function (style, text, element) {
     document.body.appendChild(element);
     element.style.width = 'auto';
     element.style.height = 'auto';
-    if (style.fontSize) element.style.fontSize = style.fontSize;
-    if (style.fontFamily) element.style.fontFamily = style.fontFamily;
-    if (style.fontWeight) element.style.fontWeight = style.fontWeight;
+    if (style.fontSize) {
+        element.style.fontSize = style.fontSize;
+    }
+    if (style.fontFamily) {
+        element.style.fontFamily = style.fontFamily;
+    }
+    if (style.fontWeight) {
+        element.style.fontWeight = style.fontWeight;
+    }
     element.style.position = 'relative';
     element.style.visibility = 'hidden';
     //fix 在某些情况下，element内的文本变成竖起排列，导致宽度计算不正确的bug

@@ -178,6 +178,7 @@ export var TurfLayer = L.GeoJSON.extend({
         if (tempArgs) {
             tempArgs.map(function (key) {
                 result.push(args[key]);
+                return args[key];
             });
         }
         return result;

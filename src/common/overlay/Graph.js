@@ -331,7 +331,7 @@ export default class Graph extends Theme {
      * @return {Array<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     resetLocation(lonlat) {
-        if (lonlat) this.lonlat = lonlat;
+        if (lonlat) {this.lonlat = lonlat;}
 
         // 获取地理位置对应的像素坐标 newLocalLX
         var newLocalLX = this.getLocalXY(this.lonlat);
@@ -472,7 +472,7 @@ export default class Graph extends Theme {
  * @return {Array<string>} 字段名数组对应的属性数据值数组。
  */
 SuperMap.Feature.Theme.getDataValues = function (data, fields, decimalNumber) {
-    if (!data.attributes) return false;
+    if (!data.attributes) {return false;}
 
     var fieldsValue = [];
 

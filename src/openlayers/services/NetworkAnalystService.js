@@ -1,18 +1,18 @@
 ﻿import ol from 'openlayers/dist/ol-debug';
-import SuperMap from'../../common/SuperMap';
-import Util from'../core/Util';
+import SuperMap from '../../common/SuperMap';
+import Util from '../core/Util';
 import ServiceBase from './ServiceBase';
-import BurstPipelineAnalystService from'../../common/iServer/BurstPipelineAnalystService';
-import ComputeWeightMatrixService from'../../common/iServer/ComputeWeightMatrixService';
-import FacilityAnalystStreamService from'../../common/iServer/FacilityAnalystStreamService';
-import FindClosestFacilitiesService from'../../common/iServer/FindClosestFacilitiesService';
-import FindLocationService from'../../common/iServer/FindLocationService';
-import FindMTSPPathsService from'../../common/iServer/FindMTSPPathsService';
-import FindPathService from'../../common/iServer/FindPathService';
-import FindServiceAreasService from'../../common/iServer/FindServiceAreasService';
-import FindTSPPathsService from'../../common/iServer/FindTSPPathsService';
-import UpdateEdgeWeightService from'../../common/iServer/UpdateEdgeWeightService';
-import UpdateTurnNodeWeightService from'../../common/iServer/UpdateTurnNodeWeightService';
+import BurstPipelineAnalystService from '../../common/iServer/BurstPipelineAnalystService';
+import ComputeWeightMatrixService from '../../common/iServer/ComputeWeightMatrixService';
+import FacilityAnalystStreamService from '../../common/iServer/FacilityAnalystStreamService';
+import FindClosestFacilitiesService from '../../common/iServer/FindClosestFacilitiesService';
+import FindLocationService from '../../common/iServer/FindLocationService';
+import FindMTSPPathsService from '../../common/iServer/FindMTSPPathsService';
+import FindPathService from '../../common/iServer/FindPathService';
+import FindServiceAreasService from '../../common/iServer/FindServiceAreasService';
+import FindTSPPathsService from '../../common/iServer/FindTSPPathsService';
+import UpdateEdgeWeightService from '../../common/iServer/UpdateEdgeWeightService';
+import UpdateTurnNodeWeightService from '../../common/iServer/UpdateTurnNodeWeightService';
 
 /**
  * @class ol.supermap.NetworkAnalystService
@@ -290,6 +290,7 @@ export default class NetworkAnalystService extends ServiceBase {
                     x: point.getCoordinates()[0],
                     y: point.getCoordinates()[1]
                 } : point;
+                return params.centers[key];
             });
         }
 
@@ -299,6 +300,7 @@ export default class NetworkAnalystService extends ServiceBase {
                     x: point.getCoordinates()[0],
                     y: point.getCoordinates()[1]
                 } : point;
+                return params.nodes[key];
             });
         }
 
@@ -312,6 +314,7 @@ export default class NetworkAnalystService extends ServiceBase {
                     x: point.getCoordinates()[0],
                     y: point.getCoordinates()[1]
                 } : point;
+                return params.facilities[key];
             });
         }
         if (params.parameter && params.parameter.barrierPoints) {
@@ -322,6 +325,7 @@ export default class NetworkAnalystService extends ServiceBase {
                         x: point.getCoordinates()[0],
                         y: point.getCoordinates()[1]
                     } : point;
+                    return params.parameter.barrierPoints[key];
                 });
             } else {
                 params.parameter.barrierPoints = [(barrierPoints instanceof ol.geom.Point) ? {
@@ -336,6 +340,6 @@ export default class NetworkAnalystService extends ServiceBase {
 
     _processFormat(resultFormat) {
         return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
-    };
+    }
 }
 ol.supermap.NetworkAnalystService = NetworkAnalystService;

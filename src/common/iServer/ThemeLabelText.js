@@ -95,7 +95,7 @@ export default  class ThemeLabelText {
      * @return {SuperMap.ThemeLabelText} ThemeLabelText对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new ThemeLabelText();
         SuperMap.Util.copy(res, obj);
         res.uniformStyle = ServerTextStyle.fromObj(obj.uniformStyle);

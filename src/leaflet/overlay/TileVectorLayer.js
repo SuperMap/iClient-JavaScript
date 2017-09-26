@@ -138,7 +138,7 @@ export var TileVectorLayer = VectorGrid.extend({
             return {};
         }
         var layerInfo = me.layersInfo[layerName];
-        if (!layerInfo) return null;
+        if (!layerInfo) {return null;}
         layerInfo_simple = {layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType};
         switch (layerInfo.ugcLayerType) {
             case "VECTOR":

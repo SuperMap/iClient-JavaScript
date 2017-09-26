@@ -67,7 +67,7 @@ export default class SmicRing extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
     }
 
 
@@ -91,7 +91,7 @@ export default class SmicRing extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         // 非零环绕填充优化
@@ -117,14 +117,13 @@ export default class SmicRing extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var lineWidth;
         if (style.brushType == 'stroke' || style.brushType == 'fill') {
             lineWidth = style.lineWidth || 1;
-        }
-        else {
+        } else {
             lineWidth = 0;
         }
         style.__rect = {

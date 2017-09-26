@@ -101,7 +101,7 @@ export default class Pie extends Graph {
         ];
 
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) return;
+        if (!this.initBaseParameter()) {return;}
 
         // 背景框，默认不启用
         if (sets.useBackground) {
@@ -110,12 +110,12 @@ export default class Pie extends Graph {
 
         // 数据值数组
         var fv = this.dataValues;
-        if (fv.length < 1) return;       // 没有数据
+        if (fv.length < 1) {return;}       // 没有数据
 
         // 值域范围
         var codomain = this.DVBCodomain;
         // 值域范围检测
-        for (var i = 0; i < fv.length; i++) {
+        for (let i = 0; i < fv.length; i++) {
             if (fv[i] < codomain[0] || fv[i] > codomain[1]) {
                 return;
             }
@@ -123,7 +123,7 @@ export default class Pie extends Graph {
 
         // 值的绝对值总和
         var valueSum = 0;
-        for (var i = 0; i < fv.length; i++) {
+        for (let i = 0; i < fv.length; i++) {
             valueSum += Math.abs(fv[i]);
         }
 
@@ -144,15 +144,13 @@ export default class Pie extends Graph {
             //计算终止角
             if (i === 0) {
                 endAngle = startAngle + fvi * uv;
-            }
-            else if (i === fvi.length - 1) {
+            } else if (i === fvi.length - 1) {
                 endAngle = startAngleTmp;
-            }
-            else {
+            } else {
                 endAngle = startAngle + fvi * uv;
             }
             //矫正误差计算
-            if ((endAngle - startAngle) >= 360) endAngle = 359.9999999;
+            if ((endAngle - startAngle) >= 360) {endAngle = 359.9999999;}
 
             // 扇形参数对象
             var sectorSP = new SuperMap.Feature.ShapeParameters.Sector(dvbCenter[0], dvbCenter[1], r, startAngle, endAngle);
@@ -161,8 +159,7 @@ export default class Pie extends Graph {
                 // 使用默认 style 组
                 var colorIndex = i % defaultStyleGroup.length;
                 sectorSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, defaultStyleGroup, null, colorIndex);
-            }
-            else {
+            } else {
                 sectorSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, sets.sectorStyleByFields, sets.sectorStyleByCodomain, i, fv[i]);
             }
 

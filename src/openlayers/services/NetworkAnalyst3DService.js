@@ -67,7 +67,7 @@ export default class NetworkAnalyst3DService extends ServiceBase {
         });
         facilityAnalystSources3DService.processAsync(params);
         return me;
-    };
+    }
 
     /**
      * @function ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst

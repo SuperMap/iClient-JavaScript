@@ -67,7 +67,7 @@ export default  class ThemeGraphItem {
      * @return {SuperMap.ThemeGraphItem} ThemeGraphItem对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new ThemeGraphItem();
         SuperMap.Util.copy(res, obj);
         res.uniformStyle = ServerStyle.fromJson(obj.uniformStyle);

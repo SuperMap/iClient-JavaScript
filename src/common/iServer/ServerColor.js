@@ -34,22 +34,19 @@ export default class ServerColor {
     constructor(red, green, blue) {
         if (!red && red != 0) {
             this.red = 255;
-        }
-        else {
+        } else {
             this.red = red;
         }
 
         if (!green && green != 0) {
             this.green = 0;
-        }
-        else {
+        } else {
             this.green = green;
         }
 
         if (!blue && blue != 0) {
             this.blue = 0;
-        }
-        else {
+        } else {
             this.blue = blue;
         }
     }

@@ -99,7 +99,7 @@ export default  class ThemeRangeItem {
      * @return {SuperMap.ThemeRangeItem} ThemeRangeItem对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new ThemeRangeItem();
         SuperMap.Util.copy(res, obj);
         res.style = ServerStyle.fromJson(obj.style);

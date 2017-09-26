@@ -195,7 +195,9 @@ export class CartoCSSToLeaflet {
      * @param widthFactor -{number}宽度系数
      */
     dashStyle(style, widthFactor) {
-        if (!style) return [];
+        if (!style) {
+            return [];
+        }
         var w = style.strokeWidth * widthFactor;
         var str = style.strokeDashstyle;
         switch (str) {
@@ -212,8 +214,12 @@ export class CartoCSSToLeaflet {
             case 'longdashdot':
                 return [8 * w, 4 * w, 1, 4 * w];
             default:
-                if (!str) return [];
-                if (SuperMap.Util.isArray(str)) return str;
+                if (!str) {
+                    return [];
+                }
+                if (SuperMap.Util.isArray(str)) {
+                    return str;
+                }
                 str = SuperMap.String.trim(str).replace(/\s+/g, ",");
                 return str.replace(/\[|\]/gi, "").split(",");
         }
@@ -257,7 +263,9 @@ export class CartoCSSToLeaflet {
                 } else {
                     if (prop === "globalCompositeOperation") {
                         value = L.supermap.CompOpMap[value];
-                        if (!value || value === "") continue;
+                        if (!value || value === "") {
+                            continue;
+                        }
                     } else if (fromServer && prop === 'iconUrl') {
                         value = this.mapUrl + '/tileFeature/symbols/' + value.replace(/(___)/gi, '@');
                         value = value.replace(/(__0__0__)/gi, '__8__8__');
@@ -351,17 +359,18 @@ export class CartoCSSToLeaflet {
             }
             var leafletStyle = obj.leafletStyle;
             switch (obj.type) {
-                case "number":
-                    var value = shader[attr];
+                case "number": {
+                    let value = shader[attr];
                     if (obj.unit) {
                         value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
                     }
                     style[leafletStyle] = value;
                     break;
+                }
 
-                case "color":
+                case "color": {
                     var color = shader[attr];
-                    var value, alpha = 1;
+                    let value, alpha = 1;
                     if (leafletStyle === "fillColor") {
                         if (fillSymbolID === 0 || fillSymbolID === 1) {
                             //当fillSymbolID为0时，用颜色填充，为1是无填充，即为透明填充，alpha通道为0
@@ -397,6 +406,7 @@ export class CartoCSSToLeaflet {
                     }
                     style[leafletStyle] = value;
                     break;
+                }
                 default:
                     break;
             }

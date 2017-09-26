@@ -80,7 +80,7 @@ export default  class ThemeGraphAxes {
      * @return {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new ThemeGraphAxes();
         SuperMap.Util.copy(res, obj);
         res.axesColor = ServerColor.fromJson(obj.axesColor);

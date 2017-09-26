@@ -88,13 +88,17 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
             len = params ? params.length : 0;
 
         if (isAnalyzeById === false) {
-            for (var i = 0; i < len; i++) {
-                if (i > 0) jsonString += ",";
+            for (let i = 0; i < len; i++) {
+                if (i > 0) {
+                    jsonString += ",";
+                }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
         } else if (isAnalyzeById == true) {
-            for (var i = 0; i < len; i++) {
-                if (i > 0) jsonString += ",";
+            for (let i = 0; i < len; i++) {
+                if (i > 0) {
+                    jsonString += ",";
+                }
                 jsonString += params[i];
             }
         }
@@ -127,6 +131,7 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
             if (path.nodeFeatures) {
                 path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
             }
+            return path;
         });
         return result;
     }

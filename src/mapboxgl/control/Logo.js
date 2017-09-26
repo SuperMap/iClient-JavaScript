@@ -88,7 +88,7 @@ export class Logo {
             "white-space: nowrap" +
             "}";
         document.getElementsByTagName('head')[0].appendChild(style);
-    };
+    }
 
     _extend(dest) {
         for (var index = 0; index < Object.getOwnPropertyNames(arguments).length; index++) {
@@ -108,6 +108,6 @@ export class Logo {
             }
         }
         return dest;
-    };
+    }
 }
 mapboxgl.supermap.LogoControl = Logo;

@@ -25,9 +25,9 @@ module.exports = {
     externals: {
         'leaflet': 'L',
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
-        'mapv':  "function(){try{return mapv}catch(e){return {}}}()",
+        'mapv': "function(){try{return mapv}catch(e){return {}}}()",
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
-        '@turf/turf':  "function(){try{return turf}catch(e){return {}}}()",
+        '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
     },
 
     module: {
@@ -42,6 +42,14 @@ module.exports = {
             }]
         }, {
             test: [/\.js$/],
+            exclude: /node_modules/,
+            enforce: 'pre',
+            loader: 'eslint-loader',
+            options: {
+                failOnError: true
+            }
+        }, {
+            test: [/\.js$/],
             exclude: /node_modules[\/\\]proj4|classic/,
             loader: 'babel-loader',
             query: {
@@ -50,12 +58,11 @@ module.exports = {
                     'transform-class-properties',
                 ]
             }
-        },{
+        }, {
             test: /\.js$/,
-            enforce:"post",
+            enforce: "post",
             loaders: ['es3ify-loader'],
-        },
-            {
+        }, {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({
                 use: {
@@ -68,6 +75,7 @@ module.exports = {
     plugins: [
         new webpack.BannerPlugin(banner),
         new ExtractTextPlugin('/../dist/' + packageName + ".css"),
+        new webpack.NoEmitOnErrorsPlugin()
     ]
 
 };

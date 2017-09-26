@@ -43,7 +43,7 @@ export default  class UpdateEdgeWeightParameters {
     edgeWeight = "";
 
     constructor(option) {
-        if (!option) return;
+        if (!option) {return;}
 
         option.edgeId && (this.edgeId = option.edgeId);
         option.fromNodeId && (this.fromNodeId = option.fromNodeId);

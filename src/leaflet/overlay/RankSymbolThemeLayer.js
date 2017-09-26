@@ -56,7 +56,7 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
         }
 
         // thematicFeature 是否创建成功
-        if (!thematicFeature) return false;
+        if (!thematicFeature) {return false;}
 
         // 对专题要素执行图形装载
         thematicFeature.assembleShapes();

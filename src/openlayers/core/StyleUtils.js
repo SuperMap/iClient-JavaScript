@@ -53,7 +53,7 @@ export default class StyleUtils {
             if (shader && shader !== "{}") {
                 var fontStr = "";
                 //设置文本是否倾斜
-                style.fontStyle = !!shader.italic ? "italic" : "normal";
+                style.fontStyle = shader.italic ? "italic" : "normal";
                 //设置文本是否使用粗体
                 style.fontWeight = shader.bold ? shader.fontWeight : "normal";
                 //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素
@@ -66,8 +66,7 @@ export default class StyleUtils {
                 //字体大小被固定，这里需要去掉
                 if (shader.fontName.indexOf("@")) {
                     fontStr = shader.fontName.replace(/@/g, "");
-                }
-                else {
+                } else {
                     fontStr = shader.fontName
                 }
                 style.fontFamily = fontStr;
@@ -77,7 +76,9 @@ export default class StyleUtils {
                 var alignStr = shader.align.replace(/TOP|MIDDLE|BASELINE|BOTTOM/, "");
                 style.textAlign = alignStr.toLowerCase();
                 var baselineStr = shader.align.replace(/LEFT|RIGHT|CENTER/, "");
-                if (baselineStr === "BASELINE") baselineStr = "alphabetic";
+                if (baselineStr === "BASELINE") {
+                    baselineStr = "alphabetic";
+                }
                 style.textBaseline = baselineStr.toLowerCase();
 
                 /*//首先判定是否需要绘制阴影，如果需要绘制，阴影应该在最下面
@@ -128,18 +129,19 @@ export default class StyleUtils {
                 var canvasStyle = obj.canvasStyle;
                 if (canvasStyle && canvasStyle != "") {
                     switch (obj.type) {
-                        case "number":
-                            var value = shader[attr];
+                        case "number": {
+                            let value = shader[attr];
                             if (obj.unit) {
                                 //将单位转换为像素单位
                                 value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
                             }
                             style[canvasStyle] = value;
                             break;
-                        case "color":
+                        }
+                        case "color": {
                             var color = shader[attr];
                             var backColor = shader["fillBackColor"];
-                            var value, alpha = 1;
+                            let value, alpha = 1;
                             if (canvasStyle === "fillStyle") {
                                 if (fillSymbolID === 0 || fillSymbolID === 1) {
                                     //当fillSymbolID为0时，用颜色填充，为1是无填充，即为透明填充，alpha通道为0
@@ -210,8 +212,10 @@ export default class StyleUtils {
                             }
                             style[canvasStyle] = value;
                             break;
+                        }
                         default:
                             break;
+
                     }
                 }
             }
@@ -261,7 +265,9 @@ export default class StyleUtils {
                     } else {
                         if (prop === "globalCompositeOperation") {
                             value = StyleMap.CartoCompOpMap[value];
-                            if (!value || value === "") continue;
+                            if (!value || value === "") {
+                                continue;
+                            }
                         } else if (fromServer && prop === 'pointFile') {
                             value = url + '/tileFeature/symbols/' + value.replace(/(___)/gi, '@');
                             value = value.replace(/(__0__0__)/gi, '__8__8__');
@@ -407,7 +413,9 @@ export default class StyleUtils {
      * @param widthFactor -{number} 宽度系数
      */
     static dashStyle(style, widthFactor) {
-        if (!style) return [];
+        if (!style) {
+            return [];
+        }
         var w = style.strokeWidth * widthFactor;
         var str = style.strokeDashstyle;
         switch (str) {
@@ -424,8 +432,12 @@ export default class StyleUtils {
             case 'longdashdot':
                 return [8 * w, 4 * w, 1, 4 * w];
             default:
-                if (!str) return [];
-                if (SuperMap.Util.isArray(str)) return str;
+                if (!str) {
+                    return [];
+                }
+                if (SuperMap.Util.isArray(str)) {
+                    return str;
+                }
                 str = SuperMap.String.trim(str).replace(/\s+/g, ",");
                 return str.replace(/\[|\]/gi, "").split(",");
         }
@@ -537,12 +549,12 @@ export default class StyleUtils {
         hex = hex.replace(/#/, "");
         if (hex.length == 3) {
             var tmp = [];
-            for (var i = 0; i < 3; i++) {
+            for (let i = 0; i < 3; i++) {
                 tmp.push(hex.charAt(i) + hex.charAt(i));
             }
             hex = tmp.join("");
         }
-        for (var i = 0; i < 6; i += 2) {
+        for (let i = 0; i < 6; i += 2) {
             color[i] = "0x" + hex.substr(i, 2);
             rgba.push(parseInt(Number(color[i])));
         }
@@ -565,6 +577,6 @@ export default class StyleUtils {
         }
         return style;
     }
-};
+}
 
 ol.supermap.StyleUtils = StyleUtils;

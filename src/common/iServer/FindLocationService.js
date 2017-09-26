@@ -80,7 +80,7 @@ export default class FindLocationService extends NetworkAnalystServiceBase {
         var json = "[",
             len = params ? params.length : 0;
         for (var i = 0; i < len; i++) {
-            if (i > 0) json += ",";
+            if (i > 0) {json += ",";}
             json += SuperMap.Util.toJSON(params[i]);
         }
         json += "]";

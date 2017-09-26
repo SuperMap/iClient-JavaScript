@@ -121,20 +121,23 @@ export default class Bar extends Graph {
         // 图表配置对象
         var sets = this.setting;
 
-        if (typeof (sets.barLinearGradient) !== "undifined") sets.barLinearGradient = deafaultColors;
+        if (typeof (sets.barLinearGradient) !== "undefined") {
+            sets.barLinearGradient = deafaultColors;
+        }
 
         // 默认数据视图框
         if (!sets.dataViewBoxParameter) {
             if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
                 sets.dataViewBoxParameter = [45, 15, 15, 15];
-            }
-            else {
+            } else {
                 sets.dataViewBoxParameter = [5, 5, 5, 5];
             }
         }
 
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) return;
+        if (!this.initBaseParameter()) {
+            return;
+        }
         // 值域
         var codomain = this.DVBCodomain;
         // 重要步骤：定义图表 Bar 数据视图框中单位值的含义
@@ -144,16 +147,22 @@ export default class Bar extends Graph {
         var dvb = this.dataViewBox;
         // 用户数据值
         var fv = this.dataValues;
-        if (fv.length < 1) return;       // 没有数据
+        if (fv.length < 1) {
+            return;
+        }       // 没有数据
 
         // 数据溢出值域范围处理
-        for (var i = 0, fvLen = fv.length; i < fvLen; i++) {
-            if (fv[i] < codomain[0] || fv[i] > codomain[1]) return;
+        for (let i = 0, fvLen = fv.length; i < fvLen; i++) {
+            if (fv[i] < codomain[0] || fv[i] > codomain[1]) {
+                return;
+            }
         }
 
         // 获取 x 轴上的图形信息
         var xShapeInfo = this.calculateXShapeInfo();
-        if (!xShapeInfo) return;
+        if (!xShapeInfo) {
+            return;
+        }
         // 每个柱条 x 位置
         var xsLoc = xShapeInfo.xPositions;
         // 柱条宽度
@@ -190,10 +199,18 @@ export default class Bar extends Graph {
             if (typeof(sets.showShadow) === "undefined" || sets.showShadow) {
                 if (sets.barShadowStyle) {
                     var sss = sets.barShadowStyle;
-                    if (sss.shadowBlur) deafaultShawdow.shadowBlur = sss.shadowBlur;
-                    if (sss.shadowColor) deafaultShawdow.shadowColor = sss.shadowColor;
-                    if (sss.shadowOffsetX) deafaultShawdow.shadowOffsetX = sss.shadowOffsetX;
-                    if (sss.shadowOffsetY) deafaultShawdow.shadowOffsetY = sss.shadowOffsetY;
+                    if (sss.shadowBlur) {
+                        deafaultShawdow.shadowBlur = sss.shadowBlur;
+                    }
+                    if (sss.shadowColor) {
+                        deafaultShawdow.shadowColor = sss.shadowColor;
+                    }
+                    if (sss.shadowOffsetX) {
+                        deafaultShawdow.shadowOffsetX = sss.shadowOffsetX;
+                    }
+                    if (sss.shadowOffsetY) {
+                        deafaultShawdow.shadowOffsetY = sss.shadowOffsetY;
+                    }
                 }
                 barParams.style = {};
                 SuperMap.Util.copyAttributesWithClip(barParams.style, deafaultShawdow);
@@ -243,7 +260,9 @@ export default class Bar extends Graph {
         var sets = this.setting;     // 图表配置对象
         var fvc = this.dataValues.length;      // 数组值个数
 
-        if (fvc < 1) return null;
+        if (fvc < 1) {
+            return null;
+        }
 
         var xBlank;        // x 轴空白间隔参数
         var xShapePositions = [];         // x 轴上图形的位置
@@ -258,8 +277,7 @@ export default class Bar extends Graph {
                 return null;
             }
             xShapeWidth = xsLen / fvc
-        }
-        else {
+        } else {
             // 默认使用等距离空白间隔，空白间隔为图形宽度
             xShapeWidth = dvbWidth / (2 * fvc + 1);
             xBlank = [xShapeWidth, xShapeWidth, xShapeWidth];
@@ -270,8 +288,7 @@ export default class Bar extends Graph {
         for (var i = 0; i < fvc; i++) {
             if (i == 0) {
                 xOffset = xBlank[0] + xShapeWidth / 2;
-            }
-            else {
+            } else {
                 xOffset += (xShapeWidth + xBlank[1]);
             }
 
@@ -304,7 +321,9 @@ export default class Bar extends Graph {
                     //渐变颜色
                     index++;
                     //以防定义的颜色数组不够用
-                    if (index >= barLinearGradient.length) index = index % barLinearGradient.length;
+                    if (index >= barLinearGradient.length) {
+                        index = index % barLinearGradient.length;
+                    }
                     var color1 = barLinearGradient[index][0];
                     var color2 = barLinearGradient[index][1];
 

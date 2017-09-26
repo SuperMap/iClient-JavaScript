@@ -64,11 +64,11 @@ export var  SVGRenderer = L.SVG.extend({
      * @param map - {L.map} 切片地图
      */
     removeFrom: function (map) {
-        var map = map || this._map;
+        var _map = map || this._map;
         if (this.options.interactive) {
             for (var i in this._layers) {
                 var layer = this._layers[i];
-                delete map._targets[L.stamp(layer._path)];
+                delete _map._targets[L.stamp(layer._path)];
             }
         }
         delete this._map;

@@ -80,12 +80,11 @@ export default class DatasetSurfaceAnalystParameters extends SurfaceAnalystParam
                     datasetSurfaceAnalystParameters.extractParameter.clipRegion = ServerGeometry.fromGeometry(datasetSurfaceAnalystParameters.extractParameter.clipRegion);
                 }
                 tempObj.extractParameter = datasetSurfaceAnalystParameters.extractParameter;
-            }
-            else if (name === "dataset") {
-            }
-            else if (name === "surfaceAnalystMethod") {
-            }
-            else {
+            } else if (name === "dataset") {
+                continue;
+            } else if (name === "surfaceAnalystMethod") {
+                continue;
+            } else {
                 tempObj[name] = datasetSurfaceAnalystParameters[name];
             }
         }

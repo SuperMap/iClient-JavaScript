@@ -82,7 +82,7 @@ export default class ThemeLabelAlongLine {
      * @return {SuperMap.ThemeLabelAlongLine} ThemeLabelAlongLine对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var t = new ThemeLabelAlongLine();
         SuperMap.Util.copy(t, obj);
         return t;

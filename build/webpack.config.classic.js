@@ -27,6 +27,14 @@ module.exports = {
     },
     module: {
         rules: [{
+            test: [/\.js$/],
+            exclude: /node_modules/,
+            enforce: 'pre',
+            loader: 'eslint-loader',
+            options: {
+                failOnError: true
+            }
+        }, {
             test: /\.js/,
             loader: 'babel-loader',
             query: {
@@ -38,7 +46,8 @@ module.exports = {
         }]
     },
     plugins: [
-        new webpack.BannerPlugin(banner)
+        new webpack.BannerPlugin(banner),
+        new webpack.NoEmitOnErrorsPlugin()
     ]
 
 };

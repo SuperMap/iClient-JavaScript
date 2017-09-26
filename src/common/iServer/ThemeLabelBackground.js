@@ -54,7 +54,7 @@ export default  class ThemeLabelBackground {
      * @return {SuperMap.ThemeLabelBackground} ThemeLabelBackground对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var t = new ThemeLabelBackground();
         t.labelBackShape = obj.labelBackShape;
         t.backStyle = ServerStyle.fromJson(obj.backStyle);

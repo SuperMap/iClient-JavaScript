@@ -393,8 +393,7 @@ export default class Render {
                 if (prop) {
                     target = prop;
                 }
-            }
-            else {
+            } else {
                 target = el;
             }
 
@@ -427,8 +426,7 @@ export default class Render {
                         animatingElements.splice(idx, 1);
                     }
                 });
-        }
-        else {
+        } else {
             SuperMap.LevelRenderer.Util_log('Element not existed');
         }
     }
@@ -648,7 +646,7 @@ export default class Render {
                 }
             }
         };
-    };
+    }
 
     // SMIC-方法扩展 - end
 

@@ -78,7 +78,7 @@ export default  class UpdateTurnNodeWeightService extends NetworkAnalystServiceB
         }
         var paramStr = "";
         for (var attr in params) {
-            if (params[attr] === "" || params[attr] === "turnNodeWeight") continue;
+            if (params[attr] === "" || params[attr] === "turnNodeWeight") {continue;}
             switch (attr) {
                 case "nodeId":
                     paramStr += "/turnnodeweight/" + params[attr];

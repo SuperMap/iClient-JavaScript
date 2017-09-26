@@ -190,9 +190,9 @@ LeafletMapCoordSys.prototype.dataToPoint = function (data) {
 }
 
 LeafletMapCoordSys.prototype.pointToData = function (pt) {
-    var mapOffset = this._mapOffset;
-    var pt = this._LeafletMap.layerPointToLatLng([pt[0] + mapOffset[0], pt[1] + mapOffset[1]]);
-    return [pt.lng, pt.lat];
+    let mapOffset = this._mapOffset;
+    let point = this._LeafletMap.layerPointToLatLng([pt[0] + mapOffset[0], pt[1] + mapOffset[1]]);
+    return [point.lng, point.lat];
 }
 
 LeafletMapCoordSys.prototype.getViewRect = function () {

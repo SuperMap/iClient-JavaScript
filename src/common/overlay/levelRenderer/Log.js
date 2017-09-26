@@ -17,14 +17,12 @@ export default class Log {
         return function () {
             if (SuperMap.LevelRenderer.Config.debugMode === 0) {
                 return;
-            }
-            else if (SuperMap.LevelRenderer.Config.debugMode == 1) {
-                for (var k in arguments) {
+            } else if (SuperMap.LevelRenderer.Config.debugMode == 1) {
+                for (let k in arguments) {
                     throw new Error(arguments[k]);
                 }
-            }
-            else if (SuperMap.LevelRenderer.Config.debugMode > 1) {
-                for (var k in arguments) {
+            } else if (SuperMap.LevelRenderer.Config.debugMode > 1) {
+                for (let k in arguments) {
                     console.log(arguments[k]);
                 }
             }

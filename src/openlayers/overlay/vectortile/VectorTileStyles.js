@@ -92,10 +92,11 @@ export default class VectorTileStyles extends ol.Observable {
                                 cartoShaders[cartoShader.elements[0].clean] = cartoShaders[cartoShader.elements[0].clean] || {};
                                 cartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] = cartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] || [];
                                 cartoShaders[cartoShader.elements[0].clean][cartoShader.attachment].push(cartoShader);
-                            })
+                                return cartoShader;
+                            });
                             ol.supermap.VectorTileStyles.setCartoShaders(cartoShaders);
                         }
-                    }
+                    };
                     vectorStylesXHR.send(null);
                 }
                 if (ol.supermap.VectorTileStyles.getCartoCss()) {
@@ -105,17 +106,19 @@ export default class VectorTileStyles extends ol.Observable {
                         clientCartoShaders[cartoShader.elements[0].clean] = clientCartoShaders[cartoShader.elements[0].clean] || {};
                         clientCartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] = clientCartoShaders[cartoShader.elements[0].clean][cartoShader.attachment] || [];
                         clientCartoShaders[cartoShader.elements[0].clean][cartoShader.attachment].push(cartoShader);
-                    })
+                        return cartoShader;
+                    });
                     ol.supermap.VectorTileStyles.setClientCartoShaders(clientCartoShaders);
                 }
             }
-        }
+        };
         layersXHR.open("GET", ol.supermap.VectorTileStyles.getUrl() + '/layers.json', false);
         layersXHR.send(null);
         this.on('featureSelected', function (e) {
             ol.supermap.VectorTileStyles.setSelectedId(e.selectedId);
             ol.supermap.VectorTileStyles.setLayerName(e.layerName);
         });
+
         /*
          * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedPointStyle
          * @description 设置默认选择后的点样式
@@ -130,6 +133,7 @@ export default class VectorTileStyles extends ol.Observable {
                 })
             })
         }
+
         /*
          * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedLineStyle
          * @description 设置默认选择后的线样式
@@ -142,6 +146,7 @@ export default class VectorTileStyles extends ol.Observable {
                 })
             })
         }
+
         /*
          * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedRegionStyle
          * @description 设置默认选择后的面样式
@@ -157,6 +162,7 @@ export default class VectorTileStyles extends ol.Observable {
                 })
             })
         }
+
         /*
          * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedTextStyle
          * @description 设置默认选择后的文本样式
@@ -253,6 +259,7 @@ export default class VectorTileStyles extends ol.Observable {
     static setLayersInfo(layersInfo) {
         this.layersInfo = layersInfo;
     }
+
     /**
      * @function ol.supermap.VectorTileStyles.getLayersInfo
      * @description 获取图层信息服务
@@ -396,7 +403,9 @@ export default class VectorTileStyles extends ol.Observable {
             return null;
         }
         var layerInfo = layersInfo[layerName];
-        if (!layerInfo) return null;
+        if (!layerInfo) {
+            return null;
+        }
         var layerInfo_simple = {layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType};
         switch (layerInfo.ugcLayerType) {
             case "VECTOR":
@@ -453,11 +462,13 @@ export default class VectorTileStyles extends ol.Observable {
         if (layerInfo) {
             return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
         }
+
         function getStyleArray(shaderAttachment) {
             var styleArray = [];
             for (var j in shaderAttachment) {
                 shaderAttachment[j].map(function (shader) {
                     styleArray.push(StyleUtils.getStyleFromCarto(zoom, scale, shader, feature, true, url))
+                    return shader;
                 })
             }
             return styleArray;
@@ -502,10 +513,10 @@ export default class VectorTileStyles extends ol.Observable {
         var id = feature.getProperties().id || feature.id_;
         if (feature.getProperties().type && feature.getProperties().type.toUpperCase() === 'TEXT') {
             selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type.toUpperCase());
-            if(feature.getProperties().texts){
+            if (feature.getProperties().texts) {
                 selectedStyle.getText().text_ = feature.getProperties().texts[0];
-            }else{
-                selectedStyle.getText().text_ =  "";
+            } else {
+                selectedStyle.getText().text_ = "";
             }
         } else {
             selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getGeometry().getType().toUpperCase());

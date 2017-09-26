@@ -687,7 +687,7 @@ export default class Bounds {
     static fromString(str, reverseAxisOrder) {
         var bounds = str.split(",");
         return Bounds.fromArray(bounds, reverseAxisOrder);
-    };
+    }
 
     /**
      * @function SuperMap.Bounds.fromArray
@@ -702,7 +702,7 @@ export default class Bounds {
         return reverseAxisOrder === true ?
             new Bounds(bbox[1], bbox[0], bbox[3], bbox[2]) :
             new Bounds(bbox[0], bbox[1], bbox[2], bbox[3]);
-    };
+    }
 
     /**
      * @function SuperMap.Bounds.fromSize
@@ -717,7 +717,7 @@ export default class Bounds {
             size.h,
             size.w,
             0);
-    };
+    }
 
     /**
      * @function SuperMap.Bounds.oppositeQuadrant
@@ -732,7 +732,7 @@ export default class Bounds {
         opp += (quadrant.charAt(1) === 'l') ? 'r' : 'l';
 
         return opp;
-    };
+    }
 
     CLASS_NAME = "SuperMap.Bounds"
 }

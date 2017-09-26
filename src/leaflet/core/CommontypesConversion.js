@@ -13,7 +13,7 @@ export default class CommontypesConversion {
      * @param bounds - {L.Bounds|L.LatLngBounds} 图层显示范围
      * @return {SuperMap.Bounds} SuperMap的bounds对象
      */
-   static toSuperMapBounds(bounds) {
+    static toSuperMapBounds(bounds) {
         if (bounds instanceof L.LatLngBounds) {
             return new SuperMap.Bounds(
                 bounds.getSouthWest().lng,

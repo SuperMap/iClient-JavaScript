@@ -90,13 +90,13 @@ export default  class ThemeParameters {
         me.datasetNames = null;
         me.dataSourceNames = null;
         if (me.joinItems) {
-            for (var i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {
+            for (let i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {
                 joinItems[i].destroy();
             }
             me.joinItems = null;
         }
         if (me.themes) {
-            for (var i = 0, themes = me.themes, len = themes.length; i < len; i++) {
+            for (let i = 0, themes = me.themes, len = themes.length; i < len; i++) {
                 themes[i].destroy();
             }
             me.themes = null;

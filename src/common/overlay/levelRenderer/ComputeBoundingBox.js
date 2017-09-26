@@ -18,7 +18,7 @@ export default class ComputeBoundingBox {
      *
      */
     constructor() {
-        if (arguments.length === 3) this.computeBoundingBox(arguments);
+        if (arguments.length === 3) {this.computeBoundingBox(arguments);}
     }
 
     /**
@@ -82,12 +82,12 @@ export default class ComputeBoundingBox {
 
         var xDim = [];
         curve.cubicExtrema(p0[0], p1[0], p2[0], p3[0], xDim);
-        for (var i = 0; i < xDim.length; i++) {
+        for (let i = 0; i < xDim.length; i++) {
             xDim[i] = curve.cubicAt(p0[0], p1[0], p2[0], p3[0], xDim[i]);
         }
         var yDim = [];
         curve.cubicExtrema(p0[1], p1[1], p2[1], p3[1], yDim);
-        for (var i = 0; i < yDim.length; i++) {
+        for (let i = 0; i < yDim.length; i++) {
             yDim[i] = curve.cubicAt(p0[1], p1[1], p2[1], p3[1], yDim[i]);
         }
 

@@ -70,6 +70,7 @@ export default class GeoDecodingParameter {
             let fields = options.filters.split(',');
             fields.map(function (field) {
                 strs.push("\"" + field + "\"");
+                return field
             });
             options.filters = strs;
         }

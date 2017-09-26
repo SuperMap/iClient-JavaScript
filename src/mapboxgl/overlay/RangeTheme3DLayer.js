@@ -107,7 +107,7 @@ export class RangeTheme3DLayer extends Theme3DLayer {
             'fill-extrusion-color': color,
             'fill-extrusion-height': {
                 "stops": this.heightStops,
-                "property": this.heightField,
+                "property": this.heightField
             },
             'fill-extrusion-opacity': this.highlight && this.highlight.opacity || 0.6
         }

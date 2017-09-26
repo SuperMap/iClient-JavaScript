@@ -279,7 +279,7 @@ export default class ThemeLabel extends Theme {
      * @return {SuperMap.ThemeLabel} ThemeLabel对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var lab = new ThemeLabel();
         var itemsL = obj.items, itemsU = obj.uniqueItems, cells = obj.matrixCells;
         obj.matrixCells = null;
@@ -295,13 +295,13 @@ export default class ThemeLabel extends Theme {
         }
         if (itemsU) {
             lab.uniqueItems = [];
-            for (var j = 0, uniqueLen = itemsU.length; j < uniqueLen; j++) {
+            for (let j = 0, uniqueLen = itemsU.length; j < uniqueLen; j++) {
                 lab.uniqueItems.push(ThemeUniqueItem.fromObj(itemsU[j]));
             }
         }
         if (cells) {
             lab.matrixCells = [];
-            for (var i = 0, len = cells.length; i < len; i++) {
+            for (let i = 0, len = cells.length; i < len; i++) {
                 //TODO
                 //lab.matrixCells.push(SuperMap.LabelMatrixCell.fromObj(cells[i]));
             }

@@ -16,6 +16,7 @@ import SurfaceAnalystService from '../../common/iServer/SurfaceAnalystService';
 import TerrainCurvatureCalculationService from '../../common/iServer/TerrainCurvatureCalculationService';
 import ThiessenAnalystService from '../../common/iServer/ThiessenAnalystService';
 import CommontypesConversion from '../core/CommontypesConversion';
+
 /**
  * @class L.supermap.spatialAnalystService
  * @classdesc 空间分析服务类。
@@ -329,33 +330,33 @@ export var SpatialAnalystService = ServiceBase.extend({
             params.bounds = CommontypesConversion.toSuperMapBounds(params.bounds);
         }
         if (params.inputPoints) {
-            for (var i = 0; i < params.inputPoints.length; i++) {
-                var inputPoint = params.inputPoints[i];
+            for (let i = 0; i < params.inputPoints.length; i++) {
+                let inputPoint = params.inputPoints[i];
                 if (L.Util.isArray(inputPoint)) {
-                    params.inputPoints[i] = {x: inputPoint[0], y: inputPoint[1],tag:inputPoint[2]};
+                    params.inputPoints[i] = {x: inputPoint[0], y: inputPoint[1], tag: inputPoint[2]};
                 }
             }
         }
 
         if (params.points) {
-            for (var i = 0; i < params.points.length; i++) {
-                var point = params.points[i];
+            for (let i = 0; i < params.points.length; i++) {
+                let point = params.points[i];
                 if (L.Util.isArray(point)) {
                     params.points[i] = {x: point[0], y: point[1]};
-                }else if(point instanceof L.LatLng){
+                } else if (point instanceof L.LatLng) {
                     params.points[i] = {x: point.lng, y: point.lat};
-                }else{
+                } else {
                     params.points[i] = {x: point.x, y: point.y};
                 }
             }
         }
         if (params.point) {
-            if(L.Util.isArray(params.point)){
+            if (L.Util.isArray(params.point)) {
                 params.point = {x: params.point[0], y: params.point[1]};
-            }else if(params.point instanceof L.LatLng){
-                params.point = {x:params.point.lng, y: params.point.lat};
-            }else{
-                params.point = {x:params.point.x, y: params.point.y};
+            } else if (params.point instanceof L.LatLng) {
+                params.point = {x: params.point.lng, y: params.point.lat};
+            } else {
+                params.point = {x: params.point.x, y: params.point.y};
             }
 
         }
@@ -369,14 +370,14 @@ export var SpatialAnalystService = ServiceBase.extend({
             params.sourceGeometry = Util.toSuperMapGeometry(params.sourceGeometry);
         }
         if (params.sourceRoute) {
-            if(params.sourceRoute instanceof  L.Polyline){
-                var target={};
-                target.type="LINEM"
-                target.parts=[params.sourceRoute.getLatLngs().length];
+            if (params.sourceRoute instanceof L.Polyline) {
+                var target = {};
+                target.type = "LINEM"
+                target.parts = [params.sourceRoute.getLatLngs().length];
                 target.points = [];
-                for(var i=0;i<params.sourceRoute.getLatLngs().length;i++){
-                    var point=params.sourceRoute.getLatLngs()[i];
-                    target.points= target.points.concat({x:point.lng, y: point.lat,measure:point.alt})
+                for (let i = 0; i < params.sourceRoute.getLatLngs().length; i++) {
+                    let point = params.sourceRoute.getLatLngs()[i];
+                    target.points = target.points.concat({x: point.lng, y: point.lat, measure: point.alt})
                 }
                 params.sourceRoute = target;
             }
@@ -385,6 +386,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         if (params.operateRegions && L.Util.isArray(params.operateRegions)) {
             params.operateRegions.map(function (geometry, key) {
                 params.operateRegions[key] = Util.toSuperMapGeometry(geometry);
+                return params.operateRegions[key];
             });
         }
         // if (params.sourceRoute && params.sourceRoute.components && L.Util.isArray(params.sourceRoute.components)) {

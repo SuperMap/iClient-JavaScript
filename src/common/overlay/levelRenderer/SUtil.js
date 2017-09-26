@@ -43,7 +43,9 @@ SuperMap.LevelRenderer.Util_vector = new Vector();
  * {Array} 生成的平滑节点数组。
  */
 SuperMap.LevelRenderer.SUtil_smoothBezier = function (points, smooth, isLoop, constraint, originalPosition) {
-    if (!originalPosition || originalPosition !== 2) originalPosition = [0, 0];
+    if (!originalPosition || originalPosition !== 2) {
+        originalPosition = [0, 0];
+    }
     var __OP = originalPosition;
 
     var cps = [];
@@ -57,7 +59,8 @@ SuperMap.LevelRenderer.SUtil_smoothBezier = function (points, smooth, isLoop, co
     if (hasConstraint) {
         min = [Infinity, Infinity];
         max = [-Infinity, -Infinity];
-        for (var i = 0, len = points.length; i < len; i++) {
+        let len = points.length;
+        for (let i = 0; i < len; i++) {
             SuperMap.LevelRenderer.Util_vector.min(min, min, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
             SuperMap.LevelRenderer.Util_vector.max(max, max, [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
         }
@@ -66,21 +69,20 @@ SuperMap.LevelRenderer.SUtil_smoothBezier = function (points, smooth, isLoop, co
         SuperMap.LevelRenderer.Util_vector.max(max, max, constraint[1]);
     }
 
-    for (var i = 0, len = points.length; i < len; i++) {
-        var point = [points[i][0] + __OP[0], points[i][1] + __OP[1]];
-        var prevPoint;
-        var nextPoint;
+    let len = points.length;
+    for (let i = 0; i < len; i++) {
+        let point = [points[i][0] + __OP[0], points[i][1] + __OP[1]];
+        let prevPoint;
+        let nextPoint;
 
         if (isLoop) {
             prevPoint = [points[i ? i - 1 : len - 1][0] + __OP[0], points[i ? i - 1 : len - 1][1] + __OP[1]];
             nextPoint = [points[(i + 1) % len][0] + __OP[0], points[(i + 1) % len][1] + __OP[1]];
-        }
-        else {
+        } else {
             if (i === 0 || i === len - 1) {
                 cps.push([points[i][0] + __OP[0], points[i][1] + __OP[1]]);
                 continue;
-            }
-            else {
+            } else {
                 prevPoint = [points[i - 1][0] + __OP[0], points[i - 1][1] + __OP[1]];
                 nextPoint = [points[i + 1][0] + __OP[0], points[i + 1][1] + __OP[1]];
             }
@@ -91,9 +93,9 @@ SuperMap.LevelRenderer.SUtil_smoothBezier = function (points, smooth, isLoop, co
         // use degree to scale the handle length
         SuperMap.LevelRenderer.Util_vector.scale(v, v, smooth);
 
-        var d0 = SuperMap.LevelRenderer.Util_vector.distance(point, prevPoint);
-        var d1 = SuperMap.LevelRenderer.Util_vector.distance(point, nextPoint);
-        var sum = d0 + d1;
+        let d0 = SuperMap.LevelRenderer.Util_vector.distance(point, prevPoint);
+        let d1 = SuperMap.LevelRenderer.Util_vector.distance(point, nextPoint);
+        let sum = d0 + d1;
         if (sum !== 0) {
             d0 /= sum;
             d1 /= sum;
@@ -101,8 +103,8 @@ SuperMap.LevelRenderer.SUtil_smoothBezier = function (points, smooth, isLoop, co
 
         SuperMap.LevelRenderer.Util_vector.scale(v1, v, -d0);
         SuperMap.LevelRenderer.Util_vector.scale(v2, v, d1);
-        var cp0 = SuperMap.LevelRenderer.Util_vector.add([], point, v1);
-        var cp1 = SuperMap.LevelRenderer.Util_vector.add([], point, v2);
+        let cp0 = SuperMap.LevelRenderer.Util_vector.add([], point, v1);
+        let cp1 = SuperMap.LevelRenderer.Util_vector.add([], point, v2);
         if (hasConstraint) {
             SuperMap.LevelRenderer.Util_vector.max(cp0, cp0, min);
             SuperMap.LevelRenderer.Util_vector.min(cp0, cp0, max);
@@ -134,43 +136,44 @@ SuperMap.LevelRenderer.SUtil_smoothBezier = function (points, smooth, isLoop, co
  * {Array} 生成的平滑节点数组。
  */
 SuperMap.LevelRenderer.SUtil_smoothSpline = function (points, isLoop, constraint, originalPosition) {
-    if (!originalPosition || originalPosition !== 2) originalPosition = [0, 0];
+    if (!originalPosition || originalPosition !== 2) {
+        originalPosition = [0, 0];
+    }
     var __OP = originalPosition;
 
     var len = points.length;
     var ret = [];
 
     var distance = 0;
-    for (var i = 1; i < len; i++) {
+    for (let i = 1; i < len; i++) {
         distance += SuperMap.LevelRenderer.Util_vector.distance([points[i - 1][0] + __OP[0], points[i - 1][1] + __OP[1]], [points[i][0] + __OP[0], points[i][1] + __OP[1]]);
     }
 
     var segs = distance / 5;
     segs = segs < len ? len : segs;
-    for (var i = 0; i < segs; i++) {
-        var pos = i / (segs - 1) * (isLoop ? len : len - 1);
-        var idx = Math.floor(pos);
+    for (let i = 0; i < segs; i++) {
+        let pos = i / (segs - 1) * (isLoop ? len : len - 1);
+        let idx = Math.floor(pos);
 
-        var w = pos - idx;
+        let w = pos - idx;
 
-        var p0;
-        var p1 = [points[idx % len][0] + __OP[0], points[idx % len][1] + __OP[1]]
-        var p2;
-        var p3;
+        let p0;
+        let p1 = [points[idx % len][0] + __OP[0], points[idx % len][1] + __OP[1]];
+        let p2;
+        let p3;
         if (!isLoop) {
             p0 = [points[idx === 0 ? idx : idx - 1][0] + __OP[0], points[idx === 0 ? idx : idx - 1][1] + __OP[1]];
             p2 = [points[idx > len - 2 ? len - 1 : idx + 1][0] + __OP[0], points[idx > len - 2 ? len - 1 : idx + 1][1] + __OP[1]];
             p3 = [points[idx > len - 3 ? len - 1 : idx + 2][0] + __OP[0], points[idx > len - 3 ? len - 1 : idx + 2][1] + __OP[1]];
-        }
-        else {
+        } else {
 
             p0 = [points[(idx - 1 + len) % len][0] + __OP[0], points[(idx - 1 + len) % len][1] + __OP[1]];
             p2 = [points[(idx + 1) % len][0] + __OP[0], points[(idx + 1) % len][1] + __OP[1]];
             p3 = [points[(idx + 2) % len][0] + __OP[0], points[(idx + 2) % len][1] + __OP[1]];
         }
 
-        var w2 = w * w;
-        var w3 = w * w2;
+        let w2 = w * w;
+        let w3 = w * w2;
 
         ret.push([
             interpolate(p0[0], p1[0], p2[0], p3[0], w, w2, w3),
@@ -206,8 +209,7 @@ SuperMap.LevelRenderer.SUtil_dashedLineTo = function (ctx, x1, y1, x2, y2, dashL
 
         if (customDashPattern && (customDashPattern instanceof Array)) {
             ctx.setLineDash(customDashPattern);
-        }
-        else {
+        } else {
             ctx.setLineDash(dashPattern);
         }
         // ctx.setLineDash(dashPattern);
@@ -228,8 +230,7 @@ SuperMap.LevelRenderer.SUtil_dashedLineTo = function (ctx, x1, y1, x2, y2, dashL
     for (var i = 0; i < numDashes; ++i) {
         if (flag) {
             ctx.moveTo(x1, y1);
-        }
-        else {
+        } else {
             ctx.lineTo(x1, y1);
         }
         flag = !flag;

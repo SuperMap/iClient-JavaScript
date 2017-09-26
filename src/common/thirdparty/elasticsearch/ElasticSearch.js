@@ -590,6 +590,7 @@ export default class ElasticSearch {
                 me.outOfGeoFence && me.outOfGeoFence(data);
                 me.events.triggerEvent('outOfGeoFence', {data: data});
             }
+            return source;
         });
     }
 

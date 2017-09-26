@@ -73,7 +73,7 @@ export default class SmicImage extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         this._imageCache = {};
     }
 
@@ -99,7 +99,7 @@ export default class SmicImage extends Shape {
      *
      */
     brush(ctx, isHighlight, refresh) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var style = this.style || {};
@@ -143,8 +143,7 @@ export default class SmicImage extends Shape {
                     if (image.readyState != 'complete') {
                         return;
                     }
-                }
-                else {
+                } else {
                     if (!image.complete) {
                         return;
                     }
@@ -171,17 +170,16 @@ export default class SmicImage extends Shape {
             this.setTransform(ctx);
 
             if (style.sWidth && style.sHeight) {
-                var sx = (style.sx + __OP[0]) || 0;
-                var sy = (style.sy + __OP[1]) || 0;
+                let sx = (style.sx + __OP[0]) || 0;
+                let sy = (style.sy + __OP[1]) || 0;
                 ctx.drawImage(
                     image,
                     sx, sy, style.sWidth, style.sHeight,
                     x, y, width, height
                 );
-            }
-            else if (style.sx && style.sy) {
-                var sx = style.sx + __OP[0];
-                var sy = style.sy + __OP[1];
+            } else if (style.sx && style.sy) {
+                let sx = style.sx + __OP[0];
+                let sy = style.sy + __OP[1];
                 var sWidth = width - sx;
                 var sHeight = height - sy;
                 ctx.drawImage(
@@ -189,8 +187,7 @@ export default class SmicImage extends Shape {
                     sx, sy, sWidth, sHeight,
                     x, y, width, height
                 );
-            }
-            else {
+            } else {
                 ctx.drawImage(image, x, y, width, height);
             }
             // 如果没设置宽和高的话自动根据图片宽高设置
@@ -225,7 +222,7 @@ export default class SmicImage extends Shape {
      * {Object} 边框对象。包含属性：x，y，width，height。
      */
     getRect(style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         return {

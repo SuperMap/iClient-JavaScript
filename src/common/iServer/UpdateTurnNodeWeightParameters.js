@@ -43,7 +43,7 @@ export default  class UpdateTurnNodeWeightParameters {
     turnNodeWeight = "";
 
     constructor(option) {
-        if (!option) return;
+        if (!option) {return;}
 
         option.nodeId && (this.nodeId = option.nodeId);
         option.fromEdgeId && (this.fromEdgeId = option.fromEdgeId);

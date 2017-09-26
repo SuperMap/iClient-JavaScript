@@ -107,7 +107,7 @@ export default class ThemeRange extends Theme {
      * @return {SuperMap.ThemeRange} ThemeRange对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new ThemeRange();
         SuperMap.Util.copy(res, obj);
         var itemsR = obj.items;

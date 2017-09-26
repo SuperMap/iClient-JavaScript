@@ -156,8 +156,7 @@ export default class AreaSolarRadiationParameters {
                 var name3 = (name === "transmittance" || name === "hourInterval" || name === "dayInterval");
                 if (name1 || name2 || name3) {
                     parameter[name] = param[name];
-                }
-                else {
+                } else {
                     tempObj[name] = param[name];
                 }
             }

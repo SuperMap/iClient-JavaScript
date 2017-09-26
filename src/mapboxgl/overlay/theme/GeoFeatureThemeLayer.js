@@ -117,8 +117,7 @@ export default class GeoFeature extends Theme {
             //判断专题要素缓存是否存在
             if (cache[fields]) {
                 cache[fields].updateAndAddShapes();
-            }
-            else {
+            } else {
                 //如果专题要素缓存不存在，创建专题要素
                 thematicFeature = this.createThematicFeature(features[i]);
 

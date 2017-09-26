@@ -20,7 +20,7 @@ import MathExpressionAnalysisParameters from './MathExpressionAnalysisParameters
  * (end)
  *
  */
-export default  class MathExpressionAnalysisService extends SpatialAnalystBase {
+export default class MathExpressionAnalysisService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -42,9 +42,7 @@ export default  class MathExpressionAnalysisService extends SpatialAnalystBase {
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
-        if (end === '/') {
-
-        } else {
+        if (end !== '/') {
             me.url += "/";
         }
 

@@ -178,7 +178,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
      */
     drawCharts: function () {
         var me = this;
-        if (!me.renderer) return;
+        if (!me.renderer) {
+            return;
+        }
 
         // 图表权重值处理
         if (me.overlayWeightField) {
@@ -231,7 +233,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
         var me = this;
         var quadLen = quadrilateral.length,
             quad2Len = quadrilateral2.length;
-        if (quadLen !== 5 || quad2Len !== 5) return null;//不是四边形
+        if (quadLen !== 5 || quad2Len !== 5) {
+            return null;
+        }//不是四边形
 
         var OverLap = false;
         //如果两四边形互不包含对方的节点，则两个四边形不相交
@@ -241,18 +245,18 @@ export var GraphThemeLayer = ThemeLayer.extend({
                 break;
             }
         }
-        for (var i = 0; i < quad2Len; i++) {
+        for (let i = 0; i < quad2Len; i++) {
             if (me.isPointInPoly(quadrilateral2[i], quadrilateral)) {
                 OverLap = true;
                 break;
             }
         }
         //加上两矩形十字相交的情况
-        for (var i = 0; i < quadLen - 1; i++) {
+        for (let i = 0; i < quadLen - 1; i++) {
             if (OverLap) {
                 break;
             }
-            for (var j = 0; j < quad2Len - 1; j++) {
+            for (let j = 0; j < quad2Len - 1; j++) {
                 var isLineIn = SuperMap.Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     OverLap = true;
@@ -272,10 +276,11 @@ export var GraphThemeLayer = ThemeLayer.extend({
      *        例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
      */
     isPointInPoly: function (pt, poly) {
-        for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
+        for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {
             ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
             && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
             && (isIn = !isIn);
+        }
         return isIn;
     },
 
@@ -368,7 +373,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
         if (typeof(defaultValue) === "undefined" || isNaN(defaultValue)) {
             defaultValue = 0;
         }
-        if (!feature.attributes) return defaultValue;
+        if (!feature.attributes) {
+            return defaultValue;
+        }
 
         var fieldValue = feature.attributes[weightField];
 
@@ -387,17 +394,14 @@ export var GraphThemeLayer = ThemeLayer.extend({
         me.charts.sort(function (cs, ce) {
             if (typeof(cs["__overlayWeight"]) === "undefined" && typeof(ce["__overlayWeight"]) === "undefined") {
                 return 0;
-            }
-            else if (typeof(cs["__overlayWeight"]) !== "undefined" && typeof(ce["__overlayWeight"]) === "undefined") {
+            } else if (typeof(cs["__overlayWeight"]) !== "undefined" && typeof(ce["__overlayWeight"]) === "undefined") {
                 return -1;
-            }
-            else if (typeof(cs["__overlayWeight"]) === "undefined" && typeof(ce["__overlayWeight"]) !== "undefined") {
+            } else if (typeof(cs["__overlayWeight"]) === "undefined" && typeof(ce["__overlayWeight"]) !== "undefined") {
                 return 1;
-            }
-            else if (typeof(cs["__overlayWeight"]) !== "undefined" && typeof(ce["__overlayWeight"]) !== "undefined") {
+            } else if (typeof(cs["__overlayWeight"]) !== "undefined" && typeof(ce["__overlayWeight"]) !== "undefined") {
                 return (parseFloat(cs["__overlayWeight"]) < parseFloat(ce["__overlayWeight"])) ? 1 : -1;
             }
-
+            return 0;
         });
     },
 
@@ -460,7 +464,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
             // 是否压盖
             var isOverlay = false;
 
-            for (var j = 0; j < chartsBounds.length; j++) {
+            for (let j = 0; j < chartsBounds.length; j++) {
                 //压盖判断
                 if (me.isQuadrilateralOverLap(cBounds, chartsBounds[j])) {
                     isOverlay = true;
@@ -476,7 +480,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
             // 添加图形
             var shapes = chart.shapes;
-            for (var j = 0, slen = shapes.length; j < slen; j++) {
+            for (let j = 0, slen = shapes.length; j < slen; j++) {
                 shapes[j].refOriginalPosition = shapeROP;
                 me.renderer.addShape(shapes[j]);
             }

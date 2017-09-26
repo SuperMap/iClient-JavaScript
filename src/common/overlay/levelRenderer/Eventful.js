@@ -153,8 +153,7 @@ export default class Eventful {
             if (_h[event] && _h[event].length === 0) {
                 delete _h[event];
             }
-        }
-        else {
+        } else {
             delete _h[event];
         }
 
@@ -204,8 +203,7 @@ export default class Eventful {
                 if (_h[i]['one']) {
                     _h.splice(i, 1);
                     len--;
-                }
-                else {
+                } else {
                     i++;
                 }
             }
@@ -258,8 +256,7 @@ export default class Eventful {
                 if (_h[i]['one']) {
                     _h.splice(i, 1);
                     len--;
-                }
-                else {
+                } else {
                     i++;
                 }
             }

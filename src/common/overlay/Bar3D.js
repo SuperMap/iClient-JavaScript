@@ -194,8 +194,7 @@ export default  class Bar3D extends Graph {
         if (!sets.dataViewBoxParameter) {
             if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
                 sets.dataViewBoxParameter = [45, 25, 20, 20];
-            }
-            else {
+            } else {
                 sets.dataViewBoxParameter = [5, 5, 5, 5];
             }
         }
@@ -205,7 +204,7 @@ export default  class Bar3D extends Graph {
         sets.axisXLabelsOffset = (typeof(sets.axisXLabelsOffset) !== "undefined") ? sets.axisXLabelsOffset : [-10, 10];
 
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) return;
+        if (!this.initBaseParameter()) {return;}
 
         // 值域
         var codomain = this.DVBCodomain;
@@ -215,16 +214,16 @@ export default  class Bar3D extends Graph {
         var dvb = this.dataViewBox;
         // 用户数据值
         var fv = this.dataValues;
-        if (fv.length < 1) return;       // 没有数据
+        if (fv.length < 1) {return;}       // 没有数据
 
         // 数据溢出值域范围处理
-        for (var i = 0, fvLen = fv.length; i < fvLen; i++) {
-            if (fv[i] < codomain[0] || fv[i] > codomain[1]) return;
+        for (let i = 0, fvLen = fv.length; i < fvLen; i++) {
+            if (fv[i] < codomain[0] || fv[i] > codomain[1]) {return;}
         }
 
         // 获取 x 轴上的图形信息
         var xShapeInfo = this.calculateXShapeInfo();
-        if (!xShapeInfo) return;
+        if (!xShapeInfo) {return;}
         // 每个柱条 x 位置
         var xsLoc = xShapeInfo.xPositions;
         // 柱条宽度
@@ -246,7 +245,7 @@ export default  class Bar3D extends Graph {
         // 3d 偏移量, 默认值 10;
         var offset3d = (sets.bar3DParameter && !isNaN(sets.bar3DParameter)) ? sets.bar3DParameter : 10;
 
-        for (var i = 0; i < fv.length; i++) {
+        for (let i = 0; i < fv.length; i++) {
             // 无 3d 偏移量时的柱面顶部 y 坐标
             var yPx = dvb[1] - (fv[i] - codomain[0]) / this.DVBUnitValue;
             // 无 3d 偏移量时的柱面的左、右端 x 坐标
@@ -363,7 +362,7 @@ export default  class Bar3D extends Graph {
         var sets = this.setting;     // 图表配置对象
         var fvc = this.dataValues.length;      // 数组值个数
 
-        if (fvc < 1) return null;
+        if (fvc < 1) {return null;}
 
         var xBlank;        // x 轴空白间隔参数
         var xShapePositions = [];         // x 轴上图形的位置
@@ -378,8 +377,7 @@ export default  class Bar3D extends Graph {
                 return null;
             }
             xShapeWidth = xsLen / fvc
-        }
-        else {
+        } else {
             // 默认使用等距离空白间隔，空白间隔为图形宽度
             xShapeWidth = dvbWidth / (2 * fvc + 1);
             xBlank = [xShapeWidth, xShapeWidth, xShapeWidth];
@@ -390,8 +388,7 @@ export default  class Bar3D extends Graph {
         for (var i = 0; i < fvc; i++) {
             if (i == 0) {
                 xOffset = xBlank[0] + xShapeWidth / 2;
-            }
-            else {
+            } else {
                 xOffset += (xShapeWidth + xBlank[1]);
             }
 

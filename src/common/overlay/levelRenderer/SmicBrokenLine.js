@@ -86,7 +86,9 @@ export default class SmicBrokenLine extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
 
@@ -113,8 +115,10 @@ export default class SmicBrokenLine extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
-        ;
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
+
         var __OP = this.refOriginalPosition;
 
         var pointList = style.pointList;
@@ -132,7 +136,7 @@ export default class SmicBrokenLine extends Shape {
             var cp1;
             var cp2;
             var p;
-            for (var i = 0; i < len - 1; i++) {
+            for (let i = 0; i < len - 1; i++) {
                 cp1 = controlPoints[i * 2];
                 cp2 = controlPoints[i * 2 + 1];
                 p = [pointList[i + 1][0] + __OP[0], pointList[i + 1][1] + __OP[1]];
@@ -140,8 +144,7 @@ export default class SmicBrokenLine extends Shape {
                     cp1[0], cp1[1], cp2[0], cp2[1], p[0], p[1]
                 );
             }
-        }
-        else {
+        } else {
             if (style.smooth === 'spline') {
                 pointList = SuperMap.LevelRenderer.SUtil_smoothSpline(pointList, null, null, __OP);
                 len = pointList.length;
@@ -149,19 +152,18 @@ export default class SmicBrokenLine extends Shape {
             if (!style.lineType || style.lineType === 'solid') {
                 // 默认为实线
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
-                for (var i = 1; i < len; i++) {
+                for (let i = 1; i < len; i++) {
                     ctx.lineTo(pointList[i][0] + __OP[0], pointList[i][1] + __OP[1]);
                 }
-            }
-            else if (style.lineType === 'dashed'
+            } else if (style.lineType === 'dashed'
                 || style.lineType === 'dotted'
                 || style.lineType === 'dot'
                 || style.lineType === 'dash'
                 || style.lineType === 'longdash'
             ) {
-                var dashLength = (style.lineWidth || 1);
-                var pattern1 = dashLength;
-                var pattern2 = dashLength;
+                let dashLength = (style.lineWidth || 1);
+                let pattern1 = dashLength;
+                let pattern2 = dashLength;
 
                 //dashed
                 if (style.lineType === 'dashed') {
@@ -220,15 +222,14 @@ export default class SmicBrokenLine extends Shape {
                         [pattern1, pattern2]
                     );
                 }
-            }
-            else if (style.lineType === 'dashot'
+            } else if (style.lineType === 'dashot'
                 || style.lineType === 'longdashdot'
             ) {
-                var dashLength = (style.lineWidth || 1);
-                var pattern1 = dashLength;
-                var pattern2 = dashLength;
-                var pattern3 = dashLength;
-                var pattern4 = dashLength;
+                let dashLength = (style.lineWidth || 1);
+                let pattern1 = dashLength;
+                let pattern2 = dashLength;
+                let pattern3 = dashLength;
+                let pattern4 = dashLength;
 
                 //dashot
                 if (style.lineType === 'dashot') {
@@ -256,10 +257,10 @@ export default class SmicBrokenLine extends Shape {
                     }
                 }
 
-                var dashLength = (style.lineWidth || 1)
+                dashLength = (style.lineWidth || 1)
                     * (style.lineType === 'dashed' ? 5 : 1);
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
-                for (var i = 1; i < len; i++) {
+                for (let i = 1; i < len; i++) {
                     SuperMap.LevelRenderer.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1],
@@ -287,7 +288,9 @@ export default class SmicBrokenLine extends Shape {
      * {Object} 边框对象。包含属性：x，y，width，height。
      */
     getRect(style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
         return SmicPolygon.prototype.getRect.apply(this, [style, __OP]);
     }

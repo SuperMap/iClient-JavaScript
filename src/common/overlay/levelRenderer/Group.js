@@ -43,7 +43,7 @@ export default class Group extends SuperMap.mixin(Eventful, Transformable) {
      */
     type = null;
 
-//http://www.w3.org/TR/2dcontext/#clipping-region
+    //http://www.w3.org/TR/2dcontext/#clipping-region
     /**
      * APIProperty: clipShape
      * {String} 用于裁剪的图形(shape)，所有 Group 内的图形在绘制时都会被这个图形裁剪，该图形会继承 Group 的变换。
@@ -155,7 +155,7 @@ export default class Group extends SuperMap.mixin(Eventful, Transformable) {
      * child - {<SuperMap.LevelRenderer.Shape>/<SuperMap.LevelRenderer.Group>} 节点图形。
      *
      */
-// TODO Type Check
+    // TODO Type Check
     addChild(child) {
         if (child == this) {
             return;

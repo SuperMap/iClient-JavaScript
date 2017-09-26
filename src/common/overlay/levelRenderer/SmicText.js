@@ -64,7 +64,9 @@ export default class SmicText extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
 
@@ -89,7 +91,9 @@ export default class SmicText extends Shape {
      *
      */
     brush(ctx, isHighlight) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var style = this.style;
@@ -126,11 +130,9 @@ export default class SmicText extends Shape {
         var y;
         if (style.textBaseline == 'top') {
             y = rect.y;
-        }
-        else if (style.textBaseline == 'bottom') {
+        } else if (style.textBaseline == 'bottom') {
             y = rect.y + lineHeight;
-        }
-        else {
+        } else {
             y = rect.y + lineHeight / 2;
         }
         var ox = style.x + __OP[0];
@@ -148,34 +150,27 @@ export default class SmicText extends Shape {
                         if (style.textBaseline == 'top') {
                             if (style.maxWidth) {
                                 ctx.fillText(text[i], 0, lineHeight * i, style.maxWidth);
-                            }
-                            else {
+                            } else {
                                 ctx.fillText(text[i], 0, lineHeight * i);
                             }
-                        }
-                        else if (style.textBaseline == 'bottom') {
+                        } else if (style.textBaseline == 'bottom') {
                             if (style.maxWidth) {
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height, style.maxWidth);
-                            }
-                            else {
+                            } else {
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height);
                             }
-                        }
-                        else {
+                        } else {
                             if (style.maxWidth) {
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2, style.maxWidth);
-                            }
-                            else {
+                            } else {
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2);
                             }
                         }
                         ctx.restore();
-                    }
-                    else {
+                    } else {
                         if (style.maxWidth) {
                             ctx.fillText(text[i], x, y, style.maxWidth);
-                        }
-                        else {
+                        } else {
                             ctx.fillText(text[i], x, y);
                         }
                     }
@@ -190,34 +185,27 @@ export default class SmicText extends Shape {
                         if (style.textBaseline == 'top') {
                             if (style.maxWidth) {
                                 ctx.strokeText(text[i], 0, lineHeight * i, style.maxWidth);
-                            }
-                            else {
+                            } else {
                                 ctx.strokeText(text[i], 0, lineHeight * i);
                             }
-                        }
-                        else if (style.textBaseline == 'bottom') {
+                        } else if (style.textBaseline == 'bottom') {
                             if (style.maxWidth) {
                                 ctx.strokeText(text[i], 0, lineHeight * (i + 1) - rect.height, style.maxWidth);
-                            }
-                            else {
+                            } else {
                                 ctx.strokeText(text[i], 0, lineHeight * (i + 1) - rect.height);
                             }
-                        }
-                        else {
+                        } else {
                             if (style.maxWidth) {
                                 ctx.strokeText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2, style.maxWidth);
-                            }
-                            else {
+                            } else {
                                 ctx.strokeText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2);
                             }
                         }
                         ctx.restore();
-                    }
-                    else {
+                    } else {
                         if (style.maxWidth) {
                             ctx.strokeText(text[i], x, y, style.maxWidth);
-                        }
-                        else {
+                        } else {
                             ctx.strokeText(text[i], x, y);
                         }
                     }
@@ -237,8 +225,7 @@ export default class SmicText extends Shape {
                                 this.setCtxGlobalAlpha(ctx, "stroke", style);
                                 ctx.strokeText(text[i], 0, lineHeight * i, style.maxWidth);
                                 this.setCtxGlobalAlpha(ctx, "reset", style);
-                            }
-                            else {
+                            } else {
                                 this.setCtxGlobalAlpha(ctx, "fill", style);
                                 ctx.fillText(text[i], 0, lineHeight * i);
                                 this.setCtxGlobalAlpha(ctx, "reset", style);
@@ -247,8 +234,7 @@ export default class SmicText extends Shape {
                                 ctx.strokeText(text[i], 0, lineHeight * i);
                                 this.setCtxGlobalAlpha(ctx, "reset", style);
                             }
-                        }
-                        else if (style.textBaseline == 'bottom') {
+                        } else if (style.textBaseline == 'bottom') {
                             if (style.maxWidth) {
                                 this.setCtxGlobalAlpha(ctx, "fill", style);
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height, style.maxWidth);
@@ -257,8 +243,7 @@ export default class SmicText extends Shape {
                                 this.setCtxGlobalAlpha(ctx, "stroke", style);
                                 ctx.strokeText(text[i], 0, lineHeight * (i + 1) - rect.height, style.maxWidth);
                                 this.setCtxGlobalAlpha(ctx, "reset", style);
-                            }
-                            else {
+                            } else {
                                 this.setCtxGlobalAlpha(ctx, "fill", style);
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height);
                                 this.setCtxGlobalAlpha(ctx, "reset", style);
@@ -267,8 +252,7 @@ export default class SmicText extends Shape {
                                 ctx.strokeText(text[i], 0, lineHeight * (i + 1) - rect.height);
                                 this.setCtxGlobalAlpha(ctx, "reset", style);
                             }
-                        }
-                        else {
+                        } else {
                             if (style.maxWidth) {
                                 this.setCtxGlobalAlpha(ctx, "fill", style);
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2, style.maxWidth);
@@ -277,8 +261,7 @@ export default class SmicText extends Shape {
                                 this.setCtxGlobalAlpha(ctx, "stroke", style);
                                 ctx.strokeText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2, style.maxWidth);
                                 this.setCtxGlobalAlpha(ctx, "reset", style);
-                            }
-                            else {
+                            } else {
                                 this.setCtxGlobalAlpha(ctx, "fill", style);
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2);
                                 this.setCtxGlobalAlpha(ctx, "reset", style);
@@ -289,8 +272,7 @@ export default class SmicText extends Shape {
                             }
                         }
                         ctx.restore();
-                    }
-                    else {
+                    } else {
                         if (style.maxWidth) {
                             this.setCtxGlobalAlpha(ctx, "fill", style);
                             ctx.fillText(text[i], x, y, style.maxWidth);
@@ -299,8 +281,7 @@ export default class SmicText extends Shape {
                             this.setCtxGlobalAlpha(ctx, "stroke", style);
                             ctx.strokeText(text[i], x, y, style.maxWidth);
                             this.setCtxGlobalAlpha(ctx, "reset", style);
-                        }
-                        else {
+                        } else {
                             this.setCtxGlobalAlpha(ctx, "fill", style);
                             ctx.fillText(text[i], x, y);
                             this.setCtxGlobalAlpha(ctx, "reset", style);
@@ -320,34 +301,27 @@ export default class SmicText extends Shape {
                         if (style.textBaseline == 'top') {
                             if (style.maxWidth) {
                                 ctx.fillText(text[i], 0, lineHeight * i, style.maxWidth);
-                            }
-                            else {
+                            } else {
                                 ctx.fillText(text[i], 0, lineHeight * i);
                             }
-                        }
-                        else if (style.textBaseline == 'bottom') {
+                        } else if (style.textBaseline == 'bottom') {
                             if (style.maxWidth) {
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height, style.maxWidth);
-                            }
-                            else {
+                            } else {
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height);
                             }
-                        }
-                        else {
+                        } else {
                             if (style.maxWidth) {
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2, style.maxWidth);
-                            }
-                            else {
+                            } else {
                                 ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2);
                             }
                         }
                         ctx.restore();
-                    }
-                    else {
+                    } else {
                         if (style.maxWidth) {
                             ctx.fillText(text[i], x, y, style.maxWidth);
-                        }
-                        else {
+                        } else {
                             ctx.fillText(text[i], x, y);
                         }
                     }
@@ -381,8 +355,7 @@ export default class SmicText extends Shape {
                 right = poi[0];
                 top = poi[1];
                 bottom = poi[1];
-            }
-            else {
+            } else {
                 if (poi[0] < left) {
                     left = poi[0]
                 }
@@ -415,7 +388,9 @@ export default class SmicText extends Shape {
      */
     getRectNoRotation(style) {
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var lineHeight = SuperMap.LevelRenderer.Util_area.getTextHeight('ZH', style.textFont);
@@ -427,8 +402,7 @@ export default class SmicText extends Shape {
         var textX = style.x + __OP[0];                 // 默认start == left
         if (style.textAlign == 'end' || style.textAlign == 'right') {
             textX -= width;
-        }
-        else if (style.textAlign == 'center') {
+        } else if (style.textAlign == 'center') {
             textX -= (width / 2);
         }
 
@@ -436,11 +410,9 @@ export default class SmicText extends Shape {
         if (style.textBaseline == 'top') {
             // textY = style.y;
             textY = style.y + __OP[1];
-        }
-        else if (style.textBaseline == 'bottom') {
+        } else if (style.textBaseline == 'bottom') {
             textY = (style.y + __OP[1]) - height;
-        }
-        else {
+        } else {
             // middle
             textY = (style.y + __OP[1]) - height / 2;
         }
@@ -457,11 +429,10 @@ export default class SmicText extends Shape {
                 width = maxWidth;
             }
 
-            var textX = style.x + __OP[0];
+            textX = style.x + __OP[0];
             if (style.textAlign == 'end' || style.textAlign == 'right') {
                 textX -= width;
-            }
-            else if (style.textAlign == 'center') {
+            } else if (style.textAlign == 'center') {
                 textX -= (width / 2);
             }
         }
@@ -473,8 +444,7 @@ export default class SmicText extends Shape {
             if (textFontStr.indexOf("italic") > -1) {
                 if (widthBeforeChangeByMaxWidth && isWidthChangeByMaxWidth === true) {
                     width += (lineHeight / 3) * (width / widthBeforeChangeByMaxWidth);
-                }
-                else {
+                } else {
                     width += lineHeight / 3;
                 }
             }
@@ -500,7 +470,9 @@ export default class SmicText extends Shape {
      * redo - {Boolean} 是否强制重新计算 textBackground。
      */
     getTextBackground(style, redo) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         if ((!redo || redo === false) && style.__textBackground) {
@@ -518,22 +490,21 @@ export default class SmicText extends Shape {
         var background = [];
 
         if (style.textRotation && style.textRotation !== 0) {
-            var textRotation = style.textRotation;
-            var ltPoi = this.getRotatedLocation(rect.x, rect.y, ox, oy, textRotation);
-            var rtPoi = this.getRotatedLocation(rect.x + rect.width, rect.y, ox, oy, textRotation);
-            var rbPoi = this.getRotatedLocation(rect.x + rect.width, rect.y + rect.height, ox, oy, textRotation);
-            var lbPoi = this.getRotatedLocation(rect.x, rect.y + rect.height, ox, oy, textRotation);
+            let textRotation = style.textRotation;
+            let ltPoi = this.getRotatedLocation(rect.x, rect.y, ox, oy, textRotation);
+            let rtPoi = this.getRotatedLocation(rect.x + rect.width, rect.y, ox, oy, textRotation);
+            let rbPoi = this.getRotatedLocation(rect.x + rect.width, rect.y + rect.height, ox, oy, textRotation);
+            let lbPoi = this.getRotatedLocation(rect.x, rect.y + rect.height, ox, oy, textRotation);
 
             background.push(ltPoi);
             background.push(rtPoi);
             background.push(rbPoi);
             background.push(lbPoi);
-        }
-        else {
-            var ltPoi = [rect.x, rect.y];
-            var rtPoi = [rect.x + rect.width, rect.y];
-            var rbPoi = [rect.x + rect.width, rect.y + rect.height];
-            var lbPoi = [rect.x, rect.y + rect.height];
+        } else {
+            let ltPoi = [rect.x, rect.y];
+            let rtPoi = [rect.x + rect.width, rect.y];
+            let rbPoi = [rect.x + rect.width, rect.y + rect.height];
+            let lbPoi = [rect.x, rect.y + rect.height];
 
             background.push(ltPoi);
             background.push(rtPoi);

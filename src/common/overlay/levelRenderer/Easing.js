@@ -263,8 +263,7 @@ export default class Easing {
         if (!a || a < 1) {
             a = 1;
             s = p / 4;
-        }
-        else {
+        } else {
             s = p * Math.asin(1 / a) / (2 * Math.PI);
         }
         return -(a * Math.pow(2, 10 * (k -= 1)) *
@@ -288,8 +287,7 @@ export default class Easing {
         if (!a || a < 1) {
             a = 1;
             s = p / 4;
-        }
-        else {
+        } else {
             s = p * Math.asin(1 / a) / (2 * Math.PI);
         }
         return (a * Math.pow(2, -10 * k) *
@@ -313,8 +311,7 @@ export default class Easing {
         if (!a || a < 1) {
             a = 1;
             s = p / 4;
-        }
-        else {
+        } else {
             s = p * Math.asin(1 / a) / (2 * Math.PI);
         }
         if ((k *= 2) < 1) {
@@ -375,14 +372,11 @@ export default class Easing {
     BounceOut(k) {
         if (k < (1 / 2.75)) {
             return 7.5625 * k * k;
-        }
-        else if (k < (2 / 2.75)) {
+        } else if (k < (2 / 2.75)) {
             return 7.5625 * (k -= (1.5 / 2.75)) * k + 0.75;
-        }
-        else if (k < (2.5 / 2.75)) {
+        } else if (k < (2.5 / 2.75)) {
             return 7.5625 * (k -= (2.25 / 2.75)) * k + 0.9375;
-        }
-        else {
+        } else {
             return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375;
         }
     }

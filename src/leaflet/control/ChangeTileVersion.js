@@ -156,12 +156,9 @@ export var ChangeTileVersion = L.Control.extend({
     getTileSetsInfo: function () {
         var me = this;
         if (me.options.layer) {
-            new MapService(me.options.layer._url).getTilesets(getTilesInfoSucceed);
-
-            function getTilesInfoSucceed(info) {
+            new MapService(me.options.layer._url).getTilesets(function getTilesInfoSucceed(info) {
                 me.options.layer.setTileSetsInfo(info.result);
-            }
-
+            });
         }
         return this;
     },
@@ -296,11 +293,9 @@ export var ChangeTileVersion = L.Control.extend({
         if (window.matchMedia("screen and (-webkit-min-device-pixel-ratio:0)").matches && this.options.orientation == 'vertical') {
             this.slider.style.width = 170 + 'px';
             this._sliderContainer.style.height = 170 + 'px';
-        }
-        else if (this.options.orientation == 'vertical') {
+        } else if (this.options.orientation == 'vertical') {
             this._sliderContainer.style.height = 170 + 'px';
-        }
-        else {
+        } else {
             this._sliderContainer.style.width = 150 + 'px';
         }
 

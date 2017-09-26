@@ -119,7 +119,7 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
             me.url += "&fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
         }
 
-        if (params.returnCountOnly) me.url += "&returnCountOnly=" + params.returnContent;
+        if (params.returnCountOnly) {me.url += "&returnCountOnly=" + params.returnContent;}
         jsonParameters = me.getJsonParameters(params);
         me.request({
             method: "POST",

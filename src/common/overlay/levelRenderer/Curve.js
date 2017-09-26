@@ -171,58 +171,52 @@ export default class Curve {
         if (this.isAroundZero(A) && this.isAroundZero(B)) {
             if (this.isAroundZero(b)) {
                 roots[0] = 0;
-            }
-            else {
-                var t1 = -c / b;  //t1, t2, t3, b is not zero
+            } else {
+                let t1 = -c / b;  //t1, t2, t3, b is not zero
                 if (t1 >= 0 && t1 <= 1) {
                     roots[n++] = t1;
                 }
             }
-        }
-        else {
+        } else {
             var disc = B * B - 4 * A * C;
 
             if (this.isAroundZero(disc)) {
                 var K = B / A;
-                var t1 = -b / a + K;  // t1, a is not zero
-                var t2 = -K / 2;  // t2, t3
+                let t1 = -b / a + K;  // t1, a is not zero
+                let t2 = -K / 2;  // t2, t3
                 if (t1 >= 0 && t1 <= 1) {
                     roots[n++] = t1;
                 }
                 if (t2 >= 0 && t2 <= 1) {
                     roots[n++] = t2;
                 }
-            }
-            else if (disc > 0) {
-                var discSqrt = Math.sqrt(disc);
-                var Y1 = A * b + 1.5 * a * (-B + discSqrt);
-                var Y2 = A * b + 1.5 * a * (-B - discSqrt);
+            } else if (disc > 0) {
+                let discSqrt = Math.sqrt(disc);
+                let Y1 = A * b + 1.5 * a * (-B + discSqrt);
+                let Y2 = A * b + 1.5 * a * (-B - discSqrt);
                 if (Y1 < 0) {
                     Y1 = -Math.pow(-Y1, this.ONE_THIRD);
-                }
-                else {
+                } else {
                     Y1 = Math.pow(Y1, this.ONE_THIRD);
                 }
                 if (Y2 < 0) {
                     Y2 = -Math.pow(-Y2, this.ONE_THIRD);
-                }
-                else {
+                } else {
                     Y2 = Math.pow(Y2, this.ONE_THIRD);
                 }
-                var t1 = (-b - (Y1 + Y2)) / (3 * a);
+                let t1 = (-b - (Y1 + Y2)) / (3 * a);
                 if (t1 >= 0 && t1 <= 1) {
                     roots[n++] = t1;
                 }
-            }
-            else {
+            } else {
                 var T = (2 * A * b - 3 * a * B) / (2 * Math.sqrt(A * A * A));
                 var theta = Math.acos(T) / 3;
                 var ASqrt = Math.sqrt(A);
                 var tmp = Math.cos(theta);
 
-                var t1 = (-b - 2 * ASqrt * tmp) / (3 * a);
-                var t2 = (-b + ASqrt * (tmp + this.THREE_SQRT * Math.sin(theta))) / (3 * a);
-                var t3 = (-b + ASqrt * (tmp - this.THREE_SQRT * Math.sin(theta))) / (3 * a);
+                let t1 = (-b - 2 * ASqrt * tmp) / (3 * a);
+                let t2 = (-b + ASqrt * (tmp + this.THREE_SQRT * Math.sin(theta))) / (3 * a);
+                let t3 = (-b + ASqrt * (tmp - this.THREE_SQRT * Math.sin(theta))) / (3 * a);
                 if (t1 >= 0 && t1 <= 1) {
                     roots[n++] = t1;
                 }
@@ -260,21 +254,19 @@ export default class Curve {
         var n = 0;
         if (this.isAroundZero(a)) {
             if (this.isNotAroundZero(b)) {
-                var t1 = -c / b;
+                let t1 = -c / b;
                 if (t1 >= 0 && t1 <= 1) {
                     extrema[n++] = t1;
                 }
             }
-        }
-        else {
+        } else {
             var disc = b * b - 4 * a * c;
             if (this.isAroundZero(disc)) {
                 extrema[0] = -b / (2 * a);
-            }
-            else if (disc > 0) {
-                var discSqrt = Math.sqrt(disc);
-                var t1 = (-b + discSqrt) / (2 * a);
-                var t2 = (-b - discSqrt) / (2 * a);
+            } else if (disc > 0) {
+                let discSqrt = Math.sqrt(disc);
+                let t1 = (-b + discSqrt) / (2 * a);
+                let t2 = (-b - discSqrt) / (2 * a);
                 if (t1 >= 0 && t1 <= 1) {
                     extrema[n++] = t1;
                 }
@@ -361,10 +353,10 @@ export default class Curve {
 
         // 先粗略估计一下可能的最小距离的 t 值
         // PENDING
-        for (var _t = 0; _t < 1; _t += 0.05) {
+        for (let _t = 0; _t < 1; _t += 0.05) {
             _v1[0] = this.cubicAt(x0, x1, x2, x3, _t);
             _v1[1] = this.cubicAt(y0, y1, y2, y3, _t);
-            var d1 = this.vector.distSquare(_v0, _v1);
+            let d1 = this.vector.distSquare(_v0, _v1);
             if (d1 < d) {
                 t = _t;
                 d = d1;
@@ -373,33 +365,31 @@ export default class Curve {
         d = Infinity;
 
         // At most 32 iteration
-        for (var i = 0; i < 32; i++) {
+        for (let i = 0; i < 32; i++) {
             if (interval < this.EPSILON) {
                 break;
             }
-            var prev = t - interval;
-            var next = t + interval;
+            let prev = t - interval;
+            let next = t + interval;
             // t - interval
             _v1[0] = this.cubicAt(x0, x1, x2, x3, prev);
             _v1[1] = this.cubicAt(y0, y1, y2, y3, prev);
 
-            var d1 = this.vector.distSquare(_v1, _v0);
+            let d1 = this.vector.distSquare(_v1, _v0);
 
             if (prev >= 0 && d1 < d) {
                 t = prev;
                 d = d1;
-            }
-            else {
+            } else {
                 // t + interval
                 _v2[0] = this.cubicAt(x0, x1, x2, x3, next);
                 _v2[1] = this.cubicAt(y0, y1, y2, y3, next);
-                var d2 = this.vector.distSquare(_v2, _v0);
+                let d2 = this.vector.distSquare(_v2, _v0);
 
                 if (next <= 1 && d2 < d) {
                     t = next;
                     d = d2;
-                }
-                else {
+                } else {
                     interval *= 0.5;
                 }
             }
@@ -478,19 +468,17 @@ export default class Curve {
                     roots[n++] = t1;
                 }
             }
-        }
-        else {
+        } else {
             var disc = b * b - 4 * a * c;
             if (this.isAroundZero(disc)) {
-                var t1 = -b / (2 * a);
+                let t1 = -b / (2 * a);
                 if (t1 >= 0 && t1 <= 1) {
                     roots[n++] = t1;
                 }
-            }
-            else if (disc > 0) {
-                var discSqrt = Math.sqrt(disc);
-                var t1 = (-b + discSqrt) / (2 * a);
-                var t2 = (-b - discSqrt) / (2 * a);
+            } else if (disc > 0) {
+                let discSqrt = Math.sqrt(disc);
+                let t1 = (-b + discSqrt) / (2 * a);
+                let t2 = (-b - discSqrt) / (2 * a);
                 if (t1 >= 0 && t1 <= 1) {
                     roots[n++] = t1;
                 }
@@ -520,8 +508,7 @@ export default class Curve {
         if (divider === 0) {
             // p1 is center of p0 and p2
             return 0.5;
-        }
-        else {
+        } else {
             return (p0 - p1) / divider;
         }
     }
@@ -561,10 +548,10 @@ export default class Curve {
 
         // 先粗略估计一下可能的最小距离的 t 值
         // PENDING
-        for (var _t = 0; _t < 1; _t += 0.05) {
+        for (let _t = 0; _t < 1; _t += 0.05) {
             _v1[0] = this.quadraticAt(x0, x1, x2, _t);
             _v1[1] = this.quadraticAt(y0, y1, y2, _t);
-            var d1 = this.vector.distSquare(_v0, _v1);
+            let d1 = this.vector.distSquare(_v0, _v1);
             if (d1 < d) {
                 t = _t;
                 d = d1;
@@ -573,32 +560,30 @@ export default class Curve {
         d = Infinity;
 
         // At most 32 iteration
-        for (var i = 0; i < 32; i++) {
+        for (let i = 0; i < 32; i++) {
             if (interval < this.EPSILON) {
                 break;
             }
-            var prev = t - interval;
-            var next = t + interval;
+            let prev = t - interval;
+            let next = t + interval;
             // t - interval
             _v1[0] = this.quadraticAt(x0, x1, x2, prev);
             _v1[1] = this.quadraticAt(y0, y1, y2, prev);
 
-            var d1 = this.vector.distSquare(_v1, _v0);
+            let d1 = this.vector.distSquare(_v1, _v0);
 
             if (prev >= 0 && d1 < d) {
                 t = prev;
                 d = d1;
-            }
-            else {
+            } else {
                 // t + interval
                 _v2[0] = this.quadraticAt(x0, x1, x2, next);
                 _v2[1] = this.quadraticAt(y0, y1, y2, next);
-                var d2 = this.vector.distSquare(_v2, _v0);
+                let d2 = this.vector.distSquare(_v2, _v0);
                 if (next <= 1 && d2 < d) {
                     t = next;
                     d = d2;
-                }
-                else {
+                } else {
                     interval *= 0.5;
                 }
             }

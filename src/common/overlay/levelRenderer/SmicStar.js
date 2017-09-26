@@ -70,7 +70,7 @@ export default class SmicStar extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
     }
 
     /**
@@ -92,7 +92,7 @@ export default class SmicStar extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var n = style.n;
@@ -137,7 +137,7 @@ export default class SmicStar extends Shape {
 
         // 绘制
         ctx.moveTo(pointList[0][0], pointList[0][1]);
-        for (var i = 0; i < pointList.length; i++) {
+        for (let i = 0; i < pointList.length; i++) {
             ctx.lineTo(pointList[i][0], pointList[i][1]);
         }
 
@@ -161,14 +161,13 @@ export default class SmicStar extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         var lineWidth;
         if (style.brushType == 'stroke' || style.brushType == 'fill') {
             lineWidth = style.lineWidth || 1;
-        }
-        else {
+        } else {
             lineWidth = 0;
         }
         style.__rect = {

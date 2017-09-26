@@ -86,6 +86,7 @@ export default class Graphic extends ol.source.ImageCanvas {
                 var result = [rotatedP[0] + offset[0], rotatedP[1] + offset[1]];
                 var pixelGeometry = new ol.geom.Point(result);
                 vectorContext.drawGeometry(pixelGeometry);
+                return graphic;
             });
             return context.canvas;
         }
@@ -115,6 +116,7 @@ export default class Graphic extends ol.source.ImageCanvas {
         if (!extent) {
             this.graphics_.map(function (graphic) {
                 graphics.push(graphic);
+                return graphic;
             });
             return graphics;
         }
@@ -122,6 +124,7 @@ export default class Graphic extends ol.source.ImageCanvas {
             if (ol.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
                 graphics.push(graphic);
             }
+            return graphic;
         });
         return graphics;
     }

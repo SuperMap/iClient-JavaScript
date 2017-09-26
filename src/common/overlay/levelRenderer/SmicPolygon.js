@@ -80,7 +80,9 @@ export default class SmicPolygon extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
 
@@ -105,7 +107,9 @@ export default class SmicPolygon extends Shape {
      *
      */
     brush(ctx, isHighlight) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
 
         var style = this.style;
         if (isHighlight) {
@@ -136,14 +140,13 @@ export default class SmicPolygon extends Shape {
             ) {
                 // 特殊处理，虚线围不成path，实线再build一次
                 this.buildPath(ctx, {
-                        lineType: 'solid',
-                        lineWidth: style.lineWidth,
-                        pointList: style.pointList
-                    }
+                    lineType: 'solid',
+                    lineWidth: style.lineWidth,
+                    pointList: style.pointList
+                }
                 );
                 hasPath = false; // 这个path不能用
-            }
-            else {
+            } else {
                 this.buildPath(ctx, style);
                 hasPath = true; // 这个path能用
             }
@@ -179,7 +182,7 @@ export default class SmicPolygon extends Shape {
 
                     ctx.globalCompositeOperation = "destination-out";
                     // 先 fill 再stroke
-                    var hasPath = false;
+                    hasPath = false;
                     if (hpStyle.brushType == 'fill' || hpStyle.brushType == 'both' || typeof hpStyle.brushType == 'undefined') {    // 默认为fill
                         ctx.beginPath();
                         if (hpStyle.lineType == 'dashed'
@@ -192,14 +195,13 @@ export default class SmicPolygon extends Shape {
                         ) {
                             // 特殊处理，虚线围不成path，实线再build一次
                             this.buildPath(ctx, {
-                                    lineType: 'solid',
-                                    lineWidth: hpStyle.lineWidth,
-                                    pointList: hpStyle.pointList
-                                }
+                                lineType: 'solid',
+                                lineWidth: hpStyle.lineWidth,
+                                pointList: hpStyle.pointList
+                            }
                             );
                             hasPath = false; // 这个path不能用
-                        }
-                        else {
+                        } else {
                             this.buildPath(ctx, hpStyle);
                             hasPath = true; // 这个path能用
                         }
@@ -219,8 +221,7 @@ export default class SmicPolygon extends Shape {
                         this.setCtxGlobalAlpha(ctx, "stroke", hpStyle);
                         ctx.stroke();
                         this.setCtxGlobalAlpha(ctx, "reset", hpStyle);
-                    }
-                    else {
+                    } else {
                         ctx.globalCompositeOperation = "source-over";
                     }
                 }
@@ -250,7 +251,9 @@ export default class SmicPolygon extends Shape {
             ctx.shadowOffsetX = style.shadowOffsetX;
             ctx.shadowOffsetY = style.shadowOffsetY;
         }
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         // 虽然能重用 brokenLine，但底层图形基于性能考虑，重复代码减少调用吧
@@ -277,8 +280,7 @@ export default class SmicPolygon extends Shape {
                     cp1[0], cp1[1], cp2[0], cp2[1], p[0], p[1]
                 );
             }
-        }
-        else {
+        } else {
             if (style.smooth === 'spline') {
                 pointList = SuperMap.LevelRenderer.SUtil_smoothSpline(pointList, true, null, __OP);
             }
@@ -286,24 +288,23 @@ export default class SmicPolygon extends Shape {
             if (!style.lineType || style.lineType == 'solid') {
                 // 默认为实线
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
-                for (var i = 1, l = pointList.length; i < l; i++) {
+                for (let i = 1; i < pointList.length; i++) {
                     ctx.lineTo(pointList[i][0] + __OP[0], pointList[i][1] + __OP[1]);
                 }
                 ctx.lineTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
-            }
-            // SMIC-方法修改 - start
-            else if (style.lineType === 'dashed'
+            } else if (style.lineType === 'dashed'
                 || style.lineType === 'dotted'
                 || style.lineType === 'dot'
                 || style.lineType === 'dash'
                 || style.lineType === 'longdash'
             ) {
-                var dashLengthForStyle = style._dashLength || (style.lineWidth || 1) * (style.lineType == 'dashed' ? 5 : 1);
+                // SMIC-方法修改 - start
+                let dashLengthForStyle = style._dashLength || (style.lineWidth || 1) * (style.lineType == 'dashed' ? 5 : 1);
                 style._dashLength = dashLengthForStyle;
 
-                var dashLength = (style.lineWidth || 1);
-                var pattern1 = dashLength;
-                var pattern2 = dashLength;
+                let dashLength = (style.lineWidth || 1);
+                let pattern1 = dashLength;
+                let pattern2 = dashLength;
 
                 //dashed
                 if (style.lineType === 'dashed') {
@@ -354,7 +355,7 @@ export default class SmicPolygon extends Shape {
 
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
-                for (var i = 1, l = pointList.length; i < l; i++) {
+                for (let i = 1; i < pointList.length; i++) {
                     SuperMap.LevelRenderer.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
@@ -374,18 +375,17 @@ export default class SmicPolygon extends Shape {
                     dashLength,
                     [pattern1, pattern2]
                 );
-            }
-            else if (style.lineType === 'dashot'
+            } else if (style.lineType === 'dashot'
                 || style.lineType === 'longdashdot'
             ) {
-                var dashLengthForStyle = style._dashLength || (style.lineWidth || 1) * (style.lineType == 'dashed' ? 5 : 1);
+                let dashLengthForStyle = style._dashLength || (style.lineWidth || 1) * (style.lineType == 'dashed' ? 5 : 1);
                 style._dashLength = dashLengthForStyle;
 
-                var dashLength = (style.lineWidth || 1);
-                var pattern1 = dashLength;
-                var pattern2 = dashLength;
-                var pattern3 = dashLength;
-                var pattern4 = dashLength;
+                let dashLength = (style.lineWidth || 1);
+                let pattern1 = dashLength;
+                let pattern2 = dashLength;
+                let pattern3 = dashLength;
+                let pattern4 = dashLength;
 
                 //dashot
                 if (style.lineType === 'dashot') {
@@ -415,7 +415,7 @@ export default class SmicPolygon extends Shape {
 
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
-                for (var i = 1, l = pointList.length; i < l; i++) {
+                for (let i = 1; i < pointList.length; i++) {
                     SuperMap.LevelRenderer.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
@@ -456,10 +456,11 @@ export default class SmicPolygon extends Shape {
     getRect(style, refOriginalPosition) {
         var __OP;
         if (!refOriginalPosition) {
-            if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+            if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+                this.refOriginalPosition = [0, 0];
+            }
             __OP = this.refOriginalPosition;
-        }
-        else {
+        } else {
             __OP = refOriginalPosition;
         }
 
@@ -491,8 +492,7 @@ export default class SmicPolygon extends Shape {
         var lineWidth;
         if (style.brushType == 'stroke' || style.brushType == 'fill') {
             lineWidth = style.lineWidth || 1;
-        }
-        else {
+        } else {
             lineWidth = 0;
         }
 

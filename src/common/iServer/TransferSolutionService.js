@@ -60,11 +60,11 @@ export default  class TransferSolutionService extends CommonServiceBase {
             solutionCount: params['solutionCount'],
             transferPreference: params["transferPreference"]
         };
-        if (params.evadeLines) jsonParameters["evadeLines"] = SuperMap.Util.toJSON(params.evadeLines);
-        if (params.evadeStops) jsonParameters["evadeStops"] = SuperMap.Util.toJSON(params.evadeStops);
-        if (params.priorLines) jsonParameters["priorLines"] = SuperMap.Util.toJSON(params.priorLines);
-        if (params.priorStops) jsonParameters["priorStops"] = SuperMap.Util.toJSON(params.priorStops);
-        if (params.travelTime) jsonParameters["travelTime"] = params.travelTime;
+        if (params.evadeLines) {jsonParameters["evadeLines"] = SuperMap.Util.toJSON(params.evadeLines);}
+        if (params.evadeStops) {jsonParameters["evadeStops"] = SuperMap.Util.toJSON(params.evadeStops);}
+        if (params.priorLines) {jsonParameters["priorLines"] = SuperMap.Util.toJSON(params.priorLines);}
+        if (params.priorStops) {jsonParameters["priorStops"] = SuperMap.Util.toJSON(params.priorStops);}
+        if (params.travelTime) {jsonParameters["travelTime"] = params.travelTime;}
 
         me.request({
             method: method,

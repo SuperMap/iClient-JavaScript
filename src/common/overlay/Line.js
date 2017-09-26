@@ -126,14 +126,13 @@ export default class Line extends Graph {
         if (!sets.dataViewBoxParameter) {
             if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
                 sets.dataViewBoxParameter = [45, 15, 15, 15];
-            }
-            else {
+            } else {
                 sets.dataViewBoxParameter = [5, 5, 5, 5];
             }
         }
 
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) return;
+        if (!this.initBaseParameter()) {return;}
 
         var dvb = this.dataViewBox;
 
@@ -144,11 +143,11 @@ export default class Line extends Graph {
         var uv = this.DVBUnitValue;
         // 数据值数组
         var fv = this.dataValues;
-        if (fv.length < 1) return;       // 没有数据
+        if (fv.length < 1) {return;}       // 没有数据
 
         // 获取 x 轴上的图形信息
         var xShapeInfo = this.calculateXShapeInfo();
-        if (!xShapeInfo) return;
+        if (!xShapeInfo) {return;}
         // 折线每个节点的 x 位置
         var xsLoc = xShapeInfo.xPositions;
 
@@ -248,7 +247,7 @@ export default class Line extends Graph {
         var sets = this.setting;     // 图表配置对象
         var fvc = this.dataValues.length;      // 数组值个数
 
-        if (fvc < 1) return null;
+        if (fvc < 1) {return null;}
 
         var xBlank;        // x 轴空白间隔参数
         var xShapePositions = [];         // x 轴上图形的位置
@@ -264,8 +263,7 @@ export default class Line extends Graph {
                 return null;
             }
             unitOffset = xsLen / (fvc - 1);
-        }
-        else {
+        } else {
             // 默认使用等距离空白间隔，空白间隔为图形宽度
             unitOffset = dvbWidth / (fvc + 1);
             xBlank = [unitOffset, unitOffset, unitOffset];
@@ -276,8 +274,7 @@ export default class Line extends Graph {
         for (var i = 0; i < fvc; i++) {
             if (i == 0) {
                 xOffset = xBlank[0];
-            }
-            else {
+            } else {
                 xOffset += unitOffset;
             }
 

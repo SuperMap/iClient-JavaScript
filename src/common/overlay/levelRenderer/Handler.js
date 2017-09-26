@@ -290,8 +290,7 @@ export default class Handler extends Eventful {
                     this.storage.drift(this._draggingTarget.id, dx, dy);
                     this._draggingTarget.modSelf();
                     this.storage.addHover(this._draggingTarget);
-                }
-                else if (this._isMouseDown) {
+                } else if (this._isMouseDown) {
                     // Layer dragging
                     var layers = this.painter.getLayers();
 
@@ -317,8 +316,7 @@ export default class Handler extends Eventful {
 
                 if (this._draggingTarget || (this._hasfound && this._lastHover.draggable)) {
                     cursor = 'move';
-                }
-                else if (this._hasfound && this._lastHover.clickable) {
+                } else if (this._hasfound && this._lastHover.clickable) {
                     cursor = 'pointer';
                 }
                 this.root.style.cursor = cursor;
@@ -492,8 +490,7 @@ export default class Handler extends Eventful {
                 root.addEventListener('touchstart', this._touchstartHandler);
                 root.addEventListener('touchmove', this._touchmoveHandler);
                 root.addEventListener('touchend', this._touchendHandler);
-            }
-            else {
+            } else {
                 // mobile的click/move/up/down自己模拟
                 root.addEventListener('click', this._clickHandler);
                 root.addEventListener('dblclick', this._dblclickHandler);
@@ -504,8 +501,7 @@ export default class Handler extends Eventful {
             }
             root.addEventListener('DOMMouseScroll', this._mousewheelHandler);
             root.addEventListener('mouseout', this._mouseoutHandler);
-        }
-        else {
+        } else {
             window.attachEvent('onresize', this._resizeHandler);
 
             root.attachEvent('onclick', this._clickHandler);
@@ -622,15 +618,13 @@ export default class Handler extends Eventful {
                                         if (si.refDataHoverGroup && hoverGroup === si.refDataHoverGroup) {
                                             me.storage.addHover(si);
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         me.storage.addHover(si);
                                     }
                                 }
                             }
                         }
-                    }
-                    else {
+                    } else {
                         me.storage.addHover(shape);
                     }
                     //初始代码：
@@ -767,8 +761,7 @@ export default class Handler extends Eventful {
                 root.removeEventListener('touchstart', this._touchstartHandler);
                 root.removeEventListener('touchmove', this._touchmoveHandler);
                 root.removeEventListener('touchend', this._touchendHandler);
-            }
-            else {
+            } else {
                 // mobile的click自己模拟
                 root.removeEventListener('click', this._clickHandler);
                 root.removeEventListener('dblclick', this._dblclickHandler);
@@ -779,8 +772,7 @@ export default class Handler extends Eventful {
             }
             root.removeEventListener('DOMMouseScroll', this._mousewheelHandler);
             root.removeEventListener('mouseout', this._mouseoutHandler);
-        }
-        else {
+        } else {
             window.detachEvent('onresize', this._resizeHandler);
 
             root.detachEvent('onclick', this._clickHandler);
@@ -1027,8 +1019,7 @@ export default class Handler extends Eventful {
             if (!eventPacket.cancelBubble) {
                 this.dispatch(eventName, eventPacket);
             }
-        }
-        else if (!draggedShape) {
+        } else if (!draggedShape) {
             // 无hover目标，无拖拽对象，原生事件分发
             this.dispatch(eventName, {
                 type: eventName,
@@ -1143,8 +1134,7 @@ export default class Handler extends Eventful {
                     : event.layerY)
                     + target.offsetTop;
             }
-        }
-        else {
+        } else {
             var touch = event.type != 'touchend'
                 ? event.targetTouches[0]
                 : event.changedTouches[0];

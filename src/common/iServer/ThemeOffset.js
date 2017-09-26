@@ -55,7 +55,7 @@ export default  class ThemeOffset {
      * @return {SuperMap.ThemeOffset} ThemeOffset对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new ThemeOffset();
         SuperMap.Util.copy(res, obj);
         return res;

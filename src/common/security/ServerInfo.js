@@ -40,7 +40,7 @@ export default class ServerInfo {
         if (!this.server) {
             console.error('server url require is not  undefined')
         }
-       // var patten = /http:\/\/([^\/]+)/i;
+        // var patten = /http:\/\/([^\/]+)/i;
         //this.server = this.server.match(patten)[0];
 
         var tokenServiceSuffix = "/services/security/tokens.json";

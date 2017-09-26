@@ -94,7 +94,7 @@ export default class ThemeGridRange extends Theme {
      * @return {SuperMap.ThemeGridRange} ThemeGridRange对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new ThemeGridRange();
         SuperMap.Util.copy(res, obj);
         var itemsR = obj.items;

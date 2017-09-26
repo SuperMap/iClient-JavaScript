@@ -45,12 +45,9 @@ export default  class BurstPipelineAnalystService extends NetworkAnalystServiceB
         };
 
         //必传参数不正确，就终止
-        if (params.edgeID !== null && params.nodeID !== null) return;
-        if (params.edgeID === null && params.nodeID === null) return;
-        if (params.edgeID !== null)
-            jsonObject.edgeID = params.edgeID;
-        else
-            jsonObject.nodeID = params.nodeID;
+        if (params.edgeID !== null && params.nodeID !== null) {return;}
+        if (params.edgeID === null && params.nodeID === null) {return;}
+        if (params.edgeID !== null) {jsonObject.edgeID = params.edgeID;} else {jsonObject.nodeID = params.nodeID;}
 
         me.request({
             method: "GET",

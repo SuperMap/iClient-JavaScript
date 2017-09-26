@@ -100,8 +100,7 @@ export default class Transformable {
 
         if (this.parent) {
             this.needTransform = this.needLocalTransform || this.parent.needTransform;
-        }
-        else {
+        } else {
             this.needTransform = this.needLocalTransform;
         }
 
@@ -121,7 +120,7 @@ export default class Transformable {
             ) {
                 origin[0] = -this.scale[2] || 0;
                 origin[1] = -this.scale[3] || 0;
-                var haveOrigin = isNotAroundZero(origin[0])
+                let haveOrigin = isNotAroundZero(origin[0])
                     || isNotAroundZero(origin[1]);
                 if (haveOrigin) {
                     SuperMap.LevelRenderer.Util_matrix.translate(
@@ -142,7 +141,7 @@ export default class Transformable {
                 if (this.rotation[0] !== 0) {
                     origin[0] = -this.rotation[1] || 0;
                     origin[1] = -this.rotation[2] || 0;
-                    var haveOrigin = isNotAroundZero(origin[0])
+                    let haveOrigin = isNotAroundZero(origin[0])
                         || isNotAroundZero(origin[1]);
                     if (haveOrigin) {
                         SuperMap.LevelRenderer.Util_matrix.translate(
@@ -158,8 +157,7 @@ export default class Transformable {
                         );
                     }
                 }
-            }
-            else {
+            } else {
                 if (this.rotation !== 0) {
                     SuperMap.LevelRenderer.Util_matrix.rotate(m, m, this.rotation);
                 }
@@ -179,8 +177,7 @@ export default class Transformable {
         if (this.parent && this.parent.needTransform) {
             if (this.needLocalTransform) {
                 SuperMap.LevelRenderer.Util_matrix.mul(this.transform, this.parent.transform, this.transform);
-            }
-            else {
+            } else {
                 SuperMap.LevelRenderer.Util_matrix.copy(this.transform, this.parent.transform);
             }
         }

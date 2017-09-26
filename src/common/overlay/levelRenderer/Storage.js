@@ -108,24 +108,26 @@ export default class Storage {
 
         // 遍历: 'down' | 'up'
         switch (option.normal) {
-            case 'down':
+            case 'down': {
                 // 降序遍历，高层优先
-                var l = this._shapeList.length;
+                let l = this._shapeList.length;
                 while (l--) {
                     if (fun(this._shapeList[l])) {
                         return this;
                     }
                 }
                 break;
+            }
             // case 'up':
-            default:
+            default: {
                 // 升序遍历，底层优先
-                for (var i = 0, l = this._shapeList.length; i < l; i++) {
+                for (let i = 0, l = this._shapeList.length; i < l; i++) {
                     if (fun(this._shapeList[i])) {
                         return this;
                     }
                 }
                 break;
+            }
         }
 
         return this;
@@ -143,8 +145,8 @@ export default class Storage {
      */
     getHoverShapes(update) {
         // hoverConnect
-        var hoverElements = [];
-        for (var i = 0, l = this._hoverElements.length; i < l; i++) {
+        var hoverElements = [], len = this._hoverElements.length;
+        for (let i = 0; i < len; i++) {
             hoverElements.push(this._hoverElements[i]);
             var target = this._hoverElements[i].hoverConnect;
             if (target) {
@@ -160,7 +162,7 @@ export default class Storage {
         }
         hoverElements.sort(Storage.shapeCompareFunc);
         if (update) {
-            for (var i = 0, l = hoverElements.length; i < l; i++) {
+            for (let i = 0, l = hoverElements.length; i < l; i++) {
                 hoverElements[i].updateTransform();
             }
         }
@@ -192,13 +194,15 @@ export default class Storage {
      */
     updateShapeList() {
         this._shapeListOffset = 0;
-        for (var i = 0, len = this._roots.length; i < len; i++) {
-            var root = this._roots[i];
+        var rootsLen = this._roots.length;
+        for (let i = 0; i < rootsLen; i++) {
+            let root = this._roots[i];
             this._updateAndAddShape(root);
         }
         this._shapeList.length = this._shapeListOffset;
 
-        for (var i = 0, len = this._shapeList.length; i < len; i++) {
+        var shapeListLen = this._shapeList.length;
+        for (let i = 0; i < shapeListLen; i++) {
             this._shapeList[i].__renderidx = i;
         }
 
@@ -244,8 +248,7 @@ export default class Storage {
             // Mark group clean here
             el.__dirty = false;
 
-        }
-        else {
+        } else {
             el.__clipShapes = clipShapes;
 
             this._shapeList[this._shapeListOffset++] = el;
@@ -288,8 +291,7 @@ export default class Storage {
                         }
                     }
                     SuperMap.LevelRenderer.Util.merge(el, target, true);
-                }
-                else {
+                } else {
                     SuperMap.LevelRenderer.Util.merge(el, params, true);
                 }
             }
@@ -316,8 +318,7 @@ export default class Storage {
             shape.needTransform = true;
             if (shape.draggable === 'horizontal') {
                 dy = 0;
-            }
-            else if (shape.draggable === 'vertical') {
+            } else if (shape.draggable === 'vertical') {
                 dx = 0;
             }
             if (!shape.ondrift // ondrift
@@ -414,7 +415,8 @@ export default class Storage {
         }
 
         if (elId instanceof Array) {
-            for (var i = 0, l = elId.length; i < l; i++) {
+            var elIdLen = elId.length;
+            for (let i = 0; i < elIdLen; i++) {
                 this.delRoot(elId[i]);
             }
             return;
@@ -423,8 +425,7 @@ export default class Storage {
         var el;
         if (typeof(elId) == 'string') {
             el = this._elements[elId];
-        }
-        else {
+        } else {
             el = elId;
         }
 
@@ -515,8 +516,8 @@ export default class Storage {
             return a.z - b.z;
         }
         return a.zlevel - b.zlevel;
-    };
+    }
 
     CLASS_NAME = "SuperMap.LevelRenderer.Storage"
-};
+}
 SuperMap.LevelRenderer.Storage = Storage;

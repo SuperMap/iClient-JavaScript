@@ -118,9 +118,9 @@ export default class GeoJSON extends JSONFormat {
         switch (type) {
             case "Geometry":
                 if (SuperMap.Util.indexOf(
-                        ["Point", "MultiPoint", "LineString", "MultiLineString",
-                            "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
-                        obj.type) == -1) {
+                    ["Point", "MultiPoint", "LineString", "MultiLineString",
+                        "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
+                    obj.type) == -1) {
                     // unsupported geometry type
                     //SuperMap.Console.error("Unsupported geometry type: " +
                     // obj.type);
@@ -374,7 +374,7 @@ export default class GeoJSON extends JSONFormat {
             for (var i = 0; i < numFeatures; ++i) {
                 var element = obj[i];
                 if (isGeometry(element)) {
-                    var feature = {};
+                    let feature = {};
                     feature.geometry = element;
                     geojson.features[i] = this.extract.feature.apply(this, [feature]);
                 } else {
@@ -382,7 +382,7 @@ export default class GeoJSON extends JSONFormat {
                 }
             }
         } else if (isGeometry(obj)) {
-            var feature = {};
+            let feature = {};
             feature.geometry = obj;
             geojson = this.extract.feature.apply(this, [feature]);
         }
@@ -789,7 +789,7 @@ export default class GeoJSON extends JSONFormat {
 
             if (i === len - 1) {
                 var polyLength = polygonArray.length;
-                if (!!polyLength) {
+                if (polyLength) {
                     polygonArray[polyLength - 1] = polygonArray[polyLength - 1].concat(CCWArray);
                 } else {
                     for (var k = 0, length = CCWArray.length; k < length; k++) {

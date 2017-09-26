@@ -91,7 +91,7 @@ export default class Ring extends Graph {
      */
     assembleShapes() {
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) return;
+        if (!this.initBaseParameter()) {return;}
 
         // 一个默认 style 组
         var defaultStyleGroup = [
@@ -113,12 +113,12 @@ export default class Ring extends Graph {
 
         // 数据值数组
         var fv = this.dataValues;
-        if (fv.length < 1) return;       // 没有数据
+        if (fv.length < 1) {return;}       // 没有数据
 
         // 值域范围
         var codomain = this.DVBCodomain;
         // 值域范围检测
-        for (var i = 0; i < fv.length; i++) {
+        for (let i = 0; i < fv.length; i++) {
             if (fv[i] < codomain[0] || fv[i] > codomain[1]) {
                 return;
             }
@@ -126,7 +126,7 @@ export default class Ring extends Graph {
 
         // 值的绝对值总和
         var valueSum = 0;
-        for (var i = 0; i < fv.length; i++) {
+        for (let i = 0; i < fv.length; i++) {
             valueSum += Math.abs(fv[i]);
         }
 
@@ -156,11 +156,9 @@ export default class Ring extends Graph {
             // 计算结束角度
             if (i === 0) {
                 endAngle = startAngle + fvi * uv;
-            }
-            else if (i === fvi.length - 1) {
+            } else if (i === fvi.length - 1) {
                 endAngle = startAngleTmp;
-            }
-            else {
+            } else {
                 endAngle = startAngle + fvi * uv;
             }
 
@@ -171,8 +169,7 @@ export default class Ring extends Graph {
                 // 使用默认 style 组
                 var colorIndex = i % defaultStyleGroup.length;
                 sectorSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, defaultStyleGroup, null, colorIndex);
-            }
-            else {
+            } else {
                 sectorSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, sets.sectorStyleByFields, sets.sectorStyleByCodomain, i, fv[i]);
             }
             // 扇形 hover 样式

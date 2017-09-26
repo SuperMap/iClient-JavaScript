@@ -405,7 +405,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
             for (var i = 0; i < this.__clipShapes.length; i++) {
                 var clipShape = this.__clipShapes[i];
                 if (clipShape.needTransform) {
-                    var m = clipShape.transform;
+                    let m = clipShape.transform;
                     SuperMap.LevelRenderer.Util_matrix.invert(clipShapeInvTransform, m);
                     ctx.transform(
                         m[0], m[1],
@@ -418,7 +418,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
                 ctx.clip();
                 // Transform back
                 if (clipShape.needTransform) {
-                    var m = clipShapeInvTransform;
+                    let m = clipShapeInvTransform;
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -442,7 +442,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
      */
     getHighlightStyle(style, highlightStyle, brushTypeOnly) {
         var newStyle = {};
-        for (var k in style) {
+        for (let k in style) {
             newStyle[k] = style[k];
         }
 
@@ -466,8 +466,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
             // }
             // SMIC-方法修改 - end
             newStyle.brushType = 'both';
-        }
-        else {
+        } else {
             if (brushTypeOnly != 'stroke') {
                 // 描边型的则用原色加工高亮
                 newStyle.strokeColor = highlightColor;
@@ -485,8 +484,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
                 //     newStyle.lineWidth = (style.lineWidth || 1);
                 // }
                 // SMIC-方法修改 - end
-            }
-            else {
+            } else {
                 // 线型的则用原色加工高亮
                 newStyle.strokeColor = highlightStyle.strokeColor
                     || SuperMap.LevelRenderer.Util_color.mix(
@@ -497,7 +495,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
         }
 
         // 可自定义覆盖默认值
-        for (var k in highlightStyle) {
+        for (let k in highlightStyle) {
             if (typeof highlightStyle[k] != 'undefined') {
                 newStyle[k] = highlightStyle[k];
             }
@@ -646,8 +644,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
         var __OP = [];
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             __OP = [0, 0];
-        }
-        else {
+        } else {
             __OP = this.refOriginalPosition;
         }
         //原代码：
@@ -746,8 +743,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
                          */
                         // Smic 方法修改 -end
                     }
-                }
-                else {
+                } else {
                     // Smic 方法修改 -start
                     xStart = (style.xStart + __OP[0]) || 0;
                     xEnd = (style.xEnd + __OP[0]) || 0;
@@ -780,15 +776,13 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
                 dd -= 4;
                 if (xStart && xEnd && xStart != xEnd) {
                     tx -= (al == 'end' ? dd : -dd);
-                }
-                else {
+                } else {
                     al = 'center';
                 }
 
                 if (yStart != yEnd) {
                     ty -= (bl == 'bottom' ? dd : -dd);
-                }
-                else {
+                } else {
                     bl = 'middle';
                 }
                 break;
@@ -865,11 +859,9 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
     setCtxGlobalAlpha(_ctx, type, style) {
         if (type === "fill") {
             _ctx.globalAlpha = typeof(style["fillOpacity"]) === "undefined" ? (typeof(style["opacity"]) === "undefined" ? 1 : style['opacity']) : style['fillOpacity'];
-        }
-        else if (type === "stroke") {
+        } else if (type === "stroke") {
             _ctx.globalAlpha = typeof(style["strokeOpacity"]) === "undefined" ? (typeof(style["opacity"]) === "undefined" ? 1 : style['opacity']) : style['strokeOpacity'];
-        }
-        else {
+        } else {
             _ctx.globalAlpha = typeof(style["opacity"]) === "undefined" ? 1 : style['opacity'];
         }
     }
@@ -907,7 +899,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
             ctx.fillText(text[i], x, y);
             y += lineHeight;
         }
-    };
+    }
 
     /**
      * Method: SuperMap.LevelRenderer.Shape._getTextRect
@@ -956,7 +948,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
             width: width,
             height: lineHeight * text.length
         };
-    };
+    }
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape"
 }

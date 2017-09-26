@@ -74,7 +74,7 @@ export var CanvasRenderer = L.Canvas.extend({
 
     _updateDashArray: function (layer) {
         var array = layer.options.dashArray;
-        if (array && typeof array === "String") {
+        if (array && typeof array === "string") {
             var parts = array.split(','),
                 dashArray = [],
                 i;

@@ -100,6 +100,7 @@ export default class TrafficTransferAnalystService extends ServiceBase {
                     x: point.getCoordinates()[0],
                     y: point.getCoordinates()[1]
                 } : point;
+                return params.points[key];
             });
         }
         return params;

@@ -1,12 +1,12 @@
- import L from "leaflet";
+import L from "leaflet";
 
- /**
-  * @class L.supermap.PolyBase
-  * @classdesc 多边形基类
-  * @private
-  */
- //@type {{_makeFeatureParts: PolyBase._makeFeatureParts, makeInteractive: PolyBase.makeInteractive}}
- export var PolyBase = {
+/**
+ * @class L.supermap.PolyBase
+ * @classdesc 多边形基类
+ * @private
+ */
+//@type {{_makeFeatureParts: PolyBase._makeFeatureParts, makeInteractive: PolyBase.makeInteractive}}
+export var PolyBase = {
     _makeFeatureParts: function (feat, pxPerExtent) {
         pxPerExtent = pxPerExtent || {x: 1, y: 1};
         var rings = feat.geometry;
@@ -24,10 +24,10 @@
         }
     },
 
-     /**
-      * @function L.supermap.PolyBase.prototype.makeInteractive
-      * @description 设置交互
-      */
+    /**
+         * @function L.supermap.PolyBase.prototype.makeInteractive
+         * @description 设置交互
+         */
     makeInteractive: function () {
         this._pxBounds = this._getPixelBounds();
     }

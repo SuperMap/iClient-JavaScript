@@ -62,9 +62,7 @@ export default class InterpolationAnalystService extends SpatialAnalystBase {
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
-        if (end === '/') {
-
-        } else {
+        if (end !== '/') {
             me.url += "/";
         }
 
@@ -75,24 +73,21 @@ export default class InterpolationAnalystService extends SpatialAnalystBase {
             } else {
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/density';
             }
-        }
-        else if (parameter instanceof InterpolationIDWAnalystParameters) {
+        } else if (parameter instanceof InterpolationIDWAnalystParameters) {
             me.mode = "IDW";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/idw';
             } else {
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/idw';
             }
-        }
-        else if (parameter instanceof InterpolationRBFAnalystParameters) {
+        } else if (parameter instanceof InterpolationRBFAnalystParameters) {
             me.mode = "RBF";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/rbf';
             } else {
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/rbf';
             }
-        }
-        else if (parameter instanceof InterpolationKrigingAnalystParameters) {
+        } else if (parameter instanceof InterpolationKrigingAnalystParameters) {
             me.mode = "Kriging";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/kriging';

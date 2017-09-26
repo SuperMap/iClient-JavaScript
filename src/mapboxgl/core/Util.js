@@ -26,6 +26,6 @@ export default class Util {
         }
     }
 
-};
+}
 
 mapboxgl.supermap.Util = Util;

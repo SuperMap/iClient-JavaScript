@@ -133,7 +133,7 @@ export default class Animation extends Eventful {
 
         var deferredEvents = [];
         var deferredClips = [];
-        for (var i = 0; i < len; i++) {
+        for (let i = 0; i < len; i++) {
             var clip = clips[i];
             var e = clip.step(time);
             // Throw out the events need to be called after
@@ -148,19 +148,18 @@ export default class Animation extends Eventful {
         }
 
         // Remove the finished clip
-        for (var i = 0; i < len;) {
+        for (let i = 0; i < len;) {
             if (clips[i]._needsRemove) {
                 clips[i] = clips[len - 1];
                 clips.pop();
                 len--;
-            }
-            else {
+            } else {
                 i++;
             }
         }
 
         len = deferredEvents.length;
-        for (var i = 0; i < len; i++) {
+        for (let i = 0; i < len; i++) {
             deferredClips[i].fire(deferredEvents[i]);
         }
 
@@ -257,14 +256,13 @@ export default class Animation extends Eventful {
     static _interpolateArray(p0, p1, percent, out, arrDim) {
         var len = p0.length;
         if (arrDim == 1) {
-            for (var i = 0; i < len; i++) {
+            for (let i = 0; i < len; i++) {
                 out[i] = SuperMap.LevelRenderer.Animation._interpolateNumber(p0[i], p1[i], percent);
             }
-        }
-        else {
+        } else {
             var len2 = p0[0].length;
-            for (var i = 0; i < len; i++) {
-                for (var j = 0; j < len2; j++) {
+            for (let i = 0; i < len; i++) {
+                for (let j = 0; j < len2; j++) {
                     out[i][j] = SuperMap.LevelRenderer.Animation._interpolateNumber(
                         p0[i][j], p1[i][j], percent
                     );
@@ -286,15 +284,14 @@ export default class Animation extends Eventful {
     static _catmullRomInterpolateArray(p0, p1, p2, p3, t, t2, t3, out, arrDim) {
         var len = p0.length;
         if (arrDim == 1) {
-            for (var i = 0; i < len; i++) {
+            for (let i = 0; i < len; i++) {
                 out[i] = SuperMap.LevelRenderer.Animation._catmullRomInterpolate(
                     p0[i], p1[i], p2[i], p3[i], t, t2, t3
                 );
             }
-        }
-        else {
+        } else {
             var len2 = p0[0].length;
-            for (var i = 0; i < len; i++) {
+            for (let i = 0; i < len; i++) {
                 for (var j = 0; j < len2; j++) {
                     out[i][j] = SuperMap.LevelRenderer.Animation._catmullRomInterpolate(
                         p0[i][j], p1[i][j], p2[i][j], p3[i][j],
@@ -303,7 +300,7 @@ export default class Animation extends Eventful {
                 }
             }
         }
-    };
+    }
 
     static _catmullRomInterpolate(p0, p1, p2, p3, t, t2, t3) {
         var v0 = (p2 - p0) * 0.5;
@@ -311,7 +308,7 @@ export default class Animation extends Eventful {
         return (2 * (p1 - p2) + v0 + v1) * t3
             + (-3 * (p1 - p2) - 2 * v0 - v1) * t2
             + v0 * t + p1;
-    };
+    }
 
     static _cloneValue(value) {
         var arraySlice = Array.prototype.slice;
@@ -324,15 +321,13 @@ export default class Animation extends Eventful {
                     ret.push(arraySlice.call(value[i]));
                 }
                 return ret;
-            }
-            else {
+            } else {
                 return arraySlice.call(value);
             }
-        }
-        else {
+        } else {
             return value;
         }
-    };
+    }
 
     static rgba2String(rgba) {
         rgba[0] = Math.floor(rgba[0]);
@@ -340,7 +335,7 @@ export default class Animation extends Eventful {
         rgba[2] = Math.floor(rgba[2]);
 
         return 'rgba(' + rgba.join(',') + ')';
-    };
+    }
 
     CLASS_NAME = "SuperMap.LevelRenderer.Animation"
 }
@@ -560,15 +555,14 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
             var trackMaxTime;
             if (trackLen) {
                 trackMaxTime = keyframes[trackLen - 1].time;
-            }
-            else {
+            } else {
                 return;
             }
             // Percents of each keyframe
             var kfPercents = [];
             // Value of each keyframe
             var kfValues = [];
-            for (var i = 0; i < trackLen; i++) {
+            for (let i = 0; i < trackLen; i++) {
                 kfPercents.push(keyframes[i].time / trackMaxTime);
                 // Assume value is a color when it is a string
                 var value = keyframes[i].value;
@@ -613,8 +607,7 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                         }
                     }
                     i = Math.min(i, trackLen - 2);
-                }
-                else {
+                } else {
                     for (i = cacheKey; i < trackLen; i++) {
                         if (kfPercents[i] > percent) {
                             break;
@@ -628,8 +621,7 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                 var range = (kfPercents[i + 1] - kfPercents[i]);
                 if (range === 0) {
                     return;
-                }
-                else {
+                } else {
                     w = (percent - kfPercents[i]) / range;
                 }
                 if (useSpline) {
@@ -643,17 +635,15 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                             getter(target, propName),
                             arrDim
                         );
-                    }
-                    else {
-                        var value;
+                    } else {
+                        let value;
                         if (isValueColor) {
                             value = SuperMap.LevelRenderer.Animation._catmullRomInterpolateArray(
                                 p0, p1, p2, p3, w, w * w, w * w * w,
                                 rgba, 1
                             );
                             value = SuperMap.LevelRenderer.Animation.rgba2String(rgba);
-                        }
-                        else {
+                        } else {
                             value = SuperMap.LevelRenderer.Animation._catmullRomInterpolate(
                                 p0, p1, p2, p3, w, w * w, w * w * w
                             );
@@ -664,25 +654,22 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                             value
                         );
                     }
-                }
-                else {
+                } else {
                     if (isValueArray) {
                         SuperMap.LevelRenderer.Animation._interpolateArray(
                             kfValues[i], kfValues[i + 1], w,
                             getter(target, propName),
                             arrDim
                         );
-                    }
-                    else {
-                        var value;
+                    } else {
+                        let value;
                         if (isValueColor) {
                             SuperMap.LevelRenderer.Animation._interpolateArray(
                                 kfValues[i], kfValues[i + 1], w,
                                 rgba, 1
                             );
                             value = SuperMap.LevelRenderer.Animation.rgba2String(rgba);
-                        }
-                        else {
+                        } else {
                             value = SuperMap.LevelRenderer.Animation._interpolateNumber(kfValues[i], kfValues[i + 1], w);
                         }
                         setter(

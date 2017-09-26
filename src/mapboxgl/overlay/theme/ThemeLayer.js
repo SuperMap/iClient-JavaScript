@@ -275,11 +275,11 @@ export default class Theme {
     getLocalXY(coordinate) {
         var pixelP, map = this.map;
         if (coordinate instanceof Point || coordinate instanceof GeoText) {
-            var tempPoint = map.project(new window.mapboxgl.LngLat(coordinate.x, coordinate.y));
+            let tempPoint = map.project(new window.mapboxgl.LngLat(coordinate.x, coordinate.y));
             pixelP = [tempPoint.x, tempPoint.y];
         }
         if (coordinate instanceof LonLat) {
-            var tempPoint = map.project(new window.mapboxgl.LngLat(coordinate.lon, coordinate.lat));
+            let tempPoint = map.project(new window.mapboxgl.LngLat(coordinate.lon, coordinate.lat));
             pixelP = [tempPoint.x, tempPoint.y];
         }
         return pixelP;

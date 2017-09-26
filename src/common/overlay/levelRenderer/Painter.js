@@ -64,7 +64,7 @@ export default class Painter {
      *
      */
     shapeToImage = null;
-// retina 屏幕优化
+    // retina 屏幕优化
     static devicePixelRatio = Math.max((window.devicePixelRatio || 1), 1);
 
     /**
@@ -251,7 +251,7 @@ export default class Painter {
                 ctx.save();
                 // Set transform
                 if (clipShape.needTransform) {
-                    var m = clipShape.transform;
+                    let m = clipShape.transform;
                     SuperMap.LevelRenderer.Util_matrix.invert(invTransform, m);
                     ctx.transform(
                         m[0], m[1],
@@ -266,7 +266,7 @@ export default class Painter {
 
                 // Transform back
                 if (clipShape.needTransform) {
-                    var m = invTransform;
+                    let m = invTransform;
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -283,16 +283,14 @@ export default class Painter {
                     if (SuperMap.LevelRenderer.Config.catchBrushException) {
                         try {
                             shape.brush(ctx, false, this.updatePainter);
-                        }
-                        catch (error) {
+                        } catch (error) {
                             SuperMap.LevelRenderer.Util_log(
                                 error,
                                 'brush error of ' + shape.type,
                                 shape
                             );
                         }
-                    }
-                    else {
+                    } else {
                         shape.brush(ctx, false, this.updatePainter);
                     }
                 }
@@ -310,7 +308,7 @@ export default class Painter {
             ctx.restore();
         }
 
-        for (var id in this._layers) {
+        for (let id in this._layers) {
             if (id !== 'hover') {
                 var layer = this._layers[id];
                 layer.dirty = false;
@@ -367,8 +365,7 @@ export default class Painter {
                     currentLayer.dom,
                     prevDom.nextSibling
                 );
-            }
-            else {
+            } else {
                 prevDom.parentNode.appendChild(
                     currentLayer.dom
                 );
@@ -408,14 +405,14 @@ export default class Painter {
         var layers = this._layers;
 
         var elCounts = {};
-        for (var z in layers) {
+        for (let z in layers) {
             if (z !== 'hover') {
                 elCounts[z] = layers[z].elCount;
                 layers[z].elCount = 0;
             }
         }
 
-        for (var i = 0, l = list.length; i < l; i++) {
+        for (let i = 0; i < list.length; i++) {
             var shape = list[i];
             var zlevel = shape.zlevel;
             var layer = layers[zlevel];
@@ -430,7 +427,7 @@ export default class Painter {
         }
 
         // 层中的元素数量有发生变化
-        for (var z in layers) {
+        for (let z in layers) {
             if (z !== 'hover') {
                 if (elCounts[z] !== layers[z].elCount) {
                     layers[z].dirty = true;
@@ -504,8 +501,7 @@ export default class Painter {
         if (config) {
             if (!this._layerConfig[zlevel]) {
                 this._layerConfig[zlevel] = config;
-            }
-            else {
+            } else {
                 SuperMap.LevelRenderer.Util.merge(this._layerConfig[zlevel], config, true);
             }
 
@@ -695,16 +691,14 @@ export default class Painter {
                         if (SuperMap.LevelRenderer.Config.catchBrushException) {
                             try {
                                 shape.brush(ctx, false, self.updatePainter);
-                            }
-                            catch (error) {
+                            } catch (error) {
                                 SuperMap.LevelRenderer.Util_log(
                                     error,
                                     'brush error of ' + shape.type,
                                     shape
                                 );
                             }
-                        }
-                        else {
+                        } else {
                             shape.brush(ctx, false, self.updatePainter);
                         }
                     }
@@ -793,14 +787,12 @@ export default class Painter {
             if (SuperMap.LevelRenderer.Config.catchBrushException) {
                 try {
                     shape.brush(ctx, true, this.updatePainter);
-                }
-                catch (error) {
+                } catch (error) {
                     SuperMap.LevelRenderer.Util_log(
                         error, 'hoverBrush error of ' + shape.type, shape
                     );
                 }
-            }
-            else {
+            } else {
                 shape.brush(ctx, true, this.updatePainter);
             }
             if (layer.needTransform) {
@@ -818,14 +810,14 @@ export default class Painter {
     _shapeToImage(id, shape, width, height, devicePixelRatio) {
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
-        var devicePixelRatio = window.devicePixelRatio || 1;
+        var _devicePixelRatio = devicePixelRatio || window.devicePixelRatio || 1;
 
         canvas.style.width = width + 'px';
         canvas.style.height = height + 'px';
-        canvas.setAttribute('width', width * devicePixelRatio);
-        canvas.setAttribute('height', height * devicePixelRatio);
+        canvas.setAttribute('width', width * _devicePixelRatio);
+        canvas.setAttribute('height', height * _devicePixelRatio);
 
-        ctx.clearRect(0, 0, width * devicePixelRatio, height * devicePixelRatio);
+        ctx.clearRect(0, 0, width * _devicePixelRatio, height * _devicePixelRatio);
 
         var shapeTransform = {
             position: shape.position,
@@ -888,7 +880,9 @@ export default class Painter {
      * shapes - {Array} 图形数组。
      */
     updateHoverLayer(shapes) {
-        if (!(shapes instanceof Array)) return this;
+        if (!(shapes instanceof Array)) {
+            return this;
+        }
 
         //清除高亮
         this.clearHover();
@@ -931,7 +925,7 @@ export default class Painter {
         //newDom.setAttribute('data-zr-dom-id', id);
         newDom.setAttribute('id', id);
         return newDom;
-    };
+    }
 
     CLASS_NAME = "SuperMap.LevelRenderer.Painter"
 }
@@ -1207,8 +1201,7 @@ class PaintLayer extends Transformable {
                 height / SuperMap.LevelRenderer.Painter.devicePixelRatio
             );
             ctx.restore();
-        }
-        else {
+        } else {
             ctx.clearRect(
                 0, 0,
                 width / SuperMap.LevelRenderer.Painter.devicePixelRatio,

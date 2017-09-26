@@ -119,7 +119,7 @@ export default class MathExpressionAnalysisParameters {
                         poi["y"] = bs[i].y;
                         points.push(poi);
                     }
-                    ;
+                    
 
                     region["points"] = points;
                     region["type"] = type;

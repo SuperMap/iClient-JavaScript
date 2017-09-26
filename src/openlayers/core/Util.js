@@ -145,19 +145,19 @@ export default class Util {
             var titulos = options.titles;
             if (options.firstLineTitles) {
                 csv = csv.split(options.lineSeparator);
-                if (csv.length < 2) return;
+                if (csv.length < 2) {return;}
                 titulos = csv[0];
                 csv.splice(0, 1);
                 csv = csv.join(options.lineSeparator);
                 titulos = titulos.trim().split(options.fieldSeparator);
-                for (var i = 0; i < titulos.length; i++) {
+                for (let i = 0; i < titulos.length; i++) {
                     titulos[i] = _deleteDoubleQuotes(titulos[i]);
                 }
                 options.titles = titulos;
             }
-            for (var i = 0; i < titulos.length; i++) {
+            for (let i = 0; i < titulos.length; i++) {
                 var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
-                if (prop == '' || prop == '_') prop = 'prop-' + i;
+                if (prop == '' || prop == '_') {prop = 'prop-' + i;}
                 _propertiesNames[i] = prop;
             }
             csv = _csv2json(csv);
@@ -165,7 +165,7 @@ export default class Util {
         return csv;
 
         function _deleteDoubleQuotes(cadena) {
-            if (options.deleteDoubleQuotes) cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
+            if (options.deleteDoubleQuotes) {cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");}
             return cadena;
         }
 
@@ -218,6 +218,6 @@ export default class Util {
         }
         return canvas.getContext('2d');
     }
-};
+}
 
 ol.supermap.Util = Util;

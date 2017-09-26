@@ -71,21 +71,17 @@ export default class ClipParameter {
      * @return {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        if (this.isClipInRegion == false)
-            return null;
+        if (this.isClipInRegion == false) {return null;}
         var strClipParameter = "";
         var me = this;
 
         strClipParameter += "'isClipInRegion':" + SuperMap.Util.toJSON(me.isClipInRegion);
 
-        if (me.clipDatasetName != null)
-            strClipParameter += "," + "'clipDatasetName':" + SuperMap.Util.toJSON(me.clipDatasetName);
+        if (me.clipDatasetName != null) {strClipParameter += "," + "'clipDatasetName':" + SuperMap.Util.toJSON(me.clipDatasetName);}
 
-        if (me.clipDatasourceName != null)
-            strClipParameter += "," + "'clipDatasourceName':" + SuperMap.Util.toJSON(me.clipDatasourceName);
+        if (me.clipDatasourceName != null) {strClipParameter += "," + "'clipDatasourceName':" + SuperMap.Util.toJSON(me.clipDatasourceName);}
 
-        if (me.isExactClip != null)
-            strClipParameter += "," + "'isExactClip':" + SuperMap.Util.toJSON(me.isExactClip);
+        if (me.isExactClip != null) {strClipParameter += "," + "'isExactClip':" + SuperMap.Util.toJSON(me.isExactClip);}
 
         if (me.clipRegion != null) {
             var serverGeometry = SuperMap.REST.ServerGeometry.fromGeometry(me.clipRegion);

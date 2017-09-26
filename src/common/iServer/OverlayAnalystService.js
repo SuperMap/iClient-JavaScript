@@ -2,6 +2,7 @@
 import SpatialAnalystBase from './SpatialAnalystBase';
 import DatasetOverlayAnalystParameters from './DatasetOverlayAnalystParameters';
 import GeometryOverlayAnalystParameters from './GeometryOverlayAnalystParameters';
+
 /**
  * @class SuperMap.OverlayAnalystService
  * @classdesc
@@ -23,7 +24,7 @@ import GeometryOverlayAnalystParameters from './GeometryOverlayAnalystParameters
  * (end)
  */
 
-export default  class OverlayAnalystService extends SpatialAnalystBase {
+export default class OverlayAnalystService extends SpatialAnalystBase {
 
     /**
      * @member SuperMap.OverlayAnalystService.prototype.mode -{string}
@@ -57,9 +58,7 @@ export default  class OverlayAnalystService extends SpatialAnalystBase {
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
-        if (end === '/') {
-
-        } else {
+        if (end !== '/') {
             me.url += "/";
         }
 
@@ -67,8 +66,7 @@ export default  class OverlayAnalystService extends SpatialAnalystBase {
             me.mode = "datasets";
             me.url += 'datasets/' + parameter.sourceDataset + '/overlay';
             DatasetOverlayAnalystParameters.toObject(parameter, parameterObject);
-        }
-        else if (parameter instanceof GeometryOverlayAnalystParameters) {
+        } else if (parameter instanceof GeometryOverlayAnalystParameters) {
             me.mode = "geometry";
             me.url += 'geometry/overlay';
             GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);

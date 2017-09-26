@@ -1,5 +1,5 @@
 import SuperMap from '../../SuperMap';
-import {baiduMapLayer,DataSet} from 'mapv';
+import {baiduMapLayer, DataSet} from 'mapv';
 
 /**
  * @class SuperMap.MapVRenderer
@@ -15,10 +15,10 @@ var MapVBaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
 export default class MapVRenderer extends MapVBaseLayer {
     constructor(map, layer, dataSet, options) {
-        if (!MapVBaseLayer) {
-            return;
-        }
         super(map, dataSet, options);
+        if (!MapVBaseLayer) {
+            return this;
+        }
 
         var self = this;
         options = options || {};

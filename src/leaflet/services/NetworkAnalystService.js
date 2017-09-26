@@ -1,17 +1,17 @@
 ﻿import L from "leaflet";
 import SuperMap from '../../common/SuperMap';
 import {ServiceBase} from './ServiceBase';
-import BurstPipelineAnalystService from  '../../common/iServer/BurstPipelineAnalystService';
-import ComputeWeightMatrixService from  '../../common/iServer/ComputeWeightMatrixService';
-import FacilityAnalystStreamService from  '../../common/iServer/FacilityAnalystStreamService';
-import FindClosestFacilitiesService from  '../../common/iServer/FindClosestFacilitiesService';
-import FindLocationService from  '../../common/iServer/FindLocationService';
-import FindMTSPPathsService from  '../../common/iServer/FindMTSPPathsService';
-import FindPathService from  '../../common/iServer/FindPathService';
-import FindServiceAreasService from  '../../common/iServer/FindServiceAreasService';
-import FindTSPPathsService from  '../../common/iServer/FindTSPPathsService';
-import UpdateEdgeWeightService from  '../../common/iServer/UpdateEdgeWeightService';
-import UpdateTurnNodeWeightService from  '../../common/iServer/UpdateTurnNodeWeightService';
+import BurstPipelineAnalystService from '../../common/iServer/BurstPipelineAnalystService';
+import ComputeWeightMatrixService from '../../common/iServer/ComputeWeightMatrixService';
+import FacilityAnalystStreamService from '../../common/iServer/FacilityAnalystStreamService';
+import FindClosestFacilitiesService from '../../common/iServer/FindClosestFacilitiesService';
+import FindLocationService from '../../common/iServer/FindLocationService';
+import FindMTSPPathsService from '../../common/iServer/FindMTSPPathsService';
+import FindPathService from '../../common/iServer/FindPathService';
+import FindServiceAreasService from '../../common/iServer/FindServiceAreasService';
+import FindTSPPathsService from '../../common/iServer/FindTSPPathsService';
+import UpdateEdgeWeightService from '../../common/iServer/UpdateEdgeWeightService';
+import UpdateTurnNodeWeightService from '../../common/iServer/UpdateTurnNodeWeightService';
 
 /**
  * @class L.supermap.networkAnalystService
@@ -287,12 +287,14 @@ export var NetworkAnalystService = ServiceBase.extend({
         if (params.centers && L.Util.isArray(params.centers)) {
             params.centers.map(function (point, key) {
                 params.centers[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;
+                return params.centers[key];
             });
         }
 
         if (params.nodes && L.Util.isArray(params.nodes)) {
             params.nodes.map(function (point, key) {
                 params.nodes[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;
+                return params.nodes[key];
             });
         }
 
@@ -303,6 +305,7 @@ export var NetworkAnalystService = ServiceBase.extend({
         if (params.facilities && L.Util.isArray(params.facilities)) {
             params.facilities.map(function (point, key) {
                 params.facilities[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;
+                return params.facilities[key];
             });
         }
 
@@ -311,6 +314,7 @@ export var NetworkAnalystService = ServiceBase.extend({
             if (L.Util.isArray(barrierPoints)) {
                 barrierPoints.map(function (point, key) {
                     params.parameter.barrierPoints[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;
+                    return params.parameter.barrierPoints[key];
                 });
             } else {
                 params.parameter.barrierPoints = [(barrierPoints instanceof L.LatLng) ? {x: barrierPoints.lng, y: barrierPoints.lat} : barrierPoints];

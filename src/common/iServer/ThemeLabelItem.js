@@ -83,7 +83,7 @@ export default  class ThemeLabelItem {
      * @return {SuperMap.ThemeLabelItem} ThemeLabelItem对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var t = new ThemeLabelItem();
         SuperMap.Util.copy(t, obj);
         return t;

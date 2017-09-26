@@ -249,8 +249,7 @@ export default class Vector {
         if (d === 0) {
             out[0] = 0;
             out[1] = 0;
-        }
-        else {
+        } else {
             out[0] = v[0] / d;
             out[1] = v[1] / d;
         }

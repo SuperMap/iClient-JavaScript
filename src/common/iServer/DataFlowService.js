@@ -44,8 +44,7 @@ export default class DataFlowService extends CommonServiceBase {
 
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
-        if (end === '/') {
-        } else {
+        if (end !== '/') {
             me.url += "/";
         }
         if (options) {

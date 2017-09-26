@@ -61,11 +61,9 @@ export default class GeometryBufferAnalystParameters extends BufferAnalystParame
                 }
                 delete tempBufferSetting.radiusUnit;
                 tempObj.analystParameter = tempBufferSetting;
-            }
-            else if (name === "sourceGeometry") {
+            } else if (name === "sourceGeometry") {
                 tempObj.sourceGeometry = ServerGeometry.fromGeometry(geometryBufferAnalystParameters.sourceGeometry);
-            }
-            else {
+            } else {
                 tempObj[name] = geometryBufferAnalystParameters[name];
             }
         }

@@ -428,8 +428,7 @@ export default class Color {
         }
         if (len === 1) {
             ret = this.getStepColors(colors[0], colors[0], step);
-        }
-        else if (len > 1) {
+        } else if (len > 1) {
             for (var i = 0, n = len - 1; i < n; i++) {
                 var steps = this.getStepColors(colors[i], colors[i + 1], step);
                 if (i < n - 1) {
@@ -463,8 +462,7 @@ export default class Color {
 
             if (format.indexOf('hex') > -1) {
                 return '#' + ((1 << 24) + (data[0] << 16) + (data[1] << 8) + (+data[2])).toString(16).slice(1);
-            }
-            else if (format.indexOf('hs') > -1) {
+            } else if (format.indexOf('hs') > -1) {
                 var sx = this.map(data.slice(1, 3),
                     function (c) {
                         return c + '%';
@@ -507,8 +505,7 @@ export default class Color {
         color.replace(/[\d.]+/g, function (n) {
             if (i < 3) {
                 n = n | 0;
-            }
-            else {
+            } else {
                 // Alpha
                 n = +n;
             }
@@ -540,15 +537,13 @@ export default class Color {
 
         if (color.indexOf('hsb') > -1) {
             data = this._HSV_2_RGB(data);
-        }
-        else if (color.indexOf('hsl') > -1) {
+        } else if (color.indexOf('hsl') > -1) {
             data = this._HSL_2_RGB(data);
         }
 
         if (format.indexOf('hsb') > -1 || format.indexOf('hsv') > -1) {
             data = this._RGB_2_HSB(data);
-        }
-        else if (format.indexOf('hsl') > -1) {
+        } else if (format.indexOf('hsl') > -1) {
             data = this._RGB_2_HSL(data);
         }
 
@@ -774,8 +769,7 @@ export default class Color {
         for (var i = 0; i < 3; i++) {
             if (direct === 1) {
                 data[i] = data[i] * (1 - level) | 0;
-            }
-            else {
+            } else {
                 data[i] = ((255 - data[i]) * level + data[i]) | 0;
             }
         }
@@ -924,8 +918,7 @@ export default class Color {
                 }
             );
 
-        }
-        else if (r[4]) {
+        } else if (r[4]) {
             // rgb rgba
             var rgba = (r[4]).split(',');
             a = rgba[3];
@@ -943,8 +936,7 @@ export default class Color {
             if (typeof a !== 'undefined') {
                 data.push(this.adjust(parseFloat(a), [0, 1]));
             }
-        }
-        else if (r[5] || r[6]) {
+        } else if (r[5] || r[6]) {
             // hsb hsba hsl hsla
             var hsxa = (r[5] || r[6]).split(',');
             var h = parseInt(hsxa[0], 0) / 360;
@@ -1026,8 +1018,7 @@ export default class Color {
         // modify by linzhifeng 2014-05-25 because -0 == 0
         if (value <= region[0]) {
             value = region[0];
-        }
-        else if (value >= region[1]) {
+        } else if (value >= region[1]) {
             value = region[1];
         }
         return value;
@@ -1063,8 +1054,7 @@ export default class Color {
             R = V * 255;
             G = V * 255;
             B = V * 255;
-        }
-        else {
+        } else {
             var h = H * 6;
             if (h === 6) {
                 h = 0;
@@ -1081,28 +1071,23 @@ export default class Color {
                 r = V;
                 g = v3;
                 b = v1;
-            }
-            else if (i === 1) {
+            } else if (i === 1) {
                 r = v2;
                 g = V;
                 b = v1;
-            }
-            else if (i === 2) {
+            } else if (i === 2) {
                 r = v1;
                 g = V;
                 b = v3;
-            }
-            else if (i === 3) {
+            } else if (i === 3) {
                 r = v1;
                 g = v2;
                 b = V;
-            }
-            else if (i === 4) {
+            } else if (i === 4) {
                 r = v3;
                 g = v1;
                 b = V;
-            }
-            else {
+            } else {
                 r = V;
                 g = v1;
                 b = v2;
@@ -1132,13 +1117,11 @@ export default class Color {
             R = L * 255;
             G = L * 255;
             B = L * 255;
-        }
-        else {
+        } else {
             var v2;
             if (L < 0.5) {
                 v2 = L * (1 + S);
-            }
-            else {
+            } else {
                 v2 = (L + S) - (S * L);
             }
 
@@ -1195,8 +1178,7 @@ export default class Color {
         if (delta === 0) {
             H = 0;
             S = 0;
-        }
-        else {
+        } else {
             S = delta / vMax;
 
             var deltaR = (((vMax - R) / 6) + (delta / 2)) / delta;
@@ -1205,11 +1187,9 @@ export default class Color {
 
             if (R === vMax) {
                 H = deltaB - deltaG;
-            }
-            else if (G === vMax) {
+            } else if (G === vMax) {
                 H = (1 / 3) + deltaR - deltaB;
-            }
-            else if (B === vMax) {
+            } else if (B === vMax) {
                 H = (2 / 3) + deltaG - deltaR;
             }
 
@@ -1248,12 +1228,10 @@ export default class Color {
         if (delta === 0) {
             H = 0;
             S = 0;
-        }
-        else {
+        } else {
             if (L < 0.5) {
                 S = delta / (vMax + vMin);
-            }
-            else {
+            } else {
                 S = delta / (2 - vMax - vMin);
             }
 
@@ -1263,11 +1241,9 @@ export default class Color {
 
             if (R === vMax) {
                 H = deltaB - deltaG;
-            }
-            else if (G === vMax) {
+            } else if (G === vMax) {
                 H = (1 / 3) + deltaR - deltaB;
-            }
-            else if (B === vMax) {
+            } else if (B === vMax) {
                 H = (2 / 3) + deltaG - deltaR;
             }
 

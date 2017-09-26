@@ -95,8 +95,7 @@ export default  class GetLayersInfoService extends CommonServiceBase {
             for (var i = 0; i < len; i++) {
                 if (layers[i].subLayers && layers[i].subLayers.layers && layers[i].subLayers.layers.length > 0) {
                     me.handleLayers(layers[i].subLayers.layers.length, layers[i].subLayers.layers);
-                }
-                else {
+                } else {
                     var type = layers[i].ugcLayerType;
                     switch (type) {
                         case 'THEME':

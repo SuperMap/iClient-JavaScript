@@ -174,6 +174,7 @@ export class Theme3DLayer {
             if (me.heightField && val.properties[me.heightField]) {
                 val.properties[me.heightField] = parseFloat(val.properties[me.heightField]);
             }
+            return val;
         });
         return this;
     }
@@ -532,7 +533,7 @@ export class Theme3DLayer {
             }
         }
         return dest;
-    };
+    }
 }
 
 mapboxgl.supermap.Theme3DLayer = Theme3DLayer;

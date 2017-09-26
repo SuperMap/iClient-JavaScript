@@ -1,6 +1,7 @@
 import L from "leaflet";
 import GeoJSONFormat from '../../common/format/GeoJSON';
 import SuperMap from '../../common/SuperMap';
+
 export var supermap_callbacks = {};
 L.Util.supermap_callbacks = supermap_callbacks;
 export var toGeoJSON = function (feature) {
@@ -29,6 +30,7 @@ export var toSuperMapGeometry = function (geometry) {
             serverResult = [];
             result.map(function (item) {
                 serverResult.push(item.geometry);
+                return item;
             });
         }
     }

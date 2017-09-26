@@ -106,7 +106,7 @@ export default class ShapeFactory {
 
         if (sps instanceof Point) {        // 点
             //设置style
-            var style = new Object();
+            let style = new Object();
             style["x"] = sps.x;
             style["y"] = sps.y;
             style["r"] = sps.r;
@@ -114,53 +114,50 @@ export default class ShapeFactory {
             style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y']);
 
             //创建图形
-            var shape = new SmicPoint();
+            let shape = new SmicPoint();
             shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
             shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'style', 'highlightStyle']);
 
             return shape;
-        }
-        else if (sps instanceof Line) {        // 线
+        } else if (sps instanceof Line) {        // 线
             //检查参数 pointList 是否存在
-            if (!sps.pointList) return null;
+            if (!sps.pointList) {return null;}
 
             // 设置style
-            var style = new Object();
+            let style = new Object();
             style["pointList"] = sps.pointList;
             style = Util.copyAttributesWithClip(style, sps.style, ['pointList']);
 
             // 创建图形
-            var shape = new SmicBrokenLine();
+            let shape = new SmicBrokenLine();
             shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
             shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', 'highlightStyle']);
 
             return shape;
-        }
-        else if (sps instanceof Polygon) {        // 面
+        } else if (sps instanceof Polygon) {        // 面
             //检查参数 pointList 是否存在
-            if (!sps.pointList) return null;
+            if (!sps.pointList) {return null;}
 
             //设置style
-            var style = new Object();
+            let style = new Object();
             style["pointList"] = sps.pointList;
             style = Util.copyAttributesWithClip(style, sps.style, ['pointList']);
 
             //创建图形
-            var shape = new SmicPolygon();
+            let shape = new SmicPolygon();
             shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
             shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', "highlightStyle"]);
 
             return shape;
-        }
-        else if (sps instanceof Rectangle) {        // 矩形
+        } else if (sps instanceof Rectangle) {        // 矩形
             //检查参数 pointList 是否存在
-            if (!sps.x && !sps.y & !sps.width & !sps.height) return null;
+            if (!sps.x && !sps.y & !sps.width & !sps.height) {return null;}
 
             //设置style
-            var style = new Object();
+            let style = new Object();
             style["x"] = sps.x;
             style["y"] = sps.y;
             style["width"] = sps.width;
@@ -169,16 +166,15 @@ export default class ShapeFactory {
             style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'width', 'height']);
 
             //创建图形
-            var shape = new SmicRectangle();
+            let shape = new SmicRectangle();
             shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
             shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'width', 'height', 'style', 'highlightStyle']);
 
             return shape;
-        }
-        else if (sps instanceof Sector) {        // 扇形
+        } else if (sps instanceof Sector) {        // 扇形
             //设置style
-            var style = new Object();
+            let style = new Object();
             style["x"] = sps.x;
             style["y"] = sps.y;
             style["r"] = sps.r;
@@ -187,25 +183,24 @@ export default class ShapeFactory {
             if (sps["r0"]) {
                 style["r0"] = sps.r0
             }
-            ;
+            
             if (sps["clockWise"]) {
                 style["clockWise"] = sps.clockWise
             }
-            ;
+            
 
             style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle']);
 
             //创建图形
-            var shape = new SmicSector();
+            let shape = new SmicSector();
             shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
             shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle', 'style', 'highlightStyle']);
 
             return shape;
-        }
-        else if (sps instanceof Label) {        // 标签
+        } else if (sps instanceof Label) {        // 标签
             //设置style
-            var style = new Object();
+            let style = new Object();
             style["x"] = sps.x;
             style["y"] = sps.y;
             style["text"] = sps.text;
@@ -213,16 +208,15 @@ export default class ShapeFactory {
             style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'text']);
 
             //创建图形
-            var shape = new SmicText();
+            let shape = new SmicText();
             shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
             shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'text', 'style', 'highlightStyle']);
 
             return shape;
-        }
-        else if (sps instanceof Image) {        // 图片
+        } else if (sps instanceof Image) {        // 图片
             //设置style
-            var style = new Object();
+            let style = new Object();
             style["x"] = sps.x;
             style["y"] = sps.y;
             if (sps["image"]) {
@@ -250,16 +244,15 @@ export default class ShapeFactory {
             style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'image', 'width', 'height', 'sx', 'sy', 'sWidth', 'sHeight']);
 
             //创建图形
-            var shape = new SmicImage();
+            let shape = new SmicImage();
             shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
             shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'image', 'width', 'height', 'style', 'highlightStyle']);
 
             return shape;
-        }
-        else if (sps instanceof Circle) {       //圆形 用于符号专题图
+        } else if (sps instanceof Circle) {       //圆形 用于符号专题图
             //设置stytle
-            var style = new Object();
+            let style = new Object();
             style["x"] = sps.x;
             style["r"] = sps.r;
             style["y"] = sps.y;
@@ -267,7 +260,7 @@ export default class ShapeFactory {
             style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r']);
 
             //创建图形
-            var shape = new SmicCircle();
+            let shape = new SmicCircle();
             shape.style = new SuperMap.Feature.ShapeFactory.transformStyle(style);
             shape.highlightStyle = new SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'style', 'highlightStyle', 'lineWidth', 'text', 'textPosition']);
@@ -303,13 +296,11 @@ export default class ShapeFactory {
                 case "fill":
                     brushType[0] = style[ss];
                     break;
-                    break;
                 case "fillColor":
                     newStyle["color"] = style[ss];
                     break;
                 case "stroke":
                     brushType[1] = style[ss];
-                    break;
                     break;
                 case "strokeWidth":
                     newStyle["lineWidth"] = style[ss];
@@ -363,7 +354,6 @@ export default class ShapeFactory {
                     newStyle["textRotation"] = style[ss];
                     break;
 
-
                 default:
                     newStyle[ss] = style[ss];
                     break;
@@ -376,14 +366,11 @@ export default class ShapeFactory {
         //画笔类型
         if (brushType[0] === true && brushType[1] === false) {
             newStyle["brushType"] = "fill";
-        }
-        else if (brushType[0] === false && brushType[1] === true) {
+        } else if (brushType[0] === false && brushType[1] === true) {
             newStyle["brushType"] = "stroke";
-        }
-        else if (brushType[0] === true && brushType[1] === true) {
+        } else if (brushType[0] === true && brushType[1] === true) {
             newStyle["brushType"] = "both";
-        }
-        else {
+        } else {
             newStyle["brushType"] = "fill";
         }
 
@@ -507,8 +494,8 @@ export default class ShapeFactory {
 
             // 3D 坐标轴  第三象限平分线
             if (sets.axis3DParameter && !isNaN(sets.axis3DParameter) && sets.axis3DParameter >= 15) {
-                var axis3DParameter = parseInt(sets.axis3DParameter);
-                var axis3DPoi = [dvb[0] - axis3DParameter, dvb[1] + axis3DParameter];
+                let axis3DParameter = parseInt(sets.axis3DParameter);
+                let axis3DPoi = [dvb[0] - axis3DParameter, dvb[1] + axis3DParameter];
 
                 // 添加 3D 轴节点
                 if (sets.axisUseArrow) {      // 添加 3D 轴箭头节点坐标
@@ -518,16 +505,14 @@ export default class ShapeFactory {
                     zArrowPois.push([axis3DPoi[0] + 7.5, axis3DPoi[1] - 1.5]);
                     //3D轴
                     xMainPois.push([axis3DPoi[0], axis3DPoi[1]]);
-                }
-                else {
+                } else {
                     xMainPois.push([axis3DPoi[0], axis3DPoi[1]]);
                 }
 
                 xMainPois.push([dvb[0], dvb[1]]);
             }
             xMainPois.push([dvb[2] + 5, dvb[1]]);
-        }
-        else {
+        } else {
             // 单位刻度长度
             var unitTick = Math.abs(dvb[1] - dvb[3]) / axisytick;
             // 刻度 y 坐标
@@ -573,8 +558,8 @@ export default class ShapeFactory {
 
             // 3D 坐标轴  第三象限平分线
             if (sets.axis3DParameter && !isNaN(sets.axis3DParameter) && sets.axis3DParameter >= 15) {
-                var axis3DParameter = parseInt(sets.axis3DParameter);
-                var axis3DPoi = [dvb[0] - axis3DParameter, dvb[1] + axis3DParameter];
+                let axis3DParameter = parseInt(sets.axis3DParameter);
+                let axis3DPoi = [dvb[0] - axis3DParameter, dvb[1] + axis3DParameter];
 
                 /*
                  // 箭头计算过程
@@ -601,8 +586,7 @@ export default class ShapeFactory {
                     zArrowPois.push([axis3DPoi[0] + 7.5, axis3DPoi[1] - 1.5]);
                     //3D轴
                     xMainPois.push([axis3DPoi[0], axis3DPoi[1]]);
-                }
-                else {
+                } else {
                     xMainPois.push([axis3DPoi[0], axis3DPoi[1]]);
                 }
 
@@ -674,7 +658,7 @@ export default class ShapeFactory {
         var yLabels = [];
         if (sets.axisYLabels && sets.axisYLabels.length && sets.axisYLabels.length > 0) {
             var axisYLabels = sets.axisYLabels;
-            var len = axisYLabels.length;
+            let len = axisYLabels.length;
 
             // 标签偏移量
             var ylOffset = [0, 0];
@@ -684,7 +668,7 @@ export default class ShapeFactory {
 
             if (len == 1) {
                 // 标签参数对象
-                var labelYSP = new Label(dvb[0] - 5 + ylOffset[0], dvb[3] + ylOffset[1], axisYLabels[0]);
+                let labelYSP = new Label(dvb[0] - 5 + ylOffset[0], dvb[3] + ylOffset[1], axisYLabels[0]);
                 labelYSP.style = {
                     labelAlign: "right"
                 };
@@ -697,15 +681,14 @@ export default class ShapeFactory {
                 labelYSP.hoverable = false;
                 // 制作标签
                 yLabels.push(shapeFactory.createShape(labelYSP));
-            }
-            else {
+            } else {
                 var labelY = dvb[3];
                 // y 轴标签单位距离
                 var yUnit = Math.abs(dvb[1] - dvb[3]) / (len - 1);
 
                 for (var j = 0; j < len; j++) {
                     // 标签参数对象
-                    var labelYSP = new Label(dvb[0] - 5 + ylOffset[0], labelY + ylOffset[1], axisYLabels[j]);
+                    let labelYSP = new Label(dvb[0] - 5 + ylOffset[0], labelY + ylOffset[1], axisYLabels[j]);
                     labelYSP.style = {
                         labelAlign: "right"
                     };
@@ -727,21 +710,21 @@ export default class ShapeFactory {
         // X 轴标签
         var xLabels = [];
         if (sets.axisXLabels && sets.axisXLabels.length && sets.axisXLabels.length > 0) {
-            var axisXLabels = sets.axisXLabels;
-            var len = axisXLabels.length;
+            let axisXLabels = sets.axisXLabels;
+            let len = axisXLabels.length;
 
             // 标签偏移量
-            var xlOffset = [0, 0];
+            let xlOffset = [0, 0];
             if (sets.axisXLabelsOffset && sets.axisXLabelsOffset.length) {
                 xlOffset = sets.axisXLabelsOffset;
             }
 
             // 标签个数与数据字段个数相等等时，标签在 x 轴均匀排列
             if (xShapeInfo && xShapeInfo.xPositions && xShapeInfo.xPositions.length && xShapeInfo.xPositions.length == len) {
-                var xsCenter = xShapeInfo.xPositions;
-                for (var K = 0; K < len; K++) {
+                let xsCenter = xShapeInfo.xPositions;
+                for (let K = 0; K < len; K++) {
                     // 标签参数对象
-                    var labelXSP = new Label(xsCenter[K] + xlOffset[0], dvb[1] + xlOffset[1], axisXLabels[K]);
+                    let labelXSP = new Label(xsCenter[K] + xlOffset[0], dvb[1] + xlOffset[1], axisXLabels[K]);
                     // 默认 style
                     labelXSP.style = {
                         labelAlign: "center",
@@ -757,11 +740,10 @@ export default class ShapeFactory {
                     // 创建标签对象
                     xLabels.push(shapeFactory.createShape(labelXSP));
                 }
-            }
-            else {
+            } else {
                 if (len == 1) {
                     // 标签参数对象
-                    var labelXSP = new Label(dvb[0] - 5 + xlOffset[0], dvb[1] + xlOffset[0], axisXLabels[0]);
+                    let labelXSP = new Label(dvb[0] - 5 + xlOffset[0], dvb[1] + xlOffset[0], axisXLabels[0]);
                     // 默认 style
                     labelXSP.style = {
                         labelAlign: "center",
@@ -776,15 +758,14 @@ export default class ShapeFactory {
                     labelXSP.hoverable = false;
                     // 创建标签对象
                     xLabels.push(shapeFactory.createShape(labelXSP));
-                }
-                else {
-                    var labelX = dvb[0];
+                } else {
+                    let labelX = dvb[0];
                     // x 轴标签单位距离
-                    var xUnit = Math.abs(dvb[2] - dvb[0]) / (len - 1);
+                    let xUnit = Math.abs(dvb[2] - dvb[0]) / (len - 1);
 
-                    for (var m = 0; m < len; m++) {
+                    for (let m = 0; m < len; m++) {
                         // 标签参数对象
-                        var labelXSP = new Label(labelX + xlOffset[0], dvb[1] + xlOffset[1], axisXLabels[m]);
+                        let labelXSP = new Label(labelX + xlOffset[0], dvb[1] + xlOffset[1], axisXLabels[m]);
                         // 默认 style
                         labelXSP.style = {
                             labelAlign: "center",

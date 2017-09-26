@@ -72,7 +72,7 @@ export default  class ThemeGraduatedSymbolStyle {
      * @return {SuperMap.ThemeGraduatedSymbolStyle} ThemeGraduatedSymbolStyle对象
      */
     static fromObj(obj) {
-        if (!obj) return;
+        if (!obj) {return;}
         var res = new ThemeGraduatedSymbolStyle();
         SuperMap.Util.copy(res, obj);
         res.negativeStyle = ServerStyle.fromJson(obj.negativeStyle);

@@ -69,7 +69,7 @@ export default class SmicRectangle extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
     }
 
 
@@ -93,7 +93,7 @@ export default class SmicRectangle extends Shape {
      *
      */
     _buildRadiusPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         // 左上、右上、右下、左下角的半径依次为r1、r2、r3、r4
@@ -113,28 +113,23 @@ export default class SmicRectangle extends Shape {
 
         if (typeof r === 'number') {
             r1 = r2 = r3 = r4 = r;
-        }
-        else if (r instanceof Array) {
+        } else if (r instanceof Array) {
             if (r.length === 1) {
                 r1 = r2 = r3 = r4 = r[0];
-            }
-            else if (r.length === 2) {
+            } else if (r.length === 2) {
                 r1 = r3 = r[0];
                 r2 = r4 = r[1];
-            }
-            else if (r.length === 3) {
+            } else if (r.length === 3) {
                 r1 = r[0];
                 r2 = r4 = r[1];
                 r3 = r[2];
-            }
-            else {
+            } else {
                 r1 = r[0];
                 r2 = r[1];
                 r3 = r[2];
                 r4 = r[3];
             }
-        }
-        else {
+        } else {
             r1 = r2 = r3 = r4 = 0;
         }
 
@@ -187,7 +182,7 @@ export default class SmicRectangle extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         if (!style.radius) {
@@ -197,8 +192,7 @@ export default class SmicRectangle extends Shape {
             ctx.lineTo((style.x + __OP[0]), (style.y + __OP[1]) + style.height);
             ctx.lineTo(style.x + __OP[0], style.y + __OP[1]);
             // ctx.rect(style.x, style.y, style.width, style.height);
-        }
-        else {
+        } else {
             this._buildRadiusPath(ctx, style);
         }
         ctx.closePath();
@@ -218,7 +212,7 @@ export default class SmicRectangle extends Shape {
      * {Object} 边框对象。包含属性：x，y，width，height。
      */
     getRect(style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) this.refOriginalPosition = [0, 0];
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
         var __OP = this.refOriginalPosition;
 
         if (style.__rect) {
@@ -228,8 +222,7 @@ export default class SmicRectangle extends Shape {
         var lineWidth;
         if (style.brushType == 'stroke' || style.brushType == 'fill') {
             lineWidth = style.lineWidth || 1;
-        }
-        else {
+        } else {
             lineWidth = 0;
         }
         style.__rect = {
