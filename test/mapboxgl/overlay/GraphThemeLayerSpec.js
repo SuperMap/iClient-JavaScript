@@ -104,8 +104,6 @@ describe('mapboxgl_testGraphThemeLayer', function () {
         expect(graphThemeLayer.isOverLay).toBeTruthy();
         expect(graphThemeLayer.themeFields.length).toEqual(5);
         graphThemeLayer.clear();
-        //graphThemeLayer.destroy();
-        //expect(graphThemeLayer).not.toBeNull();
     });
 
     it('setChartsType', function () {
@@ -204,6 +202,7 @@ describe('mapboxgl_testGraphThemeLayer', function () {
         expect(redraw).toBeTruthy();
         expect(graphThemeLayer.features[0].geometry.x).toEqual(39);
         graphThemeLayer.removeFeatures();
+        expect(graphThemeLayer.features.length).toBeGreaterThan(0);
         graphThemeLayer.removeAllFeatures();
         expect(graphThemeLayer.features.length).toEqual(0);
         graphThemeLayer.clear();

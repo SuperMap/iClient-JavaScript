@@ -182,6 +182,7 @@ describe('openlayers_graph', function () {
         expect(redraw).toBeTruthy();
         expect(graphThemeSource.features[0].geometry.x).toEqual(39);
         graphThemeSource.removeFeatures();
+        expect(graphThemeSource.features.length).toBeGreaterThan(0);
         graphThemeSource.removeAllFeatures();
         expect(graphThemeSource.features.length).toEqual(0);
         graphThemeSource.clear();

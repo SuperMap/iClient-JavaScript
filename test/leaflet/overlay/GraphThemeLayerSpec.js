@@ -235,6 +235,7 @@ describe('leaflet_testGraphThemeLayer', function () {
         graphThemeLayer.addFeatures(features);
         expect(graphThemeLayer.features.length).toBeGreaterThan(0);
         graphThemeLayer.removeFeatures();
+        expect(graphThemeLayer.features.length).toBeGreaterThan(0);
         graphThemeLayer.removeAllFeatures();
         expect(graphThemeLayer.features.length).toEqual(0);
         graphThemeLayer.clear();
