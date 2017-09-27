@@ -128,20 +128,20 @@ export default class StyleUtils {
                 var obj = StyleMap.ServerStyleMap[attr];
                 var canvasStyle = obj.canvasStyle;
                 if (canvasStyle && canvasStyle != "") {
+                    var value;
                     switch (obj.type) {
-                        case "number": {
-                            let value = shader[attr];
+                        case "number":
+                            value = shader[attr];
                             if (obj.unit) {
                                 //将单位转换为像素单位
                                 value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
                             }
                             style[canvasStyle] = value;
                             break;
-                        }
-                        case "color": {
+                        case "color":
                             var color = shader[attr];
                             var backColor = shader["fillBackColor"];
-                            let value, alpha = 1;
+                            var alpha = 1;
                             if (canvasStyle === "fillStyle") {
                                 if (fillSymbolID === 0 || fillSymbolID === 1) {
                                     //当fillSymbolID为0时，用颜色填充，为1是无填充，即为透明填充，alpha通道为0
@@ -212,7 +212,6 @@ export default class StyleUtils {
                             }
                             style[canvasStyle] = value;
                             break;
-                        }
                         default:
                             break;
 

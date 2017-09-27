@@ -2927,9 +2927,9 @@ var ServerGeometry = function () {
                         return new _LineString2["default"](pointList);
                     }
                 } else {
-                    var _pointList = [],
-                        lineList = [];
+                    var lineList = [];
                     for (var _i = 0; _i < len; _i++) {
+                        var _pointList = [];
                         for (var j = 0; j < geoParts[_i]; j++) {
                             _pointList.push(new _Point2["default"](geoPoints[j].x, geoPoints[j].y));
                         }

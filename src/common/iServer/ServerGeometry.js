@@ -186,8 +186,9 @@ export default class ServerGeometry {
                     return new LineString(pointList);
                 }
             } else {
-                let pointList = [], lineList = [];
+                let lineList = [];
                 for (let i = 0; i < len; i++) {
+                    let pointList = [];
                     for (let j = 0; j < geoParts[i]; j++) {
                         pointList.push(new Point(geoPoints[j].x, geoPoints[j].y));
                     }

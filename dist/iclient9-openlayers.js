@@ -2884,9 +2884,9 @@ var ServerGeometry = function () {
                         return new _LineString2.default(pointList);
                     }
                 } else {
-                    var _pointList = [],
-                        lineList = [];
+                    var lineList = [];
                     for (var _i = 0; _i < len; _i++) {
+                        var _pointList = [];
                         for (var j = 0; j < geoParts[_i]; j++) {
                             _pointList.push(new _Point2.default(geoPoints[j].x, geoPoints[j].y));
                         }
@@ -22860,96 +22860,92 @@ var StyleUtils = function () {
                     var obj = _StyleMap.StyleMap.ServerStyleMap[attr];
                     var canvasStyle = obj.canvasStyle;
                     if (canvasStyle && canvasStyle != "") {
+                        var value;
                         switch (obj.type) {
                             case "number":
-                                {
-                                    var value = shader[attr];
-                                    if (obj.unit) {
-                                        //将单位转换为像素单位
-                                        value = value * _SuperMap2.default.DOTS_PER_INCH * _SuperMap2.default.INCHES_PER_UNIT[obj.unit] * 2.5;
-                                    }
-                                    style[canvasStyle] = value;
-                                    break;
+                                value = shader[attr];
+                                if (obj.unit) {
+                                    //将单位转换为像素单位
+                                    value = value * _SuperMap2.default.DOTS_PER_INCH * _SuperMap2.default.INCHES_PER_UNIT[obj.unit] * 2.5;
                                 }
+                                style[canvasStyle] = value;
+                                break;
                             case "color":
-                                {
-                                    var color = shader[attr];
-                                    var backColor = shader["fillBackColor"];
-                                    var _value = void 0,
-                                        alpha = 1;
-                                    if (canvasStyle === "fillStyle") {
-                                        if (fillSymbolID === 0 || fillSymbolID === 1) {
-                                            //当fillSymbolID为0时，用颜色填充，为1是无填充，即为透明填充，alpha通道为0
-                                            alpha = 1 - fillSymbolID;
-                                            _value = "rgba(" + color.red + "," + color.green + "," + color.blue + "," + alpha + ")";
-                                        } else {
-                                            //当fillSymbolID为2~7时，用的纹理填充,但要按照前景色修改其颜色
-                                            try {
-                                                var tempCvs = document.createElement("canvas");
-                                                tempCvs.height = 8;
-                                                tempCvs.width = 8;
-                                                var tempCtx = tempCvs.getContext("2d");
-                                                var image = new Image();
-                                                if (this.layer && this.layer.fillImages) {
-                                                    tempCtx.drawImage(this.layer.fillImages["System " + fillSymbolID], 0, 0);
+                                var color = shader[attr];
+                                var backColor = shader["fillBackColor"];
+                                var alpha = 1;
+                                if (canvasStyle === "fillStyle") {
+                                    if (fillSymbolID === 0 || fillSymbolID === 1) {
+                                        //当fillSymbolID为0时，用颜色填充，为1是无填充，即为透明填充，alpha通道为0
+                                        alpha = 1 - fillSymbolID;
+                                        value = "rgba(" + color.red + "," + color.green + "," + color.blue + "," + alpha + ")";
+                                    } else {
+                                        //当fillSymbolID为2~7时，用的纹理填充,但要按照前景色修改其颜色
+                                        try {
+                                            var tempCvs = document.createElement("canvas");
+                                            tempCvs.height = 8;
+                                            tempCvs.width = 8;
+                                            var tempCtx = tempCvs.getContext("2d");
+                                            var image = new Image();
+                                            if (this.layer && this.layer.fillImages) {
+                                                tempCtx.drawImage(this.layer.fillImages["System " + fillSymbolID], 0, 0);
+                                            }
+                                            var imageData = tempCtx.getImageData(0, 0, tempCvs.width, tempCvs.height);
+                                            var pix = imageData.data;
+                                            for (var i = 0, len = pix.length; i < len; i += 4) {
+                                                var r = pix[i],
+                                                    g = pix[i + 1],
+                                                    b = pix[i + 2];
+                                                //将符号图片中的灰色或者黑色的部分替换为前景色，其余为后景色
+                                                if (r < 225 && g < 225 && b < 225) {
+                                                    pix[i] = color.red;
+                                                    pix[i + 1] = color.green;
+                                                    pix[i + 2] = color.blue;
+                                                } else if (backColor) {
+                                                    pix[i] = backColor.red;
+                                                    pix[i + 1] = backColor.green;
+                                                    pix[i + 2] = backColor.blue;
                                                 }
-                                                var imageData = tempCtx.getImageData(0, 0, tempCvs.width, tempCvs.height);
-                                                var pix = imageData.data;
-                                                for (var i = 0, len = pix.length; i < len; i += 4) {
-                                                    var r = pix[i],
-                                                        g = pix[i + 1],
-                                                        b = pix[i + 2];
-                                                    //将符号图片中的灰色或者黑色的部分替换为前景色，其余为后景色
-                                                    if (r < 225 && g < 225 && b < 225) {
-                                                        pix[i] = color.red;
-                                                        pix[i + 1] = color.green;
-                                                        pix[i + 2] = color.blue;
-                                                    } else if (backColor) {
-                                                        pix[i] = backColor.red;
-                                                        pix[i + 1] = backColor.green;
-                                                        pix[i + 2] = backColor.blue;
-                                                    }
-                                                }
-                                                tempCtx.putImageData(imageData, 0, 0);
-                                                image.src = tempCvs.toDataURL();
+                                            }
+                                            tempCtx.putImageData(imageData, 0, 0);
+                                            image.src = tempCvs.toDataURL();
 
-                                                if (this.context) {
-                                                    _value = this.context.createPattern(image, "repeat");
-                                                }
-                                            } catch (e) {
-                                                throw Error(e.message);
+                                            if (this.context) {
+                                                value = this.context.createPattern(image, "repeat");
                                             }
+                                        } catch (e) {
+                                            throw Error(e.message);
                                         }
-                                    } else if (canvasStyle === "strokeStyle") {
-                                        if (lineSymbolID === 0 || lineSymbolID === 5) {
-                                            //对于lineSymbolID为0时，线为实线，为lineSymbolID为5时，为无线模式，即线为透明，即alpha通道为0
-                                            alpha = lineSymbolID === 0 ? 1 : 0;
-                                        } else {
-                                            //以下几种linePattern分别模拟了桌面的SymbolID为1~4几种符号的linePattern
-                                            var linePattern = [1, 0];
-                                            switch (lineSymbolID) {
-                                                case 1:
-                                                    linePattern = [9.7, 3.7];
-                                                    break;
-                                                case 2:
-                                                    linePattern = [3.7, 3.7];
-                                                    break;
-                                                case 3:
-                                                    linePattern = [9.7, 3.7, 2.3, 3.7];
-                                                    break;
-                                                case 4:
-                                                    linePattern = [9.7, 3.7, 2.3, 3.7, 2.3, 3.7];
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                            style.lineDasharray = linePattern;
-                                        }
-                                        _value = "rgba(" + color.red + "," + color.green + "," + color.blue + "," + alpha + ")";
                                     }
-                                    style[canvasStyle] = _value;
-                                    break;
+                                } else if (canvasStyle === "strokeStyle") {
+                                    if (lineSymbolID === 0 || lineSymbolID === 5) {
+                                        //对于lineSymbolID为0时，线为实线，为lineSymbolID为5时，为无线模式，即线为透明，即alpha通道为0
+                                        alpha = lineSymbolID === 0 ? 1 : 0;
+                                    } else {
+                                        //以下几种linePattern分别模拟了桌面的SymbolID为1~4几种符号的linePattern
+                                        var linePattern = [1, 0];
+                                        switch (lineSymbolID) {
+                                            case 1:
+                                                linePattern = [9.7, 3.7];
+                                                break;
+                                            case 2:
+                                                linePattern = [3.7, 3.7];
+                                                break;
+                                            case 3:
+                                                linePattern = [9.7, 3.7, 2.3, 3.7];
+                                                break;
+                                            case 4:
+                                                linePattern = [9.7, 3.7, 2.3, 3.7, 2.3, 3.7];
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        style.lineDasharray = linePattern;
+                                    }
+                                    value = "rgba(" + color.red + "," + color.green + "," + color.blue + "," + alpha + ")";
                                 }
+                                style[canvasStyle] = value;
+                                break;
                             default:
                                 break;
 
