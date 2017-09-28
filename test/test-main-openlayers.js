@@ -1,5 +1,7 @@
 /**openlayers --services**/
 require('./openlayers/services/SpatialAnalystServiceSpec.js');
+require('./openlayers/services/FeatureServiceSpec.js');
+require('./openlayers/services/NetworkAnalystServiceSpec.js');
 
 /*openlayers -- overlay*/
 require('./openlayers/overlay/MapvSpec.js');
