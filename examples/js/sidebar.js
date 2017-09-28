@@ -9,6 +9,66 @@ function initSideBar() {
     }
 }
 
+//侧边栏滚动支持
+function sidebarScrollFix() {
+    $('ul#sidebar-menu>li').hover(function (evt) {
+
+        if (!$('body').hasClass('sidebar-collapse')) {
+            return;
+        }
+
+        //调整一级菜单li下标题的布局位置至右侧
+        var $titleBar = $(this).children('a').children('.sidebar-title-bar');
+        $titleBar.css({
+            "top": ($(this).offset().top - $(window).scrollTop()) + "px",
+            //fix由于侧边栏滚动条宽度引起的减少的宽度
+            "width": "223px"
+        });
+
+        //如果底部空间不够，动态增加侧边栏高度
+        var visibleOffsetTop = $(this).offset().top - $(window).scrollTop();
+        var offsetBottom = $('.sidebar-menu').height() - visibleOffsetTop;
+        var requireVisibleHeight = $(this).height() + $(this).children('ul').height();
+        if (offsetBottom <= requireVisibleHeight) {
+            $('.sidebar-menu').css({
+                "height": (requireVisibleHeight + $(window).height()) + "px"
+            })
+        }
+
+        //调整一级菜单li下子列表的布局位置至右侧
+        var offsetTop = visibleOffsetTop + $(this).height();
+        $(this).children('ul').css({
+            "top": offsetTop + "px"
+        });
+
+        //fix小尺寸屏幕下二级菜单高度高于窗口高度时显示不全的情况
+        var $activeList = $(this).children('ul');
+        var activeListOffsetBottom = $(window).height() - visibleOffsetTop - $(this).height();
+        var requireActiveListHeight = $activeList.height();
+        if (activeListOffsetBottom < requireActiveListHeight) {
+            $activeList.css({"height": activeListOffsetBottom});
+            //滚动条样式
+            $activeList.addClass('scroll-list');
+        }
+
+    }, function (evt) {
+        if (!$('body').hasClass('sidebar-collapse')) {
+            return;
+        }
+        //滚动条
+        $(this).children('ul').removeClass('scroll-list');
+        //恢复原来的高度
+        $(this).children('ul').css({"height": "auto"});
+    });
+    $('.main-sidebar').on('scroll', function (evt) {
+        evt.stopPropagation();
+    });
+
+    $(window).on('resize', function () {
+        $('.sidebar-menu').css({"height": "100%"})
+    })
+}
+
 //创建菜单项
 function createSideBarMenuItem(id, config, containAll) {
     if (!config) {
@@ -18,7 +78,6 @@ function createSideBarMenuItem(id, config, containAll) {
     var li = $("<li id='iclient_" + id + "' class='treeview '></li>");
 
     if (config.content) {
-
         createSideBarMenuTitle(id, config.name, true).appendTo(li);
         createSideBarSecondMenu(config.content, id).appendTo(li);
     } else {
@@ -67,10 +126,14 @@ function createSideBarMenuTitle(id, title, collapse) {
         icon = "<i class='fa " + iconName + " iconName'></i>"
     }
 
-    var div = $("<a  href='#" + id + "' >" + icon + "<span class='firstMenuTitle'>" + title + "</span></a>");
+    var div = $("<a href='#" + id + "' >" + icon + "</a>");
+    var titleBar = $("<span class='sidebar-title-bar'></span>");
+    var firstMenuTitle = $("<span class='firstMenuTitle'>" + title + "</span>");
+    titleBar.append(firstMenuTitle);
     if (collapse) {
-        div.append(createCollapsedIcon());
+        titleBar.append(createCollapsedIcon());
     }
+    div.append(titleBar);
     return div;
 }
 

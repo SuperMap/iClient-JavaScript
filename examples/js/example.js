@@ -1,6 +1,5 @@
 $(document).ready(function () {
     initPage();
-
     bindEvents();
 });
 var exConfig = exampleConfig,
@@ -17,7 +16,9 @@ function initPage() {
     }
     resizeCharts();
     initSelect();
+    sidebarScrollFix();
 }
+
 
 //初始化页面第一次加载
 function initSelect() {
@@ -135,8 +136,8 @@ function scroll() {
 
     }
 
-    if (ele&&ele.offset()) {
-         $("body").animate({scrollTop: ele.offset().top - 50}, 0);
+    if (ele && ele.offset()) {
+        $("body").animate({scrollTop: ele.offset().top - 50}, 0);
     }
 }
 
@@ -148,7 +149,7 @@ function bindEvents() {
     if ($('ul.sidebar-menu>li#firstMenuiManager').find('ul').length == 0) {
         if ($('ul.sidebar-menu>li#firstMenuiManager').click(function () {
                 $('ul#sidebar-menu>li>ul').slideUp(500);
-            }));
+            })) ;
     }
     //一级菜单跳转
     child.parent('ul').siblings('a').click(function (evt) {

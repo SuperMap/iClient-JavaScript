@@ -1,5 +1,14 @@
+
 .main-sidebar {
     position: fixed;
+    z-index: 900;
+    height: 100%;
+}
+
+.sidebar {
+    height: 100% !important;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 .menuTitle a.active {
@@ -18,7 +27,8 @@
     border-left: 3px solid rgba(0, 0, 0, 0.1);
 }
 
-.skin-blue .sidebar .second-menu, .skin-blue .sidebar .third-menu {
+.skin-blue .sidebar .second-menu,
+.skin-blue .sidebar .third-menu {
     padding-left: 0;
 }
 
@@ -30,11 +40,33 @@
     color: #000000;
 }
 
+/*侧边栏滚动设置 start*/
+#sidebar-menu > li:hover .sidebar-title-bar {
+    position: static;
+}
+
+.sidebar-collapse #sidebar-menu > li:hover .sidebar-title-bar {
+    position: fixed;
+}
+
+#sidebar-menu > li:hover > ul {
+    position: static;
+    height: auto;
+}
+
+.sidebar-collapse #sidebar-menu > li:hover > ul {
+    position: fixed;
+    overflow-y: auto;
+}
+
+/*侧边栏滚动设置 end*/
+
 .skin-blue .treeview-menu li > a {
     border-left: 3px solid #3c8dbc;
 }
 
-.skin-blue .treeview-menu li > a:hover, .skin-blue .treeview-menu li.active > a {
+.skin-blue .treeview-menu li > a:hover,
+.skin-blue .treeview-menu li.active > a {
     background-color: rgba(0, 0, 0, 0.1);
     border-left-color: rgba(0, 0, 0, 0.3);
 }
@@ -53,8 +85,17 @@
     background: #3c8dbc;
 }
 
+.sidebar-title-bar .fa-angle-left,
+.sidebar-title-bar .pull-right-container > .fa-angle-lef {
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin-right: 10px;
+}
+
 /*侧边栏收起后向右展开的边框宽度*/
-.sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > a > span:not(.pull-right), .sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > .treeview-menu {
+.sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > a > span:not(.pull-right),
+.sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > .treeview-menu {
     border-radius: 0;
     width: 220px;
 }
@@ -70,12 +111,14 @@
     border-radius: 0;
 }
 
-.skin-blue .sidebar-menu > li:hover > a, .skin-blue .sidebar-menu > li.active > a {
+.skin-blue .sidebar-menu > li:hover > a,
+.skin-blue .sidebar-menu > li.active > a {
     color: #3c8dbc;
     background: #3375A1;
 }
 
-.skin-blue .treeview-menu > li.active > a, .skin-blue .treeview-menu > li > a:hover {
+.skin-blue .treeview-menu > li.active > a,
+.skin-blue .treeview-menu > li > a:hover {
     color: #000000;
 }
 
@@ -101,4 +144,38 @@
 
 .main-sidebar .pull-right {
     color: #FFFFFF
+}
+
+/*侧边栏滚动条*/
+.sidebar {
+    -ms-scroll-chaining: chained;
+    -ms-overflow-style: none;
+    -ms-content-zooming: zoom;
+    -ms-scroll-rails: none;
+    -ms-content-zoom-limit-min: 100%;
+    -ms-content-zoom-limit-max: 500%;
+    -ms-scroll-snap-type: proximity;
+    -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/*侧边栏二级菜单滚动条*/
+.scroll-list {
+    -ms-scroll-chaining: chained;
+    -ms-overflow-style: none;
+    -ms-content-zooming: zoom;
+    -ms-scroll-rails: none;
+    -ms-content-zoom-limit-min: 100%;
+    -ms-content-zoom-limit-max: 500%;
+    -ms-scroll-snap-type: proximity;
+    -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+}
+
+.scroll-list::-webkit-scrollbar {
+    width: 0;
+    background-color: rgba(0, 0, 0, 0);
 }

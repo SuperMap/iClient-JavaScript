@@ -1,6 +1,7 @@
 $(document).ready(function () {
     initPage();
     bindEvents();
+    sidebarScrollFix();
 });
 
 var aceEditor;
@@ -26,6 +27,7 @@ function screenResize() {
         mapHeight();
     };
 }
+
 //初始化编辑器
 function initCodeEditor() {
     if (!aceEditor) {
