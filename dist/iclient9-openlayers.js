@@ -26571,7 +26571,10 @@ var ImageSuperMapRest = function (_ol$source$TileImage) {
                         resolutions.push(maxReolution / Math.pow(2, _i));
                     }
                 }
-                return resolutions;
+                function sortNumber(a, b) {
+                    return b - a;
+                }
+                return resolutions.sort(sortNumber);
             }
 
             options.tileGrid = new _olDebug2.default.tilegrid.TileGrid({
@@ -27238,7 +27241,10 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
                         resolutions.push(maxReolution / Math.pow(2, _i));
                     }
                 }
-                return resolutions;
+                function sortNumber(a, b) {
+                    return b - a;
+                }
+                return resolutions.sort(sortNumber);
             }
 
             options.tileGrid = new _olDebug2.default.tilegrid.TileGrid({
