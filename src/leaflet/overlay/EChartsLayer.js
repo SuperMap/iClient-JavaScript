@@ -154,6 +154,13 @@ export var EchartsLayer = L.Layer.extend({
         _div.style.zIndex = 10;
         this._echartsContainer = _div;
         this._map.getPanes().overlayPane.appendChild(this._echartsContainer);
+        var me = this;
+        this._map.on('resize', function (e) {
+            let size = e.newSize;
+            me._echartsContainer.style.width = size.x + 'px';
+            me._echartsContainer.style.height = size.y + 'px';
+            me._ec.resize()
+        })
     }
 
 });
