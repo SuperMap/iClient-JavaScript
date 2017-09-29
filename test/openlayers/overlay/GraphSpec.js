@@ -90,7 +90,7 @@ describe('openlayers_graph', function () {
         barThemeLayer.destroy();
     });
 
-    it('setChartsType', function () {
+    xit('setChartsType', function () {
         var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
             map: map,
             chartsSetting: {
@@ -109,7 +109,7 @@ describe('openlayers_graph', function () {
         graphThemeSource.clear();
     });
 
-    it('addFeatures and removeFeatures', function () {
+    xit('addFeatures and removeFeatures', function () {
         var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
             map: map
         });
@@ -224,7 +224,7 @@ describe('openlayers_graph', function () {
         graphThemeSource.clear();
     });
 
-    it('drawCharts', function (done) {
+    xit('drawCharts', function (done) {
         var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
             map: map,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
