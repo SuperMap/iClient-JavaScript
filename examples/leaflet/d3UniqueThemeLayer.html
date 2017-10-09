@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>D3单值专题图</title>
+    <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="d3,d3Layer" src="../../dist/include-leaflet.js"></script>
+    <style type="text/css">
+        .legendItemHeader,
+        .legendItemValue {
+            width: 120px;
+            height: 18px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript">
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
+    var map, resultLayer,
+            baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            url = host + "/iserver/services/data-jingjin/rest/data";
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [39.79, 116.85],
+        maxZoom: 18,
+        zoom: 7
+    });
+    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    query();
+
+    var uniqueMap = {
+        "草地": "rgb(193,255,193)",
+        "城市": "rgb(205,112,84)",
+        "灌丛": "rgb(124,205,124)",
+        "旱地": "rgb(238,154,73)",
+        "湖泊水库": "rgb(142,229,238)",
+        "经济林": "rgb(222,184,135)",
+        "水浇地": "rgb(224,255,255)",
+        "水田": "rgb(56,142,142)",
+        "用材林": "rgb(85,107,47)",
+        "沼泽": "rgb(47,79,79)",
+        "缺省风格": "rgb(171,171,171)"
+    };
+
+    function query() {
+        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: {
+                name: "Landuse_R@Jingjin",
+                attributeFilter: "SMID > -1"
+            },
+            datasetNames: ["Jingjin:Landuse_R"],
+            fromIndex: 0,
+            toIndex: 200
+        });
+        L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+            var d3Layer = L.supermap.d3Layer(function (sel, proj) {
+                var upd = sel.selectAll('path').data(serviceResult.result.features.features);
+                upd.enter()
+                        .append('path')
+                        .attr('d', proj.pathFromGeojson)
+                        .attr('fill', function (feature) {
+                            return uniqueMap[feature.properties.LANDTYPE];
+                        })
+                        .attr('fill-opacity', '0.8');
+                sel.on('mousemove', function () {
+
+                });
+            });
+            d3Layer.addTo(map);
+            initLegendView();
+        });
+    }
+
+    //图例控件
+    function initLegendView() {
+        var legendView = L.control({position: 'bottomright'});
+        legendView.onAdd = function () {
+            this._div = L.DomUtil.create('div', 'panel panel-primary legend ');
+            var title = "<div class='panel-heading'><h5 class='panel-title text-center'>图例</h5></div>";
+            $(title + "<div class='panel-body text-left' ><table>" +
+                    "<tr><td class='legendItemHeader'>土地类型</td><td class='legendItemValue'>颜色</td></tr>" +
+                    "<tr> <td class='legendItemHeader' >草地</td> <td class='legendItemValue' style='background: #C1FFC1'></td></tr>" +
+                    "<tr> <td class='legendItemHeader'>城市</td> <td class='legendItemValue' style='background: #CD7054'></td> </tr>" +
+                    "<tr> <td class='legendItemHeader'>灌丛</td> <td class='legendItemValue' style='background: #7CCD7C'></td> </tr>" +
+                    "<tr> <td class='legendItemHeader'>旱地</td> <td class='legendItemValue' style='background: #EE9A49'></td> </tr>" +
+                    "<tr> <td class='legendItemHeader'>湖泊水库</td> <td class='legendItemValue' style='background: #8EE5EE'></td> </tr>" +
+                    "<tr> <td class='legendItemHeader'>经济林</td> <td class='legendItemValue' style='background: #548B54'></td> </tr>" +
+                    "<tr><td class='legendItemHeader'>沙漠</td> <td class='legendItemValue' style='background: #DEB887'></td> </tr>" +
+                    "<tr><td class='legendItemHeader'>水浇地</td> <td class='legendItemValue' style='background: #E0FFFF'></td> </tr>" +
+                    "<tr><td class='legendItemHeader'>水田</td> <td class='legendItemValue' style='background: #388E8E'></td> </tr>" +
+                    "<tr> <td class='legendItemHeader'>用材林</td> <td class='legendItemValue' style='background: #556B2F'></td> </tr>" +
+                    "<tr> <td class='legendItemHeader'>沼泽</td> <td class='legendItemValue' style='background: #2F4F4F'></td> </tr>" +
+                    "<tr> <td class='legendItemHeader'>缺省风格</td> <td class='legendItemValue' style='background: #ABABAB'></td> </tr>" +
+                    "</table></div>"
+            ).appendTo(this._div);
+            handleMapEvent(this._div, this._map);
+            return this._div;
+        };
+        legendView.addTo(map);
+    }
+
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
+</script>
+</body>
+</html>

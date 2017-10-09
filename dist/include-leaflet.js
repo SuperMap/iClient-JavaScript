@@ -48,6 +48,15 @@
         if (inArray(includes, 'echarts')) {
             inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
         }
+        if (inArray(includes, 'd3')) {
+            inputScript("https://cdn.bootcss.com/d3/4.10.2/d3.min.js");
+        }
+        if (inArray(includes, 'd3-hexbin')) {
+            inputScript("https://d3js.org/d3-hexbin.v0.2.min.js");
+        }
+        if (inArray(includes, 'd3Layer')) {
+            inputScript("http://iclient.supermapol.com/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.min.js");
+        }
         if (inArray(includes, 'elasticsearch')) {
             inputScript("http://cdn.bootcss.com/elasticsearch/13.0.1/elasticsearch.min.js");
         }

@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>D3蜂巢图</title>
+    <script type="text/javascript" include="jquery,randomcolor" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="d3,d3-hexbin,d3Layer" src="../../dist/include-leaflet.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript">
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var map, resultLayer, randomColors = [], notfirst = false,
+            baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            url = host + "/iserver/services/data-jingjin/rest/data";
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [39.79, 116.85],
+        maxZoom: 18,
+        zoom: 7
+    });
+    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+    query();
+
+    function query() {
+        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: {
+                name: "Jingjin",
+                attributeFilter: "SMID >=  -1"
+            },
+            datasetNames: ["Jingjin:Town_P"],
+            fromIndex: 0,
+            toIndex: 600
+        });
+        L.supermap.featureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+            var points = [];
+            serviceResult.result.features.features.map(function (feature) {
+                var point = map.latLngToLayerPoint(L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]));
+                points.push([point.x, point.y, feature.properties.NAME]);
+            });
+            var d3Layer = L.supermap.d3Layer(function (sel, proj, level) {
+                if (!notfirst) {
+                    notfirst = true;
+                } else {
+                    return;
+                }
+                var svg = sel;
+                var margin = {top: 0, right: 0, bottom: 0, left: 0},
+                        width = +map.getSize().x - margin.left - margin.right,
+                        height = +map.getSize().y - margin.top - margin.bottom,
+                        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                var hexbin = d3.hexbin()
+                        .radius(30)
+                        .extent([[0, 0], [width, height]]);
+                g.append("clipPath")
+                        .attr("id", "clip")
+                        .append("rect")
+                        .attr("width", width)
+                        .attr("height", height);
+                if (randomColors.length === 0) {
+                    randomColors = randomColor({
+                        luminosity: 'bright',
+                        hue: 'random',
+                        alpha: 0.6,
+                        format: 'rgba',
+                        count: hexbin.hexagon().length
+                    });
+                }
+                g.append("g")
+                        .attr("class", "hexagon")
+                        .attr("clip-path", "url(#clip)")
+                        .selectAll("path")
+                        .data(hexbin(points))
+                        .enter().append("path")
+                        .attr("d", hexbin.hexagon())
+                        .attr("transform", function (d) {
+                            return "translate(" + d.x + "," + d.y + ")";
+                        })
+                        .attr("fill", function (d, index) {
+                            return randomColors[index];
+                        });
+            });
+            d3Layer.addTo(map);
+        });
+    }
+</script>
+</body>
+</html>

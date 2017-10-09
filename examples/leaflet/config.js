@@ -527,6 +527,22 @@ var exampleConfig = {
                     fileName: "mapVLayerPolygonBuildings"
                 }]
             },
+            "D3": {
+                name: "D3",
+                content: [{
+                    name: "单值专题图",
+                    thumbnail: "l_d3UniqueThemeLayer.png",
+                    fileName: "d3UniqueThemeLayer"
+                }, {
+                    name: "分段专题图",
+                    thumbnail: "l_d3RangeThemeLayer.png",
+                    fileName: "d3RangeThemeLayer"
+                }, {
+                    name: "蜂巢图",
+                    thumbnail: "l_d3HexbinLayer.png",
+                    fileName: "d3HexbinLayer"
+                }]
+            },
             "extrusion": {
                 name: "OSMBuildings",
                 content: [{
