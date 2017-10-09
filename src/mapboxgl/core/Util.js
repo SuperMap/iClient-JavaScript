@@ -26,6 +26,41 @@ export default class Util {
         }
     }
 
-}
+    static toSuperMapBounds(bounds) {
+        if (this.isArray(bounds)) {
+            //左下右上
+            return new SuperMap.Bounds(
+                bounds[0],
+                bounds[1],
+                bounds[2],
+                bounds[3],
+            );
+        }
+        return new SuperMap.Bounds(
+            bounds.getWest(),
+            bounds.getSouth(),
+            bounds.getEast(),
+            bounds.getNorth()
+        );
+    }
 
-mapboxgl.supermap.Util = Util;
+    static toSuperMapPoint(lnglat) {
+        //客户端可传入 geojson 对象 或者 mapboxgl lnglat 点对象,或者是点数组
+        if (this.isArray(lnglat)) {
+            return new SuperMap.Geometry.Point(lnglat[0], lnglat[1]);
+        } else if (lnglat.lng && lnglat.lat) {
+            return new SuperMap.Geometry.Point(lnglat.lng, lnglat.lat);
+        } 
+        return new SuperMap.Geometry.Point(lnglat.geometry.coordinates[0], lnglat.geometry.coordinates[1]);
+    }
+
+    /**
+     * @function mapboxgl.supermap.Util.isArray
+     * @description 判断是否为数组格式
+     * @param obj - {Object} 待判断对象
+     * @return {boolean}
+     */
+    static isArray(obj) {
+        return Object.prototype.toString.call(obj) == '[object Array]';
+    }
+}

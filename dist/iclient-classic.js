@@ -94,7 +94,7 @@ module.exports = SuperMap;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
+exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -277,18 +277,45 @@ var Unit = exports.Unit = _SuperMap2.default.Unit = {
 };
 
 /**
- * @name EngineType
+ * @name BufferRadiusUnit
  * @memberOf SuperMap
- * @description  数据源引擎类型枚举。
+ * @description  缓冲区距离单位枚举。
+ * 该类定义了一系列缓冲距离单位类型。
  *
- * @property {string} IMAGEPLUGINS  IMAGEPLUGINS
- * @property {string} OGC  OGC
- * @property {string} ORACLEPLUS  ORACLEPLUS
- * @property {string} SDBPLUS  SDBPLUS
- * @property {string} SQLPLUS  SQLPLUS
- * @property {string} UDB  UDB
+ * @property {string} CENTIMETER   厘米
+ * @property {string} DECIMETER   分米
+ * @property {string} FOOT   英尺
+ * @property {string} INCH  英寸
+ * @property {string} KILOMETER  千米
+ * @property {string} METER   米
+ * @property {string} MILE   英里
+ * @property {string} MILLIMETER    毫米
+ * @property {string} YARD    码
  */
-var EngineType = exports.EngineType = _SuperMap2.default.EngineType = {
+var BufferRadiusUnit = exports.BufferRadiusUnit = _SuperMap2.default.BufferRadiusUnit = {
+  CENTIMETER: "CENTIMETER",
+  DECIMETER: "DECIMETER",
+  FOOT: "FOOT",
+  INCH: "INCH",
+  KILOMETER: "KILOMETER",
+  METER: "METER",
+  MILE: "MILE",
+  MILLIMETER: "MILLIMETER",
+  YARD: "YARD"
+
+  /**
+   * @name EngineType
+   * @memberOf SuperMap
+   * @description  数据源引擎类型枚举。
+   *
+   * @property {string} IMAGEPLUGINS  IMAGEPLUGINS
+   * @property {string} OGC  OGC
+   * @property {string} ORACLEPLUS  ORACLEPLUS
+   * @property {string} SDBPLUS  SDBPLUS
+   * @property {string} SQLPLUS  SQLPLUS
+   * @property {string} UDB  UDB
+   */
+};var EngineType = exports.EngineType = _SuperMap2.default.EngineType = {
   IMAGEPLUGINS: "IMAGEPLUGINS",
   OGC: "OGC",
   ORACLEPLUS: "ORACLEPLUS",

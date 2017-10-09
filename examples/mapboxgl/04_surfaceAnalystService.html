@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析-表面分析(提取等值线)</title>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script>
+</head>
+<body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript">
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var map, surfaceAnalystService, surfaceAnalystParameters,
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        baseUrl = host + "/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [116.2740019864, 39.8970124079],
+        zoom: 3
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    map.on("load", function () {
+        surfaceAnalystProcess();
+    });
+
+    function surfaceAnalystProcess() {
+        //创建表面分析服务参数
+        var region = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[
+                    [0, 4010338],
+                    [1063524, 4010338],
+                    [1063524, 3150322],
+                    [0, 3150322]
+                ]]
+            }
+        };
+        surfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
+            extractParameter: new SuperMap.SurfaceAnalystParametersSetting({
+                datumValue: 0,
+                interval: 2,
+                resampleTolerance: 0,
+                smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+                smoothness: 3,
+                clipRegion: region
+            }),
+            dataset: "SamplesP@Interpolation",
+            resolution: 3000,
+            zValueFieldName: "AVG_TMP"
+        });
+        //创建表面分析服务实例
+        surfaceAnalystService = new mapboxgl.supermap.SpatialAnalystService(serviceUrl);
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (surfaceAnalystServiceResult) {
+            var resultFeatures = surfaceAnalystServiceResult.result.recordset.features.features;
+            var i, j, changesFeatures = [];
+            for (i = 0; i < resultFeatures.length; i++) {
+                var lineTemp = resultFeatures[i];
+                var changeCoordinates = [];
+                //转换line中的点
+                for (j = 0; j < lineTemp.geometry.coordinates.length; j++) {
+                    var x = lineTemp.geometry.coordinates[j][0];
+                    var y = lineTemp.geometry.coordinates[j][1];
+                    var coordinate = proj4('EPSG:3857', 'EPSG:4326', [x, y]);
+                    //组成转后的点数组
+                    coordinate[0] += 106;
+                    changeCoordinates.push(coordinate)
+                }
+                lineTemp.geometry.coordinates = changeCoordinates;
+                changesFeatures.push(lineTemp);
+            }
+
+            var changedResultFeatures = {
+                "type": "FeatureCollection",
+                "features": changesFeatures
+            }
+
+            map.addSource("analystDatas", {
+                "type": "geojson",
+                "data": changedResultFeatures
+            });
+            map.addLayer({
+                "id": "analystLayer",
+                "type": "line",
+                "source": "analystDatas",
+                "layout": {
+                    "line-join": "round",
+                    "line-cap": "round"
+                },
+                "paint": {
+                    "line-color": "red",
+                    "line-width": 4
+                }
+            });
+        });
+    }
+</script>
+</body>
+</html>

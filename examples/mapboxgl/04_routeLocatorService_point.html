@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-里程定点</title>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+</head>
+<body style="margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript">
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var map,
+        routeLocatorParameters_point, routeLocatorService,
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        mapUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [mapUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [116.2740019864, 39.8970124079],
+        zoom: 12
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    map.on("load", function () {
+        routeCalculateMeasureProcess();
+    });
+
+    function routeCalculateMeasureProcess() {
+
+        var piontLists = [
+            [116.2143386597, 39.8959419733, 0],
+            [116.217501999125, 39.896670999665, 282.3879789906],
+            [116.220156000875, 39.896820999605, 511.787745072744],
+            [116.228716999, 39.8968419995966, 1253.201708792909],
+            [116.25000000025, 39.8968619995886, 3103.167523778722],
+            [116.27412300025, 39.8967689996258, 5201.062444476062],
+            [116.310443000875, 39.8971139994878, 8360.617856315024],
+            [116.344168500812, 39.8976724992644, 11294.738396325054]
+        ];
+
+        var LineGeometryData = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": piontLists
+            }
+        };
+        map.addLayer({
+            "id": "route",
+            "type": "line",
+            "source": {
+                "type": "geojson",
+                "data": LineGeometryData
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#888",
+                "line-width": 8
+            }
+        });
+
+        //将形成路由的点提出来，为了构造下面点定里程服务sourceRoute
+        var routeLine = LineGeometryData;
+
+        //点定里程服务
+        routeLocatorService = new mapboxgl.supermap.SpatialAnalystService(serviceUrl);
+        routeLocatorParameters_point = new SuperMap.RouteCalculateMeasureParameters({
+            "sourceRoute": routeLine,
+            "type": "POINT",
+            "measure": 6753,
+            "offset": 0,
+            "isIgnoreGap": true
+        });
+        routeLocatorService.routeLocate(routeLocatorParameters_point, function (routeLocateServiceResult) {
+            var point = routeLocateServiceResult.result.resultGeometry.geometry.coordinates;
+            map.addLayer({
+                "id": "Point",
+                "type": "circle",
+                "source": {
+                    "type": "geojson",
+                    "data": {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": point
+                        }
+                    }
+                },
+                "paint": {
+                    "circle-radius": 6,
+                    "circle-color": "red",
+                },
+            });
+            //todo 待确认，是否作了相应的坐标转换
+            var innerHTML = "查询到的里程为 " + routeLocatorParameters_point.measure + " 的点";
+            new mapboxgl.Popup().setLngLat(point).setHTML(innerHTML).addTo(map);
+        });
+    }
+</script>
+
+</body>
+</html>

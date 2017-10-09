@@ -12,15 +12,12 @@ import DensityKernelAnalystParameters from './DensityKernelAnalystParameters';
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase
  * @example  例如：
- * (start code)
- * var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
- * myDensityAnalystService.on({
+ *  var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
+ *  myDensityAnalystService.on({
  *     "processCompleted": processCompleted,
  *     "processFailed": processFailed
  *     }
- * );
- * (end)
- *
+ *  );
  */
 export default class DensityAnalystService extends SpatialAnalystBase {
 

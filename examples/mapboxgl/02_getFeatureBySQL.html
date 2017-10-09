@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数据集SQL查询</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+        " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+    baseUrl = 'http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}',
+        dataUrl = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+
+    var map = new mapboxgl.Map({
+        container: 'map', //div id
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "maxzoom": 18
+            }]
+        },
+        center: [120.143, 30.236],
+        zoom: 3
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    map.on('load', function () {
+        query();
+    });
+
+    function query() {
+        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: {
+                name: "Countries@World",
+                attributeFilter: "SMID = 247"
+            },
+            datasetNames: ["World:Countries"]
+        });
+
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesBySQL(sqlParam, function (serviceResult) {
+            map.addSource("queryDatas", {
+                "type": "geojson",
+                "data": serviceResult.result.features
+            });
+            map.addLayer({
+                "id": "queryDatas",
+                "type": "fill", /* fill类型一般用来表示一个面，一般较大 */
+                "source": "queryDatas",
+                "paint": {
+                    "fill-color": "#FF3300", /* 填充的颜色 */
+                    "fill-opacity": 0.6      /* 透明度 */
+                },
+            });
+            map.on('click', 'queryDatas', function (e) {
+                new mapboxgl.Popup()
+                    .setLngLat(e.features[0].geometry.center)
+                    .setHTML(e.features[0].properties.SMID + "<br>" + "国家：" + e.features[0].properties.COUNTRY)
+                    .addTo(map);
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

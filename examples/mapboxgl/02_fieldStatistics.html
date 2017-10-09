@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据集字段查询统计</title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <style>
+        #popup {
+            position: absolute;
+            background-color: white;
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            bottom: 10px;
+            left: 10px;
+            min-width: 280px;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%">
+    <div id="popup">
+        <div id="popup-content">
+            <div style="line-height: 35px;">
+                <div id="tableName"><strong>图层</strong>（continent_T@World）&nbsp;&nbsp;&nbsp;<strong>字段</strong></div>
+                <div>
+                    <div style="line-height: 35px;"><strong>统计结果：</strong>
+                        <div>
+                            <table id="trafficRes" class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>平均值</td>
+                                    <td>最大值</td>
+                                    <td>最小值</td>
+                                    <td>标准差</td>
+                                    <td>和</td>
+                                    <td>方差</td>
+                                </tr>
+                                <tr>
+                                    <td id="AVERAGE"></td>
+                                    <td id="MAX"></td>
+                                    <td id="MIN"></td>
+                                    <td id="STDDEVIATION"></td>
+                                    <td id="SUM"></td>
+                                    <td id="VARIANCE"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var map, currentData, layersName = [],
+        baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World Map",
+        mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+        " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [mapUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [0, 0],
+        zoom: 2
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    showLayersInfo();
+
+    //获取子图层信息
+    function showLayersInfo() {
+        var subLayer;
+        new mapboxgl.supermap.LayerInfoService(baseUrl).getLayersInfo(function (serviceResult) {
+            var layers = serviceResult.result.subLayers.layers;
+            if (!layers) return;
+            for (var i = 0, len = layers.length; i < len; i++) {
+                subLayer = layers[i];
+                if ("UGC" == subLayer.type) {
+                    //记录数据源，数据集信息供字段查询统计使用
+                    if (subLayer.datasetInfo.name && subLayer.datasetInfo.dataSourceName) {
+                        layersName[i] = {
+                            dataSetName: subLayer.datasetInfo.name,
+                            dataSourceName: subLayer.datasetInfo.dataSourceName,
+                            layerName: subLayer.name
+                        };
+                    }
+                }
+            }
+            getFields();
+        });
+    }
+
+    function getFields() {
+        var name = 'continent_T@World';
+        var dataInfo;
+        for (var i = 0; i < layersName.length; i++) {
+            dataInfo = layersName[i];
+            if (dataInfo.layerName == name) {
+                //设置数据集，数据源，查询fields信息
+                currentData = dataInfo;
+                var param = new SuperMap.FieldParameters({
+                    datasource: dataInfo.dataSourceName,
+                    dataset: dataInfo.dataSetName
+                });
+                new mapboxgl.supermap.FieldService(dataUrl).getFields(param, function (serviceResult) {
+                    fieldStatistic();
+                });
+            }
+        }
+    }
+
+    function fieldStatistic() {
+        var fieldName = 'SmID';
+        var param = new SuperMap.FieldStatisticsParameters({
+            datasource: currentData.dataSourceName,
+            dataset: currentData.dataSetName,
+            fieldName: fieldName,
+            statisticMode: [
+                SuperMap.StatisticMode.MAX,
+                SuperMap.StatisticMode.MIN,
+                SuperMap.StatisticMode.SUM,
+                SuperMap.StatisticMode.AVERAGE,
+                SuperMap.StatisticMode.STDDEVIATION,
+                SuperMap.StatisticMode.VARIANCE
+            ]
+        });
+        if (currentData) {
+            new mapboxgl.supermap.FieldService(dataUrl).getFieldStatisticsInfo(param, function (serviceResult) {
+                showResult(serviceResult.result);
+            });
+        }
+    }
+
+    function showResult(serviceResult) {
+        if (!serviceResult) {
+            return;
+        }
+
+        var tableName = document.getElementById("tableName");
+        tableName.textContent += '（' + serviceResult.fieldName + '）';
+
+        var keys = ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"];
+        document.getElementById("AVERAGE").textContent += serviceResult[keys[0]];
+        document.getElementById("MAX").textContent += serviceResult[keys[1]];
+        document.getElementById("MIN").textContent += serviceResult[keys[2]];
+        document.getElementById("STDDEVIATION").textContent += serviceResult[keys[3]];
+        document.getElementById("SUM").textContent += serviceResult[keys[4]];
+        document.getElementById("VARIANCE").textContent += serviceResult[keys[5]];
+    }
+</script>
+
+</body>
+</html>

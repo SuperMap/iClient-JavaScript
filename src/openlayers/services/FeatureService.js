@@ -177,12 +177,7 @@ export default class FeatureService extends ServiceBase {
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
         params.toIndex = params.toIndex ? params.toIndex : -1;
         if (params.bounds) {
-            params.bounds = new SuperMap.Bounds(
-                params.bounds[0],
-                params.bounds[1],
-                params.bounds[2],
-                params.bounds[3]
-            );
+            params.bounds = Util.toSuperMapBounds(params.bounds);
         }
         if (params.geometry) {
             params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));

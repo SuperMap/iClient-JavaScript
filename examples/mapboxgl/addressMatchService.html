@@ -160,13 +160,7 @@
         return re.test(str);
     }
 
-    var addressMatchService = new SuperMap.AddressMatchService(addressUrl, {
-        serverType: SuperMap.ServerType.ISERVER,
-        eventListeners: {
-            processCompleted: match,
-            processFailed: match
-        },
-    });
+    var addressMatchService = new mapboxgl.supermap.AddressMatchService(addressUrl);
 
     var filters = $('#filters').val() || $('#filters').attr('placeholder');
     $("#codeBtn").click(function () {
@@ -178,7 +172,7 @@
             prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
             maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
         });
-        addressMatchService.code(addressUrl + '/geocoding', geoCodeParam);
+        addressMatchService.code(geoCodeParam, match);
     });
     $("#decodeBtn").click(function () {
         var geoDecodeParam = new SuperMap.GeoDecodingParameter({
@@ -191,7 +185,7 @@
             maxReturn: $('#maxReturn2').val() || $('#maxReturn2').attr('placeholder'),
             geoDecodingRadius: $('#geoDecodingRadius').val() || $('#geoDecodingRadius').attr('placeholder'),
         });
-        addressMatchService.decode(addressUrl + '/geodecoding', geoDecodeParam);
+        addressMatchService.decode(geoDecodeParam, match);
     });
 
     function match(obj) {

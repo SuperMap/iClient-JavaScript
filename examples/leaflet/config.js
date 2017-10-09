@@ -146,11 +146,11 @@ var exampleConfig = {
             "spatialAnalyst": {
                 name: "空间分析",
                 content: [{
-                    name: "缓冲区分析",
+                    name: "数据集缓冲区分析",
                     thumbnail: "l_bufferAnalystService.png",
                     fileName: "04_bufferAnalystService"
                 }, {
-                    name: "缓冲区分析二",
+                    name: "几何对象缓冲区分析",
                     thumbnail: "l_bufferAnalystService-geometry.png",
                     fileName: "04_bufferAnalystService_geometry"
                 }, {

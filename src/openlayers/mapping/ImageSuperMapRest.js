@@ -187,9 +187,8 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
                     resolutions.push(maxReolution / Math.pow(2, i));
                 }
             }
-            function sortNumber(a, b)
-            {
-                return b - a
+            function sortNumber(a, b) {
+                return b - a;
             }
             return  resolutions.sort(sortNumber);
         }

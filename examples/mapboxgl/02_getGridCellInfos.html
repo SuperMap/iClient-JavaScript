@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据集栅格查询</title>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<h5 style=" position: absolute; display: block; margin-left: 60px; z-index: 100;">请点击需要查询的格网区域。</h5>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script>
+    var map,
+        baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World Map/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+        " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [0, 0],
+        zoom: 3
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    map.on("click", function (evt) {
+        var x = evt.lngLat.lng;
+        var y = evt.lngLat.lat;
+        if (x < -180.0 || x > 180.0 || y < -90 || y > 90) {
+            return;
+        }
+        var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
+            dataSourceName: "World",
+            datasetName: "WorldEarth",
+            X: x,
+            Y: y
+        });
+
+        new mapboxgl.supermap.GridCellInfosService(dataUrl).getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
+            if (!serviceResult.result) {
+                return;
+            }
+            var result = serviceResult.result;
+            var innerHTML = "栅格查询结果: " + "<br>" + "column: " + result.column + "<br>";
+            innerHTML += "row: " + result.row + "<br>";
+            innerHTML += "value: " + result.value + "<br>";
+            new mapboxgl.Popup().setLngLat([x, y]).setHTML(innerHTML).addTo(map);
+        });
+    });
+</script>
+
+</body>
+</html>

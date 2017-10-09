@@ -30,7 +30,25 @@ export default class CommontypesConversion {
                 bounds.max.y
             );
         }
+        if (this.isArray(bounds)){
+            return new SuperMap.Bounds(
+                bounds[0],
+                bounds[1],
+                bounds[2],
+                bounds[3],
+            );
+        }
         return new SuperMap.Bounds();
+    }
+
+    /**
+     * @function L.supermap.Util.isArray
+     * @description 判断是否为数组格式
+     * @param obj - {Object} 待判断对象
+     * @return {boolean}
+     */
+    static isArray(obj) {
+        return Object.prototype.toString.call(obj) == '[object Array]';
     }
 }
 L.supermap.CommontypesConversion = CommontypesConversion;

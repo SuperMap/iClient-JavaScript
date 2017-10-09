@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import {BufferEndType, Unit} from '../REST';
+import {BufferEndType, Unit, BufferRadiusUnit} from '../REST';
 import BufferDistance from './BufferDistance';
 
 /**
@@ -42,10 +42,10 @@ export default class BufferSetting {
     semicircleLineSegment = 4;
 
     /**
-     * @member SuperMap.BufferSetting.prototype.radiusUnit - {SuperMap.Unit}
-     * @description 缓冲半径单位，默认值为SuperMap.Unit.METER，还可以是SuperMap.Unit.MILIMETER、SuperMap.Unit.CENTIMETER、SuperMap.Unit.DECIMETER、SuperMap.Unit.KILOMETER、SuperMap.Unit.FOOT、SuperMap.Unit.INCH、SuperMap.Unit.MILE、SuperMap.Unit.YARD。仅对DatasetBufferAnalyst有效
+     * @member SuperMap.BufferSetting.prototype.radiusUnit - {SuperMap.BufferRadiusUnit}
+     * @description 缓冲半径单位，默认值为SuperMap.BufferRadiusUnit.METER，还可以是SuperMap.BufferRadiusUnit.MILIMETER、SuperMap.BufferRadiusUnit.CENTIMETER、SuperMap.BufferRadiusUnit.DECIMETER、SuperMap.BufferRadiusUnit.KILOMETER、SuperMap.BufferRadiusUnit.FOOT、SuperMap.BufferRadiusUnit.INCH、SuperMap.BufferRadiusUnit.MILE、SuperMap.BufferRadiusUnit.YARD。仅对BufferAnalyst有效
      */
-    radiusUnit = Unit.METER;
+    radiusUnit = BufferRadiusUnit.METER;
 
     constructor(options) {
         let me = this;

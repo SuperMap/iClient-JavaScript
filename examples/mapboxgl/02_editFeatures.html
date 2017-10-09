@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地物编辑</title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <style>
+        .editPane {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 300px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<div>
+    <div class="panel panel-primary editPane" id="editPane">
+        <div class='panel-heading'>
+            <h5 class='panel-title text-center'>编辑</h5></div>
+        <div class='panel-body content'>
+            <input type='button' class='btn btn-default' value='添加地物' onclick='addMarker()'/>&nbsp;
+            <input type='button' class='btn btn-default' value='提交添加' onclick='commit()'/>&nbsp;
+            <input type='button' class='btn btn-default' value='清除结果' onclick='clearLayer()'/>
+        </div>
+    </div>
+</div>
+<script>
+    var map, id, pointFeature,
+        baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World",
+        mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+        " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [mapUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [0, 0],
+        zoom: 2
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    initFeature();
+
+    var sourceFeatures;
+
+    function initFeature() {
+        //判断是否是重载操作
+        if (map.getLayer("queryDatas")) {
+            remove("layer", "queryDatas");
+            remove("source", "queryDatas");
+            remove("image", "positionPoint");
+        }
+
+        var polygon = {
+            "type": "Polygon",
+            "coordinates": [[[118, 20], [120, 20], [120, 50], [-120, 50], [118, 20]]]
+        };
+        var featureService = new mapboxgl.supermap.FeatureService(dataUrl);
+        var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
+            toIndex: -1,
+            datasetNames: ["World:Capitals"],
+            geometry: polygon,
+            spatialQueryMode: "INTERSECT"
+        });
+        featureService.getFeaturesByGeometry(getFeatureParams, function (serviceResult) {
+            sourceFeatures = serviceResult.result.features;
+            map.loadImage('../img/marker-icon.png', function (error, image) {
+                if (error) throw error;
+                map.addImage('positionPoint', image);
+                map.addSource("queryDatas", {
+                    "type": "geojson",
+                    "data": sourceFeatures
+                });
+                map.addLayer({
+                    "id": "queryDatas",
+                    "type": "symbol",
+                    "source": "queryDatas",
+                    "layout": {
+                        "icon-image": "positionPoint",
+                        "icon-size": 0.8
+                    },
+                });
+            });
+            document.getElementById("editPane").style.display = "block";
+        });
+    }
+
+    //添加地物
+    var addPointFeaturesData = {
+        "type": "FeatureCollection",
+        "features": []
+    };
+
+    function addMarker() {
+        var xmax = 120, xmin = 100, ymax = 50, ymin = 20;
+        var addPoint = [Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)];
+        pointFeature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": addPoint
+            },
+            "properties": {POP: 1, CAPITAL: 'test'}
+        };
+
+        addPointFeaturesData.features.push(pointFeature);
+
+        if (!map.getSource("addPointsSource")) {
+            map.loadImage('../img/markerbig.png', function (error, image) {
+                if (error) throw error;
+                map.addImage('marker', image);
+            });
+
+            map.addSource("addPointsSource", {
+                "type": "geojson",
+                "data": addPointFeaturesData
+            });
+            map.addLayer({
+                "id": "addPoint",
+                "type": "symbol",
+                "source": "addPointsSource",
+                "layout": {
+                    "icon-image": "marker",
+                },
+            });
+        } else {
+            //没有setsource方法，采用删除当前图层再重新加载的方法
+            if (map.removeLayer("addPoint")) {
+                map.getSource("addPointsSource").setData(addPointFeaturesData);
+                map.addLayer({
+                    "id": "addPoint",
+                    "type": "symbol",
+                    "source": "addPointsSource",
+                    "layout": {
+                        "icon-image": "marker",
+                    },
+                });
+            }
+        }
+        //保存可提交的source
+        sourceFeatures.features.push(pointFeature);
+    }
+
+    //提交添加
+    function commit() {
+        if (!addPointFeaturesData) {
+            return;
+        }
+        //更新添加的source
+        map.getSource('queryDatas').setData(sourceFeatures);
+
+        var featureService = new mapboxgl.supermap.FeatureService(dataUrl);
+        var addFeatureParams = new SuperMap.EditFeaturesParameters({
+            features: addPointFeaturesData,
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            editType: "add",
+            returnContent: true
+        });
+        featureService.editFeatures(addFeatureParams, function (serviceResult) {
+            if (serviceResult.result.succeed) {
+                id = serviceResult.result[0];
+                alert("提交成功");
+                removeAddPointLayer();
+                initFeature();
+            }
+        });
+    }
+
+    function clearLayer() {
+        if (!id) {
+            alert("没有可删除的数据");
+            return;
+        }
+
+        var editFeaturesService = new mapboxgl.supermap.FeatureService(dataUrl);
+        editFeaturesService.editFeatures({
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            IDs: [id],
+            editType: "delete"
+        }, function (serviceResult) {
+            if (serviceResult.result.succeed) {
+                removeAddPointLayer();
+                pointFeature = null;
+                id = null;
+                alert("删除成功");
+                //重载数据默认集
+                initFeature();
+            } else {
+                alert("删除失败");
+            }
+        });
+    }
+
+    function removeAddPointLayer() {
+        remove("layer", "addPoint");
+        remove("source", "addPointsSource");
+        remove("image", "marker");
+        addPointFeaturesData.features = [];
+    }
+
+    function remove(type, name) {
+        switch (type) {
+            case "layer":
+                if (map.getLayer(name)) {
+                    map.removeLayer(name);
+                }
+                break;
+            case "source":
+                if (map.getSource(name)) {
+                    map.removeSource(name);
+                }
+                break;
+            case "image":
+                //mapboxgl没有getImage方法来对Image进行判断
+                map.removeImage(name)
+                break;
+        }
+
+    }
+</script>
+</body>
+</html>

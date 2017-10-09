@@ -24,6 +24,11 @@ export default class GeometryBufferAnalystParameters extends BufferAnalystParame
      */
     sourceGeometry = null;
 
+    /**
+     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometrySRID -{number}
+     * @description 缓冲区几何对象投影坐标参数, 如 4326，3857。
+     */
+    sourceGeometrySRID = null;
 
     constructor(options) {
         super(options);
@@ -59,10 +64,10 @@ export default class GeometryBufferAnalystParameters extends BufferAnalystParame
                 for (var key in geometryBufferAnalystParameters.bufferSetting) {
                     tempBufferSetting[key] = geometryBufferAnalystParameters.bufferSetting[key];
                 }
-                delete tempBufferSetting.radiusUnit;
                 tempObj.analystParameter = tempBufferSetting;
             } else if (name === "sourceGeometry") {
                 tempObj.sourceGeometry = ServerGeometry.fromGeometry(geometryBufferAnalystParameters.sourceGeometry);
+
             } else {
                 tempObj[name] = geometryBufferAnalystParameters[name];
             }

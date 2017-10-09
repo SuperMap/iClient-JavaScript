@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数据集Bounds查询</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="map"></div>
+<script>
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+        " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [-10, 15],
+        zoom: 2
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    map.on('load', function () {
+        map.addLayer({
+            "id": "QueryBondsArea",
+            "type": "fill",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]
+                    }
+                }
+            },
+            "paint": {
+                "fill-color": "rgba(0, 0, 255, 0.1)",
+                'fill-outline-color': "red",
+            },
+        });
+
+        query();
+    });
+
+    function query() {
+        var sw = new mapboxgl.LngLat(-20, -20);
+        var ne = new mapboxgl.LngLat(20, 20);
+        var lngLatBounds = new mapboxgl.LngLatBounds(sw, ne);
+
+        var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
+            datasetNames: ["World:Capitals"],
+            bounds: lngLatBounds
+        });
+
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesByBounds(boundsParam, function (serviceResult) {
+            map.addSource("queryDatas", {
+                "type": "geojson",
+                "data": serviceResult.result.features
+            });
+            map.addLayer({
+                "id": "queryDatas",
+                "type": "circle",
+                "source": "queryDatas",
+                "paint": {
+                    "circle-radius": 6, /* 圆的直径，单位像素 */
+                    "circle-color": "blue", /* 圆的颜色 */
+                    "circle-opacity": 0.5  /* 圆的颜色 */
+                },
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

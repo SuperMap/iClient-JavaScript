@@ -100,7 +100,7 @@ module.exports = L;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
+exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -283,18 +283,45 @@ var Unit = exports.Unit = _SuperMap2["default"].Unit = {
 };
 
 /**
- * @name EngineType
+ * @name BufferRadiusUnit
  * @memberOf SuperMap
- * @description  数据源引擎类型枚举。
+ * @description  缓冲区距离单位枚举。
+ * 该类定义了一系列缓冲距离单位类型。
  *
- * @property {string} IMAGEPLUGINS  IMAGEPLUGINS
- * @property {string} OGC  OGC
- * @property {string} ORACLEPLUS  ORACLEPLUS
- * @property {string} SDBPLUS  SDBPLUS
- * @property {string} SQLPLUS  SQLPLUS
- * @property {string} UDB  UDB
+ * @property {string} CENTIMETER   厘米
+ * @property {string} DECIMETER   分米
+ * @property {string} FOOT   英尺
+ * @property {string} INCH  英寸
+ * @property {string} KILOMETER  千米
+ * @property {string} METER   米
+ * @property {string} MILE   英里
+ * @property {string} MILLIMETER    毫米
+ * @property {string} YARD    码
  */
-var EngineType = exports.EngineType = _SuperMap2["default"].EngineType = {
+var BufferRadiusUnit = exports.BufferRadiusUnit = _SuperMap2["default"].BufferRadiusUnit = {
+  CENTIMETER: "CENTIMETER",
+  DECIMETER: "DECIMETER",
+  FOOT: "FOOT",
+  INCH: "INCH",
+  KILOMETER: "KILOMETER",
+  METER: "METER",
+  MILE: "MILE",
+  MILLIMETER: "MILLIMETER",
+  YARD: "YARD"
+
+  /**
+   * @name EngineType
+   * @memberOf SuperMap
+   * @description  数据源引擎类型枚举。
+   *
+   * @property {string} IMAGEPLUGINS  IMAGEPLUGINS
+   * @property {string} OGC  OGC
+   * @property {string} ORACLEPLUS  ORACLEPLUS
+   * @property {string} SDBPLUS  SDBPLUS
+   * @property {string} SQLPLUS  SQLPLUS
+   * @property {string} UDB  UDB
+   */
+};var EngineType = exports.EngineType = _SuperMap2["default"].EngineType = {
   IMAGEPLUGINS: "IMAGEPLUGINS",
   OGC: "OGC",
   ORACLEPLUS: "ORACLEPLUS",
@@ -8117,7 +8144,23 @@ var CommontypesConversion = function () {
             if (bounds instanceof _leaflet2["default"].Bounds) {
                 return new _SuperMap2["default"].Bounds(bounds.min.x, bounds.min.y, bounds.max.x, bounds.max.y);
             }
+            if (this.isArray(bounds)) {
+                return new _SuperMap2["default"].Bounds(bounds[0], bounds[1], bounds[2], bounds[3]);
+            }
             return new _SuperMap2["default"].Bounds();
+        }
+
+        /**
+         * @function L.supermap.Util.isArray
+         * @description 判断是否为数组格式
+         * @param obj - {Object} 待判断对象
+         * @return {boolean}
+         */
+
+    }, {
+        key: 'isArray',
+        value: function isArray(obj) {
+            return Object.prototype.toString.call(obj) == '[object Array]';
         }
     }]);
 
@@ -38984,7 +39027,7 @@ var BufferSetting = function () {
         this.leftDistance = null;
         this.rightDistance = null;
         this.semicircleLineSegment = 4;
-        this.radiusUnit = _REST.Unit.METER;
+        this.radiusUnit = _REST.BufferRadiusUnit.METER;
         this.CLASS_NAME = "SuperMap.BufferSetting";
 
         var me = this;
@@ -39002,8 +39045,8 @@ var BufferSetting = function () {
 
 
     /**
-     * @member SuperMap.BufferSetting.prototype.radiusUnit - {SuperMap.Unit}
-     * @description 缓冲半径单位，默认值为SuperMap.Unit.METER，还可以是SuperMap.Unit.MILIMETER、SuperMap.Unit.CENTIMETER、SuperMap.Unit.DECIMETER、SuperMap.Unit.KILOMETER、SuperMap.Unit.FOOT、SuperMap.Unit.INCH、SuperMap.Unit.MILE、SuperMap.Unit.YARD。仅对DatasetBufferAnalyst有效
+     * @member SuperMap.BufferSetting.prototype.radiusUnit - {SuperMap.BufferRadiusUnit}
+     * @description 缓冲半径单位，默认值为SuperMap.BufferRadiusUnit.METER，还可以是SuperMap.BufferRadiusUnit.MILIMETER、SuperMap.BufferRadiusUnit.CENTIMETER、SuperMap.BufferRadiusUnit.DECIMETER、SuperMap.BufferRadiusUnit.KILOMETER、SuperMap.BufferRadiusUnit.FOOT、SuperMap.BufferRadiusUnit.INCH、SuperMap.BufferRadiusUnit.MILE、SuperMap.BufferRadiusUnit.YARD。仅对BufferAnalyst有效
      */
 
 
@@ -41713,15 +41756,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase
  * @example  例如：
- * (start code)
- * var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
- * myDensityAnalystService.on({
+ *  var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
+ *  myDensityAnalystService.on({
  *     "processCompleted": processCompleted,
  *     "processFailed": processFailed
  *     }
- * );
- * (end)
- *
+ *  );
  */
 var DensityAnalystService = function (_SpatialAnalystBase) {
     _inherits(DensityAnalystService, _SpatialAnalystBase);
@@ -46598,12 +46638,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var GeometryBufferAnalystParameters = function (_BufferAnalystParamet) {
     _inherits(GeometryBufferAnalystParameters, _BufferAnalystParamet);
 
+    /**
+     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
+     * @description 要做缓冲区分析的几何对象。必设字段。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+     */
     function GeometryBufferAnalystParameters(options) {
         _classCallCheck(this, GeometryBufferAnalystParameters);
 
         var _this = _possibleConstructorReturn(this, (GeometryBufferAnalystParameters.__proto__ || Object.getPrototypeOf(GeometryBufferAnalystParameters)).call(this, options));
 
         _this.sourceGeometry = null;
+        _this.sourceGeometrySRID = null;
         _this.CLASS_NAME = " SuperMap.GeometryBufferAnalystParameters";
 
         if (options) {
@@ -46619,11 +46667,8 @@ var GeometryBufferAnalystParameters = function (_BufferAnalystParamet) {
 
 
     /**
-     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
-     * @description 要做缓冲区分析的几何对象。必设字段。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometrySRID -{number}
+     * @description 缓冲区几何对象投影坐标参数, 如 4326，3857。
      */
 
 
@@ -46655,7 +46700,6 @@ var GeometryBufferAnalystParameters = function (_BufferAnalystParamet) {
                     for (var key in geometryBufferAnalystParameters.bufferSetting) {
                         tempBufferSetting[key] = geometryBufferAnalystParameters.bufferSetting[key];
                     }
-                    delete tempBufferSetting.radiusUnit;
                     tempObj.analystParameter = tempBufferSetting;
                 } else if (name === "sourceGeometry") {
                     tempObj.sourceGeometry = _ServerGeometry2["default"].fromGeometry(geometryBufferAnalystParameters.sourceGeometry);
@@ -91855,7 +91899,108 @@ exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 465 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {
+	"_from": "proj4@2.3.15",
+	"_id": "proj4@2.3.15",
+	"_inBundle": false,
+	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
+	"_location": "/proj4",
+	"_phantomChildren": {},
+	"_requested": {
+		"type": "version",
+		"registry": true,
+		"raw": "proj4@2.3.15",
+		"name": "proj4",
+		"escapedName": "proj4",
+		"rawSpec": "2.3.15",
+		"saveSpec": null,
+		"fetchSpec": "2.3.15"
+	},
+	"_requiredBy": [
+		"/"
+	],
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
+	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
+	"_spec": "proj4@2.3.15",
+	"_where": "G:\\github-iClient\\iClient9",
+	"author": "",
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
+	},
+	"bundleDependencies": false,
+	"contributors": [
+		{
+			"name": "Mike Adair",
+			"email": "madair@dmsolutions.ca"
+		},
+		{
+			"name": "Richard Greenwood",
+			"email": "rich@greenwoodmap.com"
+		},
+		{
+			"name": "Calvin Metcalf",
+			"email": "calvin.metcalf@gmail.com"
+		},
+		{
+			"name": "Richard Marsden",
+			"url": "http://www.winwaed.com"
+		},
+		{
+			"name": "T. Mittan"
+		},
+		{
+			"name": "D. Steinwand"
+		},
+		{
+			"name": "S. Nelson"
+		}
+	],
+	"dependencies": {
+		"mgrs": "~0.0.2"
+	},
+	"deprecated": false,
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"devDependencies": {
+		"browserify": "~12.0.1",
+		"chai": "~1.8.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"grunt": "~0.4.2",
+		"grunt-browserify": "~4.0.1",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~0.8.0",
+		"grunt-contrib-uglify": "~0.11.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"istanbul": "~0.2.4",
+		"mocha": "~1.17.1",
+		"tin": "~0.4.0"
+	},
+	"directories": {
+		"test": "test",
+		"doc": "docs"
+	},
+	"homepage": "https://github.com/proj4js/proj4js#readme",
+	"jam": {
+		"main": "dist/proj4.js",
+		"include": [
+			"dist/proj4.js",
+			"README.md",
+			"AUTHORS",
+			"LICENSE.md"
+		]
+	},
+	"license": "MIT",
+	"main": "lib/index.js",
+	"name": "proj4",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
+	},
+	"scripts": {
+		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
+	},
+	"version": "2.3.15"
+};
 
 /***/ }),
 /* 466 */

@@ -176,6 +176,34 @@ export var Unit = SuperMap.Unit = {
 };
 
 /**
+ * @name BufferRadiusUnit
+ * @memberOf SuperMap
+ * @description  缓冲区距离单位枚举。
+ * 该类定义了一系列缓冲距离单位类型。
+ *
+ * @property {string} CENTIMETER   厘米
+ * @property {string} DECIMETER   分米
+ * @property {string} FOOT   英尺
+ * @property {string} INCH  英寸
+ * @property {string} KILOMETER  千米
+ * @property {string} METER   米
+ * @property {string} MILE   英里
+ * @property {string} MILLIMETER    毫米
+ * @property {string} YARD    码
+ */
+export var BufferRadiusUnit = SuperMap.BufferRadiusUnit = {
+    CENTIMETER: "CENTIMETER",
+    DECIMETER: "DECIMETER",
+    FOOT: "FOOT",
+    INCH: "INCH",
+    KILOMETER: "KILOMETER",
+    METER: "METER",
+    MILE: "MILE",
+    MILLIMETER: "MILLIMETER",
+    YARD: "YARD"
+}
+
+/**
  * @name EngineType
  * @memberOf SuperMap
  * @description  数据源引擎类型枚举。

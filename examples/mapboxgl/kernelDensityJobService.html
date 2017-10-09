@@ -137,7 +137,9 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
 
-    SuperMap.SecurityManager.registerToken(host, token);
+    if (!window.isLocal) {
+        SuperMap.SecurityManager.registerToken(host, token);
+    }
 
     function getQuery() {
         if ($('#query').val() === "") {
@@ -147,12 +149,10 @@
         $('#query').val().split(',').map(function (el) {
             query.push(parseFloat(el));
         });
-        return new SuperMap.Bounds(
-            query[0],
-            query[1],
-            query[2],
-            query[3]
-        );
+        var sw = new mapboxgl.LngLat(query[0], query[1]);
+        var ne = new mapboxgl.LngLat(query[2], query[3]);
+
+        return new mapboxgl.LngLatBounds(sw, ne);
     }
 
     $('#btn').on('click', function () {
@@ -177,17 +177,7 @@
             areaUnit: $('#areaUnit option:selected').attr('value'),
         });
 
-        var kernelDensityJobsService = new SuperMap.KernelDensityJobsService(processingUrl, {
-            serverType: SuperMap.ServerType.ISERVER,
-            eventListeners: {
-                processCompleted: callback,
-            },
-            format: SuperMap.Format.GeoJSON
-        });
-
-        kernelDensityJobsService.addKernelDensityJob(kernelDensityJobParameter);
-
-        function callback(serviceResult) {
+        new mapboxgl.supermap.ProcessingService(processingUrl).addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
             if (serviceResult.error) {
                 removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
@@ -206,7 +196,7 @@
                             "tileSize": 256
                         });
                         map.addLayer({
-                            "id": "kernerlData",
+                            "id": "kernerlLayer",
                             "type": "raster",
                             "source": "kernerlData",
                             "minzoom": 0,
@@ -217,7 +207,7 @@
                     });
                 }
             });
-        }
+        });
 
         function showAlert(msg, state) {
             var className = "alert-";

@@ -94,7 +94,7 @@ module.exports = SuperMap;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
+exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -277,18 +277,45 @@ var Unit = exports.Unit = _SuperMap2.default.Unit = {
 };
 
 /**
- * @name EngineType
+ * @name BufferRadiusUnit
  * @memberOf SuperMap
- * @description  数据源引擎类型枚举。
+ * @description  缓冲区距离单位枚举。
+ * 该类定义了一系列缓冲距离单位类型。
  *
- * @property {string} IMAGEPLUGINS  IMAGEPLUGINS
- * @property {string} OGC  OGC
- * @property {string} ORACLEPLUS  ORACLEPLUS
- * @property {string} SDBPLUS  SDBPLUS
- * @property {string} SQLPLUS  SQLPLUS
- * @property {string} UDB  UDB
+ * @property {string} CENTIMETER   厘米
+ * @property {string} DECIMETER   分米
+ * @property {string} FOOT   英尺
+ * @property {string} INCH  英寸
+ * @property {string} KILOMETER  千米
+ * @property {string} METER   米
+ * @property {string} MILE   英里
+ * @property {string} MILLIMETER    毫米
+ * @property {string} YARD    码
  */
-var EngineType = exports.EngineType = _SuperMap2.default.EngineType = {
+var BufferRadiusUnit = exports.BufferRadiusUnit = _SuperMap2.default.BufferRadiusUnit = {
+  CENTIMETER: "CENTIMETER",
+  DECIMETER: "DECIMETER",
+  FOOT: "FOOT",
+  INCH: "INCH",
+  KILOMETER: "KILOMETER",
+  METER: "METER",
+  MILE: "MILE",
+  MILLIMETER: "MILLIMETER",
+  YARD: "YARD"
+
+  /**
+   * @name EngineType
+   * @memberOf SuperMap
+   * @description  数据源引擎类型枚举。
+   *
+   * @property {string} IMAGEPLUGINS  IMAGEPLUGINS
+   * @property {string} OGC  OGC
+   * @property {string} ORACLEPLUS  ORACLEPLUS
+   * @property {string} SDBPLUS  SDBPLUS
+   * @property {string} SQLPLUS  SQLPLUS
+   * @property {string} UDB  UDB
+   */
+};var EngineType = exports.EngineType = _SuperMap2.default.EngineType = {
   IMAGEPLUGINS: "IMAGEPLUGINS",
   OGC: "OGC",
   ORACLEPLUS: "ORACLEPLUS",
@@ -29860,7 +29887,7 @@ var FeatureService = function (_ServiceBase) {
             params.fromIndex = params.fromIndex ? params.fromIndex : 0;
             params.toIndex = params.toIndex ? params.toIndex : -1;
             if (params.bounds) {
-                params.bounds = new _SuperMap2.default.Bounds(params.bounds[0], params.bounds[1], params.bounds[2], params.bounds[3]);
+                params.bounds = _Util2.default.toSuperMapBounds(params.bounds);
             }
             if (params.geometry) {
                 params.geometry = _Util2.default.toSuperMapGeometry(JSON.parse(new _olDebug2.default.format.GeoJSON().writeGeometry(params.geometry)));
@@ -32411,7 +32438,7 @@ var SpatialAnalystService = function (_ServiceBase) {
                 return {};
             }
             if (params.bounds) {
-                params.bounds = new _SuperMap2.default.Bounds(params.bounds[0], params.bounds[1], params.bounds[2], params.bounds[3]);
+                params.bounds = _Util2.default.toSuperMapBounds(params.bounds);
             }
             if (params.inputPoints) {
                 for (var i = 0; i < params.inputPoints.length; i++) {
@@ -32485,8 +32512,8 @@ var SpatialAnalystService = function (_ServiceBase) {
         /**
          * @private
          * @function ol.supermap.SpatialAnalystService.prototype.convertGeometry
-         * @description 隐藏几何对象
-         * @param ol3Geometry - {Object} 待隐藏的几何对象
+         * @description 转换几何对象
+         * @param ol3Geometry - {Object} 待转换的几何对象
          */
 
     }, {
@@ -36715,7 +36742,7 @@ var BufferSetting = function () {
         this.leftDistance = null;
         this.rightDistance = null;
         this.semicircleLineSegment = 4;
-        this.radiusUnit = _REST.Unit.METER;
+        this.radiusUnit = _REST.BufferRadiusUnit.METER;
         this.CLASS_NAME = "SuperMap.BufferSetting";
 
         var me = this;
@@ -36733,8 +36760,8 @@ var BufferSetting = function () {
 
 
     /**
-     * @member SuperMap.BufferSetting.prototype.radiusUnit - {SuperMap.Unit}
-     * @description 缓冲半径单位，默认值为SuperMap.Unit.METER，还可以是SuperMap.Unit.MILIMETER、SuperMap.Unit.CENTIMETER、SuperMap.Unit.DECIMETER、SuperMap.Unit.KILOMETER、SuperMap.Unit.FOOT、SuperMap.Unit.INCH、SuperMap.Unit.MILE、SuperMap.Unit.YARD。仅对DatasetBufferAnalyst有效
+     * @member SuperMap.BufferSetting.prototype.radiusUnit - {SuperMap.BufferRadiusUnit}
+     * @description 缓冲半径单位，默认值为SuperMap.BufferRadiusUnit.METER，还可以是SuperMap.BufferRadiusUnit.MILIMETER、SuperMap.BufferRadiusUnit.CENTIMETER、SuperMap.BufferRadiusUnit.DECIMETER、SuperMap.BufferRadiusUnit.KILOMETER、SuperMap.BufferRadiusUnit.FOOT、SuperMap.BufferRadiusUnit.INCH、SuperMap.BufferRadiusUnit.MILE、SuperMap.BufferRadiusUnit.YARD。仅对BufferAnalyst有效
      */
 
 
@@ -39444,15 +39471,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase
  * @example  例如：
- * (start code)
- * var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
- * myDensityAnalystService.on({
+ *  var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
+ *  myDensityAnalystService.on({
  *     "processCompleted": processCompleted,
  *     "processFailed": processFailed
  *     }
- * );
- * (end)
- *
+ *  );
  */
 var DensityAnalystService = function (_SpatialAnalystBase) {
     _inherits(DensityAnalystService, _SpatialAnalystBase);
@@ -44329,12 +44353,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var GeometryBufferAnalystParameters = function (_BufferAnalystParamet) {
     _inherits(GeometryBufferAnalystParameters, _BufferAnalystParamet);
 
+    /**
+     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
+     * @description 要做缓冲区分析的几何对象。必设字段。</br>
+     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+     */
     function GeometryBufferAnalystParameters(options) {
         _classCallCheck(this, GeometryBufferAnalystParameters);
 
         var _this = _possibleConstructorReturn(this, (GeometryBufferAnalystParameters.__proto__ || Object.getPrototypeOf(GeometryBufferAnalystParameters)).call(this, options));
 
         _this.sourceGeometry = null;
+        _this.sourceGeometrySRID = null;
         _this.CLASS_NAME = " SuperMap.GeometryBufferAnalystParameters";
 
         if (options) {
@@ -44350,11 +44382,8 @@ var GeometryBufferAnalystParameters = function (_BufferAnalystParamet) {
 
 
     /**
-     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
-     * @description 要做缓冲区分析的几何对象。必设字段。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometrySRID -{number}
+     * @description 缓冲区几何对象投影坐标参数, 如 4326，3857。
      */
 
 
@@ -44386,7 +44415,6 @@ var GeometryBufferAnalystParameters = function (_BufferAnalystParamet) {
                     for (var key in geometryBufferAnalystParameters.bufferSetting) {
                         tempBufferSetting[key] = geometryBufferAnalystParameters.bufferSetting[key];
                     }
-                    delete tempBufferSetting.radiusUnit;
                     tempObj.analystParameter = tempBufferSetting;
                 } else if (name === "sourceGeometry") {
                     tempObj.sourceGeometry = _ServerGeometry2.default.fromGeometry(geometryBufferAnalystParameters.sourceGeometry);

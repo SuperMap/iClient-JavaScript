@@ -774,163 +774,71 @@ deps = {
             "Data": {
                 "name": "数据服务",
                 "src": [
-                    "./src/common/iServer/GetFeaturesByIDsService.js",
-                    "./src/common/iServer/GetFeaturesBySQLService.js",
-                    "./src/common/iServer/GetFeaturesByBoundsService.js",
-                    "./src/common/iServer/GetFeaturesByBufferService.js",
-                    "./src/common/iServer/GetFeaturesByGeometryService.js",
-                    "./src/common/iServer/EditFeaturesService.js",
-                    "./src/common/iServer/GetFieldsService.js",
-                    "./src/common/iServer/FieldStatisticService.js",
-                    "./src/common/iServer/GetGridCellInfosService.js",
+                    "./src/mapboxgl/services/FeatureService.js",
+                    "./src/mapboxgl/services/FieldService.js",
+                    "./src/mapboxgl/services/GridCellInfosService.js"
                 ],
                 "modules": [{
-                    "name": "SuperMap.GetFeaturesByIDsService",
-                    "des": "数据集ID查询服务"
+                    "name": "mapboxgl.supermap.FeatureService",
+                    "des": "数据集服务"
                 }, {
-                    "name": "SuperMap.GetFeaturesBySQLService",
-                    "des": "数据服务中数据集 SQL 查询服务"
+                    "name": "mapboxgl.supermap.FieldService",
+                    "des": "字段服务"
                 }, {
-                    "name": "SuperMap.GetFeaturesByBoundsService",
-                    "des": "数据集范围查询服务"
-                }, {
-                    "name": "SuperMap.GetFeaturesByBufferService",
-                    "des": "数据服务中数据集缓冲区查询服务"
-                }, {
-                    "name": "SuperMap.GetFeaturesByGeometryService",
-                    "des": "数据集几何查询服务"
-                }, {
-                    "name": "SuperMap.EditFeaturesService",
-                    "des": "数据服务中数据集添加、更新、删除服务"
-                }, {
-                    "name": "SuperMap.GetFieldsService",
-                    "des": "字段查询服务"
-                }, {
-                    "name": "SuperMap.FieldStatisticService",
-                    "des": "字段查询统计服务"
-                }, {
-                    "name": "SuperMap.GetGridCellInfosService",
+                    "name": "mapboxgl.supermap.GridCellInfosService",
                     "des": "数据栅格查询服务"
-                }
-                ]
+                }]
             },
             "SpatialAnalyst": {
                 "name": "空间分析服务",
                 "src": [
-                    "./src/common/iServer/AreaSolarRadiationService.js",
-                    "./src/common/iServer/BufferAnalystService.js",
-                    "./src/common/iServer/DensityAnalystService.js",
-                    "./src/common/iServer/GenerateSpatialDataService.js",
-                    "./src/common/iServer/GeoRelationAnalystService.js",
-                    "./src/common/iServer/InterpolationAnalystService.js",
-                    "./src/common/iServer/MathExpressionAnalysisService.js",
-                    "./src/common/iServer/OverlayAnalystService.js",
-                    "./src/common/iServer/RouteCalculateMeasureService.js",
-                    "./src/common/iServer/RouteLocatorService.js",
-                    "./src/common/iServer/SurfaceAnalystService.js",
-                    "./src/common/iServer/TerrainCurvatureCalculationService.js",
-                    "./src/common/iServer/ThiessenAnalystService.js"
+                    "./src/mapboxgl/services/SpatialAnalystService.js"
                 ],
                 "modules": [{
-                    "name": "SuperMap.AreaSolarRadiationService",
-                    "des": "地区太阳辐射服务"
-                }, {
-                    "name": "SuperMap.BufferAnalystService",
-                    "des": "缓冲区分析服务"
-                }, {
-                    "name": "SuperMap.DensityAnalystService",
-                    "des": "密度分析服务"
-                }, {
-                    "name": "SuperMap.GenerateSpatialDataService",
-                    "des": "动态分段分析服务"
-                }, {
-                    "name": "SuperMap.GeoRelationAnalystService",
-                    "des": "空间关系分析服务"
-                }, {
-                    "name": "SuperMap.InterpolationAnalystService",
-                    "des": "插值分析服务"
-                }, {
-                    "name": "SuperMap.MathExpressionAnalysisService",
-                    "des": "栅格代数运算服务"
-                }, {
-                    "name": "SuperMap.OverlayAnalystService",
-                    "des": "叠加分析服务"
-                }, {
-                    "name": "SuperMap.RouteCalculateMeasureService",
-                    "des": "点定里程服务"
-                }, {
-                    "name": "SuperMap.RouteLocatorService",
-                    "des": "里程定点/定线服务"
-                }, {
-                    "name": "SuperMap.SurfaceAnalystService",
-                    "des": "表面分析服务"
-                }, {
-                    "name": "SuperMap.TerrainCurvatureCalculationService",
-                    "des": "地形曲率计算服务"
-                }, {
-                    "name": "SuperMap.ThiessenAnalystService",
-                    "des": "泰森多边形分析服务"
+                    "name": "mapboxgl.supermap.SpatialAnalystService",
+                    "des": "空间分析服务"
                 }]
             },
             "ProcessingService": {
                 "name": "分布式分析服务",
                 "src": [
-                    "./src/common/iServer/KernelDensityJobsService.js",
-                    "./src/common/iServer/SummaryMeshJobsService.js",
-                    "./src/common/iServer/SingleObjectQueryJobsService.js",
-                    "./src/common/iServer/SummaryRegionJobsService.js",
-                    "./src/common/iServer/VectorClipJobsService.js",
+                    "./src/mapboxgl/services/ProcessingService"
                 ],
                 "modules": [{
-                    "name": "SuperMap.KernelDensityJobsService",
-                    "des": "密度分析服务"
-                }, {
-                    "name": "SuperMap.SummaryMeshJobsService",
-                    "des": "点聚合分析服务"
-                }, {
-                    "name": "SuperMap.SingleObjectQueryJobsService",
-                    "des": "单对象查询分析服务"
-                }, {
-                    "name": "SuperMap.SummaryRegionJobsService",
-                    "des": "区域汇总分析服务"
-                }, {
-                    "name": "SuperMap.VectorClipJobsService",
-                    "des": "矢量裁剪分析服务"
+                    "name": "mapboxgl.supermap.ProcessingService",
+                    "des": "分布式分析服务"
                 }]
             },
             "AddressMatch": {
                 "name": "地址匹配服务",
                 "src": [
-                    "./src/common/iServer/AddressMatchService.js",
+                    "./src/mapboxgl/services/AddressMatchService.js"
                 ],
                 "modules": [{
-                    "name": "SuperMap.AddressMatchService",
+                    "name": "mapboxgl.supermap.AddressMatchService",
                     "des": "地址匹配服务"
                 }]
             },
             "Map": {
                 "name": "地图服务",
                 "src": [
-                    "./src/common/iServer/GetLayersInfoService.js",
-                    "./src/common/iServer/MapService.js",
+                    "./src/mapboxgl/services/MapService.js",
+                    "./src/mapboxgl/services/LayerInfoService.js",
+                    "./src/mapboxgl/services/QueryService.js",
+
                     "./src/common/iServer/ChartQueryService.js",
-                    "./src/common/iServer/QueryByDistanceService.js",
-                    "./src/common/iServer/QueryByGeometryService.js",
-                    "./src/common/iServer/QueryBySQLService.js",
-                    "./src/common/iServer/QueryByBoundsService.js",
-                    "./src/common/iServer/TilesetsService.js",
                     "./src/common/iServer/MeasureService.js",
                     "./src/common/iServer/ChartFeatureInfoSpecsService.js",
-                    "./src/common/iServer/SetLayerInfoService.js",
-                    "./src/common/iServer/SetLayersInfoService.js",
-                    "./src/common/iServer/SetLayerStatusService.js",
                 ],
                 "modules": [{
-                    "name": "SuperMap.GetLayersInfoService",
+                    "name": "mapboxgl.superMap.MapService",
+                    "des": "地图信息服务"
+                }, {
+                    "name": "mapboxgl.supermap.LayerInfoService",
                     "des": "图层信息服务"
                 }, {
-                    "name": "SuperMap.MapService",
-                    "des": "地图服务"
+                    "name": "mapboxgl.supermap.queryService",
+                    "des": "地图查询服务"
                 }, {
                     "name": "SuperMap.ChartQueryService",
                     "des": "海图服务"
@@ -947,23 +855,11 @@ deps = {
                     "name": "SuperMap.QueryByBoundsService",
                     "des": "Bounds查询服务"
                 }, {
-                    "name": "SuperMap.TilesetsService",
-                    "des": "瓦片集服务"
-                }, {
                     "name": "SuperMap.MeasureService",
                     "des": "测量服务"
                 }, {
                     "name": "SuperMap.ChartFeatureInfoSpecsService",
                     "des": "海图物标信息服务"
-                }, {
-                    "name": "SuperMap.SetLayerInfoService",
-                    "des": "设置图层信息服务"
-                }, {
-                    "name": "SuperMap.SetLayersInfoService",
-                    "des": "设置图层集信息服务"
-                }, {
-                    "name": "SuperMap.SetLayerStatusService",
-                    "des": "设置图层状态服务"
                 }]
             },
             "Theme": {

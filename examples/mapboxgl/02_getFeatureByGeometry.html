@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据集几何查询</title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script>
+    var map, queryPolygonGeometry,
+        baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World",
+        mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+        " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [mapUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [0, 0],
+        zoom: 2
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    map.on("load", function () {
+        queryPolygonGeometry = {
+            "type": "Polygon",
+            "coordinates": [[[0, 0], [-10, 30], [-30, 0], [0, 0]]]
+        };
+        map.addLayer({
+            "id": "queryPolygon",
+            "type": "fill",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "Feature",
+                    "geometry": queryPolygonGeometry
+                }
+            },
+            "paint": {
+                "fill-color": "rgba(0, 0, 255, 0.1)",
+                "fill-outline-color": "red",
+            },
+        });
+
+        query();
+    });
+
+    function query() {
+        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
+            datasetNames: ["World:Countries"],
+            geometry: queryPolygonGeometry,
+            spatialQueryMode: "INTERSECT"
+        });
+        new mapboxgl.supermap.FeatureService(dataUrl).getFeaturesByGeometry(geometryParam, function (serviceResult) {
+            map.addSource("queryDatas", {
+                "type": "geojson",
+                "data": serviceResult.result.features
+            });
+            map.addLayer({
+                "id": "queryDatas",
+                "type": "fill",
+                "source": "queryDatas",
+                "paint": {
+                    "fill-color": "rgba(255, 251, 240, 0.4)",
+                    'fill-outline-color': "#0066FF",
+                },
+            });
+        });
+    }
+</script>
+</body>
+</html>

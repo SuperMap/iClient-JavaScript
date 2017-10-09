@@ -338,12 +338,7 @@ export default class SpatialAnalystService extends ServiceBase {
             return {};
         }
         if (params.bounds) {
-            params.bounds = new SuperMap.Bounds(
-                params.bounds[0],
-                params.bounds[1],
-                params.bounds[2],
-                params.bounds[3]
-            );
+            params.bounds = Util.toSuperMapBounds(params.bounds);
         }
         if (params.inputPoints) {
             for (let i = 0; i < params.inputPoints.length; i++) {
@@ -418,8 +413,8 @@ export default class SpatialAnalystService extends ServiceBase {
     /**
      * @private
      * @function ol.supermap.SpatialAnalystService.prototype.convertGeometry
-     * @description 隐藏几何对象
-     * @param ol3Geometry - {Object} 待隐藏的几何对象
+     * @description 转换几何对象
+     * @param ol3Geometry - {Object} 待转换的几何对象
      */
     convertGeometry(ol3Geometry) {
         return Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(ol3Geometry)));
