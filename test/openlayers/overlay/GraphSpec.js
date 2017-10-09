@@ -3,7 +3,6 @@ require('../../resources/chinaConsumptionLevel');
 
 var url = GlobeParameter.China4326URL;
 describe('openlayers_graph', function () {
-    var originalTimeout;
     var testDiv, map;
     beforeAll(function () {
         testDiv = window.document.createElement("div");
@@ -30,15 +29,8 @@ describe('openlayers_graph', function () {
         map.addLayer(layer);
     });
     beforeEach(function () {
-        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        setTimeout(function() {
-            value = 0;
-            done();
-        }, 5000);
     });
     afterEach(function () {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(function () {
         window.document.body.removeChild(testDiv);
