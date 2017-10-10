@@ -17,7 +17,7 @@ describe('openlayers_NetworkAnalystService', function () {
 
     //爆管分析服务
     it('burstPipelineAnalyst_test', function (done) {
-        var BurstPipelineAnalystParameters = new SuperMap.BurstPipelineAnalystParameters({
+        var burstPipelineAnalystParameters = new SuperMap.BurstPipelineAnalystParameters({
             //指定的设施点ID数组
             sourceNodeIDs: [84, 85],
             //指定的弧段ID
@@ -28,7 +28,7 @@ describe('openlayers_NetworkAnalystService', function () {
             isUncertainDirectionValid: false
         });
         var service = new ol.supermap.NetworkAnalystService(URL, options);
-        service.burstPipelineAnalyst(BurstPipelineAnalystParameters, function (result) {
+        service.burstPipelineAnalyst(burstPipelineAnalystParameters, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -52,13 +52,13 @@ describe('openlayers_NetworkAnalystService', function () {
 
     //耗费矩阵分析服务
     it('computeWeightMatrix_test', function (done) {
-        var ComputeWeightMatrixParameters = new SuperMap.ComputeWeightMatrixParameters({
+        var computeWeightMatrixParameters = new SuperMap.ComputeWeightMatrixParameters({
             //是否通过节点 ID 指定路径分析的结点，默认为 false，即通过坐标点指定。
             isAnalyzeById: true,
             nodes: [84, 85],
         });
         var service = new ol.supermap.NetworkAnalystService(URL, options);
-        service.computeWeightMatrix(ComputeWeightMatrixParameters, function (result) {
+        service.computeWeightMatrix(computeWeightMatrixParameters, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -207,7 +207,7 @@ describe('openlayers_NetworkAnalystService', function () {
 
     //选址分区分析服务
     it('findLocation_test', function (done) {
-        var FindLocationParameters = new SuperMap.FindLocationParameters({
+        var findLocationParameters = new SuperMap.FindLocationParameters({
             //期望用于最终设施选址的资源供给中心数量，必设字段
             expectedSupplyCenterCount: 1,
             //是否从中心点开始分配资源。默认为 false
@@ -230,7 +230,7 @@ describe('openlayers_NetworkAnalystService', function () {
             weightName: "length"
         });
         var service = new ol.supermap.NetworkAnalystService(URL, options);
-        service.findLocation(FindLocationParameters, function (result) {
+        service.findLocation(findLocationParameters, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -280,14 +280,14 @@ describe('openlayers_NetworkAnalystService', function () {
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        var FindPathParameters = new SuperMap.FindPathParameters({
+        var findPathParameters = new SuperMap.FindPathParameters({
             isAnalyzeById: false,
             nodes: [new ol.geom.Point([4000, -3000]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([6900, -4000])],
             hasLeastEdgeCount: false,
             parameter: analystParameter
         });
         var service = new ol.supermap.NetworkAnalystService(URL, options);
-        service.findPath(FindPathParameters, function (result) {
+        service.findPath(findPathParameters, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -509,7 +509,7 @@ describe('openlayers_NetworkAnalystService', function () {
 
     //更新边的耗费权重服务
     it('updateEdgeWeight_test', function (done) {
-        var UpdateEdgeWeightParameters = new SuperMap.UpdateEdgeWeightParameters({
+        var updateEdgeWeightParameters = new SuperMap.UpdateEdgeWeightParameters({
             edgeId: "20",
             edgeWeight: "30",
             fromNodeId: "26",
@@ -517,7 +517,7 @@ describe('openlayers_NetworkAnalystService', function () {
             weightField: "time"
         });
         var service = new ol.supermap.NetworkAnalystService(URL, options);
-        service.updateEdgeWeight(UpdateEdgeWeightParameters, function (result) {
+        service.updateEdgeWeight(updateEdgeWeightParameters, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {

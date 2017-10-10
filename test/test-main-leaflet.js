@@ -14,6 +14,7 @@ require('./leaflet/services/GetFeaturesByIDsServiceSpec.js');
 require('./leaflet/services/GetFeaturesBySQLServiceSpec.js');
 require('./leaflet/services/InterpolationAnalysisSpec.js');
 require('./leaflet/services/MathExpressionAnalysisSpec.js');
+require('./leaflet/services/NetworkAnalystServiceSpec.js');
 require('./leaflet/services/OverlayAnalysisSpec.js');
 require('./leaflet/services/QueryByBoundsServiceSpec.js');
 require('./leaflet/services/QueryByDistanceServiceSpec.js');
@@ -25,6 +26,7 @@ require('./leaflet/services/SurfaceAnalysisSpec.js');
 require('./leaflet/services/TerrainCurvatureCalculateSpec.js');
 require('./leaflet/services/ThemeServiceSpec.js');
 require('./leaflet/services/ThiessenAnalysisSpec.js');
+require('./leaflet/services/TrafficTransferAnalystServiceSpec.js');
 //require('./leaflet/services/LayerInfoServiceSpec.js');
 
 /*leaflet -- overlay*/
