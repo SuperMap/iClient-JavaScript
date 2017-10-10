@@ -12098,7 +12098,10 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
     },
     _postSimulatie: function _postSimulatie(type, url, params, options) {
         var separator = url.indexOf("?") > -1 ? "&" : "?";
-        url += separator + '_method= ' + type;
+        url += separator + '_method=' + type;
+        if (typeof params !== 'string') {
+            params = JSON.stringify(params);
+        }
         return this.post(url, params, options);
     },
 

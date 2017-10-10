@@ -4,8 +4,8 @@ import fetchJsonp from 'fetch-jsonp';
 import SuperMap from '../SuperMap';
 
 export var Support = SuperMap.Support = SuperMap.Support || {
-    cors: (window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest())
-};
+        cors: (window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest())
+    };
 export var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
@@ -79,7 +79,10 @@ export var FetchRequest = SuperMap.FetchRequest = {
     },
     _postSimulatie: function (type, url, params, options) {
         var separator = url.indexOf("?") > -1 ? "&" : "?";
-        url += separator + '_method= ' + type;
+        url += separator + '_method=' + type;
+        if (typeof params !== 'string') {
+            params = JSON.stringify(params);
+        }
         return this.post(url, params, options);
     },
 
