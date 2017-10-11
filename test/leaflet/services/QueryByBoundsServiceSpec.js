@@ -23,7 +23,8 @@ describe('leaflet_testQueryService_queryByBounds', function () {
             queryParams: {name: "Capitals@World"},
             bounds: polygon.getBounds()
         });
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options).queryByBounds(queryByBoundsParams, function (result) {
+        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
+        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -90,7 +91,8 @@ describe('leaflet_testQueryService_queryByBounds', function () {
         queryByBoundsParams.startRecord = 0;
         queryByBoundsParams.holdTime = 10;
         queryByBoundsParams.returnCustomResult = true;
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options).queryByBounds(queryByBoundsParams, function (result) {
+        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
+        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -123,7 +125,8 @@ describe('leaflet_testQueryService_queryByBounds', function () {
             queryParams: {name: "Capitals@World1"},
             bounds: polygon.getBounds()
         });
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options).queryByBounds(queryByBoundsParams, function (result) {
+        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
+        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -153,7 +156,8 @@ describe('leaflet_testQueryService_queryByBounds', function () {
             queryParams: null,
             bounds: polygon.getBounds()
         });
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options).queryByBounds(queryByBoundsParams, function (result) {
+        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
+        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {

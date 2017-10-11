@@ -365,7 +365,7 @@ export default class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.createMarkersLayer
      * @description 创建图标图层
      * @param layerInfo - {Object} 图层信息
-     * @return {ol.layer.Vector}
+     * @return {ol.layer.Vector} 返回Marker图层对象
      */
     createMarkersLayer(layerInfo) {
         var markers = layerInfo.markers || [];
@@ -387,7 +387,7 @@ export default class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.createVectorLayer
      * @description 创建矢量要素图层
      * @param layerInfo - {Object} 图层信息
-     * @return {ol.layer.Vector}
+     * @return {ol.layer.Vector} 返回矢量要素图层对象
      */
     createVectorLayer(layerInfo) {
         var style = layerInfo.style;
@@ -444,7 +444,7 @@ export default class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.createWmsLayer
      * @description 创建Wms图层
      * @param layerInfo - {Object} 图层信息
-     * @return {ol.layer.Tile}
+     * @return {ol.layer.Tile} 返回Wms图层对象
      */
     createWmsLayer(layerInfo) {
         var url = layerInfo.url,

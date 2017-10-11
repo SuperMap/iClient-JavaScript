@@ -771,6 +771,32 @@ deps = {
         "Services": {
             "title": "服务",
             "description": "对各种功能服务的包装",
+            "Map": {
+                "name": "地图服务",
+                "src": [
+                    "./src/mapboxgl/services/MapService.js",
+                    "./src/mapboxgl/services/LayerInfoService.js",
+                    "./src/mapboxgl/services/ChartService.js",
+                    "./src/mapboxgl/services/QueryService.js",
+                    "./src/mapboxgl/services/MeasureService.js",
+                ],
+                "modules": [{
+                    "name": "mapboxgl.supermap.LayerInfoService",
+                    "des": "图层信息服务"
+                }, {
+                    "name": "mapboxgl.supermap.MapService",
+                    "des": "地图服务"
+                }, {
+                    "name": "mapboxgl.supermap.ChartQueryService",
+                    "des": "海图服务"
+                }, {
+                    "name": "mapboxgl.supermap.QueryService",
+                    "des": "查询服务"
+                }, {
+                    "name": "mapboxgl.supermap.MeasureService",
+                    "des": "测量服务"
+                }]
+            },
             "Data": {
                 "name": "数据服务",
                 "src": [
@@ -802,7 +828,7 @@ deps = {
             "ProcessingService": {
                 "name": "分布式分析服务",
                 "src": [
-                    "./src/mapboxgl/services/ProcessingService"
+                    "./src/mapboxgl/services/ProcessingService.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.ProcessingService",
@@ -819,33 +845,7 @@ deps = {
                     "des": "地址匹配服务"
                 }]
             },
-            "Map": {
-                "name": "地图服务",
-                "src": [
 
-                    "./src/mapboxgl/services/LayerInfoService.js",
-                    "./src/mapboxgl/services/MapService.js",
-                    "./src/mapboxgl/services/ChartService.js",
-                    "./src/mapboxgl/services/QueryService.js",
-                    "./src/mapboxgl/services/MeasureService.js",
-                ],
-                "modules": [{
-                    "name": "mapboxgl.supermap.LayerInfoService",
-                    "des": "图层信息服务"
-                }, {
-                    "name": "mapboxgl.supermap.MapService",
-                    "des": "地图服务"
-                }, {
-                    "name": "mapboxgl.supermap.ChartQueryService",
-                    "des": "海图服务"
-                }, {
-                    "name": "mapboxgl.supermap.QueryService",
-                    "des": "查询服务"
-                }, {
-                    "name": "mapboxgl.supermap.MeasureService",
-                    "des": "测量服务"
-                }]
-            },
             "Theme": {
                 "name": "服务器专题图服务",
                 "src": [
@@ -891,7 +891,7 @@ deps = {
             "NetworkAnalyst3D": {
                 "name": "3D网络分析服务",
                 "src": [
-                    "./src/mapboxgl/services/NetworkAnalystService.js"
+                    "./src/mapboxgl/services/NetworkAnalyst3DService.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.NetworkAnalyst3DService",
@@ -924,38 +924,38 @@ deps = {
                     "des": "百度MapV可视化效果"
                 }]
             },
-        "ThemeLayer": {
-            "name": "ThemeLayer",
-            "src": [
-                "./src/mapboxgl/overlay/RangeTheme3DLayer.js",
-                "./src/mapboxgl/overlay/UniqueTheme3DLayer.js",
-                "./src/mapboxgl/overlay/RangeThemeLayer.js",
-                "./src/mapboxgl/overlay/UniqueThemeLayer.js",
-                "./src/mapboxgl/overlay/RankSymbolThemeLayer.js",
-                "./src/mapboxgl/overlay/GraphThemeLayer.js"
-            ],
-            "modules": [{
-                "name": "mapboxgl.supermap.RankTheme3DLayer",
-                "des": "三维分段专题图"
-            }, {
-                "name": "mapboxgl.supermap.UniqueTheme3DLayer",
-                "des": "三维单值专题图"
-            }, {
-                "name": "mapboxgl.supermap.RangeThemeLayer",
-                "des": "分段专题图"
-            }, {
-                "name": "mapboxgl.supermap.UniqueThemeLayer",
-                "des": "单值专题图"
-            }, {
-                "name": "mapboxgl.supermap.RankSymbolThemeLayer",
-                "des": "等级符号专题图"
-            }, {
-                "name": "mapboxgl.supermap.GraphThemeLayer",
-                "des": "统计专题图"
-            }]
+            "ThemeLayer": {
+                "name": "ThemeLayer",
+                "src": [
+                    "./src/mapboxgl/overlay/RangeTheme3DLayer.js",
+                    "./src/mapboxgl/overlay/UniqueTheme3DLayer.js",
+                    "./src/mapboxgl/overlay/RangeThemeLayer.js",
+                    "./src/mapboxgl/overlay/UniqueThemeLayer.js",
+                    "./src/mapboxgl/overlay/RankSymbolThemeLayer.js",
+                    "./src/mapboxgl/overlay/GraphThemeLayer.js"
+                ],
+                "modules": [{
+                    "name": "mapboxgl.supermap.RankTheme3DLayer",
+                    "des": "三维分段专题图"
+                }, {
+                    "name": "mapboxgl.supermap.UniqueTheme3DLayer",
+                    "des": "三维单值专题图"
+                }, {
+                    "name": "mapboxgl.supermap.RangeThemeLayer",
+                    "des": "分段专题图"
+                }, {
+                    "name": "mapboxgl.supermap.UniqueThemeLayer",
+                    "des": "单值专题图"
+                }, {
+                    "name": "mapboxgl.supermap.RankSymbolThemeLayer",
+                    "des": "等级符号专题图"
+                }, {
+                    "name": "mapboxgl.supermap.GraphThemeLayer",
+                    "des": "统计专题图"
+                }]
 
-        }
-    },
+            }
+        },
         "Control": {
             "title": "控件",
             "description": "各种功能在UI上的交互控制",

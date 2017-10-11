@@ -26,7 +26,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             returnContent: true,
             isUseBatch: false
         });
-        var addFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(addFeaturesParams, function (result) {
+        var addFeaturesService = L.supermap.featureService(editServiceURL);
+        addFeaturesService.editFeatures(addFeaturesParams, function (result) {
             addFeatureResult_LINE = result
         });
         setTimeout(function () {
@@ -61,7 +62,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             IDs: [id1],
             editType: "delete"
         });
-        var deleteLineService = L.supermap.featureService(editServiceURL).editFeatures(deleteFeaturesParams, function (result) {
+        var deleteLineService = L.supermap.featureService(editServiceURL);
+        deleteLineService.editFeatures(deleteFeaturesParams, function (result) {
             deleteLineResult = result
         });
         setTimeout(function () {

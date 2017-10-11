@@ -64,7 +64,6 @@ export default class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
-     * @return {ol.supermap.DataFlowService}
      */
     initSubscribe() {
         this.dataFlow.initSubscribe();
@@ -75,7 +74,6 @@ export default class DataFlowService extends ServiceBase {
      * @function ol.supermap.DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param excludeField - {Object} 排除字段
-     * @return {ol.supermap.DataFlowService}
      */
     setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -87,7 +85,6 @@ export default class DataFlowService extends ServiceBase {
      * @function ol.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
      * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
-     * @return {ol.supermap.DataFlowService}
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);

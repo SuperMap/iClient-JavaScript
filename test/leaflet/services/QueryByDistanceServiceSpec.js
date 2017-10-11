@@ -24,7 +24,8 @@ describe('leaflet_testQueryService_queryByDistance', function () {
             distance: 10,
             geometry: circleMarker
         });
-        var queryByDistanceService = L.supermap.queryService(worldMapURL, options).queryByDistance(queryByDistanceParams, function (result) {
+        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -87,7 +88,8 @@ describe('leaflet_testQueryService_queryByDistance', function () {
             geometry: circleMarker,
             returnContent: false
         });
-        var queryByDistanceService = L.supermap.queryService(worldMapURL, options).queryByDistance(queryByDistanceParams, function (result) {
+        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -120,7 +122,8 @@ describe('leaflet_testQueryService_queryByDistance', function () {
             distance: 10,
             geometry: circleMarker
         });
-        var queryByDistanceService = L.supermap.queryService(worldMapURL, options).queryByDistance(queryByDistanceParams, function (result) {
+        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -151,7 +154,8 @@ describe('leaflet_testQueryService_queryByDistance', function () {
             distance: 10,
             geometry: circleMarker
         });
-        var queryByDistanceService = L.supermap.queryService(worldMapURL, options).queryByDistance(queryByDistanceParams, function (result) {
+        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {

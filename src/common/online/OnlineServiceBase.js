@@ -24,7 +24,7 @@ export default class OnlineServiceBase {
      * @param url - {string} 服务地址
      * @param param -{Object} Url查询参数
      * @param requestOptions -{Object} http请求参数, 比如请求头，超时时间等
-     * @return {Promise}
+     * @return {Promise}  返回包含请求结果的Promise对象
      */
     request(method, url, param, requestOptions) {
         url = this.createCredentialUrl(url);

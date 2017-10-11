@@ -33,7 +33,7 @@ export var GraphicLayer = L.Path.extend({
          * @private
          * @function L.supermap.graphicLayer.prototype.getEvents
          * @description 获取事件
-         * @return {Object}
+         * @return {Object} 返回该图层支持的事件对象
          */
     getEvents: function () {
         var events = {

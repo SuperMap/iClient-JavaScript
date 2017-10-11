@@ -26,7 +26,6 @@ export default class FieldService extends ServiceBase {
      * @description 字段查询服务
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
      * @param callback - {function} 回调函数
-     * @return {ol.supermap.FieldService}
      */
     getFields(params,callback) {
         var me = this;
@@ -41,7 +40,6 @@ export default class FieldService extends ServiceBase {
             dataset: params.dataset
         });
         getFieldsService.processAsync();
-        return me;
     }
 
     /**
@@ -49,7 +47,6 @@ export default class FieldService extends ServiceBase {
      * @description 字段统计服务
      * @param params -{SuperMap.FieldStatisticsParameters} 查询所需参数类。
      * @param callback -{function} 回调函数
-     * @return {ol.supermap.FieldService}
      */
     getFieldStatisticsInfo(params, callback) {
         var me = this,
@@ -65,7 +62,6 @@ export default class FieldService extends ServiceBase {
             me.currentStatisticResult[modes[mode]] = null;
             me._fieldStatisticRequest(params.datasource,params.dataset,fieldName, modes[mode]);
         }
-        return me;
     }
 
     _fieldStatisticRequest(datasource,dataset,fieldName, statisticMode) {

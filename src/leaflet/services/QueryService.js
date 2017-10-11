@@ -31,7 +31,6 @@ export var QueryService = ServiceBase.extend({
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
      * @param callback -{function} 回掉函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     queryByBounds: function (params, callback, resultFormat) {
         var me = this;
@@ -46,7 +45,6 @@ export var QueryService = ServiceBase.extend({
         });
 
         queryService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -55,7 +53,6 @@ export var QueryService = ServiceBase.extend({
      * @param params - {SuperMap.QueryByDistanceParameters} Distance查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     queryByDistance: function (params, callback, resultFormat) {
         var me = this;
@@ -70,7 +67,6 @@ export var QueryService = ServiceBase.extend({
         });
 
         queryByDistanceService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -79,7 +75,6 @@ export var QueryService = ServiceBase.extend({
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
      * @param callback -{function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     queryBySQL: function (params, callback, resultFormat) {
         var me = this;
@@ -94,7 +89,6 @@ export var QueryService = ServiceBase.extend({
         });
 
         queryBySQLService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -103,7 +97,6 @@ export var QueryService = ServiceBase.extend({
      * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     queryByGeometry: function (params, callback, resultFormat) {
         var me = this;
@@ -118,7 +111,6 @@ export var QueryService = ServiceBase.extend({
         });
 
         queryByGeometryService.processAsync(me._processParams(params));
-        return me;
     },
 
     _processParams: function (params) {

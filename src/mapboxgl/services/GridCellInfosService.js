@@ -43,7 +43,6 @@ export default class GridCellInfosService extends ServiceBase {
             }
         });
         gridCellQueryService.processAsync(params);
-        return me;
     }
 }
 mapboxgl.supermap.GridCellInfosService = GridCellInfosService;

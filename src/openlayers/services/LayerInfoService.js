@@ -40,7 +40,6 @@ export default class LayerInfoService extends ServiceBase {
             }
         });
         getLayersInfoService.processAsync();
-        return me;
     }
 
     /**
@@ -72,7 +71,6 @@ export default class LayerInfoService extends ServiceBase {
             resourceID: resourceID
         });
         setLayerInfoService.processAsync(layerInfoParams);
-        return me;
     }
 
     /**
@@ -105,7 +103,6 @@ export default class LayerInfoService extends ServiceBase {
             isTempLayers: isTempLayers
         });
         setLayersInfoService.processAsync(layersInfoParam);
-        return me;
     }
 
     /**
@@ -127,7 +124,6 @@ export default class LayerInfoService extends ServiceBase {
             }
         });
         setLayerStatusService.processAsync(params);
-        return me;
     }
 }
 ol.supermap.LayerInfoService = LayerInfoService;

@@ -45,7 +45,7 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.uniqueThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style
      * @param feat {SuperMap.Feature.Vector} 用户要素数据
-     * @return {Array<SuperMap.ThemeStyle>}
+     * @return {Array<SuperMap.ThemeStyle>} 返回包含专题要素style的对象
      */
     getStyleByData: function (feat) {
         var me = this,

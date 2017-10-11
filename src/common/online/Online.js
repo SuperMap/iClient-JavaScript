@@ -30,7 +30,7 @@ export default class Online {
     /**
      * @function SuperMap.Online.prototype.load
      * @description 加载online，验证online是否可用
-     * @returns {Promise}
+     * @returns {Promise} 返回包含网络请求结果的Promise对象
      */
     load() {
         return FetchRequest.get(this.rootUrl).then(function (response) {
@@ -50,7 +50,7 @@ export default class Online {
      * @function SuperMap.Online.prototype.queryDatas
      * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
      * @param parameter -{SuperMap.OnlineQueryDatasParameter} myDatas服务资源查询参数
-     * @returns {Promise}
+     * @returns {Promise} 返回包含所有数据服务信息的Promise对象
      */
     queryDatas(parameter) {
         var me = this, url = me.mDatasUrl;

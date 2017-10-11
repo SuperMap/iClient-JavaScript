@@ -55,7 +55,7 @@ export default class Util {
      * @function mapboxgl.supermap.Util.isArray
      * @description 判断是否为数组格式
      * @param obj - {Object} 待判断对象
-     * @return {boolean}
+     * @return {boolean} 是否是数组
      */
     static isArray(obj) {
         return Object.prototype.toString.call(obj) == '[object Array]'

@@ -26,7 +26,6 @@ export var ThemeService = ServiceBase.extend({
      * @description 获取专题图信息
      * @param params - {SuperMap.ThemeParameters} 专题图参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     getThemeInfo: function (params, callback) {
         var me = this;
@@ -39,7 +38,6 @@ export var ThemeService = ServiceBase.extend({
             }
         });
         themeService.processAsync(params);
-        return me;
     }
 });
 

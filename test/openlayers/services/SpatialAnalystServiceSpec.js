@@ -15,7 +15,8 @@ describe('openlayers_SpatialAnalystService', function () {
     });
 
     //暂无相关服务
-    xit('getAreaSolarRadiationResult test', function () {});
+    xit('getAreaSolarRadiationResult test', function () {
+    });
 
     //缓冲区分析
     it('bufferAnalysis test', function (done) {
@@ -31,7 +32,8 @@ describe('openlayers_SpatialAnalystService', function () {
                 semicircleLineSegment: 10
             })
         });
-        new ol.supermap.SpatialAnalystService(changchunServiceUrl).bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
+        var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
+        spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
 
@@ -53,7 +55,8 @@ describe('openlayers_SpatialAnalystService', function () {
             resultGridName: "KernelDensity_Result",
             deleteExistResultDataset: true
         });
-        new ol.supermap.SpatialAnalystService(changchunServiceUrl).densityAnalysis(densityAnalystParameters, function (serviceResult) {
+        var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
+        spatialAnalystService.densityAnalysis(densityAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
 
@@ -83,7 +86,8 @@ describe('openlayers_SpatialAnalystService', function () {
                 dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
             })
         });
-        new ol.supermap.SpatialAnalystService(changchunServiceUrl).generateSpatialData(generateSpatialDataParameters, function (serviceResult) {
+        var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
+        spatialAnalystService.generateSpatialData(generateSpatialDataParameters, function (serviceResult) {
             serviceResults = serviceResult;
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
@@ -99,7 +103,8 @@ describe('openlayers_SpatialAnalystService', function () {
     });
 
     //暂无相关服务
-    xit('geoRelationAnalysis test', function () {});
+    xit('geoRelationAnalysis test', function () {
+    });
 
     //插值分析
     describe('interpolationAnalysis test', function () {
@@ -120,7 +125,8 @@ describe('openlayers_SpatialAnalystService', function () {
                 //结果栅格数据集的范围（生效）
                 bounds: [-2640403.63, 1873792.1, 3247669.39, 5921501.4]
             });
-            new ol.supermap.SpatialAnalystService(sampleServiceUrl).interpolationAnalysis(interpolationAnalystParameters, function (serviceResult) {
+            var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
+            spatialAnalystService.interpolationAnalysis(interpolationAnalystParameters, function (serviceResult) {
                 serviceResults = serviceResult;
             });
 
@@ -150,7 +156,8 @@ describe('openlayers_SpatialAnalystService', function () {
                 expectedCount: 12,
                 bounds: [-2640403.63, 1873792.1, 3247669.39, 5921501.4]
             });
-            new ol.supermap.SpatialAnalystService(sampleServiceUrl).interpolationAnalysis(interpolationAnalystParameters, function (serviceResult) {
+            var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
+            spatialAnalystService.interpolationAnalysis(interpolationAnalystParameters, function (serviceResult) {
                 serviceResults = serviceResult;
             });
 
@@ -234,7 +241,8 @@ describe('openlayers_SpatialAnalystService', function () {
             resultGridName: "MathExpressionAnalysis_Result",
             deleteExistResultDataset: true
         });
-        new ol.supermap.SpatialAnalystService(sampleServiceUrl).mathExpressionAnalysis(mathExpressionAnalysisParameters, function (serviceResult) {
+        var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
+        spatialAnalystService.mathExpressionAnalysis(mathExpressionAnalysisParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
 
@@ -254,7 +262,8 @@ describe('openlayers_SpatialAnalystService', function () {
             tolerance: 0,
             operation: SuperMap.OverlayOperationType.UNION
         });
-        new ol.supermap.SpatialAnalystService(sampleServiceUrl).overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
+        var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
+        spatialAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
 
@@ -315,7 +324,7 @@ describe('openlayers_SpatialAnalystService', function () {
     //里程分析
     describe('routeLocate test', function () {
         //里程定线
-        it('routeLocate_line',function (done) {
+        it('routeLocate_line', function (done) {
             queryBySQLService = new ol.supermap.QueryService(changchunBaseUrl);
             queryBySQLParams = new SuperMap.QueryBySQLParameters({
                 queryParams: [
@@ -359,7 +368,7 @@ describe('openlayers_SpatialAnalystService', function () {
         });
 
         //里程定点
-        it('routeLocate_point',function (done) {
+        it('routeLocate_point', function (done) {
             queryBySQLService = new ol.supermap.QueryService(changchunBaseUrl);
             queryBySQLParams = new SuperMap.QueryBySQLParameters({
                 queryParams: [
@@ -446,7 +455,8 @@ describe('openlayers_SpatialAnalystService', function () {
             deleteExistResultDataset: true
         });
         //向iServer发起地形曲率计算请求
-        new ol.supermap.SpatialAnalystService(sampleServiceUrl).terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (serviceResult) {
+        var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
+        spatialAnalystService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
 
@@ -466,7 +476,8 @@ describe('openlayers_SpatialAnalystService', function () {
             var dThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
                 dataset: "Factory@Changchun"
             });
-            new ol.supermap.SpatialAnalystService(changchunServiceUrl).thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {
+            var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
+            spatialAnalystService.thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {
                 serviceResults = serviceResult;
             });
 
@@ -497,9 +508,10 @@ describe('openlayers_SpatialAnalystService', function () {
                 points: pointsList
             });
             //创建泰森多边形服务实例
-            new ol.supermap.SpatialAnalystService(changchunServiceUrl).thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
+            var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
+            spatialAnalystService.thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
                 serviceResults = serviceResult;
-            })
+            });
 
             setTimeout(function () {
                 expect(serviceResults).not.toBeNull();

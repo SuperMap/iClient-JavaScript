@@ -282,7 +282,7 @@ export default class ChangeTileVersion extends ol.control.Control {
      * @function ol.supermap.control.ChangeTileVersion.prototype.setToolTip
      * @description 设置提示信息
      * @param tooltip -{string} 工具提示
-     * @return {ChangeTileVersion}
+     * @return {this} this
      */
     setToolTip(tooltip) {
         this.tooltip.innerHTML = tooltip;
@@ -299,7 +299,6 @@ export default class ChangeTileVersion extends ol.control.Control {
             this.length = length;
             this.slider.setAttribute("max", this.length - 1);
         }
-        return this;
     }
 
     /**
@@ -322,7 +321,6 @@ export default class ChangeTileVersion extends ol.control.Control {
             me.setContent(tileVersions);
         });
         me.getTileSetsInfo();
-        return me;
     }
 
     /**
@@ -338,7 +336,6 @@ export default class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.getTileSetsInfo
      * @description 请求获取切片集信息
-     * @return {SuperMap.ChangeTileVersion}
      */
     getTileSetsInfo() {
         var me = this;
@@ -347,7 +344,6 @@ export default class ChangeTileVersion extends ol.control.Control {
                 me.options.layer.setTileSetsInfo(info.result);
             });
         }
-        return me;
     }
 
     /**
@@ -356,12 +352,12 @@ export default class ChangeTileVersion extends ol.control.Control {
      */
     removeLayer() {
         this.options.layer = null;
-        return this;
     }
 
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.nextTilesVersion
      * @description 下一个版本，第一次不进行加减，是无版本的状态
+     * @return {this} this
      */
     nextTilesVersion() {
         if (this.firstLoad) {
@@ -379,6 +375,7 @@ export default class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.lastTilesVersion
      * @description 获取上一个版本信息
+     * @return {this} this
      */
     lastTilesVersion() {
         this.slider.value = this.slider.value - 1;

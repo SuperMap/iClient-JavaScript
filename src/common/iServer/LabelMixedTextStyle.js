@@ -96,7 +96,7 @@ export default class LabelMixedTextStyle {
      * @function SuperMap.LabelMixedTextStyle.fromObj
      * @description 从传入对象获取标签文本复合风格类。
      * @param obj - {Object} 传入对象
-     * @return {SuperMap.LabelMixedTextStyle}
+     * @return {SuperMap.LabelMixedTextStyle} 返回新的LabelMixedTextStyle对象
      */
     static fromObj(obj) {
         if (!obj) {return;}

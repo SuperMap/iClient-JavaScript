@@ -4,6 +4,7 @@ import {ServiceBase} from './ServiceBase';
 import ChartQueryService from '../../common/iServer/ChartQueryService';
 import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoSpecsService';
 import CommontypesConversion from '../core/CommontypesConversion';
+
 /**
  * @class L.supermap.chartService
  * @classdesc 海图服务。
@@ -45,7 +46,6 @@ var ChartService = ServiceBase.extend({
         });
 
         chartQueryService.processAsync(param);
-        return me;
     },
 
     /**
@@ -65,7 +65,6 @@ var ChartService = ServiceBase.extend({
             }
         });
         chartFeatureInfoSpecsService.processAsync();
-        return me;
     },
 
     _processParams: function (params) {

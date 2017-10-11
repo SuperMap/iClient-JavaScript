@@ -38,7 +38,6 @@ export default class AddressMatchService extends ServiceBase {
             }
         });
         addressMatchService.code(me.url + '/geocoding', params);
-        return me;
     }
 
     /**
@@ -58,7 +57,6 @@ export default class AddressMatchService extends ServiceBase {
             }
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
-        return me;
     }
 
 }

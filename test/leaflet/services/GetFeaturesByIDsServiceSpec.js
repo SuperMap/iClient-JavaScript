@@ -23,7 +23,8 @@ describe('leaflet_testFeatureService_getFeaturesByIDs', function () {
             datasetNames: ["World:Capitals"],
             IDs: [1, 2, 3]
         });
-        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options).getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -80,7 +81,8 @@ describe('leaflet_testFeatureService_getFeaturesByIDs', function () {
             datasetNames: ["World:Capitals"],
             IDs: [1, 2, 3]
         });
-        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options).getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -110,7 +112,8 @@ describe('leaflet_testFeatureService_getFeaturesByIDs', function () {
             datasetNames: ["World1:Capitals"],
             IDs: [1, 2, 3]
         });
-        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options).getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -137,7 +140,8 @@ describe('leaflet_testFeatureService_getFeaturesByIDs', function () {
         var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
             datasetNames: null
         });
-        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options).getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {

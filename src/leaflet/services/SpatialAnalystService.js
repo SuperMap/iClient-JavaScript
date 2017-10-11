@@ -55,7 +55,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         areaSolarRadiationService.processAsync(params);
-        return me;
     },
 
     /**
@@ -77,7 +76,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         bufferAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -99,7 +97,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         densityAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -121,7 +118,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         generateSpatialDataService.processAsync(params);
-        return me;
     },
 
     /**
@@ -143,7 +139,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         geoRelationAnalystService.processAsync(params);
-        return me;
     },
 
     /**
@@ -165,7 +160,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         interpolationAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -187,7 +181,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         mathExpressionAnalysisService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -209,7 +202,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         overlayAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -231,7 +223,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         routeCalculateMeasureService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -253,7 +244,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         routeLocatorService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -275,7 +265,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         surfaceAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -297,7 +286,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         terrainCurvatureCalculationService.processAsync(params);
-        return me;
     },
 
     /**
@@ -319,7 +307,6 @@ export var SpatialAnalystService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         thiessenAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     _processParams: function (params) {

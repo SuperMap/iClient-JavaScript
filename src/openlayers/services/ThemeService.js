@@ -27,7 +27,6 @@ export default class ThemeService extends ServiceBase {
      * @description 获取专题图信息
      * @param params - {SuperMap.ThemeParameters} 专题图参数类
      * @param callback - {function} 回调函数
-     * @return {ol.supermap.ThemeService}
      */
     getThemeInfo(params, callback) {
         var me = this;
@@ -40,7 +39,6 @@ export default class ThemeService extends ServiceBase {
             }
         });
         themeService.processAsync(params);
-        return me;
     }
 }
 ol.supermap.ThemeService = ThemeService;

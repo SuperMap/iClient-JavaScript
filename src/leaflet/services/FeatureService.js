@@ -35,7 +35,6 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByIDsParameters} ID 查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesByIDs: function (params, callback, resultFormat) {
         var me = this;
@@ -48,7 +47,6 @@ export var FeatureService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeaturesByIDsService.processAsync(me._processParams(params));
-        return me;
 
     },
 
@@ -58,7 +56,6 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByBoundsParameters} 数据集范围查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesByBounds: function (params, callback, resultFormat) {
         var me = this;
@@ -71,7 +68,6 @@ export var FeatureService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeaturesByBoundsService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -80,7 +76,6 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByBufferParameters} 数据服务中数据集缓冲区查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesByBuffer: function (params, callback, resultFormat) {
         var me = this;
@@ -93,7 +88,6 @@ export var FeatureService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeatureService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -102,7 +96,6 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesBySQLParameters} 数据服务中数据集SQL查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesBySQL: function (params, callback, resultFormat) {
         var me = this;
@@ -115,7 +108,6 @@ export var FeatureService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeatureBySQLService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -124,7 +116,6 @@ export var FeatureService = ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByGeometryParameters} 数据集几何查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesByGeometry: function (params, callback, resultFormat) {
         var me = this;
@@ -137,7 +128,6 @@ export var FeatureService = ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeaturesByGeometryService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -145,7 +135,6 @@ export var FeatureService = ServiceBase.extend({
      * @description 地物编辑服务
      * @param params {SuperMap.EditFeaturesParameters} 数据服务中数据集添加、修改、删除参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     editFeatures: function (params, callback) {
 
@@ -167,7 +156,6 @@ export var FeatureService = ServiceBase.extend({
             }
         });
         editFeatureService.processAsync(me._processParams(params));
-        return me;
     },
 
     _processParams: function (params) {

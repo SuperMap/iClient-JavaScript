@@ -95,7 +95,7 @@ export default class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
-     * @return {SuperMap.DataFlowService}
+     * @return {this} this
      */
     initSubscribe() {
         var me = this;
@@ -120,7 +120,7 @@ export default class DataFlowService extends CommonServiceBase {
      * @function SuperMap.DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param excludeField - {Object} 排除字段
-     * @return {SuperMap.DataFlowService}
+     * @return {this} this
      */
     setExcludeField(excludeField) {
         this.excludeField = excludeField;
@@ -132,7 +132,7 @@ export default class DataFlowService extends CommonServiceBase {
      * @function SuperMap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
      * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
-     * @return {SuperMap.DataFlowService}
+     * @return {this} this
      */
     setGeometry(geometry) {
         this.geometry = geometry;

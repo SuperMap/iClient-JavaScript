@@ -1692,7 +1692,7 @@ _SuperMap2["default"].Util.getElement = function () {
 /**
  * @description instance of的跨浏览器实现。
  * @param o - {Object} 对象。
- * @return {boolean}
+ * @return {boolean} 是否是页面元素
  */
 _SuperMap2["default"].Util.isElement = function (o) {
     return !!(o && o.nodeType === 1);
@@ -2090,7 +2090,7 @@ _SuperMap2["default"].DOTS_PER_INCH = 96;
 
 /**
  * @param scale - {number}
- * @return {number}
+ * @return {number} 返回正常的scale值
  */
 _SuperMap2["default"].Util.normalizeScale = function (scale) {
     var normScale = scale > 1.0 ? 1.0 / scale : scale;
@@ -3832,10 +3832,9 @@ var GeoJSON = function (_JSONFormat) {
          *     每个值都会被filter函数的结果所替换掉。这个函数可被用来将某些对象转化成
          *     某个类相应的对象，或者将日期字符串转化成Date对象。
          *
-         * @return {Object}
-         *    返回值依赖于type参数的值。如果type等于"FeatureCollection"（默认值），
-         *     返回值将会是 <SuperMap.Feature.Vector> 数组。如果type为"Geometry",
-         *     输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>
+         * @return {Object}    返回值依赖于type参数的值。<br>
+         *     如果type等于"FeatureCollection"（默认值），返回值将会是 <SuperMap.Feature.Vector> 数组。<br>
+         *     如果type为"Geometry",输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>。 <br>
          *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是<SuperMap.Feature.Vector> 。
          */
         value: function read(json, type, filter) {
@@ -7781,7 +7780,7 @@ _SuperMap2["default"].SecurityManager = {
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
      * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
-     * @return {Promise}
+     * @return {Promise} 返回包含token信息的Promise对象
      */
     generateToken: function generateToken(url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -7881,7 +7880,7 @@ _SuperMap2["default"].SecurityManager = {
      * @param username -{string} 用户名
      * @param password -{string} 密码
      * @param rememberme -{boolean} 是否记住
-     * @returns {Promise}
+     * @returns {Promise} 返回包含iServer登录请求结果的Promise对象
      */
     loginiServer: function loginiServer(url, username, password, rememberme) {
         var end = url.substr(url.length - 1, 1);
@@ -7905,7 +7904,7 @@ _SuperMap2["default"].SecurityManager = {
     /**
      * @description iServer登出
      * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
-     * @returns {Promise}
+     * @returns {Promise} 是否登出成功
      */
     logoutiServer: function logoutiServer(url) {
         var end = url.substr(url.length - 1, 1);
@@ -7939,7 +7938,7 @@ _SuperMap2["default"].SecurityManager = {
      * @param url -{string} iportal首页地址
      * @param username -{string} 用户名
      * @param password -{string} 密码
-     * @returns {Promise}
+     * @returns {Promise} 返回包含iPortal登录请求结果的Promise对象
      */
     loginiPortal: function loginiPortal(url, username, password) {
         var end = url.substr(url.length - 1, 1);
@@ -7963,7 +7962,7 @@ _SuperMap2["default"].SecurityManager = {
     /**
      * @description iPortal登出
      * @param url -{string} iportal首页地址
-     * @returns {Promise}
+     * @returns {Promise} 如果登出成功，返回true;否则返回false
      */
     logoutiPortal: function logoutiPortal(url) {
         var end = url.substr(url.length - 1, 1);
@@ -7992,7 +7991,7 @@ _SuperMap2["default"].SecurityManager = {
      *        password-{string} 密码
      * @param options -{Object} <br>
      *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
-     * @return {Promise}
+     * @return {Promise} 返回包含iManager登录请求结果的Promise对象
      */
     loginManager: function loginManager(url, loginInfoParams, options) {
         if (!_SuperMap2["default"].Util.isInTheSameDomain(url)) {
@@ -8157,7 +8156,7 @@ var CommontypesConversion = function () {
          * @function L.supermap.Util.isArray
          * @description 判断是否为数组格式
          * @param obj - {Object} 待判断对象
-         * @return {boolean}
+         * @return {boolean} 是否是数组
          */
 
     }, {
@@ -9079,7 +9078,7 @@ var ServerTextStyle = function () {
          * @function SuperMap.ServerTextStyle.fromObj
          * @description 从传入对象获服务端文本风格类。
          * @param obj - {Object} 传入对象
-         * @return {SuperMap.ServerTextStyle}
+         * @return {SuperMap.ServerTextStyle} 返回服务端文本风格对象
          */
 
     }], [{
@@ -14214,7 +14213,7 @@ var IPortalServiceBase = function () {
      * @param url -{string} 服务地址
      * @param param -{Object} 请求参数
      * @param requestOptions -{Object} fetch请求配置项
-     * @returns {Promise}
+     * @returns {Promise} 返回包含请求结果的Promise对象
      */
 
     _createClass(IPortalServiceBase, [{
@@ -16475,7 +16474,7 @@ var Curve = function () {
          * p2 - {Number}
          * p3 - {Number}
          * val - {Number}
-         * roots - {Number} 有效根数目
+         * roots -{Array<number>} 有效根数目
          *
          * Returns:
          * {number} 有效根
@@ -16568,7 +16567,7 @@ var Curve = function () {
          * p1 - {Number}
          * p2 - {Number}
          * p3 - {Number}
-         * extrema - {Number}
+         * extrema - {Array<number>}
          *
          * Returns:
          * {number} 有效数目
@@ -19002,7 +19001,6 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     /**
      * @function L.supermap.dataFlowService.prototype.initBroadcast
      * @description 初始化广播
-     * @returns {this}
      */
     initBroadcast: function initBroadcast() {
         this.dataFlow.initBroadcast();
@@ -19021,7 +19019,6 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     /**
      * @function L.supermap.dataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
-     * @returns {this}
      */
     initSubscribe: function initSubscribe() {
         this.dataFlow.initSubscribe();
@@ -19032,7 +19029,6 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
      * @function L.supermap.dataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param excludeField - {Object} 排除字段
-     * @returns {this}
      */
     setExcludeField: function setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -19044,7 +19040,6 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
      * @function L.supermap.dataFlowService.prototype.setGeometry
      * @description 设置添加的GeoJSON几何要素数据
      * @param geometry - {Array<Object>} 设置增添的GeoJSON几何要素对象数组。
-     * @returns {this}
      */
     setGeometry: function setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -19139,7 +19134,6 @@ var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
      * @function  L.supermap.mapService.prototype.getMapInfo
      * @description 获取地图信息
      * @param callback -{function} 回调函数
-     * @return {this}
      */
     getMapInfo: function getMapInfo(callback) {
         var me = this;
@@ -19152,14 +19146,12 @@ var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
             }, projection: me.options.projection
         });
         getMapStatusService.processAsync();
-        return me;
     },
 
     /**
      * @function  L.supermap.mapService.prototype.getTilesets
      * @description 获取切片列表信息
      * @param callback -{function} 回调函数
-     * @return {this}
      */
     getTilesets: function getTilesets(callback) {
         var me = this;
@@ -19173,7 +19165,6 @@ var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
         });
 
         tilesetsService.processAsync();
-        return me;
     }
 });
 
@@ -24858,7 +24849,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getEvents
      * @description 获取图层事件
-     * @return {{zoomend: ThemeLayer._reset, moveend: ThemeLayer._reset, resize: ThemeLayer._resize}}
+     * @return {Object} 返回图层支持的事件
      */
     getEvents: function getEvents() {
         var me = this;
@@ -27980,7 +27971,7 @@ var IPortal = function (_IPortalServiceBase) {
     /**
      * @function SuperMap.iPortal.prototype.load
      * @description 加载页面
-     * @returns {Promise}
+     * @returns {Promise} 返回包含iportal web资源信息的Promise对象
      */
 
 
@@ -27994,7 +27985,7 @@ var IPortal = function (_IPortalServiceBase) {
          * @function SuperMap.iPortal.prototype.queryServices
          * @param queryParams -{SuperMap.iPortalServicesQueryParam} 查询参数
          * @description 查询服务
-         * @returns {Promise}
+         * @returns {Promise} 返回包含所有服务的Promise对象
          */
 
     }, {
@@ -28015,7 +28006,7 @@ var IPortal = function (_IPortalServiceBase) {
          * @function SuperMap.iPortal.prototype.deleteServices
          * @param ids -{Array} 服务的序号
          * @description 删除服务
-         * @returns {Promise}
+         * @returns {Promise} 返回包含服务删除操作状态的Promise对象
          */
 
     }, {
@@ -28029,7 +28020,7 @@ var IPortal = function (_IPortalServiceBase) {
          * @function SuperMap.iPortal.prototype.queryMaps
          * @param queryParams -{SuperMap.iPortalMapsQueryParam} 查询参数
          * @description 获取地图信息
-         * @returns {Promise}
+         * @returns {Promise} 返回包含所有地图服务信息的Promise对象
          */
 
     }, {
@@ -28124,7 +28115,7 @@ var Online = function () {
     /**
      * @function SuperMap.Online.prototype.load
      * @description 加载online，验证online是否可用
-     * @returns {Promise}
+     * @returns {Promise} 返回包含网络请求结果的Promise对象
      */
 
 
@@ -28151,7 +28142,7 @@ var Online = function () {
          * @function SuperMap.Online.prototype.queryDatas
          * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取)并返回可操作的服务对象
          * @param parameter -{SuperMap.OnlineQueryDatasParameter} myDatas服务资源查询参数
-         * @returns {Promise}
+         * @returns {Promise} 返回包含所有数据服务信息的Promise对象
          */
 
     }, {
@@ -29056,7 +29047,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
      * @function L.supermap.control.changeTileVersion.prototype.setVersionName
      * @description  设置版本号
      * @param content - {string} 版本信息
-     * @return {this} 返回改变后的版本
+     * @return {this} this
      */
     setVersionName: function setVersionName(content) {
         var value = content;
@@ -29071,7 +29062,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
      * @function L.supermap.control.changeTileVersion.prototype.setToolTip
      * @description 设置提示信息
      * @param tooltip - {HTMLElement|String} 要需要设置的提示信息
-     * @return {this}
+     * @return {this} this
      */
     setToolTip: function setToolTip(tooltip) {
         this.tooltip.innerHTML = tooltip;
@@ -29088,7 +29079,6 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
             this.length = length;
             this.slider.setAttribute("max", this.length - 1);
         }
-        return this;
     },
 
     /**
@@ -29111,7 +29101,6 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
             me.setContent(tileVersions);
         });
         me.getTileSetsInfo();
-        return this;
     },
 
     /**
@@ -29135,7 +29124,6 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
                 me.options.layer.setTileSetsInfo(info.result);
             });
         }
-        return this;
     },
 
     /**
@@ -29144,13 +29132,12 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
      */
     removeLayer: function removeLayer() {
         this.options.layer = null;
-        return this;
     },
 
     /**
      * @function L.supermap.control.changeTileVersion.prototype.nextTilesVersion
      * @description 下一个版本,第一次不进行加减，是无版本的状态
-     * @return {this}
+     * @return {this} this
      */
     nextTilesVersion: function nextTilesVersion() {
         if (this.firstLoad) {
@@ -29964,7 +29951,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
      * @param layer - {L.Layer} 待添加的图层
      * @param isBaseLayer -{boolean} 是否为底图层
      * @param options - {Object} 创建地图的可选参数
-     * @return {this}
+     * @return {this} this
      */
     addLayerWrapper: function addLayerWrapper(layer, isBaseLayer, options) {
         if (isBaseLayer) {
@@ -30081,7 +30068,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
      * @param dpi - {number}屏幕分辨率
      * @param units - {string} 地图的单位
      * @param datum - {SuperMap.Datum} 大地参照系类
-     * @return {Array<number>}
+     * @return {Array<number>} 返回给定比例尺所对应的分辨率
      */
     getResolutionsFromScales: function getResolutionsFromScales(scales, dpi, units, datum) {
         var resolutions = [];
@@ -30191,7 +30178,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
      * @description 创建天地图图层
      * @param layerInfo - {Object} 图层信息
      * @param epsgCode - {number}epsg编码
-     * @return {L.supermap.tiandituTileLayer}
+     * @return {L.supermap.tiandituTileLayer} 返回天地图图层对象
      */
     createTiandituLayer: function createTiandituLayer(layerInfo, epsgCode) {
         var proj = epsgCode === 4326 ? "c" : "w";
@@ -30222,7 +30209,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
      * @description 创建图标图层
      * @param layerInfo - {Object} 图层信息
      * @param crs - {Object} 坐标对象
-     * @return {L.Layer}
+     * @return {L.Layer} 返回marker图层
      */
     createMarkersLayer: function createMarkersLayer(layerInfo, crs) {
         var that = this;
@@ -30262,7 +30249,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
      * @description 创建矢量要素图层
      * @param layerInfo - {Object} 图层信息
      * @param crs - {Object} 坐标对象
-     * @return {L.Layer}
+     * @return {L.Layer} 返回矢量要素图层对象
      */
     createVectorLayer: function createVectorLayer(layerInfo, crs) {
         var _style = layerInfo.style,
@@ -30838,7 +30825,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
          * @private
          * @function L.supermap.graphicLayer.prototype.getEvents
          * @description 获取事件
-         * @return {Object}
+         * @return {Object} 返回该图层支持的事件对象
          */
     getEvents: function getEvents() {
         var events = {
@@ -31111,7 +31098,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getCanvas
      * @description 获取canvas
-     * @return {HTMLElement}
+     * @return {HTMLElement} 返回mapV图层包含的canvas对象
      */
     getCanvas: function getCanvas() {
         return this.canvas;
@@ -31120,7 +31107,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getContainer
      * @description 获取容器
-     * @return {HTMLElement}
+     * @return {HTMLElement} 返回包含mapV图层的dom对象
      */
     getContainer: function getContainer() {
         return this.container;
@@ -31129,7 +31116,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getTopLeft
      * @description 获取左上角坐标
-     * @return {L.Bounds}
+     * @return {L.Bounds} 返回左上角坐标
      */
     getTopLeft: function getTopLeft() {
         var map = this._map;
@@ -32189,7 +32176,7 @@ var UniqueThemeLayer = exports.UniqueThemeLayer = _GeoFeatureThemeLayer.GeoFeatu
      * @function L.supermap.uniqueThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style
      * @param feat {SuperMap.Feature.Vector} 用户要素数据
-     * @return {Array<SuperMap.ThemeStyle>}
+     * @return {Array<SuperMap.ThemeStyle>} 返回包含专题要素style的对象
      */
     getStyleByData: function getStyleByData(feat) {
         var me = this,
@@ -32299,7 +32286,6 @@ var AddressMatchService = exports.AddressMatchService = _ServiceBase.ServiceBase
             }
         });
         addressMatchService.code(me.url + '/geocoding', params);
-        return me;
     },
 
     /**
@@ -32319,7 +32305,6 @@ var AddressMatchService = exports.AddressMatchService = _ServiceBase.ServiceBase
             }
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
-        return me;
     }
 
 });
@@ -32407,7 +32392,6 @@ var ChartService = _ServiceBase.ServiceBase.extend({
         });
 
         chartQueryService.processAsync(param);
-        return me;
     },
 
     /**
@@ -32428,7 +32412,6 @@ var ChartService = _ServiceBase.ServiceBase.extend({
             }
         });
         chartFeatureInfoSpecsService.processAsync();
-        return me;
     },
 
     _processParams: function _processParams(params) {
@@ -32538,7 +32521,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByIDsParameters} ID 查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesByIDs: function getFeaturesByIDs(params, callback, resultFormat) {
         var me = this;
@@ -32551,7 +32533,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeaturesByIDsService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -32560,7 +32541,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByBoundsParameters} 数据集范围查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesByBounds: function getFeaturesByBounds(params, callback, resultFormat) {
         var me = this;
@@ -32573,7 +32553,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeaturesByBoundsService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -32582,7 +32561,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByBufferParameters} 数据服务中数据集缓冲区查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesByBuffer: function getFeaturesByBuffer(params, callback, resultFormat) {
         var me = this;
@@ -32595,7 +32573,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeatureService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -32604,7 +32581,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesBySQLParameters} 数据服务中数据集SQL查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesBySQL: function getFeaturesBySQL(params, callback, resultFormat) {
         var me = this;
@@ -32617,7 +32593,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeatureBySQLService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -32626,7 +32601,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
      * @param params {SuperMap.GetFeaturesByGeometryParameters} 数据集几何查询参数类
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     getFeaturesByGeometry: function getFeaturesByGeometry(params, callback, resultFormat) {
         var me = this;
@@ -32639,7 +32613,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
             format: me._processFormat(resultFormat)
         });
         getFeaturesByGeometryService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -32647,7 +32620,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
      * @description 地物编辑服务
      * @param params {SuperMap.EditFeaturesParameters} 数据服务中数据集添加、修改、删除参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     editFeatures: function editFeatures(params, callback) {
 
@@ -32669,7 +32641,6 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
             }
         });
         editFeatureService.processAsync(me._processParams(params));
-        return me;
     },
 
     _processParams: function _processParams(params) {
@@ -32792,7 +32763,6 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
      * @description 字段查询服务
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     getFields: function getFields(params, callback) {
         var me = this;
@@ -32807,7 +32777,6 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
             dataset: params.dataset
         });
         getFieldsService.processAsync();
-        return me;
     },
 
     /**
@@ -32815,7 +32784,6 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
      * @description 字段统计服务
      * @param params {SuperMap.FieldStatisticsParameters} 字段统计信息查询参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     getFieldStatisticsInfo: function getFieldStatisticsInfo(params, callback) {
         var me = this,
@@ -32831,7 +32799,6 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
             me.currentStatisticResult[modes[mode]] = null;
             me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
         }
-        return me;
     },
 
     _fieldStatisticRequest: function _fieldStatisticRequest(dataSourceName, dataSetName, fieldName, statisticMode) {
@@ -32922,7 +32889,6 @@ var GridCellInfosService = exports.GridCellInfosService = _ServiceBase.ServiceBa
      * @function L.supermap.gridCellInfosService.prototype.getGridCellInfos
      * @param params {SuperMap.GetGridCellInfosParameters} 数据服务栅格查询参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     getGridCellInfos: function getGridCellInfos(params, callback) {
         if (!params) {
@@ -32938,7 +32904,6 @@ var GridCellInfosService = exports.GridCellInfosService = _ServiceBase.ServiceBa
             }
         });
         gridCellQueryService.processAsync(params);
-        return me;
     }
 });
 var gridCellInfosService = exports.gridCellInfosService = function gridCellInfosService(url, options) {
@@ -33010,7 +32975,6 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
      * @function L.supermap.layerInfoService.prototype.getLayerInfo
      * @description 获取图层信息
      * @param callback - {function} 获取信息完成后的回调函数
-     * @return {this}
      */
     getLayersInfo: function getLayersInfo(callback) {
         var me = this;
@@ -33022,7 +32986,6 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
             }
         });
         getLayersInfoService.processAsync();
-        return me;
     },
 
     /**
@@ -33030,7 +32993,6 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改
      * @param params - {SuperMap.SetLayerInfoParameters} 图层信息相关参数
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     setLayerInfo: function setLayerInfo(params, callback) {
         if (!params) {
@@ -33057,7 +33019,6 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
         });
 
         setLayerInfoService.processAsync(layerInfoParams);
-        return me;
     },
 
     /**
@@ -33065,7 +33026,6 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
      * @description 设置图层信息。可以实现创建新的临时图层和对现有临时图层的修改
      * @param params -{SuperMap.SetLayersInfoParameters} 图层信息设置参数,包括临时图层。
      * @param callback -{function} 回调函数
-     * @return {this}
      */
     setLayersInfo: function setLayersInfo(params, callback) {
         if (!params) {
@@ -33092,7 +33052,6 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
         });
 
         setLayersInfoService.processAsync(layersInfoParam);
-        return me;
     },
 
     /**
@@ -33100,7 +33059,6 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
      * @description 负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param params -{SuperMap.SetLayerStatusParameters} 图层信息显示控制参数
      * @param callback -{function} 回调函数
-     * @return {this}
      */
     setLayerStatus: function setLayerStatus(params, callback) {
         if (!params) {
@@ -33115,7 +33073,6 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
             }
         });
         setLayerStatusService.processAsync(params);
-        return me;
     }
 
 });
@@ -33188,7 +33145,6 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
      * @description 测距
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     measureDistance: function measureDistance(params, callback) {
         this.measure(_SuperMap2["default"].MeasureMode.DISTANCE, params, callback);
@@ -33200,7 +33156,6 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
      * @description 测面积
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     measureArea: function measureArea(params, callback) {
         this.measure(_SuperMap2["default"].MeasureMode.AREA, params, callback);
@@ -33211,7 +33166,6 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
      * @function L.supermap.measureService.measure
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     measure: function measure(type, params, callback) {
         if (!params) {
@@ -33231,7 +33185,6 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
             }
         });
         measureService.processAsync(params);
-        return me;
     }
 });
 
@@ -33309,7 +33262,6 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
      * @description 汇查找服务
      * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     sinksFacilityAnalyst: function sinksFacilityAnalyst(params, callback) {
         var me = this;
@@ -33322,7 +33274,6 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
             }
         });
         facilityAnalystSinks3DService.processAsync(params);
-        return me;
     },
 
     /**
@@ -33330,7 +33281,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
      * @description 源查找服务
      * @param params -{SuperMap.FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找服务)
      * @param callback - {function} 回调函数
-     *  @return {this}
+     *  @return {this} this
      */
     sourcesFacilityAnalyst: function sourcesFacilityAnalyst(params, callback) {
         var me = this;
@@ -33343,7 +33294,6 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
             }
         });
         facilityAnalystSources3DService.processAsync(params);
-        return me;
     },
 
     /**
@@ -33351,7 +33301,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
      * @description 上游追踪资源服务
      * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
      * @param callback - {function} 回调函数
-     *  @return {this}
+     *  @return {this} this
      */
     traceUpFacilityAnalyst: function traceUpFacilityAnalyst(params, callback) {
         var me = this;
@@ -33364,7 +33314,6 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
             }
         });
         facilityAnalystTraceup3DService.processAsync(params);
-        return me;
     },
 
     /**
@@ -33372,7 +33321,6 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
      * @description 下游追踪资源服务
      * @param params {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     traceDownFacilityAnalyst: function traceDownFacilityAnalyst(params, callback) {
         var me = this;
@@ -33385,7 +33333,6 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
             }
         });
         facilityAnalystTracedown3DService.processAsync(params);
-        return me;
     },
 
     /**
@@ -33393,7 +33340,6 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
      * @description 上游关键设施查找服务
      * @param params -{SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找服务参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     upstreamFacilityAnalyst: function upstreamFacilityAnalyst(params, callback) {
         var me = this;
@@ -33406,7 +33352,6 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
             }
         });
         facilityAnalystUpstream3DService.processAsync(params);
-        return me;
     }
 });
 
@@ -33510,7 +33455,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
      * @param params -{SuperMap.BurstPipelineAnalystParameters} 爆管分析服务参数类
      * @param callback -{function} 回调函数
-     * @return {this}
      */
     burstPipelineAnalyst: function burstPipelineAnalyst(params, callback) {
         var me = this;
@@ -33523,7 +33467,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             }
         });
         burstPipelineAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -33531,7 +33474,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @description 耗费矩阵分析服务:根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
      * @param params - {SuperMap.ComputeWeightMatrixParameters} 耗费矩阵分析服务参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     computeWeightMatrix: function computeWeightMatrix(params, callback) {
         var me = this;
@@ -33544,7 +33486,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             }
         });
         computeWeightMatrixService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -33553,7 +33494,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @param params - {SuperMap.FindClosestFacilitiesParameters} 最近设施分析服务参数类
      * @param callback -{function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {this}
      */
     findClosestFacilities: function findClosestFacilities(params, callback, resultFormat) {
         var me = this;
@@ -33567,7 +33507,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         findClosestFacilitiesService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -33576,7 +33515,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @param params - {SuperMap.FacilityAnalystStreamParameters} 上游/下游 关键设施查找资源服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {this}
      */
     streamFacilityAnalyst: function streamFacilityAnalyst(params, callback, resultFormat) {
         var me = this;
@@ -33590,7 +33528,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         facilityAnalystStreamService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -33599,7 +33536,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @param params - {SuperMap.FindLocationParameters} 选址分区分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {this}
      */
     findLocation: function findLocation(params, callback, resultFormat) {
         var me = this;
@@ -33613,7 +33549,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         findLocationService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -33622,7 +33557,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @param params - {SuperMap.FindPathParameters} 最佳路径分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）
-     * @return {this}
      */
     findPath: function findPath(params, callback, resultFormat) {
         var me = this;
@@ -33636,7 +33570,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         findPathService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -33645,7 +33578,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @param params - {SuperMap.FindTSPPathsParameters} 旅行商分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {this}
      */
     findTSPPaths: function findTSPPaths(params, callback, resultFormat) {
         var me = this;
@@ -33659,7 +33591,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         findTSPPathsService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -33668,7 +33599,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @param params - {SuperMap.FindMTSPPathsParameters} 多旅行商分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {this}
      */
     findMTSPPaths: function findMTSPPaths(params, callback, resultFormat) {
         var me = this;
@@ -33682,7 +33612,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         findMTSPPathsService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -33691,7 +33620,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @param params - {SuperMap.FindServiceAreasParameters} 服务区分析服务参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {this}
      */
     findServiceAreas: function findServiceAreas(params, callback, resultFormat) {
         var me = this;
@@ -33705,7 +33633,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         findServiceAreasService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -33713,7 +33640,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @description 更新边的耗费权重服务
      * @param params - {SuperMap.UpdateEdgeWeightParameters} 更新边的耗费权重服务参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     updateEdgeWeight: function updateEdgeWeight(params, callback) {
         var me = this;
@@ -33726,7 +33652,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             }
         });
         updateEdgeWeightService.processAsync(params);
-        return me;
     },
 
     /**
@@ -33734,7 +33659,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
      * @description 转向耗费权重更新服务
      * @param params - {SuperMap.UpdateTurnNodeWeightParameters} 转向耗费权重更新服务参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     updateTurnNodeWeight: function updateTurnNodeWeight(params, callback) {
         var me = this;
@@ -33747,7 +33671,6 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             }
         });
         updateTurnNodeWeightService.processAsync(params);
-        return me;
     },
 
     _processParams: function _processParams(params) {
@@ -33885,7 +33808,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 获取密度分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getKernelDensityJobs: function getKernelDensityJobs(callback, resultFormat) {
         var me = this,
@@ -33900,7 +33822,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         kernelDensityJobsService.getKernelDensityJobs();
-        return me;
     },
 
     /**
@@ -33909,7 +33830,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getKernelDensityJob: function getKernelDensityJob(id, callback, resultFormat) {
         var me = this,
@@ -33924,7 +33844,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         kernelDensityJobsService.getKernelDensityJob(id);
-        return me;
     },
 
     /**
@@ -33934,7 +33853,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     addKernelDensityJob: function addKernelDensityJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -33953,13 +33871,13 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         kernelDensityJobsService.addKernelDensityJob(param, seconds);
-        return me;
     },
 
     /**
      * @function L.supermap.processingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
      * @param id - {string}密度分析的id。
+     * @return {Object} 密度分析的状态
      */
     getKernelDensityJobState: function getKernelDensityJobState(id) {
         return this.kernelDensityJobs[id];
@@ -33970,7 +33888,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 获取点聚合分析的列表。
      * @param callback - {function}  请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getSummaryMeshJobs: function getSummaryMeshJobs(callback, resultFormat) {
         var me = this,
@@ -33985,7 +33902,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         summaryMeshJobsService.getSummaryMeshJobs();
-        return me;
     },
 
     /**
@@ -33994,7 +33910,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getSummaryMeshJob: function getSummaryMeshJob(id, callback, resultFormat) {
         var me = this,
@@ -34009,7 +33924,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         summaryMeshJobsService.getSummaryMeshJob(id);
-        return me;
     },
 
     /**
@@ -34019,7 +33933,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     addSummaryMeshJob: function addSummaryMeshJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -34038,13 +33951,13 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         summaryMeshJobsService.addSummaryMeshJob(param, seconds);
-        return me;
     },
 
     /**
      * @function L.supermap.processingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
      * @param id - {string} 点聚合分析的id。
+     * @return {Object} 点聚合分析的状态
      */
     getSummaryMeshJobState: function getSummaryMeshJobState(id) {
         return this.summaryMeshJobs[id];
@@ -34055,7 +33968,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 获取单对象查询分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getQueryJobs: function getQueryJobs(callback, resultFormat) {
         var me = this,
@@ -34070,7 +33982,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         singleObjectQueryJobsService.getQueryJobs();
-        return me;
     },
 
     /**
@@ -34079,7 +33990,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getQueryJob: function getQueryJob(id, callback, resultFormat) {
         var me = this,
@@ -34094,7 +34004,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         singleObjectQueryJobsService.getQueryJob(id);
-        return me;
     },
 
     /**
@@ -34104,7 +34013,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     addQueryJob: function addQueryJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -34123,13 +34031,13 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         singleObjectQueryJobsService.addQueryJob(param, seconds);
-        return me;
     },
 
     /**
      * @function L.supermap.processingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
      * @param id - {string}单对象查询分析的id。
+     * @return {Object} 单对象查询分析的状态
      */
     getQueryJobState: function getQueryJobState(id) {
         return this.queryJobs[id];
@@ -34140,7 +34048,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 获取区域汇总分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getSummaryRegionJobs: function getSummaryRegionJobs(callback, resultFormat) {
         var me = this,
@@ -34155,7 +34062,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         summaryRegionJobsService.getSummaryRegionJobs();
-        return me;
     },
 
     /**
@@ -34164,7 +34070,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param id - {string}区域汇总分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getSummaryRegionJob: function getSummaryRegionJob(id, callback, resultFormat) {
         var me = this,
@@ -34179,7 +34084,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         summaryRegionJobsService.getSummaryRegionJob(id);
-        return me;
     },
 
     /**
@@ -34189,7 +34093,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     addSummaryRegionJob: function addSummaryRegionJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -34208,13 +34111,13 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         summaryRegionJobsService.addSummaryRegionJob(param, seconds);
-        return me;
     },
 
     /**
      * @function L.supermap.processingService.prototype.getSummaryRegionJobState
      * @description 获取区域汇总分析的状态。
      * @param id - {string}区域汇总分析的id。
+     * @return {Object} 区域汇总分析的状态
      */
     getSummaryRegionJobState: function getSummaryRegionJobState(id) {
         return this.summaryRegionJobs[id];
@@ -34225,7 +34128,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 获取矢量裁剪分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getVectorClipJobs: function getVectorClipJobs(callback, resultFormat) {
         var me = this,
@@ -34240,7 +34142,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         vectorClipJobsService.getVectorClipJobs();
-        return me;
     },
 
     /**
@@ -34249,7 +34150,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     getVectorClipJob: function getVectorClipJob(id, callback, resultFormat) {
         var me = this,
@@ -34264,7 +34164,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         vectorClipJobsService.getVectorClipJob(id);
-        return me;
     },
 
     /**
@@ -34274,7 +34173,6 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @returns {this}
      */
     addVectorClipJob: function addVectorClipJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -34293,13 +34191,13 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
             format: format
         });
         vectorClipJobsService.addVectorClipJob(param, seconds);
-        return me;
     },
 
     /**
      * @function L.supermap.processingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
      * @param id - {string}矢量裁剪分析的id。
+     * @return {Object} 矢量裁剪分析的状态
      */
     getVectorClipJobState: function getVectorClipJobState(id) {
         return this.vectorClipJobs[id];
@@ -34399,7 +34297,6 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
      * @param callback -{function} 回掉函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     queryByBounds: function queryByBounds(params, callback, resultFormat) {
         var me = this;
@@ -34414,7 +34311,6 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
         });
 
         queryService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34423,7 +34319,6 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
      * @param params - {SuperMap.QueryByDistanceParameters} Distance查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     queryByDistance: function queryByDistance(params, callback, resultFormat) {
         var me = this;
@@ -34438,7 +34333,6 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
         });
 
         queryByDistanceService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34447,7 +34341,6 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
      * @param callback -{function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     queryBySQL: function queryBySQL(params, callback, resultFormat) {
         var me = this;
@@ -34462,7 +34355,6 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
         });
 
         queryBySQLService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34471,7 +34363,6 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
      * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
-     * @return {this}
      */
     queryByGeometry: function queryByGeometry(params, callback, resultFormat) {
         var me = this;
@@ -34486,7 +34377,6 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
         });
 
         queryByGeometryService.processAsync(me._processParams(params));
-        return me;
     },
 
     _processParams: function _processParams(params) {
@@ -34648,7 +34538,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         areaSolarRadiationService.processAsync(params);
-        return me;
     },
 
     /**
@@ -34670,7 +34559,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         bufferAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34692,7 +34580,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         densityAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34714,7 +34601,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         generateSpatialDataService.processAsync(params);
-        return me;
     },
 
     /**
@@ -34736,7 +34622,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         geoRelationAnalystService.processAsync(params);
-        return me;
     },
 
     /**
@@ -34758,7 +34643,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         interpolationAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34780,7 +34664,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         mathExpressionAnalysisService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34802,7 +34685,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         overlayAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34824,7 +34706,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         routeCalculateMeasureService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34846,7 +34727,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         routeLocatorService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34868,7 +34748,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         surfaceAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     /**
@@ -34890,7 +34769,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         terrainCurvatureCalculationService.processAsync(params);
-        return me;
     },
 
     /**
@@ -34912,7 +34790,6 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             format: me._processFormat(resultFormat)
         });
         thiessenAnalystService.processAsync(me._processParams(params));
-        return me;
     },
 
     _processParams: function _processParams(params) {
@@ -35047,7 +34924,6 @@ var ThemeService = exports.ThemeService = _ServiceBase.ServiceBase.extend({
      * @description 获取专题图信息
      * @param params - {SuperMap.ThemeParameters} 专题图参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     getThemeInfo: function getThemeInfo(params, callback) {
         var me = this;
@@ -35060,7 +34936,6 @@ var ThemeService = exports.ThemeService = _ServiceBase.ServiceBase.extend({
             }
         });
         themeService.processAsync(params);
-        return me;
     }
 });
 
@@ -35125,7 +35000,6 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
      * @description 站点查询服务
      * @param params - {SuperMap.StopQueryParameters} 站点查询参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     queryStop: function queryStop(params, callback) {
         var me = this;
@@ -35138,14 +35012,12 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
             }
         });
         stopQueryService.processAsync(params);
-        return me;
     },
     /**
      * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务
      * @param params - {SuperMap.TransferPathParameters} 交通换乘线路查询参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     analysisTransferPath: function analysisTransferPath(params, callback) {
         var me = this;
@@ -35158,14 +35030,12 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
             }
         });
         transferPathService.processAsync(me._processParams(params));
-        return me;
     },
     /**
      * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务
      * @param params {SuperMap.TransferSolutionParameters} 交通换乘方案查询参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     analysisTransferSolution: function analysisTransferSolution(params, callback) {
         var me = this;
@@ -35178,7 +35048,6 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
             }
         });
         transferSolutionService.processAsync(me._processParams(params));
-        return me;
     },
 
     _processParams: function _processParams(params) {
@@ -37947,7 +37816,7 @@ var IPortalMap = function (_IPortalServiceBase) {
     /**
      * @function SuperMap.iPortalMap.prototype.load
      * @description 加载地图信息
-     * @returns {Promise}
+     * @returns {Promise} 返回Promise对象。如果成功，Promise没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise返回值包含错误信息
      */
 
 
@@ -37968,7 +37837,7 @@ var IPortalMap = function (_IPortalServiceBase) {
         /**
          * @function SuperMap.iPortalMap.prototype.update
          * @description 更新地图参数
-         * @returns {Promise}
+         * @returns {Promise} 返回包含更新操作状态的Promise对象
          */
 
     }, {
@@ -38144,7 +38013,7 @@ var IPortalService = function (_IPortalServiceBase) {
     /**
      * @function SuperMap.iPortalService.prototype.load
      * @description 加载服务信息
-     * @returns {Promise}
+     * @returns {Promise} 返回Promise对象。如果成功，Promise没有返回值；如果失败，Promise返回值包含错误信息
      */
 
     _createClass(IPortalService, [{
@@ -38164,7 +38033,7 @@ var IPortalService = function (_IPortalServiceBase) {
         /**
          * @function SuperMap.iPortalService.prototype.update
          * @description 更新服务
-         * @returns {Promise}
+         * @returns {Promise} 返回包含更新操作状态的Promise对象
          */
 
     }, {
@@ -40564,7 +40433,7 @@ var DataFlowService = function (_CommonServiceBase) {
         /**
          * @function SuperMap.DataFlowService.prototype.initSubscribe
          * @description 初始化订阅数据
-         * @return {SuperMap.DataFlowService}
+         * @return {this} this
          */
 
     }, {
@@ -40591,7 +40460,7 @@ var DataFlowService = function (_CommonServiceBase) {
          * @function SuperMap.DataFlowService.prototype.setExcludeField
          * @description 设置排除字段
          * @param excludeField - {Object} 排除字段
-         * @return {SuperMap.DataFlowService}
+         * @return {this} this
          */
 
     }, {
@@ -40606,7 +40475,7 @@ var DataFlowService = function (_CommonServiceBase) {
          * @function SuperMap.DataFlowService.prototype.setGeometry
          * @description 设置添加的几何要素数据
          * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
-         * @return {SuperMap.DataFlowService}
+         * @return {this} this
          */
 
     }, {
@@ -50876,7 +50745,7 @@ var LabelMixedTextStyle = function () {
          * @function SuperMap.LabelMixedTextStyle.fromObj
          * @description 从传入对象获取标签文本复合风格类。
          * @param obj - {Object} 传入对象
-         * @return {SuperMap.LabelMixedTextStyle}
+         * @return {SuperMap.LabelMixedTextStyle} 返回新的LabelMixedTextStyle对象
          */
 
     }], [{
@@ -61551,7 +61420,7 @@ var OnlineData = function (_OnlineServiceBase) {
     /**
      * @function SuperMap.OnlineData.prototype.load
      * @description 通过url请求获取该服务完整信息
-     * @returns {Promise}
+     * @returns {Promise} 返回不包含请求结果的Promise对象,请求返回结果自动填充到该类属性中
      */
 
     //数据的缩略图路径。
@@ -61904,7 +61773,7 @@ var OnlineServiceBase = function () {
      * @param url - {string} 服务地址
      * @param param -{Object} Url查询参数
      * @param requestOptions -{Object} http请求参数, 比如请求头，超时时间等
-     * @return {Promise}
+     * @return {Promise}  返回包含请求结果的Promise对象
      */
 
 
@@ -68054,6 +67923,7 @@ var Color = function () {
             }
             var gradient = this._ctx.createRadialGradient(x0, y0, r0, x1, y1, r1);
             for (var i = 0, l = colorList.length; i < l; i++) {
+
                 gradient.addColorStop(colorList[i][0], colorList[i][1]);
             }
             gradient.__nonRecursion = true;
@@ -68574,7 +68444,7 @@ var Color = function () {
         }
 
         /**
-         * APIMethod: reverse
+         * APIMethod: mix
          * 简单两种颜色混合
          *
          * Parameters:
@@ -69490,7 +69360,7 @@ var Easing = function () {
         // 线性
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回输入值
          */
 
     }, {
@@ -69502,7 +69372,7 @@ var Easing = function () {
         // 二次方的缓动（t^2）
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回二次方的缓动的值
          */
 
     }, {
@@ -69513,7 +69383,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按二次方缓动退出的值
          */
 
     }, {
@@ -69524,7 +69394,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按二次方缓动进入和退出的值
          */
 
     }, {
@@ -69539,7 +69409,7 @@ var Easing = function () {
         // 三次方的缓动（t^3）
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按三次方缓动的值
          */
 
     }, {
@@ -69550,7 +69420,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按三次方缓动退出的值
          */
 
     }, {
@@ -69561,7 +69431,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按三次方缓动进入退出的值
          */
 
     }, {
@@ -69576,7 +69446,7 @@ var Easing = function () {
         // 四次方的缓动（t^4）
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按四次方缓动进入的值
          */
 
     }, {
@@ -69587,7 +69457,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按四次方缓动退出的值
          */
 
     }, {
@@ -69598,7 +69468,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按四次方缓动进入退出的值
          */
 
     }, {
@@ -69613,7 +69483,7 @@ var Easing = function () {
         // 五次方的缓动（t^5）
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按五次方缓动的值
          */
 
     }, {
@@ -69624,7 +69494,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按五次方缓动退出的值
          */
 
     }, {
@@ -69635,7 +69505,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按五次方缓动进入退出的值
          */
 
     }, {
@@ -69650,7 +69520,7 @@ var Easing = function () {
         // 正弦曲线的缓动（sin(t)）
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按正弦曲线的缓动进入的值
          */
 
     }, {
@@ -69661,7 +69531,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按正弦曲线的缓动退出的值
          */
 
     }, {
@@ -69672,7 +69542,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按正弦曲线的缓动进入退出的值
          */
 
     }, {
@@ -69684,7 +69554,7 @@ var Easing = function () {
         // 指数曲线的缓动（2^t）
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按指数曲线的缓动进入的值
          */
 
     }, {
@@ -69695,7 +69565,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按指数曲线的缓动退出的值
          */
 
     }, {
@@ -69706,7 +69576,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按指数曲线的缓动进入退出的值
          */
 
     }, {
@@ -69727,7 +69597,7 @@ var Easing = function () {
         // 圆形曲线的缓动（sqrt(1-t^2)）
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按圆形曲线的缓动进入的值
          */
 
     }, {
@@ -69738,7 +69608,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按圆形曲线的缓动退出的值
          */
 
     }, {
@@ -69749,7 +69619,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按圆形曲线的缓动进入退出的值
          */
 
     }, {
@@ -69764,7 +69634,7 @@ var Easing = function () {
         // 创建类似于弹簧在停止前来回振荡的动画
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动进入的值
          */
 
     }, {
@@ -69790,7 +69660,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动退出的值
          */
 
     }, {
@@ -69816,7 +69686,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动进入退出的值
          */
 
     }, {
@@ -69846,7 +69716,7 @@ var Easing = function () {
         // 在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入的值
          */
 
     }, {
@@ -69858,7 +69728,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动退出的值
          */
 
     }, {
@@ -69870,7 +69740,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入退出的值
          */
 
     }, {
@@ -69886,7 +69756,7 @@ var Easing = function () {
         // 创建弹跳效果
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按弹跳效果的缓动进入的值
          */
 
     }, {
@@ -69897,7 +69767,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按弹跳效果的缓动退出的值
          */
 
     }, {
@@ -69916,7 +69786,7 @@ var Easing = function () {
 
         /*
          * @param {number} k
-         * @return {number}
+         * @return {number} 返回按弹跳效果的缓动进入退出的值
          */
 
     }, {
@@ -84931,7 +84801,7 @@ var VectorGrid = exports.VectorGrid = _leaflet2["default"].GridLayer.extend({
      * @param id - {number}要素id
      * @param layerName - {string} 图层名称
      * @param layerStyle - {Array|function} 图层样式
-     * @return {this}
+     * @return {this} this
      */
     setFeatureStyle: function setFeatureStyle(id, layerName, layerStyle) {
         var featureKey = this._getFeatureKey(id, layerName);
@@ -84954,7 +84824,7 @@ var VectorGrid = exports.VectorGrid = _leaflet2["default"].GridLayer.extend({
      * @description 重绘要素风格，需要id和layerName才能确定一个要素
      * @param id - {number}要素id
      * @param layerName - {string} 图层名称
-     * @return {this}
+     * @return {this} this
      */
     resetFeatureStyle: function resetFeatureStyle(id, layerName) {
         var featureKey = this._getFeatureKey(id, layerName);
@@ -85372,7 +85242,7 @@ var VectorTileJSON = exports.VectorTileJSON = _leaflet2["default"].Class.extend(
     /**
      * @function L.supermap.VectorTileJSON.prototype.getTile
      * @description 获取瓦片
-     * @return {Promise}
+     * @return {Promise} 返回包含矢量瓦片信息(js对象)的Promise对象
      */
     getTile: function getTile() {
         var me = this;
@@ -85544,7 +85414,7 @@ var VectorTilePBF = exports.VectorTilePBF = _leaflet2["default"].Class.extend({
     /**
      * @function L.supermap.VectorTilePBF.prototype.getTile
      * @description 获取瓦片PBF(MVT)
-     * @return {Promise}
+     * @return {Promise} 返回包含矢量瓦片信息(js对象)的Promise对象
      */
     getTile: function getTile() {
         var me = this;
@@ -91902,7 +91772,108 @@ exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 465 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {
+	"_from": "proj4@2.3.15",
+	"_id": "proj4@2.3.15",
+	"_inBundle": false,
+	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
+	"_location": "/proj4",
+	"_phantomChildren": {},
+	"_requested": {
+		"type": "version",
+		"registry": true,
+		"raw": "proj4@2.3.15",
+		"name": "proj4",
+		"escapedName": "proj4",
+		"rawSpec": "2.3.15",
+		"saveSpec": null,
+		"fetchSpec": "2.3.15"
+	},
+	"_requiredBy": [
+		"/"
+	],
+	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
+	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
+	"_spec": "proj4@2.3.15",
+	"_where": "F:\\dev\\iClient",
+	"author": "",
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
+	},
+	"bundleDependencies": false,
+	"contributors": [
+		{
+			"name": "Mike Adair",
+			"email": "madair@dmsolutions.ca"
+		},
+		{
+			"name": "Richard Greenwood",
+			"email": "rich@greenwoodmap.com"
+		},
+		{
+			"name": "Calvin Metcalf",
+			"email": "calvin.metcalf@gmail.com"
+		},
+		{
+			"name": "Richard Marsden",
+			"url": "http://www.winwaed.com"
+		},
+		{
+			"name": "T. Mittan"
+		},
+		{
+			"name": "D. Steinwand"
+		},
+		{
+			"name": "S. Nelson"
+		}
+	],
+	"dependencies": {
+		"mgrs": "~0.0.2"
+	},
+	"deprecated": false,
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"devDependencies": {
+		"browserify": "~12.0.1",
+		"chai": "~1.8.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"grunt": "~0.4.2",
+		"grunt-browserify": "~4.0.1",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~0.8.0",
+		"grunt-contrib-uglify": "~0.11.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"istanbul": "~0.2.4",
+		"mocha": "~1.17.1",
+		"tin": "~0.4.0"
+	},
+	"directories": {
+		"test": "test",
+		"doc": "docs"
+	},
+	"homepage": "https://github.com/proj4js/proj4js#readme",
+	"jam": {
+		"main": "dist/proj4.js",
+		"include": [
+			"dist/proj4.js",
+			"README.md",
+			"AUTHORS",
+			"LICENSE.md"
+		]
+	},
+	"license": "MIT",
+	"main": "lib/index.js",
+	"name": "proj4",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
+	},
+	"scripts": {
+		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
+	},
+	"version": "2.3.15"
+};
 
 /***/ }),
 /* 466 */

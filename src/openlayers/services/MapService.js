@@ -38,7 +38,6 @@ export default class MapService extends ServiceBase {
             }, projection: me.options.projection
         });
         getMapStatusService.processAsync();
-        return me;
     }
 
     /**
@@ -58,7 +57,6 @@ export default class MapService extends ServiceBase {
             }
         });
         tilesetsService.processAsync();
-        return me;
     }
 }
 ol.supermap.MapService = MapService;

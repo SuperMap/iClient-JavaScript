@@ -27,7 +27,6 @@ export var  FieldService = ServiceBase.extend({
      * @description 字段查询服务
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     getFields: function (params,callback) {
         var me = this;
@@ -42,7 +41,6 @@ export var  FieldService = ServiceBase.extend({
             dataset: params.dataset
         });
         getFieldsService.processAsync();
-        return me;
     },
 
     /**
@@ -50,7 +48,6 @@ export var  FieldService = ServiceBase.extend({
      * @description 字段统计服务
      * @param params {SuperMap.FieldStatisticsParameters} 字段统计信息查询参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     getFieldStatisticsInfo: function (params, callback) {
         var me = this,
@@ -66,7 +63,6 @@ export var  FieldService = ServiceBase.extend({
             me.currentStatisticResult[modes[mode]] = null;
             me._fieldStatisticRequest(params.datasource,params.dataset,fieldName, modes[mode]);
         }
-        return me;
     },
 
     _fieldStatisticRequest: function (dataSourceName,dataSetName,fieldName, statisticMode) {

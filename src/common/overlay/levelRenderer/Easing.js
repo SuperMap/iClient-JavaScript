@@ -32,7 +32,7 @@ export default class Easing {
     // 线性
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回输入值
      */
     Linear(k) {
         return k;
@@ -42,7 +42,7 @@ export default class Easing {
     // 二次方的缓动（t^2）
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回二次方的缓动的值
      */
     QuadraticIn(k) {
         return k * k;
@@ -50,7 +50,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按二次方缓动退出的值
      */
     QuadraticOut(k) {
         return k * (2 - k);
@@ -58,7 +58,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按二次方缓动进入和退出的值
      */
     QuadraticInOut(k) {
         if ((k *= 2) < 1) {
@@ -71,7 +71,7 @@ export default class Easing {
     // 三次方的缓动（t^3）
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按三次方缓动的值
      */
     CubicIn(k) {
         return k * k * k;
@@ -79,7 +79,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按三次方缓动退出的值
      */
     CubicOut(k) {
         return --k * k * k + 1;
@@ -87,7 +87,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按三次方缓动进入退出的值
      */
     CubicInOut(k) {
         if ((k *= 2) < 1) {
@@ -100,7 +100,7 @@ export default class Easing {
     // 四次方的缓动（t^4）
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按四次方缓动进入的值
      */
     QuarticIn(k) {
         return k * k * k * k;
@@ -108,7 +108,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按四次方缓动退出的值
      */
     QuarticOut(k) {
         return 1 - (--k * k * k * k);
@@ -116,7 +116,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按四次方缓动进入退出的值
      */
     QuarticInOut(k) {
         if ((k *= 2) < 1) {
@@ -129,7 +129,7 @@ export default class Easing {
     // 五次方的缓动（t^5）
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按五次方缓动的值
      */
     QuinticIn(k) {
         return k * k * k * k * k;
@@ -137,7 +137,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按五次方缓动退出的值
      */
     QuinticOut(k) {
         return --k * k * k * k * k + 1;
@@ -145,7 +145,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按五次方缓动进入退出的值
      */
     QuinticInOut(k) {
         if ((k *= 2) < 1) {
@@ -158,7 +158,7 @@ export default class Easing {
     // 正弦曲线的缓动（sin(t)）
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按正弦曲线的缓动进入的值
      */
     SinusoidalIn(k) {
         return 1 - Math.cos(k * Math.PI / 2);
@@ -166,7 +166,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按正弦曲线的缓动退出的值
      */
     SinusoidalOut(k) {
         return Math.sin(k * Math.PI / 2);
@@ -174,7 +174,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按正弦曲线的缓动进入退出的值
      */
     SinusoidalInOut(k) {
         return 0.5 * (1 - Math.cos(Math.PI * k));
@@ -184,7 +184,7 @@ export default class Easing {
     // 指数曲线的缓动（2^t）
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按指数曲线的缓动进入的值
      */
     ExponentialIn(k) {
         return k === 0 ? 0 : Math.pow(1024, k - 1);
@@ -192,7 +192,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按指数曲线的缓动退出的值
      */
     ExponentialOut(k) {
         return k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
@@ -200,7 +200,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按指数曲线的缓动进入退出的值
      */
     ExponentialInOut(k) {
         if (k === 0) {
@@ -219,7 +219,7 @@ export default class Easing {
     // 圆形曲线的缓动（sqrt(1-t^2)）
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按圆形曲线的缓动进入的值
      */
     CircularIn(k) {
         return 1 - Math.sqrt(1 - k * k);
@@ -227,7 +227,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按圆形曲线的缓动退出的值
      */
     CircularOut(k) {
         return Math.sqrt(1 - (--k * k));
@@ -235,7 +235,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按圆形曲线的缓动进入退出的值
      */
     CircularInOut(k) {
         if ((k *= 2) < 1) {
@@ -248,7 +248,7 @@ export default class Easing {
     // 创建类似于弹簧在停止前来回振荡的动画
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动进入的值
      */
     ElasticIn(k) {
         var s;
@@ -272,7 +272,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动退出的值
      */
     ElasticOut(k) {
         var s;
@@ -296,7 +296,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按类似于弹簧在停止前来回振荡的动画的缓动进入退出的值
      */
     ElasticInOut(k) {
         var s;
@@ -327,7 +327,7 @@ export default class Easing {
     // 在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入的值
      */
     BackIn(k) {
         var s = 1.70158;
@@ -336,7 +336,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动退出的值
      */
     BackOut(k) {
         var s = 1.70158;
@@ -345,7 +345,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按在某一动画开始沿指示的路径进行动画处理前稍稍收回该动画的移动的缓动进入退出的值
      */
     BackInOut(k) {
         var s = 1.70158 * 1.525;
@@ -359,7 +359,7 @@ export default class Easing {
     // 创建弹跳效果
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按弹跳效果的缓动进入的值
      */
     BounceIn(k) {
         return 1 - this.BounceOut(1 - k);
@@ -367,7 +367,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按弹跳效果的缓动退出的值
      */
     BounceOut(k) {
         if (k < (1 / 2.75)) {
@@ -383,7 +383,7 @@ export default class Easing {
 
     /*
      * @param {number} k
-     * @return {number}
+     * @return {number} 返回按弹跳效果的缓动进入退出的值
      */
     BounceInOut(k) {
         if (k < 0.5) {

@@ -25,7 +25,8 @@ describe('leaflet_testFeatureService_getFeaturesByGeometry', function () {
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options).getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
+        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -84,7 +85,8 @@ describe('leaflet_testFeatureService_getFeaturesByGeometry', function () {
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options).getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
+        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -116,7 +118,8 @@ describe('leaflet_testFeatureService_getFeaturesByGeometry', function () {
             },
             datasetNames: ["World1:Countries"]
         });
-        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options).getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
+        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -144,7 +147,8 @@ describe('leaflet_testFeatureService_getFeaturesByGeometry', function () {
             queryParameter: null,
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options).getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
+        var getFeaturesByGeometryService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByGeometryService.getFeaturesByGeometry(getFeaturesByGeometryParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {

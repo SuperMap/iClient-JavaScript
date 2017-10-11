@@ -80,7 +80,7 @@ export var WebMap = L.LayerGroup.extend({
      * @param layer - {L.Layer} 待添加的图层
      * @param isBaseLayer -{boolean} 是否为底图层
      * @param options - {Object} 创建地图的可选参数
-     * @return {this}
+     * @return {this} this
      */
     addLayerWrapper: function (layer, isBaseLayer, options) {
         if (isBaseLayer) {
@@ -200,7 +200,7 @@ export var WebMap = L.LayerGroup.extend({
      * @param dpi - {number}屏幕分辨率
      * @param units - {string} 地图的单位
      * @param datum - {SuperMap.Datum} 大地参照系类
-     * @return {Array<number>}
+     * @return {Array<number>} 返回给定比例尺所对应的分辨率
      */
     getResolutionsFromScales: function (scales, dpi, units, datum) {
         var resolutions = [];
@@ -312,7 +312,7 @@ export var WebMap = L.LayerGroup.extend({
      * @description 创建天地图图层
      * @param layerInfo - {Object} 图层信息
      * @param epsgCode - {number}epsg编码
-     * @return {L.supermap.tiandituTileLayer}
+     * @return {L.supermap.tiandituTileLayer} 返回天地图图层对象
      */
     createTiandituLayer: function (layerInfo, epsgCode) {
         var proj = epsgCode === 4326 ? "c" : "w";
@@ -346,7 +346,7 @@ export var WebMap = L.LayerGroup.extend({
      * @description 创建图标图层
      * @param layerInfo - {Object} 图层信息
      * @param crs - {Object} 坐标对象
-     * @return {L.Layer}
+     * @return {L.Layer} 返回marker图层
      */
     createMarkersLayer: function (layerInfo, crs) {
         var that = this;
@@ -386,7 +386,7 @@ export var WebMap = L.LayerGroup.extend({
      * @description 创建矢量要素图层
      * @param layerInfo - {Object} 图层信息
      * @param crs - {Object} 坐标对象
-     * @return {L.Layer}
+     * @return {L.Layer} 返回矢量要素图层对象
      */
     createVectorLayer: function (layerInfo, crs) {
         var style = layerInfo.style,

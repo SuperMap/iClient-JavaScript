@@ -2,7 +2,7 @@
 import Util from '../core/Util';
 import ServiceBase from './ServiceBase';
 import StopQueryService from '../../common/iServer/StopQueryService';
-import TransferPathService from'../../common/iServer/TransferPathService';
+import TransferPathService from '../../common/iServer/TransferPathService';
 import TransferSolutionService from '../../common/iServer/TransferSolutionService';
 
 /**
@@ -29,7 +29,6 @@ export default class TrafficTransferAnalystService extends ServiceBase {
      * @description 站点查询服务
      * @param params - {SuperMap.StopQueryParameters} 查询相关参数类
      * @param callback - {function} 回调函数
-     * @return {ol.supermap.TrafficTransferAnalystService}
      */
     queryStop(params, callback) {
         var me = this;
@@ -42,7 +41,6 @@ export default class TrafficTransferAnalystService extends ServiceBase {
             }
         });
         stopQueryService.processAsync(params);
-        return me;
     }
 
     /**
@@ -50,7 +48,6 @@ export default class TrafficTransferAnalystService extends ServiceBase {
      * @description 交通换乘线路查询服务
      * @param params - {SuperMap.TransferPathParameters} 查询相关参数类
      * @param callback - {function} 回调函数
-     * @return {ol.supermap.TrafficTransferAnalystService}
      */
     analysisTransferPath(params, callback) {
         var me = this;
@@ -63,7 +60,6 @@ export default class TrafficTransferAnalystService extends ServiceBase {
             }
         });
         transferPathService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**
@@ -71,7 +67,6 @@ export default class TrafficTransferAnalystService extends ServiceBase {
      * @description 交通换乘方案查询服务
      * @param params - {SuperMap.TransferSolutionParameters} 查询相关参数类
      * @param callback - {function} 回调函数
-     * @return {ol.supermap.TrafficTransferAnalystService}
      */
     analysisTransferSolution(params, callback) {
         var me = this;
@@ -84,7 +79,6 @@ export default class TrafficTransferAnalystService extends ServiceBase {
             }
         });
         transferSolutionService.processAsync(me._processParams(params));
-        return me;
     }
 
     _processParams(params) {

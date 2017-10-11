@@ -20,7 +20,6 @@ export class AddressMatchService extends CommonServiceBase {
      * @description 正向匹配
      * @param params - {SuperMap.GeoCodingParameter} 正向匹配参数
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     code(params, callback) {
         var me = this;
@@ -33,7 +32,6 @@ export class AddressMatchService extends CommonServiceBase {
             }
         });
         addressMatchService.code(me.url + '/geocoding', params);
-        return me;
     }
 
     /**
@@ -41,7 +39,6 @@ export class AddressMatchService extends CommonServiceBase {
      * @description 反向匹配
      * @param params - {SuperMap.GeoDeCodingParameter} 反向匹配参数
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     decode(params, callback) {
         var me = this;
@@ -54,7 +51,6 @@ export class AddressMatchService extends CommonServiceBase {
             }
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
-        return me;
     }
 
     CLASS_NAME = "SuperMap.REST.AddressMatchService"

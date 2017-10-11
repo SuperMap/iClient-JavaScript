@@ -26,7 +26,8 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
             },
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options).getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
+        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -84,7 +85,8 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
             },
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options).getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
+        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -116,7 +118,8 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
             },
             datasetNames: ["World1:Countries"]
         });
-        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options).getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
+        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -144,7 +147,8 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
             queryParameter: null,
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options).getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
+        var getFeaturesBySQLService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesBySQLService.getFeaturesBySQL(getFeaturesBySQLParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {

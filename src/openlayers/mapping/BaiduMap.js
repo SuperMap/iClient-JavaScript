@@ -59,7 +59,7 @@ export default class BaiduMap extends ol.source.TileImage {
     /**
      * @function ol.source.BaiduMap.defaultTileGrid
      * @description 获取默认瓦片格网
-     * @return {ol.tilegrid.TileGrid}
+     * @return {ol.tilegrid.TileGrid} 返回瓦片格网对象
      */
     static defaultTileGrid() {
         var tileGird = new ol.tilegrid.TileGrid({

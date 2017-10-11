@@ -35,7 +35,8 @@ describe('leaflet_testThemeService', function () {
             datasetNames: ['Countries'],
             dataSourceNames: ['World']
         });
-        var themeDotDensityService = L.supermap.themeService(WorldURL, options).getThemeInfo(themeDotDensityParameters, function (result) {
+        var themeDotDensityService = L.supermap.themeService(WorldURL, options);
+        themeDotDensityService.getThemeInfo(themeDotDensityParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -88,7 +89,8 @@ describe('leaflet_testThemeService', function () {
             datasetNames: ['China_Province_pg'],
             dataSourceNames: ['China']
         });
-        var themeGraduatedSymbolService = L.supermap.themeService(ChinaURL, options).getThemeInfo(themeGraduatedSymbolParameters, function (result) {
+        var themeGraduatedSymbolService = L.supermap.themeService(ChinaURL, options);
+        themeGraduatedSymbolService.getThemeInfo(themeGraduatedSymbolParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -164,7 +166,8 @@ describe('leaflet_testThemeService', function () {
             dataSourceNames: ["Jingjin"],
             datasetNames: ["BaseMap_R"]
         });
-        var themeGraphService = L.supermap.themeService(jingjinPopulationURL, options).getThemeInfo(themeGraphParameters, function (result) {
+        var themeGraphService = L.supermap.themeService(jingjinPopulationURL, options);
+        themeGraphService.getThemeInfo(themeGraphParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -241,7 +244,8 @@ describe('leaflet_testThemeService', function () {
             joinItems: null,
             themes: [themeGridRange]
         });
-        var themeGridRangeService = L.supermap.themeService(jingjinPopulationURL, options).getThemeInfo(themeGridRangeParameters, function (result) {
+        var themeGridRangeService = L.supermap.themeService(jingjinPopulationURL, options);
+        themeGridRangeService.getThemeInfo(themeGridRangeParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -328,7 +332,8 @@ describe('leaflet_testThemeService', function () {
             datasetNames: ["Capitals"],
             dataSourceNames: ["World"]
         });
-        var themeLableService = L.supermap.themeService(WorldURL, options).getThemeInfo(themeLableParameters, function (result) {
+        var themeLableService = L.supermap.themeService(WorldURL, options);
+        themeGridRangeService.getThemeInfo(themeLableParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -388,7 +393,8 @@ describe('leaflet_testThemeService', function () {
             joinItems: null,
             themes: [themeRange]
         });
-        var themeRangeService = L.supermap.themeService(ChinaURL, options).getThemeInfo(themeRangeParameters, function (result) {
+        var themeRangeService = L.supermap.themeService(ChinaURL, options);
+        themeGridRangeService.getThemeInfo(themeRangeParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -447,7 +453,8 @@ describe('leaflet_testThemeService', function () {
             dataSourceNames: ["China"],
             themes: [themeUnique]
         });
-        var themeUniqueService = L.supermap.themeService(ChinaURL, options).getThemeInfo(themeUniqueParameters, function (result) {
+        var themeUniqueService = L.supermap.themeService(ChinaURL, options);
+        themeGridRangeService.getThemeInfo(themeUniqueParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {

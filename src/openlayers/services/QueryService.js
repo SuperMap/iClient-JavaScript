@@ -47,7 +47,6 @@ export default class QueryService extends ServiceBase {
         });
 
         queryService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**
@@ -56,7 +55,6 @@ export default class QueryService extends ServiceBase {
      * @param params - {QueryByDistanceParameters} Distance查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
-     * @return {ol.supermap.QueryService}
      */
     queryByDistance(params, callback, resultFormat) {
         var me = this;
@@ -71,7 +69,6 @@ export default class QueryService extends ServiceBase {
         });
 
         queryByDistanceService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**
@@ -80,7 +77,6 @@ export default class QueryService extends ServiceBase {
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
-     * @return {ol.supermap.QueryService}
      */
     queryBySQL(params, callback, resultFormat) {
         var me = this;
@@ -95,7 +91,6 @@ export default class QueryService extends ServiceBase {
         });
 
         queryBySQLService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**
@@ -104,7 +99,6 @@ export default class QueryService extends ServiceBase {
      * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
-     * @return {ol.supermap.QueryService}
      */
     queryByGeometry(params, callback, resultFormat) {
         var me = this;
@@ -119,7 +113,6 @@ export default class QueryService extends ServiceBase {
         });
 
         queryByGeometryService.processAsync(me._processParams(params));
-        return me;
     }
 
     _processParams(params) {

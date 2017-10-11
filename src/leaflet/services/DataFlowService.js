@@ -47,7 +47,6 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.initBroadcast
      * @description 初始化广播
-     * @returns {this}
      */
     initBroadcast: function () {
         this.dataFlow.initBroadcast();
@@ -66,7 +65,6 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
-     * @returns {this}
      */
     initSubscribe: function () {
         this.dataFlow.initSubscribe();
@@ -78,7 +76,6 @@ export var DataFlowService = ServiceBase.extend({
      * @function L.supermap.dataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param excludeField - {Object} 排除字段
-     * @returns {this}
      */
     setExcludeField: function (excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -90,7 +87,6 @@ export var DataFlowService = ServiceBase.extend({
      * @function L.supermap.dataFlowService.prototype.setGeometry
      * @description 设置添加的GeoJSON几何要素数据
      * @param geometry - {Array<Object>} 设置增添的GeoJSON几何要素对象数组。
-     * @returns {this}
      */
     setGeometry: function (geometry) {
         this.dataFlow.setGeometry(geometry);

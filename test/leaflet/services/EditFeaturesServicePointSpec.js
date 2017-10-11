@@ -27,7 +27,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             returnContent: true,
             isUseBatch: false
         });
-        var addFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(addFeaturesParams, function (result) {
+        var addFeaturesService = L.supermap.featureService(editServiceURL);
+        addFeaturesService.editFeatures(addFeaturesParams, function (result) {
             addFeatureResult_POINT = result
         });
         setTimeout(function () {
@@ -66,7 +67,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             returnContent: false,
             isUseBatch: true
         });
-        var addFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(addFeaturesParams, function (result) {
+        var addFeaturesService = L.supermap.featureService(editServiceURL);
+        addFeaturesService.editFeatures(addFeaturesParams, function (result) {
             addFeaturesResult = result
         });
         setTimeout(function () {
@@ -103,7 +105,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             IDs: [id1, id2, id3],
             editType: "delete"
         });
-        var deletePointsService = L.supermap.featureService(editServiceURL).editFeatures(deleteFeaturesParams, function (result) {
+        var deletePointsService = L.supermap.featureService(editServiceURL);
+        deletePointsService.editFeatures(deleteFeaturesParams, function (result) {
             deletePointsResult = result
         });
         setTimeout(function () {
@@ -135,7 +138,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             features: [],
             editType: "add"
         });
-        var nullFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(nullFeaturesParams, function (result) {
+        var nullFeaturesService = L.supermap.featureService(editServiceURL);
+        nullFeaturesService.editFeatures(nullFeaturesParams, function (result) {
             featuresNullResult = result
         });
         setTimeout(function () {
@@ -157,4 +161,4 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             }
         }, 2000)
     });
-})
+});

@@ -52,7 +52,7 @@ export default class IPortalService extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalService.prototype.load
      * @description 加载服务信息
-     * @returns {Promise}
+     * @returns {Promise} 返回Promise对象。如果成功，Promise没有返回值；如果失败，Promise返回值包含错误信息
      */
 
     load() {
@@ -71,7 +71,7 @@ export default class IPortalService extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalService.prototype.update
      * @description 更新服务
-     * @returns {Promise}
+     * @returns {Promise} 返回包含更新操作状态的Promise对象
      */
     update() {
         var serviceUpdateParam = {

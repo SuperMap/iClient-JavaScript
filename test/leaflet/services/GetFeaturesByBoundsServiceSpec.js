@@ -24,7 +24,8 @@ describe('leaflet_testFeatureService_getFeaturesByBounds', function () {
             bounds: polygon.getBounds(),
             returnContent: true
         });
-        var getFeaturesByBoundsService = L.supermap.featureService(dataServiceURL, options).getFeaturesByBounds(getFeaturesByBoundsParams, function (result) {
+        var getFeaturesByBoundsService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -81,7 +82,8 @@ describe('leaflet_testFeatureService_getFeaturesByBounds', function () {
             bounds: polygon.getBounds(),
             returnContent: false
         });
-        var getFeaturesByBoundsService = L.supermap.featureService(dataServiceURL, options).getFeaturesByBounds(getFeaturesByBoundsParams, function (result) {
+        var getFeaturesByBoundsService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -112,7 +114,8 @@ describe('leaflet_testFeatureService_getFeaturesByBounds', function () {
             datasetNames: ["World1:Capitals"],
             bounds: polygon.getBounds()
         });
-        var getFeaturesByBoundsService = L.supermap.featureService(dataServiceURL, options).getFeaturesByBounds(getFeaturesByBoundsParams, function (result) {
+        var getFeaturesByBoundsService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByBoundsService.getFeaturesByBounds(getFeaturesByBoundsParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {

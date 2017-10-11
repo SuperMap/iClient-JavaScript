@@ -52,7 +52,8 @@ describe('openlayers_FieldService', function () {
             datasource: "World1",
             dataset: "continent_T"
         });
-        var service = new ol.supermap.FieldService(url, options).getFields(fieldParameters, function (result) {
+        var service = new ol.supermap.FieldService(url, options);
+        service.getFields(fieldParameters, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {

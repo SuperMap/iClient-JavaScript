@@ -49,9 +49,9 @@ export default class Tianditu extends ol.source.WMTS {
 
     /**
      * @function ol.source.Tianditu.getTileGrid
-     * @description 获取网格瓦片
+     * @description 获取瓦片网格
      * @param projection - {Object} 投影参考对象
-     * @return {ol.tilegrid.WMTS}
+     * @return {ol.tilegrid.WMTS} 返回瓦片网格对象
      */
     static getTileGrid(projection) {
         if (projection === "EPSG:4326" || projection === "EPSG:4490") {
@@ -63,7 +63,7 @@ export default class Tianditu extends ol.source.WMTS {
     /**
      * @function ol.source.Tianditu.default4326TileGrid
      * @description 获取默认4326网格瓦片
-     * @return {ol.tilegrid.WMTS}
+     * @return {ol.tilegrid.WMTS} 返回默认4326网格瓦片对象
      */
     static default4326TileGrid() {
         var tdt_WGS84_resolutions = [];
@@ -85,7 +85,7 @@ export default class Tianditu extends ol.source.WMTS {
     /**
      * @function ol.source.Tianditu.default3857TileGrid
      * @description 获取默认3857网格瓦片
-     * @return {ol.tilegrid.WMTS}
+     * @return {ol.tilegrid.WMTS} 返回默认3857网格瓦片对象
      */
     static default3857TileGrid() {
         var tdt_Mercator_resolutions = [];

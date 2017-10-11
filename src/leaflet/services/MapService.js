@@ -34,7 +34,6 @@ export var MapService = ServiceBase.extend({
      * @function  L.supermap.mapService.prototype.getMapInfo
      * @description 获取地图信息
      * @param callback -{function} 回调函数
-     * @return {this}
      */
     getMapInfo: function (callback) {
         var me = this;
@@ -47,14 +46,12 @@ export var MapService = ServiceBase.extend({
             }, projection: me.options.projection
         });
         getMapStatusService.processAsync();
-        return me;
     },
 
     /**
      * @function  L.supermap.mapService.prototype.getTilesets
      * @description 获取切片列表信息
      * @param callback -{function} 回调函数
-     * @return {this}
      */
     getTilesets: function (callback) {
         var me = this;
@@ -68,7 +65,6 @@ export var MapService = ServiceBase.extend({
         });
 
         tilesetsService.processAsync();
-        return me;
     }
 });
 

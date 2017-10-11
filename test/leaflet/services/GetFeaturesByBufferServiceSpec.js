@@ -25,10 +25,11 @@ describe('leaflet_testFeatureService_getFeaturesByBuffer', function () {
             attributeFilter: "SMID>0",
             bufferDistance: 30,
             geometry: polygon,
-            fromIndex:0,
-            toIndex:19
+            fromIndex: 0,
+            toIndex: 19
         });
-        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options).getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
+        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -88,7 +89,8 @@ describe('leaflet_testFeatureService_getFeaturesByBuffer', function () {
             bufferDistance: 30,
             geometry: polygon
         });
-        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options).getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
+        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -122,7 +124,8 @@ describe('leaflet_testFeatureService_getFeaturesByBuffer', function () {
             bufferDistance: 30,
             geometry: polygon
         });
-        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options).getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
+        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -153,7 +156,8 @@ describe('leaflet_testFeatureService_getFeaturesByBuffer', function () {
             bufferDistance: 30,
             geometry: polygon
         });
-        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options).getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
+        var getFeaturesByBufferService = L.supermap.featureService(dataServiceURL, options);
+        getFeaturesByBufferService.getFeaturesByBuffer(getFeaturesByBufferParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {

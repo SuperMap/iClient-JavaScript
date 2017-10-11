@@ -57,7 +57,6 @@ export default class MeasureService extends ServiceBase {
             }
         });
         measureService.processAsync(me._processParam(params));
-        return me;
     }
 
     _processParam(params) {

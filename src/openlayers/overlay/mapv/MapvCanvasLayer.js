@@ -1,4 +1,5 @@
 import ol from 'openlayers/dist/ol-debug';
+
 /**
  * @class ol.supermap.MapvCanvasLayer
  * @classdesc Mapv渲染器。
@@ -68,7 +69,7 @@ export default class MapvCanvasLayer {
     /**
      * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
      * @description 获取容器
-     * @return {Element}
+     * @return {Element} 包含Mapv图层的dom对象
      */
     getContainer() {
         return this.canvas;

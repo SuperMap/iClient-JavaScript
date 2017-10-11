@@ -39,7 +39,6 @@ export var AddressMatchService = ServiceBase.extend({
             }
         });
         addressMatchService.code(me.url + '/geocoding', params);
-        return me;
     },
 
     /**
@@ -59,7 +58,6 @@ export var AddressMatchService = ServiceBase.extend({
             }
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
-        return me;
     }
 
 });

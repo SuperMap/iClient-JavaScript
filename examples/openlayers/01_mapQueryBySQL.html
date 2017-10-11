@@ -8,7 +8,8 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
-    var map, resultLayer, url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World";
+    var map, resultLayer,
+        url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
@@ -35,7 +36,7 @@
                 attributeFilter: "SMID < 10"
             }
         });
-        queryService = new ol.supermap.QueryService(url).queryBySQL(param, function (serviceResult) {
+        new ol.supermap.QueryService(url).queryBySQL(param, function (serviceResult) {
             var vectorSource = new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features),
                 wrapX: false

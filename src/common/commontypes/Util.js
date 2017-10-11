@@ -119,7 +119,7 @@ SuperMap.Util.getElement = function () {
 /**
  * @description instance of的跨浏览器实现。
  * @param o - {Object} 对象。
- * @return {boolean}
+ * @return {boolean} 是否是页面元素
  */
 SuperMap.Util.isElement = function (o) {
     return !!(o && o.nodeType === 1);
@@ -532,11 +532,10 @@ SuperMap.DOTS_PER_INCH = 96;
 
 /**
  * @param scale - {number}
- * @return {number}
+ * @return {number} 返回正常的scale值
  */
 SuperMap.Util.normalizeScale = function (scale) {
-    var normScale = (scale > 1.0) ? (1.0 / scale)
-        : scale;
+    var normScale = (scale > 1.0) ? (1.0 / scale) : scale;
     return normScale;
 };
 

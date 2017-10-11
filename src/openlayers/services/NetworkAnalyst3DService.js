@@ -45,7 +45,6 @@ export default class NetworkAnalyst3DService extends ServiceBase {
             }
         });
         facilityAnalystSinks3DService.processAsync(params);
-        return me;
     }
 
     /**
@@ -66,7 +65,6 @@ export default class NetworkAnalyst3DService extends ServiceBase {
             }
         });
         facilityAnalystSources3DService.processAsync(params);
-        return me;
     }
 
     /**
@@ -88,7 +86,6 @@ export default class NetworkAnalyst3DService extends ServiceBase {
             }
         });
         facilityAnalystTraceup3DService.processAsync(params);
-        return me;
     }
 
     /**
@@ -109,7 +106,6 @@ export default class NetworkAnalyst3DService extends ServiceBase {
             }
         });
         facilityAnalystTracedown3DService.processAsync(params);
-        return me;
     }
 
     /**
@@ -130,7 +126,6 @@ export default class NetworkAnalyst3DService extends ServiceBase {
             }
         });
         facilityAnalystUpstream3DService.processAsync(params);
-        return me;
     }
 }
 ol.supermap.NetworkAnalyst3DService = NetworkAnalyst3DService;

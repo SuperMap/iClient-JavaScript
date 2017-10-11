@@ -42,7 +42,6 @@ export default class GridCellInfosService extends ServiceBase {
             }
         });
         gridCellQueryService.processAsync(params);
-        return me;
     }
 }
 ol.supermap.GridCellInfosService = GridCellInfosService;

@@ -22,7 +22,7 @@ SuperMap.SecurityManager = {
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
      * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
-     * @return {Promise}
+     * @return {Promise} 返回包含token信息的Promise对象
      */
     generateToken: function (url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -122,7 +122,7 @@ SuperMap.SecurityManager = {
      * @param username -{string} 用户名
      * @param password -{string} 密码
      * @param rememberme -{boolean} 是否记住
-     * @returns {Promise}
+     * @returns {Promise} 返回包含iServer登录请求结果的Promise对象
      */
     loginiServer: function (url, username, password, rememberme) {
         var end = url.substr(url.length - 1, 1);
@@ -147,7 +147,7 @@ SuperMap.SecurityManager = {
     /**
      * @description iServer登出
      * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
-     * @returns {Promise}
+     * @returns {Promise} 是否登出成功
      */
     logoutiServer: function (url) {
         var end = url.substr(url.length - 1, 1);
@@ -183,7 +183,7 @@ SuperMap.SecurityManager = {
      * @param url -{string} iportal首页地址
      * @param username -{string} 用户名
      * @param password -{string} 密码
-     * @returns {Promise}
+     * @returns {Promise} 返回包含iPortal登录请求结果的Promise对象
      */
     loginiPortal: function (url, username, password) {
         var end = url.substr(url.length - 1, 1);
@@ -208,7 +208,7 @@ SuperMap.SecurityManager = {
     /**
      * @description iPortal登出
      * @param url -{string} iportal首页地址
-     * @returns {Promise}
+     * @returns {Promise} 如果登出成功，返回true;否则返回false
      */
     logoutiPortal: function (url) {
         var end = url.substr(url.length - 1, 1);
@@ -238,7 +238,7 @@ SuperMap.SecurityManager = {
      *        password-{string} 密码
      * @param options -{Object} <br>
      *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
-     * @return {Promise}
+     * @return {Promise} 返回包含iManager登录请求结果的Promise对象
      */
     loginManager: function (url, loginInfoParams, options) {
         if (!SuperMap.Util.isInTheSameDomain(url)) {

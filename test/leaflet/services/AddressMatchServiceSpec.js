@@ -18,7 +18,7 @@ describe('leaflet_testAddressMatchService', function () {
     });
 
     it('successEvent:GeoCoding', function (done) {
-        var GeoCodingParams = new SuperMap.GeoCodingParameter({
+        var geoCodingParams = new SuperMap.GeoCodingParameter({
             address: '公司',
             fromIndex: 0,
             toIndex: 10,
@@ -26,13 +26,14 @@ describe('leaflet_testAddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var GeoCodingService = L.supermap.addressMatchService(addressMatchURL, options).code(GeoCodingParams, function (result) {
+        var geoCodingService = L.supermap.addressMatchService(addressMatchURL, options);
+        geoCodingService.code(geoCodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
             try {
-                expect(GeoCodingService).not.toBeNull();
-                expect(GeoCodingService.options.serverType).toBe("iServer");
+                expect(geoCodingService).not.toBeNull();
+                expect(geoCodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
                 expect(result).not.toBeNull();
@@ -43,11 +44,11 @@ describe('leaflet_testAddressMatchService', function () {
                     expect(result[i].filters[1]).toBe("海淀区");
                 }
                 expect(result[0].score).not.toBeNull();
-                GeoCodingService.destroy();
+                geoCodingService.destroy();
                 done();
             } catch (exception) {
                 console.log("'successEvent:GeoCoding'案例失败：" + exception.name + ":" + exception.message);
-                GeoCodingService.destroy();
+                geoCodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
@@ -66,7 +67,8 @@ describe('leaflet_testAddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var GeoDecodingService = L.supermap.addressMatchService(addressMatchURL, options).decode(GeoDecodingParams, function (result) {
+        var GeoDecodingService = L.supermap.addressMatchService(addressMatchURL, options);
+        GeoDecodingService.decode(GeoDecodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -95,7 +97,7 @@ describe('leaflet_testAddressMatchService', function () {
     });
 
     it('failEvent:GeocodingAddressNull', function (done) {
-        var GeoCodingParams = new SuperMap.GeoCodingParameter({
+        var geoCodingParams = new SuperMap.GeoCodingParameter({
             address: null,
             fromIndex: 0,
             toIndex: 10,
@@ -103,24 +105,24 @@ describe('leaflet_testAddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var GeoCodingService = L.supermap.addressMatchService(addressMatchURL, options).code(GeoCodingParams, function (result) {
+        var geoCodingService = L.supermap.addressMatchService(addressMatchURL, options).code(geoCodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
             try {
-                expect(GeoCodingService).not.toBeNull();
-                expect(GeoCodingService.options.serverType).toBe("iServer");
+                expect(geoCodingService).not.toBeNull();
+                expect(geoCodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
                 expect(result).not.toBeNull();
                 expect(result.success).toBeFalsy();
                 expect(result.error.code).toEqual(400);
                 expect(result.error.errorMsg).toBe("address cannot be null!");
-                GeoCodingService.destroy();
+                geoCodingService.destroy();
                 done();
             } catch (exception) {
                 console.log("'failEvent:GeocodingAddressNull'案例失败：" + exception.name + ":" + exception.message);
-                GeoCodingService.destroy();
+                geoCodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }

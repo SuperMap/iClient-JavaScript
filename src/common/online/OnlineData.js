@@ -7,7 +7,7 @@ import OnlineServiceBase from './OnlineServiceBase';
  * @param serviceRootUrl -{string} 服务根地址
  * @param options -{string} 服务相关参数
  */
-export default  class OnlineData extends OnlineServiceBase {
+export default class OnlineData extends OnlineServiceBase {
     //MD5
     MD5 = null;
     //文件类型。
@@ -66,7 +66,7 @@ export default  class OnlineData extends OnlineServiceBase {
     /**
      * @function SuperMap.OnlineData.prototype.load
      * @description 通过url请求获取该服务完整信息
-     * @returns {Promise}
+     * @returns {Promise} 返回不包含请求结果的Promise对象,请求返回结果自动填充到该类属性中
      */
     load() {
         if (!this.serviceUrl) {

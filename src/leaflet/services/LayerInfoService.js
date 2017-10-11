@@ -29,7 +29,6 @@ export var LayerInfoService = ServiceBase.extend({
      * @function L.supermap.layerInfoService.prototype.getLayerInfo
      * @description 获取图层信息
      * @param callback - {function} 获取信息完成后的回调函数
-     * @return {this}
      */
     getLayersInfo: function (callback) {
         var me = this;
@@ -41,7 +40,6 @@ export var LayerInfoService = ServiceBase.extend({
             }
         });
         getLayersInfoService.processAsync();
-        return me;
     },
 
     /**
@@ -49,7 +47,6 @@ export var LayerInfoService = ServiceBase.extend({
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改
      * @param params - {SuperMap.SetLayerInfoParameters} 图层信息相关参数
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     setLayerInfo: function (params, callback) {
         if (!params) {
@@ -76,7 +73,6 @@ export var LayerInfoService = ServiceBase.extend({
         });
 
         setLayerInfoService.processAsync(layerInfoParams);
-        return me;
     },
 
 
@@ -85,7 +81,6 @@ export var LayerInfoService = ServiceBase.extend({
      * @description 设置图层信息。可以实现创建新的临时图层和对现有临时图层的修改
      * @param params -{SuperMap.SetLayersInfoParameters} 图层信息设置参数,包括临时图层。
      * @param callback -{function} 回调函数
-     * @return {this}
      */
     setLayersInfo: function (params, callback) {
         if (!params) {
@@ -112,7 +107,6 @@ export var LayerInfoService = ServiceBase.extend({
         });
 
         setLayersInfoService.processAsync(layersInfoParam);
-        return me;
     },
 
 
@@ -121,7 +115,6 @@ export var LayerInfoService = ServiceBase.extend({
      * @description 负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param params -{SuperMap.SetLayerStatusParameters} 图层信息显示控制参数
      * @param callback -{function} 回调函数
-     * @return {this}
      */
     setLayerStatus: function (params, callback) {
         if (!params) {
@@ -136,7 +129,6 @@ export var LayerInfoService = ServiceBase.extend({
             }
         });
         setLayerStatusService.processAsync(params);
-        return me;
     }
 
 });

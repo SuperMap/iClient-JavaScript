@@ -29,7 +29,6 @@ export default class ChartService extends ServiceBase {
      * @param params - {SuperMap.ChartQueryParameters} 海图查询所需参数类。
      * @param callback - {function} 回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果格式类型。
-     * @return {mapboxgl.supermap.ChartService}
      */
     queryChart(params, callback, resultFormat) {
         var me = this,
@@ -46,14 +45,12 @@ export default class ChartService extends ServiceBase {
         });
 
         chartQueryService.processAsync(param);
-        return me;
     }
 
     /**
      * @function mapboxgl.supermap.ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息服务。
      * @param callback - {function} 回调函数
-     * @return {mapboxgl.supermap.ChartService}
      */
     getChartFeatureInfo(callback) {
         var me = this, url = me.url.concat();
@@ -67,7 +64,6 @@ export default class ChartService extends ServiceBase {
             }
         });
         chartFeatureInfoSpecsService.processAsync();
-        return me;
     }
 
     _processParams(params) {

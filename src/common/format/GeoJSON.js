@@ -33,10 +33,9 @@ export default class GeoJSON extends JSONFormat {
      *     每个值都会被filter函数的结果所替换掉。这个函数可被用来将某些对象转化成
      *     某个类相应的对象，或者将日期字符串转化成Date对象。
      *
-     * @return {Object}
-     *    返回值依赖于type参数的值。如果type等于"FeatureCollection"（默认值），
-     *     返回值将会是 <SuperMap.Feature.Vector> 数组。如果type为"Geometry",
-     *     输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>
+     * @return {Object}    返回值依赖于type参数的值。<br>
+     *     如果type等于"FeatureCollection"（默认值），返回值将会是 <SuperMap.Feature.Vector> 数组。<br>
+     *     如果type为"Geometry",输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>。 <br>
      *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是<SuperMap.Feature.Vector> 。
      */
     read(json, type, filter) {
@@ -118,9 +117,9 @@ export default class GeoJSON extends JSONFormat {
         switch (type) {
             case "Geometry":
                 if (SuperMap.Util.indexOf(
-                    ["Point", "MultiPoint", "LineString", "MultiLineString",
-                        "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
-                    obj.type) == -1) {
+                        ["Point", "MultiPoint", "LineString", "MultiLineString",
+                            "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
+                        obj.type) == -1) {
                     // unsupported geometry type
                     //SuperMap.Console.error("Unsupported geometry type: " +
                     // obj.type);

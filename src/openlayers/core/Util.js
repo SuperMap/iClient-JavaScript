@@ -1,6 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import GeoJSONFormat from '../../common/format/GeoJSON';
+
 ol.supermap = ol.supermap || {};
 
 /**
@@ -59,7 +60,7 @@ export default class Util {
      * @function ol.supermap.Util.toSuperMapBounds
      * @description 转为SuperMapBounds格式
      * @param bounds {Array<number>} bounds数组
-     * @return {SuperMap.Bounds}
+     * @return {SuperMap.Bounds} 返回SuperMap的Bounds对象
      */
     static toSuperMapBounds(bounds) {
         return new SuperMap.Bounds(
@@ -91,7 +92,7 @@ export default class Util {
      * @function ol.supermap.Util.getMeterPerMapUnit
      * @description 获取每地图单位多少米
      * @param mapUnit mapUnit - {string} 地图单位
-     * @return {number}
+     * @return {number} 返回每地图单位多少米
      */
     static getMeterPerMapUnit(mapUnit) {
         var earchRadiusInMeters = 6378137;
@@ -117,7 +118,7 @@ export default class Util {
      * @function ol.supermap.Util.isArray
      * @description 判断是否为数组格式
      * @param obj - {Object} 待判断对象
-     * @return {boolean}
+     * @return {boolean} 是否是数组
      */
     static isArray(obj) {
         return Object.prototype.toString.call(obj) == '[object Array]'
@@ -145,7 +146,9 @@ export default class Util {
             var titulos = options.titles;
             if (options.firstLineTitles) {
                 csv = csv.split(options.lineSeparator);
-                if (csv.length < 2) {return;}
+                if (csv.length < 2) {
+                    return;
+                }
                 titulos = csv[0];
                 csv.splice(0, 1);
                 csv = csv.join(options.lineSeparator);
@@ -157,7 +160,9 @@ export default class Util {
             }
             for (let i = 0; i < titulos.length; i++) {
                 var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
-                if (prop == '' || prop == '_') {prop = 'prop-' + i;}
+                if (prop == '' || prop == '_') {
+                    prop = 'prop-' + i;
+                }
                 _propertiesNames[i] = prop;
             }
             csv = _csv2json(csv);
@@ -165,7 +170,9 @@ export default class Util {
         return csv;
 
         function _deleteDoubleQuotes(cadena) {
-            if (options.deleteDoubleQuotes) {cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");}
+            if (options.deleteDoubleQuotes) {
+                cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
+            }
             return cadena;
         }
 

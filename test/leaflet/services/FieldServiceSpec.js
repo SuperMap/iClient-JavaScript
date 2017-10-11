@@ -20,7 +20,8 @@ describe('leaflet_testFieldService', function () {
 
     //字段查询服务 成功事件
     it('successEvent:getFields', function (done) {
-        var getFieldsService = L.supermap.fieldService(dataServiceURL).getFields(params,function (result) {
+        var getFieldsService = L.supermap.fieldService(dataServiceURL);
+        getFieldsService.getFields(params, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -47,10 +48,11 @@ describe('leaflet_testFieldService', function () {
 
     //字段查询服务 失败事件
     it('failEvent:getFields_dataSourceNotExist', function (done) {
-        var getFieldsService = L.supermap.fieldService(dataServiceURL).getFields({
+        var getFieldsService = L.supermap.fieldService(dataServiceURL);
+        getFieldsService.getFields({
             datasource: "World1",
             dataset: "continent_T"
-        },function (result) {
+        }, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -82,7 +84,8 @@ describe('leaflet_testFieldService', function () {
             fieldName: "SmID",
             statisticMode: ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"]
         });
-        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL).getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
+        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL);
+        getFieldStatisticsInfoService.getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -122,7 +125,8 @@ describe('leaflet_testFieldService', function () {
             fieldName: "SmID",
             statisticMode: ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"]
         });
-        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL).getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
+        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL);
+        getFieldStatisticsInfoService.getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {

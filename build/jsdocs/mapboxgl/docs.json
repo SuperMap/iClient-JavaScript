@@ -6,11 +6,12 @@
     },
     "disqus":"",
     "tags": {
-        "allowUnknownTags": true
+        "allowUnknownTags": true,
+        "linkdoc-openlayers":"https://www.mapbox.com/mapbox-gl-js/api/"
     },
     "source": {
         "includePattern": ".+\\.js?$",
-        //"excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base.js?$",
+        "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base.js?$",
         "include": [
             "src/common","src/mapboxgl"
         ],
@@ -18,7 +19,7 @@
             "src/common/overlay/feature","src/common/overlay/levelRenderer"
         ]
     },
-    "plugins": ["plugins/markdown"],
+    "plugins": ["plugins/markdown","../plugins/linkdoc"],
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,

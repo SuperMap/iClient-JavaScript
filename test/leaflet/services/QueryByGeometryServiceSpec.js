@@ -26,7 +26,8 @@ describe('leaflet_testQueryService_queryByGeometry', function () {
             queryParams: {name: "Capitals@World"},
             geometry: polygon
         });
-        var queryByGeometryService = L.supermap.queryService(worldMapURL, options).queryByGeometry(queryByGeometryParams, function (result) {
+        var queryByGeometryService = L.supermap.queryService(worldMapURL, options);
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -91,7 +92,8 @@ describe('leaflet_testQueryService_queryByGeometry', function () {
             geometry: polygon,
             returnContent: false
         });
-        var queryByGeometryService = L.supermap.queryService(worldMapURL, options).queryByGeometry(queryByGeometryParams, function (result) {
+        var queryByGeometryService = L.supermap.queryService(worldMapURL, options);
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -122,7 +124,8 @@ describe('leaflet_testQueryService_queryByGeometry', function () {
             queryParams: {name: "Capitals@World1"},
             geometry: polygon
         });
-        var queryByGeometryService = L.supermap.queryService(worldMapURL, options).queryByGeometry(queryByGeometryParams, function (result) {
+        var queryByGeometryService = L.supermap.queryService(worldMapURL, options);
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -151,7 +154,8 @@ describe('leaflet_testQueryService_queryByGeometry', function () {
             queryParams: null,
             geometry: polygon
         });
-        var queryByGeometryService = L.supermap.queryService(worldMapURL, options).queryByGeometry(queryByGeometryParams, function (result) {
+        var queryByGeometryService = L.supermap.queryService(worldMapURL, options);
+        queryByGeometryService.queryByGeometry(queryByGeometryParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {

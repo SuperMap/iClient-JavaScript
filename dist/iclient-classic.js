@@ -2526,7 +2526,7 @@ _SuperMap2.default.Util.getElement = function () {
 /**
  * @description instance of的跨浏览器实现。
  * @param o - {Object} 对象。
- * @return {boolean}
+ * @return {boolean} 是否是页面元素
  */
 _SuperMap2.default.Util.isElement = function (o) {
     return !!(o && o.nodeType === 1);
@@ -2924,7 +2924,7 @@ _SuperMap2.default.DOTS_PER_INCH = 96;
 
 /**
  * @param scale - {number}
- * @return {number}
+ * @return {number} 返回正常的scale值
  */
 _SuperMap2.default.Util.normalizeScale = function (scale) {
     var normScale = scale > 1.0 ? 1.0 / scale : scale;
@@ -3808,7 +3808,6 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
      * @description 正向匹配
      * @param params - {SuperMap.GeoCodingParameter} 正向匹配参数
      * @param callback - {function} 回调函数
-     * @return {this}
      */
 
 
@@ -3825,7 +3824,6 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
                 }
             });
             addressMatchService.code(me.url + '/geocoding', params);
-            return me;
         }
 
         /**
@@ -3833,7 +3831,6 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
          * @description 反向匹配
          * @param params - {SuperMap.GeoDeCodingParameter} 反向匹配参数
          * @param callback - {function} 回调函数
-         * @return {this}
          */
 
     }, {
@@ -3849,7 +3846,6 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
                 }
             });
             addressMatchService.decode(me.url + '/geodecoding', params);
-            return me;
         }
     }]);
 
@@ -3944,7 +3940,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
      * @description 获取密度分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {this}
      */
 
 
@@ -3963,7 +3958,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             kernelDensityJobsService.getKernelDensityJobs();
-            return me;
         }
 
         /**
@@ -3972,7 +3966,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param id - {string}空间分析的id。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -3990,7 +3983,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             kernelDensityJobsService.getKernelDensityJob(id);
-            return me;
         }
 
         /**
@@ -4000,7 +3992,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param callback - {function} 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4020,13 +4011,13 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             kernelDensityJobsService.addKernelDensityJob(params, seconds);
-            return me;
         }
 
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getKernelDensityJobState
          * @description 获取密度分析的状态。
          * @param id - {string}密度分析的id。
+         * @return {Object} 密度分析的状态
          */
 
     }, {
@@ -4040,7 +4031,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @description 获取点聚合分析的列表。
          * @param callback - {function}  请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4058,7 +4048,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             summaryMeshJobsService.getSummaryMeshJobs();
-            return me;
         }
 
         /**
@@ -4067,7 +4056,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param id - {string}空间分析的id。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4085,7 +4073,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             summaryMeshJobsService.getSummaryMeshJob(id);
-            return me;
         }
 
         /**
@@ -4095,7 +4082,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param callback - {function} 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4115,13 +4101,13 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             summaryMeshJobsService.addSummaryMeshJob(params, seconds);
-            return me;
         }
 
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobState
          * @description 获取点聚合分析的状态。
          * @param id - {string} 点聚合分析的id。
+         * @return {Object} 点聚合分析的状态
          */
 
     }, {
@@ -4135,7 +4121,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @description 获取单对象查询分析的列表。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4153,7 +4138,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             singleObjectQueryJobsService.getQueryJobs();
-            return me;
         }
 
         /**
@@ -4162,7 +4146,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param id - {string}空间分析的id。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4180,7 +4163,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             singleObjectQueryJobsService.getQueryJob(id);
-            return me;
         }
 
         /**
@@ -4190,7 +4172,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param callback - {function} 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4210,13 +4191,13 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             singleObjectQueryJobsService.addQueryJob(params, seconds);
-            return me;
         }
 
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getQueryJobState
          * @description 获取单对象查询分析的状态。
          * @param id - {string}单对象查询分析的id。
+         * @return {Object} 单对象查询分析的状态
          */
 
     }, {
@@ -4230,7 +4211,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @description 获取区域汇总分析的列表。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4248,7 +4228,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             summaryRegionJobsService.getSummaryRegionJobs();
-            return me;
         }
 
         /**
@@ -4257,7 +4236,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param id - {string}区域汇总分析的id。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4275,7 +4253,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             summaryRegionJobsService.getSummaryRegionJob(id);
-            return me;
         }
 
         /**
@@ -4285,7 +4262,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param callback - {function} 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4305,13 +4281,13 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             summaryRegionJobsService.addSummaryRegionJob(params, seconds);
-            return me;
         }
 
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobState
          * @description 获取区域汇总分析的状态。
          * @param id - {string}区域汇总分析的id。
+         * @return {Object} 区域汇总分析的状态
          */
 
     }, {
@@ -4325,7 +4301,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @description 获取矢量裁剪分析的列表。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4343,7 +4318,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             vectorClipJobsService.getVectorClipJobs();
-            return me;
         }
 
         /**
@@ -4352,7 +4326,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param id - {string}空间分析的id。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4370,7 +4343,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             vectorClipJobsService.getVectorClipJob(id);
-            return me;
         }
 
         /**
@@ -4380,7 +4352,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
          * @param callback - {function} 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {this}
          */
 
     }, {
@@ -4401,13 +4372,13 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 format: format
             });
             vectorClipJobsService.addVectorClipJob(params, seconds);
-            return me;
         }
 
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getVectorClipJobState
          * @description 获取矢量裁剪分析的状态。
          * @param id - {string}矢量裁剪分析的id。
+         * @return {Object} 矢量裁剪分析的状态
          */
 
     }, {
@@ -9516,7 +9487,7 @@ _SuperMap2.default.SecurityManager = {
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
      * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
-     * @return {Promise}
+     * @return {Promise} 返回包含token信息的Promise对象
      */
     generateToken: function generateToken(url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -9616,7 +9587,7 @@ _SuperMap2.default.SecurityManager = {
      * @param username -{string} 用户名
      * @param password -{string} 密码
      * @param rememberme -{boolean} 是否记住
-     * @returns {Promise}
+     * @returns {Promise} 返回包含iServer登录请求结果的Promise对象
      */
     loginiServer: function loginiServer(url, username, password, rememberme) {
         var end = url.substr(url.length - 1, 1);
@@ -9640,7 +9611,7 @@ _SuperMap2.default.SecurityManager = {
     /**
      * @description iServer登出
      * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
-     * @returns {Promise}
+     * @returns {Promise} 是否登出成功
      */
     logoutiServer: function logoutiServer(url) {
         var end = url.substr(url.length - 1, 1);
@@ -9674,7 +9645,7 @@ _SuperMap2.default.SecurityManager = {
      * @param url -{string} iportal首页地址
      * @param username -{string} 用户名
      * @param password -{string} 密码
-     * @returns {Promise}
+     * @returns {Promise} 返回包含iPortal登录请求结果的Promise对象
      */
     loginiPortal: function loginiPortal(url, username, password) {
         var end = url.substr(url.length - 1, 1);
@@ -9698,7 +9669,7 @@ _SuperMap2.default.SecurityManager = {
     /**
      * @description iPortal登出
      * @param url -{string} iportal首页地址
-     * @returns {Promise}
+     * @returns {Promise} 如果登出成功，返回true;否则返回false
      */
     logoutiPortal: function logoutiPortal(url) {
         var end = url.substr(url.length - 1, 1);
@@ -9727,7 +9698,7 @@ _SuperMap2.default.SecurityManager = {
      *        password-{string} 密码
      * @param options -{Object} <br>
      *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
-     * @return {Promise}
+     * @return {Promise} 返回包含iManager登录请求结果的Promise对象
      */
     loginManager: function loginManager(url, loginInfoParams, options) {
         if (!_SuperMap2.default.Util.isInTheSameDomain(url)) {

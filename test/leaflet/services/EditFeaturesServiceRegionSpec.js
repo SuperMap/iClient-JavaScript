@@ -26,7 +26,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             returnContent: true,
             isUseBatch: false
         });
-        var addFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(addFeaturesParams, function (result) {
+        var addFeaturesService = L.supermap.featureService(editServiceURL);
+        addFeaturesService.editFeatures(addFeaturesParams, function (result) {
             addFeatureResult_REGION = result
         });
         setTimeout(function () {
@@ -64,7 +65,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             returnContent: false,
             isUseBatch: false
         });
-        var addFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(addFeaturesParams, function (result) {
+        var addFeaturesService = L.supermap.featureService(editServiceURL);
+        addFeaturesService.editFeatures(addFeaturesParams, function (result) {
             addFeatureResult = result
         });
         setTimeout(function () {
@@ -101,7 +103,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             IDs: [id1, id2],
             editType: "delete"
         });
-        var deleteFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(deleteFeaturesParams, function (result) {
+        var deleteFeaturesService = L.supermap.featureService(editServiceURL);
+        deleteFeaturesService.editFeatures(deleteFeaturesParams, function (result) {
             deleteFeatureResult = result
         });
         setTimeout(function () {
@@ -133,7 +136,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             datasetNames: ["Jingjin:Landuse_R"],
             IDs: [1]
         });
-        var getFeaturesByIDsService = L.supermap.featureService(editServiceURL).getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
+        var getFeaturesByIDsService = L.supermap.featureService(editServiceURL);
+        getFeaturesByIDsService.getFeaturesByIDs(getFeaturesByIDsParams, function (result) {
             getFeatureResult = result
         });
         setTimeout(function () {
@@ -157,7 +161,7 @@ describe('leaflet_testFeatureService_editFeatures', function () {
     it('successEvent:updateFeature', function (done) {
         var updateFeatureResult = null;
         if (originFeature != null) {
-            var random = parseInt(Math.random()*10000000);
+            var random = parseInt(Math.random() * 10000000);
             originFeature.properties.LANDTYPE = "用材林" + random;
             var updateFeaturesParams = new SuperMap.EditFeaturesParameters({
                 dataSourceName: "Jingjin",
@@ -165,7 +169,8 @@ describe('leaflet_testFeatureService_editFeatures', function () {
                 features: originFeature,
                 editType: "update"
             });
-            var updateFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(updateFeaturesParams, function (result) {
+            var updateFeaturesService = L.supermap.featureService(editServiceURL);
+            updateFeaturesService.editFeatures(updateFeaturesParams, function (result) {
                 updateFeatureResult = result
             });
             setTimeout(function () {

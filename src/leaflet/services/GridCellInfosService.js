@@ -25,7 +25,6 @@ export var GridCellInfosService = ServiceBase.extend({
      * @function L.supermap.gridCellInfosService.prototype.getGridCellInfos
      * @param params {SuperMap.GetGridCellInfosParameters} 数据服务栅格查询参数类
      * @param callback - {function} 回调函数
-     * @return {this}
      */
     getGridCellInfos: function (params, callback) {
         if (!params) {
@@ -41,7 +40,6 @@ export var GridCellInfosService = ServiceBase.extend({
             }
         });
         gridCellQueryService.processAsync(params);
-        return me;
     }
 });
 export var gridCellInfosService = function (url, options) {

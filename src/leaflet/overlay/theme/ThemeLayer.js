@@ -37,7 +37,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getEvents
      * @description 获取图层事件
-     * @return {{zoomend: ThemeLayer._reset, moveend: ThemeLayer._reset, resize: ThemeLayer._resize}}
+     * @return {Object} 返回图层支持的事件
      */
     getEvents: function () {
         var me = this;

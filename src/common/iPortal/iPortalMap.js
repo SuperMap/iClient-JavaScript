@@ -9,7 +9,7 @@ import IPortalServiceBase from './iPortalServiceBase';
  * @extends SuperMap.iPortalServiceBase
  *
  */
-export default  class IPortalMap extends IPortalServiceBase {
+export default class IPortalMap extends IPortalServiceBase {
 
     authorizeSetting = [];
     center = "";
@@ -48,7 +48,7 @@ export default  class IPortalMap extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalMap.prototype.load
      * @description 加载地图信息
-     * @returns {Promise}
+     * @returns {Promise} 返回Promise对象。如果成功，Promise没有返回值，请求返回结果自动填充到该类的属性中；如果失败，Promise返回值包含错误信息
      */
     load() {
         var me = this;
@@ -66,7 +66,7 @@ export default  class IPortalMap extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortalMap.prototype.update
      * @description 更新地图参数
-     * @returns {Promise}
+     * @returns {Promise} 返回包含更新操作状态的Promise对象
      */
     update() {
         var mapUpdateParam = {

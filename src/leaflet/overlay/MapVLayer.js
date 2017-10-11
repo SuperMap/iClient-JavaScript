@@ -152,7 +152,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getCanvas
      * @description 获取canvas
-     * @return {HTMLElement}
+     * @return {HTMLElement} 返回mapV图层包含的canvas对象
      */
     getCanvas: function () {
         return this.canvas;
@@ -161,7 +161,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getContainer
      * @description 获取容器
-     * @return {HTMLElement}
+     * @return {HTMLElement} 返回包含mapV图层的dom对象
      */
     getContainer: function () {
         return this.container;
@@ -170,7 +170,7 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.getTopLeft
      * @description 获取左上角坐标
-     * @return {L.Bounds}
+     * @return {L.Bounds} 返回左上角坐标
      */
     getTopLeft: function () {
         var map = this._map;

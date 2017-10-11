@@ -23,7 +23,7 @@ export default class IPortal extends IPortalServiceBase {
     /**
      * @function SuperMap.iPortal.prototype.load
      * @description 加载页面
-     * @returns {Promise}
+     * @returns {Promise} 返回包含iportal web资源信息的Promise对象
      */
     load() {
         return FetchRequest.get(this.iportalUrl + '/web');
@@ -33,7 +33,7 @@ export default class IPortal extends IPortalServiceBase {
      * @function SuperMap.iPortal.prototype.queryServices
      * @param queryParams -{SuperMap.iPortalServicesQueryParam} 查询参数
      * @description 查询服务
-     * @returns {Promise}
+     * @returns {Promise} 返回包含所有服务的Promise对象
      */
     queryServices(queryParams) {
         var serviceUrl = this.iportalUrl + "/web/services";
@@ -51,7 +51,7 @@ export default class IPortal extends IPortalServiceBase {
      * @function SuperMap.iPortal.prototype.deleteServices
      * @param ids -{Array} 服务的序号
      * @description 删除服务
-     * @returns {Promise}
+     * @returns {Promise} 返回包含服务删除操作状态的Promise对象
      */
     deleteServices(ids) {
         var serviceUrl = this.iportalUrl + "/web/services";
@@ -62,7 +62,7 @@ export default class IPortal extends IPortalServiceBase {
      * @function SuperMap.iPortal.prototype.queryMaps
      * @param queryParams -{SuperMap.iPortalMapsQueryParam} 查询参数
      * @description 获取地图信息
-     * @returns {Promise}
+     * @returns {Promise} 返回包含所有地图服务信息的Promise对象
      */
     queryMaps(queryParams) {
         var mapsUrl = this.iportalUrl + "/web/maps";

@@ -288,7 +288,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
      * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
      * @description 更改URL请求参数中的切片版本号,并重绘。
      * @param version - {Object} 版本信息
-     * @return {boolean}
+     * @return {boolean} 是否成功
      */
     mergeTileVersionParam(version) {
         if (version) {

@@ -33,7 +33,6 @@ export default class FeatureService extends ServiceBase {
      * @param params - {SuperMap.GetFeaturesByIDsParameters} 查询所需参数类。
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
-     * @return {mapboxgl.supermap.FeatureService}
      */
     getFeaturesByIDs(params, callback, resultFormat) {
         var me = this;
@@ -46,7 +45,6 @@ export default class FeatureService extends ServiceBase {
             format: me._processFormat(resultFormat)
         });
         getFeaturesByIDsService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**
@@ -55,7 +53,6 @@ export default class FeatureService extends ServiceBase {
      * @param params - {SuperMap.GetFeaturesByBoundsParameters} 查询所需参数类。
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
-     * @return {mapboxgl.supermap.FeatureService}
      */
     getFeaturesByBounds(params, callback, resultFormat) {
         var me = this;
@@ -68,7 +65,6 @@ export default class FeatureService extends ServiceBase {
             format: me._processFormat(resultFormat)
         });
         getFeaturesByBoundsService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**
@@ -77,7 +73,6 @@ export default class FeatureService extends ServiceBase {
      * @param params - {SuperMap.GetFeaturesByBufferParameters} 查询所需参数类。
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
-     * @return {mapboxgl.supermap.FeatureService}
      */
     getFeaturesByBuffer(params, callback, resultFormat) {
         var me = this;
@@ -90,7 +85,6 @@ export default class FeatureService extends ServiceBase {
             format: me._processFormat(resultFormat)
         });
         getFeatureService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**
@@ -99,7 +93,6 @@ export default class FeatureService extends ServiceBase {
      * @param params - {SuperMap.GetFeaturesBySQLParameters} 查询所需参数类。
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回的数据格式
-     * @return {mapboxgl.supermap.FeatureService}
      */
     getFeaturesBySQL(params, callback, resultFormat) {
         var me = this;
@@ -113,7 +106,6 @@ export default class FeatureService extends ServiceBase {
         });
 
         getFeatureBySQLService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**
@@ -122,7 +114,6 @@ export default class FeatureService extends ServiceBase {
      * @param params - {SuperMap.GetFeaturesByGeometryParameters} 查询所需参数类。
      * @param callback - {function} 回调函数
      * @param resultFormat {SuperMap.DataFormat} 返回的数据格式
-     * @return {mapboxgl.supermap.FeatureService}
      */
     getFeaturesByGeometry(params, callback, resultFormat) {
         var me = this;
@@ -135,7 +126,6 @@ export default class FeatureService extends ServiceBase {
             format: me._processFormat(resultFormat)
         });
         getFeaturesByGeometryService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**
@@ -143,7 +133,6 @@ export default class FeatureService extends ServiceBase {
      * @description 地物编辑服务
      * @param params - {SuperMap.EditFeaturesParameters} 查询所需参数类。
      * @param callback - {function} 回调函数
-     * @return {mapboxgl.supermap.FeatureService}
      */
     editFeatures(params, callback) {
         if (!params || !params.dataSourceName || !params.dataSetName) {
@@ -163,7 +152,6 @@ export default class FeatureService extends ServiceBase {
             }
         });
         editFeatureService.processAsync(me._processParams(params));
-        return me;
     }
 
     /**

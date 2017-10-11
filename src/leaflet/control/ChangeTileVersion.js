@@ -81,7 +81,7 @@ export var ChangeTileVersion = L.Control.extend({
      * @function L.supermap.control.changeTileVersion.prototype.setVersionName
      * @description  设置版本号
      * @param content - {string} 版本信息
-     * @return {this} 返回改变后的版本
+     * @return {this} this
      */
     setVersionName: function (content) {
         var value = content;
@@ -96,7 +96,7 @@ export var ChangeTileVersion = L.Control.extend({
      * @function L.supermap.control.changeTileVersion.prototype.setToolTip
      * @description 设置提示信息
      * @param tooltip - {HTMLElement|String} 要需要设置的提示信息
-     * @return {this}
+     * @return {this} this
      */
     setToolTip: function (tooltip) {
         this.tooltip.innerHTML = tooltip;
@@ -113,7 +113,6 @@ export var ChangeTileVersion = L.Control.extend({
             this.length = length;
             this.slider.setAttribute("max", this.length - 1);
         }
-        return this;
     },
 
     /**
@@ -136,7 +135,6 @@ export var ChangeTileVersion = L.Control.extend({
             me.setContent(tileVersions);
         });
         me.getTileSetsInfo();
-        return this;
     },
 
     /**
@@ -160,7 +158,6 @@ export var ChangeTileVersion = L.Control.extend({
                 me.options.layer.setTileSetsInfo(info.result);
             });
         }
-        return this;
     },
 
     /**
@@ -169,13 +166,12 @@ export var ChangeTileVersion = L.Control.extend({
      */
     removeLayer: function () {
         this.options.layer = null;
-        return this;
     },
 
     /**
      * @function L.supermap.control.changeTileVersion.prototype.nextTilesVersion
      * @description 下一个版本,第一次不进行加减，是无版本的状态
-     * @return {this}
+     * @return {this} this
      */
     nextTilesVersion: function () {
         if (this.firstLoad) {

@@ -24,7 +24,8 @@ describe('leaflet_testQueryService_queryBySQL', function () {
                 attributeFilter: "SMID < 10"
             }
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options).queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -87,7 +88,8 @@ describe('leaflet_testQueryService_queryBySQL', function () {
             },
             returnContent: false
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options).queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -121,7 +123,8 @@ describe('leaflet_testQueryService_queryBySQL', function () {
             returnContent: false,
             returnCustomResult: true
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options).queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -154,7 +157,8 @@ describe('leaflet_testQueryService_queryBySQL', function () {
                 attributeFilter: "SMID < 10"
             }
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options).queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
@@ -181,7 +185,8 @@ describe('leaflet_testQueryService_queryBySQL', function () {
         var queryBySQLParams = new SuperMap.QueryBySQLParameters({
             queryParams: null
         });
-        var queryBySQLService = L.supermap.queryService(worldMapURL, options).queryBySQL(queryBySQLParams, function (result) {
+        var queryBySQLService = L.supermap.queryService(worldMapURL, options);
+        queryBySQLService.queryBySQL(queryBySQLParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {

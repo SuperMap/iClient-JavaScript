@@ -20,7 +20,7 @@ export var VectorTilePBF = L.Class.extend({
     /**
      * @function L.supermap.VectorTilePBF.prototype.getTile
      * @description 获取瓦片PBF(MVT)
-     * @return {Promise}
+     * @return {Promise} 返回包含矢量瓦片信息(js对象)的Promise对象
      */
     getTile: function () {
         var me = this;
