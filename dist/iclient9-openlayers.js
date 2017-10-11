@@ -17248,7 +17248,7 @@ var Curve = function () {
          * p2 - {Number}
          * p3 - {Number}
          * val - {Number}
-         * roots - {Number} 有效根数目
+         * roots -{Array<number>} 有效根数目
          *
          * Returns:
          * {number} 有效根
@@ -17341,7 +17341,7 @@ var Curve = function () {
          * p1 - {Number}
          * p2 - {Number}
          * p3 - {Number}
-         * extrema - {Number}
+         * extrema - {Array<number>}
          *
          * Returns:
          * {number} 有效数目
@@ -19274,7 +19274,7 @@ var DataFlowService = function (_ServiceBase) {
 
         options = options || {};
         if (options.projection) {
-            _this.options.prjCoordSys = new _SuperMap2.default.Projection(options.projection);
+            _this.options.prjCoordSys = options.projection;
         }
         _ServiceBase3.default.call(_this, url, options);
         _this.dataFlow = new _DataFlowService2.default(url, options);
@@ -27916,9 +27916,6 @@ var DataFlow = function (_ol$source$Vector) {
         var options = opt_options ? opt_options : {};
 
         var _this = _possibleConstructorReturn(this, (DataFlow.__proto__ || Object.getPrototypeOf(DataFlow)).call(this, {
-            attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
-            }),
             ws: options.ws,
             geometry: options.geometry,
             prjCoordSys: options.prjCoordSys,
@@ -27953,7 +27950,7 @@ var DataFlow = function (_ol$source$Vector) {
 
 
     _createClass(DataFlow, [{
-        key: "setPrjCoordSys",
+        key: 'setPrjCoordSys',
         value: function setPrjCoordSys(prjCoordSys) {
             this.dataService.setPrjCoordSys(prjCoordSys);
             this.prjCoordSys = prjCoordSys;
@@ -27967,7 +27964,7 @@ var DataFlow = function (_ol$source$Vector) {
          */
 
     }, {
-        key: "setExcludeField",
+        key: 'setExcludeField',
         value: function setExcludeField(excludeField) {
             this.dataService.setExcludeField(excludeField);
             this.excludeField = excludeField;
@@ -27981,14 +27978,14 @@ var DataFlow = function (_ol$source$Vector) {
          */
 
     }, {
-        key: "setGeometry",
+        key: 'setGeometry',
         value: function setGeometry(geometry) {
             this.dataService.setGeometry(geometry);
             this.geometry = geometry;
             return this;
         }
     }, {
-        key: "_onMessageSuccessed",
+        key: '_onMessageSuccessed',
         value: function _onMessageSuccessed(msg) {
             //this.clear();
             var geoID = msg.value.featureResult.properties[this.idField];
@@ -65769,6 +65766,7 @@ var Color = function () {
             }
             var gradient = this._ctx.createRadialGradient(x0, y0, r0, x1, y1, r1);
             for (var i = 0, l = colorList.length; i < l; i++) {
+
                 gradient.addColorStop(colorList[i][0], colorList[i][1]);
             }
             gradient.__nonRecursion = true;
@@ -66289,7 +66287,7 @@ var Color = function () {
         }
 
         /**
-         * APIMethod: reverse
+         * APIMethod: mix
          * 简单两种颜色混合
          *
          * Parameters:
@@ -83029,8 +83027,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
   }
 
-  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
-  // error if request timeout
   function clearFunction(functionName) {
     // IE8 throws an exception when you try to delete a property on window
     // http://stackoverflow.com/a/1824228/751089
@@ -83043,7 +83039,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   function removeScript(scriptId) {
     var script = document.getElementById(scriptId);
-    document.getElementsByTagName('head')[0].removeChild(script);
+    if (script) {
+      document.getElementsByTagName('head')[0].removeChild(script);
+    }
   }
 
   function fetchJsonp(_url) {
@@ -83081,6 +83079,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       var jsonpScript = document.createElement('script');
       jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+      if (options.charset) {
+        jsonpScript.setAttribute('charset', options.charset);
+      }
       jsonpScript.id = scriptId;
       document.getElementsByTagName('head')[0].appendChild(jsonpScript);
 
@@ -83089,7 +83090,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         clearFunction(callbackFunction);
         removeScript(scriptId);
+        window[callbackFunction] = function () {
+          clearFunction(callbackFunction);
+        };
       }, timeout);
+
+      // Caught if got 404/500
+      jsonpScript.onerror = function () {
+        reject(new Error('JSONP request to ' + _url + ' failed'));
+
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        if (timeoutId) clearTimeout(timeoutId);
+      };
     });
   }
 

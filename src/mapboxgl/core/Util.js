@@ -9,9 +9,6 @@ import GeoJSONFormat from '../../common/format/GeoJSON';
  */
 export default class Util {
 
-    constructor() {
-
-    }
 
     /**
      * @function mapboxgl.supermap.Util.toSuperMapGeometry
@@ -50,7 +47,7 @@ export default class Util {
             return new SuperMap.Geometry.Point(lnglat[0], lnglat[1]);
         } else if (lnglat.lng && lnglat.lat) {
             return new SuperMap.Geometry.Point(lnglat.lng, lnglat.lat);
-        } 
+        }
         return new SuperMap.Geometry.Point(lnglat.geometry.coordinates[0], lnglat.geometry.coordinates[1]);
     }
 
@@ -61,6 +58,23 @@ export default class Util {
      * @return {boolean}
      */
     static isArray(obj) {
-        return Object.prototype.toString.call(obj) == '[object Array]';
+        return Object.prototype.toString.call(obj) == '[object Array]'
     }
+
+
+    /**
+     * @function mapboxgl.supermap.Util.toGeoJSON
+     * @description 将传入对象转为 GeoJSON 格式
+     * @param smObj - {Object} 待转参数
+     */
+    static toGeoJSON(smObj) {
+        if (smObj) {
+            var format = new GeoJSONFormat();
+            return JSON.parse(format.write(smObj));
+        }
+    }
+
+
 }
+
+mapboxgl.supermap.Util = Util;

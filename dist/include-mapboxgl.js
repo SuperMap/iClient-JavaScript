@@ -35,6 +35,11 @@
             inputCSS("https://cdn.bootcss.com/mapbox-gl/0.39.1/mapbox-gl.css");
             inputScript("https://cdn.bootcss.com/mapbox-gl/0.39.1/mapbox-gl.js");
         }
+        if(inArray(includes,'draw')){
+            inputCSS("http://iclient.supermapol.com/libs/mapbox-gl-js/plugins/mapbox-gl-draw.css");
+            inputScript("http://iclient.supermapol.com/libs/mapbox-gl-js/plugins/mapbox-gl-draw.js");
+        }
+
         if(inArray(includes,'mapv')){
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }

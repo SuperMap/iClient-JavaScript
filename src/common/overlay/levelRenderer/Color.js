@@ -328,6 +328,7 @@ export default class Color {
         }
         var gradient = this._ctx.createRadialGradient(x0, y0, r0, x1, y1, r1);
         for (var i = 0, l = colorList.length; i < l; i++) {
+
             gradient.addColorStop(colorList[i][0], colorList[i][1]);
         }
         gradient.__nonRecursion = true;
@@ -800,7 +801,7 @@ export default class Color {
     }
 
     /**
-     * APIMethod: reverse
+     * APIMethod: mix
      * 简单两种颜色混合
      *
      * Parameters:

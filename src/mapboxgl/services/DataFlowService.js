@@ -1,14 +1,13 @@
-import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
+import mapboxgl from 'mapbox-gl';
 import ServiceBase from './ServiceBase';
 import DataFlow from '../../common/iServer/DataFlowService';
 
 /**
- * @class ol.supermap.DataFlowService
+ * @class mapboxgl.supermap.DataFlowService
  * @classdesc 实时数据服务
- * @extends ol.supermap.ServiceBase
+ * @extends mapboxgl.supermap.ServiceBase
  * @example
- *      new ol.supermap.DataFlowService(url)
+ *      new mapboxgl.supermap.DataFlowService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
@@ -20,6 +19,7 @@ import DataFlow from '../../common/iServer/DataFlowService';
  *        excludeField - -{Object} 排除字段
  */
 export default class DataFlowService extends ServiceBase {
+
 
     constructor(url, options) {
         super(url, options);
@@ -40,12 +40,18 @@ export default class DataFlowService extends ServiceBase {
             "setFilterParamSuccessed": this._defaultEvent,
             scope: this
         });
+        var me = this;
+        me.on('subscribeSocketConnected', function (e) {
+            me.fire('subscribeSuccessed', e);
+        })
+
     }
 
+
     /**
-     * @function ol.supermap.DataFlowService.prototype.initBroadcast
+     * @function mapboxgl.supermap.DataFlowService.prototype.initBroadcast
      * @description 初始化广播
-     * @returns {ol.supermap.DataFlowService}
+     * @returns {mapboxgl.supermap.DataFlowService}
      */
     initBroadcast() {
         this.dataFlow.initBroadcast();
@@ -53,7 +59,7 @@ export default class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.broadcast
+     * @function mapboxgl.supermap.DataFlowService.prototype.broadcast
      * @description 加载广播数据
      * @param obj {JSON} json格式的要素数据
      */
@@ -62,20 +68,21 @@ export default class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.initSubscribe
+     * @function mapboxgl.supermap.DataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
-     * @return {ol.supermap.DataFlowService}
+     * @return {mapboxgl.supermap.DataFlowService}
      */
     initSubscribe() {
         this.dataFlow.initSubscribe();
         return this;
     }
 
+
     /**
-     * @function ol.supermap.DataFlowService.prototype.setExcludeField
+     * @function mapboxgl.supermap.DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param excludeField - {Object} 排除字段
-     * @return {ol.supermap.DataFlowService}
+     * @return {mapboxgl.supermap.DataFlowService}
      */
     setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
@@ -84,10 +91,10 @@ export default class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.setGeometry
+     * @function mapboxgl.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
      * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
-     * @return {ol.supermap.DataFlowService}
+     * @return {mapboxgl.supermap.DataFlowService}
      */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);
@@ -96,7 +103,7 @@ export default class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.unSubscribe
+     * @function mapboxgl.supermap.DataFlowService.prototype.unSubscribe
      * @description 结束订阅数据
      */
     unSubscribe() {
@@ -104,7 +111,7 @@ export default class DataFlowService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.DataFlowService.prototype.unBroadcast
+     * @function mapboxgl.supermap.DataFlowService.prototype.unBroadcast
      * @description 结束加载广播
      */
     unBroadcast() {
@@ -112,7 +119,7 @@ export default class DataFlowService extends ServiceBase {
     }
 
     _defaultEvent(e) {
-        this.dispatchEvent({type: e.eventType || e.type, value: e});
+        this.fire(e.eventType || e.type, e);
     }
 }
-ol.supermap.DataFlowService = DataFlowService;
+mapboxgl.supermap.DataFlowService = DataFlowService;

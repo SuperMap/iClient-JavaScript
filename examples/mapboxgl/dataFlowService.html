@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>实时数据服务</title>
+</head>
+<style>
+    .mapboxgl-popup {
+        max-width: 200px;
+    }
+</style>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+<script>
+    var host = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090"),
+        tileUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}',
+        urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326";
+
+    wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "117.122.248.69:8800");
+    var token = "jDTu8vHZoo9ABgE_IW48UcyYbwBhlOmfIub7gscWjzmiszd0vKC7xtcp8pIcK0eAAzANtETZdaFiE9d1l9Ojtg..";
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+
+    urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+    var dataFlowService;
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [tileUrl],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 18
+            }],
+            "sprite": "http://iclient.supermapol.com/web/styles/street/sprite",
+        },
+        center: [116.443571, 39.887549],
+        maxZoom: 18,
+        zoom: 10
+    });
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    if (!window.isLocal) {
+        SuperMap.SecurityManager.registerToken(urlDataFlow, token);
+    }
+    var popup = new mapboxgl.Popup();
+
+    map.on('load', function () {
+        query();
+    });
+
+
+    function query() {
+        var param = new SuperMap.QueryBySQLParameters({
+            queryParams: {
+                name: "Main_Road_L@China#1",
+                attributeFilter: "SMID = 1755"
+            }
+        });
+
+        queryService = new mapboxgl.supermap.QueryService(urlQuery).queryBySQL(param, function (serviceResult) {
+
+            featureResult = serviceResult;
+            var options = {ws: urlDataFlow};
+            var dataService = new mapboxgl.supermap.DataFlowService(options.ws, {
+                geometry: options.geometry,
+                prjCoordSys: options.prjCoordSys,
+                excludeField: options.excludeField
+            }).initSubscribe();
+
+            dataFlowService = new mapboxgl.supermap.DataFlowService(urlDataFlow).initBroadcast();
+            dataService.on('subscribeSuccessed', function (e) {
+                dataFlowService.on('broadcastSocketConnected', function (e) {
+                    timer = window.setInterval("broadcast()", 2000);
+                });
+            });
+            dataService.on('messageSuccessed', function (msg) {
+                popup.remove();
+                addLayer(msg);
+            });
+
+        });
+    }
+
+    var count = 200;
+
+    function broadcast() {
+
+        if (count >= featureResult.result.recordsets[0].features.features[0].geometry.coordinates.length) {
+            window.clearInterval(timer);
+            return;
+        }
+        var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
+        var feature = {
+            geometry: {coordinates: [point[0], point[1]], type: "Point"},
+            type: "Feature",
+            properties: {id: 1, time: new Date()}
+        };
+        dataFlowService.broadcast(feature);
+        count += 3;
+    }
+
+    function addLayer(msg) {
+        if (!msg.featureResult) {
+            return;
+        }
+        var feature = msg.featureResult;
+        var coord = feature.geometry.coordinates;
+        var data = {
+            geometry: {
+                type: 'Point',
+                coordinates: coord,
+            },
+            type: "Feature"
+        };
+
+        if (!map.getSource('location')) {
+            map.addSource('location', {
+                'type': 'geojson',
+                'data': data
+            });
+            map.addLayer({
+                "id": "point",
+                "type": "circle",
+                "paint": {
+                    "circle-radius": 6,
+                    "circle-color": 'red',
+                },
+                "source": 'location'
+            });
+        }
+
+        map.getSource('location').setData(data);
+
+        popup.setLngLat(coord)
+            .setHTML(feature.properties.time)
+            .addTo(map);
+    }
+
+
+</script>
+
+</body>
+</html>

@@ -150,7 +150,7 @@ export default class Curve {
      * p2 - {Number}
      * p3 - {Number}
      * val - {Number}
-     * roots - {Number} 有效根数目
+     * roots -{Array<number>} 有效根数目
      *
      * Returns:
      * {number} 有效根
@@ -241,7 +241,7 @@ export default class Curve {
      * p1 - {Number}
      * p2 - {Number}
      * p3 - {Number}
-     * extrema - {Number}
+     * extrema - {Array<number>}
      *
      * Returns:
      * {number} 有效数目
