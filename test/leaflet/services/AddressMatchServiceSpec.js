@@ -105,7 +105,8 @@ describe('leaflet_testAddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var geoCodingService = L.supermap.addressMatchService(addressMatchURL, options).code(geoCodingParams, function (result) {
+        var geoCodingService = L.supermap.addressMatchService(addressMatchURL, options);
+        geoCodingService.code(geoCodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
