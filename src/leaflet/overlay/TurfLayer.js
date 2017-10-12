@@ -160,7 +160,7 @@ export var TurfLayer = L.GeoJSON.extend({
      */
     process: function (type, args, callback, addFeaturesToMap) {
         var result = turf[type.split('.')[1]].apply(this, this.parse(type, args));
-        addFeaturesToMap = addFeaturesToMap || true;
+        addFeaturesToMap = addFeaturesToMap == null ? true : addFeaturesToMap;
         if (addFeaturesToMap) {
             this.addData([result]);
         }

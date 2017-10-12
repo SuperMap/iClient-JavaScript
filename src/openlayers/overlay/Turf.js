@@ -172,7 +172,7 @@ export default class Turf extends ol.source.Vector {
             }
             return;
         }
-        addFeaturesToMap = addFeaturesToMap || true;
+        addFeaturesToMap = addFeaturesToMap == null ? true : addFeaturesToMap;
         if (addFeaturesToMap) {
             this.addFeatures(features);
         }

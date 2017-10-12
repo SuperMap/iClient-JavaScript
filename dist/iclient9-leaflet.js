@@ -32080,7 +32080,7 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
      */
     process: function process(type, args, callback, addFeaturesToMap) {
         var result = _turf2["default"][type.split('.')[1]].apply(this, this.parse(type, args));
-        addFeaturesToMap = addFeaturesToMap || true;
+        addFeaturesToMap = addFeaturesToMap == null ? true : addFeaturesToMap;
         if (addFeaturesToMap) {
             this.addData([result]);
         }

@@ -28857,7 +28857,7 @@ var Turf = function (_ol$source$Vector) {
                 }
                 return;
             }
-            addFeaturesToMap = addFeaturesToMap || true;
+            addFeaturesToMap = addFeaturesToMap == null ? true : addFeaturesToMap;
             if (addFeaturesToMap) {
                 this.addFeatures(features);
             }
