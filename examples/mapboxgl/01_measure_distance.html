@@ -51,17 +51,25 @@
             trash: true
         }
     });
-    map.addControl(draw,"top-left");
 
-    map.on('draw.create', function (e) {
+    map.addControl(draw, "top-left");
+
+    function updateArea(e) {
         var data = draw.getAll();
-        if (data.features.length > 0) {
-            new mapboxgl.supermap.MeasureService(url).measureDistance(data, function (serviceResult) {
-                var distance = serviceResult.result.distance;
-                showAlert(distance + "米");
-            });
-        }
-    });
+        var current = data.features[data.features.length - 1];
+        new mapboxgl.supermap.MeasureService(url).measureDistance(current, function (serviceResult) {
+            var distance = serviceResult.result.distance;
+            showAlert(distance + "米");
+        });
+    }
+
+    function removeMsg() {
+        $('#msg_container').remove();
+    }
+
+    map.on('draw.create', updateArea);
+    map.on('draw.delete', removeMsg);
+
     function showAlert(msg) {
         var className = "alert-success";
         if (alertDiv) {

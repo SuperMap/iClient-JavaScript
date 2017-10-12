@@ -52,16 +52,23 @@
     });
     map.addControl(draw,"top-left");
 
-    map.on('draw.create', function (e) {
+    function updateArea(e) {
         var data = draw.getAll();
-        if (data.features.length > 0) {
-            new mapboxgl.supermap.MeasureService(url).measureArea(data, function (serviceResult) {
+        var current=data.features[data.features.length-1];
+            new mapboxgl.supermap.MeasureService(url).measureArea(current, function (serviceResult) {
                 var area = serviceResult.result.area;
                 var rounded_area = Math.round(area * 100) / 100;
                 showAlert(rounded_area + "平方米");
             });
-        }
-    });
+    }
+
+    function removeMsg() {
+        $('#msg_container').remove();
+    }
+
+    map.on('draw.create',updateArea);
+    map.on('draw.delete',removeMsg);
+
     function showAlert(msg) {
         var className = "alert-success";
         if (alertDiv) {
