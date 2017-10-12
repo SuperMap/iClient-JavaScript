@@ -138,13 +138,14 @@ describe('leaflet_testAddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var GeoDecodingService = L.supermap.addressMatchService(addressMatchURL, options).decode(GeoDecodingParams, function (result) {
+        var geoDecodingService = L.supermap.addressMatchService(addressMatchURL, options);
+        geoDecodingService.decode(GeoDecodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
             try {
-                expect(GeoDecodingService).not.toBeNull();
-                expect(GeoDecodingService.options.serverType).toBe("iServer");
+                expect(geoDecodingService).not.toBeNull();
+                expect(geoDecodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
                 expect(result).not.toBeNull();
@@ -152,11 +153,11 @@ describe('leaflet_testAddressMatchService', function () {
                 expect(result.success).toBeFalsy();
                 expect(result.error.code).toEqual(400);
                 expect(result.error.errorMsg).toBe("location not valid!");
-                GeoDecodingService.destroy();
+                geoDecodingService.destroy();
                 done();
             } catch (exception) {
                 console.log("'failEvent:GeoDecodingLocationInvalid'案例失败：" + exception.name + ":" + exception.message);
-                GeoDecodingService.destroy();
+                geoDecodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }

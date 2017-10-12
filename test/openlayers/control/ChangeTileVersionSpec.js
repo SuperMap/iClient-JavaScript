@@ -92,24 +92,24 @@ describe('openlayers_testChangeTileVersion', function () {
         var options = {
             orientation: "horizontal"
         };
-        var changetileversion = new ol.supermap.control.ChangeTileVersion(options);
-        var result = changetileversion.setLayer(baseLayer);
-        expect(result).not.toBeNull();
-        expect(result.firstLoad).toBeTruthy();
-        expect(result.options.collapsed).toBeTruthy();
-        expect(result.options.switch).toBeTruthy();
-        expect(result.options.orientation).toBe("horizontal");
-        expect(result.options.title).toBe("切换缓存版本");
-        expect(result.options.tooltip).toBe("top");
+        var changeTileVersion = new ol.supermap.control.ChangeTileVersion(options);
+        changeTileVersion.setLayer(baseLayer);
+        expect(changeTileVersion).not.toBeNull();
+        expect(changeTileVersion.firstLoad).toBeTruthy();
+        expect(changeTileVersion.options.collapsed).toBeTruthy();
+        expect(changeTileVersion.options.switch).toBeTruthy();
+        expect(changeTileVersion.options.orientation).toBe("horizontal");
+        expect(changeTileVersion.options.title).toBe("切换缓存版本");
+        expect(changeTileVersion.options.tooltip).toBe("top");
     });
 
     it("removeLayer", function () {
         var options = {
             orientation: "horizontal"
         };
-        var changetileversion = new ol.supermap.control.ChangeTileVersion(options);
-        var result = changetileversion.removeLayer();
-        expect(result.options.layer).toBeNull();
+        var changeTileVersion = new ol.supermap.control.ChangeTileVersion(options);
+        changeTileVersion.removeLayer();
+        expect(changeTileVersion.options.layer).toBeNull();
     });
 
     it("tilesVersion", function () {

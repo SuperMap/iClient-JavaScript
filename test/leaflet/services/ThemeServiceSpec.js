@@ -333,7 +333,7 @@ describe('leaflet_testThemeService', function () {
             dataSourceNames: ["World"]
         });
         var themeLableService = L.supermap.themeService(WorldURL, options);
-        themeGridRangeService.getThemeInfo(themeLableParameters, function (result) {
+        themeLableService.getThemeInfo(themeLableParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -394,7 +394,7 @@ describe('leaflet_testThemeService', function () {
             themes: [themeRange]
         });
         var themeRangeService = L.supermap.themeService(ChinaURL, options);
-        themeGridRangeService.getThemeInfo(themeRangeParameters, function (result) {
+        themeRangeService.getThemeInfo(themeRangeParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -454,7 +454,7 @@ describe('leaflet_testThemeService', function () {
             themes: [themeUnique]
         });
         var themeUniqueService = L.supermap.themeService(ChinaURL, options);
-        themeGridRangeService.getThemeInfo(themeUniqueParameters, function (result) {
+        themeUniqueService.getThemeInfo(themeUniqueParameters, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
