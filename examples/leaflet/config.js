@@ -372,8 +372,8 @@ var exampleConfig = {
             }
         }
     },
-    "ElasticSearch": {
-        name: "ElasticSearch",
+    "Elasticsearch": {
+        name: "Elasticsearch",
         content: {
             "": {
                 name: "可视化",
@@ -719,7 +719,7 @@ var sideBarIconConfig = {
     "iPortal": "fa-desktop",
     "Online": "fa-cloud",
     "iManager": "fa-group",
-    "ElasticSearch": "fa-tasks",
+    "Elasticsearch": "fa-tasks",
     "plot": "fa-edit",
     "control": "fa-sliders",
     "clientSpatialAnalyst": "fa-object-group",
@@ -738,7 +738,7 @@ var exampleIconConfig = {
     "iPortal": "fa-desktop",
     "Online": "fa-cloud",
     "iManager": "fa-group",
-    "ElasticSearch": "fa-tasks",
+    "Elasticsearch": "fa-tasks",
     "plot": "fa-edit",
     "control": "fa-sliders",
     "clientSpatialAnalyst": "fa-object-group",
