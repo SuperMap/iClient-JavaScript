@@ -1,9 +1,10 @@
 import mapboxgl from 'mapbox-gl';
-import {baiduMapLayer,DataSet} from "mapv";
+import {baiduMapLayer, DataSet} from "mapv";
+
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
  * @private
- * @class mapboxgl.supermap.MapvRenderer
+ * @class MapvRenderer
  * @classdesc MapV图层渲染
  * @param map - {string} 地图
  * @param layer -{Object} 图层
@@ -33,8 +34,9 @@ export default class MapvRenderer extends BaseLayer {
         this.map.on('remove', this.removeEvent.bind(this));
         this.bindEvent();
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.clickEvent
+     * @function MapvRenderer.prototype.clickEvent
      * @description  点击绑定事件
      * @param e - {Object} 事件
      */
@@ -42,8 +44,9 @@ export default class MapvRenderer extends BaseLayer {
         var pixel = e.layerPoint;
         super.clickEvent(pixel, e);
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.mousemoveEvent
+     * @function MapvRenderer.prototype.mousemoveEvent
      * @description  鼠标移动事件
      * @param e - {Object} 事件
      */
@@ -51,8 +54,9 @@ export default class MapvRenderer extends BaseLayer {
         var pixel = e.layerPoint;
         super.mousemoveEvent(pixel, e);
     }
+
     /**
-     * @function  mapboxgl.supermap.prototype.bindEvent
+     * @function  MapvRenderer.prototype.bindEvent
      * @description 绑定事件
      * @param e - {object} 触发对象
      */
@@ -69,7 +73,7 @@ export default class MapvRenderer extends BaseLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.prototype.unbindEvent
+     * @function MapvRenderer.prototype.unbindEvent
      * @description 解绑事件
      * @param e - {object} 触发对象
      */
@@ -85,8 +89,9 @@ export default class MapvRenderer extends BaseLayer {
             }
         }
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.getContext
+     * @function MapvRenderer.prototype.getContext
      * @description 获取信息
      */
     getContext() {
@@ -94,7 +99,76 @@ export default class MapvRenderer extends BaseLayer {
     }
 
     /**
-     * @function mapboxgl.supermap.prototype.updateData
+     * @function MapvRenderer.prototype.addData
+     * @description 添加数据
+     * @param data - {oject} 待添加的数据
+     * @param options - {oject} 待添加的数据信息
+     */
+    addData(data, options) {
+        var _data = data;
+        if (data && data.get) {
+            _data = data.get();
+        }
+        this.dataSet.add(_data);
+        this.update({options: options});
+    }
+
+    /**
+     * @function MapvRenderer.prototype.update
+     * @description 更新图层
+     * @param opt - {Object} 待更新的数据<br>
+     *        data -{Object} mapv数据集<br>
+     *        options -{Object} mapv绘制参数<br>
+     */
+    update(opt) {
+        var update = opt || {};
+        var _data = update.data;
+        if (_data && _data.get) {
+            _data = _data.get();
+        }
+        if (_data != undefined) {
+            this.dataSet.set(_data);
+        }
+        super.update({options: update.options});
+    }
+
+    /**
+     * @function MapvRenderer.prototype.getData
+     * @description 获取数据
+     */
+    getData() {
+        return this.dataSet;
+    }
+
+    /**
+     * @function MapvRenderer.prototype.removeData
+     * @description 删除符合过滤条件的数据
+     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     */
+    removeData(filter) {
+        if (!this.dataSet) {
+            return;
+        }
+        var newData = this.dataSet.get({
+            filter: function (data) {
+                return (filter != null && typeof filter === "function") ? !filter(data) : true;
+            }
+        });
+        this.dataSet.set(newData);
+        this.update({options: null});
+    }
+
+    /**
+     * @function MapVRenderer.prototype.clearData
+     * @description 清除数据
+     */
+    clearData() {
+        this.dataSet && this.dataSet.clear();
+        this.update({options: null});
+    }
+
+    /**
+     * @function MapVRenderer.prototype.updateData
      * @param dataSet - {Object} 数据集
      * @param options - {Object} 数据项配置
      * @description  更新数据
@@ -144,6 +218,7 @@ export default class MapvRenderer extends BaseLayer {
         if (self.options.minZoom && map.getZoom() < self.options.minZoom || self.options.maxZoom && map.getZoom() > self.options.maxZoom) {
             return;
         }
+
         function projectPoint(p) {
             var sin = Math.sin(p[1] * Math.PI / 180),
                 x = (p[0] / 360 + 0.5),
@@ -154,6 +229,7 @@ export default class MapvRenderer extends BaseLayer {
 
             return [x, y, 0];
         }
+
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
                 var worldPoint = map.transform.locationPoint((new window.mapboxgl.LngLat(coordinate[0], coordinate[1])));
@@ -196,29 +272,33 @@ export default class MapvRenderer extends BaseLayer {
 
         this.initAnimator();
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.addAnimatorEvent
+     * @function MapvRenderer.prototype.addAnimatorEvent
      * @description 添加动画事件
      */
     addAnimatorEvent() {
 
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.removeEvent
+     * @function MapvRenderer.prototype.removeEvent
      * @description 移除事件
      */
     removeEvent() {
         this.canvasLayer.mapContainer.removeChild(this.canvasLayer.canvas);
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.moveEvent
+     * @function MapvRenderer.prototype.moveEvent
      * @description 隐藏事件
      */
     moveEvent() {
         this._hide();
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.resizeEvent
+     * @function MapvRenderer.prototype.resizeEvent
      * @description 调整事件
      */
     resizeEvent() {
@@ -231,16 +311,18 @@ export default class MapvRenderer extends BaseLayer {
         canvas.style.width = this.map.getCanvas().style.width;
         canvas.style.height = this.map.getCanvas().style.height;
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.moveEndEvent
+     * @function MapvRenderer.prototype.moveEndEvent
      * @description 移除最后事件
      */
     moveEndEvent() {
         this._canvasUpdate();
         this._show();
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.clear
+     * @function MapvRenderer.prototype.clear
      * @param context - {object} 当前环境
      * @description 清除环境
      */
@@ -255,8 +337,9 @@ export default class MapvRenderer extends BaseLayer {
     _show() {
         this.canvasLayer.canvas.style.display = 'block';
     }
+
     /**
-     * @function mapboxgl.supermap.prototype.draw
+     * @function MapvRenderer.prototype.draw
      * @description 渲染绘制
      */
     draw() {

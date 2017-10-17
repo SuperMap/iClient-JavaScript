@@ -3,7 +3,7 @@ import MapvCanvasLayer from './MapvCanvasLayer';
 import {baiduMapLayer,DataSet} from "mapv";
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
- * @class ol.supermap.MapvLayer
+ * @class MapvLayer
  * @classdesc MapV图层类。
  * @private
  * @param map - {Object} 地图
@@ -54,7 +54,7 @@ export default class MapvLayer extends BaiduMapLayer {
     }
 
     /**
-     * @function ol.supermap.MapvLayer.prototype.init
+     * @function MapvLayer.prototype.init
      * @param options - {Object} 参数
      * @description 初始化参数
      */
@@ -70,7 +70,7 @@ export default class MapvLayer extends BaiduMapLayer {
     }
 
     /**
-     * @function ol.supermap.MapvLayer.prototype.clickEvent
+     * @function MapvLayer.prototype.clickEvent
      * @param e - {Object} 事件参数
      * @description 点击事件
      */
@@ -80,7 +80,7 @@ export default class MapvLayer extends BaiduMapLayer {
     }
 
     /**
-     * @function ol.supermap.MapvLayer.prototype.mousemoveEvent
+     * @function MapvLayer.prototype.mousemoveEvent
      * @param e - {Object} 事件参数
      * @description 鼠标移动事件
      */
@@ -90,7 +90,7 @@ export default class MapvLayer extends BaiduMapLayer {
     }
 
     /**
-     * @function ol.supermap.MapvLayer.prototype.bindEvent
+     * @function MapvLayer.prototype.bindEvent
      * @description 绑定事件
      */
     bindEvent() {
@@ -111,7 +111,7 @@ export default class MapvLayer extends BaiduMapLayer {
     }
 
     /**
-     * @function ol.supermap.MapvLayer.prototype.unbindEvent
+     * @function MapvLayer.prototype.unbindEvent
      * @description 解除绑定事件
      */
     unbindEvent() {
@@ -124,6 +124,75 @@ export default class MapvLayer extends BaiduMapLayer {
                 map.removeInteraction(this.pointerInteraction)
             }
         }
+    }
+
+    /**
+     * @function MapvRenderer.prototype.addData
+     * @description 添加数据
+     * @param data - {oject} 待添加的数据
+     * @param options - {oject} 待添加的数据信息
+     */
+    addData(data, options) {
+        var _data = data;
+        if (data && data.get) {
+            _data = data.get();
+        }
+        this.dataSet.add(_data);
+        this.update({options: options});
+    }
+
+    /**
+     * @function MapvRenderer.prototype.update
+     * @description 更新图层
+     * @param opt - {Object} 待更新的数据<br>
+     *        data -{Object} mapv数据集<br>
+     *        options -{Object} mapv绘制参数<br>
+     */
+    update(opt) {
+        var update = opt || {};
+        var _data = update.data;
+        if (_data && _data.get) {
+            _data = _data.get();
+        }
+        if (_data != undefined) {
+            this.dataSet.set(_data);
+        }
+        super.update({options: update.options});
+    }
+
+    /**
+     * @function MapvRenderer.prototype.getData
+     * @description 获取数据
+     */
+    getData() {
+        return this.dataSet;
+    }
+
+    /**
+     * @function MapvRenderer.prototype.removeData
+     * @description 删除符合过滤条件的数据
+     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     */
+    removeData(filter) {
+        if (!this.dataSet) {
+            return;
+        }
+        var newData = this.dataSet.get({
+            filter: function (data) {
+                return (filter != null && typeof filter === "function") ? !filter(data) : true;
+            }
+        });
+        this.dataSet.set(newData);
+        this.update({options: null});
+    }
+
+    /**
+     * @function MapVRenderer.prototype.clearData
+     * @description 清除数据
+     */
+    clearData() {
+        this.dataSet && this.dataSet.clear();
+        this.update({options: null});
     }
 
     _canvasUpdate(time) {
@@ -230,16 +299,5 @@ export default class MapvLayer extends BaiduMapLayer {
 
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    }
-
-
-    update(obj) {
-        var self = this;
-        var _options = obj.options;
-        var options = self.options;
-        for (var i in _options) {
-            options[i] = _options[i];
-        }
-        self.init(options);
     }
 }

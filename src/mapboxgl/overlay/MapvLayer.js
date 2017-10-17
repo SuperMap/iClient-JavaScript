@@ -34,6 +34,63 @@ export class MapvLayer {
         return topLeft;
     }
 
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.addData
+     * @description 追加数据
+     * @param data - {Object} 要追加的数据
+     * @param options -{Object} 要追加的值
+     */
+    addData(data, options) {
+        this.renderer.addData(data, options);
+    }
+
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.update
+     * @description 更新图层
+     * @param opt - {Object} 待更新的数据<br>
+     *        data -{Object} mapv数据集<br>
+     *        options -{Object} mapv绘制参数<br>
+     */
+    update(opt) {
+        this.renderer.update(opt);
+    }
+
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.getData
+     * @description 获取数据
+     * @return {mapv.DataSet} mapv数据集
+     */
+    getData() {
+        if (this.renderer) {
+            this.dataSet = this.renderer.getData();
+        }
+        return this.dataSet;
+    }
+
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.removeData
+     * @description 删除符合过滤条件的数据
+     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @example
+     *  filter=function(data){
+     *    if(data.id=="1"){
+     *      return true
+     *    }
+     *    return false;
+     *  }
+     */
+    removeData(filter) {
+        this.renderer && this.renderer.removeData(filter);
+    }
+
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.clearData
+     * @description 清除数据
+     */
+    clearData() {
+        this.renderer.clearData();
+    }
+
     show() {
         if (this.renderer) {
             this.renderer._show();
@@ -61,4 +118,5 @@ export class MapvLayer {
     }
 
 }
+
 mapboxgl.supermap.MapvLayer = MapvLayer;

@@ -1,5 +1,4 @@
 ﻿import SuperMap from '../../SuperMap';
-import Collection from './Collection';
 import LineString from './LineString';
 import Point from './Point';
 import {NumberExt} from '../BaseTypes';
@@ -50,12 +49,12 @@ export default class LinearRing extends LineString {
         // given an index, add the point
         // without an index only add non-duplicate points
         if (index != null || !point.equals(lastPoint)) {
-            added = Collection.prototype.addComponent.apply(this, arguments);
+            added = super.addComponent.apply(this, arguments);
         }
 
         //append copy of first point
         var firstPoint = this.components[0];
-        Collection.prototype.addComponent.apply(this, [firstPoint]);
+        super.addComponent.apply(this, [firstPoint]);
 
         return added;
     }
@@ -73,12 +72,10 @@ export default class LinearRing extends LineString {
             this.components.pop();
 
             //remove our point
-            Collection.prototype.removeComponent.apply(this,
-                arguments);
+            super.removeComponent.apply(this, arguments);
             //append copy of first point
             var firstPoint = this.components[0];
-            Collection.prototype.addComponent.apply(this,
-                [firstPoint]);
+            super.addComponent.apply(this, [firstPoint]);
         }
         return removed;
     }

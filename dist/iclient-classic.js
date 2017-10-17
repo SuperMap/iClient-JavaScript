@@ -3636,11 +3636,11 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
 
         /**
          * @function SuperMap.Layer.MapVLayer.prototype.removeData
-         * @description 按照过滤条件移除数据
-         * @param filter - {string} 过滤条件
+         * @description 删除符合过滤条件的数据
+         * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
          * @example
          *  filter=function(data){
-         *    if(data.id="1"){
+         *    if(data.id=="1"){
          *      return true
          *    }
          *    return false;
@@ -3737,7 +3737,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         value: function transferToMapLatLng(latLng) {
             var source = "EPSG:4326",
                 dest = "EPSG:4326";
-            var unit = this.map.getUnits();
+            var unit = this.map.getUnits() || "degree";
             if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
                 dest = "EPSG:3857";
             }
@@ -5446,7 +5446,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * @class SuperMap.MapVRenderer
+ * @class MapVRenderer
  * @classdesc MapV渲染器。
  * @private
  * @extends mapv.MapVBaseLayer
@@ -5485,7 +5485,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
     }
 
     /**
-     * @function SuperMap.MapVRenderer.prototype.clickEvent
+     * @function MapvRenderer.prototype.clickEvent
      * @description 点击事件
      * @param e - {Object} 触发对象
      */
@@ -5499,7 +5499,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.mousemoveEvent
+         * @function MapvRenderer.prototype.mousemoveEvent
          * @description 鼠标移动事件
          * @param  e - {Object} 触发对象
          */
@@ -5512,7 +5512,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.bindEvent
+         * @function MapvRenderer.prototype.bindEvent
          * @description 绑定鼠标移动和鼠标点击事件
          * @param e - {Object} 触发对象
          */
@@ -5533,7 +5533,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.unbindEvent
+         * @function MapvRenderer.prototype.unbindEvent
          * @description 解绑鼠标移动和鼠标滑动触发的事件
          * @param e - {Object} 触发对象
          */
@@ -5554,7 +5554,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.getContext
+         * @function MapvRenderer.prototype.getContext
          * @description 获取信息
          */
 
@@ -5565,7 +5565,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.addData
+         * @function MapvRenderer.prototype.addData
          * @description 追加数据
          * @param data - {oject} 待添加的数据
          * @param options - {oject} 待添加的数据信息
@@ -5583,7 +5583,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.updateData
+         * @function MapvRenderer.prototype.updateData
          * @description 更新覆盖原数据
          * @param data - {oject} 待更新的数据
          * @param options - {oject} 待更新的数据信息
@@ -5602,7 +5602,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.getData
+         * @function MapvRenderer.prototype.getData
          * @description 获取数据
          */
 
@@ -5613,24 +5613,28 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.removeData
-         * @description 删除数据
-         * @param filter - {string} 删除条件\过滤信息
+         * @function MapvRenderer.prototype.removeData
+         * @description 删除符合过滤条件的数据
+         * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
          */
 
     }, {
         key: 'removeData',
-        value: function removeData(filter) {
+        value: function removeData(_filter) {
             if (!this.dataSet) {
                 return;
             }
-            var newData = this.dataSet.get(filter);
+            var newData = this.dataSet.get({
+                filter: function filter(data) {
+                    return _filter != null && typeof _filter === "function" ? !_filter(data) : true;
+                }
+            });
             this.dataSet.set(newData);
             this.update({ options: null });
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.clearData
+         * @function MapvRenderer.prototype.clearData
          * @description 清除数据
          */
 
@@ -5642,7 +5646,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.render
+         * @function MapvRenderer.prototype.render
          * @description 着色
          * @param time - {number}
          */
@@ -5654,7 +5658,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.transferToMercator
+         * @function MapvRenderer.prototype.transferToMercator
          * @description 墨卡托坐标为经纬度
          */
 
@@ -5779,7 +5783,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.addAnimatorEvent
+         * @function MapvRenderer.prototype.addAnimatorEvent
          * @description 添加动画事件
          */
 
@@ -5791,7 +5795,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.clear
+         * @function MapvRenderer.prototype.clear
          * @description 清除环境
          * @param context - {Object} 当前环境
          */
@@ -5803,7 +5807,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.show
+         * @function MapvRenderer.prototype.show
          * @description 展示渲染效果
          */
 
@@ -5814,7 +5818,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.hide
+         * @function MapvRenderer.prototype.hide
          * @description 隐藏渲染效果
          */
 
@@ -5825,7 +5829,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         }
 
         /**
-         * @function SuperMap.MapVRenderer.prototype.draw
+         * @function MapvRenderer.prototype.draw
          * @description 渲染绘制
          */
 

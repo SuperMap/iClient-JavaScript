@@ -1170,7 +1170,7 @@ __webpack_require__(161);
 
 __webpack_require__(84);
 
-__webpack_require__(22);
+__webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -2725,7 +2725,7 @@ var _LinearRing = __webpack_require__(48);
 
 var _LinearRing2 = _interopRequireDefault(_LinearRing);
 
-var _LineString = __webpack_require__(25);
+var _LineString = __webpack_require__(24);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -3461,7 +3461,7 @@ var _MultiPoint = __webpack_require__(60);
 
 var _MultiPoint2 = _interopRequireDefault(_MultiPoint);
 
-var _LineString = __webpack_require__(25);
+var _LineString = __webpack_require__(24);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -4766,7 +4766,7 @@ var _Transformable2 = _interopRequireDefault(_Transformable);
 
 __webpack_require__(5);
 
-__webpack_require__(30);
+__webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -6854,318 +6854,6 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Point = __webpack_require__(13);
-
-var _Point2 = _interopRequireDefault(_Point);
-
-var _Geometry2 = __webpack_require__(58);
-
-var _Geometry3 = _interopRequireDefault(_Geometry2);
-
-var _Util = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.Geometry.Collection
- * @classdesc 几何对象集合类，存储在本地的 components 属性中（可作为参数传递给构造函数）。<br>
- *            随着新的几何图形添加到集合中，将不能被克隆，当移动几何图形时，需要指定参照物。<br>
- *            getArea和getLength函数只能通过遍历存储几何对象的 components 数组，总计所有几何图形的面积和长度。
- *
- * @extends SuperMap.Geometry
- * @param components - {SuperMap.Geometry[]}几何对象数组。
- * @example
- * var point1 = new SuperMap.Geometry.Point(10,20);
- * var point2 = new SuperMap.Geometry.Point(30,40);
- * var col = new SuperMap.Geometry.Collection([point1,point2]);
- */
-var Collection = function (_Geometry) {
-    _inherits(Collection, _Geometry);
-
-    /**
-     * @description 存储几何对象的数组。
-     * @member SuperMap.Geometry.Collection.prototype.components -{Array<SuperMap.Geometry>}
-     */
-    function Collection(components) {
-        _classCallCheck(this, Collection);
-
-        var _this = _possibleConstructorReturn(this, (Collection.__proto__ || Object.getPrototypeOf(Collection)).call(this));
-
-        _this.components = null;
-        _this.componentTypes = null;
-        _this.CLASS_NAME = "SuperMap.Geometry.Collection";
-
-        _this.components = [];
-        if (components != null) {
-            _this.addComponents(components);
-        }
-        return _this;
-    }
-
-    /**
-     * @function SuperMap.Geometry.Collection.prototype.destroy
-     * @description 销毁几何图形。
-     */
-
-
-    /**
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @member SuperMap.Geometry.Collection.prototype.componentTypes -{Array<string>}
-     */
-
-
-    _createClass(Collection, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.components.length = 0;
-            this.components = null;
-            _get(Collection.prototype.__proto__ || Object.getPrototypeOf(Collection.prototype), 'destroy', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.clone
-         * @description 克隆当前几何对象。
-         * @returns {SuperMap.Geometry.Collection} 克隆的几何对象集合。
-         */
-
-    }, {
-        key: 'clone',
-        value: function clone() {
-            var geometry = new Collection();
-            for (var i = 0, len = this.components.length; i < len; i++) {
-                geometry.addComponent(this.components[i].clone());
-            }
-
-            // catch any randomly tagged-on properties
-            _Util.Util.applyDefaults(geometry, this);
-
-            return geometry;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.getComponentsString
-         * @description 获取components字符串
-         * @returns {string} components字符串
-         */
-
-    }, {
-        key: 'getComponentsString',
-        value: function getComponentsString() {
-            var strings = [];
-            for (var i = 0, len = this.components.length; i < len; i++) {
-                strings.push(this.components[i].toShortString());
-            }
-            return strings.join(",");
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.calculateBounds
-         * @description 通过遍历数组重新计算边界，在遍历每一子项中时调用 extend 方法。
-         */
-
-    }, {
-        key: 'calculateBounds',
-        value: function calculateBounds() {
-            this.bounds = null;
-            var bounds = new _SuperMap2["default"].Bounds();
-            var components = this.components;
-            if (components) {
-                for (var i = 0, len = components.length; i < len; i++) {
-                    bounds.extend(components[i].getBounds());
-                }
-            }
-            // to preserve old behavior, we only set bounds if non-null
-            // in the future, we could add bounds.isEmpty()
-            if (bounds.left != null && bounds.bottom != null && bounds.right != null && bounds.top != null) {
-                this.setBounds(bounds);
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.addComponents
-         * @description 给几何图形对象添加元素。
-         * @param components -{Array<SuperMap.Geometry>} 几何对象组件。
-         * @example
-         * var collection = new SuperMap.Geometry.Collection();
-         * collection.addComponents(new SuerpMap.Geometry.Point(1010));
-         */
-
-    }, {
-        key: 'addComponents',
-        value: function addComponents(components) {
-            if (!_Util.Util.isArray(components)) {
-                components = [components];
-            }
-            for (var i = 0, len = components.length; i < len; i++) {
-                this.addComponent(components[i]);
-            }
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.addComponent
-         * @description 添加一个几何对象到集合中。如果设置了componentTypes类型，则添加的几何对象必须是componentTypes中的类型
-         *
-         * @param component - {SuperMap.Geometry} 待添加的几何对象
-         * @param index - {int} 几何对象插入的位置
-         *
-         * @returns {Boolean} 是否添加成功
-         */
-
-    }, {
-        key: 'addComponent',
-        value: function addComponent(component, index) {
-            var added = false;
-            if (component) {
-                if (this.componentTypes == null || _Util.Util.indexOf(this.componentTypes, component.CLASS_NAME) > -1) {
-
-                    if (index != null && index < this.components.length) {
-                        var components1 = this.components.slice(0, index);
-                        var components2 = this.components.slice(index, this.components.length);
-                        components1.push(component);
-                        this.components = components1.concat(components2);
-                    } else {
-                        this.components.push(component);
-                    }
-                    component.parent = this;
-                    this.clearBounds();
-                    added = true;
-                }
-            }
-            return added;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.removeComponents
-         * @description 清除几何对象。
-         *
-         * @param components -{Array<SuperMap.Geometry>} 需要清除的几何对象。
-         * @returns {Boolean} 元素是否被删除。
-         */
-
-    }, {
-        key: 'removeComponents',
-        value: function removeComponents(components) {
-            var removed = false;
-
-            if (!_Util.Util.isArray(components)) {
-                components = [components];
-            }
-            for (var i = components.length - 1; i >= 0; --i) {
-                removed = this.removeComponent(components[i]) || removed;
-            }
-            return removed;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.removeComponent
-         * @description 从集合中移除一个几何对象
-         * @param component -{SuperMap.Geometry} 要移除的几何对象
-         * @returns {Boolean} 几何对象是否移除成功
-         */
-
-    }, {
-        key: 'removeComponent',
-        value: function removeComponent(component) {
-            _Util.Util.removeItem(this.components, component);
-
-            // clearBounds() so that it gets recalculated on the next call
-            // to this.getBounds();
-            this.clearBounds();
-            return true;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.getArea
-         * @description 计算几何对象的面积。注意，这个方法在 <SuperMap.Geometry.Polygon> 类中需要重写。
-         * @returns {number} 几何图形的面积，是几何对象中所有组成部分的面积之和。
-         */
-
-    }, {
-        key: 'getArea',
-        value: function getArea() {
-            var area = 0.0;
-            for (var i = 0, len = this.components.length; i < len; i++) {
-                area += this.components[i].getArea();
-            }
-            return area;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.equals
-         * @description 判断两个几何图形是否相等。如果所有的 components 具有相同的坐标，则认为是相等的。
-         * @param geometry - {SuperMap.Geometry} 需要判断的几何图形。
-         * @returns {Boolean} 输入的几何图形与当前几何图形是否相等。
-         */
-
-    }, {
-        key: 'equals',
-        value: function equals(geometry) {
-            var equivalent = true;
-            if (!geometry || !geometry.CLASS_NAME || this.CLASS_NAME !== geometry.CLASS_NAME) {
-                equivalent = false;
-            } else if (!_Util.Util.isArray(geometry.components) || geometry.components.length !== this.components.length) {
-                equivalent = false;
-            } else {
-                for (var i = 0, len = this.components.length; i < len; ++i) {
-                    if (!this.components[i].equals(geometry.components[i])) {
-                        equivalent = false;
-                        break;
-                    }
-                }
-            }
-            return equivalent;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Collection.prototype.getVertices
-         * @description 返回几何对象的所有结点的列表。
-         * @param nodes - {Boolean} 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
-         * @returns {Array} 几何对象的顶点列表。
-         */
-
-    }, {
-        key: 'getVertices',
-        value: function getVertices(nodes) {
-            var vertices = [];
-            for (var i = 0, len = this.components.length; i < len; ++i) {
-                Array.prototype.push.apply(vertices, this.components[i].getVertices(nodes));
-            }
-            return vertices;
-        }
-    }]);
-
-    return Collection;
-}(_Geometry3["default"]);
-
-exports["default"] = Collection;
-
-_SuperMap2["default"].Geometry.Collection = Collection;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
 var _Theme2 = __webpack_require__(102);
 
 var _Theme3 = _interopRequireDefault(_Theme2);
@@ -7736,7 +7424,7 @@ _SuperMap2["default"].Feature.Theme.getDataValues = function (data, fields, deci
 _SuperMap2["default"].Feature.Theme.Graph = Graph;
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8095,7 +7783,7 @@ _SuperMap2["default"].SecurityManager.SSO = "https://sso.supermap.com";
 _SuperMap2["default"].SecurityManager.ONLINE = "http://www.supermapol.com";
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8174,7 +7862,7 @@ exports["default"] = CommontypesConversion;
 _leaflet2["default"].supermap.CommontypesConversion = CommontypesConversion;
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8303,7 +7991,7 @@ _leaflet2["default"].Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
 _leaflet2["default"].Util.NormalizeScale = NormalizeScale;
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8315,6 +8003,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
@@ -8322,10 +8012,6 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 var _Point = __webpack_require__(13);
 
 var _Point2 = _interopRequireDefault(_Point);
-
-var _Collection = __webpack_require__(20);
-
-var _Collection2 = _interopRequireDefault(_Collection);
 
 var _Curve2 = __webpack_require__(163);
 
@@ -8378,7 +8064,7 @@ var LineString = function (_Curve) {
         value: function removeComponent(point) {
             var removed = this.components && this.components.length > 2;
             if (removed) {
-                _Collection2["default"].prototype.removeComponent.apply(this, arguments);
+                _get(LineString.prototype.__proto__ || Object.getPrototypeOf(LineString.prototype), 'removeComponent', this).apply(this, arguments);
             }
             return removed;
         }
@@ -8686,7 +8372,7 @@ exports["default"] = LineString;
 _SuperMap2["default"].Geometry.LineString = LineString;
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8847,7 +8533,7 @@ exports["default"] = QueryParameters;
 _SuperMap2["default"].QueryParameters = QueryParameters;
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9101,7 +8787,7 @@ exports["default"] = ServerTextStyle;
 _SuperMap2["default"].ServerTextStyle = ServerTextStyle;
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9232,7 +8918,7 @@ exports["default"] = TransportationAnalystParameter;
 _SuperMap2["default"].TransportationAnalystParameter = TransportationAnalystParameter;
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9429,7 +9115,7 @@ _SuperMap2["default"].LevelRenderer._instances = {};
 _SuperMap2["default"].LevelRenderer.Tool = {};
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9439,7 +9125,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _LevelRenderer = __webpack_require__(29);
+var _LevelRenderer = __webpack_require__(28);
 
 var _LevelRenderer2 = _interopRequireDefault(_LevelRenderer);
 
@@ -9483,7 +9169,7 @@ var _Matrix = __webpack_require__(375);
 
 var _Matrix2 = _interopRequireDefault(_Matrix);
 
-var _Util = __webpack_require__(31);
+var _Util = __webpack_require__(30);
 
 var _Util2 = _interopRequireDefault(_Util);
 
@@ -9713,7 +9399,7 @@ _SuperMap2["default"].LevelRenderer.SUtil_dashedLineTo = function (ctx, x1, y1, 
 };
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10078,7 +9764,7 @@ exports["default"] = Util;
 _SuperMap2["default"].LevelRenderer.Tool.Util = Util;
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
@@ -10089,13 +9775,325 @@ module.exports = function(x) {
 };
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = function(eccent, sinphi, cosphi) {
   var con = eccent * sinphi;
   return cosphi / (Math.sqrt(1 - con * con));
 };
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _Point = __webpack_require__(13);
+
+var _Point2 = _interopRequireDefault(_Point);
+
+var _Geometry2 = __webpack_require__(58);
+
+var _Geometry3 = _interopRequireDefault(_Geometry2);
+
+var _Util = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.Geometry.Collection
+ * @classdesc 几何对象集合类，存储在本地的 components 属性中（可作为参数传递给构造函数）。<br>
+ *            随着新的几何图形添加到集合中，将不能被克隆，当移动几何图形时，需要指定参照物。<br>
+ *            getArea和getLength函数只能通过遍历存储几何对象的 components 数组，总计所有几何图形的面积和长度。
+ *
+ * @extends SuperMap.Geometry
+ * @param components - {SuperMap.Geometry[]}几何对象数组。
+ * @example
+ * var point1 = new SuperMap.Geometry.Point(10,20);
+ * var point2 = new SuperMap.Geometry.Point(30,40);
+ * var col = new SuperMap.Geometry.Collection([point1,point2]);
+ */
+var Collection = function (_Geometry) {
+    _inherits(Collection, _Geometry);
+
+    /**
+     * @description 存储几何对象的数组。
+     * @member SuperMap.Geometry.Collection.prototype.components -{Array<SuperMap.Geometry>}
+     */
+    function Collection(components) {
+        _classCallCheck(this, Collection);
+
+        var _this = _possibleConstructorReturn(this, (Collection.__proto__ || Object.getPrototypeOf(Collection)).call(this));
+
+        _this.components = null;
+        _this.componentTypes = null;
+        _this.CLASS_NAME = "SuperMap.Geometry.Collection";
+
+        _this.components = [];
+        if (components != null) {
+            _this.addComponents(components);
+        }
+        return _this;
+    }
+
+    /**
+     * @function SuperMap.Geometry.Collection.prototype.destroy
+     * @description 销毁几何图形。
+     */
+
+
+    /**
+     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+     * @member SuperMap.Geometry.Collection.prototype.componentTypes -{Array<string>}
+     */
+
+
+    _createClass(Collection, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.components.length = 0;
+            this.components = null;
+            _get(Collection.prototype.__proto__ || Object.getPrototypeOf(Collection.prototype), 'destroy', this).call(this);
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.clone
+         * @description 克隆当前几何对象。
+         * @returns {SuperMap.Geometry.Collection} 克隆的几何对象集合。
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+            var geometry = new Collection();
+            for (var i = 0, len = this.components.length; i < len; i++) {
+                geometry.addComponent(this.components[i].clone());
+            }
+
+            // catch any randomly tagged-on properties
+            _Util.Util.applyDefaults(geometry, this);
+
+            return geometry;
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.getComponentsString
+         * @description 获取components字符串
+         * @returns {string} components字符串
+         */
+
+    }, {
+        key: 'getComponentsString',
+        value: function getComponentsString() {
+            var strings = [];
+            for (var i = 0, len = this.components.length; i < len; i++) {
+                strings.push(this.components[i].toShortString());
+            }
+            return strings.join(",");
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.calculateBounds
+         * @description 通过遍历数组重新计算边界，在遍历每一子项中时调用 extend 方法。
+         */
+
+    }, {
+        key: 'calculateBounds',
+        value: function calculateBounds() {
+            this.bounds = null;
+            var bounds = new _SuperMap2["default"].Bounds();
+            var components = this.components;
+            if (components) {
+                for (var i = 0, len = components.length; i < len; i++) {
+                    bounds.extend(components[i].getBounds());
+                }
+            }
+            // to preserve old behavior, we only set bounds if non-null
+            // in the future, we could add bounds.isEmpty()
+            if (bounds.left != null && bounds.bottom != null && bounds.right != null && bounds.top != null) {
+                this.setBounds(bounds);
+            }
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.addComponents
+         * @description 给几何图形对象添加元素。
+         * @param components -{Array<SuperMap.Geometry>} 几何对象组件。
+         * @example
+         * var collection = new SuperMap.Geometry.Collection();
+         * collection.addComponents(new SuerpMap.Geometry.Point(1010));
+         */
+
+    }, {
+        key: 'addComponents',
+        value: function addComponents(components) {
+            if (!_Util.Util.isArray(components)) {
+                components = [components];
+            }
+            for (var i = 0, len = components.length; i < len; i++) {
+                this.addComponent(components[i]);
+            }
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.addComponent
+         * @description 添加一个几何对象到集合中。如果设置了componentTypes类型，则添加的几何对象必须是componentTypes中的类型
+         *
+         * @param component - {SuperMap.Geometry} 待添加的几何对象
+         * @param index - {int} 几何对象插入的位置
+         *
+         * @returns {Boolean} 是否添加成功
+         */
+
+    }, {
+        key: 'addComponent',
+        value: function addComponent(component, index) {
+            var added = false;
+            if (component) {
+                if (this.componentTypes == null || _Util.Util.indexOf(this.componentTypes, component.CLASS_NAME) > -1) {
+
+                    if (index != null && index < this.components.length) {
+                        var components1 = this.components.slice(0, index);
+                        var components2 = this.components.slice(index, this.components.length);
+                        components1.push(component);
+                        this.components = components1.concat(components2);
+                    } else {
+                        this.components.push(component);
+                    }
+                    component.parent = this;
+                    this.clearBounds();
+                    added = true;
+                }
+            }
+            return added;
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.removeComponents
+         * @description 清除几何对象。
+         *
+         * @param components -{Array<SuperMap.Geometry>} 需要清除的几何对象。
+         * @returns {Boolean} 元素是否被删除。
+         */
+
+    }, {
+        key: 'removeComponents',
+        value: function removeComponents(components) {
+            var removed = false;
+
+            if (!_Util.Util.isArray(components)) {
+                components = [components];
+            }
+            for (var i = components.length - 1; i >= 0; --i) {
+                removed = this.removeComponent(components[i]) || removed;
+            }
+            return removed;
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.removeComponent
+         * @description 从集合中移除一个几何对象
+         * @param component -{SuperMap.Geometry} 要移除的几何对象
+         * @returns {Boolean} 几何对象是否移除成功
+         */
+
+    }, {
+        key: 'removeComponent',
+        value: function removeComponent(component) {
+            _Util.Util.removeItem(this.components, component);
+
+            // clearBounds() so that it gets recalculated on the next call
+            // to this.getBounds();
+            this.clearBounds();
+            return true;
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.getArea
+         * @description 计算几何对象的面积。注意，这个方法在 <SuperMap.Geometry.Polygon> 类中需要重写。
+         * @returns {number} 几何图形的面积，是几何对象中所有组成部分的面积之和。
+         */
+
+    }, {
+        key: 'getArea',
+        value: function getArea() {
+            var area = 0.0;
+            for (var i = 0, len = this.components.length; i < len; i++) {
+                area += this.components[i].getArea();
+            }
+            return area;
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.equals
+         * @description 判断两个几何图形是否相等。如果所有的 components 具有相同的坐标，则认为是相等的。
+         * @param geometry - {SuperMap.Geometry} 需要判断的几何图形。
+         * @returns {Boolean} 输入的几何图形与当前几何图形是否相等。
+         */
+
+    }, {
+        key: 'equals',
+        value: function equals(geometry) {
+            var equivalent = true;
+            if (!geometry || !geometry.CLASS_NAME || this.CLASS_NAME !== geometry.CLASS_NAME) {
+                equivalent = false;
+            } else if (!_Util.Util.isArray(geometry.components) || geometry.components.length !== this.components.length) {
+                equivalent = false;
+            } else {
+                for (var i = 0, len = this.components.length; i < len; ++i) {
+                    if (!this.components[i].equals(geometry.components[i])) {
+                        equivalent = false;
+                        break;
+                    }
+                }
+            }
+            return equivalent;
+        }
+
+        /**
+         * @function SuperMap.Geometry.Collection.prototype.getVertices
+         * @description 返回几何对象的所有结点的列表。
+         * @param nodes - {Boolean} 对于线来说，仅仅返回作为端点的顶点，如果设为false，则返回非端点的顶点如果没有设置此参数，则返回所有顶点。
+         * @returns {Array} 几何对象的顶点列表。
+         */
+
+    }, {
+        key: 'getVertices',
+        value: function getVertices(nodes) {
+            var vertices = [];
+            for (var i = 0, len = this.components.length; i < len; ++i) {
+                Array.prototype.push.apply(vertices, this.components[i].getVertices(nodes));
+            }
+            return vertices;
+        }
+    }]);
+
+    return Collection;
+}(_Geometry3["default"]);
+
+exports["default"] = Collection;
+
+_SuperMap2["default"].Geometry.Collection = Collection;
 
 /***/ }),
 /* 34 */
@@ -11192,15 +11190,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Collection = __webpack_require__(20);
-
-var _Collection2 = _interopRequireDefault(_Collection);
-
-var _LineString2 = __webpack_require__(25);
+var _LineString2 = __webpack_require__(24);
 
 var _LineString3 = _interopRequireDefault(_LineString2);
 
@@ -11275,12 +11271,12 @@ var LinearRing = function (_LineString) {
             // given an index, add the point
             // without an index only add non-duplicate points
             if (index != null || !point.equals(lastPoint)) {
-                added = _Collection2["default"].prototype.addComponent.apply(this, arguments);
+                added = _get(LinearRing.prototype.__proto__ || Object.getPrototypeOf(LinearRing.prototype), 'addComponent', this).apply(this, arguments);
             }
 
             //append copy of first point
             var firstPoint = this.components[0];
-            _Collection2["default"].prototype.addComponent.apply(this, [firstPoint]);
+            _get(LinearRing.prototype.__proto__ || Object.getPrototypeOf(LinearRing.prototype), 'addComponent', this).apply(this, [firstPoint]);
 
             return added;
         }
@@ -11301,10 +11297,10 @@ var LinearRing = function (_LineString) {
                 this.components.pop();
 
                 //remove our point
-                _Collection2["default"].prototype.removeComponent.apply(this, arguments);
+                _get(LinearRing.prototype.__proto__ || Object.getPrototypeOf(LinearRing.prototype), 'removeComponent', this).apply(this, arguments);
                 //append copy of first point
                 var firstPoint = this.components[0];
-                _Collection2["default"].prototype.addComponent.apply(this, [firstPoint]);
+                _get(LinearRing.prototype.__proto__ || Object.getPrototypeOf(LinearRing.prototype), 'addComponent', this).apply(this, [firstPoint]);
             }
             return removed;
         }
@@ -11376,7 +11372,7 @@ var _CommonServiceBase2 = __webpack_require__(3);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _QueryParameters = __webpack_require__(26);
+var _QueryParameters = __webpack_require__(25);
 
 var _QueryParameters2 = _interopRequireDefault(_QueryParameters);
 
@@ -11766,7 +11762,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(29);
+__webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -13981,7 +13977,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Collection2 = __webpack_require__(20);
+var _Collection2 = __webpack_require__(33);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
@@ -14075,7 +14071,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Collection2 = __webpack_require__(20);
+var _Collection2 = __webpack_require__(33);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
@@ -14083,7 +14079,7 @@ var _Point = __webpack_require__(13);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _LineString = __webpack_require__(25);
+var _LineString = __webpack_require__(24);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -14182,7 +14178,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(2);
 
-__webpack_require__(22);
+__webpack_require__(21);
 
 var _FetchRequest = __webpack_require__(15);
 
@@ -14481,7 +14477,7 @@ var _PointWithMeasure = __webpack_require__(274);
 
 var _PointWithMeasure2 = _interopRequireDefault(_PointWithMeasure);
 
-var _Collection2 = __webpack_require__(20);
+var _Collection2 = __webpack_require__(33);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
@@ -16965,7 +16961,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(30);
+__webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -18012,7 +18008,7 @@ exports.tiledMapLayer = exports.TiledMapLayer = undefined;
 
 __webpack_require__(4);
 
-__webpack_require__(22);
+__webpack_require__(21);
 
 var _SuperMap = __webpack_require__(0);
 
@@ -18028,7 +18024,7 @@ var _Credential = __webpack_require__(84);
 
 var _Credential2 = _interopRequireDefault(_Credential);
 
-var _Util = __webpack_require__(24);
+var _Util = __webpack_require__(23);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -18445,7 +18441,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _CommontypesConversion = __webpack_require__(23);
+var _CommontypesConversion = __webpack_require__(22);
 
 var _CommontypesConversion2 = _interopRequireDefault(_CommontypesConversion);
 
@@ -19938,11 +19934,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Collection2 = __webpack_require__(20);
+var _Collection2 = __webpack_require__(33);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
-var _LineString = __webpack_require__(25);
+var _LineString = __webpack_require__(24);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -20010,7 +20006,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Collection2 = __webpack_require__(20);
+var _Collection2 = __webpack_require__(33);
 
 var _Collection3 = _interopRequireDefault(_Collection2);
 
@@ -24388,7 +24384,7 @@ var _ServerFeature = __webpack_require__(92);
 
 var _ServerFeature2 = _interopRequireDefault(_ServerFeature);
 
-var _CommontypesConversion = __webpack_require__(23);
+var _CommontypesConversion = __webpack_require__(22);
 
 var _CommontypesConversion2 = _interopRequireDefault(_CommontypesConversion);
 
@@ -24808,7 +24804,7 @@ var _GeoText = __webpack_require__(164);
 
 var _GeoText2 = _interopRequireDefault(_GeoText);
 
-var _LevelRenderer = __webpack_require__(29);
+var _LevelRenderer = __webpack_require__(28);
 
 var _LevelRenderer2 = _interopRequireDefault(_LevelRenderer);
 
@@ -27068,7 +27064,7 @@ var adjust_lon = __webpack_require__(6);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var sign = __webpack_require__(46);
-var asinz = __webpack_require__(32);
+var asinz = __webpack_require__(31);
 
 exports.init = function() {
   this.e0 = e0fn(this.es);
@@ -28069,7 +28065,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(22);
+__webpack_require__(21);
 
 var _OnlineQueryDatasParameter = __webpack_require__(342);
 
@@ -31055,8 +31051,15 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.removeData
-     * @description 删除数据
-     * @param filter - {function} 过滤条件
+     * @description 删除符合过滤条件的数据
+     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @example
+     *  filter=function(data){
+     *    if(data.id=="1"){
+     *      return true
+     *    }
+     *    return false;
+     *  }
      */
     removeData: function removeData(filter) {
         this.renderer && this.renderer.removeData(filter);
@@ -31409,7 +31412,7 @@ exports.tiledVectorLayer = exports.TileVectorLayer = undefined;
 
 __webpack_require__(4);
 
-__webpack_require__(22);
+__webpack_require__(21);
 
 var _leaflet = __webpack_require__(1);
 
@@ -32345,7 +32348,7 @@ var _ChartFeatureInfoSpecsService = __webpack_require__(182);
 
 var _ChartFeatureInfoSpecsService2 = _interopRequireDefault(_ChartFeatureInfoSpecsService);
 
-var _CommontypesConversion = __webpack_require__(23);
+var _CommontypesConversion = __webpack_require__(22);
 
 var _CommontypesConversion2 = _interopRequireDefault(_CommontypesConversion);
 
@@ -32460,7 +32463,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _ServiceBase = __webpack_require__(7);
 
-var _Util = __webpack_require__(24);
+var _Util = __webpack_require__(23);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -32488,7 +32491,7 @@ var _EditFeaturesService = __webpack_require__(200);
 
 var _EditFeaturesService2 = _interopRequireDefault(_EditFeaturesService);
 
-var _CommontypesConversion = __webpack_require__(23);
+var _CommontypesConversion = __webpack_require__(22);
 
 var _CommontypesConversion2 = _interopRequireDefault(_CommontypesConversion);
 
@@ -33105,7 +33108,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _ServiceBase = __webpack_require__(7);
 
-var _Util = __webpack_require__(24);
+var _Util = __webpack_require__(23);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -33771,7 +33774,7 @@ var _VectorClipJobsService = __webpack_require__(340);
 
 var _VectorClipJobsService2 = _interopRequireDefault(_VectorClipJobsService);
 
-var _CommontypesConversion = __webpack_require__(23);
+var _CommontypesConversion = __webpack_require__(22);
 
 var _CommontypesConversion2 = _interopRequireDefault(_CommontypesConversion);
 
@@ -34245,7 +34248,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _ServiceBase = __webpack_require__(7);
 
-var _Util = __webpack_require__(24);
+var _Util = __webpack_require__(23);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -34265,7 +34268,7 @@ var _QueryByGeometryService = __webpack_require__(280);
 
 var _QueryByGeometryService2 = _interopRequireDefault(_QueryByGeometryService);
 
-var _CommontypesConversion = __webpack_require__(23);
+var _CommontypesConversion = __webpack_require__(22);
 
 var _CommontypesConversion2 = _interopRequireDefault(_CommontypesConversion);
 
@@ -34436,7 +34439,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _ServiceBase = __webpack_require__(7);
 
-var _Util = __webpack_require__(24);
+var _Util = __webpack_require__(23);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -34492,7 +34495,7 @@ var _ThiessenAnalystService = __webpack_require__(325);
 
 var _ThiessenAnalystService2 = _interopRequireDefault(_ThiessenAnalystService);
 
-var _CommontypesConversion = __webpack_require__(23);
+var _CommontypesConversion = __webpack_require__(22);
 
 var _CommontypesConversion2 = _interopRequireDefault(_CommontypesConversion);
 
@@ -36214,7 +36217,7 @@ var _Point = __webpack_require__(13);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _LineString = __webpack_require__(25);
+var _LineString = __webpack_require__(24);
 
 var _LineString2 = _interopRequireDefault(_LineString);
 
@@ -37663,7 +37666,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(22);
+__webpack_require__(21);
 
 var _FetchRequest = __webpack_require__(15);
 
@@ -39604,7 +39607,7 @@ var _CommonServiceBase2 = __webpack_require__(3);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _QueryParameters = __webpack_require__(26);
+var _QueryParameters = __webpack_require__(25);
 
 var _QueryParameters2 = _interopRequireDefault(_QueryParameters);
 
@@ -40065,7 +40068,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(28);
+var _TransportationAnalystParameter = __webpack_require__(27);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -43720,7 +43723,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(28);
+var _TransportationAnalystParameter = __webpack_require__(27);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -44352,7 +44355,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(28);
+var _TransportationAnalystParameter = __webpack_require__(27);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -44666,7 +44669,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(28);
+var _TransportationAnalystParameter = __webpack_require__(27);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -44971,7 +44974,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(28);
+var _TransportationAnalystParameter = __webpack_require__(27);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -45294,7 +45297,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _TransportationAnalystParameter = __webpack_require__(28);
+var _TransportationAnalystParameter = __webpack_require__(27);
 
 var _TransportationAnalystParameter2 = _interopRequireDefault(_TransportationAnalystParameter);
 
@@ -50631,7 +50634,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(27);
+var _ServerTextStyle = __webpack_require__(26);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -52506,7 +52509,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(26);
+var _QueryParameters2 = __webpack_require__(25);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -52724,7 +52727,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(26);
+var _QueryParameters2 = __webpack_require__(25);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -52976,7 +52979,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(26);
+var _QueryParameters2 = __webpack_require__(25);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -53219,7 +53222,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _QueryParameters2 = __webpack_require__(26);
+var _QueryParameters2 = __webpack_require__(25);
 
 var _QueryParameters3 = _interopRequireDefault(_QueryParameters2);
 
@@ -56823,7 +56826,7 @@ var _ServerColor = __webpack_require__(17);
 
 var _ServerColor2 = _interopRequireDefault(_ServerColor);
 
-var _ServerTextStyle = __webpack_require__(27);
+var _ServerTextStyle = __webpack_require__(26);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -57171,7 +57174,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(27);
+var _ServerTextStyle = __webpack_require__(26);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -58152,7 +58155,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(27);
+var _ServerTextStyle = __webpack_require__(26);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -58289,7 +58292,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(27);
+var _ServerTextStyle = __webpack_require__(26);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -58445,7 +58448,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerTextStyle = __webpack_require__(27);
+var _ServerTextStyle = __webpack_require__(26);
 
 var _ServerTextStyle2 = _interopRequireDefault(_ServerTextStyle);
 
@@ -61737,7 +61740,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(22);
+__webpack_require__(21);
 
 var _REST = __webpack_require__(2);
 
@@ -61850,7 +61853,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Graph2 = __webpack_require__(21);
+var _Graph2 = __webpack_require__(20);
 
 var _Graph3 = _interopRequireDefault(_Graph2);
 
@@ -62241,7 +62244,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Graph2 = __webpack_require__(21);
+var _Graph2 = __webpack_require__(20);
 
 var _Graph3 = _interopRequireDefault(_Graph2);
 
@@ -62879,7 +62882,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Graph2 = __webpack_require__(21);
+var _Graph2 = __webpack_require__(20);
 
 var _Graph3 = _interopRequireDefault(_Graph2);
 
@@ -63230,7 +63233,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Graph2 = __webpack_require__(21);
+var _Graph2 = __webpack_require__(20);
 
 var _Graph3 = _interopRequireDefault(_Graph2);
 
@@ -63472,7 +63475,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Graph2 = __webpack_require__(21);
+var _Graph2 = __webpack_require__(20);
 
 var _Graph3 = _interopRequireDefault(_Graph2);
 
@@ -63789,7 +63792,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Graph2 = __webpack_require__(21);
+var _Graph2 = __webpack_require__(20);
 
 var _Graph3 = _interopRequireDefault(_Graph2);
 
@@ -63995,7 +63998,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Graph2 = __webpack_require__(21);
+var _Graph2 = __webpack_require__(20);
 
 var _Graph3 = _interopRequireDefault(_Graph2);
 
@@ -66252,7 +66255,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Util = __webpack_require__(31);
+var _Util = __webpack_require__(30);
 
 var _Util2 = _interopRequireDefault(_Util);
 
@@ -67562,11 +67565,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Util = __webpack_require__(31);
+var _Util = __webpack_require__(30);
 
 var _Util2 = _interopRequireDefault(_Util);
 
-__webpack_require__(29);
+__webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -68959,7 +68962,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _Util = __webpack_require__(31);
+var _Util = __webpack_require__(30);
 
 var _Util2 = _interopRequireDefault(_Util);
 
@@ -68971,7 +68974,7 @@ var _Vector = __webpack_require__(73);
 
 var _Vector2 = _interopRequireDefault(_Vector);
 
-__webpack_require__(29);
+__webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -70095,7 +70098,7 @@ var _Transformable = __webpack_require__(72);
 
 var _Transformable2 = _interopRequireDefault(_Transformable);
 
-__webpack_require__(31);
+__webpack_require__(30);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -72249,7 +72252,7 @@ var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 __webpack_require__(5);
 
-__webpack_require__(31);
+__webpack_require__(30);
 
 var _Transformable2 = __webpack_require__(72);
 
@@ -73558,7 +73561,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _LevelRenderer = __webpack_require__(29);
+var _LevelRenderer = __webpack_require__(28);
 
 var _LevelRenderer2 = _interopRequireDefault(_LevelRenderer);
 
@@ -73586,7 +73589,7 @@ __webpack_require__(367);
 
 __webpack_require__(363);
 
-__webpack_require__(30);
+__webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -74362,7 +74365,7 @@ var _SmicPolygon = __webpack_require__(103);
 
 var _SmicPolygon2 = _interopRequireDefault(_SmicPolygon);
 
-__webpack_require__(30);
+__webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -76306,7 +76309,7 @@ var _Shape2 = __webpack_require__(12);
 
 var _Shape3 = _interopRequireDefault(_Shape2);
 
-__webpack_require__(30);
+__webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -76802,7 +76805,7 @@ var _Shape2 = __webpack_require__(12);
 
 var _Shape3 = _interopRequireDefault(_Shape2);
 
-__webpack_require__(30);
+__webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -83242,7 +83245,7 @@ var _proj = __webpack_require__(437);
 
 var _proj2 = _interopRequireDefault(_proj);
 
-var _Util = __webpack_require__(24);
+var _Util = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -84173,17 +84176,21 @@ var MapVRenderer = function (_BaseLayer) {
 
         /**
          * @function L.supermap.MapVRenderer.prototype.removeData
-         * @description 删除数据
-         * @param filter - {string} 删除条件\过滤信息
+         * @description 删除符合过滤条件的数据
+         * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true表示删除该元素；否则表示不删除
          */
 
     }, {
         key: 'removeData',
-        value: function removeData(filter) {
+        value: function removeData(_filter) {
             if (!this.dataSet) {
                 return;
             }
-            var newData = this.dataSet.get(filter);
+            var newData = this.dataSet.get({
+                filter: function filter(data) {
+                    return _filter != null && typeof _filter === "function" ? !_filter(data) : true;
+                }
+            });
             this.dataSet.set(newData);
             this.update({ options: null });
         }
@@ -85214,7 +85221,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _Util = __webpack_require__(24);
+var _Util = __webpack_require__(23);
 
 var Util = _interopRequireWildcard(_Util);
 
@@ -89038,10 +89045,10 @@ exports.start = function() {
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
-var msfnz = __webpack_require__(33);
+var msfnz = __webpack_require__(32);
 var qsfnz = __webpack_require__(77);
 var adjust_lon = __webpack_require__(6);
-var asinz = __webpack_require__(32);
+var asinz = __webpack_require__(31);
 exports.init = function() {
 
   if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
@@ -89173,7 +89180,7 @@ var e1fn = __webpack_require__(42);
 var e2fn = __webpack_require__(43);
 var e3fn = __webpack_require__(44);
 var gN = __webpack_require__(75);
-var asinz = __webpack_require__(32);
+var asinz = __webpack_require__(31);
 var imlfn = __webpack_require__(76);
 exports.init = function() {
   this.sin_p12 = Math.sin(this.lat0);
@@ -89477,7 +89484,7 @@ exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 var adjust_lon = __webpack_require__(6);
 var qsfnz = __webpack_require__(77);
-var msfnz = __webpack_require__(33);
+var msfnz = __webpack_require__(32);
 var iqsfnz = __webpack_require__(423);
 /*
   reference:  
@@ -89595,7 +89602,7 @@ var e0fn = __webpack_require__(41);
 var e1fn = __webpack_require__(42);
 var e2fn = __webpack_require__(43);
 var e3fn = __webpack_require__(44);
-var msfnz = __webpack_require__(33);
+var msfnz = __webpack_require__(32);
 var mlfn = __webpack_require__(45);
 var adjust_lon = __webpack_require__(6);
 var adjust_lat = __webpack_require__(40);
@@ -89760,7 +89767,7 @@ exports.names = ["gauss"];
 
 var adjust_lon = __webpack_require__(6);
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(32);
+var asinz = __webpack_require__(31);
 
 /*
   reference:
@@ -90262,7 +90269,7 @@ exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area",
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
-var msfnz = __webpack_require__(33);
+var msfnz = __webpack_require__(32);
 var tsfnz = __webpack_require__(55);
 var HALF_PI = Math.PI/2;
 var sign = __webpack_require__(46);
@@ -90418,7 +90425,7 @@ exports.names = ["longlat", "identity"];
 /* 452 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var msfnz = __webpack_require__(33);
+var msfnz = __webpack_require__(32);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var R2D = 57.29577951308232088;
@@ -91193,7 +91200,7 @@ var pj_mlfn = __webpack_require__(118);
 var pj_inv_mlfn = __webpack_require__(425);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(32);
+var asinz = __webpack_require__(31);
 exports.init = function() {
   /* Place parameters in static storage for common use
     -------------------------------------------------*/
@@ -91385,7 +91392,7 @@ exports.names = ["somerc"];
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var sign = __webpack_require__(46);
-var msfnz = __webpack_require__(33);
+var msfnz = __webpack_require__(32);
 var tsfnz = __webpack_require__(55);
 var phi2z = __webpack_require__(54);
 var adjust_lon = __webpack_require__(6);
@@ -91644,7 +91651,7 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 var adjust_lon = __webpack_require__(6);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(32);
+var asinz = __webpack_require__(31);
 /* Initialize the Van Der Grinten projection
   ----------------------------------------*/
 exports.init = function() {

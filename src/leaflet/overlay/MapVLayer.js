@@ -109,8 +109,15 @@ export var MapVLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.mapVLayer.prototype.removeData
-     * @description 删除数据
-     * @param filter - {function} 过滤条件
+     * @description 删除符合过滤条件的数据
+     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+     * @example
+     *  filter=function(data){
+     *    if(data.id=="1"){
+     *      return true
+     *    }
+     *    return false;
+     *  }
      */
     removeData: function (filter) {
         this.renderer && this.renderer.removeData(filter);

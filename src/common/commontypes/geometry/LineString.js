@@ -1,6 +1,5 @@
 ﻿import SuperMap from '../../SuperMap';
 import Point from './Point';
-import Collection from './Collection';
 import Curve from './Curve';
 
 /**
@@ -32,7 +31,7 @@ export default class LineString extends Curve {
     removeComponent(point) {
         var removed = this.components && (this.components.length > 2);
         if (removed) {
-            Collection.prototype.removeComponent.apply(this, arguments);
+            super.removeComponent.apply(this, arguments);
         }
         return removed;
     }

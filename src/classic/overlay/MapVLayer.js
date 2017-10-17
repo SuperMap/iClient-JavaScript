@@ -130,11 +130,11 @@ export class MapVLayer extends SuperMap.Layer {
 
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.removeData
-     * @description 按照过滤条件移除数据
-     * @param filter - {string} 过滤条件
+     * @description 删除符合过滤条件的数据
+     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
      * @example
      *  filter=function(data){
-     *    if(data.id="1"){
+     *    if(data.id=="1"){
      *      return true
      *    }
      *    return false;
@@ -217,7 +217,7 @@ export class MapVLayer extends SuperMap.Layer {
      */
     transferToMapLatLng(latLng) {
         var source = "EPSG:4326", dest = "EPSG:4326";
-        var unit = this.map.getUnits();
+        var unit = this.map.getUnits() || "degree";
         if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
             dest = "EPSG:3857";
         }

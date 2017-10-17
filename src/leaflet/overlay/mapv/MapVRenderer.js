@@ -144,14 +144,18 @@ export default class MapVRenderer extends BaseLayer {
 
     /**
      * @function L.supermap.MapVRenderer.prototype.removeData
-     * @description 删除数据
-     * @param filter - {string} 删除条件\过滤信息
+     * @description 删除符合过滤条件的数据
+     * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
      */
     removeData(filter) {
         if (!this.dataSet) {
             return;
         }
-        var newData = this.dataSet.get(filter);
+        var newData = this.dataSet.get({
+            filter: function (data) {
+                return (filter != null && typeof filter === "function") ? !filter(data) : true;
+            }
+        });
         this.dataSet.set(newData);
         this.update({options: null});
     }
