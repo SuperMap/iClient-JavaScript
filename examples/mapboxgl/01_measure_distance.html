@@ -11,7 +11,7 @@
 <script type="text/javascript">
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
     var alertDiv,
-        host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
+        host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
     var url = host + "/iserver/services/map-world/rest/maps/World";
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
@@ -55,8 +55,10 @@
     map.addControl(draw, "top-left");
 
     function updateArea(e) {
-        var data = draw.getAll();
-        var current = data.features[data.features.length - 1];
+
+        var data= new SuperMap.MeasureParameters(draw.getAll());
+        //获取当前画的图形的数据
+        var current = data.geometry.features[data.geometry.features.length - 1];
         new mapboxgl.supermap.MeasureService(url).measureDistance(current, function (serviceResult) {
             var distance = serviceResult.result.distance;
             showAlert(distance + "米");

@@ -53,8 +53,9 @@
     map.addControl(draw,"top-left");
 
     function updateArea(e) {
-        var data = draw.getAll();
-        var current=data.features[data.features.length-1];
+        var data= new SuperMap.MeasureParameters(draw.getAll());
+        //获取当前画的图形的数据
+        var current = data.geometry.features[data.geometry.features.length - 1];
             new mapboxgl.supermap.MeasureService(url).measureArea(current, function (serviceResult) {
                 var area = serviceResult.result.area;
                 var rounded_area = Math.round(area * 100) / 100;
