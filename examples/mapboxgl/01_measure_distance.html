@@ -54,12 +54,13 @@
 
     map.addControl(draw, "top-left");
 
-    function updateArea(e) {
-
-        var data= new SuperMap.MeasureParameters(draw.getAll());
-        //获取当前画的图形的数据
-        var current = data.geometry.features[data.geometry.features.length - 1];
-        new mapboxgl.supermap.MeasureService(url).measureDistance(current, function (serviceResult) {
+    function measureDistance(e) {
+        if (!e.features) {
+            alert("没有获取到数据,请重新绘制");
+            return;
+        }
+        var param = new SuperMap.MeasureParameters(e.features[0]);
+        new mapboxgl.supermap.MeasureService(url).measureDistance(param, function (serviceResult) {
             var distance = serviceResult.result.distance;
             showAlert(distance + "米");
         });
@@ -69,7 +70,7 @@
         $('#msg_container').remove();
     }
 
-    map.on('draw.create', updateArea);
+    map.on('draw.create', measureDistance);
     map.on('draw.delete', removeMsg);
 
     function showAlert(msg) {

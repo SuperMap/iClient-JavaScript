@@ -50,25 +50,27 @@
             trash: true
         }
     });
-    map.addControl(draw,"top-left");
+    map.addControl(draw, "top-left");
 
-    function updateArea(e) {
-        var data= new SuperMap.MeasureParameters(draw.getAll());
-        //获取当前画的图形的数据
-        var current = data.geometry.features[data.geometry.features.length - 1];
-            new mapboxgl.supermap.MeasureService(url).measureArea(current, function (serviceResult) {
-                var area = serviceResult.result.area;
-                var rounded_area = Math.round(area * 100) / 100;
-                showAlert(rounded_area + "平方米");
-            });
+    function measureArea(e) {
+        if (!e.features) {
+            alert("没有获取到数据,请重新绘制");
+            return;
+        }
+        var param = new SuperMap.MeasureParameters(e.features[0]);
+        new mapboxgl.supermap.MeasureService(url).measureArea(param, function (serviceResult) {
+            var area = serviceResult.result.area;
+            var rounded_area = Math.round(area * 100) / 100;
+            showAlert(rounded_area + "平方米");
+        });
     }
 
     function removeMsg() {
         $('#msg_container').remove();
     }
 
-    map.on('draw.create',updateArea);
-    map.on('draw.delete',removeMsg);
+    map.on('draw.create', measureArea);
+    map.on('draw.delete', removeMsg);
 
     function showAlert(msg) {
         var className = "alert-success";

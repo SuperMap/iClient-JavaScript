@@ -62,7 +62,7 @@ export default class MeasureService extends ServiceBase {
     _processParam(params) {
         if (params && !(params.geometry instanceof SuperMap.Geometry)) {
 
-            params.geometry = Util.toSuperMapGeometry(params);
+            params.geometry = Util.toSuperMapGeometry(params.geometry);
         }
         return params;
 
