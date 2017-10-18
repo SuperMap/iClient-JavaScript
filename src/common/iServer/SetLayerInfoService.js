@@ -16,18 +16,12 @@ import SetLayerInfoParameters from './SetLayerInfoParameters';
  */
 export default  class SetLayerInfoService extends CommonServiceBase {
 
-    /**
-     * @member SuperMap.SetLayerInfoService.prototype.resourceID - {string}
-     * @description 图层资源ID，临时图层的资源ID标记。
-     */
-    resourceID = null;
 
     constructor(url, options) {
         super(url, options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-        this.resourceID = options.resourceID;
     }
 
     /**

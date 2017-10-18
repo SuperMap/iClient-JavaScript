@@ -37,7 +37,7 @@
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'leaflet')) {
             inputCSS("http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css");
-            inputScript("http://cdn.bootcss.com/leaflet/1.0.3/leaflet-src.js");
+            inputScript("http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");

@@ -26291,22 +26291,20 @@ var LayerInfoService = function (_ServiceBase) {
                 return;
             }
             var me = this,
-                tempLayerID = params.tempLayerID,
-                layerPath = params.layerPath,
                 resourceID = params.resourceID,
+                tempLayerName = params.tempLayerName,
                 layerInfoParams = params.layerInfo;
-            if (!tempLayerID || !layerPath || !resourceID) {
+            if (!resourceID || !tempLayerName) {
                 return;
             }
             var url = me.url.concat();
-            url += "/tempLayersSet/" + tempLayerID + "/" + layerPath;
+            url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
             var setLayerInfoService = new _SetLayerInfoService2.default(url, {
                 serverType: me.options.serverType,
                 eventListeners: {
                     processCompleted: callback,
                     processFailed: callback
-                },
-                resourceID: resourceID
+                }
             });
             setLayerInfoService.processAsync(layerInfoParams);
         }
@@ -47599,29 +47597,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SetLayerInfoParameters
  * @classdesc 设置图层信息参数类.
  * @param options -{Object} 可选参数。如：<br>
- *         tempLayerID -{string} 临时图层的资源ID。<br>
- *         layerName -{string} 图层资源名。<br>
- *         resourceID -{string} 资源ID。<br>
+ *         resourceID -{string} 临时图层的资源ID。<br>
+ *         tempLayerName -{string} 临时图层下的子图层名。<br>
  *         layerInfo -{string} 要更新的图层信息。
  */
 var SetLayerInfoParameters = function () {
 
     /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.resourceID -{string}
-     * @description 资源ID，
-     */
-
-
-    /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.tempLayerID -{string}
-     * @description 临时图层的资源ID
+     * @member SuperMap.SetLayerInfoParameters.prototype.tempLayerName -{string}
+     * @description 临时图层下子图层(或者其子图层)名,如：Countries@World.3@@World
      */
     function SetLayerInfoParameters(options) {
         _classCallCheck(this, SetLayerInfoParameters);
 
-        this.tempLayerID = null;
-        this.layerName = null;
         this.resourceID = null;
+        this.tempLayerName = null;
         this.layerInfo = null;
         this.CLASS_NAME = "SuperMap.SetLayerInfoParameters";
 
@@ -47642,8 +47632,8 @@ var SetLayerInfoParameters = function () {
 
 
     /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.layerName -{string}
-     * @description 图层资源名
+     * @member SuperMap.SetLayerInfoParameters.prototype.resourceID -{string}
+     * @description 临时图层的资源ID
      */
 
 
@@ -47651,9 +47641,8 @@ var SetLayerInfoParameters = function () {
         key: "destroy",
         value: function destroy() {
             var me = this;
-            me.tempLayerID = null;
-            me.layerName = null;
             me.resourceID = null;
+            me.tempLayerName = null;
             me.layerInfo = null;
         }
     }]);
@@ -47721,24 +47710,16 @@ var SetLayerInfoService = function (_CommonServiceBase) {
 
         var _this = _possibleConstructorReturn(this, (SetLayerInfoService.__proto__ || Object.getPrototypeOf(SetLayerInfoService)).call(this, url, options));
 
-        _this.resourceID = null;
         _this.CLASS_NAME = "SuperMap.SetLayerInfoService";
 
         if (options) {
             _SuperMap2.default.Util.extend(_this, options);
         }
-        _this.resourceID = options.resourceID;
         return _this;
     }
 
     /**
      * @override
-     */
-
-
-    /**
-     * @member SuperMap.SetLayerInfoService.prototype.resourceID - {string}
-     * @description 图层资源ID，临时图层的资源ID标记。
      */
 
 
@@ -48127,13 +48108,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 设置图层信息参数类
  * @param options -{Object} 可选参数。如：<br>
  *        isTempLayers -{boolean} 是否是临时图层。<br>
- *        resourceID -{string} 资源ID。<br>
+ *        resourceID -{string} 临时图层资源ID。<br>
  *        layerInfo -{string} 要更新的图层信息。
  */
 var SetLayersInfoParameters = function () {
     /**
      * @member SuperMap.SetLayersInfoParameters.prototype.resourceID -{string}
-     * @description 资源ID，
+     * @description 临时图层资源ID，
      */
     function SetLayersInfoParameters(options) {
         _classCallCheck(this, SetLayersInfoParameters);
@@ -72261,6 +72242,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
   }
 
+  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
+  // error if request timeout
   function clearFunction(functionName) {
     // IE8 throws an exception when you try to delete a property on window
     // http://stackoverflow.com/a/1824228/751089
@@ -72273,9 +72256,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   function removeScript(scriptId) {
     var script = document.getElementById(scriptId);
-    if (script) {
-      document.getElementsByTagName('head')[0].removeChild(script);
-    }
+    document.getElementsByTagName('head')[0].removeChild(script);
   }
 
   function fetchJsonp(_url) {
@@ -72313,9 +72294,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       var jsonpScript = document.createElement('script');
       jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
-      if (options.charset) {
-        jsonpScript.setAttribute('charset', options.charset);
-      }
       jsonpScript.id = scriptId;
       document.getElementsByTagName('head')[0].appendChild(jsonpScript);
 
@@ -72324,19 +72302,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         clearFunction(callbackFunction);
         removeScript(scriptId);
-        window[callbackFunction] = function () {
-          clearFunction(callbackFunction);
-        };
       }, timeout);
-
-      // Caught if got 404/500
-      jsonpScript.onerror = function () {
-        reject(new Error('JSONP request to ' + _url + ' failed'));
-
-        clearFunction(callbackFunction);
-        removeScript(scriptId);
-        if (timeoutId) clearTimeout(timeoutId);
-      };
     });
   }
 

@@ -53,22 +53,20 @@ export default class LayerInfoService extends ServiceBase {
             return;
         }
         var me = this,
-            tempLayerID = params.tempLayerID,
-            layerPath = params.layerPath,
             resourceID = params.resourceID,
+            tempLayerName = params.tempLayerName,
             layerInfoParams = params.layerInfo;
-        if (!tempLayerID || !layerPath || !resourceID) {
+        if (!resourceID || !tempLayerName) {
             return;
         }
         var url = me.url.concat();
-        url += "/tempLayersSet/" + tempLayerID + "/" + layerPath;
+        url += "/tempLayersSet/" + resourceID + "/" + tempLayerName;
         var setLayerInfoService = new SetLayerInfoService(url, {
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
-            },
-            resourceID: resourceID
+            }
         });
         setLayerInfoService.processAsync(layerInfoParams);
     }

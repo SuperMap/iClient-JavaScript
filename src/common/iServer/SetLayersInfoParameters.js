@@ -5,7 +5,7 @@ import SuperMap from '../SuperMap';
  * @classdesc 设置图层信息参数类
  * @param options -{Object} 可选参数。如：<br>
  *        isTempLayers -{boolean} 是否是临时图层。<br>
- *        resourceID -{string} 资源ID。<br>
+ *        resourceID -{string} 临时图层资源ID。<br>
  *        layerInfo -{string} 要更新的图层信息。
  */
 export default  class SetLayersInfoParameters {
@@ -17,7 +17,7 @@ export default  class SetLayersInfoParameters {
     isTempLayers = null;
     /**
      * @member SuperMap.SetLayersInfoParameters.prototype.resourceID -{string}
-     * @description 资源ID，
+     * @description 临时图层资源ID，
      */
     resourceID = null;
 

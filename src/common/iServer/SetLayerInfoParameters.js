@@ -4,30 +4,23 @@ import SuperMap from '../SuperMap';
  * @class SuperMap.SetLayerInfoParameters
  * @classdesc 设置图层信息参数类.
  * @param options -{Object} 可选参数。如：<br>
- *         tempLayerID -{string} 临时图层的资源ID。<br>
- *         layerName -{string} 图层资源名。<br>
- *         resourceID -{string} 资源ID。<br>
+ *         resourceID -{string} 临时图层的资源ID。<br>
+ *         tempLayerName -{string} 临时图层下的子图层名。<br>
  *         layerInfo -{string} 要更新的图层信息。
  */
-export default  class SetLayerInfoParameters {
-
-    /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.tempLayerID -{string}
-     * @description 临时图层的资源ID
-     */
-    tempLayerID = null;
-
-    /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.layerName -{string}
-     * @description 图层资源名
-     */
-    layerName = null;
+export default class SetLayerInfoParameters {
 
     /**
      * @member SuperMap.SetLayerInfoParameters.prototype.resourceID -{string}
-     * @description 资源ID，
+     * @description 临时图层的资源ID
      */
     resourceID = null;
+
+    /**
+     * @member SuperMap.SetLayerInfoParameters.prototype.tempLayerName -{string}
+     * @description 临时图层下子图层(或者其子图层)名,如：Countries@World.3@@World
+     */
+    tempLayerName = null;
 
     /**
      * @member SuperMap.SetLayerInfoParameters.prototype.layerInfo -{string}
@@ -46,9 +39,8 @@ export default  class SetLayerInfoParameters {
      */
     destroy() {
         var me = this;
-        me.tempLayerID = null;
-        me.layerName = null;
         me.resourceID = null;
+        me.tempLayerName = null;
         me.layerInfo = null;
     }
 
