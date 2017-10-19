@@ -6,7 +6,7 @@ import SuperMap from '../SuperMap';
  * @param options -{Object} 可选参数。如：<br>
  *        isTempLayers -{boolean} 是否是临时图层。<br>
  *        resourceID -{string} 临时图层资源ID。<br>
- *        layerInfo -{string} 要更新的图层信息。
+ *        layersInfo -{string} 要更新的图层信息。
  */
 export default  class SetLayersInfoParameters {
 
@@ -22,10 +22,10 @@ export default  class SetLayersInfoParameters {
     resourceID = null;
 
     /**
-     * @member SuperMap.SetLayersInfoParameters.prototype.layerInfo -{Object}
+     * @member SuperMap.SetLayersInfoParameters.prototype.layersInfo -{Object}
      * @description 要更新的图层信息。(包含修改和未修改的所有字段)。该参数可以通过图层信息服务获取，然后对返回值中subLayers.layers[i]图层信息属性进行修改。
      */
-    layerInfo = null;
+    layersInfo = null;
 
     constructor(options) {
         options = options || {};
@@ -41,7 +41,7 @@ export default  class SetLayersInfoParameters {
         var me = this;
         me.isTempLayers = null;
         me.resourceID = null;
-        me.layerInfo = null;
+        me.layersInfo = null;
     }
 
 

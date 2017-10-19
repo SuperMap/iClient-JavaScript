@@ -88,9 +88,6 @@ export default class LayerInfoService extends ServiceBase {
         if (!resourceID || !layersInfo) {
             return;
         }
-        var layersInfoParam = {};
-        layersInfoParam.subLayers = {};
-        layersInfoParam.subLayers.layers = layersInfo;
         var setLayersInfoService = new SetLayersInfoService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
@@ -100,7 +97,7 @@ export default class LayerInfoService extends ServiceBase {
             resourceID: resourceID,
             isTempLayers: isTempLayers
         });
-        setLayersInfoService.processAsync(layersInfoParam);
+        setLayersInfoService.processAsync(layersInfo);
     }
 
     /**

@@ -30363,9 +30363,6 @@ var LayerInfoService = function (_ServiceBase) {
             if (!resourceID || !layersInfo) {
                 return;
             }
-            var layersInfoParam = {};
-            layersInfoParam.subLayers = {};
-            layersInfoParam.subLayers.layers = layersInfo;
             var setLayersInfoService = new _SetLayersInfoService2.default(me.url, {
                 serverType: me.options.serverType,
                 eventListeners: {
@@ -30375,7 +30372,7 @@ var LayerInfoService = function (_ServiceBase) {
                 resourceID: resourceID,
                 isTempLayers: isTempLayers
             });
-            setLayersInfoService.processAsync(layersInfoParam);
+            setLayersInfoService.processAsync(layersInfo);
         }
 
         /**
@@ -52527,7 +52524,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options -{Object} 可选参数。如：<br>
  *        isTempLayers -{boolean} 是否是临时图层。<br>
  *        resourceID -{string} 临时图层资源ID。<br>
- *        layerInfo -{string} 要更新的图层信息。
+ *        layersInfo -{string} 要更新的图层信息。
  */
 var SetLayersInfoParameters = function () {
     /**
@@ -52539,7 +52536,7 @@ var SetLayersInfoParameters = function () {
 
         this.isTempLayers = null;
         this.resourceID = null;
-        this.layerInfo = null;
+        this.layersInfo = null;
         this.CLASS_NAME = "SuperMap.SetLayersInfoParameters";
 
         options = options || {};
@@ -52553,7 +52550,7 @@ var SetLayersInfoParameters = function () {
 
 
     /**
-     * @member SuperMap.SetLayersInfoParameters.prototype.layerInfo -{Object}
+     * @member SuperMap.SetLayersInfoParameters.prototype.layersInfo -{Object}
      * @description 要更新的图层信息。(包含修改和未修改的所有字段)。该参数可以通过图层信息服务获取，然后对返回值中subLayers.layers[i]图层信息属性进行修改。
      */
 
@@ -52570,7 +52567,7 @@ var SetLayersInfoParameters = function () {
             var me = this;
             me.isTempLayers = null;
             me.resourceID = null;
-            me.layerInfo = null;
+            me.layersInfo = null;
         }
     }]);
 
@@ -52692,6 +52689,7 @@ var SetLayersInfoService = function (_CommonServiceBase) {
             if (!params) {
                 return;
             }
+
             end = me.url.substr(me.url.length - 1, 1);
             me.url += end === "/" ? '' : '/';
             //创建临时图层和设置修改临时图层信息对应不同的资源URL
@@ -52703,6 +52701,12 @@ var SetLayersInfoService = function (_CommonServiceBase) {
                 method = "POST";
             }
             me.url += ".json?";
+            if (!params.subLayers) {
+                params.subLayers = { layers: [] };
+            }
+            if (!params.subLayers.layers) {
+                params.subLayers.layers = [];
+            }
             var layers = params.subLayers.layers,
                 len = layers.length;
             for (var i in layers) {

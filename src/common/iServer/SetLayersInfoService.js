@@ -17,7 +17,7 @@ import SetLayersInfoParameters from './SetLayersInfoParameters';
  *         serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *         format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。<br>
  */
-export default  class SetLayersInfoService extends CommonServiceBase {
+export default class SetLayersInfoService extends CommonServiceBase {
 
     /**
      * @member SuperMap.SetLayersInfoService.prototype.resourceID - {string}
@@ -63,6 +63,7 @@ export default  class SetLayersInfoService extends CommonServiceBase {
         if (!params) {
             return;
         }
+
         end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? '' : '/';
         //创建临时图层和设置修改临时图层信息对应不同的资源URL
@@ -74,6 +75,12 @@ export default  class SetLayersInfoService extends CommonServiceBase {
             method = "POST";
         }
         me.url += ".json?";
+        if (!params.subLayers) {
+            params.subLayers = {layers: []}
+        }
+        if (!params.subLayers.layers) {
+            params.subLayers.layers = [];
+        }
         var layers = params.subLayers.layers,
             len = layers.length;
         for (let i in layers) {
