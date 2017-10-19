@@ -47626,8 +47626,8 @@ var SetLayerInfoParameters = function () {
 
 
     /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.layerInfo -{string}
-     * @description 要更新的图层信息
+     * @member SuperMap.SetLayerInfoParameters.prototype.layerInfo -{Object}
+     * @description 要更新的图层信息。(包含修改和未修改的所有字段)。该参数可以通过图层信息服务获取，然后对返回值中subLayers.layers[i]图层信息属性进行修改。
      */
 
 
@@ -48135,8 +48135,8 @@ var SetLayersInfoParameters = function () {
 
 
     /**
-     * @member SuperMap.SetLayersInfoParameters.prototype.layerInfo -{string}
-     * @description 要更新的图层信息。
+     * @member SuperMap.SetLayersInfoParameters.prototype.layerInfo -{Object}
+     * @description 要更新的图层信息。(包含修改和未修改的所有字段)。该参数可以通过图层信息服务获取，然后对返回值中subLayers.layers[i]图层信息属性进行修改。
      */
 
 
