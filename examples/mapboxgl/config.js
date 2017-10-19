@@ -92,6 +92,34 @@ var exampleConfig = {
                     name: "点密度专题图",
                     thumbnail: "mb_themeDotDensity.png",
                     fileName: "03_themeDotDensity"
+                }, {
+                    name: "等级符号专题图",
+                    thumbnail: "mb_themeGraduatedSymbol.png",
+                    fileName: "03_themeGraduatedSymbol"
+                }, {
+                    name: "统计专题图",
+                    thumbnail: "mb_themeGraph.png",
+                    fileName: "03_themeGraph"
+                }, {
+                    name: "矩阵标签专题图",
+                    thumbnail: "mb_themeLabel.png",
+                    fileName: "03_themeLabel"
+                }, {
+                    name: "分段专题图",
+                    thumbnail: "mb_themeRange.png",
+                    fileName: "03_themeRange"
+                }, {
+                    name: "单值专题图",
+                    thumbnail: "mb_themeUnique.png",
+                    fileName: "03_themeUnique"
+                }, {
+                    name: "栅格分段专题图",
+                    thumbnail: "mb_themeGridRange.png",
+                    fileName: "03_themeGridRange"
+                }, {
+                    name: "栅格单值专题图",
+                    thumbnail: "mb_themeGridUnique.png",
+                    fileName: "03_themeGridUnique"
                 }]
             },
             "spatialAnalyst": {

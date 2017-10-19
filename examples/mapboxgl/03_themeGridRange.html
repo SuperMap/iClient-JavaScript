@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>栅格分段专题图</title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+<span id="show"></span>
+<script type="text/javascript">
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+
+    var dataUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [host + '/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [117, 40],
+        zoom: 6
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    function createTheme() {
+        var themeGridRangeItem1 = new SuperMap.ThemeGridRangeItem({
+                start: -4,
+                end: 120,
+                color: new SuperMap.ServerColor(198, 244, 240)
+            }),
+
+            themeGridRangeItem2 = new SuperMap.ThemeGridRangeItem({
+                start: 120,
+                end: 240,
+                color: new SuperMap.ServerColor(176, 244, 188)
+            }),
+            themeGridRangeItem3 = new SuperMap.ThemeGridRangeItem({
+                start: 240,
+                end: 360,
+                color: new SuperMap.ServerColor(218, 251, 178)
+            }),
+            themeGridRangeItem4 = new SuperMap.ThemeGridRangeItem({
+                start: 360,
+                end: 480,
+                color: new SuperMap.ServerColor(220, 236, 145)
+            }),
+            themeGridRangeItem5 = new SuperMap.ThemeGridRangeItem({
+                start: 480,
+                end: 600,
+                color: new SuperMap.ServerColor(96, 198, 66)
+            }),
+            themeGridRangeItem6 = new SuperMap.ThemeGridRangeItem({
+                start: 600,
+                end: 720,
+                color: new SuperMap.ServerColor(20, 142, 53)
+            }),
+            themeGridRangeItem7 = new SuperMap.ThemeGridRangeItem({
+                start: 720,
+                end: 840,
+                color: new SuperMap.ServerColor(85, 144, 55)
+            }),
+
+            themeGridRangeItem8 = new SuperMap.ThemeGridRangeItem({
+                start: 840,
+                end: 960,
+                color: new SuperMap.ServerColor(171, 168, 38)
+            }),
+            themeGridRangeItem9 = new SuperMap.ThemeGridRangeItem({
+                start: 960,
+                end: 1100,
+                color: new SuperMap.ServerColor(235, 165, 9)
+            }),
+            themeGridRangeItem10 = new SuperMap.ThemeGridRangeItem({
+                start: 1100,
+                end: 1220,
+                color: new SuperMap.ServerColor(203, 89, 2)
+            }),
+            themeGridRangeItem11 = new SuperMap.ThemeGridRangeItem({
+                start: 1220,
+                end: 1340,
+                color: new SuperMap.ServerColor(157, 25, 1)
+            }),
+            themeGridRangeItem12 = new SuperMap.ThemeGridRangeItem({
+                start: 1340,
+                end: 1460,
+                color: new SuperMap.ServerColor(118, 15, 3)
+            }),
+            themeGridRangeItem13 = new SuperMap.ThemeGridRangeItem({
+                start: 1460,
+                end: 1600,
+                color: new SuperMap.ServerColor(112, 32, 7)
+            }),
+
+            themeGridRangeItem14 = new SuperMap.ThemeGridRangeItem({
+                start: 1600,
+                end: 1800,
+                color: new SuperMap.ServerColor(106, 45, 12)
+            }),
+            themeGridRangeItem15 = new SuperMap.ThemeGridRangeItem({
+                start: 1800,
+                end: 2000,
+                color: new SuperMap.ServerColor(129, 80, 50)
+            }),
+            themeGridRangeItem16 = new SuperMap.ThemeGridRangeItem({
+                start: 2000,
+                end: 2167,
+                color: new SuperMap.ServerColor(160, 154, 146)
+            });
+        themeGridRange = new SuperMap.ThemeGridRange({
+            reverseColor: false,
+            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            items: [
+                themeGridRangeItem1, themeGridRangeItem2,
+                themeGridRangeItem3, themeGridRangeItem4,
+                themeGridRangeItem5, themeGridRangeItem6,
+                themeGridRangeItem7, themeGridRangeItem8,
+                themeGridRangeItem9, themeGridRangeItem10,
+                themeGridRangeItem11, themeGridRangeItem12,
+                themeGridRangeItem13, themeGridRangeItem14,
+                themeGridRangeItem15, themeGridRangeItem16
+            ]
+        });
+        themeParameters = new SuperMap.ThemeParameters({
+            datasetNames: ["JingjinTerrain"],
+            dataSourceNames: ["Jingjin"],
+            joinItems: null,
+            themes: [themeGridRange]
+        });
+
+        new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters, function (serviceResult) {
+            var result = serviceResult.result;
+            if (result && result.newResourceID) {
+                map.addSource("theme", {
+                    "type": 'raster',
+                    "tiles": [host + '/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图/zxyTileImage.png?z={z}&x={x}&y={y}&transparent=true&cacheEnabled=false&layersID=' + result.newResourceID],
+                    "tileSize": 256,
+                });
+
+                map.addLayer({
+                    "id": "themeLayer",
+                    "type": "raster",
+                    "source": "theme",
+                });
+            }
+        })
+    }
+
+    map.on('load', function () {
+
+        createTheme();
+    });
+
+</script>
+
+</body>
+</html>

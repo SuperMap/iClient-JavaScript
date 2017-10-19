@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>标签专题图</title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="title" style="position:absolute;top: 10px;text-align:center;width:100%;z-index: 10;color: #f7931e">全国省份人口专题</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+<span id="show"></span>
+<script type="text/javascript">
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+
+    var dataUrl = host + "/iserver/services/map-china400/rest/maps/China";
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [117, 37],
+        zoom: 3
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+
+    function createTheme() {
+        var style1, style2, style3;
+        style1 = new SuperMap.ServerTextStyle({
+            fontHeight: 4,
+            foreColor: new SuperMap.ServerColor(0, 0, 0),
+
+        });
+        style2 = new SuperMap.ServerTextStyle({
+            fontHeight: 4,
+            foreColor: new SuperMap.ServerColor(155, 30, 45),
+        });
+        style3 = new SuperMap.ServerTextStyle({
+            fontHeight: 4,
+            foreColor: new SuperMap.ServerColor(30, 45, 155),
+        });
+        var themeLabelItem1, themeLabelItem2, themeLabelItem3;
+        themeLabelItem1 = new SuperMap.ThemeLabelItem({
+            start: 300,//110000,
+            end: 3508,//350000,
+            style: style1
+        });
+        themeLabelItem2 = new SuperMap.ThemeLabelItem({
+            start: 3508,//350000,
+            end: 5508,//550000,
+            style: style2
+        });
+        themeLabelItem3 = new SuperMap.ThemeLabelItem({
+            start: 5508,//550000,
+            end: 10724,//820000,
+            style: style3
+        });
+
+        var themeLabel = new SuperMap.ThemeLabel({
+            labelExpression: "NAME",
+            rangeExpression: "pop_2014",
+            numericPrecision: 0,
+            items: [themeLabelItem1, themeLabelItem2, themeLabelItem3],
+            background: new SuperMap.ThemeLabelBackground({
+                backStyle: new SuperMap.ServerStyle({
+                    fillForeColor: new SuperMap.ServerColor(179, 209, 193),
+                    fillOpaqueRate: 60,
+                    lineWidth: 0.1
+                }),
+                labelBackShape: "RECT"
+            })
+        });
+        var themeParameters = new SuperMap.ThemeParameters({
+            themes: [themeLabel],
+            datasetNames: ["China_Province_pg"],
+            dataSourceNames: ["China"]
+        });
+
+        new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters, function (serviceResult) {
+            var result = serviceResult.result;
+            if (result && result.newResourceID) {
+                map.addSource("theme", {
+                    "type": 'raster',
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}&transparent=true&cacheEnabled=false&layersID=' + result.newResourceID],
+                    "tileSize": 256,
+                });
+
+                map.addLayer({
+                    "id": "themeLayer",
+                    "type": "raster",
+                    "source": "theme",
+                });
+            }
+        })
+    }
+
+    map.on('load', function () {
+
+        createTheme();
+    });
+
+</script>
+
+</body>
+</html>

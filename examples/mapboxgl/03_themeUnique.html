@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>单值专题图</title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+<span id="show"></span>
+<script type="text/javascript">
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+
+    var dataUrl = host + "/iserver/services/map-china400/rest/maps/China";
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}'],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [110, 37],
+        zoom: 3
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    function createTheme() {
+        var style1, style2, style3, style4, style5, style6;
+        style1 = new SuperMap.ServerStyle({
+            fillForeColor: new SuperMap.ServerColor(248, 203, 249),
+            lineColor: new SuperMap.ServerColor(255, 255, 255),
+            lineWidth: 0.1
+        });
+        style2 = new SuperMap.ServerStyle({
+            fillForeColor: new SuperMap.ServerColor(196, 255, 189),
+            lineColor: new SuperMap.ServerColor(255, 255, 255),
+            lineWidth: 0.1
+        });
+        style3 = new SuperMap.ServerStyle({
+            fillForeColor: new SuperMap.ServerColor(255, 173, 173),
+            lineColor: new SuperMap.ServerColor(255, 255, 255),
+            lineWidth: 0.1
+        });
+        style4 = new SuperMap.ServerStyle({
+            fillForeColor: new SuperMap.ServerColor(255, 239, 168),
+            lineColor: new SuperMap.ServerColor(255, 255, 255),
+            lineWidth: 0.1
+        });
+        style5 = new SuperMap.ServerStyle({
+            fillForeColor: new SuperMap.ServerColor(173, 209, 255),
+            lineColor: new SuperMap.ServerColor(255, 255, 255),
+            lineWidth: 0.1
+        });
+        style6 = new SuperMap.ServerStyle({
+            fillForeColor: new SuperMap.ServerColor(132, 164, 232),
+            lineColor: new SuperMap.ServerColor(255, 255, 255),
+            lineWidth: 0.1
+        });
+
+        var themeUniqueIteme1 = new SuperMap.ThemeUniqueItem({
+                unique: "黑龙江省",
+                style: style1
+            }),
+            themeUniqueIteme2 = new SuperMap.ThemeUniqueItem({
+                unique: "湖北省",
+                style: style2
+            }),
+            themeUniqueIteme3 = new SuperMap.ThemeUniqueItem({
+                unique: "吉林省",
+                style: style3
+            }),
+            themeUniqueIteme4 = new SuperMap.ThemeUniqueItem({
+                unique: "内蒙古自治区",
+                style: style4
+            }),
+            themeUniqueIteme5 = new SuperMap.ThemeUniqueItem({
+                unique: "青海省",
+                style: style5
+            }),
+            themeUniqueIteme6 = new SuperMap.ThemeUniqueItem({
+                unique: "新疆维吾尔自治区",
+                style: style6
+            }),
+            themeUniqueIteme7 = new SuperMap.ThemeUniqueItem({
+                unique: "云南省",
+                style: style1
+            }),
+            themeUniqueIteme8 = new SuperMap.ThemeUniqueItem({
+                unique: "四川省",
+                style: style4
+            }),
+            themeUniqueIteme9 = new SuperMap.ThemeUniqueItem({
+                unique: "贵州省",
+                style: style3
+            }),
+            themeUniqueIteme10 = new SuperMap.ThemeUniqueItem({
+                unique: "甘肃省",
+                style: style3
+            }),
+            themeUniqueIteme11 = new SuperMap.ThemeUniqueItem({
+                unique: "宁夏回族自治区",
+                style: style5
+            }),
+            themeUniqueIteme12 = new SuperMap.ThemeUniqueItem({
+                unique: "重庆市",
+                style: style6
+            }),
+            themeUniqueIteme13 = new SuperMap.ThemeUniqueItem({
+                unique: "山东省",
+                style: style1
+            }),
+            themeUniqueIteme14 = new SuperMap.ThemeUniqueItem({
+                unique: "安徽省",
+                style: style2
+            }),
+            themeUniqueIteme15 = new SuperMap.ThemeUniqueItem({
+                unique: "江西省",
+                style: style3
+            }),
+            themeUniqueIteme16 = new SuperMap.ThemeUniqueItem({
+                unique: "浙江省",
+                style: style4
+            }),
+            themeUniqueIteme17 = new SuperMap.ThemeUniqueItem({
+                unique: "台湾省",
+                style: style2
+            }),
+            themeUniqueIteme18 = new SuperMap.ThemeUniqueItem({
+                unique: "江苏省",
+                style: style6
+            }),
+            themeUniqueIteme19 = new SuperMap.ThemeUniqueItem({
+                unique: "湖南省",
+                style: style5
+            }),
+            themeUniqueIteme20 = new SuperMap.ThemeUniqueItem({
+                unique: "河南省",
+                style: style4
+            }),
+            themeUniqueIteme21 = new SuperMap.ThemeUniqueItem({
+                unique: "河北省",
+                style: style3
+            }),
+            themeUniqueIteme22 = new SuperMap.ThemeUniqueItem({
+                unique: "福建省",
+                style: style5
+            }),
+            themeUniqueIteme23 = new SuperMap.ThemeUniqueItem({
+                unique: "广西壮族自治区",
+                style: style6
+            }),
+            themeUniqueIteme24 = new SuperMap.ThemeUniqueItem({
+                unique: "西藏自治区",
+                style: style2
+            }),
+            themeUniqueIteme25 = new SuperMap.ThemeUniqueItem({
+                unique: "广东省",
+                style: style4
+            }),
+            themeUniqueIteme26 = new SuperMap.ThemeUniqueItem({
+                unique: "山西省",
+                style: style2
+            }),
+            themeUniqueIteme27 = new SuperMap.ThemeUniqueItem({
+                unique: "陕西省",
+                style: style1
+            }),
+            themeUniqueIteme28 = new SuperMap.ThemeUniqueItem({
+                unique: "天津市",
+                style: style5
+            }),
+            themeUniqueIteme29 = new SuperMap.ThemeUniqueItem({
+                unique: "北京市",
+                style: style2
+            }),
+
+            themeUniqueIteme30 = new SuperMap.ThemeUniqueItem({
+                unique: "辽宁省",
+                style: style1
+            });
+
+        var themeUniqueItemes = [
+            themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3, themeUniqueIteme4, themeUniqueIteme5,
+            themeUniqueIteme6, themeUniqueIteme7, themeUniqueIteme8, themeUniqueIteme9, themeUniqueIteme10,
+            themeUniqueIteme11, themeUniqueIteme12, themeUniqueIteme13, themeUniqueIteme14, themeUniqueIteme15,
+            themeUniqueIteme16, themeUniqueIteme17, themeUniqueIteme18, themeUniqueIteme19, themeUniqueIteme20,
+            themeUniqueIteme21, themeUniqueIteme22, themeUniqueIteme23, themeUniqueIteme24, themeUniqueIteme25,
+            themeUniqueIteme26, themeUniqueIteme27, themeUniqueIteme28, themeUniqueIteme29, themeUniqueIteme30
+        ];
+
+        var themeUnique = new SuperMap.ThemeUnique({
+            uniqueExpression: "Name",
+            items: themeUniqueItemes,
+            defaultStyle: style1
+        });
+        var themeParameters = new SuperMap.ThemeParameters({
+            datasetNames: ["China_Province_pg"],
+            dataSourceNames: ["China"],
+            themes: [themeUnique]
+        });
+
+        new mapboxgl.supermap.ThemeService(dataUrl).getThemeInfo(themeParameters, function (serviceResult) {
+            var result = serviceResult.result;
+            if (result && result.newResourceID) {
+                map.addSource("theme", {
+                    "type": 'raster',
+                    "tiles": [host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}&noWrap=true&transparent=true&cacheEnabled=false&layersID=' + result.newResourceID],
+                    "tileSize": 256,
+                });
+
+                map.addLayer({
+                    "id": "themeLayer",
+                    "type": "raster",
+                    "source": "theme",
+                });
+            }
+        })
+    }
+
+    map.on('load', function () {
+
+        createTheme();
+    });
+
+</script>
+
+</body>
+</html>
