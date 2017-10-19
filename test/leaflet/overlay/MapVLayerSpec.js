@@ -94,7 +94,7 @@ describe('leaflet_MapVLayer', function () {
         done();
     });
 
-    it('adddata test',function () {
+    it('adddata test', function () {
         var data = [{
             geometry: {
                 type: 'Point',
@@ -106,7 +106,7 @@ describe('leaflet_MapVLayer', function () {
         var tempoption = {
             shadowBlur: 30
         }
-        mapvLayer.addData(dataset,tempoption);
+        mapvLayer.addData(dataset, tempoption);
 
         expect(mapvLayer.dataSet).not.toBeNull();
         expect(mapvLayer.dataSet._data[1000].count).toEqual(111);
@@ -115,27 +115,27 @@ describe('leaflet_MapVLayer', function () {
         expect(mapvLayer.mapVOptions.shadowBlur).toEqual(30);
     });
 
-    it('getData test',function () {
+    it('getData test', function () {
         var dataset = mapvLayer.getData()
         expect(dataset._data.length).toEqual(1000);
     });
-
-    xit('removeData test',function (done) {
-        var filter = function(data){
-            //if( mapvLayer.dataSet._data.indexOf(data) === 2){
-            if(data.count = 7.439562169122387){
+    //删除数据
+    it('removeData test', function (done) {
+        var filter = function (data) {
+            if (mapvLayer.dataSet._data.indexOf(data) === 2) {
                 return true
             }
             return false;
         }
+
         mapvLayer.removeData(filter);
         setTimeout(function () {
             expect(mapvLayer.dataSet._data.length).toEqual(999);
             done();
-        },6000);
+        }, 6000);
     });
 
-    it('update test',function () {
+    it('update test', function () {
         var data = [{
             geometry: {
                 type: 'Point',
@@ -157,12 +157,12 @@ describe('leaflet_MapVLayer', function () {
         expect(mapvLayer.mapVOptions.shadowBlur).toEqual(40);
     });
 
-    it('clearData test',function () {
+    it('clearData test', function () {
         mapvLayer.clearData();
         expect(mapvLayer.dataSet._data.length).toEqual(0);
     });
 
-    it('draw redraw test',function () {
+    it('draw redraw test', function () {
         mapvLayer.draw();
         expect(mapvLayer.canvas.width).toEqual(500);
         expect(mapvLayer.canvas.style.width).toBe('500px');
@@ -171,24 +171,24 @@ describe('leaflet_MapVLayer', function () {
         expect(mapvLayer.canvas.style.width).toBe('500px');
     });
 
-    it('setZIndex test',function () {
+    it('setZIndex test', function () {
         mapvLayer.setZIndex(2);
         expect(mapvLayer.canvas.style.zIndex).toEqual('2');
     });
 
-    it('getCanvas test',function () {
+    it('getCanvas test', function () {
         var canvas = mapvLayer.getCanvas();
         expect(canvas).not.toBeNull();
         expect(mapvLayer.canvas.width).toEqual(500);
         expect(mapvLayer.canvas.height).toEqual(500);
     });
 
-    it('getContainer test',function () {
+    it('getContainer test', function () {
         var container = mapvLayer.getContainer();
         expect(container).not.toBeNull();
     });
 
-    it('getTopLeft test',function () {
+    it('getTopLeft test', function () {
         var topLeft = mapvLayer.getTopLeft();
         expect(topLeft).not.toBeNull();
         expect(topLeft.lng).toEqual(87.01171875);

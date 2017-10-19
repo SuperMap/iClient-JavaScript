@@ -33,9 +33,8 @@ describe('common_LinearRing Test', function () {
 
 
     //从几何组件中删除一个点。
-    xit('removeComponent_test',function () {
-        var removePoint = new SuperMap.Geometry.Point(5365.09521434033, -3324.5789112568386);
-        var removedSuccess = linearRing.removeComponent(removePoint);
+    it('removeComponent_test', function () {
+        var removedSuccess = linearRing.removeComponent(points[2]);
         expect(removedSuccess).toBeTruthy();
         expect(linearRing.components.length).toEqual(6);
     });
@@ -46,7 +45,7 @@ describe('common_LinearRing Test', function () {
         var pointList2 = linearRing.getVertices(false);
         expect(pointList1.length).toEqual(0);
         expect(pointList2).not.toBeNull();
-        expect(pointList2.length).toEqual(6);
+        expect(pointList2.length).toEqual(5);
     });
 
 });

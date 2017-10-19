@@ -1,8 +1,9 @@
 require('../../../src/openlayers/services/FeatureService');
-var FeatureServiceURL = GlobeParameter.dataServiceURL;
+var featureServiceURL = GlobeParameter.dataServiceURL;
 var options = {
     serverType: 'iServer'
 };
+var id, id1, id2;
 describe('openlayers_FeatureService', function () {
     var serviceResult;
     var originalTimeout;
@@ -22,7 +23,7 @@ describe('openlayers_FeatureService', function () {
             IDs: [246, 247],
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesByIDService = new ol.supermap.FeatureService(FeatureServiceURL, options);
+        var getFeaturesByIDService = new ol.supermap.FeatureService(featureServiceURL, options);
         getFeaturesByIDService.getFeaturesByIDs(idsParam, function (result) {
             serviceResult = result;
         });
@@ -71,7 +72,7 @@ describe('openlayers_FeatureService', function () {
             datasetNames: ["World:Capitals"],
             bounds: polygon.getExtent()
         });
-        var getFeaturesByBoundsService = new ol.supermap.FeatureService(FeatureServiceURL, options);
+        var getFeaturesByBoundsService = new ol.supermap.FeatureService(featureServiceURL, options);
         getFeaturesByBoundsService.getFeaturesByBounds(boundsParam, function (result) {
             serviceResult = result;
         });
@@ -82,8 +83,8 @@ describe('openlayers_FeatureService', function () {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.featureCount).toEqual(24);
-                expect(serviceResult.result.totalCount).toEqual(24);
+                expect(serviceResult.result.featureCount).not.toBeNull();
+                expect(serviceResult.result.totalCount).toEqual(serviceResult.result.featureCount);
                 expect(serviceResult.result.features.type).toEqual("FeatureCollection");
                 var features = serviceResult.result.features.features;
                 expect(features).not.toBeNull();
@@ -117,7 +118,7 @@ describe('openlayers_FeatureService', function () {
             bufferDistance: 30,
             geometry: polygon
         });
-        var getFeaturesByBuffeService = new ol.supermap.FeatureService(FeatureServiceURL, options);
+        var getFeaturesByBuffeService = new ol.supermap.FeatureService(featureServiceURL, options);
         getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, function (result) {
             serviceResult = result;
 
@@ -128,7 +129,7 @@ describe('openlayers_FeatureService', function () {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.featureCount).toEqual(88);
+                expect(serviceResult.result.featureCount).not.toBeNull();
                 expect(serviceResult.result.totalCount).toEqual(serviceResult.result.featureCount);
                 expect(serviceResult.result.features.type).toEqual("FeatureCollection");
                 var features = serviceResult.result.features.features;
@@ -160,7 +161,7 @@ describe('openlayers_FeatureService', function () {
             },
             datasetNames: ["World:Countries"]
         });
-        var getFeaturesBySQLService = new ol.supermap.FeatureService(FeatureServiceURL, options);
+        var getFeaturesBySQLService = new ol.supermap.FeatureService(featureServiceURL, options);
         getFeaturesBySQLService.getFeaturesBySQL(sqlParam, function (result) {
             serviceResult = result;
             setTimeout(function () {
@@ -203,7 +204,7 @@ describe('openlayers_FeatureService', function () {
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
         });
-        var getFeaturesByGeometryService = new ol.supermap.FeatureService(FeatureServiceURL, options);
+        var getFeaturesByGeometryService = new ol.supermap.FeatureService(featureServiceURL, options);
         getFeaturesByGeometryService.getFeaturesByGeometry(geometryParam, function (result) {
             serviceResult = result;
         });
@@ -212,8 +213,8 @@ describe('openlayers_FeatureService', function () {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.result.featureCount).toEqual(13);
-                expect(serviceResult.result.totalCount).toEqual(13);
+                expect(serviceResult.result.featureCount).not.toBeNull();
+                expect(serviceResult.result.totalCount).toEqual(serviceResult.result.featureCount);
                 expect(serviceResult.result.features.type).toEqual("FeatureCollection");
                 var features = serviceResult.result.features.features;
                 expect(features.length).toBeGreaterThan(0);
@@ -238,37 +239,148 @@ describe('openlayers_FeatureService', function () {
     });
 
 
-    //地物编辑服务
-    xit('editFeatures_test', function (done) {
-        var xmax = 120, xmin = 100, ymax = 50, ymin = 20;
-        var pointFeature = new ol.Feature(new ol.geom.Point([Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)]));
-
+    //地物编辑服务 添加一个地物
+    it('editFeatures_addFeature_test', function (done) {
+        var marker = new ol.Feature(new ol.geom.Point([118.05408801141, 58.837029131724]));
+        marker.setProperties({POP: 1, CAPITAL: 'test'});
         var addFeatureParams = new SuperMap.EditFeaturesParameters({
-            features: pointFeature,
+            features: marker,
             dataSourceName: "World",
             dataSetName: "Capitals",
             editType: "add",
-            returnContent: true
+            returnContent: true,
         });
-        var featureService = new ol.supermap.FeatureService(FeatureServiceURL, options);
+        var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
         featureService.editFeatures(addFeatureParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
             try {
                 expect(featureService).not.toBeNull();
-                expect(featureService.options.serverType).toBe('iServer');
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.result.succeed).toBe(true);
                 expect(serviceResult.result[0]).not.toBeNull();
-                expect(serviceResult.result[0]).toBeGreaterThan(1);
+                id = serviceResult.result[0];
+                expect(serviceResult.result.succeed).toBe(true);
+                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.options.method).toBe("POST");
+                expect(serviceResult.object.options.data).toContain("'parts':[1]");
+                expect(serviceResult.object.options.data).toContain('"POINT"');
+                expect(serviceResult.object.options.data).toContain("'x':118.05408801141");
+                expect(serviceResult.object.options.data).toContain("'y':58.837029131724");
                 done();
-            } catch (exception) {
-                console.log("'editFeatures_test'案例失败" + exception.name + ":" + exception.message);
+            } catch (e) {
+                console.log("'editFeatures_addFeature_test'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000);
     });
+
+    //地物编辑服务 批量添加地物   isUseBatch为true
+    it('editFeatures_addFeature_isUseBatch_true_test', function (done) {
+        var marker = new ol.Feature(new ol.geom.Point([100, 58]));
+        var marker1 = new ol.Feature(new ol.geom.Point([120, 42]));
+        marker.setProperties({POP: 1, CAPITAL: 'test'});
+        marker1.setProperties({POP: 1, CAPITAL: 'test'});
+        var addFeatureParams = new SuperMap.EditFeaturesParameters({
+            features: [marker, marker1],
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            editType: "add",
+            returnContent: true,
+            isUseBatch: true
+        });
+        var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
+        featureService.editFeatures(addFeatureParams, function (result) {
+            serviceResult = result;
+        });
+        setTimeout(function () {
+            try {
+                expect(featureService).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toBe("processCompleted");
+                expect(serviceResult.result.postResultType).toEqual("CreateChild");
+                expect(serviceResult.result.succeed).toBe(true);
+                expect(serviceResult.object.isUseBatch).toBe(true);
+                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
+                expect(serviceResult.object.options.method).toBe("POST");
+                expect(serviceResult.object.options.data).toContain("'parts':[1]");
+                expect(serviceResult.object.options.data).toContain('"POINT"');
+                expect(serviceResult.object.options.data).toContain("'x':100");
+                expect(serviceResult.object.options.data).toContain("'y':58");
+                expect(serviceResult.object.options.data).toContain("'x':120");
+                expect(serviceResult.object.options.data).toContain("'y':42");
+                id1 = id + 1;
+                id2 = id + 2;
+                done();
+            } catch (e) {
+                console.log("'editFeatures_addFeature_isUseBatch_true_test'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        }, 5000);
+    });
+
+    //地物编辑服务 删除地物
+    it('editFeatures_deleteFeature_test', function (done) {
+        var deleteFeatureParams = new SuperMap.EditFeaturesParameters({
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            IDs: [id, id1, id2],
+            editType: "delete",
+        });
+        var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
+        featureService.editFeatures(deleteFeatureParams, function (result) {
+            serviceResult = result;
+        });
+        setTimeout(function () {
+            try {
+                expect(featureService).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.object.options.method).toBe("DELETE");
+                expect(serviceResult.object.options.data).toContain(id);
+                expect(serviceResult.object.options.data).toContain(id1);
+                expect(serviceResult.object.options.data).toContain(id2);
+                expect(serviceResult.type).toBe("processCompleted");
+                expect(serviceResult.result.succeed).toBe(true);
+                done();
+            } catch (e) {
+                console.log("'editFeatures_deleteFeature_test'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        }, 5000);
+    });
+
+    //地物编辑服务 删除地物失败事件
+    it('editFeatures_deleteFeature_failed_test', function (done) {
+        id = id + 3;
+        var deleteFeatureParams = new SuperMap.EditFeaturesParameters({
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            IDs: [id],
+            editType: "delete",
+        });
+        var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
+        featureService.editFeatures(deleteFeatureParams, function (result) {
+            serviceResult = result;
+        });
+        setTimeout(function () {
+            try {
+                expect(featureService).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toBe("processFailed");
+                expect(serviceResult.error.code).toBe(400);
+                expect(serviceResult.error.errorMsg).toEqual("the specified features does not exist");
+                done();
+            } catch (e) {
+                console.log("'editFeatures_deleteFeature_failed_test'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        }, 5000);
+    });
+
+
 });
