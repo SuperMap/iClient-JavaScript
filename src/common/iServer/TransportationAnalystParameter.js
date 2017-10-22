@@ -80,7 +80,7 @@ export default  class TransportationAnalystParameter {
         }
         if (me.barrierPoints && me.barrierPoints.length) {
             for (var i in me.barrierPoints) {
-                me.barrierPoints.destroy();
+                me.barrierPoints[i].destroy();
             }
         }
         me.barrierPoints = null;

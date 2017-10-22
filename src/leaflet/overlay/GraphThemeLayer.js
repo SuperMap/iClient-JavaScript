@@ -432,10 +432,6 @@ export var GraphThemeLayer = ThemeLayer.extend({
             mapBounds.getEast(),
             mapBounds.getNorth()
         );
-
-        if (!mapBounds) {
-            return;
-        }
         var charts = me.charts;
         var chartsBounds = [];
         // 获取地图像素 bounds

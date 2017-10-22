@@ -1,6 +1,5 @@
 import SuperMap from '../SuperMap';
 import '../security/SecurityManager';
-import OnlineQueryDatasParameter from './OnlineQueryDatasParameter';
 import OnlineData from './OnlineData';
 import {FetchRequest} from '../util/FetchRequest';
 

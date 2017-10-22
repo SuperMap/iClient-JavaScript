@@ -246,7 +246,7 @@ export default class Painter {
             }
 
             // Start group clipping
-            if (shape.__startClip) {
+            if (ctx && shape.__startClip) {
                 var clipShape = shape.__startClip;
                 ctx.save();
                 // Set transform
@@ -275,7 +275,7 @@ export default class Painter {
                 }
             }
 
-            if ((currentLayer.dirty || paintAll) && !shape.invisible) {
+            if (((currentLayer && currentLayer.dirty) || paintAll) && !shape.invisible) {
                 if (
                     !shape.onbrush
                     || (shape.onbrush && !shape.onbrush(ctx, false))

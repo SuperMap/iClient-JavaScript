@@ -308,8 +308,6 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     _processParams(params) {
-        var me = this;
-
         if (!params) {
             return {};
         }

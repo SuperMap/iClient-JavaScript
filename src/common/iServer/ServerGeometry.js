@@ -291,7 +291,6 @@ export default class ServerGeometry {
                     [new LinearRing(pointList)]
                 )
             );
-            pointList = [];
             return new MultiPolygon(polygonArray);
         }
         //处理复杂面
@@ -411,7 +410,6 @@ export default class ServerGeometry {
                     [new LinearRing(lineEPS)]
                 )
             );
-            pointList = [];
             return new MultiPolygon(polygonArray);
         }
         //处理复杂面

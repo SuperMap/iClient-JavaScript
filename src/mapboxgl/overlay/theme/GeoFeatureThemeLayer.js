@@ -101,13 +101,13 @@ export default class GeoFeature extends Theme {
 
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
-            var feaBounds = feature.geometry.getBounds();
-
-            //剔除当前视图（地理）范围以外的数据
-            if (extent) {
-                var bounds = new SuperMap.Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
-                // if (!bounds.intersectsBounds(feaBounds)) continue;
-            }
+            // var feaBounds = feature.geometry.getBounds();
+            //
+            // //剔除当前视图（地理）范围以外的数据
+            // if (extent) {
+            //     var bounds = new SuperMap.Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
+            //     // if (!bounds.intersectsBounds(feaBounds)) continue;
+            // }
 
             //缓存字段
             var fields = feature.id + "_zoom_" + cmZoom.toString();

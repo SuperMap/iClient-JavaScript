@@ -201,7 +201,7 @@ export var VectorTile = L.Class.extend({
         }
         var vectorLayer = this.layer;
 
-        if (vectorLayer.options.interactive) {
+        if (layer && vectorLayer.options.interactive) {
             layer.addEventParent(vectorLayer);
         }
 

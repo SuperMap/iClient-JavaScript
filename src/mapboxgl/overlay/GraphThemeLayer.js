@@ -85,13 +85,13 @@ export default class Graph extends Theme {
         var features = this.features;
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
-            // 要素范围判断
-            var feaBounds = feature.geometry.getBounds();
-            //剔除当前视图（地理）范围以外的数据
-            if (extent) {
-                var bounds = new SuperMap.Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
-                // if (!bounds.intersectsBounds(feaBounds)) continue;
-            }
+            // // 要素范围判断
+            // var feaBounds = feature.geometry.getBounds();
+            // //剔除当前视图（地理）范围以外的数据
+            // if (extent) {
+            //     var bounds = new SuperMap.Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
+            //     // if (!bounds.intersectsBounds(feaBounds)) continue;
+            // }
             var cache = this.cache;
             // 用 feature id 做缓存标识
             var cacheField = feature.id;

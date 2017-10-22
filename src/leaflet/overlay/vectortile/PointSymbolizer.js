@@ -114,7 +114,7 @@ export var PointSymbolizer = L.CircleMarker.extend({
         img.src = src;
         img.className = 'leaflet-marker-' + name + ' ' + (this.layerName || '');
 
-        var options = this.options;
+       // var options = this.options;
         var sizeOption = iconSize;
 
         if (typeof sizeOption === 'number') {

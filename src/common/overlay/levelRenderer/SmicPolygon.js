@@ -228,8 +228,6 @@ export default class SmicPolygon extends Shape {
             }
 
         }
-        hpStyle = null;
-
         ctx.restore();
         return;
     }

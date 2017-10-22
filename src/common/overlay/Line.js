@@ -160,7 +160,7 @@ export default class Line extends Graph {
         // 折线图必须使用坐标轴
         this.shapes = this.shapes.concat(SuperMap.Feature.ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
 
-        var isDataEffective = true;
+       // var isDataEffective = true;
 
         var xPx;        // 折线节点 x 坐标
         var yPx;        // 折线节点 y 坐标
@@ -170,7 +170,7 @@ export default class Line extends Graph {
         for (var i = 0, len = fv.length; i < len; i++) {
             // 数据溢出值域检查
             if (fv[i] < codomain[0] || fv[i] > codomain[1]) {
-                isDataEffective = false;
+               // isDataEffective = false;
                 return null;
             }
 
@@ -219,10 +219,10 @@ export default class Line extends Graph {
         // 添加节点到图表图形数组
         this.shapes = this.shapes.concat(shapePois);
 
-        // 数据范围检测未通过，清空图形
-        if (isDataEffective === false) {
-            this.shapes = [];
-        }
+        // // 数据范围检测未通过，清空图形
+        // if (isDataEffective === false) {
+        //     this.shapes = [];
+        // }
 
         // 重要步骤：将图形转为由相对坐标表示的图形，以便在地图平移缩放过程中快速重绘图形
         // （统计专题图模块从结构上要求使用相对坐标，assembleShapes() 函数必须在图形装配完成后调用 shapesConvertToRelativeCoordinate() 函数）

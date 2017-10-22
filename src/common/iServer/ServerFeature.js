@@ -100,8 +100,7 @@ export default class ServerFeature {
      * {SuperMap.ServerFeature} 转化后的 ServerFeature 对象。
      */
     static fromJson(jsonObject) {
-        var me = this,
-            geo = null;
+        var geo = null;
         if (!jsonObject) {
             return;
         }

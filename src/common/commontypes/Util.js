@@ -697,11 +697,11 @@ SuperMap.Util.isInTheSameDomain = function (url) {
         documentIndex = documentSubString.indexOf("/");
         var documentPortIndex = documentSubString.indexOf(":");
         var documentDomainWithPort = documentSubString.substring(0, documentIndex);
-        var documentPort;
+        //var documentPort;
 
         var documentprotocol = document.location.protocol;
         if (documentPortIndex !== -1) {
-            documentPort = +documentSubString.substring(documentPortIndex, documentIndex);
+           // documentPort = +documentSubString.substring(documentPortIndex, documentIndex);
         } else {
             documentDomainWithPort += ':' + (documentprotocol.toLowerCase() === 'http:' ? 80 : 443);
         }

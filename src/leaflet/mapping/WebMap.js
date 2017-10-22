@@ -398,7 +398,6 @@ export var WebMap = L.LayerGroup.extend({
     createVectorLayer: function (layerInfo, crs) {
         var style = layerInfo.style,
             opacity = layerInfo.opacity,
-            isVisible = layerInfo.isVisible,
             me = this;
         //todo readonly = layerInfo.readonly;
         var coordsToLatLng = function (coords) {

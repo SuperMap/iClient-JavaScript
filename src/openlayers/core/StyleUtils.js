@@ -261,6 +261,7 @@ export default class StyleUtils {
                         style.fontSize = fontSize;
                     } else if (prop === "fontName") {
                         fontName = value;
+                        style.fontName = fontName;
                     } else {
                         if (prop === "globalCompositeOperation") {
                             value = StyleMap.CartoCompOpMap[value];

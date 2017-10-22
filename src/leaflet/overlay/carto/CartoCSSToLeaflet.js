@@ -260,6 +260,7 @@ export class CartoCSSToLeaflet {
                     style.fontSize = fontSize;
                 } else if (prop === "fontName") {
                     fontName = value;
+                    style.fontName = fontName;
                 } else {
                     if (prop === "globalCompositeOperation") {
                         value = L.supermap.CompOpMap[value];

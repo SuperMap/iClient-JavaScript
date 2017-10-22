@@ -76,7 +76,7 @@ export var  SVGRenderer = L.SVG.extend({
 
     _initContainer: function () {
         L.SVG.prototype._initContainer.call(this);
-        var rect = L.SVG.create('rect');
+       // var rect = L.SVG.create('rect');
     },
 
     _addPath: function (layer) {

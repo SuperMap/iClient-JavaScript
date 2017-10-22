@@ -248,7 +248,7 @@ export var Event = SuperMap.Event = {
             for (var i = elementObservers.length - 1; i >= 0; i--) {
                 var entry = elementObservers[i];
                 var args = new Array(entry.element, entry.name, entry.observer, entry.useCapture);
-                var removed = SuperMap.Event.stopObserving.apply(this, args);
+                SuperMap.Event.stopObserving.apply(this, args);
             }
         }
     },

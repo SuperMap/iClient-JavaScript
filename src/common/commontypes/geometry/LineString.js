@@ -113,8 +113,7 @@ export default class LineString extends Curve {
         if (points.length < 3) {
             return points
         }
-        var len = points.length,
-            centerPoint = {},
+        var centerPoint = {},
             p1 = points[0],
             p2 = points[1],
             p3 = points[2];

@@ -137,10 +137,10 @@ export default class SmicCircle extends Shape {
             lineWidth = 0;
         }
         style.__rect = {
-            x: Math.round(x - style.r - lineWidth / 2),
-            y: Math.round(y - style.r - lineWidth / 2),
-            width: style.r * 2 + lineWidth,
-            height: style.r * 2 + lineWidth
+            x: Math.round(x - r - lineWidth / 2),
+            y: Math.round(y - r - lineWidth / 2),
+            width: r * 2 + lineWidth,
+            height: r * 2 + lineWidth
         };
 
         return style.__rect;
