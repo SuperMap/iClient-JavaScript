@@ -124,6 +124,10 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         if (hoverone && hoverone.refDataID) {
             hoverFid = hoverone.refDataID;
         }
+        if (bounds && bounds instanceof L.LatLngBounds) {
+            var crs = this._map.options.crs;
+            bounds = L.bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
+        }
         bounds = CommontypesConversion.toSuperMapBounds(bounds);
         //清除当前所有可视元素
         me.renderer.clearAll();

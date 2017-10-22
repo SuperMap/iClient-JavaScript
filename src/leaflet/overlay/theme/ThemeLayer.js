@@ -380,19 +380,21 @@ export var ThemeLayer = L.Layer.extend({
         var coor = coordinate;
         if (!(coordinate instanceof L.LatLng)) {
             if (coordinate instanceof Point || coordinate instanceof GeoText) {
-                coor = L.latLng(coordinate.y, coordinate.x);
+                coor = L.point(coordinate.x, coordinate.y,);
             } else {
-                coor = L.latLng(coordinate.lat, coordinate.lon);
+                coor = L.point(coordinate.lon, coordinate.lat);
             }
 
         }
-        var point = this._map.latLngToContainerPoint(coor);
+        var point = this._map.latLngToContainerPoint(this._map.options.crs.unproject(coor));
         return [point.x, point.y];
     },
 
     _initContainer: function () {
         var parentContainer = this.getPane();
         this.container = L.DomUtil.create("div", "themeLayer", parentContainer);
+        this.container.style.position = "relative";
+        this.container.style.zIndex = 100;
     },
 
 
