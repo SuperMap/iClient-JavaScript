@@ -20,7 +20,7 @@ describe('mapboxgl_SpatialAnalystService', function () {
 
     //地区太阳辐射 暂无相关服务
     /*xit('getAreaSolarRadiationResult_test', function () {
-    });*/
+     });*/
 
     //缓冲区数据集分析  isAttributeRetained 默认为 true
     it('bufferAnalysis_test', function (done) {
@@ -180,7 +180,6 @@ describe('mapboxgl_SpatialAnalystService', function () {
             }
         }, 5000);
     });
-
 
     //点密度分析,删除重复的数据集
     it('densityAnalysis_deleteExistResultDataset_true_test', function (done) {
@@ -681,8 +680,6 @@ describe('mapboxgl_SpatialAnalystService', function () {
         var service = new mapboxgl.supermap.SpatialAnalystService(url1, options);
         service.surfaceAnalysis(datasetSurfaceAnalystParameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(function () {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -711,7 +708,7 @@ describe('mapboxgl_SpatialAnalystService', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 10000)
+        });
     });
 
     //地形曲率计算
@@ -725,8 +722,6 @@ describe('mapboxgl_SpatialAnalystService', function () {
         var service = new mapboxgl.supermap.SpatialAnalystService(url1, options);
         service.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(function () {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -740,7 +735,7 @@ describe('mapboxgl_SpatialAnalystService', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
+        });
     });
 
     //泰森多边形分析 数据集泰森多边形
@@ -777,7 +772,6 @@ describe('mapboxgl_SpatialAnalystService', function () {
                 done();
             }
         }, 5000)
-
     });
     //泰森多边形分析 几何泰森多边形
     it('thiessenAnalysis_geometry_test', function (done) {
@@ -843,6 +837,5 @@ describe('mapboxgl_SpatialAnalystService', function () {
                 done();
             }
         }, 5000)
-
     });
-});
+})
