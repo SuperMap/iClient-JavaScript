@@ -88,7 +88,7 @@ export var LayerInfoService = ServiceBase.extend({
             resourceID = params.resourceID,
             isTempLayers = params.isTempLayers ? params.isTempLayers : false,
             layersInfo = params.layersInfo;
-        if (!resourceID || !layersInfo) {
+        if ((isTempLayers && !resourceID) || !layersInfo) {
             return;
         }
         var setLayersInfoService = new SetLayersInfoService(me.url, {

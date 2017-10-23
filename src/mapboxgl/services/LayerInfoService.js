@@ -85,7 +85,7 @@ export default class LayerInfoService extends ServiceBase {
             resourceID = params.resourceID,
             isTempLayers = params.isTempLayers ? params.isTempLayers : false,
             layersInfo = params.layersInfo;
-        if (!resourceID || !layersInfo) {
+        if ((isTempLayers && !resourceID) || !layersInfo) {
             return;
         }
         var setLayersInfoService = new SetLayersInfoService(me.url, {
