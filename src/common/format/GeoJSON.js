@@ -663,7 +663,7 @@ export default class GeoJSON extends JSONFormat {
      * @description 将服务端的点几何对象转换为几何对象
      */
     toGeoPoint(geometry) {
-        var geoPoints = geometry.points || [],
+        var geoPoints = geometry.points || [{x: geometry.x, y: geometry.y}],
             geoParts = geometry.parts || [geoPoints.length],
             len = geoParts.length;
         if (len < 1) {

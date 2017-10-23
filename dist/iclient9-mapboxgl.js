@@ -3382,7 +3382,7 @@ var GeoJSON = function (_JSONFormat) {
     }, {
         key: 'toGeoPoint',
         value: function toGeoPoint(geometry) {
-            var geoPoints = geometry.points || [],
+            var geoPoints = geometry.points || [{ x: geometry.x, y: geometry.y }],
                 geoParts = geometry.parts || [geoPoints.length],
                 len = geoParts.length;
             if (len < 1) {
@@ -5779,7 +5779,7 @@ var Point = function (_Geometry) {
         if (tag || tag == 0) {
             _this.tag = parseFloat(tag);
         }
-        _this.type = type || "NONE";
+        _this.type = type || "Point";
         return _this;
     }
 

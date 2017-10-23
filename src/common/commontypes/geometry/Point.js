@@ -48,7 +48,7 @@ export default class Point extends Geometry {
         if (tag || tag == 0) {
             this.tag = parseFloat(tag);
         }
-        this.type = type || "NONE";
+        this.type = type || "Point";
     }
 
     /**

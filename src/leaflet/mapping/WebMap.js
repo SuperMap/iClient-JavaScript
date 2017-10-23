@@ -11,6 +11,7 @@ import {RangeThemeLayer} from "../overlay/RangeThemeLayer";
 import {featureService} from "../services/FeatureService";
 import {DataFormat} from '../../common/REST';
 import ServerFeature from '../../common/iServer/ServerFeature';
+import {UnicodeMarker} from '../core/UnicodeMarker';
 
 /**
  * @class L.supermap.webmap
@@ -189,7 +190,8 @@ export var WebMap = L.LayerGroup.extend({
             maxZoom: options.maxZoom || 22,
             minZoom: options.minZoom || 0,
             zoom: options.zoom || 0,
-            crs: crs
+            crs: crs,
+            renderer: L.canvas()
         });
         if (crs instanceof NonEarthCRS) {
             this._map.setZoom(options.zoom ? options.zoom + 2 : 2, {maxZoom: options.maxZoom || 22});
@@ -491,7 +493,7 @@ export var WebMap = L.LayerGroup.extend({
         } else if (type === "RANGE") {
             layer = this.createRangeLayer(layerInfo, themeSettings);
         } else {
-            layer = this.createVectorLayer(layerInfo, themeSettings);
+            layer = this.createBaseThemeLayer(layerInfo, themeSettings);
         }
         if (layer) {
             this.addFeature2ThemeLayer(layerInfo, layer);
@@ -501,6 +503,44 @@ export var WebMap = L.LayerGroup.extend({
         }
 
         return layer;
+    },
+    /**
+     * Method: createBaseLayer
+     * 创建基本样式专题图层并返回
+     * */
+    createBaseThemeLayer: function (layerInfo, themeSettings) {
+        let style = layerInfo.style, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType, featureStyle = style.pointStyle;
+        if (vectorType === "LINE") {
+            featureStyle.fill = false;
+        } else {
+            featureStyle.fill = true;
+        }
+        var coordsToLatLng = (coords) => {
+            var ll = this._map.options.crs.unproject(L.point(coords[0], coords[1]));
+            return new L.LatLng(ll.lat, ll.lng, coords[2]);
+        };
+        var pointStyle = {};
+        pointStyle.radius = featureStyle.pointRadius;
+        pointStyle.color = featureStyle.strokeColor;
+        pointStyle.opacity = featureStyle.strokeOpacity;
+        pointStyle.lineCap = featureStyle.strokeLineCap;
+        pointStyle.weight = featureStyle.strokeWidth;
+        pointStyle.fillColor = featureStyle.fillColor;
+        pointStyle.fillOpacity = featureStyle.fillOpacity;
+        var pointToLayer = (geojson, latlng) => {
+            return L.circleMarker(latlng, pointStyle);
+        };
+        if (featureStyle.unicode) {
+            pointToLayer = (geojson, latlng)=> {
+                return new UnicodeMarker(latlng, featureStyle)
+            }
+        }
+        return L.geoJSON({type: "GeometryCollection", geometries: []}, {
+            pointToLayer: pointToLayer,
+            coordsToLatLng: coordsToLatLng,
+            opacity: opacity
+        });
+        //this.registerVectorEvent(vector);
     },
     /**
      * Method: createUniqueLayer
@@ -593,10 +633,10 @@ export var WebMap = L.LayerGroup.extend({
             featureWeight = themeSettings.settings[0].featureWeight;
         }
         return L.heatLayer([], {
-            radius: radius/2,
+            radius: radius / 2,
             minOpacity: layerInfo.opacity,
             gradient: gradient,
-            blur:radius/2,
+            blur: radius / 2,
             featureWeight: featureWeight
         })
     },
@@ -722,15 +762,17 @@ export var WebMap = L.LayerGroup.extend({
                 // me.addFeature2LableLayer(layerInfo, features, layer.labelLayer);
             }
             var heatPoints = [];
-            if (layer instanceof L.HeatLayer) {
+            if (L.HeatLayer && layer instanceof L.HeatLayer) {
                 for (let i = 0, len = features.length; i < len; i++) {
                     let geometry = features[i].geometry;
                     heatPoints[i] = me._map.options.crs.unproject(L.point(geometry.x, geometry.y));
-                    if(layer.options.featureWeight){
-                        heatPoints[i]=[heatPoints[i].lat,heatPoints[i].lng,parseFloat(features[i].attributes[layer.options.featureWeight])];
+                    if (layer.options.featureWeight) {
+                        heatPoints[i] = [heatPoints[i].lat, heatPoints[i].lng, parseFloat(features[i].attributes[layer.options.featureWeight])];
                     }
                 }
                 layer.setLatLngs(heatPoints);
+            } else if (layer instanceof L.GeoJSON) {
+                layer.addData(JSON.parse(new SuperMap.Format.GeoJSON().write(features)));
             } else {
                 layer.addFeatures(features);
             }

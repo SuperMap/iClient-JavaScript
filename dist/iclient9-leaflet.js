@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 471);
+/******/ 	return __webpack_require__(__webpack_require__.s = 472);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4162,7 +4162,7 @@ var GeoJSON = function (_JSONFormat) {
     }, {
         key: 'toGeoPoint',
         value: function toGeoPoint(geometry) {
-            var geoPoints = geometry.points || [],
+            var geoPoints = geometry.points || [{ x: geometry.x, y: geometry.y }],
                 geoParts = geometry.parts || [geoPoints.length],
                 len = geoParts.length;
             if (len < 1) {
@@ -5823,7 +5823,7 @@ var Point = function (_Geometry) {
         if (tag || tag == 0) {
             _this.tag = parseFloat(tag);
         }
-        _this.type = type || "NONE";
+        _this.type = type || "Point";
         return _this;
     }
 
@@ -6078,11 +6078,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 __webpack_require__(393);
 
-var _whatwgFetchImportable = __webpack_require__(421);
+var _whatwgFetchImportable = __webpack_require__(422);
 
 var _whatwgFetchImportable2 = _interopRequireDefault(_whatwgFetchImportable);
 
-var _fetchJsonp2 = __webpack_require__(408);
+var _fetchJsonp2 = __webpack_require__(409);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
@@ -17971,10 +17971,10 @@ _SuperMap2["default"].LevelRenderer.Tool.Vector = Vector;
 /* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parseCode = __webpack_require__(438);
+var parseCode = __webpack_require__(439);
 var extend = __webpack_require__(79);
-var projections = __webpack_require__(439);
-var deriveConstants = __webpack_require__(435);
+var projections = __webpack_require__(440);
+var deriveConstants = __webpack_require__(436);
 
 function Projection(srsCode,callback) {
   if (!(this instanceof Projection)) {
@@ -18502,7 +18502,9 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
 
         //切片的起始参考点，默认为地图范围的左上角。
         var crs = me._crs;
-        if (crs.projection && crs.projection.bounds) {
+        if (crs.options && crs.options.origin) {
+            params["origin"] = JSON.stringify({ x: crs.options.origin[0], y: crs.options.origin[1] });
+        } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = _leaflet2["default"].point(bounds.min.x, bounds.max.y);
             params["origin"] = JSON.stringify({ x: tileOrigin.x, y: tileOrigin.y });
@@ -24374,9 +24376,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(4);
 
-__webpack_require__(396);
-
 __webpack_require__(397);
+
+__webpack_require__(398);
 
 __webpack_require__(5);
 
@@ -27035,7 +27037,7 @@ function getMinNorthing(zoneLetter) {
 "use strict";
 
 
-var Point = __webpack_require__(414);
+var Point = __webpack_require__(415);
 
 module.exports = VectorTileFeature;
 
@@ -27348,7 +27350,7 @@ module.exports = function (array){
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var globals = __webpack_require__(436);
+var globals = __webpack_require__(437);
 var parseProj = __webpack_require__(125);
 var wkt = __webpack_require__(128);
 
@@ -27409,17 +27411,17 @@ module.exports = defs;
 /* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var proj4 = __webpack_require__(432);
+var proj4 = __webpack_require__(433);
 proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = __webpack_require__(75);
 proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(422);
+proj4.Point = __webpack_require__(423);
 proj4.toPoint = __webpack_require__(122);
 proj4.defs = __webpack_require__(123);
 proj4.transform = __webpack_require__(127);
 proj4.mgrs = __webpack_require__(118);
-proj4.version = __webpack_require__(465).version;
-__webpack_require__(437)(proj4);
+proj4.version = __webpack_require__(466).version;
+__webpack_require__(438)(proj4);
 module.exports = proj4;
 
 /***/ }),
@@ -27427,8 +27429,8 @@ module.exports = proj4;
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(430);
-var units = __webpack_require__(431);
+var PrimeMeridian = __webpack_require__(431);
+var units = __webpack_require__(432);
 
 module.exports = function(defData) {
   var self = {};
@@ -27709,8 +27711,8 @@ var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(434);
-var adjust_axis = __webpack_require__(423);
+var datum_transform = __webpack_require__(435);
+var adjust_axis = __webpack_require__(424);
 var proj = __webpack_require__(75);
 var toPoint = __webpack_require__(122);
 module.exports = function transform(source, dest, point) {
@@ -28696,7 +28698,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _elasticsearch = __webpack_require__(468);
+var _elasticsearch = __webpack_require__(469);
 
 var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
@@ -29459,7 +29461,7 @@ exports.changeTileVersion = exports.ChangeTileVersion = undefined;
 
 __webpack_require__(4);
 
-__webpack_require__(464);
+__webpack_require__(465);
 
 __webpack_require__(81);
 
@@ -29830,7 +29832,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _iClient = __webpack_require__(466);
+var _iClient = __webpack_require__(467);
 
 var _iClient2 = _interopRequireDefault(_iClient);
 
@@ -30365,7 +30367,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _jsonsql = __webpack_require__(410);
+var _jsonsql = __webpack_require__(411);
 
 var _jsonsql2 = _interopRequireDefault(_jsonsql);
 
@@ -30394,6 +30396,8 @@ var _REST = __webpack_require__(2);
 var _ServerFeature = __webpack_require__(66);
 
 var _ServerFeature2 = _interopRequireDefault(_ServerFeature);
+
+var _UnicodeMarker = __webpack_require__(396);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -30573,7 +30577,8 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             maxZoom: options.maxZoom || 22,
             minZoom: options.minZoom || 0,
             zoom: options.zoom || 0,
-            crs: crs
+            crs: crs,
+            renderer: _leaflet2["default"].canvas()
         });
         if (crs instanceof _NonEarthCRS.NonEarthCRS) {
             this._map.setZoom(options.zoom ? options.zoom + 2 : 2, { maxZoom: options.maxZoom || 22 });
@@ -30872,7 +30877,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         } else if (type === "RANGE") {
             layer = this.createRangeLayer(layerInfo, themeSettings);
         } else {
-            layer = this.createVectorLayer(layerInfo, themeSettings);
+            layer = this.createBaseThemeLayer(layerInfo, themeSettings);
         }
         if (layer) {
             this.addFeature2ThemeLayer(layerInfo, layer);
@@ -30882,6 +30887,49 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         }
 
         return layer;
+    },
+    /**
+     * Method: createBaseLayer
+     * 创建基本样式专题图层并返回
+     * */
+    createBaseThemeLayer: function createBaseThemeLayer(layerInfo, themeSettings) {
+        var _this3 = this;
+
+        var style = layerInfo.style,
+            opacity = layerInfo.opacity,
+            vectorType = themeSettings.vectorType,
+            featureStyle = style.pointStyle;
+        if (vectorType === "LINE") {
+            featureStyle.fill = false;
+        } else {
+            featureStyle.fill = true;
+        }
+        var coordsToLatLng = function coordsToLatLng(coords) {
+            var ll = _this3._map.options.crs.unproject(_leaflet2["default"].point(coords[0], coords[1]));
+            return new _leaflet2["default"].LatLng(ll.lat, ll.lng, coords[2]);
+        };
+        var pointStyle = {};
+        pointStyle.radius = featureStyle.pointRadius;
+        pointStyle.color = featureStyle.strokeColor;
+        pointStyle.opacity = featureStyle.strokeOpacity;
+        pointStyle.lineCap = featureStyle.strokeLineCap;
+        pointStyle.weight = featureStyle.strokeWidth;
+        pointStyle.fillColor = featureStyle.fillColor;
+        pointStyle.fillOpacity = featureStyle.fillOpacity;
+        var pointToLayer = function pointToLayer(geojson, latlng) {
+            return _leaflet2["default"].circleMarker(latlng, pointStyle);
+        };
+        if (featureStyle.unicode) {
+            pointToLayer = function pointToLayer(geojson, latlng) {
+                return new _UnicodeMarker.UnicodeMarker(latlng, featureStyle);
+            };
+        }
+        return _leaflet2["default"].geoJSON({ type: "GeometryCollection", geometries: [] }, {
+            pointToLayer: pointToLayer,
+            coordsToLatLng: coordsToLatLng,
+            opacity: opacity
+        });
+        //this.registerVectorEvent(vector);
     },
     /**
      * Method: createUniqueLayer
@@ -30997,7 +31045,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
      * 根据json数据重新生成feature，并添加到专题图层上
      * */
     addFeature2ThemeLayer: function addFeature2ThemeLayer(layerInfo, layer) {
-        var _this3 = this;
+        var _this4 = this;
 
         if (layerInfo.layerType !== "FEATURE_LAYER" || layerInfo.identifier !== "THEME") {
             return;
@@ -31093,7 +31141,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                         oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
 
                     if (needTransform) {
-                        _this3.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, addedFeatures, function (features) {
+                        _this4.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, addedFeatures, function (features) {
                             addFeatures(features);
                         });
                     } else {
@@ -31126,7 +31174,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 // me.addFeature2LableLayer(layerInfo, features, layer.labelLayer);
             }
             var heatPoints = [];
-            if (layer instanceof _leaflet2["default"].HeatLayer) {
+            if (_leaflet2["default"].HeatLayer && layer instanceof _leaflet2["default"].HeatLayer) {
                 for (var _i = 0, _len = features.length; _i < _len; _i++) {
                     var geometry = features[_i].geometry;
                     heatPoints[_i] = me._map.options.crs.unproject(_leaflet2["default"].point(geometry.x, geometry.y));
@@ -31135,6 +31183,8 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     }
                 }
                 layer.setLatLngs(heatPoints);
+            } else if (layer instanceof _leaflet2["default"].GeoJSON) {
+                layer.addData(JSON.parse(new _SuperMap2["default"].Format.GeoJSON().write(features)));
             } else {
                 layer.addFeatures(features);
             }
@@ -31433,23 +31483,23 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         };
     },
     registerThemeEvent: function registerThemeEvent(themeLayer) {
-        var _this4 = this;
+        var _this5 = this;
 
         themeLayer.on('click', function (evt) {
             if (!themeLayer.map) {
                 return;
             }
-            if (_this4.selectedFeature) {
-                _this4.fire('featureUnSelected', { feature: _this4.selectedFeature });
-                _this4.selectedFeature = null;
+            if (_this5.selectedFeature) {
+                _this5.fire('featureUnSelected', { feature: _this5.selectedFeature });
+                _this5.selectedFeature = null;
             }
             var feature = void 0;
             if (evt.target && evt.target.refDataID) {
                 feature = themeLayer.getFeatureById(evt.target.refDataID);
             }
             if (feature) {
-                _this4.selectedFeature = feature;
-                _this4.fire('featureSelected', { feature: feature });
+                _this5.selectedFeature = feature;
+                _this5.fire('featureSelected', { feature: feature });
             }
         });
         themeLayer.on('mousemove', function (evt) {
@@ -31462,7 +31512,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     feature = themeLayer.getFeatureById(evt.target.refDataID);
                 }
                 if (feature) {
-                    _this4.fire('featureMousemove', { feature: feature });
+                    _this5.fire('featureMousemove', { feature: feature });
                 }
             }
         });
@@ -31689,7 +31739,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _echarts = __webpack_require__(467);
+var _echarts = __webpack_require__(468);
 
 var _echarts2 = _interopRequireDefault(_echarts);
 
@@ -31941,9 +31991,9 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-__webpack_require__(398);
-
 __webpack_require__(399);
+
+__webpack_require__(400);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -32093,7 +32143,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _MapVRenderer = __webpack_require__(400);
+var _MapVRenderer = __webpack_require__(401);
 
 var _MapVRenderer2 = _interopRequireDefault(_MapVRenderer);
 
@@ -32462,7 +32512,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _VectorGrid = __webpack_require__(404);
+var _VectorGrid = __webpack_require__(405);
 
 var _CartoCSSToLeaflet = __webpack_require__(110);
 
@@ -32962,7 +33012,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _turf = __webpack_require__(470);
+var _turf = __webpack_require__(471);
 
 var _turf2 = _interopRequireDefault(_turf);
 
@@ -83566,7 +83616,7 @@ _SuperMap2["default"].CartoCSS.Tree.Zoom.ranges = {
 "use strict";
 
 
-var _promisePolyfill = __webpack_require__(416);
+var _promisePolyfill = __webpack_require__(417);
 
 var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
@@ -83950,6 +84000,166 @@ _leaflet2["default"].Proj.CRS = crs;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.unicodeMarker = exports.UnicodeMarker = undefined;
+
+__webpack_require__(4);
+
+var _leaflet = __webpack_require__(1);
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+/**
+ * @class L.supermap.baiduTileLayer
+ * @classdesc 百度地图图层。
+ * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
+ * @param url -{string} 切片地址
+ * @param options -{Object} 切片参数。如：<br>
+ *        minZoom - {number} 最小缩放级别 <br>
+ *        maxZoom - {number} 最大缩放级别 <br>
+ *        bounds - {[L.LatLngBounds]{@linkdoc-leaflet/#latlngbounds}} 显示范围 <br>
+ *        retina - {[L.Browser]{@linkdoc-leaflet/#browser}} 浏览器显示分辨率 <br>
+ *        attribution - {string} 版权信息 <br>
+ */
+var UnicodeMarker = exports.UnicodeMarker = _leaflet2["default"].Path.extend({
+    // @section
+    // @aka CircleMarker options
+    options: {
+        fill: true,
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: "1em",
+        fontFamily: "sans-serif",
+        textAlign: "center",
+        textBaseline: "middle",
+        vfactor: -.5,
+        labelRotation: 0,
+        labelXOffset: 0,
+        labelYOffset: 0,
+        globalAlpha: 1,
+        label: ""
+    },
+
+    initialize: function initialize(latlng, options) {
+        _leaflet2["default"].Util.setOptions(this, options);
+        this._latlng = latlng;
+    },
+
+    // @method setLatLng(latLng: LatLng): this
+    // Sets the position of a circle marker to a new location.
+    setLatLng: function setLatLng(latlng) {
+        this._latlng = latlng;
+        this.redraw();
+        return this.fire('move', { latlng: this._latlng });
+    },
+
+    // @method getLatLng(): LatLng
+    // Returns the current geographical position of the circle marker
+    getLatLng: function getLatLng() {
+        return this._latlng;
+    },
+
+    _project: function _project() {
+        this._point = this._map.latLngToLayerPoint(this._latlng);
+        this._updateBounds();
+    },
+
+    _updateBounds: function _updateBounds() {
+        var w = this._clickTolerance(),
+            p = [w, w];
+        this._pxBounds = new _leaflet2["default"].Bounds(this._point.subtract(p), this._point.add(p));
+    },
+    _update: function _update() {
+        if (this._map) {
+            this._updatePath();
+        }
+    },
+
+    _updatePath: function _updatePath() {
+        this._renderer._updateUnicode(this);
+    },
+    // Needed by the `Canvas` renderer for interactivity
+    _containsPoint: function _containsPoint(p) {
+        return p.distanceTo(this._point) <= this._clickTolerance();
+    }
+});
+var unicodeMarker = exports.unicodeMarker = function unicodeMarker(latlng, options) {
+    return new UnicodeMarker(latlng, options);
+};
+_leaflet2["default"].supermap.unicodeMarker = unicodeMarker;
+_leaflet2["default"].Canvas.include({
+    _updateUnicode: function _updateUnicode(layer) {
+        if (!this._drawing) {
+            return;
+        }
+        this._drawnLayers[layer._leaflet_id] = layer;
+        var pt = layer._point,
+            ctx = this._ctx,
+            fontStyle = [layer.options.fontStyle, "normal", layer.options.fontWeight, layer.options.fontSize, layer.options.fontFamily].join(" ");
+        var label = layer.options.label.replace(/^&#x/, '');
+        label = String.fromCharCode(parseInt(label, 16));
+        var labelRows = label.split('\n');
+        var numRows = labelRows.length;
+        // if (layer.options.labelXOffset || layer.options.labelYOffset) {
+        //     let xOffset = isNaN(layer.options.labelXOffset) ? 0 : layer.options.labelXOffset;
+        //     let yOffset = isNaN(layer.options.labelYOffset) ? 0 : layer.options.labelYOffset;
+        //     pt.x += xOffset;
+        //     pt.y -= yOffset;
+        // }
+        ctx.fillStyle = layer.options.fontColor;
+        ctx.globalAlpha = 1.0;
+        if (layer.options.fontOpacity >= 0 && layer.options.fontOpacity < 1) {
+            ctx.globalAlpha = layer.options.fontOpacity;
+        }
+        if (ctx.fillText) {
+            // HTML5
+            ctx.font = fontStyle;
+            ctx.textAlign = layer.options.textAlign;
+            ctx.textBaseline = layer.options.textBaseline;
+            var vfactor = layer.options.vfactor;
+            var lineHeight = ctx.measureText('Mg').height || ctx.measureText('xx').width;
+            pt.y += lineHeight * vfactor * (numRows - 1);
+            for (var i = 0; i < numRows; i++) {
+                if (layer.options.labelRotation != 0) {
+                    ctx.save();
+                    ctx.translate(pt.x, pt.y);
+                    ctx.rotate(layer.options.labelRotation * Math.PI / 180);
+                    ctx.fillText(labelRows[i], 0, lineHeight * i);
+                    ctx.restore();
+                } else {
+                    ctx.fillText(labelRows[i], pt.x, pt.y + lineHeight * i);
+                }
+            }
+        } else if (ctx.mozDrawText) {
+            // Mozilla pre-Gecko1.9.1 (<FF3.1)
+            ctx.mozTextStyle = fontStyle;
+            // No built-in text alignment, so we measure and adjust the position
+            var hfactor = layer.options.textAlign;
+            var _vfactor = layer.options.vfactor;
+            var _lineHeight = ctx.mozMeasureText('xx');
+            pt.y += _lineHeight * (1 + _vfactor * numRows);
+            for (var _i = 0; _i < numRows; _i++) {
+                var x = pt.x + hfactor * ctx.mozMeasureText(labelRows[_i]);
+                var y = pt.y + _i * _lineHeight;
+                ctx.translate(x, y);
+                ctx.mozDrawText(labelRows[_i]);
+                ctx.translate(-x, -y);
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 397 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.DefaultStyle = undefined;
 
 __webpack_require__(4);
@@ -84026,7 +84236,7 @@ var DefaultStyle = exports.DefaultStyle = _leaflet2["default"].supermap.DefaultS
 };
 
 /***/ }),
-/* 397 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84215,7 +84425,7 @@ _leaflet2["default"].supermap.CompOpMap = {
 };
 
 /***/ }),
-/* 398 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84317,7 +84527,7 @@ var circleStyle = exports.circleStyle = function circleStyle(options) {
 _leaflet2["default"].supermap.circleStyle = circleStyle;
 
 /***/ }),
-/* 399 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84392,7 +84602,7 @@ var graphic = exports.graphic = function graphic(options) {
 _leaflet2["default"].supermap.graphic = graphic;
 
 /***/ }),
-/* 400 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84410,7 +84620,7 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _mapv = __webpack_require__(469);
+var _mapv = __webpack_require__(470);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -84798,7 +85008,7 @@ var MapVRenderer = function (_BaseLayer) {
 exports["default"] = MapVRenderer;
 
 /***/ }),
-/* 401 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84865,7 +85075,7 @@ var LineSymbolizer = exports.LineSymbolizer = _leaflet2["default"].Polyline.exte
 });
 
 /***/ }),
-/* 402 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85041,7 +85251,7 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2["default"].CircleMarke
 });
 
 /***/ }),
-/* 403 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85096,7 +85306,7 @@ var RegionSymbolizer = exports.RegionSymbolizer = _leaflet2["default"].Polygon.e
 });
 
 /***/ }),
-/* 404 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85111,7 +85321,7 @@ var _SVGRenderer = __webpack_require__(115);
 
 var _CanvasRenderer = __webpack_require__(114);
 
-var _VectorTile = __webpack_require__(405);
+var _VectorTile = __webpack_require__(406);
 
 var _TextSymbolizer = __webpack_require__(117);
 
@@ -85342,7 +85552,7 @@ var VectorGrid = exports.VectorGrid = _leaflet2["default"].GridLayer.extend({
      */
 
 /***/ }),
-/* 405 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85363,15 +85573,15 @@ var _VectorFeatureType = __webpack_require__(53);
 
 var _TextSymbolizer = __webpack_require__(117);
 
-var _PointSymbolizer = __webpack_require__(402);
+var _PointSymbolizer = __webpack_require__(403);
 
-var _LineSymbolizer = __webpack_require__(401);
+var _LineSymbolizer = __webpack_require__(402);
 
-var _RegionSymbolizer = __webpack_require__(403);
+var _RegionSymbolizer = __webpack_require__(404);
 
-var _VectorTilePBF = __webpack_require__(407);
+var _VectorTilePBF = __webpack_require__(408);
 
-var _VectorTileJSON = __webpack_require__(406);
+var _VectorTileJSON = __webpack_require__(407);
 
 var _VectorTileFormat = __webpack_require__(109);
 
@@ -85619,7 +85829,7 @@ var VectorTile = exports.VectorTile = _leaflet2["default"].Class.extend({
 });
 
 /***/ }),
-/* 406 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85791,7 +86001,7 @@ var VectorTileJSON = exports.VectorTileJSON = _leaflet2["default"].Class.extend(
 });
 
 /***/ }),
-/* 407 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85806,11 +86016,11 @@ var _leaflet = __webpack_require__(1);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _pbf = __webpack_require__(413);
+var _pbf = __webpack_require__(414);
 
 var _pbf2 = _interopRequireDefault(_pbf);
 
-var _vectorTile = __webpack_require__(418);
+var _vectorTile = __webpack_require__(419);
 
 var _vectorTile2 = _interopRequireDefault(_vectorTile);
 
@@ -85899,7 +86109,7 @@ var VectorTilePBF = exports.VectorTilePBF = _leaflet2["default"].Class.extend({
 });
 
 /***/ }),
-/* 408 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86018,7 +86228,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 409 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86110,7 +86320,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 };
 
 /***/ }),
-/* 410 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86118,7 +86328,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var utils = __webpack_require__(411);
+var utils = __webpack_require__(412);
 
 var AND = '&&',
     OR = '||',
@@ -86381,7 +86591,7 @@ if (typeof module != 'undefined' && typeof module.exports != 'undefined') module
 if (typeof window != 'undefined') window.Query = Query;
 
 /***/ }),
-/* 411 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86415,7 +86625,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 412 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86469,12 +86679,12 @@ exports._unrefActive = exports.active = function (item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(417);
+__webpack_require__(418);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 /***/ }),
-/* 413 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86482,7 +86692,7 @@ exports.clearImmediate = clearImmediate;
 
 module.exports = Pbf;
 
-var ieee754 = __webpack_require__(409);
+var ieee754 = __webpack_require__(410);
 
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
@@ -87150,7 +87360,7 @@ function writeUtf8(buf, str, pos) {
 }
 
 /***/ }),
-/* 414 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87304,7 +87514,7 @@ Point.convert = function (a) {
 };
 
 /***/ }),
-/* 415 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87497,7 +87707,7 @@ process.umask = function () {
 };
 
 /***/ }),
-/* 416 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87738,10 +87948,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     root.Promise = Promise;
   }
 })(undefined);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(412).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(413).setImmediate))
 
 /***/ }),
-/* 417 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87929,21 +88139,21 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 })(typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(420), __webpack_require__(415)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(421), __webpack_require__(416)))
 
 /***/ }),
-/* 418 */
+/* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports.VectorTile = __webpack_require__(419);
+module.exports.VectorTile = __webpack_require__(420);
 module.exports.VectorTileFeature = __webpack_require__(119);
 module.exports.VectorTileLayer = __webpack_require__(120);
 
 /***/ }),
-/* 419 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87965,7 +88175,7 @@ function readTile(tag, layers, pbf) {
 }
 
 /***/ }),
-/* 420 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87995,7 +88205,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 421 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88442,7 +88652,7 @@ var whatwgFetch = function (self) {
 module.exports = whatwgFetch;
 
 /***/ }),
-/* 422 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mgrs = __webpack_require__(118);
@@ -88482,7 +88692,7 @@ module.exports = Point;
 
 
 /***/ }),
-/* 423 */
+/* 424 */
 /***/ (function(module, exports) {
 
 module.exports = function(crs, denorm, point) {
@@ -88539,7 +88749,7 @@ module.exports = function(crs, denorm, point) {
 
 
 /***/ }),
-/* 424 */
+/* 425 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -88576,7 +88786,7 @@ module.exports = function(eccent, q) {
 };
 
 /***/ }),
-/* 425 */
+/* 426 */
 /***/ (function(module, exports) {
 
 var C00 = 1;
@@ -88605,7 +88815,7 @@ module.exports = function(es) {
 };
 
 /***/ }),
-/* 426 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var pj_mlfn = __webpack_require__(121);
@@ -88630,7 +88840,7 @@ module.exports = function(arg, es, en) {
 };
 
 /***/ }),
-/* 427 */
+/* 428 */
 /***/ (function(module, exports) {
 
 module.exports = function(esinp, exp) {
@@ -88638,7 +88848,7 @@ module.exports = function(esinp, exp) {
 };
 
 /***/ }),
-/* 428 */
+/* 429 */
 /***/ (function(module, exports) {
 
 exports.wgs84 = {
@@ -88723,7 +88933,7 @@ exports.rnb72 = {
 };
 
 /***/ }),
-/* 429 */
+/* 430 */
 /***/ (function(module, exports) {
 
 exports.MERIT = {
@@ -88943,7 +89153,7 @@ exports.sphere = {
 };
 
 /***/ }),
-/* 430 */
+/* 431 */
 /***/ (function(module, exports) {
 
 exports.greenwich = 0.0; //"0dE",
@@ -88961,7 +89171,7 @@ exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 /***/ }),
-/* 431 */
+/* 432 */
 /***/ (function(module, exports) {
 
 exports.ft = {to_meter: 0.3048};
@@ -88969,7 +89179,7 @@ exports['us-ft'] = {to_meter: 1200 / 3937};
 
 
 /***/ }),
-/* 432 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var proj = __webpack_require__(75);
@@ -89038,7 +89248,7 @@ function proj4(fromProj, toProj, coord) {
 module.exports = proj4;
 
 /***/ }),
-/* 433 */
+/* 434 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -89447,7 +89657,7 @@ module.exports = datum;
 
 
 /***/ }),
-/* 434 */
+/* 435 */
 /***/ (function(module, exports) {
 
 var PJD_3PARAM = 1;
@@ -89552,13 +89762,13 @@ module.exports = function(source, dest, point) {
 
 
 /***/ }),
-/* 435 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Datum = __webpack_require__(428);
-var Ellipsoid = __webpack_require__(429);
+var Datum = __webpack_require__(429);
+var Ellipsoid = __webpack_require__(430);
 var extend = __webpack_require__(79);
-var datum = __webpack_require__(433);
+var datum = __webpack_require__(434);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
 var SIXTH = 0.1666666666666666667;
@@ -89614,7 +89824,7 @@ module.exports = function(json) {
 
 
 /***/ }),
-/* 436 */
+/* 437 */
 /***/ (function(module, exports) {
 
 module.exports = function(defs) {
@@ -89631,32 +89841,32 @@ module.exports = function(defs) {
 
 
 /***/ }),
-/* 437 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
   __webpack_require__(126),
+  __webpack_require__(463),
   __webpack_require__(462),
   __webpack_require__(461),
   __webpack_require__(460),
-  __webpack_require__(459),
-  __webpack_require__(456),
-  __webpack_require__(450),
-  __webpack_require__(448),
-  __webpack_require__(442),
-  __webpack_require__(449),
-  __webpack_require__(440),
-  __webpack_require__(447),
-  __webpack_require__(443),
-  __webpack_require__(444),
   __webpack_require__(457),
-  __webpack_require__(455),
-  __webpack_require__(453),
-  __webpack_require__(458),
-  __webpack_require__(454),
+  __webpack_require__(451),
+  __webpack_require__(449),
+  __webpack_require__(443),
+  __webpack_require__(450),
+  __webpack_require__(441),
+  __webpack_require__(448),
+  __webpack_require__(444),
   __webpack_require__(445),
-  __webpack_require__(463),
-  __webpack_require__(441)
+  __webpack_require__(458),
+  __webpack_require__(456),
+  __webpack_require__(454),
+  __webpack_require__(459),
+  __webpack_require__(455),
+  __webpack_require__(446),
+  __webpack_require__(464),
+  __webpack_require__(442)
 ];
 module.exports = function(proj4){
   projs.forEach(function(proj){
@@ -89665,7 +89875,7 @@ module.exports = function(proj4){
 };
 
 /***/ }),
-/* 438 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var defs = __webpack_require__(123);
@@ -89706,12 +89916,12 @@ function parse(code){
 module.exports = parse;
 
 /***/ }),
-/* 439 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(452),
-  __webpack_require__(451)
+  __webpack_require__(453),
+  __webpack_require__(452)
 ];
 var names = {};
 var projStore = [];
@@ -89746,7 +89956,7 @@ exports.start = function() {
 
 
 /***/ }),
-/* 440 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -89873,7 +90083,7 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 441 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(6);
@@ -90076,7 +90286,7 @@ exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 442 */
+/* 443 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mlfn = __webpack_require__(45);
@@ -90184,13 +90394,13 @@ exports.inverse = function(p) {
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 443 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(6);
 var qsfnz = __webpack_require__(78);
 var msfnz = __webpack_require__(32);
-var iqsfnz = __webpack_require__(424);
+var iqsfnz = __webpack_require__(425);
 /*
   reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
@@ -90253,7 +90463,7 @@ exports.names = ["cea"];
 
 
 /***/ }),
-/* 444 */
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(6);
@@ -90300,7 +90510,7 @@ exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 445 */
+/* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(41);
@@ -90416,11 +90626,11 @@ exports.names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 446 */
+/* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var FORTPI = Math.PI/4;
-var srat = __webpack_require__(427);
+var srat = __webpack_require__(428);
 var HALF_PI = Math.PI/2;
 var MAX_ITER = 20;
 exports.init = function() {
@@ -90467,7 +90677,7 @@ exports.names = ["gauss"];
 
 
 /***/ }),
-/* 447 */
+/* 448 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(6);
@@ -90572,7 +90782,7 @@ exports.names = ["gnom"];
 
 
 /***/ }),
-/* 448 */
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(6);
@@ -90676,7 +90886,7 @@ exports.names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 449 */
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -90970,7 +91180,7 @@ exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area",
 
 
 /***/ }),
-/* 450 */
+/* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -91111,7 +91321,7 @@ exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Confo
 
 
 /***/ }),
-/* 451 */
+/* 452 */
 /***/ (function(module, exports) {
 
 exports.init = function() {
@@ -91127,7 +91337,7 @@ exports.names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 452 */
+/* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var msfnz = __webpack_require__(32);
@@ -91230,7 +91440,7 @@ exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_
 
 
 /***/ }),
-/* 453 */
+/* 454 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(6);
@@ -91281,7 +91491,7 @@ exports.names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 454 */
+/* 455 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(6);
@@ -91364,7 +91574,7 @@ exports.names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 455 */
+/* 456 */
 /***/ (function(module, exports) {
 
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
@@ -91588,7 +91798,7 @@ exports.inverse = function(p) {
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 456 */
+/* 457 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var tsfnz = __webpack_require__(55);
@@ -91761,7 +91971,7 @@ exports.inverse = function(p) {
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 457 */
+/* 458 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(41);
@@ -91894,15 +92104,15 @@ exports.inverse = function(p) {
 exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 458 */
+/* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(6);
 var adjust_lat = __webpack_require__(40);
-var pj_enfn = __webpack_require__(425);
+var pj_enfn = __webpack_require__(426);
 var MAX_ITER = 20;
 var pj_mlfn = __webpack_require__(121);
-var pj_inv_mlfn = __webpack_require__(426);
+var pj_inv_mlfn = __webpack_require__(427);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var asinz = __webpack_require__(31);
@@ -92005,7 +92215,7 @@ exports.inverse = function(p) {
 exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 459 */
+/* 460 */
 /***/ (function(module, exports) {
 
 /*
@@ -92091,7 +92301,7 @@ exports.names = ["somerc"];
 
 
 /***/ }),
-/* 460 */
+/* 461 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -92263,10 +92473,10 @@ exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (vari
 
 
 /***/ }),
-/* 461 */
+/* 462 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var gauss = __webpack_require__(446);
+var gauss = __webpack_require__(447);
 var adjust_lon = __webpack_require__(6);
 exports.init = function() {
   gauss.init.apply(this);
@@ -92326,7 +92536,7 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 /***/ }),
-/* 462 */
+/* 463 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
@@ -92350,7 +92560,7 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 463 */
+/* 464 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(6);
@@ -92475,150 +92685,49 @@ exports.inverse = function(p) {
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 464 */
+/* 465 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 465 */
-/***/ (function(module, exports) {
-
-module.exports = {
-	"_from": "proj4@2.3.15",
-	"_id": "proj4@2.3.15",
-	"_inBundle": false,
-	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
-	"_location": "/proj4",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "version",
-		"registry": true,
-		"raw": "proj4@2.3.15",
-		"name": "proj4",
-		"escapedName": "proj4",
-		"rawSpec": "2.3.15",
-		"saveSpec": null,
-		"fetchSpec": "2.3.15"
-	},
-	"_requiredBy": [
-		"/"
-	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
-	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
-	"_spec": "proj4@2.3.15",
-	"_where": "F:\\dev\\iClient",
-	"author": "",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
-	},
-	"bundleDependencies": false,
-	"contributors": [
-		{
-			"name": "Mike Adair",
-			"email": "madair@dmsolutions.ca"
-		},
-		{
-			"name": "Richard Greenwood",
-			"email": "rich@greenwoodmap.com"
-		},
-		{
-			"name": "Calvin Metcalf",
-			"email": "calvin.metcalf@gmail.com"
-		},
-		{
-			"name": "Richard Marsden",
-			"url": "http://www.winwaed.com"
-		},
-		{
-			"name": "T. Mittan"
-		},
-		{
-			"name": "D. Steinwand"
-		},
-		{
-			"name": "S. Nelson"
-		}
-	],
-	"dependencies": {
-		"mgrs": "~0.0.2"
-	},
-	"deprecated": false,
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"devDependencies": {
-		"browserify": "~12.0.1",
-		"chai": "~1.8.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"grunt": "~0.4.2",
-		"grunt-browserify": "~4.0.1",
-		"grunt-cli": "~0.1.13",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~0.8.0",
-		"grunt-contrib-uglify": "~0.11.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"istanbul": "~0.2.4",
-		"mocha": "~1.17.1",
-		"tin": "~0.4.0"
-	},
-	"directories": {
-		"test": "test",
-		"doc": "docs"
-	},
-	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"jam": {
-		"main": "dist/proj4.js",
-		"include": [
-			"dist/proj4.js",
-			"README.md",
-			"AUTHORS",
-			"LICENSE.md"
-		]
-	},
-	"license": "MIT",
-	"main": "lib/index.js",
-	"name": "proj4",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
-	},
-	"scripts": {
-		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
-	},
-	"version": "2.3.15"
-};
-
-/***/ }),
 /* 466 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0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"
+module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 467 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return echarts}catch(e){return {}}}();
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0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"
 
 /***/ }),
 /* 468 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
+module.exports = function(){try{return echarts}catch(e){return {}}}();
 
 /***/ }),
 /* 469 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return mapv}catch(e){return {}}}();
+module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
 /* 470 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return turf}catch(e){return {}}}();
+module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
 /* 471 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return turf}catch(e){return {}}}();
+
+/***/ }),
+/* 472 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(81);
