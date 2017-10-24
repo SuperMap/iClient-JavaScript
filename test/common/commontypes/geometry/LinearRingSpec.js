@@ -14,7 +14,7 @@ describe('common_LinearRing Test', function () {
         expect(linearRing.components[0].id).toEqual(linearRing.components[5].id);
         for (var i = 0; i < linearRing.components.length; i++) {
             expect(linearRing.components[i].CLASS_NAME).toEqual("SuperMap.Geometry.Point");
-            expect(linearRing.components[i].type).toEqual("NONE");
+            expect(linearRing.components[i].type).toEqual("Point");
         }
         //获得当前几何对象区域大小，如果是沿顺时针方向的环则是正值，否则为负值
         var area = linearRing.getArea();
