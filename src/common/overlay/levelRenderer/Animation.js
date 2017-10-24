@@ -81,7 +81,7 @@ export default class Animation extends Eventful {
         this.stage = options.stage || {};
 
         this.onframe = options.onframe || function () {
-        };
+            };
 
         // private properties
         this._clips = [];
@@ -552,12 +552,7 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
             keyframes.sort(function (a, b) {
                 return a.time - b.time;
             });
-            var trackMaxTime;
-            if (trackLen) {
-                trackMaxTime = keyframes[trackLen - 1].time;
-            } else {
-                return;
-            }
+            var trackMaxTime = keyframes[trackLen - 1].time;
             // Percents of each keyframe
             var kfPercents = [];
             // Value of each keyframe
@@ -638,10 +633,10 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                     } else {
                         let value;
                         if (isValueColor) {
-                            value = SuperMap.LevelRenderer.Animation._catmullRomInterpolateArray(
-                                p0, p1, p2, p3, w, w * w, w * w * w,
-                                rgba, 1
-                            );
+                            // value = SuperMap.LevelRenderer.Animation._catmullRomInterpolateArray(
+                            //     p0, p1, p2, p3, w, w * w, w * w * w,
+                            //     rgba, 1
+                            // );
                             value = SuperMap.LevelRenderer.Animation.rgba2String(rgba);
                         } else {
                             value = SuperMap.LevelRenderer.Animation._catmullRomInterpolate(

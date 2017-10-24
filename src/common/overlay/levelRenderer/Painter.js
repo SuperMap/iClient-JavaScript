@@ -297,14 +297,14 @@ export default class Painter {
             }
 
             // Stop group clipping
-            if (shape.__stopClip) {
+            if (ctx && shape.__stopClip) {
                 ctx.restore();
             }
 
             shape.__dirty = false;
         }
 
-        if (currentLayer && currentLayer.needTransform) {
+        if (ctx && currentLayer && currentLayer.needTransform) {
             ctx.restore();
         }
 

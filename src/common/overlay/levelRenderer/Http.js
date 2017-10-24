@@ -36,12 +36,13 @@ export default class Http {
             url = obj.url;
             onsuccess = obj.onsuccess;
             onerror = obj.onerror;
-            opts = obj;
-        } else {
-            if (typeof(onerror) === 'object') {
-                opts = onerror;
-            }
+           // opts = obj;
         }
+        // else {
+        //     if (typeof(onerror) === 'object') {
+        //         opts = onerror;
+        //     }
+        // }
         /* jshint ignore:start */
         var xhr = window.XMLHttpRequest
             ? new XMLHttpRequest()

@@ -471,7 +471,7 @@ export default class Area {
         }
         var _l = Math.max(lineWidth, 5);
         var _a = 0;
-        var _b = x0;
+        var _b = 0;
         // Quick reject
         if (
             (y > y0 + _l && y > y1 + _l)
