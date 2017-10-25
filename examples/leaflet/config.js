@@ -281,6 +281,10 @@ var exampleConfig = {
                     name: "矢量裁剪分析",
                     thumbnail: "l_vectorClipJob.png",
                     fileName: "vectorClipJobService"
+                }, {
+                    name: "叠加分析",
+                    thumbnail: "l_overlayJobService.png",
+                    fileName: "overlayGeoJobService"
                 }]
             },
             "addressMatch": {

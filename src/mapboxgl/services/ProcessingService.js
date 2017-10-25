@@ -7,6 +7,7 @@ import SingleObjectQueryJobsService from '../../common/iServer/SingleObjectQuery
 import SummaryMeshJobsService from '../../common/iServer/SummaryMeshJobsService';
 import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsService';
 import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
+import OverlayGeoJobsService from '../../common/iServer/OverlayGeoJobsService';
 
 /**
  * @class mapboxgl.supermap.ProcessingService
@@ -29,6 +30,7 @@ export default class ProcessingService extends ServiceBase {
         this.queryJobs = {};
         this.summaryRegionJobs = {};
         this.vectorClipJobs = {};
+        this.overlayGeoJobs = {};
     }
 
     /**
@@ -425,6 +427,86 @@ export default class ProcessingService extends ServiceBase {
      */
     getVectorClipJobState(id) {
         return this.vectorClipJobs[id];
+    }
+
+    /**
+     * @function mapboxgl.supermap.processingService.prototype.getOverlayGeoJobs
+     * @description 获取叠加分析的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    getOverlayGeoJobs(callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        overlayGeoJobsService.getOverlayGeoJobs();
+    }
+
+    /**
+     * @function mapboxgl.supermap.processingService.prototype.getOverlayGeoJob
+     * @description 获取某一个叠加分析。
+     * @param id - {string}空间分析的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    getOverlayGeoJob(id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        overlayGeoJobsService.getOverlayGeoJob(id);
+    }
+
+    /**
+     * @function mapboxgl.supermap.processingService.prototype.addOverlayGeoJob
+     * @description 新建一个叠加分析。
+     * @param params -{SuperMap.OverlayGeoJobParameter} 创建一个空间分析的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    addOverlayGeoJob(params, callback, seconds, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var overlayGeoJobsService = new OverlayGeoJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.overlayGeoJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        overlayGeoJobsService.addOverlayGeoJob(param, seconds);
+    }
+
+    /**
+     * @function mapboxgl.supermap.processingService.prototype.getoverlayGeoJobState
+     * @description 获取叠加分析的状态。
+     * @param id - {string}叠加分析的id。
+     * @return {Object} 叠加分析的状态
+     */
+    getoverlayGeoJobState(id) {
+        return this.overlayGeoJobs[id];
     }
 
     _processFormat(resultFormat) {

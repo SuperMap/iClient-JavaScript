@@ -196,6 +196,10 @@ var exampleConfig = {
                     name: "矢量裁剪分析",
                     thumbnail: "mb_vectorClipJob.png",
                     fileName: "vectorClipJobService"
+                }, {
+                    name: "叠加分析",
+                    thumbnail: "mb_overlayJobService.png",
+                    fileName: "overlayGeoJobService"
                 }]
             }
         }
