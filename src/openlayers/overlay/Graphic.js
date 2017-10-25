@@ -33,7 +33,7 @@ export default class Graphic extends ol.source.ImageCanvas {
             });
         }
 
-        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
             var mapWidth = size[0] * pixelRatio;
             var mapHeight = size[1] * pixelRatio;
             var width = this.map.getSize()[0] * pixelRatio;

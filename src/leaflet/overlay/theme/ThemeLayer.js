@@ -98,7 +98,7 @@ export var ThemeLayer = L.Layer.extend({
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
      * @param features - {L.feature} 要添加的要素
      */
-    addFeatures: function (features) {
+    addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
     },
 
@@ -107,7 +107,7 @@ export var ThemeLayer = L.Layer.extend({
      * @description 抽象方法，可实例化子类必须实现此方法。
      * @param bounds - {L.bounds} 重绘专题要素范围。
      */
-    redrawThematicFeatures: function (bounds) {
+    redrawThematicFeatures: function (bounds) { // eslint-disable-line no-unused-vars
         //子类必须实现此方法
     },
 
@@ -328,7 +328,7 @@ export var ThemeLayer = L.Layer.extend({
      * @param callback - {function} 回调函数
      * @param context - {string} 信息
      */
-    on: function (event, callback, context) {
+    on: function (event, callback, context) { // eslint-disable-line no-unused-vars
         if (this.renderer) {
             this.renderer.on(event, callback);
         } else {
@@ -344,7 +344,7 @@ export var ThemeLayer = L.Layer.extend({
      * @param callback - {function} 回调函数
      * @param context - {string} 信息
      */
-    off: function (event, callback, context) {
+    off: function (event, callback, context) { // eslint-disable-line no-unused-vars
         var me = this;
         if (me.renderer) {
             me.renderer.off(event, callback);

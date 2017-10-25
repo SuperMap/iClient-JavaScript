@@ -95,7 +95,7 @@ export default class Unique extends GeoFeature {
         return style;
     }
 
-    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
         return GeoFeature.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
 }

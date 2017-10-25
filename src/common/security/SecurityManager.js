@@ -1,7 +1,4 @@
 import SuperMap from '../SuperMap';
-import ServerInfo from './ServerInfo';
-import TokenServiceParameter from './TokenServiceParameter';
-import KeyServiceParameter from './KeyServiceParameter';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
@@ -161,7 +158,7 @@ SuperMap.SecurityManager = {
         };
         return FetchRequest.get(url, "", requestOptions).then(function () {
             return true;
-        }).catch(function (ex) {
+        }).catch(function () {
             return false;
         });
 

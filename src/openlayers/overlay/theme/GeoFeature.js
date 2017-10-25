@@ -80,7 +80,7 @@ export default class GeoFeature extends Theme {
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      * @param features - {Object} 要删除的要素对象
      */
-    removeFeatures(features) {
+    removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();
         Theme.prototype.removeFeatures.apply(this, arguments);
     }
@@ -191,7 +191,7 @@ export default class GeoFeature extends Theme {
         return thematicFeature;
     }
 
-    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
         return Theme.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
 

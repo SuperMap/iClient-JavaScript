@@ -27,7 +27,7 @@ export default class Mapv extends ol.source.ImageCanvas {
         this.dataSet = opt_options.dataSet;
         this.mapvOptions = opt_options.mapvOptions;
 
-        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
             var mapWidth = size[0] * pixelRatio;
             var mapHeight = size[1] * pixelRatio;
             var width = this.map.getSize()[0] * pixelRatio;

@@ -61,7 +61,7 @@ export default  class NetworkAnalystServiceBase extends CommonServiceBase {
      * @param result - {Object} 服务器返回的结果对象。
      * @return{Object} geojson对象
      */
-    toGeoJSONResult(result) {
+    toGeoJSONResult(result) { // eslint-disable-line no-unused-vars
         return null;
     }
 

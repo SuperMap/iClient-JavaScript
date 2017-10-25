@@ -59,7 +59,7 @@ export default class RankSymbol extends Graph {
         return thematicFeature;
     }
 
-    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
         return Graph.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
 }

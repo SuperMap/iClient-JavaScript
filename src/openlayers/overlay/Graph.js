@@ -406,7 +406,7 @@ export default class Graph extends Theme {
         this.clearCache();
     }
 
-    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
         return Theme.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
 }

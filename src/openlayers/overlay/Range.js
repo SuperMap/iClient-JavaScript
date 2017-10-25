@@ -1,7 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import GeoFeature from './theme/GeoFeature';
-import ServerFeature from '../../common/iServer/ServerFeature';
 import Vector from '../../common/overlay/ThemeVector';
 
 /**
@@ -125,7 +124,7 @@ export default class Range extends GeoFeature {
         return style;
     }
 
-    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+    canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
         return GeoFeature.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
 }

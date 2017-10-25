@@ -1,4 +1,3 @@
-import mapboxgl from 'mapbox-gl';
 import {baiduMapLayer, DataSet} from "mapv";
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
@@ -58,9 +57,8 @@ export default class MapvRenderer extends BaseLayer {
     /**
      * @function  MapvRenderer.prototype.bindEvent
      * @description 绑定事件
-     * @param e - {object} 触发对象
      */
-    bindEvent(e) {
+    bindEvent() {
         var map = this.map;
         if (this.options.methods) {
             if (this.options.methods.click) {
@@ -75,9 +73,8 @@ export default class MapvRenderer extends BaseLayer {
     /**
      * @function MapvRenderer.prototype.unbindEvent
      * @description 解绑事件
-     * @param e - {object} 触发对象
      */
-    unbindEvent(e) {
+    unbindEvent() {
         var map = this.map;
 
         if (this.options.methods) {
@@ -219,16 +216,16 @@ export default class MapvRenderer extends BaseLayer {
             return;
         }
 
-        function projectPoint(p) {
-            var sin = Math.sin(p[1] * Math.PI / 180),
-                x = (p[0] / 360 + 0.5),
-                y = (0.5 - 0.25 * Math.log((1 + sin) / (1 - sin)) / Math.PI);
-
-            y = y < 0 ? 0 :
-                y > 1 ? 1 : y;
-
-            return [x, y, 0];
-        }
+        // function projectPoint(p) {
+        //     var sin = Math.sin(p[1] * Math.PI / 180),
+        //         x = (p[0] / 360 + 0.5),
+        //         y = (0.5 - 0.25 * Math.log((1 + sin) / (1 - sin)) / Math.PI);
+        //
+        //     y = y < 0 ? 0 :
+        //         y > 1 ? 1 : y;
+        //
+        //     return [x, y, 0];
+        // }
 
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {

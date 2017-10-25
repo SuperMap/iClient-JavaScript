@@ -1,5 +1,3 @@
-import ol from 'openlayers/dist/ol-debug';
-
 /**
  * @class ol.supermap.MapvCanvasLayer
  * @classdesc Mapv渲染器。

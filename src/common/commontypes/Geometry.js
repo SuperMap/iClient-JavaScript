@@ -137,7 +137,7 @@ export default class Geometry {
      * @param nodes - {Boolean} 如果是true，线则只返回线的末端点，如果false，仅仅返回顶点，如果没有设置，则返回顶点。
      * @returns {Array} 几何图形的顶点列表。
      */
-    getVertices(nodes) {
+    getVertices(nodes) { // eslint-disable-line no-unused-vars
     }
 
     /**

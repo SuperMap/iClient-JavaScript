@@ -1,4 +1,3 @@
-import SuperMap from '../../common/SuperMap';
 import ServiceBase  from './ServiceBase';
 import ol from 'openlayers/dist/ol-debug';
 import CommonAddressMatchService from '../../common/iServer/AddressMatchService';

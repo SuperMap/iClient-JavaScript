@@ -88,7 +88,7 @@ export default class Theme {
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
      */
-    addFeatures(features) {
+    addFeatures(features) { // eslint-disable-line no-unused-vars
 
     }
 
@@ -219,7 +219,7 @@ export default class Theme {
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
      * @param extent - {mapboxgl.LngLatBounds} 重绘的范围。
      */
-    redrawThematicFeatures(extent) {
+    redrawThematicFeatures(extent) { // eslint-disable-line no-unused-vars
     }
 
     /**
@@ -229,7 +229,7 @@ export default class Theme {
      * @param callback - {function} 回调函数
      * @param context - {string} 信息
      */
-    on(event, callback, context) {
+    on(event, callback, context) { // eslint-disable-line no-unused-vars
         if (this.renderer) {
             this.renderer.on(event, callback);
         } else {
@@ -245,7 +245,7 @@ export default class Theme {
      * @param callback - {function} 回调函数
      * @param context - {string} 信息
      */
-    off(event, callback, context) {
+    off(event, callback, context) { // eslint-disable-line no-unused-vars
         var me = this;
         if (me.renderer) {
             me.renderer.off(event, callback);

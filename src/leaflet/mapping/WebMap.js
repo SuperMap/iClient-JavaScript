@@ -40,6 +40,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.defaultFeatureLayerPopup
      * @description 默认图层弹出框
      * @param layer -{L.Layer} 指定图层
@@ -58,6 +59,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.load
      * @description 登陆后添加地图图层
      */
@@ -83,6 +85,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.addLayerWrapper
      * @description 添加图层容器
      * @param layer - {L.Layer} 待添加的图层
@@ -203,6 +206,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率
      * @param scales - {Array<number>} 排序比例尺数组
@@ -220,6 +224,7 @@ export var WebMap = L.LayerGroup.extend({
     },
 
     /**
+     * @private
      * @function L.supermap.webmap.prototype.createLayer
      * @description 创建图层
      * @param type - {string} 图层类型
@@ -388,7 +393,28 @@ export var WebMap = L.LayerGroup.extend({
         }
         return layer;
     },
+    /**
+     * @private
+     * @function L.supermap.webmap.prototype.createWmsLayer
+     * @description 创建Wms图层
+     * @param layerInfo - {Object} 图层信息
+     */
+    createWmsLayer: function (layerInfo) {
+        var url = layerInfo.url,
+            opacity = layerInfo.opacity,
+            subLayers = layerInfo.subLayers;
 
+        if (!subLayers || subLayers === "undefined" || subLayers === "null") {
+            subLayers = "0";
+        }
+        return L.tileLayer.wms(url, {
+            layers: subLayers,
+            format: 'image/png',
+            transparent: true,
+            noWrap: true,
+            opacity: opacity
+        })
+    },
     /**
      * @private
      * @function L.supermap.webmap.prototype.createVectorLayer
@@ -504,10 +530,6 @@ export var WebMap = L.LayerGroup.extend({
 
         return layer;
     },
-    /**
-     * Method: createBaseLayer
-     * 创建基本样式专题图层并返回
-     * */
     createBaseThemeLayer: function (layerInfo, themeSettings) {
         let style = layerInfo.style, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType, featureStyle = style.pointStyle;
         if (vectorType === "LINE") {
@@ -542,10 +564,6 @@ export var WebMap = L.LayerGroup.extend({
         });
         //this.registerVectorEvent(vector);
     },
-    /**
-     * Method: createUniqueLayer
-     * 创建单值专题图层并返回
-     * */
     createUniqueLayer: function (layerInfo, themeSettings) {
         var title = layerInfo.title, epsgCode = layerInfo.prjCoordSys.epsgCode;
         var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
@@ -578,10 +596,6 @@ export var WebMap = L.LayerGroup.extend({
         });
         return unique;
     },
-    /**
-     * Method: createRangeLayer
-     * 创建分段专题图层并返回
-     * */
     createRangeLayer: function (layerInfo, themeSettings) {
         var title = layerInfo.title, epsgCode = layerInfo.prjCoordSys.epsgCode;
         var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
@@ -611,11 +625,6 @@ export var WebMap = L.LayerGroup.extend({
         range.styleGroups = styleGroups;
         return range;
     },
-
-    /**
-     * Method: createHeatLayer
-     * 创建热点专题图层并返回
-     * */
     createHeatLayer: function (layerInfo, themeSettings) {
         let colors = themeSettings.colors || ['blue', 'cyan', 'lime', 'yellow', 'red'];
         let gradient = {}, featureWeight;
@@ -640,10 +649,6 @@ export var WebMap = L.LayerGroup.extend({
             featureWeight: featureWeight
         })
     },
-    /**
-     * Method: addFeature2ThemeLayer
-     * 根据json数据重新生成feature，并添加到专题图层上
-     * */
     addFeature2ThemeLayer: function (layerInfo, layer) {
         if (layerInfo.layerType !== "FEATURE_LAYER" || layerInfo.identifier !== "THEME") {
             return;
@@ -779,15 +784,6 @@ export var WebMap = L.LayerGroup.extend({
 
         }
     },
-    /**
-     * 对要素图层和专题图层进行坐标转换
-     * @param oldEpsgCode
-     * @param newEpsgCode
-     * @param layer
-     * @param features
-     * @param success
-     * @returns {boolean}
-     */
     changeFeatureLayerEpsgCode: function (oldEpsgCode, newEpsgCode, layer, features, success) {
         var me = this, i, len;
         var points = [];
@@ -840,13 +836,6 @@ export var WebMap = L.LayerGroup.extend({
             }
         }
     },
-    /**
-     * 坐标转换接口
-     * @param fromEpsg
-     * @param toEpsg
-     * @param point
-     * @param success
-     */
     coordsTransform: function (fromEpsg, toEpsg, point, success) {
         var newCoord;
         var from = this.SERVER_TYPE_MAP[fromEpsg], to = this.SERVER_TYPE_MAP[toEpsg];
@@ -944,12 +933,6 @@ export var WebMap = L.LayerGroup.extend({
         }
         SuperMap.Util.committer(options);
     },
-    /**
-     * Method: getSQLFromFilter
-     * 文件上传时通过filter属性获得一个完整的sql语句 暂时不支持比较复杂的如Like语句
-     * @param filter
-     * @returns {*}
-     */
     getSQLFromFilter: function (filter) {
 
         if (filter === '') {
@@ -973,15 +956,6 @@ export var WebMap = L.LayerGroup.extend({
         }
         return attrArr;
     },
-    /**
-     * 将excel和csv的数据转换成SuperMap.Feature.Vector
-     * method parseFeatureFromEXCEL
-     * @param rows
-     * @param colTitles
-     * @param isGraphic
-     * @param position
-     * @returns {Array}
-     */
     parseFeatureFromEXCEL: function (rows, colTitles, isGraphic, position) {
         var attrArr = this.getAttributesObjFromTable(rows, colTitles);
         var features = [];
@@ -999,11 +973,6 @@ export var WebMap = L.LayerGroup.extend({
 
 
     },
-    /**
-     * 将一个geoJson字符串转换成SuperMap.Feature.Vector对象
-     * method parseFeatureFromJson
-     * @param feature
-     */
     parseFeatureFromJson: function (feature) {
         var format = new SuperMap.Format.GeoJSON();
         var features = format.read(feature);
@@ -1022,25 +991,12 @@ export var WebMap = L.LayerGroup.extend({
         return features;
 
     },
-    /**
-     * 通过layerInfo里的url获取文件上传的数据
-     * method getFeatureFromFileAdded
-     * @param layerInfo
-     * @param success
-     * @param failed
-     */
     getFeatureFromFileAdded: function (layerInfo, success, failed, isGraphic) {
         var url = isGraphic ? layerInfo.url + '?currentPage=1&&pageSize=9999999' : layerInfo.url;
         Request.get(url).then(response=>response.json()).then(data=> {
             success && success(data);
         }).catch(err => failed && failed(err));
     },
-    /**
-     * 将layerInfo里的cartoCSS属性转换成js对象
-     * method getCartoCSS2Obj
-     * @param cartoCSS
-     * @returns {{isAddFile: *, needTransform: boolean}}
-     */
     getCartoCSS2Obj: function (cartoCSS) {
         var isAddFile, needTransform = false;
         if (cartoCSS.indexOf('}') > -1) {
@@ -1096,28 +1052,6 @@ export var WebMap = L.LayerGroup.extend({
 
             }
         });
-    },
-    /**
-     * @private
-     * @function L.supermap.webmap.prototype.createWmsLayer
-     * @description 创建Wms图层
-     * @param layerInfo - {Object} 图层信息
-     */
-    createWmsLayer: function (layerInfo) {
-        var url = layerInfo.url,
-            opacity = layerInfo.opacity,
-            subLayers = layerInfo.subLayers;
-
-        if (!subLayers || subLayers === "undefined" || subLayers === "null") {
-            subLayers = "0";
-        }
-        return L.tileLayer.wms(url, {
-            layers: subLayers,
-            format: 'image/png',
-            transparent: true,
-            noWrap: true,
-            opacity: opacity
-        })
     },
     SERVER_TYPE_MAP: {
         "EPSG:4326": "WGS84",

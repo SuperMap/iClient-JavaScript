@@ -563,7 +563,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
      * ctx - {CanvasRenderingContext2D} Context2D 上下文。
      * style - {Object} 样式。
      */
-    buildPath(ctx, style) {
+    buildPath(ctx, style) { // eslint-disable-line no-unused-vars
         SuperMap.LevelRenderer.Util_log('buildPath not implemented in ' + this.type);
     }
 

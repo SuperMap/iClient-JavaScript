@@ -33,7 +33,7 @@ export default class Theme extends ol.source.ImageCanvas {
             resolutions: options.resolutions,
             state: options.state
         });
-        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
+        function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
             var mapWidth = size[0] * pixelRatio;
             var mapHeight = size[1] * pixelRatio;
             if (!this.context) {
@@ -165,7 +165,7 @@ export default class Theme extends ol.source.ImageCanvas {
      *              专题图仅接收 SuperMap.Feature.Vector 类型数据，
      *              feature 将储存于 features 属性中，其存储形式为数组。
      */
-    addFeatures(features) {
+    addFeatures(features) { // eslint-disable-line no-unused-vars
 
     }
 
@@ -299,7 +299,7 @@ export default class Theme extends ol.source.ImageCanvas {
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
      * @param extent - {Array} 当前级别下计算出的地图范围
      */
-    redrawThematicFeatures(extent) {
+    redrawThematicFeatures(extent) { //eslint-disable-line no-unused-vars
     }
 
     /**
