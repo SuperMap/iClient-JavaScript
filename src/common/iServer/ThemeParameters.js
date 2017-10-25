@@ -1,16 +1,16 @@
 ﻿import SuperMap from '../SuperMap';
-import JoinItem from './JoinItem';
-import ThemeDotDensity from './ThemeDotDensity';
-import ThemeGraduatedSymbol from './ThemeGraduatedSymbol';
-import ThemeGraph from './ThemeGraph';
-import ThemeLabel from './ThemeLabel';
-import ThemeRange from './ThemeRange';
-import ThemeUnique from './ThemeUnique';
-import ThemeGridRange from './ThemeGridRange';
-import ThemeGridUnique from './ThemeGridUnique';
-import LabelImageCell from './LabelImageCell';
-import LabelSymbolCell from './LabelSymbolCell';
-import LabelThemeCell from './LabelThemeCell';
+import './JoinItem';
+import './ThemeDotDensity';
+import './ThemeGraduatedSymbol';
+import './ThemeGraph';
+import './ThemeLabel';
+import './ThemeRange';
+import './ThemeUnique';
+import './ThemeGridRange';
+import './ThemeGridUnique';
+import './LabelImageCell';
+import './LabelSymbolCell';
+import './LabelThemeCell';
 
 /**
  * @class SuperMap.ThemeParameters

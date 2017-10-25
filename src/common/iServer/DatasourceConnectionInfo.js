@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import {EngineType} from '../REST';
+import {EngineType} from '../REST'; // eslint-disable-line no-unused-vars
 
 /**
  * @class SuperMap.DatasourceConnectionInfo

@@ -49,7 +49,7 @@ export default class SummaryMeshJobParameter {
      * @member SuperMap.SummaryMeshJobParameter.prototype.statisticModes -{SuperMap.StatisticAnalystMode}
      * @description 统计模式。
      */
-    statisticModes = "";
+    statisticModes = StatisticAnalystMode.AVERAGE;
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.fields -{number}

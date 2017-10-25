@@ -81,10 +81,10 @@ export default  class QueryService extends CommonServiceBase {
     /**
      * @function SuperMap.QueryService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param params - {QueryParameters} 查询参数。
+     * @param params - {SuperMap.QueryParameters} 查询参数。
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof QueryParameters)) {
             return;
         }
         var me = this,

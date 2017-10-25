@@ -180,7 +180,7 @@ export default class GeoJSON extends JSONFormat {
         if (obj == null) {
             return null;
         }
-        var geometry, collection = false;
+        var geometry;
         if (obj.type == "GeometryCollection") {
             if (!(SuperMap.Util.isArray(obj.geometries))) {
                 throw "GeometryCollection must have geometries array: " + obj;
@@ -193,7 +193,6 @@ export default class GeoJSON extends JSONFormat {
                 );
             }
             geometry = new SuperMap.Geometry.Collection(components);
-            collection = true;
         } else {
             if (!(SuperMap.Util.isArray(obj.coordinates))) {
                 throw "Geometry must have coordinates array: " + obj;
@@ -728,8 +727,7 @@ export default class GeoJSON extends JSONFormat {
             geoPoints = geometry.points || [],
             geoParts = geometry.parts || [geoPoints.length],
             len = geoParts.length,
-            lineList = [],
-            type;
+            lineList = [];
         if (len < 1) {
             return null;
         }

@@ -6,8 +6,8 @@
  *
  */
 import SuperMap from '../../SuperMap';
-import LevelRenderer from './LevelRenderer';
-import Util from '../../commontypes/Util';
+import './LevelRenderer';
+import {Util} from '../../commontypes/Util';
 import Storage from './Storage';
 import Painter from './Painter';
 import Handler from './Handler';

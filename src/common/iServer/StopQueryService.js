@@ -48,8 +48,8 @@ export default  class StopQueryService extends CommonServiceBase {
      * @param params - {SuperMap.StopQueryParameters} 交通换乘参数。
      */
     processAsync(params) {
-        if (!params) {
-            return;
+        if (!(params instanceof StopQueryParameters)) {
+            return null;
         }
         var me = this, end;
 

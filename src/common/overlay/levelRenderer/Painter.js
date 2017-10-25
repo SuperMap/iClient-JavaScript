@@ -1,4 +1,5 @@
 import SuperMap from '../../SuperMap';
+import Transformable from './Transformable';
 import '../../commontypes/Util';
 import './Util';
 
@@ -135,7 +136,8 @@ export default class Painter {
         }
 
         // 什么都不干的空方法
-        function doNothing() {
+        function doNothing() { // eslint-disable-line no-unused-vars
+
         }
     }
 
@@ -930,9 +932,6 @@ export default class Painter {
     CLASS_NAME = "SuperMap.LevelRenderer.Painter"
 }
 SuperMap.LevelRenderer.Painter = Painter;
-
-import Transformable from './Transformable';
-
 /**
  * @private
  * @class SuperMap.LevelRenderer.Painter.Layer

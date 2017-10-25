@@ -1,7 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
-import {StatisticMode} from '../REST';
 import CommonServiceBase from './CommonServiceBase';
-import FieldStatisticsParameters from './FieldStatisticsParameters';
+import './FieldStatisticsParameters';
 
 /**
  * @class SuperMap.FieldStatisticService

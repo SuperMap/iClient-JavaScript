@@ -99,7 +99,7 @@ export var  SVGRenderer = L.SVG.extend({
         } else {
             var img = new Image();
             img.src = iconUrl;
-            L.DomEvent.on(img, 'load', function (evt) {
+            L.DomEvent.on(img, 'load', function () {
                 var size = L.point([img.width, img.height]),
                     anchor = size && size.divideBy(2, true),
                     p = layer._point.subtract(anchor);

@@ -1,5 +1,5 @@
 import SuperMap from '../../SuperMap';
-import LevelRenderer from './LevelRenderer';
+import './LevelRenderer';
 import Area from './Area';
 import Color from './Color';
 import ComputeBoundingBox from './ComputeBoundingBox';

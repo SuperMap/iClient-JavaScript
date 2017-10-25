@@ -1,6 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import {VariogramMode, Exponent} from '../REST';
-import ThiessenAnalystParameters from './ThiessenAnalystParameters';
+import './ThiessenAnalystParameters';
 import InterpolationAnalystParameters from './InterpolationAnalystParameters';
 /**
  * @class SuperMap.InterpolationKrigingAnalystParameters

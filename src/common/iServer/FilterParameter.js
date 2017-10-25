@@ -1,6 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
-import JoinItem from './JoinItem';
-import LinkItem from './LinkItem';
+import './JoinItem';
+import './LinkItem';
 
 /**
  * @class SuperMap.FilterParameter

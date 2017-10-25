@@ -45,7 +45,7 @@ export default class FindMTSPPathsService extends NetworkAnalystServiceBase {
      * @param params - {SuperMap.FindMTSPPathsParameters} 多旅行商分析服务参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FindMTSPPathsParameters)) {
             return;
         }
         var me = this, jsonObject,

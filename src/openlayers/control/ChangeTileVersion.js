@@ -247,7 +247,7 @@ export default class ChangeTileVersion extends ol.control.Control {
             this._container.classList.remove('ol-control-ctv-expanded');
         }
 
-        function tilesVersion(e) {
+        function tilesVersion() {
             var version = this.getVersion();
             this.tilesVersion(version);
 

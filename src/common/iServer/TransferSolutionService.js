@@ -41,7 +41,7 @@ export default  class TransferSolutionService extends CommonServiceBase {
      * @param params - {SuperMap.TransferSolutionParameters} 交通换乘参数。
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof TransferSolutionParameters)) {
             return;
         }
         var me = this,

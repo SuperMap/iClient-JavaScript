@@ -78,7 +78,7 @@ export default class Graph extends Theme {
      *              地图漫游时调用此方法进行图层刷新。
      * @param extent - {mapboxgl.LngLatBounds} 重绘的范围
      */
-    redrawThematicFeatures(extent) {
+    redrawThematicFeatures(extent) { // eslint-disable-line no-unused-vars
         this.clearCache();
         //清除当前所有可视元素
         this.renderer.clearAll();

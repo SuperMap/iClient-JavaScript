@@ -86,8 +86,7 @@ export default class EditFeaturesParameters {
      * @return {string} JSON字符串。
      */
     static toJsonParameters(params) {
-        var geometry,
-            feature,
+        var feature,
             len,
             features,
             editType = params.editType;

@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import LayerStatus from './LayerStatus';
+import  './LayerStatus';
 
 /**
  * @class SuperMap.SetLayerStatusParameters

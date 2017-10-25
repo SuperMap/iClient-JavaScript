@@ -1,7 +1,5 @@
 ﻿import SuperMap from '../../SuperMap';
 import LineString from './LineString';
-import Point from './Point';
-import {NumberExt} from '../BaseTypes';
 
 /**
  * @class  SuperMap.Geometry.LinearRing
@@ -65,7 +63,7 @@ export default class LinearRing extends LineString {
      * @param point - {SuperMap.Geometry.Point} 点对象。
      * @returns {Boolean} 点对象是否删除。
      */
-    removeComponent(point) {
+    removeComponent(point) { // eslint-disable-line no-unused-vars
         var removed = this.components && (this.components.length > 3);
         if (removed) {
             //remove last point

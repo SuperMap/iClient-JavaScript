@@ -38,7 +38,7 @@ export default class BaiduMap extends ol.source.TileImage {
             wrapX: options.wrapX,
             tilePixelRatio: hidpi ? 2 : 1,
             tileGrid: tileGrid,
-            tileUrlFunction: function (tileCoord, pixelRatio, projection) {
+            tileUrlFunction: function (tileCoord, pixelRatio, projection) { // eslint-disable-line no-unused-vars
                 return url.replace("{z}", tileCoord[0].toString())
                     .replace("{x}", tileCoord[1].toString())
                     .replace("{y}", function () {

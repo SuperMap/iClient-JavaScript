@@ -43,7 +43,7 @@ export default  class ThemeService extends CommonServiceBase {
      * @param params - {SuperMap.ThemeParameters} 专题图参数类。
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof ThemeParameters)) {
             return;
         }
         var me = this,
@@ -66,7 +66,6 @@ export default  class ThemeService extends CommonServiceBase {
      */
     getJsonParameters(parameter) {
         var jsonParameters = "",
-            themeType = "",
             themeObj = null,
             filters = null,
             orderBys = null,

@@ -70,14 +70,13 @@ export var EchartsLayer = L.Layer.extend({
         this._ec = echarts.init(this._echartsContainer);
         echarts.leafletMap = map;
         var me = this;
-        map.on("zoomstart", function (e) {
+        map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
         echarts.registerAction({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
             update: 'updateLayout'
-        }, function (payload, ecModel) {
         })
         echarts.registerCoordinateSystem(
             'leaflet', LeafletMapCoordSys
@@ -98,7 +97,7 @@ export var EchartsLayer = L.Layer.extend({
                 var leafletMap = echarts.leafletMap;
                 var viewportRoot = api.getZr().painter.getViewportRoot()
                 var coordSys = LeafletMapModel.coordinateSystem;
-                var moveHandler = function (type, target) {
+                var moveHandler = function () {
                     if (rendering) {
                         return
                     }

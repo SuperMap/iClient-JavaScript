@@ -11,14 +11,14 @@ import SmicPoint from '../levelRenderer/SmicPoint';
 import SmicText from '../levelRenderer/SmicText';
 import SmicCircle from '../levelRenderer/SmicCircle';
 import SmicBrokenLine from '../levelRenderer/SmicBrokenLine';
-import SmicEllipse from '../levelRenderer/SmicEllipse';
+import '../levelRenderer/SmicEllipse';
 import SmicImage from '../levelRenderer/SmicImage';
-import SmicIsogon from '../levelRenderer/SmicIsogon';
+import '../levelRenderer/SmicIsogon';
 import SmicPolygon from '../levelRenderer/SmicPolygon';
 import SmicRectangle from '../levelRenderer/SmicRectangle';
-import SmicRing from '../levelRenderer/SmicRing';
+import '../levelRenderer/SmicRing';
 import SmicSector from '../levelRenderer/SmicSector';
-import SmicStar from '../levelRenderer/SmicStar';
+import '../levelRenderer/SmicStar';
 import {Util} from '../../commontypes/Util';
 import '../../commontypes/Feature';
 

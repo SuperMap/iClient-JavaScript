@@ -103,7 +103,7 @@ export default class ChartQueryService extends CommonServiceBase {
      */
     processAsync(params) {
         //todo重点需要添加代码的地方
-        if (!params) {
+        if (!(params instanceof ChartQueryParameters)) {
             return;
         }
         var me = this, jsonParameters;
@@ -146,7 +146,7 @@ export default class ChartQueryService extends CommonServiceBase {
      * @function SuperMap.ChartQueryService.prototype.getQueryParameters
      * @description 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
      * @param params - {Object} JSON 字符串表示的查询参数。
-     * @return {chartQueryFilterParameters} 返回查询结果
+     * @return {SuperMap.QueryParameters} 返回查询结果
      */
     getQueryParameters(params) {
         return new QueryParameters({

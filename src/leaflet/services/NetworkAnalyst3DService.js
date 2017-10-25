@@ -1,5 +1,4 @@
 ﻿import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
 import {ServiceBase} from './ServiceBase';
 import FacilityAnalystSinks3DService from '../../common/iServer/FacilityAnalystSinks3DService';
 import FacilityAnalystSources3DService from '../../common/iServer/FacilityAnalystSources3DService';

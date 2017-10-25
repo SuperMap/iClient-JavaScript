@@ -40,6 +40,9 @@ export default class AreaSolarRadiationService extends SpatialAnalystBase {
      * @param parameter - {SuperMap.AreaSolarRadiationParameters} 地区太阳辐射参数
      */
     processAsync(parameter) {
+        if (!(parameter instanceof AreaSolarRadiationParameters)) {
+            return;
+        }
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);

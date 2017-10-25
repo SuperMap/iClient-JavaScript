@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import {BufferEndType, Unit, BufferRadiusUnit} from '../REST';
+import {BufferEndType, BufferRadiusUnit} from '../REST';
 import BufferDistance from './BufferDistance';
 
 /**
@@ -10,7 +10,7 @@ import BufferDistance from './BufferDistance';
  *         leftDistance - {{@link SuperMap.BufferDistance}} 左侧缓冲距离。<br>
  *         rightDistance - {{@link SuperMap.BufferDistance}} 右侧缓冲距离。<br>
  *         semicircleLineSegment - {number} 圆头缓冲圆弧处线段的个数。<br>
- *         radiusUnit - {{@link SuperMap.Unit}} 缓冲半径单位。
+ *         radiusUnit - {{@link SuperMap.BufferRadiusUnit}} 缓冲半径单位。
  */
 export default class BufferSetting {
     /**

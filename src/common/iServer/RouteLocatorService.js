@@ -76,7 +76,7 @@ export default  class RouteLocatorService extends SpatialAnalystBase {
      * @param params - {SuperMap.RouteLocatorParameters}
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof RouteLocatorParameters)) {
             return;
         }
         var me = this, jsonParameters;

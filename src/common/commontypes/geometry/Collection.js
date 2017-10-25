@@ -1,5 +1,4 @@
 ﻿import SuperMap from '../../SuperMap';
-import Point from './Point';
 import Geometry from '../Geometry';
 import {Util} from '../Util';
 

@@ -6,6 +6,7 @@ module.exports = {
         //启用 ES6 语法
         "es6": true
     },
+    "plugins": ["import"],
     "root": true,
     "parser": "babel-eslint",
     "parserOptions": {
@@ -34,7 +35,7 @@ module.exports = {
         //禁止多次声明同一变量
         "no-redeclare": "warn",
         //允许出现未使用过的变量
-        "no-unused-vars": "off",
+        "no-unused-vars": "warn",
         //不要求在构造函数中有 super() 的调用
         "constructor-super": "off",
         //允许在嵌套的块中出现function声明
@@ -50,6 +51,36 @@ module.exports = {
         //禁止 case 语句落空
         "no-fallthrough": "warn",
         //禁止直接调用eval()
-        "no-eval": ["error", {"allowIndirect": true}]
+        "no-eval": ["error", {"allowIndirect": true}],
+        //Ensure imports point to a file/module that can be resolved
+        "import/no-unresolved": [2, {commonjs: true, amd: true}],
+        //Ensure named imports correspond to a named export in the remote file
+        "import/named": 2,
+        //Ensure a default export is present, given a default import
+        "import/default": 2,
+        //Restrict which files can be imported in a given folder
+        "import/no-restricted-paths": 2,
+        //Forbid import of modules using absolute paths
+        "import/no-absolute-path": 2,
+        //Forbid require() calls with expressions
+        "import/no-dynamic-require": 2,
+        //Forbid named default exports
+        "import/no-named-default": 2,
+        //Forbid anonymous values as default exports
+        "import/no-anonymous-default-export": 2,
+        //Report repeated import of the same module in multiple places
+        "import/no-duplicates": 1,
+        //Ensure consistent use of file extension within the import path
+        "import/extensions": 1,
+        //Ensure all imports appear before other statements
+        "import/first": 1,
+        //Enforce a newline after import statements
+        "import/newline-after-import": 1,
+        //Prevent importing the submodules of other modules
+        "import/no-internal-modules": 0,
+        //Forbid unassigned imports
+        "import/no-unassigned-import": 0
+
+
     },
 };

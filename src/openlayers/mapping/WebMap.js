@@ -123,9 +123,8 @@ export default class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.addLayer
      * @description 添加图层
      * @param layer -{ol.layer.Vector} ol图层
-     * @param options -{Object} 创建图层所需参数
      */
-    addLayer(layer, options) {
+    addLayer(layer) {
         return this.map.addLayer(layer);
     }
 

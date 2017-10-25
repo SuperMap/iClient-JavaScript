@@ -44,6 +44,9 @@ export default  class QueryByBoundsService extends QueryService {
      * @return {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
+        if (!(params instanceof QueryByBoundsParameters)) {
+            return null;
+        }
         var me = this,
             jsonParameters = "",
             qp = null,

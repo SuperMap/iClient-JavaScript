@@ -2,6 +2,7 @@
 import SpatialAnalystBase from './SpatialAnalystBase';
 import DatasetSurfaceAnalystParameters from './DatasetSurfaceAnalystParameters';
 import GeometrySurfaceAnalystParameters from './GeometrySurfaceAnalystParameters';
+import SurfaceAnalystParameters from './SurfaceAnalystParameters';
 
 
 /**
@@ -45,7 +46,7 @@ export default class SurfaceAnalystService extends SpatialAnalystBase {
      * @param params - {SuperMap.SurfaceAnalystParameters}
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof SurfaceAnalystParameters)) {
             return;
         }
         var me = this, jsonParameters;

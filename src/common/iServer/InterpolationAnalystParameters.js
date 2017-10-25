@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import ClipParameter from './ClipParameter';
+import './ClipParameter';
 import {PixelFormat} from '../REST';
 
 /**

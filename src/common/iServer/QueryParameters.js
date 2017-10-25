@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import FilterParameter from './FilterParameter';
+import './FilterParameter';
 import {GeometryType, QueryOption} from '../REST';
 
 /**

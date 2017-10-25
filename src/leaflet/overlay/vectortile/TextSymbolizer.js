@@ -108,7 +108,7 @@ export var TextSymbolizer = L.Path.extend({
     _updatePath: function () {
         this._renderer._updateText(this);
     },
-    _containsPoint: function (point) {
+    _containsPoint: function (point) { // eslint-disable-line no-unused-vars
         return false;
     }
 });

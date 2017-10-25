@@ -1,10 +1,12 @@
 import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
 import {ServiceBase} from './ServiceBase';
 import GetLayersInfoService from '../../common/iServer/GetLayersInfoService';
 import SetLayerInfoService from '../../common/iServer/SetLayerInfoService';
 import SetLayersInfoService from '../../common/iServer/SetLayersInfoService';
 import SetLayerStatusService from '../../common/iServer/SetLayerStatusService';
+import SetLayerStatusParameters from '../../common/iServer/SetLayerStatusParameters';
+import SetLayerInfoParameters from '../../common/iServer/SetLayerInfoParameters';
+import SetLayersInfoParameters from '../../common/iServer/SetLayersInfoParameters';
 
 /**
  * @class L.supermap.layerInfoService
@@ -49,7 +51,7 @@ export var LayerInfoService = ServiceBase.extend({
      * @param callback - {function} 回调函数
      */
     setLayerInfo: function (params, callback) {
-        if (!params) {
+        if (!(params instanceof SetLayerInfoParameters)) {
             return;
         }
         var me = this,
@@ -81,7 +83,7 @@ export var LayerInfoService = ServiceBase.extend({
      * @param callback -{function} 回调函数
      */
     setLayersInfo: function (params, callback) {
-        if (!params) {
+        if (!(params instanceof SetLayersInfoParameters)) {
             return;
         }
         var me = this,
@@ -112,7 +114,7 @@ export var LayerInfoService = ServiceBase.extend({
      * @param callback -{function} 回调函数
      */
     setLayerStatus: function (params, callback) {
-        if (!params) {
+        if (!(params instanceof SetLayerStatusParameters)) {
             return;
         }
         var me = this;

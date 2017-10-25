@@ -34,7 +34,7 @@ export default  class FacilityAnalystStreamService extends NetworkAnalystService
      * @param params - {SuperMap.FacilityAnalystStreamParameters} 上游/下游关键设施查找资源参数类。
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FacilityAnalystStreamParameters)) {
             return;
         }
         var me = this, jsonObject;

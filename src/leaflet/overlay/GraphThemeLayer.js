@@ -321,7 +321,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
      * @param features - {L.features} 待删除得要输
      */
-    removeFeatures: function (features) {
+    removeFeatures: function (features) { // eslint-disable-line no-unused-vars
         var me = this;
         me.clearCache();
         ThemeLayer.prototype.removeFeatures.apply(me, arguments);

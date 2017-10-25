@@ -1,6 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
-import {SpatialRelationType} from '../REST';
-import FilterParameter from './FilterParameter';
+import '../REST';
+import './FilterParameter';
 /**
  * @class SuperMap.GeoRelationAnalystParameters
  * @classdesc

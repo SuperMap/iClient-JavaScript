@@ -36,6 +36,9 @@ export default class IPortal extends IPortalServiceBase {
      * @returns {Promise} 返回包含所有服务的Promise对象
      */
     queryServices(queryParams) {
+        if (!(queryParams instanceof IPortalServicesQueryParam)) {
+            return null;
+        }
         var serviceUrl = this.iportalUrl + "/web/services";
         return this.request("GET", serviceUrl, queryParams).then(function (result) {
             var services = [];
@@ -65,6 +68,9 @@ export default class IPortal extends IPortalServiceBase {
      * @returns {Promise} 返回包含所有地图服务信息的Promise对象
      */
     queryMaps(queryParams) {
+        if (!(queryParams instanceof IPortalMapsQueryParam)) {
+            return null;
+        }
         var mapsUrl = this.iportalUrl + "/web/maps";
         return this.request("GET", mapsUrl, queryParams).then(function (result) {
             var mapRetult = {};

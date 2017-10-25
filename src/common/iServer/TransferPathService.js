@@ -36,7 +36,7 @@ export default  class TransferPathService extends CommonServiceBase {
      * @param params - {SuperMap.TransferPathParameters} 交通换乘参数。
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof TransferPathParameters)) {
             return;
         }
         var me = this,

@@ -1,5 +1,4 @@
 import SuperMap from '../../SuperMap';
-import Util from './Util';
 import Curve from './Curve';
 import Vector from './Vector';
 import './LevelRenderer';

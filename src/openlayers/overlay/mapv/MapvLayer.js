@@ -1,6 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
 import MapvCanvasLayer from './MapvCanvasLayer';
 import {baiduMapLayer,DataSet} from "mapv";
+
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
  * @class MapvLayer

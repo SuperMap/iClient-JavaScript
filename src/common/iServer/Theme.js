@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import ThemeMemoryData from './ThemeMemoryData';
+import './ThemeMemoryData';
 
 /**
  * @class SuperMap.Theme

@@ -44,7 +44,7 @@ export default  class FindPathService extends NetworkAnalystServiceBase {
      * @param params - {SuperMap.FindPathParameters} 最佳路径分析服务参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FindPathParameters)) {
             return;
         }
         var me = this, jsonObject,

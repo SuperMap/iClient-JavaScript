@@ -307,7 +307,7 @@ export var WebMap = L.LayerGroup.extend({
                 if (layerInfo.identifier == "ANIMATORVECTOR") {
                     //todo
                 } else if (layerInfo.identifier == "THEME") {
-                    layer = this.createThemeLayer(layerInfo, crs);
+                    layer = this.createThemeLayer(layerInfo);
                 } else {
                     layer = this.createVectorLayer(layerInfo, crs);
                 }
@@ -504,7 +504,7 @@ export var WebMap = L.LayerGroup.extend({
      * @param crs - {Object} 坐标对象
      * @return {L.Layer} 返回专题图图层对象
      */
-    createThemeLayer: function (layerInfo, crs) {
+    createThemeLayer: function (layerInfo) {
         var themeSettings = layerInfo.themeSettings && JSON.parse(layerInfo.themeSettings);
         if (layerInfo.themeSettings && themeSettings.labelField) {
             //var labelLayer = this.createLableLayer(layerInfo,themeSettings);
@@ -565,7 +565,7 @@ export var WebMap = L.LayerGroup.extend({
         //this.registerVectorEvent(vector);
     },
     createUniqueLayer: function (layerInfo, themeSettings) {
-        var title = layerInfo.title, epsgCode = layerInfo.prjCoordSys.epsgCode;
+        var title = layerInfo.title;
         var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
             isVisible = layerInfo.isVisible, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType;
         //组成styleGroup
@@ -597,7 +597,7 @@ export var WebMap = L.LayerGroup.extend({
         return unique;
     },
     createRangeLayer: function (layerInfo, themeSettings) {
-        var title = layerInfo.title, epsgCode = layerInfo.prjCoordSys.epsgCode;
+        var title = layerInfo.title;
         var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
             isVisible = layerInfo.isVisible, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType,
             featureStyle = layerInfo.style.pointStyle;
@@ -696,7 +696,7 @@ export var WebMap = L.LayerGroup.extend({
                     } else {
                         addFeatures(sFeaturesArr);
                     }
-                }, function (err) {
+                }, function () {
                 });
             } else {
                 var newFeautures = [], features = layerInfo.features;

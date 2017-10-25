@@ -70,7 +70,7 @@ export default class EditFeaturesService extends CommonServiceBase {
      * @param params - {SuperMap.EditFeaturesParameters} 编辑要素参数。
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof EditFeaturesParameters)) {
             return;
         }
         var me = this,

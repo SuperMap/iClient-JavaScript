@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import {UGCLayerType} from '../REST';
+import '../REST';
 
 /**
  * @class SuperMap.UGCLayer

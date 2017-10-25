@@ -1,4 +1,5 @@
 ﻿import ol from 'openlayers/dist/ol-debug';
+
 ol.supermap = ol.supermap || {};
 
 /**

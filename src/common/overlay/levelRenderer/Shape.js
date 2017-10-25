@@ -575,7 +575,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
      * Parameters:
      * style - {Object} 样式。
      */
-    getRect(style) {
+    getRect(style) { // eslint-disable-line no-unused-vars
         SuperMap.LevelRenderer.Util_log('getRect not implemented in ' + this.type);
     }
 

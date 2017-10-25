@@ -1,6 +1,7 @@
 import '../../core/Base';
 import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
+import Vector from "../../../common/commontypes/Vector"
 /**
  * @class L.supermap.themeFeature
  * @classdesc 客户端专题图要素类。
@@ -40,7 +41,7 @@ export var ThemeFeature = L.Class.extend({
                 geometry = new SuperMap.Geometry.Point(points[0], points[1]);
             }
         }
-        return new SuperMap.Feature.Vector(geometry, this.attributes);
+        return new Vector(geometry, this.attributes);
     },
 
     /**

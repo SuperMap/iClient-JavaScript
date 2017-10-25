@@ -81,7 +81,7 @@ export default  class RouteCalculateMeasureService extends SpatialAnalystBase {
      * @param params - {SuperMap.RouteCalculateMeasureParameters}
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof RouteCalculateMeasureParameters)) {
             return;
         }
         var me = this, jsonParameters;

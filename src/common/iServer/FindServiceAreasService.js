@@ -44,7 +44,7 @@ export default class FindServiceAreasService extends NetworkAnalystServiceBase {
      * @param params - {SuperMap.FindServiceAreasParameters} 服务区分析服务参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FindServiceAreasParameters)) {
             return;
         }
         var me = this, jsonObject,

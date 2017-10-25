@@ -50,7 +50,7 @@ export default  class UpdateEdgeWeightService extends NetworkAnalystServiceBase 
      * (end)
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof UpdateEdgeWeightParameters)) {
             return;
         }
 

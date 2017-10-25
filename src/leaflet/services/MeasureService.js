@@ -3,6 +3,7 @@ import SuperMap from '../../common/SuperMap';
 import {ServiceBase} from './ServiceBase';
 import * as Util from '../core/Util';
 import SuperMapMeasureService from '../../common/iServer/MeasureService' ;
+import MeasureParameters from '../../common/iServer/MeasureParameters' ;
 
 /**
  * @class L.supermap.measureService
@@ -55,7 +56,7 @@ export var MeasureService = ServiceBase.extend({
      * @param callback - {function} 回调函数
      */
     measure: function (type, params, callback) {
-        if (!params) {
+        if (!(params instanceof MeasureParameters)) {
             return;
         }
         var me = this;

@@ -53,7 +53,7 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
      * @param params - {SuperMap.FindClosestFacilitiesParameters} 最近设施分析服务参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FindClosestFacilitiesParameters)) {
             return;
         }
         var me = this, jsonObject,

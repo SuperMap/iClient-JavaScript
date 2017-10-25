@@ -1,6 +1,6 @@
 ﻿import SuperMap from '../../SuperMap';
 import Collection from './Collection';
-import LineString from './LineString';
+import './LineString';
 
 
 /**

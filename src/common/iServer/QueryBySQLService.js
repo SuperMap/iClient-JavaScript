@@ -56,6 +56,9 @@ export default  class QueryBySQLService extends QueryService {
      * @return {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
+        if (!(params instanceof QueryBySQLParameters)) {
+            return;
+        }
         var me = this,
             jsonParameters = "",
             qp = null;

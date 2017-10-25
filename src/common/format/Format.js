@@ -45,7 +45,7 @@ export default class Format {
      * @description 来从字符串中读取数据。
      * @param data - {string} 读取的数据。
      */
-    read(data) {
+    read(data) { // eslint-disable-line no-unused-vars
         //用来从字符串中读取数据
     }
 
@@ -55,7 +55,7 @@ export default class Format {
      * @param object - {Object} 可序列化的对象。
      * @return {string} 对象被写成字符串。
      */
-    write(object) {
+    write(object) { // eslint-disable-line no-unused-vars
         //用来写字符串
     }
 

@@ -30,19 +30,20 @@ export default class Http {
      * Returns:
      * {Number} cos 值。
      */
-    get(url, onsuccess, onerror, opts) {
+    get(url, onsuccess, onerror, opts) {// eslint-disable-line no-unused-vars
         if (typeof(url) === 'object') {
             var obj = url;
             url = obj.url;
             onsuccess = obj.onsuccess;
             onerror = obj.onerror;
-           // opts = obj;
+            opts = obj;// eslint-disable-line no-unused-vars
+
+        } else {
+            if (typeof(onerror) === 'object') {
+                opts = onerror;// eslint-disable-line no-unused-vars
+
+            }
         }
-        // else {
-        //     if (typeof(onerror) === 'object') {
-        //         opts = onerror;
-        //     }
-        // }
         /* jshint ignore:start */
         var xhr = window.XMLHttpRequest
             ? new XMLHttpRequest()

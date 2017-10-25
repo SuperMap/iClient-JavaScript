@@ -2,7 +2,6 @@
 import Theme from './Theme';
 import ThemeLabelItem from './ThemeLabelItem';
 import ThemeUniqueItem from './ThemeUniqueItem';
-import ThemeLabelUniqueItem from './ThemeLabelUniqueItem';
 import ThemeFlow from './ThemeFlow';
 import ThemeOffset from './ThemeOffset';
 import ThemeLabelText from './ThemeLabelText';

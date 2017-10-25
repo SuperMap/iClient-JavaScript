@@ -1,7 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import FilterParameter from './FilterParameter';
 import SurfaceAnalystParameters from './SurfaceAnalystParameters';
-import DataReturnOption from './DataReturnOption';
 import ServerGeometry from './ServerGeometry';
 
 /**

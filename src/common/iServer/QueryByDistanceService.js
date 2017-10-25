@@ -43,6 +43,9 @@ export default class QueryByDistanceService extends QueryService {
      * @return {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
+        if (!(params instanceof QueryByDistanceParameters)) {
+            return;
+        }
         var me = this,
             jsonParameters = "",
             qp = me.getQueryParameters(params);

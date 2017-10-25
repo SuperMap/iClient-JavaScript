@@ -75,12 +75,13 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
     /**
      * @function SuperMap.GetGridCellInfosService.prototype.processAsync
      * @description 执行服务，查询数据集信息。
-     * params - {SuperMap.GetGridCellInfosParameters} 查询参数。
+     * @param params - {SuperMap.GetGridCellInfosParameters} 查询参数。
      */
     processAsync(params) {
-        if (params) {
-            SuperMap.Util.extend(this, params);
+        if (!(params instanceof GetGridCellInfosParameters)) {
+            return;
         }
+        SuperMap.Util.extend(this, params);
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
         me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json") :

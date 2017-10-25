@@ -325,7 +325,7 @@ export var ChangeTileVersion = L.Control.extend({
         L.DomUtil.removeClass(this._container, 'leaflet-control-ctv-expanded');
     },
 
-    _tilesVersion: function (e) {
+    _tilesVersion: function () {
         var version = this.getVersion();
         this.tilesVersion(version);
     }

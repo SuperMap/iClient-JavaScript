@@ -62,7 +62,7 @@ export default class GeoFeature extends Theme {
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      * @param features - {Object} 要删除的要素对象
      */
-    removeFeatures(features) {
+    removeFeatures(features) { // eslint-disable-line no-unused-vars
         this.clearCache();
         Theme.prototype.removeFeatures.apply(this, arguments);
     }
@@ -81,7 +81,7 @@ export default class GeoFeature extends Theme {
      * @description 重绘所有专题要素。
      * @param extent - {mapboxgl.LngLatBounds} 重绘的范围。
      */
-    redrawThematicFeatures(extent) {
+    redrawThematicFeatures(extent) { // eslint-disable-line no-unused-vars
         this.clearCache();
         //获取高亮专题要素对应的用户 id
         var hoverone = this.renderer.getHoverOne();

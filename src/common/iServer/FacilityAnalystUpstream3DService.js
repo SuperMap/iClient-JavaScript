@@ -32,7 +32,7 @@ export default  class FacilityAnalystUpstream3DService extends CommonServiceBase
      * @param params - {SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找资源参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FacilityAnalystUpstream3DParameters)) {
             return;
         }
         var me = this, jsonObject,

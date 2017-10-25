@@ -68,7 +68,7 @@ export var CanvasRenderer = L.Canvas.extend({
      * @description 删除切片地图
      * @param map - {L.map} 切片地图
      */
-    removeFrom: function (map) {
+    removeFrom: function (map) { // eslint-disable-line no-unused-vars
         delete this._map;
     },
 
@@ -125,7 +125,7 @@ export var CanvasRenderer = L.Canvas.extend({
                 p = layer._point.subtract(anchor);
             ctx.drawImage(img, p.x, p.y, size.x, size.y);
         } else {
-            L.DomEvent.on(img, 'load', function (evt) {
+            L.DomEvent.on(img, 'load', function () {
                 var size = L.point([img.width, img.height]),
                     anchor = size && size.divideBy(2, true),
                     p = layer._point.subtract(anchor);

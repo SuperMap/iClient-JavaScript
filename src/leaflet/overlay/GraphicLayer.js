@@ -92,7 +92,7 @@ export var GraphicLayer = L.Path.extend({
         return graphicsInBounds;
     },
 
-    _containsPoint: function (p) {
+    _containsPoint: function () {
         return false;
     },
 

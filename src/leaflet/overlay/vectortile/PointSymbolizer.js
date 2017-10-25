@@ -134,7 +134,7 @@ export var PointSymbolizer = L.CircleMarker.extend({
             }
         }
 
-        img.onload = function (evt) {
+        img.onload = function () {
             if (!sizeOption) {
                 img.style.width = this.width + 'px';
                 img.style.height = this.height + 'px';

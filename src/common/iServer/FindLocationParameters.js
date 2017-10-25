@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import SupplyCenter from './SupplyCenter';
+import './SupplyCenter';
 
 /**
  * @class SuperMap.FindLocationParameters

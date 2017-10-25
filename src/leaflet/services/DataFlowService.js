@@ -1,5 +1,4 @@
 import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
 import {ServiceBase} from './ServiceBase';
 import DataFlow from '../../common/iServer/DataFlowService';
 

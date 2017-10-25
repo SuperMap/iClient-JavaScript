@@ -148,8 +148,6 @@ export default  class Point extends Graph {
         // 点状图必须使用坐标轴
         this.shapes = this.shapes.concat(SuperMap.Feature.ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
 
-        var isDataEffective = true;
-
         var xPx;        // 图形点 x 坐标
         var yPx;        // 图形点 y 坐标
         for (var i = 0, len = fv.length; i < len; i++) {

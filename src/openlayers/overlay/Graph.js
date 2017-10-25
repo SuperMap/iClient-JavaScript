@@ -93,11 +93,9 @@ export default class Graph extends Theme {
      *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
      *              地图漫游时调用此方法进行图层刷新。
      * @param extent - {Object} 重绘的范围
-     * @param zoomChanged - {string} 重绘的范围
-     * @param dragging - {boolean} 重绘的范围
      *
      */
-    redrawThematicFeatures(extent, zoomChanged, dragging) {
+    redrawThematicFeatures(extent) {
         //清除当前所有可视元素
         this.renderer.clearAll();
         var features = this.features;

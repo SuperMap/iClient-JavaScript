@@ -54,7 +54,7 @@ export default class WKT extends Format {
      * @returns {string} The WKT string representation of the input geometries
      */
     write(features) {
-        var collection, geometry, type, data, isCollection;
+        var collection, geometry, isCollection;
         if (features.constructor === Array) {
             collection = features;
             isCollection = true;

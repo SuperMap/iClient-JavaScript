@@ -41,7 +41,7 @@ export default  class FacilityAnalystTraceup3DService extends CommonServiceBase 
      * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FacilityAnalystTraceup3DParameters)) {
             return;
         }
         var me = this, jsonObject,

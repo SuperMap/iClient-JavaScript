@@ -35,13 +35,13 @@ export default  class SetLayerInfoService extends CommonServiceBase {
     /**
      * @function SuperMap.SetLayerInfoService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
-     * @param params - {Object} 修改后的图层资源信息。<br>
+     * @param params - {SuperMap.SetLayerInfoParameters} 修改后的图层资源信息。<br>
      *        该参数可以使用获取图层信息服务 <SuperMap.GetLayerInfoService>.result.subLayers.layers[i]返回图层信息，然后对其属性进行修改来获取。
      */
     processAsync(params) {
         var me = this;
 
-        if (!params) {
+        if (!(params instanceof SetLayerInfoParameters)) {
             return;
         }
         me.url += ".json";

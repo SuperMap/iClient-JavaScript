@@ -1,7 +1,7 @@
 ﻿import SuperMap from '../SuperMap';
 import UGCSubLayer from './UGCSubLayer';
 import ServerColor from './ServerColor';
-import {ColorSpaceType} from '../REST';
+import '../REST';
 
 /**
  * @class SuperMap.Image

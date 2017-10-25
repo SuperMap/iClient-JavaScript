@@ -32,7 +32,7 @@ export default  class FacilityAnalystTracedown3DService extends CommonServiceBas
      * @param params - {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FacilityAnalystTracedown3DParameters)) {
             return;
         }
         var me = this, jsonObject,

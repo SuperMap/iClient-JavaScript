@@ -45,7 +45,7 @@ export default  class FacilityAnalystSinks3DService extends CommonServiceBase {
      * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FacilityAnalystSinks3DParameters)) {
             return;
         }
         var me = this, jsonObject,

@@ -2,6 +2,7 @@ import L from "leaflet";
 import {ServiceBase} from './ServiceBase';
 import GetFieldsService from '../../common/iServer/GetFieldsService';
 import FieldStatisticService from '../../common/iServer/FieldStatisticService';
+import FieldStatisticsParameters from '../../common/iServer/FieldStatisticsParameters';
 /**
  * @class  L.supermap.fieldService
  * @classdesc 字段服务类
@@ -16,7 +17,7 @@ import FieldStatisticService from '../../common/iServer/FieldStatisticService';
  *        dataSourceName - {string} 数据资源名称 <br>
  *        dataSetName - {string} 数据集名称
  */
-export var  FieldService = ServiceBase.extend({
+export var FieldService = ServiceBase.extend({
 
     initialize: function (url) {
         ServiceBase.prototype.initialize.call(this, url);
@@ -28,7 +29,7 @@ export var  FieldService = ServiceBase.extend({
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
      * @param callback - {function} 回调函数
      */
-    getFields: function (params,callback) {
+    getFields: function (params, callback) {
         var me = this;
         var getFieldsService = new GetFieldsService(me.url, {
             serverType: me.options.serverType,
@@ -50,6 +51,9 @@ export var  FieldService = ServiceBase.extend({
      * @param callback - {function} 回调函数
      */
     getFieldStatisticsInfo: function (params, callback) {
+        if (!(params instanceof FieldStatisticsParameters)) {
+            return;
+        }
         var me = this,
             fieldName = params.fieldName,
             modes = params.statisticMode;
@@ -61,11 +65,11 @@ export var  FieldService = ServiceBase.extend({
         //针对每种统计方式分别进行请求
         for (var mode in modes) {
             me.currentStatisticResult[modes[mode]] = null;
-            me._fieldStatisticRequest(params.datasource,params.dataset,fieldName, modes[mode]);
+            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
         }
     },
 
-    _fieldStatisticRequest: function (dataSourceName,dataSetName,fieldName, statisticMode) {
+    _fieldStatisticRequest: function (dataSourceName, dataSetName, fieldName, statisticMode) {
         var me = this;
         var statisticService = new FieldStatisticService(me.url, {
             eventListeners: {

@@ -61,7 +61,7 @@ export default class MapVRenderer extends BaseLayer {
      * @description 绑定鼠标移动和鼠标点击事件
      * @param e - {Object} 触发对象
      */
-    bindEvent(e) {
+    bindEvent() {
         var map = this.map;
 
         if (this.options.methods) {
@@ -79,7 +79,7 @@ export default class MapVRenderer extends BaseLayer {
      * @description 解绑鼠标移动和鼠标滑动触发的事件
      * @param e - {Object} 触发对象
      */
-    unbindEvent(e) {
+    unbindEvent() {
         var map = this.map;
 
         if (this.options.methods) {

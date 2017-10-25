@@ -1,8 +1,6 @@
 import SuperMap from '../SuperMap';
 import IManagerServiceBase from './iManagerServiceBase';
 import IManagerCreateNodeParam from './iManagerCreateNodeParam';
-import {FetchRequest} from '../util/FetchRequest';
-
 /**
  * @class SuperMap.iManager
  * @classdesc iManager服务类。

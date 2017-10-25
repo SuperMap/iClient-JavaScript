@@ -44,7 +44,7 @@ export default class FindLocationService extends NetworkAnalystServiceBase {
      * @param params - {SuperMap.FindLocationParameters} 选址分区分析服务参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FindLocationParameters)) {
             return;
         }
         var me = this, jsonObject,

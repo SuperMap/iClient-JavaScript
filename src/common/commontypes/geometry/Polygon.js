@@ -1,8 +1,8 @@
 ﻿import SuperMap from '../../SuperMap';
 import Collection from './Collection';
-import Point from './Point';
-import LineString from './LineString';
-import LinearRing from './LinearRing';
+import  './Point';
+import  './LineString';
+import  './LinearRing';
 
 /**
  * @class SuperMap.Geometry.Polygon

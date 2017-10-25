@@ -41,10 +41,10 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
     /**
      * @function SuperMap.ComputeWeightMatrixService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param params - {ComputeWeightMatrixParameters} 耗费矩阵分析参数类
+     * @param params - {SuperMap.ComputeWeightMatrixParameters} 耗费矩阵分析参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof ComputeWeightMatrixParameters)) {
             return;
         }
         var me = this, jsonObject,

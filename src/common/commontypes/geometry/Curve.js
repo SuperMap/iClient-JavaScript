@@ -1,6 +1,5 @@
 ﻿import SuperMap from '../../SuperMap';
 import MultiPoint from './MultiPoint';
-import {Util} from '../Util';
 
 /**
  * @class SuperMap.Geometry.Curve

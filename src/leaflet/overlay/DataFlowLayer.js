@@ -42,7 +42,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
      */
-    onAdd: function (map) {
+    onAdd: function (map) { // eslint-disable-line no-unused-vars
         var me = this;
         me.dataService = new DataFlowService(this.url, {
             geometry: this.options.geometry,
@@ -66,7 +66,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
      * @description 删除指定地图
      * @param map - {L.map} 待删除的地图
      */
-    onRemove: function (map) {
+    onRemove: function (map) { // eslint-disable-line no-unused-vars
         this.dataService.unSubscribe();
     },
 

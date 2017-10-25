@@ -28,7 +28,7 @@ export default class LineString extends Curve {
      * @param point - {SuperMap.Geometry.Point} 将被删除的点。
      * @returns {Boolean} 删除的点。
      */
-    removeComponent(point) {
+    removeComponent(point) { // eslint-disable-line no-unused-vars
         var removed = this.components && (this.components.length > 2);
         if (removed) {
             super.removeComponent.apply(this, arguments);
@@ -263,7 +263,6 @@ export default class LineString extends Curve {
      */
     static createLineEPS(points) {
         var list = [],
-            part = 0,
             len = points.length;
         if (points == null || len < 2) {
             return points;

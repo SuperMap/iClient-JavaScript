@@ -71,7 +71,7 @@ export default  class GenerateSpatialDataService extends SpatialAnalystBase {
      * @param params - {SuperMap.GenerateSpatialDataParameters}
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof GenerateSpatialDataParameters)) {
             return;
         }
         var me = this,

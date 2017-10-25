@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import TransferLine from './TransferLine';
+import './TransferLine';
 
 /**
  * @class SuperMap.TransferPathParameters

@@ -1,5 +1,5 @@
 import SuperMap from '../SuperMap';
-import * as OnlineResources from './OnlineResources';
+import './OnlineResources';
 
 /**
  * @class SuperMap.OnlineQueryDatasParameter

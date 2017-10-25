@@ -25,7 +25,7 @@ import {GraphThemeLayer} from './GraphThemeLayer';
  */
 export var RankSymbolThemeLayer = GraphThemeLayer.extend({
 
-    initialize: function (name, symbolType, options) {
+    initialize: function (name, symbolType, options) {// eslint-disable-line no-unused-vars
         GraphThemeLayer.prototype.initialize.apply(this, arguments);
         this.symbolType = symbolType;
         this.symbolSetting = {};

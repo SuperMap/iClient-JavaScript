@@ -3,7 +3,6 @@
  */
 import L from "leaflet";
 import proj4 from "proj4";
-import {getMeterPerMapUnit} from "./Util";
 
 window.proj4 = proj4;
 window.Proj4js = proj4;

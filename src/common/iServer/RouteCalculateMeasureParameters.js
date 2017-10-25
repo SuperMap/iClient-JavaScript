@@ -1,5 +1,5 @@
 import SuperMap from '../SuperMap';
-import Route from './Route';
+import './Route';
 
 /**
  * @class SuperMap.RouteCalculateMeasureParameters

@@ -48,7 +48,7 @@ export default  class UpdateTurnNodeWeightService extends NetworkAnalystServiceB
      * (end)
      **/
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof UpdateTurnNodeWeightParameters)) {
             return;
         }
 

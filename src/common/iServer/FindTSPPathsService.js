@@ -46,7 +46,7 @@ export default class FindTSPPathsService extends NetworkAnalystServiceBase {
      * @param params - {SuperMap.FindTSPPathsParameters} 旅行商分析服务参数类
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FindTSPPathsParameters)) {
             return;
         }
         var me = this, jsonObject,

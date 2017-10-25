@@ -1,6 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
-import FilterParameter from './FilterParameter';
 import GetFeaturesParametersBase from './GetFeaturesParametersBase';
+import './FilterParameter';
 
 /**
  * @class SuperMap.GetFeaturesBySQLParameters

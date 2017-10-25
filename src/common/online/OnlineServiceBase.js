@@ -1,7 +1,7 @@
 import SuperMap from '../SuperMap';
 import '../security/SecurityManager';
 import {ServerType} from '../REST';
-import FetchRequest from '../util/FetchRequest';
+import {FetchRequest} from '../util/FetchRequest';
 
 /**
  * @class SuperMap.OnlineServiceBase

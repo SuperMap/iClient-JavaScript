@@ -1,6 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import UGCLayer from './UGCLayer';
-import OverlapDisplayedOptions from './OverlapDisplayedOptions';
+import './OverlapDisplayedOptions';
 
 /**
  * @class SuperMap.UGCMapLayer

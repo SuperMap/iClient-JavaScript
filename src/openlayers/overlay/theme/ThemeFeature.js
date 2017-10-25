@@ -1,5 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../../common/SuperMap';
+
 ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.ThemeFeature

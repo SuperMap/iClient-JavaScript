@@ -122,7 +122,7 @@ export default class Point extends Geometry {
      *
      * @returns {Array} 几何图形的顶点列表。
      */
-    getVertices(nodes) {
+    getVertices(nodes) { // eslint-disable-line no-unused-vars
         return [this];
     }
 

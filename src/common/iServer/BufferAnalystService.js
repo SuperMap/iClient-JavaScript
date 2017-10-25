@@ -2,7 +2,6 @@
 import SpatialAnalystBase from './SpatialAnalystBase';
 import DatasetBufferAnalystParameters from './DatasetBufferAnalystParameters';
 import GeometryBufferAnalystParameters from './GeometryBufferAnalystParameters';
-import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.BufferAnalystService

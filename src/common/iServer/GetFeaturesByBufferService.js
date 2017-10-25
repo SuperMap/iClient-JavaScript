@@ -45,6 +45,9 @@ export default  class GetFeaturesByBufferService extends GetFeaturesServiceBase 
      * @return {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
+        if (!(params instanceof GetFeaturesByBufferParameters)) {
+            return;
+        }
         return SuperMap.GetFeaturesByBufferParameters.toJsonParameters(params);
     }
 

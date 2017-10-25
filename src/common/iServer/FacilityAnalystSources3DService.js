@@ -38,7 +38,7 @@ export default  class FacilityAnalystSources3DService extends CommonServiceBase 
      * @param params - {SuperMap.FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找资源)
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof FacilityAnalystSources3DParameters)) {
             return;
         }
         var me = this, jsonObject,

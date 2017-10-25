@@ -1,11 +1,11 @@
 import SuperMap from '../../SuperMap';
 import Geometry from '../Geometry';
-import Point from './Point';
-import LineString from './LineString';
 import Bounds from '../Bounds';
-import Pixel from '../Pixel';
-import LonLat from '../LonLat';
 import {Util} from '../Util';
+import './Point';
+import  './LineString';
+import '../Pixel';
+import '../LonLat';
 
 /**
  * @class SuperMap.Geometry.GeoText

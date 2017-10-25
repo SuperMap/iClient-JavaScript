@@ -127,7 +127,7 @@ export default class LinkItem {
      */
     destroy() {
         var me = this;
-        if (me.datasourceConnectionInfo) {
+        if (me.datasourceConnectionInfo instanceof DatasourceConnectionInfo) {
             me.datasourceConnectionInfo.destroy();
             me.datasourceConnectionInfo = null;
         }

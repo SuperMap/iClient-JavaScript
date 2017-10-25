@@ -47,13 +47,11 @@ export default  class SetLayerStatusService extends CommonServiceBase {
      *         返回图层信息，然后对其属性进行修改来获取。
      */
     processAsync(params) {
-        var subLayers = [],
-            me = this,
-            method = "POST";
-        if (!params) {
+        if (!(params instanceof SetLayerStatusParameters)) {
             return;
         }
-
+        var me = this,
+            method = "POST";
         me.url = me.mapUrl;
         var end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? '' : '/';

@@ -32,12 +32,12 @@ export default  class BurstPipelineAnalystService extends NetworkAnalystServiceB
      * @params params - {SuperMap.BurstPipelineAnalystParameters} 爆管分析参数类
      */
     processAsync(params) {
-        if (!params) {
-            return;
+        if (!(params instanceof BurstPipelineAnalystParameters)) {
+            return null;
         }
         var me = this, jsonObject;
         var end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "burstAnalyse" : "/burstAnalyse") +  ".json?";
+        me.url = me.url + ((end === "/") ? "burstAnalyse" : "/burstAnalyse") + ".json?";
 
         jsonObject = {
             sourceNodeIDs: params.sourceNodeIDs,
@@ -45,9 +45,17 @@ export default  class BurstPipelineAnalystService extends NetworkAnalystServiceB
         };
 
         //必传参数不正确，就终止
-        if (params.edgeID !== null && params.nodeID !== null) {return;}
-        if (params.edgeID === null && params.nodeID === null) {return;}
-        if (params.edgeID !== null) {jsonObject.edgeID = params.edgeID;} else {jsonObject.nodeID = params.nodeID;}
+        if (params.edgeID !== null && params.nodeID !== null) {
+            return;
+        }
+        if (params.edgeID === null && params.nodeID === null) {
+            return;
+        }
+        if (params.edgeID !== null) {
+            jsonObject.edgeID = params.edgeID;
+        } else {
+            jsonObject.nodeID = params.nodeID;
+        }
 
         me.request({
             method: "GET",

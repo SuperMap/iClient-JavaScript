@@ -1,6 +1,7 @@
 ﻿import L from "leaflet";
 import {ServiceBase} from './ServiceBase';
 import GetGridCellInfosService from '../../common/iServer/GetGridCellInfosService';
+import GetGridCellInfosParameters from '../../common/iServer/GetGridCellInfosParameters'
 
 /**
  * @class L.supermap.gridCellInfosService
@@ -27,8 +28,8 @@ export var GridCellInfosService = ServiceBase.extend({
      * @param callback - {function} 回调函数
      */
     getGridCellInfos: function (params, callback) {
-        if (!params) {
-            return null;
+        if (!(params instanceof GetGridCellInfosParameters)) {
+            return;
         }
         var me = this;
         var gridCellQueryService = new GetGridCellInfosService(me.url, {

@@ -55,7 +55,7 @@ export default class SummaryRegionJobParameter {
      * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
      * @description 以标准属字段统计的字段名称。
      */
-    standardFields = "";
+    standardFields = StatisticAnalystMode.AVERAGE;;
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}

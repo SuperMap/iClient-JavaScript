@@ -1,5 +1,4 @@
 ﻿import SuperMap from '../SuperMap';
-import Bounds from '../commontypes/Bounds';
 import Point from '../commontypes/geometry/Point';
 import MultiPoint from '../commontypes/geometry/MultiPoint';
 import LinearRing from '../commontypes/geometry/LinearRing';

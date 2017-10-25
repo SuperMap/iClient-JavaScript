@@ -53,14 +53,13 @@ export default class MeasureService extends CommonServiceBase {
      * @param params - {SuperMap.MeasureParameters} 量算参数。
      */
     processAsync(params) {
-        if (!params) {
+        if (!(params instanceof MeasureParameters)) {
             return;
         }
         var me = this,
             geometry = params.geometry,
             pointsCount = 0,
             point2ds = null,
-            urlParameters = null,
             end = null;
         if (!geometry) {
             return;

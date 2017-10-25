@@ -2,7 +2,7 @@
 import UGCMapLayer from './UGCMapLayer';
 import JoinItem from './JoinItem';
 import DatasetInfo from './DatasetInfo';
-import {LayerType} from '../REST';
+import '../REST';
 
 /**
  * @class SuperMap.UGCSubLayer

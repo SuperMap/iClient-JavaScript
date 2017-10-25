@@ -111,6 +111,9 @@ export default class ChartQueryParameters {
             var chartLength = this.chartQueryFilterParameters.length;
             for (var j = 0; j < chartLength; j++) {
                 var chartQueryFilterParameter = this.chartQueryFilterParameters[j];
+                if (!(chartQueryFilterParameter instanceof ChartQueryFilterParameter)) {
+                    continue;
+                }
                 chartParamArray.push(chartQueryFilterParameter.toJson());
             }
             var chartParamsJson = "[" + chartParamArray.join(",") + "]";

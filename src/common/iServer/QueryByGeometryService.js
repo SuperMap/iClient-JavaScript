@@ -50,6 +50,9 @@ export default class QueryByGeometryService extends QueryService {
      * @return {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
+        if (!(params instanceof QueryByGeometryParameters)) {
+            return;
+        }
         var me = this,
             jsonParameters = "",
             qp = null,

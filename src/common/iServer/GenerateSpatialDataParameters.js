@@ -1,5 +1,5 @@
 ﻿import SuperMap from '../SuperMap';
-import DataReturnOption from './DataReturnOption';
+import './DataReturnOption';
 
 /**
  * @class SuperMap.GenerateSpatialDataParameters

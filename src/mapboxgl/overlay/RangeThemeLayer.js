@@ -1,7 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import SuperMap from '../../common/SuperMap';
 import GeoFeature from './theme/GeoFeatureThemeLayer';
-import ServerFeature from '../../common/iServer/ServerFeature';
 import Vector from '../../common/overlay/ThemeVector';
 
 /**

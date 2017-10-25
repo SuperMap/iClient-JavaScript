@@ -30,6 +30,9 @@ export default class AddressMatchService extends CommonServiceBase {
      * @param params {SuperMap.GeoCodingParameter} 正向地址匹配服务参数
      */
     code(url, params) {
+        if (!(params instanceof GeoCodingParameter)) {
+            return;
+        }
         this.processAsync(url, params);
     }
 
@@ -39,6 +42,9 @@ export default class AddressMatchService extends CommonServiceBase {
      * @param params {SuperMap.GeoDecodingParameter} 反向地址匹配服务参数
      */
     decode(url, params) {
+        if (!(params instanceof GeoDecodingParameter)) {
+            return null;
+        }
         this.processAsync(url, params);
     }
 
