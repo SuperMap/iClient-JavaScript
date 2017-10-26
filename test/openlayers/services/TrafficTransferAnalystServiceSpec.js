@@ -18,7 +18,7 @@ describe('openlayers_TrafficTransferAnalystService', function () {
 
     //站点查询服务 返回坐标
     it('queryStop_returnPosition_test', function (done) {
-        var stopQueryParameters = new SuperMap.SetLayerStatusParameters({
+        var stopQueryParameters = new SuperMap.StopQueryParameters({
             keyWord: "人民",
             //是否返回站点坐标信息
             returnPosition: true
@@ -48,7 +48,7 @@ describe('openlayers_TrafficTransferAnalystService', function () {
     });
     //站点查询服务  不返回坐标
     it('queryStop_returnPosition_false_test', function (done) {
-        var stopQueryParameters = new SuperMap.SetLayerStatusParameters({
+        var stopQueryParameters = new SuperMap.StopQueryParameters({
             keyWord: "人民",
             //是否返回站点坐标信息
             returnPosition: false

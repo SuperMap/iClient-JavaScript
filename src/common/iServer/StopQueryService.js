@@ -49,7 +49,7 @@ export default  class StopQueryService extends CommonServiceBase {
      */
     processAsync(params) {
         if (!(params instanceof StopQueryParameters)) {
-            return null;
+            return;
         }
         var me = this, end;
 

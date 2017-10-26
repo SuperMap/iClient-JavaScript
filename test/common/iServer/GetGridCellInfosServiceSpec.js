@@ -94,10 +94,7 @@ describe('testGetGridCellInfosService_processAsync',function(){
 
         setTimeout(function() {
             try{
-                expect(eventFailed).not.toBeNull();
-                expect(eventFailed.succeed).toBeFalsy();
-                expect(eventFailed.error.code).toEqual(404);
-                expect(eventFailed.error.errorMsg).not.toBeNull();
+                expect((myService.processAsync())===undefined).toBeTruthy();
                 myService.destroy();
                 done();
             }catch(exception){
