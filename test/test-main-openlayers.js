@@ -1,9 +1,26 @@
 /**openlayers --services**/
-require('./openlayers/services/FeatureServiceSpec.js');
+require('./openlayers/services/BufferAnalysisSpec.js');
+require('./openlayers/services/DensityAnalysisSpec.js');
+require('./openlayers/services/EditFeaturesSpec.js');
 require('./openlayers/services/FieldServiceSpec.js');
+require('./openlayers/services/GenerateSpatialDataSpec.js');
+require('./openlayers/services/GeoRelationAnalysisSpec.js');
+require('./openlayers/services/GetFeaturesByBoundsSpec.js');
+require('./openlayers/services/GetFeaturesByBufferSpec.js');
+require('./openlayers/services/GetFeaturesByGeometrySpec.js');
+require('./openlayers/services/GetFeaturesByIDsSpec.js');
+require('./openlayers/services/GetFeaturesBySQLSpec.js');
+require('./openlayers/services/InterpolationAnalysisSpec.js');
+// require('./openlayers/services/LayerInfoServiceSpec.js'); //待调试
+require('./openlayers/services/MathExpressionAnalysisSpec.js');
 require('./openlayers/services/MeasureServiceSpec.js');
 require('./openlayers/services/NetworkAnalystServiceSpec.js');
-require('./openlayers/services/SpatialAnalystServiceSpec.js');
+require('./openlayers/services/OverlayAnalysisSpec.js');
+require('./openlayers/services/RouteCalculateMeasureSpec.js');
+require('./openlayers/services/RouteLocateSpec.js');
+require('./openlayers/services/SurfaceAnalysisSpec.js');
+require('./openlayers/services/TerrainCurvatureCalculateSpec.js');
+require('./openlayers/services/ThiessenAnalysisSpec.js');
 require('./openlayers/services/TrafficTransferAnalystServiceSpec.js');
 
 /*openlayers -- overlay*/
