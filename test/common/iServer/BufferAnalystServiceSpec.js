@@ -1,4 +1,5 @@
 ﻿require('../../../src/common/iServer/BufferAnalystService');
+var request = require('request');
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
@@ -28,13 +29,19 @@ describe('testBufferAnalystService_processAsync', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+    afterAll(function () {
+        var bufferbyDSResult = GlobeParameter.datajingjinURL + "bufferAnalystResultDS_common";
+        request.delete(bufferbyDSResult, function (response) {
+            console.log(response);
+        });
+    });
 
     //测试成功事件
     it('SuccessEvent:byDatasets_NotReturnContent', function (done) {
         var bfServiceByDatasets = initBufferAnalystService();
         var resultSetting = new SuperMap.DataReturnOption({
             expectCount: 2000,
-            dataset: null,
+            dataset: "bufferAnalystResultDS_common",
             dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
             deleteExistResultDataset: true
         });
@@ -46,7 +53,6 @@ describe('testBufferAnalystService_processAsync', function () {
         dsBufferAnalystParameters.bufferSetting.leftDistance.value = 100;
         dsBufferAnalystParameters.resultSetting = resultSetting;
         bfServiceByDatasets.processAsync(dsBufferAnalystParameters);
-
         setTimeout(function () {
             try {
                 expect(bfServiceByDatasets.mode).toEqual("datasets");
@@ -56,6 +62,7 @@ describe('testBufferAnalystService_processAsync', function () {
                 expect(bfServiceByDatasets.eventListeners).toBeNull();
                 expect(bfServiceByDatasets.mode).toBeNull();
                 dsBufferAnalystParameters.destroy();
+
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
@@ -68,11 +75,9 @@ describe('testBufferAnalystService_processAsync', function () {
     });
 
     it('SuccessEvent:byGeometry_NotReturnContent', function (done) {
-
         var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url);
-
         var sourceGeometry = new SuperMap.Geometry.Point(7884.79277012316, 5072.18865322196);
         var bufferSetting = new SuperMap.BufferSetting();
         bufferSetting.endType = SuperMap.BufferEndType.ROUND;
@@ -80,7 +85,7 @@ describe('testBufferAnalystService_processAsync', function () {
         bufferSetting.semicircleLineSegment = 5;
         var resultSetting = new SuperMap.DataReturnOption({
             expectCount: 2000,
-            dataset: "Landuse_R@Jingjin",
+            dataset: "bufferAnalystResultGM_common",
             dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
             deleteExistResultDataset: false
         });
@@ -89,7 +94,6 @@ describe('testBufferAnalystService_processAsync', function () {
         geometryBufferAnalystParameters.bufferSetting = bufferSetting;
         geometryBufferAnalystParameters.resultSetting = resultSetting;
         bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
-
         setTimeout(function () {
             try {
                 var bfMode = analystEventArgsSystem.result.resultGeometry;
@@ -116,7 +120,6 @@ describe('testBufferAnalystService_processAsync', function () {
         var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url);
-
         var sourceGeometry = new SuperMap.Geometry.Point(7884.79277012316, 5072.18865322196);
         var bufferSetting = new SuperMap.BufferSetting();
         bufferSetting.endType = SuperMap.BufferEndType.ROUND;
@@ -132,9 +135,7 @@ describe('testBufferAnalystService_processAsync', function () {
         geometryBufferAnalystParameters.sourceGeometry = sourceGeometry;
         geometryBufferAnalystParameters.bufferSetting = bufferSetting;
         geometryBufferAnalystParameters.resultSetting = resultSetting;
-
         bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
-
         setTimeout(function () {
             try {
 
