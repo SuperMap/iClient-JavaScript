@@ -90,6 +90,7 @@
     "nightwatch": "^0.9.5",
     "openlayers": "4.2.0",
     "pngjs": "^3.3.0",
+    "request": "^2.83.0",
     "selenium-server": "^2.53.1",
     "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
