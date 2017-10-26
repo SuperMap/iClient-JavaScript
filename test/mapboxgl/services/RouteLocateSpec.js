@@ -88,7 +88,7 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
             }
         };
         var routeLine = LineGeometryData;
-        var routeLocatorParameters_line = new SuperMap.RouteCalculateMeasureParameters({
+        var routeLocatorParameters_line = new SuperMap.RouteLocatorParameters({
             "sourceRoute": routeLine,
             "type": "LINE",
             "startMeasure": 1123,
