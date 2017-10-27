@@ -1,6 +1,6 @@
 require('../../../../src/common/overlay/levelRenderer/Color');
 
-describe('testColor', function () {
+describe('Color', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -37,7 +37,6 @@ describe('testColor', function () {
         expect(JSON.stringify(init.palette)).toBe(`["#ff9277"," #dddd00"," #ffc877"," #bbe3ff"," #d5ffbb","#bbbbff"," #ddb000"," #b0dd00"," #e2bbff"," #ffbbe3","#ff7777"," #ff9900"," #83dd00"," #77e3ff"," #778fff","#c877ff"," #ff77ab"," #ff6600"," #aa8800"," #77c7ff","#ad77ff"," #ff77ff"," #dd0083"," #777700"," #00aa00","#0088aa"," #8400dd"," #aa0088"," #dd0000"," #772e00"]`);
     });
 
-
     it("getColor", function () {
         var idx = 1;
         var userPalete = ['#ff9277', '#dddd00'];
@@ -47,7 +46,6 @@ describe('testColor', function () {
         expect(result).not.toBeNull();
         expect(result).toBe('#dddd00');
     });
-
 
     it("getHighlightColor", function () {
         var userHighlightColor = '#e43';
@@ -64,7 +62,6 @@ describe('testColor', function () {
         expect(init.getHighlightColor()).toBe('#e43');
     });
 
-
     it("resetHighlight", function () {
         var userHighlightColor = '#e43';
         var init = new SuperMap.LevelRenderer.Tool.Color();
@@ -72,7 +69,6 @@ describe('testColor', function () {
         init.resetHighlight();
         expect(init.getHighlightColor()).toBe('rgba(0,0,255,1)');
     });
-
 
     it("getRadialGradient", function () {
         var x0 = 75, y0 = 50, r0 = 5, x1 = 90, y1 = 60, r1 = 100,
@@ -84,7 +80,6 @@ describe('testColor', function () {
         expect(result.__nonRecursion).toBeTruthy();
     });
 
-
     it("getLinearGradient", function () {
         var x0 = 75, y0 = 50, r0 = 5, x1 = 90, y1 = 60, r1 = 100,
             colorList = [[0, 'red'], [1 / 6, 'orange'], [2 / 6, 'yellow'], [3 / 6, 'green'], [4 / 6, 'aqua'], [5 / 6, 'blue'], [1, 'purple']];
@@ -94,7 +89,6 @@ describe('testColor', function () {
         expect(result instanceof CanvasGradient).toBeTruthy();
         expect(result.__nonRecursion).toBeTruthy();
     });
-
 
     it("getStepColors", function () {
         var start = 'red', end = 'green', step = 6;
@@ -114,7 +108,6 @@ describe('testColor', function () {
         expect(result.toString()).toBe('rgba(255,255,0,1),rgba(255,212,0,1),rgba(255,170,0,1),rgba(255,127,0,1),rgba(255,85,0,1),rgba(255,42,0,1),rgba(255,0,0,1)');
     });
 
-
     it("toColor_rgb", function () {
         var data = [0, 191, 255, 0.5], format = 'rgb';
         var init = new SuperMap.LevelRenderer.Tool.Color();
@@ -123,7 +116,6 @@ describe('testColor', function () {
         expect(result).toBe("rgb(0,191,255)");
     });
 
-
     it("toColor_hsl", function () {
         var data = [0, 191, 255, 0.5], format = 'hsl';
         var init = new SuperMap.LevelRenderer.Tool.Color();
@@ -131,7 +123,6 @@ describe('testColor', function () {
         expect(result).not.toBeNull();
         expect(result).toBe("hsl(0,191%,255%)");
     });
-
 
     it("toArray", function () {
         var color = 'red';
@@ -157,7 +148,6 @@ describe('testColor', function () {
         expect(result).not.toBeNull();
         expect(result).toBe('hsb(0,100%,100%)');
     });
-
 
     it("convert_format_hsl", function () {
         var color = 'red', format = "hsl";
@@ -204,14 +194,12 @@ describe('testColor', function () {
         expect(result).toBe('rgb(127,255,170)');
     });
 
-
     it("toHex", function () {
         var color = "red";
         var init = new SuperMap.LevelRenderer.Tool.Color();
         var result = init.toHex(color);
         expect(result).toBe('#ff0000');
     });
-
 
     it("toHSVA", function () {
         var color = "red";
@@ -262,7 +250,6 @@ describe('testColor', function () {
         expect(result).toBe('red');
     });
 
-
     it("trim", function () {
         var color = "#e4 32e 2d";
         var init = new SuperMap.LevelRenderer.Tool.Color();
@@ -270,14 +257,12 @@ describe('testColor', function () {
         expect(result).toBe('#e432e2d');
     });
 
-
     it("normalize", function () {
         var color = "#e4 32e 2d ";
         var init = new SuperMap.LevelRenderer.Tool.Color();
         var result = init.normalize(color);
         expect(result).toBe('#e432e2d')
     });
-
 
     it("lift", function () {
         var color = "#00BFFF";
@@ -311,7 +296,6 @@ describe('testColor', function () {
         expect(result).toBe('rgb(37,143,41)');
     });
 
-
     it("reverse_errorFormat_color", function () {
         var color = {'red': "#e43"};
         var init = new SuperMap.LevelRenderer.Tool.Color();
@@ -319,7 +303,6 @@ describe('testColor', function () {
         expect(result).not.toBeNull();
         expect(JSON.stringify(result)).toBe('{"red":"#e43"}');
     });
-
 
     it("mix", function () {
         var color1 = "#DA70D6";
@@ -331,7 +314,6 @@ describe('testColor', function () {
         expect(result).toBe('rgb(109,152,235)');
     });
 
-
     it("mix_errorFormat_color", function () {
         var color1 = "#DA70D6";
         var color2 = {'red': "#e43"};
@@ -340,7 +322,6 @@ describe('testColor', function () {
         var result = init.mix(color1, color2, weight);
         expect(result).toBe('#DA70D6');
     });
-
 
     it("mix_weightTObe_undefined", function () {
         var color1 = "#DA70D6";
@@ -351,7 +332,6 @@ describe('testColor', function () {
         expect(result).toBe('rgb(109,152,235)');
     });
 
-
     it("random", function () {
         var init = new SuperMap.LevelRenderer.Tool.Color();
         var result = init.random();
@@ -360,14 +340,12 @@ describe('testColor', function () {
         expect(toarry.length).toBeGreaterThanOrEqual(3);
     });
 
-
     it("alpha", function () {
         var color = '#DA70D6', a = 0.5;
         var init = new SuperMap.LevelRenderer.Tool.Color();
         var result = init.alpha(color, a);
         expect(result).toBe('rgba(218,112,214,0.5000)');
     });
-
 
     it("alpha_errorFormat_color", function () {
         var color = {"red": "#e43"}, a = 0.5;
@@ -377,14 +355,12 @@ describe('testColor', function () {
         expect(JSON.stringify(result)).toBe('{"red":"#e43"}');
     });
 
-
     it("alpha_a_TObe_zero", function () {
         var color = '#DA70D6', a = null;
         var init = new SuperMap.LevelRenderer.Tool.Color();
         var result = init.alpha(color, a);
         expect(result).toBe('rgba(218,112,214,1)');
     });
-
 
     it("_HSV_2_RGB_with_S_toBe_zero", function () {
         var data = [1.0, 0.0, 1.0];
@@ -493,7 +469,6 @@ describe('testColor', function () {
         expect(result.toString()).toBe("120.00000000000001,9.090909090909086,0.2156862745098039");
     });
 
-
     it("_RGB_2_HSL_B_is_max", function () {
         var data = [0.5, 0.5, 0.6];
         var init = new SuperMap.LevelRenderer.Tool.Color();
@@ -502,6 +477,4 @@ describe('testColor', function () {
         expect(result instanceof Array).toBeTruthy();
         expect(result.toString()).toBe("240,9.090909090909086,0.2156862745098039");
     });
-
-
 });

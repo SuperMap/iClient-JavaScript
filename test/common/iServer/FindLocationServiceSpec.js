@@ -20,7 +20,7 @@ function findLocationServiceFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-describe('testFindLocationService_processAsync', function () {
+describe('FindLocationService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -30,9 +30,8 @@ describe('testFindLocationService_processAsync', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('basicTest', function (done) {
+    it('processAsync:default', function (done) {
         var expectedSupplyCenterCount = 1,
-//        nodeDemandField = "Demand",
             turnWeightField = "TurnCost",
             weightName = "length";
         var supplyCenterType_OPTIONALCENTER = SuperMap.SupplyCenterType.OPTIONALCENTER;
@@ -54,14 +53,12 @@ describe('testFindLocationService_processAsync', function () {
         var parameter = new SuperMap.FindLocationParameters({
             expectedSupplyCenterCount: expectedSupplyCenterCount,
             isFromCenter: false,
-//            nodeDemandField: nodeDemandField,
             supplyCenters: supplyCenters,
             turnWeightField: turnWeightField,
             weightName: weightName
         });
         findLocationService = initFindLocationService_RegisterListener();
         findLocationService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
@@ -76,7 +73,6 @@ describe('testFindLocationService_processAsync', function () {
                 expect(analystResult.demandResults.features[0].properties.demandID).toEqual(885);
                 expect(analystResult.demandResults.features[0].properties.isEdge).toBeFalsy();
                 expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(1358);
-
                 expect(analystResult.supplyResults).not.toBeNull();
                 expect(analystResult.supplyResults.type).toEqual("FeatureCollection");
                 expect(analystResult.supplyResults.features).not.toBeNull();
@@ -107,7 +103,7 @@ describe('testFindLocationService_processAsync', function () {
     });
 
     //isFromCenter为true的情况
-    it('isFromCenter', function (done) {
+    it('processAsync_isFromCenter:true', function (done) {
         var expectedSupplyCenterCount = 1;
         // var nodeDemandField = "Demand";
         var turnWeightField = "TurnCost";
@@ -119,7 +115,6 @@ describe('testFindLocationService_processAsync', function () {
                 nodeID: 139,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
-
             }),
             new SuperMap.SupplyCenter({
                 maxWeight: 500,
@@ -131,14 +126,12 @@ describe('testFindLocationService_processAsync', function () {
         var parameter = new SuperMap.FindLocationParameters({
             expectedSupplyCenterCount: expectedSupplyCenterCount,
             isFromCenter: true,
-            // nodeDemandField: nodeDemandField,
             supplyCenters: supplyCenters,
             turnWeightField: turnWeightField,
             weightName: weightName
         });
         findLocationService = initFindLocationService_RegisterListener();
         findLocationService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
@@ -153,7 +146,6 @@ describe('testFindLocationService_processAsync', function () {
                 expect(analystResult.demandResults.features[0].properties.demandID).toEqual(885);
                 expect(analystResult.demandResults.features[0].properties.isEdge).toBeFalsy();
                 expect(analystResult.demandResults.features[0].properties.supplyCenter.nodeID).toEqual(1358);
-
                 expect(analystResult.supplyResults).not.toBeNull();
                 expect(analystResult.supplyResults.type).toEqual("FeatureCollection");
                 expect(analystResult.supplyResults.features).not.toBeNull();
@@ -168,7 +160,6 @@ describe('testFindLocationService_processAsync', function () {
                 expect(analystResult.supplyResults.features[0].properties.nodeID).toEqual(1358);
                 expect(analystResult.supplyResults.features[0].properties.totalWeights).toEqual(14194);
                 expect(analystResult.supplyResults.features[0].properties.type).toEqual("OPTIONALCENTER");
-
                 findLocationService.destroy();
                 expect(findLocationService.EVENT_TYPES).toBeNull();
                 expect(findLocationService.events).toBeNull();
@@ -185,9 +176,8 @@ describe('testFindLocationService_processAsync', function () {
     });
 
     //参数错误
-    it('parameterWrong', function (done) {
+    it('processAsync_parameterWrong', function (done) {
         var expectedSupplyCenterCount = 1,
-//        nodeDemandField = "Demand",
             turnWeightField = "TurnCost1",
             weightName = "length";
         var supplyCenterType_OPTIONALCENTER = SuperMap.SupplyCenterType.OPTIONALCENTER;
@@ -204,19 +194,16 @@ describe('testFindLocationService_processAsync', function () {
                 nodeID: 1358,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
-
             })];
         var parameter = new SuperMap.FindLocationParameters({
             expectedSupplyCenterCount: expectedSupplyCenterCount,
             isFromCenter: true,
-//            nodeDemandField: nodeDemandField,
             supplyCenters: supplyCenters,
             turnWeightField: turnWeightField,
             weightName: weightName
         });
         var findLocationService = initFindLocationService_RegisterListener();
         findLocationService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -237,10 +224,9 @@ describe('testFindLocationService_processAsync', function () {
     });
 
     //参数为空
-    it('parameterNull', function (done) {
+    it('processAsync_parameterNull', function (done) {
         var findLocationService = initFindLocationService_RegisterListener();
         findLocationService.processAsync();
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);

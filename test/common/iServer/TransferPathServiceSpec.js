@@ -5,59 +5,61 @@ var analystEventArgsSystem = null;
 
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
 var options = {
-    eventListeners:{"processCompleted": succeed,
-        "processFailed": failed}
+    eventListeners: {
+        "processCompleted": succeed,
+        "processFailed": failed
+    }
 };
 function initTransferPathService() {
     return new SuperMap.TransferPathService(trafficTransferURL, options);
 }
-function succeed(event){
+function succeed(event) {
     analystEventArgsSystem = event;
 }
-function failed(event){
+function failed(event) {
     serviceFailedEventArgsSystem = event;
 }
 
-describe('testTransferPathService_processAsync',function(){
+describe('TransferPathService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('noParams',function(done){
+    it('processAsync_noParams', function (done) {
         var service = initTransferPathService();
         service.processAsync();
-        setTimeout(function(){
-          try{
-              expect(typeof(service.processAsync()) === "undefined").toBeTruthy();
-              service.destroy();
-              done();
-          }catch (exception){
-              expect(false).toBeTruthy();
-              console.log("TransferPathService_" + exception.name + ":" + exception.message);
-              service.destroy();
-              done();
-          }
-        },1500)
+        setTimeout(function () {
+            try {
+                expect(typeof(service.processAsync()) === "undefined").toBeTruthy();
+                service.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("TransferPathService_" + exception.name + ":" + exception.message);
+                service.destroy();
+                done();
+            }
+        }, 1500)
     });
 
-    it('success',function(done){
+    it('success:processAsync', function (done) {
         var service = initTransferPathService();
         var params = new SuperMap.TransferPathParameters({
             transferLines: [
-                {"lineID":27,"startStopIndex":3,"endStopIndex":4},
-                {"lineID":12,"startStopIndex":5,"endStopIndex":9}
+                {"lineID": 27, "startStopIndex": 3, "endStopIndex": 4},
+                {"lineID": 12, "startStopIndex": 5, "endStopIndex": 9}
             ],
             points: [175, 164]
         });
         service.processAsync(params);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var result = analystEventArgsSystem.result;
                 expect(result).not.toBeNull();
                 expect(result.succeed).toBeTruthy();
@@ -69,13 +71,13 @@ describe('testTransferPathService_processAsync',function(){
                 expect(service.eventListeners).toBeNull();
                 params.destroy();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("TransferPathService_" + exception.name + ":" + exception.message);
                 service.destroy();
                 params.destroy();
                 done();
             }
-        },1500);
+        }, 1500);
     })
 });

@@ -1,5 +1,5 @@
 require('../../../src/common/security/SecurityManager');
-describe('testSecurityManager', function () {
+describe('SecurityManager', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -11,7 +11,7 @@ describe('testSecurityManager', function () {
 
     it("registerServers", function () {
         var serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
-            server: "http://localhost:8092/iportal",
+            server: "http://localhost:8092/iportal"
         });
         SuperMap.SecurityManager.registerServers([serverInfo]);
         expect(JSON.stringify(SuperMap.SecurityManager.servers[serverInfo.server])).toBe(JSON.stringify(serverInfo));
@@ -31,7 +31,6 @@ describe('testSecurityManager', function () {
         var result = SuperMap.SecurityManager.getToken('http://localhost:8092/iportal');
         expect(result).not.toBeNull();
         expect(result).toBe(token);
-
     });
 
     it("registerKey", function () {
@@ -46,7 +45,7 @@ describe('testSecurityManager', function () {
     it("getServerInfo", function () {
         var url = "http://localhost:8093";
         serverInfo = new SuperMap.ServerInfo(SuperMap.ServerType.IPORTAL, {
-            server: url,
+            server: url
         });
         SuperMap.SecurityManager.registerServers(serverInfo);
         var result = SuperMap.SecurityManager.getServerInfo(url);
@@ -84,7 +83,7 @@ describe('testSecurityManager', function () {
 
     it("loginiPortal", function () {
         var url = 'http://localhost:8092';
-        SuperMap.SecurityManager.loginiPortal(url, "admin","admin");
+        SuperMap.SecurityManager.loginiPortal(url, "admin", "admin");
     });
 
     it("destroyAllCredentials", function () {
@@ -107,5 +106,4 @@ describe('testSecurityManager', function () {
         SuperMap.SecurityManager.destroyKey(id);
         expect(SuperMap.SecurityManager.getKey(id)).toBeUndefined();
     });
-
 });

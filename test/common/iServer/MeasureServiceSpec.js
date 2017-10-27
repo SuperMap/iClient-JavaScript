@@ -9,7 +9,6 @@ var worldMapURL = mapServiceURL + "World Map";
 function initMeasureService() {
     return new SuperMap.MeasureService(worldMapURL);
 }
-
 //注册监听器对象，面积量算
 function initMeasureService_RegisterListener() {
     return new SuperMap.MeasureService(worldMapURL, {
@@ -27,7 +26,7 @@ function measureFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-describe('testMeasureService_processAsync', function () {
+describe('MeasureService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -39,7 +38,7 @@ describe('testMeasureService_processAsync', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('distance', function (done) {
+    it('processAsync_distance', function (done) {
         var measureService = initMeasureService();
         var points = [new SuperMap.Geometry.Point(0, 0), new SuperMap.Geometry.Point(10, 10)];
         var geometry = new SuperMap.Geometry.LineString(points);
@@ -48,7 +47,6 @@ describe('testMeasureService_processAsync', function () {
         expect(measureService.url).toEqual(worldMapURL);
         measureService.events.on({'processCompleted': measureCompleted, 'processFailed': measureFailed});
         measureService.processAsync(measureParameters);
-
         setTimeout(function () {
             try {
                 var measureResult = measureEventArgsSystem.result;
@@ -76,7 +74,7 @@ describe('testMeasureService_processAsync', function () {
     });
 
     //反向测试用例，输入点进行距离量算
-    it('distance_failed0', function (done) {
+    it('fail0:processAsync_distance', function (done) {
         var measureService = initMeasureService();
         var point = new SuperMap.Geometry.Point(0, 0);
         var measureParameters = new SuperMap.MeasureParameters(point);
@@ -108,7 +106,7 @@ describe('testMeasureService_processAsync', function () {
     });
 
     //反向测试用例，输入距离单位枚举值错误
-    it('distance_failed1', function (done) {
+    it('fail1:processAsync_distance', function (done) {
         var measureService = initMeasureService();
         var points = [new SuperMap.Geometry.Point(0, 0), new SuperMap.Geometry.Point(0, 0)];
         var geometry = new SuperMap.Geometry.LineString(points);
@@ -142,7 +140,7 @@ describe('testMeasureService_processAsync', function () {
     });
 
     //area
-    it('area', function (done) {
+    it('processAsync_area', function (done) {
         var measureService = initMeasureService_RegisterListener();
         var points = [
             new SuperMap.Geometry.Point(0, 0),
@@ -175,7 +173,7 @@ describe('testMeasureService_processAsync', function () {
     });
 
     //反向测试用例，传入的点无法构成面
-    it('area_failed0', function (done) {
+    it('fail:processAsync_area', function (done) {
         var measureService = initMeasureService_RegisterListener();
         var points = [
             new SuperMap.Geometry.Point(0, 0),
@@ -207,7 +205,7 @@ describe('testMeasureService_processAsync', function () {
     });
 
     //反向测试用例，传入线进行面积量算
-    it('area_failed1', function (done) {
+    it('fail1_processAsync_area', function (done) {
         var measureService = initMeasureService_RegisterListener();
         var points = [new SuperMap.Geometry.Point(0, 0), new SuperMap.Geometry.Point(10, 10)];
         var geometry = new SuperMap.Geometry.LineString(points);
@@ -236,7 +234,7 @@ describe('testMeasureService_processAsync', function () {
     });
 
     //反向测试用例，地图名错误，无法调用回调函数
-    it('area_failed2', function (done) {
+    it('fail2_processAsync_area', function (done) {
         var measureService = new SuperMap.MeasureService(worldMapURL + "_Error", {measureMode: SuperMap.MeasureMode.AREA});
         var points = [new SuperMap.Geometry.Point(0, 0), new SuperMap.Geometry.Point(10, 10), new SuperMap.Geometry.Point(10, 0)];
         //服务端缺陷,new SuperMap.Geometry.Point(20, 20),new SuperMap.Geometry.Point(0, 0)
@@ -265,52 +263,5 @@ describe('testMeasureService_processAsync', function () {
             }
         }, 1500);
     });
-
-
-    /*  与iclient8不同，暂时忽略
-     //反向测试用例，geometry为空
-     it('distance_failed2',function(done){
-     var measureService = initMeasureService();
-     var geometry = null;
-     var measureParameters = new SuperMap.MeasureParameters(geometry);
-     measureService.events.on({
-     'processCompleted':measureCompleted,
-     'processFailed':measureFailed
-     });
-     measureService.processAsync(measureParameters);
-
-     setTimeout(function() {
-     try{
-     expect(measureEventArgsSystem).not.toBeNull();
-     expect(serviceFailedEventArgsSystem).not.toBeNull();
-     measureService.destroy();
-     done();
-     }catch(exception){
-     alert(exception.name + ":" + exception.message);
-     measureService.destroy();
-     done();
-     }
-     },1500);
-     });
-
-     asyncTest("TestMeasureService_serverGeometry_null",function(){
-     var measureService = initMeasureService_RegisterListener();
-     //var points = new Array(new SuperMap.Geometry.Point(0, 0),new SuperMap.Geometry.Point(10, 10),new SuperMap.Geometry.Point(10, 0),new SuperMap.Geometry.Point(0, 0));
-     //var geometry = new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points));
-     var measureParameters = new SuperMap.MeasureParameters();
-     measureService.processAsync(measureParameters);
-
-     setTimeout(function() {
-     try{
-     var measureResult=measureService.lastResult;
-     equal(measureResult,null,"measureService.lastResult");
-     start();
-     }catch(exception){
-     ok(false,"exception occcurs,message is:"+exception.message)
-     start();
-     }
-     },1500);
-     });
-     */
 });
 

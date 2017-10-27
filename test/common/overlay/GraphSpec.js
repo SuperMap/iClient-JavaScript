@@ -1,6 +1,6 @@
 require('../../../src/common/overlay/Graph');
 
-describe('common_Graph', function () {
+describe('Graph', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -10,8 +10,7 @@ describe('common_Graph', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-
-    it('constructor_test', function () {
+    it('constructor', function () {
         var geometry = new SuperMap.Geometry.Point(-115, 10);
         var attributes = {
             'SMID': 1,
@@ -60,7 +59,6 @@ describe('common_Graph', function () {
             origonPointOffset: [0, 0],
             fields: ["SMID", "CAPITAL_CH"],
         };
-
         var graph = new SuperMap.Feature.Theme.Graph(data, layer, fields, setting, options, lonlat);
         expect(graph).not.toBeNull();
         expect(graph.RelativeCoordinate).toBe(false);
@@ -87,7 +85,6 @@ describe('common_Graph', function () {
             expect(graph.setting.dataViewBoxParameter[j]).toEqual(5);
         }
         expect(graph.setting.decimalNumber).toEqual(setting.decimalNumber);
-
         graph.destroy();
         expect(graph.width).toBeNull();
         expect(graph.height).toBeNull();

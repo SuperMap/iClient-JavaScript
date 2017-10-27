@@ -9,46 +9,44 @@ function initQueryByDistanceService() {
 }
 var options = {
     eventListeners: {
-        'processFailed':QueryByDistanceFailed,
-        'processCompleted':QueryByDistanceCompleted
+        'processFailed': QueryByDistanceFailed,
+        'processCompleted': QueryByDistanceCompleted
     }
 };
 //服务初始化时注册事件监听函数
 function initQueryByDistanceService_RegisterListener() {
     return new SuperMap.QueryByDistanceService(worldMapURL, options);
 }
-function QueryByDistanceFailed(serviceFailedEventArgs){
-    serviceFailedEventArgsSystem=serviceFailedEventArgs;
+function QueryByDistanceFailed(serviceFailedEventArgs) {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
-function QueryByDistanceCompleted(serviceCompletedEventArgs){
-    serviceCompletedEventArgsSystem=serviceCompletedEventArgs;
+function QueryByDistanceCompleted(serviceCompletedEventArgs) {
+    serviceCompletedEventArgsSystem = serviceCompletedEventArgs;
 }
 
-describe('testQueryByBoundsService_constructor',function(){
-    it('constructor and destroy',function(){
-        var queryByDistanceService = initQueryByDistanceService();
-        expect(queryByDistanceService).not.toBeNull();
-        expect(queryByDistanceService.url).toEqual(worldMapURL+ "/queryResults.json?");
-        queryByDistanceService.destroy();
-        expect(queryByDistanceService.EVENT_TYPES).toBeNull();
-        expect(queryByDistanceService.events).toBeNull();
-        expect(queryByDistanceService.returnContent).toBeNull();
-    })
-});
-
-describe('testQueryByBoundsService_processAsync',function(){
+describe('QueryByBoundsService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceFailedEventArgsSystem = null;
         serviceCompletedEventArgsSystem = null;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('returnContent',function(done){
+    it('constructor, destroy', function () {
+        var queryByDistanceService = initQueryByDistanceService();
+        expect(queryByDistanceService).not.toBeNull();
+        expect(queryByDistanceService.url).toEqual(worldMapURL + "/queryResults.json?");
+        queryByDistanceService.destroy();
+        expect(queryByDistanceService.EVENT_TYPES).toBeNull();
+        expect(queryByDistanceService.events).toBeNull();
+        expect(queryByDistanceService.returnContent).toBeNull();
+    });
+
+    it('processAsync_returnContent:true', function (done) {
         var queryByDistanceService = initQueryByDistanceService_RegisterListener();
         var queryByDistanceParameters = new SuperMap.QueryByDistanceParameters({
             customParams: null,
@@ -63,9 +61,8 @@ describe('testQueryByBoundsService_processAsync',function(){
         });
         queryByDistanceParameters.holdTime = 10;
         queryByDistanceService.processAsync(queryByDistanceParameters);
-
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
                 expect(queryResult.type).toBe("FeatureCollection");
@@ -83,7 +80,7 @@ describe('testQueryByBoundsService_processAsync',function(){
         }, 2000);
     });
 
-    it('pass',function(done){
+    it('processAsync_returnCotent:false', function (done) {
         var queryByDistanceService = initQueryByDistanceService_RegisterListener();
         var queryByDistanceParameters = new SuperMap.QueryByDistanceParameters({
             customParams: null,
@@ -100,8 +97,7 @@ describe('testQueryByBoundsService_processAsync',function(){
         queryByDistanceParameters.startRecord = 0;
         queryByDistanceParameters.holdTime = 10;
         queryByDistanceService.processAsync(queryByDistanceParameters);
-
-        setTimeout(function() {
+        setTimeout(function () {
             try {
                 var queryResult = serviceCompletedEventArgsSystem.result;
                 expect(queryResult).not.toBeNull();
@@ -122,7 +118,7 @@ describe('testQueryByBoundsService_processAsync',function(){
         }, 2000);
     });
 
-    it('fail',function(done){
+    it('fail:processAsync', function (done) {
         var queryByDistanceService = initQueryByDistanceService_RegisterListener();
         var queryByDistanceParameters = new SuperMap.QueryByDistanceParameters({
             customParams: null,
@@ -131,18 +127,17 @@ describe('testQueryByBoundsService_processAsync',function(){
             queryOption: SuperMap.QueryOption.ATTRIBUTE,
             queryParams: new Array(),
             geometry: new SuperMap.Geometry.Point(-50, -10),
-            distance:20
+            distance: 20
         });
         queryByDistanceParameters.startRecord = 0;
         queryByDistanceParameters.holdTime = 10;
-        queryByDistanceService.events.on({ 'processFailed': queryFailed });
+        queryByDistanceService.events.on({'processFailed': queryFailed});
         queryByDistanceService.processAsync(queryByDistanceParameters);
-
         function queryFailed(e) {
             failedResult = e;
         }
 
-        setTimeout(function() {
+        setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
@@ -159,7 +154,6 @@ describe('testQueryByBoundsService_processAsync',function(){
                 done();
             }
         }, 2000);
-
     })
 });
 

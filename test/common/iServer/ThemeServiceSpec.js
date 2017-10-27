@@ -2,13 +2,13 @@
 
 var themeEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
-var mapServiceURL= GlobeParameter.mapServiceURL,
+var mapServiceURL = GlobeParameter.mapServiceURL,
     themeURL = mapServiceURL + "World Map";
 
-function themeCompleted(themeEventArgs){
+function themeCompleted(themeEventArgs) {
     themeEventArgsSystem = themeEventArgs;
 }
-function themeFailed(serviceFailedEventArgs){
+function themeFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 function initThemeService() {
@@ -16,30 +16,32 @@ function initThemeService() {
 }
 function initThemeService_RegisterListener() {
     return new SuperMap.ThemeService(themeURL,
-        {eventListeners: {
-            "processCompleted": themeCompleted,
-            "processFailed": themeFailed
-        }});
+        {
+            eventListeners: {
+                "processCompleted": themeCompleted,
+                "processFailed": themeFailed
+            }
+        });
 }
 
-describe('testThemeService_processAsync', function () {
+describe('ThemeService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('Range',function(done){
+    it('processAsync_Range', function (done) {
         var themeService = initThemeService();
         themeRange = new SuperMap.ThemeRange({
             rangeExpression: "POP_1994",
             rangeParameter: 3,
             rangeMode: SuperMap.RangeMode.CUSTOMINTERVAL
         });
-        style1 =  new SuperMap.ServerStyle({
+        style1 = new SuperMap.ServerStyle({
             fillForeColor: new SuperMap.ServerColor(250, 105, 25),
             lineWidth: 0.05
         });
@@ -50,7 +52,7 @@ describe('testThemeService_processAsync', function () {
             caption: "item1",
             end: 8609844.5
         });
-        style2 =  new SuperMap.ServerStyle({
+        style2 = new SuperMap.ServerStyle({
             fillForeColor: new SuperMap.ServerColor(114, 15, 205),
             lineWidth: 0.02
         });
@@ -73,7 +75,7 @@ describe('testThemeService_processAsync', function () {
         });
         themeRange.items = new Array(themeRangeItem1, themeRangeItem2, themeRangeItem3);
         expect(themeService).not.toBeNull();
-        expect(themeService.url).toEqual(themeURL+"/tempLayersSet.json?");
+        expect(themeService.url).toEqual(themeURL + "/tempLayersSet.json?");
         var themeParameters = new SuperMap.ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -83,8 +85,8 @@ describe('testThemeService_processAsync', function () {
         themeService.processAsync(themeParameters);
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -106,7 +108,7 @@ describe('testThemeService_processAsync', function () {
         }, 4000);
     });
 
-    it('Range_1',function(done){
+    it('processAsync_Range_1', function (done) {
         var themeService = initThemeService_RegisterListener();
         themeRange = new SuperMap.ThemeRange({
             rangeExpression: "POP_1994",
@@ -150,8 +152,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -173,7 +175,7 @@ describe('testThemeService_processAsync', function () {
         }, 2000);
     });
 
-    it('Range_UrlLarge',function(done){
+    it('processAsync_Range_UrlLarge', function (done) {
         var themeService = initThemeService();
         themeRange = new SuperMap.ThemeRange({
             rangeExpression: "POP_1994",
@@ -252,7 +254,7 @@ describe('testThemeService_processAsync', function () {
         style6.lineColor = style6.fillForeColor;
         themeRangeIteme6.style = style6;
 
-        themeRange.items = [themeRangeIteme1,themeRangeIteme2,themeRangeIteme3,themeRangeIteme4,themeRangeIteme5,themeRangeIteme6];
+        themeRange.items = [themeRangeIteme1, themeRangeIteme2, themeRangeIteme3, themeRangeIteme4, themeRangeIteme5, themeRangeIteme6];
         var themeParameters = new SuperMap.ThemeParameters({
             datasetNames: new Array("Countries"),
             dataSourceNames: new Array("World"),
@@ -262,8 +264,8 @@ describe('testThemeService_processAsync', function () {
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -285,7 +287,7 @@ describe('testThemeService_processAsync', function () {
         }, 2000);
     });
 
-    it('Graph',function(done){
+    it('processAsync_Graph', function (done) {
         var themeService = initThemeService();
         themeGraph = new SuperMap.ThemeGraph({
             barWidth: 2,
@@ -307,16 +309,16 @@ describe('testThemeService_processAsync', function () {
             })
         });
         uniformStyle1 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(120,120,110)
+            fillForeColor: new SuperMap.ServerColor(120, 120, 110)
         });
         uniformStyle2 = new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(250,105,85)
+            fillForeColor: new SuperMap.ServerColor(250, 105, 85)
         });
         themeGraphItem1 = new SuperMap.ThemeGraphItem({
-            caption: "SQMI", graphExpression:"SQMI",uniformStyle:uniformStyle1
+            caption: "SQMI", graphExpression: "SQMI", uniformStyle: uniformStyle1
         });
         themeGraphItem2 = new SuperMap.ThemeGraphItem({
-            caption: "SQKM", graphExpression:"SQKM",uniformStyle:uniformStyle2
+            caption: "SQKM", graphExpression: "SQKM", uniformStyle: uniformStyle2
         });
         themeGraph.items = new Array(themeGraphItem1, themeGraphItem2);
         var themeParameters = new SuperMap.ThemeParameters({
@@ -328,8 +330,8 @@ describe('testThemeService_processAsync', function () {
         themeService.processAsync(themeParameters);
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -351,7 +353,7 @@ describe('testThemeService_processAsync', function () {
         }, 2000);
     });
 
-    it('JoinItem',function(done){
+    it('processAsync_JoinItem', function (done) {
         var themeService = initThemeService_RegisterListener();
         joinItem = new SuperMap.JoinItem({
             foreignTableName: "Capitals",
@@ -414,8 +416,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -437,29 +439,29 @@ describe('testThemeService_processAsync', function () {
         }, 2000);
     });
 
-    it('Unique',function(done){
+    it('processAsync_Unique', function (done) {
         var themeService = initThemeService();
         themeUnique = new SuperMap.ThemeUnique({
             uniqueExpression: "CONTINENT"
         });
-        style1 =  new SuperMap.ServerStyle({
+        style1 = new SuperMap.ServerStyle({
             fillForeColor: new SuperMap.ServerColor(250, 105, 25),
             lineWidth: 0.05
         });
         themeUniqueItem1 = new SuperMap.ThemeUniqueItem({
             style: style1,
             visible: true,
-            unique:  "亚洲",
+            unique: "亚洲",
             caption: "亚洲"
         });
-        style2 =  new SuperMap.ServerStyle({
+        style2 = new SuperMap.ServerStyle({
             fillForeColor: new SuperMap.ServerColor(114, 15, 205),
             lineWidth: 0.02
         });
         themeUniqueItem2 = new SuperMap.ThemeUniqueItem({
             style: style2,
             visible: true,
-            unique:  "欧洲",
+            unique: "欧洲",
             caption: "欧洲"
         });
         themeUniqueItem3 = new SuperMap.ThemeUniqueItem({
@@ -468,7 +470,7 @@ describe('testThemeService_processAsync', function () {
                 lineWidth: 0.01
             }),
             visible: true,
-            unique:  "非洲",
+            unique: "非洲",
             caption: "非洲"
         });
         themeUniqueItem4 = new SuperMap.ThemeUniqueItem({
@@ -477,7 +479,7 @@ describe('testThemeService_processAsync', function () {
                 lineWidth: 0.01
             }),
             visible: true,
-            unique:  "北美洲",
+            unique: "北美洲",
             caption: "北美洲"
         });
         //南美洲默认风格
@@ -492,8 +494,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -515,12 +517,12 @@ describe('testThemeService_processAsync', function () {
         }, 2000);
     });
 
-    it('Unique_0',function(done){
+    it('processAsync_Unique_0', function (done) {
         var themeService = initThemeService();
         themeUnique = new SuperMap.ThemeUnique({
             uniqueExpression: "SmID"
         });
-        style1 =  new SuperMap.ServerStyle({
+        style1 = new SuperMap.ServerStyle({
             fillForeColor: new SuperMap.ServerColor(250, 105, 25),
             lineWidth: 0.05,
             markerSize: 10,
@@ -529,10 +531,10 @@ describe('testThemeService_processAsync', function () {
         themeUniqueItem1 = new SuperMap.ThemeUniqueItem({
             style: style1,
             visible: true,
-            unique:  "1",
+            unique: "1",
             caption: "ARCTIC  OCEAN"
         });
-        style2 =  new SuperMap.ServerStyle({
+        style2 = new SuperMap.ServerStyle({
             fillForeColor: new SuperMap.ServerColor(114, 15, 205),
             lineWidth: 0.02,
             markerSize: 14,
@@ -541,7 +543,7 @@ describe('testThemeService_processAsync', function () {
         themeUniqueItem2 = new SuperMap.ThemeUniqueItem({
             style: style2,
             visible: true,
-            unique:  "2",
+            unique: "2",
             caption: "PACIFIC   OCEAN"
         });
         themeUniqueItem3 = new SuperMap.ThemeUniqueItem({
@@ -552,7 +554,7 @@ describe('testThemeService_processAsync', function () {
                 markerSymbolID: 66
             }),
             visible: true,
-            unique:  "3",
+            unique: "3",
             caption: "ATLANTIC   OCEAN"
         });
         themeUniqueItem4 = new SuperMap.ThemeUniqueItem({
@@ -563,7 +565,7 @@ describe('testThemeService_processAsync', function () {
                 markerSymbolID: 11
             }),
             visible: true,
-            unique:  "4",
+            unique: "4",
             caption: "INDIAN OCEAN"
         });
         //南美洲默认风格
@@ -578,8 +580,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -602,12 +604,12 @@ describe('testThemeService_processAsync', function () {
     });
 
     //统一风格标签专题图
-    it('Label_uniformStyle',function(done){
+    it('processAsync_Label_uniformStyle', function (done) {
         var themeService = initThemeService();
         var themeLabel = new SuperMap.ThemeLabel({
             labelExpression: "Pop_1994",
             labelOverLengthMode: SuperMap.LabelOverLengthMode.NEWLINE,
-            maxLabelLength:6,
+            maxLabelLength: 6,
             background: new SuperMap.ThemeLabelBackground({
                 backStyle: new SuperMap.ServerStyle({
                     fillBackOpaque: true,
@@ -637,8 +639,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -661,14 +663,14 @@ describe('testThemeService_processAsync', function () {
     });
 
     //分段标签专题图
-    it('Label_range_1',function(done){
+    it('processAsync_Label_range_1', function (done) {
         var themeService = initThemeService();
         var themeLabel = new SuperMap.ThemeLabel({
             //alongLine: false,
             labelExpression: "smid",//smid    COUNTRY
             rangeExpression: "smid",
             labelOverLengthMode: SuperMap.LabelOverLengthMode.OMIT,
-            maxLabelLength:10,
+            maxLabelLength: 10,
             background: new SuperMap.ThemeLabelBackground({
                 backStyle: new SuperMap.ServerStyle({
                     fillBackOpaque: true,
@@ -680,7 +682,7 @@ describe('testThemeService_processAsync', function () {
                 labelBackShape: SuperMap.LabelBackShape.ELLIPSE
             })
         });
-        style1 =  new SuperMap.ServerTextStyle({
+        style1 = new SuperMap.ServerTextStyle({
             rotation: 10,
             sizeFixed: true,
             foreColor: new SuperMap.ServerColor(250, 15, 25)
@@ -691,7 +693,7 @@ describe('testThemeService_processAsync', function () {
             start: 1,
             end: 40
         });
-        style2 =  new SuperMap.ServerTextStyle({
+        style2 = new SuperMap.ServerTextStyle({
             shadow: true,
             sizeFixed: true,
             foreColor: new SuperMap.ServerColor(114, 15, 205)
@@ -732,8 +734,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -756,14 +758,14 @@ describe('testThemeService_processAsync', function () {
     });
 
     //分段标签专题图
-    it('Label_range_2',function(done){
+    it('processAsync_Label_range_2', function (done) {
         var themeService = initThemeService();
         var themeLabelIteme1 = new SuperMap.ThemeLabelItem();
         themeLabelIteme1.start = 0;
         themeLabelIteme1.end = 59973;
         style1 = new SuperMap.ServerTextStyle();
-        style1.fontHeight =5;
-        style1.fontWidth =5;
+        style1.fontHeight = 5;
+        style1.fontWidth = 5;
         style1.foreColor = new SuperMap.ServerColor();
         style1.foreColor.blue = 232;
         style1.foreColor.green = 227;
@@ -776,8 +778,8 @@ describe('testThemeService_processAsync', function () {
         themeLabelIteme2.start = 59973;
         themeLabelIteme2.end = 1097234;
         style2 = new SuperMap.ServerTextStyle();
-        style2.fontHeight =5;
-        style2.fontWidth =5;
+        style2.fontHeight = 5;
+        style2.fontWidth = 5;
         style2.foreColor = new SuperMap.ServerColor();
         style2.foreColor.blue = 50;
         style2.foreColor.green = 20;
@@ -790,8 +792,8 @@ describe('testThemeService_processAsync', function () {
         themeLabelIteme3.start = 1097234;
         themeLabelIteme3.end = 5245515;
         style3 = new SuperMap.ServerTextStyle();
-        style3.fontHeight =5;
-        style3.fontWidth =5;
+        style3.fontHeight = 5;
+        style3.fontWidth = 5;
         style3.foreColor = new SuperMap.ServerColor();
         style3.foreColor.blue = 255;
         style3.foreColor.green = 95;
@@ -804,8 +806,8 @@ describe('testThemeService_processAsync', function () {
         themeLabelIteme4.start = 5245515;
         themeLabelIteme4.end = 17250390;
         style4 = new SuperMap.ServerTextStyle();
-        style4.fontHeight =5;
-        style4.fontWidth =5;
+        style4.fontHeight = 5;
+        style4.fontWidth = 5;
         style4.foreColor = new SuperMap.ServerColor();
         style4.foreColor.blue = 6;
         style4.foreColor.green = 129;
@@ -818,8 +820,8 @@ describe('testThemeService_processAsync', function () {
         themeLabelIteme5.start = 17250390;
         themeLabelIteme5.end = 894608700;
         style5 = new SuperMap.ServerTextStyle();
-        style5.fontHeight =5;
-        style5.fontWidth =5;
+        style5.fontHeight = 5;
+        style5.fontWidth = 5;
         style5.foreColor = new SuperMap.ServerColor();
         style5.foreColor.blue = 0;
         style5.foreColor.green = 129;
@@ -832,8 +834,8 @@ describe('testThemeService_processAsync', function () {
         themeLabelIteme6.start = 894608700;
         themeLabelIteme6.end = 1.84467E+19;
         style6 = new SuperMap.ServerTextStyle();
-        style6.fontHeight =5;
-        style6.fontWidth =5;
+        style6.fontHeight = 5;
+        style6.fontWidth = 5;
         style6.foreColor = new SuperMap.ServerColor();
         style6.foreColor.blue = 81;
         style6.foreColor.green = 81;
@@ -846,7 +848,7 @@ describe('testThemeService_processAsync', function () {
         var themeLabel = new SuperMap.ThemeLabel();
         themeLabel.labelExpression = "Capital";
         themeLabel.rangeExpression = "Pop_1994";
-        themeLabel.items = [themeLabelIteme1,themeLabelIteme2,themeLabelIteme3,themeLabelIteme4,themeLabelIteme5,themeLabelIteme6];
+        themeLabel.items = [themeLabelIteme1, themeLabelIteme2, themeLabelIteme3, themeLabelIteme4, themeLabelIteme5, themeLabelIteme6];
         themeLabel.text.uniformStyle.sizeFixed = true;
         //专题图参数 ThemeParameters 必设 theme（即以设置好的分段专题图对象）、dataSourceName 和 datasetName
         var themeParameters = new SuperMap.ThemeParameters({
@@ -857,8 +859,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -881,12 +883,12 @@ describe('testThemeService_processAsync', function () {
     });
 
     //矩阵标签专题图
-    it('Label_matrixCells',function(done){
+    it('processAsync_Label_matrixCells', function (done) {
         var themeService = initThemeService(),
             labelThemeOfThemeCell = new SuperMap.ThemeLabel({
                 labelExpression: "Capital",
                 labelOverLengthMode: SuperMap.LabelOverLengthMode.NEWLINE,
-                maxLabelLength:6,
+                maxLabelLength: 6,
                 background: new SuperMap.ThemeLabelBackground({
                     backStyle: new SuperMap.ServerStyle({
                         fillBackOpaque: true,
@@ -910,7 +912,7 @@ describe('testThemeService_processAsync', function () {
         var labelSymbolCell = new SuperMap.LabelSymbolCell({symbolIDField: "60"});
         labelSymbolCell.style = new SuperMap.ServerStyle({markerSize: 5});
         var labelThemeCell = new SuperMap.LabelThemeCell({themeLabel: labelThemeOfThemeCell});
-        var matrixCells = new Array(new Array(labelSymbolCell),new Array(labelThemeCell));
+        var matrixCells = new Array(new Array(labelSymbolCell), new Array(labelThemeCell));
         //var matrixCells = new Array(new Array(labelSymbolCell, labelThemeCell));
         themeLabel.matrixCells = matrixCells;
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
@@ -923,8 +925,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -947,7 +949,7 @@ describe('testThemeService_processAsync', function () {
     });
 
     //使用内存数据制作统一风格标签专题图
-    it('Label__WithMemortData',function(done){
+    it('processAsync_Label__WithMemortData', function (done) {
         var themeService = initThemeService();
         srcData = new Array("亚洲", "欧洲", "非洲", "北美洲", "南美洲");
         targetData = new Array("亚洲国家", "欧洲国家", "非洲国家", "北美洲国家", "南美洲国家");
@@ -955,7 +957,7 @@ describe('testThemeService_processAsync', function () {
         themeLabel = new SuperMap.ThemeLabel({
             labelExpression: "CONTINENT",
             labelOverLengthMode: SuperMap.LabelOverLengthMode.NEWLINE,
-            maxLabelLength:6,
+            maxLabelLength: 6,
             background: new SuperMap.ThemeLabelBackground({
                 backStyle: new SuperMap.ServerStyle({
                     fillBackOpaque: true,
@@ -985,8 +987,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -1009,49 +1011,49 @@ describe('testThemeService_processAsync', function () {
     });
 
     //使用内存数据制作范围分段专题图
-    it('Range_withMemoryData',function(done){
+    it('processAsync_Range_withMemoryData', function (done) {
         var themeService = initThemeService(),
-        themeRange = new SuperMap.ThemeRange({
-            rangeExpression: "POP_1994",
-            rangeParameter: 3,
-            rangeMode: SuperMap.RangeMode.CUSTOMINTERVAL
-        }),
-        style1 =  new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(250, 105, 25),
-            lineWidth: 0.05
-        }),
-        themeRangeItem1 = new SuperMap.ThemeRangeItem({
-            style: style1,
-            visible: true,
-            start: -5,
-            caption: "item1",
-            end: 8609844.5
-        }),
-        style2 =  new SuperMap.ServerStyle({
-            fillForeColor: new SuperMap.ServerColor(114, 15, 205),
-            lineWidth: 0.02
-        }),
-        themeRangeItem2 = new SuperMap.ThemeRangeItem({
-            style: style2,
-            visible: true,
-            start: 8609844.5,
-            caption: "item2",
-            end: 28609844.5
-        }),
-        themeRangeItem3 = new SuperMap.ThemeRangeItem({
-            style: new SuperMap.ServerStyle({
-                fillForeColor: new SuperMap.ServerColor(67, 78, 127),
-                lineWidth: 0.01
+            themeRange = new SuperMap.ThemeRange({
+                rangeExpression: "POP_1994",
+                rangeParameter: 3,
+                rangeMode: SuperMap.RangeMode.CUSTOMINTERVAL
             }),
-            visible: true,
-            start: 28609844.5,
-            caption: "item3",
-            end: 15028139690
-        });
+            style1 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(250, 105, 25),
+                lineWidth: 0.05
+            }),
+            themeRangeItem1 = new SuperMap.ThemeRangeItem({
+                style: style1,
+                visible: true,
+                start: -5,
+                caption: "item1",
+                end: 8609844.5
+            }),
+            style2 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(114, 15, 205),
+                lineWidth: 0.02
+            }),
+            themeRangeItem2 = new SuperMap.ThemeRangeItem({
+                style: style2,
+                visible: true,
+                start: 8609844.5,
+                caption: "item2",
+                end: 28609844.5
+            }),
+            themeRangeItem3 = new SuperMap.ThemeRangeItem({
+                style: new SuperMap.ServerStyle({
+                    fillForeColor: new SuperMap.ServerColor(67, 78, 127),
+                    lineWidth: 0.01
+                }),
+                visible: true,
+                start: 28609844.5,
+                caption: "item3",
+                end: 15028139690
+            });
         themeRange.items = new Array(themeRangeItem1, themeRangeItem2, themeRangeItem3);
 
-        var srcData = new Array(1128139689,17827520,33796870);
-        var targetData =  new Array(2,17827520,33796870);
+        var srcData = new Array(1128139689, 17827520, 33796870);
+        var targetData = new Array(2, 17827520, 33796870);
         var themeMemoryData = new SuperMap.ThemeMemoryData(srcData, targetData);
         themeRange.memoryData = themeMemoryData;
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
@@ -1064,8 +1066,8 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -1088,7 +1090,7 @@ describe('testThemeService_processAsync', function () {
     });
 
     //点密度专题图
-    it('DotDensity_style',function(done){
+    it('processAsync_DotDensity_style', function (done) {
         var themeService = initThemeService();
         var themeDotDensity = new SuperMap.ThemeDotDensity({
             dotExpression: "Pop_1994",
@@ -1112,8 +1114,8 @@ describe('testThemeService_processAsync', function () {
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -1136,7 +1138,7 @@ describe('testThemeService_processAsync', function () {
     });
 
     //等级符号专题图
-    it('GraduatedSymbol',function(done){
+    it('processAsync_GraduatedSymbol', function (done) {
         var themeService = initThemeService();
         var myOffset = new SuperMap.ThemeOffset({
             offsetFixed: true,
@@ -1158,7 +1160,7 @@ describe('testThemeService_processAsync', function () {
                 flowEnabled: false
             }),
             graduatedMode: SuperMap.GraduatedMode.LOGARITHM,
-            offset:myOffset,
+            offset: myOffset,
             style: myStyle
         });
         var themeParameters = new SuperMap.ThemeParameters({
@@ -1170,8 +1172,8 @@ describe('testThemeService_processAsync', function () {
         themeService.events.on({"processCompleted": themeCompleted, "processFailed": themeFailed});
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 expect(themeResult.succeed).toBeTruthy();
@@ -1193,7 +1195,7 @@ describe('testThemeService_processAsync', function () {
         }, 2000);
     });
 
-    it('data',function(done){
+    it('processAsync_data', function (done) {
         var themeService = initThemeService();
         var themeRange = new SuperMap.ThemeRange({
             rangeExpression: "POP_1994",
@@ -1207,13 +1209,13 @@ describe('testThemeService_processAsync', function () {
         });
         themeService.processAsync(themeParameters);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var themeResult = themeEventArgsSystem.result;
                 expect(themeResult).not.toBeNull();
                 /*expect(themeResult.succeed).toBeTruthy();
-                expect(themeResult.newResourceID).not.toBeNull();
-                expect(themeResult.newResourceLocation).not.toBeNull();*/
+                 expect(themeResult.newResourceID).not.toBeNull();
+                 expect(themeResult.newResourceLocation).not.toBeNull();*/
                 themeService.destroy();
                 expect(themeService.EVENT_TYPES == null).toBeTruthy();
                 expect(themeService.events == null).toBeTruthy();
@@ -1229,23 +1231,21 @@ describe('testThemeService_processAsync', function () {
             }
         }, 2000);
     })
-});
 
-describe('testThemeService',function(){
-   it('ThemeUniqueItem',function(){
-       var themeUniqueItem = new SuperMap.ThemeUniqueItem({
-           visible: true,
-           unique:  "亚洲",
-           caption: "亚洲"
-       });
+    it('ThemeUniqueItem', function () {
+        var themeUniqueItem = new SuperMap.ThemeUniqueItem({
+            visible: true,
+            unique: "亚洲",
+            caption: "亚洲"
+        });
 
-       expect(themeUniqueItem).not.toBeNull();
-       expect(themeUniqueItem.style).not.toBeNull();
-       themeUniqueItem.destroy();
-       expect(themeUniqueItem.visible).toBeNull();
-       expect(themeUniqueItem.unique).toBeNull();
-       expect(themeUniqueItem.caption).toBeNull();
-       expect(themeUniqueItem.style).toBeNull();
-   })
+        expect(themeUniqueItem).not.toBeNull();
+        expect(themeUniqueItem.style).not.toBeNull();
+        themeUniqueItem.destroy();
+        expect(themeUniqueItem.visible).toBeNull();
+        expect(themeUniqueItem.unique).toBeNull();
+        expect(themeUniqueItem.caption).toBeNull();
+        expect(themeUniqueItem.style).toBeNull();
+    })
 });
 

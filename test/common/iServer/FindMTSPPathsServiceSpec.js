@@ -5,7 +5,6 @@ var serviceSucceedEventArgsSystem = null;
 
 //服务初始化时注册事件监听函数
 var url = GlobeParameter.networkAnalystURL;
-;
 var options = {
     eventListeners: {
         'processFailed': findMTSPathsServiceFailed,
@@ -22,8 +21,7 @@ function findMTSPathsServiceFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-
-describe('testFindMTSPPathsService_processAsync', function () {
+describe('FindMTSPPathsService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -34,7 +32,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
     });
 
     //基本测试
-    it('basicTest', function (done) {
+    it('processAsync:default', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)],
             nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
                 new SuperMap.Geometry.Point(5000, -4600),
@@ -64,7 +62,6 @@ describe('testFindMTSPPathsService_processAsync', function () {
         });
         var findMTSPPathsService = initFindMTSPathsService();
         findMTSPPathsService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.pathList;
@@ -95,7 +92,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
     });
 
     //测试hasLeastTotalCost为true
-    it('hasLeastTotalCost:true', function (done) {
+    it('processAsync_hasLeastTotalCost:true', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)];
         var nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
             new SuperMap.Geometry.Point(5000, -4600),
@@ -125,7 +122,6 @@ describe('testFindMTSPPathsService_processAsync', function () {
         });
         var findMTSPPathsService = initFindMTSPathsService();
         findMTSPPathsService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.pathList;
@@ -156,7 +152,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
     });
 
     //测试传入参数为id
-    it('isAnalyzeById', function (done) {
+    it('processAsync_isAnalyzeById', function (done) {
         var centerArray = [2, 5, 7];
         var nodeArray = [1, 6, 21];
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
@@ -183,7 +179,6 @@ describe('testFindMTSPPathsService_processAsync', function () {
         });
         var findMTSPPathsService = initFindMTSPathsService();
         findMTSPPathsService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.pathList;
@@ -198,7 +193,6 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 expect(analystResult[0].nodeFeatures).not.toBeNull();
                 expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(2);
                 expect(analystResult[0].route).not.toBeNull();
-
                 findMTSPPathsService.destroy();
                 expect(findMTSPPathsService.EVENT_TYPES).toBeNull();
                 expect(findMTSPPathsService.events).toBeNull();
@@ -215,7 +209,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
     });
 
     //测试传入参数为id，但是传入为空
-    it('isAnalyzeById but null', function (done) {
+    it('processAsync_isAnalyzeById but Null', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)];
         var nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
             new SuperMap.Geometry.Point(5000, -4600),
@@ -245,7 +239,6 @@ describe('testFindMTSPPathsService_processAsync', function () {
         });
         var findMTSPPathsService = initFindMTSPathsService();
         findMTSPPathsService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -266,7 +259,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
     });
 
     //参数错误
-    it('parameterWrong', function (done) {
+    it('processAsync_parameterWrong', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)];
         var nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
             new SuperMap.Geometry.Point(5000, -4600),
@@ -296,7 +289,6 @@ describe('testFindMTSPPathsService_processAsync', function () {
         });
         var findMTSPPathsService = initFindMTSPathsService();
         findMTSPPathsService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -317,7 +309,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
     });
 
     //参数为空
-    it('parameterWrong', function (done) {
+    it('processAsync_parameterWrong', function (done) {
         var findMTSPPathsService = initFindMTSPathsService();
         findMTSPPathsService.processAsync();
 
@@ -338,7 +330,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
     });
 
     //错误的isAnalyzeById
-    it('AnalyzeById_null', function (done) {
+    it('processAsync_AnalyzeById_null', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)],
             nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
                 new SuperMap.Geometry.Point(5000, -4600),
@@ -368,7 +360,6 @@ describe('testFindMTSPPathsService_processAsync', function () {
         });
         var findMTSPPathsService = initFindMTSPathsService();
         findMTSPPathsService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);

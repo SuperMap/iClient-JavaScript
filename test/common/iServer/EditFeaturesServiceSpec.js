@@ -2,7 +2,7 @@
 
 var editServiceURL = GlobeParameter.editServiceURL;
 var id1;
-describe('testEditFeaturesService', function () {
+describe('EditFeaturesService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -53,7 +53,6 @@ describe('testEditFeaturesService', function () {
         });
         var addFeatureService = new SuperMap.EditFeaturesService(editServiceURL, addFeatureOptions);
         addFeatureService.processAsync(addFeaturesParams);
-
         setTimeout(function () {
             try {
                 var serviceResult = addFeatureSuccessEventArgsSystem.result;
@@ -122,7 +121,6 @@ describe('testEditFeaturesService', function () {
         });
         var updateFeaturesService = new SuperMap.EditFeaturesService(editServiceURL, updateFeaturesOptions);
         updateFeaturesService.processAsync(updateFeaturesParams);
-
         setTimeout(function () {
             try {
                 expect(updateFeaturesService).not.toBeNull();
@@ -163,7 +161,6 @@ describe('testEditFeaturesService', function () {
                 'processFailed': deleteFeaturesFailed
             }
         };
-
         var deleteFeaturesParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "Jingjin",
             dataSetName: "Landuse_R",
@@ -172,7 +169,6 @@ describe('testEditFeaturesService', function () {
         });
         var deleteFeaturesService = new SuperMap.EditFeaturesService(editServiceURL, deleteFeaturesOptions);
         deleteFeaturesService.processAsync(deleteFeaturesParams);
-
         setTimeout(function () {
             try {
                 expect(deleteFailedEventArgsSystem).toBeNull();
@@ -213,7 +209,6 @@ describe('testEditFeaturesService', function () {
                 'processFailed': noParamsFailed
             }
         };
-
         var noParams = new SuperMap.EditFeaturesParameters({
             features: null,
             editType: SuperMap.EditType.ADD,
@@ -221,7 +216,6 @@ describe('testEditFeaturesService', function () {
         });
         var noParamsService = new SuperMap.EditFeaturesService(editServiceURL, noParamsOptions);
         noParamsService.processAsync(noParams);
-
         setTimeout(function () {
             try {
                 expect(noParamsSuccessEventArgsSystem).toBeNull();
@@ -243,5 +237,4 @@ describe('testEditFeaturesService', function () {
             }
         }, 2000);
     });
-
 });

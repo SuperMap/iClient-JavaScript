@@ -1,16 +1,5 @@
 ﻿require('../../../src/common/iServer/QueryBySQLService');
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
-describe('testQueryBySQLService_constructor', function () {
-    it('constructor and destroy', function () {
-        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL);
-        expect(queryBySQLService).not.toBeNull();
-        expect(queryBySQLService.url).toEqual(worldMapURL + "/queryResults.json?");
-        queryBySQLService.destroy();
-        expect(queryBySQLService.EVENT_TYPES).toBeNull();
-        expect(queryBySQLService.events).toBeNull();
-        expect(queryBySQLService.returnContent).toBeNull();
-    })
-});
 describe('testQueryBySQLService_processAsync', function () {
     var originalTimeout;
     beforeEach(function () {
@@ -21,8 +10,18 @@ describe('testQueryBySQLService_processAsync', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('constructor, destroy', function () {
+        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL);
+        expect(queryBySQLService).not.toBeNull();
+        expect(queryBySQLService.url).toEqual(worldMapURL + "/queryResults.json?");
+        queryBySQLService.destroy();
+        expect(queryBySQLService.EVENT_TYPES).toBeNull();
+        expect(queryBySQLService.events).toBeNull();
+        expect(queryBySQLService.returnContent).toBeNull();
+    });
+
     //不直接返回查询结果
-    it('notReturnContent', function (done) {
+    it('processAsync_returnContent:false', function (done) {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
         var options = {
             eventListeners: {
@@ -55,7 +54,6 @@ describe('testQueryBySQLService_processAsync', function () {
         queryBySQLParameters.holdTime = 10;
         returnCustomResult = false;
         queryBySQLService.processAsync(queryBySQLParameters);
-
         setTimeout(function () {
             try {
                 var queryResult = serviceSuccessEventArgs.result;
@@ -82,7 +80,7 @@ describe('testQueryBySQLService_processAsync', function () {
     });
 
     //直接返回查询结果
-    it('returnContent', function (done) {
+    it('processAsync_returnContent:true', function (done) {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
         var options = {
             eventListeners: {
@@ -122,7 +120,6 @@ describe('testQueryBySQLService_processAsync', function () {
         queryBySQLParameters.returnCustomResult = false;
         queryBySQLService.events.on({'processCompleted': QueryBySQLCompleted});
         queryBySQLService.processAsync(queryBySQLParameters);
-
         setTimeout(function () {
             try {
                 var queryResult = serviceSuccessEventArgs.result.recordsets[0].features;
@@ -147,7 +144,7 @@ describe('testQueryBySQLService_processAsync', function () {
     });
 
     //返回bounds信息
-    it('returnCustomResult', function (done) {
+    it('processAsync_returnCustomResult', function (done) {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
         var options = {
             eventListeners: {
@@ -181,7 +178,6 @@ describe('testQueryBySQLService_processAsync', function () {
         queryBySQLParameters.holdTime = 10;
         queryBySQLParameters.returnCustomResult = true;
         queryBySQLService.processAsync(queryBySQLParameters);
-
         setTimeout(function () {
             try {
                 queryResult = serviceSuccessEventArgs.result;
@@ -208,7 +204,7 @@ describe('testQueryBySQLService_processAsync', function () {
         }, 2000)
     });
 
-    it('noParams', function (done) {
+    it('processAsync_noParams', function (done) {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
         var options = {
             eventListeners: {
@@ -235,7 +231,6 @@ describe('testQueryBySQLService_processAsync', function () {
         });
         queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
         queryBySQLService.processAsync(queryBySQLParameters);
-
         setTimeout(function () {
             try {
                 expect(queryFailedEventArgs).not.toBeNull();
@@ -260,7 +255,7 @@ describe('testQueryBySQLService_processAsync', function () {
     });
 
     //查询目标图层不存在情况
-    it('LayerNotExist', function (done) {
+    it('processAsync_LayerNotExist', function (done) {
         var queryFailedEventArgs = null, serviceSuccessEventArgs = null;
         var options = {
             eventListeners: {
@@ -285,13 +280,12 @@ describe('testQueryBySQLService_processAsync', function () {
             queryOption: SuperMap.QueryOption.ATTRIBUTE,
             queryParams: new Array(new SuperMap.FilterParameter({
                 attributeFilter: "SmID>0",
-                name: "notExist",
+                name: "notExist"
             })),
             returnContent: false
         });
         queryBySQLService.events.on({'processFailed': QueryBySQLFailed});
         queryBySQLService.processAsync(queryBySQLParameters);
-
         setTimeout(function () {
             try {
                 expect(serviceSuccessEventArgs).toBeNull();

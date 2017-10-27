@@ -5,10 +5,12 @@ var analystEventArgsSystem = null;
 var spatialAnalystURL_Changchun = GlobeParameter.spatialAnalystURL_Changchun;
 function initThiessenAnalystService() {
     return new SuperMap.ThiessenAnalystService(spatialAnalystURL_Changchun,
-        {eventListeners:{
-            "processCompleted": analyzeCompleted,
-            'processFailed': analyzeFailed
-        }});
+        {
+            eventListeners: {
+                "processCompleted": analyzeCompleted,
+                'processFailed': analyzeFailed
+            }
+        });
 }
 function analyzeFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
@@ -17,18 +19,18 @@ function analyzeCompleted(analyseEventArgs) {
     analystEventArgsSystem = analyseEventArgs;
 }
 
-describe('testThiessenAnalystService_processAsync',function(){
+describe('ThiessenAnalystService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //成功事件 AnalyzeByDatasets
-    it('AnalyzeByDatasets',function(done){
+    it('processAsync_byDatasets', function (done) {
         var tsServiceByDatasets = initThiessenAnalystService();
         expect(tsServiceByDatasets).not.toBeNull();
         expect(tsServiceByDatasets.url).toEqual(spatialAnalystURL_Changchun);
@@ -38,7 +40,6 @@ describe('testThiessenAnalystService_processAsync',function(){
             filterQueryParameter: new SuperMap.FilterParameter({attributeFilter: "SMID < 5"})
         });
         tsServiceByDatasets.processAsync(dsThiessenAnalystParameters);
-
         setTimeout(function () {
             try {
                 var tsResult = analystEventArgsSystem.result.regions;
@@ -49,7 +50,6 @@ describe('testThiessenAnalystService_processAsync',function(){
                 expect(tsResult.features[0].geometry).not.toBeNull();
                 expect(tsResult.features[0].geometry.coordinates).not.toBeNull();
                 expect(tsResult.features[0].geometry.type).toEqual("MultiPolygon");
-
                 tsServiceByDatasets.destroy();
                 expect(tsServiceByDatasets.events).toBeNull();
                 expect(tsServiceByDatasets.eventListeners).toBeNull();
@@ -66,19 +66,18 @@ describe('testThiessenAnalystService_processAsync',function(){
     });
 
     //成功事件 AnalyzeByGeometry
-    it('AnalyzeByGeometry',function(done){
+    it('processAsync_yGeometry', function (done) {
         var tsServiceByGeometry = initThiessenAnalystService();
-        var points = [new SuperMap.Geometry.Point(21.35414430430097,91.59340881700358),
-            new SuperMap.Geometry.Point(20.50760752363726,0.6802641290663991),
-            new SuperMap.Geometry.Point(28.208029226321006,92.81799910814934),
-            new SuperMap.Geometry.Point(23.986958756157428,95.21525547430991),
-            new SuperMap.Geometry.Point(30.762395431757028,0.29794739028268236),
-            new SuperMap.Geometry.Point(20.607496079935604,77.0461900744243)];
+        var points = [new SuperMap.Geometry.Point(21.35414430430097, 91.59340881700358),
+            new SuperMap.Geometry.Point(20.50760752363726, 0.6802641290663991),
+            new SuperMap.Geometry.Point(28.208029226321006, 92.81799910814934),
+            new SuperMap.Geometry.Point(23.986958756157428, 95.21525547430991),
+            new SuperMap.Geometry.Point(30.762395431757028, 0.29794739028268236),
+            new SuperMap.Geometry.Point(20.607496079935604, 77.0461900744243)];
         var geoThiessenAnalystParameters = new SuperMap.GeometryThiessenAnalystParameters({
             points: points
         });
         tsServiceByGeometry.processAsync(geoThiessenAnalystParameters);
-
         setTimeout(function () {
             try {
                 var tsResult = analystEventArgsSystem.result.regions;
@@ -89,7 +88,6 @@ describe('testThiessenAnalystService_processAsync',function(){
                 expect(tsResult.features[0].geometry).not.toBeNull();
                 expect(tsResult.features[0].geometry.coordinates).not.toBeNull();
                 expect(tsResult.features[0].geometry.type).toEqual("MultiPolygon");
-
                 tsServiceByGeometry.destroy();
                 expect(tsServiceByGeometry.events).toBeNull();
                 expect(tsServiceByGeometry.eventListeners).toBeNull();
@@ -106,11 +104,10 @@ describe('testThiessenAnalystService_processAsync',function(){
     });
 
     //测试失败事件 AnalyzeByGeometry
-    it('AnalyzeByGeometry_failed',function(done){
+    it('fail:processAsync_byGeometry', function (done) {
         var tsServiceByGeometry = initThiessenAnalystService();
         var geoThiessenAnalystParameters = new SuperMap.GeometryThiessenAnalystParameters();
         tsServiceByGeometry.processAsync(geoThiessenAnalystParameters);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
@@ -132,13 +129,12 @@ describe('testThiessenAnalystService_processAsync',function(){
     });
 
     //测试失败事件 AnalyzeByDataset
-    it('AnalyzeByDataset_failed',function(done){
+    it('fail:processAsync_byDataset', function (done) {
         var tsServiceByDataset = initThiessenAnalystService();
         var dsThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
             dataset: 'test'
         });
         tsServiceByDataset.processAsync(dsThiessenAnalystParameters);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();

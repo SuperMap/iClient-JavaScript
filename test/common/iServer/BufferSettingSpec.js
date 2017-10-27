@@ -1,7 +1,7 @@
 ﻿require('../../../src/common/iServer/BufferSetting');
 
-describe('testBufferSetting_constructor',function(){
-    it('constructorDefault',function(){
+describe('BufferSetting', function () {
+    it('constructor_default', function () {
         var bufferSetting = new SuperMap.BufferSetting();
         expect(bufferSetting).not.toBeNull();
         expect(bufferSetting.leftDistance).not.toBeNull();
@@ -15,14 +15,14 @@ describe('testBufferSetting_constructor',function(){
         expect(bufferSetting.endType).toEqual(SuperMap.BufferEndType.ROUND);
         expect(bufferSetting.leftDistance.value).toEqual(150);
         expect(bufferSetting.semicircleLineSegment).toEqual(5);
-
         bufferSetting.destroy();
         expect(bufferSetting.endType).toBeNull();
         expect(bufferSetting.leftDistance).toBeNull();
         expect(bufferSetting.rightDistance).toBeNull();
         expect(bufferSetting.semicircleLineSegment).toBeNull();
     });
-    it('constructorCustom',function(){
+
+    it('constructor_leftDistance', function () {
         var bufferSetting = new SuperMap.BufferSetting({
             leftDistance: new SuperMap.BufferDistance({
                 value: 200

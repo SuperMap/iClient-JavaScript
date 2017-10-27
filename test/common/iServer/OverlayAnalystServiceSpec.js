@@ -19,8 +19,7 @@ function OverlayAnalystServiceFailed(eventArgs) {
     serviceFailedEventArgsSystem = eventArgs;
 }
 
-
-describe('testOverlayAnalystService_processAsync', function () {
+describe('OverlayAnalystService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -33,7 +32,7 @@ describe('testOverlayAnalystService_processAsync', function () {
     });
 
     //不直接返回查询结果
-    it('AnalyzeByDatasets_NotReturnContent', function (done) {
+    it('processAsync_byDatasets_returnContent:false', function (done) {
         var overlayServiceByDatasets = initOverlayAnalystService_Register();
         expect(overlayServiceByDatasets).not.toBeNull();
         expect(overlayServiceByDatasets.url).toEqual(spatialAnalystURL);
@@ -43,7 +42,6 @@ describe('testOverlayAnalystService_processAsync', function () {
         dsOverlayAnalystParameters.operation = SuperMap.OverlayOperationType.UPDATE;
         overlayServiceByDatasets.events.on({"processCompleted": OverlayAnalystServiceCompleted});
         overlayServiceByDatasets.processAsync(dsOverlayAnalystParameters);
-
         setTimeout(function () {
             try {
                 var overlayResult = analystEventArgsSystem.result;
@@ -64,7 +62,7 @@ describe('testOverlayAnalystService_processAsync', function () {
         }, 4000)
     });
 
-    it('AnalyzeByDatasets_failed', function (done) {
+    it('fail:processAsync_byDatasets', function (done) {
         var overlayServiceByDatasets = initOverlayAnalystService_Register();
         expect(overlayServiceByDatasets).not.toBeNull();
         var dsOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters();
@@ -91,7 +89,7 @@ describe('testOverlayAnalystService_processAsync', function () {
         }, 4000)
     });
 
-    it('AnalyzeByDatasets_Geometry', function (done) {
+    it('processAsync_byGeometry', function (done) {
         var overlayServiceByDatasets = initOverlayAnalystService_Register();
         expect(overlayServiceByDatasets).not.toBeNull();
         var points = [new SuperMap.Geometry.Point(47.9909960608, 382.4873382105),
@@ -99,7 +97,6 @@ describe('testOverlayAnalystService_processAsync', function () {
             new SuperMap.Geometry.Point(170.3545301069, 437.8615644344),
             new SuperMap.Geometry.Point(170.3545301069, 382.4873382105)];
         var sourceGeometry = new SuperMap.Geometry.LineString(points);
-
         var points1 = [new SuperMap.Geometry.Point(111.4687675858, 353.8548114800),
             new SuperMap.Geometry.Point(111.4687675858, 408.1485649972),
             new SuperMap.Geometry.Point(208.9814293754, 408.1485649972),

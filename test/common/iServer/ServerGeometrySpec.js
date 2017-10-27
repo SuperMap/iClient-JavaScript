@@ -1,6 +1,6 @@
 require('../../../src/common/iServer/ServerGeometry');
-describe('testServerGeometry', function () {
-    it('constructor and destroy', function () {
+describe('ServerGeometry', function () {
+    it('constructor, destroy', function () {
         var options = {
             id: 1,
             parts: [1],

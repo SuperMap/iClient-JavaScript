@@ -5,10 +5,12 @@ var serviceCompletedEventArgsSystem = null;
 var tileSetsURL = GlobeParameter.tileSetsURL;
 function initTilesetsService_Register() {
     return new SuperMap.TilesetsService(tileSetsURL,
-        {eventListeners:{
-            "processCompleted": analyzeCompleted,
-            'processFailed': analyzeFailed
-        }});
+        {
+            eventListeners: {
+                "processCompleted": analyzeCompleted,
+                'processFailed': analyzeFailed
+            }
+        });
 }
 function analyzeFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
@@ -17,8 +19,16 @@ function analyzeCompleted(analyseCompletedEventArgs) {
     serviceCompletedEventArgsSystem = analyseCompletedEventArgs;
 }
 
-describe('testTilesetsService',function(){
-    it('constructor and destroy',function(){
+describe('testTilesetsService_processAsync', function () {
+    var originalTimeout;
+    beforeEach(function () {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    });
+    afterEach(function () {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
+    it('constructor, destroy', function () {
         var tilesetsService = initTilesetsService_Register();
         tilesetsService.events.on({"processCompleted": analyzeCompleted});
         expect(tilesetsService.url).toEqual(tileSetsURL);
@@ -28,23 +38,11 @@ describe('testTilesetsService',function(){
         expect(tilesetsService.EVENT_TYPES).toBeNull();
         expect(tilesetsService.events).toBeNull();
     });
-});
-
-describe('testTilesetsService_processAsync',function(){
-    var originalTimeout;
-    beforeEach(function() {
-        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-    });
-    afterEach(function() {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-    });
 
     //成功事件
-    it('pass',function(done){
+    it('success:processAsync', function (done) {
         var tilesetsService = initTilesetsService_Register();
         tilesetsService.processAsync();
-
         setTimeout(function () {
             try {
                 var analyseResult = serviceCompletedEventArgsSystem.result;

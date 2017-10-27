@@ -1,8 +1,7 @@
 require('../../../../src/common/commontypes/geometry/GeoText');
 
-describe('common_GeoText', function () {
-
-    it('GeoText_test', function () {
+describe('GeoText', function () {
+    it('initialize, destroy', function () {
         var x = 100, y = 35, text = "中华人民共和国";
         var geoText = new SuperMap.Geometry.GeoText(x, y, text);
         geoText.bsInfo = {
@@ -27,7 +26,7 @@ describe('common_GeoText', function () {
         expect(geoTextFeature.geometry.y).toBeNull();
     });
 
-    it('clone_test', function () {
+    it('clone', function () {
         var x = 100, y = 35, text = "中华人民共和国";
         var geoText = new SuperMap.Geometry.GeoText(x, y, text);
         var obj = geoText.clone();
@@ -45,7 +44,7 @@ describe('common_GeoText', function () {
         geoText.destroy();
     });
 
-    it('calculateBounds_test', function () {
+    it('calculateBounds', function () {
         var x = 100, y = 35, text = "中华人民共和国";
         var geoText = new SuperMap.Geometry.GeoText(x, y, text);
         geoText.calculateBounds();

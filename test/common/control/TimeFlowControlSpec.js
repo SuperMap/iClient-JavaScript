@@ -1,6 +1,6 @@
 require('../../../src/common/control/TimeFlowControl');
 
-describe('testTimeFlowControl', function () {
+describe('TimeFlowControl', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -9,7 +9,6 @@ describe('testTimeFlowControl', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
     var options = {
         speed: 1,
         frequency: 1000,
@@ -18,7 +17,6 @@ describe('testTimeFlowControl', function () {
         repeat: true,
         reverse: false
     };
-
     var callback = function (currentTime) {
 
     };
@@ -51,7 +49,7 @@ describe('testTimeFlowControl', function () {
 
     });
 
-    it("start_reverse_true", function () {
+    it("start_reverse:true", function () {
         var option = {
             speed: 2,
             frequency: 2000,
@@ -104,7 +102,6 @@ describe('testTimeFlowControl', function () {
         expect(timeflowcontrol.intervalId).toBeGreaterThan(1);
     });
 
-
     it("update", function () {
         var option = {
             speed: 1000,
@@ -114,7 +111,6 @@ describe('testTimeFlowControl', function () {
             repeat: false,
             reverse: false
         };
-
         var timeflowcontrol = new SuperMap.TimeFlowControl(callback, option);
         timeflowcontrol.running = true;
         timeflowcontrol.update();
@@ -127,7 +123,7 @@ describe('testTimeFlowControl', function () {
         expect(timeflowcontrol.getRunning()).toBeFalsy();
     });
 
-    it("update_reverse_true", function () {
+    it("update_reverse:true", function () {
         var option = {
             speed: 1000,
             frequency: 1000,
@@ -136,7 +132,6 @@ describe('testTimeFlowControl', function () {
             repeat: false,
             reverse: false
         };
-
         var timeflowcontrol = new SuperMap.TimeFlowControl(callback, option);
         timeflowcontrol.running = true;
         timeflowcontrol.update();
@@ -147,7 +142,7 @@ describe('testTimeFlowControl', function () {
         expect(timeflowcontrol.getRunning()).toBeTruthy();
     });
 
-    it("update_reverse_false_and_repeat_true", function () {
+    it("update_reverse:false_repeat:true", function () {
         var option = {
             speed: 1000,
             frequency: 1000,
@@ -156,7 +151,6 @@ describe('testTimeFlowControl', function () {
             repeat: true,
             reverse: false
         };
-
         var timeflowcontrol = new SuperMap.TimeFlowControl(callback, option);
         timeflowcontrol.running = true;
         timeflowcontrol.update();
@@ -165,7 +159,8 @@ describe('testTimeFlowControl', function () {
         timeflowcontrol.update();
         expect(timeflowcontrol.getRunning()).toBeTruthy();
     });
-    it("update_reverse_true_and_repeat_true", function () {
+
+    it("update_reverse:true_repeat:true", function () {
         var option = {
             speed: 1000,
             frequency: 1000,
@@ -174,7 +169,6 @@ describe('testTimeFlowControl', function () {
             repeat: true,
             reverse: true
         };
-
         var timeflowcontrol = new SuperMap.TimeFlowControl(callback, option);
         timeflowcontrol.running = true;
         timeflowcontrol.update();
@@ -184,7 +178,7 @@ describe('testTimeFlowControl', function () {
         expect(timeflowcontrol.getRunning()).toBeTruthy();
     });
 
-    it("update_reverse_true_and_repeat_false", function () {
+    it("update_reverse:true_repeat:false", function () {
         var option = {
             speed: 1000,
             frequency: 1000,
@@ -193,12 +187,9 @@ describe('testTimeFlowControl', function () {
             repeat: false,
             reverse: true
         };
-
         var timeflowcontrol = new SuperMap.TimeFlowControl(callback, option);
         timeflowcontrol.running = true;
         timeflowcontrol.update();
         expect(timeflowcontrol.getRunning()).toBeFalsy();
     });
-
-
 });

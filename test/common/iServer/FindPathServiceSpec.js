@@ -21,8 +21,7 @@ function findPathServiceFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-
-describe('testFindPathService_processAsync', function () {
+describe('FindPathService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -33,7 +32,7 @@ describe('testFindPathService_processAsync', function () {
     });
 
     //基本测试
-    it('basicTest', function (done) {
+    it('processAsync:default', function (done) {
         var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -59,7 +58,6 @@ describe('testFindPathService_processAsync', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.pathList;
@@ -74,7 +72,6 @@ describe('testFindPathService_processAsync', function () {
                 expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(2);
                 expect(analystResult[0].pathGuideItems).not.toBeNull();
                 expect(analystResult[0].route).not.toBeNull();
-
                 findPathService.destroy();
                 expect(findPathService.EVENT_TYPES).toBeNull();
                 expect(findPathService.events).toBeNull();
@@ -91,7 +88,7 @@ describe('testFindPathService_processAsync', function () {
     });
 
     //设置返回信息的有效性
-    it('return', function (done) {
+    it('processAsync_returnInformationInvalid', function (done) {
         var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -117,16 +114,14 @@ describe('testFindPathService_processAsync', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.pathList;
-                expect(analystResult!= null).toBeTruthy();
+                expect(analystResult != null).toBeTruthy();
                 expect(analystResult[0].edgeFeatures == null).toBeTruthy();
                 expect(analystResult[0].nodeFeatures == null).toBeTruthy();
                 expect(analystResult[0].pathGuideItems == null).toBeTruthy();
                 expect(analystResult[0].route == null).toBeTruthy();
-
                 findPathService.destroy();
                 expect(findPathService.EVENT_TYPES).toBeNull();
                 expect(findPathService.events).toBeNull();
@@ -143,7 +138,7 @@ describe('testFindPathService_processAsync', function () {
     });
 
     //id为空
-    it('isAnalyzeById', function (done) {
+    it('processAsync_isAnalyzeById but Null', function (done) {
         var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -169,7 +164,6 @@ describe('testFindPathService_processAsync', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -190,7 +184,7 @@ describe('testFindPathService_processAsync', function () {
     });
 
     //参数错误
-    it('parameterWrong', function (done) {
+    it('processAsync_parameterWrong', function (done) {
         var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -216,7 +210,6 @@ describe('testFindPathService_processAsync', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -237,10 +230,9 @@ describe('testFindPathService_processAsync', function () {
     });
 
     //参数为空
-    it('parameterNull', function (done) {
+    it('processAsync_parameterNull', function (done) {
         var findPathService = initFindPathService();
         findPathService.processAsync();
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -285,7 +277,6 @@ describe('testFindPathService_processAsync', function () {
         });
         var findPathService = initFindPathService();
         findPathService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);

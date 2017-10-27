@@ -1,6 +1,6 @@
 require('../../../src/common/format/JSON');
 
-describe('JSONSTest', function () {
+describe('JSON', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -15,7 +15,6 @@ describe('JSONSTest', function () {
         "SMID": 1,
         "ADDRESS": ["海淀区", "天安门", "东城区"]
     };
-
     var POINTSARRAY = {"POINTSARRAY": [1, 2, 3, 4]};
     var BOOLEANOBJ = {"ISJSON": false};
     var DATE = {"DATE": new Date()};
@@ -60,5 +59,4 @@ describe('JSONSTest', function () {
         jsonString = jsonFormat.write(POINTSARRAY, pretty);
         expect(typeof (jsonString)).toBe('string');
     });
-
 });

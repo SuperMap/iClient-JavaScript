@@ -20,34 +20,34 @@ function failed(event) {
     serviceFailedEventArgsSystem = event;
 }
 
-describe('testTransferSolutionService_processAsync',function(){
+describe('TransferSolutionService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('noParams',function(done){
+    it('processAsync_noParams', function (done) {
         var service = initTransferSolutionService();
         service.processAsync();
 
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 expect(typeof(service.processAsync()) === "undefined").toBeTruthy();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("TransferSolutionService_" + exception.name + ":" + exception.message);
                 service.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 
-    it('success',function(done){
+    it('success:processAsync', function (done) {
         var service = initTransferSolutionService();
         var params = new SuperMap.TransferSolutionParameters({
             solutionCount: 5,
@@ -56,11 +56,10 @@ describe('testTransferSolutionService_processAsync',function(){
             walkingRatio: 10,
             points: [175, 179]
         });
-        service.events.on({"processCompleted":succeed});
+        service.events.on({"processCompleted": succeed});
         service.processAsync(params);
-
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var result = serviceCompletedEventArgsSystem.result;
                 expect(result).not.toBeNull();
                 expect(result.defaultGuide).not.toBeNull();
@@ -71,13 +70,13 @@ describe('testTransferSolutionService_processAsync',function(){
                 expect(service.eventListeners == null).toBeTruthy();
                 params.destroy();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("TransferSolutionService_" + exception.name + ":" + exception.message);
                 service.destroy();
                 params.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 });

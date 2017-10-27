@@ -11,40 +11,39 @@ var options = {
     }
 };
 function initGetFeaturesByBufferService() {
-    return new SuperMap.GetFeaturesByBufferService(dataServiceURL,options);
+    return new SuperMap.GetFeaturesByBufferService(dataServiceURL, options);
 }
-function getFeaturesByBufferFailed(serviceFailedEventArgs){
+function getFeaturesByBufferFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
-function getFeaturesByBufferCompleted(getFeaturesEventArgs){
+function getFeaturesByBufferCompleted(getFeaturesEventArgs) {
     getFeaturesEventArgsSystem = getFeaturesEventArgs;
 }
 
-describe('testGetFeaturesByBufferService_processAsync',function(){
+describe('GetFeaturesByBufferService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //不直接返回查询结果
-    it('NotReturnContent',function(done){
-        var geometry = new SuperMap.Geometry.Point(7.25,18.75);
+    it('processAsync_returnContent:false', function (done) {
+        var geometry = new SuperMap.Geometry.Point(7.25, 18.75);
         var getFeaturesByBufferParameters = new SuperMap.GetFeaturesByBufferParameters({
-            datasetNames:["World:Capitals"],
-            bufferDistance:30,
-            attributeFilter:"SMID>0",
-            geometry:geometry,
-            returnContent:false
+            datasetNames: ["World:Capitals"],
+            bufferDistance: 30,
+            attributeFilter: "SMID>0",
+            geometry: geometry,
+            returnContent: false
         });
         var getFeaturesByBufferService = initGetFeaturesByBufferService();
         getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters);
-
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 var getFeaturesResult = getFeaturesEventArgsSystem.result;
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
@@ -59,33 +58,32 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 expect(getFeaturesByBufferService.toIndex).toBeNull();
                 getFeaturesByBufferParameters.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("GetFeaturesByBufferService_" + exception.name + ":" + exception.message);
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 
     //直接返回查询结果
-    it('returnContent',function(done){
-        var geometry = new SuperMap.Geometry.Point(7.25,18.75);
+    it('processAsync_returnContent:true', function (done) {
+        var geometry = new SuperMap.Geometry.Point(7.25, 18.75);
         var getFeaturesByBufferParameters = new SuperMap.GetFeaturesByBufferParameters({
-            datasetNames:["World:Capitals"],
-            bufferDistance:30,
-            attributeFilter:"SMID>0",
-            geometry:geometry,
-            fromIndex:0,
-            toIndex:19,
-            returnContent:true
+            datasetNames: ["World:Capitals"],
+            bufferDistance: 30,
+            attributeFilter: "SMID>0",
+            geometry: geometry,
+            fromIndex: 0,
+            toIndex: 19,
+            returnContent: true
         });
         var getFeaturesByBufferService = initGetFeaturesByBufferService();
         getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters);
-
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 var getFeaturesResult = getFeaturesEventArgsSystem.result.features;
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
@@ -104,33 +102,32 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 expect(getFeaturesByBufferService.toIndex).toBeNull();
                 getFeaturesByBufferParameters.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("GetFeaturesByBufferService_" + exception.name + ":" + exception.message);
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 
     //测试没有传入参数时的情况
-    it('noParams',function(done){
+    it('processAsync_noParams', function (done) {
         var getFeaturesByBufferParameters = new SuperMap.GetFeaturesByBufferParameters({
-            datasetNames:["World:Capitals"],
-            bufferDistance:30,
-            attributeFilter:"SMID>0",
+            datasetNames: ["World:Capitals"],
+            bufferDistance: 30,
+            attributeFilter: "SMID>0",
             //geometry:new SuperMap.Geometry.Point(7.25,18.75)，
             fields: ["SMID"],
-            fromIndex:0,
-            toIndex:19,
-            returnContent:true
+            fromIndex: 0,
+            toIndex: 19,
+            returnContent: true
         });
         var getFeaturesByBufferService = initGetFeaturesByBufferService();
         getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters);
-
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
@@ -139,33 +136,32 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("GetFeaturesByBufferService_" + exception.name + ":" + exception.message);
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 
     //测试目标图层不存在
-    it('LayerNotExist',function(done){
-        var geometry = new SuperMap.Geometry.Point(7.25,18.75);
+    it('processAsync_LayerNotExist', function (done) {
+        var geometry = new SuperMap.Geometry.Point(7.25, 18.75);
         var getFeaturesByBufferParameters = new SuperMap.GetFeaturesByBufferParameters({
-            datasetNames:["World:Capitalss"],
-            bufferDistance:30,
-            attributeFilter:"SMID>0",
-            geometry:geometry,
-            fromIndex:0,
-            toIndex:19,
-            returnContent:true
+            datasetNames: ["World:Capitalss"],
+            bufferDistance: 30,
+            attributeFilter: "SMID>0",
+            geometry: geometry,
+            fromIndex: 0,
+            toIndex: 19,
+            returnContent: true
         });
         var getFeaturesByBufferService = initGetFeaturesByBufferService();
-        getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters );
-
-        setTimeout(function(){
-            try{
+        getFeaturesByBufferService.processAsync(getFeaturesByBufferParameters);
+        setTimeout(function () {
+            try {
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
@@ -175,13 +171,13 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("GetFeaturesByBufferService_" + exception.name + ":" + exception.message);
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 });

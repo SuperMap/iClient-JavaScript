@@ -17,8 +17,7 @@ function analyzeCompleted(analyseEventArgs) {
     analystEventArgsSystem = analyseEventArgs;
 }
 
-
-describe('testBufferAnalystService_processAsync', function () {
+describe('testBufferAnalystService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -29,19 +28,13 @@ describe('testBufferAnalystService_processAsync', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
-        var bufferbyDSResult = GlobeParameter.datajingjinURL + "bufferAnalystResultDS_common";
-        request.delete(bufferbyDSResult, function (response) {
-            console.log(response);
-        });
-    });
 
     //测试成功事件
-    it('SuccessEvent:byDatasets_NotReturnContent', function (done) {
+    it('success:BufferAnalystService_byDatasets', function (done) {
         var bfServiceByDatasets = initBufferAnalystService();
         var resultSetting = new SuperMap.DataReturnOption({
             expectCount: 2000,
-            dataset: "bufferAnalystResultDS_common",
+            dataset: "bufferAnalystByDS_commonTest",
             dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
             deleteExistResultDataset: true
         });
@@ -62,11 +55,10 @@ describe('testBufferAnalystService_processAsync', function () {
                 expect(bfServiceByDatasets.eventListeners).toBeNull();
                 expect(bfServiceByDatasets.mode).toBeNull();
                 dsBufferAnalystParameters.destroy();
-
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("BufferAnalystService_" + exception.name + ":" + exception.message);
+                console.log("BufferAnalystService_byDatasets" + exception.name + ":" + exception.message);
                 bfServiceByDatasets.destroy();
                 dsBufferAnalystParameters.destroy();
                 done();
@@ -74,7 +66,8 @@ describe('testBufferAnalystService_processAsync', function () {
         }, 4000)
     });
 
-    it('SuccessEvent:byGeometry_NotReturnContent', function (done) {
+
+    it('success:BufferAnalystService_byGeometry', function (done) {
         var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url);
@@ -85,7 +78,7 @@ describe('testBufferAnalystService_processAsync', function () {
         bufferSetting.semicircleLineSegment = 5;
         var resultSetting = new SuperMap.DataReturnOption({
             expectCount: 2000,
-            dataset: "bufferAnalystResultGM_common",
+            dataset: "bufferAnalystByGM_commonTest",
             dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
             deleteExistResultDataset: false
         });
@@ -107,7 +100,7 @@ describe('testBufferAnalystService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("BufferAnalystService_" + exception.name + ":" + exception.message);
+                console.log("BufferAnalystService_byGeometry" + exception.name + ":" + exception.message);
                 bfServiceByGeometry.destroy();
                 geometryBufferAnalystParameters.destroy();
                 done();
@@ -116,7 +109,7 @@ describe('testBufferAnalystService_processAsync', function () {
     });
 
     //测试失败事件
-    it('failEvent:byGeometry_NotReturnContent', function (done) {
+    it('fail:BufferAnalystService_byGeometry', function (done) {
         var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url);
@@ -138,7 +131,6 @@ describe('testBufferAnalystService_processAsync', function () {
         bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
         setTimeout(function () {
             try {
-
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -152,13 +144,24 @@ describe('testBufferAnalystService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("BufferAnalystService_" + exception.name + ":" + exception.message);
+                console.log("fail:BufferAnalystService_byGeometry" + exception.name + ":" + exception.message);
                 bfServiceByGeometry.destroy();
                 dsBufferAnalystParameters.destroy();
                 done();
             }
         }, 4000)
     });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var bufferbyDSResult = GlobeParameter.datajingjinURL + "bufferAnalystByDS_commonTest";
+        request.delete(bufferbyDSResult, function (response) {
+            console.log(response);
+        });
+        done();
+    });
 });
+
+
 
 

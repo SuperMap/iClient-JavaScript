@@ -4,36 +4,36 @@ var serviceFailedEventArgsSystem = null;
 var serviceSucceedEventArgsSystem = null;
 
 //服务初始化时注册事件监听函数
-var url = GlobeParameter.networkAnalystURL;;
+var url = GlobeParameter.networkAnalystURL;
+;
 var options = {
     eventListeners: {
         'processFailed': findServiceAreasServiceFailed,
-        'processCompleted':findServiceAreasServiceCompleted
+        'processCompleted': findServiceAreasServiceCompleted
     }
 };
 function initFindServiceAreasService() {
     return new SuperMap.FindServiceAreasService(url, options);
 }
-function findServiceAreasServiceCompleted(serviceSucceedEventArgs){
+function findServiceAreasServiceCompleted(serviceSucceedEventArgs) {
     serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
 }
-function findServiceAreasServiceFailed(serviceFailedEventArgs){
+function findServiceAreasServiceFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-
-describe('testFindServiceAreasService_processAsync',function(){
+describe('FindServiceAreasService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //基本测试
-    it('basicTest',function(done){
+    it('processAsync:default', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -62,9 +62,8 @@ describe('testFindServiceAreasService_processAsync',function(){
         });
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
-
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList != null).toBeTruthy();
                 expect(analystResult.serviceAreaList[0].edgeFeatures != null).toBeTruthy();
@@ -76,17 +75,17 @@ describe('testFindServiceAreasService_processAsync',function(){
                 expect(findServiceAreasService.EVENT_TYPES).toBeNull();
                 expect(findServiceAreasService.events).toBeNull();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 done();
             }
-        },2000)
+        }, 2000)
     });
 
     //设置返回信息的有效性
-    it('returnInformationInvalid',function(done){
+    it('processAsync_returnInformationInvalid', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -116,8 +115,8 @@ describe('testFindServiceAreasService_processAsync',function(){
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
 
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList).not.toBeNull();
                 expect(analystResult.serviceAreaList[0].edgeFeatures).toBeNull();
@@ -131,18 +130,18 @@ describe('testFindServiceAreasService_processAsync',function(){
                 expect(findServiceAreasService.events).toBeNull();
                 parameter.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 parameter.destroy();
                 done();
             }
-        },2000)
+        }, 2000)
     });
 
     //id为空
-    it('isAnalystById',function(done){
+    it('processAsync_isAnalystById', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -172,8 +171,8 @@ describe('testFindServiceAreasService_processAsync',function(){
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
 
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 findServiceAreasService.destroy();
@@ -181,18 +180,18 @@ describe('testFindServiceAreasService_processAsync',function(){
                 expect(findServiceAreasService.events).toBeNull();
                 parameter.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 parameter.destroy();
                 done();
             }
-        },2000)
+        }, 2000)
     });
 
     //参数错误
-    it('paramsWrong',function(done){
+    it('processAsync_paramsWrong', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -222,8 +221,8 @@ describe('testFindServiceAreasService_processAsync',function(){
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
 
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 findServiceAreasService.destroy();
@@ -231,40 +230,40 @@ describe('testFindServiceAreasService_processAsync',function(){
                 expect(findServiceAreasService.events).toBeNull();
                 parameter.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 parameter.destroy();
                 done();
             }
-        },2000)
+        }, 2000)
     });
 
     //参数为空
-    it('parameterNull',function(done){
+    it('processAsync_parameterNull', function (done) {
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync();
 
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 findServiceAreasService.destroy();
                 expect(findServiceAreasService.EVENT_TYPES).toBeNull();
                 expect(findServiceAreasService.events).toBeNull();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 done();
             }
-        },2000)
+        }, 2000)
     });
 
     //AnalyzeById_null
-    it('AnalyzeById_null',function(done){
+    it('processAsync_AnalyzeById_wrong', function (done) {
         var centerArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -293,9 +292,8 @@ describe('testFindServiceAreasService_processAsync',function(){
         });
         var findServiceAreasService = initFindServiceAreasService();
         findServiceAreasService.processAsync(parameter);
-
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 findServiceAreasService.destroy();
@@ -303,13 +301,13 @@ describe('testFindServiceAreasService_processAsync',function(){
                 expect(findServiceAreasService.events).toBeNull();
                 parameter.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 parameter.destroy();
                 done();
             }
-        },2000)
+        }, 2000)
     })
 });

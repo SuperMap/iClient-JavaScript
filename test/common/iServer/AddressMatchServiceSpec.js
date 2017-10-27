@@ -2,8 +2,17 @@ require('../../../src/common/iServer/AddressMatchService');
 
 var addressMatchURL_code = GlobeParameter.addressMatchURL_code;
 var addressMatchURL_decode = GlobeParameter.addressMatchURL_decode;
-describe('testAddressMatchService', function () {
-    it('constructor and destroy', function () {
+describe('AddressMatchService', function () {
+    var originalTimeout;
+    beforeEach(function () {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    });
+    afterEach(function () {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
+
+    it('constructor, destroy', function () {
         var addressMatchService = new SuperMap.AddressMatchService(addressMatchURL_code);
         expect(addressMatchService).not.toBeNull();
         expect(addressMatchService.url).toEqual(addressMatchURL_code);
@@ -15,17 +24,7 @@ describe('testAddressMatchService', function () {
         expect(addressMatchService.options).toBeNull();
         expect(addressMatchService.url).toBeNull();
     });
-});
 
-describe('testAddressMatchService异步', function () {
-    var originalTimeout;
-    beforeEach(function () {
-        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-    });
-    afterEach(function () {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-    });
     it('code', function (done) {
         var codingFailedEventArgs = null, codingSuccessEventArgs = null;
         var options = {
@@ -123,7 +122,6 @@ describe('testAddressMatchService异步', function () {
             }
         }, 5000)
     });
-
 });
 
 

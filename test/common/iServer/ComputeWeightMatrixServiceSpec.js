@@ -9,20 +9,17 @@ var options = {
         'processFailed': ComputeWeightMatrixServiceFailed
     }
 };
-
 function initComputeWeightMatrixService_RegisterListener() {
     return new SuperMap.ComputeWeightMatrixService(url, options);
 }
-
 function ComputeWeightMatrixServiceCompleted(getFeaturesEventArgs) {
     serviceCompletedEventArgsSystem = getFeaturesEventArgs;
 }
-
 function ComputeWeightMatrixServiceFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-describe('testComputeWeightMatrixService_processAsync', function () {
+describe('ComputeWeightMatrixService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -32,7 +29,7 @@ describe('testComputeWeightMatrixService_processAsync', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('return_true', function (done) {
+    it('processAsync_return:true', function (done) {
         var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
         var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
@@ -63,9 +60,9 @@ describe('testComputeWeightMatrixService_processAsync', function () {
                 expect(computeWeightMatrixService).not.toBeNull();
                 expect(serviceCompletedEventArgsSystem.result).not.toBeNull();
                 /*  expect(serviceCompletedEventArgsSystem.result[0][0]).toEqual(0);
-                  expect(serviceCompletedEventArgsSystem.result[0][1]).toEqual(53);
-                  expect(serviceCompletedEventArgsSystem.result[1][0]).toEqual(53);
-                  expect(serviceCompletedEventArgsSystem.result[1][1]).toEqual(0);*/
+                 expect(serviceCompletedEventArgsSystem.result[0][1]).toEqual(53);
+                 expect(serviceCompletedEventArgsSystem.result[1][0]).toEqual(53);
+                 expect(serviceCompletedEventArgsSystem.result[1][1]).toEqual(0);*/
                 computeWeightMatrixService.destroy();
                 expect(computeWeightMatrixService.EVENT_TYPES).toBeNull();
                 expect(computeWeightMatrixService.events).toBeNull();
@@ -85,7 +82,7 @@ describe('testComputeWeightMatrixService_processAsync', function () {
     });
 
     //id为空
-    it('isAnalyzeById', function (done) {
+    it('processAsync_isAnalyzeById:null', function (done) {
         var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
         var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
@@ -110,7 +107,6 @@ describe('testComputeWeightMatrixService_processAsync', function () {
             parameter: analystParameter
         });
         computeWeightMatrixService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.erroeMsg).not.toBeNull();
@@ -129,7 +125,7 @@ describe('testComputeWeightMatrixService_processAsync', function () {
     });
 
     //参数错误
-    it('parameterWrong', function (done) {
+    it('processAsync_parametersWrong', function (done) {
         var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
         var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
@@ -154,7 +150,6 @@ describe('testComputeWeightMatrixService_processAsync', function () {
             parameter: analystParameter
         });
         computeWeightMatrixService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
@@ -173,7 +168,7 @@ describe('testComputeWeightMatrixService_processAsync', function () {
     });
 
     //测试参数为空时的健壮性
-    it('parameterNull', function (done) {
+    it('processAsync:parametersNull', function (done) {
         var computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
         computeWeightMatrixService.processAsync();
 
@@ -192,7 +187,7 @@ describe('testComputeWeightMatrixService_processAsync', function () {
         }, 4000)
     });
 
-    it('isAnalyzeByIdInvalid', function (done) {
+    it('processAsync_isAnalyzeByIdInvalid', function (done) {
         var nodeArray = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -217,7 +212,6 @@ describe('testComputeWeightMatrixService_processAsync', function () {
         });
         computeWeightMatrixService = initComputeWeightMatrixService_RegisterListener();
         computeWeightMatrixService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);

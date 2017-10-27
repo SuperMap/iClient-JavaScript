@@ -1,6 +1,6 @@
 require('../../../../src/common/overlay/levelRenderer/Curve');
 
-describe('testCurve', function () {
+describe('Curve', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -173,6 +173,4 @@ describe('testCurve', function () {
         var result = init.quadraticProjectPoint(x0, y0, x1, y1, x2, y2, x, y, out);
         expect(result).toBe(2.5772794521647513);
     });
-
-
 });

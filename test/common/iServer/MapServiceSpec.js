@@ -1,56 +1,48 @@
 ﻿require('../../../src/common/iServer/MapService');
 
-var getMapStatusEventArgsSystem=null;
-var serviceFailedEventArgsSystem=null;
-var worldMapURL =  GlobeParameter.worldMapURL;
-
-function initMapService() {
-    getMapStatusEventArgsSystem=null;
-    serviceFailedEventArgsSystem=null;
-    return new SuperMap.MapService(worldMapURL);
-}
+var getMapStatusEventArgsSystem = null;
+var serviceFailedEventArgsSystem = null;
+var worldMapURL = GlobeParameter.worldMapURL;
 
 //初始化注册事件监听器的Services
 function initMapService_RegisterListener() {
     return new SuperMap.MapService(worldMapURL, {
-        eventListeners: {'processFailed':GetMapStatusFailed,'processCompleted':GetMapStatusCompleted}}
+            eventListeners: {'processFailed': GetMapStatusFailed, 'processCompleted': GetMapStatusCompleted}
+        }
     );
 }
-function GetMapStatusCompleted(getMapStatusEventArgs){
+function GetMapStatusCompleted(getMapStatusEventArgs) {
     getMapStatusEventArgsSystem = getMapStatusEventArgs;
 }
-function GetMapStatusFailed(serviceFailedEventArgs){
+function GetMapStatusFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-describe('testMapService_constructor',function(){
-    it('token',function(){
-        var getMapService = new SuperMap.MapService(worldMapURL,{token:88888});
-        expect(getMapService).not.toBeNull();
-        expect(getMapService.token).toEqual(88888);
-        getMapService.destroy();
-    })
-});
-
-describe('testMapService_processAsync',function(){
+describe('MapService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    it('constructor_token', function () {
+        var getMapService = new SuperMap.MapService(worldMapURL, {token: 88888});
+        expect(getMapService).not.toBeNull();
+        expect(getMapService.token).toEqual(88888);
+        getMapService.destroy();
+    });
+
     //通过的情况
-    it('pass',function(done){
+    it('success:processAsync', function (done) {
         var getMapService = initMapService_RegisterListener();
         expect(getMapService).not.toBeNull();
-        expect(getMapService.url).toEqual(worldMapURL+".json");
+        expect(getMapService.url).toEqual(worldMapURL + ".json");
         getMapService.processAsync();
-
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var getMapStatusResult = getMapStatusEventArgsSystem.result;
                 expect(getMapStatusEventArgsSystem).not.toBeNull();
                 expect(getMapStatusResult).not.toBeNull();
@@ -67,49 +59,48 @@ describe('testMapService_processAsync',function(){
                 expect(getMapService.events).toBeNull();
                 expect(getMapService.eventListeners).toBeNull();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("MapService_" + exception.name + ":" + exception.message);
                 getMapService.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 
-    it('fail',function(done){
+    it('fail:processAsync', function (done) {
         var mapServiceURL = GlobeParameter.mapServiceURL;
         var getMapService = new SuperMap.MapService(mapServiceURL + "MapNameError");
-        getMapService.events.on({'processFailed':GetMapStatusFailed});
+        getMapService.events.on({'processFailed': GetMapStatusFailed});
         getMapService.processAsync();
-
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(404);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("MapService_" + exception.name + ":" + exception.message);
                 getMapService.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     })
 });
 
 /*
  function boundsEqual(jsonObject,bounds,tolerance){
-    if(!(jsonObject && bounds)) {
-        return false;
-    }
-    if(tolerance == undefined ){
-        tolerance=1.0E-6;
-    }
-    Math
-    if(Math.abs(jsonObject.left - bounds.left) <tolerance  && Math.abs(jsonObject.bottom - bounds.bottom) <tolerance  && Math.abs(jsonObject.right - bounds.right)  <tolerance &&  Math.abs(jsonObject.top - bounds.top) <tolerance ){
-        return true;
-    }else{
-        return false;
-    }
-}*/
+ if(!(jsonObject && bounds)) {
+ return false;
+ }
+ if(tolerance == undefined ){
+ tolerance=1.0E-6;
+ }
+ Math
+ if(Math.abs(jsonObject.left - bounds.left) <tolerance  && Math.abs(jsonObject.bottom - bounds.bottom) <tolerance  && Math.abs(jsonObject.right - bounds.right)  <tolerance &&  Math.abs(jsonObject.top - bounds.top) <tolerance ){
+ return true;
+ }else{
+ return false;
+ }
+ }*/

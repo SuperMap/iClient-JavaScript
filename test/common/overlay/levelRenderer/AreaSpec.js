@@ -1,6 +1,6 @@
 require('../../../../src/common/overlay/levelRenderer/Area');
 
-describe('testArea', function () {
+describe('Area', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -10,7 +10,7 @@ describe('testArea', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it("init", function () {
+    it("initialize", function () {
         var init = new SuperMap.LevelRenderer.Tool.Area();
         expect(init.TEXT_CACHE_MAX).toBe(5000);
         expect(parseFloat(init.PI2.toFixed(15))).toBe(6.283185307179586);
@@ -26,7 +26,7 @@ describe('testArea', function () {
         expect(result).toBe(1.8584374907635848);
     });
 
-    it("isInside_shape.buildPath && this._ctx.isPointInPath", function () {
+    it("isInside", function () {
         var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
             style: {
                 x: 100,
@@ -40,7 +40,6 @@ describe('testArea', function () {
                 text: 'SmicEllipse'
             }
         });
-
         var area = {
             x: 100,
             y: 100,
@@ -60,7 +59,7 @@ describe('testArea', function () {
         expect(result).toBeFalsy();
     });
 
-    it("isInside__mathReturn_not_undefined", function () {
+    it("isInside_mathReturn_not_undefined", function () {
 
         var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
             style: {
@@ -69,13 +68,11 @@ describe('testArea', function () {
                 color: 'blue'
             }
         });
-
         var area = {
             // 100x100 的正方形
             pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
             color: 'blue'
         };
-
         var x = 209;
         var y = 110;
         var init = new SuperMap.LevelRenderer.Tool.Area();
@@ -160,7 +157,6 @@ describe('testArea', function () {
         shape.cpY1 = 5;
         shape.percent = 1;
         shape.type = "bezier-curve";
-
         var area = {
             stroke: '#000',
             fill: null,
@@ -192,7 +188,6 @@ describe('testArea', function () {
         shape.cpY1 = 5;
         shape.percent = 1;
         shape.type = "bezier-curve";
-
         var area = {
             stroke: '#000',
             fill: null,
@@ -204,7 +199,7 @@ describe('testArea', function () {
             yStart: 0,
             xEnd: 80,
             yEnd: 80,
-            lineWidth: "10px",
+            lineWidth: "10px"
         };
         var x = 100;
         var y = 200;
@@ -220,8 +215,7 @@ describe('testArea', function () {
         shape.y1 = 10;
         shape.x2 = 20;
         shape.y2 = 20;
-        shape.type =  "line";
-
+        shape.type = "line";
         var area = {
             xStart: 0,
             yStart: 0,
@@ -239,7 +233,7 @@ describe('testArea', function () {
 
     it("_mathMethod_broken-line_false", function () {
         var shape = new SuperMap.LevelRenderer.Shape();
-        shape.type =  "broken-line";
+        shape.type = "broken-line";
 
         var area = {
             pointList: [[0, 0], [100, 100], [100, 0]],
@@ -255,7 +249,7 @@ describe('testArea', function () {
 
     it("_mathMethod_broken-line_true", function () {
         var shape = new SuperMap.LevelRenderer.Shape();
-        shape.type =  "broken-line";
+        shape.type = "broken-line";
         var area = {
             pointList: [[100, 1], [90, 100], [1, 1]],
             lineWidth: 90
@@ -269,7 +263,6 @@ describe('testArea', function () {
     });
 
     it("_mathMethod_smicbroken-line", function () {
-
         var shape = new SuperMap.LevelRenderer.Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -277,8 +270,6 @@ describe('testArea', function () {
         shape.y2 = 20;
         shape.refOriginalPosition = [80, 80];
         shape.type = "smicbroken-line";
-
-
         var area = {
             xStart: 0,
             yStart: 0,
@@ -293,11 +284,9 @@ describe('testArea', function () {
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
-
     });
 
     it("_mathMethod_ring", function () {
-
         var shape = new SuperMap.LevelRenderer.Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -305,7 +294,6 @@ describe('testArea', function () {
         shape.y2 = 20;
         shape.refOriginalPosition = [80, 80];
         shape.type = "ring";
-
         var area = {
             xStart: 0,
             yStart: 0,
@@ -324,7 +312,6 @@ describe('testArea', function () {
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
-
     });
 
     it("_mathMethod_smicring", function () {
@@ -336,7 +323,6 @@ describe('testArea', function () {
                 r: 50
             }
         });
-
         var area = {
             xStart: 0,
             yStart: 0,
@@ -358,7 +344,6 @@ describe('testArea', function () {
     });
 
     it("_mathMethod_circle", function () {
-
         var shape = new SuperMap.LevelRenderer.Shape();
         shape.x1 = 10;
         shape.y1 = 10;
@@ -366,7 +351,7 @@ describe('testArea', function () {
         shape.y2 = 20;
         shape.refOriginalPosition = [80, 80];
         shape.type = "circle";
-        shape.holePolygonPointLists=[
+        shape.holePolygonPointLists = [
             [
                 [1, 2], [3, 4]
             ],
@@ -374,7 +359,6 @@ describe('testArea', function () {
                 [5, 6], [7, 8]
             ]
         ];
-
         var area = {
             xStart: 0,
             yStart: 0,
@@ -434,9 +418,9 @@ describe('testArea', function () {
         shape.y1 = 10;
         shape.x2 = 20;
         shape.y2 = 20;
-        shape.refOriginalPosition= [10, 5];
+        shape.refOriginalPosition = [10, 5];
         shape.type = "sector";
-        shape.holePolygonPointLists=[
+        shape.holePolygonPointLists = [
             [
                 [1, 2], [3, 4]
             ],
@@ -444,7 +428,6 @@ describe('testArea', function () {
                 [5, 6], [7, 8]
             ]
         ];
-
         var area = {
             xStart: 0,
             yStart: 0,
@@ -480,7 +463,6 @@ describe('testArea', function () {
                 endEngle: 180
             }
         });
-
         var area = {
             xStart: 0,
             yStart: 0,
@@ -495,7 +477,6 @@ describe('testArea', function () {
             startAngle: 30,
             endAngle: 180,
             clockWise: false
-
         };
         var x = 20;
         var y = 10;
@@ -511,9 +492,9 @@ describe('testArea', function () {
         shape.y1 = 10;
         shape.x2 = 20;
         shape.y2 = 20;
-        shape.refOriginalPosition= [10, 5];
+        shape.refOriginalPosition = [10, 5];
         shape.type = "path";
-        shape.holePolygonPointLists=[
+        shape.holePolygonPointLists = [
             [
                 [1, 2], [3, 4]
             ],
@@ -521,7 +502,6 @@ describe('testArea', function () {
                 [5, 6], [7, 8]
             ]
         ];
-
         var area = {
             xStart: 0,
             yStart: 0,
@@ -667,7 +647,6 @@ describe('testArea', function () {
     it("_mathMethod_image", function () {
         var shape = new SuperMap.LevelRenderer.Shape();
         shape.type = "image";
-
         var area = {
             x: 10,
             y: 5,
@@ -679,7 +658,6 @@ describe('testArea', function () {
         var init = new SuperMap.LevelRenderer.Tool.Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
-
     });
 
     it("_mathMethod_smicimage", function () {
@@ -721,6 +699,4 @@ describe('testArea', function () {
         var result = init.windingArc(cx, cy, r, startAngle, endAngle, anticlockwise, x, y);
         expect(result).not.toBeNull();
     });
-
-
 });

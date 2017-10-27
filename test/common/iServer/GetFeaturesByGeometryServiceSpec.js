@@ -10,42 +10,41 @@ var options = {
     }
 };
 function initGetFeaturesByGeometryService() {
-    return new SuperMap.GetFeaturesByGeometryService(dataServiceURL,options);
+    return new SuperMap.GetFeaturesByGeometryService(dataServiceURL, options);
 }
-function getFeaturesByGeometryFailed(serviceFailedEventArgs){
-    serviceFailedEventArgsSystem=serviceFailedEventArgs;
+function getFeaturesByGeometryFailed(serviceFailedEventArgs) {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
-function getFeaturesByGeometryCompleted(getFeaturesEventArgs){
-    getFeatureEventArgsSystem=getFeaturesEventArgs;
+function getFeaturesByGeometryCompleted(getFeaturesEventArgs) {
+    getFeatureEventArgsSystem = getFeaturesEventArgs;
 }
 
-describe('testGetFeaturesByGeometryService_processAsync',function(){
+describe('GetFeaturesByGeometryService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //不直接返回查询结果
-    it('NotReturnContent',function(done){
-        var point = new SuperMap.Geometry.Point(112,36);
+    it('processAsync_returnContent:false', function (done) {
+        var point = new SuperMap.Geometry.Point(112, 36);
         var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
-            returnContent:false,
+            returnContent: false,
             datasetNames: ["World:Countries"],
             fields: ["SMID"],
             fromIndex: 0,
-            toIndex:-1,
-            spatialQueryMode:SuperMap.SpatialQueryMode.INTERSECT,
-            geometry:point
+            toIndex: -1,
+            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+            geometry: point
         });
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
-
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result;
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
@@ -58,30 +57,29 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 expect(getFeaturesByGeometryService.returnContent).toBeNull();
                 getFeaturesByGeometryParameters.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },4000);
+        }, 4000);
     });
 
     //直接返回结果情况
-    it('returnContent',function(done){
+    it('processAsync_returnContent:true', function (done) {
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
         var point = new SuperMap.Geometry.Point(112, 36);
         var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             toIndex: -1,
-            spatialQueryMode:SuperMap.SpatialQueryMode.INTERSECT,
-            geometry:point
+            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+            geometry: point
         });
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
-
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result.features;
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
@@ -91,31 +89,30 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },4000);
+        }, 4000);
     });
 
     //具有attributeFilter直接返回结果情况
-    it('returnContent_withAttributeFilter',function(done){
+    it('processAsync_returnContent_withAttributeFilter', function (done) {
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
         var point = new SuperMap.Geometry.Point(112, 36);
         var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             toIndex: -1,
             attributeFilter: "SMID<100",
-            spatialQueryMode:SuperMap.SpatialQueryMode.INTERSECT,
-            geometry:point
+            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+            geometry: point
         });
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
-
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 var getFeaturesResult = getFeatureEventArgsSystem.result.features;
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
@@ -124,29 +121,28 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },4000);
+        }, 4000);
     });
 
     //测试没有传入参数时的情况
-    it('noParams',function(done){
+    it('processAsync_noParams', function (done) {
         var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
-            returnContent:false,
+            returnContent: false,
             datasetNames: ["World:Capitals"],
             toIndex: -1,
             spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN
         });
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
         getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
-
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.result).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
@@ -155,31 +151,30 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },4000);
+        }, 4000);
     });
 
     //查询目标图层不存在情况
-    it('LayerNotExist',function(done){
+    it('processAsync_LayerNotExist', function (done) {
         var point = new SuperMap.Geometry.Point(112, 36);
         var getFeaturesByGeometryParameters = new SuperMap.GetFeaturesByGeometryParameters({
-            returnContent:false,
+            returnContent: false,
             datasetNames: ["World:CountriesNotExsit"],
             toIndex: -1,
-            spatialQueryMode:SuperMap.SpatialQueryMode.INTERSECT,
-            geometry:point
+            spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+            geometry: point
         });
         var getFeaturesByGeometryService = initGetFeaturesByGeometryService();
-        getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters );
-
-        setTimeout(function(){
-            try{
+        getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+        setTimeout(function () {
+            try {
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.result).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
@@ -188,13 +183,13 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
-            }catch (exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },4000);
+        }, 4000);
     });
 });

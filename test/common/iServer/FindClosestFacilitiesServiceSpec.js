@@ -19,7 +19,7 @@ function findClosestFacilitiesServiceFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-describe('testFindClosestFacilitiesService_processAsync', function () {
+describe('FindClosestFacilitiesService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -29,7 +29,7 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('return:True', function (done) {
+    it('processAsync:return:true', function (done) {
         var facilityPoints = [new SuperMap.Geometry.Point(119.6100397551, -122.6278394459),
             new SuperMap.Geometry.Point(171.9035599945, -113.2491141857)
         ];
@@ -53,7 +53,6 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
         parameter.parameter = analystParameter;
         var closestFacilitiesService = initFindClosestFacilitiesService();
         closestFacilitiesService.processAsync(parameter);
-
         setTimeout(function () {
             try {
                 var analystResult = serviceSucceedEventArgsSystem.result.facilityPathList;
@@ -80,7 +79,7 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
     });
 
     // isAnalyzeById
-    it('isAnalyzeById', function (done) {
+    it('processAsync_isAnalyzeById', function (done) {
         var transReSetting = new SuperMap.TransportationAnalystResultSetting();
         with (transReSetting) {
             returnEdgeFeatures = true;
@@ -102,7 +101,6 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
         }
         var closestFacilitiesService = initFindClosestFacilitiesService();
         closestFacilitiesService.processAsync(facilitiesParams);
-
         setTimeout(function () {
             try {
                 expect(serviceSucceedEventArgsSystem).not.toBeNull();
@@ -122,7 +120,7 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
     });
 
     //参数为空
-    it('parameterNull', function (done) {
+    it('processAsync_parameterNull', function (done) {
         var transReSetting = new SuperMap.TransportationAnalystResultSetting();
         with (transReSetting) {
             returnEdgeFeatures = true;
@@ -144,7 +142,6 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
         }
         var closestFacilitiesService = initFindClosestFacilitiesService();
         closestFacilitiesService.processAsync();
-
         setTimeout(function () {
             try {
                 expect(serviceSucceedEventArgsSystem.result.facilityPathList).toBeNull();
@@ -159,7 +156,7 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
         }, 2000);
     });
 
-    it('failedEvent', function (done) {
+    it('fail_processAsync', function (done) {
         var transReSetting = new SuperMap.TransportationAnalystResultSetting();
         with (transReSetting) {
             returnEdgeFeatures = true;
@@ -183,7 +180,6 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
         }
         var closestFacilitiesService = initFindClosestFacilitiesService();
         closestFacilitiesService.processAsync(facilitiesParams);
-
         setTimeout(function () {
             try {
                 expect(serviceSucceedEventArgsSystem.result.facilityPathList).toBeNull();

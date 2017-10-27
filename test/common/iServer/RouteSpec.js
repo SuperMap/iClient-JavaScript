@@ -1,6 +1,6 @@
 require('../../../src/common/iServer/Route');
 
-describe('testRoute', function () {
+describe('Route', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -12,7 +12,7 @@ describe('testRoute', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('init', function () {
+    it('constructor', function () {
         var lineString = new SuperMap.Geometry.LineString();
         var options = {
             "id": 1,
@@ -105,7 +105,7 @@ describe('testRoute', function () {
         expect(route.componentTypes).toBeNull();
     });
 
-    it('fromJson', function ( ) {
+    it('fromJson', function () {
         var jsonobj = {
             "id": 1,
             "length": 1024,
@@ -129,5 +129,4 @@ describe('testRoute', function () {
         expect(result.type).toBe("POINT");
         expect(result.parts).toBe(jsonobj.parts);
     });
-
 });

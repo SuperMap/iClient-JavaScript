@@ -4,34 +4,34 @@ var serviceFailedEventArgsSystem = null;
 var fieldStatisticEventArgsSystem = null;
 var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
-    eventListeners:{
+    eventListeners: {
         'processCompleted': fieldStatisticCompleted,
-        'processFailed':fieldStatisticFailed
+        'processFailed': fieldStatisticFailed
     }
 };
 function initFieldStatisticService() {
     return new SuperMap.FieldStatisticService(dataServiceURL, options);
 }
-function fieldStatisticCompleted(getFeaturesEventArgs){
+function fieldStatisticCompleted(getFeaturesEventArgs) {
     fieldStatisticEventArgsSystem = getFeaturesEventArgs;
 }
 function fieldStatisticFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
-describe('testFieldStatisticService_processAsync', function () {
+describe('FieldStatisticService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //存在对应数据源数据集返回查询结果
-    it('getResult', function (done) {
-        var fieldStatisticService =initFieldStatisticService();
+    it('success:processAsync', function (done) {
+        var fieldStatisticService = initFieldStatisticService();
         expect(fieldStatisticService).not.toBeNull();
         expect(fieldStatisticService.url).toBe(dataServiceURL);
         fieldStatisticService.dataset = "Countries";
@@ -40,8 +40,8 @@ describe('testFieldStatisticService_processAsync', function () {
         fieldStatisticService.statisticMode = SuperMap.StatisticMode.AVERAGE;
         fieldStatisticService.events.on({'processCompleted': fieldStatisticCompleted});
         fieldStatisticService.processAsync();
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 expect(fieldStatisticEventArgsSystem).not.toBeNull();
                 expect(fieldStatisticEventArgsSystem.result.mode).toBe("AVERAGE");
                 expect(fieldStatisticEventArgsSystem.result.result).toEqual(124);
@@ -53,17 +53,17 @@ describe('testFieldStatisticService_processAsync', function () {
                 expect(fieldStatisticService.statisticMode).toBeNull();
                 expect(fieldStatisticService.dataset).toBeNull();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 fieldStatisticService.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 
     //错误数据集，查询错误
-    it('WrongDatasets', function (done){
+    it('processAsync_datasetsWrong', function (done) {
         var fieldStatisticService = initFieldStatisticService();
         fieldStatisticService.dataset = "NoDataset";
         fieldStatisticService.datasource = "World";
@@ -71,20 +71,20 @@ describe('testFieldStatisticService_processAsync', function () {
         fieldStatisticService.statisticMode = SuperMap.StatisticMode.AVERAGE;
         fieldStatisticService.events.on({'processFailed': fieldStatisticFailed});
         fieldStatisticService.processAsync();
-        setTimeout(function(){
-            try{
+        setTimeout(function () {
+            try {
                 expect(serviceFailedEventArgsSystem).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(500);
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 fieldStatisticService.destroy();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 fieldStatisticService.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     })
 });

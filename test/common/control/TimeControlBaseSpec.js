@@ -1,7 +1,6 @@
 require('../../../src/common/control/TimeControlBase');
 
-describe('testTimeControlBase', function () {
-
+describe('TimeControlBase', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -10,7 +9,6 @@ describe('testTimeControlBase', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
     var options = {
         speed: 1,
         frequency: 1000,

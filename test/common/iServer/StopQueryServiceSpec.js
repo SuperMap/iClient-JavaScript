@@ -18,46 +18,45 @@ function failed(event) {
     serviceFailedEventArgsSystem = event;
 }
 
-describe('testStopQueryService_processAsync',function(){
+describe('StopQueryService', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         stopQueryServiceEventArgsSystem = null;
         serviceFailedEventArgsSystem = null;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('noParams',function(done){
+    it('processAsync_noParams', function (done) {
         var stopQueryService = initStopQueryService();
         stopQueryService.processAsync();
 
-        setTimeout(function(){
-            try{
-                expect((stopQueryService.processAsync())===undefined).toBeTruthy();
+        setTimeout(function () {
+            try {
+                expect((stopQueryService.processAsync()) === undefined).toBeTruthy();
                 stopQueryService.destroy();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("StopQueryService_" + exception.name + ":" + exception.message);
                 stopQueryService.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 
-    it('success_returnPosition',function(done){
+    it('success:processAsync_returnPosition', function (done) {
         var stopQueryService = initStopQueryService();
         var stopQueryServiceParams = new SuperMap.StopQueryParameters({
             keyWord: '人民',
             returnPosition: true
         });
         stopQueryService.processAsync(stopQueryServiceParams);
-
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 expect(stopQueryServiceEventArgsSystem.result).not.toBeNull();
                 expect(stopQueryServiceEventArgsSystem.result[0].position).not.toBeNull();
                 stopQueryService.destroy();
@@ -65,26 +64,25 @@ describe('testStopQueryService_processAsync',function(){
                 expect(stopQueryService.events).toBeNull();
                 stopQueryServiceParams.destroy();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("StopQueryService_" + exception.name + ":" + exception.message);
                 stopQueryService.destroy();
                 stopQueryServiceParams.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     });
 
-    it('success_returnPosition:false',function(done){
+    it('success:processAsync_returnPosition:false', function (done) {
         var stopQueryService = initStopQueryService();
         var stopQueryServiceParams = new SuperMap.StopQueryParameters({
             keyWord: '人民',
             returnPosition: false
         });
         stopQueryService.processAsync(stopQueryServiceParams);
-
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var result = stopQueryServiceEventArgsSystem.result;
                 expect(result).not.toBeNull();
                 expect(stopQueryServiceEventArgsSystem.result[0].position).toBeNull();
@@ -92,13 +90,13 @@ describe('testStopQueryService_processAsync',function(){
                 stopQueryService.destroy();
                 stopQueryServiceParams.destroy();
                 done();
-            }catch(exception){
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("StopQueryService_" + exception.name + ":" + exception.message);
                 stopQueryService.destroy();
                 stopQueryServiceParams.destroy();
                 done();
             }
-        },2000);
+        }, 2000);
     })
 });

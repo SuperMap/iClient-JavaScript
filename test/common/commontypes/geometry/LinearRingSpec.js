@@ -1,5 +1,5 @@
 require('../../../../src/common/commontypes/geometry/LinearRing');
-describe('common_LinearRing Test', function () {
+describe('LinearRing', function () {
     var points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
         new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
         new SuperMap.Geometry.Point(5006.0235999418364, -3358.8890067038628),
@@ -7,7 +7,7 @@ describe('common_LinearRing Test', function () {
         new SuperMap.Geometry.Point(5305.19551436013, -3376.9669111768926)];
     var linearRing = new SuperMap.Geometry.LinearRing(points);
 
-    it('constructor_test', function () {
+    it('initialize, getArea', function () {
         expect(linearRing).not.toBeNull();
         expect(linearRing.id).not.toBeNull();
         expect(linearRing.components.length).toEqual(6);
@@ -21,9 +21,8 @@ describe('common_LinearRing Test', function () {
         expect(area).toEqual(-4929.534861156455);
     });
 
-
     // 添加一个点到几何图形数组中
-    it('addComponent_test', function () {
+    it('addComponent', function () {
         var addPoint = new SuperMap.Geometry.Point(5365.09521434033, -3324.5789112568386);
         var addSuccess = linearRing.addComponent(addPoint, 6);
         expect(addSuccess).toBeTruthy();
@@ -31,21 +30,19 @@ describe('common_LinearRing Test', function () {
         expect(linearRing.components[0].id).toEqual(linearRing.components[6].id);
     });
 
-
     //从几何组件中删除一个点。
-    it('removeComponent_test', function () {
+    it('removeComponent', function () {
         var removedSuccess = linearRing.removeComponent(points[2]);
         expect(removedSuccess).toBeTruthy();
         expect(linearRing.components.length).toEqual(6);
     });
 
     //返回几何图形的所有点的列表
-    it('getVertices_test', function () {
+    it('getVertices', function () {
         var pointList1 = linearRing.getVertices(true);
         var pointList2 = linearRing.getVertices(false);
         expect(pointList1.length).toEqual(0);
         expect(pointList2).not.toBeNull();
         expect(pointList2.length).toEqual(5);
     });
-
 });
