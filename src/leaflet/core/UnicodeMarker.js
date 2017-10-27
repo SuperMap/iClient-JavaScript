@@ -2,22 +2,25 @@ import '../core/Base';
 import L from "leaflet";
 
 /**
- * @class L.supermap.baiduTileLayer
- * @classdesc 百度地图图层。
- * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
- * @param url -{string} 切片地址
- * @param options -{Object} 切片参数。如：<br>
- *        minZoom - {number} 最小缩放级别 <br>
- *        maxZoom - {number} 最大缩放级别 <br>
- *        bounds - {[L.LatLngBounds]{@linkdoc-leaflet/#latlngbounds}} 显示范围 <br>
- *        retina - {[L.Browser]{@linkdoc-leaflet/#browser}} 浏览器显示分辨率 <br>
- *        attribution - {string} 版权信息 <br>
+ * @class L.supermap.unicodeMarker
+ * @classdesc Unicode字符图标。
+ * @extends L.Path{@linkdoc-leaflet/#Path}
+ * @param latlng -[L.LatLngBounds]{@linkdoc-leaflet/#latlng}} 经纬度坐标
+ * @param options -{Object} 符号参数。<br>
+ *        label - {string} 符号Unicode值 <br>
+ *        labelRotation - {string} 符号旋转角度 <br>
+ *        globalAlpha - {string} 符号的透明值 <br>
+ *        fontStyle - {string} 符号的风格 <br>
+ *        fontWeight - {string} 符号的粗细 <br>
+ *        fontSize - {string} 符号的尺寸 <br>
+ *        fontFamily - {string} 符号的字体 <br>
+ *        textAlign - {string} 符号内容的对齐方式 <br>
+ *        textBaseline - {string} 绘制符号时使用的基线 <br>
  */
 export var UnicodeMarker = L.Path.extend({
     // @section
     // @aka CircleMarker options
     options: {
-        fill: true,
         fontStyle: "normal",
         fontWeight: "normal",
         fontSize: "1em",
@@ -26,8 +29,6 @@ export var UnicodeMarker = L.Path.extend({
         textBaseline: "middle",
         vfactor: -.5,
         labelRotation: 0,
-        labelXOffset: 0,
-        labelYOffset: 0,
         globalAlpha: 1,
         label: ""
     },

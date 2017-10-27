@@ -26528,23 +26528,27 @@ var Tianditu = function (_ol$source$WMTS) {
         var attributions = options.attributions || new _olDebug2.default.Attribution({
             html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " + "src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " + "<span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
         });
-
+        options.layerType = options.layerType || "vec";
+        options.layerType = options.isLabel ? _olDebug2.default.source.Tianditu.layerLabelMap[options.layerType] : options.layerType;
+        options.matrixSet = options.projection === 'EPSG:4326' || options.projection === 'EPSG:4490' ? "c" : "w";
         if (!options.url && !options.urls) {
-            options.url = "http://t{0-7}.tianditu.com/img_w/wmts";
+            options.url = "http://t{0-7}.tianditu.com/{layer}_{proj}/wmts?";
         }
+        options.url = options.url.replace("{layer}", options.layerType).replace("{proj}", options.matrixSet);
+        var tileGrid = options.tileGrid || _olDebug2.default.source.Tianditu.getTileGrid(options.projection || 'EPSG:3857');
         return _possibleConstructorReturn(this, (Tianditu.__proto__ || Object.getPrototypeOf(Tianditu)).call(this, {
             version: options.version || '1.0.0',
             format: options.format || 'tiles',
             dimensions: options.dimensions || {},
-            layer: options.layer || 'img',
-            matrixSet: options.matrixSet || 'w',
-            tileGrid: options.tileGrid || _olDebug2.default.source.Tianditu.getTileGrid(options.projection || 'EPSG:3857'),
+            layer: options.layerType,
+            matrixSet: options.matrixSet,
+            tileGrid: tileGrid,
             style: options.style || 'default',
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
             opaque: options.opaque || true,
-            maxZoom: options.maxZoom || 19,
+            maxZoom: _olDebug2.default.source.Tianditu.layerZoomMap[options.layerType],
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,
             url: options.url,
@@ -26570,21 +26574,21 @@ var Tianditu = function (_ol$source$WMTS) {
             }
             return _olDebug2.default.source.Tianditu.default3857TileGrid();
         }
+    }, {
+        key: "default4326TileGrid",
+
 
         /**
          * @function ol.source.Tianditu.default4326TileGrid
          * @description 获取默认4326网格瓦片
          * @return {ol.tilegrid.WMTS} 返回默认4326网格瓦片对象
          */
-
-    }, {
-        key: "default4326TileGrid",
         value: function default4326TileGrid() {
             var tdt_WGS84_resolutions = [];
             var matrixIds = [];
-            for (var i = 0; i < 18; i++) {
-                tdt_WGS84_resolutions.push(0.703125 / Math.pow(2, i));
-                matrixIds.push(i + 1);
+            for (var i = 1; i < 19; i++) {
+                tdt_WGS84_resolutions.push(0.703125 * 2 / Math.pow(2, i));
+                matrixIds.push(i);
             }
             var tileGird = new _olDebug2.default.tilegrid.WMTS({
                 extent: [-180, -90, 180, 90],
@@ -26607,9 +26611,9 @@ var Tianditu = function (_ol$source$WMTS) {
         value: function default3857TileGrid() {
             var tdt_Mercator_resolutions = [];
             var matrixIds = [];
-            for (var i = 0; i < 18; i++) {
-                tdt_Mercator_resolutions.push(78271.5169640203125 / Math.pow(2, i));
-                matrixIds.push(i + 1);
+            for (var i = 1; i < 19; i++) {
+                tdt_Mercator_resolutions.push(78271.5169640203125 * 2 / Math.pow(2, i));
+                matrixIds.push(i);
             }
             var tileGird = new _olDebug2.default.tilegrid.WMTS({
                 extent: [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892],
@@ -26625,6 +26629,15 @@ var Tianditu = function (_ol$source$WMTS) {
     return Tianditu;
 }(_olDebug2.default.source.WMTS);
 
+Tianditu.layerLabelMap = {
+    "vec": "cva",
+    "ter": "cta",
+    "img": "cia"
+};
+Tianditu.layerZoomMap = {
+    "vec": 18,
+    "ter": 14,
+    "img": 18 };
 exports.default = Tianditu;
 
 _olDebug2.default.source.Tianditu = Tianditu;
@@ -27487,26 +27500,12 @@ var WebMap = function (_ol$Observable) {
     }, {
         key: 'createTiandituLayer',
         value: function createTiandituLayer(layerInfo, epsgCode) {
-            var proj = epsgCode === 4326 ? "c" : "w";
-            var tdtURL = "http://t{0-7}.tianditu.com/{type}_{proj}/wmts?";
             var type = layerInfo.type.split('_')[1].toLowerCase();
-            if (layerInfo.layerType === 'OVERLAY_LAYER') {
-                if (type == "vec") {
-                    type = "cva";
-                }
-                if (type == "img") {
-                    type = "cia";
-                }
-                if (type == "ter") {
-                    type = "cta";
-                }
-            }
-            tdtURL = tdtURL.replace("{type}", type).replace("{proj}", proj);
+            var isLabel = layerInfo.layerType === 'OVERLAY_LAYER';
             var layer = new _olDebug2.default.layer.Tile({
                 source: new _olDebug2.default.source.Tianditu({
-                    url: tdtURL,
-                    matrixSet: proj,
-                    layer: type,
+                    layerType: type,
+                    isLabel: isLabel,
                     projection: "EPSG:" + epsgCode
                 })
             });

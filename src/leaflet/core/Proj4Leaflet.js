@@ -91,7 +91,7 @@ L.Proj.Projection = L.Class.extend({
  *                     bounds -{Array|L.Bounds} 范围
  * @example
  * 用法：
- *    var crs =L.Proj.CRS("EPSG:4326", '', {
+ *    var crs =L.Proj.CRS("EPSG:4326",{
  *          origin: [-180,90],
  *          scaleDenominators: [2000,1000,500,200,100,50,20,10],
  *    });

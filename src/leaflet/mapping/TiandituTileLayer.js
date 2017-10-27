@@ -6,12 +6,12 @@ import {WMTSLayer} from "./TileLayer.WMTS";
  * @class L.supermap.tiandituTileLayer
  * @classdesc 天地图图层类。
  * @extends L.supermap.wmtsLayer
- * @param defaultURL -{string} 默认图层地址
  * @param options -{Object} 切片图层参数。如：<br>
- *        layer - {string} 图层类型。<br>
+ *        url - {string} 地图地址。<br>
+ *        layerType - {string} 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)<br>
  *        style - {string} 图层风格。<br>
- *        tilematrixSet - {string} 瓦片矩阵集。<br>
  *        format - {string} 格式。<br>
+ *        isLabel - {boolean} 是否是标注图层<br>
  *        subdomains - {Array<number>} 子域名数组。<br>
  *        attribution - {string} 版权信息
  */

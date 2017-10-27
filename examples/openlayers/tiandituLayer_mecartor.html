@@ -10,24 +10,21 @@
 <script type="text/javascript">
     var resolutions = [];
     for (var i = 0; i < 18; i++) {
-        resolutions.push(78271.5169640203125 / (Math.pow(2, i)));
+        resolutions.push(78271.5169640203125*2 / (Math.pow(2, i)));
     }
-   new ol.Map({
+    new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
             .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [0, 0],
-            zoom: 0,
-            resolutions: resolutions
+            zoom: 1
         }),
         layers: [new ol.layer.Tile({
             source: new ol.source.Tianditu()
         }), new ol.layer.Tile({
             source: new ol.source.Tianditu({
-                url: "http://t0.tianditu.com/cia_w/wmts",
-                matrixSet: 'w',
-                layer: 'cia'
+                isLabel: true
             })
         })]
     });

@@ -347,27 +347,12 @@ export default class WebMap extends ol.Observable {
      * @return {ol.layer.Tile} 获取天地图的图层
      */
     createTiandituLayer(layerInfo, epsgCode) {
-        var proj = epsgCode === 4326 ? "c" : "w";
-        var tdtURL =
-            "http://t{0-7}.tianditu.com/{type}_{proj}/wmts?";
         var type = layerInfo.type.split('_')[1].toLowerCase();
-        if (layerInfo.layerType === 'OVERLAY_LAYER') {
-            if (type == "vec") {
-                type = "cva"
-            }
-            if (type == "img") {
-                type = "cia"
-            }
-            if (type == "ter") {
-                type = "cta"
-            }
-        }
-        tdtURL = tdtURL.replace("{type}", type).replace("{proj}", proj);
+        var isLabel=layerInfo.layerType === 'OVERLAY_LAYER';
         var layer = new ol.layer.Tile({
             source: new ol.source.Tianditu({
-                url: tdtURL,
-                matrixSet: proj,
-                layer: type,
+                layerType: type,
+                isLabel:isLabel,
                 projection: "EPSG:" + epsgCode
             })
         })

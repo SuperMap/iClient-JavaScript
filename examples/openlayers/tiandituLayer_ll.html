@@ -8,40 +8,26 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
-    var resolutions = [];
-    for (var i = 6; i < 10; i++) {
-        resolutions.push(0.703125 / (Math.pow(2, i)));
-    }
     var map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
             .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [116.402, 39.905],
-            zoom: 0,
-            projection: "EPSG:4326",
-            resolutions: resolutions
+            zoom: 5,
+            projection: "EPSG:4326"
         }),
 
         layers: [new ol.layer.Tile({
             source: new ol.source.Tianditu({
-                url: "http://t0.tianditu.com/vec_c/wmts",
-                matrixSet: 'c',
-                layer: 'vec',
+                layerType: 'ter',
                 projection: "EPSG:4326"
             })
         }), new ol.layer.Tile({
             source: new ol.source.Tianditu({
-                url: " http://t0.tianditu.com/cva_c/wmts",
-                matrixSet: 'c',
-                layer: 'cva',
-                projection: "EPSG:4326",
-                tileGrid: new ol.tilegrid.WMTS({
-                    extent: [-180, -90, 180, 90],
-                    resolutions: resolutions,
-                    origin: [-180, 90],
-                    matrixIds: [7, 8, 9, 10],
-                })
+                layerType: 'ter',
+                isLabel: true,
+                projection: "EPSG:4326"
             })
         })]
     });
