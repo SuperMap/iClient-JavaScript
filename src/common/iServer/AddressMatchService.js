@@ -43,7 +43,7 @@ export default class AddressMatchService extends CommonServiceBase {
      */
     decode(url, params) {
         if (!(params instanceof GeoDecodingParameter)) {
-            return null;
+            return;
         }
         this.processAsync(url, params);
     }
