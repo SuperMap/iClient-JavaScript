@@ -33,9 +33,12 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', function () {
         var spatialAnalystService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
         spatialAnalystService.generateSpatialData(generateSpatialDataParameters, function (serviceResult) {
             serviceResults = serviceResult;
+        });
+        setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
-        });
+            done();
+        }, 8000);
     });
 });
