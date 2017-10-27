@@ -4,7 +4,7 @@ var mapboxgl = require('mapbox-gl');
 window.mapboxgl = mapboxgl;
 
 var url = GlobeParameter.China4326URL;
-describe('mapboxgl_testGraphThemeLayer', function () {
+describe('mapboxgl_GraphThemeLayer', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {
@@ -51,7 +51,7 @@ describe('mapboxgl_testGraphThemeLayer', function () {
         map.remove();
     });
 
-    it('construtor', function () {
+    it('initialize', function () {
         var graphThemeLayer = new mapboxgl.supermap.GraphThemeLayer("GraphThemeLayer", "Bar",
             {
                 map: map,
@@ -208,7 +208,7 @@ describe('mapboxgl_testGraphThemeLayer', function () {
         graphThemeLayer.clear();
     });
 
-    // 此方法为iclient8的私有方法,不支持leaflet对象,此处测试传入iclient对象的情况
+    // 此方法为iclient8的私有方法,不支持mapboxgl对象,此处测试传入iclient对象的情况
     it('isQuadrilateralOverLap, isPointInPoly', function () {
         var graphThemeLayer = new mapboxgl.supermap.GraphThemeLayer("GraphThemeLayer", "Bar",
             {
@@ -237,7 +237,7 @@ describe('mapboxgl_testGraphThemeLayer', function () {
         var graphThemeLayer = new mapboxgl.supermap.GraphThemeLayer("GraphThemeLayer", "Bar", {
             map: map,
             isOverLay: false,
-            overlayWeightField:"pop_1991",
+            overlayWeightField: "pop_1991",
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
             chartsSetting: {
                 width: 240,

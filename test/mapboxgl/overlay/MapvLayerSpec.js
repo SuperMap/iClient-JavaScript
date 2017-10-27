@@ -1,8 +1,8 @@
+require('../../../src/mapboxgl/overlay/MapvLayer');
 var mapboxgl = require('mapbox-gl');
 var mapv = require('mapv');
 window.mapv = mapv;
 window.mapboxgl = mapboxgl;
-require('../../../src/mapboxgl/overlay/MapvLayer');
 
 var url = GlobeParameter.ChinaURL + '/zxyTileImage.png?z={z}&x={x}&y={y}';
 describe('mapboxgl_MapVLayer', function () {
@@ -17,7 +17,6 @@ describe('mapboxgl_MapVLayer', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-
         map = new mapboxgl.Map({
             container: 'map',
             style: {
@@ -40,7 +39,6 @@ describe('mapboxgl_MapVLayer', function () {
             center: [112, 37.94],
             zoom: 3
         });
-
         map.on('load', function () {
             var randomCount = 1000;
             var data = [];
@@ -78,23 +76,20 @@ describe('mapboxgl_MapVLayer', function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
     afterAll(function () {
         document.body.removeChild(testDiv);
         mapv = null;
     });
 
-    it('constructor test', function (done) {
+    it('initialize', function (done) {
         setTimeout(function () {
             expect(mapvLayer).not.toBeNull();
             expect(mapvLayer.canvas).not.toBeNull();
             expect(mapvLayer.map).not.toBeNull();
             expect(mapvLayer.mapContainer).not.toBeNull();
-
             //判断是否返回期望的maplayer
             expect(mapvLayer.renderer).not.toBeNull();
             expect(mapvLayer.renderer.context).toBe("2d");
@@ -102,21 +97,20 @@ describe('mapboxgl_MapVLayer', function () {
         }, 6000);
     });
 
-    it('getTopLeft test', function () {
+    it('getTopLeft', function () {
         var topLeft = mapvLayer.getTopLeft();
         expect(topLeft).not.toBeNull();
     });
 
-    it('show test', function () {
+    it('show', function () {
         var thisMapvlayer = mapvLayer.show();
         expect(thisMapvlayer).not.toBeNull();
         expect(thisMapvlayer.renderer.canvasLayer.canvas.style.display).toBe('block');
     });
 
-    it('hide test', function () {
+    it('hide', function () {
         var thisMapvlayer = mapvLayer.hide();
         expect(thisMapvlayer).not.toBeNull();
         expect(thisMapvlayer.renderer.canvasLayer.canvas.style.display).toBe('none');
     });
-
 });

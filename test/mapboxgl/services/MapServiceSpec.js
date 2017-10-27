@@ -1,4 +1,4 @@
-require('../../../src/mapboxgl/services/SpatialAnalystService');
+require('../../../src/mapboxgl/services/MapService');
 var mapboxgl = require('mapbox-gl');
 var url = GlobeParameter.WorldURL;
 var options = {
@@ -15,8 +15,9 @@ describe('mapboxgl_MapService', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //地图信息查询服务
-    it('getMapInfo_test', function (done) {
+    it('getMapInfo', function (done) {
         var service = new mapboxgl.supermap.MapService(url, options);
         service.getMapInfo(function (result) {
             serviceResult = result
@@ -42,14 +43,15 @@ describe('mapboxgl_MapService', function () {
                 expect(serviceResult.result.viewer).not.toBeNull();
                 done();
             } catch (e) {
-                console.log("'getMapInfo_test'案例失败" + e.name + ":" + e.message);
+                console.log("'getMapInfo'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 3000)
     });
+
     //切片列表信息查询服务
-    it('getTilesets_test', function (done) {
+    it('getTilesets', function (done) {
         var service = new mapboxgl.supermap.MapService(url, options);
         service.getTilesets(function (result) {
             serviceResult = result
@@ -62,7 +64,7 @@ describe('mapboxgl_MapService', function () {
                 expect(serviceResult.result.succeed).toEqual(true);
                 done();
             } catch (e) {
-                console.log("'getMapInfo_test'案例失败" + e.name + ":" + e.message);
+                console.log("'getMapInfo'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

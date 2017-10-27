@@ -16,8 +16,9 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //路由定位 里程定点
-    it('routeLocate_point_test', function (done) {
+    it('routeLocate_point', function (done) {
         var piontLists = [
             [116.2143386597, 39.8959419733, 0],
             [116.217501999125, 39.896670999665, 282.3879789906],
@@ -28,16 +29,13 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
             [116.310443000875, 39.8971139994878, 8360.617856315024],
             [116.344168500812, 39.8976724992644, 11294.738396325054]
         ];
-
-        var lineGeometryData = {
+        var routeLine = {
             "type": "Feature",
             "geometry": {
                 "type": "LineString",
                 "coordinates": piontLists
             }
         };
-
-        var routeLine = lineGeometryData;
         var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
             "sourceRoute": routeLine,
             "type": "POINT",
@@ -60,7 +58,7 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
                 expect(serviceResult.result.resultGeometry.geometry.coordinates.length).toEqual(2);
                 done();
             } catch (e) {
-                console.log("'routeLocate_point_test'案例失败" + e.name + ":" + e.message);
+                console.log("'routeLocate_point'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -69,7 +67,7 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
     });
 
     //路由定位 里程定线
-    it('routeLocate_line_test', function (done) {
+    it('routeLocate_line', function (done) {
         var piontLists = [
             [116.2143386597, 39.8959419733, 0],
             [116.217501999125, 39.896670999665, 282.3879789906],
@@ -80,14 +78,13 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
             [116.310443000875, 39.8971139994878, 8360.617856315024],
             [116.344168500812, 39.8976724992644, 11294.738396325054]
         ];
-        var LineGeometryData = {
+        var routeLine = {
             "type": "Feature",
             "geometry": {
                 "type": "LineString",
                 "coordinates": piontLists
             }
         };
-        var routeLine = LineGeometryData;
         var routeLocatorParameters_line = new SuperMap.RouteLocatorParameters({
             "sourceRoute": routeLine,
             "type": "LINE",
@@ -114,7 +111,7 @@ describe('mapboxgl_SpatialAnalystService_routeLocate', function () {
                 }
                 done();
             } catch (e) {
-                console.log("'routeLocate_line_test'案例失败" + e.name + ":" + e.message);
+                console.log("'routeLocate_line'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

@@ -16,8 +16,9 @@ describe('mapboxgl_SpatialAnalystService_overlayAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //叠加分析
-    it('overlayAnalysis_test', function (done) {
+    it('overlayAnalysis', function (done) {
         var datasetOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters({
             //叠加分析中源数据集的名称
             sourceDataset: "BaseMap_R@Jingjin",
@@ -31,8 +32,6 @@ describe('mapboxgl_SpatialAnalystService_overlayAnalysis', function () {
         var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
         service.overlayAnalysis(datasetOverlayAnalystParameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(function () {
             try {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -54,10 +53,10 @@ describe('mapboxgl_SpatialAnalystService_overlayAnalysis', function () {
                 }
                 done();
             } catch (e) {
-                console.log("'overlayAnalysis_test'案例失败" + e.name + ":" + e.message);
+                console.log("'overlayAnalysis'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 10000);
+        });
     });
 });

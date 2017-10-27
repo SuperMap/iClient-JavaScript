@@ -16,8 +16,9 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //动态分段分析
-    it('generateSpatialData_test', function (done) {
+    it('generateSpatialData', function (done) {
         var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
@@ -48,11 +49,10 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', function () {
                 expect(serviceResult.result.dataset).toEqual("generateSpatialData@Changchun");
                 done();
             } catch (e) {
-                console.log("'generateSpatialData_test'案例失败" + e.name + ":" + e.message);
+                console.log("'generateSpatialData'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000);
-
     });
 });

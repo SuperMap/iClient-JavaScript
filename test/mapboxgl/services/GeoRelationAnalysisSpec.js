@@ -4,7 +4,7 @@ var mapboxgl = require('mapbox-gl');
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 describe('mapboxgl_SpatialAnalystService_geoRelationAnalysis', function () {
     var serviceResults;
-    var originalTimeout;     
+    var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -13,8 +13,9 @@ describe('mapboxgl_SpatialAnalystService_geoRelationAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //空间关系分析
-    it('geoRelationAnalysis test', function (done) {
+    it('geoRelationAnalysis', function (done) {
         var geoRelationAnalystParameters = new SuperMap.GeoRelationAnalystParameters({
             dataset: "Park@Changchun",
             startRecord: 0,
@@ -46,6 +47,5 @@ describe('mapboxgl_SpatialAnalystService_geoRelationAnalysis', function () {
             }
             done();
         }, 5000)
-
     });
 });

@@ -16,8 +16,9 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //缓冲区数据集分析  isAttributeRetained 默认为 true
-    it('bufferAnalysis_isAttributeRetained_true_test', function (done) {
+    it('bufferAnalysis_isAttributeRetained:true', function (done) {
         var bufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
             //设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
@@ -57,7 +58,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
                 expect(result.recordset.fields.length).toEqual(result.recordset.fieldCaptions.length);
                 done();
             } catch (e) {
-                console.log("'bufferAnalysis_isAttributeRetained_true_test'案例失败" + e.name + ":" + e.message);
+                console.log("'bufferAnalysis_isAttributeRetained:true'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -65,7 +66,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
     });
 
     //缓冲区数据集分析  isAttributeRetained 为 false
-    it('bufferAnalysis_isAttributeRetained_false_test', function (done) {
+    it('bufferAnalysis_isAttributeRetained:false', function (done) {
         var bufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
             dataset: "Road_L@Jingjin",
             //设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
@@ -109,7 +110,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
                 expect(result.recordset.fields.length).toEqual(result.recordset.fieldCaptions.length);
                 done();
             } catch (e) {
-                console.log("'bufferAnalysis_isAttributeRetained_false_test'案例失败" + e.name + ":" + e.message);
+                console.log("'bufferAnalysis_isAttributeRetained:false'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -117,7 +118,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
     });
 
     //缓冲区分析 几何对象缓冲区分析
-    it('bufferAnalysis_geometry_test', function (done) {
+    it('bufferAnalysis_byGeometry', function (done) {
         var pointList = [
             [116.1916654036, 39.8888542507],
             [116.2031567225, 39.8888542507],
@@ -168,7 +169,7 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
                 }
                 done();
             } catch (e) {
-                console.log("'bufferAnalysis_geometry_test'案例失败" + e.name + ":" + e.message);
+                console.log("'bufferAnalysis_byGeometry'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

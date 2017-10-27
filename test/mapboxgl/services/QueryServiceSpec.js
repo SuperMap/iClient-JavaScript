@@ -15,8 +15,8 @@ describe('mapboxgl_QueryService', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    //bounds查询地图服务
-    it('queryByBounds_test', function (done) {
+    //地图bounds查询
+    it('queryByBounds', function (done) {
         var param = new SuperMap.QueryByBoundsParameters({
             queryParams: {name: "Capitals@World.1"},
             bounds: new mapboxgl.LngLatBounds([0, 0], [60, 39])
@@ -50,7 +50,7 @@ describe('mapboxgl_QueryService', function () {
                 expect(recordSets.fields.length).toEqual(recordSets.fieldCaptions.length);
                 done();
             } catch (e) {
-                console.log("'queryByBounds_test'案例失败" + e.name + ":" + e.message);
+                console.log("'queryByBounds'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -58,7 +58,7 @@ describe('mapboxgl_QueryService', function () {
     });
 
     //地图距离查询服务
-    it('queryByDistance_test', function (done) {
+    it('queryByDistance', function (done) {
         var param = new SuperMap.QueryByDistanceParameters({
             queryParams: {name: "Capitals@World.1"},
             distance: 10,
@@ -93,7 +93,7 @@ describe('mapboxgl_QueryService', function () {
                 expect(recordSets.fields.length).toEqual(recordSets.fieldCaptions.length);
                 done();
             } catch (e) {
-                console.log("'queryByDistance_test'案例失败" + e.name + ":" + e.message);
+                console.log("'queryByDistance'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -101,7 +101,7 @@ describe('mapboxgl_QueryService', function () {
     });
 
     //地图SQL查询服务
-    it('queryBySQL_test', function (done) {
+    it('queryBySQL', function (done) {
         var param = new SuperMap.QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World.1",
@@ -137,7 +137,7 @@ describe('mapboxgl_QueryService', function () {
                 expect(recordSets.fields.length).toEqual(recordSets.fieldCaptions.length);
                 done();
             } catch (e) {
-                console.log("'queryBySQL_test'案例失败" + e.name + ":" + e.message);
+                console.log("'queryBySQL'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -145,7 +145,7 @@ describe('mapboxgl_QueryService', function () {
     });
 
     //地图几何查询服务
-    it('queryByGeometry_test', function (done) {
+    it('queryByGeometry', function (done) {
         var geo = {
             'type': 'Feature',
             'geometry': {
@@ -186,7 +186,7 @@ describe('mapboxgl_QueryService', function () {
                 expect(recordSets.fields.length).toEqual(recordSets.fieldCaptions.length);
                 done();
             } catch (e) {
-                console.log("'queryByGeometry_test'案例失败" + e.name + ":" + e.message);
+                console.log("'queryByGeometry'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

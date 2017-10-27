@@ -17,8 +17,8 @@ describe('mapboxgl_MeasureService', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    //测距  成功事件
-    it('measureDistance_success_test', function (done) {
+    //测距, 成功事件
+    it('success:measureDistance', function (done) {
         var line = {
             "type": "Feature",
             "geometry": {
@@ -45,15 +45,15 @@ describe('mapboxgl_MeasureService', function () {
                 expect(serviceResult.result.unit).toEqual("METER");
                 done();
             } catch (e) {
-                console.log("'measureDistance_success_test'案例失败" + e.name + ":" + e.message);
+                console.log("'success:measureDistance'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000);
     });
 
-    //测距  失败事件
-    it('measureDistance_failed_test', function (done) {
+    //测距:失败事件
+    it('fail:measureDistance', function (done) {
         var line = {
             "type": "Feature",
             "geometry": {
@@ -77,7 +77,7 @@ describe('mapboxgl_MeasureService', function () {
                 expect(serviceResult.error.errorMsg).toEqual("参数 point2Ds 不合法，必须至少包含两个二维点");
                 done();
             } catch (e) {
-                console.log("'measureDistance_failed_test'案例失败" + e.name + ":" + e.message);
+                console.log("'fail:measureDistance'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

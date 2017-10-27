@@ -17,14 +17,13 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    //栅格代数运算 删除已有的数据集  默认不删除
-    it('mathExpressionAnalysis_deleteExistResultDataset_true_test', function (done) {
+    //栅格代数运算, 删除已有的数据集
+    it('mathExpressionAnalysis_deleteExistResultDataset:true', function (done) {
         var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
             dataset: "JingjinTerrain@Jingjin",
             expression: "[Jingjin.JingjinTerrain] + 600",
             targetDatasource: "Jingjin",
             resultGridName: "MathExpressionAnalysis_Result",
-            //如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除
             deleteExistResultDataset: true
         });
         var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
@@ -40,15 +39,15 @@ describe('mapboxgl_SpatialAnalystService_mathExpressionAnalysis', function () {
                 expect(serviceResult.result.dataset).toEqual("MathExpressionAnalysis_Result@Jingjin");
                 done();
             } catch (e) {
-                console.log("'mathExpressionAnalysis_deleteExistResultDataset_true_test'案例失败" + e.name + ":" + e.message);
+                console.log("'mathExpressionAnalysis_deleteExistResultDataset:true'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 8000);
     });
 
-    //栅格代数运算 不删除已有的数据集
-    it('mathExpressionAnalysis_deleteExistResultDataset_false_test', function (done) {
+    //栅格代数运算, 不删除重复的数据集(默认), 本测试的resultGridName需要是一个已经存在的数据集
+    it('mathExpressionAnalysis_deleteExistResultDataset:false', function (done) {
         var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
             dataset: "JingjinTerrain@Jingjin",
             expression: "[Jingjin.JingjinTerrain] + 600",

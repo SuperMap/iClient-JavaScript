@@ -16,8 +16,9 @@ describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //表面分析
-    it('surfaceAnalysis_test', function (done) {
+    it('surfaceAnalysis', function (done) {
         var datasetSurfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
             dataset: "SamplesP@Interpolation",
             //获取或设置用于提取操作的字段名称
@@ -31,7 +32,7 @@ describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', function () {
                 smoothness: 3,
                 clipRegion: null
             }),
-            resolution: 3000,
+            resolution: 3000
         });
         var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
         service.surfaceAnalysis(datasetSurfaceAnalystParameters, function (result) {
@@ -60,7 +61,7 @@ describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', function () {
                 expect(serviceResult.result.recordset.fields.length).toEqual(serviceResult.result.recordset.fieldCaptions.length);
                 done();
             } catch (e) {
-                console.log("'surfaceAnalysis_test'案例失败" + e.name + ":" + e.message);
+                console.log("'surfaceAnalysis'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

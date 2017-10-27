@@ -13,8 +13,9 @@ describe('mapboxgl_FeatureService_getFeaturesByGeometry', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //数据集几何查询服务类
-    it('getFeaturesByGeometry_test', function (done) {
+    it('getFeaturesByGeometry', function (done) {
         var queryPolygonGeometry = {
             "type": "Polygon",
             "coordinates": [[[0, 0], [-10, 30], [-30, 0], [0, 0]]]
@@ -48,7 +49,7 @@ describe('mapboxgl_FeatureService_getFeaturesByGeometry', function () {
                 }
                 done();
             } catch (e) {
-                console.log("'getFeaturesByGeometry_test'案例失败" + e.name + ":" + e.message);
+                console.log("'getFeaturesByGeometry'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

@@ -3,7 +3,6 @@ var mapboxgl = require('mapbox-gl');
 
 var url = GlobeParameter.dataServiceURL;
 var id;
-var originFeature = null;
 describe('mapboxgl_FeatureService_editFeatures', function () {
     var serviceResult;
     var originalTimeout;
@@ -15,8 +14,9 @@ describe('mapboxgl_FeatureService_editFeatures', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    //地物编辑服务 添加地物
-    it('editFeatures_addFeature_test', function (done) {
+
+    //添加要素
+    it('add', function (done) {
         var pointFeature = {
             "type": "Feature",
             "geometry": {
@@ -34,7 +34,7 @@ describe('mapboxgl_FeatureService_editFeatures', function () {
             dataSourceName: "World",
             dataSetName: "Capitals",
             editType: "add",
-            returnContent: true,
+            returnContent: true
         });
         var service = new mapboxgl.supermap.FeatureService(url);
         service.editFeatures(addFeatureParams, function (result) {
@@ -54,20 +54,20 @@ describe('mapboxgl_FeatureService_editFeatures', function () {
                 expect(serviceResult.object.options.data).toContain("'y':15");
                 done();
             } catch (e) {
-                console.log("'editFeatures_addFeature_test'案例失败" + e.name + ":" + e.message);
+                console.log("'editFeatures_addFeature'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000)
     });
 
-    //地物编辑服务 删除地物
-    it('editFeatures_deleteFeature_test', function (done) {
+    //删除要素
+    it('delete', function (done) {
         var deleteFeatureParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
             IDs: [id],
-            editType: "delete",
+            editType: "delete"
         });
         var service = new mapboxgl.supermap.FeatureService(url);
         service.editFeatures(deleteFeatureParams, function (result) {
@@ -84,7 +84,7 @@ describe('mapboxgl_FeatureService_editFeatures', function () {
                 expect(serviceResult.object.options.data).toContain(id);
                 done();
             } catch (e) {
-                console.log("'editFeatures_deleteFeature_test'案例失败" + e.name + ":" + e.message);
+                console.log("'editFeatures_deleteFeature'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

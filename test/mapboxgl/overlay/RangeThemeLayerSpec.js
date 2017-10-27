@@ -4,7 +4,7 @@ window.mapboxgl = mapboxgl;
 
 var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
     dataUrl = GlobeParameter.editServiceURL_leaflet;
-describe('mapboxgl_testRangeThemeLayer', function () {
+describe('mapboxgl_RangeThemeLayer', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {
@@ -51,7 +51,7 @@ describe('mapboxgl_testRangeThemeLayer', function () {
         map.remove();
     });
 
-    it('constructor, addFeatures, getShapesByFeatureID, getCacheCount, setMaxCacheCount, removeFeatures', function (done) {
+    it('initialize, addFeatures, getShapesByFeatureID, getCacheCount, setMaxCacheCount, removeFeatures', function (done) {
         var themeLayer, result;
         var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
             queryParameter: new SuperMap.FilterParameter({

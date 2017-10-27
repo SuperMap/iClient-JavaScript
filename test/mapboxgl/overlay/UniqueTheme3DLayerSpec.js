@@ -3,7 +3,7 @@ var mapboxgl = require('mapbox-gl');
 
 var dataUrl = GlobeParameter.editServiceURL_leaflet;
 var themeField = "LANDTYPE";
-describe('mapboxgl_testUniqueTheme3DLayer', function () {
+describe('mapboxgl_UniqueTheme3DLayer', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {
@@ -50,7 +50,7 @@ describe('mapboxgl_testUniqueTheme3DLayer', function () {
         map.remove();
     });
 
-    it('constructor', function (done) {
+    it('initialize', function (done) {
         var themeLayer;
         map.on('load', function () {
             var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
@@ -61,7 +61,6 @@ describe('mapboxgl_testUniqueTheme3DLayer', function () {
                 toIndex: 500,
                 datasetNames: ["Jingjin:Landuse_R"]
             });
-
             var queryFeatures = new SuperMap.GetFeaturesBySQLService(dataUrl, {
                 eventListeners: {
                     processCompleted: function (serviceResult) {
@@ -80,7 +79,6 @@ describe('mapboxgl_testUniqueTheme3DLayer', function () {
                                     ["湖泊水库", "#8EE5EE"], ["经济林", "#548B54"], ["沙漠", "#DEB887"], ["水浇地", "#E0FFFF"],
                                     ["水田", "#388E8E"], ["用材林", "#556B2F"], ["沼泽", "#2F4F4F"]
                                 ],
-
                                 // 显示图例
                                 showLegend: true,
                                 legendTitle: "土地利用类型"

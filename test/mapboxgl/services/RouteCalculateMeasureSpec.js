@@ -16,8 +16,9 @@ describe('mapboxgl_SpatialAnalystService_routeCalculateMeasure', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //路由测量计算
-    it('routeCalculateMeasure_test', function (done) {
+    it('routeCalculateMeasure', function (done) {
         var piontLists = [
             [116.2143386597, 39.8959419733, 0],
             [116.217501999125, 39.896670999665, 282.3879789906],
@@ -64,7 +65,7 @@ describe('mapboxgl_SpatialAnalystService_routeCalculateMeasure', function () {
                 expect(serviceResult.result.measure).toEqual(3103.167523778722);
                 done();
             } catch (e) {
-                console.log("'routeCalculateMeasure_test'案例失败" + e.name + ":" + e.message);
+                console.log("'routeCalculateMeasure'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

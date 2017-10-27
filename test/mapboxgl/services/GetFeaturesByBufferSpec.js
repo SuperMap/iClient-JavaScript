@@ -13,6 +13,7 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //数据集Buffer查询服务
     it('getFeaturesByBuffer_geometry', function (done) {
         var queryBufferGeometry = {
@@ -53,6 +54,5 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', function () {
                 done();
             }
         }, 5000);
-
     });
 });

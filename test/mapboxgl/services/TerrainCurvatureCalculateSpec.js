@@ -5,7 +5,7 @@ var url = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('mapboxgl_SpatialAnalystService_terrainCurvatureCalculate',function () {
+describe('mapboxgl_SpatialAnalystService_terrainCurvatureCalculate', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -16,8 +16,9 @@ describe('mapboxgl_SpatialAnalystService_terrainCurvatureCalculate',function () 
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //地形曲率计算
-    it('terrainCurvatureCalculate_test', function (done) {
+    it('terrainCurvatureCalculate', function (done) {
         var terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
@@ -36,7 +37,7 @@ describe('mapboxgl_SpatialAnalystService_terrainCurvatureCalculate',function () 
                 expect(serviceResult.result.averageCurvatureResult.succeed).toEqual(true);
                 done();
             } catch (e) {
-                console.log("'terrainCurvatureCalculate_test'案例失败" + e.name + ":" + e.message);
+                console.log("'terrainCurvatureCalculate'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

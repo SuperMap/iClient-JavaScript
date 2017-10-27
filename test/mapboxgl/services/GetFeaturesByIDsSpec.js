@@ -13,8 +13,9 @@ describe('mapboxgl_FeatureService_getFeaturesByIDs', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //数据集ID查询服务
-    it('getFeaturesByIDs_test', function (done) {
+    it('getFeaturesByIDs', function (done) {
         var idsParam = new SuperMap.GetFeaturesByIDsParameters({
             IDs: [247],
             datasetNames: ["World:Countries"]
@@ -45,9 +46,8 @@ describe('mapboxgl_FeatureService_getFeaturesByIDs', function () {
                     }
                 }
                 done();
-
             } catch (e) {
-                console.log("'getFeaturesByIDs_test'案例失败" + e.name + ":" + e.message);
+                console.log("'getFeaturesByIDs'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

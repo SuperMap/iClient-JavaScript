@@ -14,7 +14,7 @@ describe('mapboxgl_FeatureService_getFeaturesByBounds', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     //数据集Bounds查询服务
-    it('getFeaturesByBounds_test', function (done) {
+    it('getFeaturesByBounds', function (done) {
         var sw = new mapboxgl.LngLat(-20, -20);
         var ne = new mapboxgl.LngLat(20, 20);
         var lngLatBounds = new mapboxgl.LngLatBounds(sw, ne);
@@ -47,7 +47,7 @@ describe('mapboxgl_FeatureService_getFeaturesByBounds', function () {
                 }
                 done();
             } catch (e) {
-                console.log("'getFeaturesByBounds_test'案例失败" + e.name + ":" + e.message);
+                console.log("'getFeaturesByBounds'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

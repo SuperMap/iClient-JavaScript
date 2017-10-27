@@ -13,9 +13,9 @@ describe('mapboxgl_FieldService', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    
+
     //字段查询服务
-    it('getFields_test', function (done) {
+    it('getFields', function (done) {
         var fieldParameters = new SuperMap.FieldParameters({
             datasource: "World",
             dataset: "continent_T"
@@ -37,7 +37,7 @@ describe('mapboxgl_FieldService', function () {
                 expect(serviceResult.result.fieldNames[0]).toEqual("SmID");
                 done();
             } catch (e) {
-                console.log("'getFields_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'getFields'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -45,7 +45,7 @@ describe('mapboxgl_FieldService', function () {
     });
 
     //字段统计服务
-    it('getFieldStatisticsInfo_test', function (done) {
+    it('getFieldStatisticsInfo', function (done) {
         var fieldStatisticsParameters = new SuperMap.FieldStatisticsParameters({
             datasource: "World",
             dataset: "Countries",
@@ -85,11 +85,10 @@ describe('mapboxgl_FieldService', function () {
                 expect(serviceResult.result.fieldName).toEqual("SmID");
                 done();
             } catch (e) {
-                console.log("'getFieldStatisticsInfo_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'getFieldStatisticsInfo'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000);
     });
-
 });

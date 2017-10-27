@@ -3,7 +3,7 @@ var mapboxgl = require('mapbox-gl');
 
 var dataUrl = GlobeParameter.editServiceURL_leaflet;
 var themeField = "POP_DENSITY99";
-describe('mapboxgl_testRangeTheme3DLayer', function () {
+describe('mapboxgl_RangeTheme3DLayer', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {
@@ -50,7 +50,7 @@ describe('mapboxgl_testRangeTheme3DLayer', function () {
         map.remove();
     });
 
-    it('constructor', function (done) {
+    it('initialize', function (done) {
         var themeLayer;
         map.on('load', function () {
             var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({

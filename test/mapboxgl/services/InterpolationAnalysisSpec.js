@@ -18,7 +18,7 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
     });
 
     //插值分析 点密度插值分析
-    it('interpolationAnalysis_density_test', function (done) {
+    it('interpolationAnalysis_density', function (done) {
         var interpolationAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
             dataset: "SamplesP@Interpolation",
             //插值分析结果数据集的名称
@@ -48,7 +48,7 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(serviceResult.object.mode).toEqual("Density");
                 done();
             } catch (e) {
-                console.log("'interpolationAnalysis_density_test'案例失败" + e.name + ":" + e.message);
+                console.log("'interpolationAnalysis_density'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -56,7 +56,7 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
     });
 
     //插值分析 反距离加权插值分析
-    it('interpolationAnalysis_IDW_dataset_test', function (done) {
+    it('interpolationAnalysis_IDW_dataset', function (done) {
         var interpolationAnalystParameters = new SuperMap.InterpolationIDWAnalystParameters({
             //用于做插值分析的数据源中数据集的名称
             dataset: "SamplesP@Interpolation",
@@ -88,11 +88,10 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(serviceResult.object.mode).toEqual("IDW");
                 done();
             } catch (e) {
-                console.log("'interpolationAnalysis_IDW_dataset_test'案例失败" + e.name + ":" + e.message);
+                console.log("'interpolationAnalysis_IDW_dataset'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 25000);
     });
-
 });

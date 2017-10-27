@@ -16,8 +16,9 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //泰森多边形分析 数据集泰森多边形
-    it('thiessenAnalysis_datasets_test', function (done) {
+    it('thiessenAnalysis_byDataset', function (done) {
         var datasetThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
             dataset: "Town_P@Jingjin"
         });
@@ -45,14 +46,15 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', function () {
                 }
                 done();
             } catch (e) {
-                console.log("'thiessenAnalysis_datasets_test'案例失败" + e.name + ":" + e.message);
+                console.log("'thiessenAnalysis_byDataset'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000)
     });
+
     //泰森多边形分析 几何泰森多边形
-    it('thiessenAnalysis_geometry_test', function (done) {
+    it('thiessenAnalysis_byGeometry', function (done) {
         var pointsList = [{
             "type": "Feature",
             "geometry": {
@@ -110,7 +112,7 @@ describe('mapboxgl_SpatialAnalystService_thiessenAnalysis', function () {
                 }
                 done();
             } catch (e) {
-                console.log("'thiessenAnalysis_geometry_test'案例失败" + e.name + ":" + e.message);
+                console.log("'thiessenAnalysis_byGeometry'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

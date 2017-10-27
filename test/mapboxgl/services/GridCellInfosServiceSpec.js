@@ -14,7 +14,8 @@ describe('mapboxgl_GridCellInfosService', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('getGridCellInfos_test', function (done) {
+
+    it('getGridCellInfos', function (done) {
         var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
@@ -42,11 +43,10 @@ describe('mapboxgl_GridCellInfosService', function () {
                 expect(serviceResult.result.value).toEqual(12295026);
                 done();
             } catch (e) {
-                console.log("'getGridCellInfos_test'案例失败" + e.name + ":" + e.message);
+                console.log("'getGridCellInfos'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000)
-
     })
 });
