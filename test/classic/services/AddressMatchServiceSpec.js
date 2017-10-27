@@ -96,7 +96,7 @@ describe('testAddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var addressDeCodeService = new SuperMap.REST.AddressMatchServic(addressMatchURL, options);
+        var addressDeCodeService = new SuperMap.REST.AddressMatchService(addressMatchURL, options);
         addressDeCodeService.decode(GeoDeCodingParams, decodeFailed);
         setTimeout(function () {
             try {
