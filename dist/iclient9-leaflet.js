@@ -33053,7 +33053,6 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
             me.url = url;
         }
         this.cartoCSSToLeaflet = new _CartoCSSToLeaflet.CartoCSSToLeaflet(me.url);
-        me._initLayerUrl();
         me.initLayersInfo();
         if (!me.options.serverCartoCSSStyle && me.options) {
             me.setClientCartoCSS(me.options.cartoCSS);
@@ -33069,6 +33068,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
     onAdd: function onAdd(map) {
         this._crs = this.options.crs || map.options.crs;
         this._map = map;
+        this._initLayerUrl();
         if (this.options.tileTemplate || !this.options.serverCartoCSSStyle) {
             this._initGrid();
         }
@@ -33387,14 +33387,13 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
     },
 
     _initLayerUrl: function _initLayerUrl() {
-        var me = this;
-        var options = me.options;
-        if (!me.url) {
+        var options = this.options;
+        if (!this.url) {
             return;
         }
         var format = options.format.toString().toLowerCase();
-        me._tileUrl = me.url + "/tileFeature." + format + "?";
-        me._tileUrl += me._createURLParam(options);
+        this._tileUrl = this.url + "/tileFeature." + format + "?";
+        this._tileUrl += this._createURLParam(options);
     },
 
     _createURLParam: function _createURLParam(options) {
