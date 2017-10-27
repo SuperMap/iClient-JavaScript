@@ -12,6 +12,7 @@ import {featureService} from "../services/FeatureService";
 import {DataFormat} from '../../common/REST';
 import ServerFeature from '../../common/iServer/ServerFeature';
 import {UnicodeMarker} from '../core/UnicodeMarker';
+import {TiandituTileLayer} from '../mapping/TiandituTileLayer';
 
 /**
  * @class L.supermap.webmap
@@ -267,7 +268,7 @@ export var WebMap = L.LayerGroup.extend({
                 mapOptions.crs = epsgCode === 4326 ? L.CRS.TianDiTu_WGS84 : L.CRS.TianDiTu_Mercator;
                 mapOptions.minZoom = 1;
                 mapOptions.zoom = 1 + mapOptions.zoom;
-                layer = this.createTiandituLayer(layerInfo, epsgCode);
+                layer = this.createTiandituLayer(layerInfo);
                 break;
             case "BAIDU":
                 mapOptions.crs = L.CRS.BaiduCRS;
@@ -325,30 +326,15 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createTiandituLayer
      * @description 创建天地图图层
      * @param layerInfo - {Object} 图层信息
-     * @param epsgCode - {number}epsg编码
      * @return {L.supermap.tiandituTileLayer} 返回天地图图层对象
      */
-    createTiandituLayer: function (layerInfo, epsgCode) {
-        var proj = epsgCode === 4326 ? "c" : "w";
-        var wmtsURL =
-            "http://t{s}.tianditu.com/{type}_{proj}/wmts?";
+    createTiandituLayer: function (layerInfo) {
         var type = layerInfo.type.split('_')[1].toLowerCase();
-        if (layerInfo.layerType === 'OVERLAY_LAYER') {
-            if (type == "vec") {
-                type = "cva"
-            }
-            if (type == "img") {
-                type = "cia"
-            }
-            if (type == "ter") {
-                type = "cta"
-            }
-        }
-        wmtsURL = wmtsURL.replace("{type}", type).replace("{proj}", proj);
-        var layer = L.supermap.tiandituTileLayer(wmtsURL,
+        var isLabel=layerInfo.layerType === 'OVERLAY_LAYER';
+        var layer = new TiandituTileLayer(
             {
-                layer: type,
-                tilematrixSet: proj
+                layerType: type,
+                isLabel:isLabel
             }
         );
         return layer;

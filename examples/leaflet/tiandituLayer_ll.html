@@ -10,18 +10,15 @@
 <script type="text/javascript">
     var map = L.map('map', {
         center: [0, 0],
-        maxZoom: 20,
-        minZoom: 1,
-        zoom: 1,
+        zoom: 0,
         crs: L.CRS.TianDiTu_WGS84
     });
-    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
-        layer: "vec",
-        tilematrixSet: "c"
+    L.supermap.tiandituTileLayer({
+        layerType: "ter",
     }).addTo(map);
-    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/cva_c/wmts", {
-        layer: "cva",
-        tilematrixSet: "c"
+    L.supermap.tiandituTileLayer({
+        layerType: "ter",
+        isLabel:true
     }).addTo(map);
 </script>
 </body>

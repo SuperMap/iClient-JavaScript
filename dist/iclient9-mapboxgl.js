@@ -48990,7 +48990,7 @@ var StopQueryService = function (_CommonServiceBase) {
         key: 'processAsync',
         value: function processAsync(params) {
             if (!(params instanceof _StopQueryParameters2.default)) {
-                return null;
+                return;
             }
             var me = this,
                 end;

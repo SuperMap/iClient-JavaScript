@@ -27306,16 +27306,42 @@ var WebMap = function (_ol$Observable) {
                 center = this.mapInfo.center || layerInfo.center,
                 level = this.mapInfo.level || layerInfo.level,
                 bounds = layerInfo.bounds || this.mapInfo.extent,
+                origin = [bounds.leftBottom.x, bounds.rightTop.y],
                 extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
             var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
-
             //var crs = this.createCRS(epsgCode, origin, resolution, boundsL);
-            return {
+            var viewOptions = {
                 center: [center.x, center.y],
                 zoom: level,
                 projection: projection,
                 extent: extent
             };
+            switch (layerInfo.type) {
+                case "TIANDITU_VEC":
+                case "TIANDITU_IMG":
+                case "TIANDITU_TER":
+                    viewOptions.minZoom = 1;
+                    viewOptions.zoom = 1 + viewOptions.zoom;
+                    break;
+                case "BAIDU":
+                    viewOptions.resolutions = [131072 * 2, 131072, 65536, 32768, 16284, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
+                    viewOptions.zoom = 3 + viewOptions.zoom;
+                    viewOptions.minZoom = 3;
+                    break;
+                case "WMTS":
+                    var identifier = layerInfo.identifier;
+                    var wellKnownScaleSet = identifier.split("_")[0];
+                    var info = this.getWmtsResolutionsAndMatrixIds(wellKnownScaleSet, layerInfo.units, layerInfo.scales, origin, extent);
+                    viewOptions.resolutions = info.resolutions;
+                    break;
+                case "CLOUD":
+                    viewOptions.zoom = 3 + viewOptions.zoom;
+                    viewOptions.minZoom = 3;
+                    break;
+                default:
+                    break;
+            }
+            return viewOptions;
         }
 
         /**
@@ -27330,22 +27356,12 @@ var WebMap = function (_ol$Observable) {
         value: function createLayer(type, layerInfo) {
             var prjCoordSys = layerInfo.prjCoordSys,
                 epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
-                center = this.mapInfo.center || layerInfo.center,
-                level = this.mapInfo.level || layerInfo.level,
                 bounds = layerInfo.bounds || this.mapInfo.extent,
                 scales = layerInfo.scales,
                 opacity = layerInfo.opacity,
                 origin = [bounds.leftBottom.x, bounds.rightTop.y],
                 extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
             var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
-
-            //var crs = this.createCRS(epsgCode, origin, resolution, boundsL);
-            var viewOptions = {
-                center: [center.x, center.y],
-                zoom: level,
-                projection: projection,
-                extent: extent
-            };
             var layer;
             switch (type) {
                 case "SUPERMAP_REST":
@@ -27367,14 +27383,9 @@ var WebMap = function (_ol$Observable) {
                 case "TIANDITU_VEC":
                 case "TIANDITU_IMG":
                 case "TIANDITU_TER":
-                    viewOptions.minZoom = 1;
-                    viewOptions.zoom = 1 + viewOptions.zoom;
                     layer = this.createTiandituLayer(layerInfo, epsgCode);
                     break;
                 case "BAIDU":
-                    viewOptions.resolutions = [131072 * 2, 131072, 65536, 32768, 16284, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
-                    viewOptions.zoom = 3 + viewOptions.zoom;
-                    viewOptions.minZoom = 3;
                     layer = new _olDebug2.default.layer.Tile({
                         source: new _olDebug2.default.source.BaiduMap()
                     });
@@ -27392,7 +27403,6 @@ var WebMap = function (_ol$Observable) {
                     var wellKnownScaleSet = identifier.split("_")[0];
                     var layerName = identifier.substring(identifier.indexOf("_") + 1);
                     var info = this.getWmtsResolutionsAndMatrixIds(wellKnownScaleSet, layerInfo.units, scales, origin, extent);
-                    viewOptions.resolutions = info.resolutions;
                     layer = new _olDebug2.default.layer.Tile({
                         opacity: opacity,
                         source: new _olDebug2.default.source.WMTS({
@@ -27406,8 +27416,6 @@ var WebMap = function (_ol$Observable) {
                     });
                     break;
                 case "CLOUD":
-                    viewOptions.zoom = 3 + viewOptions.zoom;
-                    viewOptions.minZoom = 3;
                     layer = new _olDebug2.default.layer.Tile({
                         source: new _olDebug2.default.source.SuperMapCloud()
                     });
@@ -27428,7 +27436,7 @@ var WebMap = function (_ol$Observable) {
                     throw new Error('unSupported Layer Type');
             }
             if (layer) {
-                this.addLayer(layer, viewOptions);
+                this.addLayer(layer);
             }
         }
 
@@ -53397,7 +53405,7 @@ var StopQueryService = function (_CommonServiceBase) {
         key: 'processAsync',
         value: function processAsync(params) {
             if (!(params instanceof _StopQueryParameters2.default)) {
-                return null;
+                return;
             }
             var me = this,
                 end;
