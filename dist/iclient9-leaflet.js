@@ -1,6 +1,6 @@
 /*!
  * 
- *     iclient9-leaflet.(http://iclient.supermapol.com)
+ *     iclient9-leaflet.(http://iclient.supermap.io)
  *     Copyright© 2000-2017 SuperMap Software Co. Ltd
  *     license: Apache-2.0
  *     version: v9.0.0
@@ -17255,12 +17255,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @class L.supermap.tiandituTileLayer
  * @classdesc 天地图图层类。
  * @extends L.supermap.wmtsLayer
- * @param defaultURL -{string} 默认图层地址
  * @param options -{Object} 切片图层参数。如：<br>
- *        layer - {string} 图层类型。<br>
+ *        url - {string} 地图地址。<br>
+ *        layerType - {string} 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)<br>
  *        style - {string} 图层风格。<br>
- *        tilematrixSet - {string} 瓦片矩阵集。<br>
  *        format - {string} 格式。<br>
+ *        isLabel - {boolean} 是否是标注图层<br>
  *        subdomains - {Array<number>} 子域名数组。<br>
  *        attribution - {string} 版权信息
  */
@@ -17279,7 +17279,7 @@ var TiandituTileLayer = exports.TiandituTileLayer = _TileLayer.WMTSLayer.extend(
     options: {
         layerType: "vec", //(vec:矢量图层，vec:矢量标签图层，img:影像图层,cia:影像标签图层，ter:地形,cta:地形标签图层)
         isLabel: false,
-        attribution: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        attribution: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
         url: "http://t{s}.tianditu.com/{layer}_{proj}/wmts?",
         zoomOffset: 1,
         dpi: 96,
@@ -17356,7 +17356,7 @@ var WMTSLayer = exports.WMTSLayer = _leaflet2["default"].TileLayer.extend({
         tileSize: 256,
         matrixIds: null,
         layer: '',
-        attribution: "with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     //todo 自动获取Capabilities
@@ -17487,7 +17487,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
         crs: null,
         serverType: _REST.ServerType.ISERVER,
 
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function initialize(url, options) {
@@ -25922,7 +25922,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
         //这是一个二维数组，组成二维数组的每个一维数组长度为 2，分别是 event, callback。
         TFEvents: null,
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function initialize(name, options) {
@@ -30509,7 +30509,7 @@ var Logo = exports.Logo = _leaflet2["default"].Control.extend({
                 styleSize = "";
             }
         }
-        var link = this.options.link || "http://iclient.supermapol.com";
+        var link = this.options.link || "http://iclient.supermap.io";
         div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" + "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'></a>";
         return div;
     }
@@ -30582,7 +30582,7 @@ var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2["default"].TileLayer.ext
         maxZoom: 19,
         bounds: _leaflet2["default"].latLngBounds(_leaflet2["default"].latLng(-85.0511287798, -180), _leaflet2["default"].latLng(85.0511287798, 180)),
         retina: _leaflet2["default"].Browser.retina,
-        attribution: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function initialize(url, options) {
@@ -30677,7 +30677,7 @@ var CloudTileLayer = exports.CloudTileLayer = _leaflet2["default"].TileLayer.ext
         type: "web",
         minZoom: 3,
         maxZoom: 18,
-        attribution: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
 
     },
 
@@ -30764,7 +30764,7 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2["default"].TileLayer.exten
         crs: null,
         serverType: _SuperMap2["default"].ServerType.ISERVER,
 
-        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function initialize(url, options) {
@@ -30975,7 +30975,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         featureLayerPopup: null,
         credentialValue: null,
         credentialKey: 'key',
-        attribution: "Map Data <span>© <a href='http://www.supermapol.com'>SuperMap Online</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data <span>© <a href='http://www.supermapol.com'>SuperMap Online</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     /**
@@ -32234,7 +32234,7 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
     _echartsOptions: null,
 
     options: {
-        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
         loadWhileAnimating: true
     },
 
@@ -32634,7 +32634,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
 
     options: {
         attributionPrefix: null,
-        attribution: " © 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: " © 2017 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function initialize(dataSet, mapVOptions, options) {
@@ -33031,7 +33031,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         subdomains: 'abc',
 
         timeout: 10000,
-        attribution: " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function initialize(url, options) {
@@ -33637,7 +33637,7 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
     },
 
     options: {
-        attribution: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function initialize(options) {
@@ -83586,7 +83586,7 @@ _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
  *                     bounds -{Array|L.Bounds} 范围
  * @example
  * 用法：
- *    var crs =L.Proj.CRS("EPSG:4326", '', {
+ *    var crs =L.Proj.CRS("EPSG:4326",{
  *          origin: [-180,90],
  *          scaleDenominators: [2000,1000,500,200,100,50,20,10],
  *    });
@@ -83792,22 +83792,25 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
- * @class L.supermap.baiduTileLayer
- * @classdesc 百度地图图层。
- * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
- * @param url -{string} 切片地址
- * @param options -{Object} 切片参数。如：<br>
- *        minZoom - {number} 最小缩放级别 <br>
- *        maxZoom - {number} 最大缩放级别 <br>
- *        bounds - {[L.LatLngBounds]{@linkdoc-leaflet/#latlngbounds}} 显示范围 <br>
- *        retina - {[L.Browser]{@linkdoc-leaflet/#browser}} 浏览器显示分辨率 <br>
- *        attribution - {string} 版权信息 <br>
+ * @class L.supermap.unicodeMarker
+ * @classdesc Unicode字符图标。
+ * @extends L.Path{@linkdoc-leaflet/#Path}
+ * @param latlng -[L.LatLngBounds]{@linkdoc-leaflet/#latlng}} 经纬度坐标
+ * @param options -{Object} 符号参数。<br>
+ *        label - {string} 符号Unicode值 <br>
+ *        labelRotation - {string} 符号旋转角度 <br>
+ *        globalAlpha - {string} 符号的透明值 <br>
+ *        fontStyle - {string} 符号的风格 <br>
+ *        fontWeight - {string} 符号的粗细 <br>
+ *        fontSize - {string} 符号的尺寸 <br>
+ *        fontFamily - {string} 符号的字体 <br>
+ *        textAlign - {string} 符号内容的对齐方式 <br>
+ *        textBaseline - {string} 绘制符号时使用的基线 <br>
  */
 var UnicodeMarker = exports.UnicodeMarker = _leaflet2["default"].Path.extend({
     // @section
     // @aka CircleMarker options
     options: {
-        fill: true,
         fontStyle: "normal",
         fontWeight: "normal",
         fontSize: "1em",
@@ -83816,8 +83819,6 @@ var UnicodeMarker = exports.UnicodeMarker = _leaflet2["default"].Path.extend({
         textBaseline: "middle",
         vfactor: -.5,
         labelRotation: 0,
-        labelXOffset: 0,
-        labelYOffset: 0,
         globalAlpha: 1,
         label: ""
     },

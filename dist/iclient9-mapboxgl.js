@@ -1,6 +1,6 @@
 /*!
  * 
- *     iclient9-mapboxgl.(http://iclient.supermapol.com)
+ *     iclient9-mapboxgl.(http://iclient.supermap.io)
  *     Copyright© 2000-2017 SuperMap Software Co. Ltd
  *     license: Apache-2.0
  *     version: v9.0.0
@@ -23804,7 +23804,7 @@ var Logo = exports.Logo = function () {
                     styleSize = "";
                 }
             }
-            var link = this.link || "http://iclient.supermapol.com";
+            var link = this.link || "http://iclient.supermap.io";
             this._container.innerHTML = "<a href='" + link + "' target='_blank'>" + "<img src=" + imgSrc + " alt='" + alt + "' style='" + styleSize + "margin-bottom: 2px'></a>";
             this._createStyleSheet();
             return this._container;

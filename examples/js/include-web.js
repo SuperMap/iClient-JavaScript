@@ -71,7 +71,7 @@
             inputScript("http://cdn.bootcss.com/bootstrap-select/1.12.2/js/bootstrap-select.min.js");
         }
         if (inArray(includes, 'geohash')) {
-            inputScript("http://iclient.supermapol.com/libs/geohash/geohash.js");
+            inputScript("http://iclient.supermap.io/libs/geohash/geohash.js");
         }
         if (inArray(includes, 'dat-gui')) {
             inputScript("http://cdn.bootcss.com/dat-gui/0.6.5/dat.gui.min.js");

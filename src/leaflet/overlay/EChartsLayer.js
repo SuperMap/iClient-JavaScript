@@ -20,7 +20,7 @@ export var EchartsLayer = L.Layer.extend({
     _echartsOptions: null,
 
     options: {
-        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
         loadWhileAnimating: true
     },
 

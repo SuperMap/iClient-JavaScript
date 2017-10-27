@@ -55,10 +55,10 @@
             inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
         }
         if (inArray(includes, 'osmbuildings')) {
-            inputScript("http://iclient.supermapol.com/libs/osmbuildings/OSMBuildings-OL3.js");
+            inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-OL3.js");
         }
         if (inArray(includes, 'animatedclusterlayer')) {
-            inputScript("http://iclient.supermapol.com/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js");
+            inputScript("http://iclient.supermap.io/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js");
         }
         if (inArray(includes, 'datgui')) {
             inputScript("http://cdn.bootcss.com/dat-gui/0.6.5/dat.gui.js");

@@ -1,6 +1,6 @@
 /*!
  * 
- *     iclient-classic.(http://iclient.supermapol.com)
+ *     iclient-classic.(http://iclient.supermap.io)
  *     Copyright© 2000-2017 SuperMap Software Co. Ltd
  *     license: Apache-2.0
  *     version: v9.0.0
@@ -3550,7 +3550,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         _this.div.appendChild(_this.canvas);
         var context = _this.options && _this.options.context || "2d";
         _this.canvasContext = _this.canvas.getContext(context);
-        _this.attribution = "© 2017 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermapol.com' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
+        _this.attribution = "© 2017 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
         return _this;
     }
 

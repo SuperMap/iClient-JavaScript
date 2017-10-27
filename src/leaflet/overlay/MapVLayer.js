@@ -15,7 +15,7 @@ export var MapVLayer = L.Layer.extend({
 
     options: {
         attributionPrefix: null,
-        attribution: " © 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: " © 2017 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function (dataSet, mapVOptions, options) {

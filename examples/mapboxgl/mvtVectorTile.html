@@ -25,7 +25,7 @@
 
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
-        " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
+        " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
 
     var map = new mapboxgl.Map({
         container: 'map', // container id
@@ -38,7 +38,7 @@
                     "tiles": [host + "/iserver/services/map-china400/rest/maps/China/tileFeature.mvt?_cache=false&returnAttributes=true&width=512&height=512&viewBounds={bbox-epsg-3857}"]
                 },
             },
-            "sprite": "http://iclient.supermapol.com/web/styles/street/sprite",
+            "sprite": "http://iclient.supermap.io/web/styles/street/sprite",
             "glyphs": host + "/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": []
         },

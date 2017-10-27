@@ -36,7 +36,7 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'iclient8c')) {
-            inputScript("http://iclient.supermapol.com/libs/iclient8c/libs/SuperMap.Include.js");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/libs/SuperMap.Include.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");

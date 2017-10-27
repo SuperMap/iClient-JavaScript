@@ -1,6 +1,6 @@
 /*!
  * 
- *     iclient9-openlayers.(http://iclient.supermapol.com)
+ *     iclient9-openlayers.(http://iclient.supermap.io)
  *     Copyright© 2000-2017 SuperMap Software Co. Ltd
  *     license: Apache-2.0
  *     version: v9.0.0
@@ -17406,7 +17406,7 @@ var Logo = function (_ol$control$Control) {
         options.imageUrl = options.imageUrl || null;
         options.width = options.width || null;
         options.height = options.height || null;
-        options.link = options.link || "http://iclient.supermapol.com";
+        options.link = options.link || "http://iclient.supermap.io";
         options.alt = options.alt || "SuperMap iClient";
 
         var _this = _possibleConstructorReturn(this, (Logo.__proto__ || Object.getPrototypeOf(Logo)).call(this, options));
@@ -23557,7 +23557,7 @@ var Theme = function (_ol$source$ImageCanva) {
 
         var _this = _possibleConstructorReturn(this, (Theme.__proto__ || Object.getPrototypeOf(Theme)).call(this, {
             attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -26068,7 +26068,7 @@ var BaiduMap = function (_ol$source$TileImage) {
 
         var options = opt_options || {};
         var attributions = options.attributions || new _olDebug2.default.Attribution({
-            html: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+            html: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         var tileGrid = _olDebug2.default.source.BaiduMap.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
@@ -26455,7 +26455,7 @@ var SuperMapCloud = function (_ol$source$XYZ) {
         var options = opt_options || {};
 
         var attributions = options.attributions || new _olDebug2.default.Attribution({
-            html: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+            html: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         var mapName = options.mapName || 'quanguo';
         var mapType = options.mapType || 'web';
@@ -26511,10 +26511,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 天地图图层源。
  * @param opt_options - {Object} 参数。
  *        url - {string} 服务地址。<br>
+ *        layerType - {string} 图层类型。(vec:矢量图层，img:影像图层，ter:地形图层)<br>
  *        attributions - {string} 版权描述信息。<br>
  *        cacheSize - {number} 缓冲大小。<br>
  *        tileLoadFunction - {function} 切片加载完成后执行函数。<br>
- *        maxZoom - {Object} 最大缩放级别。<br>
+ *        style - {string} 图层风格。<br>
+ *        format - {string} 格式。<br>
+ *        isLabel - {boolean} 是否是标注图层<br>
  *        opaque - {boolean} 是否透明。
  * @extends ol.source.WMTS{@linkdoc-openlayers/ol.source.WMTS}
  */
@@ -26526,7 +26529,7 @@ var Tianditu = function (_ol$source$WMTS) {
 
         var options = opt_options || {};
         var attributions = options.attributions || new _olDebug2.default.Attribution({
-            html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " + "src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " + "<span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+            html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " + "src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " + "<span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         options.layerType = options.layerType || "vec";
         options.layerType = options.isLabel ? _olDebug2.default.source.Tianditu.layerLabelMap[options.layerType] : options.layerType;
@@ -26705,7 +26708,7 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
         }
 
         options.attributions = options.attributions || new _olDebug2.default.Attribution({
-            html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+            html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
 
         var layerUrl = options.url + "/tileImage.png?";
@@ -28033,7 +28036,7 @@ var Mapv = function (_ol$source$ImageCanva) {
 
         var _this = _possibleConstructorReturn(this, (Mapv.__proto__ || Object.getPrototypeOf(Mapv)).call(this, {
             attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -28528,7 +28531,7 @@ var Turf = function (_ol$source$Vector) {
 
         var _this = _possibleConstructorReturn(this, (Turf.__proto__ || Object.getPrototypeOf(Turf)).call(this, {
             attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             features: options.features,
             format: options.format,
@@ -28937,7 +28940,7 @@ var VectorTileSuperMapRest = function (_ol$source$VectorTile) {
         }
         options.crossOrigin = 'anonymous';
         options.attributions = options.attributions || new _olDebug2.default.Attribution({
-            html: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+            html: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         var layerUrl = options.url + '/tileFeature.json?';
         if (options.format instanceof _olDebug2.default.format.MVT) {

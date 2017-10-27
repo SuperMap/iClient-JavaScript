@@ -1,7 +1,7 @@
 # SuperMap iClient for Leaflet API
 SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开发平台， 支持访问SuperMap iServer / iExpress / iPortal / iManager / Online的地图、服务和资源，为用户提供了完整专业的GIS能力， 同时提供了优秀的可视化功能。
 
-*   官网(website)：[http://iclient.supermapol.com/introduction/leaflet.html#introduce](http://iclient.supermapol.com/introduction/leaflet.html#introduce)
+*   官网(website)：[http://iclient.supermap.io/introduction/leaflet.html#introduce](http://iclient.supermap.io/introduction/leaflet.html#introduce)
 
 *   源码(source code)：[https://github.com/SuperMap/iClient9/tree/master/src/leaflet](https://github.com/SuperMap/iClient9/tree/master/src/leaflet)
 <table><tr>

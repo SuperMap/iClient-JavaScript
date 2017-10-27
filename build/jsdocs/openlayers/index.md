@@ -1,7 +1,7 @@
 # SuperMap iClient for OpenLayers API
 SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户端开发平台， 支持访问SuperMap iServer / iExpress / iPortal / iManager / Online的地图、服务和资源，为用户提供了完整专业的GIS能力， 同时提供了优秀的可视化功能。
 
-*   官网(website)：[http://iclient.supermapol.com/introduction/openlayers.html#introduce](http://iclient.supermapol.com/introduction/openlayers.html#introduce)
+*   官网(website)：[http://iclient.supermap.io/introduction/openlayers.html#introduce](http://iclient.supermap.io/introduction/openlayers.html#introduce)
 
 *   源码(source code)：[https://github.com/SuperMap/iClient9/tree/master/src/openlayers](https://github.com/SuperMap/iClient9/tree/master/src/openlayers)
 <table><tr>

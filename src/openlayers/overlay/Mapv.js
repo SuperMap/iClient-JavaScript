@@ -14,7 +14,7 @@ export default class Mapv extends ol.source.ImageCanvas {
         var options = opt_options ? opt_options : {};
         super({
             attributions: options.attributions || new ol.Attribution({
-                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,

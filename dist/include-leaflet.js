@@ -55,7 +55,7 @@
             inputScript("https://d3js.org/d3-hexbin.v0.2.min.js");
         }
         if (inArray(includes, 'd3Layer')) {
-            inputScript("http://iclient.supermapol.com/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.min.js");
+            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.min.js");
         }
         if (inArray(includes, 'elasticsearch')) {
             inputScript("http://cdn.bootcss.com/elasticsearch/13.0.1/elasticsearch.min.js");
@@ -70,7 +70,7 @@
             inputScript("http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js");
         }
         if (inArray(includes, 'osmbuildings')) {
-            inputScript("http://iclient.supermapol.com/libs/osmbuildings/OSMBuildings-Leaflet.js");
+            inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-Leaflet.js");
         }
         if (inArray(includes, 'leaflet.markercluster')) {
             inputCSS("http://cdn.bootcss.com/leaflet.markercluster/1.0.3/MarkerCluster.Default.css");
@@ -78,8 +78,8 @@
             inputScript("http://cdn.bootcss.com/leaflet.markercluster/1.0.3/leaflet.markercluster.js");
         }
         if (inArray(includes, 'leaflet-icon-pulse')) {
-            inputCSS("http://iclient.supermapol.com/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.css");
-            inputScript("http://iclient.supermapol.com/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js");
+            inputCSS("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.css");
+            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js");
         }
         if (inArray(includes, 'leaflet.draw')) {
             inputCSS("http://cdn.bootcss.com/leaflet.draw/0.4.9/leaflet.draw.css");

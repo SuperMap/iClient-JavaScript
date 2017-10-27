@@ -142,7 +142,7 @@ export default class Turf extends ol.source.Vector {
         var options = opt_options ? opt_options : {};
         super({
             attributions: options.attributions || new ol.Attribution({
-                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             features: options.features,
             format: options.format,

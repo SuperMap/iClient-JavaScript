@@ -36,8 +36,8 @@
             inputScript("https://cdn.bootcss.com/mapbox-gl/0.39.1/mapbox-gl.js");
         }
         if(inArray(includes,'draw')){
-            inputCSS("http://iclient.supermapol.com/libs/mapbox-gl-js/plugins/mapbox-gl-draw.css");
-            inputScript("http://iclient.supermapol.com/libs/mapbox-gl-js/plugins/mapbox-gl-draw.js");
+            inputCSS("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-draw.css");
+            inputScript("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-draw.js");
         }
 
         if(inArray(includes,'mapv')){
@@ -45,7 +45,7 @@
         }
         if(inArray(includes,'echarts')){
             inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
-            inputScript("http://iclient.supermapol.com/libs/echartsLayer/EchartsLayer.js");
+            inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
         }
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
             inputScript("../../dist/iclient9-mapboxgl.min.js");

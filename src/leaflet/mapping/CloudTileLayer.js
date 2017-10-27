@@ -40,7 +40,7 @@ export var CloudTileLayer = L.TileLayer.extend({
         type: "web",
         minZoom: 3,
         maxZoom: 18,
-        attribution: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
 
     },
 

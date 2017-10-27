@@ -25,7 +25,7 @@ export default class Logo extends ol.control.Control {
         options.imageUrl = options.imageUrl || null;
         options.width = options.width || null;
         options.height = options.height || null;
-        options.link = options.link || "http://iclient.supermapol.com";
+        options.link = options.link || "http://iclient.supermap.io";
         options.alt = options.alt || "SuperMap iClient";
         super(options);
         this.options = options;

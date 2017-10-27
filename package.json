@@ -40,7 +40,7 @@
     "Leaflet",
     "OpenLayers3"
   ],
-  "homepage": "http://iclient.supermapol.com",
+  "homepage": "http://iclient.supermap.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/SuperMap/iClient9.git"

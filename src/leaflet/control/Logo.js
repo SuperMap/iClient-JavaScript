@@ -65,7 +65,7 @@ export var Logo = L.Control.extend({
                 styleSize = "";
             }
         }
-        var link = this.options.link || "http://iclient.supermapol.com";
+        var link = this.options.link || "http://iclient.supermap.io";
         div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
             "<img src=" + imgSrc + " alt='" + alt + "' style='border: none;" + styleSize + "margin-right:5px;margin-bottom:2px;white-space: nowrap'></a>";
         return div;

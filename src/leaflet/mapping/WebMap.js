@@ -37,7 +37,7 @@ export var WebMap = L.LayerGroup.extend({
         featureLayerPopup: null,
         credentialValue: null,
         credentialKey: 'key',
-        attribution: "Map Data <span>© <a href='http://www.supermapol.com'>SuperMap Online</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+        attribution: "Map Data <span>© <a href='http://www.supermapol.com'>SuperMap Online</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
     /**
