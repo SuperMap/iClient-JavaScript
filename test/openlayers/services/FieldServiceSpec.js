@@ -17,7 +17,7 @@ describe('openlayers_FieldService', function () {
     });
 
     //字段查询服务成功事件
-    it('getFields_successEvent_test', function (done) {
+    it('success:getFields', function (done) {
         var fieldParameters = new SuperMap.FieldParameters({
             datasource: "World",
             dataset: "continent_T"
@@ -39,7 +39,7 @@ describe('openlayers_FieldService', function () {
                 expect(serviceResult.result.fieldNames[0]).toEqual("SmID");
                 done();
             } catch (e) {
-                console.log("'getFields_successEvent_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'success:getFields'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -47,7 +47,7 @@ describe('openlayers_FieldService', function () {
     });
 
     //字段查询服务失败事件
-    it('getFields_failEvent_test', function (done) {
+    it('fail:getFields', function (done) {
         var fieldParameters = new SuperMap.FieldParameters({
             datasource: "World1",
             dataset: "continent_T"
@@ -69,7 +69,7 @@ describe('openlayers_FieldService', function () {
                 expect(serviceResult.error.errorMsg).toBe("数据源World1不存在，获取相应的数据服务组件失败");
                 done();
             } catch (e) {
-                console.log("'getFields_failEvent_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'fail:getFields'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -77,7 +77,7 @@ describe('openlayers_FieldService', function () {
     });
 
     //字段统计服务成功事件
-    it('getFieldStatisticsInfo_successEvent_test', function (done) {
+    it('success:getFieldStatisticsInfo', function (done) {
         var fieldStatisticsParameters = new SuperMap.FieldStatisticsParameters({
             datasource: "World",
             dataset: "Countries",
@@ -117,7 +117,7 @@ describe('openlayers_FieldService', function () {
                 expect(serviceResult.result.fieldName).toEqual("SmID");
                 done();
             } catch (e) {
-                console.log("'getFieldStatisticsInfo_successEvent_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'success:getFieldStatisticsInfo'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -125,7 +125,7 @@ describe('openlayers_FieldService', function () {
     });
 
     //字段统计服务失败事件
-    it('getFieldStatisticsInfo_failEvent_test', function (done) {
+    it('fail:getFieldStatisticsInfo', function (done) {
         var fieldStatisticsParameters = new SuperMap.FieldStatisticsParameters({
             datasource: "World1",
             dataset: "Countries",
@@ -162,12 +162,10 @@ describe('openlayers_FieldService', function () {
                 expect(serviceResult.error.errorMsg).toBe("数据源World1不存在，获取相应的数据服务组件失败");
                 done();
             } catch (e) {
-                console.log("'getFieldStatisticsInfo_failEvent_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'fail:getFieldStatisticsInfo'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000);
     });
-
-
 });

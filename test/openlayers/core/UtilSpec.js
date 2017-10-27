@@ -1,6 +1,6 @@
 require('../../../src/openlayers/core/Util.js');
 
-describe('openlayers_testUtil', function () {
+describe('openlayers_Util', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -8,10 +8,6 @@ describe('openlayers_testUtil', function () {
     });
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-    });
-
-    it('init', function () {
-        new ol.supermap.Util();
     });
 
     it('toGeoJSON', function () {
@@ -35,7 +31,7 @@ describe('openlayers_testUtil', function () {
                     id: "SuperMap.Geometry.Point_6",
                     type: "NONE",
                     x: 258,
-                    y: 258,
+                    y: 258
                 }, {
                     id: "SuperMap.Geometry.Point_7",
                     type: "NONE",
@@ -88,17 +84,14 @@ describe('openlayers_testUtil', function () {
         expect(result.id).not.toBeNull();
         expect(result.components).not.toBeNull();
         expect(result.components.length).toBe(1);
-
         var polygon = result.components[0];
         expect(polygon instanceof SuperMap.Geometry.Polygon).toBeTruthy();
         expect(polygon.components).not.toBeNull();
         expect(polygon.components.length).toBe(1);
-
         var lineString = polygon.components[0];
         expect(lineString instanceof SuperMap.Geometry.LinearRing).toBeTruthy();
         expect(lineString.components).not.toBeNull();
         expect(lineString.components.length).toBe(3);
-
         var point = lineString.components[0];
         expect(point instanceof SuperMap.Geometry.Point).toBeTruthy();
         expect(point.x).toBe(-2);
@@ -180,7 +173,6 @@ describe('openlayers_testUtil', function () {
         expect(result.type).toBe("FeatureCollection");
         expect(result.features).not.toBeNull();
         expect(result.features.length).toBe(5);
-
         var feature = result.features[0];
         expect(feature).not.toBeNull();
         expect(feature.type).toBe('Feature');
@@ -203,5 +195,4 @@ describe('openlayers_testUtil', function () {
         expect(result.canvas.width).toBe(360);
         expect(result.canvas.height).toBe(580);
     });
-
 });

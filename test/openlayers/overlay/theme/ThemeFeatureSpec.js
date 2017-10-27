@@ -1,6 +1,6 @@
 require('../../../../src/openlayers/overlay/theme/ThemeFeature');
 
-describe('openlayers_testthemeFeature', function () {
+describe('openlayers_ThemeFeature', function () {
     var originalTimeout, map;
     beforeAll(function () {
         testDiv = window.document.createElement("div");
@@ -11,7 +11,6 @@ describe('openlayers_testthemeFeature', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-
         var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
             extent = [104.07, 30.54, 119.51, 42.31];
         map = new ol.Map({
@@ -32,22 +31,17 @@ describe('openlayers_testthemeFeature', function () {
         });
         map.addLayer(layer);
     });
-
-
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
     afterAll(function () {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
-
 
     it("toFeature", function () {
         var geo = new ol.geom.Point([116.407283, 39.904557]);
@@ -56,7 +50,6 @@ describe('openlayers_testthemeFeature', function () {
         attrs.CON2009 = 22023;
         var themeFeature = new ol.supermap.ThemeFeature(geo, attrs);
         var result = themeFeature.toFeature();
-
         expect(result).not.toBeNull();
         expect(result instanceof SuperMap.Feature.Vector).toBeTruthy();
         expect(result.geometry).not.toBeNull();
@@ -66,7 +59,6 @@ describe('openlayers_testthemeFeature', function () {
         expect(result.geometry.x).toBe(116.407283);
         expect(result.geometry.y).toBe(39.904557);
     });
-
 });
 
 

@@ -14,8 +14,9 @@ describe('openlayers_FeatureService_getFeaturesBySQL', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //数据集SQL查询服务
-    it('getFeaturesBySQL_test', function (done) {
+    it('getFeaturesBySQL', function (done) {
         var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
@@ -48,11 +49,10 @@ describe('openlayers_FeatureService_getFeaturesBySQL', function () {
                     }
                     done();
                 } catch (exception) {
-                    console.log("'getFeaturesBySQL_test'案例失败" + exception.name + ":" + exception.message);
+                    console.log("'getFeaturesBySQL'案例失败" + exception.name + ":" + exception.message);
                     expect(false).toBeTruthy();
                     done();
                 }
-
             }, 5000);
         });
     });

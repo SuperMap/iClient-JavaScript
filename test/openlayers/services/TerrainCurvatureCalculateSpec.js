@@ -11,8 +11,9 @@ describe('openlayers_SpatialAnalystService_terrainCurvatureCalculate', function 
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //地形曲率计算
-    it('terrainCurvatureCalculate test', function (done) {
+    it('terrainCurvatureCalculate', function (done) {
         var terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
@@ -24,7 +25,6 @@ describe('openlayers_SpatialAnalystService_terrainCurvatureCalculate', function 
         spatialAnalystService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
-
         setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');

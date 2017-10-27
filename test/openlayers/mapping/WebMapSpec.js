@@ -1,6 +1,6 @@
 require('../../../src/openlayers/mapping/WebMap');
 
-describe('openlayers_WebMapTest', function() {
+describe('openlayers_WebMap', function () {
     var originalTimeout;
     var testDiv;
     beforeEach(function () {
@@ -20,51 +20,48 @@ describe('openlayers_WebMapTest', function() {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('TIANDITU and FEATURE_LAYER test', function (done) {
-        var tianDiTuWebMap = new  ol.supermap.WebMap(44, {server: "support.supermap.com.cn:8092"});
+    it('TIANDITU and FEATURE_LAYER', function (done) {
+        var tianDiTuWebMap = new ol.supermap.WebMap(44, {server: "support.supermap.com.cn:8092"});
         setTimeout(function () {
             try {
                 expect(tianDiTuWebMap).not.toBeNull();
                 expect(tianDiTuWebMap.id).toBe(44);
                 tianDiTuWebMap = null;
                 done();
-            }catch(exception) {
+            } catch (exception) {
                 console.log("'TIANDITU'案例失败：" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
             }
-
-        },5000);
+        }, 5000);
     });
 
-    it('BAIDU test', function (done) {
-        var BaiDuWebMap = new  ol.supermap.WebMap(53, {server: "support.supermap.com.cn:8092"});
+    it('BAIDU', function (done) {
+        var BaiDuWebMap = new ol.supermap.WebMap(53, {server: "support.supermap.com.cn:8092"});
         setTimeout(function () {
             try {
                 expect(BaiDuWebMap).not.toBeNull();
                 expect(BaiDuWebMap.id).toBe(53);
                 BaiDuWebMap = null;
                 done();
-            }catch(exception) {
+            } catch (exception) {
                 console.log("'BAIDU'案例失败：" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
             }
-
-        },5000);
+        }, 5000);
     });
 
-    it('CLOUD test', function (done) {
-        var CloudWebMap = new  ol.supermap.WebMap(439);
+    it('CLOUD', function (done) {
+        var CloudWebMap = new ol.supermap.WebMap(439);
         setTimeout(function () {
             try {
                 expect(CloudWebMap).not.toBeNull();
                 expect(CloudWebMap.id).toBe(439);
                 CloudWebMap = null;
                 done()
-            }catch(exception) {
+            } catch (exception) {
                 console.log("'CLOUD'案例失败：" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
             }
-
-        },5000);
+        }, 5000);
     });
 });

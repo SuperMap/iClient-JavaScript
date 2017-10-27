@@ -3,7 +3,7 @@ var mapv = require('mapv');
 window.mapv = mapv;
 
 var url = GlobeParameter.ChinaURL;
-describe('openlayers_testMapV', function () {
+describe('openlayers_MapV', function () {
     var originalTimeout;
     var testDiv, map, mapVSource;
     beforeAll(function () {
@@ -15,7 +15,6 @@ describe('openlayers_testMapV', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         document.body.appendChild(testDiv);
-
         map = new ol.Map({
             target: 'map',
             controls: ol.control.defaults({attributionOptions: {collapsed: false}})
@@ -26,7 +25,6 @@ describe('openlayers_testMapV', function () {
                 projection: 'EPSG:3857'
             })
         });
-
         map.addLayer(new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({
                 url: url,
@@ -72,22 +70,19 @@ describe('openlayers_testMapV', function () {
             source: mapVSource
         }));
     });
-
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
     afterAll(function () {
         document.body.removeChild(testDiv);
         mapv = null;
     });
 
-    it('constructor test', function (done) {
+    it('initialize', function (done) {
         //判断是否返回期望的maplayer
         setTimeout(function () {
             expect(mapVSource).not.toBeNull();

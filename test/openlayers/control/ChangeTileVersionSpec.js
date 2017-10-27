@@ -1,6 +1,6 @@
 require('../../../src/openlayers/control/ChangeTileVersion');
 
-describe('openlayers_testChangeTileVersion', function () {
+describe('openlayers_ChangeTileVersion', function () {
     var map, baseLayer;
     var tileVersions = [
         {
@@ -18,7 +18,7 @@ describe('openlayers_testChangeTileVersion', function () {
                     top: 66.826881183998
                 },
                 resolutions: [0.15211472144423888, 0.07605736072211941, 0.03802868036105977],
-                scaleDenominators: [64000000, 32000000, 16000000],
+                scaleDenominators: [64000000, 32000000, 16000000]
             }
         }, {
             desc: "V2",
@@ -32,7 +32,7 @@ describe('openlayers_testChangeTileVersion', function () {
                     leftBottom: {x: 73.45169014635671, y: 3.853726078199864},
                     right: 134.9754744676044,
                     rightTop: {x: 134.9754744676044, y: 66.826881183998},
-                    top: 66.826881183998,
+                    top: 66.826881183998
                 },
                 resolutions: [0.15211472144423888, 0.07605736072211941, 0.03802868036105977],
                 scaleDenominators: [64000000, 32000000, 16000000]
@@ -48,7 +48,6 @@ describe('openlayers_testChangeTileVersion', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-
         var url = GlobeParameter.China4326URL;
         map = new ol.Map({
             target: 'map',
@@ -60,20 +59,18 @@ describe('openlayers_testChangeTileVersion', function () {
                 projection: 'EPSG:4326'
             })
         });
-
         baseLayer = new ol.source.TileSuperMapRest({
             origin: [-180, 90],
             url: url,
             wrapX: true
         });
-
         map.addLayer(new ol.layer.Tile({
             source: baseLayer,
             projection: 'EPSG:4326'
         }));
     });
 
-    it("constructor", function () {
+    it("initialize", function () {
         var options = {
             layer: baseLayer,
             orientation: "horizontal"
@@ -183,7 +180,6 @@ describe('openlayers_testChangeTileVersion', function () {
         changetileversion.update(tileVersions);
         var result = changetileversion.getVersion();
         expect(result).toBe('63477488-e91e-41a1-b029-c1c7b476a64d');
-
     });
 });
 

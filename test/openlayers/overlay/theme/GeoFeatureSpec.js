@@ -1,6 +1,6 @@
 require('../../../../src/openlayers/overlay/theme/GeoFeature');
 
-describe('openlayers_testGeoFeature', function () {
+describe('openlayers_GeoFeature', function () {
     var originalTimeout, map;
     beforeAll(function () {
         testDiv = window.document.createElement("div");
@@ -11,7 +11,6 @@ describe('openlayers_testGeoFeature', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-
         var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
             extent = [104.07, 30.54, 119.51, 42.31];
         map = new ol.Map({
@@ -32,17 +31,13 @@ describe('openlayers_testGeoFeature', function () {
         });
         map.addLayer(layer);
     });
-
-
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-
     afterAll(function () {
         window.document.body.removeChild(testDiv);
         map.remove();
@@ -242,7 +237,7 @@ describe('openlayers_testGeoFeature', function () {
         "ID": 1
     }];
 
-    it("destroy", function () {
+    it("initialize, destroy", function () {
         var geoFeature = new ol.source.GeoFeature("ThemeLayer", {
             map: map,
             features: features,

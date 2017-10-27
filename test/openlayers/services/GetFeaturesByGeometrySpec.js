@@ -15,7 +15,7 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     //数据集几何查询服务类
-    it('getFeaturesByGeometry_test', function (done) {
+    it('getFeaturesByGeometry', function (done) {
         var polygon = new ol.geom.Polygon([[[0, 0], [-10, 30], [-30, 0], [0, 0]]]);
         var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
@@ -49,7 +49,7 @@ describe('openlayers_FeatureService_getFeaturesByGeometry', function () {
                 }
                 done();
             } catch (exception) {
-                console.log("'getFeaturesByGeometry_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'getFeaturesByGeometry'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }

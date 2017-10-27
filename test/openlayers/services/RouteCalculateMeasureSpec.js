@@ -13,8 +13,9 @@ describe('openlayers_SpatialAnalystService_routeCalculateMeasure', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //点定里程
-    it('routeCalculateMeasure test', function (done) {
+    it('routeCalculateMeasure', function (done) {
         queryBySQLService = new ol.supermap.QueryService(changchunBaseUrl);
         queryBySQLParams = new SuperMap.QueryBySQLParameters({
             queryParams: [
@@ -26,7 +27,6 @@ describe('openlayers_SpatialAnalystService_routeCalculateMeasure', function () {
         });
         queryBySQLService.queryBySQL(queryBySQLParams, function (SQLQueryServiceResult) {
             var queryBySQLResult = SQLQueryServiceResult.result.recordsets[0].features;
-
             //将形成路由的点提出来，为了构造下面点定里程服务sourceRoute
             var pointsList = [];
             var routeObj = queryBySQLResult.features[0].geometry.coordinates[0];
@@ -34,10 +34,8 @@ describe('openlayers_SpatialAnalystService_routeCalculateMeasure', function () {
                 pointsList.push([routeObj[i][0], routeObj[i][1], routeObj[i][2]])
             }
             var routeLine = new ol.geom.LineString([pointsList]);
-
             //在组成路由的点中选取一个查询点(数组中第8个点),并添加到地图上
             var point = new ol.geom.Point([routeObj[7][0], routeObj[7][1]]);
-
             //点定里程服务
             routeCalculateMeasureService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
             routeCalculateMeasureParameters = new SuperMap.RouteCalculateMeasureParameters({
@@ -50,7 +48,6 @@ describe('openlayers_SpatialAnalystService_routeCalculateMeasure', function () {
                 serviceResults = routeCaculateServiceResult;
             });
         });
-
         setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');

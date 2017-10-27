@@ -1,6 +1,6 @@
 require('../../../src/openlayers/overlay/Range');
 
-describe('openlayers_testRange', function () {
+describe('openlayers_Range', function () {
     var originalTimeout, map;
     beforeAll(function () {
         testDiv = window.document.createElement("div");
@@ -11,7 +11,6 @@ describe('openlayers_testRange', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-
         var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
             extent = [104.07, 30.54, 119.51, 42.31];
         map = new ol.Map({
@@ -32,8 +31,6 @@ describe('openlayers_testRange', function () {
         });
         map.addLayer(layer);
     });
-
-
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -237,7 +234,7 @@ describe('openlayers_testRange', function () {
         "ID": 1
     }];
 
-    it("constructor", function () {
+    it("initialize", function () {
         var range = new ol.source.Range("ThemeLayer", {
             map: map,
             features: features,
@@ -409,7 +406,6 @@ describe('openlayers_testRange', function () {
             source: range
         });
         map.addLayer(themeLayer);
-
         var feature = {
             attributes: {
                 'CITY': "北京市",
@@ -448,9 +444,8 @@ describe('openlayers_testRange', function () {
                 },
                 id: "SuperMap.Geometry.MultiPolygon_465"
             },
-            id: "SuperMap.Feature.Vector_466",
+            id: "SuperMap.Feature.Vector_466"
         };
-
         feature.data = feature.attributes;
         var result = range.getStyleByData(feature);
         expect(result).not.toBeNull();
@@ -459,7 +454,6 @@ describe('openlayers_testRange', function () {
         expect(result.shadowBlur).toBe(16);
         expect(result.shadowColor).toBe("#000000");
     });
-
 });
 
 

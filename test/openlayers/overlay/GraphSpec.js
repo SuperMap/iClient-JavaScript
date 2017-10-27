@@ -2,7 +2,7 @@ require('../../../src/openlayers/overlay/Graph');
 require('../../resources/chinaConsumptionLevel');
 
 var url = GlobeParameter.China4326URL;
-describe('openlayers_graph', function () {
+describe('openlayers_Graph', function () {
     var testDiv, map;
     beforeAll(function () {
         testDiv = window.document.createElement("div");
@@ -37,7 +37,7 @@ describe('openlayers_graph', function () {
         map.remove();
     });
 
-    it('construtor and destroy', function (done) {
+    it('initialize, destroy', function (done) {
         var barThemeLayer = new ol.source.Graph("BarThemeLayer", "Bar", {
             map: map,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
@@ -88,27 +88,27 @@ describe('openlayers_graph', function () {
     });
 
     it('setChartsType', function (done) {
-            var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
-                map: map,
-                chartsSetting: {
-                    width: 240,
-                    height: 100,
-                    codomain: [0, 40000]
-                }
-            });
-            var layer = new ol.layer.Image({
-                source: graphThemeSource
-            });
-            map.addLayer(layer);
-            expect(graphThemeSource.chartsType).toBe("Bar");
-            graphThemeSource.setChartsType("Line");
-            expect(graphThemeSource.chartsType).toBe("Line");
-            graphThemeSource.clear();
-            done();
+        var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
+            map: map,
+            chartsSetting: {
+                width: 240,
+                height: 100,
+                codomain: [0, 40000]
+            }
+        });
+        var layer = new ol.layer.Image({
+            source: graphThemeSource
+        });
+        map.addLayer(layer);
+        expect(graphThemeSource.chartsType).toBe("Bar");
+        graphThemeSource.setChartsType("Line");
+        expect(graphThemeSource.chartsType).toBe("Line");
+        graphThemeSource.clear();
+        done();
 
     });
 
-    it('addFeatures and removeFeatures', function (done) {
+    it('addFeatures, removeFeatures', function (done) {
         var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
             map: map
         });

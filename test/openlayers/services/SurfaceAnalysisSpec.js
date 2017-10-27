@@ -11,8 +11,9 @@ describe('openlayers_SpatialAnalystService_surfaceAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //表面分析(提取等值线)
-    it('surfaceAnalysis test', function (done) {
+    it('surfaceAnalysis', function (done) {
         var region = new ol.geom.Polygon([[
             [0, 4010338],
             [1063524, 4010338],
@@ -37,7 +38,6 @@ describe('openlayers_SpatialAnalystService_surfaceAnalysis', function () {
         surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (surfaceAnalystServiceResult) {
             serviceResults = surfaceAnalystServiceResult;
         });
-
         setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');

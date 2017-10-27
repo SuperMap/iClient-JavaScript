@@ -16,7 +16,7 @@ describe('openlayers_NetworkAnalystService', function () {
     });
 
     //爆管分析服务
-    it('burstPipelineAnalyst_test', function (done) {
+    it('burstPipelineAnalyst', function (done) {
         var burstPipelineAnalystParameters = new SuperMap.BurstPipelineAnalystParameters({
             //指定的设施点ID数组
             sourceNodeIDs: [84, 85],
@@ -43,7 +43,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(result.edges.length).toEqual(12);
                 done();
             } catch (exception) {
-                console.log("'burstPipelineAnalyst_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'burstPipelineAnalyst'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -51,7 +51,7 @@ describe('openlayers_NetworkAnalystService', function () {
     });
 
     //耗费矩阵分析服务
-    it('computeWeightMatrix_test', function (done) {
+    it('computeWeightMatrix', function (done) {
         var computeWeightMatrixParameters = new SuperMap.ComputeWeightMatrixParameters({
             //是否通过节点 ID 指定路径分析的结点，默认为 false，即通过坐标点指定。
             isAnalyzeById: true,
@@ -73,7 +73,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(result[1].length).toEqual(2);
                 done();
             } catch (e) {
-                console.log("'computeWeightMatrix_test'案例失败" + e.name + ":" + e.message);
+                console.log("'computeWeightMatrix'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -81,7 +81,7 @@ describe('openlayers_NetworkAnalystService', function () {
     });
 
     //最近设施分析服务
-    it('findClosestFacilities_test', function (done) {
+    it('findClosestFacilities', function (done) {
         //创建最近设施分析参数实例
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -169,7 +169,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(facilityPath.weight).not.toBeNull();
                 done();
             } catch (e) {
-                console.log("'findClosestFacilities_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findClosestFacilities'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -179,34 +179,34 @@ describe('openlayers_NetworkAnalystService', function () {
 
     //上游/下游 关键设施查找资源服务//common里被注释掉了
     /*it('streamFacilityAnalyst_test',function (done) {
-        var FacilityAnalystStreamParameters =new SuperMap.FacilityAnalystStreamParameters({
-            edgeID:84,
-            //nodeID:85,
-            isUncertainDirectionValid:true,
-            sourceNodeIDs:[],
-            // 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）
-            type:1
-        });
-        var service = new ol.supermap.NetworkAnalystService(URL, options);
-        service.streamFacilityAnalyst(FacilityAnalystStreamParameters,function (result) {
-             serviceResult=result;
-        });
-        setTimeout(function () {
-            try{
-                expect(service).not.toBeNull();
-                expect(serviceResult).not.toBeNull();
-                done();
-            } catch(e) {
-                console.log("'streamFacilityAnalyst_test'案例失败" + e.name + ":" + e.message);
-                expect(false).toBeTruthy();
-                done();
-            }
-        },45000)
+     var FacilityAnalystStreamParameters =new SuperMap.FacilityAnalystStreamParameters({
+     edgeID:84,
+     //nodeID:85,
+     isUncertainDirectionValid:true,
+     sourceNodeIDs:[],
+     // 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）
+     type:1
+     });
+     var service = new ol.supermap.NetworkAnalystService(URL, options);
+     service.streamFacilityAnalyst(FacilityAnalystStreamParameters,function (result) {
+     serviceResult=result;
+     });
+     setTimeout(function () {
+     try{
+     expect(service).not.toBeNull();
+     expect(serviceResult).not.toBeNull();
+     done();
+     } catch(e) {
+     console.log("'streamFacilityAnalyst_test'案例失败" + e.name + ":" + e.message);
+     expect(false).toBeTruthy();
+     done();
+     }
+     },45000)
 
-    });*/
+     });*/
 
     //选址分区分析服务
-    it('findLocation_test', function (done) {
+    it('findLocation', function (done) {
         var findLocationParameters = new SuperMap.FindLocationParameters({
             //期望用于最终设施选址的资源供给中心数量，必设字段
             expectedSupplyCenterCount: 1,
@@ -257,7 +257,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(serviceResult.result.supplyResults.features[0].properties).not.toBeNull();
                 done();
             } catch (e) {
-                console.log("'findLocation_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findLocation'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -265,7 +265,7 @@ describe('openlayers_NetworkAnalystService', function () {
     });
 
     //最佳路径分析服务
-    it('findPath_test', function (done) {
+    it('findPath', function (done) {
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
@@ -340,7 +340,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(serviceResult.result.pathList[0].stopWeights).not.toBeNull();
                 done();
             } catch (e) {
-                console.log("'findPath_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findPath'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -348,7 +348,7 @@ describe('openlayers_NetworkAnalystService', function () {
     });
 
     //旅行商分析服务
-    it('findTSPPaths_test', function (done) {
+    it('findTSPPaths', function (done) {
         //创建多旅行商分析参数实例
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -412,7 +412,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(tspPathList.stopWeights).not.toBeNull();
                 done();
             } catch (e) {
-                console.log("'findTSPPaths_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findTSPPaths'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -421,7 +421,7 @@ describe('openlayers_NetworkAnalystService', function () {
     });
 
     // 多旅行商分析服务
-    it('findMTSPPaths_test', function (done) {
+    it('findMTSPPaths', function (done) {
         var findMTSPPathsParameter = new SuperMap.FindMTSPPathsParameters({
             centers: [new ol.geom.Point([6000, -5500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([2500, -3500])],
             isAnalyzeById: false,
@@ -446,7 +446,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(serviceResult.result.pathList[0].weight).not.toBeNull();
                 done();
             } catch (e) {
-                console.log("'findMTSPPaths_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findMTSPPaths'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -454,7 +454,7 @@ describe('openlayers_NetworkAnalystService', function () {
     });
 
     //服务区分析服务
-    it('findServiceAreas_test', function (done) {
+    it('findServiceAreas', function (done) {
         var point = new ol.geom.Point([5605, -3375]);
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -499,7 +499,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(serviceAreaList.serviceRegion).not.toBeNull();
                 done();
             } catch (e) {
-                console.log("'findServiceAreas_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findServiceAreas'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -508,7 +508,7 @@ describe('openlayers_NetworkAnalystService', function () {
     });
 
     //更新边的耗费权重服务
-    it('updateEdgeWeight_test', function (done) {
+    it('updateEdgeWeight', function (done) {
         var updateEdgeWeightParameters = new SuperMap.UpdateEdgeWeightParameters({
             edgeId: "20",
             edgeWeight: "30",
@@ -528,7 +528,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
             } catch (e) {
-                console.log("'updateEdgeWeight_test'案例失败" + e.name + ":" + e.message);
+                console.log("'updateEdgeWeight'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -536,7 +536,7 @@ describe('openlayers_NetworkAnalystService', function () {
     });
 
     //转向耗费权重更新服务
-    it('updateTurnNodeWeight_test', function (done) {
+    it('updateTurnNodeWeight', function (done) {
         var parameters = new SuperMap.UpdateTurnNodeWeightParameters({
             //转向结点的id
             nodeId: "106",
@@ -561,7 +561,7 @@ describe('openlayers_NetworkAnalystService', function () {
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
             } catch (e) {
-                console.log("'updateTurnNodeWeight_test'案例失败" + e.name + ":" + e.message);
+                console.log("'updateTurnNodeWeight'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }

@@ -1,6 +1,6 @@
 require('../../../../src/openlayers/overlay/theme/Theme');
 
-describe('openlayers_testTheme', function () {
+describe('openlayers_Theme', function () {
     var originalTimeout, map;
     beforeAll(function () {
         testDiv = window.document.createElement("div");
@@ -11,7 +11,6 @@ describe('openlayers_testTheme', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-
         var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
             extent = [104.07, 30.54, 119.51, 42.31];
         map = new ol.Map({
@@ -32,8 +31,6 @@ describe('openlayers_testTheme', function () {
         });
         map.addLayer(layer);
     });
-
-
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -234,7 +231,7 @@ describe('openlayers_testTheme', function () {
         "ID": 1
     }];
 
-    it("constructor", function () {
+    it("initialize", function () {
         var theme = new ol.source.Theme("ThemeLayer", {
             map: map,
             features: features,
@@ -290,63 +287,6 @@ describe('openlayers_testTheme', function () {
                 }]
         });
         expect(theme).not.toBeNull();
-    });
-
-    it("destroy", function () {
-        var theme = new ol.source.Theme("ThemeLayer", {
-            map: map,
-            features: features,
-            style: {
-                shadowBlur: 16,
-                shadowColor: "#000000",
-                fillColor: "#FFFFFF"
-            },
-            isHoverAble: true,
-            highlightStyle: {
-                stroke: true,
-                strokeWidth: 4,
-                strokeColor: 'blue',
-                fillColor: "#00EEEE",
-                fillOpacity: 0.8
-            },
-            themeField: "POP_DENSITY99",
-            styleGroups: [
-                {
-                    start: 0,
-                    end: 0.02,
-                    style: {
-                        color: '#FDE2CA'
-                    }
-                },
-                {
-                    start: 0.02,
-                    end: 0.04,
-                    style: {
-                        color: '#FACE9C'
-                    }
-                },
-                {
-                    start: 0.04,
-                    end: 0.06,
-                    style: {
-                        color: '#F09C42'
-                    }
-                },
-                {
-                    start: 0.06,
-                    end: 0.1,
-                    style: {
-                        color: '#D0770B'
-                    }
-                },
-                {
-                    start: 0.1,
-                    end: 0.2,
-                    style: {
-                        color: '#945305'
-                    }
-                }]
-        });
         theme.destroy();
         expect(theme).not.toBeNull();
         expect(theme.EVENT_TYPES).toBeNull();
@@ -358,8 +298,6 @@ describe('openlayers_testTheme', function () {
         expect(theme.movingOffset).toBeNull();
         expect(theme.currentMousePosition).toBeNull();
     });
-
-
 });
 
 

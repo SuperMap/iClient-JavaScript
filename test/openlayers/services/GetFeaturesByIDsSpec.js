@@ -15,7 +15,7 @@ describe('openlayers_FeatureService_getFeaturesByIDs', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     //数据集ID查询服务
-    it('getFeaturesByIDs_test', function (done) {
+    it('getFeaturesByIDs', function (done) {
         var idsParam = new SuperMap.GetFeaturesByIDsParameters({
             IDs: [246, 247],
             datasetNames: ["World:Countries"]
@@ -53,11 +53,10 @@ describe('openlayers_FeatureService_getFeaturesByIDs', function () {
                 }
                 done();
             } catch (exception) {
-                console.log("'getFeaturesByIDs_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'getFeaturesByIDs'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000);
-
     });
 });

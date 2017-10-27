@@ -11,8 +11,9 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //缓冲区分析
-    it('bufferAnalysis test', function (done) {
+    it('bufferAnalysis_dataset', function (done) {
         var dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
             filterQueryParameter: new SuperMap.FilterParameter({
@@ -29,7 +30,6 @@ describe('openlayers_SpatialAnalystService_bufferAnalysis', function () {
         spatialAnalystService.bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
-
         setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');

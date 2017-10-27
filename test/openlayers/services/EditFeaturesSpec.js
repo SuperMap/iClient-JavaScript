@@ -17,8 +17,9 @@ describe('openlayers_FeatureService_editFeatures', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //地物编辑服务 添加一个地物
-    it('editFeatures_addFeature_test', function (done) {
+    it('addFeature', function (done) {
         var marker = new ol.Feature(new ol.geom.Point([118.05408801141, 58.837029131724]));
         marker.setProperties({POP: 1, CAPITAL: 'test'});
         updateFeature = marker;
@@ -27,7 +28,7 @@ describe('openlayers_FeatureService_editFeatures', function () {
             dataSourceName: "World",
             dataSetName: "Capitals",
             editType: "add",
-            returnContent: true,
+            returnContent: true
         });
         var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
         featureService.editFeatures(addFeatureParams, function (result) {
@@ -49,7 +50,7 @@ describe('openlayers_FeatureService_editFeatures', function () {
                 expect(serviceResult.object.options.data).toContain("'y':58.837029131724");
                 done();
             } catch (e) {
-                console.log("'editFeatures_addFeature_test'案例失败" + e.name + ":" + e.message);
+                console.log("'addFeature'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -57,7 +58,7 @@ describe('openlayers_FeatureService_editFeatures', function () {
     });
 
     //地物编辑服务 批量添加地物   isUseBatch为true
-    it('editFeatures_addFeature_isUseBatch_true_test', function (done) {
+    it('addFeatures_isUseBatch:true', function (done) {
         var marker = new ol.Feature(new ol.geom.Point([100, 58]));
         var marker1 = new ol.Feature(new ol.geom.Point([120, 42]));
         marker.setProperties({POP: 1, CAPITAL: 'test'});
@@ -94,7 +95,7 @@ describe('openlayers_FeatureService_editFeatures', function () {
                 id2 = id + 2;
                 done();
             } catch (e) {
-                console.log("'editFeatures_addFeature_isUseBatch_true_test'案例失败" + e.name + ":" + e.message);
+                console.log("'addFeatures_isUseBatch:true'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -102,12 +103,12 @@ describe('openlayers_FeatureService_editFeatures', function () {
     });
 
     //地物编辑服务 删除地物
-    it('editFeatures_deleteFeature_test', function (done) {
+    it('deleteFeatures', function (done) {
         var deleteFeatureParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
             IDs: [id, id1, id2],
-            editType: "delete",
+            editType: "delete"
         });
         var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
         featureService.editFeatures(deleteFeatureParams, function (result) {
@@ -133,13 +134,13 @@ describe('openlayers_FeatureService_editFeatures', function () {
     });
 
     //地物编辑服务 删除地物失败事件
-    it('editFeatures_deleteFeature_failed_test', function (done) {
+    it('deleteFeature_failed', function (done) {
         id = id + 3;
         var deleteFeatureParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
             IDs: [id],
-            editType: "delete",
+            editType: "delete"
         });
         var featureService = new ol.supermap.FeatureService(featureServiceURL, options);
         featureService.editFeatures(deleteFeatureParams, function (result) {
@@ -161,10 +162,9 @@ describe('openlayers_FeatureService_editFeatures', function () {
         }, 5000);
     });
 
-
     //更新地物
     // 首先确认从服务器上获取一个有效要素
-    it('editFeatures_getFeatureForUpdate', function (done) {
+    it('getFeatureForUpdate', function (done) {
         var getFeatureResult = null;
         var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
             returnContent: true,
@@ -190,8 +190,9 @@ describe('openlayers_FeatureService_editFeatures', function () {
             }
         }, 4000)
     });
+
     // 将上面获取的要素update
-    it('editFeatures_updateFeature', function (done) {
+    it('updateFeature', function (done) {
         var updateFeatureResult = null;
         if (originFeature != null) {
             var random = parseInt(Math.random() * 10000000);

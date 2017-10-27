@@ -2,7 +2,6 @@ require('../../../src/openlayers/services/SpatialAnalystService');
 
 var originalTimeout, serviceResults;
 var sampleServiceUrl = GlobeParameter.spatialAnalystURL;
-//插值分析
 describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -12,9 +11,9 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    
+
     //点密度插值分析
-    it('interpolationAnalysis_Density test', function (done) {
+    it('interpolationAnalysis_density', function (done) {
         var interpolationAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
             dataset: "SamplesP@Interpolation",
             //插值分析结果数据集的名称
@@ -33,17 +32,15 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
         var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
         spatialAnalystService.interpolationAnalysis(interpolationAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
-        });
-
-        setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
             done();
-        }, 30000);
+        });
     });
+
     //反距离加权插值分析
-    it('interpolationAnalysis_IDW_dataset test', function (done) {
+    it('interpolationAnalysis_IDW_dataset', function (done) {
         var interpolationAnalystParameters = new SuperMap.InterpolationIDWAnalystParameters({
             //用于做插值分析的数据源中数据集的名称
             dataset: "SamplesP@Interpolation",
@@ -64,18 +61,16 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
         var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
         spatialAnalystService.interpolationAnalysis(interpolationAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
-        });
-
-        setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
             done();
-        }, 30000);
+        });
     });
+
     //离散点插值分析
-    it('interpolationAnalysis_IDW_geometry test', function (done) {
-        var baseurl = "http://localhost:8090/iserver/services/map-temperature/rest/maps/全国温度变化图";
+    it('interpolationAnalysis_IDW_geometry', function (done) {
+        var baseurl = GlobeParameter.mapTemperatureURL + "全国温度变化图";
         //通过SQL查询的方法获取用于插值分析的geometry
         var queryBySQLParams, queryBySQLService;
         queryBySQLService = new ol.supermap.QueryService(baseurl);
@@ -102,7 +97,6 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
                     points.push(point);
                 }
             }
-
             //创建离散点插值分析服务实例
             interpolationAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
             //创建离散点插值分析参数实例
@@ -125,14 +119,11 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
             });
             interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters, function (serviceResult) {
                 serviceResults = serviceResult;
+                expect(serviceResults).not.toBeNull();
+                expect(serviceResults.type).toBe('processCompleted');
+                expect(serviceResults.result.dataset).not.toBeNull();
+                done();
             });
         });
-
-        setTimeout(function () {
-            expect(serviceResults).not.toBeNull();
-            expect(serviceResults.type).toBe('processCompleted');
-            expect(serviceResults.result.dataset).not.toBeNull();
-            done();
-        }, 30000);
     });
 });

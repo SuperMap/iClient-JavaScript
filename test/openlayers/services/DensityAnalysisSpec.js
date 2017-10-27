@@ -11,8 +11,9 @@ describe('openlayers_SpatialAnalystService_densityAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //点密度分析
-    it('densityAnalysis test', function (done) {
+    it('densityAnalysis', function (done) {
         var densityAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
             dataset: "Railway@Changchun",
             bounds: [3800, -3800, 8200, -2200],
@@ -25,7 +26,6 @@ describe('openlayers_SpatialAnalystService_densityAnalysis', function () {
         spatialAnalystService.densityAnalysis(densityAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
-
         setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');

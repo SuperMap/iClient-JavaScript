@@ -11,7 +11,8 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('generateSpatialData test', function (done) {
+
+    it('generateSpatialData', function (done) {
         var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
@@ -36,12 +37,5 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', function () {
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
         });
-
-        setTimeout(function () {
-            expect(serviceResults).not.toBeNull();
-            expect(serviceResults.type).toBe('processCompleted');
-            expect(serviceResults.result.dataset).not.toBeNull();
-            done();
-        }, 8000);
     });
 });

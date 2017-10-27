@@ -15,7 +15,7 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     //数据集Buffer查询服务
-    it('getFeaturesByBuffer_test', function (done) {
+    it('getFeaturesByBuffer', function (done) {
         var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
         var bufferParam = new SuperMap.GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitals"],
@@ -25,7 +25,6 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', function () {
         var getFeaturesByBuffeService = new ol.supermap.FeatureService(featureServiceURL, options);
         getFeaturesByBuffeService.getFeaturesByBuffer(bufferParam, function (result) {
             serviceResult = result;
-
         });
         setTimeout(function () {
             try {
@@ -48,7 +47,7 @@ describe('openlayers_FeatureService_getFeaturesByBuffer', function () {
                 }
                 done();
             } catch (exception) {
-                console.log("'getFeaturesByBuffer_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'getFeaturesByBuffer'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }

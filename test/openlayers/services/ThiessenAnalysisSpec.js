@@ -11,9 +11,9 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    //数据集泰森多边形
-    it('thiessenAnalysis_datasets test', function (done) {
 
+    //数据集泰森多边形
+    it('thiessenAnalysis_datasets', function (done) {
         var dThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
@@ -21,7 +21,6 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', function () {
         spatialAnalystService.thiessenAnalysis(dThiessenAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
-
         setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
@@ -29,8 +28,9 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', function () {
             done();
         }, 8000);
     });
+
     //几何泰森多边形
-    it('thiessenAnalysis_geometry test', function (done) {
+    it('thiessenAnalysis_geometry', function (done) {
         //创建几何泰森多边形参数
         var pointsList = [
             new ol.geom.Point([5238.998556, -1724.229865]),
@@ -44,7 +44,6 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', function () {
             new ol.geom.Point([5472.712382, -2189.15344]),
             new ol.geom.Point([5752.716961, -2425.40363])
         ];
-
         var gThiessenAnalystParameters = new SuperMap.GeometryThiessenAnalystParameters({
             points: pointsList
         });
@@ -53,7 +52,6 @@ describe('openlayers_SpatialAnalystService_thiessenAnalysis', function () {
         spatialAnalystService.thiessenAnalysis(gThiessenAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
         });
-
         setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');

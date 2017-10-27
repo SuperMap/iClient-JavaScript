@@ -11,8 +11,9 @@ describe('openlayers_SpatialAnalystService_mathExpressionAnalysis', function () 
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //栅格代数运算
-    it('mathExpressionAnalysis test', function (done) {
+    it('mathExpressionAnalysis', function (done) {
         var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
             dataset: "JingjinTerrain@Jingjin",
             expression: "[Jingjin.JingjinTerrain] + 600",
@@ -23,13 +24,10 @@ describe('openlayers_SpatialAnalystService_mathExpressionAnalysis', function () 
         var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
         spatialAnalystService.mathExpressionAnalysis(mathExpressionAnalysisParameters, function (serviceResult) {
             serviceResults = serviceResult;
-        });
-
-        setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.dataset).not.toBeNull();
             done();
-        }, 8000);
+        });
     });
 });

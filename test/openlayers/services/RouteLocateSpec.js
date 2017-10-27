@@ -3,7 +3,6 @@ require('../../../src/openlayers/services/SpatialAnalystService');
 var originalTimeout, serviceResults;
 var changchunBaseUrl = GlobeParameter.tileSetsURL;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
-//里程分析
 describe('openlayers_SpatialAnalystService_routeLocate', function () {
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -13,6 +12,7 @@ describe('openlayers_SpatialAnalystService_routeLocate', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //里程定线
     it('routeLocate_line', function (done) {
         queryBySQLService = new ol.supermap.QueryService(changchunBaseUrl);
@@ -26,7 +26,6 @@ describe('openlayers_SpatialAnalystService_routeLocate', function () {
         });
         queryBySQLService.queryBySQL(queryBySQLParams, function (SQLQueryServiceResult) {
             var queryBySQLResult = SQLQueryServiceResult.result.recordsets[0].features;
-
             //将形成路由的点提出来，为了构造下面点定里程服务sourceRoute
             var pointsList = [];
             var routeObj = queryBySQLResult.features[0].geometry.coordinates[0];
@@ -34,7 +33,6 @@ describe('openlayers_SpatialAnalystService_routeLocate', function () {
                 pointsList.push([routeObj[i][0], routeObj[i][1], routeObj[i][2]])
             }
             var routeLine = new ol.geom.LineString([pointsList]);
-
             //里程定线服务
             routeLocatorService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
             routeLocatorParameters_line = new SuperMap.RouteLocatorParameters({
@@ -48,7 +46,6 @@ describe('openlayers_SpatialAnalystService_routeLocate', function () {
                 serviceResults = routeLocateServiceResult;
             });
         });
-
         setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
@@ -77,7 +74,6 @@ describe('openlayers_SpatialAnalystService_routeLocate', function () {
                 pointsList.push([routeObj[i][0], routeObj[i][1], routeObj[i][2]])
             }
             var routeLine = new ol.geom.LineString([pointsList]);
-
             //里程定点服务
             routeLocatorService = new ol.supermap.SpatialAnalystService(changchunServiceUrl);
             routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
@@ -91,7 +87,6 @@ describe('openlayers_SpatialAnalystService_routeLocate', function () {
                 serviceResults = routeLocateServiceResult;
             });
         });
-
         setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');

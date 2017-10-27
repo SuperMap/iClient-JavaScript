@@ -11,8 +11,9 @@ describe('openlayers_SpatialAnalystService_overlayAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //叠加分析
-    it('overlayAnalysis test', function (done) {
+    it('overlayAnalysis', function (done) {
         var datasetOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters({
             sourceDataset: "BaseMap_R@Jingjin",
             operateDataset: "Neighbor_R@Jingjin",
@@ -22,13 +23,10 @@ describe('openlayers_SpatialAnalystService_overlayAnalysis', function () {
         var spatialAnalystService = new ol.supermap.SpatialAnalystService(sampleServiceUrl);
         spatialAnalystService.overlayAnalysis(datasetOverlayAnalystParameters, function (serviceResult) {
             serviceResults = serviceResult;
-        });
-
-        setTimeout(function () {
             expect(serviceResults).not.toBeNull();
             expect(serviceResults.type).toBe('processCompleted');
             expect(serviceResults.result.recordset).not.toBeNull();
             done();
-        }, 8000);
+        });
     });
 });

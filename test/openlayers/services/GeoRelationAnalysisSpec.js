@@ -11,8 +11,9 @@ describe('openlayers_SpatialAnalystService_geoRelationAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //空间关系分析
-    it('geoRelationAnalysis test', function (done) {
+    it('geoRelationAnalysis', function (done) {
         var geoRelationAnalystParameters = new SuperMap.GeoRelationAnalystParameters({
             dataset: "Park@Changchun",
             startRecord: 0,

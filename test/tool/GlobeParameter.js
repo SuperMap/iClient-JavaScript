@@ -1,11 +1,14 @@
 ﻿GlobeParameter = {
     rootURL: "http://localhost:8090/iserver/services",
     mapServiceURL: "http://localhost:8090/iserver/services/map-world/rest/maps/",
+    mapTemperatureURL:"http://localhost:8090/iserver/services/map-temperature/rest/maps/",
     worldMapURL: "http://localhost:8090/iserver/services/map-world/rest/maps/世界地图",
     networkAnalystURL: "http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun",
     spatialAnalystURL: "http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
     spatialAnalystURL_Changchun: "http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst",
     dataServiceURL: "http://localhost:8090/iserver/services/data-world/rest/data",
+    datajingjinURL:"http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/",
+    datachangchunURL:"http://localhost:8090/iserver/services/data-changchun/rest/data/datasources/Changchun/datasets/",
     editServiceURL: "http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R",
     editServiceURL_LINE: "http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Geomor_L",
     editServiceURL_POINT: "http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Neighbor_P",
@@ -25,5 +28,5 @@
     China4326URL: "http://localhost:8090/iserver/services/map-china400/rest/maps/China_4326",
     addressMatchURL_code: "http://localhost:8090/iserver/services/addressmatch-Address/restjsr/v1/address/geocoding",
     addressMatchURL_decode: "http://localhost:8090/iserver/services/addressmatch-Address/restjsr/v1/address/geodecoding",
-    ChinaProvincesURL: "http://localhost:8090//iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces"
+    ChinaProvincesURL: "http://localhost:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces"
 }

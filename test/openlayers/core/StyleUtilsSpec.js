@@ -2,12 +2,12 @@ require('../../../src/openlayers/core/StyleUtils.js');
 require('../../resources/china_cartoCSS.js');
 require('../../resources/china_layers.js');
 require('../../resources/iPortal_maps.js');
-var fetch=require('whatwg-fetch-importable');
+var fetch = require('whatwg-fetch-importable');
 
 var StyleUtils = ol.supermap.StyleUtils;
 var layersInfo, cartoCSSShaders, iPortalLayersInfo;
 var mapUrl = GlobeParameter.ChinaURL;
-describe('openlayers_testStyleUtils', function () {
+describe('openlayers_StyleUtils', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -36,14 +36,11 @@ describe('openlayers_testStyleUtils', function () {
                 expect(style.getStroke()).toBeNull();
                 expect(style.getText()).toBeNull();
                 expect(style.getFill()).toBeNull();
-
                 var imageStyle = style.getImage();
                 expect(imageStyle).not.toBeNull();
                 expect(imageStyle.getOpacity()).toBe(1);
-
                 expect(imageStyle.getSrc()).not.toBeNull();
                 expect(imageStyle.getImage(imageStyle.getSrc())).not.toBeNull();
-
                 done();
             } catch (exception) {
                 console.error("openlayers_StyleUtils': getValidStyleFromLayerInfo_point'案例失败：" + exception.name + ":" + exception.message);
@@ -65,7 +62,6 @@ describe('openlayers_testStyleUtils', function () {
                 var style = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, mapUrl);
                 expect(style).not.toBeNull();
                 expect(style.getFill()).toBeNull();
-
                 var strokeStyle = style.getStroke();
                 expect(strokeStyle).not.toBeNull();
                 expect(strokeStyle.getColor()).toBe('rgba(0,128,0,1)');
@@ -99,7 +95,6 @@ describe('openlayers_testStyleUtils', function () {
                 expect(style.getFill()).not.toBeNull();
                 //此处由于StyleUtils内部处理fillSymbolID有一个缺陷，故不判断具体值
                 expect(style.getFill().getColor()).not.toBeNull();
-
                 var strokeStyle = style.getStroke();
                 expect(strokeStyle).not.toBeNull();
                 expect(strokeStyle.getColor()).toBe('rgba(110,84,90,1)');
@@ -157,7 +152,6 @@ describe('openlayers_testStyleUtils', function () {
                 var feature = getFeature(layerName, features);
                 var style = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, mapUrl);
                 expect(style).not.toBeNull();
-
                 var textStyle = style.getText();
                 expect(textStyle).not.toBeNull();
                 expect(textStyle.getText()).toBe("太平洋");
@@ -187,15 +181,12 @@ describe('openlayers_testStyleUtils', function () {
                 var shader = getShader(layerName);
                 var style = StyleUtils.getStyleFromCarto(10, 8.653637486605572e-7, shader, feature, true, mapUrl);
                 expect(style).not.toBeNull();
-
                 expect(style.getStroke()).toBeNull();
                 expect(style.getText()).toBeNull();
                 expect(style.getFill()).toBeNull();
-
                 var imageStyle = style.getImage();
                 expect(imageStyle).not.toBeNull();
                 expect(imageStyle.getOpacity()).toBe(1);
-
                 expect(imageStyle.getSrc()).not.toBeNull();
                 expect(imageStyle.getImage(imageStyle.getSrc())).not.toBeNull();
                 done();
@@ -221,11 +212,9 @@ describe('openlayers_testStyleUtils', function () {
                 expect(style.getStroke()).toBeNull();
                 expect(style.getText()).toBeNull();
                 expect(style.getFill()).toBeNull();
-
                 var imageStyle = style.getImage();
                 expect(imageStyle).not.toBeNull();
                 expect(imageStyle.getOpacity()).toBe(1);
-
                 expect(imageStyle.getSrc()).not.toBeNull();
                 expect(imageStyle.getImage(imageStyle.getSrc())).not.toBeNull();
                 done();
@@ -249,7 +238,6 @@ describe('openlayers_testStyleUtils', function () {
                 var style = StyleUtils.getStyleFromCarto(10, 8.653637486605572e-7, shader, feature, true, mapUrl);
                 expect(style).not.toBeNull();
                 expect(style.getFill()).toBeNull();
-
                 var strokeStyle = style.getStroke();
                 expect(strokeStyle).not.toBeNull();
                 expect(strokeStyle.getColor()).toBe('rgba(0,0,0,0)');
@@ -280,7 +268,6 @@ describe('openlayers_testStyleUtils', function () {
                 expect(style).not.toBeNull();
                 expect(style.getFill()).not.toBeNull();
                 expect(style.getFill().getColor()).toBe('rgba(145, 185, 234, 1)');
-
                 var strokeStyle = style.getStroke();
                 expect(strokeStyle).not.toBeNull();
                 expect(strokeStyle.getColor()).toBe('rgba(0, 0, 0, 0)');
@@ -312,29 +299,24 @@ describe('openlayers_testStyleUtils', function () {
                 expect(style.getStroke()).toBeNull();
                 expect(style.getText()).toBeNull();
                 expect(style.getFill()).toBeNull();
-
                 var imageStyle = style.getImage();
                 expect(imageStyle).not.toBeNull();
                 expect(imageStyle.getOpacity()).toBe(1);
                 expect(imageStyle.getRadius()).toBe(3);
                 expect(imageStyle.getPoints()).toBePositiveInfinity();
                 expect(imageStyle.getImage()).not.toBeNull();
-
                 var size = imageStyle.getSize();
                 expect(size).not.toBeNull();
                 expect(size[0]).toBe(9);
                 expect(size[1]).toBe(9);
-
                 var anchor = imageStyle.getAnchor();
                 expect(anchor).not.toBeNull();
                 expect(anchor[0]).toBe(4.5);
                 expect(anchor[1]).toBe(4.5);
-
                 var stroke = imageStyle.getStroke();
                 expect(stroke).not.toBeNull();
                 expect(stroke.getColor()).toBe("#c33");
                 expect(stroke.getWidth()).toBe(1);
-
                 var fill = imageStyle.getFill();
                 expect(fill.getColor()).toBe("#fc0");
                 done();
@@ -357,18 +339,14 @@ describe('openlayers_testStyleUtils', function () {
             var iPortalStyle = iPortalLayersInfo[key][2].style;
             var style = StyleUtils.getStyleFromiPortalStyle(iPortalStyle, feature.getGeometry().getType(), feature.getProperties().style);
             expect(style).not.toBeNull();
-
             expect(style.getStroke()).toBeNull();
             expect(style.getText()).toBeNull();
             expect(style.getFill()).toBeNull();
-
             var imageStyle = style.getImage();
             expect(imageStyle).not.toBeNull();
             expect(imageStyle.getOpacity()).toBe(1);
-
             expect(imageStyle.getSrc()).not.toBeNull();
             expect(imageStyle.getImage(imageStyle.getSrc())).not.toBeNull();
-
             done();
         } catch (exception) {
             console.error("openlayers_StyleUtils': getStyleFromiPortalStyle_point'案例失败：" + exception.name + ":" + exception.message);
@@ -376,6 +354,7 @@ describe('openlayers_testStyleUtils', function () {
             done();
         }
     });
+
     //测试从iPortalLayers中获取style
     it('getStyleFromiPortalStyle_polyLine', function (done) {
         var key = 'iPortalMaps47';
@@ -387,15 +366,12 @@ describe('openlayers_testStyleUtils', function () {
             var iPortalStyle = iPortalLayersInfo[key][3].style;
             var style = StyleUtils.getStyleFromiPortalStyle(iPortalStyle, feature.getGeometry().getType(), feature.getProperties().style);
             expect(style).not.toBeNull();
-
             expect(style.getText()).toBeNull();
             expect(style.getFill()).toBeNull();
-
             var strokeStyle = style.getStroke();
             expect(strokeStyle).not.toBeNull();
             expect(strokeStyle.getColor()).toBe('rgba(52,219,103,1)');
             expect(strokeStyle.getWidth()).toBe(4);
-
             var lineDash = strokeStyle.getLineDash();
             expect(lineDash).not.toBeNull();
             expect(lineDash[0]).toBe(16);
@@ -407,8 +383,8 @@ describe('openlayers_testStyleUtils', function () {
             done();
         }
     });
-
 });
+
 function initLayersInfo() {
     var layersInfo = {};
     var layers = ChinaLayersInfo.subLayers.layers;
@@ -458,7 +434,6 @@ function getLayerInfo(layerName) {
     if (layersInfo === undefined) {
         return null;
     }
-
     var layerInfo = layersInfo[layerName];
     if (!layerInfo)return null;
     var layerInfo_simple = {layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType};
@@ -504,7 +479,6 @@ function getShader(layerName) {
 //请求tileFeature获取测试用ol feature对象
 function requestFeature(url) {
     var tileFormat = new ol.format.GeoJSON();
-
     return fetch(url, {method: 'GET', timeout: 10000})
         .then(function (response) {
             return response.json();

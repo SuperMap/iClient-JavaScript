@@ -16,7 +16,7 @@ describe('openlayers_FeatureService_getFeaturesByBounds', function () {
     });
 
     //数据集Bounds查询服务
-    it('getFeaturesByBounds_test', function (done) {
+    it('getFeaturesByBounds', function (done) {
         var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
         var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
@@ -51,11 +51,10 @@ describe('openlayers_FeatureService_getFeaturesByBounds', function () {
                 expect(features[0].geometry.type).toEqual("Point");
                 done();
             } catch (exception) {
-                console.log("'getFeaturesByBounds_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'getFeaturesByBounds'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000);
-
     });
 });
