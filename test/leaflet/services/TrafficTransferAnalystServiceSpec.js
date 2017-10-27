@@ -15,8 +15,9 @@ describe('leaflet_TrafficTransferAnalystService', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //站点查询服务 返回坐标
-    it('queryStop_returnPosition_test', function (done) {
+    it('queryStop_returnPosition:true', function (done) {
         var stopQueryParameters = new SuperMap.StopQueryParameters({
             keyWord: "人民",
             returnPosition: true
@@ -38,16 +39,17 @@ describe('leaflet_TrafficTransferAnalystService', function () {
                 expect(serviceResult.result[0].position.y).not.toBeNull();
                 service.destroy();
                 done();
-            } catch (e) {
-                console.log("'queryStop_returnPosition_test'案例失败" + exception.name + ":" + exception.message);
+            } catch (exception) {
+                console.log("'queryStop_returnPosition=true'案例失败" + exception.name + ":" + exception.message);
                 service.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000);
     });
+
     //站点查询服务 不返回坐标
-    it('queryStop_returnPosition_false_test', function (done) {
+    it('queryStop_returnPosition:false', function (done) {
         var stopQueryParameters = new SuperMap.StopQueryParameters({
             keyWord: "人民",
             returnPosition: false
@@ -68,16 +70,17 @@ describe('leaflet_TrafficTransferAnalystService', function () {
                 expect(serviceResult.result[0].position).toBeNull();
                 service.destroy();
                 done();
-            } catch (e) {
-                console.log("'queryStop_returnPosition_false_test'案例失败" + exception.name + ":" + exception.message);
+            } catch (exception) {
+                console.log("'queryStop_returnPosition:false'案例失败" + exception.name + ":" + exception.message);
                 service.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000);
     });
+
     //交通换乘线路查询服务 按ID进行查询
-    it('analysisTransferPath_ID_test', function (done) {
+    it('analysisTransferPath_ID', function (done) {
         var transferPathParameters = new SuperMap.TransferPathParameters({
             points: [175, 164],
             transferLines: [{"lineID": 27, "startStopIndex": 7, "endStopIndex": 9}]
@@ -113,15 +116,16 @@ describe('leaflet_TrafficTransferAnalystService', function () {
                 service.destroy();
                 done();
             } catch (e) {
-                console.log("'analysisTransferPath_ID_test'案例失败" + e.name + ":" + e.message);
+                console.log("'analysisTransferPath_ID'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
             }
         }, 5000);
     });
+
     //交通换乘线路查询服务  按坐标进行查询
-    it('analysisTransferPath_position_test', function (done) {
+    it('analysisTransferPath_position', function (done) {
         var transferPathParameters = new SuperMap.TransferPathParameters({
             points: [{x: 4941, y: -3566}, {x: 5308, y: -3935}],
             transferLines: [{"lineID": 27, "startStopIndex": 7, "endStopIndex": 9}]
@@ -156,15 +160,16 @@ describe('leaflet_TrafficTransferAnalystService', function () {
                 service.destroy();
                 done();
             } catch (e) {
-                console.log("'analysisTransferPath_position_test'案例失败" + e.name + ":" + e.message);
+                console.log("'analysisTransferPath_position'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
             }
         }, 5000);
     });
+
     //交通换乘方案查询服务
-    it('analysisTransferSolution_test', function (done) {
+    it('analysisTransferSolution', function (done) {
         var transferSolutionParameters = new SuperMap.TransferSolutionParameters({
             solutionCount: 3,
             //交通换乘策略类型: 时间最短、距离最短、最少换乘、最少步行:transferTactic
@@ -212,7 +217,7 @@ describe('leaflet_TrafficTransferAnalystService', function () {
                 service.destroy();
                 done();
             } catch (e) {
-                console.log("'analysisTransferSolution_test'案例失败" + e.name + ":" + e.message);
+                console.log("'analysisTransferSolution'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();

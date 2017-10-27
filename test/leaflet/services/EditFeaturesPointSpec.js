@@ -3,20 +3,18 @@ require('../../../src/leaflet/services/FeatureService');
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var id1, id2, id3;
 
-describe('leaflet_testFeatureService_editFeatures', function () {
+describe('leaflet_FeatureService_editFeatures_Point', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-
     // 增加一个点要素，returnContent为true
-    it('successEvent:addFeature_POINT', function (done) {
+    it('successEvent:add_POINT', function (done) {
         var addFeatureResult_POINT = null;
         var marker = L.circleMarker([38.837029131724, 118.05408801141]);
         var addFeaturesParams = new SuperMap.EditFeaturesParameters({
@@ -55,7 +53,7 @@ describe('leaflet_testFeatureService_editFeatures', function () {
     });
 
     // 批量增加点要素，isUseBatch为true
-    it('successEvent:addFeatures_isUseBatch=true', function (done) {
+    it('successEvent:add_isUseBatch=true', function (done) {
         var addFeaturesResult = null;
         var marker1 = L.circleMarker([40, 120]);
         var marker2 = L.circleMarker([51, 100]);
@@ -97,7 +95,7 @@ describe('leaflet_testFeatureService_editFeatures', function () {
     });
 
     // 批量删除点要素
-    it('successEvent:deletePOINTs', function (done) {
+    it('successEvent:delete', function (done) {
         var deletePointsResult = null;
         var deleteFeaturesParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "Jingjin",
@@ -130,7 +128,7 @@ describe('leaflet_testFeatureService_editFeatures', function () {
     });
 
     // 失败事件：features为空
-    it('failEvent:addFeature_featuresNull', function (done) {
+    it('failEvent:add_featuresNull', function (done) {
         var featuresNullResult = null;
         var nullFeaturesParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "Jingjin",

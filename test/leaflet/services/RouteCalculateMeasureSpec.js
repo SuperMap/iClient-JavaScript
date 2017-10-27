@@ -1,4 +1,4 @@
-require('../../../src/leaflet/services/spatialAnalystService');
+require('../../../src/leaflet/services/SpatialAnalystService');
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -15,7 +15,8 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('routeCalculateMeasure_test', function (done) {
+
+    it('routeCalculateMeasure', function (done) {
         var pointsList = [];
         var routeObj = [
             [4020.0045221720466, -4377.027184298267, 0],
@@ -50,9 +51,8 @@ describe('leaflet_SpatialAnalystService_routeCalculateMeasure', function () {
                 expect(serviceResult.result.measure).toBe(195.39962171759203);
                 routeCalculateMeasureService.destroy();
                 done();
-
             } catch (exception) {
-                console.log("'routeCalculateMeasure_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'routeCalculateMeasure'案例失败" + exception.name + ":" + exception.message);
                 routeCalculateMeasureService.destroy();
                 expect(false).toBeTruthy();
                 done();

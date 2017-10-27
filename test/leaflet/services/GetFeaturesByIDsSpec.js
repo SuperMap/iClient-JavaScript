@@ -5,7 +5,7 @@ var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_testFeatureService_getFeaturesByIDs', function () {
+describe('leaflet_FeatureService_getFeaturesByIDs', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('leaflet_testFeatureService_getFeaturesByIDs', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:returnContent=true', function (done) {
+    it('successEvent:getFeaturesByIDs_returnContent=true', function (done) {
         var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
             returnContent: true,
             datasetNames: ["World:Capitals"],
@@ -74,8 +74,7 @@ describe('leaflet_testFeatureService_getFeaturesByIDs', function () {
         }, 2000)
     });
 
-
-    it('successEvent:returnContent=false', function (done) {
+    it('successEvent:getFeaturesByIDs_returnContent=false', function (done) {
         var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
             returnContent: false,
             datasetNames: ["World:Capitals"],
@@ -107,7 +106,7 @@ describe('leaflet_testFeatureService_getFeaturesByIDs', function () {
         }, 2000);
     });
 
-    it('failEvent:datasetNotExist', function (done) {
+    it('failEvent:getFeaturesByIDs_datasetNotExist', function (done) {
         var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
             datasetNames: ["World1:Capitals"],
             IDs: [1, 2, 3]
@@ -136,7 +135,7 @@ describe('leaflet_testFeatureService_getFeaturesByIDs', function () {
         }, 2000);
     });
 
-    it('failEvent:datasetNamesNull', function (done) {
+    it('failEvent:getFeaturesByIDs_datasetNamesNull', function (done) {
         var getFeaturesByIDsParams = new SuperMap.GetFeaturesByIDsParameters({
             datasetNames: null
         });

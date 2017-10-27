@@ -1,4 +1,4 @@
-require('../../../src/leaflet/services/spatialAnalystService');
+require('../../../src/leaflet/services/SpatialAnalystService');
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -15,7 +15,8 @@ describe('leaflet_SpatialAnalystService_thiessenAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('thiessenAnalysis_test', function (done) {
+
+    it('thiessenAnalysis', function (done) {
         var dsThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
@@ -48,9 +49,8 @@ describe('leaflet_SpatialAnalystService_thiessenAnalysis', function () {
                 expect(regions.type).toEqual("FeatureCollection");
                 thiessenAnalystService.destroy();
                 done();
-
             } catch (exception) {
-                console.log("'thiessenAnalysis_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'thiessenAnalysis'案例失败" + exception.name + ":" + exception.message);
                 thiessenAnalystService.destroy();
                 expect(false).toBeTruthy();
                 done();

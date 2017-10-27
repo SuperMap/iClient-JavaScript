@@ -3,12 +3,10 @@ require('../../../src/leaflet/services/ThemeService');
 var WorldURL = GlobeParameter.WorldURL;      //ThemeDotDensity, ThemeLable
 var ChinaURL = GlobeParameter.ChinaURL;      //ThemeGraduatedSymbol, ThemeRange, ThemeUnique
 var jingjinPopulationURL = GlobeParameter.jingjinMapURL + "/maps/京津地区人口分布图_专题图";       //themeGraph, themeGridRange
-var jingjinMapURL = GlobeParameter.jingjinMapURL + "/maps/京津地区地图";       // themeGridUnique
 var options = {
     serverType: 'iServer'
 };
-
-describe('leaflet_testThemeService', function () {
+describe('leaflet_ThemeService', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {

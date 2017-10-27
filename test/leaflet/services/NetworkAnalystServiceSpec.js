@@ -15,8 +15,9 @@ describe('leaflet_NetworkAnalystService', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+
     //爆管分析服务
-    it('burstPipelineAnalyst_test', function (done) {
+    it('burstPipelineAnalyst', function (done) {
         var burstPipelineAnalystParameters = new SuperMap.BurstPipelineAnalystParameters({
             sourceNodeIDs: [84, 85],
             edgeID: 310,
@@ -36,19 +37,17 @@ describe('leaflet_NetworkAnalystService', function () {
                 expect(serviceResult.result.edges.length).toBeGreaterThan(0);
                 service.destroy();
                 done();
-
-            } catch (e) {
-                console.log("'burstPipelineAnalyst_test'案例失败" + exception.name + ":" + exception.message);
+            } catch (exception) {
+                console.log("'burstPipelineAnalyst'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
             }
         }, 5000);
-
     });
 
     //耗费矩阵分析服务
-    it('computeWeightMatrix_test', function (done) {
+    it('computeWeightMatrix', function (done) {
         var computeWeightMatrixParameters = new SuperMap.ComputeWeightMatrixParameters({
             //nodes: [2,6,9],
             isAnalyzeById: true,
@@ -69,19 +68,17 @@ describe('leaflet_NetworkAnalystService', function () {
                 expect(serviceResult.result[1].length).toEqual(2);
                 service.destroy();
                 done();
-
-            } catch (e) {
-                console.log("'computeWeightMatrix_test'案例失败" + exception.name + ":" + exception.message);
+            } catch (exception) {
+                console.log("'computeWeightMatrix'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
             }
         }, 5000);
-
     });
 
     //最近设施分析服务  isAnalyzeById 为 true,
-    it('findClosestFacilities_isAnalyzeById_true_test', function (done) {
+    it('findClosestFacilities_isAnalyzeById:true', function (done) {
         var findClosetFacilitiesParameter = new SuperMap.FindClosestFacilitiesParameters({
             //事件点,必设参数
             event: 2,
@@ -106,19 +103,17 @@ describe('leaflet_NetworkAnalystService', function () {
                 expect(serviceResult.result.facilityPathList[0].weight).toEqual(125);
                 service.destroy();
                 done();
-
-            } catch (e) {
-                console.log("'findClosestFacilities_isAnalyzeById_true_test'案例失败" + exception.name + ":" + exception.message);
+            } catch (exception) {
+                console.log("'findClosestFacilities_isAnalyzeById:true'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
             }
         }, 5000);
-
     });
 
     //最近设施分析服务  isAnalyzeById 为 false,
-    it('findClosestFacilities_test', function (done) {
+    it('findClosestFacilities', function (done) {
         //创建最近设施分析参数实例
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -201,9 +196,8 @@ describe('leaflet_NetworkAnalystService', function () {
                 expect(facilityPath.weight).toEqual(facilityPath.stopWeights[0]);
                 service.destroy();
                 done();
-
-            } catch (e) {
-                console.log("'findClosestFacilities_test'案例失败" + exception.name + ":" + exception.message);
+            } catch (exception) {
+                console.log("'findClosestFacilities'案例失败" + exception.name + ":" + exception.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
@@ -213,7 +207,7 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //选址分区分析服务
-    it('findLocation_test', function (done) {
+    it('findLocation', function (done) {
         var supplyCenterType_OPTIONALCENTER = SuperMap.SupplyCenterType.OPTIONALCENTER,
             supplyCenterType_NULL = SuperMap.SupplyCenterType.NULL,
             supplyCenterType_FIXEDCENTER = SuperMap.SupplyCenterType.FIXEDCENTER;
@@ -222,28 +216,24 @@ describe('leaflet_NetworkAnalystService', function () {
             nodeID: 139,                // 资源供给中心点的结点 ID 号,必设参数
             resourceValue: 100,         // 资源供给中心能提供的最大服务量或商品数量,必设参数
             type: supplyCenterType_OPTIONALCENTER      //选址分区中资源中心的类型包括固定中心和可选中心两种
-
         }),
             new SuperMap.SupplyCenter({
                 maxWeight: 500,
                 nodeID: 1358,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
-
             }),
             new SuperMap.SupplyCenter({
                 maxWeight: 500,
                 nodeID: 2972,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
-
             }),
             new SuperMap.SupplyCenter({
                 maxWeight: 500,
                 nodeID: 5523,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
-
             }),
             new SuperMap.SupplyCenter({
                 maxWeight: 500,
@@ -256,21 +246,18 @@ describe('leaflet_NetworkAnalystService', function () {
                 nodeID: 4337,
                 resourceValue: 100,
                 type: supplyCenterType_OPTIONALCENTER
-
             }),
             new SuperMap.SupplyCenter({
                 maxWeight: 500,
                 nodeID: 5732,
                 resourceValue: 100,
                 type: supplyCenterType_NULL
-
             }),
             new SuperMap.SupplyCenter({
                 maxWeight: 500,
                 nodeID: 663,
                 resourceValue: 100,
                 type: supplyCenterType_FIXEDCENTER
-
             })
         ];
         var findLocationParameters = new SuperMap.FindLocationParameters({
@@ -319,7 +306,7 @@ describe('leaflet_NetworkAnalystService', function () {
                 service.destroy();
                 done();
             } catch (e) {
-                console.log("'findLocation_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findLocation'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
@@ -328,7 +315,7 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //最佳路径分析服务
-    it('findPath_test', function (done) {
+    it('findPath', function (done) {
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
@@ -400,7 +387,7 @@ describe('leaflet_NetworkAnalystService', function () {
                 service.destroy();
                 done();
             } catch (e) {
-                console.log("'findPath_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findPath'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
@@ -409,7 +396,7 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //旅行商分析服务
-    it('findTSPPaths_test', function (done) {
+    it('findTSPPaths', function (done) {
         //创建多旅行商分析参数实例
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -482,7 +469,7 @@ describe('leaflet_NetworkAnalystService', function () {
                 service.destroy();
                 done();
             } catch (e) {
-                console.log("'findTSPPaths_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findTSPPaths'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
@@ -491,7 +478,7 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //多旅行商分析服务
-    it('findMTSPPaths_test', function (done) {
+    it('findMTSPPaths', function (done) {
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
@@ -566,17 +553,16 @@ describe('leaflet_NetworkAnalystService', function () {
                 service.destroy();
                 done();
             } catch (e) {
-                console.log("'findMTSPPaths_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findMTSPPaths'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
             }
         }, 5000);
-
     });
 
     //服务区分析服务
-    it('findServiceAreas_test', function (done) {
+    it('findServiceAreas', function (done) {
         var marker = L.marker([-3375, 5605]);
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -652,7 +638,7 @@ describe('leaflet_NetworkAnalystService', function () {
                 service.destroy();
                 done();
             } catch (e) {
-                console.log("'findServiceAreas_test'案例失败" + e.name + ":" + e.message);
+                console.log("'findServiceAreas'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();
@@ -661,7 +647,7 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //更新边的耗费权重服务
-    it('updateEdgeWeight_test', function (done) {
+    it('updateEdgeWeight', function (done) {
         var UpdateEdgeWeightParameters = new SuperMap.UpdateEdgeWeightParameters({
             edgeId: "20",
             edgeWeight: "30",
@@ -681,7 +667,7 @@ describe('leaflet_NetworkAnalystService', function () {
                 expect(serviceResult.result.succeed).toBe(true);
                 done();
             } catch (e) {
-                console.log("'updateEdgeWeight_test'案例失败" + e.name + ":" + e.message);
+                console.log("'updateEdgeWeight'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 done();
             }
@@ -689,7 +675,7 @@ describe('leaflet_NetworkAnalystService', function () {
     });
 
     //转向耗费权重更新服务
-    it('updateTurnNodeWeight_test', function (done) {
+    it('updateTurnNodeWeight', function (done) {
         var parameters = new SuperMap.UpdateTurnNodeWeightParameters({
             //转向结点的id
             nodeId: "106",
@@ -715,7 +701,7 @@ describe('leaflet_NetworkAnalystService', function () {
                 service.destroy();
                 done();
             } catch (e) {
-                console.log("'updateTurnNodeWeight_test'案例失败" + e.name + ":" + e.message);
+                console.log("'updateTurnNodeWeight'案例失败" + e.name + ":" + e.message);
                 expect(false).toBeTruthy();
                 service.destroy();
                 done();

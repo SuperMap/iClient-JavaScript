@@ -1,4 +1,4 @@
-require('../../../src/leaflet/services/spatialAnalystService');
+require('../../../src/leaflet/services/SpatialAnalystService');
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -15,18 +15,17 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', function () 
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('terrainCurvatureCalculate_test', function (done) {
+
+    it('terrainCurvatureCalculate', function (done) {
         var terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
-            averageCurvatureName: "CurvatureA",
+            averageCurvatureName: "terrainCurvature_leafletTest",
             deleteExistResultDataset: true
         });
         var terrainCurvatureCalculationService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
         terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(function () {
             try {
                 expect(terrainCurvatureCalculationService).not.toBeNull();
                 expect(terrainCurvatureCalculationService.options.serverType).toBe('iServer');
@@ -34,17 +33,16 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', function () 
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.averageCurvatureResult.dataset).toEqual("CurvatureA@Jingjin");
+                expect(serviceResult.result.averageCurvatureResult.dataset).toEqual("terrainCurvature_leafletTest@Jingjin");
                 expect(serviceResult.result.averageCurvatureResult.succeed).toBe(true);
                 terrainCurvatureCalculationService.destroy();
                 done();
-
             } catch (exception) {
-                console.log("'terrainCurvatureCalculate_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'terrainCurvatureCalculate'案例失败" + exception.name + ":" + exception.message);
                 terrainCurvatureCalculationService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 10000);
+        });
     });
 });

@@ -37,7 +37,7 @@ describe('leaflet_testGraphThemeLayer', function () {
         map.remove();
     });
 
-    it('construtor and destroy', function () {
+    it('initialize, destroy', function () {
         var barThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", {isOverLay: false}).addTo(map);
         barThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
         barThemeLayer.chartsSetting = {
@@ -173,7 +173,6 @@ describe('leaflet_testGraphThemeLayer', function () {
         expect(isPointInPoly).toBeTruthy();
         graphThemeLayer.clear();
     });
-
 
     // 此方法为iclient8的私有方法,不支持leaflet对象,此处测试传入iclient对象的情况
     it('isPointInPoly', function () {

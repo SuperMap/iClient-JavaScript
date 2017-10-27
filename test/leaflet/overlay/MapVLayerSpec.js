@@ -16,25 +16,19 @@ describe('leaflet_MapVLayer', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         document.body.appendChild(testDiv);
-
         map = L.map('map', {
             center: [32, 109],
             zoom: 4,
         });
-
         L.supermap.tiledMapLayer(url).addTo(map);
 
     });
     beforeEach(function () {
-
         var randomCount = 1000;
-
         var data = [];
-
         var citys = ["北京", "天津", "上海", "重庆", "石家庄", "太原", "呼和浩特", "哈尔滨", "长春", "沈阳", "济南",
             "南京", "合肥", "杭州", "南昌", "福州", "郑州", "武汉", "长沙", "广州", "南宁", "西安", "银川", "兰州",
             "西宁", "乌鲁木齐", "成都", "贵阳", "昆明", "拉萨", "海口"];
-
         // 构造数据
         while (randomCount--) {
             var cityCenter = mapv.utilCityCenter.getCenterByCityName(citys[parseInt(Math.random() * citys.length)]);
@@ -46,9 +40,7 @@ describe('leaflet_MapVLayer', function () {
                 count: 30 * Math.random()
             });
         }
-
         var dataSet = new mapv.DataSet(data);
-
         var options = {
             fillStyle: 'rgba(55, 50, 250, 0.8)',
             shadowColor: 'rgba(255, 250, 50, 1)',
@@ -63,30 +55,25 @@ describe('leaflet_MapVLayer', function () {
             gradient: {0.25: "rgb(0,0,255)", 0.55: "rgb(0,255,0)", 0.85: "yellow", 1.0: "rgb(255,0,0)"},
             draw: 'honeycomb'
         };
-
         //创建MapV图层
         mapvLayer = L.supermap.mapVLayer(dataSet, options).addTo(map);
-
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
-
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         mapvLayer.remove();
     });
-
     afterAll(function () {
         document.body.removeChild(testDiv);
         map.remove();
         mapv = null;
     });
 
-    it('constructor test', function (done) {
+    it('initialize', function (done) {
         expect(mapvLayer).not.toBeNull();
         expect(mapvLayer.mapVOptions.shadowBlur).toEqual(20);
         expect(mapvLayer.mapVOptions.draw).toBe("honeycomb");
-
         //判断是否返回期望的maplayer
         expect(mapvLayer.renderer).not.toBeNull();
         expect(mapvLayer.renderer.context).toBe("2d");
@@ -94,7 +81,7 @@ describe('leaflet_MapVLayer', function () {
         done();
     });
 
-    it('adddata test', function () {
+    it('addData', function () {
         var data = [{
             geometry: {
                 type: 'Point',
@@ -107,7 +94,6 @@ describe('leaflet_MapVLayer', function () {
             shadowBlur: 30
         }
         mapvLayer.addData(dataset, tempoption);
-
         expect(mapvLayer.dataSet).not.toBeNull();
         expect(mapvLayer.dataSet._data[1000].count).toEqual(111);
         expect(mapvLayer.dataSet._data[1000].geometry.coordinates[0]).toEqual(109);
@@ -115,19 +101,19 @@ describe('leaflet_MapVLayer', function () {
         expect(mapvLayer.mapVOptions.shadowBlur).toEqual(30);
     });
 
-    it('getData test', function () {
+    it('getData', function () {
         var dataset = mapvLayer.getData()
         expect(dataset._data.length).toEqual(1000);
     });
+
     //删除数据
-    it('removeData test', function (done) {
+    it('removeData', function (done) {
         var filter = function (data) {
             if (mapvLayer.dataSet._data.indexOf(data) === 2) {
                 return true
             }
             return false;
         }
-
         mapvLayer.removeData(filter);
         setTimeout(function () {
             expect(mapvLayer.dataSet._data.length).toEqual(999);
@@ -135,7 +121,7 @@ describe('leaflet_MapVLayer', function () {
         }, 6000);
     });
 
-    it('update test', function () {
+    it('update', function () {
         var data = [{
             geometry: {
                 type: 'Point',
@@ -149,7 +135,6 @@ describe('leaflet_MapVLayer', function () {
         }
         var opt = {data: dataset, options: tempoption};
         mapvLayer.update(opt);
-
         expect(mapvLayer.dataSet._data.length).toEqual(1);
         expect(mapvLayer.dataSet._data[0].count).toEqual(111);
         expect(mapvLayer.dataSet._data[0].geometry.coordinates[0]).toEqual(109);
@@ -157,12 +142,12 @@ describe('leaflet_MapVLayer', function () {
         expect(mapvLayer.mapVOptions.shadowBlur).toEqual(40);
     });
 
-    it('clearData test', function () {
+    it('clearData', function () {
         mapvLayer.clearData();
         expect(mapvLayer.dataSet._data.length).toEqual(0);
     });
 
-    it('draw redraw test', function () {
+    it('draw, redraw', function () {
         mapvLayer.draw();
         expect(mapvLayer.canvas.width).toEqual(500);
         expect(mapvLayer.canvas.style.width).toBe('500px');
@@ -171,28 +156,27 @@ describe('leaflet_MapVLayer', function () {
         expect(mapvLayer.canvas.style.width).toBe('500px');
     });
 
-    it('setZIndex test', function () {
+    it('setZIndex', function () {
         mapvLayer.setZIndex(2);
         expect(mapvLayer.canvas.style.zIndex).toEqual('2');
     });
 
-    it('getCanvas test', function () {
+    it('getCanvas', function () {
         var canvas = mapvLayer.getCanvas();
         expect(canvas).not.toBeNull();
         expect(mapvLayer.canvas.width).toEqual(500);
         expect(mapvLayer.canvas.height).toEqual(500);
     });
 
-    it('getContainer test', function () {
+    it('getContainer', function () {
         var container = mapvLayer.getContainer();
         expect(container).not.toBeNull();
     });
 
-    it('getTopLeft test', function () {
+    it('getTopLeft', function () {
         var topLeft = mapvLayer.getTopLeft();
         expect(topLeft).not.toBeNull();
         expect(topLeft.lng).toEqual(87.01171875);
         expect(topLeft.lat).toEqual(48.63290858589535);
     });
-
 });

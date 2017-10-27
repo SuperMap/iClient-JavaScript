@@ -16,9 +16,9 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    //点密度分析
-    it('densityAnalysis_test', function (done) {
 
+    //点密度分析
+    it('densityAnalysis', function (done) {
         var densityAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
             //指定数据集
             dataset: "Railway@Changchun",
@@ -28,7 +28,7 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
             fieldName: "SmLength",
             searchRadius: 50, //Railway@Changchun的单位是米
             // 结果数据集名称
-            resultGridName: "KernelDensity_Result",
+            resultGridName: "KernelDensity_leafletTest",
             deleteExistResultDataset: true
         });
         var densityAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
@@ -42,13 +42,12 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
                 expect(result).not.toBeNull();
-                expect(result.dataset).toEqual("KernelDensity_Result@Changchun");
+                expect(result.dataset).toEqual("KernelDensity_leafletTest@Changchun");
                 expect(result.succeed).toBe(true);
                 densityAnalystService.destroy();
                 done();
-
             } catch (exception) {
-                console.log("'densityAnalysis_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'densityAnalysis'案例失败" + exception.name + ":" + exception.message);
                 densityAnalystService.destroy();
                 expect(false).toBeTruthy();
                 done();

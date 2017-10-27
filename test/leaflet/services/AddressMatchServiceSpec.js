@@ -5,7 +5,7 @@ var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_testAddressMatchService', function () {
+describe('leaflet_AddressMatchService', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('leaflet_testAddressMatchService', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:GeoCoding', function (done) {
+    it('successEvent:code', function (done) {
         var geoCodingParams = new SuperMap.GeoCodingParameter({
             address: '公司',
             fromIndex: 0,
@@ -47,7 +47,7 @@ describe('leaflet_testAddressMatchService', function () {
                 geoCodingService.destroy();
                 done();
             } catch (exception) {
-                console.log("'successEvent:GeoCoding'案例失败：" + exception.name + ":" + exception.message);
+                console.log("'successEvent:code'案例失败：" + exception.name + ":" + exception.message);
                 geoCodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
@@ -55,8 +55,7 @@ describe('leaflet_testAddressMatchService', function () {
         }, 5000)
     });
 
-
-    it('successEvent:GeoDecoding', function (done) {
+    it('successEvent:decode', function (done) {
         var GeoDecodingParams = new SuperMap.GeoDecodingParameter({
             x: 116.31740122415627,
             y: 39.92311315752059,
@@ -88,7 +87,7 @@ describe('leaflet_testAddressMatchService', function () {
                 GeoDecodingService.destroy();
                 done();
             } catch (exception) {
-                console.log("'successEvent:GeoDecoding'案例失败：" + exception.name + ":" + exception.message);
+                console.log("'successEvent:decode'案例失败：" + exception.name + ":" + exception.message);
                 GeoDecodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
@@ -96,7 +95,7 @@ describe('leaflet_testAddressMatchService', function () {
         }, 5000)
     });
 
-    it('failEvent:GeocodingAddressNull', function (done) {
+    it('failEvent:code_AddressNull', function (done) {
         var geoCodingParams = new SuperMap.GeoCodingParameter({
             address: null,
             fromIndex: 0,
@@ -122,7 +121,7 @@ describe('leaflet_testAddressMatchService', function () {
                 geoCodingService.destroy();
                 done();
             } catch (exception) {
-                console.log("'failEvent:GeocodingAddressNull'案例失败：" + exception.name + ":" + exception.message);
+                console.log("'failEvent:code_AddressNull'案例失败：" + exception.name + ":" + exception.message);
                 geoCodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
@@ -130,7 +129,7 @@ describe('leaflet_testAddressMatchService', function () {
         }, 5000);
     });
 
-    it('failEvent:GeoDecodingLocationInvalid', function (done) {
+    it('failEvent:decode_LocationInvalid', function (done) {
         var GeoDecodingParams = new SuperMap.GeoDecodingParameter({
             fromIndex: 0,
             toIndex: 5,
@@ -157,14 +156,13 @@ describe('leaflet_testAddressMatchService', function () {
                 geoDecodingService.destroy();
                 done();
             } catch (exception) {
-                console.log("'failEvent:GeoDecodingLocationInvalid'案例失败：" + exception.name + ":" + exception.message);
+                console.log("'failEvent:decode_LocationInvalid'案例失败：" + exception.name + ":" + exception.message);
                 geoDecodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000)
     });
-
 });
 
 

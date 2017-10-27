@@ -1,9 +1,9 @@
 require('../../../src/leaflet/control/ChangeTileVersion');
 
 var url = GlobeParameter.ChinaProvincesURL;
-describe('leaflet_ChangeTileVersionTest', function () {
+describe('leaflet_ChangeTileVersion', function () {
     var originalTimeout;
-    var testDiv, map , changeTileVersion;
+    var testDiv, map, changeTileVersion;
     beforeAll(function () {
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -13,14 +13,12 @@ describe('leaflet_ChangeTileVersionTest', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         document.body.appendChild(testDiv);
-
         map = L.map('map', {
             crs: L.CRS.EPSG4326,
             center: [33.03, 104.79],
             zoom: 3,
         });
         var baseLayer = L.supermap.tiledMapLayer(url).addTo(map);
-
         changeTileVersion = L.supermap.control.changeTileVersion({
             layer: baseLayer,
             position: "topleft",
@@ -39,11 +37,10 @@ describe('leaflet_ChangeTileVersionTest', function () {
         map.remove();
     });
 
-    it('constructor test', function () {
+    it('initialize', function () {
         expect(changeTileVersion).not.toBeNull();
         expect(changeTileVersion.options.layer).not.toBeNull();
         expect(changeTileVersion.slider).not.toBeNull();
-
         changeTileVersion.nextTilesVersion();
         expect(changeTileVersion.options.layer.tempIndex).toBe(0);
         changeTileVersion.lastTilesVersion();

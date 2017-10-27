@@ -3,7 +3,7 @@ require('../../../src/leaflet/services/FeatureService');
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
 var id1;
 
-describe('leaflet_testFeatureService_editFeatures', function () {
+describe('leaflet_FeatureService_editFeatures_Line', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -15,7 +15,7 @@ describe('leaflet_testFeatureService_editFeatures', function () {
     });
 
     // 增加LINE要素，returnContent为true
-    it('successEvent:addFeature_LINE', function (done) {
+    it('successEvent:add_LINE', function (done) {
         var addFeatureResult_LINE = null;
         var line = L.polyline([[10, 20], [20, 30]]);
         var addFeaturesParams = new SuperMap.EditFeaturesParameters({
@@ -54,7 +54,7 @@ describe('leaflet_testFeatureService_editFeatures', function () {
     });
 
     // 删除LINE要素
-    it('successEvent:deleteLINE', function (done) {
+    it('successEvent:delete_LINE', function (done) {
         var deleteLineResult = null;
         var deleteFeaturesParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "Jingjin",
@@ -79,11 +79,10 @@ describe('leaflet_testFeatureService_editFeatures', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("'successEvent:deleteLINE'案例失败" + exception.name + ":" + exception.message);
+                console.log("'successEvent:delete_LINE'案例失败" + exception.name + ":" + exception.message);
                 deleteLineService.destroy();
                 done();
             }
         }, 2000);
     });
-
 });

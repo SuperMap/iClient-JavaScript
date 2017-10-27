@@ -5,7 +5,7 @@ var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
+describe('leaflet_FeatureService_getFeaturesBySQL', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:returnContent=true', function (done) {
+    it('successEvent:getFeaturesBySQL_returnContent=true', function (done) {
         var getFeaturesBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
             returnContent: true,
             queryParameter: {
@@ -76,7 +76,7 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
         }, 2000)
     });
 
-    it('successEvent:returnContent=false', function (done) {
+    it('successEvent:getFeaturesBySQL_returnContent=false', function (done) {
         var getFeaturesBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
             returnContent: false,
             queryParameter: {
@@ -110,7 +110,7 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
         }, 2000);
     });
 
-    it('failEvent:datasetNotExist', function (done) {
+    it('failEvent:getFeaturesBySQL_datasetNotExist', function (done) {
         var getFeaturesBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
@@ -142,7 +142,7 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
         }, 2000);
     });
 
-    it('failEvent:queryParameterNull', function (done) {
+    it('failEvent:getFeaturesBySQL_queryParameterNull', function (done) {
         var getFeaturesBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
             queryParameter: null,
             datasetNames: ["World:Countries"]
@@ -163,7 +163,7 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
                 getFeaturesBySQLService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletGetFeaturesBySQLService_'failEvent:queryParameterNull'案例失败：" + exception.name + ":" + exception.message);
+                console.log("leaflet_getFeaturesBySQL_'failEvent:queryParameterNull'案例失败：" + exception.name + ":" + exception.message);
                 getFeaturesBySQLService.destroy();
                 expect(false).toBeTruthy();
                 done();

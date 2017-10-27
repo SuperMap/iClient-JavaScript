@@ -5,7 +5,7 @@ var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_testQueryService_queryByBounds', function () {
+describe('leaflet_QueryService_queryByDistance', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -17,88 +17,85 @@ describe('leaflet_testQueryService_queryByBounds', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:returnContent=true', function (done) {
-        var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var queryByBoundsParams = new SuperMap.QueryByBoundsParameters({
+    it('successEvent:queryByDistance_returnContent=true', function (done) {
+        var circleMarker = L.circleMarker([30, 104]);
+        var queryByDistanceParams = new SuperMap.QueryByDistanceParameters({
             queryParams: {name: "Capitals@World"},
-            bounds: polygon.getBounds()
+            distance: 10,
+            geometry: circleMarker
         });
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
-        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
+        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
             try {
-                expect(queryByBoundsService).not.toBeNull();
-                expect(queryByBoundsService.options.serverType).toBe("iServer");
+                expect(queryByDistanceService).not.toBeNull();
+                expect(queryByDistanceService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.customResponse).toBeNull();
-                expect(serviceResult.result.currentCount).toEqual(38);
-                expect(serviceResult.result.totalCount).toEqual(38);
+                expect(serviceResult.result.currentCount).toBeGreaterThan(0);
+                expect(serviceResult.result.totalCount).toBeGreaterThan(0);
                 expect(serviceResult.result.recordsets.length).toBeGreaterThan(0);
                 expect(serviceResult.result.recordsets[0].datasetName).toBe("Capitals@World");
                 expect(serviceResult.result.recordsets[0].fieldCaptions.length).toEqual(16);
                 expect(serviceResult.result.recordsets[0].fieldTypes.length).toEqual(16);
                 expect(serviceResult.result.recordsets[0].features.type).toBe("FeatureCollection");
-                expect(serviceResult.result.recordsets[0].features.features.length).toEqual(38);
+                expect(serviceResult.result.recordsets[0].features.features.length).toBeGreaterThan(0);
                 for (var i = 0; i < serviceResult.result.recordsets[0].features.features.length; i++) {
                     expect(serviceResult.result.recordsets[0].features.features[i].type).toBe("Feature");
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.type).toBe("Point");
                     expect(serviceResult.result.recordsets[0].features.features[i].geometry.coordinates.length).toEqual(2);
                 }
                 expect(serviceResult.result.recordsets[0].features.features[0].properties).toEqual(Object({
-                    CAPITAL: "圣多美",
-                    CAPITAL_CH: "圣多美",
-                    CAPITAL_EN: "Sao Tome",
-                    CAPITAL_LO: "São Tomé",
-                    CAP_POP: "53300.0",
-                    COUNTRY: "圣多美和普林西比",
-                    COUNTRY_CH: "圣多美和普林西比",
-                    COUNTRY_EN: "Sao Tome & Principe",
-                    ID: 19,
-                    POP: "53300.0",
+                    CAPITAL: "河内",
+                    CAPITAL_CH: "河内",
+                    CAPITAL_EN: "Hanoi",
+                    CAPITAL_LO: "Hà Nội",
+                    CAP_POP: "1431270.0",
+                    COUNTRY: "越南",
+                    COUNTRY_CH: "越南",
+                    COUNTRY_EN: "Vietnam",
+                    ID: 167,
+                    POP: "1431270.0",
                     SmGeometrySize: "16",
-                    SmID: "19",
+                    SmID: "167",
                     SmLibTileID: "1",
                     SmUserID: "0",
-                    SmX: "6.728004415891377",
-                    SmY: "0.33699598913014484",
+                    SmX: "105.82000238598519",
+                    SmY: "21.030003066242273",
                     USERID: "0"
                 }));
-                queryByBoundsService.destroy();
+                queryByDistanceService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletQueryByBoundsService_'successEvent:returnContent=true'案例失败：" + exception.name + ":" + exception.message);
-                queryByBoundsService.destroy();
+                console.log("leaflet_queryByDistance_'successEvent:returnContent=true'案例失败：" + exception.name + ":" + exception.message);
+                queryByDistanceService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
         }, 2000)
     });
 
-    it('successEvent:customsResult=true', function (done) {
-        var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var queryByBoundsParams = new SuperMap.QueryByBoundsParameters({
+    it('successEvent:queryByDistance_returnContent=false', function (done) {
+        var circleMarker = L.circleMarker([30, 104]);
+        var queryByDistanceParams = new SuperMap.QueryByDistanceParameters({
             queryParams: {name: "Capitals@World"},
-            bounds: polygon.getBounds(),
-            customParams: null,
-            expectCount: 100,
+            distance: 10,
+            geometry: circleMarker,
             returnContent: false
         });
-        queryByBoundsParams.startRecord = 0;
-        queryByBoundsParams.holdTime = 10;
-        queryByBoundsParams.returnCustomResult = true;
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
-        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
+        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
             try {
-                expect(queryByBoundsService).not.toBeNull();
-                expect(queryByBoundsService.options.serverType).toBe("iServer");
+                expect(queryByDistanceService).not.toBeNull();
+                expect(queryByDistanceService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.result).not.toBeNull();
@@ -106,75 +103,74 @@ describe('leaflet_testQueryService_queryByBounds', function () {
                 expect(serviceResult.result.postResultType).toBe("CreateChild");
                 expect(serviceResult.result.newResourceLocation.length).toBeGreaterThan(0);
                 expect(serviceResult.result.newResourceID.length).toBeGreaterThan(0);
-                expect(serviceResult.result.customResult).not.toBeNull();
-                queryByBoundsService.destroy();
+                queryByDistanceService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletQueryByBoundsService_'successEvent:customsResult=true'案例失败：" + exception.name + ":" + exception.message);
-                queryByBoundsService.destroy();
+                console.log("leaflet_queryByDistance_'successEvent:returnContent=false'案例失败：" + exception.name + ":" + exception.message);
+                queryByDistanceService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
         }, 2000);
     });
 
-
-    it('failEvent:layerNotExist', function (done) {
-        var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var queryByBoundsParams = new SuperMap.QueryByBoundsParameters({
+    it('failEvent:queryByDistance_layerNotExist', function (done) {
+        var circleMarker = L.circleMarker([30, 104]);
+        var queryByDistanceParams = new SuperMap.QueryByDistanceParameters({
             queryParams: {name: "Capitals@World1"},
-            bounds: polygon.getBounds()
+            distance: 10,
+            geometry: circleMarker
         });
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
-        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
+        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
             try {
-                expect(queryByBoundsService).not.toBeNull();
-                expect(queryByBoundsService.options.serverType).toBe("iServer");
+                expect(queryByDistanceService).not.toBeNull();
+                expect(queryByDistanceService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processFailed");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(400);
                 expect(serviceResult.error.errorMsg).toBe("查询目标图层不存在。(Capitals@World1)");
-                queryByBoundsService.destroy();
+                queryByDistanceService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletQueryByBoundsService_'failEvent:layerNotExist'案例失败：" + exception.name + ":" + exception.message);
-                queryByBoundsService.destroy();
+                console.log("leaflet_queryByDistance_'failEvent:layerNotExist'案例失败：" + exception.name + ":" + exception.message);
+                queryByDistanceService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
         }, 2000);
     });
 
-
-    it('failEvent:queryParamsNull', function (done) {
-        var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
-        var queryByBoundsParams = new SuperMap.QueryByBoundsParameters({
+    it('failEvent:queryByDistance_queryParamsNull', function (done) {
+        var circleMarker = L.circleMarker([30, 104]);
+        var queryByDistanceParams = new SuperMap.QueryByDistanceParameters({
             queryParams: null,
-            bounds: polygon.getBounds()
+            distance: 10,
+            geometry: circleMarker
         });
-        var queryByBoundsService = L.supermap.queryService(worldMapURL, options);
-        queryByBoundsService.queryByBounds(queryByBoundsParams, function (result) {
+        var queryByDistanceService = L.supermap.queryService(worldMapURL, options);
+        queryByDistanceService.queryByDistance(queryByDistanceParams, function (result) {
             serviceResult = result;
         });
         setTimeout(function () {
             try {
-                expect(queryByBoundsService).not.toBeNull();
-                expect(queryByBoundsService.options.serverType).toBe("iServer");
+                expect(queryByDistanceService).not.toBeNull();
+                expect(queryByDistanceService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processFailed");
                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
                 expect(serviceResult.error).not.toBeNull();
                 expect(serviceResult.error.code).toEqual(400);
                 expect(serviceResult.error.errorMsg).toBe("参数queryParameterSet.queryParams非法，不能为空。");
-                queryByBoundsService.destroy();
+                queryByDistanceService.destroy();
                 done();
             } catch (exception) {
+                console.log("leaflet_queryByDistance_'failEvent:queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
+                queryByDistanceService.destroy();
                 expect(false).toBeTruthy();
-                console.log("leafletQueryByBoundsService_'failEvent:queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
-                queryByBoundsService.destroy();
                 done();
             }
         }, 2000);

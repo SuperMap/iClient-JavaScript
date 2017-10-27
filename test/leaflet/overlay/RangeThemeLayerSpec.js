@@ -1,7 +1,7 @@
 require('../../../src/leaflet/overlay/RangeThemeLayer');
 
 var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图";
-describe('leaflet_testRangeThemeLayer', function () {
+describe('leaflet_RangeThemeLayer', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {
@@ -33,20 +33,17 @@ describe('leaflet_testRangeThemeLayer', function () {
         map.remove();
     });
 
-
     it('getStyleByData', function () {
         var rangeThemeLayer = L.supermap.rangeThemeLayer("ThemeLayer", {
             // 开启 hover 高亮效果
             isHoverAble: true,
             opacity: 0.8
         });
-
         rangeThemeLayer.style = new SuperMap.ThemeStyle({
             shadowBlur: 16,
             shadowColor: "#000000",
             fillColor: "#FFFFFF"
         });
-
         // hover 高亮样式
         rangeThemeLayer.highlightStyle = new SuperMap.ThemeStyle({
             stroke: true,
@@ -55,7 +52,6 @@ describe('leaflet_testRangeThemeLayer', function () {
             fillColor: "#00EEEE",
             fillOpacity: 0.8
         });
-
         // 用于单值专题图的属性字段名称
         rangeThemeLayer.themeField = "POP_DENSITY99";
         // 风格数组，设定值对应的样式
@@ -72,7 +68,6 @@ describe('leaflet_testRangeThemeLayer', function () {
                 color: '#FACE9C'
             }
         }];
-
         var feature = {
             attributes: {
                 'CITY': "北京市",
@@ -111,11 +106,10 @@ describe('leaflet_testRangeThemeLayer', function () {
                 },
                 id: "SuperMap.Geometry.MultiPolygon_465"
             },
-            id: "SuperMap.Feature.Vector_466",
+            id: "SuperMap.Feature.Vector_466"
         };
         feature.data = feature.attributes;
         var result = rangeThemeLayer.getStyleByData(feature);
-
         expect(result).not.toBeNull();
         expect(result.fill).toBeTruthy();
         expect(result.fontSize).toBe(12);

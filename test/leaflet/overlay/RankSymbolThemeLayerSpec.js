@@ -3,7 +3,7 @@ require('../../resources/chinaConsumptionLevel');
 
 var China4326URL = GlobeParameter.China4326URL;
 
-describe('leaflet_testRankSymbolThemeLayer', function () {
+describe('leaflet_RankSymbolThemeLayer', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {
@@ -34,7 +34,6 @@ describe('leaflet_testRankSymbolThemeLayer', function () {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
-
 
     it('addFeatures', function () {
         //initialize

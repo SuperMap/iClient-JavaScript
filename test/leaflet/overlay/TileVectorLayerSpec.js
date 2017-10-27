@@ -1,6 +1,6 @@
 require('../../../src/leaflet/overlay/TileVectorLayer');
 
-describe('leaflet_testTileVectorLayer', function () {
+describe('leaflet_TileVectorLayer', function () {
     var originalTimeout;
     var testDiv, map;
     var ChinaURL = GlobeParameter.ChinaURL;
@@ -84,7 +84,6 @@ describe('leaflet_testTileVectorLayer', function () {
             done();
         }, 5000);
     });
-
 
     it('initialize_cartoCSS', function (done) {
         var cssStr = initClientCssStr();

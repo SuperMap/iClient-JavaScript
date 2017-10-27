@@ -15,7 +15,8 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('bufferAnalysis_test', function (done) {
+
+    it('bufferAnalysis_byGeometry', function (done) {
         var pointsList = [
             [-4690.000, 2823.940],
             [-4690.301, 3448.940],
@@ -85,7 +86,7 @@ describe('leaflet_SpatialAnalystService_bufferAnalysis', function () {
                 bufferAnalystService.destroy();
                 done();
             } catch (exception) {
-                console.log("'bufferAnalysis_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'bufferAnalysis_byGeometry'案例失败" + exception.name + ":" + exception.message);
                 bufferAnalystService.destroy();
                 expect(false).toBeTruthy();
                 done();

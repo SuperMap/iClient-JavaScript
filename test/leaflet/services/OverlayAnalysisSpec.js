@@ -15,7 +15,8 @@ describe('leaflet_SpatialAnalystService_overlayAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('overlayAnalysis_test', function (done) {
+
+    it('overlayAnalysis', function (done) {
         var datasetOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters({
             sourceDataset: "BaseMap_R@Jingjin",
             operateDataset: "Neighbor_R@Jingjin",
@@ -55,7 +56,7 @@ describe('leaflet_SpatialAnalystService_overlayAnalysis', function () {
                 overlayAnalystService.destroy();
                 done();
             } catch (exception) {
-                console.log("'overlayAnalysis_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'overlayAnalysis'案例失败" + exception.name + ":" + exception.message);
                 overlayAnalystService.destroy();
                 expect(false).toBeTruthy();
                 done();

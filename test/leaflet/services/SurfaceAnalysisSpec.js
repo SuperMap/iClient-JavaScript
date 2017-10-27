@@ -1,4 +1,4 @@
-require('../../../src/leaflet/services/spatialAnalystService');
+require('../../../src/leaflet/services/SpatialAnalystService');
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
@@ -14,7 +14,8 @@ describe('leaflet_SpatialAnalystService_surfaceAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('surfaceAnalysis_test', function (done) {
+
+    it('surfaceAnalysis', function (done) {
         var region = L.polygon([
             [4010338, 0],
             [4010338, 1063524],
@@ -64,12 +65,11 @@ describe('leaflet_SpatialAnalystService_surfaceAnalysis', function () {
                 surfaceAnalystService.destroy();
                 done();
             } catch (exception) {
-                console.log("'surfaceAnalysis_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'surfaceAnalysis'案例失败" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
         }, 5000)
     });
-
 });

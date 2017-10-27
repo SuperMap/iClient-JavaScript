@@ -5,7 +5,7 @@ var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_testFeatureService_getFeaturesByBuffer', function () {
+describe('leaflet_FeatureService_getFeaturesByBuffer', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('leaflet_testFeatureService_getFeaturesByBuffer', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:returnContent=true', function (done) {
+    it('successEvent:getFeaturesByBuffer_returnContent=true', function (done) {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
         var getFeaturesByBufferParams = new SuperMap.GetFeaturesByBufferParameters({
             returnContent: true,
@@ -79,8 +79,7 @@ describe('leaflet_testFeatureService_getFeaturesByBuffer', function () {
         }, 2000)
     });
 
-
-    it('successEvent:returnContent=false', function (done) {
+    it('successEvent:getFeaturesByBuffer_returnContent=false', function (done) {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
         var getFeaturesByBufferParams = new SuperMap.GetFeaturesByBufferParameters({
             returnContent: false,
@@ -115,8 +114,7 @@ describe('leaflet_testFeatureService_getFeaturesByBuffer', function () {
         }, 2000);
     });
 
-
-    it('failEvent:datasetNotExist', function (done) {
+    it('failEvent:getFeaturesByBuffer_datasetNotExist', function (done) {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
         var getFeaturesByBufferParams = new SuperMap.GetFeaturesByBufferParameters({
             datasetNames: ["World1:Capitals"],
@@ -148,7 +146,7 @@ describe('leaflet_testFeatureService_getFeaturesByBuffer', function () {
         }, 2000);
     });
 
-    it('failEvent:datasetNamesNull', function (done) {
+    it('failEvent:getFeaturesByBuffer_datasetNamesNull', function (done) {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
         var getFeaturesByBufferParams = new SuperMap.GetFeaturesByBufferParameters({
             datasetNames: null,

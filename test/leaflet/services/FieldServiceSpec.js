@@ -6,7 +6,7 @@ var params = {
     dataset: "continent_T"
 };
 
-describe('leaflet_testFieldService', function () {
+describe('leaflet_FieldService', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -153,7 +153,6 @@ describe('leaflet_testFieldService', function () {
             }
         }, 2000)
     });
-
 });
 
 

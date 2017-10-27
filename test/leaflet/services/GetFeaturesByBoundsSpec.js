@@ -5,7 +5,7 @@ var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_testFeatureService_getFeaturesByBounds', function () {
+describe('leaflet_FeatureService_getFeaturesByBounds', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('leaflet_testFeatureService_getFeaturesByBounds', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:returnContent=true', function (done) {
+    it('successEvent:getFeaturesByBounds_returnContent=true', function (done) {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
         var getFeaturesByBoundsParams = new SuperMap.GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
@@ -75,7 +75,7 @@ describe('leaflet_testFeatureService_getFeaturesByBounds', function () {
         }, 2000)
     });
 
-    it('successEvent:returnContent=false', function (done) {
+    it('successEvent:getFeaturesByBounds_returnContent=false', function (done) {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
         var getFeaturesByBoundsParams = new SuperMap.GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
@@ -108,7 +108,7 @@ describe('leaflet_testFeatureService_getFeaturesByBounds', function () {
         }, 2000);
     });
 
-    it('failEvent:datasetNotExist', function (done) {
+    it('failEvent:getFeaturesByBounds_datasetNotExist', function (done) {
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]]);
         var getFeaturesByBoundsParams = new SuperMap.GetFeaturesByBoundsParameters({
             datasetNames: ["World1:Capitals"],
@@ -138,6 +138,5 @@ describe('leaflet_testFeatureService_getFeaturesByBounds', function () {
             }
         }, 2000);
     });
-
 });
 

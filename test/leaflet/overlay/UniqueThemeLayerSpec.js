@@ -3,7 +3,7 @@ require('../../../src/leaflet/overlay/UniqueThemeLayer');
 var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
     dataUrl = GlobeParameter.editServiceURL_leaflet;
 var features = [];
-describe('leaflet_testUniqueThemeLayer', function () {
+describe('leaflet_UniqueThemeLayer', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {
@@ -35,7 +35,6 @@ describe('leaflet_testUniqueThemeLayer', function () {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
-
 
     it('prepareFeaturesToAdd', function (done) {
         function concatAttributes(fieldNames, filedValues) {
@@ -262,7 +261,7 @@ describe('leaflet_testUniqueThemeLayer', function () {
     });
 
     it('addFeatures', function (done) {
-        //constructor
+        //initialize
         var uniqueThemeLayer = L.supermap.uniqueThemeLayer("ThemeLayer", {
             isHoverAble: true,
             opacity: 0.8

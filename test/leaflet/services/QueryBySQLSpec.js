@@ -5,7 +5,7 @@ var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_testQueryService_queryBySQL', function () {
+describe('leaflet_QueryService_queryBySQL', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:returnContent=true', function (done) {
+    it('successEvent:queryBySQL_returnContent=true', function (done) {
         var queryBySQLParams = new SuperMap.QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World",
@@ -72,7 +72,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
                 queryBySQLService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletQueryBySQLService_'successEvent:returnContent=true'案例失败：" + exception.name + ":" + exception.message);
+                console.log("leaflet_queryBySQL_'successEvent:returnContent=true'案例失败：" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 expect(false).toBeTruthy();
                 done();
@@ -80,7 +80,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
         }, 2000)
     });
 
-    it('successEvent:returnContent=false', function (done) {
+    it('successEvent:queryBySQL_returnContent=false', function (done) {
         var queryBySQLParams = new SuperMap.QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World",
@@ -106,7 +106,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
                 queryBySQLService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletQueryBySQLService_'successEvent:returnContent=false'案例失败：" + exception.name + ":" + exception.message);
+                console.log("leaflet_queryBySQL_'successEvent:returnContent=false'案例失败：" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 expect(false).toBeTruthy();
                 done();
@@ -114,7 +114,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
         }, 2000);
     });
 
-    it('successEvent:customsResult=true', function (done) {
+    it('successEvent:queryBySQL_customsResult=true', function (done) {
         var queryBySQLParams = new SuperMap.QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World",
@@ -142,7 +142,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
                 queryBySQLService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletQueryBySQLService_'successEvent:customsResult=true'案例失败：" + exception.name + ":" + exception.message);
+                console.log("leaflet_queryBySQL_'successEvent:customsResult=true'案例失败：" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 expect(false).toBeTruthy();
                 done();
@@ -150,7 +150,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
         }, 2000);
     });
 
-    it('failEvent:layerNotExist', function (done) {
+    it('failEvent:queryBySQL_layerNotExist', function (done) {
         var queryBySQLParams = new SuperMap.QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World1",
@@ -173,7 +173,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
                 queryBySQLService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletQueryBySQLService_'failEvent:layerNotExist'案例失败：" + exception.name + ":" + exception.message);
+                console.log("leaflet_queryBySQL_'failEvent:layerNotExist'案例失败：" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 expect(false).toBeTruthy();
                 done();
@@ -181,7 +181,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
         }, 2000);
     });
 
-    it('failEvent:queryParamsNull', function (done) {
+    it('failEvent:queryBySQL_queryParamsNull', function (done) {
         var queryBySQLParams = new SuperMap.QueryBySQLParameters({
             queryParams: null
         });
@@ -201,7 +201,7 @@ describe('leaflet_testQueryService_queryBySQL', function () {
                 queryBySQLService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletQueryBySQLService_'failEvent:queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
+                console.log("leaflet_queryBySQL_'failEvent:queryParamsNull'案例失败：" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 expect(false).toBeTruthy();
                 done();

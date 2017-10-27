@@ -15,7 +15,8 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('generateSpatialData_test', function (done) {
+
+    it('generateSpatialData', function (done) {
         var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
@@ -28,7 +29,7 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', function () {
             errorInfoField: "",
             dataReturnOption: new SuperMap.DataReturnOption({
                 expectCount: 1000,
-                dataset: "generateSpatialData@Changchun",
+                dataset: "generateSpatialData_leafletTest",
                 deleteExistResultDataset: true,
                 dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
             })
@@ -46,10 +47,9 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', function () {
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.dataset).toEqual("generateSpatialData@Changchun");
+                expect(serviceResult.result.dataset).toEqual("generateSpatialData_leafletTest@Changchun");
                 generateSpatialDataService.destroy();
                 done();
-
             } catch (exception) {
                 console.log("'generateSpatialData_test'案例失败" + exception.name + ":" + exception.message);
                 generateSpatialDataService.destroy();

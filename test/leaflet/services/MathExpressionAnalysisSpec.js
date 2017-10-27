@@ -1,6 +1,8 @@
 require('../../../src/leaflet/services/spatialAnalystService');
+var request = require('request');
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
+
 var options = {
     serverType: 'iServer'
 };
@@ -15,7 +17,9 @@ describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    it('mathExpressionAnalysis_test', function (done) {
+
+    var resultDataset = "MathExpressionAnalysis_leafletTest";
+    it('mathExpressionAnalysis', function (done) {
         var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
             //指定数据集,必设
             dataset: "JingjinTerrain@Jingjin",
@@ -24,7 +28,7 @@ describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', function () {
             //存储结果数据集的数据源,必设
             targetDatasource: "Jingjin",
             //结果数据集名称,必设
-            resultGridName: "MathExpressionAnalysis_Result",
+            resultGridName: resultDataset,
             deleteExistResultDataset: true
         });
         var mathExpressionAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
@@ -39,11 +43,9 @@ describe('leaflet_SpatialAnalystService_mathExpressionAnalysis', function () {
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
-                mathExpressionAnalystService.destroy();
                 done();
-
             } catch (exception) {
-                console.log("'mathExpressionAnalysis_test'案例失败" + exception.name + ":" + exception.message);
+                console.log("'leaflet_mathExpressionAnalysis'案例失败" + exception.name + ":" + exception.message);
                 mathExpressionAnalystService.destroy();
                 expect(false).toBeTruthy();
                 done();

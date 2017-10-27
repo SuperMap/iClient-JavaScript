@@ -5,7 +5,7 @@ var options = {
     serverType: 'iServer'
 };
 
-describe('leaflet_testFeatureService_getFeaturesByGeometry', function () {
+describe('leaflet_FeatureService_getFeaturesByGeometry', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('leaflet_testFeatureService_getFeaturesByGeometry', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('successEvent:returnContent=true', function (done) {
+    it('successEvent:getFeaturesByGeometry_returnContent=true', function (done) {
         var polygon = L.polygon([[0, 0], [-30, 0], [-10, 30], [0, 0]]);
         var getFeaturesByGeometryParams = new SuperMap.GetFeaturesByGeometryParameters({
             returnContent: true,
@@ -77,7 +77,7 @@ describe('leaflet_testFeatureService_getFeaturesByGeometry', function () {
         }, 2000)
     });
 
-    it('successEvent:returnContent=false', function (done) {
+    it('successEvent:getFeaturesByGeometry_returnContent=false', function (done) {
         var polygon = L.polygon([[0, 0], [-30, 0], [-10, 30], [0, 0]]);
         var getFeaturesByGeometryParams = new SuperMap.GetFeaturesByGeometryParameters({
             returnContent: false,
@@ -110,7 +110,7 @@ describe('leaflet_testFeatureService_getFeaturesByGeometry', function () {
         }, 2000);
     });
 
-    it('failEvent:datasetNotExist', function (done) {
+    it('failEvent:getFeaturesByGeometry_datasetNotExist', function (done) {
         var getFeaturesByGeometryParams = new SuperMap.GetFeaturesByGeometryParameters({
             queryParameter: {
                 name: "Countries@World",
@@ -142,7 +142,7 @@ describe('leaflet_testFeatureService_getFeaturesByGeometry', function () {
         }, 2000);
     });
 
-    it('failEvent:queryParamsNull', function (done) {
+    it('failEvent:getFeaturesByGeometry_queryParamsNull', function (done) {
         var getFeaturesByGeometryParams = new SuperMap.GetFeaturesByGeometryParameters({
             queryParameter: null,
             datasetNames: ["World:Countries"]
