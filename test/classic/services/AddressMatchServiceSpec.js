@@ -74,10 +74,6 @@ describe('testAddressMatchService', function () {
 
     it('decode', function (done) {
         var decodingFailedEventArgs = null, decodingSuccessEventArgs = null;
-        var options = {
-            eventListeners: {"processCompleted": decodeCompleted, "processFailed": decodeFailed}
-        };
-
         function decodeFailed(serviceFailedEventArgs) {
             decodingFailedEventArgs = serviceFailedEventArgs;
         }
@@ -96,8 +92,8 @@ describe('testAddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var addressDeCodeService = new SuperMap.REST.AddressMatchService(addressMatchURL, options);
-        addressDeCodeService.decode(GeoDeCodingParams, decodeFailed);
+        var addressDeCodeService = new SuperMap.REST.AddressMatchService(addressMatchURL);
+        addressDeCodeService.decode(GeoDeCodingParams, decodeCompleted);
         setTimeout(function () {
             try {
                 expect(addressDeCodeService).not.toBeNull();
