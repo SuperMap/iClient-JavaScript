@@ -13,11 +13,8 @@
         zoom: 0,
         crs: L.CRS.TianDiTu_WGS84
     });
+    L.supermap.tiandituTileLayer().addTo(map);
     L.supermap.tiandituTileLayer({
-        layerType: "ter",
-    }).addTo(map);
-    L.supermap.tiandituTileLayer({
-        layerType: "ter",
         isLabel:true
     }).addTo(map);
 </script>
