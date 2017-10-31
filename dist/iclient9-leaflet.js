@@ -55474,9 +55474,7 @@ var _CommonServiceBase2 = __webpack_require__(3);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _SetLayerInfoParameters = __webpack_require__(101);
-
-var _SetLayerInfoParameters2 = _interopRequireDefault(_SetLayerInfoParameters);
+__webpack_require__(101);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -55529,18 +55527,17 @@ var SetLayerInfoService = function (_CommonServiceBase) {
         /**
          * @function SuperMap.SetLayerInfoService.prototype.processAsync
          * @description 负责将客户端的更新参数传递到服务端。
-         * @param params - {SuperMap.SetLayerInfoParameters} 修改后的图层资源信息。<br>
-         *        该参数可以使用获取图层信息服务 <SuperMap.GetLayerInfoService>.result.subLayers.layers[i]返回图层信息，然后对其属性进行修改来获取。
+         * @param params - {Object} 修改后的图层资源信息。<br>
+         *        该参数可以使用获取图层信息服务<{@link SuperMap.GetLayersInfoService}>返回图层信息，解析结果result.subLayers.layers[i]，然后对其属性进行修改来获取。
          */
 
     }, {
         key: 'processAsync',
         value: function processAsync(params) {
-            var me = this;
-
-            if (!(params instanceof _SetLayerInfoParameters2["default"])) {
+            if (!params) {
                 return;
             }
+            var me = this;
             me.url += ".json";
             var jsonParamsStr = _SuperMap2["default"].Util.toJSON(params);
             me.request({
@@ -55782,9 +55779,7 @@ var _CommonServiceBase2 = __webpack_require__(3);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _SetLayersInfoParameters = __webpack_require__(103);
-
-var _SetLayersInfoParameters2 = _interopRequireDefault(_SetLayersInfoParameters);
+__webpack_require__(103);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 

@@ -1,6 +1,6 @@
 import SuperMap from '../SuperMap';
 import CommonServiceBase from './CommonServiceBase';
-import SetLayerInfoParameters from './SetLayerInfoParameters';
+import './SetLayerInfoParameters';
 
 /**
  * @class SuperMap.SetLayerInfoService
@@ -14,7 +14,7 @@ import SetLayerInfoParameters from './SetLayerInfoParameters';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default  class SetLayerInfoService extends CommonServiceBase {
+export default class SetLayerInfoService extends CommonServiceBase {
 
 
     constructor(url, options) {
@@ -35,15 +35,14 @@ export default  class SetLayerInfoService extends CommonServiceBase {
     /**
      * @function SuperMap.SetLayerInfoService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
-     * @param params - {SuperMap.SetLayerInfoParameters} 修改后的图层资源信息。<br>
-     *        该参数可以使用获取图层信息服务 <SuperMap.GetLayerInfoService>.result.subLayers.layers[i]返回图层信息，然后对其属性进行修改来获取。
+     * @param params - {Object} 修改后的图层资源信息。<br>
+     *        该参数可以使用获取图层信息服务<{@link SuperMap.GetLayersInfoService}>返回图层信息，解析结果result.subLayers.layers[i]，然后对其属性进行修改来获取。
      */
     processAsync(params) {
-        var me = this;
-
-        if (!(params instanceof SetLayerInfoParameters)) {
+        if (!params) {
             return;
         }
+        var me = this;
         me.url += ".json";
         var jsonParamsStr = SuperMap.Util.toJSON(params);
         me.request({

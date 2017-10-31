@@ -1,6 +1,6 @@
 ﻿import SuperMap from '../SuperMap';
 import CommonServiceBase from './CommonServiceBase';
-import SetLayersInfoParameters from './SetLayersInfoParameters';
+import './SetLayersInfoParameters';
 
 /**
  * @class SuperMap.SetLayersInfoService
