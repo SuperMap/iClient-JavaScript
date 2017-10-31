@@ -6,10 +6,13 @@ var surfaceAnalystEventArgsSystem = null,
 function surfaceAnalystCompleted(surfaceAnalystEventArgs) {
     surfaceAnalystEventArgsSystem = surfaceAnalystEventArgs;
 }
+
 function surfaceAnalystFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
+
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
+
 function initSurfaceService() {
     return new SuperMap.SurfaceAnalystService(spatialAnalystURL, {
         eventListeners: {
@@ -19,64 +22,76 @@ function initSurfaceService() {
     });
 }
 
-describe('testSurfaceAnalystService_processAsync', function () {
+describe('SurfaceAnalystService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        //   surfaceAnalystEventArgsSystem = null;
-        //   serviceFailedEventArgsSystem = null;
+        surfaceAnalystEventArgsSystem = null;
+        serviceFailedEventArgsSystem = null;
     });
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    /* 等值线LinearRing待开发添加到GeoJason后再测试
-     //点数据集提取等值线
-     it('Dataset_ISOLINE',function(done){
-     var surfaceAnalystService = initSurfaceService();
-     var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
-     datumValue: 70,
-     interval: 100,
-     resampleTolerance: 0.7,
-     smoothMethod: SuperMap.SmoothMethod.BSPLINE,
-     smoothness: 3
-     });
-     var params = new SuperMap.DatasetSurfaceAnalystParameters({
-     extractParameter: surfaceAnalystParameters,
-     dataset: "SamplesP@Interpolation",
-     resolution: 3000,
-     zValueFieldName: "AVG_WTR"
-     });
+    //点数据集提取等值线
+    it('Dataset_ISOLINE', function (done) {
+        var surfaceAnalystService = initSurfaceService();
+        var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
+            datumValue: 0,
+            interval: 100,
+            resampleTolerance: 0.7,
+            smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+            smoothness: 3
+        });
+        var params = new SuperMap.DatasetSurfaceAnalystParameters({
+            extractParameter: surfaceAnalystParameters,
+            dataset: "SamplesP@Interpolation",
+            resolution: 3000,
+            zValueFieldName: "AVG_TMP",
+            surfaceAnalystMethod: SuperMap.SurfaceAnalystMethod.ISOLINE
+        });
 
-     expect(surfaceAnalystService).not.toBeNull();
-     expect(surfaceAnalystService.url).toEqual(spatialAnalystURL);
-     surfaceAnalystService.processAsync(params);
-
-     setTimeout(function() {
-     try{
-     var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result;
-     expect(surfaceAnalystResult).not.toBeNull();
-
-     /!*  ok(surfaceAnalystResult.recordset != null, "surfaceAnalystResult.recordset");
-     equal(surfaceAnalystResult.succeed, true, "surfaceAnalystResult.succeed");
-     ok(surfaceAnalystResult.recordset != null,
-     "surfaceAnalystResult.recordset:" + surfaceAnalystResult.recordset);*!/
-
-     surfaceAnalystService.destroy();
-     expect(surfaceAnalystService.EVENT_TYPES == null).toBeTruthy();
-     expect(surfaceAnalystService.events == null).toBeTruthy();
-     expect(surfaceAnalystService.lastResult == null).toBeTruthy();
-     expect(surfaceAnalystService.eventListeners == null).toBeTruthy();
-     done();
-     } catch (exception) {
-     expect(false).toBeTruthy();
-     console.log("SurfaceAnalystService" + exception.name + ":" + exception.message);
-     surfaceAnalystService.destroy();
-     done();
-     }
-     }, 2000);
-     });*/
+        expect(surfaceAnalystService).not.toBeNull();
+        expect(surfaceAnalystService.url).toEqual(spatialAnalystURL);
+        surfaceAnalystService.processAsync(params);
+        setTimeout(function () {
+            try {
+                var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result;
+                expect(surfaceAnalystResult).not.toBeNull();
+                expect(surfaceAnalystResult.succeed).toBeTruthy();
+                expect(surfaceAnalystResult.recordset.features.type).toEqual("FeatureCollection");
+                var features = surfaceAnalystResult.recordset.features.features;
+                expect(features.length).toBeGreaterThan(0);
+                for (var i = 0; i < features.length; i++) {
+                    expect(features[i].type).toEqual("Feature");
+                    expect(features[i].id).not.toBeNull();
+                    expect(features[i].properties).not.toBeNull();
+                    expect(features[i].geometry.type).toEqual("LineString");
+                    var coordinates = features[i].geometry.coordinates;
+                    expect(coordinates.length).toBeGreaterThan(0);
+                    for (var j = 0; j < coordinates.length; j++) {
+                        expect(coordinates[j].length).toEqual(2);
+                    }
+                }
+                var fieldCaptions = surfaceAnalystResult.recordset.fieldCaptions.length;
+                expect(fieldCaptions).toBeGreaterThan(0);
+                expect(surfaceAnalystResult.recordset.fieldTypes.length).toEqual(fieldCaptions);
+                expect(surfaceAnalystResult.recordset.fields.length).toEqual(fieldCaptions);
+                surfaceAnalystService.destroy();
+                expect(surfaceAnalystService.EVENT_TYPES == null).toBeTruthy();
+                expect(surfaceAnalystService.events == null).toBeTruthy();
+                expect(surfaceAnalystService.lastResult == null).toBeTruthy();
+                expect(surfaceAnalystService.eventListeners == null).toBeTruthy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("SurfaceAnalystService" + exception.name + ":" + exception.message);
+                surfaceAnalystService.destroy();
+                done();
+            }
+        }, 5000);
+    });
 
     //点数据集提取等值面
     it('Dataset_ISOREGION', function (done) {
@@ -88,7 +103,6 @@ describe('testSurfaceAnalystService_processAsync', function () {
             smoothMethod: SuperMap.SmoothMethod.BSPLINE,
             smoothness: 3
         });
-
         var params = new SuperMap.DatasetSurfaceAnalystParameters({
             extractParameter: surfaceAnalystParameters,
             dataset: "SamplesP@Interpolation",
@@ -97,7 +111,6 @@ describe('testSurfaceAnalystService_processAsync', function () {
             surfaceAnalystMethod: SuperMap.SurfaceAnalystMethod.ISOREGION
         });
         surfaceAnalystService.processAsync(params);
-
         setTimeout(function () {
             try {
                 var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result.recordset.features;
@@ -149,7 +162,6 @@ describe('testSurfaceAnalystService_processAsync', function () {
             })
         });
         surfaceAnalystService.processAsync(params);
-
         setTimeout(function () {
             try {
                 var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result.recordset.features;
@@ -179,7 +191,6 @@ describe('testSurfaceAnalystService_processAsync', function () {
             smoothMethod: SuperMap.SmoothMethod.BSPLINE,
             smoothness: 3
         });
-
         var params = new SuperMap.GeometrySurfaceAnalystParameters({
             extractParameter: surfaceAnalystParameters,
             points: [new SuperMap.Geometry.Point(-4000, 2000),
@@ -201,7 +212,6 @@ describe('testSurfaceAnalystService_processAsync', function () {
             })
         });
         surfaceAnalystService.processAsync(params);
-
         setTimeout(function () {
             try {
                 var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result.recordset.features;
@@ -221,25 +231,6 @@ describe('testSurfaceAnalystService_processAsync', function () {
         }, 10000);
     });
 
-    /*  暂时没法测
-     //参数为空
-     it('parameter_null',function(done){
-     var surfaceAnalystService = initSurfaceService();
-     surfaceAnalystService.processAsync();
-
-     setTimeout(function() {
-     try{
-     ok(surfaceAnalystResult == null, "surfaceAnalystService.lastResult");
-     done();
-     } catch (exception) {
-     expect(false).toBeTruthy();
-     console.log("SurfaceAnalystService" + exception.name + ":" + exception.message);
-     surfaceAnalystService.destroy();
-     done();
-     }
-     }, 2000);
-     });*/
-
     //失败
     it('fail', function (done) {
         var surfaceAnalystService = initSurfaceService();
@@ -257,7 +248,6 @@ describe('testSurfaceAnalystService_processAsync', function () {
             zValueFieldName: "AVG_WTR"
         });
         surfaceAnalystService.processAsync(params);
-
         setTimeout(function () {
             try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();

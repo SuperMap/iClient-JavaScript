@@ -7,17 +7,20 @@ var url = GlobeParameter.spatialAnalystURL;
 var options = {
     eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
 };
+
 function initBufferAnalystService() {
     return new SuperMap.BufferAnalystService(url, options);
 }
+
 function analyzeFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
+
 function analyzeCompleted(analyseEventArgs) {
     analystEventArgsSystem = analyseEventArgs;
 }
 
-describe('testBufferAnalystService', function () {
+describe('BufferAnalystService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -63,9 +66,8 @@ describe('testBufferAnalystService', function () {
                 dsBufferAnalystParameters.destroy();
                 done();
             }
-        }, 4000)
+        }, 5000)
     });
-
 
     it('success:BufferAnalystService_byGeometry', function (done) {
         var bfServiceByGeometry = initBufferAnalystService();
@@ -76,16 +78,9 @@ describe('testBufferAnalystService', function () {
         bufferSetting.endType = SuperMap.BufferEndType.ROUND;
         bufferSetting.leftDistance.value = 300;
         bufferSetting.semicircleLineSegment = 5;
-        var resultSetting = new SuperMap.DataReturnOption({
-            expectCount: 2000,
-            dataset: "bufferAnalystByGM_commonTest",
-            dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
-            deleteExistResultDataset: false
-        });
         var geometryBufferAnalystParameters = new SuperMap.GeometryBufferAnalystParameters();
         geometryBufferAnalystParameters.sourceGeometry = sourceGeometry;
         geometryBufferAnalystParameters.bufferSetting = bufferSetting;
-        geometryBufferAnalystParameters.resultSetting = resultSetting;
         bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
         setTimeout(function () {
             try {
@@ -118,16 +113,9 @@ describe('testBufferAnalystService', function () {
         bufferSetting.endType = SuperMap.BufferEndType.ROUND;
         bufferSetting.leftDistance.value = -1;
         bufferSetting.semicircleLineSegment = 5;
-        var resultSetting = new SuperMap.DataReturnOption({
-            expectCount: 2000,
-            dataset: null,
-            dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
-            deleteExistResultDataset: true
-        });
         var geometryBufferAnalystParameters = new SuperMap.GeometryBufferAnalystParameters();
         geometryBufferAnalystParameters.sourceGeometry = sourceGeometry;
         geometryBufferAnalystParameters.bufferSetting = bufferSetting;
-        geometryBufferAnalystParameters.resultSetting = resultSetting;
         bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
         setTimeout(function () {
             try {

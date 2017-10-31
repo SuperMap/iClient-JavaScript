@@ -11,7 +11,7 @@ require('./openlayers/services/GetFeaturesByGeometrySpec.js');
 require('./openlayers/services/GetFeaturesByIDsSpec.js');
 require('./openlayers/services/GetFeaturesBySQLSpec.js');
 require('./openlayers/services/InterpolationAnalysisSpec.js');
-// require('./openlayers/services/LayerInfoServiceSpec.js'); //待调试
+require('./openlayers/services/LayerInfoServiceSpec.js');
 require('./openlayers/services/MathExpressionAnalysisSpec.js');
 require('./openlayers/services/MeasureServiceSpec.js');
 require('./openlayers/services/NetworkAnalystServiceSpec.js');

@@ -7,12 +7,14 @@ require('./leaflet/services/EditFeaturesPointSpec.js');
 require('./leaflet/services/EditFeaturesRegionSpec.js');
 require('./leaflet/services/FieldServiceSpec.js');
 require('./leaflet/services/GenerateSpatialDataSpec.js');
+require('./leaflet/services/GeoRelationAnalysisSpec.js');
 require('./leaflet/services/GetFeaturesByBoundsSpec.js');
 require('./leaflet/services/GetFeaturesByBufferSpec.js');
 require('./leaflet/services/GetFeaturesByGeometrySpec.js');
 require('./leaflet/services/GetFeaturesByIDsSpec.js');
 require('./leaflet/services/GetFeaturesBySQLSpec.js');
 require('./leaflet/services/InterpolationAnalysisSpec.js');
+require('./leaflet/services/LayerInfoServiceSpec.js');
 require('./leaflet/services/MathExpressionAnalysisSpec.js');
 require('./leaflet/services/NetworkAnalystServiceSpec.js');
 require('./leaflet/services/OverlayAnalysisSpec.js');
@@ -27,7 +29,6 @@ require('./leaflet/services/TerrainCurvatureCalculateSpec.js');
 require('./leaflet/services/ThemeServiceSpec.js');
 require('./leaflet/services/ThiessenAnalysisSpec.js');
 require('./leaflet/services/TrafficTransferAnalystServiceSpec.js');
-//require('./leaflet/services/LayerInfoServiceSpec.js');
 
 /*leaflet -- overlay*/
 require('./leaflet/overlay/EchartsLayerSpec.js');
