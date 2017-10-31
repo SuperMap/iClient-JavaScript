@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>单对象查询分析</title>
     <script type="text/javascript" include="bootstrap,jquery,loader" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <script type="text/javascript" include="draw" src="../../dist/include-mapboxgl.js"></script>
     <style>
         .mb-popup {
             position: absolute;
@@ -27,6 +27,14 @@
                        value='samples_processing_newyorkZone_R'/></div>
             <p></p>
             <div class='input-group'>
+                <span class='input-group-addon'>查询对象模式<span title="必填字段" style="color: red;"> * </span></span>
+                <select class='form-control' id='queryMode' name='queryMode'>
+                    <option value='DATASET' selected>数据集</option>
+                    <option value='GEOJSON'>Geojson</option>
+                </select>
+            </div>
+            <p></p>
+            <div class='input-group' id='datasetDiv'>
                 <span class='input-group-addon'>查询对象数据集<span title="必填字段" style="color: red;"> * </span></span>
                 <input id='datasetQuery' type='text' class='form-control'
                        value='samples_processing_singleRegion_R'/>
@@ -85,6 +93,24 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    var draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+            polygon: true,
+            trash: true
+        }
+    });
+    $("#queryMode").change(function () {
+        var queryMode = $(this).val();
+        if (queryMode === "DATASET"){
+            map.removeControl(draw,"top-left");
+            $('#datasetDiv').show();
+        }
+        if (queryMode === "GEOJSON"){
+            map.addControl(draw, "top-left");
+            $('#datasetDiv').hide();
+        }
+    });
 
     bindClick();
 
@@ -107,10 +133,37 @@
 
     var processingService = new mapboxgl.supermap.ProcessingService(processingsUrl);
 
+    function getFeatureGeo() {
+        var result = draw.getAll();
+        if (result.features.length >1){
+            for (var i = 0;i < result.features.length-1;i++){
+                draw.delete(result.features[i].id);
+            }
+        }
+    }
+    map.on('draw.create', getFeatureGeo);
+
     function queryJobs() {
+        var queryParam,points;
+        if ($("#queryMode").val() === "DATASET"){
+            queryParam = $('#datasetQuery').val();
+            points =[];
+        }
+        if ($("#queryMode").val() === "GEOJSON"){
+            var result = draw.getAll();
+            if (result.features.length < 1){
+                removeLoader();
+                showAlert("创建失败!<br>" + "请绘制查询范围!", false);
+                return;
+            } else {
+                points = result.features[0].geometry.coordinates[0];
+                queryParam = "";
+            }
+        }
         var singleObjectQueryJobsParameter = new SuperMap.SingleObjectQueryJobsParameter({
             datasetName: $('#datasetName').val(),
-            datasetQuery: $('#datasetQuery').val(),
+            datasetQuery: queryParam,
+            geometryQuery: points,
             mode: $('#mode option:selected').attr('value')
         });
         processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {

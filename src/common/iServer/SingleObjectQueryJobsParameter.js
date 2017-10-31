@@ -1,5 +1,5 @@
 import SuperMap from '../SuperMap';
-import {SpatialQueryMode} from '../REST'
+import {SpatialQueryMode} from '../REST';
 
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
@@ -24,6 +24,12 @@ export default  class SingleObjectQueryJobsParameter {
     datasetQuery = "";
 
     /**
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery -{string}
+     * @description 查询对象所在的几何对象。
+     */
+    geometryQuery = "";
+
+    /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
      * @description 空间查询模式 。
      */
@@ -43,6 +49,7 @@ export default  class SingleObjectQueryJobsParameter {
     destroy() {
         this.datasetName = null;
         this.datasetQuery = null;
+        this.geometryQuery = null;
         this.mode = null;
     }
     /**

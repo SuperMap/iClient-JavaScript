@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>矢量裁剪分析</title>
     <script type="text/javascript" include="bootstrap,jquery,loader" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+    <script type="text/javascript" include="draw" src="../../dist/include-mapboxgl.js"></script>
     <style>
         .mb-popup {
             position: absolute;
@@ -27,8 +27,16 @@
                        value='samples_processing_newyorkZone_R'/></div>
             <p></p>
             <div class='input-group'>
+                <span class='input-group-addon'>查询对象模式<span title="必填字段" style="color: red;"> * </span></span>
+                <select class='form-control' id='clipMode' name='clipMode'>
+                    <option value='DATASET' selected>数据集</option>
+                    <option value='GEOJSON'>Geojson</option>
+                </select>
+            </div>
+            <p></p>
+            <div class='input-group' id='datasetDiv'>
                 <span class='input-group-addon'>裁剪对象数据集<span title="必填字段" style="color: red;"> * </span></span>
-                <input id='datasetOverlay' type='text' class='form-control'
+                <input id='datasetVectorClip' type='text' class='form-control'
                        value='samples_processing_singleRegion_R'/>
             </div>
             <p></p>
@@ -79,6 +87,24 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    var draw = new MapboxDraw({
+        displayControlsDefault: false,
+        controls: {
+            polygon: true,
+            trash: true
+        }
+    });
+    $("#clipMode").change(function () {
+        var clipMode = $(this).val();
+        if (clipMode === "DATASET"){
+            map.removeControl(draw,"top-left");
+            $('#datasetDiv').show();
+        }
+        if (clipMode === "GEOJSON"){
+            map.addControl(draw, "top-left");
+            $('#datasetDiv').hide();
+        }
+    });
 
     if (!window.isLocal) {
         SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090/iserver', token);
@@ -99,10 +125,37 @@
         });
     }
 
+    function getFeatureGeo() {
+        var result = draw.getAll();
+        if (result.features.length >1){
+            for (var i = 0;i < result.features.length-1;i++){
+                draw.delete(result.features[i].id);
+            }
+        }
+    }
+    map.on('draw.create', getFeatureGeo);
+
     function addVectorClipJobs() {
+        var clipParam,points;
+        if ($('#clipMode').val() === "DATASET"){
+            clipParam = $('#datasetVectorClip').val();
+            points = [];
+        }
+        if ($('#clipMode').val() === "GEOJSON"){
+            var result = draw.getAll();
+            if (result.features.length < 1){
+                removeLoader();
+                showAlert("创建失败!<br>" + "请绘制裁剪范围!", false);
+                return;
+            } else {
+                points = result.features[0].geometry.coordinates[0];
+                clipParam = "";
+            }
+        }
         var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
             datasetName: $('#datasetName').val(),
-            datasetOverlay: $('#datasetOverlay').val(),
+            datasetVectorClip: clipParam,
+            geometryClip: points,
             mode: $('#mode option:selected').attr('value')
         });
         processingService.addVectorClipJob(vectorClipJobsParameter, function (serviceResult) {

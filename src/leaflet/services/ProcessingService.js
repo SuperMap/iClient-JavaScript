@@ -527,6 +527,12 @@ export var ProcessingService = ServiceBase.extend({
         if (params.query) {
             params.query = CommontypesConversion.toSuperMapBounds(params.query);
         }
+        if (params.geometryQuery) {
+            params.geometryQuery = CommontypesConversion.toProcessingParam(params.geometryQuery);
+        }
+        if (params.geometryClip) {
+            params.geometryClip = CommontypesConversion.toProcessingParam(params.geometryClip);
+        }
         return params;
     }
 });

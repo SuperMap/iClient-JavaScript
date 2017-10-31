@@ -239,7 +239,9 @@ export class ProcessingService extends CommonServiceBase {
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      */
     addQueryJob(params, callback, seconds, resultFormat) {
-        var me = this, format = me._processFormat(resultFormat);
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
             eventListeners: {
                 scope: me,
@@ -251,7 +253,7 @@ export class ProcessingService extends CommonServiceBase {
             },
             format: format
         });
-        singleObjectQueryJobsService.addQueryJob(params, seconds);
+        singleObjectQueryJobsService.addQueryJob(param, seconds);
     }
 
     /**
@@ -393,7 +395,9 @@ export class ProcessingService extends CommonServiceBase {
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      */
     addVectorClipJob(params, callback, seconds, resultFormat) {
-        var me = this, format = me._processFormat(resultFormat);
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
         var vectorClipJobsService = new VectorClipJobsService(me.url, {
             serverType: me.serverType,
             eventListeners: {
@@ -406,7 +410,7 @@ export class ProcessingService extends CommonServiceBase {
             },
             format: format
         });
-        vectorClipJobsService.addVectorClipJob(params, seconds);
+        vectorClipJobsService.addVectorClipJob(param, seconds);
     }
 
     /**
@@ -489,7 +493,7 @@ export class ProcessingService extends CommonServiceBase {
     }
 
     /**
-     * @functionSuperMap.REST.ProcessingService.prototype.getoverlayGeoJobState
+     * @function SuperMap.REST.ProcessingService.prototype.getoverlayGeoJobState
      * @description 获取叠加分析的状态。
      * @param id - {string}叠加分析的id。
      * @return {Object} 叠加分析的状态
@@ -500,6 +504,37 @@ export class ProcessingService extends CommonServiceBase {
 
     _processFormat(resultFormat) {
         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
+    }
+
+    _processParams (params) {
+        if (!params) {
+            return {};
+        }
+        if (params.geometryQuery) {
+            params.geometryQuery = this._convertPatams(params.geometryQuery);
+        }
+        if (params.geometryClip) {
+            params.geometryClip = this._convertPatams(params.geometryClip);
+        }
+        return params;
+    }
+
+    _convertPatams (points){
+        var geometryParam = {};
+        if (points.length < 1){
+            geometryParam = "";
+        } else {
+            var results = [];
+            for (var i = 0;i < points.length;i++) {
+                var point = {};
+                point.x = points[i].x;
+                point.y = points[i].y;
+                results.push(point);
+            }
+            geometryParam.type = "REGION";
+            geometryParam.points = results;
+        }
+        return geometryParam;
     }
 
 }

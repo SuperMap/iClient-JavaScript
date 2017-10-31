@@ -74,6 +74,29 @@ export default class Util {
         }
     }
 
+    /**
+     * @function mapboxgl.supermap.Util.toProcessingParam
+     * @description 将Region节点数组转为Processing服务需要的分析参数
+     * @param points - Region各个节点数组
+     * @return processing服务裁剪、查询分析的分析参数
+     */
+    static toProcessingParam(points){
+        var geometryParam = {};
+        if (points.length < 1){
+            geometryParam = "";
+        } else {
+            var results = [];
+            for (var i = 0;i < points.length;i++) {
+                var point = {};
+                point.x = points[i][0];
+                point.y = points[i][1];
+                results.push(point);
+            }
+            geometryParam.type = "REGION";
+            geometryParam.points = results;
+        }
+        return geometryParam;
+    }
 
 }
 

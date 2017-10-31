@@ -521,6 +521,12 @@ export default class ProcessingService extends ServiceBase {
         if (params.query) {
             params.query = Util.toSuperMapBounds(params.query);
         }
+        if (params.geometryQuery) {
+            params.geometryQuery = Util.toProcessingParam(params.geometryQuery);
+        }
+        if (params.geometryClip) {
+            params.geometryClip = Util.toProcessingParam(params.geometryClip);
+        }
         return params;
     }
 }

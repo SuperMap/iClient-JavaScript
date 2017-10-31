@@ -11,6 +11,12 @@
             top: 10px;
             right: 10px;
         }
+        .ol-draw {
+            position: absolute;
+            top: 70px;
+            left: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -27,8 +33,16 @@
                        value='samples_processing_newyorkZone_R'/></div>
             <p></p>
             <div class='input-group'>
+                <span class='input-group-addon'>查询对象模式<span title="必填字段" style="color: red;"> * </span></span>
+                <select class='form-control' id='clipMode' name='clipMode'>
+                    <option value='DATASET' selected>数据集</option>
+                    <option value='GEOJSON'>Geojson</option>
+                </select>
+            </div>
+            <p></p>
+            <div class='input-group' id='datasetDiv'>
                 <span class='input-group-addon'>裁剪对象数据集<span title="必填字段" style="color: red;"> * </span></span>
-                <input id='datasetOverlay' type='text' class='form-control'
+                <input id='datasetVectorClip' type='text' class='form-control'
                        value='samples_processing_singleRegion_R'/>
             </div>
             <p></p>
@@ -46,9 +60,15 @@
         </div>
     </div>
 </div>
+<div id="draw" class="ol-draw">
+    <div class="btn-group" role="group" aria-label="...">
+        <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default">绘面</button><br>
+        <button id="clear" value='Clear' type="button" class="btn btn-default">清除</button>
+    </div>
+</div>
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
-    var layer,
+    var layer,draw,
         processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
         mapURL = host + "/iserver/services/map-world/rest/maps/World",
         token = 'ObpcGH_Q3L4d6Ow1FLJlbvn-3joeHSL4puxenZr-hBbG3bqnziyGSf705LFwcMWR48cgIBRb5UH1AghE9HVPSQ..',
@@ -68,6 +88,58 @@
         }),
     }));
     var processingService = new ol.supermap.ProcessingService(processingsUrl);
+    var source = new ol.source.Vector({wrapX: false});
+    var vector = new ol.layer.Vector({
+        source: source
+    });
+    map.addLayer(vector);
+    var info = new ol.control.Control({element: document.getElementById('draw')});
+    info.setMap(map);
+    map.addControl(info);
+
+    $("#clipMode").change(function () {
+        var clipMode = $(this).val();
+        if (clipMode === "DATASET"){
+            $('#draw').hide();
+            $('#datasetDiv').show();
+        }
+        if (clipMode === "GEOJSON"){
+            $('#draw').show();
+            $('#datasetDiv').hide();
+        }
+    });
+
+    var buttons = $('.btn-group').children();
+    buttons.map(function (key) {
+        var value = buttons[key].value;
+        if (value === 'Clear') {
+            $(buttons[key]).on('click', function () {
+                clearInteraction();
+                source.clear();
+                draw = undefined;
+            });
+            return;
+        }
+        $(buttons[key]).on('click', function () {
+            clearInteraction();
+            source.clear();
+            draw = new ol.interaction.Draw({
+                source: source,
+                type: buttons[key].value,
+                snapTolerance: 20
+            });
+            draw.on('drawend',function () {
+                map.removeInteraction(draw);
+            });
+            map.addInteraction(draw);
+        });
+    });
+
+    function clearInteraction() {
+        if (draw) {
+            map.removeInteraction(draw);
+        }
+    }
 
     initForm();
     bindClick();
@@ -95,9 +167,25 @@
     }
 
     function addVectorClipJobs() {
+        var points,clipParam;
+        if ($('#clipMode').val() === "DATASET") {
+            clipParam = $('#datasetVectorClip').val();
+            points = [];
+        }
+        if ($('#clipMode').val() === "GEOJSON") {
+            if (!draw){
+                removeLoader();
+                showAlert("创建失败!<br>" + "请绘制裁剪范围!", false);
+                return;
+            } else {
+                points = draw.a[0];
+                clipParam ="";
+            }
+        }
         var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
             datasetName: $('#datasetName').val(),
-            datasetOverlay: $('#datasetOverlay').val(),
+            datasetVectorClip: clipParam,
+            geometryClip: points,
             mode: $('#mode option:selected').attr('value')
         });
         processingService.addVectorClipJob(vectorClipJobsParameter, function (serviceResult) {

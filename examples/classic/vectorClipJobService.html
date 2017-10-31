@@ -10,7 +10,12 @@
             top: 10px;
             right: 10px;
         }
-
+        .control-draw {
+            position: absolute;
+            top: 80px;
+            left: 5px;
+            display: none;
+        }
         #map {
             position: absolute;
         }
@@ -30,8 +35,16 @@
                        value='samples_processing_newyorkZone_R'/></div>
             <p></p>
             <div class='input-group'>
+                <span class='input-group-addon'>查询对象模式<span title="必填字段" style="color: red;"> * </span></span>
+                <select class='form-control' id='clipMode' name='clipMode'>
+                    <option value='DATASET' selected>数据集</option>
+                    <option value='GEOJSON'>Geojson</option>
+                </select>
+            </div>
+            <p></p>
+            <div class='input-group' id='datasetDiv'>
                 <span class='input-group-addon'>裁剪对象数据集<span title="必填字段" style="color: red;"> * </span></span>
-                <input id='datasetOverlay' type='text' class='form-control'
+                <input id='datasetVectorClip' type='text' class='form-control'
                        value='samples_processing_singleRegion_R'/>
             </div>
             <p></p>
@@ -49,27 +62,56 @@
         </div>
     </div>
 </div>
+<div id="draw" class="control-draw">
+    <div class="btn-group" role="group" aria-label="...">
+        <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default">绘面</button><br>
+        <button id="clear" value='Clear' type="button" class="btn btn-default">清除</button>
+    </div>
+</div>
 <script type="text/javascript" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
-    var layer, resultLayer,
+    var style = {
+        strokeColor: "#304DBE",
+        strokeWidth: 2,
+        pointerEvents: "visiblePainted",
+        fillColor: "#304DBE",
+        fillOpacity: 0.8
+    };
+    var layer, resultLayer,drawPolygon, polygonLayer,points = [],
         processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
         mapURL = host + "/iserver/services/map-world/rest/maps/World",
         token = 'ObpcGH_Q3L4d6Ow1FLJlbvn-3joeHSL4puxenZr-hBbG3bqnziyGSf705LFwcMWR48cgIBRb5UH1AghE9HVPSQ..',
+        polygonLayer = new SuperMap.Layer.Vector("polygonLayer");
+        polygonLayer.style = style;
+        drawPolygon = new SuperMap.Control.DrawFeature(polygonLayer, SuperMap.Handler.Polygon);
+        drawPolygon.events.on({"featureadded": drawCompleted});
         map = new SuperMap.Map("map", {
             controls: [
                 new SuperMap.Control.Navigation(),
                 new SuperMap.Control.Zoom(),
-                new SuperMap.Control.LayerSwitcher()
-
+                new SuperMap.Control.LayerSwitcher(),
+                drawPolygon
             ], allOverlays: true
         });
     map.addControl(new SuperMap.Control.MousePosition());
     var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null, {maxResolution: "auto"});
     layer.events.on({"layerInitialized": addLayer});
 
+    $("#clipMode").change(function () {
+        var clipMode = $(this).val();
+        if (clipMode === "DATASET"){
+            $('#draw').hide();
+            $('#datasetDiv').show();
+        }
+        if (clipMode === "GEOJSON"){
+            $('#draw').show();
+            $('#datasetDiv').hide();
+        }
+    });
+
     function addLayer() {
-        map.addLayers([layer]);
+        map.addLayers([layer,polygonLayer]);
         map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
     }
 
@@ -91,12 +133,39 @@
             }
             addVectorClipJobs();
         });
+        $('#drawPolygon').on('click', function () {
+            drawPolygon.activate();
+            polygonLayer.removeAllFeatures();
+        });
+        $('#clear').on('click', function () {
+            polygonLayer.removeAllFeatures();
+            points = [];
+        });
+    }
+
+    function drawCompleted(drawGeometryArgs) {
+        drawPolygon.deactivate();
+        points = drawGeometryArgs.feature.geometry.components[0].components;
     }
 
     function addVectorClipJobs() {
+        var clipParam;
+        if ($('#clipMode').val() === "DATASET") {
+            clipParam = $('#datasetVectorClip').val();
+        }
+        if ($('#clipMode').val() === "GEOJSON") {
+            if (points.length < 1){
+                removeLoader();
+                showAlert("创建失败!<br>" + "请绘制裁剪范围!", false);
+                return;
+            } else {
+                clipParam = "";
+            }
+        }
         var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
             datasetName: $('#datasetName').val(),
-            datasetOverlay: $('#datasetOverlay').val(),
+            datasetVectorClip: clipParam,
+            geometryClip: points,
             mode: $('#mode option:selected').attr('value')
         });
         processingService.addVectorClipJob(vectorClipJobsParameter, function (serviceResult) {

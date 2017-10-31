@@ -21,7 +21,13 @@ export default class VectorClipJobsParameter {
      * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
      * @description 裁剪对象数据集。
      */
-    datasetOverlay = "";
+    datasetVectorClip = "";
+
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
+     * @description 裁剪几何对象。
+     */
+    geometryClip = "";
 
     /**
      * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
@@ -43,7 +49,8 @@ export default class VectorClipJobsParameter {
      */
     destroy() {
         this.datasetName = null;
-        this.datasetOverlay = null;
+        this.datasetVectorClip = null;
+        this.geometryClip = null;
         this.mode = null;
     }
     /**
@@ -64,7 +71,6 @@ export default class VectorClipJobsParameter {
         }
     }
 
-    CLASS_NAME = "SuperMap.VectorClipJobsParameter"
 }
 
 SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
