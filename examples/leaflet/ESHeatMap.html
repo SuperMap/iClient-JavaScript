@@ -343,7 +343,7 @@
                 crs: L.CRS.EPSG3857
             });
             var attr = 'Data © <a href="https://www.elastic.co/products/elasticsearch" target="_blank">Elasticsearch</a> Map Data <span>© <a href="http://support.supermap.com.cn/product/iServer.aspx" target="_blank">SuperMap iServer</a></span> with <span>© <a href="http://iclient.supermap.io" target="_blank">SuperMap iClient</a></span>';
-            var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+            var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
             var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
             L.supermap.tiledMapLayer(url,{attribution:attr}).addTo(map);
         }

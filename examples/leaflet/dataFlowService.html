@@ -8,7 +8,7 @@
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090";
+    var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     var wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "117.122.248.69:8800");
     var token = "ObpcGH_Q3L4d6Ow1FLJlbvn-3joeHSL4puxenZr-hBbG3bqnziyGSf705LFwcMWR48cgIBRb5UH1AghE9HVPSQ..";
     var map,

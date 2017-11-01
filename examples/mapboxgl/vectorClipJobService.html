@@ -56,9 +56,9 @@
 </div>
 <script>
     var map,
-        baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World",
+        baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World",
         mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
-        processingsUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
+        processingsUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/distributedanalyst/rest/v1/jobs",
         token = 'ObpcGH_Q3L4d6Ow1FLJlbvn-3joeHSL4puxenZr-hBbG3bqnziyGSf705LFwcMWR48cgIBRb5UH1AghE9HVPSQ..';
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +

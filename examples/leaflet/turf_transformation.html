@@ -9,7 +9,7 @@
 <script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
 <script type="text/javascript" include="turf" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090",
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
         turfLayer, resultLayer, marker,
         notFirst = false,

@@ -65,7 +65,7 @@
     <div id="popup-content">示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理</div>
 </div>
 <script type="text/javascript">
-    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
     var container = document.getElementById('popup');
     var closer = document.getElementById('popup-closer');

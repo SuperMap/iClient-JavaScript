@@ -96,4 +96,6 @@
     }
 
     load();
+    window.isLocal = false;
+    window.server = "http://localhost:8090";
 })();

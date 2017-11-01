@@ -10,8 +10,8 @@
 <script type="text/javascript">
     var map, options, interpolationAnalystService, interpolationAnalystParameters, interpolationAnalystResult, points,
         themeService, themeGridRange, themeParameters,
-        baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-temperature/rest/maps/全国温度变化图",
-        serviceUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+        baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-temperature/rest/maps/全国温度变化图",
+        serviceUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
     var mapService = new ol.supermap.MapService(baseUrl);
     var extent = [-2640403.63, 1873792.1, 3247669.39, 5921501.4];
     var projection = new ol.proj.Projection({

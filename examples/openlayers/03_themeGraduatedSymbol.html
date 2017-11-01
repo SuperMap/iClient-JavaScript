@@ -9,7 +9,7 @@
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
     var map, themeLayer, options,
-        url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China";
+        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-china400/rest/maps/China";
     var mapService = new ol.supermap.MapService(url);
     mapService.getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;

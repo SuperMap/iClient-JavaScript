@@ -13,7 +13,7 @@
         center: [29.56, 106.56],
         zoom: 11,
     });
-    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
     L.supermap.tiledMapLayer(url).addTo(map);

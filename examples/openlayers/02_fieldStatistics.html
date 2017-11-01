@@ -28,8 +28,8 @@
 <script type="text/javascript">
     var container, content, info;
     var map, currentData, layersName = [],
-        mapURL = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World",
-        dataURL = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090")+"/iserver/services/data-world/rest/data";
+        mapURL = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World",
+        dataURL = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/data-world/rest/data";
 
     map = new ol.Map({
         target: 'map',

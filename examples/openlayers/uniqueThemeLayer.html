@@ -92,8 +92,8 @@
 </div>
 <script type="text/javascript">
     var map, options, themeLayer, themeSource,
-            baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
-            url2 = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://117.122.248.69:8090") + "/iserver/services/data-jingjin/rest/data",
+            baseUrl = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            url2 = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/data-jingjin/rest/data",
             extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;

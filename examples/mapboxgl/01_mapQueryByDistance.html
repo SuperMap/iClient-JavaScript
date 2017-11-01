@@ -10,7 +10,7 @@
 <script type="text/javascript">
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
     var decodeMarkers = [];
-    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var url = host + "/iserver/services/map-world/rest/maps/World";
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";

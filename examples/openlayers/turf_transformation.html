@@ -75,7 +75,7 @@
     </select>
 </div>
 <script type="text/javascript">
-    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090",
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         select, container = document.getElementById('info'),
         content = document.getElementById('info-content'),
         overlay = new ol.Overlay(({

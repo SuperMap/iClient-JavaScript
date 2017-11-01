@@ -27,7 +27,7 @@
 <div id="loading">纽约出租车145万上车点数据加载中...</div>
 <script type="text/javascript" include="leaflet.heat" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
 
     var map = L.map('map', {

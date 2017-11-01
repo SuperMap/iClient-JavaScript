@@ -13,7 +13,7 @@
         center: [39.916, 116.450],
         zoom: 16
     });
-    var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var url = host + "/iserver/services/map-china400/rest/maps/China";
     L.supermap.tiledMapLayer(url).addTo(map);
 

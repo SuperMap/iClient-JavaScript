@@ -10,9 +10,9 @@
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script>
     var map, queryBufferGeometry,
-        baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World",
+        baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World",
         mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
-        dataUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+        dataUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
     var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
         "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
         " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";

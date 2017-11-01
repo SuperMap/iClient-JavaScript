@@ -59,8 +59,8 @@
             duration: 250
         }
     }));
-    var map, baseUrl = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/世界地图_Day",
-            url = (window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
+    var map, baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/世界地图_Day",
+            url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
     map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
