@@ -1,5 +1,5 @@
 require('../../../src/common/iServer/SetLayerInfoService');
-require('../../resrces/LayersInfo');
+require('../../resources/LayersInfo');
 
 var setLayerFailedEventArgsSystem = null;
 var setLayerEventArgsSystem = null;
