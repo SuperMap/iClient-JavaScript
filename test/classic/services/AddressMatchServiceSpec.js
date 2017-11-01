@@ -1,7 +1,7 @@
 require('../../../src/classic/services/AddressMatchService');
 
 var addressMatchURL = GlobeParameter.addressMatchURL;
-describe('testAddressMatchService', function () {
+describe('classic_AddressMatchService', function () {
     var originaTimeout;
     beforeEach(function () {
         originaTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;

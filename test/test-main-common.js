@@ -5,7 +5,7 @@ require('./common/iServer/BufferDistanceSpec.js');
 require('./common/iServer/BufferSettingSpec.js');
 require('./common/iServer/BurstPipelineAnalystServiceSpec.js');
 require('./common/iServer/ComputeWeightMatrixServiceSpec.js');
-// require('./common/iServer/DensityAnalystServiceSpec.js');   //暂不提交
+require('./common/iServer/DensityAnalystServiceSpec.js');
 require('./common/iServer/EditFeaturesServiceSpec.js');
 require('./common/iServer/FieldStatisticServiceSpec.js');
 require('./common/iServer/FindClosestFacilitiesServiceSpec.js');
