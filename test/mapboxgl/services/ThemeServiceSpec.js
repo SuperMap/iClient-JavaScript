@@ -3,6 +3,9 @@ var mapboxgl = require('mapbox-gl');
 
 var worldUrl = GlobeParameter.WorldURL;
 var chinaUrl = GlobeParameter.ChinaURL;
+var jingjinAreaUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图";
+var jingjinPopulationUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区人口分布图_专题图";
+
 describe('mapboxgl_ThemeService', function () {
     var serviceResult;
     var originalTimeout;
@@ -170,12 +173,10 @@ describe('mapboxgl_ThemeService', function () {
                 done();
             }
         }, 5000)
-
     });
 
     //栅格分段专题图
     it('getThemeInfo_GridRange', function (done) {
-        var jingjinUrl = "http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
         var themeGridRangeItem1 = new SuperMap.ThemeGridRangeItem({
             start: -4,
             end: 120,
@@ -202,7 +203,7 @@ describe('mapboxgl_ThemeService', function () {
             joinItems: null,
             themes: [themeGridRange]
         });
-        var service = new mapboxgl.supermap.ThemeService(jingjinUrl);
+        var service = new mapboxgl.supermap.ThemeService(jingjinPopulationUrl);
         service.getThemeInfo(themeParameters, function (result) {
             serviceResult = result
         });
@@ -227,8 +228,6 @@ describe('mapboxgl_ThemeService', function () {
     });
 
     it('getThemeInfo_GridUnique', function (done) {
-        var jingjinUrl = "http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区地图";
-
         function setItems() {
             var items = [];
             for (var i = -4; i < 2197; i++) {
@@ -265,7 +264,7 @@ describe('mapboxgl_ThemeService', function () {
             dataSourceNames: ["Jingjin"],
             themes: [themeGridUnique]
         });
-        var service = new mapboxgl.supermap.ThemeService(jingjinUrl);
+        var service = new mapboxgl.supermap.ThemeService(jingjinAreaUrl);
         service.getThemeInfo(themeParameters, function (result) {
             serviceResult = result
         });
@@ -286,8 +285,7 @@ describe('mapboxgl_ThemeService', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 5000)
-
+        }, 8000)
     });
 
     //标签专题图
@@ -422,8 +420,7 @@ describe('mapboxgl_ThemeService', function () {
             }
         }, 5000)
     });
-
-
+    
     //单值专题图
     it('getThemeInfo_Unique', function (done) {
         var themeUniqueIteme1 = new SuperMap.ThemeUniqueItem({

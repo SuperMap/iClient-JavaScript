@@ -90,11 +90,11 @@ describe('SurfaceAnalystService', function () {
                 surfaceAnalystService.destroy();
                 done();
             }
-        }, 5000);
+        }, 10000);
     });
 
     //点数据集提取等值面
-    it('Dataset_ISOREGION', function (done) {
+    xit('Dataset_ISOREGION', function (done) {
         var surfaceAnalystService = initSurfaceService();
         var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
             datumValue: 70,
@@ -127,7 +127,7 @@ describe('SurfaceAnalystService', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 10000);
+        }, 12000);
     });
 
     //对象提取等值线
