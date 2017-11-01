@@ -7,15 +7,12 @@ var url = GlobeParameter.spatialAnalystURL;
 var options = {
     eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
 };
-
 function initBufferAnalystService() {
     return new SuperMap.BufferAnalystService(url, options);
 }
-
 function analyzeFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
-
 function analyzeCompleted(analyseEventArgs) {
     analystEventArgsSystem = analyseEventArgs;
 }
@@ -32,12 +29,13 @@ describe('BufferAnalystService', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    var resultDataset = "BufferAnalystByDS_commonTest";
     //测试成功事件
     it('success:BufferAnalystService_byDatasets', function (done) {
         var bfServiceByDatasets = initBufferAnalystService();
         var resultSetting = new SuperMap.DataReturnOption({
             expectCount: 2000,
-            dataset: "bufferAnalystByDS_commonTest",
+            dataset: resultDataset,
             dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
             deleteExistResultDataset: true
         });
@@ -142,10 +140,8 @@ describe('BufferAnalystService', function () {
 
     // 删除测试过程中产生的测试数据集
     it('delete test resources', function (done) {
-        var bufferbyDSResult = GlobeParameter.datajingjinURL + "bufferAnalystByDS_commonTest";
-        request.delete(bufferbyDSResult, function (response) {
-            console.log(response);
-        });
+        var testResult = GlobeParameter.datajingjinURL + resultDataset;
+        request.delete(testResult);
         done();
     });
 });

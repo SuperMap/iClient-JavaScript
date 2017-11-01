@@ -1,5 +1,6 @@
 require('../../../src/mapboxgl/services/SpatialAnalystService');
 var mapboxgl = require('mapbox-gl');
+var request = require('request');
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -17,13 +18,14 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    var resultDataset = "KernelDensity_mapboxglTest";
     //点密度分析, 删除重复的数据集
     it('densityAnalysis_deleteExistResultDataset:true', function (done) {
         var densityKernelAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
             dataset: "Railway@Changchun",
             //用于进行核密度分析的测量值的字段名称
             fieldName: "SmLength",
-            resultGridName: "KernelDensity_Result",
+            resultGridName: resultDataset,
             //删除重复的数据集
             deleteExistResultDataset: true
         });
@@ -37,7 +39,7 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.dataset).toEqual("KernelDensity_Result@Changchun");
+                expect(serviceResult.result.dataset).toEqual(resultDataset + "@Changchun");
                 done();
             } catch (e) {
                 console.log("'densityAnalysis_deleteExistResultDataset:true'案例失败" + e.name + ":" + e.message);
@@ -53,7 +55,7 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
             dataset: "Railway@Changchun",
             //用于进行核密度分析的测量值的字段名称
             fieldName: "SmLength",
-            resultGridName: "KernelDensity_Result",
+            resultGridName: resultDataset,
             //不删除重复的数据集
             deleteExistResultDataset: false
         });
@@ -67,7 +69,7 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processFailed");
                 expect(serviceResult.error.code).toEqual(400);
-                expect(serviceResult.error.errorMsg).toEqual("数据集KernelDensity_Result@Changchun已存在。");
+                expect(serviceResult.error.errorMsg).toEqual("数据集" + resultDataset + "@Changchun已存在。");
                 done();
             } catch (e) {
                 console.log("'densityAnalysis_deleteExistResultDataset_false_test'案例失败" + e.name + ":" + e.message);
@@ -75,5 +77,12 @@ describe('mapboxgl_SpatialAnalystService_densityAnalysis', function () {
                 done();
             }
         }, 5000);
+    });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var testResult = GlobeParameter.datachangchunURL + resultDataset;
+        request.delete(testResult);
+        done();
     });
 });

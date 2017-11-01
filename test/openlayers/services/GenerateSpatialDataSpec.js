@@ -1,4 +1,5 @@
 require('../../../src/openlayers/services/SpatialAnalystService');
+var request = require('request');
 
 var originalTimeout, serviceResults;
 var changchunServiceUrl = GlobeParameter.spatialAnalystURL_Changchun;
@@ -12,6 +13,7 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    var resultDataset = "GenerateSpatialData_openlayersTest";
     it('generateSpatialData', function (done) {
         var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
@@ -25,7 +27,7 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', function () {
             errorInfoField: "",
             dataReturnOption: new SuperMap.DataReturnOption({
                 expectCount: 1000,
-                dataset: "generateSpatialData@Changchun",
+                dataset: resultDataset,
                 deleteExistResultDataset: true,
                 dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
             })
@@ -40,5 +42,12 @@ describe('openlayers_SpatialAnalystService_generateSpatialData', function () {
             expect(serviceResults.result.dataset).not.toBeNull();
             done();
         }, 8000);
+    });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var testResult = GlobeParameter.datachangchunURL + resultDataset;
+        request.delete(testResult);
+        done();
     });
 });

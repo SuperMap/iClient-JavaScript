@@ -1,4 +1,5 @@
 require('../../../src/leaflet/services/SpatialAnalystService');
+var request = require('request');
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
@@ -16,11 +17,12 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', function () 
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    var resultDataset = "TerrainCurvature_leafletTest";
     it('terrainCurvatureCalculate', function (done) {
         var terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
-            averageCurvatureName: "terrainCurvature_leafletTest",
+            averageCurvatureName: resultDataset,
             deleteExistResultDataset: true
         });
         var terrainCurvatureCalculationService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
@@ -33,7 +35,7 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', function () 
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.averageCurvatureResult.dataset).toEqual("terrainCurvature_leafletTest@Jingjin");
+                expect(serviceResult.result.averageCurvatureResult.dataset).toEqual(resultDataset + "@Jingjin");
                 expect(serviceResult.result.averageCurvatureResult.succeed).toBe(true);
                 terrainCurvatureCalculationService.destroy();
                 done();
@@ -44,5 +46,12 @@ describe('leaflet_SpatialAnalystService_terrainCurvatureCalculate', function () 
                 done();
             }
         });
+    });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var testResult = GlobeParameter.datajingjinURL + resultDataset;
+        request.delete(testResult);
+        done();
     });
 });

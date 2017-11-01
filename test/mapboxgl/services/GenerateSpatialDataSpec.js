@@ -1,5 +1,6 @@
 require('../../../src/mapboxgl/services/SpatialAnalystService');
 var mapboxgl = require('mapbox-gl');
+var request = require('request');
 
 var url = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -17,6 +18,7 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    var resultDataset = "GenerateSpatialData_mapboxglTest";
     //动态分段分析
     it('generateSpatialData', function (done) {
         var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
@@ -32,7 +34,7 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', function () {
             errorInfoField: "",
             dataReturnOption: new SuperMap.DataReturnOption({
                 expectCount: 1000,
-                dataset: "generateSpatialData@Changchun",
+                dataset: resultDataset,
                 deleteExistResultDataset: true,
                 dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
             })
@@ -46,7 +48,7 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', function () {
                 expect(service).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.result.dataset).toEqual("generateSpatialData@Changchun");
+                expect(serviceResult.result.dataset).toEqual(resultDataset + "@Changchun");
                 done();
             } catch (e) {
                 console.log("'generateSpatialData'案例失败" + e.name + ":" + e.message);
@@ -54,5 +56,12 @@ describe('mapboxgl_SpatialAnalystService_generateSpatialData', function () {
                 done();
             }
         }, 5000);
+    });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var testResult = GlobeParameter.datachangchunURL + resultDataset;
+        request.delete(testResult);
+        done();
     });
 });

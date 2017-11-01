@@ -1,4 +1,5 @@
 require('../../../src/leaflet/services/spatialAnalystService');
+var request = require('request');
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -17,6 +18,7 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    var resultDataset = "KernelDensity_leafletTest";
     //点密度分析
     it('densityAnalysis', function (done) {
         var densityAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
@@ -28,7 +30,7 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
             fieldName: "SmLength",
             searchRadius: 50, //Railway@Changchun的单位是米
             // 结果数据集名称
-            resultGridName: "KernelDensity_leafletTest",
+            resultGridName: resultDataset,
             deleteExistResultDataset: true
         });
         var densityAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
@@ -42,7 +44,7 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
                 expect(serviceResult.type).toBe("processCompleted");
                 var result = serviceResult.result;
                 expect(result).not.toBeNull();
-                expect(result.dataset).toEqual("KernelDensity_leafletTest@Changchun");
+                expect(result.dataset).toEqual(resultDataset + "@Changchun");
                 expect(result.succeed).toBe(true);
                 densityAnalystService.destroy();
                 done();
@@ -53,5 +55,12 @@ describe('leaflet_SpatialAnalystService_densityAnalysis', function () {
                 done();
             }
         }, 5000);
+    });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var testResult = GlobeParameter.datachangchunURL + resultDataset;
+        request.delete(testResult);
+        done();
     });
 });

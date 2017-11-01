@@ -1,4 +1,5 @@
 require('../../../src/leaflet/services/spatialAnalystService');
+var request = require('request');
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
@@ -16,6 +17,7 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    var resultDataset = "GenerateSpatialData_leafletTest";
     it('generateSpatialData', function (done) {
         var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
@@ -29,7 +31,7 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', function () {
             errorInfoField: "",
             dataReturnOption: new SuperMap.DataReturnOption({
                 expectCount: 1000,
-                dataset: "generateSpatialData_leafletTest",
+                dataset: resultDataset,
                 deleteExistResultDataset: true,
                 dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
             })
@@ -47,7 +49,7 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', function () {
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.result.dataset).toEqual("generateSpatialData_leafletTest@Changchun");
+                expect(serviceResult.result.dataset).toEqual(resultDataset + "@Changchun");
                 generateSpatialDataService.destroy();
                 done();
             } catch (exception) {
@@ -57,5 +59,12 @@ describe('leaflet_SpatialAnalystService_generateSpatialData', function () {
                 done();
             }
         }, 5000);
+    });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var testResult = GlobeParameter.datachangchunURL + resultDataset;
+        request.delete(testResult);
+        done();
     });
 });
