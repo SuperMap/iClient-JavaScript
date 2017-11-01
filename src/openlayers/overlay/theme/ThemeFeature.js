@@ -15,6 +15,7 @@ export default class ThemeFeature {
         this.geometry = geometry;
         this.attributes = attributes;
     }
+
     /**
      * @function ol.supermap.ThemeFeature.prototype.toFeature
      * @description 转为矢量要素
@@ -40,6 +41,9 @@ export default class ThemeFeature {
             }
             var linearRings = new SuperMap.Geometry.LinearRing(points);
             geometry = new SuperMap.Geometry.Polygon([linearRings]);
+        }
+        if (geometry.length === 3) {
+            geometry = new SuperMap.Geometry.GeoText(geometry[0], geometry[1], geometry[2]);
         }
         return new SuperMap.Feature.Vector(geometry, this.attributes);
     }

@@ -122,7 +122,9 @@ export default class ShapeFactory {
             return shape;
         } else if (sps instanceof Line) {        // 线
             //检查参数 pointList 是否存在
-            if (!sps.pointList) {return null;}
+            if (!sps.pointList) {
+                return null;
+            }
 
             // 设置style
             let style = new Object();
@@ -138,7 +140,9 @@ export default class ShapeFactory {
             return shape;
         } else if (sps instanceof Polygon) {        // 面
             //检查参数 pointList 是否存在
-            if (!sps.pointList) {return null;}
+            if (!sps.pointList) {
+                return null;
+            }
 
             //设置style
             let style = new Object();
@@ -154,7 +158,9 @@ export default class ShapeFactory {
             return shape;
         } else if (sps instanceof Rectangle) {        // 矩形
             //检查参数 pointList 是否存在
-            if (!sps.x && !sps.y & !sps.width & !sps.height) {return null;}
+            if (!sps.x && !sps.y & !sps.width & !sps.height) {
+                return null;
+            }
 
             //设置style
             let style = new Object();
@@ -183,11 +189,11 @@ export default class ShapeFactory {
             if (sps["r0"]) {
                 style["r0"] = sps.r0
             }
-            
+
             if (sps["clockWise"]) {
                 style["clockWise"] = sps.clockWise
             }
-            
+
 
             style = Util.copyAttributesWithClip(style, sps.style, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle']);
 
@@ -320,6 +326,9 @@ export default class ShapeFactory {
                 case "label":
                     newStyle["text"] = style[ss];
                     break;
+                case "labelRect":
+                    newStyle["labelRect"] = style[ss];
+                    break;
                 case "fontColor":
                     newStyle["textColor"] = style[ss];
                     break;
@@ -333,7 +342,11 @@ export default class ShapeFactory {
                     fontStr[2] = style[ss];
                     break;
                 case "fontSize":
-                    fontStr[3] = style[ss] + "px";
+                    var unit = "";
+                    if (style[ss]&&style[ss].toString().indexOf("px") < 0) {
+                        unit = "px";
+                    }
+                    fontStr[3] = style[ss] + unit;
                     break;
                 case "fontFamily":
                     fontStr[4] = style[ss];

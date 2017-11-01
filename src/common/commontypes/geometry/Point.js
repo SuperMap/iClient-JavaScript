@@ -96,6 +96,19 @@ export default class Point extends Geometry {
         return equals;
     }
 
+
+    /**
+     * @function SuperMap.Geometry.Point.prototype.move
+     * @description 沿着x、y轴的正方向上按照给定的位移移动点对象，move 不仅改变了几何对象的位置并且清理了边界缓存。
+     * @param x - {float} x轴正方向上的偏移量。
+     * @param y - {float} y轴正方向上偏移量。
+     */
+    move(x, y) {
+        this.x = this.x + x;
+        this.y = this.y + y;
+        this.clearBounds();
+    }
+
     /**
      * @function SuperMap.Geometry.Point.prototype.toShortString
      * @returns {string} 字符串代表点对象。(ex. <i>"5, 42"</i>)

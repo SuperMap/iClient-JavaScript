@@ -140,6 +140,15 @@ export default class SmicText extends Shape {
 
         //文本绘制
         for (var i = 0, l = text.length; i < l; i++) {
+            //是否渲染矩形背景及颜色
+            if (style.labelRect) {
+                //+4,-2是为了让文字距边框左右边缘有点间隔
+                ctx.fillRect(rect.x-2, rect.y, rect.width + 4, rect.height);
+                ctx.fillStyle = style.strokeColor;
+                ctx.strokeRect(rect.x-2, rect.y, rect.width + 4, rect.height);
+                ctx.fillStyle = style.textColor;
+            }
+
             switch (style.brushType) {
                 case 'fill':
                     this.setCtxGlobalAlpha(ctx, "fill", style);

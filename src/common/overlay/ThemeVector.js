@@ -1,5 +1,15 @@
 import SuperMap from '../SuperMap';
 import ThemeFeature from '../overlay/feature/Theme';
+import '../commontypes/geometry/Rectangle';
+import '../commontypes/geometry/Point';
+import '../commontypes/geometry/MultiPoint';
+import '../commontypes/geometry/LineString';
+import '../commontypes/geometry/MultiLineString';
+import '../commontypes/geometry/LinearRing';
+import '../commontypes/geometry/Polygon';
+import '../commontypes/geometry/MultiPolygon';
+import '../commontypes/geometry/Curve';
+import '../commontypes/geometry/GeoText';
 
 
 /**
@@ -69,8 +79,12 @@ export default class ThemeVector extends ThemeFeature {
     constructor(data, layer, style, options, shapeOptions) {
         super(data, layer);
         //数据的 geometry 属性必须存在且类型是 SuperMap.Geometry 或其子类的类型
-        if (!data.geometry) {return;}
-        if (!(data.geometry instanceof SuperMap.Geometry)) {return;}
+        if (!data.geometry) {
+            return;
+        }
+        if (!(data.geometry instanceof SuperMap.Geometry)) {
+            return;
+        }
         this.style = style ? style : {};
         this.data = data;
         this.layer = layer;
@@ -165,7 +179,9 @@ export default class ThemeVector extends ThemeFeature {
             //抽稀 - 2 px
             if (pointList.length > 0) {
                 var lastLocalXY = pointList[pointList.length - 1];
-                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) {continue;}
+                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) {
+                    continue;
+                }
             }
 
             //使用参考点
@@ -249,7 +265,9 @@ export default class ThemeVector extends ThemeFeature {
             //抽稀
             if (pointList.length > 0) {
                 var lastLocalXY = pointList[pointList.length - 1];
-                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) {continue;}
+                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) {
+                    continue;
+                }
             }
 
             //使用参考点
@@ -378,7 +396,7 @@ export default class ThemeVector extends ThemeFeature {
      */
     polygonToTF(geometry) {
         var components = geometry.components;
-        
+
 
         //节点像素坐标
         var localLX = [];
@@ -411,7 +429,9 @@ export default class ThemeVector extends ThemeFeature {
                     //抽稀 - 2 px
                     if (pointList.length > 0) {
                         var lastLocalXY = pointList[pointList.length - 1];
-                        if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) {continue;}
+                        if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) {
+                            continue;
+                        }
                     }
 
                     //使用参考点
@@ -431,7 +451,9 @@ export default class ThemeVector extends ThemeFeature {
                     //抽稀 - 2 px
                     if (holePolygonPointList.length > 0) {
                         var lastXY = holePolygonPointList[holePolygonPointList.length - 1];
-                        if ((Math.abs(lastXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastXY[1] - refLocal[1]) <= nCPx)) {continue;}
+                        if ((Math.abs(lastXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastXY[1] - refLocal[1]) <= nCPx)) {
+                            continue;
+                        }
                     }
 
                     //使用参考点

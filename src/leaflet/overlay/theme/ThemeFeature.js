@@ -2,6 +2,7 @@ import '../../core/Base';
 import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
 import Vector from "../../../common/commontypes/Vector"
+
 /**
  * @class L.supermap.themeFeature
  * @classdesc 客户端专题图要素类。
@@ -31,15 +32,20 @@ export var ThemeFeature = L.Class.extend({
         } else if (geometry instanceof L.Polygon) {
             points = this.reverseLatLngs(geometry.getLatLngs());
             geometry = new SuperMap.Geometry.Polygon(points);
+        } else if (geometry.length === 3) {
+            geometry = new SuperMap.Geometry.GeoText(geometry[1], geometry[0], geometry[2]);
         } else {
             if (geometry instanceof L.LatLng) {
                 points = [geometry.lng, geometry.lat];
             } else if (geometry instanceof L.Point) {
                 points = [geometry.x, geometry.y];
+            } else {
+                points = geometry;
             }
-            if (points.length > 1) {
+            if (points.length === 2) {
                 geometry = new SuperMap.Geometry.Point(points[0], points[1]);
             }
+
         }
         return new Vector(geometry, this.attributes);
     },

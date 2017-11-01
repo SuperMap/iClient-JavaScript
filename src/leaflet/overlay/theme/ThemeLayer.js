@@ -96,7 +96,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
-     * @param features - {L.feature} 要添加的要素
+     * @param features - {SuperMap.Feature.Vector} 要添加的要素
      */
     addFeatures: function (features) { // eslint-disable-line no-unused-vars
         //子类实现此方法
@@ -114,7 +114,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.destroyFeatures
      * @description 销毁某个要素
-     * @param features - {L.feature} 将被销毁得要素
+     * @param features - {SuperMap.Feature.Vector} 将被销毁的要素
      */
     destroyFeatures: function (features) {
         if (features === undefined) {
@@ -370,15 +370,17 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.ThemeLayer.prototype.getLocalXY
-     * @description 地理坐标转为像素坐标。{Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-     * @param coordinate - {string} 坐标系统
+     * @description 地理坐标转为像素坐标
+     * @param coordinate - {array}
      */
     getLocalXY: function (coordinate) {
         if (!this._map) {
             return coordinate;
         }
         var coor = coordinate;
-        if (!(coordinate instanceof L.LatLng)) {
+        if (L.Util.isArray(coordinate)) {
+            coor = L.point(coordinate[0], coordinate[1]);
+        } else if (!(coordinate instanceof L.Point)) {
             if (coordinate instanceof Point || coordinate instanceof GeoText) {
                 coor = L.point(coordinate.x, coordinate.y,);
             } else {

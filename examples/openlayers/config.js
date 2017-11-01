@@ -537,6 +537,10 @@ var exampleConfig = {
                     thumbnail: "rankSymbolThemeLayer.png",
                     fileName: "rankSymbolThemeLayer"
                 }, {
+                    name: "标签专题图",
+                    thumbnail: "labelThemeLayer.png",
+                    fileName: "labelThemeLayer"
+                }, {
                     name: "柱状图",
                     thumbnail: "barThemeLayer.png",
                     fileName: "barThemeLayer"

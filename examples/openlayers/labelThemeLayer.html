@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>客户端标签专题图</title>
+    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+    <style type="text/css">
+        .legend td {
+            width: 60px;
+            height: 12px;
+            font-size: 12px;
+        }
+
+        .panel {
+            margin-bottom: 10px;
+        }
+
+        .leaflet-popup-content {
+            margin: 5px
+        }
+
+        .ol-popup {
+            position: relative;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 60px;
+            left: -50px;
+            font-size: 14px;
+            z-index: 100;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%">
+    <div style="z-index: 100;position: relative;width: 250px;float:right">
+        <div class="panel legend"
+             style=" position: fixed !important;position: absolute; left: 0;bottom: 0;width: 400px; margin-left: 10px;">
+            <div class="panel-body text-center">
+                <table>
+                    <tr>
+                        <td>优</td>
+                        <td>良</td>
+                        <td>轻度污染</td>
+                        <td>中度污染</td>
+                        <td>重度污染</td>
+                        <td>严重污染</td>
+                    </tr>
+                    <tr>
+                        <td style='background: #6ACD06'></td>
+                        <td style='background: #FBD12A'></td>
+                        <td style='background: #FE8800'></td>
+                        <td style='background: #FF0000'></td>
+                        <td style='background: #CC0000'></td>
+                        <td style='background: #960453'></td>
+                    </tr>
+                    <tr>
+                        <td>0-51</td>
+                        <td>51-101</td>
+                        <td>101-151</td>
+                        <td>151-201</td>
+                        <td>201-301</td>
+                        <td>301-601</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content"></div>
+</div>
+<script type="text/javascript" src="../data/themeLableData.js"></script>
+<script type="text/javascript">
+
+    var map, themeSource,
+        host = window.isLocal ? window.server : "http://117.122.248.69:8090",
+        baseUrl = host + "/iserver/services/map-china400/rest/maps/China_4326";
+
+
+    var popupContent = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    closer.onClick = function () {
+        removePopup();
+        return false;
+    };
+    var popup = new ol.Overlay(({
+        element: document.getElementById('popup'),
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    }));
+
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [110.85, 39.79],
+                zoom: 4,
+                projection: "EPSG:4326"
+            }),
+            overlays: [popup]
+        });
+        var options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest(options),
+            projection: 'EPSG:4326'
+        });
+        map.addLayer(layer);
+        initThemeLayer();
+        initLegendView();
+    });
+
+    function initThemeLayer() {
+        themeSource = new ol.source.Label("labelThemeLayer", {
+            map: map,
+            attributions: " ",
+            style: new SuperMap.ThemeStyle({
+                labelRect: true,
+                fontColor: "#000000",
+                fontWeight: "bolder",
+                fontSize: "18px",
+                fill: true,
+                fillColor: "#FFFFFF",
+                fillOpacity: 1,
+                stroke: false,
+                strokeColor: "#8B7B8B"
+            }),
+            themeField: "aqi",
+            styleGroups: [
+                {
+                    start: 0,
+                    end: 51,
+                    style: {
+                        fillColor: "#6ACD06",
+                        fontSize: "17px"
+                    }
+                }, {
+                    start: 51,
+                    end: 101,
+                    style: {
+                        fillColor: "#FBD12A",
+                        fontSize: "19px"
+                    }
+                }, {
+                    start: 101,
+                    end: 151,
+                    style: {
+                        fillColor: "#FE8800",
+                        fontSize: "22px"
+                    }
+                }, {
+                    start: 151,
+                    end: 201,
+                    style: {
+                        fillColor: "#FF0000",
+                        fontSize: "24px"
+                    }
+                }, {
+                    start: 201,
+                    end: 301,
+                    style: {
+                        fillColor: "#CC0000",
+                        fontSize: "26px"
+                    }
+                }, {
+                    start: 301,
+                    end: 601,
+                    style: {
+                        fillColor: "#960453",
+                        fontSize: "28px"
+                    }
+                }
+            ]
+        });
+        //专题图层 mousemove 事件
+        themeSource.on('mousemove', handleMouseOver);
+        //source添加到图层
+        var pointerInteraction = new ol.interaction.Pointer({
+            handleMoveEvent: function (event) {
+                themeSource.fire('mousemove', event);
+            }
+        });
+        map.addInteraction(pointerInteraction);
+        var themeLayer = new ol.layer.Image({
+            source: themeSource
+        });
+        map.addLayer(themeLayer);
+        addFeatures();
+    }
+
+    function addFeatures() {
+        var labelFeatures = [];
+        var feat;
+        for (var i = 0; i < themeData.length; i++) {
+            var lonlat = themeData[i].lonLat.split(",");
+            var lng = parseFloat(lonlat[0]);
+            var lat = parseFloat(lonlat[1]);
+            var text = themeData[i].aqi;
+            feat = new ol.supermap.ThemeFeature([lng, lat, text], themeData[i]);
+            labelFeatures.push(feat);
+        }
+        themeSource.addFeatures(labelFeatures);
+    }
+
+    //图例
+    function initLegendView() {
+        document.getElementById("mapLegend").style.display = "block";
+    }
+
+    //图层信息框
+    function updateInfoView(feature) {
+
+        if (!feature && popup) {
+            removePopup();
+            return;
+        }
+
+        var statisticsData = getStatisticsData();
+        var contentHTML = "<table><tbody><tr>" +
+            "<td><div style='margin-left: 15px'>" +
+            "<table><tbody><tr>" +
+            "<td><div id='contentID' style='margin-top: 2px;margin-bottom: 2px;width:65px;text-align: center;font-size:35px;color: #ffffff;'>" + feature.attributes.aqi + "</div></td>" +
+            "<td style='padding-right: 20px;'></td>" +
+            "<td>" +
+            "<div id='textID' style='text-align: left;font-size: 19px;text-shadow: 1px 1px 0 #ffffff;'>" + feature.attributes.quality + "</div>" +
+            "<div style='font-size:10px;width:150px;'>" + feature.attributes.time_point + "</div>" +
+            "<div style=' font-weight:lighter; font-size:14px;'>当前城市：" + feature.attributes.area + "</div>" +
+            "</td>" +
+            "</tr> </tbody></table>" +
+            "<table style='width:100%;font-size: 10px;border: 0 solid black;padding: 0;margin: 0;border-spacing: 0;'>" +
+            "<tbody>" +
+            "<tr>" +
+            "<td style='font-weight:bold;width:45px;'></td><td style='font-weight:bold;width:51px;' align='center' nowrap='true'>Current</td>" +
+            "<td  style=' font-weight:bold;width:49px;' align='center' nowrap='true'>Min</td>" +
+            "<td style='font-weight:bold;width:49px;' align='center' nowrap='true'>Max</td> " +
+            "</tr>" +
+            "<tr style='height: 23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>PM2.5</span></div></td>" +
+            "<td style='font-size:11px;' align='center'>" + feature.attributes.pm2_5 + "</td>" +
+            "<td style='color:#0086c8;font-size:11px;' align='center'>" + statisticsData.minNum + "</td>" +
+            "<td  style='color:#ce3c3a;font-size:11px;' align='center'>" + statisticsData.maxNum + "</td>" +
+            "</tr>" +
+            "<tr style='height: 23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>PM10</span></div></td>" +
+            "<td style='font-size:11px;' align='center'>" + feature.attributes.pm10 + "</td>" +
+            "<td style='color:#0086c8;font-size:11px;' align='center'>" + statisticsData.minpm10 + "</td>" +
+            "<td  style='color:#ce3c3a;font-size:11px;' align='center'>" + statisticsData.maxpm10 + "</td>" +
+            "</tr>" +
+            "<tr style='height:23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>O3</span></div></td>" +
+            "<td style='font-size:11px;' align='center'>" + feature.attributes.o3 + "</td>" +
+            "<td style='color:#0086c8;font-size:11px;' align='center'>" + statisticsData.minO3 + "</td>" +
+            "<td style='color:#ce3c3a;font-size:11px;' align='center'>" + statisticsData.maxO3 + "</td></td>" +
+            "</tr>" +
+            "<tr style='height: 23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>SO2</span></div></td>" +
+            "<td style='font-size:11px;' align='center'>" + feature.attributes.so2 + "</td>" +
+            "<td style='color:#0086c8;font-size:11px;' align='center'>" + statisticsData.minSO2 + "</td>" +
+            "<td  style='color:#ce3c3a;font-size:11px;' align='center'>" + statisticsData.maxSO2 + "</td></td>" +
+            "</tr>" +
+            "<tr style='height: 23px;'><td style='padding-left: 0;padding-right: 0'><div style='width:46px;'><span style='font-weight:bold;'>NO2</span></div></td>" +
+            "<td style='font-size:11px;' align='center'>" + feature.attributes.no2 + "</td>" +
+            "<td style='color:#0086c8;font-size:11px;' align='center'>" + statisticsData.minNO2 + "</td>" +
+            "<td  style='color:#ce3c3a;font-size:11px;' align='center'>" + statisticsData.maxNO2 + "</td></td>" +
+            "</tr></tbody> </table></div></td></tr></tbody> </table>";
+
+        var latLng = getLatLng(feature.attributes.lonLat);
+        popupContent.innerHTML = contentHTML;
+        popup.setPosition(latLng);
+        popup.setOffset([0, -190]);
+
+        //设置弹框内容颜色
+        var groups = themeSource.styleGroups;
+        for (var i = 0; i < groups.length; i++) {
+            if (feature.attributes.aqi >= groups[0].start && feature.attributes.aqi < groups[0].end) {
+                setColor("#6ACD06");
+            }
+            else if (feature.attributes.aqi >= groups[1].start && feature.attributes.aqi < groups[1].end) {
+                setColor("#FBD12A");
+            }
+            else if (feature.attributes.aqi >= groups[2].start && feature.attributes.aqi < groups[2].end) {
+                setColor("#FE8800");
+            }
+            else if (feature.attributes.aqi >= groups[3].start && feature.attributes.aqi < groups[3].end) {
+                setColor("#FF0000");
+            }
+            else if (feature.attributes.aqi >= groups[4].start && feature.attributes.aqi < groups[4].end) {
+                setColor("#CC0000");
+            }
+            else if (feature.attributes.aqi >= groups[5].start && feature.attributes.aqi < groups[5].end) {
+                setColor("#960453");
+            }
+        }
+
+        function setColor(color) {
+            document.getElementById("contentID").style.backgroundColor = color;
+            document.getElementById("textID").style.color = color;
+        }
+
+        function getLatLng(latLng) {
+            var latLng = latLng.split(",");
+            return [parseFloat(latLng[0]), parseFloat(latLng[1])]
+        }
+    }
+
+    function getStatisticsData() {
+        if (this.statisticsData) {
+            return this.statisticsData;
+        }
+        //遍历数组，获取单个属性。组成新的数组
+        var pm25 = [], pm10s = [], o3s = [], so2s = [], no2s = [];
+        for (var i = 0; i < themeData.length; i++) {
+            pm10s.push(themeData[i].pm2_5);
+            pm25.push(themeData[i].pm10);
+            o3s.push(themeData[i].o3);
+            so2s.push(themeData[i].so2);
+            no2s.push(themeData[i].no2);
+        }
+        //获取单个属性的最大最小值
+        this.statisticsData = {
+            maxNum: Math.max.apply(Math, pm25),
+            minNum: Math.min.apply(Math, pm25),
+            maxpm10: Math.max.apply(Math, pm10s),
+            minpm10: Math.min.apply(Math, pm10s),
+            maxO3: Math.max.apply(Math, o3s),
+            minO3: Math.min.apply(Math, o3s),
+            maxSO2: Math.max.apply(Math, so2s),
+            minSO2: Math.min.apply(Math, so2s),
+            maxNO2: Math.max.apply(Math, no2s),
+            minNO2: Math.min.apply(Math, no2s)
+        };
+        return this.statisticsData;
+
+    }
+
+    function handleMouseOver(e) {
+        if (e.target && e.target.refDataID) {
+            var fid = e.target.refDataID;
+            var fea = themeSource.getFeatureById(fid);
+            if (fea) {
+                updateInfoView(fea);
+            }
+        } else {
+            removePopup();
+        }
+    }
+
+    function removePopup() {
+        popup.setPosition(undefined);
+        closer.blur();
+    }
+</script>
+</body>
+</html>

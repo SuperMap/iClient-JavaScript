@@ -387,6 +387,7 @@ deps = {
                     './src/leaflet/overlay/RangeThemeLayer.js',
                     './src/leaflet/overlay/RankSymbolThemeLayer.js',
                     './src/leaflet/overlay/GraphThemeLayer.js',
+                    './src/leaflet/overlay/LabelThemeLayer.js',
                 ],
                 "modules": [{
                     "name": "L.supermap.uniqueThemeLayer",
@@ -400,6 +401,9 @@ deps = {
                 }, {
                     "name": "L.supermap.garphThemeLayer",
                     "des": "统计专题图效果"
+                }, {
+                    "name": "L.supermap.labelThemeLayer",
+                    "des": "标签专题图效果"
                 }]
             },
             "MapV": {
@@ -705,6 +709,7 @@ deps = {
                     "./src/openlayers/overlay/Range.js",
                     "./src/openlayers/overlay/RankSymbol.js",
                     "./src/openlayers/overlay/Graph.js",
+                    "./src/openlayers/overlay/Label.js",
                 ],
                 "modules": [{
                     "name": "ol.source.Unique",
@@ -718,6 +723,9 @@ deps = {
                 }, {
                     "name": "ol.source.Graph",
                     "des": "统计专题图效果"
+                }, {
+                    "name": "ol.source.Label",
+                    "des": "标签专题图效果"
                 }]
             },
             "Mapv": {
