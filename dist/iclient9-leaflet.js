@@ -33222,7 +33222,7 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
             labelYOffset: 0,
             labelRotation: 0,
 
-            //默认背景框样式
+            //默认样式
             fill: false,
             fillColor: "#ee9900",
             fillOpacity: 0.4,
@@ -33233,8 +33233,11 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
             strokeLinecap: "round",
             strokeDashstyle: "solid",
 
+            //默认显示背景框
+            labelRect: true,
             //对用户隐藏但必须保持此值的属性
             //cursor: "pointer",
+
             labelSelect: true,
 
             //用  _isGeoTextStrategyStyle 标记此style，携带此类style的要素特指GeoText策略中的标签要素
@@ -33253,7 +33256,7 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
      * @param bounds -{L.bounds} 重绘范围
      */
     redrawThematicFeatures: function redrawThematicFeatures(bounds) {
-        if (!this.labelFeatures) {
+        if (!this.labelFeatures || this.labelFeatures.length == 0) {
             var feats = this.setLabelsStyle(this.features);
             this.labelFeatures = [];
             for (var i = 0, len = feats.length; i < len; i++) {
@@ -33298,7 +33301,7 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
         for (var i = 0, len = labelFeatures.length; i < len; i++) {
             fi = labelFeatures[i];
             //检查fi的style在避让中是否被改变，如果改变，重新设置要素的style
-            if (fi.isStyleChange) {
+            if (fi.isStyleChange || fi.isStyleChange === undefined) {
                 fi = this.setStyle(fi);
             }
 
@@ -33410,7 +33413,9 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
                 }
 
                 //屏蔽有偏移性质的style属性,偏移量在算bounds时已经加入计算
-                var bounds = new _Bounds2["default"](geoBs[3].lng, geoBs[3].lat, geoBs[1].lng, [geoBs[1].lat]);
+                var leftBottom = map.options.crs.project(geoBs[3]);
+                var rightTop = map.options.crs.project(geoBs[1]);
+                var bounds = new _Bounds2["default"](leftBottom.x, leftBottom.y, rightTop.x, [rightTop.y]);
                 var center = bounds.getCenterLonLat();
                 var label = new _GeoText2["default"](center.lon, center.lat, fi.attributes[this.themeField]);
                 label.calculateBounds();
@@ -33567,7 +33572,7 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
 
         //将标签的地理位置转为像素位置
         var locationTmp = geoText.getCentroid();
-        var locTmp = this._map.latLngToContainerPoint(_leaflet2["default"].latLng(locationTmp.y, locationTmp.x));
+        var locTmp = this._map.latLngToContainerPoint(this._map.options.crs.unproject(_leaflet2["default"].point(locationTmp.x, locationTmp.y)));
         var loc = _leaflet2["default"].point(locTmp.x, locTmp.y);
 
         //偏移处理
