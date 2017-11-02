@@ -82,8 +82,8 @@
             inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js");
         }
         if (inArray(includes, 'leaflet.draw')) {
-            inputCSS("http://cdn.bootcss.com/leaflet.draw/0.4.9/leaflet.draw.css");
-            inputScript("http://cdn.bootcss.com/leaflet.draw/0.4.9/leaflet.draw.js");
+            inputCSS("http://cdn.bootcss.com/leaflet.draw/0.4.12/leaflet.draw.css");
+            inputScript("http://cdn.bootcss.com/leaflet.draw/0.4.12/leaflet.draw.js");
         }
         if (inArray(includes, 'leaflet.pm')) {
             inputCSS("http://cdn.bootcss.com/leaflet.pm/0.16.0/leaflet.pm.min.css");
