@@ -24,7 +24,7 @@ require('./common/iServer/GetFeaturesBySQLServiceSpec.js');
 require('./common/iServer/GetFieldsServiceSpec.js');
 require('./common/iServer/GetGridCellInfosServiceSpec.js');
 require('./common/iServer/GetLayersInfoServiceSpec.js');
-// require('./common/iServer/InterpolationAnalystServiceSpec.js'); //暂不提交
+require('./common/iServer/InterpolationAnalystServiceSpec.js');
 require('./common/iServer/MapServiceSpec.js');
 require('./common/iServer/MathExpressionAnalysisServiceSpec.js');
 require('./common/iServer/MeasureServiceSpec.js');

@@ -1,4 +1,5 @@
 require('../../../src/mapboxgl/services/SpatialAnalystService');
+var request = require('request');
 var mapboxgl = require('mapbox-gl');
 
 var url = GlobeParameter.spatialAnalystURL;
@@ -117,6 +118,49 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
         }, 5000);
     });
 
+    var resultDataset = "BufferAnalystByDatasets_mbglTest";
+    //缓冲区数据集分析  返回值为数据集
+    it('bufferAnalysis_DATASET_ONLY', function (done) {
+        var bufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+            dataset: "Road_L@Jingjin",
+            //设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析
+            filterQueryParameter: new SuperMap.FilterParameter({attributeFilter: "NAME='莲花池东路'"}),
+            bufferSetting: new SuperMap.BufferSetting({
+                endType: SuperMap.BufferEndType.ROUND,
+                leftDistance: {value: 200},
+                rightDistance: {value: 200},
+                semicircleLineSegment: 10
+            }),
+            resultSetting: new SuperMap.DataReturnOption({
+                expectCount: 2000,
+                dataset: resultDataset,
+                dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
+                deleteExistResultDataset: true
+            })
+        });
+        var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
+        service.bufferAnalysis(bufferAnalystParameters, function (result) {
+            serviceResult = result;
+        });
+        setTimeout(function () {
+            try {
+                expect(service).not.toBeNull();
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.type).toEqual("processCompleted");
+                expect(serviceResult.object.mode).toEqual("datasets");
+                var result = serviceResult.result;
+                expect(result).not.toBeNull();
+                expect(result.succeed).toBe(true);
+                expect(result.dataset).toEqual(resultDataset + "@Jingjin");
+                done();
+            } catch (e) {
+                console.log("'bufferAnalysis_isAttributeRetained:true'案例失败" + e.name + ":" + e.message);
+                expect(false).toBeTruthy();
+                done();
+            }
+        }, 6000);
+    });
+
     //缓冲区分析 几何对象缓冲区分析
     it('bufferAnalysis_byGeometry', function (done) {
         var pointList = [
@@ -174,5 +218,12 @@ describe('mapboxgl_SpatialAnalystService_bufferAnalysis', function () {
                 done();
             }
         }, 5000);
+    });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var testResult = GlobeParameter.datajingjinURL + resultDataset;
+        request.delete(testResult);
+        done();
     });
 });
