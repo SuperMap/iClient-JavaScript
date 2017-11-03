@@ -1,6 +1,6 @@
 import '../core/Base';
 import L from "leaflet";
-import echarts  from "echarts";
+import echarts from "echarts";
 
 /**
  * @class L.supermap.echartsLayer
@@ -20,7 +20,7 @@ export var EchartsLayer = L.Layer.extend({
     _echartsOptions: null,
 
     options: {
-        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
         loadWhileAnimating: true
     },
 
@@ -77,6 +77,8 @@ export var EchartsLayer = L.Layer.extend({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
             update: 'updateLayout'
+        }, function (payload, ecModel) {// eslint-disable-line no-unused-vars
+
         })
         echarts.registerCoordinateSystem(
             'leaflet', LeafletMapCoordSys
