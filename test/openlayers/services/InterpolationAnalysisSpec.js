@@ -1,4 +1,5 @@
 require('../../../src/openlayers/services/SpatialAnalystService');
+var request = require('request');
 
 var originalTimeout, serviceResults;
 var sampleServiceUrl = GlobeParameter.spatialAnalystURL;
@@ -12,12 +13,13 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
+    var resultDataset_density = "Interpolation_density_olTest";
     //点密度插值分析
     it('interpolationAnalysis_density', function (done) {
         var interpolationAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
             dataset: "SamplesP@Interpolation",
             //插值分析结果数据集的名称
-            outputDatasetName: "Density_Result",
+            outputDatasetName: resultDataset_density,
             //插值分析结果数据源的名称
             outputDatasourceName: "Interpolation",
             //结果栅格数据集存储的像素格式
@@ -39,13 +41,14 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
         });
     });
 
+    var resultDataset_IDW_dataset = "Interpolation_IDW_dataset_olTest";
     //反距离加权插值分析
     it('interpolationAnalysis_IDW_dataset', function (done) {
         var interpolationAnalystParameters = new SuperMap.InterpolationIDWAnalystParameters({
             //用于做插值分析的数据源中数据集的名称
             dataset: "SamplesP@Interpolation",
             //插值分析结果数据集的名称
-            outputDatasetName: "IDW_result",
+            outputDatasetName: resultDataset_IDW_dataset,
             //插值分析结果数据源的名称
             outputDatasourceName: "Interpolation",
             //结果栅格数据集存储的像素格式
@@ -68,6 +71,7 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
         });
     });
 
+    var resultDataset_IDW_geometry = "Interpolation_IDW_geometry_olTest";
     //离散点插值分析
     it('interpolationAnalysis_IDW_geometry', function (done) {
         var baseurl = GlobeParameter.mapTemperatureURL + "全国温度变化图";
@@ -104,7 +108,7 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
                 // 插值分析类型,geometry类型表示对离散点插值分析,默认为“dataset”
                 InterpolationAnalystType: "geometry",
                 // 插值分析结果数据集的名称
-                outputDatasetName: "IDWcretePoints_result",
+                outputDatasetName: resultDataset_IDW_geometry,
                 // 插值分析结果数据源的名称
                 outputDatasourceName: "Interpolation",
                 // 结果栅格数据集存储的像素格式
@@ -125,5 +129,16 @@ describe('openlayers_SpatialAnalystService_interpolationAnalysis', function () {
                 done();
             });
         });
+    });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var testResult_density = GlobeParameter.dataspatialAnalystURL + resultDataset_density;
+        var testResult_IDW_dataset = GlobeParameter.dataspatialAnalystURL + resultDataset_IDW_dataset;
+        var testResult_IDW_geometry = GlobeParameter.dataspatialAnalystURL + resultDataset_IDW_geometry;
+        request.delete(testResult_density);
+        request.delete(testResult_IDW_dataset);
+        request.delete(testResult_IDW_geometry);
+        done();
     });
 });

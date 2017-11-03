@@ -9,6 +9,7 @@
     dataServiceURL: "http://localhost:8090/iserver/services/data-world/rest/data",
     datajingjinURL:"http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/",
     datachangchunURL:"http://localhost:8090/iserver/services/data-changchun/rest/data/datasources/Changchun/datasets/",
+    dataspatialAnalystURL:"http://localhost:8090/iserver/services/data-spatialAnalyst/rest/data/datasources/Interpolation/datasets/",
     editServiceURL: "http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R",
     editServiceURL_LINE: "http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Geomor_L",
     editServiceURL_POINT: "http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Neighbor_P",

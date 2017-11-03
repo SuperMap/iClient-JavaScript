@@ -1,4 +1,6 @@
 require('../../../src/leaflet/services/spatialAnalystService');
+var request = require('request');
+
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options = {
     serverType: 'iServer'
@@ -15,12 +17,13 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    it('interpolationAnalysis', function (done) {
+    var resultDataset = "Interpolation_UnvsKriging_lfTest";
+    it('interpolationAnalysis_Kriging_Universal', function (done) {
         var interpolationAnalystParameters = new SuperMap.InterpolationKrigingAnalystParameters({
             // 用于做插值分析的数据源中数据集的名称
             dataset: "SamplesP@Interpolation",
             // 插值分析结果数据集的名称
-            outputDatasetName: "UniversalKriging_leafletTest",
+            outputDatasetName: resultDataset,
             // 插值分析结果数据源的名称
             outputDatasourceName: "Interpolation",
             // 结果栅格数据集存储的像素格式
@@ -55,16 +58,23 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
-                expect(serviceResult.result.dataset).toContain("UniversalKriging_leafletTest");
+                expect(serviceResult.result.dataset).toEqual(resultDataset + "@Interpolation");
                 expect(serviceResult.result.succeed).toBe(true);
                 interpolationAnalystService.destroy();
                 done();
             } catch (exception) {
-                console.log("'leaflet_interpolationAnalystService'案例失败" + exception.name + ":" + exception.message);
+                console.log("'leaflet_interpolationAnalystService_Kriging_Universal'案例失败" + exception.name + ":" + exception.message);
                 interpolationAnalystService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
         });
+    });
+
+    // 删除测试过程中产生的测试数据集
+    it('delete test resources', function (done) {
+        var testResult = GlobeParameter.dataspatialAnalystURL+ resultDataset;
+        request.delete(testResult);
+        done();
     });
 });
