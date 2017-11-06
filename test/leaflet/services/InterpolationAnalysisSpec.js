@@ -58,7 +58,8 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toEqual("processCompleted");
                 expect(serviceResult.result).not.toBeNull();
-                expect(serviceResult.result.dataset).toEqual(resultDataset + "@Interpolation");
+                expect(serviceResult.result.dataset).toContain(resultDataset);
+                expect(serviceResult.result.dataset).toContain("@Interpolation");
                 expect(serviceResult.result.succeed).toBe(true);
                 interpolationAnalystService.destroy();
                 done();
@@ -73,7 +74,7 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
 
     // 删除测试过程中产生的测试数据集
     it('delete test resources', function (done) {
-        var testResult = GlobeParameter.dataspatialAnalystURL+ resultDataset;
+        var testResult = GlobeParameter.dataspatialAnalystURL + resultDataset;
         request.delete(testResult);
         done();
     });

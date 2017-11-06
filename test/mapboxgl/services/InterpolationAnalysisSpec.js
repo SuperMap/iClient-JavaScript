@@ -46,7 +46,8 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.succeed).toEqual(true);
-                expect(serviceResult.result.dataset).toEqual(resultDataset_density + "@Interpolation");
+                expect(serviceResult.result.dataset).toContain(resultDataset_density);
+                expect(serviceResult.result.dataset).toContain("@Interpolation");
                 expect(serviceResult.object.mode).toEqual("Density");
                 done();
             } catch (e) {
@@ -87,7 +88,8 @@ describe('mapboxgl_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.type).toBe("processCompleted");
                 expect(serviceResult.result.succeed).toEqual(true);
-                expect(serviceResult.result.dataset).toEqual(resultDataset_IDW_dataset + "@Interpolation");
+                expect(serviceResult.result.dataset).toContain(resultDataset_IDW_dataset);
+                expect(serviceResult.result.dataset).toContain("@Interpolation");
                 expect(serviceResult.object.mode).toEqual("IDW");
                 done();
             } catch (e) {

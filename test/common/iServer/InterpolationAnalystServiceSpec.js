@@ -263,7 +263,8 @@ describe('InterpolationAnalystService', function () {
                 var serviceResult = analystEventArgsSystem.result;
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toEqual(resultDataset_RBFByGeo + "@Interpolation");
+                expect(serviceResult.dataset).toContain(resultDataset_RBFByGeo);
+                expect(serviceResult.dataset).toContain("@Interpolation");
                 interpolationAnalystService.destroy();
                 interpolationRBFAnalystParameters.destroy();
                 done();
@@ -311,7 +312,8 @@ describe('InterpolationAnalystService', function () {
                 var serviceResult = analystEventArgsSystem.result;
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toEqual(resultDataset_densityByGeo + "@Interpolation");
+                expect(serviceResult.dataset).toContain(resultDataset_densityByGeo);
+                expect(serviceResult.dataset).toContain("@Interpolation");
                 interpolationAnalystService.destroy();
                 interpolationDensityAnalystParameters.destroy();
                 done();
@@ -362,7 +364,8 @@ describe('InterpolationAnalystService', function () {
                 var serviceResult = analystEventArgsSystem.result;
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toEqual(resultDataset_IDWByGeo + "@Interpolation");
+                expect(serviceResult.dataset).toContain(resultDataset_IDWByGeo);
+                expect(serviceResult.dataset).toContain("@Interpolation");
                 interpolationAnalystService.destroy();
                 interpolationIDWAnalystParameters.destroy();
                 done();
@@ -417,7 +420,8 @@ describe('InterpolationAnalystService', function () {
                 var serviceResult = analystEventArgsSystem.result;
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toEqual(resultDataset_krigingByGeo + "@Interpolation");
+                expect(serviceResult.dataset).toContain(resultDataset_krigingByGeo);
+                expect(serviceResult.dataset).toContain("@Interpolation");
                 interpolationAnalystService.destroy();
                 interpolationKrigingAnalystParameters.destroy();
                 done();
