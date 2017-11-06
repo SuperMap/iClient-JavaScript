@@ -17872,18 +17872,13 @@ var Graph = function (_Theme) {
             if (!_SuperMap2.default.Util.isArray(features)) {
                 features = [features];
             }
-            var event = { features: features };
-            var ret = _mapboxGl2.default.Evented.prototype.fire('beforefeaturesadded', event);
+            var ret = _mapboxGl2.default.Evented.prototype.fire('beforefeaturesadded', { features: features });
             if (ret === false) {
                 return;
             }
-            features = event.features;
-            var featuresFailAdded = [];
             for (var i = 0, len = features.length; i < len; i++) {
                 this.features.push(this.toiClientFeature(features[i]));
             }
-            var succeed = featuresFailAdded.length == 0 ? true : false;
-            _mapboxGl2.default.Evented.prototype.fire('featuresadded', { features: featuresFailAdded, succeed: succeed });
             //绘制专题要素
             if (this.renderer) {
                 this.redrawThematicFeatures(this.map.getBounds());
@@ -22864,7 +22859,9 @@ var Theme = function () {
         //处理用户预先（在图层添加到 map 前）监听的事件
         this.addTFEvents();
         this.map.on('move', this.moveEvent.bind(this));
-        this.map.on('remove', this.removeEvent.bind(this));
+        this.map.on('zoom', this.zoomEvent.bind(this));
+        this.map.on('remove', this.removeFromMap.bind(this));
+        this.map.on('resize', this.resizeEvent.bind(this));
     }
 
     /**
@@ -23169,6 +23166,11 @@ var Theme = function () {
         value: function moveEvent() {
             this.redrawThematicFeatures(this.map.getBounds());
         }
+    }, {
+        key: 'zoomEvent',
+        value: function zoomEvent() {
+            this.redrawThematicFeatures(this.map.getBounds());
+        }
 
         /**
          * @function mapboxgl.supermap.prototype.resizeEvent
@@ -23178,15 +23180,12 @@ var Theme = function () {
     }, {
         key: 'resizeEvent',
         value: function resizeEvent() {
-            var div = this.div;
-            div.style.position = 'absolute';
-            div.style.top = 0 + "px";
-            div.style.left = 0 + "px";
             var canvas = this.map.getCanvas();
-            div.width = parseInt(canvas.width);
-            div.height = parseInt(canvas.height);
-            div.style.width = canvas.style.width;
-            div.style.height = canvas.style.height;
+            this.div.style.width = canvas.style.width;
+            this.div.style.height = canvas.style.height;
+            this.div.width = parseInt(canvas.width);
+            this.div.height = parseInt(canvas.height);
+            this.renderer.resize();
             this.redrawThematicFeatures(this.map.getBounds());
         }
 
@@ -23196,8 +23195,8 @@ var Theme = function () {
          */
 
     }, {
-        key: 'removeEvent',
-        value: function removeEvent() {
+        key: 'removeFromMap',
+        value: function removeFromMap() {
             this.map.getCanvasContainer().removeChild(this.div);
         }
     }]);
@@ -26199,7 +26198,7 @@ var FeatureService = function (_ServiceBase) {
             if (params.geometry) {
                 params.geometry = _Util2.default.toSuperMapGeometry(params.geometry);
             }
-            //editFeature服务参数转换
+            //editFeature服务参数转换,传入单独得对象或对象数组
             if (params.features) {
                 var features = [];
                 if (_Util2.default.isArray(params.features)) {
@@ -26223,7 +26222,7 @@ var FeatureService = function (_ServiceBase) {
             var feature = {},
                 fieldNames = [],
                 fieldValues = [];
-            var properties = geoFeature.features[0].properties;
+            var properties = geoFeature.properties;
             for (var key in properties) {
                 fieldNames.push(key);
                 fieldValues.push(properties[key]);
@@ -27483,42 +27482,46 @@ var NetworkAnalystService = function (_ServiceBase) {
             });
             updateTurnNodeWeightService.processAsync(params);
         }
+
+        /**
+         * @description 所有 Point 考虑 mapboxgl.lnglat、mapboxgl.Point、[]三种形式
+         * @param params
+         * @return {*}
+         * @private
+         */
+
     }, {
         key: '_processParams',
         value: function _processParams(params) {
             if (!params) {
                 return {};
             }
+            var me = this;
             if (params.centers && _Util2.default.isArray(params.centers)) {
                 params.centers.map(function (point, key) {
-                    params.centers[key] = point instanceof _mapboxGl2.default.LngLat ? {
-                        x: point.lng,
-                        y: point.lat
-                    } : point;
+                    params.centers[key] = me._toPointObject(point);
                     return params.centers[key];
                 });
             }
 
             if (params.nodes && _Util2.default.isArray(params.nodes)) {
                 params.nodes.map(function (point, key) {
-                    params.nodes[key] = point instanceof _mapboxGl2.default.LngLat ? {
-                        x: point.lng,
-                        y: point.lat
-                    } : point;
+                    params.nodes[key] = me._toPointObject(point);
                     return params.nodes[key];
                 });
             }
 
-            if (params.event && params.event instanceof _mapboxGl2.default.LngLat) {
-                params.event = { x: params.event.lng, y: params.event.lat };
+            if (params.event) {
+                if (params.event instanceof _mapboxGl2.default.LngLat) {
+                    params.event = { x: params.event.lng, y: params.event.lat };
+                } else if (_Util2.default.isArray(params.event)) {
+                    params.event = { x: params.event[0], y: params.event[1] };
+                }
             }
 
             if (params.facilities && _Util2.default.isArray(params.facilities)) {
                 params.facilities.map(function (point, key) {
-                    params.facilities[key] = point instanceof _mapboxGl2.default.LngLat ? {
-                        x: point.lng,
-                        y: point.lat
-                    } : point;
+                    params.facilities[key] = me._toPointObject(point);
                     return params.facilities[key];
                 });
             }
@@ -27526,10 +27529,7 @@ var NetworkAnalystService = function (_ServiceBase) {
                 var barrierPoints = params.parameter.barrierPoints;
                 if (_Util2.default.isArray(barrierPoints)) {
                     barrierPoints.map(function (point, key) {
-                        params.parameter.barrierPoints[key] = point instanceof _mapboxGl2.default.LngLat ? {
-                            x: point.lng,
-                            y: point.lat
-                        } : point;
+                        params.parameter[key] = me._toPointObject(point);
                         return params.parameter.barrierPoints[key];
                     });
                 } else {
@@ -27540,6 +27540,26 @@ var NetworkAnalystService = function (_ServiceBase) {
                 }
             }
             return params;
+        }
+    }, {
+        key: '_toPointObject',
+        value: function _toPointObject(point) {
+            if (_Util2.default.isArray(point)) {
+                return {
+                    x: point[0],
+                    y: point[1]
+                };
+            } else if (point instanceof _mapboxGl2.default.LngLat) {
+                return {
+                    x: point.lng,
+                    y: point.lat
+                };
+            } else {
+                return point instanceof _mapboxGl2.default.Point ? {
+                    x: point.x,
+                    y: point.y
+                } : point;
+            }
         }
     }, {
         key: '_processFormat',
@@ -65204,7 +65224,7 @@ var Math = function () {
         this._radians = null;
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Math";
 
-        this._radians = Math.PI / 180;
+        this._radians = window.Math.PI / 180;
     }
 
     /**
@@ -65229,7 +65249,7 @@ var Math = function () {
     _createClass(Math, [{
         key: "sin",
         value: function sin(angle, isDegrees) {
-            return Math.sin(isDegrees ? angle * this._radians : angle);
+            return window.Math.sin(isDegrees ? angle * this._radians : angle);
         }
 
         /**
@@ -65247,7 +65267,7 @@ var Math = function () {
     }, {
         key: "cos",
         value: function cos(angle, isDegrees) {
-            return Math.cos(isDegrees ? angle * this._radians : angle);
+            return window.Math.cos(isDegrees ? angle * this._radians : angle);
         }
 
         /**

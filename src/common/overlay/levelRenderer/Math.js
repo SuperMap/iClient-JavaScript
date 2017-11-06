@@ -20,7 +20,7 @@ export default class Math {
      *
      */
     constructor() {
-        this._radians = Math.PI / 180;
+        this._radians = window.Math.PI / 180;
     }
 
 
@@ -36,7 +36,7 @@ export default class Math {
      * {Number} sin 值。
      */
     sin(angle, isDegrees) {
-        return Math.sin(isDegrees ? angle * this._radians : angle);
+        return window.Math.sin(isDegrees ? angle * this._radians : angle);
     }
 
 
@@ -52,7 +52,7 @@ export default class Math {
      * {Number} cos 值。
      */
     cos(angle, isDegrees) {
-        return Math.cos(isDegrees ? angle * this._radians : angle);
+        return window.Math.cos(isDegrees ? angle * this._radians : angle);
     }
 
 

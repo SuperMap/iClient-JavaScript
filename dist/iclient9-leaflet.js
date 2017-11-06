@@ -19615,7 +19615,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *              统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
  *              目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
  * @param name - {string} 专题图表名称
- * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
+ * @param chartsType - {string} 图表类型。目前可用："Bar", "Bar3D", "Line","Point","Pie","Ring"。
  * @param options - {Object} 待设置得参数。如：<br>
  *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
  *        chartsType :图表类型。目前可用："Bar", "Line", "Pie"。<br>
@@ -19638,17 +19638,17 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         isOverLay: true
     },
 
-    /*
-       */
     initialize: function initialize(name, chartsType, options) {
         var newArgs = [];
         newArgs.push(name);
         newArgs.push(options);
         _ThemeLayer.ThemeLayer.prototype.initialize.apply(this, newArgs);
+        this.map = options.map || null;
         this.chartsType = chartsType;
-        this.charts = [];
-        this.cache = {};
-        this.chartsSetting = {};
+        this.chartsSetting = options.chartsSetting || {};
+        this.themeFields = options.themeFields || null;
+        this.charts = options.charts || [];
+        this.cache = options.cache || {};
     },
 
     /**
@@ -19672,20 +19672,14 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
             features = [features];
         }
 
-        var me = this,
-            event = { features: features };
-        me.fire("beforefeaturesadded", event);
-        features = event.features;
+        var me = this;
+        me.fire("beforefeaturesadded", { features: features });
 
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
             feature = me._createFeature(feature);
             me.features.push(feature);
         }
-
-        var succeed = me.features.length === 0;
-        me.fire("featuresadded", { features: me.features, succeed: succeed });
-
         //绘制专题要素
         if (!me.renderer) {
             return;
@@ -26472,6 +26466,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         this.TFEvents = [];
         this.levelRenderer = new _LevelRenderer2["default"]();
         this.movingOffset = [0, 0];
+        this.map = options.map || null;
     },
 
     /**
@@ -26498,9 +26493,9 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
      * @param map - {L.map} 要删除的地图
      */
     onRemove: function onRemove(map) {
-        if (map) {
-            map.removeLayer(this);
-        }
+        var me = this;
+        _leaflet2["default"].DomUtil.remove(me.container);
+        map.off("mousemove", me.mouseMoveHandler);
     },
 
     /**
@@ -26525,12 +26520,18 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
 
         me.renderer = me.levelRenderer.init(me.container);
         me.renderer.clear();
+        if (me.features.length > 0) {
+            me._reset();
+            me.redrawThematicFeatures(me.map.getBounds());
+        }
+
         //处理用户预先（在图层添加到 map 前）监听的事件
         me.addTFEvents();
-        map.on("mousemove", function (e) {
+        me.mouseMoveHandler = function (e) {
             var xy = e.layerPoint;
             me.currentMousePosition = _leaflet2["default"].point(xy.x + me.movingOffset[0], xy.y + me.movingOffset[1]);
-        });
+        };
+        map.on("mousemove", me.mouseMoveHandler);
     },
 
     /**
@@ -26787,7 +26788,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         // eslint-disable-line no-unused-vars
         var me = this;
         if (me.renderer) {
-            me.renderer.off(event, callback);
+            me.renderer.un(event, callback);
         } else {
             _leaflet2["default"].Layer.prototype.off.call(this, event, callback);
         }
@@ -26834,7 +26835,6 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
     _initContainer: function _initContainer() {
         var parentContainer = this.getPane();
         this.container = _leaflet2["default"].DomUtil.create("div", "themeLayer", parentContainer);
-        this.container.style.position = "relative";
         this.container.style.zIndex = 100;
     },
 
@@ -73700,7 +73700,7 @@ var Math = function () {
         this._radians = null;
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Math";
 
-        this._radians = Math.PI / 180;
+        this._radians = window.Math.PI / 180;
     }
 
     /**
@@ -73725,7 +73725,7 @@ var Math = function () {
     _createClass(Math, [{
         key: "sin",
         value: function sin(angle, isDegrees) {
-            return Math.sin(isDegrees ? angle * this._radians : angle);
+            return window.Math.sin(isDegrees ? angle * this._radians : angle);
         }
 
         /**
@@ -73743,7 +73743,7 @@ var Math = function () {
     }, {
         key: "cos",
         value: function cos(angle, isDegrees) {
-            return Math.cos(isDegrees ? angle * this._radians : angle);
+            return window.Math.cos(isDegrees ? angle * this._radians : angle);
         }
 
         /**
@@ -93820,7 +93820,108 @@ exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 466 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {
+	"_from": "proj4@2.3.15",
+	"_id": "proj4@2.3.15",
+	"_inBundle": false,
+	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
+	"_location": "/proj4",
+	"_phantomChildren": {},
+	"_requested": {
+		"type": "version",
+		"registry": true,
+		"raw": "proj4@2.3.15",
+		"name": "proj4",
+		"escapedName": "proj4",
+		"rawSpec": "2.3.15",
+		"saveSpec": null,
+		"fetchSpec": "2.3.15"
+	},
+	"_requiredBy": [
+		"/"
+	],
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
+	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
+	"_spec": "proj4@2.3.15",
+	"_where": "G:\\github-iClient\\iClient9",
+	"author": "",
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
+	},
+	"bundleDependencies": false,
+	"contributors": [
+		{
+			"name": "Mike Adair",
+			"email": "madair@dmsolutions.ca"
+		},
+		{
+			"name": "Richard Greenwood",
+			"email": "rich@greenwoodmap.com"
+		},
+		{
+			"name": "Calvin Metcalf",
+			"email": "calvin.metcalf@gmail.com"
+		},
+		{
+			"name": "Richard Marsden",
+			"url": "http://www.winwaed.com"
+		},
+		{
+			"name": "T. Mittan"
+		},
+		{
+			"name": "D. Steinwand"
+		},
+		{
+			"name": "S. Nelson"
+		}
+	],
+	"dependencies": {
+		"mgrs": "~0.0.2"
+	},
+	"deprecated": false,
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"devDependencies": {
+		"browserify": "~12.0.1",
+		"chai": "~1.8.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"grunt": "~0.4.2",
+		"grunt-browserify": "~4.0.1",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~0.8.0",
+		"grunt-contrib-uglify": "~0.11.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"istanbul": "~0.2.4",
+		"mocha": "~1.17.1",
+		"tin": "~0.4.0"
+	},
+	"directories": {
+		"test": "test",
+		"doc": "docs"
+	},
+	"homepage": "https://github.com/proj4js/proj4js#readme",
+	"jam": {
+		"main": "dist/proj4.js",
+		"include": [
+			"dist/proj4.js",
+			"README.md",
+			"AUTHORS",
+			"LICENSE.md"
+		]
+	},
+	"license": "MIT",
+	"main": "lib/index.js",
+	"name": "proj4",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
+	},
+	"scripts": {
+		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
+	},
+	"version": "2.3.15"
+};
 
 /***/ }),
 /* 467 */

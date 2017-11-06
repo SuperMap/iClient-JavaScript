@@ -341,9 +341,9 @@ var exampleConfig = {
                         fileName: "rankSymbolThemeLayer"
                     },
                     {
-                        name: "柱状图",
-                        thumbnail: "barThemeLayer.png",
-                        fileName: "barThemeLayer"
+                        name: "图表专题图",
+                        thumbnail: "mb_graphThemeLayer.png",
+                        fileName: "graphThemeLayer"
                     }
                 ]
             },

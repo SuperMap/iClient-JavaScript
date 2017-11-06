@@ -613,6 +613,10 @@ var exampleConfig = {
                     name: "标签专题图",
                     thumbnail: "l_labelThemeLayer.png",
                     fileName: "labelThemeLayer"
+                }, {
+                    name: "图表专题图",
+                    thumbnail: "l_graphThemeLayer.png",
+                    fileName: "graphThemeLayer"
                 }]
             }
         }

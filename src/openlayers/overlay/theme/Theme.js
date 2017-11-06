@@ -80,13 +80,12 @@ export default class Theme extends ol.source.ImageCanvas {
             return this.context.canvas;
         }
 
-
         this.canvasFunctionInternal_ = canvasFunctionInternal_;
         this.EVENT_TYPES = ["loadstart", "loadend", "loadcancel",
             "visibilitychanged", "move", "moveend", "added", "removed",
             "tileloaded", "beforefeaturesadded", "featuresadded", "featuresremoved"];
-        this.features = [];
-        this.TFEvents = [];
+        this.features = options.features || [];
+        this.TFEvents = options.TFEvents || [];
         this.map = options.map;
         var size = this.map.getSize();
         this.div = document.createElement('div');

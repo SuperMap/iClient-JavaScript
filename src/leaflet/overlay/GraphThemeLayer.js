@@ -23,7 +23,7 @@ import CommontypesConversion from '../core/CommontypesConversion';
  *              统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
  *              目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
  * @param name - {string} 专题图表名称
- * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
+ * @param chartsType - {string} 图表类型。目前可用："Bar", "Bar3D", "Line","Point","Pie","Ring"。
  * @param options - {Object} 待设置得参数。如：<br>
  *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。<br>
  *        chartsType :图表类型。目前可用："Bar", "Line", "Pie"。<br>
@@ -46,18 +46,17 @@ export var GraphThemeLayer = ThemeLayer.extend({
         isOverLay: true
     },
 
-    /*
-
-     */
     initialize: function (name, chartsType, options) {
         var newArgs = [];
         newArgs.push(name);
         newArgs.push(options);
         ThemeLayer.prototype.initialize.apply(this, newArgs);
+        this.map = options.map || null;
         this.chartsType = chartsType;
-        this.charts = [];
-        this.cache = {};
-        this.chartsSetting = {};
+        this.chartsSetting = options.chartsSetting || {};
+        this.themeFields = options.themeFields || null;
+        this.charts = options.charts || [];
+        this.cache = options.cache || {};
     },
 
     /**
@@ -81,19 +80,14 @@ export var GraphThemeLayer = ThemeLayer.extend({
             features = [features];
         }
 
-        var me = this, event = {features: features};
-        me.fire("beforefeaturesadded", event);
-        features = event.features;
+        var me = this;
+        me.fire("beforefeaturesadded", {features: features});
 
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
             feature = me._createFeature(feature);
             me.features.push(feature);
         }
-
-        var succeed = me.features.length === 0;
-        me.fire("featuresadded", {features: me.features, succeed: succeed});
-
         //绘制专题要素
         if (!me.renderer) {
             return;
@@ -186,7 +180,6 @@ export var GraphThemeLayer = ThemeLayer.extend({
         if (me.overlayWeightField) {
             me._sortChart();
         }
-
 
         if (me.options && !me.options.isOverLay) {
             // 不进行避让
@@ -360,7 +353,6 @@ export var GraphThemeLayer = ThemeLayer.extend({
         me.removeAllFeatures();
         me.clearCache();
     },
-
 
     /**
      * @function L.supermap.GraphThemeLayer.prototype.getWeightFieldValue

@@ -53,18 +53,13 @@ export default class Graph extends Theme {
         if (!(SuperMap.Util.isArray(features))) {
             features = [features];
         }
-        var event = {features: features};
-        var ret = mapboxgl.Evented.prototype.fire('beforefeaturesadded', event);
+        var ret = mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
         if (ret === false) {
             return;
         }
-        features = event.features;
-        var featuresFailAdded = [];
         for (var i = 0, len = features.length; i < len; i++) {
             this.features.push(this.toiClientFeature(features[i]));
         }
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        mapboxgl.Evented.prototype.fire('featuresadded', {features: featuresFailAdded, succeed: succeed});
         //绘制专题要素
         if (this.renderer) {
             this.redrawThematicFeatures(this.map.getBounds());
@@ -127,7 +122,9 @@ export default class Graph extends Theme {
             thematicFeature = new SuperMap.Feature.Theme[this.chartsType](feature, this, this.themeFields, this.chartsSetting);
         }
         // thematicFeature 是否创建成功
-        if (!thematicFeature) {return false;}
+        if (!thematicFeature) {
+            return false;
+        }
         // 对专题要素执行图形装载
         thematicFeature.assembleShapes();
         return thematicFeature;
@@ -140,7 +137,9 @@ export default class Graph extends Theme {
      */
     drawCharts() {
         // 判断 rendere r就绪
-        if (!this.renderer) {return;}
+        if (!this.renderer) {
+            return;
+        }
         var charts = this.charts;
         // 图表权重值处理des
         if (this.overlayWeightField) {
@@ -257,7 +256,9 @@ export default class Graph extends Theme {
     isQuadrilateralOverLap(quadrilateral, quadrilateral2) {
         var quadLen = quadrilateral.length,
             quad2Len = quadrilateral2.length;
-        if (quadLen !== 5 || quad2Len !== 5) {return null;}//不是四边形
+        if (quadLen !== 5 || quad2Len !== 5) {
+            return null;
+        }//不是四边形
 
         var OverLap = false;
         //如果两四边形互不包含对方的节点，则两个四边形不相交

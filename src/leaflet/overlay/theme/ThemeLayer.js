@@ -32,6 +32,7 @@ export var ThemeLayer = L.Layer.extend({
         this.TFEvents = [];
         this.levelRenderer = new LevelRenderer();
         this.movingOffset = [0, 0];
+        this.map = options.map || null;
     },
 
     /**
@@ -58,9 +59,9 @@ export var ThemeLayer = L.Layer.extend({
      * @param map - {L.map} 要删除的地图
      */
     onRemove: function (map) {
-        if (map) {
-            map.removeLayer(this);
-        }
+        var me = this;
+        L.DomUtil.remove(me.container);
+        map.off("mousemove", me.mouseMoveHandler);
     },
 
     /**
@@ -85,12 +86,18 @@ export var ThemeLayer = L.Layer.extend({
 
         me.renderer = me.levelRenderer.init(me.container);
         me.renderer.clear();
+        if(me.features.length > 0){
+            me._reset();
+            me.redrawThematicFeatures(me.map.getBounds());
+        }
+
         //处理用户预先（在图层添加到 map 前）监听的事件
         me.addTFEvents();
-        map.on("mousemove", function (e) {
+        me.mouseMoveHandler = function (e) {
             var xy = e.layerPoint;
             me.currentMousePosition = L.point(xy.x + me.movingOffset[0], xy.y + me.movingOffset[1]);
-        });
+        };
+        map.on("mousemove", me.mouseMoveHandler);
     },
 
     /**
@@ -347,7 +354,7 @@ export var ThemeLayer = L.Layer.extend({
     off: function (event, callback, context) { // eslint-disable-line no-unused-vars
         var me = this;
         if (me.renderer) {
-            me.renderer.off(event, callback);
+            me.renderer.un(event, callback);
         } else {
             L.Layer.prototype.off.call(this, event, callback);
         }
@@ -395,7 +402,6 @@ export var ThemeLayer = L.Layer.extend({
     _initContainer: function () {
         var parentContainer = this.getPane();
         this.container = L.DomUtil.create("div", "themeLayer", parentContainer);
-        this.container.style.position = "relative";
         this.container.style.zIndex = 100;
     },
 

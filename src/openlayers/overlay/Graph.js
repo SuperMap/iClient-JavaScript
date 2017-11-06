@@ -69,18 +69,13 @@ export default class Graph extends Theme {
         if (!(SuperMap.Util.isArray(features))) {
             features = [features];
         }
-        var event = {features: features};
-        var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: event});
+        var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
         if (ret === false) {
             return;
         }
-        features = event.features;
-        var featuresFailAdded = [];
         for (var i = 0, len = features.length; i < len; i++) {
             this.features.push(this.toiClientFeature(features[i]));
         }
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
         //绘制专题要素
         if (this.renderer) {
             this.redrawThematicFeatures(this.map.getView().calculateExtent());

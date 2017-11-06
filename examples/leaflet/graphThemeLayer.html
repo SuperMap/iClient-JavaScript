@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图表专题图</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+    <script src='../data/chinaConsumptionLevel.js'></script>
+    <style>
+        .editPane {
+            position: absolute;
+            right: 55px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+            border-radius: 4px;
+        }
+
+        .tooltip-inner {
+            width: 68px;
+            background-color: transparent;
+            color: #515151;
+        }
+        .graph {
+            margin: 5px;
+            width: 26px;
+            height: 26px;
+            border: none;
+            border-radius: 4px;
+            background-size: 100%;
+        }
+
+        #bar {
+            background-image: url("../img/bar.png");
+        }
+
+        #bar3d {
+            background-image: url("../img/bar3D.png");
+        }
+
+        #ling {
+            background-image: url("../img/ling.png");
+        }
+
+        #point {
+            background-image: url("../img/point.png");
+        }
+
+        #pie {
+            background-image: url("../img/pie.png");
+        }
+
+        #ring {
+            background-image: url("../img/ring.png");
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%"></div>
+<script>
+    var map, themeLayer, popup,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: {lon: 105.85, lat: 36.79},
+        zoom: 4
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+
+    initEditView();
+
+    function initEditView() {
+        var infoView = L.control({position: 'topright'});
+        infoView.onAdd = function () {
+            var me = this;
+            me._div = L.DomUtil.create('div', 'editPane');
+            me._div.style.width = '236px';
+            me._div.innerHTML = "<button type='button' class='btn btn-default graph active' id='bar' data-toggle='tooltip' data-placement='bottom' title='柱状图'></button>" +
+                "<button type='button' class='btn btn-default graph' id='bar3d' data-toggle='tooltip' data-placement='bottom' title='3D柱状图'></button>" +
+                "<button type='button' class='btn btn-default graph' id='ling' data-toggle='tooltip' data-placement='bottom' title='折线图'></button>" +
+                "<button type='button' class='btn btn-default graph' id='point' data-toggle='tooltip' data-placement='bottom' title='点图'></button>" +
+                "<button type='button' class='btn btn-default graph' id='pie' data-toggle='tooltip' data-placement='bottom' title='扇形图'></button>" +
+                "<button type='button' class='btn btn-default graph' id='ring' data-toggle='tooltip' data-placement='bottom' title='环形图'></button>";
+            handleMapEvent(me._div, me._map);
+            return me._div;
+        };
+        infoView.addTo(map);
+    }
+
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
+
+    bindEvent();
+
+    function bindEvent() {
+        $("[data-toggle='tooltip']").on("mouseover",function () {
+            $("[data-toggle='tooltip']").tooltip();
+        });
+
+        $("[data-toggle='tooltip']").on("mouseout",function () {
+            $("[data-toggle='tooltip']").tooltip("hide");
+        });
+
+        $(".graph").on("click",function () {
+            $(".graph").removeClass("active");
+        });
+
+        $("#bar").on("click", function () {
+            $("#bar").addClass("active");
+            initFeaterDatasAddStyles();
+            clearThemeLayer();
+            createBarThemeLayer();
+        });
+        $("#bar3d").on("click", function () {
+            $("#bar3d").addClass("active");
+            initFeaterDatasAddStyles();
+            clearThemeLayer();
+            createBar3DThemeLayer();
+        });
+        $("#ling").on("click", function () {
+            $("#ling").addClass("active");
+            initFeaterDatasAddStyles();
+            clearThemeLayer();
+            createLineThemeLayer();
+        });
+        $("#point").on("click", function () {
+            $("#point").addClass("active");
+            initFeaterDatasAddStyles();
+            clearThemeLayer();
+            createPointThemeLayer();
+        });
+        $("#pie").on("click", function () {
+            $("#pie").addClass("active");
+            initFeaterDatasAddStyles();
+            clearThemeLayer();
+            createPieThemeLayer();
+        });
+        $("#ring").on("click", function () {
+            $("#ring").addClass("active");
+            initFeaterDatasAddStyles();
+            clearThemeLayer();
+            createRingThemeLayer();
+        });
+    }
+
+    //初始化数据和样式
+    initFeaterDatasAddStyles();
+    var features,
+        chartsSettingForBarAddBar3DCommon,
+        chartsSettingForPointOrLine,
+        chartsSettingForPieOrRing,
+        themeLayerOptions;
+
+    function initFeaterDatasAddStyles() {
+        //创建附着要素
+        features = [];
+        for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+            // 省居民消费水平（单位：元）信息
+            var provinceInfo = chinaConsumptionLevel[i];
+            var geo = L.point([provinceInfo[1], provinceInfo[2]]);
+            var attrs = {};
+            attrs.NAME = provinceInfo[0];
+            attrs.CON2009 = provinceInfo[3];
+            attrs.CON2010 = provinceInfo[4];
+            attrs.CON2011 = provinceInfo[5];
+            attrs.CON2012 = provinceInfo[6];
+            attrs.CON2013 = provinceInfo[7];
+            var fea = L.supermap.themeFeature(geo, attrs);
+            features.push(fea);
+        }
+
+        //Bar add Bar3D chartsSetting
+        chartsSettingForBarAddBar3DCommon = {
+            width: 260,
+            height: 120,
+            codomain: [0, 40000],
+            xShapeBlank: [15, 15, 15],
+            axisYTick: 4,
+            axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+            axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+            backgroundRadius: [5, 5, 5, 5],
+            backgroundStyle: {
+                fillColor: "#d1eeee",
+                shadowBlur: 12,
+                shadowColor: "#d1eeee"
+            }
+        };
+
+        //Point add Line chartsSetting
+        chartsSettingForPointOrLine = {
+            width: 220,
+            height: 100,
+            codomain: [0, 40000],
+            xShapeBlank: [10, 10],
+            axisYTick: 4,
+            axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+            axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+            backgroundStyle: {fillColor: "#d1eeee"},
+            backgroundRadius: [5, 5, 5, 5],
+            useXReferenceLine: true,
+            pointStyle: {
+                pointRadius: 5,
+                shadowBlur: 12,
+                shadowColor: "#D8361B",
+                fillOpacity: 0.8
+            },
+            pointHoverStyle: {
+                stroke: true,
+                strokeColor: "#D8361B",
+                strokeWidth: 2,
+                fillColor: "#ffffff",
+                pointRadius: 4
+            },
+        };
+
+        //Pie add Ring chartsSetting
+        chartsSettingForPieOrRing = {
+            width: 240,
+            height: 100,
+            codomain: [0, 40000],       // 允许图表展示的值域范围，此范围外的数据将不制作图表
+            sectorStyle: {fillOpacity: 0.8},      // 柱状图中柱条的（表示字段值的图形）样式
+            sectorStyleByFields: [
+                {fillColor: "#FFB980"},
+                {fillColor: "#5AB1EF"},
+                {fillColor: "#B6A2DE"},
+                {fillColor: "#2EC7C9"},
+                {fillColor: "#D87A80"}],
+            sectorHoverStyle: {fillOpacity: 1},
+            xShapeBlank: [10, 10, 10],      // 水平方向上的空白间距参数
+            axisYLabels: ["4万", "3万", "2万", "1万", "0"],         // y 轴标签内容
+            axisXLabels: ["09年", "10年", "11年", "12年", "13年"],         // x 轴标签内容
+            backgroundStyle: {fillColor: "#CCE8CF"},        // 背景样式
+            backgroundRadius: [5, 5, 5, 5],        // 背景框圆角参数
+        };
+
+        //设置graphThemeLayer option参数
+        themeLayerOptions = {
+            map: map,
+            isOverLay: true,
+            attributions: " ",
+            themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
+            opacity: 0.9,
+            chartsSetting: {},
+        };
+    }
+
+    createBarThemeLayer();
+
+    //创建Bar图表
+    function createBarThemeLayer() {
+        var chartsSettingForBar = chartsSettingForBarAddBar3DCommon;
+        chartsSettingForBar.barStyle = {fillOpacity: 0.7};      // 柱状图中柱条的（表示字段值的图形）样式
+        chartsSettingForBar.barHoverStyle = {fillOpacity: 1};      //  柱条 hover 样式
+        //阴影样式
+        chartsSettingForBar.barShadowStyle = {
+            shadowBlur: 8,
+            shadowOffsetX: 2,
+            shadowOffsetY: 2,
+            shadowColor: "rgba(100,100,100,0.8)"
+        };
+        chartsSettingForBar.barLinearGradient = [
+            ["#00FF00", "#00CD00"],
+            ["#00CCFF", "#5E87A2"],
+            ["#00FF66", "#669985"],
+            ["#CCFF00", "#94A25E"],
+            ["#FF9900", "#A2945E"]];
+
+        themeLayerOptions.chartsSetting = chartsSettingForBar;
+        themeLayer = L.supermap.graphThemeLayer("BarLayer", "Bar", themeLayerOptions);//.addTo(map)
+        themeLayer.addFeatures(features);
+        map.addLayer(themeLayer);
+        themeLayer.on('mousemove', showInfoWin);
+        themeLayer.on("mouseout", closeInfoWin);
+    }
+
+    //创建Bar3D图表
+    function createBar3DThemeLayer() {
+        var chartsSettingForBar3D = chartsSettingForBarAddBar3DCommon;
+        chartsSettingForBar3D.useXReferenceLine = true;
+        chartsSettingForBar3D.xReferenceLineStyle = {strokeColor: "#008acd", strokeOpacity: 0.4};
+        // 3d 柱条正面样式（3d 柱条的侧面和顶面会以 3d 柱条正面样式为默认样式）
+        chartsSettingForBar3D.barFaceStyle = {stroke: true};
+        // 按字段设置 3d 柱条正面样式
+        chartsSettingForBar3D.barFaceStyleByFields = [
+            {fillColor: "#FFB980"},
+            {fillColor: "#5AB1EF"},
+            {fillColor: "#B6A2DE"},
+            {fillColor: "#2EC7C9"},
+            {fillColor: "#D87A80"}];
+        // 3d 柱条正面 hover 样式（3d 柱条的侧面和顶面 hover 会以 3d 柱条正面 hover 样式为默认 hover 样式）
+        chartsSettingForBar3D.barFaceHoverStyle = {
+            stroke: true,
+            strokeWidth: 1,
+            strokeColor: "#ffff00"
+        };
+
+        themeLayerOptions.chartsSetting = chartsSettingForBar3D;
+        themeLayer = L.supermap.graphThemeLayer("Bar3DLayer", "Bar3D", themeLayerOptions);
+        themeLayer.addFeatures(features);
+        map.addLayer(themeLayer);
+        themeLayer.on('mousemove', showInfoWin);
+        themeLayer.on("mouseout", closeInfoWin);
+    }
+
+    //创建Line图表
+    function createLineThemeLayer() {
+        chartsSettingForPointOrLine.pointStyle.fillColor = "#9966CC";
+        themeLayerOptions.chartsSetting = chartsSettingForPointOrLine;
+        themeLayer = L.supermap.graphThemeLayer("LineLayer", "Line", themeLayerOptions);
+        themeLayer.addFeatures(features);
+        map.addLayer(themeLayer);
+        themeLayer.on('mousemove', showInfoWin);
+        themeLayer.on("mouseout", closeInfoWin);
+    }
+
+    //创建Point图表
+    function createPointThemeLayer() {
+        chartsSettingForPointOrLine.pointStyle.fillColor = "#D8361B";
+        themeLayerOptions.chartsSetting = chartsSettingForPointOrLine;
+        themeLayer = L.supermap.graphThemeLayer("PiontLayer", "Point", themeLayerOptions);
+        themeLayer.addFeatures(features);
+        map.addLayer(themeLayer);
+        themeLayer.on('mousemove', showInfoWin);
+        themeLayer.on("mouseout", closeInfoWin);
+    }
+
+    //创建Pie图表
+    function createPieThemeLayer() {
+        themeLayerOptions.chartsSetting = chartsSettingForPieOrRing;
+        themeLayer = L.supermap.graphThemeLayer("PieLayer", "Pie", themeLayerOptions);
+        themeLayer.addFeatures(features);
+        map.addLayer(themeLayer);
+        themeLayer.on('mousemove', showInfoWin);
+        themeLayer.on("mouseout", closeInfoWin);
+    }
+
+    //创建Ring图表
+    function createRingThemeLayer() {
+        chartsSettingForPieOrRing.innerRingRadius = 20;
+        themeLayerOptions.chartsSetting = chartsSettingForPieOrRing;
+        themeLayer = L.supermap.graphThemeLayer("RingLayer", "Ring", themeLayerOptions);
+        themeLayer.addFeatures(features);
+        map.addLayer(themeLayer);
+        themeLayer.on('mousemove', showInfoWin);
+        themeLayer.on("mouseout", closeInfoWin);
+    }
+
+    //清除图表专题图
+    function clearThemeLayer() {
+        if (themeLayer) {
+            map.removeLayer(themeLayer);
+            themeLayer = null;
+        }
+    }
+
+    //设置弹框
+    function showInfoWin(e) {
+        // e.target 是图形对象，即数据的可视化对象，柱状图中是柱条;
+        // 图形对象的 refDataID 属性是数据（feature）的 id 属性，它指明图形对象是由那个数据制作而来;
+        // 图形对象的 dataInfo 属性是图形对象表示的具体数据，他有两个属性，field 和 value;
+        if (e.target && e.target.refDataID && e.target.dataInfo) {
+            closeInfoWin();
+            // 获取图形对应的数据 (feature)
+            var fea = themeLayer.getFeatureById(e.target.refDataID);
+
+            var info = e.target.dataInfo;
+
+            // 弹窗内容
+            var contentHTML = "<div style='color: #000; background-color: #fff'>";
+            contentHTML += "省级行政区名称:<br><strong>" + fea.attributes.NAME + "</strong>";
+
+            contentHTML += "<hr style='margin: 3px'>";
+            switch (info.field) {
+                case "CON2009":
+                    contentHTML += "09年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    break;
+                case "CON2010":
+                    contentHTML += "10年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    break;
+                case "CON2011":
+                    contentHTML += "11年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    break;
+                case "CON2012":
+                    contentHTML += "12年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    break;
+                case "CON2013":
+                    contentHTML += "13年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                    break;
+                default:
+                    contentHTML += "No Data";
+            }
+            contentHTML += "</div>";
+
+            var tempPoint = map.mouseEventToLatLng(e.event);
+            popup = L.tooltip({direction: 'top'})
+                .setContent(contentHTML)
+                .setLatLng([tempPoint.lat, tempPoint.lng])
+                .addTo(map);
+            return;
+        }
+    }
+
+    // 移除地图弹窗
+    function closeInfoWin() {
+        if (popup) {
+            popup.remove(map);
+        }
+    }
+</script>
+</body>
+</html>

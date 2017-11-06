@@ -1,18 +1,18 @@
 import mapboxgl from 'mapbox-gl';
-import SuperMap from'../../common/SuperMap';
-import Util from'../core/Util';
+import SuperMap from '../../common/SuperMap';
+import Util from '../core/Util';
 import ServiceBase from './ServiceBase';
-import BurstPipelineAnalystService from'../../common/iServer/BurstPipelineAnalystService';
-import ComputeWeightMatrixService from'../../common/iServer/ComputeWeightMatrixService';
-import FacilityAnalystStreamService from'../../common/iServer/FacilityAnalystStreamService';
-import FindClosestFacilitiesService from'../../common/iServer/FindClosestFacilitiesService';
-import FindLocationService from'../../common/iServer/FindLocationService';
-import FindMTSPPathsService from'../../common/iServer/FindMTSPPathsService';
-import FindPathService from'../../common/iServer/FindPathService';
-import FindServiceAreasService from'../../common/iServer/FindServiceAreasService';
-import FindTSPPathsService from'../../common/iServer/FindTSPPathsService';
-import UpdateEdgeWeightService from'../../common/iServer/UpdateEdgeWeightService';
-import UpdateTurnNodeWeightService from'../../common/iServer/UpdateTurnNodeWeightService';
+import BurstPipelineAnalystService from '../../common/iServer/BurstPipelineAnalystService';
+import ComputeWeightMatrixService from '../../common/iServer/ComputeWeightMatrixService';
+import FacilityAnalystStreamService from '../../common/iServer/FacilityAnalystStreamService';
+import FindClosestFacilitiesService from '../../common/iServer/FindClosestFacilitiesService';
+import FindLocationService from '../../common/iServer/FindLocationService';
+import FindMTSPPathsService from '../../common/iServer/FindMTSPPathsService';
+import FindPathService from '../../common/iServer/FindPathService';
+import FindServiceAreasService from '../../common/iServer/FindServiceAreasService';
+import FindTSPPathsService from '../../common/iServer/FindTSPPathsService';
+import UpdateEdgeWeightService from '../../common/iServer/UpdateEdgeWeightService';
+import UpdateTurnNodeWeightService from '../../common/iServer/UpdateTurnNodeWeightService';
 
 /**
  * @class mapboxgl.supermap.NetworkAnalystService
@@ -258,40 +258,42 @@ export default class NetworkAnalystService extends ServiceBase {
         updateTurnNodeWeightService.processAsync(params);
     }
 
+    /**
+     * @description 所有 Point 考虑 mapboxgl.lnglat、mapboxgl.Point、[]三种形式
+     * @param params
+     * @return {*}
+     * @private
+     */
     _processParams(params) {
         if (!params) {
             return {};
         }
+        var me = this;
         if (params.centers && Util.isArray(params.centers)) {
             params.centers.map(function (point, key) {
-                params.centers[key] = (point instanceof mapboxgl.LngLat) ? {
-                    x: point.lng,
-                    y: point.lat
-                } : point;
+                params.centers[key] = me._toPointObject(point);
                 return params.centers[key];
             });
         }
 
         if (params.nodes && Util.isArray(params.nodes)) {
             params.nodes.map(function (point, key) {
-                params.nodes[key] = (point instanceof mapboxgl.LngLat) ? {
-                    x: point.lng,
-                    y: point.lat
-                } : point;
+                params.nodes[key] = me._toPointObject(point);
                 return params.nodes[key];
             });
         }
 
-        if (params.event && params.event instanceof mapboxgl.LngLat) {
-            params.event = {x: params.event.lng, y: params.event.lat};
+        if (params.event) {
+            if (params.event instanceof mapboxgl.LngLat) {
+                params.event = {x: params.event.lng, y: params.event.lat};
+            } else if (Util.isArray(params.event)) {
+                params.event = {x: params.event[0], y: params.event[1]};
+            }
         }
 
         if (params.facilities && Util.isArray(params.facilities)) {
             params.facilities.map(function (point, key) {
-                params.facilities[key] = (point instanceof mapboxgl.LngLat) ? {
-                    x: point.lng,
-                    y: point.lat
-                } : point;
+                params.facilities[key] = me._toPointObject(point);
                 return params.facilities[key];
             });
         }
@@ -299,10 +301,7 @@ export default class NetworkAnalystService extends ServiceBase {
             var barrierPoints = params.parameter.barrierPoints;
             if (Util.isArray(barrierPoints)) {
                 barrierPoints.map(function (point, key) {
-                    params.parameter.barrierPoints[key] = (point instanceof mapboxgl.LngLat) ? {
-                        x: point.lng,
-                        y: point.lat
-                    } : point;
+                    params.parameter[key] = me._toPointObject(point);
                     return params.parameter.barrierPoints[key];
                 });
             } else {
@@ -314,6 +313,25 @@ export default class NetworkAnalystService extends ServiceBase {
         }
         return params;
 
+    }
+
+    _toPointObject(point){
+        if (Util.isArray(point)) {
+            return {
+                x: point[0],
+                y: point[1]
+            };
+        } else if (point instanceof mapboxgl.LngLat) {
+           return  {
+                x: point.lng,
+                y: point.lat
+            };
+        } else {
+            return (point instanceof mapboxgl.Point) ? {
+                x: point.x,
+                y: point.y
+            } : point;
+        }
     }
 
     _processFormat(resultFormat) {

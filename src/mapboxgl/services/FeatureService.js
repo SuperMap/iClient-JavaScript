@@ -179,7 +179,7 @@ export default class FeatureService extends ServiceBase {
         if (params.geometry) {
             params.geometry = Util.toSuperMapGeometry(params.geometry);
         }
-        //editFeature服务参数转换
+        //editFeature服务参数转换,传入单独得对象或对象数组
         if (params.features) {
             var features = [];
             if (Util.isArray(params.features)) {
@@ -198,7 +198,7 @@ export default class FeatureService extends ServiceBase {
     //geoFeature严格按照 mapboxgl geojson的结构
     _createServerFeature(geoFeature) {
         var feature = {}, fieldNames = [], fieldValues = [];
-        var properties = geoFeature.features[0].properties;
+        var properties = geoFeature.properties;
         for (var key in properties) {
             fieldNames.push(key);
             fieldValues.push(properties[key]);

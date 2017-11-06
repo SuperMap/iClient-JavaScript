@@ -19769,18 +19769,13 @@ var Graph = function (_Theme) {
             if (!_SuperMap2.default.Util.isArray(features)) {
                 features = [features];
             }
-            var event = { features: features };
-            var ret = this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
+            var ret = this.dispatchEvent({ type: 'beforefeaturesadded', value: { features: features } });
             if (ret === false) {
                 return;
             }
-            features = event.features;
-            var featuresFailAdded = [];
             for (var i = 0, len = features.length; i < len; i++) {
                 this.features.push(this.toiClientFeature(features[i]));
             }
-            var succeed = featuresFailAdded.length == 0 ? true : false;
-            this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
             //绘制专题要素
             if (this.renderer) {
                 this.redrawThematicFeatures(this.map.getView().calculateExtent());
@@ -25140,8 +25135,8 @@ var Theme = function (_ol$source$ImageCanva) {
 
         _this.canvasFunctionInternal_ = canvasFunctionInternal_;
         _this.EVENT_TYPES = ["loadstart", "loadend", "loadcancel", "visibilitychanged", "move", "moveend", "added", "removed", "tileloaded", "beforefeaturesadded", "featuresadded", "featuresremoved"];
-        _this.features = [];
-        _this.TFEvents = [];
+        _this.features = options.features || [];
+        _this.TFEvents = options.TFEvents || [];
         _this.map = options.map;
         var size = _this.map.getSize();
         _this.div = document.createElement('div');
@@ -70873,7 +70868,7 @@ var Math = function () {
         this._radians = null;
         this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Math";
 
-        this._radians = Math.PI / 180;
+        this._radians = window.Math.PI / 180;
     }
 
     /**
@@ -70898,7 +70893,7 @@ var Math = function () {
     _createClass(Math, [{
         key: "sin",
         value: function sin(angle, isDegrees) {
-            return Math.sin(isDegrees ? angle * this._radians : angle);
+            return window.Math.sin(isDegrees ? angle * this._radians : angle);
         }
 
         /**
@@ -70916,7 +70911,7 @@ var Math = function () {
     }, {
         key: "cos",
         value: function cos(angle, isDegrees) {
-            return Math.cos(isDegrees ? angle * this._radians : angle);
+            return window.Math.cos(isDegrees ? angle * this._radians : angle);
         }
 
         /**

@@ -42,7 +42,9 @@ export default class Theme {
         //处理用户预先（在图层添加到 map 前）监听的事件
         this.addTFEvents();
         this.map.on('move', this.moveEvent.bind(this));
-        this.map.on('remove', this.removeEvent.bind(this));
+        this.map.on('zoom', this.zoomEvent.bind(this));
+        this.map.on('remove', this.removeFromMap.bind(this));
+        this.map.on('resize', this.resizeEvent.bind(this));
     }
 
     /**
@@ -265,6 +267,7 @@ export default class Theme {
         for (var i = 0; i < len; i++) {
             this.renderer.on(tfEs[i][0], tfEs[i][1]);
         }
+
     }
 
     /**
@@ -301,20 +304,21 @@ export default class Theme {
         this.redrawThematicFeatures(this.map.getBounds());
     }
 
+    zoomEvent() {
+        this.redrawThematicFeatures(this.map.getBounds());
+    }
+
     /**
      * @function mapboxgl.supermap.prototype.resizeEvent
      * @description 调整事件
      */
     resizeEvent() {
-        var div = this.div;
-        div.style.position = 'absolute';
-        div.style.top = 0 + "px";
-        div.style.left = 0 + "px";
         var canvas = this.map.getCanvas();
-        div.width = parseInt(canvas.width);
-        div.height = parseInt(canvas.height);
-        div.style.width = canvas.style.width;
-        div.style.height = canvas.style.height;
+        this.div.style.width = canvas.style.width;
+        this.div.style.height = canvas.style.height;
+        this.div.width = parseInt(canvas.width);
+        this.div.height = parseInt(canvas.height);
+        this.renderer.resize();
         this.redrawThematicFeatures(this.map.getBounds());
     }
 
@@ -322,7 +326,7 @@ export default class Theme {
      * @function mapboxgl.supermap.prototype.removeEvent
      * @description 移除事件
      */
-    removeEvent() {
+    removeFromMap() {
         this.map.getCanvasContainer().removeChild(this.div);
     }
 

@@ -541,9 +541,9 @@ var exampleConfig = {
                     thumbnail: "labelThemeLayer.png",
                     fileName: "labelThemeLayer"
                 }, {
-                    name: "柱状图",
-                    thumbnail: "barThemeLayer.png",
-                    fileName: "barThemeLayer"
+                    name: "图表专题图",
+                    thumbnail: "ol_graphThemeLayer.png",
+                    fileName: "graphThemeLayer"
                 }]
             }
         }
