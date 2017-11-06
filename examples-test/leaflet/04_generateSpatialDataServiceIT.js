@@ -1,4 +1,7 @@
 var commonTools = require('../base/commonTools');
+var request = require('request');
+require('../base/ExampleTestGlobeParameter');
+
 module.exports = {
     'leaflet_04_generateSpatialDataService': function (browser) {
         var type = 'leaflet';
@@ -17,7 +20,12 @@ module.exports = {
         });
         //测试版权点击的正确性
         //commonTools.verifyCopyrightOfLeaflet(browser);
-        browser.pause(1000);
+
+        //删除测试中产生的数据集
+        browser.pause(1000, function () {
+            var exampleTestResult = "GenerateSpatialData_Result";
+            request.delete(GlobeParameter.datachangchunURL + exampleTestResult);
+        });
         browser.end();
     }
 };
