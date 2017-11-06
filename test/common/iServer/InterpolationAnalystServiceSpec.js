@@ -24,7 +24,7 @@ describe('InterpolationAnalystService', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
         serviceFailedEventArgsSystem = null;
         analystEventArgsSystem = null;
     });
@@ -61,7 +61,8 @@ describe('InterpolationAnalystService', function () {
                 var serviceResult = analystEventArgsSystem.result;
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toEqual(resultDataset_RBFByDS + "@Interpolation");
+                expect(serviceResult.dataset).toContain(resultDataset_RBFByDS);
+                expect(serviceResult.dataset).toContain("@Interpolation");
                 interpolationAnalystService.destroy();
                 interpolationRBFAnalystParameters.destroy();
                 done();
@@ -72,7 +73,7 @@ describe('InterpolationAnalystService', function () {
                 interpolationRBFAnalystParameters.destroy();
                 done();
             }
-        }, 5000);
+        }, 10000);
     });
     // 删除测试过程中产生的数据集
     it('delete test resources_RBFByDS', function (done) {
@@ -106,7 +107,8 @@ describe('InterpolationAnalystService', function () {
                 var serviceResult = analystEventArgsSystem.result;
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toEqual(resultDataset_densityByDS + "@Interpolation");
+                expect(serviceResult.dataset).toContain(resultDataset_densityByDS);
+                expect(serviceResult.dataset).toContain("@Interpolation");
                 interpolationAnalystService.destroy();
                 interpolationDensityAnalystParameters.destroy();
                 done();
@@ -117,7 +119,7 @@ describe('InterpolationAnalystService', function () {
                 interpolationDensityAnalystParameters.destroy();
                 done();
             }
-        }, 5000);
+        }, 10000);
     });
     // 删除测试过程中产生的数据集
     it('delete test resources_densityByDS', function (done) {
@@ -153,7 +155,8 @@ describe('InterpolationAnalystService', function () {
                 var serviceResult = analystEventArgsSystem.result;
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toEqual(resultDataset_IDWByDS + "@Interpolation");
+                expect(serviceResult.dataset).toContain(resultDataset_IDWByDS);
+                expect(serviceResult.dataset).toContain("@Interpolation");
                 interpolationAnalystService.destroy();
                 interpolationIDWAnalystParameters.destroy();
                 done();
@@ -164,7 +167,7 @@ describe('InterpolationAnalystService', function () {
                 interpolationIDWAnalystParameters.destroy();
                 done();
             }
-        }, 5000);
+        }, 10000);
 
     });
     // 删除测试过程中产生的数据集
@@ -208,7 +211,8 @@ describe('InterpolationAnalystService', function () {
                 var serviceResult = analystEventArgsSystem.result;
                 expect(serviceResult).not.toBeNull();
                 expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toEqual(resultDataset_krigingByDS + "@Interpolation");
+                expect(serviceResult.dataset).toContain(resultDataset_krigingByDS);
+                expect(serviceResult.dataset).toContain("@Interpolation");
                 interpolationAnalystService.destroy();
                 interpolationKrigingAnalystParameters.destroy();
                 done();
@@ -219,7 +223,7 @@ describe('InterpolationAnalystService', function () {
                 interpolationKrigingAnalystParameters.destroy();
                 done();
             }
-        }, 5000);
+        }, 10000);
     });
     // 删除测试过程中产生的数据集
     it('delete test resources_krigingByDS', function (done) {
