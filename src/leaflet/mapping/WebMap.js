@@ -3,14 +3,22 @@ import L from "leaflet";
 import jsonsql from "jsonsql";
 import proj4 from "proj4";
 import {FetchRequest as Request} from '../../common/util/FetchRequest';
-import SuperMap from '../../common/SuperMap';
+import {DataFormat} from '../../common/REST';
+import GeoJSONFormat from '../../common/format/GeoJSON';
+import ServerFeature from '../../common/iServer/ServerFeature';
+import ThemeStyle from '../../common/style/ThemeStyle';
+import Vector from '../../common/commontypes/Vector';
+import Point from '../../common/commontypes/geometry/Point';
+import {Util} from '../../common/commontypes/Util';
+import GetFeaturesBySQLParameters from '../../common/iServer/GetFeaturesBySQLParameters';
 import {CartoCSSToLeaflet} from '../overlay/carto/CartoCSSToLeaflet' ;
 import {NonEarthCRS} from "../core/NonEarthCRS";
+import {Graphic} from '../overlay/graphic/Graphic';
 import {UniqueThemeLayer} from "../overlay/UniqueThemeLayer";
 import {RangeThemeLayer} from "../overlay/RangeThemeLayer";
+import {LabelThemeLayer} from "../overlay/LabelThemeLayer";
 import {featureService} from "../services/FeatureService";
-import {DataFormat} from '../../common/REST';
-import ServerFeature from '../../common/iServer/ServerFeature';
+import {ThemeFeature} from '../overlay/theme/ThemeFeature';
 import {UnicodeMarker} from '../core/UnicodeMarker';
 import {TiandituTileLayer} from '../mapping/TiandituTileLayer';
 
@@ -98,7 +106,11 @@ export var WebMap = L.LayerGroup.extend({
         if (isBaseLayer) {
             this.createMap(options);
         }
-        return this.addLayer(layer);
+        this.addLayer(layer);
+        if (layer.labelLayer) {
+            this.addLayer(layer.labelLayer);
+        }
+        return this;
     },
 
     /**
@@ -202,8 +214,6 @@ export var WebMap = L.LayerGroup.extend({
         } else {
             this._map.fitBounds(bounds, {maxZoom: options.maxZoom || 22});
         }
-
-
     },
 
     /**
@@ -286,14 +296,12 @@ export var WebMap = L.LayerGroup.extend({
                 mapOptions.resolutions = this.getResolutionsFromScales(scales, 90.71446714322, layerInfo.units);
                 var identifier = layerInfo.identifier;
                 var layerName = identifier.substring(identifier.indexOf("_") + 1);
-                layer = L.supermap.wmtsLayer(layerInfo.url,
-                    {
-                        layer: layerName,
-                        style: "default",
-                        tilematrixSet: identifier,
-                        format: "image/png"
-                    }
-                );
+                layer = L.supermap.wmtsLayer(layerInfo.url, {
+                    layer: layerName,
+                    style: "default",
+                    tilematrixSet: identifier,
+                    format: "image/png"
+                });
                 break;
             case "CLOUD":
                 mapOptions.crs = L.CRS.EPSG3857;
@@ -330,13 +338,11 @@ export var WebMap = L.LayerGroup.extend({
      */
     createTiandituLayer: function (layerInfo) {
         var type = layerInfo.type.split('_')[1].toLowerCase();
-        var isLabel=layerInfo.layerType === 'OVERLAY_LAYER';
-        var layer = new TiandituTileLayer(
-            {
-                layerType: type,
-                isLabel:isLabel
-            }
-        );
+        var isLabel = layerInfo.layerType === 'OVERLAY_LAYER';
+        var layer = new TiandituTileLayer({
+            layerType: type,
+            isLabel: isLabel
+        });
         return layer;
     },
 
@@ -367,7 +373,7 @@ export var WebMap = L.LayerGroup.extend({
                     if (style) {
                         m.setIcon(style);
                     }
-                }
+                };
                 return m;
             },
             coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
@@ -445,7 +451,7 @@ export var WebMap = L.LayerGroup.extend({
             for (var setNameIndex = 0; setNameIndex < datasets.length; setNameIndex++) {
                 var dataset = datasets[setNameIndex];
                 if (dataset.visible) {
-                    this.getFeaturesBySQL(url, datasourceName, dataset.name, "", DataFormat.GEOJSON, (serviceResult)=> {
+                    this.getFeaturesBySQL(url, datasourceName, dataset.name, "", DataFormat.GEOJSON, (serviceResult) => {
                         var layer = L.geoJSON(serviceResult.result, {
                             pointToLayer: function (geojson, latlng) {
                                 var m = new L.Marker(latlng);
@@ -473,7 +479,7 @@ export var WebMap = L.LayerGroup.extend({
     },
     getFeaturesBySQL: function (url, datasourceName, datasetName, filter, format, callback) {
         filter = filter || "SMID > 0";
-        var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+        var sqlParam = new GetFeaturesBySQLParameters({
             queryParameter: {
                 name: datasetName + "@" + datasourceName,
                 attributeFilter: filter
@@ -487,14 +493,11 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createThemeLayer
      * @description 创建专题图图层
      * @param layerInfo - {Object} 图层信息
-     * @param crs - {Object} 坐标对象
      * @return {L.Layer} 返回专题图图层对象
      */
     createThemeLayer: function (layerInfo) {
         var themeSettings = layerInfo.themeSettings && JSON.parse(layerInfo.themeSettings);
-        if (layerInfo.themeSettings && themeSettings.labelField) {
-            //var labelLayer = this.createLableLayer(layerInfo,themeSettings);
-        }
+
         var layer;
         var type = themeSettings.type;
         layerInfo.themeSettings = themeSettings;
@@ -509,15 +512,22 @@ export var WebMap = L.LayerGroup.extend({
         }
         if (layer) {
             this.addFeature2ThemeLayer(layerInfo, layer);
-            layer.on('add', (e)=> {
+            layer.on('add', (e) => {
                 this.registerThemeEvent(e.target);
             })
         }
-
+        if (themeSettings && themeSettings.labelField) {
+            var labelLayer = this.createLabelLayer(layerInfo, themeSettings);
+            labelLayer.on('add', (e) => {
+                this.registerThemeEvent(e.target);
+            });
+            layer.labelLayer = labelLayer;
+        }
         return layer;
     },
     createBaseThemeLayer: function (layerInfo, themeSettings) {
-        let style = layerInfo.style, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType, featureStyle = style.pointStyle;
+        let style = layerInfo.style, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType,
+            featureStyle = style.pointStyle;
         if (vectorType === "LINE") {
             featureStyle.fill = false;
         } else {
@@ -539,7 +549,7 @@ export var WebMap = L.LayerGroup.extend({
             return L.circleMarker(latlng, pointStyle);
         };
         if (featureStyle.unicode) {
-            pointToLayer = (geojson, latlng)=> {
+            pointToLayer = (geojson, latlng) => {
                 return new UnicodeMarker(latlng, featureStyle)
             }
         }
@@ -601,15 +611,52 @@ export var WebMap = L.LayerGroup.extend({
             styleGroups.push(object);
         }
         var range = new RangeThemeLayer(title, {
-            visibility: isVisible
+            visibility: isVisible,
+            opacity: opacity
         });
         this.registerThemeEvent(range);
-        range.setOpacity(opacity);
         range.style = layerInfo.style.pointStyle;
         range.style.stroke = true;
         range.themeField = themeField;
         range.styleGroups = styleGroups;
         return range;
+    },
+    createLabelLayer: function (layerInfo, themeSettings) {
+        var title = layerInfo.title;
+        var labelField = themeSettings.labelField, settings = themeSettings.settings,
+            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity;
+
+        //目前只是同一样式
+        var style;
+        if (!settings || settings.length > 0) {
+            style = {
+                "fillColor": "#ffffff"
+            };
+        } else {
+            style = settings[0].style;
+        }
+        var layerStyle = L.Util.extend(new ThemeStyle(), style);
+        layerStyle.fontWeight = "bold";
+        layerStyle.fontSize = "14px";
+        //默认显示标签边框背景
+        layerStyle.labelRect = true;
+        layerStyle.strokeColor = layerStyle.fillColor;
+        layerStyle.fontColor = themeSettings.labelColor;
+        if (themeSettings.labelFont) {
+            layerStyle.fontFamily = themeSettings.labelFont;
+        }
+
+        var label = new LabelThemeLayer(title, {
+            visibility: isVisible,
+            opacity: opacity
+        });
+        this.registerThemeEvent(label);
+        label.style = layerStyle;
+
+        label.themeField = labelField;
+        //styleGroup, 目前只是同一样式
+        label.styleGroups = [];
+        return label;
     },
     createHeatLayer: function (layerInfo, themeSettings) {
         let colors = themeSettings.colors || ['blue', 'cyan', 'lime', 'yellow', 'red'];
@@ -692,8 +739,8 @@ export var WebMap = L.LayerGroup.extend({
                     if (sqlResult.length > 0) {
                         var lon = feature.geometry.points[0].x,
                             lat = feature.geometry.points[0].y;
-                        var point = new SuperMap.Geometry.Point(lon, lat);
-                        var vector = new SuperMap.Feature.Vector(point, feature.attributes, feature.style);
+                        var point = new Point(lon, lat);
+                        var vector = new Vector(point, feature.attributes, feature.style);
                         newFeautures.push(vector);
                     }
                 }
@@ -708,7 +755,7 @@ export var WebMap = L.LayerGroup.extend({
                 subLayer = subLayers;
             }
             layerName = subLayer && subLayer.name;
-            this.getFeaturesBySQL(layerInfo.url, dataSourceName, layerName, themeSettings.filter, DataFormat.ISERVER, (getFeaturesEventArgs)=> {
+            this.getFeaturesBySQL(layerInfo.url, dataSourceName, layerName, themeSettings.filter, DataFormat.ISERVER, (getFeaturesEventArgs) => {
                 var features, feature, result = getFeaturesEventArgs.result, addedFeatures = [];
                 if (result && result.features) {
                     features = result.features;
@@ -736,7 +783,7 @@ export var WebMap = L.LayerGroup.extend({
                 subLayer = subLayers;
             }
             layerName = subLayer && subLayer.name;
-            var oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode
+            var oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
             this.queryFeaturesBySQL(url, credential, layerName, filter, needTransform ? '' : oldEpsgCode, function (features) {
                 var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode;
                 if (needTransform) {
@@ -748,12 +795,13 @@ export var WebMap = L.LayerGroup.extend({
                 }
             });
         }
+
         function addFeatures(features) {
-            if (layer.labelLayer) {
-                // me.addFeature2LableLayer(layerInfo, features, layer.labelLayer);
+            if (layer && layer.labelLayer instanceof LabelThemeLayer) {
+                me.addFeature2LabelLayer(layer.labelLayer, features, layerInfo);
             }
-            var heatPoints = [];
             if (L.HeatLayer && layer instanceof L.HeatLayer) {
+                var heatPoints = [];
                 for (let i = 0, len = features.length; i < len; i++) {
                     let geometry = features[i].geometry;
                     heatPoints[i] = me._map.options.crs.unproject(L.point(geometry.x, geometry.y));
@@ -763,12 +811,81 @@ export var WebMap = L.LayerGroup.extend({
                 }
                 layer.setLatLngs(heatPoints);
             } else if (layer instanceof L.GeoJSON) {
-                layer.addData(JSON.parse(new SuperMap.Format.GeoJSON().write(features)));
+                layer.addData(JSON.parse(new GeoJSONFormat().write(features)));
             } else {
                 layer.addFeatures(features);
             }
 
         }
+    },
+
+    addFeature2LabelLayer: function (layer, features, layerInfo) {
+        if (!features) {
+            return;
+        }
+
+        var feature, geoTextFeature;
+        var themeSettings = layerInfo.themeSettings;
+        themeSettings = typeof themeSettings === "string" ? JSON.parse(layerInfo.themeSettings) : layerInfo.themeSettings;
+        var themeField = themeSettings.labelField;
+
+        var style = layer.style;
+        var labelFeatures = [], lngLat;
+        var styleInfo = layerInfo.styleString && JSON.parse(layerInfo.styleString);
+        for (var i = 0; i < features.length; i++) {
+            lngLat = this.getLabelLngLat(themeSettings.vectorType, features[i]);
+            //设置标签的偏移量
+            this.setLabelOffset(themeSettings.vectorType, styleInfo, features[i], style);
+            feature = features[i];
+            var attributes = feature.attributes;
+            geoTextFeature = new ThemeFeature([lngLat.lat, lngLat.lng, attributes[themeField]], attributes);
+            labelFeatures.push(geoTextFeature);
+        }
+        layer.style = style;
+        layer.addFeatures(labelFeatures);
+    },
+    setLabelOffset: function (vectorType, styleInfo, feature, layerStyle) {
+        if (vectorType === 'POINT') {
+            var pointRadius = styleInfo.pointStyle.pointRadius || 0;
+            var strokeWidth = styleInfo.pointStyle.strokeWidth || 0;
+            var fontSize = parseInt(styleInfo.pointStyle.fontSize) || 0;
+            layerStyle.labelXOffset = 0;
+            layerStyle.labelYOffset = styleInfo.pointStyle.unicode ? 20 + fontSize : 25 + (pointRadius + strokeWidth);
+        } else {
+            return;
+        }
+    },
+    getLabelLngLat: function (vectorType, feature) {
+        var lngLat = {};
+        if (vectorType === 'POINT') {
+            var geometry = feature.geometry;
+            lngLat.lng = geometry.x;
+            lngLat.lat = geometry.y;
+        } else if (vectorType === 'LINE') {
+            //一条线所有顶点的数量
+            var length, index;
+            var components = feature.geometry.components;
+            if (components[0].x) {
+                //说明是lineString类型
+                length = components.length;
+                //线取中间点下一个显示标签
+                index = parseInt(length / 2);
+                lngLat.lng = components[index].x;
+                lngLat.lat = components[index].y;
+            } else {
+                //说明是MultiLineString类型,取第一条线
+                var lineOne = components[0].components;
+                length = lineOne.length;
+                index = parseInt(length / 2);
+                lngLat.lng = lineOne[index].x;
+                lngLat.lat = lineOne[index].y;
+            }
+        } else {
+            var centroid = feature.geometry.getCentroid();
+            lngLat.lng = centroid.x;
+            lngLat.lat = centroid.y;
+        }
+        return lngLat;
     },
     changeFeatureLayerEpsgCode: function (oldEpsgCode, newEpsgCode, layer, features, success) {
         var me = this, i, len;
@@ -914,18 +1031,18 @@ export var WebMap = L.LayerGroup.extend({
             },
             scope: this
         };
-        if (!SuperMap.Util.isInTheSameDomain(url) && this.proxy) {
+        if (!Util.isInTheSameDomain(url) && this.proxy) {
             options.proxy = this.proxy;
         }
-        SuperMap.Util.committer(options);
+        Util.committer(options);
     },
     getSQLFromFilter: function (filter) {
 
-        if (filter === '') {
-            return ' * where (1>=1)'
+        if (!filter) {
+            return ' * where (1==1||1>=0)'
         } else {
             filter = filter.replace(/=/g, '==').replace(/and|AND/g, '&&').replace(/or|OR/g, '||').replace(/>==/g, '>=').replace(/<==/g, '<=');
-            return '*  where (' + filter + ')';
+            return ' *  where (' + filter + ')';
         }
     },
     getAttributesObjFromTable: function (cols, colTitles) {
@@ -946,12 +1063,19 @@ export var WebMap = L.LayerGroup.extend({
         var attrArr = this.getAttributesObjFromTable(rows, colTitles);
         var features = [];
         for (var i = 0, len = attrArr.length; i < len; i++) {
-            var geometry = new SuperMap.Geometry.Point(attrArr[i][position["lon"]], attrArr[i][position["lat"]]);
+            var lon = attrArr[i][position["lon"]];
+            var lat = attrArr[i][position["lat"]];
+            if (!lon || !lat) {
+                continue;
+            }
+            lon = parseFloat(lon);
+            lat = parseFloat(lat);
+            var geometry = new Point(lon, lat);
             var pointGraphic;
             if (isGraphic) {
-                pointGraphic = new SuperMap.Graphic(geometry, attrArr[i], null);
+                pointGraphic = new Graphic(geometry, attrArr[i], null);
             } else {
-                pointGraphic = new SuperMap.Feature.Vector(geometry, attrArr[i], null);
+                pointGraphic = new Vector(geometry, attrArr[i], null);
             }
             features.push(pointGraphic);
         }
@@ -960,7 +1084,7 @@ export var WebMap = L.LayerGroup.extend({
 
     },
     parseFeatureFromJson: function (feature) {
-        var format = new SuperMap.Format.GeoJSON();
+        var format = new GeoJSONFormat();
         var features = format.read(feature);
         //兼容insights数据格式
         if (features == null) {
@@ -968,7 +1092,7 @@ export var WebMap = L.LayerGroup.extend({
             if (content.isAnalyseResult) {
                 content = content.data.recordsets[0].features;
             }
-            format = new SuperMap.Format.GeoJSON();
+            format = new GeoJSONFormat();
             features = format.read(content);
         }
         for (var i = 0, len = features.length; i < len; i++) {
@@ -979,7 +1103,7 @@ export var WebMap = L.LayerGroup.extend({
     },
     getFeatureFromFileAdded: function (layerInfo, success, failed, isGraphic) {
         var url = isGraphic ? layerInfo.url + '?currentPage=1&&pageSize=9999999' : layerInfo.url;
-        Request.get(url).then(response=>response.json()).then(data=> {
+        Request.get(url).then(response => response.json()).then(data => {
             success && success(data);
         }).catch(err => failed && failed(err));
     },
@@ -1006,7 +1130,7 @@ export var WebMap = L.LayerGroup.extend({
 
     },
     registerThemeEvent: function (themeLayer) {
-        themeLayer.on('click', evt=> {
+        themeLayer.on('click', evt => {
             if (!themeLayer.map) {
                 return;
             }
@@ -1023,7 +1147,7 @@ export var WebMap = L.LayerGroup.extend({
                 this.fire('featureSelected', {feature: feature});
             }
         });
-        themeLayer.on('mousemove', evt=> {
+        themeLayer.on('mousemove', evt => {
             if (!themeLayer.map) {
                 return;
             }
@@ -1053,4 +1177,4 @@ export var WebMap = L.LayerGroup.extend({
 export var webMap = function (id, options) {
     return new WebMap(id, options);
 };
-L.supermap.webmap = webMap
+L.supermap.webmap = webMap;

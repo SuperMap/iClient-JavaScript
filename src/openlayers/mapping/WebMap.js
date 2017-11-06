@@ -1,7 +1,23 @@
 import ol from 'openlayers/dist/ol-debug';
+import jsonsql from "jsonsql";
+import proj4 from "proj4";
 import {FetchRequest} from '../../common/util/FetchRequest';
-import SuperMap from '../../common/SuperMap';
+import {DataFormat} from '../../common/REST';
+import ServerFeature from '../../common/iServer/ServerFeature';
+import ThemeStyle from '../../common/style/ThemeStyle';
+import {Util} from '../../common/commontypes/Util';
+import GeoJSONFormat from '../../common/format/GeoJSON';
+import Point from '../../common/commontypes/geometry/Point';
+import Vector from '../../common/commontypes/Vector';
+import GetFeaturesBySQLParameters from '../../common/iServer/GetFeaturesBySQLParameters';
 import StyleUtils from '../core/StyleUtils';
+import Graphic from '../overlay/graphic/Graphic';
+import ThemeFeature from '../overlay/theme/ThemeFeature';
+import FeatureService from "../services/FeatureService";
+import TiandituTileLayer from '../mapping/Tianditu';
+import UniqueThemeSource from "../overlay/Unique";
+import RangeThemeSource from "../overlay/Range";
+import LabelThemeSource from "../overlay/Label";
 import Logo from '../control/Logo';
 
 ol.supermap = ol.supermap || {};
@@ -21,7 +37,7 @@ export default class WebMap extends ol.Observable {
 
     EventType = {
         WEBMAPLOADEND: 'webmaploadend'
-    }
+    };
 
     constructor(id, options) {
         super();
@@ -111,11 +127,10 @@ export default class WebMap extends ol.Observable {
                     me.createLayer(type, layerInfo);
                 }
                 me.dispatchEvent({type: ol.supermap.WebMap.EventType.WEBMAPLOADEND, value: this});
-            })
+            });
             view.fit(viewOptions.extent);
 
         }
-
 
     }
 
@@ -163,54 +178,9 @@ export default class WebMap extends ol.Observable {
             return resolutions;
         }
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(SuperMap.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+            resolutions.push(Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
-    }
-
-    _getViewOptions(layerInfo) {
-        var prjCoordSys = layerInfo.prjCoordSys,
-            epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
-            center = this.mapInfo.center || layerInfo.center,
-            level = this.mapInfo.level || layerInfo.level,
-            bounds = layerInfo.bounds || this.mapInfo.extent,
-            origin = [bounds.leftBottom.x, bounds.rightTop.y],
-            extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
-        var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
-        //var crs = this.createCRS(epsgCode, origin, resolution, boundsL);
-        var viewOptions = {
-            center: [center.x, center.y],
-            zoom: level,
-            projection: projection,
-            extent: extent
-        };
-        switch (layerInfo.type) {
-            case "TIANDITU_VEC":
-            case "TIANDITU_IMG":
-            case "TIANDITU_TER":
-                viewOptions.minZoom = 1;
-                viewOptions.zoom = 1 + viewOptions.zoom;
-                break;
-            case "BAIDU":
-                viewOptions.resolutions = [131072 * 2, 131072, 65536, 32768, 16284, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
-                viewOptions.zoom = 3 + viewOptions.zoom;
-                viewOptions.minZoom = 3;
-                break;
-            case "WMTS":
-                var identifier = layerInfo.identifier;
-                var wellKnownScaleSet = identifier.split("_")[0];
-                var info = this.getWmtsResolutionsAndMatrixIds(wellKnownScaleSet, layerInfo.units, layerInfo.scales, origin, extent);
-                viewOptions.resolutions = info.resolutions;
-                break;
-            case "CLOUD":
-                viewOptions.zoom = 3 + viewOptions.zoom;
-                viewOptions.minZoom = 3;
-                break;
-            default:
-                break;
-        }
-        return viewOptions;
-
     }
 
     /**
@@ -238,7 +208,10 @@ export default class WebMap extends ol.Observable {
                         tileGrid: scales ? new ol.tilegrid.TileGrid({
                             extent: extent,
                             resolutions: this.getResolutionsFromScales(scales, 96)
-                        }) : ol.source.TileSuperMapRest.createTileGrid(extent)
+                        }) : ol.source.TileSuperMapRest.createTileGrid(extent),
+                        attributions: new ol.Attribution({
+                            html: ";Map Data <span>© <a href='http://www.supermapol.com'>SuperMap Online</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
+                        })
                     }),
                     projection: projection
                 });
@@ -279,7 +252,7 @@ export default class WebMap extends ol.Observable {
                         tileGrid: new ol.tilegrid.WMTS(info),
                         style: 'default'
                     })
-                })
+                });
                 break;
             case "CLOUD":
                 layer = new ol.layer.Tile({
@@ -293,7 +266,7 @@ export default class WebMap extends ol.Observable {
                 if (layerInfo.identifier == "ANIMATORVECTOR") {
                     //todo
                 } else if (layerInfo.identifier == "THEME") {
-                    //todo
+                    layer = this.createThemeLayer(layerInfo);
                 } else {
                     layer = this.createVectorLayer(layerInfo);
                 }
@@ -303,6 +276,9 @@ export default class WebMap extends ol.Observable {
         }
         if (layer) {
             this.addLayer(layer);
+        }
+        if (layer.labelLayer) {
+            this.addLayer(layer.labelLayer);
         }
     }
 
@@ -319,7 +295,7 @@ export default class WebMap extends ol.Observable {
         var resolutions = ol.wellKnownScale.getResolutions(wellKnownScaleSet);
         if (!resolutions && scales) {
             for (var i = 0; i < scales.length; i++) {
-                resolutions.push(SuperMap.Util.getResolutionFromScaleDpi(scales[i], 90.71446714322, units));
+                resolutions.push(Util.getResolutionFromScaleDpi(scales[i], 90.71446714322, units));
             }
         }
         var origin = ol.wellKnownScale.getOrigin(wellKnownScaleSet);
@@ -348,14 +324,14 @@ export default class WebMap extends ol.Observable {
      */
     createTiandituLayer(layerInfo, epsgCode) {
         var type = layerInfo.type.split('_')[1].toLowerCase();
-        var isLabel=layerInfo.layerType === 'OVERLAY_LAYER';
+        var isLabel = layerInfo.layerType === 'OVERLAY_LAYER';
         var layer = new ol.layer.Tile({
-            source: new ol.source.Tianditu({
+            source: new TiandituTileLayer({
                 layerType: type,
-                isLabel:isLabel,
+                isLabel: isLabel,
                 projection: "EPSG:" + epsgCode
             })
-        })
+        });
         return layer;
     }
 
@@ -425,7 +401,7 @@ export default class WebMap extends ol.Observable {
             for (var setNameIndex = 0; setNameIndex < datasets.length; setNameIndex++) {
                 var dataset = datasets[setNameIndex];
                 if (dataset.visible) {
-                    var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
+                    var sqlParam = new GetFeaturesBySQLParameters({
                         queryParameter: {
                             name: dataset.name + "@" + datasourceName,
                             attributeFilter: "SMID >0"
@@ -464,6 +440,774 @@ export default class WebMap extends ol.Observable {
         })
     }
 
+    /**
+     * @private
+     * @function ol.supermap.WebMap.prototype.createThemeLayer
+     * @description 创建专题图图层
+     * @param layerInfo - {Object} 图层信息
+     * @return {L.Layer} 返回专题图图层对象
+     */
+    createThemeLayer(layerInfo) {
+        var themeSettings = layerInfo.themeSettings && JSON.parse(layerInfo.themeSettings);
+
+        var layer;
+        var type = themeSettings.type;
+        layerInfo.themeSettings = themeSettings;
+        if (type === "HEAT") {
+            layer = this.createHeatLayer(layerInfo, themeSettings);
+        } else if (type === "UNIQUE") {
+            layer = this.createUniqueLayer(layerInfo, themeSettings);
+        } else if (type === "RANGE") {
+            layer = this.createRangeLayer(layerInfo, themeSettings);
+        } else {
+            layer = this.createBaseThemeLayer(layerInfo, themeSettings);
+        }
+        if (layer) {
+            this.addFeature2ThemeLayer(layerInfo, layer);
+            layer.on('add', (e) => {
+                this.registerThemeEvent(e.target);
+            })
+        }
+        if (layerInfo.themeSettings && themeSettings.labelField) {
+            var labelLayer = this.createLabelLayer(layerInfo, themeSettings);
+            labelLayer.on('add', (e) => {
+                this.registerThemeEvent(e.target);
+            });
+            layer.labelLayer = labelLayer;
+        }
+        //数据来源都一样。所以不用添加重复的attributions
+        layer.getSource().setAttributions(" ");
+
+        return layer;
+    }
+
+    createBaseThemeLayer(layerInfo, themeSettings) {
+        let style = layerInfo.style, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType,
+            featureStyle = style.pointStyle;
+        if (vectorType === "LINE") {
+            featureStyle.fill = false;
+        } else {
+            featureStyle.fill = true;
+        }
+
+        var imageStyleOptions = {};
+
+        if (featureStyle.fill) {
+            imageStyleOptions.fill = new ol.style.Fill({
+                color: featureStyle.fillColor
+            });
+        }
+        if (featureStyle.pointRadius) {
+            imageStyleOptions.radius = parseFloat(featureStyle.pointRadius);
+        }
+        if (featureStyle.strokeColor || featureStyle.strokeWidth) {
+            imageStyleOptions.stroke = new ol.style.Stroke({
+                color: featureStyle.strokeColor,
+                width: featureStyle.strokeWidth,
+                lineCap: featureStyle.strokeLineCap
+            })
+        }
+        var pointStyle = new ol.style.Style({
+            image: new ol.style.Circle(imageStyleOptions)
+        });
+        if (featureStyle.unicode) {
+            let label = featureStyle.label.replace(/^&#x/, '');
+            label = String.fromCharCode(parseInt(label, 16));
+            pointStyle.setText(new ol.style.Text({
+                text: label,
+                font: featureStyle.fontSize + " supermapol-icons",
+                fill: new ol.style.Fill({color: featureStyle.fontColor})
+            }));
+
+        }
+
+        var vectorSource = new ol.source.Vector({
+            features: [],
+            wrapX: false
+        });
+
+        this.registerThemeEvent(vectorSource);
+
+        return new ol.layer.Vector({
+            source: vectorSource,
+            style: pointStyle,
+            opacity: opacity
+        });
+
+    }
+
+    createUniqueLayer(layerInfo, themeSettings) {
+        var title = layerInfo.title;
+        var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
+            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType;
+
+        for (var i = 0; i < settings.length; i++) {
+            var object = {};
+            object.value = settings[i].value;
+            object.style = settings[i].style;
+            styleGroups.push(object);
+        }
+        var unique = new UniqueThemeSource(title, {
+            map: this.map,
+            wrapX: false,
+            opacity: opacity,
+            visibility: isVisible
+        });
+
+
+        unique.style = layerInfo.style.pointStyle;
+        if (vectorType === "LINE") {
+            unique.style.fill = false;
+        }
+        unique.style.stroke = true;
+        unique.themeField = themeField;
+        unique.styleGroups = styleGroups;
+        var that = this;
+        unique.on('click', function (event) {
+            if (event.target && event.target.refDataID) {
+                var currenFeature = unique.getFeatureById(event.target.refDataID);
+                that.events.triggerEvent("uniquefeatureclicked", currenFeature, unique);
+            }
+        });
+        var themeLayer = new ol.layer.Image({
+            source: unique
+        });
+
+        this.registerThemeEvent(unique);
+        themeLayer.setOpacity(opacity);
+        return themeLayer;
+    }
+
+    createRangeLayer(layerInfo, themeSettings) {
+        var title = layerInfo.title;
+        var themeField = themeSettings.field, styleGroups = [], settings = themeSettings.settings,
+            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity, vectorType = themeSettings.vectorType,
+            featureStyle = layerInfo.style.pointStyle;
+        if (vectorType === "LINE") {
+            featureStyle.fill = false;
+        } else {
+            featureStyle.fill = true;
+        }
+        //组成styleGroup
+        for (var i = 0; i < settings.length; i++) {
+            var object = {};
+            object.start = settings[i].start;
+            object.end = settings[i].end;
+            object.style = settings[i].style;
+            styleGroups.push(object);
+        }
+        var range = new RangeThemeSource(title, {
+            map: this.map,
+            wrapX: false,
+            opacity: opacity,
+            visibility: isVisible
+        });
+        range.style = layerInfo.style.pointStyle;
+        range.style.stroke = true;
+        range.themeField = themeField;
+        range.styleGroups = styleGroups;
+        this.registerThemeEvent(range);
+        var themeLayer = new ol.layer.Image({
+            source: range
+        });
+        themeLayer.setOpacity(opacity);
+        return themeLayer;
+    }
+
+    createLabelLayer(layerInfo, themeSettings) {
+        var title = layerInfo.title;
+        var labelField = themeSettings.labelField, settings = themeSettings.settings,
+            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity;
+
+        //目前只是同一样式
+        var style;
+        if (!settings || settings.length > 0) {
+            style = {
+                "fillColor": "#ffffff"
+            };
+        } else {
+            style = settings[0].style;
+        }
+        var layerStyle = Util.extend(new ThemeStyle(), style);
+        layerStyle.fontWeight = "bold";
+        layerStyle.fontSize = "14px";
+        //默认显示标签边框背景
+        layerStyle.labelRect = true;
+        layerStyle.strokeColor = layerStyle.fillColor;
+        layerStyle.fontColor = themeSettings.labelColor;
+        if (themeSettings.labelFont) {
+            layerStyle.fontFamily = themeSettings.labelFont;
+        }
+
+        //目前label数据跟其他专题图图层数据来源一样。所以attribution不用重复
+        var label = new LabelThemeSource(title, {
+            map: this.map,
+            attributions: " ",
+            wrapX: false,
+            opacity: opacity,
+            visibility: isVisible
+        });
+
+        label.style = layerStyle;
+
+        label.themeField = labelField;
+        //styleGroup, 目前只是同一样式
+        label.styleGroups = [];
+
+        this.registerThemeEvent(label);
+        var themeLayer = new ol.layer.Image({
+            source: label
+        });
+        themeLayer.setOpacity(opacity);
+        return themeLayer;
+    }
+
+    createHeatLayer(layerInfo, themeSettings) {
+        let colors = themeSettings.colors || ['blue', 'cyan', 'lime', 'yellow', 'red'];
+        let gradient = colors, featureWeight, blur, shadow;
+
+        let radius = parseFloat(themeSettings.settings[0].radius);
+        //判断单位
+        if (themeSettings.heatUnit === "千米" || themeSettings.heatUnit === "km") {
+            radius = themeSettings.heatRadius * 1000
+        }
+        //权重
+        if (themeSettings.settings[0] && themeSettings.settings[0].featureWeight) {
+            featureWeight = themeSettings.settings[0].featureWeight;
+        }
+        //阴影
+        if (themeSettings.settings[0] && themeSettings.settings[0].shadow) {
+            shadow = themeSettings.settings[0].shadow;
+        }
+        //模糊
+        if (themeSettings.settings[0] && themeSettings.settings[0].blur) {
+            blur = themeSettings.settings[0].blur;
+        }
+
+        var layer = new ol.layer.Heatmap({
+            source: new ol.source.Vector({
+                features: [],
+                wrapX: false
+            }),
+            blur: blur,
+            shadow: shadow,
+            radius: radius,
+            gradient: gradient,
+            weight: featureWeight
+        });
+        return layer;
+    }
+
+    addFeature2ThemeLayer(layerInfo, layer) {
+        if (layerInfo.layerType !== "FEATURE_LAYER" || layerInfo.identifier !== "THEME") {
+            return;
+        }
+        var me = this;
+        var isRestData = !!layerInfo.datasourceName;
+        var cartoCSS = layerInfo.cartoCSS;
+        if (cartoCSS) {
+            var needTransform = this.getCartoCSS2Obj(cartoCSS).needTransform;
+            var isAddFile = this.getCartoCSS2Obj(cartoCSS).isAddFile;
+        }
+
+        var url = layerInfo.url, subLayers, subLayer, layerName, credential = layerInfo.credential,
+            themeSettings = layerInfo.themeSettings, filter = themeSettings.filter;
+
+        if (isAddFile) {
+            var position = JSON.parse(layerInfo.datasourceName);
+            var sql = this.getSQLFromFilter(filter);
+            if (url) {
+                this.getFeatureFromFileAdded(layerInfo, function (data) {
+                    var sFeaturesArr = [], features, result;
+                    if (data.type === 'EXCEL' || data.type === 'CSV') {
+                        features = me.parseFeatureFromEXCEL.apply(me, [data.content.rows, data.content.colTitles, false, position]);
+                        for (var x = 0, len = features.length; x < len; x++) {
+                            result = jsonsql({attr: features[x].attributes}, sql);
+                            if (result.length > 0) {
+                                sFeaturesArr.push(features[x])
+                            }
+                        }
+                    } else {
+                        features = me.parseFeatureFromJson(data.content);
+                        for (var i = 0, length = features.length; i < length; i++) {
+                            result = jsonsql({attr: features[i].attributes}, sql);
+                            if (result.length > 0) {
+                                sFeaturesArr.push(features[i]);
+                            }
+                        }
+                    }
+                    var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode,
+                        oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
+                    if (needTransform) {
+                        me.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, sFeaturesArr, function (features) {
+                            addFeatures(features);
+                        });
+                    } else {
+                        addFeatures(sFeaturesArr);
+                    }
+                }, function () {
+                });
+            } else {
+                var newFeautures = [], features = layerInfo.features;
+                for (var i = 0, len = features.length; i < len; i++) {
+                    var feature = features[i];
+                    var sqlResult = jsonsql({attr: feature.attributes}, sql);
+                    if (sqlResult.length > 0) {
+                        var lon = feature.geometry.points[0].x,
+                            lat = feature.geometry.points[0].y;
+                        var point = new Point(lon, lat);
+                        var vector = new Vector(point, feature.attributes, feature.style);
+                        newFeautures.push(vector);
+                    }
+                }
+                addFeatures(newFeautures);
+            }
+        } else if (isRestData) {
+            var dataSourceName = layerInfo.datasourceName;
+            subLayers = layerInfo.subLayers && JSON.parse(layerInfo.subLayers);
+            if (subLayers.length && subLayers.length > 0) {
+                subLayer = subLayers[0];
+            } else {
+                subLayer = subLayers;
+            }
+            layerName = subLayer && subLayer.name;
+            this.getFeaturesBySQL(layerInfo.url, dataSourceName, layerName, themeSettings.filter, DataFormat.ISERVER, (getFeaturesEventArgs) => {
+                var features, feature, result = getFeaturesEventArgs.result, addedFeatures = [];
+                if (result && result.features) {
+                    features = result.features;
+                    for (var fi = 0, felen = features.length; fi < felen; fi++) {
+                        feature = new ServerFeature.fromJson(features[fi]).toFeature();
+                        addedFeatures.push(feature);
+                    }
+                    var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode,
+                        oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
+
+                    if (needTransform) {
+                        this.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, addedFeatures, function (features) {
+                            addFeatures(features);
+                        });
+                    } else {
+                        addFeatures(features);
+                    }
+                }
+            })
+        } else {
+            subLayers = layerInfo.subLayers && JSON.parse(layerInfo.subLayers);
+            if (subLayers.length && subLayers.length > 0) {
+                subLayer = subLayers[0];
+            } else {
+                subLayer = subLayers;
+            }
+            layerName = subLayer && subLayer.name;
+            var oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
+            this.queryFeaturesBySQL(url, credential, layerName, filter, needTransform ? '' : oldEpsgCode, function (features) {
+                var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode;
+                if (needTransform) {
+                    me.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, features, function (features) {
+                        addFeatures(features);
+                    });
+                } else {
+                    addFeatures(features);
+                }
+            });
+        }
+
+        function addFeatures(features) {
+            var source = layer.getSource();
+            if (layer.labelLayer) {
+                me.addFeature2LabelLayer(layer.labelLayer, features, layerInfo);
+            }
+
+
+            if (layer instanceof ol.layer.Heatmap) {
+                var heatFeatures = [], featureWeight;
+                if (themeSettings.settings && themeSettings.settings[0] && themeSettings.settings[0].featureWeight) {
+                    featureWeight = themeSettings.settings[0].featureWeight;
+                }
+                for (let i = 0, len = features.length; i < len; i++) {
+                    let geometry = features[i].geometry;
+                    var attributes = features[i].attributes;
+                    var feature = new ol.Feature(attributes);
+                    feature.set("geometry", new ol.geom.Point([geometry.x, geometry.y]));
+                    if (featureWeight) {
+                        feature.set(featureWeight, parseFloat(feature.get(featureWeight)) - 5);
+                    }
+                    heatFeatures.push(feature);
+                }
+                source.addFeatures(heatFeatures);
+            } else if (layer instanceof ol.layer.Vector) {
+                var feats = [];
+                for (let j = 0, len = features.length; j < len; j++) {
+                    let geometry = features[j].geometry;
+                    let attributes = features[j].attributes;
+                    let feature = new ol.Feature(attributes);
+                    feature.set("geometry", new ol.geom.Point([geometry.x, geometry.y]));
+                    feats.push(feature);
+                }
+                source.addFeatures(feats);
+            } else {
+                source.addFeatures(features);
+            }
+
+        }
+    }
+
+    addFeature2LabelLayer(layer, features, layerInfo) {
+        if (!features) {
+            return;
+        }
+        var labelSource = layer.getSource();
+        var feature, geoTextFeature;
+        var themeSettings = layerInfo.themeSettings;
+        themeSettings = typeof themeSettings === "string" ? JSON.parse(layerInfo.themeSettings) : layerInfo.themeSettings;
+        var themeField = themeSettings.labelField;
+
+        var style = labelSource.style;
+        var labelFeatures = [], lngLat;
+        var styleInfo = layerInfo.styleString && JSON.parse(layerInfo.styleString);
+        for (var i = 0; i < features.length; i++) {
+            lngLat = this.getLabelLngLat(themeSettings.vectorType, features[i]);
+            //设置标签的偏移量
+            this.setLabelOffset(themeSettings.vectorType, styleInfo, features[i], style);
+            feature = features[i];
+            var attributes = feature.attributes;
+            geoTextFeature = new ThemeFeature([lngLat.lng, lngLat.lat, attributes[themeField]], attributes);
+            labelFeatures.push(geoTextFeature);
+        }
+        labelSource.style = style;
+        labelSource.addFeatures(labelFeatures);
+    }
+
+    setLabelOffset(vectorType, styleInfo, feature, layerStyle) {
+        if (vectorType === 'POINT') {
+            var pointRadius = styleInfo.pointStyle.pointRadius || 0;
+            var strokeWidth = styleInfo.pointStyle.strokeWidth || 0;
+            var fontSize = parseInt(styleInfo.pointStyle.fontSize) || 0;
+            layerStyle.labelXOffset = 0;
+            layerStyle.labelYOffset = styleInfo.pointStyle.unicode ? 20 + fontSize : 25 + (pointRadius + strokeWidth);
+        } else {
+            return;
+        }
+    }
+
+    getLabelLngLat(vectorType, feature) {
+        var lngLat = {};
+        if (vectorType === 'POINT') {
+            var geometry = feature.geometry;
+            lngLat.lng = geometry.x;
+            lngLat.lat = geometry.y;
+        } else if (vectorType === 'LINE') {
+            //一条线所有顶点的数量
+            var length, index;
+            var components = feature.geometry.components;
+            if (components[0].x) {
+                //说明是lineString类型
+                length = components.length;
+                //线取中间点下一个显示标签
+                index = parseInt(length / 2);
+                lngLat.lng = components[index].x;
+                lngLat.lat = components[index].y;
+            } else {
+                //说明是MultiLineString类型,取第一条线
+                var lineOne = components[0].components;
+                length = lineOne.length;
+                index = parseInt(length / 2);
+                lngLat.lng = lineOne[index].x;
+                lngLat.lat = lineOne[index].y;
+            }
+        } else {
+            var centroid = feature.geometry.getCentroid();
+            lngLat.lng = centroid.x;
+            lngLat.lat = centroid.y;
+        }
+        return lngLat;
+    }
+
+    getFeaturesBySQL(url, datasourceName, datasetName, filter, format, callback) {
+        filter = filter || "SMID > 0";
+        var sqlParam = new GetFeaturesBySQLParameters({
+            queryParameter: {
+                name: datasetName + "@" + datasourceName,
+                attributeFilter: filter
+            },
+            datasetNames: [datasourceName + ":" + datasetName]
+        });
+        new FeatureService(url).getFeaturesBySQL(sqlParam, callback, format);
+    }
+
+    changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, features, success) {
+        var me = this, i, len;
+        var points = [];
+        if (!oldEpsgCode || !newEpsgCode) {
+            return;
+        }
+        if (features && features.length > 0) {
+            for (i = 0, len = features.length; i < len; i++) {
+                var feature = features[i];
+                var geometry = feature.geometry;
+                var vertices = geometry.getVertices();
+                points = points.concat(vertices);
+            }
+            oldEpsgCode = 'EPSG:' + oldEpsgCode, newEpsgCode = 'EPSG:' + newEpsgCode;
+            me.coordsTransform(oldEpsgCode, newEpsgCode, points, function (layer, features) {
+                return function (newCoors) {
+                    var start = 0, len = newCoors.length;
+                    for (i = start; i < len; i++) {
+                        var point = points[i], coor = newCoors[i];
+                        point.x = coor.x;
+                        point.y = coor.y;
+                        point.calculateBounds();
+                    }
+                    for (i = 0, len = features.length; i < len; i++) {
+                        var feature = features[i];
+                        var geometry = feature.geometry;
+                        if (geometry.components) {
+                            me.calculateComponents(geometry.components);
+                        }
+                        geometry.calculateBounds();
+                    }
+                    success && success.call(me, features);
+                }
+            }(layer, features));
+        }
+        return true;
+    }
+
+    coordsTransform(fromEpsg, toEpsg, point, success) {
+        var newCoord;
+        var from = this.SERVER_TYPE_MAP[fromEpsg], to = this.SERVER_TYPE_MAP[toEpsg];
+        if (fromEpsg === toEpsg || !from || !to) {
+            if (point && point.length !== undefined) {
+                newCoord = [];
+                for (var i = 0, len = point.length; i < len; i++) {
+                    var coor = {x: point[i].x, y: point[i].y};
+                    newCoord.push(coor);
+                }
+            } else {
+                newCoord = {x: point.x, y: point.y};
+            }
+            if (success) {
+                success.call(this, newCoord);
+            }
+        } else {
+            var mercator = this.SERVER_TYPE_MAP['EPSG:3857'], wgs84 = this.SERVER_TYPE_MAP['EPSG:4326'];
+            if ((from === mercator || from === wgs84) && (to === mercator || to === wgs84)) {
+                this.projTransform(fromEpsg, toEpsg, point, success);
+            } else {
+                var convertType = from + '_' + to;
+                this.postTransform(convertType, point, success);
+            }
+        }
+    }
+
+    projTransform(fromEpsg, toEpsg, point, success) {
+        var newCoor, me = this;
+        if (!proj4) {
+            return;
+        }
+        if (point && point.length !== undefined) {
+            newCoor = [];
+            for (var i = 0, len = point.length; i < len; i++) {
+                var coor = proj4(fromEpsg, toEpsg, [point[i].x, point[i].y]);
+                newCoor.push({x: coor[0], y: coor[1]});
+            }
+        } else {
+            newCoor = proj4(fromEpsg, toEpsg, [point.x, point.y]);
+            newCoor = {x: newCoor[0], y: newCoor[1]};
+        }
+        if (success) {
+            me.dispatchEvent({type: 'coordconvertsuccess', coordinates: newCoor});
+            success.call(me, newCoor);
+        }
+    }
+
+    getAttributesObjFromTable(cols, colTitles) {
+        if (cols.length < 0 || colTitles.length < 0) {
+            return;
+        }
+        var attrArr = [];
+        for (var i = 0; i < cols.length; i++) {
+            var obj = {};
+            for (var j = 0; j < colTitles.length; j++) {
+                obj[colTitles[j]] = cols[i][j]
+            }
+            attrArr.push(obj);
+        }
+        return attrArr;
+    }
+
+    parseFeatureFromEXCEL(rows, colTitles, isGraphic, position) {
+        var attrArr = this.getAttributesObjFromTable(rows, colTitles);
+        var features = [];
+        for (var i = 0, len = attrArr.length; i < len; i++) {
+            var lon = attrArr[i][position["lon"]];
+            var lat = attrArr[i][position["lat"]];
+            if (!lon || !lat) {
+                continue;
+            }
+            lon = parseFloat(lon);
+            lat = parseFloat(lat);
+            var geometry = new Point(lon, lat);
+            var pointGraphic;
+            if (isGraphic) {
+                pointGraphic = new Graphic(geometry, attrArr[i], null);
+            } else {
+                pointGraphic = new Vector(geometry, attrArr[i], null);
+            }
+            features.push(pointGraphic);
+        }
+        return features;
+
+
+    }
+
+    parseFeatureFromJson(feature) {
+        var format = new GeoJSONFormat();
+        var features = format.read(feature);
+        //兼容insights数据格式
+        if (features == null) {
+            var content = JSON.parse(feature.replace(/'/, '"'));
+            if (content.isAnalyseResult) {
+                content = content.data.recordsets[0].features;
+            }
+            format = new GeoJSONFormat();
+            features = format.read(content);
+        }
+        for (var i = 0, len = features.length; i < len; i++) {
+            features[i].attributes = features[i].attributes.properties || features[i].attributes;
+        }
+        return features;
+
+    }
+
+    getFeatureFromFileAdded(layerInfo, success, failed, isGraphic) {
+        var url = isGraphic ? layerInfo.url + '?currentPage=1&&pageSize=9999999' : layerInfo.url;
+        FetchRequest.get(url).then(response => response.json()).then(data => {
+            success && success(data);
+        }).catch(err => failed && failed(err));
+    }
+
+    getSQLFromFilter(filter) {
+
+        if (!filter) {
+            return ' * where (1==1||1>=0)'
+        } else {
+            filter = filter.replace(/=/g, '==').replace(/and|AND/g, '&&').replace(/or|OR/g, '||').replace(/>==/g, '>=').replace(/<==/g, '<=');
+            return ' *  where (' + filter + ')';
+        }
+    }
+
+    registerThemeEvent(themeLayer) {
+        themeLayer.on('click', evt => {
+            if (!themeLayer.map) {
+                return;
+            }
+            if (this.selectedFeature) {
+                this.fire('featureUnSelected', {feature: this.selectedFeature});
+                this.selectedFeature = null;
+            }
+            let feature;
+            if (evt.target && evt.target.refDataID) {
+                feature = themeLayer.getFeatureById(evt.target.refDataID);
+            }
+            if (feature) {
+                this.selectedFeature = feature;
+                this.dispatchEvent({type: 'featureSelected', feature: feature});
+            }
+        });
+        themeLayer.on('mousemove', evt => {
+            if (!themeLayer.map) {
+                return;
+            }
+            if (evt.target && evt.target.refDataID) {
+                let feature;
+                if (evt.target && evt.target.refDataID) {
+                    feature = themeLayer.getFeatureById(evt.target.refDataID);
+                }
+                if (feature) {
+                    this.dispatchEvent({type: 'featureMousemove', feature: feature});
+                }
+
+            }
+        });
+    }
+
+    getCartoCSS2Obj(cartoCSS) {
+        var isAddFile, needTransform = false;
+        if (cartoCSS.indexOf('}') > -1) {
+            cartoCSS = JSON.parse(cartoCSS);
+            needTransform = cartoCSS.needTransform;
+            isAddFile = cartoCSS.isAddFile;
+        } else {
+            if (cartoCSS === 'needTransform') {
+                needTransform = true;
+                isAddFile = false;
+            } else {
+                isAddFile = cartoCSS === 'true';
+            }
+        }
+        return {
+            isAddFile: isAddFile,
+            needTransform: needTransform
+        }
+
+
+    }
+
+    _getViewOptions(layerInfo) {
+        var prjCoordSys = layerInfo.prjCoordSys,
+            epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
+            center = this.mapInfo.center || layerInfo.center,
+            level = this.mapInfo.level || layerInfo.level,
+            bounds = layerInfo.bounds || this.mapInfo.extent,
+            origin = [bounds.leftBottom.x, bounds.rightTop.y],
+            extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
+        var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
+        var viewOptions = {
+            center: [center.x, center.y],
+            zoom: level,
+            projection: projection,
+            extent: extent
+        };
+        switch (layerInfo.type) {
+            case "TIANDITU_VEC":
+            case "TIANDITU_IMG":
+            case "TIANDITU_TER":
+                viewOptions.minZoom = 1;
+                viewOptions.zoom = 1 + viewOptions.zoom;
+                break;
+            case "BAIDU":
+                viewOptions.resolutions = [131072 * 2, 131072, 65536, 32768, 16284, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
+                viewOptions.zoom = 3 + viewOptions.zoom;
+                viewOptions.minZoom = 3;
+                break;
+            case "WMTS":
+                var identifier = layerInfo.identifier;
+                var wellKnownScaleSet = identifier.split("_")[0];
+                var info = this.getWmtsResolutionsAndMatrixIds(wellKnownScaleSet, layerInfo.units, layerInfo.scales, origin, extent);
+                viewOptions.resolutions = info.resolutions;
+                break;
+            case "CLOUD":
+                viewOptions.zoom = 3 + viewOptions.zoom;
+                viewOptions.minZoom = 3;
+                break;
+            default:
+                break;
+        }
+        return viewOptions;
+
+    }
+
+    SERVER_TYPE_MAP = {
+        "EPSG:4326": "WGS84",
+        "EPSG:3857": "MERCATOR",
+        "EPSG:900913": "MERCATOR",
+        "EPSG:102113": "MERCATOR",
+        "EPSG:910101": "GCJ02",
+        "EPSG:910111": "GCJ02MERCATOR",
+        "EPSG:910102": "BD",
+        "EPSG:910112": "BDMERCATOR"
+    }
 }
 
 ol.supermap.WebMap = WebMap;

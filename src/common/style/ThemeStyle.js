@@ -1,4 +1,5 @@
 import SuperMap from '../SuperMap';
+
 /**
  * @class SuperMap.ThemeStyle
  * @classdesc 客户端专题图风格类
@@ -120,7 +121,7 @@ export default class ThemeStyle {
      * @member SuperMap.ThemeStyle.prototype.labelRect -boolean
      * @description 是否显示文本标签矩形背景。
      */
-    labelRect= false;
+    labelRect = false;
     /**
      * @member SuperMap.ThemeStyle.prototype.fontColor -{string}
      * @description 附加文本字体颜色。

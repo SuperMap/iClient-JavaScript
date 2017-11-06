@@ -256,7 +256,7 @@ export default class GeoText extends Geometry {
         if (style.fontSize) {
             fontSize = parseFloat(style.fontSize);
         } else {
-            return null;
+            fontSize = parseFloat("12px");
         }
 
         //标签宽高

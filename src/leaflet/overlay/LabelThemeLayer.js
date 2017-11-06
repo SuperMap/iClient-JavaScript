@@ -405,8 +405,8 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
         if (styleTmp.labelXOffset || styleTmp.labelYOffset) {
             var xOffset = isNaN(styleTmp.labelXOffset) ? 0 : styleTmp.labelXOffset;
             var yOffset = isNaN(styleTmp.labelYOffset) ? 0 : styleTmp.labelYOffset;
-            loc.add(xOffset, -yOffset);
-            return L.point(loc.x, loc.y);
+            var point = loc.add(L.point(xOffset, -yOffset));
+            return L.point(point.x, point.y);
         } else {
             return L.point(loc.x, loc.y);
         }
@@ -627,7 +627,6 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
                 }
             }
         }
-        this.setCanvasStyle("reset");
         var labelInfo = {};//标签信息
         if (labelWidth) {
             labelInfo.w = labelWidth;//标签的宽

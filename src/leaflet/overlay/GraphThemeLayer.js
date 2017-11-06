@@ -51,7 +51,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
         newArgs.push(name);
         newArgs.push(options);
         ThemeLayer.prototype.initialize.apply(this, newArgs);
-        this.map = options.map || null;
+        this.map = options && options.map || null;
         this.chartsType = chartsType;
         this.chartsSetting = options.chartsSetting || {};
         this.themeFields = options.themeFields || null;

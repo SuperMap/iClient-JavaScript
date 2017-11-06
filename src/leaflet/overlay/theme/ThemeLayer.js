@@ -32,7 +32,7 @@ export var ThemeLayer = L.Layer.extend({
         this.TFEvents = [];
         this.levelRenderer = new LevelRenderer();
         this.movingOffset = [0, 0];
-        this.map = options.map || null;
+        this.map = options && options.map || null;
     },
 
     /**
@@ -71,13 +71,14 @@ export var ThemeLayer = L.Layer.extend({
      */
     onAdd: function (map) {
         var me = this;
+
         me._initContainer();
         if (!me.levelRenderer) {
             map.removeLayer(me);
             return;
         }
 
-        me.map = map;
+        me.map = me._map = map;
         //初始化渲染器
         var size = map.getSize();
         me.container.style.width = size.x + "px";
@@ -86,7 +87,7 @@ export var ThemeLayer = L.Layer.extend({
 
         me.renderer = me.levelRenderer.init(me.container);
         me.renderer.clear();
-        if(me.features.length > 0){
+        if (me.features.length > 0) {
             me._reset();
             me.redrawThematicFeatures(me.map.getBounds());
         }
@@ -401,7 +402,9 @@ export var ThemeLayer = L.Layer.extend({
 
     _initContainer: function () {
         var parentContainer = this.getPane();
-        this.container = L.DomUtil.create("div", "themeLayer", parentContainer);
+        var className = this.options.name || "themeLayer";
+        this.container = L.DomUtil.create("div", className, parentContainer);
+        this.container.style.position = "absolute";
         this.container.style.zIndex = 100;
     },
 

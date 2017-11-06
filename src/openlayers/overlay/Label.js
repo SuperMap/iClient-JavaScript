@@ -641,7 +641,6 @@ export default class Label extends GeoFeature {
                 }
             }
         }
-        this.setCanvasStyle("reset");
         var labelInfo = {};//标签信息
         if (labelWidth) {
             labelInfo.w = labelWidth;//标签的宽

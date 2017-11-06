@@ -2,6 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 import Util from '../../core/Util';
 import SuperMap from '../../../common/SuperMap';
 import ServerFeature from '../../../common/iServer/ServerFeature';
+import Vector from '../../../common/commontypes/Vector';
 import ThemeFeature from './ThemeFeature';
 import LonLat from "../../../common/commontypes/LonLat";
 import Point from "../../../common/commontypes/geometry/Point";
@@ -33,6 +34,7 @@ export default class Theme extends ol.source.ImageCanvas {
             resolutions: options.resolutions,
             state: options.state
         });
+
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) { // eslint-disable-line no-unused-vars
             var mapWidth = size[0] * pixelRatio;
             var mapHeight = size[1] * pixelRatio;
@@ -479,13 +481,18 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.Theme.prototype.scale
+     * @function ol.source.Theme.prototype.toiClientFeature
      * @description 转为 iClient 要素
      * @param feature 待转要素
+     * @return {SuperMap.Feature.Vector} 转换后的iClient要素
      */
     toiClientFeature(feature) {
         if (feature instanceof ThemeFeature) {
             return feature.toFeature();
+        }
+        if (feature instanceof Vector) {
+            return feature;
+
         }
         return new ServerFeature.fromJson(feature).toFeature();
     }
