@@ -19652,16 +19652,12 @@ var GeoFeature = function (_Theme) {
             if (!_Util.Util.isArray(features)) {
                 features = [features];
             }
-            var event = { features: features };
-            _mapboxGl2.default.Evented.prototype.fire('beforefeaturesadded', event);
 
-            features = event.features;
-            var featuresFailAdded = [];
+            _mapboxGl2.default.Evented.prototype.fire('beforefeaturesadded', { features: features });
+
             for (var i = 0, len = features.length; i < len; i++) {
                 this.features.push(this.toiClientFeature(features[i]));
             }
-            var succeed = featuresFailAdded.length == 0 ? true : false;
-            _mapboxGl2.default.Evented.prototype.fire('featuresadded', { features: featuresFailAdded, succeed: succeed });
             if (!this.isCustomSetMaxCacheCount) {
                 this.maxCacheCount = this.features.length * 5;
             }
@@ -29562,11 +29558,7 @@ var NetworkAnalystService = function (_ServiceBase) {
             }
 
             if (params.event) {
-                if (params.event instanceof _mapboxGl2.default.LngLat) {
-                    params.event = { x: params.event.lng, y: params.event.lat };
-                } else if (_Util2.default.isArray(params.event)) {
-                    params.event = { x: params.event[0], y: params.event[1] };
-                }
+                return params.event = me._toPointObject(params.event);
             }
 
             if (params.facilities && _Util2.default.isArray(params.facilities)) {
@@ -29599,17 +29591,17 @@ var NetworkAnalystService = function (_ServiceBase) {
                     x: point[0],
                     y: point[1]
                 };
-            } else if (point instanceof _mapboxGl2.default.LngLat) {
+            }
+            if (point instanceof _mapboxGl2.default.LngLat) {
                 return {
                     x: point.lng,
                     y: point.lat
                 };
-            } else {
-                return point instanceof _mapboxGl2.default.Point ? {
-                    x: point.x,
-                    y: point.y
-                } : point;
             }
+            return point instanceof _mapboxGl2.default.Point ? {
+                x: point.x,
+                y: point.y
+            } : point;
         }
     }, {
         key: '_processFormat',

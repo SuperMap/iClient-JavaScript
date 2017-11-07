@@ -51,7 +51,7 @@
         div.addEventListener('mouseout', function () {
             map.scrollWheelZoom.enable();
             map.doubleClickZoom.enable();
-            if(!drawing){
+            if (!drawing) {
                 map.on('mousemove', pointerMoveHandler);
             }
             if (turfAnalyzeType === 'Classification_nearest') {
@@ -303,7 +303,6 @@
             showAlert("已有分析范围，请勿重复绘制。");
             return;
         }
-        //todo 没有找到监听地图点击时的监听事件
         tooltip.removeFrom(map);
         map.off('mousemove', pointerMoveHandler);
         var layer = e.layer;
@@ -633,7 +632,7 @@
         $('#msg').html(msg);
     }
 
-    function closeAlert(){
+    function closeAlert() {
         if (alertDiv) {
             $(alertDiv).remove();
         }

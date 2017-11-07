@@ -82,16 +82,12 @@ export default class GeoFeature extends Theme {
         if (!(Util.isArray(features))) {
             features = [features];
         }
-        var event = {features: features};
-        mapboxgl.Evented.prototype.fire('beforefeaturesadded', event);
 
-        features = event.features;
-        var featuresFailAdded = [];
+        mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
+
         for (var i = 0, len = features.length; i < len; i++) {
             this.features.push(this.toiClientFeature(features[i]));
         }
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        mapboxgl.Evented.prototype.fire('featuresadded', {features: featuresFailAdded, succeed: succeed});
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;
         }

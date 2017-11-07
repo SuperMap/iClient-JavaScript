@@ -232,9 +232,10 @@ describe('openlayers_Theme', function () {
     }];
 
     it("initialize", function () {
+        var iClientFeatures = ol.source.Theme.prototype.toiClientFeature(features);
         var theme = new ol.source.Theme("ThemeLayer", {
             map: map,
-            features: features,
+            features: iClientFeatures,
             style: {
                 shadowBlur: 16,
                 shadowColor: "#000000",

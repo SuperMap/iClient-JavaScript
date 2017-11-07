@@ -28,11 +28,10 @@ export var ThemeLayer = L.Layer.extend({
     initialize: function (name, options) {
         L.Util.setOptions(this, options);
         this.options.name = name;
-        this.features = [];
-        this.TFEvents = [];
+        this.features = options && options.features ? options.features : [];
+        this.TFEvents = options && options.TFEvents ? options.TFEvents : [];
         this.levelRenderer = new LevelRenderer();
         this.movingOffset = [0, 0];
-        this.map = options && options.map || null;
     },
 
     /**
@@ -87,7 +86,7 @@ export var ThemeLayer = L.Layer.extend({
 
         me.renderer = me.levelRenderer.init(me.container);
         me.renderer.clear();
-        if (me.features.length > 0) {
+        if (me.features && me.features.length > 0) {
             me._reset();
             me.redrawThematicFeatures(me.map.getBounds());
         }

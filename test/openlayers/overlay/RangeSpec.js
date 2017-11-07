@@ -297,9 +297,10 @@ describe('openlayers_Range', function () {
     });
 
     it("destroy", function () {
+        var iClientFeatures = ol.source.Range.prototype.toiClientFeature(features);
         var range = new ol.source.Range("ThemeLayer", {
             map: map,
-            features: features,
+            features: iClientFeatures,
             style: {
                 shadowBlur: 16,
                 shadowColor: "#000000",

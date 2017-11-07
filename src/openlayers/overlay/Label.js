@@ -587,13 +587,9 @@ export default class Label extends GeoFeature {
             pt[1] -= yOffset;
         }
 
-        var canvas = createCanvas();
-
-        function createCanvas() {
-            let canvas = document.createElement('canvas');
-            canvas.globalAlpha = 0;
-            canvas.lineWidth = 1;
-        }
+        var canvas = document.createElement('canvas');
+        canvas.globalAlpha = 0;
+        canvas.lineWidth = 1;
 
         canvas.fillStyle = style.fontColor;
         canvas.globalAlpha = style.fontOpacity || 1.0;

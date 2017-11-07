@@ -51,18 +51,17 @@ export var GraphThemeLayer = ThemeLayer.extend({
         newArgs.push(name);
         newArgs.push(options);
         ThemeLayer.prototype.initialize.apply(this, newArgs);
-        this.map = options && options.map || null;
         this.chartsType = chartsType;
-        this.chartsSetting = options.chartsSetting || {};
-        this.themeFields = options.themeFields || null;
-        this.charts = options.charts || [];
-        this.cache = options.cache || {};
+        this.themeFields = options && options.themeFields ? options.themeFields : null;
+        this.charts = options && options.charts ? options.charts : [];
+        this.cache = options && options.cache ? options.cache : {};
+        this.chartsSetting = options && options.chartsSetting ? options.chartsSetting : {};
     },
 
     /**
      * @function L.supermap.GraphThemeLayer.prototype.setChartsType
-     * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。图表类型，目前支持："Bar", "Line", "Pie"。
-     * @param chartsType  - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
+     * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。图表类型，目前支持："Bar", "Bar3D", "Line","Point","Pie","Ring"。
+     * @param chartsType  - {string} 图表类型。目前可用："Bar", "Bar3D", "Line","Point","Pie","Ring"。
      */
     setChartsType: function (chartsType) {
         this.chartsType = chartsType;

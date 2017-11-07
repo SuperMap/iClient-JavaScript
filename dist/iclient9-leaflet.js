@@ -18871,17 +18871,14 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
         if (!_leaflet2["default"].Util.isArray(features)) {
             features = [features];
         }
-        var me = this,
-            event = { features: features };
-        me.fire("beforefeaturesadded", event);
-        features = event.features;
+        var me = this;
+        me.fire("beforefeaturesadded", { features: features });
+
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
             feature = me._createFeature(feature);
             me.features.push(feature);
         }
-        var succeed = me.features.length === 0;
-        me.fire("featuresadded", { features: me.features, succeed: succeed });
 
         if (!me.isCustomSetMaxCacheCount) {
             me.maxCacheCount = me.features.length * 5;
@@ -19975,18 +19972,17 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         newArgs.push(name);
         newArgs.push(options);
         _ThemeLayer.ThemeLayer.prototype.initialize.apply(this, newArgs);
-        this.map = options && options.map || null;
         this.chartsType = chartsType;
-        this.chartsSetting = options.chartsSetting || {};
-        this.themeFields = options.themeFields || null;
-        this.charts = options.charts || [];
-        this.cache = options.cache || {};
+        this.themeFields = options && options.themeFields ? options.themeFields : null;
+        this.charts = options && options.charts ? options.charts : [];
+        this.cache = options && options.cache ? options.cache : {};
+        this.chartsSetting = options && options.chartsSetting ? options.chartsSetting : {};
     },
 
     /**
      * @function L.supermap.GraphThemeLayer.prototype.setChartsType
-     * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。图表类型，目前支持："Bar", "Line", "Pie"。
-     * @param chartsType  - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
+     * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。图表类型，目前支持："Bar", "Bar3D", "Line","Point","Pie","Ring"。
+     * @param chartsType  - {string} 图表类型。目前可用："Bar", "Bar3D", "Line","Point","Pie","Ring"。
      */
     setChartsType: function setChartsType(chartsType) {
         this.chartsType = chartsType;
@@ -27533,11 +27529,10 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
     initialize: function initialize(name, options) {
         _leaflet2["default"].Util.setOptions(this, options);
         this.options.name = name;
-        this.features = [];
-        this.TFEvents = [];
+        this.features = options && options.features ? options.features : [];
+        this.TFEvents = options && options.TFEvents ? options.TFEvents : [];
         this.levelRenderer = new _LevelRenderer2["default"]();
         this.movingOffset = [0, 0];
-        this.map = options && options.map || null;
     },
 
     /**
@@ -27592,7 +27587,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
 
         me.renderer = me.levelRenderer.init(me.container);
         me.renderer.clear();
-        if (me.features.length > 0) {
+        if (me.features && me.features.length > 0) {
             me._reset();
             me.redrawThematicFeatures(me.map.getBounds());
         }
