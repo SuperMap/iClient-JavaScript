@@ -153,7 +153,6 @@ export default class Label extends GeoFeature {
 
             //标签最终的中心点像素位置 （偏移后）
             var loc = this.getLabelPxLocation(fi);
-            loc = {x: loc.getCoordinates()[0], y: loc.getCoordinates()[1]};
 
             //过滤掉地图范围外的标签 （偏移后）
             if ((loc.x >= 0 && loc.x <= mapSize.x ) && (loc.y >= 0 && loc.y <= mapSize.y)) {
@@ -404,7 +403,7 @@ export default class Label extends GeoFeature {
      * @function ol.source.Label.prototype.getLabelPxLocation
      * @description 获取标签要素的像素坐标
      * @param feature -{SuperMap.Feature.Vector}  标签要素。
-     * @return {ol.geom.Point} 标签位置
+     * @return {Object} 标签位置,例如：{"x":1,"y":1}
      */
     getLabelPxLocation(feature) {
         var geoText = feature.geometry;
@@ -420,10 +419,8 @@ export default class Label extends GeoFeature {
             var xOffset = isNaN(styleTmp.labelXOffset) ? 0 : styleTmp.labelXOffset;
             var yOffset = isNaN(styleTmp.labelYOffset) ? 0 : styleTmp.labelYOffset;
             loc.translate(xOffset, -yOffset);
-            return new ol.geom.Point(loc.getCoordinates());
-        } else {
-            return new ol.geom.Point(loc.getCoordinates());
         }
+        return {x: loc.getCoordinates()[0], y: loc.getCoordinates()[1]};
     }
 
 
@@ -432,7 +429,7 @@ export default class Label extends GeoFeature {
      * @description 获得标签要素的最终范围
      *
      * @param feature - {SuperMap.Feature.Vector} 需要计算bounds的标签要素数。
-     * @param loc - {ol.geom.Point} 标签位置
+     * @param loc - {Object} 标签位置,例如：{"x":1,"y":1}
      *
      * @return {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
