@@ -64,16 +64,14 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         if (!(L.Util.isArray(features))) {
             features = [features];
         }
-        var me = this, event = {features: features};
-        me.fire("beforefeaturesadded", event);
-        features = event.features;
+        var me = this;
+        me.fire("beforefeaturesadded", {features: features});
+
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
             feature = me._createFeature(feature);
             me.features.push(feature);
         }
-        var succeed = me.features.length === 0;
-        me.fire("featuresadded", {features: me.features, succeed: succeed});
 
         if (!me.isCustomSetMaxCacheCount) {
             me.maxCacheCount = me.features.length * 5;

@@ -57,16 +57,10 @@ export default class GeoFeature extends Theme {
         if (!(SuperMap.Util.isArray(features))) {
             features = [features];
         }
-        var event = {features: features};
-        this.dispatchEvent({type: 'beforefeaturesadded', value: event});
-
-        features = event.features;
-        var featuresFailAdded = [];
+        this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
         for (var i = 0, len = features.length; i < len; i++) {
             this.features.push(this.toiClientFeature(features[i]));
         }
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;
         }

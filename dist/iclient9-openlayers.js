@@ -19427,16 +19427,10 @@ var GeoFeature = function (_Theme) {
             if (!_SuperMap2.default.Util.isArray(features)) {
                 features = [features];
             }
-            var event = { features: features };
-            this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
-
-            features = event.features;
-            var featuresFailAdded = [];
+            this.dispatchEvent({ type: 'beforefeaturesadded', value: { features: features } });
             for (var i = 0, len = features.length; i < len; i++) {
                 this.features.push(this.toiClientFeature(features[i]));
             }
-            var succeed = featuresFailAdded.length == 0 ? true : false;
-            this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
             if (!this.isCustomSetMaxCacheCount) {
                 this.maxCacheCount = this.features.length * 5;
             }
@@ -92087,10 +92081,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
 	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
 	"_spec": "proj4@2.3.15",
-	"_where": "F:\\dev\\iClient",
+	"_where": "G:\\github-iClient\\iClient9",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

@@ -2,6 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import SuperMap from '../../../common/SuperMap';
 import Theme from './ThemeLayer';
 import Vector from '../../../common/overlay/ThemeVector';
+
 /**
  * @class mapboxgl.supermap.GeoFeatureThemeLayer
  * @classdesc 地理几何专题要素型专题图层。
@@ -38,16 +39,12 @@ export default class GeoFeature extends Theme {
         if (!(SuperMap.Util.isArray(features))) {
             features = [features];
         }
-        var event = {features: features};
-        mapboxgl.Evented.prototype.fire('beforefeaturesadded', event);
 
-        features = event.features;
-        var featuresFailAdded = [];
+        mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
+
         for (var i = 0, len = features.length; i < len; i++) {
             this.features.push(this.toiClientFeature(features[i]));
         }
-        var succeed = featuresFailAdded.length == 0 ? true : false;
-        mapboxgl.Evented.prototype.fire('featuresadded', {features: featuresFailAdded, succeed: succeed});
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;
         }

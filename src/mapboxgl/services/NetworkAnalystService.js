@@ -284,11 +284,7 @@ export default class NetworkAnalystService extends ServiceBase {
         }
 
         if (params.event) {
-            if (params.event instanceof mapboxgl.LngLat) {
-                params.event = {x: params.event.lng, y: params.event.lat};
-            } else if (Util.isArray(params.event)) {
-                params.event = {x: params.event[0], y: params.event[1]};
-            }
+            return params.event =me._toPointObject(params.event);
         }
 
         if (params.facilities && Util.isArray(params.facilities)) {
@@ -315,23 +311,24 @@ export default class NetworkAnalystService extends ServiceBase {
 
     }
 
-    _toPointObject(point){
+    _toPointObject(point) {
         if (Util.isArray(point)) {
             return {
                 x: point[0],
                 y: point[1]
             };
-        } else if (point instanceof mapboxgl.LngLat) {
-           return  {
+        }
+        if (point instanceof mapboxgl.LngLat) {
+            return {
                 x: point.lng,
                 y: point.lat
             };
-        } else {
-            return (point instanceof mapboxgl.Point) ? {
-                x: point.x,
-                y: point.y
-            } : point;
         }
+        return (point instanceof mapboxgl.Point) ? {
+            x: point.x,
+            y: point.y
+        } : point;
+
     }
 
     _processFormat(resultFormat) {
