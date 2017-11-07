@@ -27941,9 +27941,9 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         var me = this;
         var latLngBounds = me._map.getBounds();
         me.update(latLngBounds);
-        var bounds = new _leaflet2["default"].Bounds(me._map.latLngToLayerPoint(latLngBounds.getNorthWest()), me._map.latLngToLayerPoint(latLngBounds.getSouthEast()));
-        var size = bounds.getSize();
-        _leaflet2["default"].DomUtil.setPosition(me.container, bounds.min);
+        var topLeft = me._map.containerPointToLayerPoint([0, 0]);
+        _leaflet2["default"].DomUtil.setPosition(me.container, topLeft);
+        var size = me._map.getSize();
         me.container.style.width = size.x + 'px';
         me.container.style.height = size.y + 'px';
     },
@@ -85117,6 +85117,8 @@ _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
      * @return {LatLng} 返回经纬度坐标
      */
     unproject: function unproject(point, unbounded) {
+        point.x = point.x < this.bounds.min.x ? this.bounds.min.x : point.x > this.bounds.max.x ? this.bounds.max.x : point.x;
+        point.y = point.y < this.bounds.min.y ? this.bounds.min.y : point.y > this.bounds.max.y ? this.bounds.max.y : point.y;
         var point2 = this._proj.inverse([point.x, point.y]);
         return new _leaflet2["default"].LatLng(point2[1], point2[0], unbounded);
     },
@@ -93970,108 +93972,7 @@ exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 466 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"_from": "proj4@2.3.15",
-	"_id": "proj4@2.3.15",
-	"_inBundle": false,
-	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
-	"_location": "/proj4",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "version",
-		"registry": true,
-		"raw": "proj4@2.3.15",
-		"name": "proj4",
-		"escapedName": "proj4",
-		"rawSpec": "2.3.15",
-		"saveSpec": null,
-		"fetchSpec": "2.3.15"
-	},
-	"_requiredBy": [
-		"/"
-	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
-	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
-	"_spec": "proj4@2.3.15",
-	"_where": "F:\\dev\\iClient",
-	"author": "",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
-	},
-	"bundleDependencies": false,
-	"contributors": [
-		{
-			"name": "Mike Adair",
-			"email": "madair@dmsolutions.ca"
-		},
-		{
-			"name": "Richard Greenwood",
-			"email": "rich@greenwoodmap.com"
-		},
-		{
-			"name": "Calvin Metcalf",
-			"email": "calvin.metcalf@gmail.com"
-		},
-		{
-			"name": "Richard Marsden",
-			"url": "http://www.winwaed.com"
-		},
-		{
-			"name": "T. Mittan"
-		},
-		{
-			"name": "D. Steinwand"
-		},
-		{
-			"name": "S. Nelson"
-		}
-	],
-	"dependencies": {
-		"mgrs": "~0.0.2"
-	},
-	"deprecated": false,
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"devDependencies": {
-		"browserify": "~12.0.1",
-		"chai": "~1.8.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"grunt": "~0.4.2",
-		"grunt-browserify": "~4.0.1",
-		"grunt-cli": "~0.1.13",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~0.8.0",
-		"grunt-contrib-uglify": "~0.11.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"istanbul": "~0.2.4",
-		"mocha": "~1.17.1",
-		"tin": "~0.4.0"
-	},
-	"directories": {
-		"test": "test",
-		"doc": "docs"
-	},
-	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"jam": {
-		"main": "dist/proj4.js",
-		"include": [
-			"dist/proj4.js",
-			"README.md",
-			"AUTHORS",
-			"LICENSE.md"
-		]
-	},
-	"license": "MIT",
-	"main": "lib/index.js",
-	"name": "proj4",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
-	},
-	"scripts": {
-		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
-	},
-	"version": "2.3.15"
-};
+module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 467 */

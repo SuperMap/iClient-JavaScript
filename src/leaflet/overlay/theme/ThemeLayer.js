@@ -434,12 +434,9 @@ export var ThemeLayer = L.Layer.extend({
         var me = this;
         var latLngBounds = me._map.getBounds();
         me.update(latLngBounds);
-        var bounds = new L.Bounds(
-            me._map.latLngToLayerPoint(latLngBounds.getNorthWest()),
-            me._map.latLngToLayerPoint(latLngBounds.getSouthEast())
-        );
-        var size = bounds.getSize();
-        L.DomUtil.setPosition(me.container, bounds.min);
+        var topLeft = me._map.containerPointToLayerPoint([0, 0]);
+        L.DomUtil.setPosition(me.container, topLeft);
+        var size = me._map.getSize();
         me.container.style.width = size.x + 'px';
         me.container.style.height = size.y + 'px';
     },
