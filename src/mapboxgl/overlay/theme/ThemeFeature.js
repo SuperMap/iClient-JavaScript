@@ -1,17 +1,19 @@
 import mapboxgl from 'mapbox-gl';
-import SuperMap from '../../../common/SuperMap';
+import Point from '../../../common/commontypes/geometry/Point';
+import GeoText from '../../../common/commontypes/geometry/GeoText';
+import Vector from '../../../common/commontypes/Vector';
 import Util from '../../core/Util';
+
 /**
  * @class mapboxgl.supermap.ThemeFeature
  * @classdesc 专题图要素类
- * @private
- * @param geometry - {Object} 要量算的几何对象
- * @param attributes - {Object} 属性
+ * @param geometry - {Object} 专题图要素几何对象，geojson格式。
+ * @param attributes - {Object} 几何对象属性
  */
 export default class ThemeFeature {
 
-    constructor(geoJson, attributes) {
-        this.geoJson = geoJson;
+    constructor(geometry, attributes) {
+        this.geometry = geometry;
         this.attributes = attributes;
     }
 
@@ -20,17 +22,19 @@ export default class ThemeFeature {
      * @description 转为矢量要素
      */
     toFeature() {
-        var geometry = Util.toSuperMapGeometry(this.geoJson);
+        var geometry = Util.toSuperMapGeometry(this.geometry);
         var points = [];
-        if (this.geoJson instanceof mapboxgl.LngLat) {
-            points = [this.geoJson.lng, this.geoJson.lat];
-        } else if (this.geoJson instanceof mapboxgl.Point) {
-            points = [this.geoJson.x, this.geoJson.y];
+        if (this.geometry instanceof mapboxgl.LngLat) {
+            points = [this.geometry.lng, this.geometry.lat];
+        } else if (this.geometry instanceof mapboxgl.Point) {
+            points = [this.geometry.x, this.geometry.y];
+        } else if (this.geometry.length === 3) {
+            geometry = new GeoText(this.geometry[0], this.geometry[1], this.geometry[2]);
         }
         if (points.length > 1) {
-            geometry = new SuperMap.Geometry.Point(points[0], points[1]);
+            geometry = new Point(points[0], points[1]);
         }
-        return new SuperMap.Feature.Vector(geometry, this.attributes);
+        return new Vector(geometry, this.attributes);
     }
 }
 

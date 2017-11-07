@@ -941,7 +941,8 @@ deps = {
                     "./src/mapboxgl/overlay/RangeThemeLayer.js",
                     "./src/mapboxgl/overlay/UniqueThemeLayer.js",
                     "./src/mapboxgl/overlay/RankSymbolThemeLayer.js",
-                    "./src/mapboxgl/overlay/GraphThemeLayer.js"
+                    "./src/mapboxgl/overlay/GraphThemeLayer.js",
+                    "./src/mapboxgl/overlay/LabelThemeLayer.js"
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.RankTheme3DLayer",
@@ -961,6 +962,9 @@ deps = {
                 }, {
                     "name": "mapboxgl.supermap.GraphThemeLayer",
                     "des": "统计专题图"
+                }, {
+                    "name": "mapboxgl.supermap.LabelThemeLayer",
+                    "des": "标签专题图"
                 }]
 
             }

@@ -12,39 +12,39 @@ var exampleConfig = {
             "map": {
                 name: "地图",
                 content: [{
-                        name: "3857底图",
-                        thumbnail: "mb_TileLayer.png",
-                        fileName: "01_tiledMapLayer"
-                    }, {
-                        name: "地图信息",
-                        thumbnail: "mb_mapService.png",
-                        fileName: "01_mapService"
+                    name: "3857底图",
+                    thumbnail: "mb_TileLayer.png",
+                    fileName: "01_tiledMapLayer"
+                }, {
+                    name: "地图信息",
+                    thumbnail: "mb_mapService.png",
+                    fileName: "01_mapService"
 
-                    }, {
-                        name: "距离测量",
-                        thumbnail: "mb_measure-distance.png",
-                        fileName: "01_measure_distance"
-                    }, {
-                        name: "面积测量",
-                        thumbnail: "mb_measure-area.png",
-                        fileName: "01_measure_area"
-                    }, {
-                        name: "范围查询",
-                        thumbnail: "mb_mapQueryByBounds.png",
-                        fileName: "01_mapQueryByBounds"
-                    }, {
-                        name: "距离查询",
-                        thumbnail: "mb_mapQueryByDistance.png",
-                        fileName: "01_mapQueryByDistance"
-                    }, {
-                        name: "几何查询",
-                        thumbnail: "mb_mapQueryByGeometry.png",
-                        fileName: "01_mapQueryByGeometry"
-                    }, {
-                        name: "SQL查询",
-                        thumbnail: "mb_mapQueryBySQL.png",
-                        fileName: "01_mapQueryBySQL"
-                    }]
+                }, {
+                    name: "距离测量",
+                    thumbnail: "mb_measure-distance.png",
+                    fileName: "01_measure_distance"
+                }, {
+                    name: "面积测量",
+                    thumbnail: "mb_measure-area.png",
+                    fileName: "01_measure_area"
+                }, {
+                    name: "范围查询",
+                    thumbnail: "mb_mapQueryByBounds.png",
+                    fileName: "01_mapQueryByBounds"
+                }, {
+                    name: "距离查询",
+                    thumbnail: "mb_mapQueryByDistance.png",
+                    fileName: "01_mapQueryByDistance"
+                }, {
+                    name: "几何查询",
+                    thumbnail: "mb_mapQueryByGeometry.png",
+                    fileName: "01_mapQueryByGeometry"
+                }, {
+                    name: "SQL查询",
+                    thumbnail: "mb_mapQueryBySQL.png",
+                    fileName: "01_mapQueryBySQL"
+                }]
             },
             "data": {
                 name: "数据",
@@ -341,6 +341,11 @@ var exampleConfig = {
                         fileName: "rankSymbolThemeLayer"
                     },
                     {
+                        name: "标签专题图",
+                        thumbnail: "mb_labelThemeLayer.png",
+                        fileName: "labelThemeLayer"
+                    },
+                    {
                         name: "图表专题图",
                         thumbnail: "mb_graphThemeLayer.png",
                         fileName: "graphThemeLayer"
@@ -366,21 +371,21 @@ var exampleConfig = {
     },
 
     "GTC": {
-            name: "GTC",
-            content: {
-                "GTC2017": {
-                    name: "2017",
-                    content: [
-                        {
-                            name: "GTC2017",
-                            thumbnail: "gtc2017.gif",
-                            fileName: "GTC2017"
-                        }
-                    ]
-                }
+        name: "GTC",
+        content: {
+            "GTC2017": {
+                name: "2017",
+                content: [
+                    {
+                        name: "GTC2017",
+                        thumbnail: "gtc2017.gif",
+                        fileName: "GTC2017"
+                    }
+                ]
             }
-        },
-    };
+        }
+    },
+};
 /**
  *key值：为exampleConfig配置的key值或者fileName值
  *      （为中间节点时是key值，叶结点是fileName值）

@@ -52,6 +52,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         me.cache = {};
         me.cacheFields = [];
         me.style = {};
+        me.highlightStyle = {};
     },
 
     /**

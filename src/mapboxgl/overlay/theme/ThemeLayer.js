@@ -1,12 +1,12 @@
 import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
-import SuperMap from '../../../common/SuperMap';
 import ServerFeature from '../../../common/iServer/ServerFeature';
 import ThemeFeature from './ThemeFeature';
 import LonLat from "../../../common/commontypes/LonLat";
 import Point from "../../../common/commontypes/geometry/Point";
 import GeoText from "../../../common/commontypes/geometry/GeoText";
 import LevelRenderer from "../../../common/overlay/levelRenderer/LevelRenderer";
+import {Util} from '../../../common/commontypes/Util';
 import "../../../common/overlay/levelRenderer/Render";
 
 /**
@@ -17,6 +17,25 @@ import "../../../common/overlay/levelRenderer/Render";
  * @param options -{Object} 参数。
  */
 export default class Theme {
+
+    /**
+     * @member mapboxgl.supermap.ThemeLayer.prototype.name -{string}
+     * @description 专题图图层名称
+     */
+    name = null;
+
+    /**
+     * @member mapboxgl.supermap.ThemeLayer.prototype.opacity -{float}
+     * @description 图层透明度
+     */
+    opacity = 1;
+
+    /**
+     * @member mapboxgl.supermap.ThemeLayer.prototype.map -{mapboxgl.Map}
+     * @description map对象
+     */
+    map = null;
+
 
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
@@ -30,6 +49,7 @@ export default class Theme {
         var canvas = this.map.getCanvas();
         this.div.style.width = canvas.style.width;
         this.div.style.height = canvas.style.height;
+        this.div.className = (options.name != null) ? opt_options.name : "themeLayer";
         this.div.width = parseInt(canvas.width);
         this.div.height = parseInt(canvas.height);
         container.appendChild(this.div);
@@ -74,7 +94,7 @@ export default class Theme {
         if (opacity !== this.opacity) {
             this.opacity = opacity;
             var element = this.div;
-            SuperMap.Util.modifyDOMElement(element, null, null, null,
+            Util.modifyDOMElement(element, null, null, null,
                 null, null, null, opacity);
 
             if (this.map !== null) {
@@ -110,7 +130,7 @@ export default class Theme {
         if (features === this.features) {
             return this.removeAllFeatures();
         }
-        if (!(SuperMap.Util.isArray(features))) {
+        if (!(Util.isArray(features))) {
             features = [features];
         }
         var featuresFailRemoved = [];
@@ -118,7 +138,7 @@ export default class Theme {
             var feature = features[i];
             //如果我们传入的feature在features数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = SuperMap.Util.indexOf(this.features, feature);
+            var findex = Util.indexOf(this.features, feature);
             if (findex === -1) {
                 featuresFailRemoved.push(feature);
                 continue;
@@ -272,7 +292,7 @@ export default class Theme {
 
     /**
      * @function mapboxgl.supermap.ThemeLayer.prototype.getLocalXY
-     * @description 获取坐标系统
+     * @description 地理坐标转为像素坐标
      * @param coordinate - {Object} 坐标位置。
      */
     getLocalXY(coordinate) {
@@ -329,6 +349,5 @@ export default class Theme {
     removeFromMap() {
         this.map.getCanvasContainer().removeChild(this.div);
     }
-
 }
 mapboxgl.supermap.ThemeLayer = Theme;
