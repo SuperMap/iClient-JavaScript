@@ -1,6 +1,6 @@
 var commonTools = require('../base/commonTools');
 var request = require('request');
-var GlobeParameter = require('../base/ExampleTestGlobeParameter');
+require('../base/ExampleTestGlobeParameter');
 
 module.exports = {
     'leaflet_04_densityKernelAnalystService': function (browser) {
