@@ -1,6 +1,6 @@
 var commonTools = require('../base/commonTools');
 var request = require('request');
-require('../base/ExampleTestGlobeParameter');
+var GlobeParameter = require('../base/ExampleTestGlobeParameter');
 
 module.exports = {
     'leaflet_04_interpolationAnalystService_Density': function (browser) {
