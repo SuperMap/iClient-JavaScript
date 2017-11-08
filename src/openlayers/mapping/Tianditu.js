@@ -42,7 +42,7 @@ export default class Tianditu extends ol.source.WMTS {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
-            opaque: options.opaque || true,
+            opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: ol.source.Tianditu.layerZoomMap[options.layerType],
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,

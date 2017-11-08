@@ -33,26 +33,26 @@ export default class VectorTileStyles extends ol.Observable {
         if (options.cartoCss) {
             ol.supermap.VectorTileStyles.setCartoCss(options.cartoCss);
         }
-        var selectdPointStyle = getDefaultSelectedPointStyle();
-        if (options.selectdPointStyle) {
-            selectdPointStyle = options.selectdPointStyle;
+        var selectedPointStyle = getDefaultSelectedPointStyle();
+        if (options.selectedPointStyle) {
+            selectedPointStyle = options.selectedPointStyle;
         }
-        ol.supermap.VectorTileStyles.setSelectedPointStyle(selectdPointStyle);
-        var selectdLineStyle = getDefaultSelectedLineStyle();
-        if (options.selectdLineStyle) {
-            selectdLineStyle = options.selectdLineStyle;
+        ol.supermap.VectorTileStyles.setSelectedPointStyle(selectedPointStyle);
+        var selectedLineStyle = getDefaultSelectedLineStyle();
+        if (options.selectedLineStyle) {
+            selectedLineStyle = options.selectedLineStyle;
         }
-        ol.supermap.VectorTileStyles.setSelectedLineStyle(selectdLineStyle);
-        var selectdRegionStyle = getDefaultSelectedRegionStyle();
-        if (options.selectdRegionStyle) {
-            selectdRegionStyle = options.selectdRegionStyle;
+        ol.supermap.VectorTileStyles.setSelectedLineStyle(selectedLineStyle);
+        var selectedRegionStyle = getDefaultSelectedRegionStyle();
+        if (options.selectedRegionStyle) {
+            selectedRegionStyle = options.selectedRegionStyle;
         }
-        ol.supermap.VectorTileStyles.setSelectedRegionStyle(selectdRegionStyle);
-        var selectdTextStyle = getDefaultSelectedTextStyle();
-        if (options.selectdTextStyle) {
-            selectdTextStyle = options.selectdTextStyle;
+        ol.supermap.VectorTileStyles.setSelectedRegionStyle(selectedRegionStyle);
+        var selectedTextStyle = getDefaultSelectedTextStyle();
+        if (options.selectedTextStyle) {
+            selectedTextStyle = options.selectedTextStyle;
         }
-        ol.supermap.VectorTileStyles.setSelectedTextStyle(selectdTextStyle);
+        ol.supermap.VectorTileStyles.setSelectedTextStyle(selectedTextStyle);
         var layersXHR = new XMLHttpRequest();
         layersXHR.onreadystatechange = function () {
             if (layersXHR.readyState == 4) {

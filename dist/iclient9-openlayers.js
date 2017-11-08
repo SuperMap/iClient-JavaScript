@@ -19382,13 +19382,13 @@ var GeoFeature = function (_Theme) {
         _this.cacheFields = opt_options.cacheFields || [];
         _this.style = opt_options.style || {};
         _this.maxCacheCount = opt_options.maxCacheCount || 0;
-        _this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount || false;
+        _this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount === undefined ? false : opt_options.isCustomSetMaxCacheCount;
         _this.nodesClipPixel = opt_options.nodesClipPixel || 2;
-        _this.isHoverAble = opt_options.isHoverAble || false;
-        _this.isMultiHover = opt_options.isMultiHover || false;
-        _this.isClickAble = opt_options.isClickAble || true;
+        _this.isHoverAble = opt_options.isHoverAble === undefined ? false : opt_options.isHoverAble;
+        _this.isMultiHover = opt_options.isMultiHover === undefined ? false : opt_options.isMultiHover;
+        _this.isClickAble = opt_options.isClickAble === undefined ? true : opt_options.isClickAble;
         _this.highlightStyle = opt_options.highlightStyle || null;
-        _this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle || false;
+        _this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle === undefined ? false : opt_options.isAllowFeatureStyle;
         return _this;
     }
 
@@ -19976,7 +19976,7 @@ var Tianditu = function (_ol$source$WMTS) {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
-            opaque: options.opaque || true,
+            opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: _olDebug2.default.source.Tianditu.layerZoomMap[options.layerType],
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,
@@ -20160,7 +20160,7 @@ var Graph = function (_Theme) {
         _this.chartsSetting = opt_options.chartsSetting || {};
         _this.themeFields = opt_options.themeFields || null;
         _this.overlayWeightField = opt_options.overlayWeightField || null;
-        _this.isOverLay = opt_options.isOverLay || true;
+        _this.isOverLay = opt_options.isOverLay === undefined ? true : opt_options.isOverLay;
         _this.charts = opt_options.charts || [];
         _this.cache = opt_options.cache || {};
         _this.chartsType = chartsType;
@@ -21595,29 +21595,6 @@ var Range = function (_GeoFeature) {
         _this.highlightStyle = opt_options.highlightStyle;
         _this.themeField = opt_options.themeField;
         _this.styleGroups = opt_options.styleGroups;
-
-        // //添加features
-        // var features = this.features;
-        // if (!(SuperMap.Util.isArray(features))) {
-        //     features = [features];
-        // }
-        // var event = {features: features};
-        // var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: event});
-        // if (ret === false) {
-        //     return;
-        // }
-        // features = event.features;
-        // var featuresFailAdded = [];
-        // var toFeatures = [];
-        // for (var i = 0, len = features.length; i < len; i++) {
-        //     toFeatures.push(new ServerFeature.fromJson(features[i]).toFeature());
-        // }
-        // this.features = toFeatures;
-        // var succeed = featuresFailAdded.length == 0 ? true : false;
-        // this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
-        // if (!this.isCustomSetMaxCacheCount) {
-        //     this.maxCacheCount = this.features.length * 5;
-        // }
         return _this;
     }
 
@@ -32216,7 +32193,7 @@ var SuperMapCloud = function (_ol$source$XYZ) {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
-            opaque: options.opaque || true,
+            opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: options.maxZoom || 18,
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,
@@ -85891,26 +85868,26 @@ var VectorTileStyles = function (_ol$Observable) {
         if (options.cartoCss) {
             _olDebug2.default.supermap.VectorTileStyles.setCartoCss(options.cartoCss);
         }
-        var selectdPointStyle = getDefaultSelectedPointStyle();
-        if (options.selectdPointStyle) {
-            selectdPointStyle = options.selectdPointStyle;
+        var selectedPointStyle = getDefaultSelectedPointStyle();
+        if (options.selectedPointStyle) {
+            selectedPointStyle = options.selectedPointStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedPointStyle(selectdPointStyle);
-        var selectdLineStyle = getDefaultSelectedLineStyle();
-        if (options.selectdLineStyle) {
-            selectdLineStyle = options.selectdLineStyle;
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedPointStyle(selectedPointStyle);
+        var selectedLineStyle = getDefaultSelectedLineStyle();
+        if (options.selectedLineStyle) {
+            selectedLineStyle = options.selectedLineStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedLineStyle(selectdLineStyle);
-        var selectdRegionStyle = getDefaultSelectedRegionStyle();
-        if (options.selectdRegionStyle) {
-            selectdRegionStyle = options.selectdRegionStyle;
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedLineStyle(selectedLineStyle);
+        var selectedRegionStyle = getDefaultSelectedRegionStyle();
+        if (options.selectedRegionStyle) {
+            selectedRegionStyle = options.selectedRegionStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedRegionStyle(selectdRegionStyle);
-        var selectdTextStyle = getDefaultSelectedTextStyle();
-        if (options.selectdTextStyle) {
-            selectdTextStyle = options.selectdTextStyle;
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedRegionStyle(selectedRegionStyle);
+        var selectedTextStyle = getDefaultSelectedTextStyle();
+        if (options.selectedTextStyle) {
+            selectedTextStyle = options.selectedTextStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedTextStyle(selectdTextStyle);
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedTextStyle(selectedTextStyle);
         var layersXHR = new XMLHttpRequest();
         layersXHR.onreadystatechange = function () {
             if (layersXHR.readyState == 4) {
@@ -92054,108 +92031,7 @@ module.exports = whatwgFetch;
 /* 438 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"_from": "proj4@2.3.15",
-	"_id": "proj4@2.3.15",
-	"_inBundle": false,
-	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
-	"_location": "/proj4",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "version",
-		"registry": true,
-		"raw": "proj4@2.3.15",
-		"name": "proj4",
-		"escapedName": "proj4",
-		"rawSpec": "2.3.15",
-		"saveSpec": null,
-		"fetchSpec": "2.3.15"
-	},
-	"_requiredBy": [
-		"/"
-	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
-	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
-	"_spec": "proj4@2.3.15",
-	"_where": "F:\\dev\\iClient",
-	"author": "",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
-	},
-	"bundleDependencies": false,
-	"contributors": [
-		{
-			"name": "Mike Adair",
-			"email": "madair@dmsolutions.ca"
-		},
-		{
-			"name": "Richard Greenwood",
-			"email": "rich@greenwoodmap.com"
-		},
-		{
-			"name": "Calvin Metcalf",
-			"email": "calvin.metcalf@gmail.com"
-		},
-		{
-			"name": "Richard Marsden",
-			"url": "http://www.winwaed.com"
-		},
-		{
-			"name": "T. Mittan"
-		},
-		{
-			"name": "D. Steinwand"
-		},
-		{
-			"name": "S. Nelson"
-		}
-	],
-	"dependencies": {
-		"mgrs": "~0.0.2"
-	},
-	"deprecated": false,
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"devDependencies": {
-		"browserify": "~12.0.1",
-		"chai": "~1.8.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"grunt": "~0.4.2",
-		"grunt-browserify": "~4.0.1",
-		"grunt-cli": "~0.1.13",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~0.8.0",
-		"grunt-contrib-uglify": "~0.11.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"istanbul": "~0.2.4",
-		"mocha": "~1.17.1",
-		"tin": "~0.4.0"
-	},
-	"directories": {
-		"test": "test",
-		"doc": "docs"
-	},
-	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"jam": {
-		"main": "dist/proj4.js",
-		"include": [
-			"dist/proj4.js",
-			"README.md",
-			"AUTHORS",
-			"LICENSE.md"
-		]
-	},
-	"license": "MIT",
-	"main": "lib/index.js",
-	"name": "proj4",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
-	},
-	"scripts": {
-		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
-	},
-	"version": "2.3.15"
-};
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\codes\\iClient9Copy\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 439 */

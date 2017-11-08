@@ -20,13 +20,13 @@ export default class GeoFeature extends Theme {
         this.cacheFields = opt_options.cacheFields || [];
         this.style = opt_options.style || {};
         this.maxCacheCount = opt_options.maxCacheCount || 0;
-        this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount || false;
+        this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount === undefined ? false : opt_options.isCustomSetMaxCacheCount;
         this.nodesClipPixel = opt_options.nodesClipPixel || 2;
-        this.isHoverAble = opt_options.isHoverAble || false;
-        this.isMultiHover = opt_options.isMultiHover || false;
-        this.isClickAble = opt_options.isClickAble || true;
+        this.isHoverAble = opt_options.isHoverAble === undefined ? false : opt_options.isHoverAble;
+        this.isMultiHover = opt_options.isMultiHover === undefined ? false : opt_options.isMultiHover;
+        this.isClickAble = opt_options.isClickAble === undefined ? true : opt_options.isClickAble;
         this.highlightStyle = opt_options.highlightStyle || null;
-        this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle || false;
+        this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle === undefined ? false : opt_options.isAllowFeatureStyle;
     }
 
     /**

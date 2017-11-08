@@ -68,7 +68,7 @@ export default class GeoFeature extends Theme {
         this.cache = opt_options.cache || {};
         this.cacheFields = opt_options.cacheFields || [];
         this.maxCacheCount = opt_options.maxCacheCount || 0;
-        this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount || false;
+        this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount === undefined ? false : opt_options.isCustomSetMaxCacheCount;
 
     }
 

@@ -27,7 +27,7 @@ export default class Graph extends Theme {
         this.chartsSetting = opt_options.chartsSetting || {};
         this.themeFields = opt_options.themeFields || null;
         this.overlayWeightField = opt_options.overlayWeightField || null;
-        this.isOverLay = opt_options.isOverLay || true;
+        this.isOverLay = opt_options.isOverLay === undefined ? true : opt_options.isOverLay;
         this.charts = opt_options.charts || [];
         this.cache = opt_options.cache || {};
         this.chartsType = chartsType;

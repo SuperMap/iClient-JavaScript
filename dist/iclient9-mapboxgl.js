@@ -19609,7 +19609,7 @@ var GeoFeature = function (_Theme) {
         _this.cache = opt_options.cache || {};
         _this.cacheFields = opt_options.cacheFields || [];
         _this.maxCacheCount = opt_options.maxCacheCount || 0;
-        _this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount || false;
+        _this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount === undefined ? false : opt_options.isCustomSetMaxCacheCount;
 
         return _this;
     }
@@ -19970,7 +19970,7 @@ var Graph = function (_Theme) {
         _this.chartsSetting = opt_options.chartsSetting || {};
         _this.themeFields = opt_options.themeFields || null;
         _this.overlayWeightField = opt_options.overlayWeightField || null;
-        _this.isOverLay = opt_options.isOverLay || true;
+        _this.isOverLay = opt_options.isOverLay === undefined ? true : opt_options.isOverLay;
         _this.charts = opt_options.charts || [];
         _this.cache = opt_options.cache || {};
         _this.chartsType = chartsType;

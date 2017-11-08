@@ -1,4 +1,5 @@
 import ol from 'openlayers/dist/ol-debug';
+
 /**
  * @class ol.source.SuperMapCloud
  * @classdesc 超图云地图图层源。
@@ -27,7 +28,7 @@ export default class SuperMapCloud extends ol.source.XYZ {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
-            opaque: options.opaque || true,
+            opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: options.maxZoom || 18,
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,
