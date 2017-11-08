@@ -1,7 +1,7 @@
 require('../../../src/openlayers/overlay/Range');
 
 describe('openlayers_Range', function () {
-    var originalTimeout, map;
+    var originalTimeout, map, testDiv;
     beforeAll(function () {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -37,6 +37,10 @@ describe('openlayers_Range', function () {
     });
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
+    afterAll(function () {
+        window.document.body.removeChild(testDiv);
+        map.remove();
     });
 
     var features = [{
@@ -234,10 +238,9 @@ describe('openlayers_Range', function () {
         "ID": 1
     }];
 
-    it("initialize", function () {
+    it("initialize and destroy", function () {
         var range = new ol.source.Range("ThemeLayer", {
             map: map,
-            features: features,
             style: {
                 shadowBlur: 16,
                 shadowColor: "#000000",
@@ -289,74 +292,84 @@ describe('openlayers_Range', function () {
                     }
                 }]
         });
-        var themeLayer = new ol.layer.Image({
-            source: range
-        });
-        map.addLayer(themeLayer);
         expect(range).not.toBeNull();
-    });
-
-    it("destroy", function () {
-        var iClientFeatures = ol.source.Range.prototype.toiClientFeature(features);
-        var range = new ol.source.Range("ThemeLayer", {
-            map: map,
-            features: iClientFeatures,
-            style: {
-                shadowBlur: 16,
-                shadowColor: "#000000",
-                fillColor: "#FFFFFF"
-            },
-            isHoverAble: true,
-            highlightStyle: {
-                stroke: true,
-                strokeWidth: 4,
-                strokeColor: 'blue',
-                fillColor: "#00EEEE",
-                fillOpacity: 0.8
-            },
-            themeField: "POP_DENSITY99",
-            styleGroups: [{
-                start: 0,
-                end: 0.02,
-                style: {
-                    color: '#FDE2CA'
-                }
-            }, {
-                start: 0.02,
-                end: 0.04,
-                style: {
-                    color: '#FACE9C'
-                }
-            }, {
-                start: 0.04,
-                end: 0.06,
-                style: {
-                    color: '#F09C42'
-                }
-            }, {
-                start: 0.06,
-                end: 0.1,
-                style: {
-                    color: '#D0770B'
-                }
-            }, {
-                start: 0.1,
-                end: 0.2,
-                style: {
-                    color: '#945305'
-                }
-            }]
-        });
+        expect(range.renderer).not.toBeUndefined();
+        expect(range.map).not.toBeUndefined();
+        expect(range.cache).not.toBeUndefined();
+        expect(range.cache).not.toBeUndefined();
+        expect(range.features.length).toEqual(0);
         range.destroy();
         expect(range.style).toBeNull();
         expect(range.themeField).toBeNull();
         expect(range.styleGroups).toBeNull();
     });
 
+    it("addFeatures", function () {
+        setTimeout(function () {
+            var range = new ol.source.Range("ThemeLayer", {
+                map: map,
+                style: {
+                    shadowBlur: 16,
+                    shadowColor: "#000000",
+                    fillColor: "#FFFFFF"
+                },
+                isHoverAble: true,
+                highlightStyle: {
+                    stroke: true,
+                    strokeWidth: 4,
+                    strokeColor: 'blue',
+                    fillColor: "#00EEEE",
+                    fillOpacity: 0.8
+                },
+                themeField: "POP_DENSITY99",
+                styleGroups: [{
+                    start: 0,
+                    end: 0.02,
+                    style: {
+                        color: '#FDE2CA'
+                    }
+                }, {
+                    start: 0.02,
+                    end: 0.04,
+                    style: {
+                        color: '#FACE9C'
+                    }
+                }, {
+                    start: 0.04,
+                    end: 0.06,
+                    style: {
+                        color: '#F09C42'
+                    }
+                }, {
+                    start: 0.06,
+                    end: 0.1,
+                    style: {
+                        color: '#D0770B'
+                    }
+                }, {
+                    start: 0.1,
+                    end: 0.2,
+                    style: {
+                        color: '#945305'
+                    }
+                }]
+            });
+            range.addFeatures(features);
+            var themeLayer = new ol.layer.Image({
+                source: range
+            });
+            map.addLayer(themeLayer);
+            expect(themeLayer.getSource()).not.toBeUndefined();
+            expect(themeLayer.getSource().renderer).not.toBeUndefined();
+            expect(themeLayer.getSource().div).not.toBeUndefined();
+            expect(themeLayer.getSource().cache).not.toBeUndefined();
+            expect(themeLayer.getSource().features.length).toBeGreaterThan(0);
+        }, 5000);
+    });
+
     it('getStyleByData', function () {
         var range = new ol.source.Range("ThemeLayer", {
             map: map,
-            features: features,
             style: {
                 shadowBlur: 16,
                 shadowColor: "#000000",
@@ -403,10 +416,6 @@ describe('openlayers_Range', function () {
                 }
             }]
         });
-        var themeLayer = new ol.layer.Image({
-            source: range
-        });
-        map.addLayer(themeLayer);
         var feature = {
             attributes: {
                 'CITY': "北京市",

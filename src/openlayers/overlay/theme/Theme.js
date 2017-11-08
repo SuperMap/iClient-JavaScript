@@ -86,7 +86,7 @@ export default class Theme extends ol.source.ImageCanvas {
         this.EVENT_TYPES = ["loadstart", "loadend", "loadcancel",
             "visibilitychanged", "move", "moveend", "added", "removed",
             "tileloaded", "beforefeaturesadded", "featuresadded", "featuresremoved"];
-        this.features = options.features || [];
+        this.features = [];
         this.TFEvents = options.TFEvents || [];
         this.map = options.map;
         var size = this.map.getSize();

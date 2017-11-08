@@ -28,7 +28,7 @@ export var ThemeLayer = L.Layer.extend({
     initialize: function (name, options) {
         L.Util.setOptions(this, options);
         this.options.name = name;
-        this.features = options && options.features ? options.features : [];
+        this.features = [];
         this.TFEvents = options && options.TFEvents ? options.TFEvents : [];
         this.levelRenderer = new LevelRenderer();
         this.movingOffset = [0, 0];

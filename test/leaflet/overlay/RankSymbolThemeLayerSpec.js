@@ -37,7 +37,7 @@ describe('leaflet_RankSymbolThemeLayer', function () {
 
     it('addFeatures', function () {
         //initialize
-        var rankSymbolThemeLayer = L.supermap.rankSymbolThemeLayer("ThemeLayer", SuperMap.ChartType.CIRCLE).addTo(map);
+        var rankSymbolThemeLayer = L.supermap.rankSymbolThemeLayer("ThemeLayer", SuperMap.ChartType.CIRCLE);
         rankSymbolThemeLayer.themeField = "CON2009";
         rankSymbolThemeLayer.symbolSetting = {
             codomain: [0, 40000],

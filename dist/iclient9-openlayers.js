@@ -27917,7 +27917,7 @@ var Theme = function (_ol$source$ImageCanva) {
 
         _this.canvasFunctionInternal_ = canvasFunctionInternal_;
         _this.EVENT_TYPES = ["loadstart", "loadend", "loadcancel", "visibilitychanged", "move", "moveend", "added", "removed", "tileloaded", "beforefeaturesadded", "featuresadded", "featuresremoved"];
-        _this.features = options.features || [];
+        _this.features = [];
         _this.TFEvents = options.TFEvents || [];
         _this.map = options.map;
         var size = _this.map.getSize();
@@ -92074,10 +92074,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
 	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
 	"_spec": "proj4@2.3.15",
-	"_where": "F:\\dev\\iClient",
+	"_where": "G:\\github-iClient\\iClient9",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

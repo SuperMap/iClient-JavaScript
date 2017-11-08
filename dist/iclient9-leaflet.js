@@ -27529,7 +27529,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
     initialize: function initialize(name, options) {
         _leaflet2["default"].Util.setOptions(this, options);
         this.options.name = name;
-        this.features = options && options.features ? options.features : [];
+        this.features = [];
         this.TFEvents = options && options.TFEvents ? options.TFEvents : [];
         this.levelRenderer = new _LevelRenderer2["default"]();
         this.movingOffset = [0, 0];
@@ -93984,10 +93984,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
 	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
 	"_spec": "proj4@2.3.15",
-	"_where": "F:\\dev\\iClient",
+	"_where": "G:\\github-iClient\\iClient9",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

@@ -38,6 +38,10 @@ describe('openlayers_Theme', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+    afterAll(function () {
+        window.document.body.removeChild(testDiv);
+        map.remove();
+    });
 
     var features = [{
         "fieldNames": ["SMID", "SMSDRIW", "SMSDRIN", "SMSDRIE", "SMSDRIS", "SMUSERID", "SMAREA", "SMPERIMETER", "SMGEOMETRYSIZE", "ADMI", "NEWA", "POP_1999", "POP_1995", "POP_1992", "POP_RATE95", "POP_RATE99", "POP_DENSITY99", "NAME", "URBANRURAL", "URBAN", "RURAL", "CITY"],
