@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>turf.js客户端测量分析</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
+    <style>
+        .editPane {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 350px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body style='margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;'>
+<div id='map' style='margin:0 auto;width: 100%;height: 100%'></div>
+<div class='panel panel-primary editPane' id='editPane'>
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>京深路卧龙岗隧道路段</h5>
+    </div>
+    <div class='panel panel-body chooseItems'>
+        <select class='form-control' id='menuSelect'>
+            <option value='null' selected='selected'>请选择方法</option>
+            <option value='along'>along</option>
+            <option value='area'>area</option>
+            <option value='bbox'>bbox</option>
+            <option value='center'>center</option>
+            <option value='destination'>destination</option>
+            <option value='distance'>distance</option>
+            <option value='midpoint'>midpoint</option>
+            <option value='square'>square</option>
+            <option value='greatCircle'>greatCircle</option>
+            <option value='bezier'>bezier</option>
+            <option value='buffer'>buffer</option>
+            <option value='circle'>circle</option>
+        </select>
+    </div>
+
+    <div class='panel-body' id='params'>
+
+        <div class='input-group' id="drawMethods">
+            <div class="btn-group" role="group" aria-label="..." id="draw">
+                <button id="drawPoint" value='Point' type="button" class="btn btn-default">绘点</button>
+                <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default">绘面</button>
+                <button id="none" value='None' type="button" class="btn btn-default">无绘制</button>
+                <button id="clearLayer" value='Clear' type="button" class="btn btn-default">清除</button>
+            </div>
+        </div>
+        <p>
+        <div class='input-group'>
+            <span class='input-group-addon'>请选择距离的单位</span>
+            <select class='form-control' id='unitSelect'>
+                <option value='null'>请选择</option>
+                <option value='kilometers'>kilometers</option>
+                <option value='miles'>miles</option>
+                <option value='degrees'>degrees</option>
+                <option value='radians'>radians</option>
+            </select>
+        </div>
+        <p></p>
+        <div class='input-group'>
+            <span class='input-group-addon'>请输入距起点距离</span>
+            <input id='distance' type='text' class='form-control' placeholder="距离"/>
+        </div>
+        <p></p>
+        <div class='input-group'>
+            <span class='input-group-addon'>请输入方位</span>
+            <input id='bearing' type='text' class='form-control' placeholder="-180度到180度之间"/>
+        </div>
+        <p></p>
+        <div align='right' class='input-group'>
+            <input type='button' id='calc' class='btn btn-primary' value='点击生成对应结果'/>&nbsp
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var unit;
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        urlWorld = host + "/iserver/services/map-world/rest/maps/World",
+        container = document.getElementById('info'), distance, geo, coordinate,
+        alertDiv, choose, bearing, result,
+        radius, steps, draw, drawSource,
+
+    overlay = new ol.Overlay(({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    }));
+
+    //添加底图
+    map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
+        view: new ol.View({
+            center: [116.407283, 39.90455699411283],
+            zoom: 11,
+            projection: 'EPSG:4326'
+        }),
+        overlays: [overlay]
+    });
+
+    var baseLayer = new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: url,
+            prjCoordSys: {"epsgCode": 4326}
+        }),
+        projection: 'EPSG:4326'
+    });
+    map.addLayer(baseLayer);
+
+    //初始化的图层
+    var turfSource = new ol.source.Turf({
+        wrapX: false,
+        attributions: new ol.Attribution({
+            html: "© <a href='http://turfjs.org/' target='_blank'>turfjs<span></a> with"
+        }),
+    });
+
+    map.addLayer(new ol.layer.Vector({
+        source: turfSource,
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'rgba(0,153,255,1)',
+                width: 6
+            }),
+            image: new ol.style.Icon(({
+                crossOrigin: 'anonymous',
+                src: '../img/marker-icon.png',
+                scale: 0.7
+            })),
+            fill: new ol.style.Fill({
+                color: 'rgba(0,153,255,0.1)'
+            })
+        })
+    }));
+
+    //结果图层
+    var resultSource = new ol.source.Turf({
+        wrapX: false,
+        attributions: new ol.Attribution({
+            html: ""
+        }),
+    });
+
+    map.addLayer(new ol.layer.Vector({
+        source: resultSource,
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'rgb(255,0,0)',
+                width: 4
+            }),
+            image: new ol.style.Icon(({
+                crossOrigin: 'anonymous',
+                src: '../img/marker-gold.png',
+                scale: 0.7
+            })),
+            fill: new ol.style.Fill({
+                color: 'rgba(178,34,34,0.3)'
+            })
+        }),
+    }));
+
+    //初始化数据
+    function bindEvents() {
+        $('.chooseItems').show();
+        hidePanel();
+        $('.panel-heading>h5').text('turf测量');
+
+        $("#menuSelect").change(function (e) {
+            //初始化图层
+            isUseWorldMap(0);
+            overlay.setPosition(undefined);
+            clearSource();
+            resetSelect();
+
+            //第一个隐藏右侧菜单
+            if ($("#menuSelect").get(0).selectedIndex === 0) {
+                hidePanel();
+            } else {
+                choose = $('#menuSelect').children('option:selected').val();
+                //对应菜单显示
+                if (choose === 'along') {
+                    clearAlert();
+                    rodeCoordinate();
+                    drawALine();
+                    setAlongIcon();
+                    $('.panel-heading>h5').text('京深路卧龙岗隧道路段');
+                    map.getView().animate({zoom: 15}, {duration: 500, center: [116.12499999899998, 39.70771500024742]});
+                    $('.input-group:eq(0)').hide();
+                    $('.input-group:eq(1)').show();
+                    $('.input-group:eq(2)').show();
+                    $('.input-group:eq(2)>span').text('请输入距起点距离');
+                    $('.input-group:eq(2)>input').attr('placeholder', '全长1174.8米约合0.729英里');
+                    $('.input-group:eq(3)').hide();
+                    $('.input-group:eq(4)').show();
+                    $('#calc').val('点击生成对应的点');
+                }
+                else if (choose === 'area') {
+                    clearAlert();
+                    showAlert('请先选择绘面,画出自定义图层,再点右侧按钮进行面积计算');
+                    drawing();
+                    $('#drawPoint').hide();
+                    $('.panel-heading>h5').text('面积测量');
+                    map.getView().animate({zoom: 11}, {duration: 500, center: [116.407283, 39.90455699411283]});
+                    $('.input-group:eq(0)').show();
+                    $('.input-group:eq(1)').hide();
+                    $('.input-group:eq(2)').hide();
+                    $('.input-group:eq(3)').hide();
+                    $('.input-group:eq(4)').show();
+                    $('#calc').val('点击计算当前图层面积');
+
+                } else if (choose === 'bbox') {
+                    clearAlert();
+                    rodeCoordinate();
+                    drawALine();
+                    $('.panel-heading>h5').text('京深路卧龙岗隧道路段的bounds');
+                    map.getView().animate({zoom: 16}, {duration: 500, center: [116.12499999899998, 39.70171500024742]});
+                    $('.input-group:eq(0)').hide();
+                    $('.input-group:eq(1)').hide();
+                    $('.input-group:eq(2)').hide();
+                    $('.input-group:eq(3)').hide();
+                    $('.input-group:eq(4)').show();
+                    $('#calc').val('点击生成bounds');
+                }
+                else if (choose === 'destination') {
+                    //北京
+                    clearAlert();
+                    setDestinationIcon();
+                    $('.panel-heading>h5').text('从北京计算出到目标点的位置');
+                    map.getView().animate({zoom: 10}, {duration: 500, center: [116.407283, 39.90455699411283]});
+                    $('.input-group:eq(0)').hide();
+                    $('.input-group:eq(1)').show();
+                    $('.input-group:eq(2)').show();
+                    $('.input-group:eq(3)').show();
+                    $('.input-group:eq(4)').show();
+                    $('.input-group:eq(2)>span').text('请输入距起点距离');
+                    $('.input-group:eq(2)>input').attr('placeholder', '请输入距起点距离');
+                    $('.input-group:eq(3)>span').text('请输入方位');
+                    $('.input-group:eq(3)>input').attr('placeholder', '请输入[-180,180]范围内的值');
+                    $('#calc').val('点击显示目标点');
+
+                }
+                else if (choose === 'center') {
+                    clearAlert();
+                    setCenterIcon();
+                    $('.panel-heading>h5').text('北京周边景区中心');
+                    map.getView().animate({zoom: 12}, {duration: 500, center: [116.38035099999959, 39.93393099410061]});
+                    $('.input-group:eq(0)').hide();
+                    $('.input-group:eq(1)').hide();
+                    $('.input-group:eq(2)').hide();
+                    $('.input-group:eq(3)').hide();
+                    $('.input-group:eq(4)').show();
+                    $('#calc').val('获取景区中心');
+                }
+                else if (choose === 'distance') {
+                    clearAlert();
+                    setDistanceIcon();
+                    $('.panel-heading>h5').text('京津两点之间的距离');
+                    map.getView().animate({zoom: 8}, {duration: 500, center: [116.12499999899998, 39.70771500024742]});
+                    $('.input-group:eq(0)').hide();
+                    $('.input-group:eq(1)').show();
+                    $('.input-group:eq(2)').hide();
+                    $('.input-group:eq(3)').hide();
+                    $('.input-group:eq(4)').show();
+                    $('#calc').val('计算两点间的距离');
+                }
+                else if (choose === 'midpoint') {
+                    clearAlert();
+                    setMidpointIcon();
+                    $('.panel-heading>h5').text('获取京津之间的中点');
+                    map.getView().animate({zoom: 8}, {duration: 500, center: [116.12499999899998, 39.70771500024742]});
+                    $('.input-group:eq(0)').hide();
+                    $('.input-group:eq(1)').hide();
+                    $('.input-group:eq(2)').hide();
+                    $('.input-group:eq(3)').hide();
+                    $('.input-group:eq(4)').show();
+                    $('#calc').val('获取京津之间的中点');
+                }
+                else if (choose === 'greatCircle') {
+                    clearAlert();
+                    isUseWorldMap(1);
+                    setGreatCircleIcon();
+                    map.getView().animate({zoom: 4}, {duration: 500, center: [90.407283, 40.90455699411283]});
+                    $('.panel-heading>h5').text('北京到布拉格的大圆航线');
+                    $('.input-group:eq(0)').hide();
+                    $('.input-group:eq(1)').hide();
+                    $('.input-group:eq(2)').hide();
+                    $('.input-group:eq(3)').hide();
+                    $('.input-group:eq(4)').show();
+                    $('#calc').val('计算大圆航线');
+                }
+                else if (choose === 'buffer') {
+                    clearAlert();
+                    drawing();
+                    $('#drawPolygon').hide();
+                    $('#drawPoint').show();
+                    alert('请先标记一个点');
+                    map.getView().animate({zoom: 12}, {duration: 500, center: [116.407283, 39.90455699411283]});
+                    $('.panel-heading>h5').text('buffer缓冲区');
+                    $('.input-group:eq(0)').show();
+                    $('.input-group:eq(1)').show();//单位
+                    $('.input-group:eq(2)').show();//步长
+                    $('.input-group:eq(3)').show(); //半径
+                    $('.input-group:eq(4)').show();
+                    $('.input-group:eq(3)>span').text('请输入半径');//半径
+                    $('.input-group:eq(3)>input').attr('placeholder', '半径');
+                    $('.input-group:eq(2)>span').text('请输入步长');//步长
+                    $('.input-group:eq(2)>input').attr('placeholder', '步长');
+                    $('#calc').val('生成标记点缓冲区');
+                }
+                else if (choose === 'circle') {
+                    clearAlert();
+                    drawing();
+                    $('#drawPolygon').hide();
+                    $('#drawPoint').show();
+                    alert('请先标记一个点');
+                    map.getView().animate({zoom: 12}, {duration: 500, center: [116.407283, 39.90455699411283]});
+                    $('.panel-heading>h5').text('圆多边形');
+                    $('.input-group:eq(0)').show();
+                    $('.input-group:eq(1)').show();//单位
+                    $('.input-group:eq(2)').show();//步长
+                    $('.input-group:eq(3)').show(); //半径
+                    $('.input-group:eq(4)').show();
+                    $('.input-group:eq(3)>span').text('请输入半径');//半径
+                    $('.input-group:eq(3)>input').attr('placeholder', '半径');
+                    $('.input-group:eq(2)>span').text('请输入步长');//步长
+                    $('.input-group:eq(2)>input').attr('placeholder', '步长');
+                    $('#calc').val('生成圆多边形');
+
+                }
+                else if (choose === 'bezier') {
+                    clearAlert();
+                    $('.panel-heading>h5').text('白河的贝塞尔曲线');
+                    map.getView().animate({zoom: 12}, {
+                        duration: 500,
+                        center: [116.55439124389999, 40.676116230453765]
+                    });
+                    $('.input-group:eq(0)').hide();
+                    $('.input-group:eq(1)').hide();//单位
+                    $('.input-group:eq(2)').hide();//步长
+                    $('.input-group:eq(3)').hide(); //半径
+                    $('.input-group:eq(4)').show();
+                    whiteRiver();
+                    setBezierLine();
+                    $('#calc').val('生成bezier曲线');
+                }
+                else if (choose === 'square') {
+                    clearAlert();
+                    setSquarePolygon();
+                    $('.panel-heading>h5').text('最小外切正方形');
+                    map.getView().animate({zoom: 12}, {duration: 500, center: [116.18865966796875, 39.88904724121094]});
+                    $('.input-group:eq(0)').hide();//draw控件
+                    $('.input-group:eq(1)').hide();//单位
+                    $('.input-group:eq(2)').hide();//距离
+                    $('.input-group:eq(3)').hide(); //步长
+                    $('.input-group:eq(4)').show();
+                    $('#calc').val('生成最小外切正方形');
+                }
+                else {
+                    alert('方法不存在')
+                }
+                showPanel();
+            }
+        });
+
+        //生成对应距离点点击事件
+        $('#calc').click(function () {
+            //获取自定义距离
+            distance = $('#distance').val();
+            //获取自定方位
+            bearing = $('#bearing').val();
+            //步长
+            steps = distance;
+            //半径
+            radius = bearing;
+            //角度
+            angle = distance;
+            meths = {
+                "along": along,
+                "area": area,
+                "bbox": bbox,
+                "destination": destination,
+                "distance": turf_Distance,
+                "midpoint": midpoint,
+                "greatCircle": greatCircle,
+                "square": square,
+                "center": center,
+                "bezier": bezier,
+                "buffer": buffer,
+                "circle": circle,
+            };
+            if (!meths[choose]) {
+                alert('选择非法，请重新选择');
+            }
+            meths[choose]();
+        });
+
+        //获取单位
+        $('#unitSelect').change(function () {
+            unit = $('#unitSelect').children('option:selected').val();
+        });
+    }
+    bindEvents();
+
+    //白河
+    function whiteRiver() {
+        coordinate = [
+            [116.44468018273878, 40.675731250349635],
+            [116.45764286288912, 40.67514041485476],
+            [116.47234517561137, 40.675374865714495],
+            [116.4864209475681, 40.68284917168584],
+            [116.50806547030137, 40.6926826346566],
+            [116.51490194761084, 40.701383778180805],
+            [116.54403108790551, 40.68381460602459],
+            [116.55439124389999, 40.676116230453765],
+            [116.56406552077725, 40.67476948501498],
+            [116.58188801112561, 40.68296164868846],
+            [116.5925083591713, 40.70683026321353],
+            [116.59861159022633, 40.72097728359635],
+            [116.61194828377546, 40.71945202953016],
+            [116.6157779223366, 40.71459183686403]
+        ];
+    }
+
+    //	京深路数据
+    function rodeCoordinate() {
+        coordinate = [
+            [116.12499999899998, 39.70771500024742],
+            [116.124684999625, 39.70738300038022],
+            [116.124684999625, 39.70738300038022],
+            [116.12366300000001, 39.70630000081341],
+            [116.12366300000001, 39.70630000081341],
+            [116.122695000875, 39.70526299956156],
+            [116.11948400050001, 39.70182899926848],
+            [116.11948400050001, 39.70182899926848],
+            [116.117782000875, 39.70001099999569],
+            [116.117782000875, 39.70001099999569],
+            [116.11697300062501, 39.69914100034369]
+        ];
+    }
+
+    //自定义的一条线
+    function drawALine() {
+        turfSource.process("Helper.lineString", {
+            "coordinates": coordinate,
+        });
+    }
+
+    function setAlongIcon() {
+        //添加目的地
+        var start = new ol.geom.Point([116.12499999899998, 39.70771500024742]);
+        var end = new ol.geom.Point([116.11697300062501, 39.69914100034369]);
+
+        var iconStart = new ol.style.Style({
+            image: new ol.style.Icon(({
+                src: '../img/start_trans.png'
+            }))
+        });
+        var iconEnd = new ol.style.Style({
+            image: new ol.style.Icon(({
+                src: '../img/end_trans.png'
+            }))
+        });
+
+        var feature1 = new ol.Feature(start);
+        var feature2 = new ol.Feature(end);
+        turfSource.addFeature(feature2);
+        turfSource.addFeature(feature1);
+        feature1.setStyle(iconStart);
+        feature2.setStyle(iconEnd);
+    }
+
+    //判断底图
+    function isUseWorldMap(bool) {
+        if (bool) {
+            baseLayer.setSource(new ol.source.TileSuperMapRest({
+                url: urlWorld,
+                prjCoordSys: {"epsgCode": 4326}
+            }));
+        }
+        else {
+            baseLayer.setSource(new ol.source.TileSuperMapRest({
+                url: url,
+                prjCoordSys: {"epsgCode": 4326}
+            }));
+        }
+    }
+
+    function resetSelect() {
+        $('#unitSelect option:first').prop("selected", 'selected');
+        $('#distance').val('');
+        $('#bearing').val('');
+    }
+
+    //清除draw
+    function clearInteraction() {
+        if (draw) {
+            map.removeInteraction(draw);
+        }
+    }
+
+    //draw
+    function drawing() {
+        var buttons = $('.btn-group').children();
+        buttons.map(function (key) {
+            var value = buttons[key].value;
+            if (value === 'None') {
+                $(buttons[key]).on('click', function () {
+                    clearInteraction();
+                });
+                return;
+            }
+            if (value === 'Clear') {
+                $(buttons[key]).on('click', function () {
+                    clearInteraction();
+                    drawSource.clear();
+                });
+                return;
+            }
+            $(buttons[key]).on('click', function () {
+                clearInteraction();
+                draw = new ol.interaction.Draw({
+                    source: drawSource,
+                    //type:('Point', 'LineString', 'Polygon', 'MultiPoint', 'MultiLineString', 'MultiPolygon' or 'Circle')
+                    type: buttons[key].value,
+                    snapTolerance: 20
+                });
+                map.addInteraction(draw);
+                draw.on('drawend', function (evt) {
+                    coordinate = evt.feature.getGeometry().getCoordinates();
+                    clearInteraction();
+                });
+
+            });
+        });
+        drawSource = new ol.source.Vector({wrapX: false});
+        var vector = new ol.layer.Vector({
+            source: drawSource
+        });
+        map.addLayer(vector);
+    }
+
+    //右侧panel显示
+    function showPanel() {
+        $('.panel-body').show();
+    }
+
+    //右侧panel隐藏
+    function hidePanel() {
+        $('.panel-body').hide();
+        $('.panel-body:eq(0)').show();
+    }
+
+    // 判断input是否是数字
+    function checkIsNum(num) {
+        var reg = /^\d+(\.\d+)?$/g;
+        if (reg.test(num)) {
+            return 1;
+        } else {
+            showAlert('信息填写不完整或者错误', "alert-danger")
+        }
+    }
+
+    //判断是否在[-180,180]范围内
+    function isInRange(val) {
+        if (val < -180 || val > 180) {
+            showAlert('请输入[-180,180]范围内的值', "alert-danger");
+        }
+        else {
+            return 1;
+        }
+    }
+
+    function greatThanZero(steps) {
+        var reg = /^[1-9]\d*(\.\d+)?$/g;
+        if (!reg.test(steps)) {
+            alert('步长必须大于0');
+        }
+    }
+
+    //弹出提示框
+    function showAlert(msg, className) {
+
+        if (className === null || typeof (className) === 'undefined') {
+            className = "alert-success";
+        }
+        className = className.toString();
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:260px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    //clear alert
+    function clearAlert() {
+        $('#msg_container').hide();
+    }
+
+    //设置center方法的icon
+    function setCenterIcon() {
+        turfSource.process("Helper.multiPoint", {
+            //北京周边景区
+            "coordinates": ([[116.38035099999959, 39.93393099410061], [116.34482800000002, 39.914760994108605], [116.40732099999964, 39.916013994108134], [116.44748600000042, 39.93767799409907]]),
+        }, function (e) {
+            geo = e;
+        });
+    }
+
+    //设置distance方法的Icon
+    function setDistanceIcon() {
+        turfSource.process("Helper.multiPoint", {
+            //北京2天津
+            "coordinates": ([[116.407283, 39.90455699411283], [117.215268, 39.12096299445415]]),
+        }, function (e) {
+            geo = e;
+        });
+    }
+
+    //设置destination方法的Icon
+    function setDestinationIcon() {
+        //设置起点
+        var iconStyle1 = new ol.style.Style({
+            image: new ol.style.Icon(({
+                anchor: [0.5, 1],
+                src: '../img/start_trans.png'
+            }))
+        });
+        var start = new ol.geom.Point([116.407283, 39.90455699411283]);
+        var feature1 = new ol.Feature(start);
+        feature1.setStyle(iconStyle1);
+        turfSource.addFeature(feature1);
+    }
+
+    //设置midpoint方法的Icon
+    function setMidpointIcon() {
+        turfSource.process("Helper.multiPoint", {
+            //北京2天津
+            "coordinates": ([[116.407283, 39.90455699411283], [117.215268, 39.12096299445415]]),
+        }, function (e) {
+
+            geo = e;
+        });
+    }
+
+    //设置greatCircle方法的Icon
+    function setGreatCircleIcon() {
+        turfSource.process("Helper.multiPoint", {
+            //北京2布拉格
+            "coordinates": ([[116.407283, 39.90455699411283], [51.052494, 18.852219]])
+        }, function (e) {
+            geo = e;
+        });
+    }
+
+    function setBezierLine() {
+        if (coordinate) {
+            turfSource.process("Helper.lineString", {
+                "coordinates": coordinate,
+            }, function (e) {
+                geo = e;
+            });
+        }
+    }
+
+    //设置square的data
+    function setSquarePolygon() {
+        coordinate = [[[116.18865966796875, 39.78904724121094], [116.18865966796875, 40.008087158203125], [116.27998352050781, 40.008087158203125], [116.27998352050781, 39.78904724121094], [116.18865966796875, 39.78904724121094]]];
+        turfSource.process("Helper.polygon", {
+            "coordinates": (coordinate),
+        }, function (e) {
+            console.log(e);
+            geo = e;
+        });
+    }
+
+    //turf along方法
+    function along() {
+        if (unit != 'null' && unit != undefined) {
+            clearAlert();
+            if (checkIsNum(distance) && coordinate) {
+                turfSource.process("Helper.lineString", {
+                    "coordinates": coordinate,
+                }, function (e) {
+                    resultSource.process("Measurement.along", {
+                        "line": e,
+                        "distance": distance,
+                        "units": unit,
+                    });
+                }, false);
+            }
+        }
+        else {
+            showAlert('单位没选', 'alert-danger');
+        }
+    }
+
+    //turf area方法
+    function area() {
+        if (coordinate) {
+            turfSource.process("Helper.polygon", {
+                "coordinates": (coordinate),
+            }, function (polygon) {
+                resultSource.process("Measurement.area", {
+                    "geojson": polygon
+                }, function (e) {
+                    result = e + '平方米';
+                    showAlert(result);
+                });
+            });
+        }
+    }
+
+    //turf bbox方法
+    function bbox() {
+        if (coordinate) {
+            turfSource.process("Helper.lineString", {
+                "coordinates": coordinate,
+            }, function (e) {
+                resultSource.process("Measurement.bbox", {
+                    "geojson": e
+                }, function (bbox) {
+                    resultSource.process("Measurement.bboxPolygon", {
+                        "bbox": bbox
+                    });
+                });
+            });
+        }
+    }
+
+    //turf destination方法
+    function destination() {
+        if (unit != 'null' && unit != undefined) {
+            clearAlert();
+            if (checkIsNum(distance) && isInRange(bearing)) {
+                turfSource.process("Helper.point", {
+                    //北京
+                    "coordinates": [116.407283, 39.90455699411283],
+                }, function (point) {
+                    resultSource.process("Measurement.destination", {
+                        "origin": point,
+                        "distance": distance,
+                        "bearing": bearing,
+                        "units": unit,
+                    });
+                }, false);
+            }
+        }
+        else {
+            showAlert('单位没选', 'alert-danger')
+        }
+    }
+
+    //turf distance方法
+    function turf_Distance() {
+        var disUnits = {
+            "kilometers": "千米",
+            "miles": "英里",
+            "degrees": "角度",
+            "radians": "弧度",
+        };
+        if (unit != 'null' && unit != undefined) {
+            clearAlert();
+            resultSource.process("Measurement.distance", {
+                "from": geo.geometry.coordinates[0],
+                "to": geo.geometry.coordinates[1],
+                "units": unit,
+            }, function (e) {
+                resultNum = e;
+            });
+            unit = disUnits[unit];
+            result = resultNum + unit;
+            showAlert(result);
+        }
+        else {
+            showAlert('单位没选', 'alert-danger')
+        }
+    }
+
+    //turf midpoint
+    function midpoint() {
+        if (geo) {
+            resultSource.process("Measurement.midpoint", {
+                "point1": geo.geometry.coordinates[0],
+                "point2": geo.geometry.coordinates[1],
+            });
+        }
+    }
+
+    //turf greatCircle
+    function greatCircle() {
+        if (geo) {
+            resultSource.process("Measurement.greatCircle", {
+                "start": geo.geometry.coordinates[0],
+                "end": geo.geometry.coordinates[1],
+                "properties": {'name': '北京 to 布拉格'},
+                "npoints": 100,
+                "offset": 10
+            });
+        }
+    }
+
+    //turf square
+    function square() {
+        if (geo) {
+            turfSource.process("Measurement.bbox", {
+                "geojson": geo
+            }, function (box) {
+                resultSource.process("Measurement.square", {
+                    "bbox": box
+                }, function (bbox) {
+                    resultSource.process("Measurement.bboxPolygon", {
+                        "bbox": bbox
+                    });
+                }, null, false);
+            }, null, false);
+        }
+    }
+
+    //turf center
+    function center() {
+        if (geo) {
+            resultSource.process("Measurement.center", {
+                "geojson": geo
+            });
+        }
+    }
+
+    //turf bezier
+    function bezier() {
+        if (geo) {
+            resultSource.process("Transformation.bezier", {
+                "line": geo,
+                "resolution": 10000,
+                "sharpness": 0.85
+            });
+        }
+    }
+
+    //turf buffer
+    //先draw一个点 再在此点上进行缓冲区分析
+    function buffer() {
+        if (unit != 'null') {
+            clearAlert();
+            greatThanZero(steps);
+            if (coordinate && checkIsNum(distance) && checkIsNum(radius) && steps > 0) {
+                turfSource.process("Helper.point", {
+                    "coordinates": coordinate,
+                }, function (point) {
+                    resultSource.process("Transformation.buffer", {
+                        "geojson": point,
+                        "radius": radius,
+                        "steps": steps,
+                        "units": unit,
+                    });
+                });
+            } else {
+                showAlert('填入数据不完善或错误', 'alert-danger');
+            }
+        }
+        else {
+            showAlert('单位没选', 'alert-danger');
+        }
+    }
+
+    //turf circle
+    //先draw一个点 再在此点上画圆多边形
+    function circle() {
+        clearAlert();
+        greatThanZero(steps);
+        if (coordinate && checkIsNum(distance) && checkIsNum(radius) && steps > 0) {
+            turfSource.process("Helper.point", {
+                "coordinates": coordinate,
+            }, function (point) {
+                resultSource.process("Transformation.circle", {
+                    "center": point,
+                    "radius": radius,
+                    "steps": steps,
+                    "units": unit,
+                    "properties": {}
+                });
+            });
+        }
+        else {
+            showAlert('填入数据不完善或错误', 'alert-danger');
+        }
+    }
+
+    //清空图层
+    function clearSource() {
+        drawSource && drawSource.clear();
+        turfSource && turfSource.clear();
+        resultSource && resultSource.clear();
+    }
+
+</script>
+</html>
