@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 443);
+/******/ 	return __webpack_require__(__webpack_require__.s = 444);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -19382,13 +19382,13 @@ var GeoFeature = function (_Theme) {
         _this.cacheFields = opt_options.cacheFields || [];
         _this.style = opt_options.style || {};
         _this.maxCacheCount = opt_options.maxCacheCount || 0;
-        _this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount === undefined ? false : opt_options.isCustomSetMaxCacheCount;
+        _this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount || false;
         _this.nodesClipPixel = opt_options.nodesClipPixel || 2;
-        _this.isHoverAble = opt_options.isHoverAble === undefined ? false : opt_options.isHoverAble;
-        _this.isMultiHover = opt_options.isMultiHover === undefined ? false : opt_options.isMultiHover;
-        _this.isClickAble = opt_options.isClickAble === undefined ? true : opt_options.isClickAble;
+        _this.isHoverAble = opt_options.isHoverAble || false;
+        _this.isMultiHover = opt_options.isMultiHover || false;
+        _this.isClickAble = opt_options.isClickAble || true;
         _this.highlightStyle = opt_options.highlightStyle || null;
-        _this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle === undefined ? false : opt_options.isAllowFeatureStyle;
+        _this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle || false;
         return _this;
     }
 
@@ -19796,7 +19796,7 @@ var _olDebug = __webpack_require__(2);
 
 var _olDebug2 = _interopRequireDefault(_olDebug);
 
-var _iClient = __webpack_require__(439);
+var _iClient = __webpack_require__(440);
 
 var _iClient2 = _interopRequireDefault(_iClient);
 
@@ -19976,7 +19976,7 @@ var Tianditu = function (_ol$source$WMTS) {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
-            opaque: options.opaque === undefined ? true : options.opaque,
+            opaque: options.opaque || true,
             maxZoom: _olDebug2.default.source.Tianditu.layerZoomMap[options.layerType],
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,
@@ -20160,7 +20160,7 @@ var Graph = function (_Theme) {
         _this.chartsSetting = opt_options.chartsSetting || {};
         _this.themeFields = opt_options.themeFields || null;
         _this.overlayWeightField = opt_options.overlayWeightField || null;
-        _this.isOverLay = opt_options.isOverLay === undefined ? true : opt_options.isOverLay;
+        _this.isOverLay = opt_options.isOverLay || true;
         _this.charts = opt_options.charts || [];
         _this.cache = opt_options.cache || {};
         _this.chartsType = chartsType;
@@ -21306,10 +21306,10 @@ var Label = function (_GeoFeature) {
     }, {
         key: 'rotationBounds',
         value: function rotationBounds(bounds, rotationCenterPoi, angle) {
-            var ltPoi = new _olDebug2.default.geom.Point([bounds.left, bounds.top]);
-            var rtPoi = new _olDebug2.default.geom.Point([bounds.right, bounds.top]);
-            var rbPoi = new _olDebug2.default.geom.Point([bounds.right, bounds.bottom]);
-            var lbPoi = new _olDebug2.default.geom.Point([bounds.left, bounds.bottom]);
+            var ltPoi = new _olDebug2.default.geom.Point(bounds.left, bounds.top);
+            var rtPoi = new _olDebug2.default.geom.Point(bounds.right, bounds.top);
+            var rbPoi = new _olDebug2.default.geom.Point(bounds.right, bounds.bottom);
+            var lbPoi = new _olDebug2.default.geom.Point(bounds.left, bounds.bottom);
 
             var ver = [];
             ver.push(this.getRotatedLocation(ltPoi.getCoordinates()[0], ltPoi.getCoordinates()[1], rotationCenterPoi.x, rotationCenterPoi.y, angle));
@@ -21595,6 +21595,29 @@ var Range = function (_GeoFeature) {
         _this.highlightStyle = opt_options.highlightStyle;
         _this.themeField = opt_options.themeField;
         _this.styleGroups = opt_options.styleGroups;
+
+        // //添加features
+        // var features = this.features;
+        // if (!(SuperMap.Util.isArray(features))) {
+        //     features = [features];
+        // }
+        // var event = {features: features};
+        // var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: event});
+        // if (ret === false) {
+        //     return;
+        // }
+        // features = event.features;
+        // var featuresFailAdded = [];
+        // var toFeatures = [];
+        // for (var i = 0, len = features.length; i < len; i++) {
+        //     toFeatures.push(new ServerFeature.fromJson(features[i]).toFeature());
+        // }
+        // this.features = toFeatures;
+        // var succeed = featuresFailAdded.length == 0 ? true : false;
+        // this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
+        // if (!this.isCustomSetMaxCacheCount) {
+        //     this.maxCacheCount = this.features.length * 5;
+        // }
         return _this;
     }
 
@@ -27894,7 +27917,7 @@ var Theme = function (_ol$source$ImageCanva) {
 
         _this.canvasFunctionInternal_ = canvasFunctionInternal_;
         _this.EVENT_TYPES = ["loadstart", "loadend", "loadcancel", "visibilitychanged", "move", "moveend", "added", "removed", "tileloaded", "beforefeaturesadded", "featuresadded", "featuresremoved"];
-        _this.features = [];
+        _this.features = options.features || [];
         _this.TFEvents = options.TFEvents || [];
         _this.map = options.map;
         var size = _this.map.getSize();
@@ -30504,7 +30527,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _elasticsearch = __webpack_require__(440);
+var _elasticsearch = __webpack_require__(441);
 
 var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
@@ -31266,7 +31289,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(437);
+__webpack_require__(438);
 
 var _olDebug = __webpack_require__(2);
 
@@ -32193,7 +32216,7 @@ var SuperMapCloud = function (_ol$source$XYZ) {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
-            opaque: options.opaque === undefined ? true : options.opaque,
+            opaque: options.opaque || true,
             maxZoom: options.maxZoom || 18,
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,
@@ -32751,6 +32774,8 @@ var _Label2 = _interopRequireDefault(_Label);
 var _Logo = __webpack_require__(82);
 
 var _Logo2 = _interopRequireDefault(_Logo);
+
+__webpack_require__(437);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34725,7 +34750,7 @@ var _olDebug = __webpack_require__(2);
 
 var _olDebug2 = _interopRequireDefault(_olDebug);
 
-var _turf = __webpack_require__(442);
+var _turf = __webpack_require__(443);
 
 var _turf2 = _interopRequireDefault(_turf);
 
@@ -85056,7 +85081,7 @@ var _MapvCanvasLayer = __webpack_require__(380);
 
 var _MapvCanvasLayer2 = _interopRequireDefault(_MapvCanvasLayer);
 
-var _mapv = __webpack_require__(441);
+var _mapv = __webpack_require__(442);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -85868,26 +85893,26 @@ var VectorTileStyles = function (_ol$Observable) {
         if (options.cartoCss) {
             _olDebug2.default.supermap.VectorTileStyles.setCartoCss(options.cartoCss);
         }
-        var selectedPointStyle = getDefaultSelectedPointStyle();
-        if (options.selectedPointStyle) {
-            selectedPointStyle = options.selectedPointStyle;
+        var selectdPointStyle = getDefaultSelectedPointStyle();
+        if (options.selectdPointStyle) {
+            selectdPointStyle = options.selectdPointStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedPointStyle(selectedPointStyle);
-        var selectedLineStyle = getDefaultSelectedLineStyle();
-        if (options.selectedLineStyle) {
-            selectedLineStyle = options.selectedLineStyle;
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedPointStyle(selectdPointStyle);
+        var selectdLineStyle = getDefaultSelectedLineStyle();
+        if (options.selectdLineStyle) {
+            selectdLineStyle = options.selectdLineStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedLineStyle(selectedLineStyle);
-        var selectedRegionStyle = getDefaultSelectedRegionStyle();
-        if (options.selectedRegionStyle) {
-            selectedRegionStyle = options.selectedRegionStyle;
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedLineStyle(selectdLineStyle);
+        var selectdRegionStyle = getDefaultSelectedRegionStyle();
+        if (options.selectdRegionStyle) {
+            selectdRegionStyle = options.selectdRegionStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedRegionStyle(selectedRegionStyle);
-        var selectedTextStyle = getDefaultSelectedTextStyle();
-        if (options.selectedTextStyle) {
-            selectedTextStyle = options.selectedTextStyle;
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedRegionStyle(selectdRegionStyle);
+        var selectdTextStyle = getDefaultSelectedTextStyle();
+        if (options.selectdTextStyle) {
+            selectdTextStyle = options.selectdTextStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedTextStyle(selectedTextStyle);
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedTextStyle(selectdTextStyle);
         var layersXHR = new XMLHttpRequest();
         layersXHR.onreadystatechange = function () {
             if (layersXHR.readyState == 4) {
@@ -88363,7 +88388,7 @@ proj4.toPoint = __webpack_require__(115);
 proj4.defs = __webpack_require__(116);
 proj4.transform = __webpack_require__(119);
 proj4.mgrs = __webpack_require__(113);
-proj4.version = __webpack_require__(438).version;
+proj4.version = __webpack_require__(439).version;
 __webpack_require__(405)(proj4);
 module.exports = proj4;
 
@@ -92031,34 +92056,40 @@ module.exports = whatwgFetch;
 /* 438 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\codes\\iClient9Copy\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 439 */
 /***/ (function(module, exports) {
 
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0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"
+module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 440 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0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"
 
 /***/ }),
 /* 441 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return mapv}catch(e){return {}}}();
+module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
 /* 442 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return turf}catch(e){return {}}}();
+module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
 /* 443 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return turf}catch(e){return {}}}();
+
+/***/ }),
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(130);

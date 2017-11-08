@@ -19,8 +19,9 @@ import {RangeThemeLayer} from "../overlay/RangeThemeLayer";
 import {LabelThemeLayer} from "../overlay/LabelThemeLayer";
 import {featureService} from "../services/FeatureService";
 import {ThemeFeature} from '../overlay/theme/ThemeFeature';
-import {UnicodeMarker} from '../core/UnicodeMarker';
+import {UnicodeMarker} from '../overlay/UnicodeMarker';
 import {TiandituTileLayer} from '../mapping/TiandituTileLayer';
+import "../../common/style/supermapol-icons.css"
 
 /**
  * @class L.supermap.webmap
@@ -648,7 +649,7 @@ export var WebMap = L.LayerGroup.extend({
 
         var label = new LabelThemeLayer(title, {
             visibility: isVisible,
-            opacity: opacity
+            opacity: 0.7
         });
         this.registerThemeEvent(label);
         label.style = layerStyle;
@@ -784,7 +785,7 @@ export var WebMap = L.LayerGroup.extend({
             }
             layerName = subLayer && subLayer.name;
             var oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
-            this.queryFeaturesBySQL(url, credential, layerName, filter, needTransform ? '' : oldEpsgCode, function (features) {
+            this.getFeaturesBySQL(url, credential, layerName, filter, DataFormat.ISERVER, function (features) {
                 var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode;
                 if (needTransform) {
                     me.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, features, function (features) {

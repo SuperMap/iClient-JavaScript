@@ -1,0 +1,447 @@
+@font-face {
+    font-family: 'supermapol-icons';
+    src:    url('./fonts/supermapol-icons.eot?ttrekr');
+    src:    url('./fonts/supermapol-icons.eot?ttrekr#iefix') format('embedded-opentype'),
+    url('./fonts/supermapol-icons.ttf?ttrekr') format('truetype'),
+    url('./fonts/supermapol-icons.woff?ttrekr') format('woff'),
+    url('./fonts/supermapol-icons.svg?ttrekr#supermapol-icons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="supermapol-icons-"], [class*=" supermapol-icons-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'supermapol-icons', 'sans-serif' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.supermapol-icons-material_design_beenhere:before {
+  content: "\e958";
+}
+.supermapol-icons-material_design_directions:before {
+  content: "\e959";
+}
+.supermapol-icons-material_design_directions_bike:before {
+  content: "\e95a";
+}
+.supermapol-icons-material_design_directions_bus:before {
+  content: "\e95b";
+}
+.supermapol-icons-material_design_directions_car:before {
+  content: "\e95c";
+}
+.supermapol-icons-material_design_directions_ferry:before {
+  content: "\e95d";
+}
+.supermapol-icons-material_design_directions_train:before {
+  content: "\e95e";
+}
+.supermapol-icons-material_design_directions_transit:before {
+  content: "\e95f";
+}
+.supermapol-icons-material_design_directions_walk:before {
+  content: "\e960";
+}
+.supermapol-icons-material_design_flight:before {
+  content: "\e961";
+}
+.supermapol-icons-material_design_hotel:before {
+  content: "\e962";
+}
+.supermapol-icons-material_design_local_airport:before {
+  content: "\e963";
+}
+.supermapol-icons-material_design_local_atm:before {
+  content: "\e964";
+}
+.supermapol-icons-material_design_local_attraction:before {
+  content: "\e965";
+}
+.supermapol-icons-material_design_local_bar:before {
+  content: "\e966";
+}
+.supermapol-icons-material_design_local_cafe:before {
+  content: "\e967";
+}
+.supermapol-icons-material_design_local_car_wash:before {
+  content: "\e968";
+}
+.supermapol-icons-material_design_local_convenience_store:before {
+  content: "\e969";
+}
+.supermapol-icons-material_design_local_drink:before {
+  content: "\e96a";
+}
+.supermapol-icons-material_design_local_florist:before {
+  content: "\e96b";
+}
+.supermapol-icons-material_design_local_gas_station:before {
+  content: "\e96c";
+}
+.supermapol-icons-material_design_local_grocery_store:before {
+  content: "\e96d";
+}
+.supermapol-icons-material_design_local_hospital:before {
+  content: "\e96e";
+}
+.supermapol-icons-material_design_local_laundry_service:before {
+  content: "\e96f";
+}
+.supermapol-icons-material_design_local_library:before {
+  content: "\e970";
+}
+.supermapol-icons-material_design_local_mall:before {
+  content: "\e971";
+}
+.supermapol-icons-material_design_local_movies:before {
+  content: "\e972";
+}
+.supermapol-icons-material_design_local_offer:before {
+  content: "\e973";
+}
+.supermapol-icons-material_design_local_parking:before {
+  content: "\e974";
+}
+.supermapol-icons-material_design_local_pharmacy:before {
+  content: "\e975";
+}
+.supermapol-icons-material_design_local_phone:before {
+  content: "\e976";
+}
+.supermapol-icons-material_design_local_pizza:before {
+  content: "\e977";
+}
+.supermapol-icons-material_design_local_play:before {
+  content: "\e978";
+}
+.supermapol-icons-material_design_local_post_office:before {
+  content: "\e979";
+}
+.supermapol-icons-material_design_local_print_shop:before {
+  content: "\e97a";
+}
+.supermapol-icons-material_design_local_restaurant:before {
+  content: "\e97b";
+}
+.supermapol-icons-material_design_local_see:before {
+  content: "\e97c";
+}
+.supermapol-icons-material_design_local_shipping:before {
+  content: "\e97d";
+}
+.supermapol-icons-material_design_local_taxi:before {
+  content: "\e97e";
+}
+.supermapol-icons-material_design_location_history:before {
+  content: "\e97f";
+}
+.supermapol-icons-material_design_my_location:before {
+  content: "\e980";
+}
+.supermapol-icons-material_design_navigation:before {
+  content: "\e981";
+}
+.supermapol-icons-material_design_pin_drop:before {
+  content: "\e982";
+}
+.supermapol-icons-material_design_place:before {
+  content: "\e983";
+}
+.supermapol-icons-material_design_rate_review:before {
+  content: "\e984";
+}
+.supermapol-icons-material_design_restaurant_menu:before {
+  content: "\e985";
+}
+.supermapol-icons-material_design_satellite:before {
+  content: "\e986";
+}
+.supermapol-icons-material_design_store_mall_directory:before {
+  content: "\e987";
+}
+.supermapol-icons-material_design_terrain:before {
+  content: "\e988";
+}
+.supermapol-icons-material_design_traffic:before {
+  content: "\e989";
+}
+.supermapol-icons-server:before {
+  content: "\e98b";
+}
+.supermapol-icons-others:before {
+  content: "\e98a";
+}
+.supermapol-icons-maps:before {
+  content: "\e954";
+}
+.supermapol-icons-new:before {
+  content: "\e955";
+}
+.supermapol-icons-feedback:before {
+  content: "\e956";
+}
+.supermapol-icons-homepage:before {
+  content: "\e957";
+}
+.supermapol-icons-ruler:before {
+  content: "\e950";
+}
+.supermapol-icons-menu:before {
+  content: "\e952";
+}
+.supermapol-icons-rename:before {
+  content: "\e953";
+}
+.supermapol-icons-field:before {
+  content: "\e951";
+}
+.supermapol-icons-export:before {
+  content: "\e94d";
+}
+.supermapol-icons-zone:before {
+  content: "\e94c";
+}
+.supermapol-icons-copy:before {
+  content: "\e94b";
+}
+.supermapol-icons-qqblog:before {
+  content: "\e94e";
+}
+.supermapol-icons-sina:before {
+  content: "\e94f";
+}
+.supermapol-icons-play:before {
+  content: "\e949";
+}
+.supermapol-icons-pause:before {
+  content: "\e94a";
+}
+.supermapol-icons-search-thin:before {
+  content: "\e948";
+}
+.supermapol-icons-layerStyle:before {
+  content: "\e947";
+}
+.supermapol-icons-cad:before {
+  content: "\e944";
+}
+.supermapol-icons-grid:before {
+  content: "\e945";
+}
+.supermapol-icons-image:before {
+  content: "\e946";
+}
+.supermapol-icons-eye-closed:before {
+  content: "\e915";
+}
+.supermapol-icons-dropdown:before {
+  content: "\e943";
+}
+.supermapol-icons-solid-triangle:before {
+  content: "\e941";
+}
+.supermapol-icons-eye:before {
+  content: "\e942";
+}
+.supermapol-icons-opacity:before {
+  content: "\e940";
+}
+.supermapol-icons-table:before {
+  content: "\e93f";
+}
+.supermapol-icons-upload:before {
+  content: "\e93d";
+}
+.supermapol-icons-solid-point:before {
+  content: "\e93a";
+}
+.supermapol-icons-flag:before {
+  content: "\e93b";
+}
+.supermapol-icons-target:before {
+  content: "\e93c";
+}
+.supermapol-icons-legend:before {
+  content: "\e93e";
+}
+.supermapol-icons-select:before {
+  content: "\e939";
+}
+.supermapol-icons-logo:before {
+  content: "\e938";
+}
+.supermapol-icons-tag:before {
+  content: "\e934";
+}
+.supermapol-icons-new_home:before {
+  content: "\e935";
+}
+.supermapol-icons-update:before {
+  content: "\e936";
+}
+.supermapol-icons-info:before {
+  content: "\e937";
+}
+.supermapol-icons-unfold:before {
+  content: "\e930";
+}
+.supermapol-icons-fold:before {
+  content: "\e931";
+}
+.supermapol-icons-right:before {
+  content: "\e932";
+}
+.supermapol-icons-left:before {
+  content: "\e933";
+}
+.supermapol-icons-edit:before {
+  content: "\e92c";
+}
+.supermapol-icons-home:before {
+  content: "\e92d";
+}
+.supermapol-icons-share:before {
+  content: "\e92e";
+}
+.supermapol-icons-back:before {
+  content: "\e92f";
+}
+.supermapol-icons-rest-api:before {
+  content: "\e929";
+}
+.supermapol-icons-javascript-api:before {
+  content: "\e92a";
+}
+.supermapol-icons-desktop-dev:before {
+  content: "\e92b";
+}
+.supermapol-icons-open:before {
+  content: "\e91f";
+}
+.supermapol-icons-overlay:before {
+  content: "\e920";
+}
+.supermapol-icons-point-layer:before {
+  content: "\e921";
+}
+.supermapol-icons-hamburg:before {
+  content: "\e922";
+}
+.supermapol-icons-triangle:before {
+  content: "\e923";
+}
+.supermapol-icons-polygon-layer:before {
+  content: "\e924";
+}
+.supermapol-icons-close:before {
+  content: "\e925";
+}
+.supermapol-icons-add:before {
+  content: "\e926";
+}
+.supermapol-icons-more:before {
+  content: "\e927";
+}
+.supermapol-icons-line-layer:before {
+  content: "\e928";
+}
+.supermapol-icons-polygon:before {
+  content: "\e91e";
+}
+.supermapol-icons-triangle-old:before {
+  content: "\e910";
+  color: #474747;
+}
+.supermapol-icons-save:before {
+  content: "\e900";
+}
+.supermapol-icons-baselayer:before {
+  content: "\e901";
+}
+.supermapol-icons-marker:before {
+  content: "\e902";
+}
+.supermapol-icons-uncheck:before {
+  content: "\e903";
+}
+.supermapol-icons-checked:before {
+  content: "\e904";
+}
+.supermapol-icons-zoom-in:before {
+  content: "\e905";
+}
+.supermapol-icons-clear:before {
+  content: "\e906";
+}
+.supermapol-icons-setting:before {
+  content: "\e907";
+}
+.supermapol-icons-zoom-to:before {
+  content: "\e908";
+}
+.supermapol-icons-default-layer:before {
+  content: "\e909";
+}
+.supermapol-icons-group:before {
+  content: "\e90a";
+}
+.supermapol-icons-delete:before {
+  content: "\e90b";
+}
+.supermapol-icons-up:before {
+  content: "\e90c";
+}
+.supermapol-icons-warning:before {
+  content: "\e90d";
+}
+.supermapol-icons-retract:before {
+  content: "\e90e";
+}
+.supermapol-icons-search:before {
+  content: "\e90f";
+}
+.supermapol-icons-zoom-out:before {
+  content: "\e911";
+}
+.supermapol-icons-layers:before {
+  content: "\e912";
+}
+.supermapol-icons-add-old:before {
+  content: "\e913";
+}
+.supermapol-icons-brush:before {
+  content: "\e914";
+}
+.supermapol-icons-down:before {
+  content: "\e916";
+}
+.supermapol-icons-line:before {
+  content: "\e917";
+}
+.supermapol-icons-pen:before {
+  content: "\e918";
+}
+.supermapol-icons-user:before {
+  content: "\e919";
+}
+.supermapol-icons-down-end:before {
+  content: "\e91a";
+}
+.supermapol-icons-up-end:before {
+  content: "\e91b";
+}
+.supermapol-icons-text:before {
+  content: "\e91c";
+}
+.supermapol-icons-customize:before {
+  content: "\e91d";
+}

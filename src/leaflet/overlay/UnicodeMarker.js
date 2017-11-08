@@ -87,7 +87,7 @@ L.Canvas.include({
             return;
         }
         this._drawnLayers[layer._leaflet_id] = layer;
-        let pt = layer._point,
+        let pt = {x:layer._point.x,y:layer._point.y},
             ctx = this._ctx,
             fontStyle = [layer.options.fontStyle,
                 "normal", layer.options.fontWeight,
@@ -126,7 +126,7 @@ L.Canvas.include({
                     ctx.fillText(labelRows[i], 0, (lineHeight * i));
                     ctx.restore();
                 } else {
-                    ctx.fillText(labelRows[i], pt.x, pt.y + (lineHeight * i));
+                    ctx.fillText(labelRows[i], pt.x, pt.y);
                 }
 
             }

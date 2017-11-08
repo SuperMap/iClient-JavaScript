@@ -29,15 +29,14 @@ module.exports = {
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
         '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
     },
-
     module: {
         rules: [{
-            //图片小于30k采用base64编码
-            test: /\.(png|jpg|jpeg|gif|woff)$/,
+            //图片小于80k采用base64编码
+            test: /\.(png|jpg|jpeg|gif|woff|woff2|svg|eot|ttf)$/,
             use: [{
                 loader: 'url-loader',
                 options: {
-                    limit: 30000
+                    limit: 80000
                 }
             }]
         }, {

@@ -32,12 +32,12 @@ module.exports = {
     module: {
         noParse: /[\/\\]node_modules[\/\\]openlayers[\/\\]dist[\/\\]ol\.js$/,
         rules: [{
-            //图片小于100k采用base64编码
-            test: /\.(png|jpg|jpeg|gif|woff)$/,
+            //图片小于80k采用base64编码
+            test: /\.(png|jpg|jpeg|gif|woff|woff2|svg|eot|ttf)$/,
             use: [{
                 loader: 'url-loader',
                 options: {
-                    limit: 30000
+                    limit: 80000
                 }
             }]
         }, {

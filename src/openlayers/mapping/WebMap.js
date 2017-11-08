@@ -19,6 +19,7 @@ import UniqueThemeSource from "../overlay/Unique";
 import RangeThemeSource from "../overlay/Range";
 import LabelThemeSource from "../overlay/Label";
 import Logo from '../control/Logo';
+import "../../common/style/supermapol-icons.css"
 
 ol.supermap = ol.supermap || {};
 /**
@@ -644,7 +645,7 @@ export default class WebMap extends ol.Observable {
             map: this.map,
             attributions: " ",
             wrapX: false,
-            opacity: opacity,
+            opacity: 0.7,
             visibility: isVisible
         });
 
@@ -800,7 +801,7 @@ export default class WebMap extends ol.Observable {
             }
             layerName = subLayer && subLayer.name;
             var oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
-            this.queryFeaturesBySQL(url, credential, layerName, filter, needTransform ? '' : oldEpsgCode, function (features) {
+            this.getFeaturesBySQL(url, credential, layerName, filter, DataFormat.ISERVER, function (features) {
                 var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode;
                 if (needTransform) {
                     me.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, features, function (features) {

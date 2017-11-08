@@ -78,7 +78,15 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
         //获取标签像素 bounds 的方式。0 - 表示通过文本类容和文本风格计算获取像素范围，现在支持中文、英文; 1 - 表示通过绘制的文本标签获取像素范围，支持各个语种的文字范围获取，但性能消耗较大（尤其是采用SVG渲染）。默认值为0。
         this.getPxBoundsMode = 0;
     },
-
+    /**
+     * @function L.supermap.ThemeLayer.prototype.onAdd
+     * @description 添加专题图
+     * @param map - {L.map} 要添加的地图
+     */
+    onAdd: function (map) {
+        GeoFeatureThemeLayer.prototype.onAdd.call(this, map);
+        this.container.style.zIndex = 200;
+    },
     /**
      * @function L.supermap.LabelThemeLayer.prototype.redrawThematicFeatures
      * @description 重绘所有专题要素。

@@ -425,6 +425,16 @@ deps = {
                     "name": "L.supermap.turfLayer",
                     "des": "客户端空间分析js库"
                 }]
+            },
+            "UnicodeMarker.js": {
+                "name": "UnicodeMarker",
+                "src": [
+                    './src/leaflet/overlay/UnicodeMarker.js'
+                ],
+                "modules": [{
+                    "name": "L.supermap.unicodeMarker",
+                    "des": "unicodeMarker"
+                }]
             }
         },
 
