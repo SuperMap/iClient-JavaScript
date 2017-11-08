@@ -27543,7 +27543,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
     getEvents: function getEvents() {
         var me = this;
         var events = {
-            zoomend: this._reset,
+            zoomend: me._reset,
             moveend: me._reset,
             resize: me._resize
         };
@@ -27572,13 +27572,12 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
     onAdd: function onAdd(map) {
         var me = this;
 
+        me.map = me._map = map;
         me._initContainer();
         if (!me.levelRenderer) {
             map.removeLayer(me);
             return;
         }
-
-        me.map = me._map = map;
         //初始化渲染器
         var size = map.getSize();
         me.container.style.width = size.x + "px";
@@ -27589,7 +27588,6 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         me.renderer.clear();
         if (me.features && me.features.length > 0) {
             me._reset();
-            me.redrawThematicFeatures(me.map.getBounds());
         }
 
         //处理用户预先（在图层添加到 map 前）监听的事件
@@ -27599,6 +27597,8 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
             me.currentMousePosition = _leaflet2["default"].point(xy.x + me.movingOffset[0], xy.y + me.movingOffset[1]);
         };
         map.on("mousemove", me.mouseMoveHandler);
+
+        me.update();
     },
 
     /**
@@ -27901,10 +27901,16 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
 
     _initContainer: function _initContainer() {
         var parentContainer = this.getPane();
+        var animated = this._map.options.zoomAnimation && _leaflet2["default"].Browser.any3d;
         var className = this.options.name || "themeLayer";
+        className += ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide');
         this.container = _leaflet2["default"].DomUtil.create("div", className, parentContainer);
+
+        var originProp = _leaflet2["default"].DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
+        this.container.style[originProp] = '50% 50%';
+
         this.container.style.position = "absolute";
-        this.container.style.zIndex = 100;
+        this.container.style.zIndex = 200;
     },
 
     _zoomAnim: function _zoomAnim(evt) {
@@ -27916,7 +27922,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         if (_leaflet2["default"].DomUtil.setTransform) {
             _leaflet2["default"].DomUtil.setTransform(this.container, offset, scale);
         } else {
-            _leaflet2["default"].DomUtil.setPosition(this.container, offset);
+            this.container.style[_leaflet2["default"].DomUtil.TRANSFORM] = _leaflet2["default"].DomUtil.getTranslateString(offset) + ' scale(' + scale + ')';
         }
     },
 
@@ -27933,14 +27939,20 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         var me = this;
         var latLngBounds = me._map.getBounds();
         me.update(latLngBounds);
+
         var topLeft = me._map.containerPointToLayerPoint([0, 0]);
         _leaflet2["default"].DomUtil.setPosition(me.container, topLeft);
         var size = me._map.getSize();
-        me.container.style.width = size.x + 'px';
-        me.container.style.height = size.y + 'px';
+        if (parseFloat(me.container.width) !== parseFloat(size.x)) {
+            me.container.width = size.x + 'px';
+        }
+        if (parseFloat(me.container.height) !== parseFloat(size.y)) {
+            me.container.height = size.y + 'px';
+        }
+        me.redraw();
     },
 
-    //通知渲染器的尺寸变化。
+    //通知渲染器的尺寸变化
     _resize: function _resize() {
         var me = this;
         var newSize = me._map.getSize();
@@ -93984,10 +93996,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
+	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
 	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
 	"_spec": "proj4@2.3.15",
-	"_where": "G:\\github-iClient\\iClient9",
+	"_where": "F:\\dev\\iClient",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

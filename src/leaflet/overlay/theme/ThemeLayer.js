@@ -42,7 +42,7 @@ export var ThemeLayer = L.Layer.extend({
     getEvents: function () {
         var me = this;
         var events = {
-            zoomend: this._reset,
+            zoomend: me._reset,
             moveend: me._reset,
             resize: me._resize
         };
@@ -71,13 +71,13 @@ export var ThemeLayer = L.Layer.extend({
     onAdd: function (map) {
         var me = this;
 
+
+        me.map = me._map = map;
         me._initContainer();
         if (!me.levelRenderer) {
             map.removeLayer(me);
             return;
         }
-
-        me.map = me._map = map;
         //初始化渲染器
         var size = map.getSize();
         me.container.style.width = size.x + "px";
@@ -88,7 +88,6 @@ export var ThemeLayer = L.Layer.extend({
         me.renderer.clear();
         if (me.features && me.features.length > 0) {
             me._reset();
-            me.redrawThematicFeatures(me.map.getBounds());
         }
 
         //处理用户预先（在图层添加到 map 前）监听的事件
@@ -98,6 +97,8 @@ export var ThemeLayer = L.Layer.extend({
             me.currentMousePosition = L.point(xy.x + me.movingOffset[0], xy.y + me.movingOffset[1]);
         };
         map.on("mousemove", me.mouseMoveHandler);
+
+        me.update();
     },
 
     /**
@@ -401,10 +402,16 @@ export var ThemeLayer = L.Layer.extend({
 
     _initContainer: function () {
         var parentContainer = this.getPane();
+        var animated = this._map.options.zoomAnimation && L.Browser.any3d;
         var className = this.options.name || "themeLayer";
+        className += ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide');
         this.container = L.DomUtil.create("div", className, parentContainer);
+
+        var originProp = L.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
+        this.container.style[originProp] = '50% 50%';
+
         this.container.style.position = "absolute";
-        this.container.style.zIndex = 100;
+        this.container.style.zIndex = 200;
     },
 
 
@@ -416,7 +423,7 @@ export var ThemeLayer = L.Layer.extend({
         if (L.DomUtil.setTransform) {
             L.DomUtil.setTransform(this.container, offset, scale);
         } else {
-            L.DomUtil.setPosition(this.container, offset);
+            this.container.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(offset) + ' scale(' + scale + ')';
         }
     },
 
@@ -433,14 +440,20 @@ export var ThemeLayer = L.Layer.extend({
         var me = this;
         var latLngBounds = me._map.getBounds();
         me.update(latLngBounds);
+
         var topLeft = me._map.containerPointToLayerPoint([0, 0]);
         L.DomUtil.setPosition(me.container, topLeft);
         var size = me._map.getSize();
-        me.container.style.width = size.x + 'px';
-        me.container.style.height = size.y + 'px';
+        if (parseFloat(me.container.width) !== parseFloat(size.x)) {
+            me.container.width = size.x + 'px';
+        }
+        if (parseFloat(me.container.height) !== parseFloat(size.y)) {
+            me.container.height = size.y + 'px';
+        }
+        me.redraw();
     },
 
-    //通知渲染器的尺寸变化。
+    //通知渲染器的尺寸变化
     _resize: function () {
         var me = this;
         var newSize = me._map.getSize();

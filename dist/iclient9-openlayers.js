@@ -21306,10 +21306,10 @@ var Label = function (_GeoFeature) {
     }, {
         key: 'rotationBounds',
         value: function rotationBounds(bounds, rotationCenterPoi, angle) {
-            var ltPoi = new _olDebug2.default.geom.Point(bounds.left, bounds.top);
-            var rtPoi = new _olDebug2.default.geom.Point(bounds.right, bounds.top);
-            var rbPoi = new _olDebug2.default.geom.Point(bounds.right, bounds.bottom);
-            var lbPoi = new _olDebug2.default.geom.Point(bounds.left, bounds.bottom);
+            var ltPoi = new _olDebug2.default.geom.Point([bounds.left, bounds.top]);
+            var rtPoi = new _olDebug2.default.geom.Point([bounds.right, bounds.top]);
+            var rbPoi = new _olDebug2.default.geom.Point([bounds.right, bounds.bottom]);
+            var lbPoi = new _olDebug2.default.geom.Point([bounds.left, bounds.bottom]);
 
             var ver = [];
             ver.push(this.getRotatedLocation(ltPoi.getCoordinates()[0], ltPoi.getCoordinates()[1], rotationCenterPoi.x, rotationCenterPoi.y, angle));
@@ -92074,10 +92074,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
+	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
 	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
 	"_spec": "proj4@2.3.15",
-	"_where": "G:\\github-iClient\\iClient9",
+	"_where": "F:\\dev\\iClient",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"
