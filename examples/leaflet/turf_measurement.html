@@ -39,7 +39,7 @@
         infoView.onAdd = function () {
             var me = this;
             me._div = L.DomUtil.create('div');
-            me._div.style.width = '420px';
+            me._div.style.width = '350px';
             me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
     <div class='panel-heading'>
         <h5 class='panel-title text-center'>京深路卧龙岗隧道路段</h5>
@@ -460,7 +460,7 @@
     function isUseWorldMap(bool) {
         if (bool) {
             urlWorld = host + "/iserver/services/map-world/rest/maps/World";
-            url = url1;
+            url = urlWorld;
             baseLayer = L.supermap.tiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
         }
         else {
@@ -658,6 +658,7 @@
                 turfLayer.process("Helper.lineString", {
                     "coordinates": coordinate,
                 }, function (line) {
+
                     resultLayer.process("Measurement.along", {
                         "line": line,
                         "distance": distance,

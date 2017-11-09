@@ -19382,13 +19382,13 @@ var GeoFeature = function (_Theme) {
         _this.cacheFields = opt_options.cacheFields || [];
         _this.style = opt_options.style || {};
         _this.maxCacheCount = opt_options.maxCacheCount || 0;
-        _this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount || false;
+        _this.isCustomSetMaxCacheCount = opt_options.isCustomSetMaxCacheCount === undefined ? false : opt_options.isCustomSetMaxCacheCount;
         _this.nodesClipPixel = opt_options.nodesClipPixel || 2;
-        _this.isHoverAble = opt_options.isHoverAble || false;
-        _this.isMultiHover = opt_options.isMultiHover || false;
-        _this.isClickAble = opt_options.isClickAble || true;
+        _this.isHoverAble = opt_options.isHoverAble === undefined ? false : opt_options.isHoverAble;
+        _this.isMultiHover = opt_options.isMultiHover === undefined ? false : opt_options.isMultiHover;
+        _this.isClickAble = opt_options.isClickAble === undefined ? true : opt_options.isClickAble;
         _this.highlightStyle = opt_options.highlightStyle || null;
-        _this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle || false;
+        _this.isAllowFeatureStyle = opt_options.isAllowFeatureStyle === undefined ? false : opt_options.isAllowFeatureStyle;
         return _this;
     }
 
@@ -19976,7 +19976,7 @@ var Tianditu = function (_ol$source$WMTS) {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
-            opaque: options.opaque || true,
+            opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: _olDebug2.default.source.Tianditu.layerZoomMap[options.layerType],
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,
@@ -20160,7 +20160,7 @@ var Graph = function (_Theme) {
         _this.chartsSetting = opt_options.chartsSetting || {};
         _this.themeFields = opt_options.themeFields || null;
         _this.overlayWeightField = opt_options.overlayWeightField || null;
-        _this.isOverLay = opt_options.isOverLay || true;
+        _this.isOverLay = opt_options.isOverLay === undefined ? true : opt_options.isOverLay;
         _this.charts = opt_options.charts || [];
         _this.cache = opt_options.cache || {};
         _this.chartsType = chartsType;
@@ -21240,40 +21240,42 @@ var Label = function (_GeoFeature) {
             canvas.globalAlpha = 0;
             canvas.lineWidth = 1;
 
-            canvas.fillStyle = style.fontColor;
-            canvas.globalAlpha = style.fontOpacity || 1.0;
+            var ctx = canvas.getContext("2d");
+
+            ctx.fillStyle = style.fontColor;
+            ctx.globalAlpha = style.fontOpacity || 1.0;
             var fontStyle = [style.fontStyle ? style.fontStyle : "normal", "normal", style.fontWeight ? style.fontWeight : "normal", style.fontSize ? style.fontSize : "1em", style.fontFamily ? style.fontFamily : "sans-serif"].join(" ");
             var labelRows = style.label.split('\n');
             var numRows = labelRows.length;
             var vfactor, lineHeight, labelWidthTmp;
-            if (canvas.fillText) {
+            if (ctx.fillText) {
                 // HTML5
-                canvas.font = fontStyle;
-                canvas.textAlign = LABEL_ALIGN[style.labelAlign[0]] || "center";
-                canvas.textBaseline = LABEL_ALIGN[style.labelAlign[1]] || "middle";
+                ctx.font = fontStyle;
+                ctx.textAlign = LABEL_ALIGN[style.labelAlign[0]] || "center";
+                ctx.textBaseline = LABEL_ALIGN[style.labelAlign[1]] || "middle";
                 vfactor = LABEL_FACTOR[style.labelAlign[1]];
                 if (vfactor == null) {
                     vfactor = -.5;
                 }
-                lineHeight = canvas.measureText('Mg').height || canvas.measureText('xx').width;
+                lineHeight = ctx.measureText('Mg').height || ctx.measureText('xx').width;
                 pt[1] += lineHeight * vfactor * (numRows - 1);
                 for (var i = 0; i < numRows; i++) {
-                    labelWidthTmp = canvas.measureText(labelRows[i]).width;
+                    labelWidthTmp = ctx.measureText(labelRows[i]).width;
                     if (labelWidth < labelWidthTmp) {
                         labelWidth = labelWidthTmp;
                     }
                 }
-            } else if (canvas.mozDrawText) {
+            } else if (ctx.mozDrawText) {
                 // Mozilla pre-Gecko1.9.1 (<FF3.1)
-                canvas.mozTextStyle = fontStyle;
+                ctx.mozTextStyle = fontStyle;
                 vfactor = LABEL_FACTOR[style.labelAlign[1]];
                 if (vfactor == null) {
                     vfactor = -.5;
                 }
-                lineHeight = canvas.mozMeasureText('xx');
+                lineHeight = ctx.mozMeasureText('xx');
                 pt[1] += lineHeight * (1 + vfactor * numRows);
                 for (var _i = 0; _i < numRows; _i++) {
-                    labelWidthTmp = canvas.measureText(labelRows[_i]).width;
+                    labelWidthTmp = ctx.measureText(labelRows[_i]).width;
                     if (labelWidth < labelWidthTmp) {
                         labelWidth = labelWidthTmp;
                     }
@@ -21306,10 +21308,10 @@ var Label = function (_GeoFeature) {
     }, {
         key: 'rotationBounds',
         value: function rotationBounds(bounds, rotationCenterPoi, angle) {
-            var ltPoi = new _olDebug2.default.geom.Point(bounds.left, bounds.top);
-            var rtPoi = new _olDebug2.default.geom.Point(bounds.right, bounds.top);
-            var rbPoi = new _olDebug2.default.geom.Point(bounds.right, bounds.bottom);
-            var lbPoi = new _olDebug2.default.geom.Point(bounds.left, bounds.bottom);
+            var ltPoi = new _olDebug2.default.geom.Point([bounds.left, bounds.top]);
+            var rtPoi = new _olDebug2.default.geom.Point([bounds.right, bounds.top]);
+            var rbPoi = new _olDebug2.default.geom.Point([bounds.right, bounds.bottom]);
+            var lbPoi = new _olDebug2.default.geom.Point([bounds.left, bounds.bottom]);
 
             var ver = [];
             ver.push(this.getRotatedLocation(ltPoi.getCoordinates()[0], ltPoi.getCoordinates()[1], rotationCenterPoi.x, rotationCenterPoi.y, angle));
@@ -21595,29 +21597,6 @@ var Range = function (_GeoFeature) {
         _this.highlightStyle = opt_options.highlightStyle;
         _this.themeField = opt_options.themeField;
         _this.styleGroups = opt_options.styleGroups;
-
-        // //添加features
-        // var features = this.features;
-        // if (!(SuperMap.Util.isArray(features))) {
-        //     features = [features];
-        // }
-        // var event = {features: features};
-        // var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: event});
-        // if (ret === false) {
-        //     return;
-        // }
-        // features = event.features;
-        // var featuresFailAdded = [];
-        // var toFeatures = [];
-        // for (var i = 0, len = features.length; i < len; i++) {
-        //     toFeatures.push(new ServerFeature.fromJson(features[i]).toFeature());
-        // }
-        // this.features = toFeatures;
-        // var succeed = featuresFailAdded.length == 0 ? true : false;
-        // this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
-        // if (!this.isCustomSetMaxCacheCount) {
-        //     this.maxCacheCount = this.features.length * 5;
-        // }
         return _this;
     }
 
@@ -27917,7 +27896,7 @@ var Theme = function (_ol$source$ImageCanva) {
 
         _this.canvasFunctionInternal_ = canvasFunctionInternal_;
         _this.EVENT_TYPES = ["loadstart", "loadend", "loadcancel", "visibilitychanged", "move", "moveend", "added", "removed", "tileloaded", "beforefeaturesadded", "featuresadded", "featuresremoved"];
-        _this.features = options.features || [];
+        _this.features = [];
         _this.TFEvents = options.TFEvents || [];
         _this.map = options.map;
         var size = _this.map.getSize();
@@ -32216,7 +32195,7 @@ var SuperMapCloud = function (_ol$source$XYZ) {
             attributions: attributions,
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
-            opaque: options.opaque || true,
+            opaque: options.opaque === undefined ? true : options.opaque,
             maxZoom: options.maxZoom || 18,
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,
@@ -33471,7 +33450,7 @@ var WebMap = function (_ol$Observable) {
                 map: this.map,
                 attributions: " ",
                 wrapX: false,
-                opacity: opacity,
+                opacity: 0.7,
                 visibility: isVisible
             });
 
@@ -33644,7 +33623,7 @@ var WebMap = function (_ol$Observable) {
                 }
                 layerName = subLayer && subLayer.name;
                 var oldEpsgCode = layerInfo.prjCoordSys && layerInfo.prjCoordSys.epsgCode;
-                this.queryFeaturesBySQL(url, credential, layerName, filter, needTransform ? '' : oldEpsgCode, function (features) {
+                this.getFeaturesBySQL(url, credential, layerName, filter, _REST.DataFormat.ISERVER, function (features) {
                     var newEpsgCode = me.mapInfo && me.mapInfo.epsgCode;
                     if (needTransform) {
                         me.changeFeatureLayerEpsgCode(oldEpsgCode, newEpsgCode, layer, features, function (features) {
@@ -67486,24 +67465,13 @@ var Image = function (_ShapeParameters) {
         _this.x = x;
         _this.y = y;
         _this.image = image;
-        if (_this.width) {
-            _this.width = width;
-        }
-        if (_this.height) {
-            _this.height = width;
-        }
-        if (_this.sx) {
-            _this.sx = width;
-        }
-        if (_this.sy) {
-            _this.sy = width;
-        }
-        if (_this.sWidth) {
-            _this.sWidth = width;
-        }
-        if (_this.sHeight) {
-            _this.sHeight = width;
-        }
+
+        _this.width = width;
+        _this.height = height;
+        _this.sx = sx;
+        _this.sy = sy;
+        _this.sWidth = sWidth;
+        _this.sHeight = sHeight;
         return _this;
     }
 
@@ -85893,26 +85861,26 @@ var VectorTileStyles = function (_ol$Observable) {
         if (options.cartoCss) {
             _olDebug2.default.supermap.VectorTileStyles.setCartoCss(options.cartoCss);
         }
-        var selectdPointStyle = getDefaultSelectedPointStyle();
-        if (options.selectdPointStyle) {
-            selectdPointStyle = options.selectdPointStyle;
+        var selectedPointStyle = getDefaultSelectedPointStyle();
+        if (options.selectedPointStyle) {
+            selectedPointStyle = options.selectedPointStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedPointStyle(selectdPointStyle);
-        var selectdLineStyle = getDefaultSelectedLineStyle();
-        if (options.selectdLineStyle) {
-            selectdLineStyle = options.selectdLineStyle;
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedPointStyle(selectedPointStyle);
+        var selectedLineStyle = getDefaultSelectedLineStyle();
+        if (options.selectedLineStyle) {
+            selectedLineStyle = options.selectedLineStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedLineStyle(selectdLineStyle);
-        var selectdRegionStyle = getDefaultSelectedRegionStyle();
-        if (options.selectdRegionStyle) {
-            selectdRegionStyle = options.selectdRegionStyle;
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedLineStyle(selectedLineStyle);
+        var selectedRegionStyle = getDefaultSelectedRegionStyle();
+        if (options.selectedRegionStyle) {
+            selectedRegionStyle = options.selectedRegionStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedRegionStyle(selectdRegionStyle);
-        var selectdTextStyle = getDefaultSelectedTextStyle();
-        if (options.selectdTextStyle) {
-            selectdTextStyle = options.selectdTextStyle;
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedRegionStyle(selectedRegionStyle);
+        var selectedTextStyle = getDefaultSelectedTextStyle();
+        if (options.selectedTextStyle) {
+            selectedTextStyle = options.selectedTextStyle;
         }
-        _olDebug2.default.supermap.VectorTileStyles.setSelectedTextStyle(selectdTextStyle);
+        _olDebug2.default.supermap.VectorTileStyles.setSelectedTextStyle(selectedTextStyle);
         var layersXHR = new XMLHttpRequest();
         layersXHR.onreadystatechange = function () {
             if (layersXHR.readyState == 4) {
@@ -92062,7 +92030,108 @@ module.exports = whatwgFetch;
 /* 439 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {
+	"_from": "proj4@2.3.15",
+	"_id": "proj4@2.3.15",
+	"_inBundle": false,
+	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
+	"_location": "/proj4",
+	"_phantomChildren": {},
+	"_requested": {
+		"type": "version",
+		"registry": true,
+		"raw": "proj4@2.3.15",
+		"name": "proj4",
+		"escapedName": "proj4",
+		"rawSpec": "2.3.15",
+		"saveSpec": null,
+		"fetchSpec": "2.3.15"
+	},
+	"_requiredBy": [
+		"/"
+	],
+	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz",
+	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
+	"_spec": "proj4@2.3.15",
+	"_where": "F:\\dev\\iClient",
+	"author": "",
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
+	},
+	"bundleDependencies": false,
+	"contributors": [
+		{
+			"name": "Mike Adair",
+			"email": "madair@dmsolutions.ca"
+		},
+		{
+			"name": "Richard Greenwood",
+			"email": "rich@greenwoodmap.com"
+		},
+		{
+			"name": "Calvin Metcalf",
+			"email": "calvin.metcalf@gmail.com"
+		},
+		{
+			"name": "Richard Marsden",
+			"url": "http://www.winwaed.com"
+		},
+		{
+			"name": "T. Mittan"
+		},
+		{
+			"name": "D. Steinwand"
+		},
+		{
+			"name": "S. Nelson"
+		}
+	],
+	"dependencies": {
+		"mgrs": "~0.0.2"
+	},
+	"deprecated": false,
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"devDependencies": {
+		"browserify": "~12.0.1",
+		"chai": "~1.8.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"grunt": "~0.4.2",
+		"grunt-browserify": "~4.0.1",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~0.8.0",
+		"grunt-contrib-uglify": "~0.11.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"istanbul": "~0.2.4",
+		"mocha": "~1.17.1",
+		"tin": "~0.4.0"
+	},
+	"directories": {
+		"test": "test",
+		"doc": "docs"
+	},
+	"homepage": "https://github.com/proj4js/proj4js#readme",
+	"jam": {
+		"main": "dist/proj4.js",
+		"include": [
+			"dist/proj4.js",
+			"README.md",
+			"AUTHORS",
+			"LICENSE.md"
+		]
+	},
+	"license": "MIT",
+	"main": "lib/index.js",
+	"name": "proj4",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
+	},
+	"scripts": {
+		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
+	},
+	"version": "2.3.15"
+};
 
 /***/ }),
 /* 440 */

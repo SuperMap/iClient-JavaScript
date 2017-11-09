@@ -588,8 +588,10 @@ export default class Label extends GeoFeature {
         canvas.globalAlpha = 0;
         canvas.lineWidth = 1;
 
-        canvas.fillStyle = style.fontColor;
-        canvas.globalAlpha = style.fontOpacity || 1.0;
+        var ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = style.fontColor;
+        ctx.globalAlpha = style.fontOpacity || 1.0;
         var fontStyle = [style.fontStyle ? style.fontStyle : "normal",
             "normal",
             style.fontWeight ? style.fontWeight : "normal",
@@ -598,37 +600,37 @@ export default class Label extends GeoFeature {
         var labelRows = style.label.split('\n');
         var numRows = labelRows.length;
         var vfactor, lineHeight, labelWidthTmp;
-        if (canvas.fillText) {
+        if (ctx.fillText) {
             // HTML5
-            canvas.font = fontStyle;
-            canvas.textAlign = LABEL_ALIGN[style.labelAlign[0]] ||
+            ctx.font = fontStyle;
+            ctx.textAlign = LABEL_ALIGN[style.labelAlign[0]] ||
                 "center";
-            canvas.textBaseline = LABEL_ALIGN[style.labelAlign[1]] ||
+            ctx.textBaseline = LABEL_ALIGN[style.labelAlign[1]] ||
                 "middle";
             vfactor = LABEL_FACTOR[style.labelAlign[1]];
             if (vfactor == null) {
                 vfactor = -.5;
             }
-            lineHeight = canvas.measureText('Mg').height ||
-                canvas.measureText('xx').width;
+            lineHeight = ctx.measureText('Mg').height ||
+                ctx.measureText('xx').width;
             pt[1] += lineHeight * vfactor * (numRows - 1);
             for (let i = 0; i < numRows; i++) {
-                labelWidthTmp = canvas.measureText(labelRows[i]).width;
+                labelWidthTmp = ctx.measureText(labelRows[i]).width;
                 if (labelWidth < labelWidthTmp) {
                     labelWidth = labelWidthTmp;
                 }
             }
-        } else if (canvas.mozDrawText) {
+        } else if (ctx.mozDrawText) {
             // Mozilla pre-Gecko1.9.1 (<FF3.1)
-            canvas.mozTextStyle = fontStyle;
+            ctx.mozTextStyle = fontStyle;
             vfactor = LABEL_FACTOR[style.labelAlign[1]];
             if (vfactor == null) {
                 vfactor = -.5;
             }
-            lineHeight = canvas.mozMeasureText('xx');
+            lineHeight = ctx.mozMeasureText('xx');
             pt[1] += lineHeight * (1 + (vfactor * numRows));
             for (let i = 0; i < numRows; i++) {
-                labelWidthTmp = canvas.measureText(labelRows[i]).width;
+                labelWidthTmp = ctx.measureText(labelRows[i]).width;
                 if (labelWidth < labelWidthTmp) {
                     labelWidth = labelWidthTmp;
                 }

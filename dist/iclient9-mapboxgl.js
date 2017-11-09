@@ -25970,7 +25970,7 @@ var Label = function (_GeoFeature) {
          * @function mapboxgl.supermap.LabelThemeLayer.prototype.calculateLabelBounds
          * @description 获得标签要素的最终范围
          *
-         * @param feature - {SuperMap.Feature.Vector>} 需要计算bounds的标签要素数。
+         * @param feature - {SuperMap.Feature.Vector} 需要计算bounds的标签要素数。
          * @param loc - {mapboxgl.Point} 标签位置
          *
          * @return {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -26012,7 +26012,7 @@ var Label = function (_GeoFeature) {
          * @function mapboxgl.supermap.LabelThemeLayer.prototype.calculateLabelBounds2
          * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算bounds的效率。
          *
-         * @param feature - {SuperMap.Feature.Vector>} 需要计算bounds的标签要素数。
+         * @param feature - {SuperMap.Feature.Vector} 需要计算bounds的标签要素数。
          * @param loc - {mapboxgl.Point} 标签位置
          *
          * @return {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -26127,40 +26127,42 @@ var Label = function (_GeoFeature) {
             canvas.globalAlpha = 0;
             canvas.lineWidth = 1;
 
-            canvas.fillStyle = style.fontColor;
-            canvas.globalAlpha = style.fontOpacity || 1.0;
+            var ctx = canvas.getContext("2d");
+
+            ctx.fillStyle = style.fontColor;
+            ctx.globalAlpha = style.fontOpacity || 1.0;
             var fontStyle = [style.fontStyle ? style.fontStyle : "normal", "normal", style.fontWeight ? style.fontWeight : "normal", style.fontSize ? style.fontSize : "1em", style.fontFamily ? style.fontFamily : "sans-serif"].join(" ");
             var labelRows = style.label.split('\n');
             var numRows = labelRows.length;
             var vfactor, lineHeight, labelWidthTmp;
-            if (canvas.fillText) {
+            if (ctx.fillText) {
                 // HTML5
-                canvas.font = fontStyle;
-                canvas.textAlign = LABEL_ALIGN[style.labelAlign[0]] || "center";
-                canvas.textBaseline = LABEL_ALIGN[style.labelAlign[1]] || "middle";
+                ctx.font = fontStyle;
+                ctx.textAlign = LABEL_ALIGN[style.labelAlign[0]] || "center";
+                ctx.textBaseline = LABEL_ALIGN[style.labelAlign[1]] || "middle";
                 vfactor = LABEL_FACTOR[style.labelAlign[1]];
                 if (vfactor == null) {
                     vfactor = -.5;
                 }
-                lineHeight = canvas.measureText('Mg').height || canvas.measureText('xx').width;
+                lineHeight = ctx.measureText('Mg').height || ctx.measureText('xx').width;
                 pt[1] += lineHeight * vfactor * (numRows - 1);
                 for (var i = 0; i < numRows; i++) {
-                    labelWidthTmp = canvas.measureText(labelRows[i]).width;
+                    labelWidthTmp = ctx.measureText(labelRows[i]).width;
                     if (labelWidth < labelWidthTmp) {
                         labelWidth = labelWidthTmp;
                     }
                 }
-            } else if (canvas.mozDrawText) {
+            } else if (ctx.mozDrawText) {
                 // Mozilla pre-Gecko1.9.1 (<FF3.1)
-                canvas.mozTextStyle = fontStyle;
+                ctx.mozTextStyle = fontStyle;
                 vfactor = LABEL_FACTOR[style.labelAlign[1]];
                 if (vfactor == null) {
                     vfactor = -.5;
                 }
-                lineHeight = canvas.mozMeasureText('xx');
+                lineHeight = ctx.mozMeasureText('xx');
                 pt[1] += lineHeight * (1 + vfactor * numRows);
                 for (var _i = 0; _i < numRows; _i++) {
-                    labelWidthTmp = canvas.measureText(labelRows[_i]).width;
+                    labelWidthTmp = ctx.measureText(labelRows[_i]).width;
                     if (labelWidth < labelWidthTmp) {
                         labelWidth = labelWidthTmp;
                     }
@@ -59884,24 +59886,13 @@ var Image = function (_ShapeParameters) {
         _this.x = x;
         _this.y = y;
         _this.image = image;
-        if (_this.width) {
-            _this.width = width;
-        }
-        if (_this.height) {
-            _this.height = width;
-        }
-        if (_this.sx) {
-            _this.sx = width;
-        }
-        if (_this.sy) {
-            _this.sy = width;
-        }
-        if (_this.sWidth) {
-            _this.sWidth = width;
-        }
-        if (_this.sHeight) {
-            _this.sHeight = width;
-        }
+
+        _this.width = width;
+        _this.height = height;
+        _this.sx = sx;
+        _this.sy = sy;
+        _this.sWidth = sWidth;
+        _this.sHeight = sHeight;
         return _this;
     }
 

@@ -590,6 +590,10 @@ var exampleConfig = {
                     name: "插值、格网、分等",
                     thumbnail: "ol_turf_analysis.png",
                     fileName: "turf_analysis"
+                },{
+                    name: "测量计算",
+                    thumbnail: "ol_turf_measurement.png",
+                    fileName: "turf_measurement"
                 }]
             }
         }
