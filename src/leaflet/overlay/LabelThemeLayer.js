@@ -425,7 +425,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.calculateLabelBounds
      * @description 获得标签要素的最终范围
      *
-     * @param feature - {SuperMap.Feature.Vector>} 需要计算bounds的标签要素数。
+     * @param feature - {SuperMap.Feature.Vector} 需要计算bounds的标签要素数。
      * @param loc - {L.point} 标签位置
      *
      * @return {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
@@ -470,7 +470,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
      * @function L.supermap.LabelThemeLayer.prototype.calculateLabelBounds2
      * @description 获得标签要素的最终范围的另一种算法（通过记录下的标签宽高），提高计算bounds的效率。
      *
-     * @param feature - {SuperMap.Feature.Vector>} 需要计算bounds的标签要素数。
+     * @param feature - {SuperMap.Feature.Vector} 需要计算bounds的标签要素数。
      * @param loc - {L.point} 标签位置
      *
      * @return {Array<Object>}  四边形节点数组。例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
