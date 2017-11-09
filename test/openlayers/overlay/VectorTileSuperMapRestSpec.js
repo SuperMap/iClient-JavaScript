@@ -1,7 +1,7 @@
 require('../../../src/openlayers/overlay/VectorTileSuperMapRest');
 
 var url = GlobeParameter.ChinaURL;
-describe('openlayers_VectorTileSuperMapRestTest', function () {
+describe('openlayers_VectorTileSuperMapRest', function () {
     var originalTimeout;
     var testDiv, map, vectorTileOptions, vectorTileSource;
     beforeAll(function () {

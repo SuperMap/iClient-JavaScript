@@ -31,6 +31,7 @@ require('./openlayers/overlay/theme/GeoFeatureSpec.js');
 require('./openlayers/overlay/GraphSpec.js');
 require('./openlayers/overlay/theme/ThemeFeatureSpec.js');
 require('./openlayers/overlay/theme/ThemeSpec.js');
+require('./openlayers/overlay/vectortile/VectorTileStylesSpec.js');
 
 /*openlayers -- mapping*/
 require('./openlayers/mapping/ImageSuperMapRestSpec.js');

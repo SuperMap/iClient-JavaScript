@@ -28,16 +28,12 @@ describe('openlayers_Graph', function () {
         });
         map.addLayer(layer);
     });
-    beforeEach(function () {
-    });
-    afterEach(function () {
-    });
     afterAll(function () {
         window.document.body.removeChild(testDiv);
         map.remove();
     });
 
-    it('initialize, destroy', function (done) {
+    it('constructor, destroy', function (done) {
         var barThemeLayer = new ol.source.Graph("BarThemeLayer", "Bar", {
             map: map,
             themeFields: ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"],
@@ -87,28 +83,61 @@ describe('openlayers_Graph', function () {
         done();
     });
 
-    it('setChartsType', function (done) {
+    it('setChartsType, setOpacity', function (done) {
         var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
             map: map,
             chartsSetting: {
                 width: 240,
                 height: 100,
                 codomain: [0, 40000]
+            },
+            isOverLay: false
+        });
+        expect(graphThemeSource.isOverLay).toBeFalsy();      
+        //setOpacity
+        graphThemeSource.setOpacity(0.6);
+        expect(graphThemeSource.opacity).toEqual(0.6);
+        //on
+        graphThemeSource.on("mousemove", function (e) {
+            if (e.target && e.target.refDataID && e.target.dataInfo) {
+                var fea = graphThemeSource.getFeatureById(e.target.refDataID);
+                expect(fea).not.toBeNull()
+            }
+        });
+        //un
+        graphThemeSource.un("click", function (e) {
+            if (e.target && e.target.refDataID && e.target.dataInfo) {
+                var fea = graphThemeSource.getFeatureById(e.target.refDataID);
+                expect(fea).not.toBeNull()
             }
         });
         var layer = new ol.layer.Image({
             source: graphThemeSource
         });
         map.addLayer(layer);
+        //setChartsType
         expect(graphThemeSource.chartsType).toBe("Bar");
         graphThemeSource.setChartsType("Line");
         expect(graphThemeSource.chartsType).toBe("Line");
+        //fire
+        var event = {};
+        event.originalEvent = {
+            zrenderX: 1,
+            offsetX: 1,
+            layerX: 1,
+            clientX: 1,
+            zrenderY: 2,
+            offsetY: 2,
+            layerY: 2,
+            clientY: 2
+        };
+        graphThemeSource.offset = 3;
+        graphThemeSource.fire('move', event);
         graphThemeSource.clear();
         done();
-
     });
 
-    it('addFeatures, removeFeatures', function (done) {
+    it('addFeatures, redraw, getFeatures, removeFeatures', function (done) {
         setTimeout(function () {
             var graphThemeSource = new ol.source.Graph("BarThemeLayer", "Bar", {
                 map: map
@@ -154,6 +183,7 @@ describe('openlayers_Graph', function () {
                 var fea = new ol.supermap.ThemeFeature(geometry, atrributes);
                 features.push(fea);
             }
+            //addFeatures
             graphThemeSource.addFeatures(features);
             var LayerFeatures = graphThemeSource.features;
             expect(LayerFeatures.length).toBeGreaterThan(0);
@@ -178,22 +208,44 @@ describe('openlayers_Graph', function () {
                 CON2013: 33337,
                 NAME: "北京市"
             }));
+            //getShapesByFeatureID
             var shape1 = graphThemeSource.getShapesByFeatureID();
             var shape2 = graphThemeSource.getShapesByFeatureID(LayerFeatures[0].id);
             expect(shape1.length).toEqual(17);
             expect(shape2.length).toEqual(5);
             graphThemeSource.features[0].geometry.x = 39;
+            //redraw
             var redraw = graphThemeSource.redraw();
             expect(redraw).toBeTruthy();
             expect(graphThemeSource.features[0].geometry.x).toEqual(39);
+            //getFeatures
+            var featureArrays = graphThemeSource.getFeatures();
+            expect(featureArrays.length).toBeGreaterThan(0);
+            for (var k = 0; k < featureArrays.length; k++) {
+                expect(featureArrays[k].CLASS_NAME).toBe("SuperMap.Feature.Vector");
+                expect(featureArrays[k].id).toContain("SuperMap.Feature");
+                expect(featureArrays[k].geometry).not.toBeNull();
+            }
+            //getFeatureBy, getFeatureById, getFeaturesByAttribute
+            var featureBy = graphThemeSource.getFeatureBy("id", featureArrays[0].id);
+            var featureById = graphThemeSource.getFeatureById(featureArrays[0].id);
+            expect(featureBy).toEqual(featureById);
+            var featureByAttribute = graphThemeSource.getFeaturesByAttribute("id", "SuperMap.Feature_15");
+            expect(featureByAttribute.length).toEqual(0);
+            //removeFeatures
+            var orignFeatureLength = graphThemeSource.features.length;
             graphThemeSource.removeFeatures();
-            expect(graphThemeSource.features.length).toBeGreaterThan(0);
+            var length1 = graphThemeSource.features.length;
+            expect(length1).toEqual(orignFeatureLength);
+            graphThemeSource.removeFeatures(featureArrays[0]);
+            var length2 = graphThemeSource.features.length;
+            expect(length2).toEqual(length1 - 1);
+            //removeAllFeatures
             graphThemeSource.removeAllFeatures();
             expect(graphThemeSource.features.length).toEqual(0);
             graphThemeSource.clear();
             done();
         }, 3000);
-
     });
 
     it('isQuadrilateralOverLap', function (done) {
