@@ -89,12 +89,13 @@ export default class Image extends ShapeParameters {
         this.x = x;
         this.y = y;
         this.image = image;
-        if (this.width) {this.width = width;}
-        if (this.height) {this.height = width;}
-        if (this.sx) {this.sx = width;}
-        if (this.sy) {this.sy = width;}
-        if (this.sWidth) {this.sWidth = width;}
-        if (this.sHeight) {this.sHeight = width;}
+
+        this.width = width;
+        this.height = height;
+        this.sx = sx;
+        this.sy = sy;
+        this.sWidth = sWidth;
+        this.sHeight = sHeight;
     }
 
 

@@ -59884,24 +59884,13 @@ var Image = function (_ShapeParameters) {
         _this.x = x;
         _this.y = y;
         _this.image = image;
-        if (_this.width) {
-            _this.width = width;
-        }
-        if (_this.height) {
-            _this.height = width;
-        }
-        if (_this.sx) {
-            _this.sx = width;
-        }
-        if (_this.sy) {
-            _this.sy = width;
-        }
-        if (_this.sWidth) {
-            _this.sWidth = width;
-        }
-        if (_this.sHeight) {
-            _this.sHeight = width;
-        }
+
+        _this.width = width;
+        _this.height = height;
+        _this.sx = sx;
+        _this.sy = sy;
+        _this.sWidth = sWidth;
+        _this.sHeight = sHeight;
         return _this;
     }
 
