@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>经纬度地图</title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-world/rest/maps/World";
+    //初始化地图
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.Navigation(),
+            new SuperMap.Control.Zoom()]
+    });
+    map.addControl(new SuperMap.Control.MousePosition());
+    //初始化图层
+    layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null, {maxResolution: "auto"});
+    //监听图层信息加载完成事件
+    layer.events.on({"layerInitialized": addLayer});
+    function addLayer() {
+        map.addLayer(layer);
+        //显示地图范围
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+    }
+</script>
+</body>
+</html>

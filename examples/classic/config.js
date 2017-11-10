@@ -9,6 +9,41 @@ var exampleConfig = {
     "iServer": {
         name: "iServer",
         content: {
+            "map": {
+                name: "地图",
+                content: [{
+                    name: "4326底图",
+                    thumbnail: "4326Map.png",
+                    fileName: "4326Map"
+                }, {
+                    name: "3857底图",
+                    thumbnail: "3857Map.png",
+                    fileName: "3857Map"
+                }, {
+                    name: "平面坐标系图层",
+                    thumbnail: "changchunMap.png",
+                    fileName: "changchunMap"
+
+                }, {
+                    name: "SuperMap 云图层",
+                    thumbnail: "cloudLayer.png",
+                    fileName: "cloudLayer"
+                }, {
+                    name: "Image图层",
+                    thumbnail: "image.png",
+                    fileName: "image"
+                }, {
+                    name: "图层叠加",
+                    thumbnail: "overlayLayer.png",
+                    fileName: "overlayLayer"
+
+                }, {
+                    name: "动态图层",
+                    thumbnail: "dynamiclayers.png",
+                    fileName: "dynamiclayers"
+
+                }]
+            },
             "processingService": {
                 name: "分布式分析",
                 content: [{
