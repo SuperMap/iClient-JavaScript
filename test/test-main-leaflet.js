@@ -32,12 +32,13 @@ require('./leaflet/services/TrafficTransferAnalystServiceSpec.js');
 
 /*leaflet -- overlay*/
 require('./leaflet/overlay/EchartsLayerSpec.js');
+require('./leaflet/overlay/GraphThemeLayerSpec.js');
+require('./leaflet/overlay/LabelThemeLayerSpec.js');
 require('./leaflet/overlay/mapVLayerSpec.js');
 require('./leaflet/overlay/RangeThemeLayerSpec.js');
 require('./leaflet/overlay/RankSymbolThemeLayerSpec.js');
 require('./leaflet/overlay/TileVectorLayerSpec.js');
 require('./leaflet/overlay/UniqueThemeLayerSpec.js');
-require('./leaflet/overlay/GraphThemeLayerSpec.js');
 //require('./leaflet/overlay/DataFlowlayerSpec.js');
 
 /*leaflet -- mapping*/

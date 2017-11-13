@@ -77,6 +77,7 @@ require('./common/commonTypes/geometry/LineStringSpec.js');
 require('./common/commonTypes/geometry/LinearRingSpec.js');
 
 /**common -- overlay**/
+require('./common/overlay/feature/ShapeFactorySpec.js');
 require('./common/overlay/levelRenderer/AreaSpec.js');
 require('./common/overlay/levelRenderer/ColorSpec.js');
 require('./common/overlay/levelRenderer/CurveSpec.js');

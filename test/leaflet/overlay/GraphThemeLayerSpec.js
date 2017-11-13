@@ -5,7 +5,7 @@ var options = {
     isOverLay: true
 };
 var url = GlobeParameter.China4326URL;
-describe('leaflet_testGraphThemeLayer', function () {
+describe('leaflet_GraphThemeLayer', function () {
     var originalTimeout;
     var testDiv, map;
     beforeAll(function () {

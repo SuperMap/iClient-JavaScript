@@ -1,0 +1,28 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>平面坐标系图层</title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer, host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    url = host + "/iserver/services/map-changchun/rest/maps/长春市区图";
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.Navigation(),
+            new SuperMap.Control.Zoom()]
+    });
+    map.addControl(new SuperMap.Control.MousePosition());
+    layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, null, {maxResolution: "auto"});
+    layer.events.on({"layerInitialized": addLayer});
+
+    function addLayer() {
+        map.addLayer(layer);
+        map.setCenter(new SuperMap.LonLat(5105, -3375), 0);
+    }
+</script>
+</body>
+</html>
