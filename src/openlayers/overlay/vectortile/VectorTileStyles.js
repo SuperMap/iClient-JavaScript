@@ -510,7 +510,7 @@ export default class VectorTileStyles extends ol.Observable {
     getFeatureStyle(feature) {
         var selectedStyle;
         var layerName = feature.getProperties().layerName || feature.getProperties().layer;
-        var id = feature.getProperties().id || feature.id_;
+        var id = feature.getProperties().id || parseInt(feature.getProperties().SmID);
         if (feature.getProperties().type && feature.getProperties().type.toUpperCase() === 'TEXT') {
             selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type.toUpperCase());
             if (feature.getProperties().texts) {
