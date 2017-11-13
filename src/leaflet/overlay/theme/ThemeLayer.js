@@ -390,7 +390,7 @@ export var ThemeLayer = L.Layer.extend({
             coor = L.point(coordinate[0], coordinate[1]);
         } else if (!(coordinate instanceof L.Point)) {
             if (coordinate instanceof Point || coordinate instanceof GeoText) {
-                coor = L.point(coordinate.x, coordinate.y,);
+                coor = L.point(coordinate.x, coordinate.y);
             } else {
                 coor = L.point(coordinate.lon, coordinate.lat);
             }
