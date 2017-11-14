@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>地物编辑</title>
-    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
+    <style>
+        .leaflet-tooltip, .leaflet-tooltip:before {
+            color: white;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .tooltip-inner {
+            width: 80px;
+            background-color: transparent;
+            color: #515151;
+        }
+
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-    var map, marker, featureGroup, id, resultLayer, featureService,
+    var map, marker, featureGroup, resultLayer, featureService, alertDiv,
         baseUrl = host + "/iserver/services/map-world/rest/maps/World",
         url = host + "/iserver/services/data-world/rest/data";
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: {lon: 110, lat: 30},
+        center: {lon: 0, lat: 0},
         maxZoom: 18,
-        zoom: 3
+        zoom: 2
     });
     L.supermap.tiledMapLayer(baseUrl).addTo(map);
     featureGroup = L.featureGroup().addTo(map);
@@ -27,7 +41,7 @@
     initEditView();
 
     function initFeature() {
-        var polygon = L.polygon([[10, 100], [10, 124], [40, 124], [40, 100], [10, 100]]);
+        var polygon = L.polygon([[20, 118], [20, 120], [50, 120], [50, -120], [20, 118]]);
         var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
             toIndex: -1,
             datasetNames: ["World:Capitals"],
@@ -35,61 +49,25 @@
         });
 
         featureService.getFeaturesByGeometry(getFeatureParams, function (serviceResult) {
-            resultLayer = L.geoJSON(serviceResult.result.features, {
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup("首都：" + feature.properties.CAPITAL);
-                }
-            }).addTo(map);
+            resultLayer = L.geoJSON(serviceResult.result.features).addTo(map);
+            resultLayer.on("mousemove", function (e) {
+                e.layer.bindPopup("首都：" + e.layer.feature.properties.CAPITAL).openPopup();
+            });
+            resultLayer.on("mouseout", function (e) {
+                e.layer.closePopup();
+            });
         });
-    }
-
-    function addMarker() {
-        if (!featureGroup.hasLayer(marker)) {
-            var xmax = 120, xmin = 100, ymax = 50, ymin = 20;
-            marker = L.circleMarker([
-                Math.floor(Math.random() * (ymax - ymin + 1) + ymin),
-                Math.floor(Math.random() * (xmax - xmin + 1) + xmin)
-            ], {color: "red"});
-            featureGroup.addLayer(marker);
-            featureGroup.addTo(map);
-            map.setView(marker.getLatLng());
-        } else {
-            alert("请先清除结果");
-        }
-    }
-
-    function commit() {
-        var me = this;
-        if (featureGroup.hasLayer(marker)) {
-            marker = marker.toGeoJSON();
-            marker.properties = {POP: 1, CAPITAL: 'test'};
-            var addFeatureParams = new SuperMap.EditFeaturesParameters({
-                dataSourceName: "World",
-                dataSetName: "Capitals",
-                features: marker,
-                editType: "add",
-                returnContent: true
-            });
-            featureService.editFeatures(addFeatureParams, function (serviceResult) {
-                if (serviceResult.result.succeed) {
-                    id = serviceResult.result[0];
-                    featureGroup.removeFrom(map);
-                    me.initFeature();
-                }
-            });
-        } else {
-            alert("请先添加地物");
-        }
     }
 
     function initEditView() {
         var infoView = L.control({position: 'topright'});
         infoView.onAdd = function () {
             var me = this;
-            me._div = L.DomUtil.create('div', 'panel panel-primary infoPane');
+            me._div = L.DomUtil.create('div', 'panel panel-primary');
             me._div.innerHTML = "<div class='panel-heading'>" +
                 "<h5 class='panel-title text-center'>编辑</h5></div><div class='panel-body content'>" +
                 "<input type='button' class='btn btn-default' value='添加地物' onclick='addMarker()'/>&nbsp;" +
+                "<input type='button' class='btn btn-default' value='撤销添加' onclick='revocationMarker()'/>&nbsp;" +
                 "<input type='button' class='btn btn-default' value='提交添加' onclick='commit()'/>&nbsp;" +
                 "<input type='button' class='btn btn-default' value='清除结果' onclick='clearLayer()'/></div>";
 
@@ -115,27 +93,143 @@
         });
     }
 
-    function clearLayer() {
-        var me = this;
-        if (id && featureService) {
-            var deleteParams = new SuperMap.EditFeaturesParameters({
+    //添加鼠标滑动事件
+    var tooltip = L.tooltip({
+        direction: 'right'
+    });
+    var pointerMoveHandler = function (evt) {
+        tooltip.setContent("选择并删除要素。");
+        tooltip.setLatLng(evt.latlng);
+        tooltip.addTo(map);
+    };
+
+
+    function addMarker() {
+        closeAlert();
+        closeClearListener();
+        var xmax = 120, xmin = 100, ymax = 50, ymin = 20,
+            point = [];
+        if (!featureGroup.hasLayer(marker)) {
+
+            point = [
+                Math.floor(Math.random() * (ymax - ymin + 1) + ymin),
+                Math.floor(Math.random() * (xmax - xmin + 1) + xmin)
+            ];
+            marker = L.circleMarker(point, {color: "red"});
+            featureGroup.addLayer(marker);
+            featureGroup.addTo(map);
+            map.flyTo(point, 5);
+        } else {
+            featureGroup.clearLayers();
+            point = [
+                Math.floor(Math.random() * (ymax - ymin + 1) + ymin),
+                Math.floor(Math.random() * (xmax - xmin + 1) + xmin)
+            ];
+            marker = L.circleMarker(point, {color: "red"});
+            featureGroup.addLayer(marker);
+            featureGroup.addTo(map);
+            map.flyTo(point, 5);
+        }
+    }
+
+    function revocationMarker() {
+        closeClearListener();
+        if (featureGroup.hasLayer(marker)) {
+            featureGroup.clearLayers();
+            marker = null;
+        } else {
+            showAlert("没有可撤回的要素。");
+        }
+    }
+
+    function commit() {
+        closeAlert();
+        closeClearListener();
+        if (featureGroup.hasLayer(marker)) {
+            marker = marker.toGeoJSON();
+            marker.properties = {POP: 1, CAPITAL: 'test'};
+            var addFeatureParams = new SuperMap.EditFeaturesParameters({
                 dataSourceName: "World",
                 dataSetName: "Capitals",
-                IDs: [id],
-                editType: "delete"
+                features: marker,
+                editType: "add",
+                returnContent: true
             });
-            featureService.editFeatures(deleteParams, function (serviceResult) {
+            featureService.editFeatures(addFeatureParams, function (serviceResult) {
                 if (serviceResult.result.succeed) {
-                    resultLayer.removeFrom(map);
-                    me.initFeature();
-                } else {
-                    alert("删除失败")
+                    featureGroup.clearLayers();
+                    marker = null;
+                    map.removeLayer(resultLayer);
+                    resultLayer = null;
+                    initFeature();
+                    showAlert("提交成功");
                 }
             });
+        } else {
+            showAlert("请先添加地物");
         }
-        if (featureGroup && featureGroup.hasLayer(marker)) {
-            featureGroup.removeLayer(marker);
-            marker = null;
+    }
+
+    function clearLayer() {
+        map.on('mousemove', pointerMoveHandler);
+        resultLayer.on("click", layerClickListener);
+        closeAlert();
+    }
+
+    function layerClickListener(e) {
+        var deleteParams = new SuperMap.EditFeaturesParameters({
+            dataSourceName: "World",
+            dataSetName: "Capitals",
+            IDs: [e.layer.feature.properties.ID],
+            editType: "delete"
+        });
+        featureService.editFeatures(deleteParams, function (serviceResult) {
+            if (serviceResult.result.succeed) {
+                map.removeLayer(resultLayer);
+                resultLayer = null;
+                initFeature();
+                showAlert("删除成功");
+                closeClearListener();
+            } else {
+                showAlert("删除失败");
+            }
+        });
+    }
+
+    function closeClearListener() {
+        if (map.hasLayer(tooltip)) {
+            tooltip.removeFrom(map);
+        }
+        if (resultLayer) {
+            resultLayer.off("click", layerClickListener);
+        }
+        map.off('mousemove', pointerMoveHandler);
+    }
+
+    //显示提示框
+    function showAlert(msg) {
+        var className = "alert-success";
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
         }
     }
 </script>

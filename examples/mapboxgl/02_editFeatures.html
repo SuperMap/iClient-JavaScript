@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>地物编辑</title>
-    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
     <style>
         .editPane {
             position: absolute;
             right: 10px;
             top: 10px;
-            width: 300px;
             text-align: center;
             background: #FFF;
             z-index: 1000;
-            display: none;
         }
     </style>
 </head>
@@ -23,16 +21,17 @@
 <div>
     <div class="panel panel-primary editPane" id="editPane">
         <div class='panel-heading'>
-            <h5 class='panel-title text-center'>编辑</h5></div>
+            <h5 class='panel-title text-center'>编辑单个要素</h5></div>
         <div class='panel-body content'>
             <input type='button' class='btn btn-default' value='添加地物' onclick='addMarker()'/>&nbsp;
+            <input type='button' class='btn btn-default' value='撤销添加' onclick='revocationMarker()'/>
             <input type='button' class='btn btn-default' value='提交添加' onclick='commit()'/>&nbsp;
             <input type='button' class='btn btn-default' value='清除结果' onclick='clearLayer()'/>
         </div>
     </div>
 </div>
 <script>
-    var map, id, pointFeature,
+    var map, id = [], pointFeature, alertDiv, featureService,
         baseUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World",
         mapUrl = baseUrl + "/zxyTileImage.png?z={z}&x={x}&y={y}",
         dataUrl = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/data-world/rest/data";
@@ -63,24 +62,27 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    featureService = new mapboxgl.supermap.FeatureService(dataUrl);
+
+    var sourceFeatures = {},
+        addPointFeaturesData = {
+            "type": "FeatureCollection",
+            "features": []
+        };
+
+    map.loadImage('../img/marker-icon.png', function (error, image) {
+        if (error) throw error;
+        map.addImage('positionPoint', image);
+    });
 
     initFeature();
 
-    var sourceFeatures;
-
     function initFeature() {
-        //判断是否是重载操作
-        if (map.getLayer("queryDatas")) {
-            remove("layer", "queryDatas");
-            remove("source", "queryDatas");
-            remove("image", "positionPoint");
-        }
 
         var polygon = {
             "type": "Polygon",
             "coordinates": [[[118, 20], [120, 20], [120, 50], [-120, 50], [118, 20]]]
         };
-        var featureService = new mapboxgl.supermap.FeatureService(dataUrl);
         var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
             toIndex: -1,
             datasetNames: ["World:Capitals"],
@@ -89,34 +91,51 @@
         });
         featureService.getFeaturesByGeometry(getFeatureParams, function (serviceResult) {
             sourceFeatures = serviceResult.result.features;
-            map.loadImage('../img/marker-icon.png', function (error, image) {
-                if (error) throw error;
-                map.addImage('positionPoint', image);
+
+            if (!map.getSource("queryDatas")) {
                 map.addSource("queryDatas", {
                     "type": "geojson",
                     "data": sourceFeatures
                 });
-                map.addLayer({
-                    "id": "queryDatas",
-                    "type": "symbol",
-                    "source": "queryDatas",
-                    "layout": {
-                        "icon-image": "positionPoint",
-                        "icon-size": 0.8
-                    },
-                });
+            } else {
+                map.getSource("queryDatas").setData(sourceFeatures);
+            }
+            map.addLayer({
+                "id": "queryDatasLayer",
+                "type": "symbol",
+                "source": "queryDatas",
+                "layout": {
+                    "icon-image": "positionPoint",
+                    "icon-size": 0.8,
+                    "icon-offset": [0, -15] //设置偏移量
+                },
             });
-            document.getElementById("editPane").style.display = "block";
+
+            var popup = new mapboxgl.Popup({
+                anchor: 'bottom',
+                closeButton: false,
+                offset: {
+                    'bottom': [0, -20],
+                }
+            });
+            map.on('mousemove', "queryDatasLayer", function (e) {
+                popup.setLngLat(e.lngLat).setHTML(e.features[0].properties.CAPITAL).addTo(map);
+                map.getCanvas().style.cursor = 'pointer';
+
+            });
+            map.on('mouseout', "queryDatasLayer", function () {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            })
+
         });
     }
 
     //添加地物
-    var addPointFeaturesData = {
-        "type": "FeatureCollection",
-        "features": []
-    };
-
     function addMarker() {
+        closeClearListener();
+        closeAlert();
+        addPointFeaturesData.features = [];
         var xmax = 120, xmin = 100, ymax = 50, ymin = 20;
         var addPoint = [Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)];
         pointFeature = {
@@ -130,53 +149,61 @@
 
         addPointFeaturesData.features.push(pointFeature);
 
-        if (!map.getSource("addPointsSource")) {
-            map.loadImage('../img/markerbig.png', function (error, image) {
-                if (error) throw error;
-                map.addImage('marker', image);
-            });
-
+        if (!map.getLayer("addPoint")) {
             map.addSource("addPointsSource", {
                 "type": "geojson",
                 "data": addPointFeaturesData
             });
             map.addLayer({
                 "id": "addPoint",
-                "type": "symbol",
+                "type": "circle",
                 "source": "addPointsSource",
-                "layout": {
-                    "icon-image": "marker",
+                'paint': {
+                    'circle-radius': 8,
+                    'circle-color': 'rgba(255, 0, 0, 0.2)',
+                    "circle-stroke-color": 'red',
+                    "circle-stroke-width": 2,
+//                    "circle-translate": [0, 13] //设置偏移量
                 },
             });
         } else {
-            //没有setsource方法，采用删除当前图层再重新加载的方法
-            if (map.removeLayer("addPoint")) {
-                map.getSource("addPointsSource").setData(addPointFeaturesData);
-                map.addLayer({
-                    "id": "addPoint",
-                    "type": "symbol",
-                    "source": "addPointsSource",
-                    "layout": {
-                        "icon-image": "marker",
-                    },
-                });
-            }
+            map.getSource("addPointsSource").setData(addPointFeaturesData);
         }
-        //保存可提交的source
-        sourceFeatures.features.push(pointFeature);
+
+        map.flyTo({
+            center: addPoint,
+            zoom: 5,
+            bearing: 0,
+            speed: 1.2,
+            curve: 1,
+            easing: function (t) {
+                return t;
+            }
+        });
+    }
+
+    function revocationMarker() {
+        closeClearListener();
+        if (pointFeature) {
+            addPointFeaturesData.features = [];
+            map.getSource("addPointsSource").setData(addPointFeaturesData);
+            pointFeature = null;
+        } else {
+            showAlert("没有可撤回的要素。");
+        }
     }
 
     //提交添加
     function commit() {
-        if (!addPointFeaturesData) {
+        closeClearListener();
+        closeAlert();
+        if (!pointFeature) {
+            showAlert("没有可提交的新要素，请先添加新要素。");
             return;
         }
         //更新添加的source
-        map.getSource('queryDatas').setData(sourceFeatures);
-
-        var featureService = new mapboxgl.supermap.FeatureService(dataUrl);
         var addFeatureParams = new SuperMap.EditFeaturesParameters({
-            features: addPointFeaturesData,
+            features: pointFeature,
             dataSourceName: "World",
             dataSetName: "Capitals",
             editType: "add",
@@ -184,65 +211,87 @@
         });
         featureService.editFeatures(addFeatureParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
-                id = serviceResult.result[0];
-                alert("提交成功");
-                removeAddPointLayer();
+                addPointFeaturesData.features = [];
+                map.getSource("addPointsSource").setData(addPointFeaturesData);
+                pointFeature = null;
+                map.removeLayer("queryDatasLayer");
+                showAlert("提交成功");
+                pointFeature = null;
                 initFeature();
             }
         });
     }
+
+
+    var popup = new mapboxgl.Popup({
+        anchor: 'left',
+        closeButton: false,
+        offset: {'left': [10, 10]}
+    });
 
     function clearLayer() {
-        if (!id) {
-            alert("没有可删除的数据");
-            return;
-        }
+        closeClearListener();
+        closeAlert();
+        map.on('mousemove', mousemoveListener);
+        map.on('click', 'queryDatasLayer', dataClickListener);
+    }
 
-        var editFeaturesService = new mapboxgl.supermap.FeatureService(dataUrl);
-        editFeaturesService.editFeatures({
+    function mousemoveListener(e) {
+        popup.setLngLat(e.lngLat).setHTML("请选择需要删除的点").addTo(map);
+    }
+
+    function dataClickListener(e) {
+
+        var deleteParams = new SuperMap.EditFeaturesParameters({
             dataSourceName: "World",
             dataSetName: "Capitals",
-            IDs: [id],
+            IDs: [e.features[0].properties.ID],
             editType: "delete"
-        }, function (serviceResult) {
+        });
+
+        featureService.editFeatures(deleteParams, function (serviceResult) {
             if (serviceResult.result.succeed) {
-                removeAddPointLayer();
-                pointFeature = null;
-                id = null;
-                alert("删除成功");
+                map.removeLayer("queryDatasLayer");
                 //重载数据默认集
                 initFeature();
+                map.getCanvas().style.cursor = '';
+                closeClearListener();
+                showAlert("删除成功");
             } else {
-                alert("删除失败");
+                showAlert("删除失败");
             }
         });
     }
 
-    function removeAddPointLayer() {
-        remove("layer", "addPoint");
-        remove("source", "addPointsSource");
-        remove("image", "marker");
-        addPointFeaturesData.features = [];
+    function closeClearListener() {
+        popup.remove();
+        map.off('mousemove', mousemoveListener);
+        map.off('click', 'queryDatasLayer', dataClickListener);
     }
 
-    function remove(type, name) {
-        switch (type) {
-            case "layer":
-                if (map.getLayer(name)) {
-                    map.removeLayer(name);
-                }
-                break;
-            case "source":
-                if (map.getSource(name)) {
-                    map.removeSource(name);
-                }
-                break;
-            case "image":
-                //mapboxgl没有getImage方法来对Image进行判断
-                map.removeImage(name)
-                break;
+    //显示提示框
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
         }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
 
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
     }
 </script>
 </body>

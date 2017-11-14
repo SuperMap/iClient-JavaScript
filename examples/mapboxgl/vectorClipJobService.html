@@ -120,6 +120,7 @@
             showLoader();
             if (map.getLayer("vectorClipLayer")) {
                 map.removeLayer("vectorClipLayer");
+                map.removeSource("vectorClipSource");
             }
             addVectorClipJobs();
         });
@@ -171,7 +172,7 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path + "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
-                        map.addSource("vectorClipData", {
+                        map.addSource("vectorClipSource", {
                             "type": "raster",
                             "tiles": [mapUrl],
                             "tileSize": 256
@@ -179,7 +180,7 @@
                         map.addLayer({
                             "id": "vectorClipLayer",
                             "type": "raster",
-                            "source": "vectorClipData",
+                            "source": "vectorClipSource",
                             "minzoom": 0,
                             "maxzoom": 22
                         });

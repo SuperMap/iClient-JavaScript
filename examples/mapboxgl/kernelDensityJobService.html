@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>密度分析</title>
     <script type="text/javascript" include="jquery,bootstrap,loader" src="../js/include-web.js"></script>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
     <style>
         body, #map {
             position: absolute;
@@ -100,7 +101,6 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
 
@@ -160,9 +160,9 @@
             $('#msg_container').remove();
         }
         showLoader();
-        if (map && map.getLayer("kernerlData")) {
-            map.removeLayer("kernerlData");
-            map.removeSource("kernerlData");
+        if (map && map.getSource("kernerlLayer")) {
+            map.removeLayer("kernerlLayer")
+            map.removeSource("kernerlSource");
         }
         var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
             datasetName: $('#datasetName').val(),
@@ -190,7 +190,7 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path + "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
-                        map.addSource("kernerlData", {
+                        map.addSource("kernerlSource", {
                             "type": "raster",
                             "tiles": [mapUrl],
                             "tileSize": 256
@@ -198,11 +198,10 @@
                         map.addLayer({
                             "id": "kernerlLayer",
                             "type": "raster",
-                            "source": "kernerlData",
+                            "source": "kernerlSource",
                             "minzoom": 0,
                             "maxzoom": 22
                         });
-
                         removeLoader();
                     });
                 }

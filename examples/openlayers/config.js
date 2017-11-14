@@ -587,7 +587,7 @@ var exampleConfig = {
                     thumbnail: "turf_transformation.png",
                     fileName: "turf_transformation"
                 }, {
-                    name: "插值、格网、分等",
+                    name: "插值、格网、分级",
                     thumbnail: "ol_turf_analysis.png",
                     fileName: "turf_analysis"
                 },{

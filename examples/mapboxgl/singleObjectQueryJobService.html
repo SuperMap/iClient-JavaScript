@@ -102,11 +102,11 @@
     });
     $("#queryMode").change(function () {
         var queryMode = $(this).val();
-        if (queryMode === "DATASET"){
-            map.removeControl(draw,"top-left");
+        if (queryMode === "DATASET") {
+            map.removeControl(draw, "top-left");
             $('#datasetDiv').show();
         }
-        if (queryMode === "GEOJSON"){
+        if (queryMode === "GEOJSON") {
             map.addControl(draw, "top-left");
             $('#datasetDiv').hide();
         }
@@ -122,6 +122,7 @@
             showLoader();
             if (map.getLayer("singleLayer")) {
                 map.removeLayer("singleLayer");
+                map.removeSource("singleSource");
             }
             queryJobs();
         });
@@ -135,23 +136,24 @@
 
     function getFeatureGeo() {
         var result = draw.getAll();
-        if (result.features.length >1){
-            for (var i = 0;i < result.features.length-1;i++){
+        if (result.features.length > 1) {
+            for (var i = 0; i < result.features.length - 1; i++) {
                 draw.delete(result.features[i].id);
             }
         }
     }
+
     map.on('draw.create', getFeatureGeo);
 
     function queryJobs() {
-        var queryParam,points;
-        if ($("#queryMode").val() === "DATASET"){
+        var queryParam, points;
+        if ($("#queryMode").val() === "DATASET") {
             queryParam = $('#datasetQuery').val();
-            points =[];
+            points = [];
         }
-        if ($("#queryMode").val() === "GEOJSON"){
+        if ($("#queryMode").val() === "GEOJSON") {
             var result = draw.getAll();
-            if (result.features.length < 1){
+            if (result.features.length < 1) {
                 removeLoader();
                 showAlert("创建失败!<br>" + "请绘制查询范围!", false);
                 return;
@@ -179,7 +181,7 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path + "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
-                        map.addSource("singleData", {
+                        map.addSource("singleSource", {
                             "type": "raster",
                             "tiles": [mapUrl],
                             "tileSize": 256
@@ -187,7 +189,7 @@
                         map.addLayer({
                             "id": "singleLayer",
                             "type": "raster",
-                            "source": "singleData",
+                            "source": "singleSource",
                             "minzoom": 0,
                             "maxzoom": 22
                         });

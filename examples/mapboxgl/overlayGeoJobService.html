@@ -117,8 +117,9 @@
                 $('#msg_container').remove();
             }
             showLoader();
-            if (map.getLayer("singleLayer")) {
-                map.removeLayer("singleLayer");
+            if (map.getLayer("overlayGeoJobLayer")) {
+                map.removeLayer("overlayGeoJobLayer");
+                map.removeSource("overlayGeoJobSource");
             }
             overlayGeoJobs();
         });
@@ -145,15 +146,15 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path + "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
-                        map.addSource("singleData", {
+                        map.addSource("overlayGeoJobSource", {
                             "type": "raster",
                             "tiles": [mapUrl],
                             "tileSize": 256
                         });
                         map.addLayer({
-                            "id": "singleLayer",
+                            "id": "overlayGeoJobLayer",
                             "type": "raster",
-                            "source": "singleData",
+                            "source": "overlayGeoJobSource",
                             "minzoom": 0,
                             "maxzoom": 22
                         });

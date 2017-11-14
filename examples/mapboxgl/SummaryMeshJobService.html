@@ -157,6 +157,7 @@
         showLoader();
         if (map.getLayer("summaryLayer")) {
             map.removeLayer("summaryLayer");
+            map.removeSource("summarySource");
         }
         var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
             datasetName: $('#datasetName').val(),
@@ -181,7 +182,7 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path + "/zxyTileImage.png?z={z}&x={x}&y={y}&width=256&height=256&transparent=true";
-                        map.addSource("summaryData", {
+                        map.addSource("summarySource", {
                             "type": "raster",
                             "tiles": [mapUrl],
                             "tileSize": 256
@@ -189,7 +190,7 @@
                         map.addLayer({
                             "id": "summaryLayer",
                             "type": "raster",
-                            "source": "summaryData",
+                            "source": "summarySource",
                             "minzoom": 0,
                             "maxzoom": 22
                         });
