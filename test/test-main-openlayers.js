@@ -1,4 +1,3 @@
-require('./openlayers/core/UtilSpec.js');
 /**openlayers --services**/
 require('./openlayers/services/BufferAnalysisSpec.js');
 require('./openlayers/services/DensityAnalysisSpec.js');
