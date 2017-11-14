@@ -625,7 +625,7 @@ export var WebMap = L.LayerGroup.extend({
     createLabelLayer: function (layerInfo, themeSettings) {
         var title = layerInfo.title;
         var labelField = themeSettings.labelField, settings = themeSettings.settings,
-            isVisible = layerInfo.isVisible, opacity = layerInfo.opacity;
+            isVisible = layerInfo.isVisible;
 
         //目前只是同一样式
         var style;

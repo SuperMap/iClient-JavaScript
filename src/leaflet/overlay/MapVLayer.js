@@ -197,6 +197,11 @@ export var MapVLayer = L.Layer.extend({
         canvas.style.left = 0 + "px";
         canvas.style.pointerEvents = "none";
         canvas.style.zIndex = this.options.zIndex || 600;
+        var global$2 = typeof window === 'undefined' ? {} : window;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        if (this.mapVOptions.context == '2d') {
+            canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
+        }
         return canvas;
     },
 

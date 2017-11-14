@@ -1,6 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
 import MapvCanvasLayer from './MapvCanvasLayer';
-import {baiduMapLayer,DataSet} from "mapv";
+import {baiduMapLayer, DataSet} from "mapv";
 
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
@@ -77,7 +77,7 @@ export default class MapvLayer extends BaiduMapLayer {
      */
     clickEvent(e) {
         var pixel = e.pixel;
-        super.clickEvent({x: pixel[0], y: pixel[1]}, e);
+        super.clickEvent({x: pixel[0] + this.offset[0], y: pixel[1] + this.offset[1]}, e);
     }
 
     /**
