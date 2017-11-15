@@ -1041,3 +1041,25 @@ export var SummaryType = SuperMap.SummaryType = {
     "SUMMARYMESH": "SUMMARYMESH",
     "SUMMARYREGION": "SUMMARYREGION"
 };
+/**
+ * @name TopologyValidatorRule
+ * @memberOf SuperMap
+ * @description  拓扑检查模式枚举。该类定义了拓扑检查操作模式常量。
+ *
+ * @property {string} RegionNoOverlap  RegionNoOverlap
+ * @property {string} RegionNoOverlapWith  RegionNoOverlapWith
+ * @property {string} RegionContainedByRegion  RegionContainedByRegion
+ * @property {string} RegionCoveredByRegion  RegionCoveredByRegion
+ * @property {string} LineNoOverlap  LineNoOverlap
+ * @property {string} LineNoOverlapWith  LineNoOverlapWith
+ * @property {string} PointNoIdentical  PointNoIdentical
+ */
+export var TopologyValidatorRule = SuperMap.TopologyValidatorRule = {
+    RegionNoOverlap: "RegionNoOverlap",
+    RegionNoOverlapWith: "RegionNoOverlapWith",
+    RegionContainedByRegion: "RegionContainedByRegion",
+    RegionCoveredByRegion: "RegionCoveredByRegion",
+    LineNoOverlap: "LineNoOverlap",
+    LineNoOverlapWith: "LineNoOverlapWith",
+    PointNoIdentical: "PointNoIdentical"
+};

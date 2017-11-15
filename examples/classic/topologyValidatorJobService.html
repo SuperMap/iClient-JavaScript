@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拓扑检查分析</title>
+    <script type="text/javascript" include="jquery,bootstrap,loader" src="../js/include-web.js"></script>
+    <style>
+        .control {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #map {
+            position: absolute;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%"></div>
+<div id="control" class="control" style='width:350px'>
+    <div class="panel panel-default">
+        <div class='panel-heading'>
+            <h3 class='panel-title'>拓扑检查分析</h3>
+        </div>
+        <div class='panel-body'>
+            <div class='input-group'>
+                <span class='input-group-addon'>输入数据<span title="必填字段" style="color: red;"> * </span>　</span>
+                <input id='datasetName' type='text' class='form-control'
+                       value='samples_processing_newyorkZone_R'/></div>
+            <p></p>
+            <div class='input-group'>
+                <span class='input-group-addon'>拓扑检查规则<span title="必填字段" style="color: red;"> * </span></span>
+                <select class='form-control' id='rule' name='rule'>
+                    <option value='RegionNoOverlap'>面数据集内部无交叠</option>
+                    <option value='RegionNoOverlapWith'>面数据集与面数据集无交叠</option>
+                    <option value='RegionContainedByRegion'>面数据集被面数据集包含</option>
+                    <option value='RegionCoveredByRegion' selected>面数据集被面数据集覆盖</option>
+                    <option value='LineNoOverlap'>线数据集内部无交叠</option>
+                    <option value='LineNoOverlapWith'>线数据集与线数据集无交叠</option>
+                    <option value='PointNoIdentical'>点数据集内部无重复点</option>
+                </select>
+            </div>
+            <p></p>
+            <div class='input-group' id='datasetTopologyDiv'>
+                <span class='input-group-addon'>拓扑检查数据集<span title="必填字段" style="color: red;"> * </span>　</span>
+                <input id='datasetTopology' type='text' class='form-control'
+                       value='samples_processing_newyorkResidential_R'/></div>
+            <p></p>
+            <div class='input-group'>
+                <span class='input-group-addon'>容限</span>
+                <input id='tolerance' type='text' class='form-control' value='0.000001'/>
+            </div>
+            <p></p>
+            <div align='right'>
+                <input type='button' id='btn' class='btn btn-primary' value='分析'/>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
+    var resultLayer,
+        processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+        mapURL = host + "/iserver/services/map-world/rest/maps/World",
+        token = '15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..',
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Navigation(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.LayerSwitcher()
+
+            ], allOverlays: true
+        });
+    var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null, {maxResolution: "auto"});
+    layer.events.on({"layerInitialized": addLayer});
+
+    function addLayer() {
+        map.addLayers([layer]);
+        map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
+    }
+
+    var processingService = new SuperMap.REST.ProcessingService(processingsUrl);
+    if (!window.isLocal) {
+        SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090/iserver', token);
+    }
+    $("#rule").change(function () {
+        var rule = $(this).val();
+        if (rule =="PointNoIdentical" ||rule =="LineNoOverlap"||rule =="RegionNoOverlap"){
+            $("#datasetTopologyDiv").hide();
+        } else {
+            $("#datasetTopologyDiv").show();
+        }
+    });
+
+    bindClick();
+
+    function bindClick() {
+        $('#btn').on('click', function () {
+            if ($('#msg_container')[0]) {
+                $('#msg_container').remove();
+            }
+            showLoader();
+            if (map && resultLayer) {
+                map.removeLayer(resultLayer);
+            }
+            TopologyValidatorJobs();
+        });
+    }
+
+    function TopologyValidatorJobs() {
+        var topologyValidatorJobsParameter = new  SuperMap.TopologyValidatorJobsParameter({
+            datasetName: $('#datasetName').val(),
+            datasetTopology: $('#datasetTopology').val(),
+            rule: $('#rule option:selected').attr('value'),
+            tolerance: $('#tolerance').val()
+        });
+        processingService.addTopologyValidatorJob(topologyValidatorJobsParameter,function (serviceResult) {
+            if (serviceResult.error) {
+                removeLoader();
+                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                showAlert("创建失败!<br>" + errorMsg, false);
+                return;
+            }
+            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                if (info.serviceType === 'RESTMAP') {
+                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
+                        return response.json();
+                    }).then(function (result) {
+                        var mapUrl = result[0].path;
+                        resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer("resultLayer", mapUrl, {transparent: true});
+                        resultLayer.events.on({"layerInitialized": addLayer});
+
+                        function addLayer() {
+                            map.addLayer(resultLayer);
+                            removeLoader();
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    function showAlert(msg, state) {
+        var className = "alert-";
+        className += state ? "success" : "danger";
+        if (!$('#msg_container')[0]) {
+            var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+</script>
+</body>
+</html>

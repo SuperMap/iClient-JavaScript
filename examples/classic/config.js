@@ -58,7 +58,14 @@ var exampleConfig = {
                     name: "单对象查询分析",
                     thumbnail: "lg_singleObjectQueryJob.png",
                     fileName: "singleObjectQueryJobService"
-
+                }, {
+                    name: "叠加分析",
+                    thumbnail: "lg_overlayJobService.png",
+                    fileName: "overlayGeoJobService"
+                }, {
+                    name: "缓冲区分析",
+                    thumbnail: "lg_buffersAnalystJobService.png",
+                    fileName: "buffersAnalystJobService"
                 }, {
                     name: "区域汇总分析",
                     thumbnail: "SummaryRegionJobService.png",
@@ -68,9 +75,9 @@ var exampleConfig = {
                     thumbnail: "lg_vectorClipJob.png",
                     fileName: "vectorClipJobService"
                 }, {
-                    name: "叠加分析",
-                    thumbnail: "lg_overlayJobService.png",
-                    fileName: "overlayGeoJobService"
+                    name: "拓扑检查分析",
+                    thumbnail: "lg_topologyValidatorJobService.png",
+                    fileName: "topologyValidatorJobService"
                 }]
             },
             "addressMatch": {

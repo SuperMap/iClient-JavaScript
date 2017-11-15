@@ -7,6 +7,8 @@ import SummaryMeshJobsService from '../../common/iServer/SummaryMeshJobsService'
 import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsService';
 import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
 import OverlayGeoJobsService from '../../common/iServer/OverlayGeoJobsService';
+import BuffersAnalystJobsService from '../../common/iServer/BuffersAnalystJobsService';
+import TopologyValidatorJobsService from '../../common/iServer/TopologyValidatorJobsService';
 
 /**
  * @class SuperMap.REST.ProcessingService
@@ -31,6 +33,8 @@ export class ProcessingService extends CommonServiceBase {
         this.summaryRegionJobs = {};
         this.vectorClipJobs = {};
         this.overlayGeoJobs = {};
+        this.buffersJobs = {};
+        this.topologyValidatorJobs = {};
     }
 
     /**
@@ -500,6 +504,164 @@ export class ProcessingService extends CommonServiceBase {
      */
     getoverlayGeoJobState(id) {
         return this.overlayGeoJobs[id];
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobs
+     * @description 获取缓冲区分析的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    getBuffersJobs(callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
+            serverType: me.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        buffersAnalystJobsService.getBuffersJobs();
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getBuffersJob
+     * @description 获取某一个缓冲区分析。
+     * @param id - {string}空间分析的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    getBuffersJob(id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
+            serverType: me.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        buffersAnalystJobsService.getBuffersJob(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addBuffersJob
+     * @description 新建一个缓冲区分析。
+     * @param params -{SuperMap.BuffersAnalystJobsParameter} 创建一个空间分析的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    addBuffersJob(params, callback, seconds, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var buffersAnalystJobsService = new BuffersAnalystJobsService(me.url, {
+            serverType: me.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.buffersJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        buffersAnalystJobsService.addBuffersJob(params, seconds);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getBuffersJobState
+     * @description 获取缓冲区分析的状态。
+     * @param id - {string}缓冲区分析的id。
+     * @return {Object} 缓冲区分析的状态
+     */
+    getBuffersJobState(id) {
+        return this.buffersJobs[id];
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobs
+     * @description 获取拓扑检查分析的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    getTopologyValidatorJobs(callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
+            serverType: me.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        topologyValidatorJobsService.getTopologyValidatorJobs();
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJob
+     * @description 获取某一个拓扑检查分析。
+     * @param id - {string}空间分析的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    getTopologyValidatorJob(id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
+            serverType: me.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        topologyValidatorJobsService.getTopologyValidatorJob(id);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.addTopologyValidatorJob
+     * @description 新建一个拓扑检查分析。
+     * @param params -{SuperMap.TopologyValidatorJobsParameter} 创建一个空间分析的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    addTopologyValidatorJob(params, callback, seconds, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var topologyValidatorJobsService = new TopologyValidatorJobsService(me.url, {
+            serverType: me.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.topologyValidatorJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        topologyValidatorJobsService.addTopologyValidatorJob(params, seconds);
+    }
+
+    /**
+     * @function SuperMap.REST.ProcessingService.prototype.getTopologyValidatorJobState
+     * @description 获取拓扑检查分析的状态。
+     * @param id - {string}拓扑检查分析的id。
+     * @return {Object} 拓扑检查分析的状态
+     */
+    getTopologyValidatorJobState(id) {
+        return this.topologyValidatorJobs[id];
     }
 
     _processFormat(resultFormat) {

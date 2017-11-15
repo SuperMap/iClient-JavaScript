@@ -89,12 +89,14 @@ deps = {
             "./src/common/iServer/TerrainCurvatureCalculationService.js",
             "./src/common/iServer/ThiessenAnalystService.js",
             //ProcessingService
+            "./src/common/iServer/BuffersAnalystJobsService",
             "./src/common/iServer/KernelDensityJobsService.js",
+            "./src/common/iServer/OverlayGeoJobsService.js",
             "./src/common/iServer/SingleObjectQueryJobsService.js",
             "./src/common/iServer/SummaryMeshJobsService.js",
             "./src/common/iServer/SummaryRegionJobsService.js",
+            "./src/common/iServer/TopologyValidatorJobsService",
             "./src/common/iServer/VectorClipJobsService.js",
-            "./src/common/iServer/OverlayGeoJobsService.js",
             //AddressService
             "./src/common/iServer/AddressMatchService.js",
             //DataFlowService
