@@ -51,6 +51,8 @@ export default class MapvLayer extends BaiduMapLayer {
         });
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
+        map.on('movestart', this.moveStartEvent.bind(this));
+        map.on('moveend', this.moveEndEvent.bind(this));
         this.bindEvent();
     }
 
@@ -88,6 +90,25 @@ export default class MapvLayer extends BaiduMapLayer {
     mousemoveEvent(e) {
         var pixel = e.pixel;
         super.mousemoveEvent({x: pixel[0], y: pixel[1]}, e);
+    }
+
+    /**
+     * @function MapvLayer.prototype.moveStartEvent
+     * @description 开始移动事件
+     */
+    moveStartEvent() {
+        var animationOptions = this.options.animation;
+        if (this.isEnabledTime() && this.animator) {
+            this.steps.step = animationOptions.stepsRange.start;
+        }
+    }
+
+    /**
+     * @function MapvLayer.prototype.moveEndEvent
+     * @description 结束移动事件
+     */
+    moveEndEvent() {
+        this.canvasLayer.draw();
     }
 
     /**
