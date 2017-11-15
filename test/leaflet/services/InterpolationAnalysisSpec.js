@@ -18,7 +18,7 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
     });
 
     var resultDataset = "Interpolation_UnvsKriging_lfTest";
-    it('interpolationAnalysis_Kriging_Universal', function (done) {
+    it('interpolationAnalysis_Kriging_Universal', function () {
         var interpolationAnalystParameters = new SuperMap.InterpolationKrigingAnalystParameters({
             // 用于做插值分析的数据源中数据集的名称
             dataset: "SamplesP@Interpolation",
@@ -53,8 +53,6 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
         var interpolationAnalystService = L.supermap.spatialAnalystService(spatialAnalystURL, options);
         interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters, function (result) {
             serviceResult = result;
-        });
-        setTimeout(function () {
             try {
                 expect(interpolationAnalystService).not.toBeNull();
                 expect(serviceResult).not.toBeNull();
@@ -64,14 +62,12 @@ describe('leaflet_SpatialAnalystService_interpolationAnalysis', function () {
                 expect(serviceResult.result.dataset).toContain("@Interpolation");
                 expect(serviceResult.result.succeed).toBe(true);
                 interpolationAnalystService.destroy();
-                done();
             } catch (exception) {
                 console.log("'leaflet_interpolationAnalystService_Kriging_Universal'案例失败" + exception.name + ":" + exception.message);
                 interpolationAnalystService.destroy();
                 expect(false).toBeTruthy();
-                done();
             }
-        }, 10000);
+        });
     });
 
     // 删除测试过程中产生的测试数据集

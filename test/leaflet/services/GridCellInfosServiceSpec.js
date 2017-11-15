@@ -33,11 +33,11 @@ describe('leaflet_GridCellInfosService', function () {
             expect(serviceResult.result.row).not.toBeUndefined();
             expect(serviceResult.result.value).not.toBeUndefined();
             expect(serviceResult.object.options.method).toBe("GET");
-            expect(serviceResult.object.options.X).toEqual(4);
-            expect(serviceResult.object.options.Y).toEqual(20);
-            expect(serviceResult.object.options.dataSourceName).toBe("World");
-            expect(serviceResult.object.options.datasetName).toBe("WorldEarth");
-            expect(serviceResult.object.options.datasetType).toBe("IMAGE");
+            expect(serviceResult.object.X).toEqual(4);
+            expect(serviceResult.object.Y).toEqual(20);
+            expect(serviceResult.object.dataSourceName).toBe("World");
+            expect(serviceResult.object.datasetName).toBe("WorldEarth");
+            expect(serviceResult.object.datasetType).toBe("IMAGE");
             params.destroy();
         });
     });
