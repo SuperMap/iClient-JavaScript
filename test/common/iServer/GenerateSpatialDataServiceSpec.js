@@ -76,7 +76,7 @@ describe('testGenerateSpatialDataService_processAsync', function () {
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        }, 2000)
+        }, 5000)
     });
 
     var resultDataset_Linear_DATASET = "GenerateSpatial_Linear_DS_Test";
@@ -123,7 +123,7 @@ describe('testGenerateSpatialDataService_processAsync', function () {
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        }, 2000)
+        }, 5000)
     });
 
     // 点事件表数据集动态分段,并设置期望返回记录数2。生成的随机名称数据集暂时无法删除, 因此先注释掉

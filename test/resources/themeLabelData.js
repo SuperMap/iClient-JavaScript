@@ -6046,7 +6046,7 @@ var themeData=[
         "so2_24h": 27,
         "primary_pollutant": "颗粒物(PM10)",
         "time_point": "2015-01-07T09:00:00Z",
-        "lonLat": "90.137564,90.750346"
+        "lonLat": "76.137564,39.750346"
     },
     {
         "aqi": 114,
