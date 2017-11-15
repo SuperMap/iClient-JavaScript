@@ -3550,6 +3550,11 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         _this.div.appendChild(_this.canvas);
         var context = _this.options && _this.options.context || "2d";
         _this.canvasContext = _this.canvas.getContext(context);
+        var global$2 = typeof window === 'undefined' ? {} : window;
+        var devicePixelRatio = _this.devicePixelRatio = global$2.devicePixelRatio;
+        if (_this.options.context == '2d') {
+            _this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
+        }
         _this.attribution = "© 2017 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
         return _this;
     }
@@ -5625,7 +5630,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
     _createClass(MapVRenderer, [{
         key: 'clickEvent',
         value: function clickEvent(e) {
-            var pixel = e.layerPoint;
+            var pixel = e.xy;
             _get(MapVRenderer.prototype.__proto__ || Object.getPrototypeOf(MapVRenderer.prototype), 'clickEvent', this).call(this, pixel, e);
         }
 
@@ -5638,7 +5643,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
     }, {
         key: 'mousemoveEvent',
         value: function mousemoveEvent(e) {
-            var pixel = e.layerPoint;
+            var pixel = e.xy;
             _get(MapVRenderer.prototype.__proto__ || Object.getPrototypeOf(MapVRenderer.prototype), 'mousemoveEvent', this).call(this, pixel, e);
         }
 

@@ -72,6 +72,11 @@ export class MapVLayer extends SuperMap.Layer {
         this.div.appendChild(this.canvas);
         var context = this.options && this.options.context || "2d";
         this.canvasContext = this.canvas.getContext(context);
+        var global$2 = typeof window === 'undefined' ? {} : window;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        if (this.options.context == '2d') {
+            this.canvasContext.scale(devicePixelRatio, devicePixelRatio);
+        }
         this.attribution = "© 2017 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " +
             "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
     }

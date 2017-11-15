@@ -12959,7 +12959,7 @@ var GeoText = function (_Geometry) {
             left = locationPx.x - labelSize.w / 2;
             bottom = locationPx.y + labelSize.h / 2;
             //处理斜体字
-            if (style.fontStyle && style.fontStyle && style.fontStyle === "italic") {
+            if (style.fontStyle && style.fontStyle === "italic") {
                 right = locationPx.x + labelSize.w / 2 + parseInt(parseFloat(style.fontSize) / 2);
             } else {
                 right = locationPx.x + labelSize.w / 2;
@@ -26463,6 +26463,7 @@ var MapvLayer = exports.MapvLayer = function () {
 
         this.map = map;
         this.renderer = new _MapvRenderer2.default(map, this, dataSet, mapVOptions);
+        this.mapVOptions = mapVOptions;
         this.canvas = this._createCanvas();
         this.renderer._canvasUpdate();
         this.mapContainer = map.getCanvasContainer();
@@ -26585,6 +26586,11 @@ var MapvLayer = exports.MapvLayer = function () {
             canvas.height = parseInt(this.map.getCanvas().style.height);
             canvas.style.width = this.map.getCanvas().style.width;
             canvas.style.height = this.map.getCanvas().style.height;
+            var global$2 = typeof window === 'undefined' ? {} : window;
+            var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+            if (this.mapVOptions.context == '2d') {
+                canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
+            }
             return canvas;
         }
     }]);
@@ -73098,7 +73104,7 @@ var MapvRenderer = function (_BaseLayer) {
     _createClass(MapvRenderer, [{
         key: 'clickEvent',
         value: function clickEvent(e) {
-            var pixel = e.layerPoint;
+            var pixel = e.point;
             _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), 'clickEvent', this).call(this, pixel, e);
         }
 
@@ -73111,7 +73117,7 @@ var MapvRenderer = function (_BaseLayer) {
     }, {
         key: 'mousemoveEvent',
         value: function mousemoveEvent(e) {
-            var pixel = e.layerPoint;
+            var pixel = e.point;
             _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), 'mousemoveEvent', this).call(this, pixel, e);
         }
 

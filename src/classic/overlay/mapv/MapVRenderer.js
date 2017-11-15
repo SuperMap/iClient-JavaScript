@@ -38,7 +38,7 @@ export default class MapVRenderer extends MapVBaseLayer {
      * @param e - {Object} 触发对象
      */
     clickEvent(e) {
-        var pixel = e.layerPoint;
+        var pixel = e.xy;
         super.clickEvent(pixel, e);
     }
 
@@ -48,7 +48,7 @@ export default class MapVRenderer extends MapVBaseLayer {
      * @param  e - {Object} 触发对象
      */
     mousemoveEvent(e) {
-        var pixel = e.layerPoint;
+        var pixel = e.xy;
         super.mousemoveEvent(pixel, e);
     }
 

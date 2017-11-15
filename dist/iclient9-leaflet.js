@@ -14366,7 +14366,7 @@ var GeoText = function (_Geometry) {
             left = locationPx.x - labelSize.w / 2;
             bottom = locationPx.y + labelSize.h / 2;
             //处理斜体字
-            if (style.fontStyle && style.fontStyle && style.fontStyle === "italic") {
+            if (style.fontStyle && style.fontStyle === "italic") {
                 right = locationPx.x + labelSize.w / 2 + parseInt(parseFloat(style.fontSize) / 2);
             } else {
                 right = locationPx.x + labelSize.w / 2;

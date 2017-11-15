@@ -14,6 +14,7 @@ export class MapvLayer {
     constructor(map, dataSet, mapVOptions) {
         this.map = map;
         this.renderer = new MapvRenderer(map, this, dataSet, mapVOptions);
+        this.mapVOptions = mapVOptions;
         this.canvas = this._createCanvas();
         this.renderer._canvasUpdate();
         this.mapContainer = map.getCanvasContainer();
@@ -114,6 +115,11 @@ export class MapvLayer {
         canvas.height = parseInt(this.map.getCanvas().style.height);
         canvas.style.width = this.map.getCanvas().style.width;
         canvas.style.height = this.map.getCanvas().style.height;
+        var global$2 = typeof window === 'undefined' ? {} : window;
+        var devicePixelRatio = this.devicePixelRatio = global$2.devicePixelRatio;
+        if (this.mapVOptions.context == '2d') {
+            canvas.getContext(this.mapVOptions.context).scale(devicePixelRatio, devicePixelRatio);
+        }
         return canvas;
     }
 

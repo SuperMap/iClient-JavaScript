@@ -277,10 +277,11 @@ export default class WebMap extends ol.Observable {
         }
         if (layer) {
             this.addLayer(layer);
+            if (layer.labelLayer) {
+                this.addLayer(layer.labelLayer);
+            }
         }
-        if (layer.labelLayer) {
-            this.addLayer(layer.labelLayer);
-        }
+
     }
 
     /**
@@ -746,7 +747,7 @@ export default class WebMap extends ol.Observable {
                     } else {
                         addFeatures(sFeaturesArr);
                     }
-                }, function () {
+                }, function (err) {// eslint-disable-line no-unused-vars
                 });
             } else {
                 var newFeautures = [], features = layerInfo.features;

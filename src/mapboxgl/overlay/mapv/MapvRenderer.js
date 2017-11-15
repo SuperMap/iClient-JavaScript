@@ -40,7 +40,7 @@ export default class MapvRenderer extends BaseLayer {
      * @param e - {Object} 事件
      */
     clickEvent(e) {
-        var pixel = e.layerPoint;
+        var pixel = e.point;
         super.clickEvent(pixel, e);
     }
 
@@ -50,7 +50,7 @@ export default class MapvRenderer extends BaseLayer {
      * @param e - {Object} 事件
      */
     mousemoveEvent(e) {
-        var pixel = e.layerPoint;
+        var pixel = e.point;
         super.mousemoveEvent(pixel, e);
     }
 
