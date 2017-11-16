@@ -8,26 +8,25 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="width: 100%;height:100%"></div>
 <script type="text/javascript">
-    var map, url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-jingjin/rest/maps/京津地区地图";
-    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
-        var mapJSONObj = serviceResult.result;
-        map = new ol.Map({
-            target: 'map',
-            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                .extend([new ol.supermap.control.Logo()]),
-            view: new ol.View({
-                extent:[ 114.59 , 37.7,119.51 , 42.31],
-                center: [116.85 , 39.79],
-                zoom: 0,
-                projection: 'EPSG:4326'
-            })
-        });
-        options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
-        var layer = new ol.layer.Tile({
-            source: new ol.source.TileSuperMapRest(options)
-        });
-        map.addLayer(layer);
+    var map, url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090")+"/iserver/services/map-world/rest/maps/World";
+    map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
+        view: new ol.View({
+            center: [0, 0],
+            zoom: 2,
+            projection: 'EPSG:4326'
+        })
     });
+    var layer = new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: url,
+            wrapX: true
+        }),
+        projection: 'EPSG:4326'
+    });
+    map.addLayer(layer);
 </script>
 </body>
 </html>
