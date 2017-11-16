@@ -149,7 +149,7 @@ export default class MapvLayer extends BaiduMapLayer {
     }
 
     /**
-     * @function MapvRenderer.prototype.addData
+     * @function MapvLayer.prototype.addData
      * @description 添加数据
      * @param data - {oject} 待添加的数据
      * @param options - {oject} 待添加的数据信息
@@ -164,7 +164,7 @@ export default class MapvLayer extends BaiduMapLayer {
     }
 
     /**
-     * @function MapvRenderer.prototype.update
+     * @function MapvLayer.prototype.update
      * @description 更新图层
      * @param opt - {Object} 待更新的数据<br>
      *        data -{Object} mapv数据集<br>
@@ -182,8 +182,12 @@ export default class MapvLayer extends BaiduMapLayer {
         super.update({options: update.options});
     }
 
+    draw() {
+        this.canvasLayer.draw();
+    }
+
     /**
-     * @function MapvRenderer.prototype.getData
+     * @function MapvLayer.prototype.getData
      * @description 获取数据
      */
     getData() {
@@ -191,7 +195,7 @@ export default class MapvLayer extends BaiduMapLayer {
     }
 
     /**
-     * @function MapvRenderer.prototype.removeData
+     * @function MapvLayer.prototype.removeData
      * @description 删除符合过滤条件的数据
      * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
      */
@@ -209,7 +213,7 @@ export default class MapvLayer extends BaiduMapLayer {
     }
 
     /**
-     * @function MapVRenderer.prototype.clearData
+     * @function MapvLayer.prototype.clearData
      * @description 清除数据
      */
     clearData() {
