@@ -1,0 +1,100 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Geolocate</title>
+    <style type="text/css">
+        .editPane {
+            position: absolute;
+            right: 50px;
+            top: 10px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+
+<div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>Geolocate</h5>
+    </div>
+    <div class='panel-body' id='params'>
+        <p></p>
+        <div align='center' class='button-group'>
+            <input type='button' id='btn' class='btn btn-primary' value='定位' onclick="geoLocation()"/>
+        </div>
+    </div>
+</div>
+
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer, positionLayer,geolocate,
+        host = window.isLocal ? window.server : "http://117.122.248.69:8090";
+    url = host + "/iserver/services/map-china400/rest/maps/China";
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.ScaleLine(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.Navigation({
+                dragPanOptions: {
+                    enableKinetic: true
+                }
+            })],
+        projection: "EPSG:3857"
+    });
+    //添加geo定位控件
+    geolocate = new SuperMap.Control.Geolocate({
+        bind: false,
+        geolocationOptions: {
+            enableHighAccuracy: false,
+            maximumAge: 0
+        },
+        eventListeners: {
+            "locationupdated": getGeolocationCompleted,
+            "locationfailed": getGeolocationFailed
+        }
+    });
+    //激活控件
+    map.addControl(geolocate);
+    //初始化图层
+    positionLayer = new SuperMap.Layer.Markers("Markers");
+    layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {
+        transparent: true,
+        cacheEnabled: true,
+        redirect: true
+    }, {maxResolution: "auto"});
+    layer.events.on({"layerInitialized": addLayer});
+
+    function addLayer() {
+        var center = new SuperMap.LonLat(11733502.481499, 4614406.969325);
+        map.addLayers([layer, positionLayer]);
+        map.setCenter(center, 4);
+    }
+
+    function geoLocation() {
+        if (!geolocate.active) {
+            geolocate.activate();
+        }
+        geolocate.getCurrentLocation();
+    }
+
+    //更新定位
+    function getGeolocationCompleted(event) {
+        var lonLat = new SuperMap.LonLat(event.point.x, event.point.y);
+        positionLayer.clearMarkers()
+        size = new SuperMap.Size(44, 33),
+            offset = new SuperMap.Pixel(-(size.w / 2), -size.h),
+            icon = new SuperMap.Icon("./images/marker.png", size, offset);
+        positionLayer.addMarker(new SuperMap.Marker(lonLat, icon));
+        map.setCenter(lonLat);
+    }
+    function getGeolocationFailed(event) {
+        alert("您当前使用的浏览器不支持地图定位服务");
+    }
+</script>
+</body>
+</html>

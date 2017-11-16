@@ -1,0 +1,72 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>投影转换</title>
+    <style type="text/css">
+        #mousePositionDiv {
+            position: absolute;
+            z-index: 99;
+            left: 50%;
+            top: 5%;
+            transform: translate(-50%, -50%);
+            max-width: 50%;
+            text-align: center;
+            font-family: Arial;
+            font-size: smaller;
+        }
+    </style>
+</head>
+<body style="margin: 0;overflow: hidden;background: #fff;">
+<div id='mousePositionDiv' class='smCustomControlMousePosition'></div>
+<div id="map" style="position: relative;height: 100%;"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script src='../data/changchundata.js'></script>
+<script type="text/javascript">
+    var map, layer, control,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.LayerSwitcher(),
+            new SuperMap.Control.ScaleLine(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.Navigation({
+                dragPanOptions: {
+                    enableKinetic: true
+                }
+            })], projection: "EPSG:3857"
+    });
+    control = new SuperMap.Control.MousePosition();
+
+    map.events.on({"mousemove": getMousePositionPx});
+
+    layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {
+        transparent: true, cacheEnabled: true
+    }, {maxResolution: "auto"});
+    layer.events.on({"layerInitialized": addLayer});
+
+    function addLayer() {
+        map.addLayer(layer);
+        map.setCenter(new SuperMap.LonLat(9733502.481499, 4614406.969325), 4);
+    }
+
+    function getMousePositionPx(evt) {
+        //获取鼠标坐标位置
+        var lonLat = map.getLonLatFromPixel(evt.xy);
+        if (!lonLat) {
+            return;
+        }
+        //坐标转换
+        lonLat.transform("EPSG:3857", "EPSG:4326");
+
+        var newHtml = "客户端地图坐标投影转换：<br> 地图投影：EPSG:3857 <br> 鼠标位置坐标投影：EPSG:4326 <br> 鼠标位置坐标:  " +
+            lonLat.lon.toFixed(5) + " " +
+            lonLat.lat.toFixed(5);
+        document.getElementById("mousePositionDiv").innerHTML = newHtml;
+    }
+</script>
+</body>
+</html>

@@ -44,10 +44,35 @@
         if (inArray(includes, 'echarts')) {
             inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
         }
-
         if (!inArray(excludes, 'iclient-classic')) {
             inputScript("../../dist/iclient-classic.min.js");
         }
+        if (inArray(includes, 'tianditu')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/layer/Tianditu.js");
+        }
+        if (inArray(includes, 'echarts-all')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/echarts-all.js");
+        }
+        if (inArray(includes, 'baidu')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/layer/Baidu.js");
+        }
+        if (inArray(includes, 'OSMBuildings-SuperMap')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/OSMBuildings-SuperMap.js");
+        }
+        if (inArray(includes, 'D3WindMap')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/D3WindMap.js");
+        }
+        if (inArray(includes, 'd3')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/d3.v3.min.js");
+        }
+        if (inArray(includes, 'three')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/third-party/Three/ThreeWebGL.js");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/third-party/Three/ThreeExtras.js");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/third-party/Three/RequestAnimationFrame.js");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/third-party/Three/Detector.js");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/third-party/globe.js");
+        }
+
     }
 
     load();

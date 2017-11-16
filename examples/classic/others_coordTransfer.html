@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>获取经纬度坐标</title>
+    <style type="text/css">
+        .loading {
+            width: 48px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 55px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 18px;
+        }
+
+        .content > div {
+            margin-bottom: 5px;
+        }
+
+        .editPane {
+            position: absolute;
+            right: 60px;
+            top: 10px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+
+<div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>点击地图可获取经纬度坐标</h5>
+    </div>
+
+    <div class="loading info-body" style="display:none;"><img src="./images/loading.gif"/></div>
+    <div class="content info-body" style="display:none;">
+        <h4>坐标：</h4>
+        <div>经度：<span class="lon"></span></div>
+        <div>纬度：<span class="lat"></span></div>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer, vectorLayer, drawPoint, lastFeature,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China",
+        transferUrl = host + "/iserver/services/data-world/rest/data/coordtransfer";
+
+        //初始化地图
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Navigation(),
+                new SuperMap.Control.Zoom()
+            ]
+        });
+        map.addControl(new SuperMap.Control.MousePosition());
+        //初始化图层
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, null, {maxResolution: "auto"});
+        vectorLayer = new SuperMap.Layer.Vector("vectorLayer");
+
+        drawPoint = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Point);
+        //监听图层信息加载完成事件
+        layer.events.on({"layerInitialized": addLayer});
+        drawPoint.events.on({'featureadded': drawCompleted});
+
+    //异步加载图层
+    function addLayer() {
+        map.addLayers([layer, vectorLayer]);
+        map.addControl(drawPoint);
+        drawPoint.activate();
+        //显示地图范围
+        map.setCenter(new SuperMap.LonLat(0, 0), 2);
+    }
+
+    function drawCompleted(evt) {
+        $('.info-body').hide();
+        $('.loading').show();
+        lastFeature && vectorLayer.removeFeatures([lastFeature]);
+        lastFeature = evt.feature;
+        transfer();
+    }
+
+    function transfer(features) {
+        var transferParams = new SuperMap.REST.CoordTransferParameters({
+            features: vectorLayer.features,
+            targetPrj: {
+                "distanceUnit": "METER",
+                "projectionParam": null,
+                "epsgCode": 4326,
+                "coordUnit": "DEGREE",
+                "name": "Longitude / Latitude Coordinate System---GCS_WGS_1984",
+                "projection": null,
+                "type": "PCS_EARTH_LONGITUDE_LATITUDE",
+                "coordSystem": {
+                    "datum": {
+                        "name": "D_WGS_1984",
+                        "type": "DATUM_WGS_1984",
+                        "spheroid": {
+                            "flatten": 0.00335281066474748,
+                            "name": "WGS_1984",
+                            "axis": 6378137,
+                            "type": "SPHEROID_WGS_1984"
+                        }
+                    },
+                    "unit": "DEGREE",
+                    "spatialRefType": "SPATIALREF_EARTH_LONGITUDE_LATITUDE",
+                    "name": "GCS_WGS_1984",
+                    "type": "GCS_WGS_1984",
+                    "primeMeridian": {"longitudeValue": 0, "name": "Greenwich", "type": "PRIMEMERIDIAN_GREENWICH"}
+                }
+            },
+            sourcePrj: {
+                "distanceUnit": "METER",
+                "projectionParam": {
+                    "centralParallel": 0,
+                    "firstPointLongitude": 0,
+                    "rectifiedAngle": 0,
+                    "scaleFactor": 1,
+                    "falseNorthing": 0,
+                    "centralMeridian": 0,
+                    "secondStandardParallel": 0,
+                    "secondPointLongitude": 0,
+                    "azimuth": 0,
+                    "falseEasting": 0,
+                    "firstStandardParallel": 0
+                },
+                "epsgCode": 3857,
+                "coordUnit": "METER",
+                "name": "User Define",
+                "projection": {"name": "SPHERE_MERCATOR", "type": "PRJ_SPHERE_MERCATOR"},
+                "type": "PCS_USER_DEFINED",
+                "coordSystem": {
+                    "datum": {
+                        "name": "D_WGS_1984",
+                        "type": "DATUM_WGS_1984",
+                        "spheroid": {
+                            "flatten": 0.00335281066474748,
+                            "name": "WGS_1984",
+                            "axis": 6378137,
+                            "type": "SPHEROID_WGS_1984"
+                        }
+                    },
+                    "unit": "DEGREE",
+                    "spatialRefType": "SPATIALREF_EARTH_LONGITUDE_LATITUDE",
+                    "name": "GCS_WGS_1984",
+                    "type": "GCS_WGS_1984",
+                    "primeMeridian": {"longitudeValue": 0, "name": "Greenwich", "type": "PRIMEMERIDIAN_GREENWICH"}
+                }
+            }
+        });
+        var transferService = new SuperMap.REST.CoordTransferService(transferUrl, {
+            eventListeners: {
+                processCompleted: function (evt) {
+                    $('.info-body').hide();
+                    $('.content').show();
+                    var feature = evt.result.features[0];
+                    var geometry = feature.geometry;
+                    $('.lon').html(geometry.x);
+                    $('.lat').html(geometry.y);
+                },
+                processFailed: function () {
+                    $('.info-body').hide();
+                    $('.tips').show();
+                }
+            }
+        });
+        transferService.processAsync(transferParams);
+    }
+
+</script>
+
+</body>
+</html>

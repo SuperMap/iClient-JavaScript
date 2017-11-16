@@ -88,11 +88,23 @@
         if (inArray(includes, 'ace')) {
             inputScript("http://cdn.bootcss.com/ace/1.2.6/ace.js");
         }
-
         if (inArray(includes, 'loader')) {
             inputCSS("https://cdn.bootcss.com/css-loader/2.2.0/css-loader.css");
             inputScript("../js/loader.js");
         }
+        if (inArray(includes, 'zTree')) {
+            inputCSS("https://cdn.bootcss.com/zTree.v3/3.5.29/css/zTreeStyle/zTreeStyle.min.css");
+            inputScript("https://cdn.bootcss.com/zTree.v3/3.5.29/js/jquery.ztree.all.min.js");
+        }
+        if (inArray(includes, 'jquery-scontextMenu')) {
+            inputCSS("https://cdn.bootcss.com/jquery-contextmenu/2.6.3/jquery.contextMenu.min.css");
+            inputScript("https://cdn.bootcss.com/jquery-contextmenu/2.6.3/jquery.contextMenu.min.js");
+        }
+        if (inArray(includes, 'LargeFormatPrints')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/LargeFormatPrints.js");
+        }
+
+
     }
 
     load();

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>jquery右键菜单</title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;position: relative;"></div>
+<script type="text/javascript" include="bootstrap,jquery-scontextMenu" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer, host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-world/rest/maps/World";
+    function init() {
+        var broz = SuperMap.Util.getBrowser();
+        if (broz.device === 'android' || broz.device === 'apple') {
+            alert('您的设备不支持，请使用pc或其他设备');
+            return;
+        }
+        map = new SuperMap.Map("map");
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("world", url, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+    }
+    $(document).ready(function () {
+        init();
+        alert('点击右键选择缩放选项');
+    });
+    function addLayer() {
+        map.addLayers([layer]);
+        map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 1);
+    }
+    function zoomin() {
+        map.zoomIn();
+    }
+    //缩小，在当前缩放级别的基础上缩小一级。
+    function zoomout() {
+        map.zoomOut();
+    }
+</script>
+<script>
+    $(function () {
+        $.contextMenu({
+            selector: '#map',
+            autoHide: true,
+            delay: 500,
+            items: {
+                "large": {
+                    name: "放大",
+                    icon: "zoomin",
+                    callback: zoomin
+                },
+                "reduce": {
+                    name: "缩小",
+                    icon: "zoomout",
+                    callback: zoomout
+                }
+
+            }
+        })
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>layerSwitch</title>
+    <style type="text/css">
+        #handle {
+            display: none;
+            position: absolute;
+            height: 100%;
+            width: 6px;
+            left: 50%;
+            background: rgb(205, 205, 205);
+            border: 1px solid rgb(112, 107, 107);
+            z-index: 2000;
+            cursor: col-resize;
+        }
+
+        #handleCenter {
+            position: absolute;
+            height: 32px;
+            width: 24px;
+            top: 50%;
+            left: -10px;
+            background: rgb(205, 205, 205);
+            border: 1px solid rgb(112, 107, 107);
+            z-index: 2000;
+            background-image: url(images/drag.png);
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .editPane {
+            position: absolute;
+            right: 50px;
+            top: 10px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>layerSwitch</h5>
+    </div>
+    <div class='panel-body' id='params'>
+        <p></p>
+        <div align='right' class='button-group'>
+            <input type='button' id='btn1' class='btn btn-primary' value='打开卷帘' onclick="openLayerSwitch()"/>
+            <input type='button' id='btn2' class='btn btn-primary' value='关闭卷帘' onclick="closeLayerSwitch()"/>
+        </div>
+    </div>
+</div>
+
+<div id="handle" title="通过拖动查看图层" onmousedown="drag(event)">
+    <div id="handleCenter"></div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer, positionLayer, lat, lon, geolocate, baseLayer, c, b,
+        leftStart = 0, topStart = 0, leftEnd = 0, topEnd = 0,
+        mapTop, mapRight, mapButtom, mapLeft, handleLeft,
+        useCanvas, mapRightBack, isFirstDrag = false, isZoom = false, isMove = false,
+        host = window.isLocal ? window.server : "http://117.122.248.69:8090";
+    url1 = host + "/iserver/services/map-world/rest/maps/World";
+    url2 = host + "/iserver/services/map-world/rest/maps/世界地图_Night";
+    /*
+     * 不支持canvas的浏览器不能运行该范例
+     * android 设备也不能运行该范例*/
+    var broz = SuperMap.Util.getBrowser();
+
+    if (!document.createElement('canvas').getContext) {
+        alert('您的浏览器不支持 canvas，请升级');
+    } else if (broz.device === 'android') {
+        alert('您的设备不支持，请使用pc或其他设备');
+    }
+
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.ScaleLine(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.Navigation({
+                dragPanOptions: {
+                    enableKinetic: true
+                }
+            })]
+    });
+    //图层相互叠加
+    map.allOverlays = true;
+    //初始化底图
+    baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("世界地图", url1, {
+        transparent: false,
+        cacheEnabled: true,
+        redirect: true
+    }, {maxResolution: "auto"});
+    baseLayer.isBaseLayer = true;
+    baseLayer.events.on({
+        "layerInitialized": function () {
+            var center = new SuperMap.LonLat(11733502.481499, 4614406.969325);
+            map.addLayer(baseLayer);
+            map.setCenter(center, 1);
+        }
+    });
+    //初始化卷帘图层显示范围
+    handleLeft = map.size.w * 0.5;
+    mapTop = "0px";
+    mapButtom = map.size.h + "px";
+    mapLeft = "0px";
+    mapRightBack = handleLeft;
+    //初始化图层，此图层在最上层，做卷帘图层
+    layer = new SuperMap.Layer.TiledDynamicRESTLayer("世界地图_Night", url2, {
+        transparent: false,
+        cacheEnabled: true,
+        redirect: true
+    }, {maxResolution: "auto", useCanvas: false});
+
+    //关闭卷帘
+    function closeLayerSwitch() {
+        document.getElementById('handle').style.display = "none";
+        if (map.getLayerIndex(layer) != -1) {
+            map.removeLayer(layer);
+        }
+    }
+
+    //打开卷帘
+    function openLayerSwitch() {
+        if (map.getLayerIndex(layer) == -1) {
+            document.getElementById('handle').style.display = "block";
+            addLayer();
+        }
+    }
+
+    function addLayer() {
+        map.addLayer(layer);
+        useCanvas = layer.useCanvas;
+        handle = document.getElementById("handle");
+        //初始化卷帘的位置
+        handle.style.left = mapRightBack + "px";
+        //判断上次关闭前是否拖动过地图
+        if (isMove) {
+            mapMoveClip(0, 0);
+            isMove = false;
+        }
+        else {
+            clip(handleLeft);
+        }
+        //卷帘不支持非Canvas图层，非Canvas图层需要手动实现卷帘
+        //监听地图拖动事件
+        if (!useCanvas) {
+            map.events.on({
+                "movestart": movestart,
+                "move": move
+            });
+        }
+    }
+    //使图层显示范围随着卷帘的拖动而变化
+    function clip(left) {
+        mapRight = left + "px";
+        //如果在缩放后直接拖动卷帘div，卷帘图层显示范围右侧数值需要进行修正
+        if (isZoom && isFirstDrag) {
+            mapRight = (left + leftEnd) + "px";
+        }
+        var rect = "rect(" + mapTop + "," + mapRight + "," + mapButtom + "," + mapLeft + ")";
+        layer.div.style.clip = rect;
+    }
+    //拖动卷帘
+    function drag(e) {
+        var objectDiv = document.getElementById("handle");
+        //取消事件的默认行为
+        e.preventDefault();
+        if (document.all) {   //鼠标捕获
+            objectDiv.setCapture();
+        }
+        b = e.clientX - parseInt(objectDiv.style.left);
+        console.log(b);
+        //鼠标拖动
+        document.onmousemove = function (d) {
+            if (!d) d = event;
+            c = (d.clientX - b);
+            //使卷帘在地图内
+            if (c > map.size.w - 7) {
+                c = map.size.w - 7;
+            }
+            if (c < 0) {
+                c = 0;
+            }
+            if (objectDiv) {
+                objectDiv.style.left = c + "px";
+                //如果使用非Canvas图层，在拖动地图后，再次拖动卷帘div，图层显示范围出错，这里修正图层显示范围右侧数值
+                if (!useCanvas) {
+                    mapRightBack = c;
+                    c = c - leftEnd;
+                    isFirstDrag = true;
+                }
+                handleLeft = c;  //记录滚动条的位置，以便再次打开时为拖动后的位置
+                console.log(handleLeft);
+                clip(c);
+            }
+
+        };
+        //拖动完成后
+        document.onmouseup = function () {
+            if (document.all) {
+                //释放鼠标捕获
+                objectDiv.releaseCapture();
+            }
+            objectDiv = null;
+
+        };
+    }
+    //地图drag，pan或者zoom操作开始时执行该函数，此时记录卷帘图层显示范围偏移量
+    function movestart(evt) {
+        var me = this;
+        var parsePos = parse(evt.element.childNodes[0].style.left, evt.element.childNodes[0].style.top);
+        leftStart = parsePos.left;
+        topStart = parsePos.top;
+    }
+    //地图drag，pan或者zoom操作开始后执行该函数，此时计算卷帘图层显示范围偏移量，如果没有进行缩放，计算偏移量后，设置卷帘图层left，top，right，bottom显示数值
+    //如果进行缩放，则left，top，bottom重置为默认值，right设置为当前卷帘div所在位置数值
+    function move(evt) {
+        if (!evt.zoomChanged) {
+            isZoom = false;
+            isMove = true;
+            isFirstDrag = false;
+            var parsePos = parse(evt.element.childNodes[0].style.left, evt.element.childNodes[0].style.top);
+            leftEnd = parsePos.left;
+            topEnd = parsePos.top;
+            var dx = -(leftEnd - leftStart);
+            var dy = -(topEnd - topStart);
+            mapMoveClip(dx, dy);
+        } else {
+            isZoom = true;
+            mapTop = "0px";
+            mapRight = mapRightBack + "px";
+            mapButtom = map.size.h + "px";
+            mapLeft = "0px";
+            var rect = "rect(" + mapTop + "," + mapRight + "," + mapButtom + "," + mapLeft + ")";
+            layer.div.style.clip = rect;
+        }
+    }
+    //设置非Canvas卷帘图层可见范围
+    function mapMoveClip(dx, dy) {
+        var posString = layer.div.style.clip.replace(/rect\(|\)|px/g, "");
+        var pos = posString.split(" ");
+        mapTop = (parseInt(pos[0]) + dy) + "px";
+        mapRight = (parseInt(pos[1]) + dx) + "px";
+        mapButtom = (parseInt(pos[2]) + dy) + "px";
+        mapLeft = (parseInt(pos[3]) + dx) + "px";
+        var rect = "rect(" + mapTop + "," + mapRight + "," + mapButtom + "," + mapLeft + ")";
+        layer.div.style.clip = rect;
+        leftStart = leftEnd;
+        topStart = topEnd;
+    }
+    //将传入的数值取整
+    function parse(left, top) {
+        var left = left,
+            top = top;
+        if (left != undefined && top != undefined) {
+            left = parseInt(left.replace(/px/g, ""));
+            top = parseInt(top.replace(/px/g, ""));
+        } else {
+            left = 0;
+            top = 0;
+        }
+        return {
+            left: left,
+            top: top
+        };
+    }
+</script>
+</body>
+</html>

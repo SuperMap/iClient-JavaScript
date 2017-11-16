@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>点线面绘制</title>
+    <style type="text/css">
+        .editPane {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>点线面绘制</h5>
+    </div>
+    <div class='panel-body' id='params'>
+        <p></p>
+        <div align='right' class='button-group'>
+            <input type='button' id='btn1' class='btn btn-primary' value='绘点' onclick="draw_point()"/>
+            <input type='button' id='btn2' class='btn btn-primary' value='绘线' onclick="draw_line()"/>
+            <input type='button' id='btn3' class='btn btn-primary' value='绘面' onclick="draw_polygon()"/>
+            <input type='button' id='btn4' class='btn btn-primary' value='选择' onclick="selectFeature()"/>
+            <input type='button' id='btn5' class='btn btn-primary' value='编辑' onclick="modifyFeature()"/>
+            <input type='button' id='btn6' class='btn btn-primary' value='undo' onclick="undo()"/>
+            <input type='button' id='btn7' class='btn btn-primary' value='redo' onclick="redo()"/>
+            <input type='button' id='btn8' class='btn btn-primary' value='清除' onclick="clearFeatures()"/>
+        </div>
+    </div>
+</div>
+
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer, drawPoint, drawLine, drawPolygon, vecotrLayer, selectCtrl,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    //新建面矢量图层
+    vecotrLayer = new SuperMap.Layer.Vector("polygonLayer");
+    drawPoint = new SuperMap.Control.DrawFeature(vecotrLayer, SuperMap.Handler.Point, {multi: true});
+    drawLine = new SuperMap.Control.DrawFeature(vecotrLayer, SuperMap.Handler.Path, {multi: true});
+    drawPolygon = new SuperMap.Control.DrawFeature(vecotrLayer, SuperMap.Handler.Polygon);
+    modifyCtrl = new SuperMap.Control.ModifyFeature(vecotrLayer);
+    selectCtrl = new SuperMap.Control.SelectFeature(vecotrLayer, {
+        onSelect: function (feature) {
+            console.log('click');
+            console.log(feature);
+        },
+        onUnselect: function (feature) {
+            console.log('unselect');
+            console.log(feature);
+        },
+        callbacks: {
+            dblclick: function (feature) {
+                console.log('dblclick');
+                console.log(feature);
+            }
+        },
+        hover: false,
+        repeat: false
+    });
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.Navigation(),
+            new SuperMap.Control.LayerSwitcher()
+            , drawPoint, drawLine, drawPolygon, selectCtrl, modifyCtrl]
+    });
+    layer = new SuperMap.Layer.CloudLayer();
+    addLayer();
+    //layer.events.on({"layerInitialized":addLayer});
+    vecotrLayer.style = {
+        fillColor: "blue",
+        fillOpacity: 1,
+        hoverFillColor: "white",
+        hoverFillOpacity: 0.8,
+        strokeColor: "#ee9900",
+        strokeOpacity: 1,
+        strokeWidth: 1,
+        strokeLinecap: "round",
+        strokeDashstyle: "solid",
+        hoverStrokeColor: "red",
+        hoverStrokeOpacity: 1,
+        hoverStrokeWidth: 0.2,
+        pointRadius: 6,
+        hoverPointRadius: 1,
+        hoverPointUnit: "%",
+        pointerEvents: "visiblePainted",
+        cursor: "inherit",
+        fontColor: "#000000",
+        labelAlign: "cm",
+        labelOutlineColor: "white",
+        labelOutlineWidth: 3
+    };
+    function addLayer() {
+
+        map.addLayers([layer, vecotrLayer]);
+        //显示地图范围
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+    }
+    function draw_point() {
+        deactiveAll();
+        drawPoint.activate();
+
+    }
+    function draw_line() {
+        deactiveAll();
+        drawLine.activate();
+    }
+
+    function draw_polygon() {
+        deactiveAll();
+        drawPolygon.activate();
+    }
+    function deactiveAll() {
+        drawPoint.deactivate();
+        drawLine.deactivate();
+        drawPolygon.deactivate();
+        selectCtrl.deactivate();
+        modifyCtrl.deactivate();
+    }
+
+    function selectFeature() {
+        deactiveAll();
+        selectCtrl.activate();
+    }
+
+    function modifyFeature() {
+        deactiveAll();
+        modifyCtrl.activate();
+    }
+
+    function undo() {
+        modifyCtrl.undo();
+    }
+
+    function redo() {
+        modifyCtrl.redo();
+    }
+
+    function clearFeatures() {
+        deactiveAll();
+        vecotrLayer.removeAllFeatures();
+    }
+
+</script>
+</body>
+</html>

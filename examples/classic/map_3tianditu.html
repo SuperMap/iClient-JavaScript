@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>天地图</title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" include="tianditu" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, tiandituLayer, marker, markers, tianMarkerLayer;
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.Navigation(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.LayerSwitcher()
+
+        ], allOverlays: true
+    });
+    tiandituLayer = new SuperMap.Layer.Tianditu();
+    tianMarkerLayer = new SuperMap.Layer.Tianditu();
+    tianMarkerLayer.layerType = "cva";
+    tianMarkerLayer.isLabel = true;
+    map.addControl(new SuperMap.Control.MousePosition());
+    markers = new SuperMap.Layer.Markers("Markers");
+    map.addLayers([tiandituLayer, markers, tianMarkerLayer]);
+    map.setCenter(new SuperMap.LonLat(23, 37), 3);
+    addMarker();
+
+    var infowin = null;
+    //定义mouseClickHandler函数，触发click事件会调用此函数
+    function mouseClickHandler(event) {
+        closeInfoWin();
+        //初始化popup类
+        popup = new SuperMap.Popup(
+            "chicken",
+            marker.getLonLat(),
+            new SuperMap.Size(220, 140),
+            '<img src="images/xila.jpg">',
+            true,
+            null
+        );
+
+        infowin = popup;
+        //添加弹窗到map图层
+        map.addPopup(popup);
+    }
+
+    function closeInfoWin() {
+        if (infowin) {
+            try {
+                infowin.hide();
+                infowin.destroy();
+            }
+            catch (e) {
+            }
+        }
+    }
+
+    function addMarker() {
+        size = new SuperMap.Size(50, 50);
+        offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+        icon = new SuperMap.Icon('../img/markerbig_select.png', size, offset);
+        //初始化标记覆盖物类
+        marker = new SuperMap.Marker(new SuperMap.LonLat(23.6530190, 37.9439259), icon);
+        //添加覆盖物到标记图层
+        markers.addMarker(marker);
+        //注册 click 事件,触发 mouseClickHandler()方法
+        marker.events.on({
+            "click": mouseClickHandler,
+            "touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+        });
+    }
+</script>
+
+</body>
+</html>

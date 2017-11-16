@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>设置缩放级别</title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer, zoomRange = 5,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    url = host + "/iserver/services/map-world/rest/maps/World";
+
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.Navigation()]
+    });
+    map.minScale = 1.3732579019271662e-8;//设置该值可以使地图在比例尺达到此值的时候无法再缩小
+    map.numZoomLevels = zoomRange;//设置地图缩放级别的数量
+    layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {
+        transparent: true,
+        cacheEnabled: true
+    }, {maxResolution: "auto"});
+    layer.events.on({"layerInitialized": addLayer});
+    function addLayer() {
+        map.addLayer(layer);
+        map.setCenter(new SuperMap.LonLat(0, 0), 1);
+    }
+
+</script>
+
+</body>
+</html>

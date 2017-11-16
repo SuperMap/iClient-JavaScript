@@ -1,0 +1,41 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>WCS图层</title>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer, layerWorld,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url1 = host + "/iserver/services/map-world/rest/maps/World",
+        url2 = host + "/iserver/services/data-world/wcs111";
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.ScaleLine(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.LayerSwitcher(),
+            new SuperMap.Control.Navigation({
+                dragPanOptions: {
+                    enableKinetic: true
+                }
+            })], units: "degrees", allOverlays: true
+    });
+
+    layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url1, {transparent: true, cacheEnabled: true});
+    layerWorld.events.on({"layerInitialized": addLayer1});
+
+    function addLayer1() {
+        //基于SuperMap对WCS地图图层进行了支持与扩展，需要额外引入WCSLayer.js脚本;
+        //脚本位于js/layer/WCSLayer.js;
+        //初始化WCS图层
+        layer = new SuperMap.Layer.WCS("wcsLayer", url2);
+        map.addLayers([layerWorld, layer]);
+        map.setCenter(new SuperMap.LonLat(0, 0), 2);
+    }
+</script>
+</body>
+</html>

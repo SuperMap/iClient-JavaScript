@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>控件皮肤切换</title>
+    <style type="text/css">
+        .editPane {
+            position: absolute;
+            right: 50px;
+            top: 10px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>控件皮肤切换</h5>
+    </div>
+    <div class='panel-body' id='params'>
+        <div align='center' class='button-group'>
+            <input type='button' id='btn1' class='btn btn-primary' value='切换' onclick="changeSkin()"/>
+        </div>
+    </div>
+</div>
+
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var map, layer,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+    function addMap() {
+        //初始化地图
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Navigation(),
+                new SuperMap.Control.OverviewMap,
+                new SuperMap.Control.Zoom()
+            ]
+        });
+        //初始化图层
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, null, {maxResolution: "auto"});
+        //监听图层信息加载完成事件
+        layer.events.on({"layerInitialized": addLayer});
+    }
+    addMap();
+    //异步加载图层
+    function addLayer() {
+        map.addLayer(layer);
+        map.setCenter(new SuperMap.LonLat(0, 0), 4);
+    }
+
+    //切换LayerSwitcher OverviewMap Zoom Skin风格 系统提供白色和蓝色两种配色方案，系统默认为白色
+    function changeSkin() {
+        map.destroy();
+        SuperMap.Control.SKIN = SuperMap.Control.SKIN === "BLUE" ? "WHITE" : "BLUE";
+        addMap();
+    }
+</script>
+</body>
+</html>

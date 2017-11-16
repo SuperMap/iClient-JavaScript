@@ -1,0 +1,82 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>底图切换</title>
+    <style type="text/css">
+        .editPane {
+            position: absolute;
+            right: 50px;
+            top: 10px;
+            text-align: center;
+            background: #FFF;
+            display: inline-block;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>底图切换</h5>
+    </div>
+    <div class='panel-body' id='params'>
+        <p></p>
+        <div align='center' class='input-group'>
+            <input type='button' id='btn1' class='btn btn-primary' value='底图切换' onclick="changeMap()"/>
+        </div>
+    </div>
+</div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, layerDay, layerNight, bt = false;
+    var url1 = host + "/iserver/services/map-world/rest/maps/世界地图_Day";
+    var url2 = host + "/iserver/services/map-world/rest/maps/世界地图_Night";
+
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.ScaleLine(),
+            new SuperMap.Control.OverviewMap(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.Navigation({
+                dragPanOptions: {
+                    enableKinetic: true
+                }
+            })], allOverlays: false
+    });
+    layerDay = new SuperMap.Layer.TiledDynamicRESTLayer("世界地图_Day", url1, {transparent: true, cacheEnabled: true});
+    layerDay.events.on({"layerInitialized": addLayer1});
+
+    function addLayer1() {
+        layerNight = new SuperMap.Layer.TiledDynamicRESTLayer("世界地图_Night", url2, {
+            transparent: true,
+            cacheEnabled: true
+        });
+        layerNight.events.on({"layerInitialized": addLayer2});
+    }
+    function addLayer2() {
+        layerDay.isBaseLayer = true;
+        layerNight.isBaseLayer = true;
+        map.addLayers([layerDay, layerNight]);
+        map.setCenter(new SuperMap.LonLat(130, 100), 2);
+    }
+    function changeMap() {
+        if (bt == false) {
+            layerDay.setVisibility(false);
+            layerNight.setVisibility(true);
+            map.setBaseLayer(layerNight);
+            bt = true;
+        } else if (bt == true) {
+            layerDay.setVisibility(true);
+            layerNight.setVisibility(false);
+            map.setBaseLayer(layerDay);
+            bt = false;
+        }
+    }
+</script>
+
+</body>
+</html>
