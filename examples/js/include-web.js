@@ -100,9 +100,6 @@
             inputCSS("https://cdn.bootcss.com/jquery-contextmenu/2.6.3/jquery.contextMenu.min.css");
             inputScript("https://cdn.bootcss.com/jquery-contextmenu/2.6.3/jquery.contextMenu.min.js");
         }
-        if (inArray(includes, 'LargeFormatPrints')) {
-            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/LargeFormatPrints.js");
-        }
 
 
     }

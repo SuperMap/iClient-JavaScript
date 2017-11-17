@@ -72,6 +72,39 @@
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/third-party/Three/Detector.js");
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/third-party/globe.js");
         }
+        if (inArray(includes, 'MapToImg')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/MapToImg.js");
+        }
+        if (inArray(includes, 'Bar')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/graph/Bar.js");
+        }
+        if (inArray(includes, 'Bar3D')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/graph/Bar3D.js");
+        }
+        if (inArray(includes, 'Circle')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/graph/Circle.js");
+        }
+        if (inArray(includes, 'Line')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/graph/Line.js");
+        }
+        if (inArray(includes, 'Pie')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/graph/Pie.js");
+        }
+        if (inArray(includes, 'Point')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/graph/Point.js");
+        }
+        if (inArray(includes, 'Ring')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/graph/Ring.js");
+        }
+        if (inArray(includes, 'style')) {
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/theme/default/style.css");
+        }
+        if (inArray(includes, 'sm-doc')) {
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/sm-doc.css");
+        }
+        if (inArray(includes, 'LargeFormatPrints')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/LargeFormatPrints.js");
+        }
 
     }
 
