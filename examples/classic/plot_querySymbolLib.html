@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>查询标号</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+        .winContent {
+            padding: 5px;
+            overflow-y: auto;
+            height: 220px;
+
+        }
+
+        .popupWindow {
+            background: #FFF;
+            z-index: 9999;
+            display: block;
+        }
+
+        .winTitle {
+            margin-left: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>查询标号</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>关键字：</span>
+                <input class='form-control' id='queryCriteria' value=''/>
+            </div>
+        </div>
+        <input type="button" class="btn btn-default" value="查询" onmousemove="querySymbolLib()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" value="编辑" onclick="editSymbol()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" value="清空" onclick="removeAllFeatur()"/>
+    </div>
+    <div id="popupWin" class="popupWindow">
+        <div class='panel'>
+            <div class='input-group'>
+                <div class="winTitle">
+                    <span class="title_left">查询结果:</span>
+                </div>
+            </div>
+        </div>
+        <div id="queryResult" class="winContent"></div>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var plottingLayer, plottingEdit, layer, drawGraphicObject, map, plotting, symbolLibManager;
+    var loadSymbolComplete = false;
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        layer.events.on({"layerInitialized": addLayer});
+
+        plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+        plottingLayer.style = {
+            fillColor: "#66cccc",
+            fillOpacity: 0.4,
+            strokeColor: "#66cccc",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 6
+        };
+
+        // 绘制标号;
+        drawGraphicObject = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+
+        //态势标绘编辑
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+
+        //添加态势标绘控件
+        map.addControls([plottingEdit, drawGraphicObject]);
+        plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+
+        loadSymbolLib();
+    }
+
+    function addLayer() {
+        map.addLayers([layer, plottingLayer]);
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+        plottingEdit.activate();
+    }
+
+    function loadSymbolLib() {
+        symbolLibManager = plotting.getSymbolLibManager();
+        symbolLibManager.events.on({"initializeCompleted": initializeCompleted});
+        symbolLibManager.initializeAsync();
+    }
+
+    function initializeCompleted() {
+        loadSymbolComplete = true;
+    }
+
+    function PlottingDrawCancel() {
+        drawGraphicObject.deactivate();
+        plottingEdit.deactivate();
+
+        plottingEdit.activate();
+    }
+
+    function editSymbol() {
+        if (plottingEdit.editMode === SuperMap.Plot.EditMode.EDITCIRCUMRECTANGLE) {
+            plottingEdit.setEditMode(SuperMap.Plot.EditMode.EDITCONTROLPOINT);
+        } else {
+            plottingEdit.setEditMode(SuperMap.Plot.EditMode.EDITCIRCUMRECTANGLE);
+        }
+
+    }
+
+    //清空绘制
+    function PlottingClear() {
+        drawGraphicObject.deactivate();
+        plottingEdit.deactivate();
+
+        plottingLayer.removeAllFeatures();
+    }
+
+    function querySymbolLib() {
+        drawGraphicObject.deactivate();
+
+        if (!loadSymbolComplete) {
+            return;
+        }
+
+        var key = document.getElementById("queryCriteria").value;
+        if ("" === key) {
+            return;
+        }
+
+        var result = [];
+        for (var i = 0; i < symbolLibManager.getSymbolLibNumber(); i++) {
+            var symbolLib = symbolLibManager.getSymbolLibByIndex(i);
+            if (null !== symbolLib) {
+                var tempResult = symbolLib.querySymbolbyKey(key);
+                for (var j = 0; j < tempResult.length; j++) {
+                    result.push(tempResult[j]);
+                }
+            }
+        }
+
+        showResult(result);
+    }
+
+    function showResult(queryResult) {
+        document.all.queryResult.innerHTML = "";
+        if (0 === queryResult.length) {
+            return;
+        }
+        //获取选中的对象
+        var container = document.getElementById("queryResult");
+        var table = document.createElement("table");
+        drawNodeClick = function () {
+            drawGraphicObject.activate();
+            drawGraphicObject.handler.libID = this.libID;
+            drawGraphicObject.handler.symbolCode = this.symbolCode;
+            drawGraphicObject.handler.serverUrl = this.serverUrl;
+        };
+        var i = 0;
+        var rowLength = (queryResult.length % 3 === 0) ? queryResult.length / 3 : queryResult.length / 3 + 1;
+        for (var j = 0; j < rowLength; j++) {
+            var tr = document.createElement("tr");
+            for (var k = 0; k < 3; k++) {
+                if (queryResult[i]) {
+                    //存储菜单信息
+                    var td = document.createElement("td");
+                    var drawNode = document.createElement("div");
+                    drawNode.onclick = drawNodeClick;
+                    drawNode.style.textAlign = "center";
+                    //设置标号的字体居中显示
+                    drawNode.style.color = "#000";
+                    //设置标号画上的id属性
+                    drawNode.id = queryResult[i].libID + "_" + queryResult[i].symbolCode;
+                    drawNode.libID = queryResult[i].libID;
+                    drawNode.symbolCode = queryResult[i].symbolCode;
+                    drawNode.serverUrl = serverUrl;
+                    var img = document.createElement("img");
+                    //查询symbol的title
+                    img.title = queryResult[i].symbolName + "_" + queryResult[i].symbolCode;
+                    img.src = queryResult[i].icon;
+                    //文本
+                    var text = document.createElement("div");
+                    //标号的SymbolName
+                    text.innerHTML = queryResult[i].symbolName;
+                    drawNode.appendChild(img);
+                    drawNode.appendChild(text);
+                    td.appendChild(drawNode);
+
+                    tr.appendChild(td);
+                }
+                i++;
+            }
+            table.appendChild(tr);
+        }
+        container.appendChild(table);
+    }
+
+
+    function removeAllFeatur() {
+        plottingLayer.removeAllFeatures();
+    }
+
+    document.onmouseup = function (evt) {
+        var evt = evt || window.event;
+        if (evt.button === 2) {
+            PlottingDrawCancel();
+            return false;
+        }
+        evt.stopPropagation();
+    }
+</script>
+
+</body>
+</html>

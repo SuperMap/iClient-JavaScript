@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Graphic图层符号绘制</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 400px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>Graphic图层符号绘制</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>绘制个数<span title='必填字段' style='color: red;'> * </span></span>
+                <input id='total' type='text' class='form-control' value='100000'/>
+            </div>
+        </div>
+        <div class='input-group'>
+            <input type="button" class="btn btn-default" value="开始绘制" onclick="addClover()"/>&nbsp;
+            <input type="button" class="btn btn-default" value="切换图标并重绘" onclick="redraw()"/>&nbsp;
+            <input type="button" class="btn btn-default" value="+" onclick="plus()"/>&nbsp;
+            <input type="button" class="btn btn-default" value="-" onclick="minus()"/>&nbsp;
+            <input type="button" class="btn btn-default" value="移除" onclick="removeData()"/>
+        </div>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map, layer, graphicLayer, symbolinfo, selectGraphic, popup = null, img, imageWidth = 32,
+        imagePaths = ['./images/marker_blue.png', './images/marker_red.png'], imageIdx = 0,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+
+    init();
+
+    function init() {
+
+        if (!document.createElement("canvas").getContext) {
+            alert("您的浏览器不支持Canvas，请先升级");
+            return;
+        }
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation(),
+            ]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+        graphicLayer = new SuperMap.Layer.Graphics("Graphic Layer", null, {hitDetection: true, useCanvasEvent: false});
+
+        selectGraphic = new SuperMap.Control.SelectGraphic(graphicLayer, {
+            onSelect: onGraphicSelect,
+            hover: false,
+            onUnSelect: onUnGraphicSelect
+        });
+    }
+
+    function onGraphicSelect(result, evt) {
+        var image = graphicLayer.style.image;
+
+        var pixel = map.getPixelFromLonLat(new SuperMap.LonLat(result.geometry.x, result.geometry.y));
+        var evtPixel = evt.xy;
+        //点击点与中心点的角度
+        var angle = (Math.atan2(evtPixel.y - pixel.y, evtPixel.x - pixel.x)) / Math.PI * 180;
+        angle = angle > 0 ? angle : 360 + angle;
+        //确定扇叶
+        var index = Math.ceil(angle / (image.angle + image.spaceAngle));
+        addPopup(result, evt, index);
+    }
+
+    function onUnGraphicSelect(evt) {
+        //alert(2);
+    }
+
+    function addPopup(feature, evt, index) {
+        if (popup) {
+            map.removePopup(popup);
+        }
+        selectedFeature = feature;
+        var lonlat = new SuperMap.LonLat(feature.geometry.x, feature.geometry.y);
+        var contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>" +
+            "<span style='font-weight: bold; font-size: 12px;'>要素ID： " + feature.id + "</span><br>";
+        if (symbolinfo instanceof SuperMap.Style.Clover) {
+            contentHTML += "<span style='font-weight: bold; font-size: 12px;'>叶数索引： " + index + "</span><br>";
+            lonlat = map.getLonLatFromPixel(evt.xy);
+        } else {
+            lonlat = new SuperMap.LonLat(feature.geometry.x, feature.geometry.y);
+        }
+        contentHTML += "</div>"
+        //初始化一个弹出窗口，当某个地图要素被选中时会弹出此窗口，用来显示选中地图要素的属性信息
+        popup = new SuperMap.Popup.FramedCloud("chicken",
+            lonlat,
+            null,
+            contentHTML,
+            null,
+            true);
+        feature.popup = popup;
+        map.addPopup(popup);
+
+    }
+
+    function addLayer() {
+        map.addLayers([layer, graphicLayer]);
+        //显示地图范围
+        map.setCenter(new SuperMap.LonLat(0, 0), 3);
+
+        map.addControl(selectGraphic);
+        selectGraphic.activate();
+        addClover();
+    }
+
+    //symbol相关属性 填充色、边框颜色、半径、
+    var fillColors = 'rgba(255,153,0,1)';
+    var strokeColors = 'rgba(255,204,0,1)';
+    var radius = 9;
+
+
+    var e = 10000000;
+
+    function addClover() {
+        symbolinfo = new SuperMap.Style.Clover({
+            radius: radius,
+            fill: new SuperMap.Style.Fill({
+                color: fillColors
+            }),
+            stroke: new SuperMap.Style.Stroke({
+                color: strokeColors
+            })
+        });
+        loadData();
+    }
+
+    function addData(img) {
+        if (img.complete) {
+            loadData();
+        } else {
+            img.onload = function () {
+                loadData();
+            }
+        }
+    }
+
+    function loadData() {
+        if (popup) {
+            map.removePopup(popup);
+        }
+        graphicLayer.removeAllGraphics();
+        var total = document.getElementById("total").value;
+        graphicLayer.style = {
+            image: symbolinfo
+        };
+        var points = [];
+        for (var i = 0; i < total; i++) {
+            var point = new SuperMap.Geometry.Point(2 * e * Math.random() - e, 2 * e * Math.random() - e);
+            var pointVector = new SuperMap.Graphic(point);
+            //pointVector.style = ;
+            points.push(pointVector)
+        }
+        graphicLayer.addGraphics(points);
+    }
+
+    function redraw() {
+        var idx = (++imageIdx) % 2;
+        img = new Image();
+        img.src = imagePaths[idx];
+        symbolinfo = new SuperMap.Style.Image({
+            img: img,
+            anchor: [16, 16]
+        });
+        graphicLayer.style = {
+            image: symbolinfo
+        };
+        if (img.complete) {
+            graphicLayer.redraw();
+        } else {
+            img.onload = function () {
+                graphicLayer.redraw();
+            }
+        }
+
+    }
+
+    //移除数据
+    function removeData() {
+        if (!!popup) {
+            map.removePopup(popup);
+        }
+        graphicLayer.removeAllGraphics();
+        graphicLayer.refresh();
+    }
+
+    function plus() {
+        var idx = (++imageIdx) % 2;
+        img = new Image();
+        imageWidth += 10;
+        img.src = imagePaths[idx];
+        symbolinfo = new SuperMap.Style.Image({
+            img: img,
+            anchor: [imageWidth / 2, imageWidth / 2]
+        });
+        graphicLayer.style = {
+            image: symbolinfo,
+            graphicHeight: imageWidth,
+            graphicWidth: imageWidth
+        };
+        if (img.complete) {
+            graphicLayer.redraw();
+        } else {
+            img.onload = function () {
+                graphicLayer.redraw();
+            }
+        }
+    }
+
+    function minus() {
+        var idx = (++imageIdx) % 2;
+        img = new Image();
+        imageWidth -= 10;
+        if (imageWidth < 5) {
+            imageWidth = 5;
+        }
+        img.src = imagePaths[idx];
+        symbolinfo = new SuperMap.Style.Image({
+            img: img,
+            anchor: [imageWidth / 2, imageWidth / 2]
+        });
+        graphicLayer.style = {
+            image: symbolinfo,
+            graphicHeight: imageWidth,
+            graphicWidth: imageWidth
+        };
+        if (img.complete) {
+            graphicLayer.redraw();
+        } else {
+            img.onload = function () {
+                graphicLayer.redraw();
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

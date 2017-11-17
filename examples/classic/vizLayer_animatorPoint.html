@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>点渐变</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>点渐变</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="开始" onclick="startAnimator()" />&nbsp;
+        <input type="button" class="btn btn-default" value="暂停" onclick="pauseAnimator()" />&nbsp;
+        <input type="button" class="btn btn-default" value="移除历史点" title="移除掉运动过的点" onclick="removeDrawedFeature()" />
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map, layer, animatorVector;
+    var style =
+        {
+            fillColor: "#339933",
+            fillOpacity: 1,
+            strokeOpacity: 0,
+            pointRadius: 5
+        };
+    init();
+
+    function init() {
+        if (!document.createElement('canvas').getContext) {
+            alert('您的浏览器不支持 canvas，请升级');
+            return;
+        }
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.MousePosition(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+
+        layer = new SuperMap.Layer.CloudLayer();
+
+        map.addLayers([layer]);
+
+        map.setCenter(new SuperMap.LonLat(0, 0), 1);
+
+        animatorVector = new SuperMap.Layer.AnimatorVector("Vector Layer", {needRecordDrawedFeature: true}, {
+            speed: 0.05,
+            startTime: 0,
+            endTime: 100
+        });
+        map.addLayers([animatorVector]);
+        addPoint();
+    }
+
+    function addPoint() {
+        var pointFeatures = [];
+        var features = [];
+        var ti = 100;
+        var num = 100;
+
+        for (var i = 0; i < ti; i++) {
+            for (var j = 0; j < num; j++) {
+                if (features.length >= num) {
+                    var x = features[features.length - num].geometry.x;
+                    var y = features[features.length - num].geometry.y;
+                }
+                else {
+                    var x = Math.random() * 20037508 * 2 - 20037508;
+                    var y = Math.random() * 20037508 * 2 - 20037508;
+                }
+
+                var xd = Math.random() * 1375080 * 2 - 1375080;
+                var yd = Math.random() * 1375080 * 2 - 1375080;
+                var point = new SuperMap.Geometry.Point(x + xd, y + yd);
+                var pointFeature = new SuperMap.Feature.Vector(point, {
+                    FEATUREID: j,
+                    TIME: 0 + i * 1
+                }, style);
+                features.push(pointFeature);
+            }
+        }
+        animatorVector.addFeatures(features);
+    }
+
+    function startAnimator() {
+        animatorVector.animator.start();
+    }
+
+    function pauseAnimator() {
+        animatorVector.animator.pause();
+    }
+
+    function removeDrawedFeature() {
+        var features = animatorVector.getDrawedFeatures();
+        animatorVector.removeFeatures(features);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>麻点图</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>麻点图</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="渲染麻点图" onclick="createLayer()"/>&nbsp;
+        <input type="button" class="btn btn-default" value="清除" onclick="clearLayer()"/>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map, datasetName, popup, myGOIs, control,
+        host = window.isLocal ? window.server : "http://117.122.248.69:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })], allOverlays: true, projection: "EPSG:3857"
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("china", url, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+    }
+
+    function addLayer() {
+        map.addLayers([layer]);
+        map.setCenter(new SuperMap.LonLat(11733502.481499, 4614406.969325), 4);
+    }
+
+    function createLayer() {
+        datasetName = "China_Rural_pt@China";
+
+        //创建一个麻点图对象
+        myGOIs = new SuperMap.GOIs({
+            "url": url,
+            "datasetName": datasetName,
+            "style": new SuperMap.REST.ServerStyle({
+                "markerSymbolID": 72,
+                "markerSize": 4
+            }),
+            "pixcell": 16
+        });
+
+        myGOIs.events.on({
+            "initialized": GOIsInitialized
+        });
+    }
+
+    function clearLayer() {
+        closeInfoWin();
+
+        var layers = myGOIs.getLayers();
+        for (var i = 0; i < layers.length; i++) {
+            map.removeLayer(layers[i]);
+        }
+        myGOIs.destroy();
+        myGOIs = null;
+
+        control.destroy();
+        control = null;
+    }
+
+    function GOIsInitialized() {
+        var layers = myGOIs.getLayers();
+        map.addLayers(layers);
+
+        control = new SuperMap.Control.GOIs(layers, {
+            onClick: function (evt) {
+                var lonlat = evt.loc;
+                var name = evt.data.NAME;
+
+                openInfoWin(lonlat, name);
+            },
+            highlightIcon: new SuperMap.Icon('./images/circle.png', new SuperMap.Size(16, 16), new SuperMap.Pixel(-8, -8)),
+            isHighlight: true
+        });
+        map.addControl(control);
+    }
+
+    function openInfoWin(lonlat, name) {
+        closeInfoWin();
+        var contentHTML = "<div style=\'font-size:.8em; opacity: 0.8; overflow-y:hidden;\'>";
+        contentHTML += "<div>" + name + "</div></div>";
+
+        popup = new SuperMap.Popup.FramedCloud("popwin", new SuperMap.LonLat(lonlat.lon, lonlat.lat), null, contentHTML, null, true, function () {
+            closeInfoWin();
+            control.removeClickedMarker();
+        });
+        map.addPopup(popup);
+    }
+
+    function closeInfoWin() {
+        if (popup) {
+            try {
+                map.removePopup(popup);
+            }
+            catch (e) {
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

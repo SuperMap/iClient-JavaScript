@@ -101,51 +101,69 @@ var exampleConfig = {
                     fileName: "map_toggleMaps"
 
                 }]
-            },
-            "processingService": {
-                name: "分布式分析",
-                content: [{
-                    name: "密度分析",
-                    thumbnail: "kernelDensityJobService.png",
-                    fileName: "kernelDensityJobService"
-                }, {
-                    name: "点聚合分析",
-                    thumbnail: "SummaryMeshJobService.png",
-                    fileName: "SummaryMeshJobService"
-                }, {
-                    name: "单对象查询分析",
-                    thumbnail: "lg_singleObjectQueryJob.png",
-                    fileName: "singleObjectQueryJobService"
-                }, {
-                    name: "叠加分析",
-                    thumbnail: "lg_overlayJobService.png",
-                    fileName: "overlayGeoJobService"
-                }, {
-                    name: "缓冲区分析",
-                    thumbnail: "lg_buffersAnalystJobService.png",
-                    fileName: "buffersAnalystJobService"
-                }, {
-                    name: "区域汇总分析",
-                    thumbnail: "SummaryRegionJobService.png",
-                    fileName: "SummaryRegionJobService"
-                }, {
-                    name: "矢量裁剪分析",
-                    thumbnail: "lg_vectorClipJob.png",
-                    fileName: "vectorClipJobService"
-                }, {
-                    name: "拓扑检查分析",
-                    thumbnail: "lg_topologyValidatorJobService.png",
-                    fileName: "topologyValidatorJobService"
-                }]
-            },
-            "addressMatch": {
-                name: "地址匹配",
-                content: [{
-                    name: "地址匹配",
-                    thumbnail: "addressMatchService.png",
-                    fileName: "addressMatchService"
-                }]
             }
+        }
+    },
+    "overlay": {
+        name: "覆盖物",
+        content: {
+            "vectorLayer": {
+                name: "矢量图层",
+                content: [{
+                    name: "矢量图形数据",
+                    thumbnail: "overlay_vectorLayerData.png",
+                    fileName: "overlay_vectorLayerData"
+                }, {
+                    name: "标签矢量图层数据",
+                    thumbnail: "overlay_labelVectorLayerData.png",
+                    fileName: "overlay_labelVectorLayerData"
+                }, {
+                    name: "渐变色样式矢量图形数据",
+                    thumbnail: "overlay_ombreStyleLayer.png",
+                    fileName: "overlay_ombreStyleLayer"
+                }, {
+                    name: "矢量图层数据点击事件",
+                    thumbnail: "overlay_vectorDataEvent.png",
+                    fileName: "overlay_vectorDataEvent"
+                }, {
+                    name: "B样条曲线",
+                    thumbnail: "overlay_splinesData.png",
+                    fileName: "overlay_splinesData"
+                }, {
+                    name: "电信符号数据",
+                    thumbnail: "overlay_telecomIconData.png",
+                    fileName: "overlay_telecomIconData"
+                }, {
+                    name: "岛洞与多面",
+                    thumbnail: "overlay_islandMultiPolygonData.png",
+                    fileName: "overlay_islandMultiPolygonData"
+                }, {
+                    name: "Graphic图层符号绘制（一）",
+                    thumbnail: "overlay_graphicSymbolData.png",
+                    fileName: "overlay_graphicSymbolData"
+                }, {
+                    name: "Graphic图层符号绘制(二)",
+                    thumbnail: "overlay_graphicSymbolData2.png",
+                    fileName: "overlay_graphicSymbolData2"
+                }, {
+                    name: "Graphic图层符号绘制(三)",
+                    thumbnail: "overlay_graphicSymbolData3.png",
+                    fileName: "overlay_graphicSymbolData3"
+                }]
+            },
+            "markerLayer": {
+                name: "标记图层",
+                content: [{
+                    name: "标记图层",
+                    thumbnail: "overlay_markerLayer.png",
+                    fileName: "overlay_markerLayer"
+                }, {
+                    name: "标记图层支持的事件",
+                    thumbnail: "overlay_markerLayerEvent.png",
+                    fileName: "overlay_markerLayerEvent"
+                }]
+            },
+
         }
     },
     "control": {
@@ -225,41 +243,100 @@ var exampleConfig = {
             }
         }
     },
-    "OGC": {
-        name: "OGC",
+    "popup": {
+        name: "信息框",
         content: {
-            "mapService": {
-                name: "地图服务",
+            "infoBox": {
+                name: "信息框",
                 content: [{
-                    name: "WMTS图层",
-                    thumbnail: "OGC_wmtsLayer.png",
-                    fileName: "OGC_wmtsLayer"
+                    name: "简易信息框",
+                    thumbnail: "popup_simplePopup.png",
+                    fileName: "popup_simplePopup"
                 }, {
-                    name: "WCS图层",
-                    thumbnail: "OGC_wcs.png",
-                    fileName: "OGC_wcs"
+                    name: "自适应信息框",
+                    thumbnail: "popup_anchored.png",
+                    fileName: "popup_anchored"
                 }, {
-                    name: "WMS图层",
-                    thumbnail: "OGC_wms.png",
-                    fileName: "OGC_wms"
+                    name: "带阴影弹窗",
+                    thumbnail: "popup_shadowPopup.png",
+                    fileName: "popup_shadowPopup"
+                }, {
+                    name: "自定义信息框",
+                    thumbnail: "popup_customPopup.png",
+                    fileName: "popup_customPopup"
+                }, {
+                    name: "第三方信息框",
+                    thumbnail: "popup_infoWindow.png",
+                    fileName: "popup_infoWindow"
+                }
+                ]
+            }
+        }
+    },
+    "query": {
+        name: "查询",
+        content: {
+            "mapQuery": {
+                name: "地图查询",
+                content: [{
+                    name: "地图范围查询",
+                    thumbnail: "query_queryByBounds.png",
+                    fileName: "query_queryByBounds"
+                }, {
+                    name: "距离查询",
+                    thumbnail: "query_queryByDistance.png",
+                    fileName: "query_queryByDistance"
+                }, {
+                    name: "几何查询",
+                    thumbnail: "query_queryByGeometry.png",
+                    fileName: "query_queryByGeometry"
+                }, {
+                    name: "SQL查询",
+                    thumbnail: "query_queryBySQL.png",
+                    fileName: "query_queryBySQL"
+                }, {
+                    name: "查询交互",
+                    thumbnail: "query_vectorLayerRegionName.png",
+                    fileName: "query_vectorLayerRegionName"
                 }]
             },
-            "dataService": {
-                name: "数据服务",
+            "datasetQuery": {
+                name: "数据集查询",
                 content: [{
-                    name: "kml",
-                    thumbnail: "OGC_kml.png",
-                    fileName: "OGC_kml"
+                    name: "ID 查询",
+                    thumbnail: "query_getFeatureByIDs.png",
+                    fileName: "query_getFeatureByIDs"
                 }, {
-                    name: "GeoJSON数据展示",
-                    thumbnail: "OGC_GeoJSON.png",
-                    fileName: "OGC_GeoJSON"
+                    name: "缓冲区查询",
+                    thumbnail: "query_getFeatureByBuffer.png",
+                    fileName: "query_getFeatureByBuffer"
                 }, {
-                    name: "WFS 查询",
-                    thumbnail: "OGC_queryByWFS.png",
-                    fileName: "OGC_queryByWFS"
+                    name: "几何查询",
+                    thumbnail: "query_getFeatureByGeometry.png",
+                    fileName: "query_getFeatureByGeometry"
+                }, {
+                    name: "数据集SQL查询",
+                    thumbnail: "query_getFeatureBySQL.png",
+                    fileName: "query_getFeatureBySQL"
+                }, {
+                    name: "数据集范围查询",
+                    thumbnail: "query_getFeatureByBounds.png",
+                    fileName: "query_getFeatureByBounds"
+                }, {
+                    name: "地物编辑",
+                    thumbnail: "query_editFeature.png",
+                    fileName: "query_editFeature"
+                }, {
+                    name: "字段查询统计",
+                    thumbnail: "query_fieldStatistic.png",
+                    fileName: "query_fieldStatistic"
+                }, {
+                    name: "数据服务栅格查询",
+                    thumbnail: "query_gridInfosQuery.png",
+                    fileName: "query_gridInfosQuery"
                 }]
             }
+
         }
     },
     "theme": {
@@ -355,6 +432,416 @@ var exampleConfig = {
                     name: "符号专题图",
                     thumbnail: "theme_ctl_RankSymbol.png",
                     fileName: "theme_ctl_RankSymbol"
+                }]
+            }
+        }
+    },
+    "analysis": {
+        name: "分析",
+        content: {
+            "spatialAnalyst": {
+                name: "空间分析",
+                content: [{
+                    name: "缓冲区分析一",
+                    thumbnail: "analysis_bufferAnalyst.png",
+                    fileName: "analysis_bufferAnalyst"
+                }, {
+                    name: "缓冲区分析二",
+                    thumbnail: "analysis_bufferQuery.png",
+                    fileName: "analysis_bufferQuery"
+                }, {
+                    name: "泰森多边形",
+                    thumbnail: "analysis_thiessenAnalyst.png",
+                    fileName: "analysis_thiessenAnalyst"
+                }, /*{
+                    name: "叠加分析",
+                    thumbnail: "analysis_overlayAnalystService.png",
+                    fileName: "analysis_overlayAnalystService"
+                },*/ {
+                    name: "表面分析",
+                    thumbnail: "analysis_surfaceAnalyst.png",
+                    fileName: "analysis_surfaceAnalyst"
+                }, {
+                    name: "动态分段",
+                    thumbnail: "analysis_dynamicSegmentation.png",
+                    fileName: "analysis_dynamicSegmentation"
+                }, {
+                    name: "点定里程",
+                    thumbnail: "analysis_routeCalculateMeasure.png",
+                    fileName: "analysis_routeCalculateMeasure"
+                }, {
+                    name: "里程定点",
+                    thumbnail: "analysis_routeLocatorPoint.png",
+                    fileName: "analysis_routeLocatorPoint"
+                }, /*{
+                    name: "点密度插值分析",
+                    thumbnail: "analysis_interpolationAnalystByDensity.png",
+                    fileName: "analysis_interpolationAnalystByDensity"
+                }, {
+                    name: "反距离加权插值分析",
+                    thumbnail: "analysis_interpolationAnalystByIDW.png",
+                    fileName: "analysis_interpolationAnalystByIDW"
+                }, {
+                    name: "克吕金插值分析",
+                    thumbnail: "analysis_interpolationAnalystByKriging.png",
+                    fileName: "analysis_interpolationAnalystByKriging"
+                },{
+                    name: "径向基函数插值分析",
+                    thumbnail: "analysis_interpolationAnalystByRBF.png",
+                    fileName: "analysis_interpolationAnalystByRBF"
+                }, {
+                    name: "离散点插值分析",
+                    thumbnail: "analysis_interpolationAnalystByGeometry.png",
+                    fileName: "analysis_interpolationAnalystByGeometry"
+                }, {
+                    name: "地形曲率计算",
+                    thumbnail: "analysis_terrainCurvatureCalculation.png",
+                    fileName: "analysis_terrainCurvatureCalculation"
+                }, {
+                    name: "栅格代数运算",
+                    thumbnail: "analysis_mathExpression.png",
+                    fileName: "analysis_mathExpression"
+                }, {
+                    name: "核密度分析",
+                    thumbnail: "analysis_densityKernelAnalyst.png",
+                    fileName: "analysis_densityKernelAnalyst"
+                },*/
+                ]
+            },
+            "networkAnalyst": {
+                name: "网络分析",
+                content: [{
+                    name: "最近设施分析 选址分区分析",
+                    thumbnail: "analysis_closestFacilities.png",
+                    fileName: "analysis_closestFacilities"
+                }, {
+                    name: "选址分区分析",
+                    thumbnail: "analysis_findLocation.png",
+                    fileName: "analysis_findLocation"
+                }, {
+                    name: "多旅行商分析",
+                    thumbnail: "analysis_findMTSPPaths.png",
+                    fileName: "analysis_findMTSPPaths"
+                }, {
+                    name: "多旅行商分析（综合应用）",
+                    thumbnail: "analysis_findMTSPPathsAndTSPPaths.png",
+                    fileName: "analysis_findMTSPPathsAndTSPPaths"
+                }, {
+                    name: "最佳路径分析",
+                    thumbnail: "analysis_findPath.png",
+                    fileName: "analysis_findPath"
+                }, {
+                    name: "旅行商分析",
+                    thumbnail: "analysis_findTSPPaths.png",
+                    fileName: "analysis_findTSPPaths"
+                }, {
+                    name: "服务区分析",
+                    thumbnail: "analysis_serviceAreas.png",
+                    fileName: "analysis_serviceAreas"
+                },
+                ]
+            },
+            "trafficTransferAnalyst": {
+                name: "交通换乘",
+                content: [{
+                    name: "公交换乘服务",
+                    thumbnail: "analysis_trafficTransfer.png",
+                    fileName: "analysis_trafficTransfer"
+                }]
+            },
+            "processingService": {
+                name: "分布式分析",
+                content: [{
+                    name: "密度分析",
+                    thumbnail: "kernelDensityJobService.png",
+                    fileName: "kernelDensityJobService"
+                }, {
+                    name: "点聚合分析",
+                    thumbnail: "SummaryMeshJobService.png",
+                    fileName: "SummaryMeshJobService"
+                }, {
+                    name: "单对象查询分析",
+                    thumbnail: "lg_singleObjectQueryJob.png",
+                    fileName: "singleObjectQueryJobService"
+                }, {
+                    name: "叠加分析",
+                    thumbnail: "lg_overlayJobService.png",
+                    fileName: "overlayGeoJobService"
+                }, {
+                    name: "缓冲区分析",
+                    thumbnail: "lg_buffersAnalystJobService.png",
+                    fileName: "buffersAnalystJobService"
+                }, {
+                    name: "区域汇总分析",
+                    thumbnail: "SummaryRegionJobService.png",
+                    fileName: "SummaryRegionJobService"
+                }, {
+                    name: "矢量裁剪分析",
+                    thumbnail: "lg_vectorClipJob.png",
+                    fileName: "vectorClipJobService"
+                }, {
+                    name: "拓扑检查分析",
+                    thumbnail: "lg_topologyValidatorJobService.png",
+                    fileName: "topologyValidatorJobService"
+                }]
+            },
+            "addressMatch": {
+                name: "地址匹配",
+                content: [{
+                    name: "地址匹配",
+                    thumbnail: "addressMatchService.png",
+                    fileName: "addressMatchService"
+                }]
+            }
+
+        }
+    },
+    "viz": {
+        name: "可视化",
+        content: {
+            "vizLayer": {
+                name: "可视化图层",
+                content: [{
+                    name: "热点图",
+                    thumbnail: "vizLayer_heatmapLayer.png",
+                    fileName: "vizLayer_heatmapLayer"
+                }, {
+                    name: "新版热点图",
+                    thumbnail: "vizLayer_heatmapFastLayer.png",
+                    fileName: "vizLayer_heatmapFastLayer"
+                }, {
+                    name: "热点图颜色分段配置",
+                    thumbnail: "vizLayer_heatmapColorSection.png",
+                    fileName: "vizLayer_heatmapColorSection"
+                }, /*{
+                    name: "热点图颜色手动配置",
+                    thumbnail: "vizLayer_heatmapColorManual.png",
+                    fileName: "vizLayer_heatmapColorManual"
+                },*/ {
+                    name: "热点网格图",
+                    thumbnail: "vizLayer_heatGridLayer.png",
+                    fileName: "vizLayer_heatGridLayer"
+                }, {
+                    name: "聚类图层",
+                    thumbnail: "vizLayer_clusterLayer.png",
+                    fileName: "vizLayer_clusterLayer"
+                }, {
+                    name: "UTFGrid图层",
+                    thumbnail: "vizLayer_utfGridLayer.png",
+                    fileName: "vizLayer_utfGridLayer"
+                }, {
+                    name: "UTFGrid国旗版",
+                    thumbnail: "vizLayer_utfGridLayerFlags.png",
+                    fileName: "vizLayer_utfGridLayerFlags"
+                }, {
+                    name: "麻点图",
+                    thumbnail: "vizLayer_gois.png",
+                    fileName: "vizLayer_gois"
+                }, {
+                    name: "Elements Layer 扩展",
+                    thumbnail: "vizLayer_elements.png",
+                    fileName: "vizLayer_elements"
+                }]
+            },
+            "spaceTimeData": {
+                name: "时空数据",
+                content: [{
+                    name: "基础渲染",
+                    thumbnail: "vizLayer_animatorBase.png",
+                    fileName: "vizLayer_animatorBase"
+                }, {
+                    name: "点渐变",
+                    thumbnail: "vizLayer_animatorPoint.png",
+                    fileName: "vizLayer_animatorPoint"
+                }, {
+                    name: "线渐变",
+                    thumbnail: "vizLayer_animatorLine.png",
+                    fileName: "vizLayer_animatorLine"
+                }, {
+                    name: "面渐变模拟",
+                    thumbnail: "vizLayer_animatorPolygon.png",
+                    fileName: "vizLayer_animatorPolygon"
+                }, {
+                    name: "火车监控模拟",
+                    thumbnail: "vizLayer_animatorTrain.png",
+                    fileName: "vizLayer_animatorTrain"
+                }, {
+                    name: "车辆监控模拟",
+                    thumbnail: "vizLayer_animatorCar.png",
+                    fileName: "vizLayer_animatorCar"
+                }, {
+                    name: "地铁修建模拟",
+                    thumbnail: "vizLayer_animatorMetro.png",
+                    fileName: "vizLayer_animatorMetro"
+                }, {
+                    name: "地铁修建模拟2",
+                    thumbnail: "vizLayer_animatorMetro2.png",
+                    fileName: "vizLayer_animatorMetro2"
+                }, {
+                    name: "气象监测",
+                    thumbnail: "vizLayer_animatorWeatherMonitor.png",
+                    fileName: "vizLayer_animatorWeatherMonitor"
+                }, {
+                    name: "春运模拟",
+                    thumbnail: "vizLayer_animatorMigrate.png",
+                    fileName: "vizLayer_animatorMigrate"
+                }]
+            },
+            "vectorBlock": {
+                name: "矢量分块",
+                content: [{
+                    name: "矢量分块图",
+                    thumbnail: "vizLayer_tiledVectorLayer.png",
+                    fileName: "vizLayer_tiledVectorLayer"
+                }, {
+                    name: "点符号",
+                    thumbnail: "vizLayer_cartoCSS_point.png",
+                    fileName: "vizLayer_cartoCSS_point"
+                }, {
+                    name: "线符号",
+                    thumbnail: "vizLayer_cartoCSS_line.png",
+                    fileName: "vizLayer_cartoCSS_line"
+                }, {
+                    name: "面符号",
+                    thumbnail: "vizLayer_cartoCSS_polygon.png",
+                    fileName: "vizLayer_cartoCSS_polygon"
+                }, {
+                    name: "文本符号",
+                    thumbnail: "vizLayer_cartoCSS_text.png",
+                    fileName: "vizLayer_cartoCSS_text"
+                }, {
+                    name: "高亮显示",
+                    thumbnail: "vizLayer_cartoCSS_hightlight.png",
+                    fileName: "vizLayer_cartoCSS_hightlight"
+                }, {
+                    name: "CartoCSS编辑",
+                    thumbnail: "vizLayer_cartoCSS_edit.png",
+                    fileName: "vizLayer_cartoCSS_edit"
+                }, {
+                    name: "强边界风格",
+                    thumbnail: "vizLayer_cartoCSS_boundryStyle.png",
+                    fileName: "vizLayer_cartoCSS_boundryStyle"
+                }, {
+                    name: "深夜蓝黑风格",
+                    thumbnail: "vizLayer_cartoCSS_darkblueStyle.png",
+                    fileName: "vizLayer_cartoCSS_darkblueStyle"
+                }, {
+                    name: "淡雅绿风格",
+                    thumbnail: "vizLayer_cartoCSS_naturalStyle.png",
+                    fileName: "vizLayer_cartoCSS_naturalStyle"
+                }, {
+                    name: "月夜风格",
+                    thumbnail: "vizLayer_cartoCSS_nightStyle.png",
+                    fileName: "vizLayer_cartoCSS_nightStyle"
+                }, {
+                    name: "Hellokitty风格",
+                    thumbnail: "vizLayer_cartoCSS_helloKitty.png",
+                    fileName: "vizLayer_cartoCSS_helloKitty"
+                }]
+            },
+            "MapV": {
+                name: "MapV",
+                content: [{
+                    name: "蜂巢图",
+                    thumbnail: "lg_mapVLayer_honeycomb.png",
+                    fileName: "mapVLayerHoneycomb"
+                }, {
+                    name: "简单线",
+                    thumbnail: "lg_mapVLayer_polylineSimple.png",
+                    fileName: "mapVLayerPolylineSimple"
+                }]
+            }
+
+        }
+    },
+    "OGC": {
+        name: "OGC",
+        content: {
+            "mapService": {
+                name: "地图服务",
+                content: [{
+                    name: "WMTS图层",
+                    thumbnail: "OGC_wmtsLayer.png",
+                    fileName: "OGC_wmtsLayer"
+                }, {
+                    name: "WCS图层",
+                    thumbnail: "OGC_wcs.png",
+                    fileName: "OGC_wcs"
+                }, {
+                    name: "WMS图层",
+                    thumbnail: "OGC_wms.png",
+                    fileName: "OGC_wms"
+                }]
+            },
+            "dataService": {
+                name: "数据服务",
+                content: [{
+                    name: "kml",
+                    thumbnail: "OGC_kml.png",
+                    fileName: "OGC_kml"
+                }, {
+                    name: "GeoJSON数据展示",
+                    thumbnail: "OGC_GeoJSON.png",
+                    fileName: "OGC_GeoJSON"
+                }, {
+                    name: "WFS 查询",
+                    thumbnail: "OGC_queryByWFS.png",
+                    fileName: "OGC_queryByWFS"
+                }]
+            }
+        }
+    },
+    "plot": {
+        name: "动态标绘",
+        content: {
+            "plot": {
+                name: "标绘",
+                content: [/*{
+                    name: "动态标绘",
+                    thumbnail: "plot_dynamicPlot.png",
+                    fileName: "plot_dynamicPlot"
+                    //todo 迁插件迁的头大
+                }, */{
+                    name: "图层操作",
+                    thumbnail: "plot_operatePlottingLayer.png",
+                    fileName: "plot_operatePlottingLayer"
+                }, {
+                    name: "图层编辑",
+                    thumbnail: "plot_editPlottingLayer.png",
+                    fileName: "plot_editPlottingLayer"
+                }, /*{
+                    name: "鼠标标绘",
+                    thumbnail: "plot_plotSymbol.png",
+                    fileName: "plot_plotSymbol"
+                    //todo 插件与bootstrap冲突
+                }, */{
+                    name: "点线面绘制",
+                    thumbnail: "plot_drawGeoGraphicObject.png",
+                    fileName: "plot_drawGeoGraphicObject"
+                }, /*{
+                    name: "属性修改",
+                    thumbnail: "plot_modifySymbolStyle.png",
+                    fileName: "plot_modifySymbolStyle"
+                }, {
+                    name: "缺省属性",
+                    thumbnail: "plot_defaultStyle.png",
+                    fileName: "plot_defaultStyle"
+                }, */{
+                    name: "自定义属性",
+                    thumbnail: "plot_symbolExtendProperty.png",
+                    fileName: "plot_symbolExtendProperty"
+                }, {
+                    name: "查询标号",
+                    thumbnail: "plot_querySymbolLib.png",
+                    fileName: "plot_querySymbolLib"
+                }, {
+                    name: "编辑器",
+                    thumbnail: "plot_symbolEditor.png",
+                    fileName: "plot_symbolEditor"
+                }, {
+                    name: "标号库加载",
+                    thumbnail: "plot_loadSymbolLib.png",
+                    fileName: "plot_loadSymbolLib"
                 }]
             }
         }
@@ -455,26 +942,7 @@ var exampleConfig = {
                 }]
             }
         }
-    },
-    "viz": {
-        name: "可视化",
-        content: {
-            "MapV": {
-                name: "MapV",
-                content: [{
-                    name: "蜂巢图",
-                    thumbnail: "lg_mapVLayer_honeycomb.png",
-                    fileName: "mapVLayerHoneycomb"
-                }, {
-                    name: "简单线",
-                    thumbnail: "lg_mapVLayer_polylineSimple.png",
-                    fileName: "mapVLayerPolylineSimple"
-                }]
-            }
-
-        }
     }
-
 };
 /**
  *key值：为exampleConfig配置的key值或者fileName值
@@ -484,12 +952,16 @@ var exampleConfig = {
  */
 var sideBarIconConfig = {
     "map": "fa-map-marker",
+    "overlay": "fa-image",
     "control": "fa-cog",
-    "OGC": "fa fa-globe",
+    "popup": "fa-commenting-o",
+    "query": "fa-search",
     "theme": " fa-area-chart",
+    "analysis": "fa-leanpub",
+    "viz": "fa-map",
+    "OGC": "fa fa-globe",
+    "plot": "fa-edit",
     "others": "fa-th-large",
-    "viz": "fa-map"
-
 };
 
 /**
@@ -499,9 +971,14 @@ var sideBarIconConfig = {
  */
 var exampleIconConfig = {
     "map": "fa-map-marker",
+    "overlay": "fa-image",
     "control": "fa-cog",
-    "OGC": "fa fa-globe",
+    "popup": "fa-commenting-o",
+    "query": "fa-search",
     "theme": " fa-area-chart",
+    "analysis": "fa-leanpub",
+    "viz": "fa-map",
+    "OGC": "fa fa-globe",
+    "plot": "fa-edit",
     "others": "fa-th-large",
-    "viz": "fa-map"
 };

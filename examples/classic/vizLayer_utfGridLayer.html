@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>UTFGrid图层</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map, infowin, layer, utfgrid, control,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })],
+            projection: "EPSG:3857"
+        });
+
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {transparent: true}, {
+            useCanvas: true,
+            maxResolution: "auto"
+        });
+
+        //注意：pixcell与utfgridResolution两个属性有对应关系，在使用的时候也要注意场景；
+        //1.其中pixcell为发送给服务端请求utfgrid瓦片的精度，数值越小，精度越高，相应的瓦片大小也就越大；
+        //2.utfgridResolution为客户端解析瓦片使用的精度，应该与pixcell的值相等，否则会产生位置与属性对应不上的问题；
+        //3.通常如果UTFGrid图层为面图层，对应的数据量会比较大，为了不影响页面的正常浏览，可以将这两个属性设的大一些；
+        //4.isUseCache设置是否使用缓存，使用缓存能够提高性能；
+        utfgrid = new SuperMap.Layer.UTFGrid("UTFGridLayer", url,
+            {
+                layerName: "China_Province_pl@China",
+                utfTileSize: 256,
+                pixcell: 8,
+                isUseCache: true
+            },
+            {
+                utfgridResolution: 8
+            });
+
+        layer.events.on({"layerInitialized": addLayer});
+
+    }
+
+    var callback = function (infoLookup, loc, pixel) {
+        closeInfoWin();
+        if (infoLookup) {
+            var info;
+            for (var idx in infoLookup) {
+                info = infoLookup[idx];
+                if (info && info.data) {
+                    var dom = "<div style='font-size: 12px; color: #000000;'>" + info.data.NAME + "</div>";
+                    //设置x与y的像素偏移量，不影响地图浏览；
+                    var xOff = (1 / map.getScale()) * 0.001;
+                    var yOff = -(1 / map.getScale()) * 0.005;
+                    var pos = new SuperMap.LonLat(loc.lon + xOff, loc.lat + yOff);
+                    infowin = new SuperMap.Popup("chicken",
+                        pos,
+                        new SuperMap.Size(100, 20),
+                        dom,
+                        false, null);
+                    infowin.autoSize = true;
+                    map.addPopup(infowin);
+                }
+            }
+        }
+    };
+
+    function closeInfoWin() {
+        if (infowin) {
+            try {
+                map.removePopup(infowin)
+            }
+            catch (e) {
+            }
+        }
+    }
+
+    function addLayer() {
+        var center = new SuperMap.LonLat(11733502.481499, 4614406.969325);
+        map.addLayers([layer, utfgrid]);
+        map.setCenter(center, 5);
+        control = new SuperMap.Control.UTFGrid({
+            layers: [utfgrid],
+            callback: callback,
+            handlerMode: "move"
+        });
+        map.addControl(control);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Elements Layer 扩展</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map, layer, elementsLayer, myDom, lonlat = new SuperMap.LonLat(109, 35),
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-world/rest/maps/World";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })
+            ]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+    }
+
+    function addLayer() {
+        map.addLayers([layer]);
+        map.setCenter(lonlat, 1);
+
+        //创建Elements的实例，获得其div
+        elementsLayer = new SuperMap.Layer.Elements("elementsLayer");
+        map.addLayers([elementsLayer]);
+        var elementsDiv = elementsLayer.getDiv();
+
+        //设置Elements实例的div为地图大小
+        var size = map.getSize();
+        elementsDiv.style.width = size.w;
+        elementsDiv.style.height = size.h;
+
+        //创建一个图片对象并添加到Elements的实例，获得其div
+        myDom = document.createElement("img");
+        myDom.src = "./images/china.png";
+        myDom.style.opacity = "0.6";
+        elementsDiv.appendChild(myDom);
+
+        //设置自定义图片的位置，大小。
+        setDom();
+
+        //监听地图的moveend事件
+        map.events.on({
+            moveend: function (evt) {
+                //判断是否缩放
+                if (evt.zoomChanged) {
+                    //通过map获得缩放的级数
+                    var level = map.getZoom();
+                    //根据当前地图缩放级别设置图片透明度
+                    if (level > 1) {
+                        myDom.style.opacity = "0.6";
+                    }
+                    else if (level == 1) {
+                        myDom.style.opacity = "0.8";
+                    }
+                    else {
+                        myDom.style.opacity = "1";
+                    }
+                }
+                //重置图片的大小和位置，让图片可以随地图缩放
+                setDom();
+            }
+        });
+    }
+
+    //设置图片的位置，大小。
+    function setDom() {
+        //这里将图片放到中国地理范围中（{left:73.620048522949, right:134.76846313477, top:53.553741455078, bottom:3.8537260781999}），让图片可以随着地图缩放。
+        var bounds = new SuperMap.Bounds(73.620048522949, 3.8537260781999, 134.76846313477, 53.553741455078);
+        //该范围的左上角右下角点分别为：
+        var lonlatLeftTop = new SuperMap.LonLat(bounds.left, bounds.top);
+        var lonlatRightBottom = new SuperMap.LonLat(bounds.right, bounds.bottom);
+        //然后分别将左下右上角点转换为像素点
+        var pxLeftTop = elementsLayer.getLayerPxFromLonLat(lonlatLeftTop);
+        //设置图片右下角位置
+        var pxRightBottom = elementsLayer.getLayerPxFromLonLat(lonlatRightBottom);
+
+        //设置图片的大小
+        myDom.style.width = pxRightBottom.x - pxLeftTop.x + "px";
+        myDom.style.height = pxRightBottom.y - pxLeftTop.y + "px";
+
+        //设置图片的位置
+        myDom.style.position = "absolute";
+        myDom.style.left = pxLeftTop.x + "px";
+        myDom.style.top = pxLeftTop.y + "px";
+    }
+</script>
+
+</body>
+</html>

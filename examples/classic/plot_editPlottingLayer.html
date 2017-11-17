@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>图层编辑</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>图层编辑</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>标绘图层的可编辑：</span>
+                <select class='form-control' id='editable' onchange="editableChanges()">
+                    <option value='0'>false</option>
+                    <option value='1'>true</option>
+                </select>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon'>标绘图层的可锁定：</span>
+                <select class='form-control' id='locked' onchange="lockedChanges()">
+                    <option value='0'>false</option>
+                    <option value='1'>true</option>
+                </select>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon'>标绘图层的可选择：</span>
+                <select class='form-control' id='selected' onchange="selectedChanges()">
+                    <option value='0'>false</option>
+                    <option value='1'>true</option>
+                </select>
+            </div>
+        </div>
+        <input type="button" class="btn btn-default" value="绘制标号" style="margin-bottom: 10px" onclick="drawPolygon()"/>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map, baseLayer, plottingLayer, plottingEdit, drawFeature;
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        baseLayer.events.on({"layerInitialized": addLayer});
+
+        plottingLayer = new SuperMap.Layer.PlottingLayer("PlottingLayer", serverUrl);
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+        drawFeature = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+        drawFeature.events.on({"featureadded": drawCompleted});
+        map.addControls([plottingEdit, drawFeature]);
+    }
+
+    function addLayer() {
+        map.addLayers([baseLayer, plottingLayer]);
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+        if (plottingLayer.isEditable)
+            document.getElementById("editable").value = 1;
+        else
+            document.getElementById("editable").value = 0;
+
+        if (plottingLayer.isLocked)
+            document.getElementById("locked").value = 1;
+        else
+            document.getElementById("locked").value = 0;
+
+        if (plottingLayer.isSelected)
+            document.getElementById("selected").value = 1;
+        else
+            document.getElementById("selected").value = 0;
+    }
+
+    function drawCompleted() {
+        drawFeature.deactivate();
+        plottingEdit.activate();
+    }
+
+    function editableChanges() {
+        plottingLayer.setEditable(document.getElementById("editable").selectedIndex);
+    }
+
+    function lockedChanges() {
+        plottingLayer.setLocked(document.getElementById("locked").selectedIndex);
+    }
+
+    function selectedChanges() {
+        plottingLayer.setSelected(document.getElementById("selected").selectedIndex);
+    }
+
+    function drawPolygon() {
+        plottingEdit.deactivate();
+
+        drawFeature.handler.serverUrl = serverUrl;
+        drawFeature.handler.libID = 0;
+        drawFeature.handler.symbolCode = 32;
+        drawFeature.activate();
+    }
+
+    function PlottingDrawCancel() {
+        if (drawFeature) {
+            drawFeature.deactivate();
+        }
+
+        if (plottingEdit) {
+            plottingEdit.activate();
+        }
+    }
+
+    document.onmouseup = function (evt) {
+        var evt = evt || window.event;
+        if (evt.button === 2) {
+            PlottingDrawCancel();
+            return false;
+        }
+        evt.stopPropagation();
+    }
+</script>
+
+</body>
+</html>

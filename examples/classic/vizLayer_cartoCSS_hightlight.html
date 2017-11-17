@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>高亮显示</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 150px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>高亮显示</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="取消高亮"
+               onclick="layer.unHightlightFeatures();closeInfoWin();"/>
+        <ul id='layerItems' style="display: none;position: absolute;"></ul>
+    </div>
+</div>
+<div id="map"></div>
+<script type="text" id="textData">
+        @color:#ee9900;
+        *{
+        line-color:@color;
+        line-opacity:1;
+        line-width:3;
+        polygon-fill:@color;
+        polygon-opacity:0.4;
+        text-fill:#000000;
+        }
+</script>
+<script>
+    var map, layer, layerItems, infowin, featureInfoes,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+    init();
+
+    function init() {
+        if (!document.createElement('canvas').getContext) {
+            alert('您的浏览器不支持 canvas，请升级');
+            return;
+        }
+        layerItems = document.getElementById('layerItems');
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.MousePosition(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        var hightLightCartoCss = document.getElementById("textData").text;
+        layer = new SuperMap.Layer.TiledVectorLayer("China", url, {
+            cacheEnabled: true,
+            returnAttributes: true
+        }, {useLocalStorage: true, highLightCartoCss: hightLightCartoCss});
+        layer.events.on({"layerInitialized": addLayer});
+
+        map.events.on({
+            'click': function (evt) {
+                closeInfoWin();
+                layer.unHightlightFeatures();
+                featureInfoes = layer.getFeature(evt.xy.x, evt.xy.y);
+                console.log(featureInfoes);
+                if (featureInfoes && featureInfoes.length > 0) {
+                    while (layerItems.firstChild) {
+                        layerItems.removeChild(layerItems.firstChild);
+                    }
+                    layerItems.style.top = evt.clientY + 'px';
+                    layerItems.style.left = evt.clientX + 'px';
+                    for (var i = 0, len = featureInfoes.length; i < len; i++) {
+                        var li = document.createElement('li');
+                        li.innerHTML = featureInfoes[i].cartoLayer.layerName;
+                        li.setAttribute('data-index', i);
+                        layerItems.appendChild(li);
+                        if (i !== (len - 1)) {
+                            li.style.borderBottom = '1px solid';
+                        }
+                        li.onclick = liClickHandle;
+                    }
+                    layerItems.style.display = 'block';
+                } else {
+                    layerItems.style.display = 'none';
+                }
+
+            },
+            'rightclick': function () {
+                layerItems.style.display = 'none';
+            },
+            'move': function () {
+                layerItems.style.display = 'none';
+            }
+        });
+    }
+
+    function liClickHandle(evt) {
+        var evt = window.event || evt;
+        var target = evt.srcElement || evt.target;
+        evt.stopPropagation();
+        var index = +target.dataset.index;
+        layer.highlightFeatures(featureInfoes[index]);
+        var lonlat = map.getLonLatFromViewPortPx(featureInfoes.xy);
+        openPopup(featureInfoes[index].feature, lonlat);
+        layerItems.style.display = 'none';
+    }
+
+
+    function addLayer() {
+        map.addLayers([layer]);
+        var center = new SuperMap.LonLat(0, 0);
+        map.setCenter(center, 4);
+    }
+
+    //定义mouseClickHandler函数，触发click事件会调用此函数
+    function openPopup(feature, lonlat) {
+        var key = 'NAME';
+        var val = feature && feature.attributes && feature.attributes[key];
+        if (!val) {
+            key = 'SmID';
+            val = feature && feature.attributes && feature.attributes[key];
+        }
+        var contentHTML = "<div style='width:80px; font-size:12px;font-weight:bold ; opacity: 0.8'>";
+        contentHTML += key + "：" + val;
+        contentHTML += "</div>";
+
+        //初始化FramedCloud类
+        framedCloud = new SuperMap.Popup.FramedCloud(
+            "chicken",
+            lonlat,
+            null,
+            contentHTML,
+            null,
+            true,
+            null,
+            true
+        );
+
+        infowin = framedCloud;
+        map.addPopup(framedCloud);
+
+    }
+
+    function closeInfoWin() {
+        if (infowin) {
+            try {
+                infowin.hide();
+                infowin.destroy();
+            }
+            catch (e) {
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

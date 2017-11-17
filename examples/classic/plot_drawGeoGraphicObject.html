@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>点线面绘制</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>点线面绘制</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="绘线" onclick="draw_line()"/>
+        <input type="button" class="btn btn-default" value="绘面" onclick="draw_polygon()"/>
+        <input type="button" class="btn btn-default" value="绘文字" onclick="draw_text()"/>
+        <input type="button" class="btn btn-default" value="清除" onclick="clearFeatures()"/>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map, layer, plottingEdit, lineLayer, plottingLayer,
+        drawFeature;
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+    var plotUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation(),
+            ]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, null, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+
+        plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", plotUrl);
+        plottingLayer.style = {
+            fillColor: "#66cccc",
+            fillOpacity: 0.4,
+            strokeColor: "#66cccc",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 6
+        };
+
+        drawFeature = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+
+        //态势标绘编辑
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+        map.addControls([plottingEdit, drawFeature]);
+
+    }
+
+    function addLayer() {
+        map.addLayers([layer, plottingLayer]);
+        //显示地图范围
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+    }
+
+    function draw_line() {
+        clearFeatures();
+        var locationPointWCs = [];
+        locationPointWCs.push(new SuperMap.Geometry.Point(0, 0));
+        locationPointWCs.push(new SuperMap.Geometry.Point(0, 20));
+        locationPointWCs.push(new SuperMap.Geometry.Point(20, 10));
+        locationPointWCs.push(new SuperMap.Geometry.Point(10, 30));
+
+        plottingLayer.createSymbolWC(0, SuperMap.Plot.SymbolType.POLYLINESYMBOL, locationPointWCs);
+    }
+
+    function draw_polygon() {
+        clearFeatures();
+        var locationPointWCs = [];
+        locationPointWCs.push(new SuperMap.Geometry.Point(20, 0));
+        locationPointWCs.push(new SuperMap.Geometry.Point(10, 20));
+        locationPointWCs.push(new SuperMap.Geometry.Point(30, 40));
+        locationPointWCs.push(new SuperMap.Geometry.Point(60, 10));
+
+        plottingLayer.createSymbolWC(0, SuperMap.Plot.SymbolType.ARBITRARYPOLYGONSYMBOL, locationPointWCs);
+    }
+
+    function draw_text() {
+        clearFeatures();
+
+        plottingLayer.createTextWC("Text", new SuperMap.Geometry.Point(20, 0), {});
+    }
+
+
+    function clearFeatures() {
+        plottingLayer.removeAllFeatures();
+    }
+
+    //取消标绘与编辑
+    function plottingAllDeactivate() {
+        drawFeature.deactivate();
+        plottingEdit.deactivate();
+    }
+
+    //取消标绘，激活标绘编辑控件
+    function PlottingDrawCancel() {
+        plottingAllDeactivate();
+
+        plottingEdit.activate();
+    }
+
+    document.onmouseup = function (evt) {
+        var evt = evt || window.event;
+        if (evt.button === 2) {
+            PlottingDrawCancel();
+            return false;
+        }
+        evt.stopPropagation();
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>里程定线</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>里程定线</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>起始里程点：</span>
+                <input type='number' class='form-control' id='startMeasure' value='10'/>
+            </div>
+        </div>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>终止里程点：</span>
+                <input type='number' class='form-control' id='endMeasure' value='240'/>
+            </div>
+        </div>
+        <input type="button" class="btn btn-default" value="查询路由对象" style="margin-bottom: 10px"
+               onclick="CreateRouteObj()"/>
+        <input type="button" class="btn btn-default" value="定位线" style="margin-bottom: 10px" onclick="RouteLocator()"/>
+        <input type="button" class="btn btn-default" value="清除" style="margin-bottom: 10px" onclick="Remove()"/>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, layer, routeObj, vectorLayer, alertDiv,
+        lineStyle = {
+            strokeColor: "red",
+            strokeWidth: 5,
+            pointRadius: 3
+        },
+        lineStyle2 = {
+            strokeColor: "#669933",
+            strokeWidth: 3,
+            pointRadius: 3
+        },
+        url1 = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
+        url2 = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+
+    var feature;
+
+    init();
+
+    function init() {
+        //初始化图层
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("changchun", url1, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        vectorLayer = new SuperMap.Layer.Vector("RouteLayer");
+
+        //图层初始化完毕调用添加图层函数
+        layer.events.on({"layerInitialized": addLayer});
+        map = new SuperMap.Map("map", {
+            allOverlays: true, controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+    }
+
+    //添加必要图层
+    function addLayer() {
+        map.addLayers([layer, vectorLayer]);
+        map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 1);
+    }
+
+    //通过SQL查询路由对象
+    function CreateRouteObj() {
+        closeAlert();
+        var queryParam, queryBySQLParams, queryBySQLService;
+        queryParam = new SuperMap.REST.FilterParameter({
+            name: "RouteDT_road@Changchun",
+            attributeFilter: "RouteID=1690"
+        });
+        queryBySQLParams = new SuperMap.REST.QueryBySQLParameters({
+            queryParams: [queryParam]
+        });
+        queryBySQLService = new SuperMap.REST.QueryBySQLService(url1, {
+            eventListeners: {
+                "processCompleted": processCompleted,
+                "processFailed": processFailed
+            }
+        });
+        queryBySQLService.processAsync(queryBySQLParams);
+    }
+
+    //路由对象查询成功，初始化routeObj的值，同时将查询结果绘制在地图上
+    function processCompleted(queryEventArgs) {
+        routeObj = geo = queryEventArgs.result.recordsets[0].features[0].geometry;
+        var feature = new SuperMap.Feature();
+        feature.geometry = geo;
+        feature.style = lineStyle;
+        vectorLayer.addFeatures(feature);
+        showAlert("查询路由对象成功");
+    }
+
+    //路由对象查询失败，显示提示信息
+    function processFailed() {
+        showAlert("查询路由对象失败");
+    }
+
+    //"路由定线"操作，其中将routeObj和里程值作为参数传递到参数对象中
+    function RouteLocator() {
+        closeAlert();
+        if (feature != null) {
+            vectorLayer.removeFeatures(feature);
+            feature = null;
+        }
+
+        if (!routeObj) {
+            showAlert("请通过查询获取路由对象！");
+            return;
+        }
+        var routeLocatorParameters_point = new SuperMap.REST.RouteLocatorParameters({
+            "sourceRoute": routeObj,
+            "type": "LINE",
+            "startMeasure": parseFloat(document.getElementById('startMeasure').value),
+            "endMeasure": parseFloat(document.getElementById('endMeasure').value),
+            "isIgnoreGap": true
+        });
+        var routeLocatorService = new SuperMap.REST.RouteLocatorService(url2,
+            {
+                eventListeners: {
+                    "processCompleted": routeLocatorCompleted,
+                    'processFailed': routeLocatorFailed
+                }
+            }
+        )
+        routeLocatorService.processAsync(routeLocatorParameters_point);
+    }
+
+    //"里程定线"操作成功触发该函数，并显示提示信息
+    function routeLocatorCompleted(e) {
+        feature = new SuperMap.Feature.Vector();
+        var geometry = e.result.resultGeometry;
+        feature.geometry = geometry;
+        feature.style = lineStyle2;
+        vectorLayer.addFeatures(feature);
+        showAlert("里程定位线成功");
+    }
+
+    //"里程定线"操作失败触发该函数，并显示提示信息
+    function routeLocatorFailed(e) {
+        showAlert("里程定位线失败");
+    }
+
+    //移除要素，并重置里程值
+    function Remove() {
+        closeAlert();
+        vectorLayer.removeAllFeatures();
+        document.getElementById("startMeasure").value = "10";
+        document.getElementById("endMeasure").value = "240";
+        routeObj = null;
+    }
+
+    //显示提示框
+    function showAlert(msg) {
+        var className = "alert-success";
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+    }
+</script>
+
+</body>
+</html>

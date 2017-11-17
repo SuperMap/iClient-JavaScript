@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>图层操作</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>图层操作</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="创建图层" onclick="createLayer()"/>
+        <input type="button" class="btn btn-default" value="删除图层" onclick="removeLayer()"/>
+        <input type="button" class="btn btn-default" value="绘制标号" onclick="plotSymbol()"/>
+        <input type="button" class="btn btn-default" value="取消绘制" onclick="PlottingDrawCancel()"/>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map, baseLayer, drawGraphicObject, plottingEdit, symbolLibManager, plotting, plottingLayers = [],
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        baseLayer.events.on({"layerInitialized": addLayer});
+
+        plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+
+        symbolLibManager = plotting.getSymbolLibManager();
+        symbolLibManager.initializeAsync();
+    }
+
+    function addLayer() {
+        map.addLayers([baseLayer]);
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+    }
+
+    function createLayer() {
+        PlottingDrawCancel();
+        if (plottingEdit) {
+            plottingEdit.deactivate();
+        }
+
+        var plottingLayerName = "plottingLayer_" + Math.ceil(Math.random() * 1000);
+        var plottingLayer = new SuperMap.Layer.PlottingLayer(plottingLayerName, serverUrl);
+        plottingLayer.events.on({"added": layerAdded});
+        map.addLayers([plottingLayer]);
+    }
+
+    function layerAdded(addedEvt) {
+        plottingLayers.push(addedEvt.layer);
+        var successMessage = "图层 " + addedEvt.layer.name + " 创建成功";
+        alert(successMessage)
+
+        // 绘制标号;
+        drawGraphicObject = new SuperMap.Control.DrawFeature(addedEvt.layer, SuperMap.Handler.GraphicObject);
+        //态势标绘编辑
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+        //添加态势标绘控件
+        map.addControls([plottingEdit, drawGraphicObject]);
+    }
+
+    function removeLayer() {
+        if (plottingLayers.length !== 0) {
+            var plottingLayer = plottingLayers[plottingLayers.length - 1];
+            plottingLayer.events.on({"removed": layerRemoved});
+            map.removeLayer(plottingLayer);
+            map.removeControl(plottingLayer.drawGraphicObject);
+        } else {
+            alert("当前地图无标绘图层")
+        }
+
+        if (plottingLayers.length !== 0) {
+            drawGraphicObject.layer = plottingLayers[plottingLayers.length - 1];
+        } else {
+            drawGraphicObject = null;
+        }
+    }
+
+    function layerRemoved(removedEvt) {
+        plottingLayers.pop();
+        var successMessage = "图层 " + removedEvt.layer.name + " 删除成功";
+        alert(successMessage)
+    }
+
+    function plotSymbol() {
+        if (drawGraphicObject && drawGraphicObject !== null) {
+            drawGraphicObject.activate();
+            drawGraphicObject.handler.libID = 421;
+            drawGraphicObject.handler.symbolCode = 10200;
+            drawGraphicObject.handler.serverUrl = serverUrl;
+        }
+    }
+
+    //取消绘制
+    function PlottingDrawCancel() {
+        if (drawGraphicObject) {
+            drawGraphicObject.deactivate();
+        } else {
+            var map = document.getElementById('map');
+            map.oncontextmenu = function () {
+                window.event.returnValue = false;
+                return false;
+            }
+        }
+
+        if (plottingEdit) {
+            plottingEdit.activate();
+        } else {
+            var map = document.getElementById('map');
+            map.oncontextmenu = function () {
+                window.event.returnValue = false;
+                return false;
+            }
+        }
+    }
+
+    document.onmouseup = function (evt) {
+        var evt = evt || window.event;
+        if (evt.button === 2) {
+            PlottingDrawCancel(evt);
+            return false;
+        }
+    }
+</script>
+
+</body>
+</html>

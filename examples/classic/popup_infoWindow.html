@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>第三方信息框</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" include="nanoscroller,infoWindow" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        /*用户自定义*/
+        #pop-content {
+            right: 0 !important;
+            padding-left: 10px;
+            color: #000;
+            word-wrap: break-word;
+        }
+
+        /*滚动条样式*/
+        div.nano-pane {
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+
+        .nano > .nano-pane {
+            background-color: transparent;
+            width: 1px;
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nano > .nano-pane > .nano-slider {
+            background: #DEDEDE;
+            width: 6px;
+            transform: translate(0px, 43px);
+        }
+
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, layerWorld, marker, markers;
+    var vectorLayer, feature;
+    var featurePop, markerPop;
+    var url = host + "/iserver/services/map-world/rest/maps/World";
+
+    init();
+
+    function init() {
+
+        //map上添加控件
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.Navigation({  //添加导航控件到map
+                    dragPanOptions: {
+                        enableKinetic: true    //拖拽动画
+                    }
+                })]
+        });
+
+        //定义layerWorld图层，获取图层服务地址
+        layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url);
+        //为图层初始化完毕添加layerInitialized事件
+        layerWorld.events.on({"layerInitialized": addLayer});
+
+        //初始化矢量图层类
+        vectorLayer = new SuperMap.Layer.Vector("vectorLayer");
+        var selectControl = new SuperMap.Control.SelectFeature(vectorLayer, {
+            onSelect: onFeatureSelect
+        });
+        map.addControl(selectControl);
+        selectControl.activate();
+
+        //初始化标记图层类
+        markers = new SuperMap.Layer.Markers("Markers");
+
+        //初始化popup类
+        markerPop = new SuperMap.InfoWindow(
+            "marker"
+        );
+    }
+
+    //定义addLayer函数，触发 layerInitialized事件会调用此函数
+    function addLayer() {
+        //map上添加分块动态REST图层和标记图层
+        map.addLayers([layerWorld, vectorLayer, markers]);
+        map.setCenter(new SuperMap.LonLat(23, 38), 4);
+        addFeature();
+        addMarker();
+    }
+
+    //定义addMarker函数，触发layerInitialized事件会调用此函数
+    function addMarker() {
+        size = new SuperMap.Size(21, 25);
+        offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+        var icon = new SuperMap.Icon('./images/markerbig_select.png', size, offset);
+        //初始化标记覆盖物类
+        marker = new SuperMap.Marker(new SuperMap.LonLat(23.6530190, 37.9439259), icon);
+        //添加覆盖物到标记图层
+        markers.addMarker(marker);
+        //注册 click 事件,触发 mouseClickHandler()方法
+        marker.events.on({
+            "click": mouseClickHandler,
+            "touchstart": mouseClickHandler     //假如要在移动端的浏览器也实现点击弹框，则在注册touch类事件
+        });
+    }
+
+    //定义addFeature函数，触发layerInitialized事件会调用此函数
+    function addFeature() {
+        var point = new SuperMap.Geometry.Point(53, 38);
+        feature = new SuperMap.Feature.Vector(point, {
+            "SmID": "17",
+            "CAPITAL": "普拉亚",
+            "CAPITAL_EN": "Praia",
+            "COUNTRY": "佛得角",
+            "COUNTRY_EN": "Cape Verde",
+            "SmGeometrySize": "16",
+            "SmX": "-23.5209955",
+            "SmY": "14.9229990",
+            "USERID": "0"
+        });
+        vectorLayer.addFeatures(feature);
+    }
+
+    //定义mouseClickHandler函数，触发click事件会调用此函数
+    function mouseClickHandler() {
+        markerPop.titleBox = false;
+        markerPop.contentSize = new SuperMap.Size(300, 200);
+        markerPop.render();
+        //设置弹窗的位置
+        markerPop.setLonLat(this.getLonLat(), {x: 0, y: 0});
+        //设置弹窗的内容
+        markerPop.setContentHTML(null, '<div id="pop-content">' + 'SmID  :  31' + "<br>" +
+            '区县  :  房山区' + "<br>" +
+            '机构名称  :  北京市房山区福海亿利残疾人职康站' + "<br>" +
+            '服务分类  :  职康类' + "<br>" +
+            '区县  :  房山区' + "<br>" +
+            '机构名称  :  北京市房山区福海亿利残疾人职康站' + "<br>" +
+            '服务分类  :  职康类' + "<br>" +
+            '<p>注：此弹窗的滚动条为浏览器默认样式，' +
+            'feature弹窗为jquery-nanoscroller 样式，' +
+            '如需修改请看feature弹窗示例</p></div>');
+        //添加弹窗到map图层
+        map.addPopup(markerPop);
+    }
+
+    // Feature 选中事件响应
+    function onFeatureSelect(feature) {
+        featurePop = new SuperMap.InfoWindow(
+            "feature",
+            '要素信息'
+        );
+        featurePop.hide();
+        featurePop.titleBox = true;
+        featurePop.contentSize = new SuperMap.Size(300, 200);
+        featurePop.render();
+        featurePop.show(null, feature);
+        var lonLat = new SuperMap.LonLat(feature.geometry.x, feature.geometry.y);
+        featurePop.setLonLat(lonLat, {x: 0, y: 0});
+        //添加弹窗到map图层
+        map.addPopup(featurePop);
+
+        /*使用jquery的滚动条插件 jquery.nanoscroller.min.js
+         *此插件依赖于jquery
+         *还需引入此插件的css样式，还可以在此样式上进行修改
+         * */
+        document.getElementById("feature_contentDiv").className = "nano";
+        document.getElementById("feature_groupDiv").className = "nano-content";
+        $(".nano").nanoScroller();
+    }
+
+    // Feature取消选中事件响应
+    function onFeatureUnselect() {
+        featurePop.destroy();
+    }
+</script>
+
+</body>
+</html>

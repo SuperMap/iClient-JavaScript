@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>点符号</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 220px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+        img {
+            margin-left: 2px;
+            height: 30px;
+            width: 30px
+        }
+
+        #firstImg {
+            margin-left: 5px;
+        }
+
+        #lastInput {
+            margin-left: 16px;;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>点符号</h5></div>
+    <div class='panel-body content'>
+          <div class='input-group'>
+              <label id="text">选择点类型：</label>
+              <img id="firstImg" src="./images/marker_red.png">
+              <img src="./images/marker_black.png">
+              <img src="./images/marker_blue.png"> <br/>
+          </div>
+          <div class='input-group' style="padding-left: 99px;">
+              <input type="radio" class="btn" name="image" value="marker_red" onclick="selectPoint(this.value)"/>
+              <input type="radio" class="btn" name="image" value="marker_black" onclick="selectPoint(this.value)"
+                     style="margin-left: 18px"/>
+              <input id="lastInput" type="radio" class="btn" name="image" value="marker_blue"
+                     onclick="selectPoint(this.value)" style="margin-left: 18px"/>
+          </div>
+    </div>
+</div>
+<div id="map"></div>
+<script type="text" id="textData">
+        #World_Continent_pl___China{
+        polygon-fill:#666;
+        }
+        #China_ProCenCity_pt___China{
+        point-file:<%=pointFile>;
+        point-offset-y:<%=offsetY>;
+        }
+</script>
+<script>
+    var map, layer, cartoCss,
+        host = window.isLocal ? window.server : "http://117.122.248.69:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+    init();
+
+    function init() {
+        if (!document.createElement('canvas').getContext) {
+            alert('您的浏览器不支持 canvas，请升级');
+            return;
+        }
+
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.MousePosition(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        cartoCss = document.getElementById("textData").text;
+        var valueMap = {pointFile: "", offsetY: 0};
+        var cartoCssStr = replaceString(cartoCss, valueMap);
+        layer = new SuperMap.Layer.TiledVectorLayer("China", url, {
+            cacheEnabled: true,
+            returnAttributes: true
+        }, {useLocalStorage: true, cartoCss: cartoCssStr, donotNeedServerCartoCss: true});
+        layer.events.on({"layerInitialized": addLayer});
+    }
+
+
+    function addLayer() {
+        map.addLayers([layer]);
+        var center = new SuperMap.LonLat(11793760, 4407704);
+        map.setCenter(center, 6);
+    }
+
+    function replaceString(str, obj) {
+        for (var prop in obj) {
+            var regexp = new RegExp("<%=" + prop + ">", "gi");
+            str = str.replace(regexp, obj[prop]);
+        }
+        return str;
+    }
+
+    function selectPoint(imgName) {
+        var imgUrl = "url(./images/" + imgName + ".png)";
+        var valueMap = {pointFile: imgUrl, offsetY: -8};
+        var cartocssStr = replaceString(cartoCss, valueMap);
+        layer.setCartoCSS(cartocssStr);
+    }
+</script>
+
+</body>
+</html>

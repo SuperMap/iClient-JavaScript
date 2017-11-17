@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>动态分段</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>动态分段</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="动态分段" onclick="GenerateSpatialData()"/>&nbsp;
+        <input type="button" class="btn btn-default" value="清除" onclick="clearThemeLayer()"/>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, layer, themeLayer,
+        url = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
+        url2 = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+
+    init();
+
+    function init() {
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("changchun", url, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+        map = new SuperMap.Map("map", {
+            allOverlays: true, controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+    }
+
+    function addLayer() {
+        map.addLayers([layer]);
+        map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 1);
+    }
+
+    //生成动态分段
+    function GenerateSpatialData() {
+        clearThemeLayer();
+
+        //配置数据返回Option
+        var option = new SuperMap.REST.DataReturnOption({
+                expectCount: 1000,
+                dataset: "generateSpatialData@Changchun",
+                deleteExistResultDataset: true,
+                dataReturnMode: SuperMap.REST.DataReturnMode.DATASET_ONLY
+            }),
+            //配置动态分段Parameters
+            parameters = new SuperMap.REST.GenerateSpatialDataParameters({
+                routeTable: "RouteDT_road@Changchun",
+                routeIDField: "RouteID",
+                eventTable: "LinearEventTabDT@Changchun",
+                eventRouteIDField: "RouteID",
+                measureField: "",
+                measureStartField: "LineMeasureFrom",
+                measureEndField: "LineMeasureTo",
+                measureOffsetField: "",
+                errorInfoField: "",
+                dataReturnOption: option
+            }),
+            //配置动态分段iService
+            iService = new SuperMap.REST.GenerateSpatialDataService(url2, {
+                eventListeners: {
+                    processCompleted: generateCompleted,
+                    processFailed: generateFailded
+                }
+            });
+
+        //execute
+        iService.processAsync(parameters);
+
+        //completed
+        function generateCompleted(generateSpatialDataEventArgs) {
+            //配置专题样式
+            var style1, style2, style3;
+            style1 = new SuperMap.REST.ServerStyle({
+                fillForeColor: new SuperMap.REST.ServerColor(242, 48, 48),
+                lineColor: new SuperMap.REST.ServerColor(242, 48, 48),
+                lineWidth: 1
+            });
+            style2 = new SuperMap.REST.ServerStyle({
+                fillForeColor: new SuperMap.REST.ServerColor(255, 159, 25),
+                lineColor: new SuperMap.REST.ServerColor(255, 159, 25),
+                lineWidth: 1
+            });
+            style3 = new SuperMap.REST.ServerStyle({
+                fillForeColor: new SuperMap.REST.ServerColor(91, 195, 69),
+                lineColor: new SuperMap.REST.ServerColor(91, 195, 69),
+                lineWidth: 1
+            });
+
+            //配置专题项
+            var themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3;
+            themeUniqueIteme1 = new SuperMap.REST.ThemeUniqueItem({
+                unique: "拥挤",
+                style: style1
+            });
+            themeUniqueIteme2 = new SuperMap.REST.ThemeUniqueItem({
+                unique: "缓行",
+                style: style2
+            });
+            themeUniqueIteme3 = new SuperMap.REST.ThemeUniqueItem({
+                unique: "畅通",
+                style: style3
+            });
+            var themeUniqueItemes = [themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3];
+
+            var themeUnique = new SuperMap.REST.ThemeUnique({
+                uniqueExpression: "TrafficStatus",
+                items: themeUniqueItemes,
+                defaultStyle: new SuperMap.REST.ServerStyle({
+                    fillForeColor: new SuperMap.REST.ServerColor(48, 89, 14),
+                    lineColor: new SuperMap.REST.ServerColor(48, 89, 14)
+                })
+            });
+
+            var themeParameters = new SuperMap.REST.ThemeParameters({
+                themes: [themeUnique],
+                datasetNames: ["generateSpatialData"],
+                dataSourceNames: ["Changchun"],
+                types: ['REGION']
+            });
+
+            var themeService = new SuperMap.REST.ThemeService(url, {
+                eventListeners: {
+                    processCompleted: themeCompleted,
+                    processFailed: themeFailed
+                }
+            });
+
+            themeService.processAsync(themeParameters);
+
+            function themeCompleted(themeEventArgs) {
+                if (themeEventArgs.result.resourceInfo.id) {
+                    themeLayer = new SuperMap.Layer.TiledDynamicRESTLayer("道路交通状况_专题图", url, {
+                        cacheEnabled: false,
+                        transparent: true,
+                        layersID: themeEventArgs.result.resourceInfo.id
+                    }, {"maxResolution": "auto"});
+                    themeLayer.events.on({"layerInitialized": addThemeLayer});
+                }
+            }
+
+            function addThemeLayer() {
+                map.addLayer(themeLayer);
+            }
+
+            function themeFailed(e) {
+                alert(e.error.errorMsg);
+            }
+        }
+
+        //failed
+        function generateFailded(e) {
+            alert(e.error.errorMsg);
+        }
+    }
+
+    //移除专题图层
+    function clearThemeLayer() {
+        if (themeLayer) {
+            map.removeLayer(themeLayer, true);
+            themeLayer = null;
+        }
+    }
+</script>
+
+</body>
+</html>

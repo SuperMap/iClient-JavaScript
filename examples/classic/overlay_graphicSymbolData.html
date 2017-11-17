@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Graphic图层符号绘制</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'></h5>Graphic图层符号绘制
+    </div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>绘制个数<span title='必填字段' style='color: red;'> * </span></span>
+                <input id='total' type='text' class='form-control' value='1000'/>
+            </div>
+        </div>
+        <div class='input-group'>
+            <input type="button" class="btn btn-default" value="开始绘制" onclick="addData()"/>&nbsp;
+            <input type="button" class="btn btn-default" value="移除" onclick="removeData()"/>
+        </div>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map, layer, graphicLayer, alertDiv,
+        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+    init();
+
+    function init() {
+        if (!document.createElement("canvas").getContext) {
+            alert("您的浏览器不支持Canvas，请先升级");
+            return;
+        }
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation(),
+            ]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+        graphicLayer = new SuperMap.Layer.Graphics("Graphic Layer");
+    }
+
+    function addLayer() {
+        map.addLayers([layer, graphicLayer]);
+        //显示地图范围
+        map.setCenter(new SuperMap.LonLat(0, 0), 3);
+    }
+
+    //symbol相关属性 填充色、边框颜色、半径、
+    var fillColors = ['rgba(255,153,0,0.4)', 'rgba(70,80,224,0.4)', 'rgba(60,150,79,0.4)', 'rgba(176,61,35,0.4)'];
+    var strokeColors = ['rgba(255,204,0,0.2)', 'rgba(12,21,138,0.2)', 'rgba(20,99,32,0.2)', 'rgba(145,43,20,0.2)'];
+    var radius = [3, 6, 9, 12, 15, 18];
+    var sybolCount = fillColors.length * radius.length * 2;
+    var symbols = [];
+    for (var i = 0; i < fillColors.length; i++) {
+        for (var j = 0; j < radius.length; j++) {
+            //circle  symbol
+            symbols.push(new SuperMap.Style.Circle({
+                radius: radius[j],
+                fill: new SuperMap.Style.Fill({
+                    color: fillColors[i]
+                }),
+                stroke: new SuperMap.Style.Stroke({
+                    color: strokeColors[i]
+                })
+            }));
+            //star symbol
+            symbols.push(new SuperMap.Style.RegularShape({
+                pointsLength: 5,
+                radius: radius[j],
+                radius1: radius[j] * 0.6,
+                fill: new SuperMap.Style.Fill({
+                    color: fillColors[i]
+                }),
+                stroke: new SuperMap.Style.Stroke({
+                    color: strokeColors[i]
+                })
+            }));
+        }
+    }
+
+    var total, t1, t2;
+    var e = 10000000;
+
+    function addData() {
+        closeAlert();
+        graphicLayer.removeAllGraphics();
+        var total = document.getElementById("total").value;
+        t1 = new Date().getTime();
+
+        var points = [];
+        for (var i = 0; i < total; i++) {
+            var point = new SuperMap.Geometry.Point(2 * e * Math.random() - e, 2 * e * Math.random() - e);
+            var pointVector = new SuperMap.Graphic(point);
+            pointVector.style = {
+                image: symbols[i % sybolCount]
+            };
+            points.push(pointVector)
+        }
+        graphicLayer.addGraphics(points);
+
+        //消耗时间计算
+        t2 = new Date().getTime();
+        //console.info(total + "个总时间为：" + (t2-t1) + "ms");
+        showAlert(total + "个总时间为：" + (t2 - t1) + "ms");
+    }
+
+    //移除数据
+    function removeData() {
+        closeAlert();
+        graphicLayer.removeAllGraphics();
+        graphicLayer.refresh();
+    }
+
+
+    //显示提示框
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+    }
+</script>
+
+</body>
+</html>

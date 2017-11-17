@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>旅行商分析</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>旅行商分析</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="选择站点" onclick="selectPoints()" />&nbsp;
+        <input type="button" class="btn btn-default" value="提交" onclick="findTSPPaths()" />&nbsp;
+        <input type="button" class="btn btn-default" value="清除" onclick="clearElements()" />
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var local, map, layer, vectorLayer, markerLayer,
+        drawPoint, nodeArray = [], pathTime, i = 0, j = 0, result,
+        style = {
+            strokeColor: "#304DBE",
+            strokeWidth: 3,
+            pointerEvents: "visiblePainted",
+            fill: false
+        },
+        url1 = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
+        url2 = host + "/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+
+    init();
+    function init() {
+        vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
+        drawPoint = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Point);
+        drawPoint.events.on({"featureadded": drawCompleted});
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                }),
+                drawPoint], units: "m"
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("Changchun", url1, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+        vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
+        markerLayer = new SuperMap.Layer.Markers("Markers");
+    }
+
+    function addLayer() {
+        map.addLayers([layer, vectorLayer, markerLayer]);
+        map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 1);
+    }
+
+    function selectPoints() {
+        clearElements();
+        drawPoint.activate();
+    }
+
+    function drawCompleted(drawGeometryArgs) {
+        var point = drawGeometryArgs.feature.geometry,
+            size = new SuperMap.Size(44, 33),
+            offset = new SuperMap.Pixel(-(size.w / 2), -size.h),
+            icon = new SuperMap.Icon("./images/marker.png", size, offset);
+        markerLayer.addMarker(new SuperMap.Marker(new SuperMap.LonLat(point.x, point.y), icon));
+        nodeArray.push(point);
+    }
+
+    function findTSPPaths() {
+        drawPoint.deactivate();
+        var findTSPPathsService, parameter, analystParameter, resultSetting;
+        resultSetting = new SuperMap.REST.TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeGeometry: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeGeometry: true,
+            returnNodeIDs: true,
+            returnPathGuides: true,
+            returnRoutes: true
+        });
+        analystParameter = new SuperMap.REST.TransportationAnalystParameter({
+            resultSetting: resultSetting,
+            weightFieldName: "length"
+        });
+        parameter = new SuperMap.REST.FindTSPPathsParameters({
+            isAnalyzeById: false,
+            nodes: nodeArray,
+            endNodeAssigned: false,
+            parameter: analystParameter
+        });
+        if (nodeArray.length <= 1) {
+            alert("站点数目有误");
+        }
+        findTSPPathsService = new SuperMap.REST.FindTSPPathsService(url2, {
+            eventListeners: {"processCompleted": processCompleted}
+        });
+        findTSPPathsService.processAsync(parameter);
+    }
+
+    function processCompleted(findTSPPathsEventArgs) {
+        result = findTSPPathsEventArgs.result;
+        allScheme(result);
+    }
+
+    function allScheme(result) {
+        if (i < result.tspPathList.length) {
+            addPath(result);
+        } else {
+            i = 0;
+        }
+    }
+
+    //以动画效果显示分析结果
+    function addPath(result) {
+        if (j < result.tspPathList[i].route.components[0].components.length) {
+            var pathFeature = new SuperMap.Feature.Vector();
+            var points = [];
+            for (var k = 0; k < 2; k++) {
+                if (result.tspPathList[i].route.components[0].components[j + k]) {
+                    points.push(new SuperMap.Geometry.Point(result.tspPathList[i].route.components[0].components[j + k].x, result.tspPathList[i].route.components[0].components[j + k].y));
+                }
+            }
+            var curLine = new SuperMap.Geometry.LinearRing(points);
+            pathFeature.geometry = curLine;
+            pathFeature.style = style;
+            vectorLayer.addFeatures(pathFeature);
+
+            //每隔0.01毫秒加载一条弧段
+            pathTime = setTimeout(function () {
+                addPath(result);
+            }, 0.01);
+            j++;
+        } else {
+            clearTimeout(pathTime);
+            j = 0;
+            i++;
+            allScheme(result);
+        }
+    }
+
+    function clearElements() {
+        nodeArray = [];
+        i = 0;
+        j = 0;
+        markerLayer.clearMarkers();
+        vectorLayer.removeAllFeatures();
+    }
+</script>
+
+</body>
+</html>

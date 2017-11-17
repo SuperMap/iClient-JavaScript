@@ -44,6 +44,20 @@
         if (inArray(includes, 'echarts')) {
             inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
         }
+        if (inArray(includes, 'nanoscroller')) {
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/nanoscroller.css");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.nanoscroller.min.js");
+        }
+        if (inArray(includes, 'infoWindow')) {
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/js/plugins/infoWindow/infoWindow.css");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/plugins/infoWindow/InfoWindow.js");
+        }
+        if (inArray(includes, 'heatmapColorCSS')) {
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/heatmap.css");
+        }
+        if (inArray(includes, 'responsive')) {
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/bootstrap-responsive.min.css");
+        }
         if (!inArray(excludes, 'iclient-classic')) {
             inputScript("../../dist/iclient-classic.min.js");
         }
