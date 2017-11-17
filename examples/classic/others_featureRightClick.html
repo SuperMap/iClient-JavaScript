@@ -77,7 +77,7 @@
 <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var map, layer, vectorLayer, gFeature, pointVector,
+    var map, layer, vectorLayer, gFeature, pointVector,alertDiv,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-world/rest/maps/World";
     function init() {
@@ -175,7 +175,7 @@
             pointRadius: 10
         };
         vectorLayer.addFeatures([pointVector]);
-        alert('可右键点击标记点');
+        showAlert("可右键点击标记点");
     }
     function setCenter() {
         var centerP = gFeature.geometry.getCentroid();
@@ -185,6 +185,31 @@
     function deleteSelect() {
         menu.style.visibility = "hidden";
         vectorLayer.removeFeatures(gFeature);
+        clearAlert();
+    }
+    //弹出提示框
+    function showAlert(msg, className) {
+        if (className === null || typeof (className) === 'undefined') {
+            className = "alert-success";
+        }
+        className = className.toString();
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:999999;position: absolute;top: 20px;left: 40%;width:300px;display: none;opacity: 0.9;text-align: center;'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+    //clear alert
+    function clearAlert() {
+        $('#msg_container').hide();
     }
 </script>
 </body>

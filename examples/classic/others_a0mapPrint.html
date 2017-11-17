@@ -31,7 +31,7 @@
 <script type="text/javascript" include="bootstrap,LargeFormatPrints" src="../js/include-web.js"></script>
 <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var map, layer;
+    var map, layer,alertDiv;
     host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-china400/rest/maps/China";
     //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
@@ -63,7 +63,7 @@
     function doLargeFormatPrint() {
         var broz = SuperMap.Browser.name;
         if (broz == 'msie' && parseInt(SuperMap.Browser.version) < 9) {
-            alert("ie9版本以下部分打印功能不支持");
+            showAlert("ie9版本以下部分打印功能不支持","alert-danger");
             return;
         }
         //map.div.style.display = "none";
@@ -71,6 +71,29 @@
         var scale = map.getScale();
         LargeFormatPrint && LargeFormatPrint.excute(url, "3857", scale, center, "A0", map);
     }
+
+
+    //弹出提示框
+    function showAlert(msg, className) {
+        if (className === null || typeof (className) === 'undefined') {
+            className = "alert-success";
+        }
+        className = className.toString();
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:999999;position: absolute;top: 20px;left: 40%;width:260px;display: none;opacity: 0.9;'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
 
 </script>
 </body>

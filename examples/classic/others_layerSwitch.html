@@ -61,9 +61,9 @@
 <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var map, layer, positionLayer, lat, lon, geolocate, baseLayer, c, b,
+    var map, layer,baseLayer, c, b,
         leftStart = 0, topStart = 0, leftEnd = 0, topEnd = 0,
-        mapTop, mapRight, mapButtom, mapLeft, handleLeft,
+        mapTop, mapRight, mapButtom, mapLeft, handleLeft,alertDiv,
         useCanvas, mapRightBack, isFirstDrag = false, isZoom = false, isMove = false,
         host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     url1 = host + "/iserver/services/map-world/rest/maps/World";
@@ -74,9 +74,9 @@
     var broz = SuperMap.Util.getBrowser();
 
     if (!document.createElement('canvas').getContext) {
-        alert('您的浏览器不支持 canvas，请升级');
+        showAlert('您的浏览器不支持 canvas，请升级', "alert-danger");
     } else if (broz.device === 'android') {
-        alert('您的设备不支持，请使用pc或其他设备');
+        showAlert('您的设备不支持，请使用pc或其他设备', "alert-danger");
     }
 
     map = new SuperMap.Map("map", {
@@ -270,6 +270,26 @@
             left: left,
             top: top
         };
+    }
+    //弹出提示框
+    function showAlert(msg, className) {
+        if (className === null || typeof (className) === 'undefined') {
+            className = "alert-success";
+        }
+        className = className.toString();
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:999999;position: absolute;top: 20px;left: 40%;width:260px;display: none;opacity: 0.9;'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
     }
 </script>
 </body>

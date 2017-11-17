@@ -9,21 +9,21 @@
 <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
 <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var map, osmLayer, vector, dataAdded = false;
-        map = new SuperMap.Map("map", {
-            controls: [
-                new SuperMap.Control.Navigation(),
-                new SuperMap.Control.Zoom(),
-                new SuperMap.Control.LayerSwitcher(),
-                new SuperMap.Control.MousePosition()
-            ]
-        });
-        osmLayer = new SuperMap.Layer.OSM();
-        vector = new SuperMap.Layer.Vector("vector");
-        map.addLayers([osmLayer, vector]);
-        addData();
-        var bounds = new SuperMap.Bounds(-33554432, -33554432, 33554432, 33554432);
-        map.zoomToExtent(bounds);
+    var map, osmLayer, vector, alertDiv, dataAdded = false;
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.Navigation(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.LayerSwitcher(),
+            new SuperMap.Control.MousePosition()
+        ]
+    });
+    osmLayer = new SuperMap.Layer.OSM();
+    vector = new SuperMap.Layer.Vector("vector");
+    map.addLayers([osmLayer, vector]);
+    addData();
+    var bounds = new SuperMap.Bounds(-33554432, -33554432, 33554432, 33554432);
+    map.zoomToExtent(bounds);
     function addData() {
         if (!dataAdded) {
             vector.removeAllFeatures();
@@ -38,8 +38,28 @@
             vector.addFeatures([pointVector]);
             dataAdded = true;
         } else {
-            alert("数据已加载。");
+            showAlert("数据已加载。");
         }
+    }
+    //弹出提示框
+    function showAlert(msg, className) {
+        if (className === null || typeof (className) === 'undefined') {
+            className = "alert-success";
+        }
+        className = className.toString();
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:999999;position: absolute;top: 20px;left: 40%;width:260px;display: none;opacity: 0.9;'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
     }
 </script>
 </body>

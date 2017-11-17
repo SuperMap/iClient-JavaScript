@@ -21,21 +21,25 @@
             float: right;
             padding-right: 3px;
         }
+
         .winTitle .title_right a {
             color: #FFF;
             text-decoration: none;
             padding-right: 3px;
         }
+
         .winTitle .title_right a:hover {
             text-decoration: underline;
             color: #FF0000;
             padding-right: 3px;
         }
+
         .winContent {
             padding: 5px;
             overflow-y: auto;
             height: 550px;
         }
+
         .popupWindow {
             right: 20px;
             top: 140px;
@@ -44,6 +48,7 @@
             background: #FFF;
             z-index: 9999;
         }
+
         .editPane {
             position: absolute;
             right: 60px;
@@ -75,7 +80,7 @@
     var map = null;
     var layer = null;
     var tempLayerID = null,
-        host = window.isLocal ? window.server : "http://117.122.248.69:8090",
+        host = window.isLocal ? window.server : "http://117.122.248.69:8090", alertDiv,
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图";
     // 获取子图层状态信息
     function getLayersInfo() {
@@ -219,7 +224,7 @@
 
     //显示错误信息
     function createTempLayerFailed(result) {
-        alert(result.error.errorMsg);
+        showAlert(result.error.errorMsg, "alert-danger");
     }
 
     function addLayer() {
@@ -297,6 +302,26 @@
     };
     function show() {
         $("#popupWin").css("display", "block");
+    }
+    //弹出提示框
+    function showAlert(msg, className) {
+        if (className === null || typeof (className) === 'undefined') {
+            className = "alert-success";
+        }
+        className = className.toString();
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:999999;position: absolute;top: 20px;left: 40%;width:260px;display: none;opacity: 0.9;'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
     }
 </script>
 </body>

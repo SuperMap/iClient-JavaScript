@@ -32,12 +32,12 @@
 <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script src='./js/graph/Bar3D.js'></script>
 <script type="text/javascript">
-    var map, layer, themeLayer, infowin;
+    var map, layer, themeLayer, infowin,alertDiv;
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-world/rest/maps/World";
     // 统计图模块要求浏览器支持 Canvas 渲染
     if (!document.createElement('canvas').getContext) {
-        alert("您的浏览器不支持 Canvas，请升级！");
+        showAlert("您的浏览器不支持 Canvas，请升级！", "alert-danger");
     }
 
     map = new SuperMap.Map("map", {
@@ -115,7 +115,7 @@
     }
 
     function processFailed(e) {
-        alert(e.error.errorMsg);
+        showAlert(e.error.errorMsg,'alert-danger');
     }
 
     // 定位到首都城市
@@ -166,9 +166,29 @@
                 map.removePopup(infowin);
             }
             catch (e) {
-                alert(e.message);
+                showAlert(e.message,'alert-danger');
             }
         }
+    }
+    //弹出提示框
+    function showAlert(msg, className) {
+        if (className === null || typeof (className) === 'undefined') {
+            className = "alert-success";
+        }
+        className = className.toString();
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:999999;position: absolute;top: 20px;left: 40%;width:260px;display: none;opacity: 0.9;'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
     }
 </script>
 </body>
