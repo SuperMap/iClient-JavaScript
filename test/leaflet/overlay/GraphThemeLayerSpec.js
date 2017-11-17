@@ -424,7 +424,7 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     //在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature
-    xit('getFeatureBy', function () {
+    it('getFeatureBy', function () {
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
         graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
         graphThemeLayer.chartsSetting = {
@@ -459,15 +459,17 @@ describe('leaflet_GraphThemeLayer', function () {
             features.push(fea);
         }
         graphThemeLayer.addFeatures(features);
-        var result = graphThemeLayer.getFeatureBy("id", "SuperMap.Feature_3738");
+        var resultFeatures =  graphThemeLayer.getFeatures();
+        var id =resultFeatures[0].id;
+        var result = graphThemeLayer.getFeatureBy("id", id);
         expect(result).not.toBeNull();
-        expect(result.id).toEqual("SuperMap.Feature_3738");
-        expect(result.attributes.NAME).toEqual("上海市");
+        expect(result.id).toEqual(id);
+        expect(result.attributes.NAME).toEqual("北京市");
         graphThemeLayer.clear();
     });
 
      //通过给定一个 id，返回对应的矢量要素
-     xit('getFeatureById', function () {
+    it('getFeatureById', function () {
          var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
          graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
          graphThemeLayer.chartsSetting = {
@@ -502,9 +504,11 @@ describe('leaflet_GraphThemeLayer', function () {
              features.push(fea);
          }
          graphThemeLayer.addFeatures(features);
-         var result = graphThemeLayer.getFeatureById("SuperMap.Feature_4360");
+        var resultFeatures =  graphThemeLayer.getFeatures();
+        var id =resultFeatures[0].id;
+         var result = graphThemeLayer.getFeatureById(id);
          expect(result).not.toBeNull();
-         expect(result.id).toEqual("SuperMap.Feature_4360");
+         expect(result.id).toEqual(id);
          expect(result.attributes.NAME).toEqual("北京市");
          graphThemeLayer.clear();
      });
