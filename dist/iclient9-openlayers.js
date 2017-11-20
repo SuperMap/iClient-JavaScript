@@ -41419,22 +41419,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var IPortalMapsQueryParam = function IPortalMapsQueryParam(params) {
     _classCallCheck(this, IPortalMapsQueryParam);
 
-    this.userNames = '';
-    this.tags = [];
+    this.userNames = null;
+    this.tags = null;
     this.suggest = false;
-    this.sourceTypes = [];
-    this.keywords = [];
-    this.epsgCode = "";
-    this.orderBy = "";
-    this.currentPage = "";
-    this.pageSize = 0;
-    this.dirIds = [];
+    this.sourceTypes = null;
+    this.keywords = null;
+    this.epsgCode = null;
+    this.orderBy = null;
+    this.currentPage = null;
+    this.pageSize = null;
+    this.dirIds = null;
     this.isNotInDir = false;
-    this.updateStart = 0;
-    this.updateEnd = 0;
-    this.visitStart = 0;
-    this.visitEnd = 0;
-    this.filterFields = [];
+    this.updateStart = null;
+    this.updateEnd = null;
+    this.visitStart = null;
+    this.visitEnd = null;
+    this.filterFields = null;
 
     params = params || {};
     _SuperMap2.default.Util.extend(this, params);

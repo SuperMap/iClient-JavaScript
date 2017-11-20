@@ -6,24 +6,24 @@ import SuperMap from '../SuperMap';
  * @param params -{Object} iPortal地图资源查询具体参数
  *
  */
-export default  class IPortalMapsQueryParam {
+export default class IPortalMapsQueryParam {
 
-    userNames = '';
-    tags = [];
+    userNames = null;
+    tags = null;
     suggest = false;
-    sourceTypes = [];
-    keywords = [];
-    epsgCode = "";
-    orderBy = "";
-    currentPage = "";
-    pageSize = 0;
-    dirIds = [];
+    sourceTypes = null;
+    keywords = null;
+    epsgCode = null;
+    orderBy = null;
+    currentPage = null;
+    pageSize = null;
+    dirIds = null;
     isNotInDir = false;
-    updateStart = 0;
-    updateEnd = 0;
-    visitStart = 0;
-    visitEnd = 0;
-    filterFields = [];
+    updateStart = null;
+    updateEnd = null;
+    visitStart = null;
+    visitEnd = null;
+    filterFields = null;
 
     constructor(params) {
         params = params || {};
