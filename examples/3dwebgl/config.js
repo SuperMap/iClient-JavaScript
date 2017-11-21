@@ -8,12 +8,15 @@ var identification = {
 var exampleConfig = {
     "3D-WebGL": {
         name: "3D-WebGL",
+        name_en: "3D-WebGL",
         content: {
             "3D": {
                 name: "3D",
+                name_en: "3D",
                 content: [
                     {
                         name: "三维场景",
+                        name_en: "3D map",
                         thumbnail: "3D_Map.png",
                         fileName: "01_3DMap"
                     }

@@ -18,70 +18,87 @@
     <ul class="nav navbar-nav">
         <li class="overview-menu" id="headerIndex">
             <a href="../../web/index.html" class="center">
-                首页
+                <span data-i18n="nav.home._name"></span>
             </a>
         </li>
-        <li class="dropdown nav-dropdown-menu guide-menu">
+        <li class="dropdown nav-dropdown-menu product-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                产品
+                <span data-i18n="nav.product._name"></span>
                 <i class="fa fa-sort-down"></i>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="../../web/introduction/overview.html">概 览</a></li>
-                <li><a href="../../web/introduction/leaflet.html">for Leaflet</a></li>
-                <li><a href="../../web/introduction/openlayers.html">for OpenLayers</a></li>
-                <li><a href="../../web/introduction/mapboxgl.html">for MapboxGL</a></li>
-                <li><a href="../../web/introduction/classic.html">iClient Classic</a></li>
-                <li><a href="../../web/introduction/3dwebgl.html">3D-WebGL</a></li>
+                <li><a href="../../web/introduction/overview.html" data-i18n="nav.product.overview"></a></li>
+                <li><a href="../../web/introduction/leaflet.html" data-i18n="nav.product.leaflet"></a>
+                </li>
+                <li><a href="../../web/introduction/openlayers.html" data-i18n="nav.product.openlayers"></a></li>
+                <li><a href="../../web/introduction/mapboxgl.html" data-i18n="nav.product.mapboxgl"></a></li>
+                <li><a href="../../web/introduction/classic.html" data-i18n="nav.product.classic"></a></li>
+                <li><a href="../../web/introduction/3dwebgl.html" data-i18n="nav.product.3dwebgl"></a>
+                </li>
             </ul>
         </li>
         <li class="dropdown nav-dropdown-menu example-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                示例
+                <span data-i18n="nav.example._name"></span>
                 <i class="fa fa-sort-down"></i>
             </a>
             <ul class="dropdown-menu ">
-                <li><a href="../leaflet/examples.html" id="leaflet">for Leaflet</a></li>
-                <li><a href="../openlayers/examples.html" id="openlayers">for OpenLayers</a></li>
-                <li><a href="../mapboxgl/examples.html" id="mapboxgl">for MapboxGL</a></li>
-                <li><a href="../classic/examples.html" id="classic">iClient Classic</a></li>
-                <li><a href="../3dwebgl/examples.html" id="3dwebgl">3D-WebGL</a></li>
+                <li><a href="../leaflet/examples.html" id="leaflet" data-i18n="nav.example.leaflet"></a></li>
+                <li><a href="../openlayers/examples.html" id="openlayers" data-i18n="nav.example.openlayers">
+                </a></li>
+                <li><a href="../mapboxgl/examples.html" id="mapboxgl" data-i18n="nav.example.mapboxgl"></a>
+                </li>
+                <li><a href="../classic/examples.html" id="classic" data-i18n="nav.example.classic"></a>
+                </li>
+                <li><a href="../3dwebgl/examples.html" id="3dwebgl" data-i18n="nav.example.3dwebgl"></a></li>
             </ul>
         </li>
         <li class="dropdown nav-dropdown-menu api-menu" id="headerPricing">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                API
+                <span data-i18n="nav.api._name"></span>
                 <i class="fa fa-sort-down"></i>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="../../web/APIs/leaflet.html">for Leaflet</a></li>
-                <li><a href="../../web/APIs/openlayers.html">for OpenLayers</a></li>
-                <li><a href="../../web/APIs/mapboxgl.html">for MapboxGL</a></li>
-                <li><a href="../../web/APIs/classic.html">iClient Classic</a></li>
-                <li><a href="../../web/APIs/3dwebgl.html">3D-WebGL</a></li>
+                <li><a href="../../web/APIs/leaflet.html" data-i18n="nav.api.leaflet"></a></li>
+                <li><a href="../../web/APIs/openlayers.html" data-i18n="nav.api.openlayers"></a></li>
+                <li><a href="../../web/APIs/mapboxgl.html" data-i18n="nav.api.mapboxgl"></a></li>
+                <li><a href="../../web/APIs/classic.html" data-i18n="nav.api.classic"></a></li>
+                <li><a href="../../web/APIs/3dwebgl.html" data-i18n="nav.api.3dwebgl"></a></li>
             </ul>
         </li>
-        <li class="dropdown nav-dropdown-menu download-menu">
+        <li class="dropdown nav-dropdown-menu code-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                获取
+                <span data-i18n="nav.code._name"></span>
                 <i class="fa fa-sort-down"></i>
             </a>
             <ul class="dropdown-menu">
-                <li class="build"><a href="https://github.com/SuperMap/iClient9" target="_blank">源码@GitHub</a></li>
-                <li class="build"><a href="https://git.oschina.net/isupermap/iClient9" target="_blank">源码@OSChina</a></li>
+                <li class="build"><a href="https://github.com/SuperMap/iClient9" target="_blank"
+                                     data-i18n="nav.code.github"></a></li>
+                <li class="build"><a href="https://git.oschina.net/isupermap/iClient9" target="_blank"
+                                     data-i18n="nav.code.oschina"></a></li>
             </ul>
         </li>
         <li class="overview-menu" id="FAQIndex">
-            <a href="../../web/FAQ/FAQ.html" class="center">
-                FAQ
+            <a href="../../web/FAQ/FAQ.html" class="center" data-i18n="nav.faq._name">
+                <span data-i18n="nav.faq._name"></span>
             </a>
+        </li>
+        <li class="dropdown nav-dropdown-menu download-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <span id="lang" data-i18n="nav.lang._name"></span>
+                <i class="fa fa-sort-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="lang-option text-center" data-lang="zh-CN" data-i18n="nav.lang.zh"></a></li>
+                <li><a class="lang-option text-center" data-lang="en" data-i18n="nav.lang.en"></a></li>
+            </ul>
         </li>
     </ul>
 </div>
 <script type="text/javascript">
-    var notFor=['iClient Classic','3D-WebGL'];
-    $(document).ready (function () {
+    var notFor = ['iClient Classic', '3D-WebGL'];
+    $(document).ready(function () {
         var suffixHeader = document.getElementById("suffix-title");
-        suffixHeader.innerText = (notFor.indexOf(identification.name)<0?"for ":"" )+ identification.name;
+        suffixHeader.innerText = (notFor.indexOf(identification.name) < 0 ? "for " : "" ) + identification.name;
     });
 </script>

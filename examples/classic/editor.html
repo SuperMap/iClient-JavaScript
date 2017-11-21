@@ -5,7 +5,7 @@
     <title>iClient Classic 示例代码</title>
     <link rel="shortcut icon" type="image/x-icon" href="../../web/img/favicon.ico"/>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <script type="text/javascript" include="jquery,bootstrap,admin-lte,jquery.scrollto,ace" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap,admin-lte,jquery.scrollto,ace,i18n" src="../js/include-web.js"></script>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/sideBar.css">
@@ -18,6 +18,8 @@
         $('.nav-header').load('../section/header.html');
         var body = $('body');
         body.append("<script type='text/javascript' src='./config.js'><\/script>");
+        body.append("<script type='text/javascript' src='../js/utils.js'><\/script>");
+        body.append("<script type='text/javascript' src='../js/common.js'><\/script>");
         body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
         body.append("<script type='text/javascript' src='../js/editor.js'><\/script>");
     });

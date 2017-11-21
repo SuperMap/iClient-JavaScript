@@ -2,6 +2,7 @@ $(document).ready(function () {
     initPage();
     bindEvents();
 });
+
 var exConfig = exampleConfig,
     containExamples = false,
     thumbLocation = getThumbLocation();
@@ -39,8 +40,9 @@ function createGalleryItem(id, config) {
     }
 
     var categoryLi = $("<li class='category' id='" + id + "'></li>");
-    if (config.name) {
-        createGalleryItemTitle(id, config.name).appendTo(categoryLi);
+    var title = utils.getLocalPairs(config, "name");
+    if (title) {
+        createGalleryItemTitle(id, title).appendTo(categoryLi);
     }
     if (config.content) {
         createSubGalleryItem(config.content, id).appendTo(categoryLi);
@@ -54,7 +56,8 @@ function createSubGalleryItem(config, name) {
     for (var key in config) {
         var configItem = config[key];
         var content = $("<div class='box box-default color-palette-box' id='" + name + '-' + key + "'></div>");
-        createSubGalleryItemTitle(key, configItem.name).appendTo(content);
+        var title = utils.getLocalPairs(configItem, "name");
+        createSubGalleryItemTitle(key, title).appendTo(content);
         if (configItem.content) {
             createGalleryCharts(configItem.content).appendTo(content);
         }
@@ -84,8 +87,8 @@ function createGalleryCharts(examples) {
 
 function createGalleryChart(example) {
     var target = "editor.html",
-        title = example.name,
-        href = example.fileName ? example.fileName : "",
+        title = utils.getLocalPairs(example, "name");
+    href = example.fileName ? example.fileName : "",
         thumbnail = example.thumbnail ? thumbLocation + "/img/" + example.thumbnail : "";
 
     var chartDiv = $("<div class='col-xlg-2 col-lg-3 col-md-4 col-sm-6 col-xs-12'></div>");

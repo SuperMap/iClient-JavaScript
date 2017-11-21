@@ -4,10 +4,11 @@ var sideBarIconConfig = sideBarIconConfig || {};
 
 function initSideBar() {
     var sideBar = $("ul#sidebar-menu");
-    for (var key in exampleConfig) {
-        sideBar.append(createSideBarMenuItem(key, exampleConfig[key], false));
+    for (var key in conf) {
+        sideBar.append(createSideBarMenuItem(key, conf[key], false));
     }
 }
+
 
 //侧边栏滚动支持
 function sidebarScrollFix() {
@@ -71,17 +72,19 @@ function sidebarScrollFix() {
 
 //创建菜单项
 function createSideBarMenuItem(id, config, containAll) {
+    containExample = containAll;
+
     if (!config) {
         return;
     }
-    containExample = containAll;
-    var li = $("<li id='iclient_" + id + "' class='treeview '></li>");
+    var title = utils.getLocalPairs(config, "name");
 
+    var li = $("<li id='iclient_" + id + "' class='treeview ' title='" + title + "'></li>");
     if (config.content) {
-        createSideBarMenuTitle(id, config.name, true).appendTo(li);
+        createSideBarMenuTitle(id, title, true).appendTo(li);
         createSideBarSecondMenu(config.content, id).appendTo(li);
     } else {
-        createSideBarMenuTitle(id, config.name, false).appendTo(li);
+        createSideBarMenuTitle(id, title, false).appendTo(li);
     }
     return li;
 }
@@ -90,15 +93,17 @@ function createSideBarMenuItem(id, config, containAll) {
 function createSideBarSecondMenu(config, name) {
     var ul = $("<ul class='treeview-menu second-menu '></ul>");
     for (var key in config) {
-        var li = $("<li class='menuTitle ' id='" + key + "' ></li>");
-        li.appendTo(ul);
         var configItem = config[key];
+        var title = utils.getLocalPairs(configItem, "name") || "【empty title】";
+
+        var li = $("<li class='menuTitle ' id='" + key + "' title='" + title + "'></li>");
+        li.appendTo(ul);
 
         if (containExample && configItem.content) {
-            createSideBarMenuSecondTitle(name + '-' + key, configItem.name, true).appendTo(li);
+            createSideBarMenuSecondTitle(name + '-' + key, title, true).appendTo(li);
             createSideBarThirdMenu(configItem.content).appendTo(li);
         } else {
-            createSideBarMenuSecondTitle(name + '-' + key, configItem.name, false).appendTo(li);
+            createSideBarMenuSecondTitle(name + '-' + key, title, false).appendTo(li);
         }
     }
     return ul;
@@ -110,14 +115,18 @@ function createSideBarThirdMenu(examples) {
     var len = (examples && examples.length) ? examples.length : 0;
     for (var i = 0; i < len; i++) {
         var example = examples[i];
-        var li = $("<li class='menuTitle' id='" + example.fileName + "' ></li>");
+        var title = utils.getLocalPairs(example, "name")|| "【empty title】";
+
+        var li = $("<li class='menuTitle' id='" + example.fileName + "' title='" + title + "'></li>");
         li.appendTo(ul);
-        if (example.fileName && example.name) {
-            createSideBarMenuThirdTitle(example.fileName, example.name, false).appendTo(li);
+
+        if (example.fileName && title) {
+            createSideBarMenuThirdTitle(example.fileName, title, false).appendTo(li);
         }
     }
     return ul;
 }
+
 
 function createSideBarMenuTitle(id, title, collapse) {
     id = id || "";
@@ -126,7 +135,7 @@ function createSideBarMenuTitle(id, title, collapse) {
         icon = "<i class='fa " + iconName + " iconName'></i>"
     }
 
-    var div = $("<a href='#" + id + "' >" + icon + "</a>");
+    var div = $("<a href='#" + id + "'>" + icon + "</a>");
     var titleBar = $("<span class='sidebar-title-bar'></span>");
     var firstMenuTitle = $("<span class='firstMenuTitle'>" + title + "</span>");
     titleBar.append(firstMenuTitle);
@@ -145,7 +154,10 @@ function createSideBarMenuSecondTitle(id, title, collapse) {
         icon = "<i class='fa " + iconName + "'></i>"
     }
 
-    var div = $("<a href='#" + id + "' id='" + id + '-' + id + "'>" + icon + "<span class='secondMenuTitle'>" + title + "</span></a>");
+    var div = $(
+        "<a href='#" + id + "' id='" + id + '-' + id + "'>" + icon +
+        "<span class='secondMenuTitle'>" + title + "</span>" +
+        "</a>");
 
     if (collapse) {
         div.append(createCollapsedIcon());
@@ -160,7 +172,10 @@ function createSideBarMenuThirdTitle(id, title, collapse) {
         icon = "<i class='fa " + iconName + "'></i>"
     }
 
-    var div = $("<a href='#' id='" + id + "'>" + icon + "<span class='thirdMenuTitle'>" + title + "</span></a>");
+    var div = $(
+        "<a href='#' id='" + id + "'>" + icon +
+        "<span class='thirdMenuTitle'>" + title + "</span>" +
+        "</a>");
     if (collapse) {
         div.append(createCollapsedIcon());
     }

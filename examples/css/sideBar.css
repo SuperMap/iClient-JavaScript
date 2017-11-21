@@ -11,10 +11,6 @@
     overflow-y: auto;
 }
 
-.menuTitle a.active {
-    color: #f8f8f8;
-}
-
 .skin-blue .main-sidebar {
     background-color: #3c8dbc;
 }
@@ -72,8 +68,9 @@
 }
 
 .skin-blue .treeview-menu > li > a {
-    color: #000000;
+    color: white;
     padding-left: 35px;
+    padding-right: 26px !important;
 }
 
 .skin-blue .sidebar-menu > li > .treeview-menu {
@@ -119,31 +116,43 @@
 
 .skin-blue .treeview-menu > li.active > a,
 .skin-blue .treeview-menu > li > a:hover {
-    color: #000000;
+    color: white;
 }
 
 .main-sidebar .iconName {
     margin-right: 10px;
-    color: #FFFFFF
+    color: white
 }
 
-.main-sidebar .firstMenuTitle {
-    color: #FFFFFF;
+.menuTitle a.active {
+    color: #f8f8f8;
 }
+
+.sidebar-menu span {
+    color: white;
+}
+
+li.menuTitle a {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 20px !important;
+}
+
 
 .main-sidebar .secondMenuTitle {
-    color: #FFFFFF;
     padding-left: 10px;
+    color: white;
 }
 
 .main-sidebar .thirdMenuTitle {
-    color: #FFFFFF;
     font-size: 12px;
     padding-left: 32px;
+    color: white;
 }
 
 .main-sidebar .pull-right {
-    color: #FFFFFF
+    color: white
 }
 
 /*侧边栏滚动条*/

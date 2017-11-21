@@ -1,0 +1,46 @@
+{
+  "app": "SuperMap iClient 9D",
+  "nav": {
+    "home": {
+      "_name": "首页"
+    },
+    "product": {
+      "_name": "产品",
+      "overview": "概览",
+      "leaflet": "for Leaflet",
+      "openlayers": "for OpenLayers",
+      "mapboxgl": "for MapboxGL",
+      "classic": "iClient Classic",
+      "3dwebgl": "3D-WebGL"
+    },
+    "example": {
+      "_name": "示例",
+      "leaflet": "for Leaflet",
+      "openlayers": "for OpenLayers",
+      "mapboxgl": "for MapboxGL",
+      "classic": "iClient Classic",
+      "3dwebgl": "3D-WebGL"
+    },
+    "api": {
+      "_name": "API",
+      "leaflet": "for Leaflet",
+      "openlayers": "for OpenLayers",
+      "mapboxgl": "for MapboxGL",
+      "classic": "iClient Classic",
+      "3dwebgl": "3D-WebGL"
+    },
+    "code": {
+      "_name": "获取",
+      "github": "GitHub",
+      "oschina": "OSChina"
+    },
+    "faq": {
+      "_name": "FAQ"
+    },
+    "lang": {
+      "_name": "中文",
+      "zh": "中文",
+      "en": "English"
+    }
+  }
+}

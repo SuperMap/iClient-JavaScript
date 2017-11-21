@@ -36,12 +36,21 @@ h3.category-title {
 #charts-list .chart {
     width: 100%;
     max-width: 260px;
-    margin: 0 auto;
-    -webkit-border-radius: 4px;
-    border-radius: 0;
+    margin: 4px auto;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
     background: #fff;
-    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 3px rgba(150, 150, 150, 0.5);
+    -webkit-box-shadow: 0 0 3px rgba(150, 150, 150, 0.5);
+}
+
+#charts-list .chart:hover,#charts-list .chart:focus{
+    transform: scale(1.1);
+    z-index: 100;
+    -webkit-transform: scale(1.1);
+    transition-duration: .4s;
+    box-shadow: 1px 1px 6px rgba(150, 150, 150, 0.6);
+    -webkit-box-shadow: 1px 1px 6px rgba(150, 150, 150, 0.6);
 }
 
 #charts-list .chart .chart-link {
@@ -51,18 +60,19 @@ h3.category-title {
 
 #charts-list .chart .chart-link .chart-title {
     color: #2c3b41;
+    text-align: center;
+    padding: 2px;
     overflow: hidden;
+    height: 36px;
+    line-height: 36px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 10px 10px 2px 0;
     margin: 0;
     font-weight: normal;
 }
 
 #charts-list .chart .chart-link .chart-area {
     width: 100%;
-    padding-top: 8px;
-    padding-bottom: 8px;
 }
 
 .box {

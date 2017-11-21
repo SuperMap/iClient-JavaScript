@@ -162,7 +162,6 @@
     /*尺寸小于992时下拉菜单的样式*/
     .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
         border: 0;
-        border-top: 1px solid #f9f9f9;
         background: #3375A1;
     }
 
@@ -176,6 +175,19 @@
 
     .skin-blue .main-header .navbar .dropdown-menu > li > a {
         color: #ffffff;
+    }
+}
+
+@media (max-width: 991px) {
+    .navbar-custom-menu > .navbar-nav > li {
+        position: relative;
+    }
+
+    .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
+        position: absolute;
+        top: auto;
+        right: 0;
+        left: auto;
     }
 }
 
@@ -194,6 +206,22 @@
 
     .navbar-brand {
         padding: 15px 0;
+    }
+    .navbar-collapse.in {
+        overflow-y: visible;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .navbar-custom-menu > .navbar-nav > li {
+        position: static;
+    }
+
+    .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
+        position: absolute;
+        top: auto;
+        right: auto;
+        left: auto;
     }
 }
 
@@ -230,7 +258,7 @@
 }
 
 /*尺寸小于410时*/
-@media screen and (max-width: 410px){
+@media screen and (max-width: 410px) {
     .navbar-custom-menu .navbar-nav > li > a {
         padding-left: 10px;
         padding-right: 10px;
@@ -254,7 +282,12 @@
 }
 
 /*改变navbar.less的默认属性*/
-.navbar-collapse.in{
+.navbar-collapse.in {
     overflow-y: visible !important;
 }
+
 /*改变navbar.less的默认属性*/
+.lang-option {
+    cursor: pointer;
+    z-index: -1;
+}

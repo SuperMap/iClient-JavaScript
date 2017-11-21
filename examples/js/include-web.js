@@ -83,7 +83,7 @@
             inputScript("http://cdn.bootcss.com/admin-lte/2.3.8/js/app.min.js");
         }
         if (inArray(includes, 'jquery.scrollto')) {
-            inputScript("http://cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js");
+            inputScript("http://iclient.supermap.io/libs/jquery.scrollto/jquery.scrollTo.min.js");
         }
         if (inArray(includes, 'ace')) {
             inputScript("http://cdn.bootcss.com/ace/1.2.6/ace.js");
@@ -113,6 +113,11 @@
         }
         if (inArray(includes, 'responsive')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/bootstrap-responsive.min.css");
+        }
+        if (inArray(includes, 'i18n')) {
+            inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.js");
+            inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.js");
+            inputScript("https://cdn.bootcss.com/i18next-xhr-backend/1.5.0/i18nextXHRBackend.min.js");
         }
     }
 

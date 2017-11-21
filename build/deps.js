@@ -119,6 +119,7 @@ deps = {
         "Mapping": {
             "title": "地图",
             "description": "地图显示扩展",
+            "description_en": "map display extension",
 
             "RESTMAP": {
                 "name": "iServer 地图图层",
@@ -128,10 +129,12 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.tiledMapLayer",
-                    "des": "iServer TileImage地图"
+                    "des": "iServer TileImage地图",
+                    "des_en": "iServer tileImage resources tile layer"
                 }, {
                     "name": "L.supermap.imageMapLayer",
-                    "des": "iServer Image地图"
+                    "des": "iServer Image地图",
+                    "des_en": "iServer image resources tile layer"
                 }]
             },
             "Baidu": {
@@ -139,7 +142,8 @@ deps = {
                 "src": ['./src/leaflet/mapping/BaiduTileLayer.js'],
                 "modules": [{
                     "name": "L.supermap.baiduTileLayer",
-                    "des": "百度地图"
+                    "des": "百度地图",
+                    "des_en": "baidu map tile layer"
                 }]
             },
             "Cloud": {
@@ -147,7 +151,8 @@ deps = {
                 "src": ['./src/leaflet/mapping/CloudTileLayer.js'],
                 "modules": [{
                     "name": "L.supermap.cloudTileLayer",
-                    "des": "超图云地图"
+                    "des": "超图云地图",
+                    "des_en": "SuperMap Cloud map tile layer"
                 }]
             },
             "WMTS": {
@@ -155,7 +160,8 @@ deps = {
                 "src": ["./src/leaflet/mapping/TileLayer.WMTS.js"],
                 "modules": [{
                     "name": "L.supermap.wmtsLayer",
-                    "des": "iServer WMTS地图"
+                    "des": "iServer WMTS地图",
+                    "des_en": "iServer WMTS tile layer"
                 }]
             },
             "Tianditu": {
@@ -163,7 +169,8 @@ deps = {
                 "src": ["./src/leaflet/mapping/TiandituTileLayer.js"],
                 "modules": [{
                     "name": "L.supermap.tiandituTileLayer",
-                    "des": "天地图"
+                    "des": "天地图图层",
+                    "des_en": "tianditu map tile layer"
                 }]
             },
             "iPortal": {
@@ -171,7 +178,8 @@ deps = {
                 "src": ["./src/leaflet/mapping/WebMap.js"],
                 "modules": [{
                     "name": "L.supermap.webmap",
-                    "des": "iPortal、Online地图"
+                    "des": "iPortal、Online地图",
+                    "des_en": "SuperMap iPortal and Online tile layer"
                 }]
             }
         },
@@ -179,6 +187,8 @@ deps = {
         "Services": {
             "title": "服务",
             "description": "对各种功能服务的包装",
+            "description_en": "provide a variety of iServer REST services",
+
             "Map": {
                 "name": "地图服务",
                 "src": [
@@ -190,19 +200,24 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.mapService",
-                    "des": "地图信息服务"
+                    "des": "地图信息服务",
+                    "des_en": "map service"
                 }, {
                     "name": "L.supermap.queryService",
-                    "des": "地图查询服务"
+                    "des": "地图查询服务",
+                    "des_en": "map query service"
                 }, {
                     "name": "L.supermap.layerInfoService",
-                    "des": "图层信息服务"
+                    "des": "图层信息服务",
+                    "des_en": "layer information service"
                 }, {
                     "name": "L.supermap.measureService",
-                    "des": "测量服务"
+                    "des": "测量服务",
+                    "des_en": "measure service"
                 }, {
                     "name": "L.supermap.chartService",
-                    "des": "海图服务"
+                    "des": "海图服务",
+                    "des_en": "chart service"
                 }]
             },
             "Data": {
@@ -214,13 +229,16 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.featureService",
-                    "des": "数据集服务"
+                    "des": "数据集服务",
+                    "des_en": "feature service"
                 }, {
                     "name": "L.supermap.fieldService",
-                    "des": "字段服务"
+                    "des": "字段服务",
+                    "des_en": "field service"
                 }, {
                     "name": "L.supermap.gridCellInfosService",
-                    "des": "数据栅格查询服务"
+                    "des": "数据栅格查询服务",
+                    "des_en": "data grid cell information service"
                 }]
             },
             "Theme": {
@@ -230,7 +248,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.themeService",
-                    "des": "专题图服务"
+                    "des": "专题图服务",
+                    "des_en": "iServer thematic service"
                 }]
             },
             "NetworkAnalyst": {
@@ -240,7 +259,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.networkAnalystService",
-                    "des": "网络分析服务"
+                    "des": "网络分析服务",
+                    "des_en": "network analyst service"
                 }]
             },
             "NetworkAnalyst3D": {
@@ -250,7 +270,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.networkAnalyst3DService",
-                    "des": "3D网络分析服务"
+                    "des": "3D网络分析服务",
+                    "des_en": "3D network analyst service"
                 }]
             },
             "SpatialAnalyst": {
@@ -260,7 +281,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.spatialAnalystService",
-                    "des": "空间分析服务"
+                    "des": "空间分析服务",
+                    "des_en": "spatial analyst service"
                 }]
             },
             "TrafficTransferAnalyst": {
@@ -270,7 +292,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.trafficTransferAnalystService",
-                    "des": "交通换乘服务"
+                    "des": "交通换乘服务",
+                    "des_en": "traffic transfer analyst service"
                 }]
             },
             "ProcessingService": {
@@ -280,7 +303,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.processingService",
-                    "des": "分布式分析服务"
+                    "des": "分布式分析服务",
+                    "des_en": "distributed analyst service"
                 }]
             },
             "iPortal": {
@@ -289,7 +313,8 @@ deps = {
                     "./src/common/iPortal/iPortal.js"
                 ], "modules": [{
                     "name": "SuperMap.iPortal",
-                    "des": "iPortal服务"
+                    "des": "iPortal服务",
+                    "des_en": "SuperMap iPortal service"
                 }]
             },
             "Online": {
@@ -299,7 +324,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.Online",
-                    "des": "Online服务"
+                    "des": "Online服务",
+                    "des_en": "SuperMap Online service"
                 }]
             },
             "iManager": {
@@ -308,7 +334,8 @@ deps = {
                     "./src/common/iManager/iManager.js"
                 ], "modules": [{
                     "name": "SuperMap.iManager",
-                    "des": "iManager服务"
+                    "des": "iManager服务",
+                    "des_en": "SuperMap iManager service"
                 }]
             },
             "AddressMatch": {
@@ -318,7 +345,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.addressMatchService",
-                    "des": "地址匹配服务"
+                    "des": "地址匹配服务",
+                    "des_en": "address match service"
                 }]
             },
             "ElasticSearch": {
@@ -329,7 +357,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.ElasticSearch",
-                    "des": "ElasticSearch服务"
+                    "des": "ElasticSearch服务",
+                    "des_en": "ElasticSearch service"
                 }]
             },
             "DataFlow": {
@@ -340,10 +369,13 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.dataFlowService",
-                    "des": "实时数据服务"
+                    "des": "实时数据服务",
+                    "des_en": "iServer data flow service"
                 }, {
                     "name": "L.supermap.dataFlowLayer",
-                    "des": "实时数据图层"
+                    "des": "实时数据图层",
+                    "des_en": "iServer data flow layer"
+
                 }]
             }
         },
@@ -351,6 +383,8 @@ deps = {
         "Overlay": {
             "title": "可视化",
             "description": "数据可视化效果扩展",
+            "description_en": "data visualization extension",
+
             "EChartsLayer": {
                 "name": "ECharts地图图层",
                 "src": [
@@ -358,7 +392,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.echartsLayer",
-                    "des": "百度Ecahrts可视化效果"
+                    "des": "百度Ecahrts图层",
+                    "des_en": "ECharts layer"
                 }]
             },
             "GraphicLayer": {
@@ -368,7 +403,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.graphicLayer",
-                    "des": "高效率点图层效果"
+                    "des": "高效率点图层",
+                    "des_en": "high efficiency point layer"
                 }]
             },
 
@@ -379,7 +415,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.tiledVectorLayer",
-                    "des": "矢量瓦片效果"
+                    "des": "iServer矢量瓦片图层",
+                    "des_en": "vector tile layer"
                 }]
             },
             "ThemeLayer": {
@@ -393,19 +430,24 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.uniqueThemeLayer",
-                    "des": "单值专题图效果"
+                    "des": "单值专题图图层",
+                    "des_en": "unique thematic map layer"
                 }, {
                     "name": "L.supermap.rangeThemeLayer",
-                    "des": "分段专题图效果"
+                    "des": "分段专题图图层",
+                    "des_en": "range thematic map layer"
                 }, {
                     "name": "L.supermap.rankSymbolThemeLayer",
-                    "des": "符号等级专题图效果"
+                    "des": "等级符号专题图图层",
+                    "des_en": "rank symbol thematic map layer"
                 }, {
                     "name": "L.supermap.garphThemeLayer",
-                    "des": "统计专题图效果"
+                    "des": "统计专题图图层",
+                    "des_en": "statistical thematic map layer"
                 }, {
                     "name": "L.supermap.labelThemeLayer",
-                    "des": "标签专题图效果"
+                    "des": "标签专题图图层",
+                    "des_en": "label thematic map layer"
                 }]
             },
             "MapV": {
@@ -415,7 +457,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.mapVLayer",
-                    "des": "百度MapV可视化效果"
+                    "des": "百度MapV图层",
+                    "des_en": "mapV layer"
                 }]
             },
             "Turf": {
@@ -425,7 +468,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.turfLayer",
-                    "des": "客户端空间分析js库"
+                    "des": "客户端空间分析js库",
+                    "des_en": "turf layer"
                 }]
             },
             "UnicodeMarker.js": {
@@ -435,7 +479,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.unicodeMarker",
-                    "des": "unicodeMarker"
+                    "des": "unicodeMarker",
+                    "des_en": "unicode mark layer"
                 }]
             }
         },
@@ -443,6 +488,8 @@ deps = {
         "Control": {
             "title": "控件",
             "description": "各种功能在UI上的交互控制",
+            "description_en": "UI interactive control",
+
             "ChangeTileVersion": {
                 "name": "多版本缓存切换",
                 "src": [
@@ -450,7 +497,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.control.changeTileVersion",
-                    "des": "瓦片版本切换控件"
+                    "des": "瓦片版本切换控件",
+                    "des_en": "tile version switch control"
                 }]
             },
             "Logo": {
@@ -460,7 +508,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.control.logo",
-                    "des": "logo控件"
+                    "des": "logo控件",
+                    "des_en": "logo control"
                 }]
             },
         }
@@ -472,6 +521,8 @@ deps = {
         "Mapping": {
             "title": "地图",
             "description": "地图显示扩展",
+            "description_en": "map display extension",
+
             "RESTMAP": {
                 "name": "iServer 地图图层",
                 "src": ["./src/openlayers/mapping/TileSuperMapRest.js",
@@ -479,10 +530,12 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.source.TileSuperMapRest",
-                    "des": "iServer TileImage地图"
+                    "des": "iServer TileImage地图",
+                    "des_en": "iServer tileImage resources tile layer"
                 }, {
                     "name": "ol.source.ImageSuperMapRest",
-                    "des": "iServer Image地图"
+                    "des": "iServer Image地图",
+                    "des_en": "iServer image resources tile layer"
                 }]
             },
 
@@ -491,7 +544,8 @@ deps = {
                 "src": ['./src/openlayers/mapping/BaiduMap.js'],
                 "modules": [{
                     "name": "ol.source.BaiduMap",
-                    "des": "百度地图"
+                    "des": "百度地图",
+                    "des_en": "baidu map tile layer"
                 }]
             },
             "Tianditu": {
@@ -499,7 +553,8 @@ deps = {
                 "src": ['./src/openlayers/mapping/Tianditu.js'],
                 "modules": [{
                     "name": "ol.source.Tianditu",
-                    "des": "天地图"
+                    "des": "天地图",
+                    "des_en": "tianditu map tile layer"
                 }]
             },
             "SuperMapCloud": {
@@ -507,7 +562,8 @@ deps = {
                 "src": ['./src/openlayers/mapping/SuperMapCloud.js'],
                 "modules": [{
                     "name": "ol.source.SuperMapCloud",
-                    "des": "超图云地图"
+                    "des": "超图云地图",
+                    "des_en": "SuperMap Cloud map tile layer"
                 }]
             },
             "iPortal": {
@@ -515,13 +571,16 @@ deps = {
                 "src": ["./src/openlayers/mapping/WebMap.js"],
                 "modules": [{
                     "name": "ol.supermap.WebMap",
-                    "des": "iPortal、Online地图"
+                    "des": "iPortal、Online地图",
+                    "des_en": "SuperMap iPortal and Online tile layer"
                 }]
             }
         },
         "Services": {
             "title": "服务",
             "description": "对各种功能服务的包装",
+            "description_en": "provide a variety of iServer REST services",
+
             "Map": {
                 "name": "地图服务",
                 "src": [
@@ -533,19 +592,24 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.MapService",
-                    "des": "地图信息服务"
+                    "des": "地图信息服务",
+                    "des_en": "map service"
                 }, {
                     "name": "ol.supermap.QueryService",
-                    "des": "地图查询服务"
+                    "des": "地图查询服务",
+                    "des_en": "map query service"
                 }, {
                     "name": "ol.supermap.LayerInfoService",
-                    "des": "图层信息服务"
+                    "des": "图层信息服务",
+                    "des_en": "layer information service"
                 }, {
                     "name": "ol.supermap.MeasureService",
-                    "des": "测量服务"
+                    "des": "测量服务",
+                    "des_en": "measure service"
                 }, {
                     "name": "ol.supermap.ChartService",
-                    "des": "海图服务"
+                    "des": "海图服务",
+                    "des_en": "chart service"
                 }]
             },
             "Data": {
@@ -557,13 +621,16 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.FeatureService",
-                    "des": "数据集服务"
+                    "des": "数据集服务",
+                    "des_en": "feature service"
                 }, {
                     "name": "ol.supermap.FieldService",
-                    "des": "字段服务"
+                    "des": "字段服务",
+                    "des_en": "field service"
                 }, {
                     "name": "ol.supermap.GridCellInfosService",
-                    "des": "数据栅格查询服务"
+                    "des": "数据栅格查询服务",
+                    "des_en": "data grid cell information service"
                 }]
             },
             "Theme": {
@@ -573,7 +640,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.ThemeService",
-                    "des": "专题图服务"
+                    "des": "专题图服务",
+                    "des_en": "iServer thematic service"
                 }]
             },
             "NetworkAnalyst": {
@@ -583,7 +651,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.NetworkAnalystService",
-                    "des": "网络分析服务"
+                    "des": "网络分析服务",
+                    "des_en": "network analyst service"
                 }]
             },
             "NetworkAnalyst3D": {
@@ -593,7 +662,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.NetworkAnalyst3DService",
-                    "des": "3D网络分析服务"
+                    "des": "3D网络分析服务",
+                    "des_en": "3D network analyst service"
                 }]
             },
             "SpatialAnalyst": {
@@ -603,7 +673,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.SpatialAnalystService",
-                    "des": "空间分析服务"
+                    "des": "空间分析服务",
+                    "des_en": "spatial analyst service"
                 }]
             },
             "TrafficTransferAnalyst": {
@@ -613,7 +684,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.TrafficTransferAnalystService",
-                    "des": "交通换乘服务"
+                    "des": "交通换乘服务",
+                    "des_en": "traffic transfer analyst service"
                 }]
             },
             "iPortal": {
@@ -623,7 +695,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.iPortal",
-                    "des": "iPortal服务"
+                    "des": "iPortal服务",
+                    "des_en": "SuperMap iPortal service"
                 }]
             },
             "Online": {
@@ -633,7 +706,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.Online",
-                    "des": "Online服务"
+                    "des": "Online服务",
+                    "des_en": "SuperMap Online service"
                 }]
             },
             "iManager": {
@@ -642,7 +716,8 @@ deps = {
                     "./src/common/iManager/iManager.js"
                 ], "modules": [{
                     "name": "SuperMap.iManager",
-                    "des": "iManager服务"
+                    "des": "iManager服务",
+                    "des_en": "SuperMap iManager service"
                 }]
             },
             "ProcessingService": {
@@ -652,7 +727,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.ProcessingService",
-                    "des": "分布式分析服务"
+                    "des": "分布式分析服务",
+                    "des_en": "distributed analyst service"
                 }]
             },
             "AddressMatch": {
@@ -662,7 +738,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.AddressMatchService",
-                    "des": "地址匹配服务"
+                    "des": "地址匹配服务",
+                    "des_en": "address match service"
                 }]
             },
             "ElasticSearch": {
@@ -673,7 +750,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.ElasticSearch",
-                    "des": "ElasticSearch服务"
+                    "des": "ElasticSearch服务",
+                    "des_en": "ElasticSearch service"
                 }]
             },
             "DataFlow": {
@@ -684,16 +762,20 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.DataFlowService",
-                    "des": "实时数据服务"
+                    "des": "实时数据服务",
+                    "des_en": "iServer data flow service"
                 }, {
                     "name": "ol.source.DataFlow",
-                    "des": "实时数据"
+                    "des": "实时数据",
+                    "des_en": "iServer data flow layer"
                 }]
             }
         },
         "Overlay": {
             "title": "可视化",
             "description": "数据可视化效果扩展",
+            "description_en": "data visualization extension",
+
             "GraphicLayer": {
                 "name": "高效率点图层",
                 "src": [
@@ -701,7 +783,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.source.Graphic",
-                    "des": "高效率点图层效果"
+                    "des": "高效率点图层",
+                    "des_en": "high efficiency point layer"
                 }]
             },
             "VectorTile": {
@@ -711,7 +794,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.source.VectorTileSuperMapRest",
-                    "des": "iServer矢量瓦片效果"
+                    "des": "iServer矢量瓦片图层",
+                    "des_en": "vector tile layer"
                 }]
             },
             "Theme": {
@@ -725,19 +809,24 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.source.Unique",
-                    "des": "单值专题图效果"
+                    "des": "单值专题图图层",
+                    "des_en": "unique thematic map layer"
                 }, {
                     "name": "ol.source.RankSymbol",
-                    "des": "符号等级专题图效果"
+                    "des": "符号等级专题图图层",
+                    "des_en": "rank symbol thematic map layer"
                 }, {
                     "name": "ol.source.Range",
-                    "des": "分段专题图效果"
+                    "des": "分段专题图图层",
+                    "des_en": "range thematic map layer"
                 }, {
                     "name": "ol.source.Graph",
-                    "des": "统计专题图效果"
+                    "des": "统计专题图图层",
+                    "des_en": "statistical thematic map layer"
                 }, {
                     "name": "ol.source.Label",
-                    "des": "标签专题图效果"
+                    "des": "标签专题图图层",
+                    "des_en": "label thematic map layer"
                 }]
             },
             "Mapv": {
@@ -747,7 +836,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.source.Mapv",
-                    "des": "百度MapV可视化效果"
+                    "des": "百度MapV图层",
+                    "des_en": "mapV layer"
                 }]
             },
             "Turf": {
@@ -757,13 +847,15 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.source.Turf",
-                    "des": "客户端空间分析js库"
+                    "des": "客户端空间分析js库",
+                    "des_en": "turf layer"
                 }]
             }
         },
         "Control": {
             "title": "控件",
             "description": "各种功能在UI上的交互控制",
+            "description_en": "UI interactive control",
 
             "ChangeTileVersion": {
                 "name": "多版本缓存切换",
@@ -772,7 +864,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.control.ChangeTileVersion",
-                    "des": "瓦片版本切换控件"
+                    "des": "瓦片版本切换控件",
+                    "des_en": "tile version switch control"
                 }]
             },
             "Logo": {
@@ -782,7 +875,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "ol.supermap.control.Logo",
-                    "des": "logo控件"
+                    "des": "logo控件",
+                    "des_en": "logo control"
                 }]
             }
         }
@@ -792,6 +886,8 @@ deps = {
         "Services": {
             "title": "服务",
             "description": "对各种功能服务的包装",
+            "description_en": "provide a variety of iServer REST services",
+
             "Map": {
                 "name": "地图服务",
                 "src": [
@@ -803,19 +899,24 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.LayerInfoService",
-                    "des": "图层信息服务"
+                    "des": "图层信息服务",
+                    "des_en": "layer information service"
                 }, {
                     "name": "mapboxgl.supermap.MapService",
-                    "des": "地图服务"
+                    "des": "地图服务",
+                    "des_en": "map service"
                 }, {
-                    "name": "mapboxgl.supermap.ChartQueryService",
-                    "des": "海图服务"
+                    "name": "mapboxgl.supermap.ChartService",
+                    "des": "海图服务",
+                    "des_en": "chart service"
                 }, {
                     "name": "mapboxgl.supermap.QueryService",
-                    "des": "查询服务"
+                    "des": "查询服务",
+                    "des_en": "map query service"
                 }, {
                     "name": "mapboxgl.supermap.MeasureService",
-                    "des": "测量服务"
+                    "des": "测量服务",
+                    "des_en": "measure service"
                 }]
             },
             "Data": {
@@ -827,13 +928,16 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.FeatureService",
-                    "des": "数据集服务"
+                    "des": "数据集服务",
+                    "des_en": "feature service"
                 }, {
                     "name": "mapboxgl.supermap.FieldService",
-                    "des": "字段服务"
+                    "des": "字段服务",
+                    "des_en": "field service"
                 }, {
                     "name": "mapboxgl.supermap.GridCellInfosService",
-                    "des": "数据栅格查询服务"
+                    "des": "数据栅格查询服务",
+                    "des_en": "data grid cell information service"
                 }]
             },
             "SpatialAnalyst": {
@@ -843,7 +947,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.SpatialAnalystService",
-                    "des": "空间分析服务"
+                    "des": "空间分析服务",
+                    "des_en": "spatial analyst service"
                 }]
             },
             "ProcessingService": {
@@ -853,7 +958,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.ProcessingService",
-                    "des": "分布式分析服务"
+                    "des": "分布式分析服务",
+                    "des_en": "distributed analyst service"
                 }]
             },
             "AddressMatch": {
@@ -863,7 +969,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.AddressMatchService",
-                    "des": "地址匹配服务"
+                    "des": "地址匹配服务",
+                    "des_en": "address match service"
                 }]
             },
 
@@ -875,7 +982,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.ThemeService",
-                    "des": "服务器专题图服务"
+                    "des": "服务器专题图服务",
+                    "des_en": "iServer thematic service"
                 }]
             },
             "ElasticSearch": {
@@ -886,7 +994,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.ElasticSearch",
-                    "des": "ElasticSearch服务"
+                    "des": "ElasticSearch服务",
+                    "des_en": "ElasticSearch service"
                 }]
             },
             "DataFlow": {
@@ -896,7 +1005,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.DataFlowService",
-                    "des": "实时数据服务"
+                    "des": "实时数据服务",
+                    "des_en": "iServer data flow service"
                 }]
             },
             "NetworkAnalyst": {
@@ -906,7 +1016,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.NetworkAnalystService",
-                    "des": "网络分析服务"
+                    "des": "网络分析服务",
+                    "des_en": "network analyst service"
                 }]
             },
             "NetworkAnalyst3D": {
@@ -916,7 +1027,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.NetworkAnalyst3DService",
-                    "des": "3D网络分析服务"
+                    "des": "3D网络分析服务",
+                    "des_en": "3D network analyst service"
                 }]
             },
             "TrafficTransferAnalyst": {
@@ -926,13 +1038,16 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.TrafficTransferAnalystService",
-                    "des": "交通换乘服务"
+                    "des": "交通换乘服务",
+                    "des_en": "traffic transfer analyst service"
                 }]
             },
         },
         "Overlay": {
             "title": "可视化",
             "description": "数据可视化效果扩展",
+            "description_en": "data visualization extension",
+
             "Mapv": {
                 "name": "Mapv",
                 "src": [
@@ -942,7 +1057,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.MapvLayer",
-                    "des": "百度MapV可视化效果"
+                    "des": "百度MapV图层",
+                    "des_en": "mapV layer"
                 }]
             },
             "ThemeLayer": {
@@ -958,25 +1074,32 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.RankTheme3DLayer",
-                    "des": "三维分段专题图"
+                    "des": "三维分段专题图",
+                    "des_en": "3D range thematic map layer"
                 }, {
                     "name": "mapboxgl.supermap.UniqueTheme3DLayer",
-                    "des": "三维单值专题图"
+                    "des": "三维单值专题图",
+                    "des_en": "3D unique thematic map layer"
                 }, {
                     "name": "mapboxgl.supermap.RangeThemeLayer",
-                    "des": "分段专题图"
+                    "des": "分段专题图",
+                    "des_en": "range thematic map layer"
                 }, {
                     "name": "mapboxgl.supermap.UniqueThemeLayer",
-                    "des": "单值专题图"
+                    "des": "单值专题图",
+                    "des_en": "unique thematic map layer"
                 }, {
                     "name": "mapboxgl.supermap.RankSymbolThemeLayer",
-                    "des": "等级符号专题图"
+                    "des": "等级符号专题图",
+                    "des_en": "rank symbol thematic map layer"
                 }, {
                     "name": "mapboxgl.supermap.GraphThemeLayer",
-                    "des": "统计专题图"
+                    "des": "统计专题图",
+                    "des_en": "statistical thematic map layer"
                 }, {
                     "name": "mapboxgl.supermap.LabelThemeLayer",
-                    "des": "标签专题图"
+                    "des": "标签专题图",
+                    "des_en": "label thematic map layer"
                 }]
 
             }
@@ -984,6 +1107,7 @@ deps = {
         "Control": {
             "title": "控件",
             "description": "各种功能在UI上的交互控制",
+            "description_en": "UI interactive control",
 
             "Logo": {
                 "name": "logo控件",
@@ -992,7 +1116,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "mapboxgl.supermap.LogoControl",
-                    "des": "logo控件"
+                    "des": "logo控件",
+                    "des_en": "logo control"
                 }]
             }
         }
@@ -1002,6 +1127,8 @@ deps = {
         "Services": {
             "title": "服务",
             "description": "对各种功能服务的包装",
+            "description_en": "provide a variety of iServer REST services",
+
             "ProcessingService": {
                 "name": "分布式分析服务",
                 "src": [
@@ -1009,7 +1136,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.REST.ProcessingService",
-                    "des": "分布式分析服务"
+                    "des": "分布式分析服务",
+                    "des_en": "distributed analyst service"
                 }]
             },
             "AddressMatch": {
@@ -1019,7 +1147,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.REST.AddressMatchService",
-                    "des": "地址匹配服务"
+                    "des": "地址匹配服务",
+                    "des_en": "address match service"
                 }]
             },
             "ElasticSearch": {
@@ -1030,13 +1159,16 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.ElasticSearch",
-                    "des": "ElasticSearch服务"
+                    "des": "ElasticSearch服务",
+                    "des_en": "ElasticSearch service"
                 }]
             },
         },
         "Overlay": {
             "title": "可视化",
             "description": "数据可视化效果扩展",
+            "description_en": "data visualization extension",
+
             "MapV": {
                 "name": "MapV",
                 "src": [
@@ -1044,7 +1176,8 @@ deps = {
                 ],
                 "modules": [{
                     "name": "SuperMap.Layer.MapVLayer",
-                    "des": "百度MapV可视化效果"
+                    "des": "百度MapV图层",
+                    "des_en": "mapV layer"
                 }]
             }
         }
