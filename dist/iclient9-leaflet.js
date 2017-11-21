@@ -19394,7 +19394,7 @@ var TiandituTileLayer = exports.TiandituTileLayer = _TileLayer.WMTSLayer.extend(
     initialize: function initialize(options) {
         options = options || {};
         _leaflet2["default"].setOptions(this, options);
-        this.options.layer = this.options.isLabel ? this.layerLabelMap[options.layerType] : this.options.layerType;
+        this.options.layer = this.options.isLabel ? this.layerLabelMap[this.options.layerType] : this.options.layerType;
         this.options.maxZoom = this.layerZoomMap[this.options.layerType];
         _TileLayer.WMTSLayer.prototype.initialize.call(this, this.options.url, this.options);
         _leaflet2["default"].stamp(this);
