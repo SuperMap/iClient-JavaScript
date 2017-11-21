@@ -64,7 +64,7 @@
     function init() {
 
         if (!document.createElement("canvas").getContext) {
-            alert("您的浏览器不支持Canvas，请先升级");
+            showAlert("您的浏览器不支持Canvas，请先升级");
             return;
         }
         map = new SuperMap.Map("map", {
@@ -148,6 +148,7 @@
     var e = 10000000;
 
     function addClover() {
+        closeAlert();
         symbolinfo = new SuperMap.Style.Clover({
             radius: radius,
             fill: new SuperMap.Style.Fill({
@@ -190,6 +191,7 @@
     }
 
     function redraw() {
+        closeAlert();
         var idx = (++imageIdx) % 2;
         img = new Image();
         img.src = imagePaths[idx];
@@ -212,6 +214,7 @@
 
     //移除数据
     function removeData() {
+        closeAlert();
         if (!!popup) {
             map.removePopup(popup);
         }
@@ -220,6 +223,7 @@
     }
 
     function plus() {
+        closeAlert();
         var idx = (++imageIdx) % 2;
         img = new Image();
         imageWidth += 10;
@@ -243,6 +247,7 @@
     }
 
     function minus() {
+        closeAlert();
         var idx = (++imageIdx) % 2;
         img = new Image();
         imageWidth -= 10;
@@ -265,6 +270,32 @@
             img.onload = function () {
                 graphicLayer.redraw();
             }
+        }
+    }
+
+    //显示提示框
+    var alertDiv;
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
         }
     }
 </script>

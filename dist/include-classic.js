@@ -55,9 +55,6 @@
         if (inArray(includes, 'heatmapColorCSS')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/heatmap.css");
         }
-        if (inArray(includes, 'responsive')) {
-            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/bootstrap-responsive.min.css");
-        }
         if (!inArray(excludes, 'iclient-classic')) {
             inputScript("../../dist/iclient-classic.min.js");
         }
@@ -119,7 +116,15 @@
         if (inArray(includes, 'LargeFormatPrints')) {
             inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/LargeFormatPrints.js");
         }
-
+        if (inArray(includes, 'PlottingPanel')) {
+            inputScript("http://iclient.supermap.io/web/libs/iclient8c/examples/js/plottingPanel/PlottingPanel.Include.js");
+        }
+        if (inArray(includes, 'bevInclude')) {
+            inputScript("http://iclient.supermap.io/web/libs/iclient8c/examples/js/bevInclude.js");
+        }
+        if (inArray(includes, 'DefaultStyleConfiguration')) {
+            inputScript("http://iclient.supermap.io/web/libs/iclient8c/resource/Plugins/Plotting/DefaultStyleConfiguration.js");
+        }
     }
 
     load();

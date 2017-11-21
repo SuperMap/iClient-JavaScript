@@ -42,7 +42,7 @@
 
     //检测浏览器是否支持canves，Buildings 需要Canvas绘制
     if (!document.createElement('canvas').getContext) {
-        alert("您的浏览器不支持Canvas,请先升级！");
+        showAlert("您的浏览器不支持Canvas,请先升级！");
     }
 
     //新建矢量面图层 保存绘制的要素
@@ -69,7 +69,7 @@
 
     //异步加载图层
     function addLayer() {
-        alert('请输入自定义参数后绘制');
+        showAlert('请输入自定义参数后绘制');
         map.addLayers([layer, polygonLayer]);
         map.setCenter(new SuperMap.LonLat(12957186.36784, 4852711.53595), 12);
         //激活多边形绘制
@@ -130,9 +130,35 @@
                 osm.set(Draw_geojson);
                 osm.click(function (e) {
                     //Buildings 单击事件 返回当前Building的ID 和 经纬度
-                    alert("FeatureID:" + e.feature);
+                    showAlert("FeatureID:" + e.feature);
                 });
             }
+        }
+    }
+
+    //显示提示框
+    var alertDiv;
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
         }
     }
 </script>

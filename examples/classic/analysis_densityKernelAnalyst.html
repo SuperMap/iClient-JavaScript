@@ -42,8 +42,8 @@
 </div>
 <div id="map"></div>
 <script>
-    var map, baseLayer, resultLayer,
-        host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+    var map, baseLayer, resultLayer, alertDiv,
+        host = window.isLocal ? window.server : "http://117.122.248.69:8090",
         url = host + "/iserver/services/map-changchun/rest/maps/长春市区图",
         url2 = host + "/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
 
@@ -77,6 +77,7 @@
     }
 
     function addResultLayer() {
+        closeAlert();
         //移除核密度分析的结果专题图层
         removeTheme();
 
@@ -185,17 +186,43 @@
     }
 
     function themeFailed(serviceFailedEventArgs) {
-        alert(serviceFailedEventArgs.error.errorMsg);
+        showAlert(serviceFailedEventArgs.error.errorMsg);
     }
 
     function KernelAnalystFailed(serviceFailedEventArgs) {
-        alert(serviceFailedEventArgs.error.errorMsg);
+        showAlert(serviceFailedEventArgs.error.errorMsg);
     }
 
     //移除专题图
     function removeTheme() {
+        closeAlert();
         if (map.layers.length > 1) {
             map.removeLayer(resultLayer, true);
+        }
+    }
+
+    //显示提示框
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
         }
     }
 </script>

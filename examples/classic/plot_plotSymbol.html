@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>鼠标标绘</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" include="PlottingPanel"
+            src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        head, body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            left: 200px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 220px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+        #plotPanel {
+            position: absolute;
+            float: left;
+            background: #ffffff;
+            width: 200px;
+            height: 100%;
+            border: 1px solid #3473b7;
+            z-index: 100;
+        }
+
+        .panel-title {
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        .panel-body {
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        .btn {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>鼠标标绘</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="取消标绘" onclick="PlottingDrawCancel()"/>&nbsp;&nbsp;
+        <input type="button" class="btn btn-default" value="清空标绘" onclick="PlottingClear()"/>
+    </div>
+</div>
+<div id="plotPanel" title="标绘面板"></div>
+<div id="map"></div>
+<script>
+    var plottingLayer, plottingEdit, layer, drawGraphicObject, map, plotPanel;
+    var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
+    var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+
+        plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+        //空间分析服务地址：目前使用的是服务器默认空间分析地址，可更换成实际使用的空间分析服务地址
+        plottingLayer.spatialAnalystUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+        plottingLayer.style = {
+            fillColor: "#66cccc",
+            fillOpacity: 0.4,
+            strokeColor: "#66cccc",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 6
+        };
+
+        //态势标绘编辑
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+
+        // 绘制标号;
+        drawGraphicObject = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+        //添加态势标绘控件
+        map.addControls([plottingEdit, drawGraphicObject]);
+    }
+
+    function addLayer() {
+        map.addLayers([layer, plottingLayer]);
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+        plotPanel = new SuperMap.Plotting.PlotPanel("plotPanel", serverUrl, window.map);
+        plotPanel.events.on({"initializeCompleted": initializeCompleted});
+        plotPanel.initializeAsync();
+        //createPlotPanel(serverUrl, map, "plotPanel");//创建标绘面板
+    }
+
+    function initializeCompleted(evt) {
+        plotPanel.setDrawFeature(drawGraphicObject);
+    }
+
+    //取消标绘与编辑
+    function plottingAllDeactivate() {
+        plottingEdit.deactivate();
+        drawGraphicObject.deactivate();
+    }
+
+    //清空绘制
+    function PlottingClear() {
+        plottingAllDeactivate();
+        plottingLayer.removeAllFeatures();
+    }
+
+    //取消标绘，激活标绘编辑控件
+    function PlottingDrawCancel() {
+        plottingAllDeactivate();
+        plottingEdit.activate();
+    }
+
+    document.onmouseup = function (evt) {
+        var evt = evt || window.event;
+        if (evt.button === 2) {
+            PlottingDrawCancel();
+            return false;
+        }
+        evt.stopPropagation();
+    }
+</script>
+
+</body>
+</html>

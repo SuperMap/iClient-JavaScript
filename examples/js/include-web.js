@@ -100,8 +100,20 @@
             inputCSS("https://cdn.bootcss.com/jquery-contextmenu/2.6.3/jquery.contextMenu.min.css");
             inputScript("https://cdn.bootcss.com/jquery-contextmenu/2.6.3/jquery.contextMenu.min.js");
         }
-
-
+        if (inArray(includes, 'colorpicker')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.js");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.colorpicker.js");
+        }
+        if (inArray(includes, 'fileupLoad')) {
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/jquery.js");
+            inputScript("http://iclient.supermap.io/libs/iclient8c/examples/js/fileupLoad.js");
+        }
+        if (inArray(includes, 'sticklr')) {
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/jquery-sticklr.css");
+        }
+        if (inArray(includes, 'responsive')) {
+            inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/bootstrap-responsive.min.css");
+        }
     }
 
     load();

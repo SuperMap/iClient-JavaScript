@@ -1,3 +1,4 @@
+
 /**
  * classic 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
@@ -453,11 +454,11 @@ var exampleConfig = {
                     name: "泰森多边形",
                     thumbnail: "analysis_thiessenAnalyst.png",
                     fileName: "analysis_thiessenAnalyst"
-                }, /*{
+                }, {
                     name: "叠加分析",
                     thumbnail: "analysis_overlayAnalystService.png",
                     fileName: "analysis_overlayAnalystService"
-                },*/ {
+                }, {
                     name: "表面分析",
                     thumbnail: "analysis_surfaceAnalyst.png",
                     fileName: "analysis_surfaceAnalyst"
@@ -473,7 +474,7 @@ var exampleConfig = {
                     name: "里程定点",
                     thumbnail: "analysis_routeLocatorPoint.png",
                     fileName: "analysis_routeLocatorPoint"
-                }, /*{
+                }, {
                     name: "点密度插值分析",
                     thumbnail: "analysis_interpolationAnalystByDensity.png",
                     fileName: "analysis_interpolationAnalystByDensity"
@@ -485,7 +486,7 @@ var exampleConfig = {
                     name: "克吕金插值分析",
                     thumbnail: "analysis_interpolationAnalystByKriging.png",
                     fileName: "analysis_interpolationAnalystByKriging"
-                },{
+                }, {
                     name: "径向基函数插值分析",
                     thumbnail: "analysis_interpolationAnalystByRBF.png",
                     fileName: "analysis_interpolationAnalystByRBF"
@@ -505,7 +506,7 @@ var exampleConfig = {
                     name: "核密度分析",
                     thumbnail: "analysis_densityKernelAnalyst.png",
                     fileName: "analysis_densityKernelAnalyst"
-                },*/
+                },
                 ]
             },
             "networkAnalyst": {
@@ -613,11 +614,11 @@ var exampleConfig = {
                     name: "热点图颜色分段配置",
                     thumbnail: "vizLayer_heatmapColorSection.png",
                     fileName: "vizLayer_heatmapColorSection"
-                }, /*{
+                }, {
                     name: "热点图颜色手动配置",
                     thumbnail: "vizLayer_heatmapColorManual.png",
                     fileName: "vizLayer_heatmapColorManual"
-                },*/ {
+                }, {
                     name: "热点网格图",
                     thumbnail: "vizLayer_heatGridLayer.png",
                     fileName: "vizLayer_heatGridLayer"
@@ -796,12 +797,11 @@ var exampleConfig = {
         content: {
             "plot": {
                 name: "标绘",
-                content: [/*{
+                content: [{
                     name: "动态标绘",
                     thumbnail: "plot_dynamicPlot.png",
                     fileName: "plot_dynamicPlot"
-                    //todo 迁插件迁的头大
-                }, */{
+                }, {
                     name: "图层操作",
                     thumbnail: "plot_operatePlottingLayer.png",
                     fileName: "plot_operatePlottingLayer"
@@ -809,16 +809,15 @@ var exampleConfig = {
                     name: "图层编辑",
                     thumbnail: "plot_editPlottingLayer.png",
                     fileName: "plot_editPlottingLayer"
-                }, /*{
+                }, {
                     name: "鼠标标绘",
                     thumbnail: "plot_plotSymbol.png",
                     fileName: "plot_plotSymbol"
-                    //todo 插件与bootstrap冲突
-                }, */{
+                }, {
                     name: "点线面绘制",
                     thumbnail: "plot_drawGeoGraphicObject.png",
                     fileName: "plot_drawGeoGraphicObject"
-                }, /*{
+                }, {
                     name: "属性修改",
                     thumbnail: "plot_modifySymbolStyle.png",
                     fileName: "plot_modifySymbolStyle"
@@ -826,7 +825,7 @@ var exampleConfig = {
                     name: "缺省属性",
                     thumbnail: "plot_defaultStyle.png",
                     fileName: "plot_defaultStyle"
-                }, */{
+                }, {
                     name: "自定义属性",
                     thumbnail: "plot_symbolExtendProperty.png",
                     fileName: "plot_symbolExtendProperty"
@@ -843,7 +842,56 @@ var exampleConfig = {
                     thumbnail: "plot_loadSymbolLib.png",
                     fileName: "plot_loadSymbolLib"
                 }]
+            },
+            "trendMap": {
+                name: "态势图",
+                content: [{
+                    name: "保存和加载",
+                    thumbnail: "plot_saveload.png",
+                    fileName: "plot_saveload"
+                }, {
+                    name: "态势图叠加",
+                    thumbnail: "plot_addfile.png",
+                    fileName: "plot_addfile"
+                },{
+                    name: "态势图上传下载",
+                    thumbnail: "plot_filetransfer.png",
+                    fileName: "plot_filetransfer"
+                },]
+            },
+            "other": {
+                name: "其他",
+                content: [{
+                    name: "几何查询",
+                    thumbnail: "plot_symbolGeometricQuery.png",
+                    fileName: "plot_symbolGeometricQuery"
+                }, {
+                    name: "动态标绘高性能图层",
+                    thumbnail: "plot_plotSymbolPerformance.png",
+                    fileName: "plot_plotSymbolPerformance"
+                },{
+                    name: "态势图上传下载",
+                    thumbnail: "plot_filetransfer.png",
+                    fileName: "plot_filetransfer"
+                },{
+                    name: "态势推演",
+                    thumbnail: "plot_plotGOAnimation.png",
+                    fileName: "plot_plotGOAnimation"
+                },{
+                    name: "复杂对象",
+                    thumbnail: "plot_drawGraphics.png",
+                    fileName: "plot_drawGraphics"
+                },{
+                    name: "避让区域",
+                    thumbnail: "plot_symbolAvoid.png",
+                    fileName: "plot_symbolAvoid"
+                },{
+                    name: "航线",
+                    thumbnail: "plot_drawRoute.png",
+                    fileName: "plot_drawRoute"
+                }]
             }
+
         }
     },
     "others": {

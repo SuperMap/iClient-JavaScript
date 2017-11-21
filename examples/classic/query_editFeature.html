@@ -97,6 +97,7 @@
 
     //激活添加地物
     function activateAddFeature() {
+        closeAlert();
         //先清除上次的显示结果
         vectorLayer.removeAllFeatures();
         clearAllDeactivate();
@@ -141,21 +142,22 @@
         if (addResultIds === null && resourceInfo === null) return;
 
         if ((addResultIds && addResultIds.length > 0) || (resourceInfo && resourceInfo.succeed)) {
-            alert("新增地物成功");
+            showAlert("新增地物成功");
             vectorLayer.removeAllFeatures();
             //重新加载图层
             layer.redraw();
         } else {
-            alert("新增地物失败");
+            showAlert("新增地物失败");
         }
     }
 
     function processFailed(e) {
-        alert(e.error.errorMsg);
+        showAlert(e.error.errorMsg);
     }
 
     //激活选择地物
     function activateSelectedFeature() {
+        closeAlert();
         vectorLayer.removeAllFeatures();
         clearAllDeactivate();
         drawPoint.activate();
@@ -190,7 +192,7 @@
             result = getFeaturesEventArgs.result;
         vectorLayer.removeAllFeatures();
         if (originFeatures === null || originFeatures.length === 0) {
-            alert("查询地物为空");
+            showAlert("查询地物为空");
             return;
         }
         ids = new Array();
@@ -210,9 +212,10 @@
 
     //激活编辑地物
     function editselectedFeature() {
+        closeAlert();
         clearAllDeactivate();
         if (ids == null) {
-            alert("请先选择地物");
+            showAlert("请先选择地物");
         }
         else {
             modifyFeature.activate();
@@ -258,7 +261,7 @@
     //更新地物完成
     function updateFeaturesProcessCompleted(editFeaturesEventArgs) {
         if (editFeaturesEventArgs.result.resourceInfo.succeed) {
-            alert("更新地物成功");
+            showAlert("更新地物成功");
             //重新加载图层
             vectorLayer.removeAllFeatures();
             layer.redraw();
@@ -266,15 +269,16 @@
             ids = null;
         }
         else {
-            alert("更新地物失败");
+            showAlert("更新地物失败");
         }
     }
 
     //删除选中地物
     function deleteSelectedFeature() {
+        closeAlert();
         clearAllDeactivate();
         if (ids == null) {
-            alert("请先选择地物");
+            showAlert("请先选择地物");
         }
         else {
             var editFeatureParameter,
@@ -297,13 +301,13 @@
     //删除地物完成
     function deleteFeaturesProcessCompleted(editFeaturesEventArgs) {
         if (editFeaturesEventArgs.result.resourceInfo.succeed) {
-            alert("删除地物成功");
+            showAlert("删除地物成功");
             //重新加载图层
             vectorLayer.removeAllFeatures();
             layer.redraw();
         }
         else {
-            alert("删除地物失败");
+            showAlert("删除地物失败");
         }
     }
 
@@ -311,6 +315,32 @@
         modifyFeature.deactivate();
         drawPoint.deactivate();
         drawPolygon.deactivate();
+    }
+
+    //显示提示框
+    var alertDiv;
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
     }
 </script>
 

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>属性修改</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" include="PlottingPanel" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            left: 200px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #menu {
+            position: absolute;
+            background: #ffffff;
+            width: 200px;
+            height: 100%;
+            border: 1px solid #3473b7;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+<div id="menu">
+    <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+        <div id="stylePanel" title="属性面板"></div>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var plottingLayer, plottingEdit, layer, map, stylePanel;
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+
+        plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+        plottingLayer.style = {
+            fillColor: "#66cccc",
+            fillOpacity: 0.4,
+            strokeColor: "#66cccc",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 6
+        };
+
+        //态势标绘编辑
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+
+        //添加态势标绘控件
+        map.addControls([plottingEdit]);
+    }
+
+    function addLayer() {
+        map.addLayers([layer, plottingLayer]);
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+        //创建属性面板
+        stylePanel = new SuperMap.Plotting.StylePanel("stylePanel");
+        stylePanel.addEditLayer(plottingLayer);
+
+        //标绘标号
+        plotSymbol();
+
+        plottingEdit.activate();
+    }
+
+    function plotSymbol() {
+
+        //标绘多边形
+        var polygonPoints = [];
+        polygonPoints.push(new SuperMap.Geometry.Point(-20, 0));
+        polygonPoints.push(new SuperMap.Geometry.Point(-10, 20));
+        polygonPoints.push(new SuperMap.Geometry.Point(-30, 40));
+        polygonPoints.push(new SuperMap.Geometry.Point(-60, 10));
+        plottingLayer.createSymbolWC(0, SuperMap.Plot.SymbolType.ARBITRARYPOLYGONSYMBOL, polygonPoints);
+
+        //标绘折线
+        var linePoints = [];
+        linePoints.push(new SuperMap.Geometry.Point(0, 0));
+        linePoints.push(new SuperMap.Geometry.Point(0, 20));
+        linePoints.push(new SuperMap.Geometry.Point(20, 10));
+        linePoints.push(new SuperMap.Geometry.Point(10, 30));
+        plottingLayer.createSymbolWC(0, SuperMap.Plot.SymbolType.POLYLINESYMBOL, linePoints);
+    }
+</script>
+
+</body>
+</html>

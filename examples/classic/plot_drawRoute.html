@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>航线</title>
+    <script type="text/javascript" include="bootstrap,responsive,sticklr" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic"
+            include="bevInclude,PlottingPanel" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+        .input-group {
+            margin: 10px auto;
+        }
+        .panel-title {
+            color: #ffffff;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>航线</h5></div>
+    <div class='panel-body content' style="padding: 10px;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
+        <div class='input-group'>
+            <select class="search-query form-control" style="width: 120px;margin-bottom: 0;" id="SLT"
+                    onclick="setRouteNodeType()"></select>
+            <input type="button" class="btn btn-default" value="绘制航线" onclick="plotSymbol()"/>&nbsp;&nbsp;
+        </div>
+        <div class='input-group'>
+            <input type="button" class="btn btn-default" value="编辑状态" onclick="editState()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="删除节点" onclick="deleteRouteNode()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="航线高亮" onclick="HighlightFlag()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="航线闪烁" onclick="BlinkRoute()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" value="取消标绘" onclick="PlottingDrawCancel()"/>&nbsp;&nbsp;
+        </div>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map, plottingLayer, layer, menu1, menu2, menu3;
+    var stylePanel;
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var plotting;
+    var plottingEdits = [];
+    var drawGraphicObjects = [];
+    var drawGraphicObject;
+    var plottingEdit;
+    var item = ["瞄准点", "普通航路点", "展开点", "初始点", "发射点", "会合点", "待机点",
+            "补给点", "起飞点", "转弯点", "可视初始点", "齐射点", "武器发射点", "目标点",
+            "攻击点", "压制点", "八字盘旋点", "跑马圈点"],
+        select,
+        routeNodeType;
+
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            /*eventListeners:{"movestart":function(){
+                menu1.style.visibility="hidden";
+            },
+            "click":function(){
+                menu1.style.visibility="hidden";
+            }}*/
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+        map.events.register("mousedown");
+
+        //总控类
+        plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+
+        plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+
+        //空间分析服务地址：目前使用的是服务器默认空间分析地址，可更换成实际使用的空间分析服务地址
+        plottingLayer.spatialAnalystUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+
+        plottingLayer.style = {
+            fillColor: "#66cccc",
+            fillOpacity: 0.4,
+            strokeColor: "#66cccc",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 6
+        };
+
+
+        //态势标绘编辑
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+
+
+        // 绘制标号;
+        drawGraphicObject = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+        drawGraphicObjects.push(drawGraphicObject);
+        //添加态势标绘控件
+        map.addControls([plottingEdit, drawGraphicObject]);
+    }
+
+    function addLayer() {
+        map.addLayers([layer, plottingLayer]);
+        // map.setCenter(new SuperMap.LonLat(104, 35), 3);//定位中国地图
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+        //创建属性面板
+        //stylePanel = new SuperMap.Plotting.StylePanel("stylePanel");
+        //stylePanel.addEditLayer(plottingLayer);
+
+        select = document.getElementById("SLT");
+        for (var i = 0, len = item.length; i < len; i++) {
+            var options = document.createElement("option");
+            options.setAttribute("value", item[i]);
+            options.innerHTML = item[i];
+            select.appendChild(options);
+        }
+    }
+
+
+    function selectItem() {
+        var select = document.getElementById("SLT");
+        var type;
+        for (var i = 0; i < select.children.length; i++) {
+            if (select.children[i].selected) {
+                type = select.children[i].value;
+
+            }
+        }
+
+
+        if (type === item[0]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.AIMING;
+        }
+        else if (type === item[1]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.COMMONROUTE;
+        }
+        else if (type === item[2]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.EXPANDING;
+        }
+        else if (type === item[3]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.INITIAL;
+        }
+        else if (type === item[4]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.LANCH;
+        }
+        else if (type === item[5]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.RENDEZVOUS;
+        }
+        else if (type === item[6]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.STANDBY;
+        }
+        else if (type === item[7]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.SUPPLY;
+        }
+        else if (type === item[8]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.TAKEOFF;
+        }
+        else if (type === item[9]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.TURNING;
+        }
+        else if (type === item[10]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.VISUALINITAL;
+        }
+        else if (type === item[11]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.VOLLEY;
+        }
+        else if (type === item[12]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.WEAPONLAUNCH;
+        }
+        else if (type === item[13]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.TARGET;
+        }
+        else if (type === item[14]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.ATTACK;
+        }
+        else if (type === item[15]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.SUPPRESS;
+        }
+        else if (type === item[16]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.EIGHTSPIRAL;
+        }
+        else if (type === item[17]) {
+            routeNodeType = SuperMap.Plot.RouteNodeType.HAPPYVALLEY;
+        }
+        var obj = new Object();
+        obj.selectValue = type;
+        obj.routeNodeType = routeNodeType;
+        return obj;
+    }
+
+
+    //取消标绘与编辑
+    function plottingAllDeactivate() {
+        for (var i = 0; i < drawGraphicObjects.length; i++) {
+            drawGraphicObjects[i].deactivate();
+        }
+        plottingEdit.deactivate();
+    }
+
+    //取消标绘，激活标绘编辑控件
+    function PlottingDrawCancel() {
+        plottingAllDeactivate();
+        plottingEdit.activate();
+    }
+
+    //清除feature
+    function clearFeatures() {
+        plottingLayer.removeAllFeatures();
+    }
+
+    //编辑状态
+    function editState() {
+        if (plottingEdit.editMode === SuperMap.Plot.EditMode.EDITCIRCUMRECTANGLE) {
+            plottingEdit.setEditMode(SuperMap.Plot.EditMode.ADDCONTROLPOINT);
+        } else {
+            plottingEdit.setEditMode(SuperMap.Plot.EditMode.EDITCIRCUMRECTANGLE);
+        }
+    }
+
+    //删除航线节点
+    function deleteRouteNode() {
+
+        if (plottingLayer.selectedFeatures.length === 0) {
+            return;
+        }
+        var routeNodefeature = plottingLayer.selectedFeatures[0];
+        if (routeNodefeature.geometry instanceof SuperMap.Geometry.GeoRouteNode) {
+            plottingLayer.features[0].geometry.deleteRouteNode(routeNodefeature.geometry.routeNode);
+            plottingLayer.drawFeatures([plottingLayer.features[0]]);
+        }
+    }
+
+    //航线高亮
+    function HighlightFlag() {
+        if (plottingEdit.highlightFlag === true) {
+            plottingEdit.highlightFlag = false;
+        } else {
+            plottingEdit.highlightFlag = true;
+//                plottingEdit.highlightStyle={strokeColor:"#808080"};
+        }
+    }
+
+    //航线闪烁
+    function BlinkRoute() {
+        plottingLayer.features[0].geometry.blinkRoute();
+    }
+
+    //设置航线节点类型
+    function setRouteNodeType() {
+        var obj = selectItem();
+        if (drawGraphicObjects[0].active && drawGraphicObjects[0].handler instanceof SuperMap.Handler.GraphicObject) {
+            if (drawGraphicObjects[0].handler.plotting.geometry instanceof SuperMap.Geometry.Route) {
+                drawGraphicObjects[0].handler.plotting.geometry.setNextRouteNodeType(obj.routeNodeType);
+            }
+        }
+        if (plottingEdit.active && plottingEdit.features.length > 0) {
+            plottingEdit.features[0].geometry.route.setNextRouteNodeType(obj.routeNodeType);
+        }
+    }
+
+
+    function plotSymbol() {
+        drawGraphicObject.handler.libID = 0;
+        drawGraphicObject.handler.symbolCode = 1005;
+        drawGraphicObject.handler.serverUrl = serverUrl;
+
+        drawGraphicObject.deactivate();
+        drawGraphicObject.activate();
+    }
+
+    document.onmouseup = function (evt) {
+        var evt = evt || window.event;
+        if (evt.button === 2) {
+            PlottingDrawCancel();
+            return false;
+        }
+        evt.stopPropagation();
+    }
+</script>
+
+</body>
+</html>

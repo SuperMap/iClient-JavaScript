@@ -88,6 +88,7 @@
     }
 
     function selectPoints() {
+        closeAlert();
         clearElements();
         drawPoint.activate();
     }
@@ -102,6 +103,7 @@
     }
 
     function findTSPPaths() {
+        closeAlert();
         drawPoint.deactivate();
         var findTSPPathsService, parameter, analystParameter, resultSetting;
         resultSetting = new SuperMap.REST.TransportationAnalystResultSetting({
@@ -125,7 +127,7 @@
             parameter: analystParameter
         });
         if (nodeArray.length <= 1) {
-            alert("站点数目有误");
+            showAlert("站点数目有误");
         }
         findTSPPathsService = new SuperMap.REST.FindTSPPathsService(url2, {
             eventListeners: {"processCompleted": processCompleted}
@@ -175,11 +177,38 @@
     }
 
     function clearElements() {
+        closeAlert();
         nodeArray = [];
         i = 0;
         j = 0;
         markerLayer.clearMarkers();
         vectorLayer.removeAllFeatures();
+    }
+
+    //显示提示框
+    var alertDiv;
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
     }
 </script>
 

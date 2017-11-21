@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>避让区域</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>避让区域</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="避让编辑" onclick="drawAvoidRegion()"/>
+        <input type="button" class="btn btn-default" value="退出避让编辑" onclick="doneAvoidEdit()"/>
+        <input type="button" class="btn btn-default" value="删除避让" onclick="deleteAvoidEdit()"/>
+        <span id="txt" style="color: red; margin-left: 20px; font-size:1em;"></span>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var plottingLayer, plottingEdit, layer;
+    var drawGraphicObject, map, plotting, symbolLibManager;
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+
+        plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+        plottingLayer.style = {
+            fillColor: "#66cccc",
+            fillOpacity: 0.4,
+            strokeColor: "#66cccc",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 6
+        };
+
+        //态势标绘编辑
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+
+        drawGraphicObject = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+
+        //添加态势标绘控件
+        map.addControls([plottingEdit, drawGraphicObject]);
+
+        plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+
+    }
+
+    function addLayer() {
+        map.addLayers([layer, plottingLayer]);
+        map.setCenter(new SuperMap.LonLat(114.8225, 34.91), 4);
+        map.moveTo = function () {
+        };
+        plottingEdit.activate();
+        loadSymbolLib();
+    }
+
+    function loadSymbolLib() {
+        symbolLibManager = plotting.getSymbolLibManager();
+        symbolLibManager.libIDs = [421];
+        symbolLibManager.events.on({"initializeCompleted": initializeCompleted});
+        symbolLibManager.initializeAsync();
+    }
+
+    function initializeCompleted() {
+        plotSymbol();
+    }
+
+    //取消标绘与编辑
+    function plottingAllDeactivate() {
+        doneAvoidEdit();
+        drawGraphicObject.deactivate();
+        plottingEdit.deactivate();
+
+    }
+
+    //取消标绘，激活标绘编辑控件
+    function PlottingDrawCancel() {
+        plottingAllDeactivate();
+
+        plottingEdit.activate();
+
+    }
+
+    function plotSymbol() {
+        var symbolLib = symbolLibManager.getSymbolLibByIndex(0);
+        var libID = symbolLib.libID;
+
+        var locationPointWCs = [];
+        locationPointWCs.push(new SuperMap.Geometry.Point(107.02625, 35.7875));
+        locationPointWCs.push(new SuperMap.Geometry.Point(112.67375, 33.65));
+        locationPointWCs.push(new SuperMap.Geometry.Point(114.81125, 36.575));
+        plottingLayer.createSymbolWC(0, 390, locationPointWCs);
+
+        plottingLayer.createSymbolWC(libID, 9, [new SuperMap.Geometry.Point(107.02625, 35.2925)]);
+        plottingLayer.createSymbolWC(libID, 80102, [new SuperMap.Geometry.Point(110.78375, 36.08)]);
+        plottingLayer.createSymbolWC(libID, 80105, [new SuperMap.Geometry.Point(114.87875, 35.8775)]);
+
+
+    }
+
+    //绘制避让区域
+
+    function drawAvoidRegion() {
+        if (plottingLayer.selectedFeatures.length === 0) {
+            var txt = document.getElementById('txt');
+            txt.innerHTML = "避让编辑之前请先选择标号";
+            return;
+        }
+        plottingEdit.avoidEdit(true);
+    }
+
+    //退出避让编辑
+    function doneAvoidEdit() {
+        plottingEdit.avoidEdit(false);
+    }
+
+    //删除避让编辑
+    function deleteAvoidEdit() {
+        if (plottingEdit.avoidEditing === false) {
+            var txt = document.getElementById('txt');
+            txt.innerHTML = "删除避让编辑之前请先进入避让编辑";
+        }
+        plottingEdit.removeAllAvoidRegion();
+    }
+
+    document.onmouseup = function (evt) {
+        var evt = evt || window.event;
+        if (evt.button === 2) {
+            PlottingDrawCancel();
+            return false;
+        }
+        evt.stopPropagation();
+    }
+</script>
+
+</body>
+</html>

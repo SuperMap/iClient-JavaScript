@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>动态标绘高性能图层</title>
+    <script type="text/javascript" exclude="iclient-classic"
+            include="bevInclude,PlottingPanel" src="../../dist/include-classic.js"></script>
+    <script type="text/javascript" include="bootstrap,responsive,sticklr" src="../js/include-web.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+        .input-group {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>动态标绘高性能图层</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <span><h4>高性能标绘图层：</h4></span>
+            <div class='input-group'>
+                <input type="button" class="btn btn-default" value="添加不同点标号" onclick="addSymbol(0,true)"/></input>&nbsp;&nbsp;
+                <input type="button" class="btn btn-default" value="添加相同点标号" onclick="addSymbol(1,true)"/></input>&nbsp;&nbsp;
+            </div>
+            <span><h4>标绘图层：</h4></span>
+            <div class='input-group'>
+                <input type="button" class="btn btn-default" value="添加不同点标号"
+                       onclick="addSymboltoPlottingLayer(0,false)"/></input>&nbsp;&nbsp;
+                <input type="button" class="btn btn-default" value="添加相同点标号"
+                       onclick="addSymboltoPlottingLayer(1,false)"/></input>&nbsp;&nbsp;
+                <input type="button" class="btn btn-default" value="清除" onclick="clearSymbol()"/></input>
+            </div>
+            <div class='input-group'>
+                <span id="txt" style="color: #ff0000; margin-left: 20px; font-size:20px;"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var map, plottingLayer, layer, graphicsLayer;
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot";
+    var plotting, plottingEdit, plottingGraphicsEdit;
+    var showText;
+
+    init();
+
+    function init() {
+        Bev.Theme.set("bev-base");
+
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.MousePosition(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+
+        //总控类
+        plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+        plotting.defaultStyle.dotSymbolSize *= 0.5;
+
+        graphicsLayer = new SuperMap.Layer.PlottingGraphics("Graphic Layer", null, {
+            hitDetection: true,
+            useCanvasEvent: true
+        });//可以选择，开启事件
+        plottingLayer = new SuperMap.Layer.PlottingLayer("plotting Layer", serverUrl);
+
+        plottingGraphicsEdit = new SuperMap.Control.PlottingGraphicsEdit(graphicsLayer, "");
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+    }
+
+    function addLayer() {
+        map.addLayers([layer, graphicsLayer]);
+        map.addControls([plottingGraphicsEdit, plottingEdit]);
+        map.setCenter(new SuperMap.LonLat(104, 35), 3);
+        plottingGraphicsEdit.activate();
+    }
+
+    function addSymbol(flag, layerflag) {
+        setLayer(layerflag);
+        plottingGraphicsEdit.activate();
+        graphicsLayer.removeAllGraphics();
+        clearSymbol();
+        var lib = 421;
+        var features = [];
+        var symbolCount, codeArray;
+        var totalLength = 0;
+        if (flag === 0) {
+            symbolCount = [1000, 1000, 1000, 1000];
+            codeArray = [9, 80101, 80103, 80104];
+        } else if (flag === 1) {
+            symbolCount = [4000];
+            codeArray = [80101];
+        }
+        for (var i = 0; i < symbolCount.length; i++) {
+            totalLength += symbolCount[i];
+        }
+        showText = document.getElementById("txt");
+        showText.innerHTML = "正在加载数据请稍等。。。。。。";
+        for (var i = 0; i < symbolCount.length; i++) {
+            addSymboltoArray(symbolCount[i], lib, codeArray[i], features, totalLength, flag);
+        }
+    }
+
+    function addSymboltoArray(nCount, lib, code, features, totalLength, flag) {
+        SuperMap.Plot.PlottingUtil.getDataFromServer(serverUrl, lib, code, null, null, null, getCompleted, getFailed);
+        var locationPointWCs = [];
+        locationPointWCs.push(new SuperMap.Geometry.Point(122, 41));
+
+        function getCompleted(result) {
+            var resultData = SuperMap.Util.cloneObject(result.originResult);
+            for (var i = 0; i < nCount; i++) {
+                var x = 122 - Math.random() * 40;
+                var y = 41 - Math.random() * 12;
+                var position = [new SuperMap.Geometry.Point(x, y)];
+                if (flag === 0) {
+                    resultData.textContent = resultData.symbolName + i.toString();
+                } else if (flag === 1) {
+                    resultData.textContent = resultData.symbolName;
+                }
+                resultData.annotationPosition = 6;
+                var tempFeature = SuperMap.Geometry.PlottingGeometry.createFeature(resultData.libID, resultData.code, position, {
+                    dScale: 1,
+                    dRotate: 0,
+                    symbolData: resultData,
+                    map: map,
+                    serverUrl: serverUrl
+                });
+                features.push(tempFeature);
+            }
+
+            if (features.length === totalLength) {
+                graphicsLayer.addFeatures(features);
+                showText.innerHTML = "";
+            }
+        }
+
+        //获取数据失败
+        function getFailed(result) {
+            return null;
+        }
+
+    }
+
+    function addSymboltoPlottingLayer(flag, layerflag) {
+        setLayer(layerflag);
+        plottingEdit.activate();
+        plottingLayer.removeAllFeatures();
+        clearSymbol();
+        var symbolCount, codeArray;
+        var totalLength = 0;
+        var libID = 421;
+        var features = [];
+        if (flag === 0) {
+            symbolCount = [500, 500, 500, 500];
+            codeArray = [9, 80101, 80103, 80104];
+        } else if (flag === 1) {
+            symbolCount = [2000];
+            codeArray = [80101];
+        }
+        for (var i = 0; i < symbolCount.length; i++) {
+            totalLength += symbolCount[i];
+        }
+        showText = document.getElementById("txt");
+        showText.innerHTML = "正在加载数据请稍等。。。。。。";
+        for (var i = 0; i < symbolCount.length; i++) {
+            addSymbolArrayToPlottingLayer(symbolCount[i], libID, codeArray[i], features, totalLength, flag);
+        }
+    }
+
+    function addSymbolArrayToPlottingLayer(nCount, libID, code, features, totalLength, flag) {
+        SuperMap.Plot.PlottingUtil.getDataFromServer(serverUrl, libID, code, null, null, null, success, fail);
+
+        function success(result) {
+            var resultData = SuperMap.Util.cloneObject(result.originResult);
+            for (var i = 0; i < nCount; i++) {
+                var x = 122 - Math.random() * 40;
+                var y = 41 - Math.random() * 12;
+                var position = [new SuperMap.Geometry.Point(x, y)];
+                if (flag === 0) {
+                    resultData.textContent = resultData.symbolName + i.toString();
+                } else if (flag === 1) {
+                    resultData.textContent = resultData.symbolName;
+                }
+                var tempFeature = SuperMap.Geometry.PlottingGeometry.createFeature(resultData.libID, resultData.code, position, {
+                    symbolData: resultData,
+                    map: map,
+                    scaleByMap: true,
+                    maxScale: 2,
+                    minScale: 0
+                });
+                features.push(tempFeature);
+            }
+
+            if (features.length === totalLength) {
+                plottingLayer.addFeatures(features);
+                showText.innerHTML = "";
+            }
+        }
+
+        function fail(result) {
+            return null;
+        }
+    }
+
+    function setLayer(layerflag) {
+        if (layerflag === true) {//高性能图层
+            if (SuperMap.Util.indexOf(map.layers, plottingLayer) !== -1) {
+                map.removeLayer(plottingLayer);
+                map.removeControl(plottingEdit);
+            }
+            if (SuperMap.Util.indexOf(map.layers, graphicsLayer) === -1) {
+                map.addLayer(graphicsLayer);
+                map.addControl(plottingGraphicsEdit);
+            }
+        } else if (layerflag === false) {//普通标绘图层
+            if (SuperMap.Util.indexOf(map.layers, graphicsLayer) !== -1) {
+                map.removeLayer(graphicsLayer);
+                map.removeControl(plottingGraphicsEdit);
+            }
+            if (SuperMap.Util.indexOf(map.layers, plottingLayer) === -1) {
+                map.addLayer(plottingLayer);
+                map.addControl(plottingEdit);
+            }
+        }
+    }
+
+    function clearSymbol() {
+        showText = document.getElementById("txt");
+        showText.innerHTML = "";
+        graphicsLayer.removeAllGraphics();
+        for (var i = 0; i < map.layers.length; i++) {
+            if (map.layers[i].CLASS_NAME === "SuperMap.Layer.PlottingLayer") {
+                map.layers[i].removeAllFeatures();
+            }
+        }
+    }
+
+    //取消标绘与编辑
+    function plottingAllDeactivate() {
+        plottingGraphicsEdit.deactivate();
+    }
+
+    //取消标绘，激活标绘编辑控件
+    function PlottingDrawCancel() {
+        plottingAllDeactivate();
+
+        plottingGraphicsEdit.activate();
+    }
+
+    document.onmouseup = function (evt) {
+        var evt = evt || window.event;
+        if (evt.button === 2) {
+            PlottingDrawCancel();
+            return false;
+        }
+        evt.stopPropagation();
+    }
+</script>
+
+</body>
+</html>

@@ -45,7 +45,7 @@
 <div id="map"></div>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
-    var spatialAnalystURL, local, map, layer, vectorLayer, resultLayer, markerLayer, gpsLine, bufferResultGeometry,
+    var alertDiv, map, layer, vectorLayer, resultLayer, markerLayer, gpsLine, bufferResultGeometry,
         myPointsList = [new SuperMap.Geometry.Point(2823.940, -4690.000),
             new SuperMap.Geometry.Point(3448.940, -4690.301),
             new SuperMap.Geometry.Point(3816.561, -3810.125),
@@ -141,6 +141,7 @@
 
     //将离散gps信号点生成线路
     function addPath() {
+        closeAlert();
         var pathFeature = new SuperMap.Feature.Vector();
         gpsLine = new SuperMap.Geometry.LineString(myPointsList);
         pathFeature.geometry = gpsLine;
@@ -150,8 +151,9 @@
 
     //对生成的线路进行缓冲区分析
     function bufferAnalystProcess() {
+        closeAlert();
         if (!gpsLine) {
-            alert("请生成路径，用于缓冲区分析");
+            showAlert("请生成路径，用于缓冲区分析");
             return;
         }
         var bufferServiceByGeometry = new SuperMap.REST.BufferAnalystService(url2),
@@ -186,8 +188,9 @@
 
     //查询出信号影响范围内的工厂
     function queryByGeometry() {
+        closeAlert();
         if (!bufferResultGeometry) {
-            alert("请先做缓冲区分析，以得到查询的范围");
+            showAlert("请先做缓冲区分析，以得到查询的范围");
             return;
         }
         var queryParam, queryByGeometryParameters, queryService;
@@ -223,10 +226,36 @@
     }
 
     function clearElements() {
+        closeAlert();
         gpsLine = null;
         bufferResultGeometry = null;
         resultLayer.removeAllFeatures();
         markerLayer.clearMarkers();
+    }
+
+    //显示提示框
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
     }
 </script>
 

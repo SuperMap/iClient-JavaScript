@@ -159,7 +159,7 @@
     }
 
     function addExtendProperty() {
-
+        closeAlert();
         var key = document.getElementById("propertyName").value;
         var value = document.getElementById("propertyValue").value;
         if ("" === key || "" === value) {
@@ -168,7 +168,7 @@
 
         var features = plottingLayer.selectedFeatures;
         if (0 === features.length) {
-            alert("请选择您要编辑的标号");
+            showAlert("请选择您要编辑的标号");
             return;
         }
 
@@ -244,6 +244,32 @@
 
         table.appendChild(body);
         container.appendChild(table);
+    }
+
+    //显示提示框
+    var alertDiv;
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
     }
 </script>
 

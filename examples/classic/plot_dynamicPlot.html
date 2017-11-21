@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>动态标绘</title>
+    <script type="text/javascript" include="bootstrap,responsive,sticklr" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" include="bevInclude,PlottingPanel"
+            src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            left: 200px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #menuPlotting {
+            position: absolute;
+            top: 20%;
+            z-index: 999999;
+            border-radius: 4px;
+            padding-top: 2px;
+        }
+
+        #menu {
+            position: absolute;
+            float: left;
+            background: #ffffff;
+            width: 200px;
+            height: 100%;
+            border: 1px solid #3473b7;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+<div id="menu">
+    <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+        <div class="easyui-tabs" style="width: 100%;height: 100%">
+            <div id="plotPanel" title="标绘面板" style="overflow: hidden"></div>
+            <div id="stylePanel" title="属性面板"></div>
+        </div>
+    </div>
+</div>
+<div id="map">
+    <div id="menuPlotting" class="sticklr" style="left: 1%;color:rgb(0,0,0);background-color: #fff;">
+        <li>
+            <a class="glyphicon plotting-glyphicon-draw-deactivate notArrow" title="取消绘制"
+               onclick="PlottingDrawCancel()"></a>
+        </li>
+        <li>
+            <a class="glyphicon plotting-glyphicon-draw-removeAll notArrow" title="清除"></a>
+            <ul>
+                <li><input type="button" value="删除标号" onclick="deleteSymbol()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="清空图层" onclick="PlottingClear()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+            </ul>
+        </li>
+        <li>
+            <a class="glyphicon glyphicon-pencil notArrow" title="编辑器"></a>
+            <ul>
+                <li><input type="button" value="复制" onclick="copySymbol()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="剪切" onclick="cutSymbol()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+                <li><input type="button" value="粘贴" onclick="pasteSymbol()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+            </ul>
+        </li>
+        <li>
+            <a class="glyphicon glyphicon-plus notArrow" title="添加图层" onclick="addPlottingLayer()"></a>
+        </li>
+        <li>
+            <a class="glyphicon plotting-lyphicon-save-simulationMap" title="态势图操作"></a>
+            <ul>
+                <li><input type="button" value="保存态势图" onclick="saveSimulationMap()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="加载态势图" onclick="loadSimulationMap()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+            </ul>
+        </li>
+        <li>
+            <a class="glyphicon glyphicon-edit notArrow" title="编辑标号"></a>
+            <ul>
+                <li><input type="button" value="外接矩形编辑" onclick="editCircusRetangle()"
+                           style="width:85px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="节点编辑" onclick="editContorPoints()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="增加节点" onclick="addControlPoints()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+            </ul>
+        </li>
+        <li>
+            <a class="glyphicon glyphicon-lock notArrow" title="切换图层锁定/编辑/选择模式"></a>
+            <ul>
+                <li><input type="button" value="图层锁定切换" onclick="setPlottingLayerIsLocked()"
+                           style="width:85px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="图层编辑切换" onclick="setPlottingLayerIsEdit()"
+                           style="width:85px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="图层选择切换" onclick="setPlottingLayerIsSelected()"
+                           style="width:85px;height: 25px ;margin:0 auto;"> </input> </li>
+            </ul>
+        </li>
+        <li>
+            <a class="glyphicon glyphicon-check notArrow" title="切换多选模式" onclick="multiSelectModel()"></a>
+
+        </li>
+        <li>
+            <a class="glyphicon glyphicon-align-justify notArrow" title="多选对齐"></a>
+            <ul>
+                <li><input type="button" value="左对齐" onclick="setSymbolAlighLeft()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="右对齐" onclick="setSymbolAlighRight()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+
+                <li><input type="button" value="上对齐" onclick="setSymbolAlighUp()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+
+                <li><input type="button" value="下对齐" onclick="setSymbolAlighDown()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="竖直居中" onclick="setSymbolAlighVerticalcenter()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="水平居中" onclick="setSymbolAlighHorizontalcenter()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+            </ul>
+        </li>
+
+        <li>
+            <a class="glyphicon glyphicon-retweet notArrow" title="截屏" onclick="mapToImg1()"></a>
+        </li>
+
+        <li>
+            <a class="glyphicon glyphicon-adjust notArrow" title="避让"></a>
+            <ul>
+                <li><input type="button" value="避让编辑" onclick="drawAvoidRegion()"
+                           style="width:80px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="退出避让编辑" onclick="doneAvoidEdit()"
+                           style="width:80px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="删除避让" onclick="deleteAvoidEdit()"
+                           style="width:80px;height: 25px ;margin:0 auto;"> </input> </li>
+            </ul>
+        </li>
+
+
+        <li>
+            <a class="glyphicon glyphicon-gift notArrow" title="创建组合"></a>
+            <ul>
+                <li><input type="button" value="组合" onclick="createGroupObjects()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="多旗" onclick="createDrawFlags()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="解绑" onclick="testUnGroupObject()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+            </ul>
+        </li>
+    </div>
+</div>
+<script>
+    var map, plottingLayer, layer;
+    var plotPanel, stylePanel;
+    var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
+    var mapurl = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    var plotting;
+    var sitDataLayers;
+    var drawGraphicObjects = [];
+    var plottingEdit;
+    init();
+
+    function init() {
+        Bev.Theme.set("bev-base");
+
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+
+        //总控类
+        plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+
+        plotting.getSitDataManager().events.on({"openSmlFileCompleted": success});
+
+        plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+
+        //空间分析服务地址：目前使用的是服务器默认空间分析地址，可更换成实际使用的空间分析服务地址
+        plottingLayer.spatialAnalystUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+        plottingLayer.style = {
+            fillColor: "#66cccc",
+            fillOpacity: 0.4,
+            strokeColor: "#66cccc",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 6
+        };
+
+        //态势标绘编辑
+        plottingEdit = new SuperMap.Control.PlottingEdit();
+        //plottingEdits.push(plottingEdit);
+
+        // 绘制标号;
+        var drawGraphicObject = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+        drawGraphicObjects.push(drawGraphicObject);
+
+        //添加态势标绘控件
+        map.addControls([plottingEdit, drawGraphicObject]);
+    }
+
+    function addLayer() {
+        map.addLayers([layer, plottingLayer]);
+        map.setCenter(new SuperMap.LonLat(104, 35), 3);
+
+        //创建标绘面板
+        plotPanel = new SuperMap.Plotting.PlotPanel("plotPanel", serverUrl, map);
+        plotPanel.events.on({"initializeCompleted": initializeCompleted});
+        plotPanel.initializeAsync();
+
+        //创建属性面板
+        stylePanel = new SuperMap.Plotting.StylePanel("stylePanel");
+        stylePanel.addEditLayer(plottingLayer);
+    }
+
+    function initializeCompleted(evt) {
+        if (drawGraphicObjects.length > 0) {
+            plotPanel.setDrawFeature(drawGraphicObjects[0]);
+        }
+
+        plotting.getSymbolLibManager().cacheSymbolLib(100);
+    }
+
+    //取消标绘与编辑
+    function plottingAllDeactivate() {
+        for (var i = 0; i < drawGraphicObjects.length; i++) {
+            drawGraphicObjects[i].deactivate();
+        }
+        plottingEdit.deactivate();
+    }
+
+    //清空绘制
+    function PlottingClear() {
+
+        plottingAllDeactivate();
+
+        for (var i = 0; i < map.layers.length; i++) {
+            if (map.layers[i].CLASS_NAME === "SuperMap.Layer.PlottingLayer") {
+                map.layers[i].removeAllFeatures();
+            }
+        }
+    }
+
+    //删除选中标号
+    function deleteSymbol() {
+        plottingEdit.deleteSelectFeature();
+    }
+
+    //取消标绘，激活标绘编辑控件
+    function PlottingDrawCancel() {
+        plottingAllDeactivate();
+
+        plottingEdit.activate();
+
+    }
+
+    //复制
+    function copySymbol() {
+        plotting.getEditor().copy();
+    }
+
+    //剪切
+    function cutSymbol() {
+        plotting.getEditor().cut();
+    }
+
+    //粘贴
+    function pasteSymbol() {
+        plotting.getEditor().paste();
+    }
+
+    //添加图层
+    function addPlottingLayer() {
+        PlottingDrawCancel();
+        var newPlottingLayer = new SuperMap.Layer.PlottingLayer(getNewPlottingLayerName(), serverUrl);
+        newPlottingLayer.style = {
+            fillColor: "#66cccc",
+            fillOpacity: 0.4,
+            strokeColor: "#66cccc",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 6
+        };
+
+        newPlottingLayer.spatialAnalystUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+        var drawGraphicObject = new SuperMap.Control.DrawFeature(newPlottingLayer, SuperMap.Handler.GraphicObject);
+        drawGraphicObjects.push(drawGraphicObject);
+
+        //将新创建的图层添加到属性面板中
+        stylePanel.addEditLayer(newPlottingLayer);
+
+        //将标绘句柄赋给标绘面板
+        plotPanel.setDrawFeature(drawGraphicObject);
+
+        map.addControls([drawGraphicObject]);
+        map.addLayers([newPlottingLayer]);
+    }
+
+    //保存态势图
+    function saveSimulationMap() {
+        plottingAllDeactivate();
+        plotting.getSitDataManager().saveAsSmlFile("situationMap");
+    }
+
+    function loadSimulationMap() {
+        {
+            plotting.getSitDataManager().openSmlFileOnServer("situationMap");
+        }
+
+    }
+
+    function success() {
+        var sitDataLayers = plotting.getSitDataManager().getSitDataLayers();
+        plottingLayer = sitDataLayers[0];
+        drawGraphicObjects = [];
+        for (var i = 0; i < sitDataLayers.length; i++) {
+            drawGraphicObjects.push(sitDataLayers[i].drawGraphicObject);
+            stylePanel.addEditLayer(sitDataLayers[i]);
+        }
+        plotPanel.setDrawFeature(drawGraphicObjects[0]);
+    }
+
+    function getNewPlottingLayerName() {
+        var layerCount = map.layers.length;
+        var layerName = "新建标绘图层";
+
+        var bExist = true;
+        while (bExist) {
+            bExist = false;
+            var tempLayerName = layerName + layerCount;
+
+            for (var i = 0; i < map.layers.length; i++) {
+                var layer = map.layers[i];
+                if (null == layer) {
+                    continue;
+                }
+
+                if (tempLayerName === layer.name) {
+                    bExist = true;
+                }
+            }
+
+            if (!bExist) {
+                layerName = tempLayerName;
+            }
+            layerCount++;
+        }
+
+        return layerName;
+    }
+
+    function editCircusRetangle() {
+        plottingEdit.setEditMode(SuperMap.Plot.EditMode.EDITCIRCUMRECTANGLE);
+    }
+
+    function editContorPoints() {
+        plottingEdit.setEditMode(SuperMap.Plot.EditMode.EDITCONTROLPOINT);
+    }
+
+    function addControlPoints() {
+        plottingEdit.setEditMode(SuperMap.Plot.EditMode.ADDCONTROLPOINT);
+    }
+
+    //切换多选模式
+    function multiSelectModel() {
+        plottingEdit.multiSelect();
+    }
+
+    //多选对齐--左对齐
+    function setSymbolAlighLeft() {
+        plottingEdit.align(SuperMap.Plot.AlignType.LEFT);
+    }
+
+    //多选对齐--右对齐
+    function setSymbolAlighRight() {
+        plottingEdit.align(SuperMap.Plot.AlignType.RIGHT);
+    }
+
+    //多选对齐--上对齐
+    function setSymbolAlighUp() {
+        plottingEdit.align(SuperMap.Plot.AlignType.UP);
+    }
+
+    //多选对齐--下对齐
+    function setSymbolAlighDown() {
+        plottingEdit.align(SuperMap.Plot.AlignType.DOWN);
+    }
+
+    //多选对齐--竖直居中对齐
+    function setSymbolAlighVerticalcenter() {
+        plottingEdit.align(SuperMap.Plot.AlignType.VERTICALCENTER);
+    }
+
+    //多选对齐--水平居中对齐
+    function setSymbolAlighHorizontalcenter() {
+        plottingEdit.align(SuperMap.Plot.AlignType.HORIZONTALCENTER);
+    }
+
+    //切换图层是否锁定
+    function setPlottingLayerIsLocked() {
+        if (plottingLayer.getLocked() === true) {
+            plottingLayer.setLocked(false);
+        } else {
+            plottingLayer.setLocked(true);
+        }
+    }
+
+    //切换图层是否可编辑模式
+    function setPlottingLayerIsEdit() {
+        if (plottingLayer.getEditable() === true) {
+            plottingLayer.setEditable(false);
+        } else {
+            plottingLayer.setEditable(true);
+        }
+    }
+
+    //切换图层是否可选择模式
+    function setPlottingLayerIsSelected() {
+        if (plottingLayer.getSelected() === true) {
+            plottingLayer.setSelected(false);
+        } else {
+            plottingLayer.setSelected(true);
+        }
+    }
+
+    //截屏
+    function mapToImg1() {
+        MapToImg && MapToImg.excute(map);
+    }
+
+    //绘制避让区域
+    function drawAvoidRegion() {
+        plottingEdit.avoidEdit(true);
+    }
+
+    //退出避让编辑
+    function doneAvoidEdit() {
+        plottingEdit.avoidEdit(false);
+    }
+
+    //删除避让编辑
+    function deleteAvoidEdit() {
+        plottingEdit.removeAllAvoidRegion();
+    }
+
+    //创建组合对象
+    function createGroupObjects() {
+        var features = plottingEdit.features;
+        if (features.length >= 2) {
+            plottingLayer.createGroupObject(features);
+        }
+
+    }
+
+    //创建多旗
+    function createDrawFlags() {
+        var features = plottingEdit.features;
+        if (features.length >= 2) {
+            plottingLayer.createFlags(features);
+        }
+    }
+
+    //解绑组合对象
+    function testUnGroupObject() {
+        var features = plottingEdit.features;
+        for (var i = features.length - 1; i >= 0; i--) {
+            if (features[i].geometry instanceof SuperMap.Geometry.GroupObject) {
+                plottingLayer.unGroupObject(features[i].geometry.uuid);
+            }
+
+        }
+    }
+
+
+    document.onmouseup = function (evt) {
+        var evt = evt || window.event;
+        if (evt.button === 2) {
+            PlottingDrawCancel();
+            return false;
+        }
+        evt.stopPropagation();
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>态势图上传下载</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" include="fileupLoad,PlottingPanel"
+            src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            left: 200px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 320px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+        #filetree {
+            position: absolute;
+            float: left;
+            background: #ffffff;
+            width: 200px;
+            height: 100%;
+            border: 1px solid #3473b7;
+            z-index: 100;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>态势图上传下载</h5></div>
+    <div class='panel-body content' style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
+        <div class='input-group' style="margin-top: 15px;margin-left: 10px">
+            <input type="file" style='width:200px;float: left;' id="smlFile"
+                   name="smlFile"> </input>
+            <input type="button" class="btn btn-default" value="上传" onclick="uploadSmlFile()"/>
+        </div>
+        <div class='input-group' style="margin-left: 10px;">
+            <span class='input-group-addon'>态势图文件URL：</span>
+            <input class='form-control' type="text" style='width:100px;' id="downloadUrl" name="downloadUrl"
+                   value=""> </input>
+            <input type="button" class="btn btn-default" value="下载" onclick="downloadSmlFileOnServer()"/>
+        </div>
+        <div class='input-group' style="margin-left: 10px;margin-bottom: 15px">
+            <span class='input-group-addon'>文件名称：</span>
+            <input class='form-control' type="text" style='width:100px;' id="smlFileName" name="smlFileName"
+                   value=""> </input>
+            <input type="button" class="btn btn-default" value="删除" onclick="deleteSmlFileOnServer()"/>
+        </div>
+    </div>
+</div>
+<div id="filetree" title="态势图文件列表"></div>
+<div id="map"></div>
+<script>
+    var map, layer, drawFeature, treePanel, plottingLayer, plottingEdit, sitManager, plotting;
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var mapurl = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        layer.events.on({"layerInitialized": addLayer});
+
+        plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+        plottingLayer.style = {
+            fillColor: "#66cccc",
+            fillOpacity: 0.4,
+            strokeColor: "#66cccc",
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 6
+        };
+    }
+
+    function addLayer() {
+        map.addLayers([layer, plottingLayer]);
+        map.setCenter(new SuperMap.LonLat(104, 35), 3);
+
+        plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+        treePanel = new SuperMap.Plotting.TreePanel("filetree");
+        treePanel.events.on({"clickTreeNode": clickTreeNode});
+        sitManager = plotting.getSitDataManager();
+        sitManager.events.on({
+            "getSMLInfosCompleted": getSMLInfosSuccess,
+            "getSMLInfosFailed": getSMLInfosFail,
+            "deleteSmlFileCompleted": deleteSmlFileSuccess,
+            "deleteSmlFileFail": deleteSmlFileFail
+        });
+        getSMLInfos();
+        fileFilter();
+    }
+
+    function getSMLInfos() {
+        sitManager.getSMLInfos(0, 10);
+    }
+
+    function getSMLInfosSuccess(result) {
+        treePanel.initializeTree(result);
+    }
+
+    function getSMLInfosFail(result) {
+        console.log(result);
+    }
+
+    function clickTreeNode() {
+        var result = sitManager.downloadSmlFileURL(this.clickSmlFileName);
+        document.getElementById("downloadUrl").value = serverUrl + result;
+
+        document.getElementById("smlFileName").value = this.clickSmlFileName;
+
+        sitManager.openSmlFileOnServer(this.clickSmlFileName);
+        plottingLayer.redraw();
+    }
+
+    function uploadSmlFile() {
+        function sucess() {
+            getSMLInfos();
+        }
+
+        function fail() {
+            console.log("todo something if faied");
+        }
+
+        sitManager.uploadSmlFile('smlFile', sucess, fail);
+    }
+
+    function downloadSmlFileOnServer() {
+        window.open(document.getElementById("downloadUrl").value);
+    }
+
+    function deleteSmlFileOnServer() {
+        var smlFileName = document.getElementById("smlFileName").value;
+        sitManager.deleteSmlFileOnServer(smlFileName);
+    }
+
+    function deleteSmlFileSuccess() {
+        document.getElementById("downloadUrl").value = null;
+        document.getElementById("smlFileName").value = null;
+        var allLayers = map.layers;
+        for (var j = 0; j < allLayers.length; j++) {
+            if (allLayers[j].isBaseLayer === true) {
+                continue;
+            }
+
+            allLayers[j].removeAllFeatures();
+            map.removeLayer(allLayers[j], false);
+        }
+        getSMLInfos();
+    }
+
+    function deleteSmlFileFail() {
+
+    }
+
+    function fileFilter() {
+        var file = document.getElementById('smlFile');
+        file.setAttribute("accept", ".sml");
+
+    }
+
+    function stop() {
+        window.event.returnValue = false;
+        return false;
+    }
+</script>
+
+</body>
+</html>

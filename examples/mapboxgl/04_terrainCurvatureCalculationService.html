@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-地形曲率计算</title>
+    <script type="text/javascript" src="../../dist/include-mapboxgl.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
+    var map, terrainCurvatureCalculationService, terrainCurvatureCalculationParameters,
+        terrainCurvatureCalculationResult,
+        themeService, themeGridRange, themeParameters, themeLayer,
+        baseUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+        dataUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        serviceUrl = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+        center: [116.85, 39.79],
+        zoom: 7
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    map.on("load", function () {
+        terrainCurvatureCalculationProcess();
+    });
+
+    function terrainCurvatureCalculationProcess() {
+        //创建地形曲率计算服务实例
+        terrainCurvatureCalculationService = new mapboxgl.supermap.SpatialAnalystService(serviceUrl);
+        //创建地形曲率计算参数实例
+        terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
+            dataset: "JingjinTerrain@Jingjin",
+            zFactor: 1.0,
+            averageCurvatureName: "CurvatureA",
+            deleteExistResultDataset: true
+        });
+        //向iServer发起地形曲率计算请求
+        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (serviceResult) {
+            terrainCurvatureCalculationResult = serviceResult.result;
+            //用栅格专题图展示分析结果
+            showAnalysisResult_ThemeGridRange();
+        });
+    }
+
+    function showAnalysisResult_ThemeGridRange() {
+        themeService = new mapboxgl.supermap.ThemeService(dataUrl);
+        var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
+                start: -9000000,
+                end: -1000,
+                color: new SuperMap.ServerColor(0, 0, 255)
+            }),
+            themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
+                start: -1000,
+                end: -1,
+                color: new SuperMap.ServerColor(0, 0, 125)
+            }),
+            themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
+                start: -1,
+                end: 1,
+                color: new SuperMap.ServerColor(0, 125, 125)
+            }),
+            themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
+                start: 1,
+                end: 1000,
+                color: new SuperMap.ServerColor(0, 125, 0)
+            }),
+            themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
+                start: 1000,
+                end: 20000000,
+                color: new SuperMap.ServerColor(0, 255, 0)
+            });
+        themeGridRange = new SuperMap.ThemeGridRange({
+            reverseColor: false,
+            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+            //栅格分段专题图子项数组
+            items: [themeGridRangeIteme1,
+                themeGridRangeIteme2,
+                themeGridRangeIteme3,
+                themeGridRangeIteme4,
+                themeGridRangeIteme5
+            ]
+        });
+        themeParameters = new SuperMap.ThemeParameters({
+            //制作专题图的数据集（地形曲率计算的结果数据集）
+            datasetNames: [terrainCurvatureCalculationResult.averageCurvatureResult.dataset.split('@')[0]],
+            dataSourceNames: ["Jingjin"],
+            joinItems: null,
+            themes: [themeGridRange]
+        });
+        themeService.getThemeInfo(themeParameters, function (serviceResult1) {
+            var result = serviceResult1.result;
+            if (result && result.newResourceID) {
+                map.addLayer({
+                    "id": "themeLayer",
+                    "type": "raster",
+                    "source": {
+                        "type": "raster",
+                        "tiles": [baseUrl + "&transparent=true&cacheEnabled=false&layersID=" + result.newResourceID],
+                        "tileSize": 256
+                    },
+                    "minzoom": 0,
+                    "maxzoom": 22
+                });
+            }
+        })
+    }
+</script>
+</body>
+</html>

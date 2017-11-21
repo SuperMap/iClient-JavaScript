@@ -145,6 +145,14 @@ var exampleConfig = {
                     thumbnail: "mb_overlayAnalystService.png",
                     fileName: "04_overlayAnalystService"
                 }, {
+                    name: "地形曲率计算",
+                    thumbnail: "mb_terrainCurvatureCalculationService.png",
+                    fileName: "04_terrainCurvatureCalculationService"
+                }, {
+                    name: "栅格代数运算",
+                    thumbnail: "mb_mathExpressionAnalysisService.png",
+                    fileName: "04_mathExpressionAnalysisService"
+                }, {
                     name: "点定里程",
                     thumbnail: "mb_routeCalculateMeasureService.png",
                     fileName: "04_routeCalculateMeasureService"

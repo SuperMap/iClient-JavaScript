@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>叠加分析</title>
+    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>叠加分析</h5></div>
+    <div class='panel-body content'>
+        <input type="button" class="btn btn-default" value="叠加分析" onclick="overlayAnalystProcess()"/>&nbsp;
+        <input type="button" class="btn btn-default" value="移除结果" onclick="removeResult()"/>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, local, baseLayer, resultLayer, Spatialanalyst_sample,
+        style = {
+            strokeColor: "#343434",
+            strokeWidth: 0.1,
+            pointerEvents: "visiblePainted",
+            fill: true,
+            fillColor: "#304DBE",
+            fillOpacity: 0.8
+        },
+        url = host + "/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图",
+        url2 = host + "/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+    init();
+
+    function init() {
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
+        baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("京津地区人口分布图_专题图", url, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        baseLayer.events.on({"layerInitialized": addLayer});
+        resultLayer = new SuperMap.Layer.Vector("叠加结果");
+    }
+
+    function addLayer() {
+        map.addLayers([baseLayer, resultLayer]);
+        map.setCenter(new SuperMap.LonLat(117, 40), 1);
+        map.allOverlays = true;
+    }
+
+    function overlayAnalystProcess() {
+        closeAlert();
+        resultLayer.removeAllFeatures();
+        var overlayServiceByDatasets = new SuperMap.REST.OverlayAnalystService(url2),
+            dsOverlayAnalystParameters = new SuperMap.REST.DatasetOverlayAnalystParameters({
+                sourceDataset: "BaseMap_R@Jingjin",
+                operateDataset: "Neighbor_R@Jingjin",
+                tolerance: 0,
+                operation: SuperMap.REST.OverlayOperationType.UNION
+            });
+        overlayServiceByDatasets.events.on({
+            "processCompleted": overlayAnalystCompleted,
+            "processFailed": overlayAnalystFailed
+        });
+        overlayServiceByDatasets.processAsync(dsOverlayAnalystParameters);
+    }
+
+    function overlayAnalystCompleted(args) {
+        var feature, features = [];
+        for (var i = 0; i < args.result.recordset.features.length; i++) {
+            feature = args.result.recordset.features[i];
+            feature.style = style;
+            features.push(feature);
+        }
+        resultLayer.addFeatures(features);
+    }
+
+    function overlayAnalystFailed(args) {
+        showAlert(args.error.errorMsg);
+    }
+
+    function removeResult() {
+        closeAlert();
+        resultLayer.removeAllFeatures();
+    }
+
+    //显示提示框
+    var alertDiv;
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>热点图颜色手动配置</title>
+    <script type="text/javascript" include="bootstrap,colorpicker" src="../js/include-web.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%
+        }
+
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            text-align: center;
+            z-index: 100;
+            border-radius: 4px;
+        }
+
+        .row {
+            position: absolute;
+            right: 25px;
+            top: 260px;
+            background: #FFF;
+            z-index: 100;
+            border-top-width: 0px;
+            width: 150px;
+            display: none;
+        }
+
+        .winTitle {
+            background: #1E90FF;
+            font-size: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="toolbar" class="panel panel-primary">
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>热点图颜色手动配置</h5></div>
+    <div class='panel-body content'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>热点数量：</span>
+                <input class='form-control' type='text' style='width:50px;' id='heatNums' value='200'/>
+            </div>
+
+            <div class='input-group'>
+                <span class='input-group-addon'>热点半径：</span>
+                <input class='form-control' type='text' style='width:50px' value='50' id='heatradius'/>
+                <select class='form-control' style='width:70px' id='radiusUnit'>
+                    <option value='px'>px</option>
+                    <option value='degree'>degree</option>
+                </select>
+            </div>
+            <div class='input-group'>
+                <span class='input-group-addon' style="width:112px;height: 16px;">请输入颜色值：</span>
+                <input type="text" class='form-control' id="cp1text" value="" style=" width:102px;"/>
+                <span class='input-group-addon'><img src='./images/colorpicker.png' id="cp1"
+                                                     style="cursor:pointer"/></span>
+            </div>
+        </div>
+        <input type="button" class="btn btn-default" id="btn1" value="渲染热点" onclick="createHeatPoints()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" value="清除" onclick="clearHeatPoints()"/>
+    </div>
+</div>
+<div class="row panel panel-primary" id="colorList">
+    <div class="winTitle">
+        <span class="title_left">已添加颜色值：</span>
+        <span class="title_right"><a href="javascript:closeWindow()" title="关闭窗口">关闭</a></span>
+    </div>
+</div>
+<div id="map"></div>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, layer, heatMapLayer, color = [],
+        url = host + "/iserver/services/map-world/rest/maps/World";
+
+    init();
+
+    function init() {
+        if (!document.createElement('canvas').getContext) {
+            showAlert('您的浏览器不支持 canvas，请升级');
+            return;
+        }
+
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+        });
+        map.addControl(new SuperMap.Control.MousePosition());
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
+        heatMapLayer = new SuperMap.Layer.HeatMapLayer(
+            "heatMap",
+            {
+                "radius": 45,
+                "featureWeight": "value",
+                "featureRadius": "geoRadius"
+            }
+        );
+        heatMapLayer.colors = [];
+        layer.events.on({"layerInitialized": addLayer});
+    }
+
+    function addLayer() {
+        map.addLayers([layer, heatMapLayer]);
+        map.setCenter(new SuperMap.LonLat(0, 0), 0);
+    }
+
+    function createHeatPoints() {
+        closeAlert();
+        clearHeatPoints();
+        var heatPoints = [];
+        var num = parseInt(document.getElementById('heatNums').value);
+        var radius = parseInt(document.getElementById('heatradius').value);
+        var unit = document.getElementById("radiusUnit").value,
+            useGeoRadius = false;
+        if ("degree" == unit) {
+            useGeoRadius = true;
+        }
+        heatMapLayer.radius = radius
+        for (var i = 0; i < num; i++) {
+            heatPoints[i] = new SuperMap.Feature.Vector(
+                new SuperMap.Geometry.Point(
+                    Math.random() * 360 - 180,
+                    Math.random() * 180 - 90
+                ),
+                {
+                    "value": Math.random() * 9,
+                    "geoRadius": useGeoRadius ? radius : null
+                }
+            );
+        }
+        heatMapLayer.addFeatures(heatPoints);
+    }
+
+    function clearHeatPoints() {
+        closeAlert();
+        heatMapLayer.removeAllFeatures();
+    }
+
+    $(document).ready(function () {
+        $("#cp1").colorpicker({
+            ishex: false,
+            fillcolor: true,
+            event: 'mouseover',
+            target: $("#cp1text"),
+            success: addColor
+
+        });
+        $("#_creset").css("font-size", "12px");
+        $("#_creset").css("padding-right", "20px");
+        $("#colorpanel").css({"z-index": "100"});
+
+    });
+
+    //添加颜色
+    function addColor() {
+        var severColor = document.getElementById("cp1text");
+        if (severColor.value.match(/rgb()/)) {
+            for (var i = 0; i < color.length; i++) {
+                if (severColor.value == color[i]) {
+                    showAlert("重复添加！")
+                    return;
+                    $("#colorList").css("display", "block");
+                }
+            }
+            initColorList(severColor.value);
+            color.push(severColor.value);
+            var cl_s = "new  SuperMap.REST.ServerColor" + severColor.value.replace(/rgb/gi, "");
+            var cl = eval(cl_s);
+            heatMapLayer.colors.push(cl);
+            $("#colorList").css("display", "block");
+        }
+        else {
+            showAlert("请选颜色值");
+            severColor.value = "";
+        }
+
+    }
+
+    function initColorList(value) {
+        var colorList = $("#colorList");
+        colorList.append(
+            '<div ><button style="border-width:0px;margin:0px 5px 0px 0px;padding:0px;width:14px;height:14px;line-height: 15px;"' +
+            'class="btn btn-danger" onclick="deleteColor(event)">-</button>' + '<span style="color: ' + value + '">' + value + '</span></div>'
+        );
+
+    }
+
+    /*在颜色值列表里删除一个颜色*/
+    function deleteColor(evt) {
+        /*移除颜色*/
+        var parent = evt.target.parentNode;
+        parent.parentNode.removeChild(parent);
+
+        //移除颜色里与上面的颜色文本对应的成员
+        var len = color.length;
+        len < 10;
+        for (var i = 0; i < len; i++) {
+            if (color[i] == parent.childNodes[1].innerHTML) {
+                color.splice(i, 1);
+                heatMapLayer.colors.splice(i, 1);
+            }
+        }
+    }
+
+    function closeWindow() {
+        $("#colorList").css("display", "none");
+    }
+
+    //显示提示框
+    var alertDiv;
+    function showAlert(msg) {
+        var className = "alert-success";
+        closeAlert();
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('.close').on('click', function () {
+            $(alertDiv).remove();
+        });
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
+    }
+
+    function closeAlert() {
+        if (alertDiv) {
+            $(alertDiv).remove();
+        }
+    }
+</script>
+
+</body>
+</html>
