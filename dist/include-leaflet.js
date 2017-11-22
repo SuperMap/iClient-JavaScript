@@ -36,62 +36,62 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'leaflet')) {
-            inputCSS("../../web/libs/leaflet/leaflet.css");
-            inputScript("../../web/libs/leaflet/leaflet.js");
+            inputCSS("http://cdn.bootcss.com/leaflet/1.2.0/leaflet.css");
+            inputScript("http://cdn.bootcss.com/leaflet/1.2.0/leaflet.js");
         }
         if (inArray(includes, 'mapv')) {
-            inputScript("../../web/libs/mapv/mapv.min.js");
+            inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'turf')) {
-            inputScript("../../web/libs/turf/turf.min.js");
+            inputScript("https://cdn.bootcss.com/Turf.js/4.6.1/turf.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("../../web/libs/echarts/echarts.min.js");
+            inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
         }
         if (inArray(includes, 'd3')) {
-            inputScript("../../web/libs/d3/d3.min.js");
+            inputScript("https://cdn.bootcss.com/d3/4.10.2/d3.min.js");
         }
         if (inArray(includes, 'd3-hexbin')) {
-            inputScript("../../web/libs/d3/d3-hexbin.v0.2.min.js");
+            inputScript("https://d3js.org/d3-hexbin.v0.2.min.js");
         }
         if (inArray(includes, 'd3Layer')) {
-            inputScript("../../web/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.min.js");
+            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet.d3Layer/leaflet-d3Layer.min.js");
         }
         if (inArray(includes, 'elasticsearch')) {
-            inputScript("../../web/libs/elasticsearch/elasticsearch.min.js");
+            inputScript("http://cdn.bootcss.com/elasticsearch/13.0.1/elasticsearch.min.js");
         }
         if (!inArray(excludes, 'iclient9-leaflet')) {
-            inputScript("../../dist/iclient9-leaflet.js");
+            inputScript("../../dist/iclient9-leaflet.min.js");
         }
         if (inArray(includes, 'iclient9-leaflet-css')) {
             inputCSS("../../dist/iclient9-leaflet.min.css");
         }
         if (inArray(includes, 'leaflet.heat')) {
-            inputScript("../../web/libs/leaflet/plugins/leaflet.heat/leaflet-heat.js");
+            inputScript("http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js");
         }
         if (inArray(includes, 'osmbuildings')) {
-            inputScript("../../web/libs/osmbuildings/OSMBuildings-Leaflet.js");
+            inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-Leaflet.js");
         }
         if (inArray(includes, 'leaflet.markercluster')) {
-            inputCSS("../../web/libs/leaflet/plugins/leaflet.markercluster/MarkerCluster.Default.css");
-            inputCSS("../../web/libs/leaflet/plugins/leaflet.markercluster/MarkerCluster.css");
-            inputScript("../../web/libs/leaflet/plugins/leaflet.markercluster/leaflet.markercluster.js");
+            inputCSS("http://cdn.bootcss.com/leaflet.markercluster/1.0.3/MarkerCluster.Default.css");
+            inputCSS("http://cdn.bootcss.com/leaflet.markercluster/1.0.3/MarkerCluster.css");
+            inputScript("http://cdn.bootcss.com/leaflet.markercluster/1.0.3/leaflet.markercluster.js");
         }
         if (inArray(includes, 'leaflet-icon-pulse')) {
-            inputCSS("../../web/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.css");
-            inputScript("../../web/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js");
+            inputCSS("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.css");
+            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-icon-pulse/L.Icon.Pulse.js");
         }
         if (inArray(includes, 'leaflet.draw')) {
-            inputCSS("../../web/libs/leaflet/plugins/leaflet.draw/leaflet.draw.css");
-            inputScript("../../web/libs/leaflet/plugins/leaflet.draw/leaflet.draw.js");
+            inputCSS("http://cdn.bootcss.com/leaflet.draw/0.4.12/leaflet.draw.css");
+            inputScript("http://cdn.bootcss.com/leaflet.draw/0.4.12/leaflet.draw.js");
         }
         if (inArray(includes, 'leaflet.pm')) {
-            inputCSS("../../web/libs/leaflet/plugins/leaflet.pm/leaflet.pm.min.css");
-            inputScript("../../web/libs/leaflet/plugins/leaflet.pm/leaflet.pm.min.js");
+            inputCSS("http://cdn.bootcss.com/leaflet.pm/0.16.0/leaflet.pm.min.css");
+            inputScript("http://cdn.bootcss.com/leaflet.pm/0.16.0/leaflet.pm.min.js");
         }
     }
 
     load();
-    window.isLocal = true;
+    window.isLocal = false;
     window.server = "http://localhost:8090";
 })();
