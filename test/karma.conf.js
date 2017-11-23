@@ -18,7 +18,7 @@ module.exports = function (config) {
             transform: [
                 [require('babelify'), {
                     presets: ["es2015"],
-                    ignore: ["**/classic/libs/**", "**/test/**"],
+                    ignore: ["**/libs/**", "**/test/**"],
                     plugins: ['transform-class-properties','istanbul']
                 }],
                 require('browserify-css'),
@@ -81,7 +81,7 @@ module.exports = function (config) {
             '../node_modules/whatwg-fetch-importable/whatwgFetch.js': ['browserify'],
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
             '../libs/iclient8c/SuperMap_Basic-8.1.1-15521.js': ['browserify'],
-            '../src/classic/libs/Lang/*.js': ['browserify'],
+            '../libs/iclient8c/Lang/*.js': ['browserify'],
             '../src/classic/**/*.js': ['browserify'],
             './classic/**/*Spec.js': ['browserify'],
             './test-main-classic.js': ['browserify'],
