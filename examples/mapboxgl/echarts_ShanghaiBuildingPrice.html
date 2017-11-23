@@ -1,0 +1,126 @@
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>上海房价可视化图</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" include="echarts,echarts-gl" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript">
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+    var data;
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts Echarts-gl</a>";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
+    var uploadedDataURL = "../data/ShanghaiBuildingPrice.json";
+
+    var myChart = echarts.init(document.getElementById('map'));
+
+    $.getJSON(uploadedDataURL, function(linedata) {
+
+        myChart.setOption({
+
+            visualMap: {
+                show: false,
+                calculable: true,
+                realtime: false,
+                inRange: {
+                    color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                },
+                outOfRange: {
+                    colorAlpha: 0
+                },
+                max: linedata[1]
+            },
+            toolBox:{
+                feature:{
+                    dataZoom:{
+                        show:true,
+                    }
+                }
+            },
+            mapbox: {
+                center: [121.4693, 31.123070],
+                zoom: 10,
+                pitch: 50,
+                bearing: -10,
+                style: {
+                    "version": 8,
+                    "sources": {
+                        "raster-tiles": {
+                            "attribution": attribution,
+                            "type": "raster",
+                            "tiles": [tileURL],
+                            "tileSize": 256,
+                        },
+                    },
+                    "layers": [{
+                        "id": "simple-tiles",
+                        "type": "raster",
+                        "source": "raster-tiles",
+                        "minzoom": 0,
+                        "maxzoom": 22
+                    }]
+                },
+                boxHeight: 50,
+                // altitudeScale: 3e2,
+                postEffect: {
+                    enable: true,
+                    SSAO: {
+                        enable: true,
+                        radius: 2,
+                        intensity: 1.5
+                    }
+                },
+                light: {
+                    main: {
+                        intensity: 1,
+                        shadow: true,
+                        shadowQuality: 'high'
+                    },
+                    ambient: {
+                        intensity: 0.
+                    },
+                    ambientCubemap: {
+                        texture: '../data/ShanghaiBuildingPrice.hdr',
+                        exposure: 1,
+                        diffuseIntensity: 0.5
+                    }
+                },
+
+            },
+
+            series: [{
+                type: 'bar3D',
+                roam:true,
+                shading: 'realistic',
+                coordinateSystem: 'mapbox',
+                barSize: 0.2,
+                silent: true,
+                data: linedata[0]
+            }]
+        });
+        //获取mapbox对象
+        var mapbox = myChart.getModel().getComponent('mapbox').getMapbox();
+        mapbox.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    });
+
+</script>
+</body>
+</html>

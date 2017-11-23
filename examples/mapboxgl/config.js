@@ -356,6 +356,36 @@ var exampleConfig = {
                         name_en: "scatter of Weibo user",
                         thumbnail: "echarts_scatterWeibo.png",
                         fileName: "echarts_scatterWeibo"
+                    },
+                    {
+                        name: "长春公交路径图",
+                        name_en: "Changchun public transport network",
+                        thumbnail: "echarts_ChangchunPublicTransportNetwork.gif",
+                        fileName: "echarts_ChangchunPublicTransportNetwork"
+                    }
+                ]
+            },
+            "EchartsGL": {
+                name: "EchartsGL",
+                name_en: "EChartsGL",
+                content: [
+                    {
+                        name: "上海房价可视化图",
+                        name_en: "Shanghai building price",
+                        thumbnail: "echarts_ShanghaiBuildingPrice.png",
+                        fileName: "echarts_ShanghaiBuildingPrice"
+                    },
+                    {
+                        name: "飞行路径图",
+                        name_en: "flight path",
+                        thumbnail: "echarts_flightPath.gif",
+                        fileName: "echarts_flightPath"
+                    },
+                    {
+                        name: "开普敦的士路线图",
+                        name_en: "taxi Routes Of CapeTown",
+                        thumbnail: "echarts_taxiRoutesOfCapeTown.gif",
+                        fileName: "echarts_taxiRoutesOfCapeTown"
                     }
                 ]
             },

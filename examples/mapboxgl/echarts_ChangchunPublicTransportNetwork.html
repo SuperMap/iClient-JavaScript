@@ -1,0 +1,109 @@
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>长春公交路径图</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" include="echarts,echarts-gl" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript">
+    var data;
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts Echarts-gl</a>";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var tileURL = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}";
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [tileURL],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [125.35, 43.86],
+        zoom: 10
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    var uploadedDataURL = "../data/changchunBus.json";
+
+    map.on('load', function () {
+        $.get(uploadedDataURL, function (data) {
+
+            option = {
+                GLMap: {
+                    roam: true
+                },
+                coordinateSystem: 'GLMap',
+                geo: {
+                    map: 'GLMap',
+                },
+
+                series: [{
+                    type: 'lines',
+                    polyline: true,
+                    data: data,
+                    silent: true,
+                    lineStyle: {
+                        normal: {
+                            opacity: 0.2,
+                            width: 1
+                        }
+                    },
+                    progressiveThreshold: 500,
+                    progressive: 100
+                }, {
+
+                    type: 'lines',
+                    coordinateSystem: 'GLMap',
+                    polyline: true,
+                    data: data,
+                    lineStyle: {
+                        normal: {
+                            width: 0.2
+                        }
+                    },
+                    effect: {
+                        constantSpeed: 40,
+                        show: true,
+                        trailLength: 0.02,
+                        symbolSize: 2
+                    },
+                    zlevel: 1
+                }]
+            };
+            var echartslayer = new EchartsLayer(map);
+            echartslayer.chart.setOption(option);
+
+        });
+    });
+</script>
+</body>
+</html>
