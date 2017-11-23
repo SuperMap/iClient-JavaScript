@@ -52,4 +52,4 @@ export default class BuffersAnalystJobsService extends ProcessingServiceBase{
     CLASS_NAME = "SuperMap.BuffersAnalystJobsService"
 }
 
-SuperMap.BuffersAnalystJobsServicee = BuffersAnalystJobsService;
+SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;

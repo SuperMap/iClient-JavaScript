@@ -3,6 +3,8 @@ var shell = require("shelljs");
 require("./deps");
 program.description('Customized pack iClient9.');
 
+var excludeFields = ['title', 'description', 'description_en'];
+
 program.command('- <key> [modules]')
     .description('pack iClent9')
     .action(function (key, modules) {
@@ -25,10 +27,9 @@ program.command('- <key> [modules]')
         if (!modules) {
             for (var clientModule in clientModules) {
                 for (var module in clientModules[clientModule]) {
-                    if (module === "title" || module === "description") {
+                    if (excludeFields.indexOf(module) > -1) {
                         continue;
                     }
-
                     clientModules[clientModule][module].src.map(function (src) {
                         modulePaths += src + " ";
                     })
@@ -43,15 +44,15 @@ program.command('- <key> [modules]')
         modules.split(',').map(function (packModule) {
             for (var clientModule in clientModules) {
                 for (var module in clientModules[clientModule]) {
-                    if (module === 'title' || module === 'description') {
+                    if (excludeFields.indexOf(module) > -1) {
                         continue;
-                    } else {
-                        clientModules[clientModule][module].src.map(function (src) {
-                            if (module === packModule) {
-                                modulePaths += src + " ";
-                            }
-                        })
                     }
+                    clientModules[clientModule][module].src.map(function (src) {
+                        if (module === packModule) {
+                            modulePaths += src + " ";
+                        }
+                    })
+
                 }
             }
         });
