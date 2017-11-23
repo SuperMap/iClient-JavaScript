@@ -35,7 +35,7 @@ module.exports = function (config) {
             /***classic的源码***/
             /*由于除了classic其他都不依赖于8c,所以classic 的引入放在最后，以免被common覆盖*/
             {pattern: '../libs/iclient8c/SuperMap_Basic-8.1.1-15521.js', include: false},
-            {pattern: '../src/classic/libs/Lang/*.js', include: false},
+            {pattern: '../libs/iclient8c/Lang/*.js', include: false},
             {pattern: '../src/classic/theme/default/*.css', include: false},
             /**测试文件**/
             './test-main-classic.js',
