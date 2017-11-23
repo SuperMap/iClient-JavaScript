@@ -9344,7 +9344,7 @@ _SuperMap2.default.LevelRenderer.SUtil_smoothSpline = function (points, isLoop, 
     segs = segs < len ? len : segs;
     for (var _i2 = 0; _i2 < segs; _i2++) {
         var pos = _i2 / (segs - 1) * (isLoop ? len : len - 1);
-        var idx = _Math2.default.floor(pos);
+        var idx = Math.floor(pos);
 
         var w = pos - idx;
 
@@ -9405,7 +9405,7 @@ _SuperMap2.default.LevelRenderer.SUtil_dashedLineTo = function (ctx, x1, y1, x2,
 
     var dx = x2 - x1;
     var dy = y2 - y1;
-    var numDashes = _Math2.default.floor(_Math2.default.sqrt(dx * dx + dy * dy) / dashLength);
+    var numDashes = Math.floor(Math.sqrt(dx * dx + dy * dy) / dashLength);
     dx = dx / numDashes;
     dy = dy / numDashes;
     var flag = true;
