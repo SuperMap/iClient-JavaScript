@@ -1,7 +1,7 @@
 require('../../../../src/common/overlay/feature/ShapeFactory');
 require('../../../resources/img/baiduTileTest.png');
 describe('ShapeFactory', function () {
-    
+
     //构建图形工厂对象
     it('constructor, destroy', function () {
         var shapeParameters_point = new SuperMap.Feature.ShapeParameters.Point(0, 0);
@@ -26,6 +26,7 @@ describe('ShapeFactory', function () {
         expect(shape.id).not.toBeNull();
         expect(shape.style.x).toEqual(0);
         expect(shape.style.y).toEqual(0);
+        shapeParameters_point.destroy();
         shapeFactory.destroy();
     });
 
@@ -41,6 +42,7 @@ describe('ShapeFactory', function () {
         expect(shape.style.pointList.length).toEqual(3);
         expect(shape.style.pointList[2][0]).toEqual(25);
         expect(shape.style.pointList[2][1]).toEqual(30);
+        shapeParameters_Line.destroy();
         shapeFactory.destroy();
     });
 
@@ -56,6 +58,7 @@ describe('ShapeFactory', function () {
         expect(shape.style.pointList.length).toEqual(3);
         expect(shape.style.pointList[2][0]).toEqual(25);
         expect(shape.style.pointList[2][1]).toEqual(30);
+        shapeParameters_Polygon.destroy();
         shapeFactory.destroy();
     });
 
@@ -71,6 +74,7 @@ describe('ShapeFactory', function () {
         expect(shape.style.y).toEqual(0);
         expect(shape.style.height).toEqual(10);
         expect(shape.style.width).toEqual(10);
+        shapeParameters_Rectangle.destroy();
         shapeFactory.destroy();
     });
 
@@ -87,6 +91,7 @@ describe('ShapeFactory', function () {
         expect(shape.style.r).toEqual(10);
         expect(shape.style.startAngle).toEqual(0);
         expect(shape.style.endAngle).toEqual(60);
+        shapeParameters_Sector.destroy();
         shapeFactory.destroy();
     });
 
@@ -101,6 +106,7 @@ describe('ShapeFactory', function () {
         expect(shape.style.x).toEqual(0);
         expect(shape.style.y).toEqual(0);
         expect(shape.style.text).toEqual("labelTest");
+        shapeParameters_Label.destroy();
         shapeFactory.destroy();
     });
 
@@ -124,6 +130,7 @@ describe('ShapeFactory', function () {
         expect(shape.sWidth).toEqual(150);
         expect(shape.sx).toEqual(50);
         expect(shape.sy).toEqual(50);
+        shapeParameters_Image.destroy();
         shapeFactory.destroy();
     });
 
@@ -138,6 +145,7 @@ describe('ShapeFactory', function () {
         expect(shape.style.x).toEqual(50);
         expect(shape.style.y).toEqual(50);
         expect(shape.style.r).toEqual(30);
+        shapeParameters_Circle.destroy();
         shapeFactory.destroy();
     });
 

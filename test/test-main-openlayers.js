@@ -16,10 +16,12 @@ require('./openlayers/services/MathExpressionAnalysisSpec.js');
 require('./openlayers/services/MeasureServiceSpec.js');
 require('./openlayers/services/NetworkAnalystServiceSpec.js');
 require('./openlayers/services/OverlayAnalysisSpec.js');
+require('./openlayers/services/QueryServiceSpec.js');
 require('./openlayers/services/RouteCalculateMeasureSpec.js');
 require('./openlayers/services/RouteLocateSpec.js');
 require('./openlayers/services/SurfaceAnalysisSpec.js');
 require('./openlayers/services/TerrainCurvatureCalculateSpec.js');
+require('./openlayers/services/ThemeServiceSpec.js');
 require('./openlayers/services/ThiessenAnalysisSpec.js');
 require('./openlayers/services/TrafficTransferAnalystServiceSpec.js');
 
