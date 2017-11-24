@@ -16,6 +16,7 @@ require('./openlayers/services/MathExpressionAnalysisSpec.js');
 require('./openlayers/services/MeasureServiceSpec.js');
 require('./openlayers/services/NetworkAnalystServiceSpec.js');
 require('./openlayers/services/OverlayAnalysisSpec.js');
+require('./openlayers/services/ProcessingServiceSpec.js');
 require('./openlayers/services/QueryServiceSpec.js');
 require('./openlayers/services/RouteCalculateMeasureSpec.js');
 require('./openlayers/services/RouteLocateSpec.js');

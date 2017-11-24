@@ -21,6 +21,7 @@ require('./leaflet/services/MathExpressionAnalysisSpec.js');
 require('./leaflet/services/MeasureServiceSpec.js');
 require('./leaflet/services/NetworkAnalystServiceSpec.js');
 require('./leaflet/services/OverlayAnalysisSpec.js');
+require('./leaflet/services/ProcessingServiceSpec.js');
 require('./leaflet/services/QueryByBoundsSpec.js');
 require('./leaflet/services/QueryByDistanceSpec.js');
 require('./leaflet/services/QueryByGeometrySpec.js');
