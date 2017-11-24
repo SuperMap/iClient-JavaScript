@@ -437,7 +437,11 @@ export var WebMap = L.LayerGroup.extend({
                     return m;
                 },
                 coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
-                    return me.cartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
+                    let lStyle = me.cartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
+                    if (lStyle.dashArray && lStyle.dashArray.length == 0) {
+                        lStyle.dashArray = null;
+                    }
+                    return lStyle;
                 },
                 opacity: opacity
             });
