@@ -265,26 +265,26 @@ export default class CartoCSS {
                         }
 
                         switch (c) {
-                            case '{':
+                            case '{'://NOSONAR
                                 if (!inParam) {
                                     level++;
                                     chunk.push(c);
                                     break;
                                 }
-                            case '}':
+                            case '}'://NOSONAR
                                 if (!inParam) {
                                     level--;
                                     chunk.push(c);
                                     chunks[++j] = chunk = [];
                                     break;
                                 }
-                            case '(':
-                                if (!inParam) {
+                            case '('://NOSONAR
+                                if (!inParam) {x
                                     inParam = true;
                                     chunk.push(c);
                                     break;
                                 }
-                            case ')':
+                            case ')'://NOSONAR
                                 if (inParam) {
                                     inParam = false;
                                     chunk.push(c);
@@ -972,12 +972,12 @@ export default class CartoCSS {
                                             }
                                             return {
                                                 "property": prop,
-                                                "getValue": Function("attributes", "zoom", "seftFilter", "var _value = null; var isExcute=typeof seftFilter=='function'?sefgFilter():seftFilter;if(isExcute){" + body + ";} return _value; ")
+                                                "getValue": Function("attributes", "zoom", "seftFilter", "var _value = null; var isExcute=typeof seftFilter=='function'?sefgFilter():seftFilter;if(isExcute){" + body + ";} return _value; ")//NOSONAR
                                             };
                                         } else {
                                             return {
                                                 "property": prop,
-                                                "getValue": Function("attributes", "zoom", "var _value = null;" + body + "; return _value; ")
+                                                "getValue": Function("attributes", "zoom", "var _value = null;" + body + "; return _value; ")//NOSONAR
                                             };
                                         }
                                     }(shader[prop], shaderArray);
