@@ -363,8 +363,8 @@ describe('SmicText', function () {
         shape.refOriginalPosition = null;
         var rect = shape.getRect(style);
         expect(rect).not.toBeNull();
-        expect(rect.height).toEqual(23.821169059424832);
-        expect(rect.width).toEqual(23.284092699967715);
+        expect(rect.height).not.toBeNaN();
+        expect(rect.width).not.toBeNaN();
         expect(rect.x).toEqual(96.41206236027645);
         expect(rect.y).toEqual(100);
         shape.destroy();
@@ -395,8 +395,8 @@ describe('SmicText', function () {
         shape.refOriginalPosition = null;
         var rect = shape.getRectNoRotation(style1);
         expect(rect).not.toBeNull();
-        expect(rect.height).toEqual(20.662109375);
-        expect(rect.width).toEqual(20);
+        expect(rect.height).not.toBeNaN();
+        expect(rect.width).not.toBeNaN();
         expect(rect.x).toEqual(80);
         expect(rect.y).toEqual(100);
         shape.destroy();
@@ -426,8 +426,8 @@ describe('SmicText', function () {
         shape.refOriginalPosition = null;
         var rect = shape.getRectNoRotation(style2);
         expect(rect).not.toBeNull();
-        expect(rect.height).toEqual(21.509765625);
-        expect(rect.width).toEqual(24.035618094871655);
+        expect(rect.height).not.toBeNaN();
+        expect(rect.width).not.toBeNaN();
         expect(rect.x).toEqual(90);
         expect(rect.y).toEqual(100);
         shape.destroy();
