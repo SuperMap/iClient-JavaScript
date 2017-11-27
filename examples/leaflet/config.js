@@ -805,11 +805,6 @@ var exampleConfig = {
             "Turf": {
                 name: "Turf",
                 content: [{
-                    name: "空间分析",
-                    name_en: "transformation",
-                    thumbnail: "l_turf_transformation.png",
-                    fileName: "turf_transformation"
-                }, {
                     name: "插值、格网、分级",
                     name_en: "interpolation, grid, classification",
                     thumbnail: "l_turf_analysis.png",

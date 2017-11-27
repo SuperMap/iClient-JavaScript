@@ -372,20 +372,32 @@ var exampleConfig = {
                     {
                         name: "上海房价可视化图",
                         name_en: "Shanghai building price",
-                        thumbnail: "echarts_ShanghaiBuildingPrice.png",
-                        fileName: "echarts_ShanghaiBuildingPrice"
+                        thumbnail: "echartsGL_ShanghaiBuildingPrice.png",
+                        fileName: "echartsGL_ShanghaiBuildingPrice"
                     },
                     {
                         name: "飞行路径图",
                         name_en: "flight path",
-                        thumbnail: "echarts_flightPath.gif",
-                        fileName: "echarts_flightPath"
+                        thumbnail: "echartsGL_flightPath.gif",
+                        fileName: "echartsGL_flightPath"
                     },
                     {
                         name: "开普敦的士路线图",
                         name_en: "taxi Routes Of CapeTown",
-                        thumbnail: "echarts_taxiRoutesOfCapeTown.gif",
-                        fileName: "echarts_taxiRoutesOfCapeTown"
+                        thumbnail: "echartsGL_taxiRoutesOfCapeTown.gif",
+                        fileName: "echartsGL_taxiRoutesOfCapeTown"
+                    },
+                    {
+                        name: "五彩城市建筑",
+                        name_en: "colorful buildings",
+                        thumbnail: "echartsGL_colorfulCity.png",
+                        fileName: "echartsGL_colorfulCity"
+                    },
+                    {
+                        name: "成都市出租车运行轨迹图",
+                        name_en: "taxi trajectory map Of ChengDu",
+                        thumbnail: "echartsGL_taxiTrajectoryMap.gif",
+                        fileName: "echartsGL_taxiTrajectoryMap"
                     }
                 ]
             },
