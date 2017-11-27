@@ -279,7 +279,7 @@ export default class CartoCSS {
                                     break;
                                 }
                             case '('://NOSONAR
-                                if (!inParam) {x
+                                if (!inParam) {
                                     inParam = true;
                                     chunk.push(c);
                                     break;
