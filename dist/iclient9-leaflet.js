@@ -19817,8 +19817,11 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
             params = {};
 
         var tileSize = this.options.tileSize;
-        params["width"] = tileSize.toString();
-        params["height"] = tileSize.toString();
+        if (!(tileSize instanceof _leaflet2["default"].Point)) {
+            tileSize = _leaflet2["default"].point(tileSize, tileSize);
+        }
+        params["width"] = tileSize.x;
+        params["height"] = tileSize.y;
 
         params["redirect"] = options.redirect === true;
         params["transparent"] = options.transparent === true;
@@ -32631,8 +32634,11 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2["default"].TileLayer.exten
             params = [];
 
         var tileSize = this.options.tileSize;
-        params.push("width=" + tileSize);
-        params.push("height=" + tileSize);
+        if (!(tileSize instanceof _leaflet2["default"].Point)) {
+            tileSize = _leaflet2["default"].point(tileSize, tileSize);
+        }
+        params.push("width=" + tileSize.x);
+        params.push("height=" + tileSize.y);
 
         var redirect = options.redirect === true ? options.redirect : false;
         params.push("redirect=" + redirect);

@@ -277,8 +277,11 @@ export var TiledMapLayer = L.TileLayer.extend({
         var me = this, options = me.options || {}, params = {};
 
         var tileSize = this.options.tileSize;
-        params["width"] = tileSize.toString();
-        params["height"] = tileSize.toString();
+        if (!(tileSize instanceof L.Point)) {
+            tileSize = L.point(tileSize, tileSize);
+        }
+        params["width"] = tileSize.x;
+        params["height"] = tileSize.y;
 
         params["redirect"] = options.redirect === true;
         params["transparent"] = options.transparent === true;
