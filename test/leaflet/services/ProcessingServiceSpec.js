@@ -14,9 +14,9 @@ describe('leaflet_ProcessingService', function () {
     });
 
     xit('bug记录', function () {
-        console.log("1、query应该为对象,不应该为字符串,当不设置query或者设置为L.Bounds等对象时会报错");
-        console.log("2、bounds应该为对象,不应该为字符串,当不设置bounds或者设置为L.Bounds等对象时会报错");
-        console.log("3、SummaryRegionJobsService的参数类中standardFields默认值应该为空, 此时代码中默认的是average");
+        console.log("1、query应该为L.Bounds对象,不应该处理为字符串,且当不设置query时不应该报错(query不是必填参数),应该默认查询当前全部范围");
+        console.log("2、bounds应该为L.Bounds对象,不应该处理为字符串,且当不设置bounds时不应该报错(bounds不是必填参数),应该默认查询当前全部范围");
+        console.log("3、SummaryRegionJobsService的参数类中standardFields默认值应该为空字符串'', 此时代码中默认的是average");
         console.log("4、SummaryRegionJobsService的参数类,在destroy的时候 regionDataset 未置空");
     });
 
@@ -698,7 +698,7 @@ describe('leaflet_ProcessingService', function () {
         var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
             datasetName: "samples_processing_newyorkZone_R",  //必填参数, 源数据集
             sumShape: false,                                  //是否统计长度或面积
-            query: "-74.15,40.55,-73.75,40.95",               //选填参数,分析范围
+            query: "-74.05,40.65,-73.85,40.85",               //选填参数,分析范围
             weightedSummaryFields: true,                      //以权重字段统计
             //standardSummaryFields: false,                   //以标准属字段统计
             //standardFields: "",                             //以标准属字段统计的字段名称,应该默认为空

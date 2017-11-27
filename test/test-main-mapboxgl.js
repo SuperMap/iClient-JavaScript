@@ -27,6 +27,7 @@ require('./mapboxgl/services/MapServiceSpec.js');
 require('./mapboxgl/services/MathExpressionAnalysisSpec.js');
 require('./mapboxgl/services/MeasureServiceSpec.js');
 require('./mapboxgl/services/OverlayAnalysisSpec.js');
+require('./mapboxgl/services/ProcessingServiceSpec.js');
 require('./mapboxgl/services/QueryServiceSpec.js');
 require('./mapboxgl/services/RouteCalculateMeasureSpec.js');
 require('./mapboxgl/services/RouteLocateSpec.js');

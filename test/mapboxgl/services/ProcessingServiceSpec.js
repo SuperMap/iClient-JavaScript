@@ -1,21 +1,21 @@
-require('../../../src/openlayers/services/ProcessingService');
+require('../../../src/mapboxgl/services/ProcessingService');
 require('../../../src/common/util/FetchRequest');
 require('../../../src/common/security/SecurityManager');
+var mapboxgl = require('mapbox-gl');
 
-
-describe('openlayers_ProcessingService', function () {
+describe('mapboxgl_ProcessingService', function () {
     var token, url, processingService, FetchRequest;
     beforeEach(function () {
         token = '15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..';
         SuperMap.SecurityManager.registerToken('http://supermapiserver:8090/iserver', token);
         url = 'http://supermapiserver:8090/iserver/services/distributedanalyst/rest/v1/jobs';
-        processingService = new ol.supermap.ProcessingService(url);
+        processingService = new mapboxgl.supermap.ProcessingService(url);
         FetchRequest = SuperMap.FetchRequest;
     });
 
     xit('bug记录', function () {
-        console.log("1、query应该为ol.Bounds对象,不应该处理为字符串,且当不设置query时不应该报错(query不是必填参数),应该默认查询当前全部范围");
-        console.log("2、bounds应该为ol.Bounds对象,不应该处理为字符串,且当不设置bounds时不应该报错(bounds不是必填参数),应该默认查询当前全部范围");
+        console.log("1、当不设置query时会报错,query不是必填参数");
+        console.log("2、当不设置bounds时会报错,bounds不是必填参数");
         console.log("3、不支持destroy");
     });
 
@@ -123,7 +123,7 @@ describe('openlayers_ProcessingService', function () {
         });
     });
 
-    // addKernelDensityJob中有bug,当不设置query或者设置为ol.Bounds对象时会报错, 待开发修改后需要补充测试
+    // addKernelDensityJob中有bug,当不设置query时会报错, 待开发修改后需要补充测试
     it('addKernelDensityJob, getKernelDensityJobState', function (done) {
         var id = id_kernelDensityJob;
         spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
@@ -147,7 +147,7 @@ describe('openlayers_ProcessingService', function () {
             resolution: "80",          //必填参数, 网格半径
             radius: "200",             //必填参数, 分析半径
             fields: "",                //选填参数, 权重值字段
-            query: "-74.15,40.55,-73.75,40.95",                 //选填参数,分析范围
+            query: new mapboxgl.LngLatBounds(new mapboxgl.LngLat(74.150, 40.550), new mapboxgl.LngLat(-73.750, 40.950)), //选填参数,分析范围
             meshSizeUnit: 'Meter',     //选填参数, 网格单位
             radiusUnit: 'Meter',       //选填参数, 搜索半径单位
             areaUnit: 'SquareMeter'    //选填参数, 面积单位，密度的分母单位
@@ -210,7 +210,6 @@ describe('openlayers_ProcessingService', function () {
         var id = id_summaryMeshJob;
         spyOn(FetchRequest, 'get').and.callFake(function (testUrl) {
             if (testUrl === url + "/spatialanalyst/aggregatepoints") {
-                // 转义后的json字符串
                 var escapedJson = "[" + summaryMeshJob_get + "]";
                 return Promise.resolve(new Response(escapedJson));
             }
@@ -302,7 +301,7 @@ describe('openlayers_ProcessingService', function () {
         });
     });
 
-    // addSummaryMeshJob中有bug, 当不设置query或者或者设置为ol.Bounds对象时会报错, 待开发修改后需要补充测试
+    // addSummaryMeshJob中有bug, 当不设置query时会报错, 待开发修改后需要补充测试
     it('addSummaryMeshJob, getSummaryMeshJobState', function (done) {
         var id = id_summaryMeshJob;
         spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
@@ -322,7 +321,7 @@ describe('openlayers_ProcessingService', function () {
         // 四边形网格面聚合
         var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
             datasetName: "samples_newyork_taxi_2013-01_14k",  //必填参数, 源数据集
-            query: "-74.15,40.55,-73.75,40.95",               //选填参数,分析范围
+            query: new mapboxgl.LngLatBounds(new mapboxgl.LngLat(74.15, 40.55), new mapboxgl.LngLat(-73.75, 40.95)), //选填参数,分析范围
             resolution: 100,              //网格大小
             statisticModes: "max",        //统计模式
             meshType: 0,                  //网格面汇总类型
@@ -664,7 +663,7 @@ describe('openlayers_ProcessingService', function () {
         });
     });
 
-    // addSummaryRegionJob中有bug, 当不设置query或者或者设置为ol.Bounds对象时会报错, 待开发修改后需要补充测试
+    // addSummaryRegionJob中有bug, 当不设置query时会报错, 待开发修改后需要补充测试
     // 参数standardFields默认值应该为空, 此时代码中默认的是average, 待开发修改后需要回归
     // 参数类在destroy的时候 regionDataset 未置空,待开发修改后需要回归
     it('addSummaryRegionJob, getSummaryRegionJobState', function (done) {
@@ -686,7 +685,7 @@ describe('openlayers_ProcessingService', function () {
         var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
             datasetName: "samples_processing_newyorkZone_R",  //必填参数, 源数据集
             sumShape: false,                                  //是否统计长度或面积
-            query: "-74.05,40.65,-73.85,40.85",               //选填参数,分析范围
+            query: new mapboxgl.LngLatBounds(new mapboxgl.LngLat(-74.05, 40.65), new mapboxgl.LngLat(-73.85, 40.85)), //选填参数,分析范围
             weightedSummaryFields: true,                      //以权重字段统计
             //standardSummaryFields: false,                   //以标准属字段统计
             //standardFields: "",                             //以标准属字段统计的字段名称,应该默认为空
@@ -1210,7 +1209,7 @@ describe('openlayers_ProcessingService', function () {
         });
     });
 
-    // addBuffersJob中有bug,当不设置bounds或者设置为ol.Bounds()对象时会报错, 待开发修改后需要补充测试
+    // addBuffersJob中有bug,当不设置bounds时会报错, 待开发修改后需要补充测试
     it('addBuffersJob, getBuffersJobState', function (done) {
         var id = id_buffersAnalystJob;
         spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
@@ -1229,7 +1228,7 @@ describe('openlayers_ProcessingService', function () {
         });
         var buffersJobParameter = new SuperMap.BuffersAnalystJobsParameter({
             datasetName: "samples_processing_newyorkPoint_P",   //必填参数, 源数据集
-            bounds: "-74.15,40.55,-73.75,40.95", //此处应该为L.Bounds(L.point(-74.342308, 40.576233), L.point(-73.58014699999998, 40.901577))
+            bounds: new mapboxgl.LngLatBounds(new mapboxgl.LngLat(74.15, 40.55), new mapboxgl.LngLat(-73.75, 40.95)), //选填参数,分析范围
             distance: "15",     //缓冲区半径
             distanceField: "pickup_latitude",    //缓冲距离字段
             distanceUnit: "Meter",     //缓冲距离单位
