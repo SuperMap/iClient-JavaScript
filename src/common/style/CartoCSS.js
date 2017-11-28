@@ -76,7 +76,7 @@ export default class CartoCSS {
 
         // This function is called after all files
         // have been imported through `@import`.
-        var finish = function () {
+        var finish = function () {//NOSONAR
             //所有文件导入完成之后调用
         };
 
@@ -722,16 +722,16 @@ export default class CartoCSS {
 
                     while (s = $(this.selector)) {
                         selectors.push(s);
-                        while ($(this.comment)) {
+                        while ($(this.comment)) {//NOSONAR
                         }
                         if (!$(q)) {
                             break;
                         }
-                        while ($(this.comment)) {
+                        while ($(this.comment)) {//NOSONAR
                         }
                     }
                     if (s) {
-                        while ($(this.comment)) {
+                        while ($(this.comment)) {//NOSONAR
                         }
                     }
 
@@ -895,27 +895,7 @@ export default class CartoCSS {
 
                 var shaders = {};
                 var keys = [];
-                for (var i = 0, len0 = defs.length; i < len0; ++i) {
-                    var def = defs[i];
-                    var element_str = [];
-                    for (var j = 0, len1 = def.elements.length; j < len1; j++) {
-                        element_str.push(def.elements[j]);
-                    }
-                    var filters = def.filters.filters;
-                    var filterStr = [];
-                    for (var attr in filters) {
-                        filterStr.push(filters[attr].id);
-                    }
-                    var key = element_str.join("/") + "::" + def.attachment + "_" + filterStr.join("_");
-                    keys.push(key);
-                    var shader = shaders[key] = (shaders[key] || {});
-                    //shader.frames = [];
-                    shader.zoom = SuperMap.CartoCSS.Tree.Zoom.all;
-                    var props = def.toJS(this.env);
-                    for (var v in props) {
-                        (shader[v] = (shader[v] || [])).push(props[v].join('\n'))
-                    }
-                }
+                this._toShaders(shaders,keys,defs);
 
                 var ordered_shaders = [];
 
@@ -1010,7 +990,29 @@ export default class CartoCSS {
         return null;
     }
 
-
+    _toShaders(shaders, keys,defs) {
+        for (let i = 0, len0 = defs.length; i < len0; ++i) {
+            let def = defs[i];
+            let element_str = [];
+            for (let j = 0, len1 = def.elements.length; j < len1; j++) {
+                element_str.push(def.elements[j]);
+            }
+            let filters = def.filters.filters;
+            let filterStr = [];
+            for (let attr in filters) {
+                filterStr.push(filters[attr].id);
+            }
+            let key = element_str.join("/") + "::" + def.attachment + "_" + filterStr.join("_");
+            keys.push(key);
+            let shader = shaders[key] = (shaders[key] || {});
+            //shader.frames = [];
+            shader.zoom = SuperMap.CartoCSS.Tree.Zoom.all;
+            let props = def.toJS(this.env);
+            for (let v in props) {
+                (shader[v] = (shader[v] || [])).push(props[v].join('\n'))
+            }
+        }
+    }
     /**
      * @function SuperMap.CartoCSS.prototype.getShaders
      * @description 获取CartoCSS着色器
@@ -4856,10 +4858,6 @@ SuperMap.CartoCSS.Tree.Variable = class Variable {
     }
 
     ev(env) {
-        var variable,
-            v,
-            name = this.name;
-
         if (this._css) {return this._css;}
 
         var thisframe = env.frames.filter(function (f) {
@@ -4895,10 +4893,8 @@ SuperMap.CartoCSS.Tree.Zoom = class Zoom {
     }
 
     ev(env) {
-        var start = 0,
-            end = Infinity,
-            value = parseInt(this.value.ev(env).toString(), 10),
-            zoom = 0;
+        var value = parseInt(this.value.ev(env).toString(), 10);
+
 
         if (value > SuperMap.CartoCSS.Tree.Zoom.maxZoom || value < 0) {
             env.error({

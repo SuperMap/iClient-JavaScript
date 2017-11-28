@@ -20055,6 +20055,10 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
+        if (bounds && bounds instanceof _leaflet2["default"].LatLngBounds) {
+            var crs = this._map.options.crs;
+            bounds = _leaflet2["default"].bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
+        }
         bounds = _CommontypesConversion2["default"].toSuperMapBounds(bounds);
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
@@ -20360,7 +20364,9 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         var me = this;
         // 压盖判断所需 chartsBounds 集合
         var mapBounds = me._map.getBounds();
-        mapBounds = new _SuperMap2["default"].Bounds(mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth());
+        var crs = this._map.options.crs;
+        mapBounds = _leaflet2["default"].bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
+        mapBounds = _CommontypesConversion2["default"].toSuperMapBounds(mapBounds);
         var charts = me.charts;
         var chartsBounds = [];
         // 获取地图像素 bounds
@@ -76497,13 +76503,13 @@ __webpack_require__(27);
 
 var _Util = __webpack_require__(5);
 
-var _Painter = __webpack_require__(384);
-
-var _Painter2 = _interopRequireDefault(_Painter);
-
 var _Storage = __webpack_require__(397);
 
 var _Storage2 = _interopRequireDefault(_Storage);
+
+var _Painter = __webpack_require__(384);
+
+var _Painter2 = _interopRequireDefault(_Painter);
 
 var _Handler = __webpack_require__(379);
 
@@ -81042,7 +81048,7 @@ var CartoCSS = function () {
 
             // This function is called after all files
             // have been imported through `@import`.
-            var finish = function finish() {
+            var finish = function finish() {//NOSONAR
                 //所有文件导入完成之后调用
             };
 
@@ -81242,12 +81248,14 @@ var CartoCSS = function () {
 
                             switch (c) {
                                 case '{':
+                                    //NOSONAR
                                     if (!inParam) {
                                         level++;
                                         chunk.push(c);
                                         break;
                                     }
                                 case '}':
+                                    //NOSONAR
                                     if (!inParam) {
                                         level--;
                                         chunk.push(c);
@@ -81255,12 +81263,14 @@ var CartoCSS = function () {
                                         break;
                                     }
                                 case '(':
+                                    //NOSONAR
                                     if (!inParam) {
                                         inParam = true;
                                         chunk.push(c);
                                         break;
                                     }
                                 case ')':
+                                    //NOSONAR
                                     if (inParam) {
                                         inParam = false;
                                         chunk.push(c);
@@ -81733,14 +81743,17 @@ var CartoCSS = function () {
 
                         while (s = $(this.selector)) {
                             selectors.push(s);
-                            while ($(this.comment)) {}
+                            while ($(this.comment)) {//NOSONAR
+                            }
                             if (!$(q)) {
                                 break;
                             }
-                            while ($(this.comment)) {}
+                            while ($(this.comment)) {//NOSONAR
+                            }
                         }
                         if (s) {
-                            while ($(this.comment)) {}
+                            while ($(this.comment)) {//NOSONAR
+                            }
                         }
 
                         if (selectors.length > 0 && (rules = $(this.block))) {
@@ -81928,27 +81941,7 @@ var CartoCSS = function () {
 
                     var shaders = {};
                     var keys = [];
-                    for (var i = 0, len0 = defs.length; i < len0; ++i) {
-                        var def = defs[i];
-                        var element_str = [];
-                        for (var j = 0, len1 = def.elements.length; j < len1; j++) {
-                            element_str.push(def.elements[j]);
-                        }
-                        var filters = def.filters.filters;
-                        var filterStr = [];
-                        for (var attr in filters) {
-                            filterStr.push(filters[attr].id);
-                        }
-                        var key = element_str.join("/") + "::" + def.attachment + "_" + filterStr.join("_");
-                        keys.push(key);
-                        var shader = shaders[key] = shaders[key] || {};
-                        //shader.frames = [];
-                        shader.zoom = _SuperMap2["default"].CartoCSS.Tree.Zoom.all;
-                        var props = def.toJS(this.env);
-                        for (var v in props) {
-                            (shader[v] = shader[v] || []).push(props[v].join('\n'));
-                        }
-                    }
+                    this._toShaders(shaders, keys, defs);
 
                     var ordered_shaders = [];
 
@@ -82005,12 +81998,12 @@ var CartoCSS = function () {
                                                 }
                                                 return {
                                                     "property": prop,
-                                                    "getValue": Function("attributes", "zoom", "seftFilter", "var _value = null; var isExcute=typeof seftFilter=='function'?sefgFilter():seftFilter;if(isExcute){" + body + ";} return _value; ")
+                                                    "getValue": Function("attributes", "zoom", "seftFilter", "var _value = null; var isExcute=typeof seftFilter=='function'?sefgFilter():seftFilter;if(isExcute){" + body + ";} return _value; ") //NOSONAR
                                                 };
                                             } else {
                                                 return {
                                                     "property": prop,
-                                                    "getValue": Function("attributes", "zoom", "var _value = null;" + body + "; return _value; ")
+                                                    "getValue": Function("attributes", "zoom", "var _value = null;" + body + "; return _value; ") //NOSONAR
                                                 };
                                             }
                                         }(shader[prop], shaderArray);
@@ -82042,7 +82035,31 @@ var CartoCSS = function () {
             }
             return null;
         }
-
+    }, {
+        key: "_toShaders",
+        value: function _toShaders(shaders, keys, defs) {
+            for (var i = 0, len0 = defs.length; i < len0; ++i) {
+                var def = defs[i];
+                var element_str = [];
+                for (var j = 0, len1 = def.elements.length; j < len1; j++) {
+                    element_str.push(def.elements[j]);
+                }
+                var filters = def.filters.filters;
+                var filterStr = [];
+                for (var attr in filters) {
+                    filterStr.push(filters[attr].id);
+                }
+                var key = element_str.join("/") + "::" + def.attachment + "_" + filterStr.join("_");
+                keys.push(key);
+                var shader = shaders[key] = shaders[key] || {};
+                //shader.frames = [];
+                shader.zoom = _SuperMap2["default"].CartoCSS.Tree.Zoom.all;
+                var props = def.toJS(this.env);
+                for (var v in props) {
+                    (shader[v] = shader[v] || []).push(props[v].join('\n'));
+                }
+            }
+        }
         /**
          * @function SuperMap.CartoCSS.prototype.getShaders
          * @description 获取CartoCSS着色器
@@ -85048,8 +85065,6 @@ _SuperMap2["default"].CartoCSS.Tree.Reference = {
         if (_SuperMap2["default"].CartoCSS.mapnik_reference.version.hasOwnProperty(version)) {
             this.setData(_SuperMap2["default"].CartoCSS.mapnik_reference.version[version]);
             return true;
-        } else {
-            return false;
         }
         return false;
     },
@@ -85649,10 +85664,6 @@ _SuperMap2["default"].CartoCSS.Tree.Variable = function () {
     }, {
         key: "ev",
         value: function ev(env) {
-            var variable,
-                v,
-                name = this.name;
-
             if (this._css) {
                 return this._css;
             }
@@ -85698,10 +85709,7 @@ _SuperMap2["default"].CartoCSS.Tree.Zoom = function () {
     }, {
         key: "ev",
         value: function ev(env) {
-            var start = 0,
-                end = Infinity,
-                value = parseInt(this.value.ev(env).toString(), 10),
-                zoom = 0;
+            var value = parseInt(this.value.ev(env).toString(), 10);
 
             if (value > _SuperMap2["default"].CartoCSS.Tree.Zoom.maxZoom || value < 0) {
                 env.error({
