@@ -89,8 +89,8 @@ export default  class TimeControlBase {
         options = options || {};
         me.speed = ( options.speed && options.speed >= 0) ? options.speed : me.speed;
         me.frequency = (options.speed && options.frequency >= 0) ? options.frequency : me.frequency;
-        me.startTime = ((options.startTime && options.startTime != null)) ? options.startTime : 0;
-        me.endTime = ( (options.endTime && options.endTime != null && options.endTime >= me.startTime)) ? options.endTime : +new Date();
+        me.startTime = (options.startTime && options.startTime != null) ? options.startTime : 0;
+        me.endTime =  (options.endTime && options.endTime != null && options.endTime >= me.startTime) ? options.endTime : +new Date();
         me.repeat = ( options.repeat != undefined) ? options.repeat : me.repeat;
         me.reverse = (options.reverse != undefined) ? options.reverse : me.reverse;
 

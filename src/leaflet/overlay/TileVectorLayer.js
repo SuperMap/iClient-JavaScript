@@ -138,7 +138,9 @@ export var TileVectorLayer = VectorGrid.extend({
             return {};
         }
         var layerInfo = me.layersInfo[layerName];
-        if (!layerInfo) {return null;}
+        if (!layerInfo) {
+            return null;
+        }
         layerInfo_simple = {layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType};
         switch (layerInfo.ugcLayerType) {
             case "VECTOR":
@@ -423,11 +425,11 @@ export var TileVectorLayer = VectorGrid.extend({
         //切片的起始参考点，默认为地图范围的左上角。
         var crs = this._crs;
         if (crs.options && crs.options.origin) {
-            params["origin"] = JSON.stringify({x: crs.options.origin[0], y: crs.options.origin[1]});
-        }else if (crs.projection && crs.projection.bounds) {
+            params.push("origin=" + JSON.stringify({x: crs.options.origin[0], y: crs.options.origin[1]}));
+        } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = L.point(bounds.min.x, bounds.max.y);
-            params["origin"] = JSON.stringify({x: tileOrigin.x, y: tileOrigin.y});
+            params.push("origin=" + JSON.stringify({x: tileOrigin.x, y: tileOrigin.y}));
         }
         if (options.expands) {
             params.push("expands=" + options.expands);
