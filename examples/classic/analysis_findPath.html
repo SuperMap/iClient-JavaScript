@@ -199,7 +199,7 @@
             var points = [];
             for (var k = 0; k < 2; k++) {
                 if (result.pathList[pathListIndex].route.components[routeCompsIndex + k]) {
-                    points.push(new SuperMap.Geometry.Point(result.pathList[pathListIndex].route.widgets[routeCompsIndex + k].x, result.pathList[pathListIndex].route.widgets[routeCompsIndex + k].y));
+                    points.push(new SuperMap.Geometry.Point(result.pathList[pathListIndex].route.components[routeCompsIndex + k].x, result.pathList[pathListIndex].route.components[routeCompsIndex + k].y));
                 }
             }
             var curLine = new SuperMap.Geometry.LinearRing(points);

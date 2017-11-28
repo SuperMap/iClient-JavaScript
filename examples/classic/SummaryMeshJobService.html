@@ -88,7 +88,7 @@
 </div>
 <script type="text/javascript" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     var resultLayer,
         processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
         mapURL = host + "/iserver/services/map-world/rest/maps/World",
@@ -112,7 +112,7 @@
 
     var processingService = new SuperMap.REST.ProcessingService(processingsUrl);
     if (!window.isLocal) {
-        SuperMap.SecurityManager.registerToken('http://support.supermap.com.cn:8090/iserver', token);
+        SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090/iserver', token);
     }
     $("#type").change(function (e) {
         if (e.target.selectedIndex === 0) {
