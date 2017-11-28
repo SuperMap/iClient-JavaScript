@@ -6,10 +6,10 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var map, layer,alertDiv,
+    var map, layer,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     url = host + "/iserver/services/map-world/rest/maps/World";
 
@@ -29,29 +29,9 @@
         map.setCenter(new SuperMap.LonLat(0, 0), 1);
     }
     function callbackFunction(e) {
-        showAlert("鼠标" + e.type + "事件");
+        widgets.alert.showAlert("鼠标" + e.type + "事件",true);
     }
 
-    //弹出提示框
-    function showAlert(msg, className) {
-        if (className === null || typeof (className) === 'undefined') {
-            className = "alert-success";
-        }
-        className = className.toString();
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:999999;position: absolute;top: 20px;left: 40%;width:260px;display: none;opacity: 0.9;'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
 </script>
 
 </body>

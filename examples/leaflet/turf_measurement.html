@@ -7,14 +7,14 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
-<script type="text/javascript" include="bootstrap,bootstrap-select" src="../js/include-web.js"></script>
+<script type="text/javascript" include="bootstrap,bootstrap-select,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript">
     var unit;
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         turfLayer, resultLayer, urlWorld,
         totalLat = 0, totalLng = 0, averageLat, averageLng, distance, geo, coordinate,
-        alertDiv, choose, marker1, marker2, marker3, editableLayers, drawControl,
+        choose, marker1, marker2, marker3, editableLayers, drawControl,
         bearing, baseLayer, result, box,
         radius, steps, point;
 
@@ -151,7 +151,7 @@
                     $('#calc').val('点击生成对应的点');
                 }
                 else if (choose === 'area') {
-                    showAlert('选择左侧控件,画出自定义图层,再点右侧按钮进行面积计算');
+                    widgets.alert.showAlert('选择左侧控件,画出自定义图层,再点右侧按钮进行面积计算',1,260);
                     $('.panel-heading>h5').text('面积测量');
                     clearControl();
                     setDefaultCenter(39.90455699411283, 116.407283, 11);
@@ -270,7 +270,7 @@
                 }
                 else if (choose === 'buffer') {
                     $('.panel-heading>h5').text('buffer缓冲区');
-                    alert('请先点击左侧控件标记一个点');
+                    widgets.alert.showAlert('请先点击左侧控件标记一个点',true);
                     clearControl();
                     setDefaultCenter(40, 116.83, 9);
                     drawController(false, false, false, false, false, false, true);
@@ -288,7 +288,7 @@
                 }
                 else if (choose === 'circle') {
                     $('.panel-heading>h5').text('圆多边形');
-                    alert('请先点击左侧控件标记一个点');
+                    widgets.alert.showAlert('请先点击左侧控件标记一个点',true);
                     clearControl();
                     setDefaultCenter(40, 116.83, 9);
                     drawController(false, false, false, false, false, false, true);
@@ -308,7 +308,7 @@
                     $('#calc').val('生成圆多边形');
                 }
                 else {
-                    alert('方法不存在')
+                    widgets.alert.showAlert('方法不存在',false);
                 }
                 showPanel();
             }
@@ -345,7 +345,7 @@
                 "circle": circle,
             };
             if (!meths[choose]) {
-                alert('选择非法，请重新选择');
+                widgets.alert.showAlert('选择非法，请重新选择',false);
             }
             meths[choose]();
         });
@@ -599,7 +599,7 @@
         if (reg.test(num)) {
             return 1;
         } else {
-            showAlert('非法输入,请重新输入', "alert-danger")
+            widgets.alert.showAlert('非法输入,请重新输入', 0,260)
         }
     }
 
@@ -607,7 +607,7 @@
     function isInRange(val) {
         // return val >= -180 && val <= 180;
         if (val < -180 || val > 180) {
-            showAlert('请输入[-180,180]范围内的值', "alert-danger");
+            widgets.alert.showAlert('请输入[-180,180]范围内的值', 0,260);
         }
         else {
             return 1;
@@ -615,37 +615,10 @@
     }
 
 
-    //clear alert
-    function clearAlert() {
-        $('#msg_container').hide();
-    }
-
-    //弹出提示框
-    function showAlert(msg, className) {
-
-        if (className === null || typeof (className) === 'undefined') {
-            className = "alert-success";
-        }
-        className = className.toString();
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:260px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
-
     function greatThanZero(steps) {
         var reg = /^[1-9]\d*(\.\d+)?$/g;
         if (!reg.test(steps)) {
-            alert('步长必须大于0');
+            widgets.alert.showAlert('步长必须大于0', false);
         }
     }
 
@@ -653,7 +626,7 @@
     //turf along方法
     function along() {
         if (unit != 'null' && unit != undefined) {
-            clearAlert();
+            widgets.alert.clearAlert();
             if (checkIsNum(distance) && coordinate) {
                 turfLayer.process("Helper.lineString", {
                     "coordinates": coordinate,
@@ -668,7 +641,7 @@
             }
         }
         else {
-            showAlert('单位没选', 'alert-danger');
+            widgets.alert.showAlert('请选择单位', 0,260);
         }
     }
 
@@ -682,13 +655,13 @@
                     "geojson": polygon
                 }, function (e) {
                     result = e + '平方米';
-                    showAlert(result);
+                    widgets.alert.showAlert(result,1);
                     $(" input[ id='area' ] ").val(result);
                 });
             });
         }
         else {
-            showAlert('请画出图层', 'alert-danger');
+            widgets.alert.showAlert('请画出图层', 0,260);
         }
     }
 
@@ -712,7 +685,7 @@
     //turf destination方法
     function destination() {
         if (unit != 'null' && unit != undefined) {
-            clearAlert();
+            widgets.alert.clearAlert();
             if (checkIsNum(distance) && isInRange(bearing)) {
                 coordinates = [116.407283, 39.90455699411283];
                 resultLayer.process("Measurement.destination", {
@@ -725,7 +698,7 @@
             }
         }
         else {
-            showAlert('单位没选', 'alert-danger')
+            widgets.alert.showAlert('请选择单位', 0,260)
         }
     }
 
@@ -738,7 +711,7 @@
             "radians": "弧度",
         };
         if (unit != 'null' && unit != undefined) {
-            clearAlert();
+            widgets.alert.clearAlert();
             resultLayer.process("Measurement.distance", {
                 "from": turfLayer.toGeoJSON().features[0].geometry.coordinates[0],
                 "to": turfLayer.toGeoJSON().features[0].geometry.coordinates[1],
@@ -748,11 +721,11 @@
             });
             unit = disUnits[unit];
             result = resultNum + unit;
-            showAlert(result);
+            widgets.alert.showAlert(result,1,260);
             $(" input[ id='area' ] ").val(result);
         }
         else {
-            showAlert('单位没选', 'alert-danger')
+            widgets.alert.showAlert('请选择单位', 0,260)
         }
 
     }
@@ -835,7 +808,7 @@
     //先draw一个点 再在此点上进行缓冲区分析,默认单位killo
     function buffer() {
         if (unit != 'null') {
-            clearAlert();
+            widgets.alert.clearAlert();
             greatThanZero(steps);
             if (coordinate && checkIsNum(distance) && checkIsNum(radius) && steps > 0) {
                 turfLayer.process("Helper.point", {
@@ -849,11 +822,11 @@
                     });
                 });
             } else {
-                showAlert('填入数据不完善或错误', 'alert-danger');
+                widgets.alert.showAlert('填入数据不完善或错误', 0,260);
             }
         }
         else {
-            showAlert('单位没选', 'alert-danger');
+            widgets.alert.showAlert('请选择单位', 0,260);
         }
 
     }
@@ -862,7 +835,7 @@
     //先draw一个点 再在此点上画圆多边形
     //有默认单位kilometer
     function circle() {
-        clearAlert();
+        widgets.alert.clearAlert();
         greatThanZero(steps);
         if (coordinate && checkIsNum(distance) && checkIsNum(radius) && steps > 0) {
             turfLayer.process("Helper.point", {
@@ -878,7 +851,7 @@
             });
         }
         else {
-            showAlert('填入数据不完善或错误', 'alert-danger');
+            widgets.alert.showAlert('填入数据不完善或错误', 0,260);
         }
     }
 

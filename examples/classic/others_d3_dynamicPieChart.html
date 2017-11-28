@@ -11,10 +11,10 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript" exclude="iclient-classic" include="d3" src="../../dist/include-classic.js"></script>
 <script type="text/javascript">
-    var map, layer, utfgrid, control, d3Layer, alertDiv,
+    var map, layer, utfgrid, control, d3Layer,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-china400/rest/maps/China";
     var pieChartDom;
@@ -29,13 +29,13 @@
 
     function init() {
         if (!hasSVG()) {
-            showAlert('您的浏览器不支持 SVG，请升级！', "alert-danger");
+            widgets.alert.showAlert('您的浏览器不支持 SVG，请升级！', false);
             return;
         }
 
         //ie 9 支持 svg，但不完善，不能正常运行此范例
         if (SuperMap.Browser.name === "msie" && SuperMap.Browser.version.indexOf("9") !== -1) {
-            showAlert('您的浏览器不支持本范例，请升级！', "alert-danger");
+            widgets.alert.showAlert('您的浏览器不支持本范例，请升级！', false);
             return;
         }
 
@@ -201,26 +201,6 @@
         var center = new SuperMap.LonLat(9733502.481499, 4614406.969325);
         map.addLayers([layer, d3Layer, utfgrid]);
         map.setCenter(center, 4);
-    }
-    //弹出提示框
-    function showAlert(msg, className) {
-        if (className === null || typeof (className) === 'undefined') {
-            className = "alert-success";
-        }
-        className = className.toString();
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:999999;position: absolute;top: 20px;left: 40%;width:260px;display: none;opacity: 0.9;'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true' >&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
     }
 </script>
 </body>

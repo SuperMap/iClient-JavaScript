@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Online SecurityManager使用示例</title>
-    <script type="text/javascript" include="bootstrap-css,jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap-css,jquery,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .panel {
@@ -143,9 +143,9 @@
             serverType: SuperMap.ServerType.ONLINE
         }).getMapInfo(function (json) {
             if (json.error) {
-                alert(JSON.stringify(json.error))
+                widgets.alert.showAlert(JSON.stringify(json.error),false);
             } else {
-                alert(JSON.stringify(json.result))
+                widgets.alert.showAlert(JSON.stringify(json.result),true);
             }
         });
     }
@@ -202,7 +202,7 @@
 
     function checkUrl(url) {
         if (url === "") {
-            alert("请填写URL");
+            widgets.alert.showAlert("请填写URL",false);
             return false;
         }
         return true;

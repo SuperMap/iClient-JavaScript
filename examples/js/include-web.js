@@ -88,10 +88,15 @@
         if (inArray(includes, 'ace')) {
             inputScript("http://cdn.bootcss.com/ace/1.2.6/ace.js");
         }
-        if (inArray(includes, 'loader')) {
-            inputCSS("https://cdn.bootcss.com/css-loader/2.2.0/css-loader.css");
-            inputScript("../js/loader.js");
+        if (inArray(includes, 'widgets.alert')) {
+            inputScript("../js/widgets.js");
         }
+
+        if (inArray(includes, 'widgets')) {
+            inputCSS("https://cdn.bootcss.com/css-loader/2.2.0/css-loader.css");
+            inputScript("../js/widgets.js");
+        }
+
         if (inArray(includes, 'zTree')) {
             inputCSS("https://cdn.bootcss.com/zTree.v3/3.5.29/css/zTreeStyle/zTreeStyle.min.css");
             inputScript("https://cdn.bootcss.com/zTree.v3/3.5.29/js/jquery.ztree.all.min.js");

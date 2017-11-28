@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>iPortal SecurityManager使用示例</title>
-    <script type="text/javascript" include="jquery,bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap-css,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
 
     <style>
@@ -263,7 +263,7 @@
         }
         SuperMap.SecurityManager.loginiPortal(loginUrl, userName, password).then(function (result) {
             if (result.succeed)
-                window.alert("登录成功")
+                widgets.alert.showAlert("登录成功",true);
         });
     }
 
@@ -272,7 +272,7 @@
         var loginUrl = $("#loginUrl_iportal").val();
         SuperMap.SecurityManager.logoutiPortal(loginUrl).then(function (succeed) {
             if (succeed) {
-                window.alert("登出成功")
+                widgets.alert.showAlert("登出成功",true);
             }
         });
     }
@@ -303,7 +303,7 @@
             ip: referer,
             expiration: expiration
         })).then(function (result) {
-            alert(result);
+            widgets.alert.showAlert(result,true);
         });
     }
 
@@ -321,9 +321,9 @@
         var iPortalService = new SuperMap.iPortalService(serviceUrl);
         iPortalService.load().then(function (json) {
             if (json && json.error) {
-                alert(JSON.stringify(json.error))
+                widgets.alert.showAlert(JSON.stringify(json.error),false);
             } else {
-                alert("proxiedUrl:" + iPortalService.proxiedUrl);
+                widgets.alert.showAlert("proxiedUrl:" + iPortalService.proxiedUrl,true);
             }
 
         });
@@ -357,9 +357,9 @@
             serverType: SuperMap.ServerType.IPORTAL
         }).getMapInfo(function (json) {
             if (json.error) {
-                alert(JSON.stringify(json.error))
+                widgets.alert.showAlert(JSON.stringify(json.error),false);
             } else {
-                alert(JSON.stringify(json.result))
+                widgets.alert.showAlert(JSON.stringify(json.result),true);
             }
         });
     }
@@ -396,7 +396,7 @@
 
     function checkUrl(url) {
         if (url === "") {
-            alert("请填写URL");
+            widgets.alert.showAlert("请填写URL",false);
             return false;
         }
         return true;

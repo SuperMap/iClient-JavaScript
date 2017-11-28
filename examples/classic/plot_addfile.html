@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>态势图叠加</title>
-    <script type="text/javascript" include="bootstrap,fileupLoad" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,fileupLoad,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
@@ -115,23 +115,23 @@
     }
 
     function add() {
-        closeAlert();
+        widgets.alert.clearAlert();
         sitManager.addSmlFile('file', true);
     }
 
     function addtolayer() {
-        closeAlert();
+        widgets.alert.clearAlert();
         sitManager.addSmlFileToLayer('file', "标绘图层");
 
     }
 
     function openfile() {
-        closeAlert();
+        widgets.alert.clearAlert();
         sitManager.openSmlFile('file');
     }
 
     function clearlayer() {
-        closeAlert();
+        widgets.alert.clearAlert();
         plottingEdit.deactivate();
 
         var layers = map.layers;
@@ -157,34 +157,9 @@
     }
 
     function fail() {
-        showAlert("打开/叠加态势图失败，请检查态势图内容是否正确");
+        widgets.alert.showAlert("打开/叠加态势图失败，请检查态势图内容是否正确",false);
     }
 
-    //显示提示框
-    var alertDiv;
-    function showAlert(msg) {
-        var className = "alert-success";
-        closeAlert();
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('.close').on('click', function () {
-            $(alertDiv).remove();
-        });
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
-
-    function closeAlert() {
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-    }
 </script>
 
 </body>

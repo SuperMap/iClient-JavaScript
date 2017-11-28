@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>客户端标签专题图</title>
-    <script type="text/javascript" include="bootstrap-css" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap-css,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-leaflet.js"></script>
     <style type="text/css">
         .legend td {
@@ -32,7 +32,7 @@
     function init() {
         // 检测是否支持 Canvas
         if (!document.createElement('canvas').getContext) {
-            alert("您的浏览器不支持 Canvas，请升级！");
+         widgets.alert.showAlert("您的浏览器不支持 Canvas，请升级！",false);
             return;
         }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>地物编辑</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
@@ -97,7 +97,7 @@
 
     //激活添加地物
     function activateAddFeature() {
-        closeAlert();
+        widgets.alert.clearAlert();
         //先清除上次的显示结果
         vectorLayer.removeAllFeatures();
         clearAllDeactivate();
@@ -142,22 +142,22 @@
         if (addResultIds === null && resourceInfo === null) return;
 
         if ((addResultIds && addResultIds.length > 0) || (resourceInfo && resourceInfo.succeed)) {
-            showAlert("新增地物成功");
+            widgets.alert.showAlert("新增地物成功",true,240);
             vectorLayer.removeAllFeatures();
             //重新加载图层
             layer.redraw();
         } else {
-            showAlert("新增地物失败");
+            widgets.alert.showAlert("新增地物失败",false,240);
         }
     }
 
     function processFailed(e) {
-        showAlert(e.error.errorMsg);
+        widgets.alert.showAlert(e.error.errorMsg,false);
     }
 
     //激活选择地物
     function activateSelectedFeature() {
-        closeAlert();
+        widgets.alert.clearAlert();
         vectorLayer.removeAllFeatures();
         clearAllDeactivate();
         drawPoint.activate();
@@ -192,7 +192,7 @@
             result = getFeaturesEventArgs.result;
         vectorLayer.removeAllFeatures();
         if (originFeatures === null || originFeatures.length === 0) {
-            showAlert("查询地物为空");
+            widgets.alert.showAlert("查询地物为空",false,240);
             return;
         }
         ids = new Array();
@@ -212,10 +212,10 @@
 
     //激活编辑地物
     function editselectedFeature() {
-        closeAlert();
+        widgets.alert.clearAlert();
         clearAllDeactivate();
         if (ids == null) {
-            showAlert("请先选择地物");
+            widgets.alert.showAlert("请先选择地物",false,260);
         }
         else {
             modifyFeature.activate();
@@ -261,7 +261,7 @@
     //更新地物完成
     function updateFeaturesProcessCompleted(editFeaturesEventArgs) {
         if (editFeaturesEventArgs.result.resourceInfo.succeed) {
-            showAlert("更新地物成功");
+            widgets.alert.showAlert("更新地物成功",true,240);
             //重新加载图层
             vectorLayer.removeAllFeatures();
             layer.redraw();
@@ -269,16 +269,16 @@
             ids = null;
         }
         else {
-            showAlert("更新地物失败");
+            widgets.alert.showAlert("更新地物失败",false,240);
         }
     }
 
     //删除选中地物
     function deleteSelectedFeature() {
-        closeAlert();
+        widgets.alert.clearAlert();
         clearAllDeactivate();
         if (ids == null) {
-            showAlert("请先选择地物");
+            widgets.alert.showAlert("请先选择地物",false,240);
         }
         else {
             var editFeatureParameter,
@@ -301,13 +301,13 @@
     //删除地物完成
     function deleteFeaturesProcessCompleted(editFeaturesEventArgs) {
         if (editFeaturesEventArgs.result.resourceInfo.succeed) {
-            showAlert("删除地物成功");
+            widgets.alert.showAlert("删除地物成功",true,240);
             //重新加载图层
             vectorLayer.removeAllFeatures();
             layer.redraw();
         }
         else {
-            showAlert("删除地物失败");
+            widgets.alert.showAlert("删除地物失败",false,240);
         }
     }
 
@@ -317,31 +317,6 @@
         drawPolygon.deactivate();
     }
 
-    //显示提示框
-    var alertDiv;
-    function showAlert(msg) {
-        var className = "alert-success";
-        closeAlert();
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('.close').on('click', function () {
-            $(alertDiv).remove();
-        });
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
-
-    function closeAlert() {
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-    }
 </script>
 
 </body>

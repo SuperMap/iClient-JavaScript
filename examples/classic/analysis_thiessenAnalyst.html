@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>泰森多边形</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
@@ -79,7 +79,7 @@
 
     //数据集泰森多边形
     function bufferAnalystProcess() {
-        closeAlert();
+        widgets.alert.clearAlert();
         resultLayer.removeAllFeatures();
         var myThiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(url2),
             dThiessenAnalystParameters = new SuperMap.REST.DatasetThiessenAnalystParameters({
@@ -94,7 +94,7 @@
 
     //几何泰森多边形
     function geometryAnalystProcess() {
-        closeAlert();
+        widgets.alert.clearAlert();
         resultLayer.removeAllFeatures();
         //新建几何对象数组
         var points = [
@@ -135,39 +135,13 @@
 
     //请求失败
     function thiessenAnalystFailed(serviceEventArgs) {
-        showAlert(serviceEventArgs.error.errorMsg);
+        widgets.alert.showAlert(serviceEventArgs.error.errorMsg,false);
     }
 
     function removeResult() {
-        closeAlert();
+        widgets.alert.clearAlert();
         resultLayer.removeAllFeatures();
     }
-    //显示提示框
-    var alertDiv;
-    function showAlert(msg) {
-        var className = "alert-success";
-        closeAlert();
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('.close').on('click', function () {
-            $(alertDiv).remove();
-        });
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
-
-    function closeAlert() {
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-    }
-
 </script>
 
 </body>

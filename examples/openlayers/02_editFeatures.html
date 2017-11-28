@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>地物编辑</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
     <style>
         .editPane {
@@ -224,7 +224,7 @@
         if (isclearPoint) {
             closeSelectListener();
         }
-        closeAlert();
+       widgets.alert.clearAlert();
         var xmax = 120, xmin = 100, ymax = 50, ymin = 20,
             point = [Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)];
         if (!pointFeature) {
@@ -267,12 +267,12 @@
             addPointsSource.clear();
             pointFeature = null;
         } else {
-            showAlert("没有可撤回的要素。");
+           widgets.alert.showAlert("没有可撤回的要素。",false);
         }
     }
 
     function commit() {
-        closeAlert();
+       widgets.alert.clearAlert();
         if (isclearPoint) {
             closeSelectListener();
         }
@@ -291,16 +291,16 @@
                     vectorSource.clear();
                     pointFeature = null;
                     initFeature();
-                    showAlert("提交成功");
+                   widgets.alert.showAlert("提交成功",true);
                 }
             });
         } else {
-            showAlert("请先添加要素");
+           widgets.alert.showAlert("请先添加要素",false);
         }
     }
 
     function clearLayer() {
-        closeAlert();
+       widgets.alert.clearAlert();
         isclearPoint = true;
         map.on('click', selectListener);
     }
@@ -320,9 +320,9 @@
                     vectorSource.clear();
                     isclearPoint = false;
                     closeSelectListener();
-                    showAlert("删除成功");
+                   widgets.alert.showAlert("删除成功",true);
                 } else {
-                    showAlert("删除失败")
+                   widgets.alert.showAlert("删除失败",false)
                 }
             });
         }, {
@@ -339,32 +339,6 @@
         helpTooltipElement.classList.add('hidden');
     }
 
-    //显示提示框
-    function showAlert(msg) {
-        var className = "alert-success";
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('.close').on('click', function () {
-            $(alertDiv).remove();
-        });
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
-
-    function closeAlert() {
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-    }
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>公交换乘服务</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
@@ -153,7 +153,7 @@
             }
 
             function stopQueryFailed(result) {
-                showAlert(result);
+                widgets.alert.showAlert(result,false);
             }
         }
 
@@ -297,7 +297,7 @@
             }
 
             function stopQueryFailed(result) {
-                showAlert(result);
+                widgets.alert.showAlert(result,false);
             }
         }
 
@@ -400,11 +400,11 @@
 
         function getStartEndStopID() {
             if (!$("#startInput").attr("value")) {
-                showAlert("查询提示:" + "请选择查询的起点");
+                widgets.alert.showAlert("查询提示:" + "请选择查询的起点",true);
                 return;
             }
             if (!$("#endInput").attr("value")) {
-                showAlert("查询提示:" + "请选择查询的终点");
+                widgets.alert.showAlert("查询提示:" + "请选择查询的终点",true);
                 return;
             }
 
@@ -422,7 +422,7 @@
                     var startStopID = startStop.getAttribute("id");
                     var startStopName = startStop.innerHTML;
                     if (!startStopID) {
-                        showAlert("查询提示:" + "无匹配的起点信息");
+                        widgets.alert.showAlert("查询提示:" + "无匹配的起点信息",false);
                         return;
                     }
                     $("#startInput").attr("text", startStopID);
@@ -444,7 +444,7 @@
                     var endStopID = endStop.getAttribute("id");
                     var endStopName = endStop.innerHTML;
                     if (!endStopID) {
-                        showAlert("查询提示:" + "无匹配的终点信息");
+                        widgets.alert.showAlert("查询提示:" + "无匹配的终点信息",false);
                         return;
                     }
                     $("#endInput").attr("text", endStopID);
@@ -505,11 +505,11 @@
         //包括时间最短、距离最短、最少换乘、最少步行四种选择
         function executeTrafficTransfer(points, transferTactic) {
             if (noStart) {
-                showAlert("查询提示:" + "无匹配的起点");
+                widgets.alert.showAlert("查询提示:" + "无匹配的起点",false);
                 return;
             }
             if (noEnd) {
-                showAlert("查询提示:" + "无匹配的终点");
+                widgets.alert.showAlert("查询提示:" + "无匹配的终点",false);
                 return;
             }
             window.paths = {};
@@ -719,7 +719,7 @@
 
         //执行公交换乘失败返回结果
         function transferSolutionsFailed(event) {
-            showAlert("错误提示:" + event.error.errorMsg);
+            widgets.alert.showAlert("错误提示:" + event.error.errorMsg,false);
         }
     }
 
@@ -869,31 +869,6 @@
         li.appendTo($("#menuList"));
     }
 
-    //显示提示框
-    var alertDiv;
-    function showAlert(msg) {
-        var className = "alert-success";
-        closeAlert();
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('.close').on('click', function () {
-            $(alertDiv).remove();
-        });
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
-
-    function closeAlert() {
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-    }
 </script>
 
 </body>

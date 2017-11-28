@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>图层操作</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
@@ -80,7 +80,7 @@
     }
 
     function createLayer() {
-        closeAlert();
+        widgets.alert.clearAlert();
         PlottingDrawCancel();
         if (plottingEdit) {
             plottingEdit.deactivate();
@@ -95,7 +95,7 @@
     function layerAdded(addedEvt) {
         plottingLayers.push(addedEvt.layer);
         var successMessage = "图层 " + addedEvt.layer.name + " 创建成功";
-        showAlert(successMessage)
+        widgets.alert.showAlert(successMessage,true);
 
         // 绘制标号;
         drawGraphicObject = new SuperMap.Control.DrawFeature(addedEvt.layer, SuperMap.Handler.GraphicObject);
@@ -106,14 +106,14 @@
     }
 
     function removeLayer() {
-        closeAlert();
+        widgets.alert.clearAlert();
         if (plottingLayers.length !== 0) {
             var plottingLayer = plottingLayers[plottingLayers.length - 1];
             plottingLayer.events.on({"removed": layerRemoved});
             map.removeLayer(plottingLayer);
             map.removeControl(plottingLayer.drawGraphicObject);
         } else {
-            showAlert("当前地图无标绘图层")
+            widgets.alert.showAlert("当前地图无标绘图层",false);
         }
 
         if (plottingLayers.length !== 0) {
@@ -126,11 +126,11 @@
     function layerRemoved(removedEvt) {
         plottingLayers.pop();
         var successMessage = "图层 " + removedEvt.layer.name + " 删除成功";
-        showAlert(successMessage)
+        widgets.alert.showAlert(successMessage,true);
     }
 
     function plotSymbol() {
-        closeAlert();
+        widgets.alert.clearAlert();
         if (drawGraphicObject && drawGraphicObject !== null) {
             drawGraphicObject.activate();
             drawGraphicObject.handler.libID = 421;
@@ -141,7 +141,7 @@
 
     //取消绘制
     function PlottingDrawCancel() {
-        closeAlert();
+        widgets.alert.clearAlert();
         if (drawGraphicObject) {
             drawGraphicObject.deactivate();
         } else {
@@ -170,32 +170,6 @@
             return false;
         }
     };
-    //显示提示框
-    var alertDiv;
-    function showAlert(msg) {
-        var className = "alert-success";
-        closeAlert();
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('.close').on('click', function () {
-            $(alertDiv).remove();
-        });
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
-
-    function closeAlert() {
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-    }
-
 </script>
 
 </body>

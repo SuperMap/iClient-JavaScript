@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>单对象查询分析</title>
-    <script type="text/javascript" include="bootstrap,jquery,loader" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,jquery,widgets" src="../js/include-web.js"></script>
     <script type="text/javascript" include="draw" src="../../dist/include-mapboxgl.js"></script>
     <style>
         .mb-popup {
@@ -119,7 +119,7 @@
             if ($('#msg_container')[0]) {
                 $('#msg_container').remove();
             }
-            showLoader();
+           widgets.loader.showLoader();
             if (map.getLayer("singleLayer")) {
                 map.removeLayer("singleLayer");
                 map.removeSource("singleSource");
@@ -154,8 +154,8 @@
         if ($("#queryMode").val() === "GEOJSON") {
             var result = draw.getAll();
             if (result.features.length < 1) {
-                removeLoader();
-                showAlert("创建失败!<br>" + "请绘制查询范围!", false);
+               widgets.loader.removeLoader();
+               widgets.alert.showAlert("创建失败!<br>" + "请绘制查询范围!", false);
                 return;
             } else {
                 points = result.features[0].geometry.coordinates[0];
@@ -170,9 +170,9 @@
         });
         processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
             if (serviceResult.error) {
-                removeLoader();
+               widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-                showAlert("创建失败!<br>" + errorMsg, false);
+               widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -193,27 +193,14 @@
                             "minzoom": 0,
                             "maxzoom": 22
                         });
-                        removeLoader();
+                       widgets.loader.removeLoader();
                     });
                 }
             });
         });
     }
 
-    function showAlert(msg, state) {
-        var className = "alert-";
-        className += state ? "success" : "danger";
-        if (!$('#msg_container')[0]) {
-            var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
+
 </script>
 
 </body>

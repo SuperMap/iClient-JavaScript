@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>turf.js客户端空间分析</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
     <style>
         .leaflet-tooltip, .leaflet-tooltip:before {
@@ -21,7 +21,7 @@
         tinDataUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
         turfLayer, tinQueryResultLayer, nearestQueryResultLayer,
-        bbox, alertDiv,
+        bbox,
         gridAnalyzeType = 'hexGrid',
         turfAnalyzeType = 'Interpolation_tin',
 
@@ -152,7 +152,7 @@
             map.off(L.Draw.Event.CREATED, mapDrawListener);
             map.off('click', mapOnClickListener);
             //是否有需要删除的提示框
-            closeAlert();
+            widgets.alert.clearAlert();
             //切换其他分析之前清除图层
             clearLayer(true);
             clearControl();
@@ -183,7 +183,7 @@
         // 切换格网分析
         $("#gridAnalyzeType").change(function () {
             //是否有需要删除的提示框
-            closeAlert();
+           widgets.alert.clearAlert();
             bbox = null;
             clearLayer(false);
             gridAnalyzeType = $("#gridAnalyzeType option:selected").val();
@@ -213,7 +213,7 @@
 
         $("#createGridBtn").click(function () {
             //是否有需要删除的提示框
-            closeAlert();
+           widgets.alert.clearAlert();
             turfLayer.clearLayers();
             if (bbox) {
                 switch (gridAnalyzeType) {
@@ -231,15 +231,15 @@
                         break;
                 }
             } else {
-                showAlert("请先使用左上角绘图工具在地图上绘出分析范围。");
+                widgets.alert.showAlert("请先使用左上角绘图工具在地图上绘出分析范围。",false);
             }
         });
 
         $("#clearGridBtn").click(function () {
             //是否有需要删除的提示框
-            closeAlert();
+            widgets.alert.clearAlert();
             if (gridAnalyst.editableLayers.getLayers().length === 0 && turfLayer.getLayers().length == 0) {
-                showAlert("没有数据可删除");
+                widgets.alert.showAlert("没有数据可删除",false);
                 return;
             }
             bbox = null;
@@ -249,17 +249,17 @@
 
         $("#creatTinBtn").click(function () {
             //是否有需要删除的提示框
-            closeAlert();
+            widgets.alert.clearAlert();
             if (interpolationAnalyst.sourcePoints) {
                 interpolationAnalyst.creatTin();
             } else {
-                showAlert("分析数据加载中，请耐心等待。");
+                widgets.alert.showAlert("分析数据加载中，请耐心等待。",true);
                 return;
             }
         });
         $("#clearTinBtn").click(function () {
             //是否有需要删除的提示框
-            closeAlert();
+            widgets.alert.clearAlert();
             clearLayer(false);
         });
 
@@ -290,7 +290,7 @@
 
     function mapOnClickListener(e) {
         if (!classificationAnalyst.sourcePoints || classificationAnalyst.sourcePoints.features.length === 0) {
-            showAlert("数据加载中，请耐心等待。");
+            widgets.alert.showAlert("数据加载中，请耐心等待。",true);
             return;
         }
         clearLayer(false);
@@ -300,7 +300,7 @@
 
     function mapDrawListener(e) {
         if (gridAnalyst.editableLayers.getLayers().length > 0) {
-            showAlert("已有分析范围，请勿重复绘制。");
+            widgets.alert.showAlert("已有分析范围，请勿重复绘制。",false);
             return;
         }
         tooltip.removeFrom(map);
@@ -446,7 +446,7 @@
 
         creatTin: function () {
             if (turfLayer.getLayers().length > 0) {
-                showAlert("图层已创建，请勿重复创建。");
+                widgets.alert.showAlert("图层已创建，请勿重复创建。",false);
                 return;
             }
             turfLayer.process("Interpolation.tin", {
@@ -522,7 +522,7 @@
             map.on(L.Draw.Event.CREATED, mapDrawListener);
             map.on('draw:drawstart', function () {
                 //是否有需要删除的提示框
-                closeAlert();
+                widgets.alert.clearAlert();
                 drawing = true;
             });
         },
@@ -613,30 +613,6 @@
         }
     }
 
-    //显示提示框
-    function showAlert(msg) {
-        var className = "alert-success";
-        closeAlert();
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('.close').on('click', function () {
-            $(alertDiv).remove();
-        });
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
-
-    function closeAlert() {
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-    }
 </script>
 </body>
 </html>

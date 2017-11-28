@@ -62,7 +62,7 @@
         var param = new SuperMap.MeasureParameters(e.features[0]);
         new mapboxgl.supermap.MeasureService(url).measureDistance(param, function (serviceResult) {
             var distance = serviceResult.result.distance;
-            showAlert(distance + "米");
+           widgets.alert.showAlert(distance + "米");
         });
     }
 
@@ -73,22 +73,7 @@
     map.on('draw.create', measureDistance);
     map.on('draw.delete', removeMsg);
 
-    function showAlert(msg) {
-        var className = "alert-success";
-        if (alertDiv) {
-            $(alertDiv).remove();
-        }
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
+
 </script>
 </body>
 </html>

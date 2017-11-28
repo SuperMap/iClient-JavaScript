@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>点密度插值分析</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
     <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
@@ -78,7 +78,7 @@
 
     //点密度插值分析
     function interpolationDensity() {
-        closeAlert();
+        widgets.alert.clearAlert();
         removeInterpolation();
         var interpolationParams = new SuperMap.REST.InterpolationDensityAnalystParameters({
             //用于做插值分析的数据源中数据集的名称
@@ -301,45 +301,19 @@
 
     //插值分析失败后调用
     function processFailed(ServiceFailedEventArgs) {
-        showAlert(ServiceFailedEventArgs.error.errorMsg);
+        widgets.alert.showAlert(ServiceFailedEventArgs.error.errorMsg,false);
     }
 
     //服务端返回专题图结果失败时调用
     function themeFailed(serviceFailedEventArgs) {
-        showAlert(serviceFailedEventArgs.error.errorMsg);
+        widgets.alert.showAlert(serviceFailedEventArgs.error.errorMsg,false);
     }
 
     //清除专题图图层
     function removeInterpolation() {
-        closeAlert();
+        widgets.alert.clearAlert();
         if (map.layers.length > 1) {
             map.removeLayer(themeLayer, true);
-        }
-    }
-
-    //显示提示框
-    var alertDiv;
-    function showAlert(msg) {
-        var className = "alert-success";
-        closeAlert();
-        if (!$('#msg_container')[0]) {
-            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
-            $('body').append(alertDiv)
-        }
-        $('.close').on('click', function () {
-            $(alertDiv).remove();
-        });
-        $('#msg_container').addClass(className);
-        $('#msg_container').slideDown(300);
-        $('#msg').html(msg);
-    }
-
-    function closeAlert() {
-        if (alertDiv) {
-            $(alertDiv).remove();
         }
     }
 </script>
