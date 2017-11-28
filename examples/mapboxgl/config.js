@@ -362,6 +362,12 @@ var exampleConfig = {
                         name_en: "Changchun public transport network",
                         thumbnail: "echarts_ChangchunPublicTransportNetwork.gif",
                         fileName: "echarts_ChangchunPublicTransportNetwork"
+                    },
+                    {
+                        name: "格网图",
+                        name_en: "cell map",
+                        thumbnail: "echarts_cellMap.png",
+                        fileName: "echarts_cellMap"
                     }
                 ]
             },
