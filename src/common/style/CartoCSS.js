@@ -4321,8 +4321,6 @@ SuperMap.CartoCSS.Tree.Reference = {
         if (SuperMap.CartoCSS.mapnik_reference.version.hasOwnProperty(version)) {
             this.setData(SuperMap.CartoCSS.mapnik_reference.version[version]);
             return true;
-        } else {
-            return false;
         }
         return false;
     },
