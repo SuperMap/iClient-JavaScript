@@ -1,4 +1,5 @@
 require('../../../src/common/iServer/InterpolationAnalystService');
+require('../../../src/common/util/FetchRequest');
 var request = require('request');
 
 var serviceFailedEventArgsSystem = null;
@@ -32,10 +33,11 @@ describe('InterpolationAnalystService', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    var resultDataset_RBFByDS = "Interpolation_RBFByDS_commonTest";
     //数据集 样条插值（径向基函数插值法）分析
     it('InterpolationRBFAnalyst_dataset', function (done) {
-        var interpolationAnalystService = initInterpolationAnalystService();
+        var url = "http://supermapiserver:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+        var resultDataset_RBFByDS = "Interpolation_RBFByDS_commonTest";
+        var interpolationAnalystService = new SuperMap.InterpolationAnalystService(url, options);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationRBFAnalystParameters = new SuperMap.InterpolationRBFAnalystParameters({
@@ -53,39 +55,32 @@ describe('InterpolationAnalystService', function () {
             },
             outputDatasetName: resultDataset_RBFByDS
         });
-        interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
+        var FetchRequest = SuperMap.FetchRequest;
+        spyOn(FetchRequest, 'commit').and.callFake(function () {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_RBFByDS_commonTest@Interpolation\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         interpolationAnalystService.events.on({"processCompleted": analyzeCompleted});
+        interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
         setTimeout(function () {
-            try {
-                expect(analystEventArgsSystem.type).toEqual("processCompleted");
-                var serviceResult = analystEventArgsSystem.result;
-                expect(serviceResult).not.toBeNull();
-                expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toContain(resultDataset_RBFByDS);
-                expect(serviceResult.dataset).toContain("@Interpolation");
-                interpolationAnalystService.destroy();
-                interpolationRBFAnalystParameters.destroy();
-                done();
-            } catch (e) {
-                expect(false).toBeTruthy();
-                console.log("InterpolationRBFAnalyst_dataset" + e.name + ":" + e.message);
-                interpolationAnalystService.destroy();
-                interpolationRBFAnalystParameters.destroy();
-                done();
-            }
-        }, 10000);
-    });
-    // 删除测试过程中产生的数据集
-    it('delete test resources_RBFByDS', function (done) {
-        var testResult_RBFByDS = GlobeParameter.dataspatialAnalystURL + resultDataset_RBFByDS;
-        request.delete(testResult_RBFByDS);
-        done();
+            expect(analystEventArgsSystem.type).toEqual("processCompleted");
+            var serviceResult = analystEventArgsSystem.result;
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.succeed).toBeTruthy();
+            expect(serviceResult.recordset).toBeNull();
+            expect(serviceResult.dataset).toContain(resultDataset_RBFByDS);
+            expect(serviceResult.dataset).toContain("@Interpolation");
+            interpolationAnalystService.destroy();
+            interpolationRBFAnalystParameters.destroy();
+            done();
+        }, 1000);
     });
 
-    var resultDataset_densityByDS = "Interpolation_densityByDS_commonTest";
     //数据集 点密度插值分析
     it('InterpolationDensityAnalyst_dataset', function (done) {
-        var interpolationAnalystService = initInterpolationAnalystService();
+        var url = "http://supermapiserver:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+        var resultDataset_densityByDS = "Interpolation_densityByDS_commonTest";
+        var interpolationAnalystService = new SuperMap.InterpolationAnalystService(url, options);
         expect(interpolationAnalystService).not.toBeNull();
         expect(interpolationAnalystService.url).toEqual(url);
         var interpolationDensityAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
@@ -99,34 +94,27 @@ describe('InterpolationAnalystService', function () {
             },
             outputDatasetName: resultDataset_densityByDS
         });
-        interpolationAnalystService.processAsync(interpolationDensityAnalystParameters);
+        var FetchRequest = SuperMap.FetchRequest;
+        spyOn(FetchRequest, 'commit').and.callFake(function () {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"Interpolation_densityByDS_commonTest@Interpolation\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         interpolationAnalystService.events.on({"processCompleted": analyzeCompleted});
+        interpolationAnalystService.processAsync(interpolationDensityAnalystParameters);
         setTimeout(function () {
-            try {
-                expect(analystEventArgsSystem.type).toEqual("processCompleted");
-                var serviceResult = analystEventArgsSystem.result;
-                expect(serviceResult).not.toBeNull();
-                expect(serviceResult.succeed).toBeTruthy();
-                expect(serviceResult.dataset).toContain(resultDataset_densityByDS);
-                expect(serviceResult.dataset).toContain("@Interpolation");
-                interpolationAnalystService.destroy();
-                interpolationDensityAnalystParameters.destroy();
-                done();
-            } catch (e) {
-                expect(false).toBeTruthy();
-                console.log("InterpolationDensityAnalyst_dataset" + e.name + ":" + e.message);
-                interpolationAnalystService.destroy();
-                interpolationDensityAnalystParameters.destroy();
-                done();
-            }
-        }, 10000);
+            expect(analystEventArgsSystem.type).toEqual("processCompleted");
+            var serviceResult = analystEventArgsSystem.result;
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.succeed).toBeTruthy();
+            expect(serviceResult.recordset).toBeNull();
+            expect(serviceResult.dataset).toContain(resultDataset_densityByDS);
+            expect(serviceResult.dataset).toContain("@Interpolation");
+            interpolationAnalystService.destroy();
+            interpolationDensityAnalystParameters.destroy();
+            done();
+        }, 1000);
     });
-    // 删除测试过程中产生的数据集
-    it('delete test resources_densityByDS', function (done) {
-        var testResult_densityByDS = GlobeParameter.dataspatialAnalystURL + resultDataset_densityByDS;
-        request.delete(testResult_densityByDS);
-        done();
-    });
+
 
     var resultDataset_IDWByDS = "Interpolation_IDWByDS_commonTest";
     //数据集 反距离加权插值（IDW）分析
