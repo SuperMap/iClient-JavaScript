@@ -102,6 +102,10 @@ describe('leaflet_TileVectorLayer', function () {
             expect(layerStyle[0].fillOpacity).toEqual(1);
             expect(layerStyle[0].opacity).toEqual(1);
             expect(layerStyle[0].weight).toEqual(1);
+            var layerInfo = tileVectorLayer.getLayerStyleInfo('China_Province_pl@China');
+            expect(layerInfo).not.toBeNull();
+            var layerInfo2 = tileVectorLayer.getLayerStyleInfo('China_Province_pl11111@China');
+            expect(layerInfo2).toBeNull();
             map.removeLayer(tileVectorLayer);
             done();
         }, 5000);
