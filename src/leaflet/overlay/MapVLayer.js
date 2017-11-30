@@ -67,11 +67,11 @@ export var MapVLayer = L.Layer.extend({
      */
     onRemove: function (map) {
         L.DomUtil.remove(this.container);
-        map.off({
-            moveend: this.draw,
-            zoomstart: this._hide,
-            zoomend: this._show
-        }, this);
+        // map.off({
+        //     moveend: this.draw,
+        //     zoomstart: this._hide,
+        //     zoomend: this._show
+        // }, this);
     },
 
     /**

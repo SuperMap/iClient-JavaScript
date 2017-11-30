@@ -146,6 +146,14 @@ export var EchartsLayer = L.Layer.extend({
         this._ec.setOption(this._echartsOptions);
     },
 
+    onRemove: function (map) {
+        for (var i in this._layers) {
+          map.removeLayer(this._layers[i]);
+        }
+        // 销毁echarts实例
+        this._ec.dispose();
+    },
+
     _initEchartsContainer: function () {
         var size = this._map.getSize();
         var _div = document.createElement('div');
