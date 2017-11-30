@@ -72,6 +72,7 @@ export var MapVLayer = L.Layer.extend({
         //     zoomstart: this._hide,
         //     zoomend: this._show
         // }, this);
+        this.renderer.unbindEvent();
     },
 
     /**
