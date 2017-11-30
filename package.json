@@ -84,7 +84,7 @@
     "karma-coverage": "douglasduteil/karma-coverage#next",
     "karma-jasmine": "^1.1.0",
     "karma-teamcity-reporter": "^1.0.0",
-    "leaflet": "1.0.3",
+    "leaflet": "^1.2.0",
     "mapbox-gl": "0.38.0",
     "mapv": "2.0.14",
     "nightwatch": "^0.9.5",

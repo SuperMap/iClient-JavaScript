@@ -10,7 +10,7 @@ L.Proj = {};
 
 L.Proj._isProj4Obj = function (a) {
     return (typeof a.inverse !== 'undefined' &&
-        typeof a.forward !== 'undefined');
+    typeof a.forward !== 'undefined');
 };
 
 /**
@@ -53,8 +53,10 @@ L.Proj.Projection = L.Class.extend({
      * @return {LatLng} 返回经纬度坐标
      */
     unproject: function (point, unbounded) {
-        point.x = point.x < this.bounds.min.x ? this.bounds.min.x : (point.x > this.bounds.max.x ? this.bounds.max.x : point.x );
-        point.y = point.y < this.bounds.min.y ? this.bounds.min.y : (point.y > this.bounds.max.y ? this.bounds.max.y : point.y);
+        if (this.bounds) {
+            point.x = point.x < this.bounds.min.x ? this.bounds.min.x : (point.x > this.bounds.max.x ? this.bounds.max.x : point.x );
+            point.y = point.y < this.bounds.min.y ? this.bounds.min.y : (point.y > this.bounds.max.y ? this.bounds.max.y : point.y);
+        }
         var point2 = this._proj.inverse([point.x, point.y]);
         return new L.LatLng(point2[1], point2[0], unbounded);
     },
