@@ -27,6 +27,7 @@ require('./openlayers/services/ThiessenAnalysisSpec.js');
 require('./openlayers/services/TrafficTransferAnalystServiceSpec.js');
 
 /*openlayers -- overlay*/
+require('./openlayers/overlay/GraphicSpec.js');
 require('./openlayers/overlay/GraphSpec.js');
 require('./openlayers/overlay/LabelSpec');
 require('./openlayers/overlay/MapvSpec.js');
