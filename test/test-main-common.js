@@ -72,6 +72,7 @@ require('./common/format/JSONSpec.js');
 require('./common/security/SecurityManagerSpec.js');
 
 /**common -- commonTypes**/
+require('./common/commonTypes/BoundsSpec.js');
 require('./common/commonTypes/geometry/GeoTextSpec.js');
 require('./common/commonTypes/geometry/LineStringSpec.js');
 require('./common/commonTypes/geometry/LinearRingSpec.js');

@@ -175,20 +175,20 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     // 此方法为iclient8的私有方法,不支持leaflet对象,此处测试传入iclient对象的情况
-    it('isPointInPoly', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
-            width: 240,
-            height: 100,
-            codomain: [0, 40000]
-        };
-        var point = {"x": 2, "y": 5};
-        var polygon = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
-        var isPointInPoly = graphThemeLayer.isPointInPoly(point, polygon);
-        expect(isPointInPoly).toBeTruthy();
-        graphThemeLayer.clear();
-    });
+    //it('isPointInPoly', function () {
+    //    var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
+    //    graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+    //    graphThemeLayer.chartsSetting = {
+    //        width: 240,
+    //        height: 100,
+    //        codomain: [0, 40000]
+    //    };
+    //    var point = {"x": 2, "y": 5};
+    //    var polygon = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
+    //    var isPointInPoly = graphThemeLayer.isPointInPoly(point, polygon);
+    //    expect(isPointInPoly).toBeTruthy();
+    //    graphThemeLayer.clear();
+    //});
 
     //overlayWeightField默认为空
     it('drawCharts_overlayWeightField = null', function () {
@@ -245,93 +245,6 @@ describe('leaflet_GraphThemeLayer', function () {
         graphThemeLayer.clear();
     });
 
-    it('removeFeatures', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
-            width: 240,
-            height: 100,
-            codomain: [0, 40000],
-        };
-        var features = [];
-        for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
-            var provinceInfo = chinaConsumptionLevel[i];
-            var geometry = L.point(provinceInfo[2], provinceInfo[1]);
-            var fea = new L.supermap.themeFeature(geometry);
-            features.push(fea);
-        }
-        graphThemeLayer.addFeatures(features);
-        expect(graphThemeLayer.features.length).toBeGreaterThan(0);
-        graphThemeLayer.removeFeatures();
-        expect(graphThemeLayer.features.length).toBeGreaterThan(0);
-        graphThemeLayer.removeAllFeatures();
-        expect(graphThemeLayer.features.length).toEqual(0);
-        graphThemeLayer.clear();
-    });
-
-    it('clearCache', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
-            width: 240,
-            height: 100,
-            codomain: [0, 40000]
-        };
-        graphThemeLayer.charts = [1, 2, 3];
-        graphThemeLayer.cache = {'name': 'ONETWO'};
-        expect(graphThemeLayer.charts.length).toEqual(3);
-        expect(graphThemeLayer.cache).toEqual(Object({
-            name: "ONETWO"
-        }));
-        graphThemeLayer.clearCache();
-        expect(graphThemeLayer.charts.length).toEqual(0);
-        expect(graphThemeLayer.cache).toEqual(Object({}));
-    });
-
-
-    ////测试其父类“/theme/ThemeLayer”中的接口
-    //销毁addFeatures_point方法添加的所有要素
-    it('destroyFeatures', function () {
-        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-        graphThemeLayer.chartsSetting = {
-            width: 240,
-            height: 100,
-            codomain: [0, 40000],
-            barStyle: {fillOpacity: 0.7},
-            barHoverStyle: {fillOpacity: 1},
-            xShapeBlank: [10, 10, 10],
-            axisYTick: 4,
-            axisYLabels: ["4万", "3万", "2万", "1万", "0"],
-            axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
-            backgroundStyle: {fillColor: "#CCE8CF"},
-            backgroundRadius: [5, 5, 5, 5],
-            showShadow: true,
-            barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
-            barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
-        };
-        expect(graphThemeLayer.features.length).toEqual(0);
-        var features = [];
-        for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
-            var provinceInfo = chinaConsumptionLevel[i];
-            var geometry = L.point(provinceInfo[1], provinceInfo[2]);
-            var atrributes = {};
-            atrributes.NAME = provinceInfo[0];
-            atrributes.CON2009 = provinceInfo[3];
-            atrributes.CON2010 = provinceInfo[4];
-            atrributes.CON2011 = provinceInfo[5];
-            atrributes.CON2012 = provinceInfo[6];
-            atrributes.CON2013 = provinceInfo[7];
-            var fea = L.supermap.themeFeature(geometry, atrributes);
-            features.push(fea);
-        }
-        graphThemeLayer.addFeatures(features);
-        graphThemeLayer.destroyFeatures(undefined);
-        expect(graphThemeLayer).not.toBeNull();
-        expect(graphThemeLayer.features.length).toEqual(0);
-        graphThemeLayer.clear();
-    });
-
     //从专题图中删除 feature。删除所有传递进来的某一个矢量要素。
     it('removeFeatures', function () {
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
@@ -375,6 +288,68 @@ describe('leaflet_GraphThemeLayer', function () {
         expect(graphThemeLayer).not.toBeNull();
         expect(graphThemeLayer.features.length).toEqual(30);
         expect(graphThemeLayer.features[0].data.NAME).toEqual("天津市");
+        graphThemeLayer.clear();
+    });
+
+    it('clearCache', function () {
+        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
+        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        graphThemeLayer.chartsSetting = {
+            width: 240,
+            height: 100,
+            codomain: [0, 40000]
+        };
+        graphThemeLayer.charts = [1, 2, 3];
+        graphThemeLayer.cache = {'name': 'ONETWO'};
+        expect(graphThemeLayer.charts.length).toEqual(3);
+        expect(graphThemeLayer.cache).toEqual(Object({
+            name: "ONETWO"
+        }));
+        graphThemeLayer.clearCache();
+        expect(graphThemeLayer.charts.length).toEqual(0);
+        expect(graphThemeLayer.cache).toEqual(Object({}));
+    });
+
+    //测试其父类“/theme/ThemeLayer”中的接口
+    //销毁addFeatures_point方法添加的所有要素
+    it('destroyFeatures', function () {
+        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        graphThemeLayer.chartsSetting = {
+            width: 240,
+            height: 100,
+            codomain: [0, 40000],
+            barStyle: {fillOpacity: 0.7},
+            barHoverStyle: {fillOpacity: 1},
+            xShapeBlank: [10, 10, 10],
+            axisYTick: 4,
+            axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+            axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+            backgroundStyle: {fillColor: "#CCE8CF"},
+            backgroundRadius: [5, 5, 5, 5],
+            showShadow: true,
+            barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
+            barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
+        };
+        expect(graphThemeLayer.features.length).toEqual(0);
+        var features = [];
+        for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+            var provinceInfo = chinaConsumptionLevel[i];
+            var geometry = L.point(provinceInfo[1], provinceInfo[2]);
+            var atrributes = {};
+            atrributes.NAME = provinceInfo[0];
+            atrributes.CON2009 = provinceInfo[3];
+            atrributes.CON2010 = provinceInfo[4];
+            atrributes.CON2011 = provinceInfo[5];
+            atrributes.CON2012 = provinceInfo[6];
+            atrributes.CON2013 = provinceInfo[7];
+            var fea = L.supermap.themeFeature(geometry, atrributes);
+            features.push(fea);
+        }
+        graphThemeLayer.addFeatures(features);
+        graphThemeLayer.destroyFeatures(undefined);
+        expect(graphThemeLayer).not.toBeNull();
+        expect(graphThemeLayer.features.length).toEqual(0);
         graphThemeLayer.clear();
     });
 
@@ -459,8 +434,8 @@ describe('leaflet_GraphThemeLayer', function () {
             features.push(fea);
         }
         graphThemeLayer.addFeatures(features);
-        var resultFeatures =  graphThemeLayer.getFeatures();
-        var id =resultFeatures[0].id;
+        var resultFeatures = graphThemeLayer.getFeatures();
+        var id = resultFeatures[0].id;
         var result = graphThemeLayer.getFeatureBy("id", id);
         expect(result).not.toBeNull();
         expect(result.id).toEqual(id);
@@ -468,50 +443,50 @@ describe('leaflet_GraphThemeLayer', function () {
         graphThemeLayer.clear();
     });
 
-     //通过给定一个 id，返回对应的矢量要素
+    //通过给定一个 id，返回对应的矢量要素
     it('getFeatureById', function () {
-         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
-         graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-         graphThemeLayer.chartsSetting = {
-             width: 240,
-             height: 100,
-             codomain: [0, 40000],
-             barStyle: {fillOpacity: 0.7},
-             barHoverStyle: {fillOpacity: 1},
-             xShapeBlank: [10, 10, 10],
-             axisYTick: 4,
-             axisYLabels: ["4万", "3万", "2万", "1万", "0"],
-             axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
-             backgroundStyle: {fillColor: "#CCE8CF"},
-             backgroundRadius: [5, 5, 5, 5],
-             showShadow: true,
-             barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
-             barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
-         };
-         expect(graphThemeLayer.features.length).toEqual(0);
-         var features = [];
-         for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
-             var provinceInfo = chinaConsumptionLevel[i];
-             var geometry = L.point(provinceInfo[1], provinceInfo[2]);
-             var atrributes = {};
-             atrributes.NAME = provinceInfo[0];
-             atrributes.CON2009 = provinceInfo[3];
-             atrributes.CON2010 = provinceInfo[4];
-             atrributes.CON2011 = provinceInfo[5];
-             atrributes.CON2012 = provinceInfo[6];
-             atrributes.CON2013 = provinceInfo[7];
-             var fea = L.supermap.themeFeature(geometry, atrributes);
-             features.push(fea);
-         }
-         graphThemeLayer.addFeatures(features);
-        var resultFeatures =  graphThemeLayer.getFeatures();
-        var id =resultFeatures[0].id;
-         var result = graphThemeLayer.getFeatureById(id);
-         expect(result).not.toBeNull();
-         expect(result.id).toEqual(id);
-         expect(result.attributes.NAME).toEqual("北京市");
-         graphThemeLayer.clear();
-     });
+        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
+        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        graphThemeLayer.chartsSetting = {
+            width: 240,
+            height: 100,
+            codomain: [0, 40000],
+            barStyle: {fillOpacity: 0.7},
+            barHoverStyle: {fillOpacity: 1},
+            xShapeBlank: [10, 10, 10],
+            axisYTick: 4,
+            axisYLabels: ["4万", "3万", "2万", "1万", "0"],
+            axisXLabels: ["09年", "10年", "11年", "12年", "13年"],
+            backgroundStyle: {fillColor: "#CCE8CF"},
+            backgroundRadius: [5, 5, 5, 5],
+            showShadow: true,
+            barShadowStyle: {shadowBlur: 8, shadowOffsetX: 2, shadowOffsetY: 2, shadowColor: "rgba(100,100,100,0.8)"},
+            barLinearGradient: [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]]
+        };
+        expect(graphThemeLayer.features.length).toEqual(0);
+        var features = [];
+        for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+            var provinceInfo = chinaConsumptionLevel[i];
+            var geometry = L.point(provinceInfo[1], provinceInfo[2]);
+            var atrributes = {};
+            atrributes.NAME = provinceInfo[0];
+            atrributes.CON2009 = provinceInfo[3];
+            atrributes.CON2010 = provinceInfo[4];
+            atrributes.CON2011 = provinceInfo[5];
+            atrributes.CON2012 = provinceInfo[6];
+            atrributes.CON2013 = provinceInfo[7];
+            var fea = L.supermap.themeFeature(geometry, atrributes);
+            features.push(fea);
+        }
+        graphThemeLayer.addFeatures(features);
+        var resultFeatures = graphThemeLayer.getFeatures();
+        var id = resultFeatures[0].id;
+        var result = graphThemeLayer.getFeatureById(id);
+        expect(result).not.toBeNull();
+        expect(result.id).toEqual(id);
+        expect(result.attributes.NAME).toEqual("北京市");
+        graphThemeLayer.clear();
+    });
 
     // 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
     it('getFeaturesByAttribute', function () {
