@@ -36,6 +36,7 @@ require('./leaflet/services/TrafficTransferAnalystServiceSpec.js');
 
 /*leaflet -- overlay*/
 require('./leaflet/overlay/EchartsLayerSpec.js');
+require('./leaflet/overlay/GraphicLayerSpec.js');
 require('./leaflet/overlay/GraphThemeLayerSpec.js');
 require('./leaflet/overlay/LabelThemeLayerSpec.js');
 require('./leaflet/overlay/mapVLayerSpec.js');
