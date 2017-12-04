@@ -51,13 +51,13 @@ export var MapVLayer = L.Layer.extend({
         this.fire("loaded");
     },
 
-    _hide: function () {
-        this.canvas.style.display = 'none';
-    },
+    // _hide: function () {
+    //     this.canvas.style.display = 'none';
+    // },
 
-    _show: function () {
-        this.canvas.style.display = 'block';
-    },
+    // _show: function () {
+    //     this.canvas.style.display = 'block';
+    // },
 
     /**
      * @private

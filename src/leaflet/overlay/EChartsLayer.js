@@ -147,9 +147,6 @@ export var EchartsLayer = L.Layer.extend({
     },
 
     onRemove: function (map) {
-        for (var i in this._layers) {
-          map.removeLayer(this._layers[i]);
-        }
         // 销毁echarts实例
         this._ec.dispose();
     },
