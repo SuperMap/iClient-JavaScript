@@ -30,9 +30,9 @@ export default class MapVRenderer extends BaseLayer {
         this.canvasLayer = layer;
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
-        this.map.on('movestart', this.moveStartEvent.bind(this));
-        this.map.on('moveend', this.moveEndEvent.bind(this));
-        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
+        this._moveStartEvent = this.moveStartEvent.bind(this);
+        this._moveEndEvent = this.moveEndEvent.bind(this);
+        this._zoomstart = this.zoomStartEvent.bind(this);
         this.bindEvent();
     }
 
@@ -72,6 +72,9 @@ export default class MapVRenderer extends BaseLayer {
                 map.on('mousemove', this.mousemoveEvent);
             }
         }
+        this.map.on('movestart', this._moveStartEvent);
+        this.map.on('moveend', this._moveEndEvent);
+        this.map.on('zoomstart', this._zoomstart);
     }
 
     /**
@@ -90,6 +93,9 @@ export default class MapVRenderer extends BaseLayer {
                 map.off('mousemove', this.mousemoveEvent);
             }
         }
+        this.map.off('movestart', this._moveStartEvent);
+        this.map.off('moveend', this._moveEndEvent);
+        this.map.off('zoomstart', this._zoomStartEvent);
     }
 
     /**

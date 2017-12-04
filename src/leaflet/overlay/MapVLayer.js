@@ -51,13 +51,13 @@ export var MapVLayer = L.Layer.extend({
         this.fire("loaded");
     },
 
-    _hide: function () {
-        this.canvas.style.display = 'none';
-    },
+    // _hide: function () {
+    //     this.canvas.style.display = 'none';
+    // },
 
-    _show: function () {
-        this.canvas.style.display = 'block';
-    },
+    // _show: function () {
+    //     this.canvas.style.display = 'block';
+    // },
 
     /**
      * @private
@@ -67,11 +67,12 @@ export var MapVLayer = L.Layer.extend({
      */
     onRemove: function (map) {
         L.DomUtil.remove(this.container);
-        map.off({
-            moveend: this.draw,
-            zoomstart: this._hide,
-            zoomend: this._show
-        }, this);
+        // map.off({
+        //     moveend: this.draw,
+        //     zoomstart: this._hide,
+        //     zoomend: this._show
+        // }, this);
+        this.renderer.unbindEvent();
     },
 
     /**
