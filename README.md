@@ -10,9 +10,7 @@ SuperMap iClient for JavaScript 是一套由 JavaScript 语言编写的 GIS 客�
 * 源码：[https://github.com/SuperMap/iClient-JavaScript](https://github.com/SuperMap/iClient-JavaScript)
 
 ## Samples
- ![](https://www.supermap.com/pic/anlipic/201792216859921.gif)
- ![](https://www.supermap.com/pic/anlipic/201792216937199.gif)
- ![](https://www.supermap.com/pic/anlipic/2017922172359492.gif)
+ [![](https://www.supermap.com/pic/anlipic/201792216859921.gif)](http://iclient.supermap.io/examples/mapboxgl/editor.html#mapvPolylineTime)
  
 ## 许可
 [ Apache License 2.0 ](./LICENSE)
