@@ -30,29 +30,23 @@ describe('mapboxgl_FeatureService_getFeaturesByBuffer', function () {
             serviceResult = result
         });
         setTimeout(function () {
-            try {
-                expect(service).not.toBeNull();
-                expect(serviceResult).not.toBeNull();
-                expect(serviceResult.type).toBe("processCompleted");
-                expect(serviceResult.result.succeed).toBe(true);
-                expect(serviceResult.object.options.data).toContain("World:Capitals");
-                expect(serviceResult.result.featureCount).not.toBeNull();
-                expect(serviceResult.result.totalCount).toEqual(serviceResult.result.featureCount);
-                expect(serviceResult.result.features.type).toEqual("FeatureCollection");
-                var features = serviceResult.result.features.features;
-                for (var i = 0; i < features.length; i++) {
-                    expect(features[i].id).not.toBeNull();
-                    expect(features[i].type).toEqual("Feature");
-                    expect(features[i].properties).not.toBeNull();
-                    expect(features[i].geometry.type).toEqual("Point");
-                    expect(features[i].geometry.coordinates.length).toEqual(2);
-                }
-                done();
-            } catch (e) {
-                console.log("'getFeaturesByBuffer_test'案例失败" + e.name + ":" + e.message);
-                expect(false).toBeTruthy();
-                done();
+            expect(service).not.toBeNull();
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.type).toBe("processCompleted");
+            expect(serviceResult.result.succeed).toBe(true);
+            expect(serviceResult.object.options.data).toContain("World:Capitals");
+            expect(serviceResult.result.featureCount).not.toBeNull();
+            // expect(serviceResult.result.totalCount).toEqual(serviceResult.result.featureCount);
+            expect(serviceResult.result.features.type).toEqual("FeatureCollection");
+            var features = serviceResult.result.features.features;
+            for (var i = 0; i < features.length; i++) {
+                expect(features[i].id).not.toBeNull();
+                expect(features[i].type).toEqual("Feature");
+                expect(features[i].properties).not.toBeNull();
+                expect(features[i].geometry.type).toEqual("Point");
+                expect(features[i].geometry.coordinates.length).toEqual(2);
             }
+            done();
         }, 5000);
     });
 });

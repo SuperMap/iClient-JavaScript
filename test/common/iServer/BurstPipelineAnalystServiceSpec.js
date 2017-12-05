@@ -1,8 +1,9 @@
 require('../../../src/common/iServer/BurstPipelineAnalystService');
+require('../../../src/common/util/FetchRequest');
 
 var serviceFailedEventArgsSystem = null,
     serviceCompletedEventArgsSystem = null;
-var url = GlobeParameter.networkAnalystURL;
+var url = "http://supermap:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
 var options = {
     eventListeners: {
         "processCompleted": analyzeCompleted,
@@ -21,6 +22,7 @@ function analyzeCompleted(analyseEventArgs) {
 
 describe('BurstPipelineAnalystService', function () {
     var originalTimeout;
+    var FetchRequest = SuperMap.FetchRequest;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -62,27 +64,20 @@ describe('BurstPipelineAnalystService', function () {
         expect(burstPipelineAnalystParams.isUncertainDirectionValid).toBeFalsy();
     });
 
-    //参数不存在
+    //参数不存在, 直接返回
     it('processAsync_noParams', function (done) {
         var burstPipelineAnalystService = initBurstPipelineAnalystService();
         burstPipelineAnalystService.processAsync();
         setTimeout(function () {
-            try {
-                expect(serviceFailedEventArgsSystem).toBeNull();
-                expect(serviceCompletedEventArgsSystem).toBeNull();
-                burstPipelineAnalystService.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("BurstPipelineAnalystService_" + exception.name + ":" + exception.message);
-                burstPipelineAnalystService.destroy();
-                done();
-            }
-        }, 4000);
+            expect(serviceCompletedEventArgsSystem).toBeNull();
+            expect(serviceFailedEventArgsSystem).toBeNull();
+            burstPipelineAnalystService.destroy();
+            done();
+        }, 1000);
     });
 
     //正确返回结果
-    it('success:processAsync', function (done) {
+    it('processAsync_success', function (done) {
         var burstPipelineAnalystService = initBurstPipelineAnalystService();
         var burstPipelineAnalystParams = new SuperMap.BurstPipelineAnalystParameters({
             sourceNodeIDs: [1, 2],
@@ -90,25 +85,22 @@ describe('BurstPipelineAnalystService', function () {
             nodeID: null,
             isUncertainDirectionValid: true
         });
+        spyOn(FetchRequest, 'commit').and.callFake(function () {
+            var burstPipelineEscapedJson = "{\"normalNodes\":[],\"edges\":[1,2,3,4,5,6,7,8,9],\"criticalNodes\":[2]}";
+            return Promise.resolve(new Response(burstPipelineEscapedJson));
+        });
         burstPipelineAnalystService.processAsync(burstPipelineAnalystParams);
         setTimeout(function () {
-            try {
-                var analystResult = serviceCompletedEventArgsSystem.result;
-                expect(analystResult).not.toBeNull();
-                expect(analystResult.succeed).toBeTruthy();
-                expect(analystResult.criticalNodes.length).toEqual(1);
-                expect(analystResult.edges.length).toBeGreaterThan(0);
-                expect(analystResult.normalNodes.length).toEqual(0);
-                burstPipelineAnalystService.destroy();
-                burstPipelineAnalystParams.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("BurstPipelineAnalystService_" + exception.name + ":" + exception.message);
-                burstPipelineAnalystService.destroy();
-                burstPipelineAnalystParams.destroy();
-                done();
-            }
-        }, 4000)
+            var analystResult = serviceCompletedEventArgsSystem.result;
+            expect(analystResult).not.toBeNull();
+            expect(analystResult.succeed).toBeTruthy();
+            expect(analystResult.criticalNodes.length).toEqual(1);
+            expect(analystResult.criticalNodes[0]).toEqual(2);
+            expect(analystResult.edges.length).toEqual(9);
+            expect(analystResult.normalNodes.length).toEqual(0);
+            burstPipelineAnalystService.destroy();
+            burstPipelineAnalystParams.destroy();
+            done();
+        }, 1000)
     });
 });

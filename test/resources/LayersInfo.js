@@ -92,9 +92,10 @@ var layersInfo = {
     },
     "symbolScale": 0,
     "minScale": 0,
-    "ugcLayerType": "VECTOR",
+    "ugcLayerType": "VECTOR"
 };
-var layerInfo={
+
+var layerInfo = {
     "bounds": {
         "bottom": -84.34257921576281,
         "left": -150.51082428252954,
@@ -194,4 +195,4 @@ var layerInfo={
     "type": "UGC",
     "ugcLayerType": "VECTOR",
     "visible": true
-}
+};

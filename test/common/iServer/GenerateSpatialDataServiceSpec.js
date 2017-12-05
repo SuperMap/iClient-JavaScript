@@ -1,8 +1,9 @@
 ﻿require('../../../src/common/iServer/GenerateSpatialDataService');
 var request = require('request');
+require('../../../src/common/util/FetchRequest');
 
 var completedEventArgsSystem, failedEventArgsSystem;
-var url = GlobeParameter.spatialAnalystURL_Changchun;
+var url = "http://supermap:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
 var options = {
     eventListeners: {
         processCompleted: generateSpatialDataCompleted,
@@ -20,8 +21,9 @@ function generateSpatialDataFailed(failedEventArgs) {
 }
 
 
-describe('testGenerateSpatialDataService_processAsync', function () {
+describe('GenerateSpatialDataService', function () {
     var originalTimeout;
+    var FetchRequest = SuperMap.FetchRequest;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -32,9 +34,9 @@ describe('testGenerateSpatialDataService_processAsync', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-    var resultDataset_Point_DATASET = "GenerateSpatial_Point_DS_Test";
     // 点事件表数据集动态分段, DATASET_ONLY
-    it('PointEventTable_DATASET_ONLY', function (done) {
+    it('processAsync_PointEventTable_DATASET_ONLY', function (done) {
+        var resultDataset_Point_DATASET = "GenerateSpatial_Point_DS_Test";
         var dataRtnOption = new SuperMap.DataReturnOption({
             dataset: resultDataset_Point_DATASET,
             deleteExistResultDataset: true,
@@ -53,35 +55,33 @@ describe('testGenerateSpatialDataService_processAsync', function () {
             dataReturnOption: dataRtnOption
         });
         var generateSpatialDataService = initGenerateSpatialDataService();
+        spyOn(FetchRequest, 'commit').and.callFake(function () {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"GenerateSpatial_Point_DS_Test@Changchun\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         generateSpatialDataService.processAsync(generateSpatialDataParameters);
         setTimeout(function () {
-            try {
-                expect(generateSpatialDataService).not.toBeNull();
-                expect(completedEventArgsSystem.type).toBe("processCompleted");
-                var generateSpatialDataResult = completedEventArgsSystem.result;
-                expect(generateSpatialDataResult).not.toBeNull();
-                expect(generateSpatialDataResult.succeed).toBeTruthy();
-                expect(generateSpatialDataResult.recordset).toBeNull();
-                expect(generateSpatialDataResult.dataset).toEqual(resultDataset_Point_DATASET + "@Changchun");
-                generateSpatialDataService.destroy();
-                expect(generateSpatialDataService.EVENT_TYPES).toBeNull();
-                expect(generateSpatialDataService.events).toBeNull();
-                expect(generateSpatialDataService.eventListeners).toBeNull();
-                generateSpatialDataParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
-                generateSpatialDataService.destroy();
-                generateSpatialDataParameters.destroy();
-                done();
-            }
-        }, 5000)
+            expect(generateSpatialDataService).not.toBeNull();
+            expect(completedEventArgsSystem).not.toBeNull();
+            expect(failedEventArgsSystem).toBeNull();
+            expect(completedEventArgsSystem.type).toBe("processCompleted");
+            var generateSpatialDataResult = completedEventArgsSystem.result;
+            expect(generateSpatialDataResult).not.toBeNull();
+            expect(generateSpatialDataResult.succeed).toBeTruthy();
+            expect(generateSpatialDataResult.recordset).toBeNull();
+            expect(generateSpatialDataResult.dataset).toBe(resultDataset_Point_DATASET + "@Changchun");
+            generateSpatialDataService.destroy();
+            expect(generateSpatialDataService.EVENT_TYPES).toBeNull();
+            expect(generateSpatialDataService.events).toBeNull();
+            expect(generateSpatialDataService.eventListeners).toBeNull();
+            generateSpatialDataParameters.destroy();
+            done();
+        }, 1000)
     });
 
-    var resultDataset_Linear_DATASET = "GenerateSpatial_Linear_DS_Test";
     // 线事件表数据集动态分段, DATASET_ONLY
-    it('LinearEventTable_DATASET_ONLY', function (done) {
+    it('processAsync_LinearEventTable_DATASET_ONLY', function (done) {
+        var resultDataset_Linear_DATASET = "GenerateSpatial_Linear_DS_Test";
         var generateSpatialDataService = initGenerateSpatialDataService();
         var dataRtnOption = new SuperMap.DataReturnOption({
             dataset: resultDataset_Linear_DATASET,
@@ -100,30 +100,25 @@ describe('testGenerateSpatialDataService_processAsync', function () {
             errorInfoField: "",
             dataReturnOption: dataRtnOption
         });
+        spyOn(FetchRequest, 'commit').and.callFake(function () {
+            var escapedJson = "{\"succeed\":true,\"recordset\":null,\"message\":null,\"dataset\":\"GenerateSpatial_Linear_DS_Test@Changchun\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         generateSpatialDataService.processAsync(generateSpatialDataParameters);
         setTimeout(function () {
-            try {
-                expect(generateSpatialDataService).not.toBeNull();
-                expect(completedEventArgsSystem.type).toBe("processCompleted");
-                var generateSpatialDataResult = completedEventArgsSystem.result;
-                expect(generateSpatialDataResult).not.toBeNull();
-                //expect(generateSpatialDataResult.succeed).toBeTruthy();
-                //expect(generateSpatialDataResult.recordset).toBeNull();
-                //expect(generateSpatialDataResult.dataset).toEqual(resultDataset_Linear_DATASET + "@Changchun");
-                generateSpatialDataService.destroy();
-                expect(generateSpatialDataService.EVENT_TYPES).toBeNull();
-                expect(generateSpatialDataService.events).toBeNull();
-                expect(generateSpatialDataService.eventListeners).toBeNull();
-                generateSpatialDataParameters.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
-                generateSpatialDataService.destroy();
-                generateSpatialDataParameters.destroy();
-                done();
-            }
-        }, 5000)
+            expect(generateSpatialDataService).not.toBeNull();
+            expect(completedEventArgsSystem).not.toBeNull();
+            expect(failedEventArgsSystem).toBeNull();
+            expect(completedEventArgsSystem.type).toBe("processCompleted");
+            var generateSpatialDataResult = completedEventArgsSystem.result;
+            expect(generateSpatialDataResult).not.toBeNull();
+            expect(generateSpatialDataResult.succeed).toBeTruthy();
+            expect(generateSpatialDataResult.recordset).toBeNull();
+            expect(generateSpatialDataResult.dataset).toEqual(resultDataset_Linear_DATASET + "@Changchun");
+            generateSpatialDataParameters.destroy();
+            generateSpatialDataService.destroy();
+            done();
+        }, 1000)
     });
 
     // 点事件表数据集动态分段,并设置期望返回记录数2。生成的随机名称数据集暂时无法删除, 因此先注释掉
@@ -306,14 +301,5 @@ describe('testGenerateSpatialDataService_processAsync', function () {
     //        }
     //    }, 2000)
     //});
-
-    // 删除测试过程中产生的测试数据集
-    it('delete test resources', function (done) {
-        var testResult_Point = GlobeParameter.datachangchunURL + resultDataset_Point_DATASET;
-        var testResult_Linear = GlobeParameter.datachangchunURL + resultDataset_Linear_DATASET;
-        request.delete(testResult_Point);
-        request.delete(testResult_Linear);
-        done();
-    });
 });
 

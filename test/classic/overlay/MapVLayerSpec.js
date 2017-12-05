@@ -124,21 +124,6 @@ describe('classic_MapVLayer', function () {
         expect(dataset._data.length).toEqual(1000);
     });
 
-    //删除数据 待开发修改
-    xit('removeData', function (done) {
-        var filter = function (data) {
-            if (mapvLayer.dataSet._data.indexOf(data) === 2) {
-                return true
-            }
-            return false;
-        }
-        mapvLayer.removeData(filter);
-        setTimeout(function () {
-            expect(mapvLayer.dataSet._data.length).toEqual(999);
-            done();
-        }, 5000);
-    });
-
     it('setData', function () {
         var data = [{
             geometry: {
@@ -175,6 +160,21 @@ describe('classic_MapVLayer', function () {
         expect(mapvLayer.maxHeight).toBeNull();
     });
 
+    //方法引用错误
+    xit('removeData', function (done) {
+        var filter = function (data) {
+            if (mapvLayer.dataSet._data.indexOf(data) === 2) {
+                return true
+            }
+            return false;
+        }
+        mapvLayer.removeData(filter);
+        setTimeout(function () {
+            expect(mapvLayer.dataSet._data.length).toEqual(999);
+            done();
+        }, 5000);
+    });
+
     xit('setMap', function () {
         mapvLayer.setMap(map);
         expect(mapvLayer).not.toBeNull();
@@ -192,7 +192,6 @@ describe('classic_MapVLayer', function () {
         expect(mapvLayer.maxExtent.top).toEqual(90);
     });
 
-    //开发bug，待确认
     xit('transferToMapLatLng', function () {
         var latlng = new SuperMap.LonLat(104, 34.7);
         mapvLayer.transferToMapLatLng(latlng);
