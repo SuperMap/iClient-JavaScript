@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>五彩城市建筑</title>
-    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap" src="../js/include-web.js"></script>
     <script type="text/javascript" include="echarts,echarts-gl" src="../../dist/include-mapboxgl.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -13,15 +13,11 @@
     var map, myChart,
         mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}",
         attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
-            " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+            "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts Echarts-gl</a>";
 
     myChart = echarts.init(document.getElementById("map"));
     myChart.showLoading();
-
     $.getJSON('../data/colorfulCityData.json', function (buildingsGeoJSON) {
-
-//        echarts.parseGeoJSON = echarts.parseGeoJson;
 
         echarts.registerMap('buildings', buildingsGeoJSON);
 
@@ -116,6 +112,8 @@
                 }
             }]
         });
+
+        myChart.getModel().getComponent('mapbox').getMapbox().addControl(new mapboxgl.NavigationControl(), 'top-left');
     });
 </script>
 

@@ -426,8 +426,7 @@
         }
         taxiRoutes.push({
             coords: lnglats,
-            lineStyle: {
-            }
+            lineStyle: {}
         })
     }
     myChart.setOption({
@@ -510,6 +509,7 @@
             }
         }]
     });
+    myChart.getModel().getComponent('mapbox').getMapbox().addControl(new mapboxgl.NavigationControl(), 'top-left');
 
 </script>
 

@@ -368,6 +368,12 @@ var exampleConfig = {
                         name_en: "cell map",
                         thumbnail: "echarts_cellMap.png",
                         fileName: "echarts_cellMap"
+                    },
+                    {
+                        name: "全球风能可视化",
+                        name_en: "Global wind visualization",
+                        thumbnail: "echartsGL_GlobalWind.gif",
+                        fileName: "echartsGL_GlobalWind"
                     }
                 ]
             },
