@@ -3,7 +3,7 @@ SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户�
 
 *   官网(website)：[http://iclient.supermap.io/introduction/openlayers.html#introduce](http://iclient.supermap.io/introduction/openlayers.html#introduce)
 
-*   源码(source code)：[https://github.com/SuperMap/iClient9/tree/master/src/openlayers](https://github.com/SuperMap/iClient9/tree/master/src/openlayers)
+*   源码(source code)：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers)
 <table><tr>
     <th width="33.3%">四驾马车</th><th width="33.3%"></th><th width="33.3%"></th>
 </tr><tr>

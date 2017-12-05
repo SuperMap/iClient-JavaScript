@@ -3,7 +3,7 @@ SuperMap iClient for MapboxGL 是一套基于MapboxGL的云GIS网络客户端开
 
 *   官网(website)：[http://iclient.supermap.io/introduction/mapboxgl.html#introduce](http://iclient.supermap.io/introduction/mapboxgl.html#introduce)
 
-*   源码(source code)：[https://github.com/SuperMap/iClient9/tree/master/src/mapboxgl](https://github.com/SuperMap/iClient9/tree/master/src/mapboxgl)
+*   源码(source code)：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/mapboxgl](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/mapboxgl)
 
 ## 参考API
 

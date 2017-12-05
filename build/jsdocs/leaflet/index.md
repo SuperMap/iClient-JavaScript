@@ -3,7 +3,7 @@ SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开�
 
 *   官网(website)：[http://iclient.supermap.io/introduction/leaflet.html#introduce](http://iclient.supermap.io/introduction/leaflet.html#introduce)
 
-*   源码(source code)：[https://github.com/SuperMap/iClient9/tree/master/src/leaflet](https://github.com/SuperMap/iClient9/tree/master/src/leaflet)
+*   源码(source code)：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet)
 <table><tr>
     <th width="33.3%">四驾马车</th><th width="33.3%"></th><th width="33.3%"></th>
 </tr><tr>
