@@ -2,74 +2,32 @@
     font-size: 16px;
 }
 
-.main-header .navbar-brand {
-    padding-right: 5px;
+/*logo的样式*/
+#logo {
+    width: 28px;
+    height: 28px;
 }
 
 .navbar .project-title {
     text-decoration: none;
     vertical-align: middle;
-    font-family: 'HiraginoSansGB-W6';
     font-size: 24px;
     color: #FFFFFF;
     letter-spacing: -0.16px;
 }
 
-/*头部选项下拉菜单框的样式*/
-.navbar-nav > li > .dropdown-menu {
-    margin-top: 0 !important;
-    background-color: #3375A1;
-    border: 0;
-    border-radius: 0;
-}
-
-.navbar #headerMenu {
-    text-align: center;
-    margin: 7.5px -15px;
-}
-
-.navbar #headerMenu > li > a {
-    font-family: 'HiraginoSansGB-W6';
-    font-size: 16px;
-    color: #FFFFFF;
-    letter-spacing: -0.1px;
-    text-decoration: none;
-    padding: 4px 9px;
-    border: solid 2px transparent;
-    border-radius: 4px;
-    margin-right: 0;
-    line-height: 20px;
-}
-
-.navbar #headerMenu > li > a:hover {
-    background-color: #3c8dbc;
-}
-
-.navbar #headerMenu > .open > a {
-    background-color: #3c8dbc;
-}
-
-.nav_apis_box_li > li:hover {
-    color: #ffffff;
-    background-color: #0099cc;
-}
-
-.nav_apis_box_li > li {
-    text-align: center;
-    font-size: 14px;
-    height: 30px;
-    color: #7c7c7c;
-    border-bottom: 1px solid #e7e7e7;
-    line-height: 30px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
 #title {
-    font-family: 'HiraginoSansGB-W6';
     font-size: 24px;
     color: #FFFFFF;
-    letter-spacing: -0.1px;
+}
+
+#suffix-title {
+    font-size: 16px;
+    color: #FFFFFF;
+    height: 60px;
+    line-height: 60px;
+    padding: 5px;
+    float: left;
 }
 
 .main-header .sidebar-toggle {
@@ -84,27 +42,94 @@
     content: "\f03b";
 }
 
-.navbar-brand {
-    float: left;
-    height: 52px;
-    padding: 15px 15px;
-    font-size: 18px;
-    line-height: 20px;
-    padding-right: 0;
+/*头部选项选中时的颜色*/
+.skin-blue .main-header .navbar .nav > li > a:hover,
+.skin-blue .main-header .navbar .nav > li > a:active,
+.skin-blue .main-header .navbar .nav > li > a:focus,
+.skin-blue .main-header .navbar .nav .open > a,
+.skin-blue .main-header .navbar .nav .open > a:hover,
+.skin-blue .main-header .navbar .nav .open > a:focus,
+.skin-blue .main-header .navbar .nav > .active > a {
+    background: #3375A1;
 }
 
-#suffix-title {
-    font-family: 'HiraginoSansGB-W6';
-    font-size: 16px;
-    color: #FFFFFF;
-    height: 52px;
-    padding-left: 5px;
-    padding-top: 17px;
-    padding-bottom: 15px;
-    float: left;
+.skin-blue .main-header .navbar .nav > li > a:hover {
+    background: rgba(0, 0, 0, 0.1);
 }
 
-/*下拉菜单的样式*/
+.navbar-toggle {
+    height: 60px;
+}
+
+/*头部选项下拉菜单框的样式*/
+.navbar ul {
+    list-style: none outside none;
+    padding: 0;
+}
+
+.navbar-nav > li {
+    height: 60px;
+    display: table;
+}
+
+.navbar-nav > li > a {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.navbar .menu-sub-warp {
+    max-height: 0;
+}
+
+.navbar-menu:hover .menu-sub-warp {
+    max-height: 600px;
+    transform-origin: 50% 0;
+    -webkit-transform-origin: 50% 0;
+    -moz-transform-origin: 50% 0;
+    transition: all .5s linear;
+    -webkit-transition: all .5s linear;
+    -moz-transition: all .5s linear;
+}
+
+.lang-option {
+    cursor: pointer;
+    z-index: -1;
+}
+
+.menu-box {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 60px;
+}
+
+.menu-box .menu-sub-warp {
+    width: 100%;
+    margin: 0 auto;
+    overflow: auto;
+    text-align: center;
+    line-height: normal;
+    color: white;
+    background-color: rgba(0, 0, 0, .9);
+}
+
+.menu-box .menu-sub-warp::-webkit-scrollbar {
+    width: 3px;
+}
+
+.menu-box .menu-sub-warp::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    background: rgba(0, 0, 0, .8);
+}
+
+.navbar-nav > li > a {
+    padding-bottom: 17px;
+}
+
+.navbar-nav > .nav-dropdown-menu > .dropdown-menu {
+    border: 0;
+}
+
 .navbar-nav > .nav-dropdown-menu > .dropdown-menu > li > a {
     color: #F8F8F8;
     font-size: 14px;
@@ -113,51 +138,136 @@
     background-color: #3375A1;
 }
 
-/*鼠标在下拉菜单划过时的样式*/
 .navbar-nav > .nav-dropdown-menu > .dropdown-menu > li:hover > a {
-    background-color: rgba(0, 0, 0, 0.1);
-    /* background-color: #3c8dbc;*/
+    background-color: #2f5975;
 }
 
-.navbar-nav > li > a {
-    padding-bottom: 17px;
+.navbar-nav > li {
+    position: static !important;
+    height: 60px;
+    display: table;
 }
 
-/*头部选项选中时的颜色*/
-.skin-blue .main-header .navbar .nav > li > a:hover, .skin-blue .main-header .navbar .nav > li > a:active, .skin-blue .main-header .navbar .nav > li > a:focus, .skin-blue .main-header .navbar .nav .open > a, .skin-blue .main-header .navbar .nav .open > a:hover, .skin-blue .main-header .navbar .nav .open > a:focus, .skin-blue .main-header .navbar .nav > .active > a {
-    background: #3375A1;
+.nav-header-example > li {
+    position: relative !important;
 }
 
-.skin-blue .main-header .navbar .nav > li > a:hover {
-    background: rgba(0, 0, 0, 0.1);
+ul.icl-nav-menu-box {
+    margin: 0;
+    padding: 10px;
+}
+
+.icl-nav-menu-box > li {
+    display: inline-block;
+    vertical-align: text-top;
+    width: 160px;
+    margin: 0 30px;
+    text-align: right;
+}
+
+li.navbar-menu > a {
+    padding: 10px;
+}
+
+li.navbar-menu > a:hover, li.navbar-menu > a:focus {
+    outline: none;
+}
+
+li.navbar-menu > a::before {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #df9d00;
+    content: '';
+    opacity: 0;
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    -moz-transition: opacity 0.3s, -moz-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    -webkit-transform: translateY(-10px);
+    -moz-transform: translateY(-10px);
+    transform: translateY(-10px);
+}
+
+li.navbar-menu > a::before {
+    top: 0;
+    -webkit-transform: translateY(-10px);
+    -moz-transform: translateY(-10px);
+    transform: translateY(-10px);
+}
+
+li.navbar-menu > a:hover::before,
+li.navbar-menu > a:focus::before,
+li.navbar-menu.active > a::before {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+    -moz-transform: translateY(0px);
+    transform: translateY(0px);
+}
+
+ul.icl-nav-menu-sub:nth-child(1) {
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.icl-nav-menu-title {
+    display: block;
+    color: white;
+    font-size: 1.7rem;
+    text-align: right;
+    margin: 6px 0;
+    padding: 10px 4px;
+}
+
+.icl-nav-menu-title:link,
+.icl-nav-menu-title:hover,
+.icl-nav-menu-title:focus,
+.icl-nav-menu-title:visited {
+    color: white;
+}
+
+.icl-nav-menu-box li a:not(.disabled):hover,
+.icl-nav-menu-box li a:not(.disabled):focus {
+    color: #df9d00;
+}
+
+.icl-nav-menu-sub {
+    font-size: 1.4rem;
+    max-height: 600px;
+    margin-bottom: 10px;
+    overflow: auto;
+    color: #d7d7d7;
+}
+
+.icl-nav-menu-sub a {
+    color: #d7d7d7;
+}
+
+.icl-nav-menu-sub li {
+    text-align: match-parent;
+
+    line-height: 30px;
+}
+
+.icl-nav-menu-sub::-webkit-scrollbar {
+    width: 3px;
+}
+
+.icl-nav-menu-sub::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    background: rgba(0, 0, 0, .8);
+}
+
+.icl-nav-menu-item:not(.icl-nav-menu-overivew) > li:last-child {
+    width: 120px;
+}
+
+@media screen and (max-width: 1284px) {
+    .menu-box {
+        top: 120px;
+    }
 }
 
 @media screen and (max-width: 992px) {
-    .navbar-header {
-        float: none
-    }
-
-    .navbar-toggle {
-        display: block;
-        float: right
-    }
-
-    .navbar-collapse.collapse {
-        display: none !important;
-    }
-
-    .navbar-collapse {
-        border-top: 1px solid transparent;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    .navbar-nav > li {
-        float: none;
-    }
-
-    .collapse.in {
-        display: block !important;
-    }
 
     /*尺寸小于992时下拉菜单的样式*/
     .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
@@ -176,6 +286,37 @@
     .skin-blue .main-header .navbar .dropdown-menu > li > a {
         color: #ffffff;
     }
+
+    /*头部右侧收缩按钮的收缩样式和宽度控制*/
+    .navbar-header {
+        float: none
+    }
+
+    .navbar-toggle {
+        display: block;
+        float: right;
+    }
+
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+
+    .navbar-nav > li {
+        float: none;
+    }
+
+    .collapse.in {
+        display: block !important;
+    }
+
+    .icl-nav-menu-title {
+        font-size: 1.5rem;
+    }
+
+    .icl-nav-menu-overivew > li {
+        margin: 0 20px;
+    }
+
 }
 
 @media (max-width: 991px) {
@@ -185,109 +326,156 @@
 
     .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
         position: absolute;
-        top: auto;
         right: 0;
         left: auto;
     }
 }
 
-@media screen and (max-width: 768px) {
-    #title {
-        font-size: 18px;
+@media screen and (max-width: 834px) {
+    html[lang="en"] .skin-blue .main-header .navbar .nav > li > a {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .navbar-nav > li > .dropdown-menu {
+        margin-top: 0 !important;
     }
 
     #suffix-title {
         font-size: 14px;
     }
 
-    .navbar-nav > li > .dropdown-menu {
-        margin-top: 0 !important;
+    /*尺寸小于768px时，logo和产品名称的样式*/
+    #title {
+        font-size: 20px;
     }
 
     .navbar-brand {
-        padding: 15px 0;
+        padding-right: 10px !important;
     }
+
+    .navbar-toggle {
+        padding-left: 10px;
+        padding-top: 18px
+    }
+
     .navbar-collapse.in {
         overflow-y: visible;
+    }
+
+    .navbar-menu {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 756px) {
+    html[lang="en"] .menu-box {
+        top: 180px;
+    }
+}
+
+@media screen and (max-width: 698px) {
+    .menu-box {
+        top: 180px;
     }
 }
 
 @media screen and (max-width: 540px) {
     .navbar-custom-menu > .navbar-nav > li {
-        position: static;
+        position: static !important;
+    }
+
+    .navbar-custom-menu > .nav-header-example > li {
+        position: relative !important;
     }
 
     .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
         position: absolute;
-        top: auto;
-        right: auto;
-        left: auto;
+        left: 0;
     }
 }
 
-/*尺寸小于510时,利用按钮展开的头部选项的样式*/
+/*尺寸小于510px时，logo和产品名称的样式，主要是为了适应iphone6 plus等移动端的浏览器*/
 @media screen and (max-width: 510px) {
-    .navbar-custom-menu .navbar-nav > li > a {
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        line-height: 20px;
-    }
-
-    .skin-blue .main-header .navbar .nav > li > a {
-        font-size: 15px;
-    }
-}
-
-@media screen and (max-width: 460px) {
-    #title {
-        font-size: 15px;
+    #logo {
+        width: 25px;
+        height: 25px;
     }
 
     #suffix-title {
         padding-left: 5px;
         font-size: 12px;
-        padding-top: 17px;
         padding-bottom: 15px;
     }
 
-    .sidebar-toggle {
-        padding: 15px 15px !important;
+    #title {
+        font-size: 14px;
+    }
+
+    /*尺寸小于510时,利用按钮展开的头部选项的样式*/
+    .navbar-custom-menu .navbar-nav > li > a {
+        padding: 12px;
+        line-height: 20px;
+    }
+
+    .skin-blue .main-header .navbar .nav > li > a {
+        font-size: 14px;
     }
 }
 
-/*尺寸小于410时*/
-@media screen and (max-width: 410px) {
-    .navbar-custom-menu .navbar-nav > li > a {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
+@media screen and (max-width: 424px) {
     .skin-blue .main-header .navbar .nav > li > a {
         font-size: 13px;
     }
 
-    #title {
-        font-size: 8px;
+    html[lang="en"] .menu-box {
+        top: 240px;
+    }
+}
+
+@media screen and (width: 414px) {
+
+    html[lang="en"] .menu-box {
+        top: 180px;
+    }
+}
+
+/*尺寸小于410px时，logo、产品名称、右侧收缩按钮的样式，主要是为了适应iphone6等移动端的浏览器*/
+@media screen and (max-width: 410px) {
+    #logo {
+        width: 20px;
+        height: 20px;
     }
 
     #suffix-title {
         font-size: 8px;
     }
 
+    #title {
+        font-size: 11px;
+    }
+
     .navbar-toggle {
-        padding: 15px 5px 15px 5px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 
-/*改变navbar.less的默认属性*/
-.navbar-collapse.in {
-    overflow-y: visible !important;
+/*尺寸小于376px时，logo、产品名称、右侧收缩按钮的样式，主要是为了适应iphone5等移动端的浏览器*/
+@media screen and (max-width: 356px) {
+    .navbar-toggle {
+        padding-left: 3px;
+        padding-right: 6px;
+    }
+
+    .menu-box {
+        top: 240px;
+    }
 }
 
-/*改变navbar.less的默认属性*/
-.lang-option {
-    cursor: pointer;
-    z-index: -1;
+@media screen and (max-height: 640px) {
+    .navbar-menu:hover .menu-sub-warp {
+        max-height: 400px;
+    }
 }

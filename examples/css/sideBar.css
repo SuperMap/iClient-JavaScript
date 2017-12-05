@@ -55,6 +55,25 @@
     overflow-y: auto;
 }
 
+a.sidebar-toggle {
+    width: 100%;;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    background-color: #2e658a;
+    color: white !important;
+    display: block;
+}
+
+.sidebar-collapse a.sidebar-toggle div.fold {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    transition: transform .5s;
+}
+
 /*侧边栏滚动设置 end*/
 
 .skin-blue .treeview-menu li > a {
@@ -139,7 +158,6 @@ li.menuTitle a {
     padding-right: 20px !important;
 }
 
-
 .main-sidebar .secondMenuTitle {
     padding-left: 10px;
     color: white;
@@ -153,6 +171,16 @@ li.menuTitle a {
 
 .main-sidebar .pull-right {
     color: white
+}
+
+@media screen and (max-width: 768px) {
+    a.sidebar-toggle {
+        position: absolute;
+        top: 50%;
+        width: 26px;
+        height: 36px;
+        left: 100%;
+    }
 }
 
 /*侧边栏滚动条*/

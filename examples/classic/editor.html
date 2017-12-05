@@ -5,24 +5,36 @@
     <title>iClient Classic 示例代码</title>
     <link rel="shortcut icon" type="image/x-icon" href="../../web/img/favicon.ico"/>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <script type="text/javascript" include="jquery,bootstrap,admin-lte,jquery.scrollto,ace,i18n" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap,template,admin-lte,ace,i18n"
+            src="../js/include-web.js"></script>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/sideBar.css">
     <link rel="stylesheet" href="../css/editor.css">
+    <script type="text/javascript" src="../js/utils.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+
+<!-- ./wrapper -->
 <div class="wrapper"></div>
 <script>
-    $('.wrapper').load('../section/editor.html', function () {
-        $('.nav-header').load('../section/header.html');
-        var body = $('body');
-        body.append("<script type='text/javascript' src='./config.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/utils.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/common.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/editor.js'><\/script>");
-    });
+    $('.wrapper').load("../template/editor.html", function () {
+        var navigation = {
+            nav: {
+                title: "SuperMap iClient 9D",
+                version: "dev",
+                path: "../../web/"
+            }
+        };
+        utils.loadTemplate(".icl-header", "../template/header.html", navigation);
+        $body = $('body');
+        $body.append("<script type='text/javascript' src='./config.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/common.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/editor.js'><\/script>");
+    })
 </script>
+<!-- ./wrapper end-->
+
 </body>
 </html>

@@ -49,6 +49,9 @@
         if (inArray(includes, 'bootstrap-js')) {
             inputScript("http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js");
         }
+        if (inArray(includes, 'template')) {
+            inputScript("http://iclient.supermap.io/libs/art-template/template-web.js");
+        }
 
         if (inArray(includes, 'randomcolor')) {
             inputScript("http://cdn.bootcss.com/randomcolor/0.5.2/randomColor.min.js");
@@ -119,6 +122,9 @@
         if (inArray(includes, 'responsive')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/bootstrap-responsive.min.css");
         }
+        if (inArray(includes, 'lazyload')) {
+            inputScript("https://cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js");
+        }
         if (inArray(includes, 'i18n')) {
             inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.js");
             inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.js");
@@ -129,4 +135,5 @@
     load();
     window.isLocal = false;
     window.server = "http://localhost:8090";
+    window.version = "9.0.0";
 })();

@@ -1,7 +1,12 @@
 $(document).ready(function () {
     initPage();
     bindEvents();
+    //懒加载
+    var timeout = setTimeout(function () {
+        $("img.chart-thumb").lazyload();
+    }, 1000);
 });
+
 
 var exConfig = exampleConfig,
     containExamples = false,
@@ -87,15 +92,16 @@ function createGalleryCharts(examples) {
 
 function createGalleryChart(example) {
     var target = "editor.html",
-        title = utils.getLocalPairs(example, "name");
-    href = example.fileName ? example.fileName : "",
+        defaultThumb = "../img/thumb.png",
+        title = utils.getLocalPairs(example, "name"),
+        href = example.fileName ? example.fileName : "",
         thumbnail = example.thumbnail ? thumbLocation + "/img/" + example.thumbnail : "";
 
     var chartDiv = $("<div class='col-xlg-2 col-lg-3 col-md-4 col-sm-6 col-xs-12'></div>");
     var chart = $("<div class='chart'></div>");
     var link = $("<a class='chart-link' target='_blank' href='" + target + "#" + href + "'></a>");
     var chartTitle = $("<h5 class='chart-title'>" + title + "</h5>");
-    var thumb = $("<img class='chart-area' src='" + thumbnail + "' style='display: inline'>");
+    var thumb = $("<img class='chart-thumb' src='" + defaultThumb + "' data-original='" + thumbnail + "' style='display: inline'>");
 
     chartTitle.appendTo(link);
     thumb.appendTo(link);
@@ -112,8 +118,12 @@ function getThumbLocation() {
 
 //chart宽高自适应
 function resizeCharts() {
-    var charts = $("#charts-list .chart .chart-area");
-    charts.height(charts[0].offsetWidth * 0.8);
+    var charts = $("#charts-list .chart .chart-thumb");
+    if (charts[0] && charts[0].offsetWidth) {
+        charts.height(charts[0].offsetWidth * 0.8);
+    } else {
+        charts.height(260 * 0.8);
+    }
     window.onresize = function () {
         charts.height(charts[0].offsetWidth * 0.8);
     }
@@ -140,7 +150,7 @@ function scroll() {
     }
 
     if (ele && ele.offset()) {
-        $("body").animate({scrollTop: ele.offset().top - 50}, 0);
+        $(window).animate({scrollTop: ele.offset().top - 60}, 0);
     }
 }
 

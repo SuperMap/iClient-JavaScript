@@ -19,7 +19,10 @@ function initSideBar() {
     for (var key in config) {
         sideBar.append(createSideBarMenuItem(key, config[key], containExamples));
     }
-    initSelect();
+    $(sideBar).ready(function () {
+        initSelect();
+    });
+
 }
 
 function screenResize() {

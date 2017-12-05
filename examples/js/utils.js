@@ -1,4 +1,4 @@
-var utils = {
+﻿var utils = {
     //设置语言。参数："zh_CN"，"en"
     setLanguage: null,
     //获取当前语言。默认从cookie读取，没有则读取浏览器默认语言
@@ -10,6 +10,8 @@ var utils = {
 
     //获取给定key在当前语言环境下对应的key所对应的值。如读取name字段的值在英语环境下应该变为读取name_en字段的值
     getLocalPairs: null,
+    //加载模板文件，依赖art-template库
+    loadTemplate: null
 };
 (function (utils) {
     var cKey = "userLanguage";
@@ -79,10 +81,27 @@ var utils = {
         return obj[localKey] != null ? obj[localKey] : obj[key];
     }
 
+    function loadTemplate(element, templateFilePath, data) {
+        if (!window.$ || !window.jQuery) {
+            throw new Error("jQuery is required")
+        }
+        if (!window.template) {
+            throw new Error("art-template.js is required")
+        }
+        if (!element) {
+            throw new Error("element is required")
+        }
+        $.get(templateFilePath, function (html) {
+            $(element).html(window.template.compile(html)(data));
+        });
+
+    }
+
     utils.setLanguage = setLanguage;
     utils.getLanguage = getLanguage;
     utils.setCookie = setCookie;
     utils.getCookie = getCookie;
     utils.getLocalPairs = getLocalPairs;
+    utils.loadTemplate = loadTemplate;
 
 })(utils);

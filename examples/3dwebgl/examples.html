@@ -6,27 +6,43 @@
     <title>SuperMap 3D-WebGL 示范程序</title>
     <link rel="shortcut icon" type="image/x-icon" href="../../web/img/favicon.ico"/>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <script type="text/javascript" include="jquery,bootstrap,admin-lte,jquery.scrollto,i18n" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="jquery,bootstrap,template,admin-lte,jquery.scrollto,i18n,lazyload"
+            src="../js/include-web.js"></script>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/sideBar.css">
     <link rel="stylesheet" href="../css/examples.css">
+    <script type="text/javascript" src="../js/utils.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini" data-spy="scroll" data-target="#scrollSpy">
+
 <!-- ./wrapper -->
-<div class="wrapper" id="webGL3D"></div>
-<!-- ./wrapper -->
+<div class="wrapper"></div>
 <script>
-    $('.wrapper').load('../section/example.html', function () {
-        var header = $('.nav-header');
-        header.load('../section/header.html');
-        var body = $('body');
-        body.append("<script type='text/javascript' src='./config.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/utils.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/common.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/example.js'><\/script>");
+    $('.wrapper').load("../template/example.html", function () {
+        var navigation = {
+            nav: {
+                title: "SuperMap iClient 9D",
+                version: "dev",
+                path: "../../web/"
+            }
+        };
+        utils.loadTemplate(".icl-header", "../template/header.html", navigation);
+
+        $body = $('body');
+        $body.append("<script type='text/javascript' src='./config.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/common.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
+        $body.append("<script type='text/javascript' src='../js/example.js'><\/script>");
     });
 </script>
+<!-- ./wrapper end-->
+
+<!--footer-->
+<script>
+    utils.loadTemplate(".icl-footer", "../template/footer.html");
+</script>
+<!--footer end-->
+
 </body>
 </html>

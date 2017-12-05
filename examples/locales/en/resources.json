@@ -4,43 +4,98 @@
     "home": {
       "_name": "Home"
     },
+    "overview": {
+      "_name": "OverView",
+      "functions": "Functions",
+      "compatibility": "Compatibility",
+      "thirdpatry": "ThirdParty",
+      "license": "License",
+      "howToChoose": "How to choose"
+    },
+    "leaflet": {
+      "_name": "for Leaflet"
+    },
+    "openlayers": {
+      "_name": "for OpenLayers"
+    },
+    "mapboxgl": {
+      "_name": "for MapboxGL"
+    },
+    "classic": {
+      "_name": "Classic"
+    },
+    "3dwebgl": {
+      "_name": "3D-WebGL"
+    },
     "product": {
       "_name": "Product",
-      "overview": "overview",
-      "leaflet": "for Leaflet",
-      "openlayers": "for OpenLayers",
-      "mapboxgl": "for MapboxGL",
-      "classic": "iClient Classic",
-      "3dwebgl": "3D-WebGL"
+      "introduce": "Introduction",
+      "guide": "Guide",
+      "modules": "Modules",
+      "dependence": "Dependencies",
+      "license": "License",
+      "features": "Features"
     },
-    "example": {
+    "guide": {
+      "_name": "Guide",
+      "beginning": "Getting Started",
+      "quickStart": "Quick Start",
+      "projection": "Projection",
+      "ie8": "Compatible with IE8",
+      "mapService": "Map Service",
+      "dataService": "Data Service",
+      "spatialAnalystService": "Spatial Analysis Service",
+      "networkAnalystService": "Network Analysis Service",
+      "trafficTransferAnalystService": "Traffic Transfer Analysis Service",
+      "processingService": "Distributed Analysis Services",
+      "dataFlow": "Data Flow Service",
+      "addressMatch": "Address Match Service"
+    },
+    "examples": {
       "_name": "Example",
-      "leaflet": "for Leaflet",
-      "openlayers": "for OpenLayers",
-      "mapboxgl": "for MapboxGL",
-      "classic": "iClient Classic",
-      "3dwebgl": "3D-WebGL"
+      "iServer": "iServer",
+      "iPortal": "iPortal",
+      "Online": "Online",
+      "iManager": "iManager",
+      "Elasticsearch": "Elasticsearch",
+      "viz": "Visualization",
+      "plot": "Plot",
+      "dynamicPlot": "Dynamic Plot",
+      "map": "Map",
+      "overlay": "Overlay",
+      "popup": "Popup",
+      "query": "Query",
+      "theme": "Thematic Map",
+      "analysis": "Analysis",
+      "clientSpatialAnalyst": "Client Spatial Analysis",
+      "control": "Control",
+      "OGC": "OGC",
+      "mapping": "Third Party Map",
+      "others": "Others",
+      "3D-WebGL": "3D-WebGL"
+    },
+    "more": {
+      "_name": "More>>",
+      "version": {
+        "_name": "Versions"
+      },
+      "get": {
+        "_name": "Code"
+      },
+      "language": {
+        "_name": "Language"
+      },
+      "faq": {
+        "_name": "FAQ"
+      }
     },
     "api": {
       "_name": "API",
-      "leaflet": "for Leaflet",
-      "openlayers": "for OpenLayers",
-      "mapboxgl": "for MapboxGL",
-      "classic": "iClient Classic",
-      "3dwebgl": "3D-WebGL"
+      "doc": "Document"
     },
-    "code": {
-      "_name": "Code",
-      "github": "GitHub",
-      "oschina": "OSChina"
+    "gallery": {
+      "_name": "Gallery"
     },
-    "faq": {
-      "_name": "FAQ"
-    },
-    "lang": {
-      "_name": "中文",
-      "zh": "中文",
-      "en": "English"
-    }
+    "soon": "Coming Soon"
   }
 }

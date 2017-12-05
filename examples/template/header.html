@@ -1,0 +1,67 @@
+<nav class="navbar navbar-static-top">
+    <div class="nav-header">
+        <div class="navbar-header">
+
+            <a class="navbar-brand" target="_blank" href="../../web/index.html">
+                <span class="project-title vm" id="title">SuperMap iClient 9D</span>
+            </a>
+            <div id="suffix-title"></div>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"
+                    aria-expanded="false">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-custom-menu" id="navbar-collapse">
+
+
+            <ul class="nav navbar-nav nav-header-example">
+
+                <li class="navbar-menu" id="leaflet-menu">
+                    <a class="center" target="_blank"
+                       href="../leaflet/examples.html">For Leaflet</a>
+                </li>
+                <li class="navbar-menu" id="openlayers-menu">
+                    <a class="center" target="_blank"
+                       href="../openlayers/examples.html">For OpenLayers</a>
+
+                </li>
+                <li class="navbar-menu" id="mapboxgl-menu">
+                    <a class="center" target="_blank"
+                       href="../mapboxgl/examples.html">For MapboxGL</a>
+                </li>
+                <li class="navbar-menu" id="classic-menu">
+                    <a class="center" target="_blank"
+                       href="../classic/examples.html">Classic</a>
+
+                </li>
+                <li class="navbar-menu" id="3dwebgl-menu">
+                    <a class="center" target="_blank"
+                       href="../3dwebgl/examples.html">3D WebGL</a>
+
+                </li>
+                <li class="dropdown nav-dropdown-menu download-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span id="lang" data-i18n="nav.lang._name"></span>
+                        <i class="fa fa-sort-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="lang-option text-center" data-lang="zh-CN">中文</a></li>
+                        <li><a class="lang-option text-center" data-lang="en">English</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<script type="text/javascript">
+    var notFor = ['iClient Classic', '3D-WebGL'];
+    var identification = identification != null ? identification : undefined;
+    $(document).ready(function () {
+        if (identification && identification.name) {
+            var suffixHeader = document.getElementById("suffix-title");
+            suffixHeader.innerText = (notFor.indexOf(identification.name) < 0 ? "for " : "" ) + identification.name;
+        }
+    });
+</script>
