@@ -1,4 +1,5 @@
 require('../../../src/mapboxgl/overlay/RangeThemeLayer');
+require('../../../src/common/util/FetchRequest');
 var mapboxgl = require('mapbox-gl');
 window.mapboxgl = mapboxgl;
 
@@ -165,7 +166,7 @@ describe('mapboxgl_RangeThemeLayer', function () {
                 expect(shape2.length).toBeGreaterThan(0);
                 var cacheCount1 = themeLayer.getCacheCount();
                 expect(cacheCount1).toBeGreaterThan(0);
-                var maxCacheCount = themeLayer.setMaxCacheCount(10);
+                themeLayer.setMaxCacheCount(10);
                 expect(themeLayer.maxCacheCount).toEqual(10);
                 themeLayer.removeFeatures();
                 expect(themeLayer.features.length).toBeGreaterThan(0);
@@ -176,5 +177,263 @@ describe('mapboxgl_RangeThemeLayer', function () {
             done();
         }, 5000)
     });
-});
+
+    //测试父类ThemeVector类下的方法
+    it('lineToTF', function (done) {
+        var themeLayer, result;
+        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: new SuperMap.FilterParameter({
+                name: "Jingjin",
+                attributeFilter: "SMID > -1"
+            }),
+            toIndex: 500,
+            datasetNames: ["Jingjin:BaseMap_L"]
+        });
+        var getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+            format: SuperMap.DataFormat.ISERVER,
+            eventListeners: {
+                processCompleted: function (serviceResult) {
+                    if (serviceResult.error) {
+                        alert("error:" + JSON.stringify(serviceResult.error));
+                        return;
+                    }
+                    result = serviceResult.result;
+                }
+            }
+        });
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        setTimeout(function () {
+            if (result && result.features) {
+                themeLayer = new mapboxgl.supermap.RangeThemeLayer("ThemeLayer",
+                    {
+                        map: map,
+                        opacity: 0.8,
+                        style: {
+                            shadowBlur: 16,
+                            shadowColor: "#000000",
+                            fillColor: "#FFFFFF"
+                        },
+                        isHoverAble: true,
+                        highlightStyle: {
+                            stroke: true,
+                            strokeWidth: 4,
+                            strokeColor: 'blue',
+                            fillColor: "#00EEEE",
+                            fillOpacity: 0.8
+                        },
+                        themeField: "SmID",
+                        styleGroups: [
+                            {
+                                start: 2,
+                                end: 3,
+                                style: {
+                                    color: '#FDE2CA'
+                                }
+                            },
+                            {
+                                start: 3,
+                                end: 4,
+                                style: {
+                                    color: '#FACE9C'
+                                }
+                            }
+                        ]
+                    });
+                themeLayer.addFeatures(result.features);
+                expect(themeLayer).not.toBeNull();
+                expect(themeLayer.themeField).toBe("SmID");
+                expect(themeLayer.features.length).toBeGreaterThan(0);
+                for (var i = 0; i < themeLayer.features.length; i++) {
+                    var features_i = themeLayer.features[i];
+                    expect(features_i.data).not.toBeNull();
+                    expect(features_i.CLASS_NAME).toBe("SuperMap.Feature.Vector");
+                    expect(features_i.id).not.toBeNull();
+                    var geometry_i = features_i.geometry;
+                    expect(geometry_i).not.toBeNull();
+                    expect(geometry_i.CLASS_NAME).toBe("SuperMap.Geometry.LineString");
+                    expect(geometry_i.bounds).not.toBeUndefined();
+                    expect(geometry_i.componentTypes).not.toBeUndefined();
+                    expect(geometry_i.components).not.toBeUndefined();
+                    expect(geometry_i.id).not.toBeUndefined();
+                }
+            }
+            themeLayer.clear();
+            done();
+        }, 5000)
+    });
+
+    it('pointToTF', function (done) {
+        var themeLayer, result;
+        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: new SuperMap.FilterParameter({
+                name: "Jingjin",
+                attributeFilter: "SMID > -1"
+            }),
+            toIndex: 500,
+            datasetNames: ["Jingjin:BaseMap_P"]
+        });
+        var getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+            format: SuperMap.DataFormat.ISERVER,
+            eventListeners: {
+                processCompleted: function (serviceResult) {
+                    if (serviceResult.error) {
+                        alert("error:" + JSON.stringify(serviceResult.error));
+                        return;
+                    }
+                    result = serviceResult.result;
+                }
+            }
+        });
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        setTimeout(function () {
+            if (result && result.features) {
+                //创建RangeThemeLayer
+                themeLayer = new mapboxgl.supermap.RangeThemeLayer("ThemeLayer",
+                    {
+                        map: map,
+                        opacity: 0.8,
+                        style: {
+                            shadowBlur: 16,
+                            shadowColor: "#000000",
+                            fillColor: "#FFFFFF"
+                        },
+                        isHoverAble: true,
+                        highlightStyle: {
+                            stroke: true,
+                            strokeWidth: 4,
+                            strokeColor: 'blue',
+                            fillColor: "#00EEEE",
+                            fillOpacity: 0.8
+                        },
+                        themeField: "SmID",
+                        styleGroups: [
+                            {
+                                start: 2,
+                                end: 3,
+                                style: {
+                                    color: '#FDE2CA'
+                                }
+                            },
+                            {
+                                start: 3,
+                                end: 4,
+                                style: {
+                                    color: '#FACE9C'
+                                }
+                            }
+                        ]
+                    });
+                themeLayer.addFeatures(result.features);
+                expect(themeLayer).not.toBeNull();
+                expect(themeLayer.themeField).toBe("SmID");
+                expect(themeLayer.features.length).toBeGreaterThan(0);
+                for (var i = 0; i < themeLayer.features.length; i++) {
+                    var features_i = themeLayer.features[i];
+                    expect(features_i.data).not.toBeNull();
+                    expect(features_i.CLASS_NAME).toBe("SuperMap.Feature.Vector");
+                    expect(features_i.id).not.toBeNull();
+                    var geometry_i = features_i.geometry;
+                    expect(geometry_i).not.toBeNull();
+                    expect(geometry_i.CLASS_NAME).toBe("SuperMap.Geometry.Point");
+                    expect(geometry_i.bounds).not.toBeNull();
+                    expect(geometry_i.id).not.toBeUndefined();
+                }
+            }
+            themeLayer.clear();
+            done();
+        }, 5000)
+    });
+
+    //未找到合适的数据源
+    //xit('multiPointToTF', function () {
+    //});
+    //xit('multiLineStringToTF', function () {
+    //});
+    //xit('rectangleToTF', function () {
+    //});
+
+    // 测试父类mapbox/overlay/theme/ThemeLayer类中的方法
+    it('getFeatures, getFeatureBy, getFeatureById, getFeaturesByAttribute, moveEvent, zoomEvent, resizeEvent, destroyFeatures', function (done) {
+        var themeLayer, result;
+        var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: new SuperMap.FilterParameter({
+                name: "Jingjin",
+                attributeFilter: "SMID > -1"
+            }),
+            toIndex: 500,
+            datasetNames: ["Jingjin:BaseMap_R"]
+        });
+        var getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(dataUrl, {
+            format: SuperMap.DataFormat.ISERVER,
+            eventListeners: {
+                processCompleted: function (serviceResult) {
+                    if (serviceResult.error) {
+                        alert("error:" + JSON.stringify(serviceResult.error));
+                        return;
+                    }
+                    result = serviceResult.result;
+                }
+            }
+        });
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        setTimeout(function () {
+            if (result && result.features) {
+                themeLayer = new mapboxgl.supermap.RangeThemeLayer("ThemeLayer",
+                    {
+                        map: map,
+                        opacity: 0.8,
+                        style: {
+                            shadowBlur: 16,
+                            shadowColor: "#000000",
+                            fillColor: "#FFFFFF"
+                        },
+                        themeField: "POP_DENSITY99",
+                        styleGroups: [
+                            {
+                                start: 0,
+                                end: 0.02,
+                                style: {
+                                    color: '#FDE2CA'
+                                }
+                            }]
+                    });
+                themeLayer.addFeatures(result.features);
+                expect(themeLayer.features.length).toBeGreaterThan(0);
+                //getFeatures方法
+                var resultFeatures = themeLayer.getFeatures();
+                expect(resultFeatures.length).toBeGreaterThan(0);
+                //getFeatureBy方法
+                var id = resultFeatures[0].id;
+                var feature = themeLayer.getFeatureBy("id", id);
+                expect(feature).toBe(resultFeatures[0]);
+                //getFeatureById方法
+                var featureGetById = themeLayer.getFeatureById(id);
+                expect(featureGetById).toBe(resultFeatures[0]);
+                //getFeatureByAttribute方法
+                var featureGetByAttribute = themeLayer.getFeaturesByAttribute("NAME", "北京市");
+                expect(featureGetByAttribute.length).toBeGreaterThan(0);
+                expect(featureGetByAttribute[0].attributes.NAME).toBe("北京市");
+                //on方法
+                themeLayer.on('click', function () {
+                    console.log('test on');
+                });
+                //moveEvent方法
+                themeLayer.moveEvent();
+                //zoomEvent方法
+                themeLayer.zoomEvent();
+                //resizeEvent方法
+                themeLayer.resizeEvent();
+                //destroyFeatures方法
+                themeLayer.destroyFeatures(result.features[0]);     //有问题，没删掉，待开发修改
+                //expect(themeLayer.features.length).toEqual(resultFeatures.length - 1);
+                themeLayer.destroyFeatures();
+                expect(themeLayer.features.length).toEqual(0);
+                expect(1).not.toBeNull();
+            }
+            themeLayer.clear();
+            done();
+        }, 5000)
+    });
+})
+;
 
