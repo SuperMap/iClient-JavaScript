@@ -27,7 +27,7 @@
     "package": "node ./build/pack.js",
     "package-debug": "node ./build/pack.js - debug",
     "test": "npm install ./src/common && karma start ./test/karma.conf.js",
-    "citest": "karma start ./test/karma.conf.js --single-run",
+    "citest": "npm install ./src/common && karma start ./test/karma.conf.js --single-run",
     "exampletest": "nightwatch --config ./examples-test/nightwatch.json",
     "build-docs": "npm run build-docs-leaflet&&npm run build-docs-openlayers&&npm run build-docs-mapboxgl&&npm run build-docs-classic",
     "build-docs-leaflet": "jsdoc -c ./build/jsdocs/leaflet/docs.json -R ./build/jsdocs/leaflet/index.md",
