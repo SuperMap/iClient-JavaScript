@@ -331,7 +331,7 @@ export default class WKT extends Format {
             var wktArray = SuperMap.String.trim(str).split('|');
             var components = [];
             for (var i = 0, len = wktArray.length; i < len; ++i) {
-                components.push(WKT.read(wktArray[i]));
+                components.push(this.read(wktArray[i]));
             }
             return components;
         }

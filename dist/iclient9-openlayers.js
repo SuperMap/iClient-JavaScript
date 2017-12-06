@@ -40986,7 +40986,7 @@ var WKT = function (_Format) {
                 var wktArray = _SuperMap2.default.String.trim(str).split('|');
                 var components = [];
                 for (var i = 0, len = wktArray.length; i < len; ++i) {
-                    components.push(WKT.read(wktArray[i]));
+                    components.push(this.read(wktArray[i]));
                 }
                 return components;
             }
@@ -80806,7 +80806,7 @@ var CartoCSS = function () {
 
             // This function is called after all files
             // have been imported through `@import`.
-            var finish = function finish() {
+            var finish = function finish() {//NOSONAR
                 //所有文件导入完成之后调用
             };
 
@@ -80833,7 +80833,7 @@ var CartoCSS = function () {
             // Parse from a token, regexp or string, and move forward if match
             //
             function $(tok) {
-                var match, args, length, c, index, endIndex, k;
+                var match, length, c, endIndex;
 
                 // Non-terminal
                 if (tok instanceof Function) {
@@ -80943,13 +80943,6 @@ var CartoCSS = function () {
                 // Throws an error on parse errors.
                 parse: function parse(str) {
                     var root,
-                        start,
-                        end,
-                        zone,
-                        line,
-                        lines,
-                        buff = [],
-                        c,
                         error = null;
 
                     i = j = current = furthest = 0;
@@ -80958,8 +80951,6 @@ var CartoCSS = function () {
                     if (env.filename) {
                         that.env.inputs[env.filename] = input;
                     }
-
-                    var early_exit = false;
 
                     // Split the input into chunks.
                     chunks = function (chunks) {
@@ -81006,12 +80997,14 @@ var CartoCSS = function () {
 
                             switch (c) {
                                 case '{':
+                                    //NOSONAR
                                     if (!inParam) {
                                         level++;
                                         chunk.push(c);
                                         break;
                                     }
                                 case '}':
+                                    //NOSONAR
                                     if (!inParam) {
                                         level--;
                                         chunk.push(c);
@@ -81019,12 +81012,14 @@ var CartoCSS = function () {
                                         break;
                                     }
                                 case '(':
+                                    //NOSONAR
                                     if (!inParam) {
                                         inParam = true;
                                         chunk.push(c);
                                         break;
                                     }
                                 case ')':
+                                    //NOSONAR
                                     if (inParam) {
                                         inParam = false;
                                         chunk.push(c);
@@ -81488,23 +81483,23 @@ var CartoCSS = function () {
                     ruleset: function ruleset() {
                         var selectors = [],
                             s,
-                            f,
-                            l,
                             rules,
-                            filters = [],
                             q = ',';
                         save();
 
                         while (s = $(this.selector)) {
                             selectors.push(s);
-                            while ($(this.comment)) {}
+                            while ($(this.comment)) {//NOSONAR
+                            }
                             if (!$(q)) {
                                 break;
                             }
-                            while ($(this.comment)) {}
+                            while ($(this.comment)) {//NOSONAR
+                            }
                         }
                         if (s) {
-                            while ($(this.comment)) {}
+                            while ($(this.comment)) {//NOSONAR
+                            }
                         }
 
                         if (selectors.length > 0 && (rules = $(this.block))) {
@@ -81545,8 +81540,6 @@ var CartoCSS = function () {
                     font: function font() {
                         var value = [],
                             expression = [],
-                            weight,
-                            font,
                             e,
                             q = ',';
 
@@ -81638,9 +81631,7 @@ var CartoCSS = function () {
                     // or white-space delimited Entities.  @var * 2
                     expression: function expression() {
                         var e,
-                            delim,
-                            entities = [],
-                            d;
+                            entities = [];
 
                         while (e = $(this.addition) || $(this.entity)) {
                             entities.push(e);
@@ -81692,27 +81683,7 @@ var CartoCSS = function () {
 
                     var shaders = {};
                     var keys = [];
-                    for (var i = 0, len0 = defs.length; i < len0; ++i) {
-                        var def = defs[i];
-                        var element_str = [];
-                        for (var j = 0, len1 = def.elements.length; j < len1; j++) {
-                            element_str.push(def.elements[j]);
-                        }
-                        var filters = def.filters.filters;
-                        var filterStr = [];
-                        for (var attr in filters) {
-                            filterStr.push(filters[attr].id);
-                        }
-                        var key = element_str.join("/") + "::" + def.attachment + "_" + filterStr.join("_");
-                        keys.push(key);
-                        var shader = shaders[key] = shaders[key] || {};
-                        //shader.frames = [];
-                        shader.zoom = _SuperMap2.default.CartoCSS.Tree.Zoom.all;
-                        var props = def.toJS(this.env);
-                        for (var v in props) {
-                            (shader[v] = shader[v] || []).push(props[v].join('\n'));
-                        }
-                    }
+                    this._toShaders(shaders, keys, defs);
 
                     var ordered_shaders = [];
 
@@ -81730,6 +81701,7 @@ var CartoCSS = function () {
                                     if (prop === "layer-index") {
                                         /*var getLayerIndex = Function("attributes", "zoom", "var _value = null;" + shader[prop].join('\n') + "; return _value; ");*/
                                         var getLayerIndex = function getLayerIndex(attributes, zoom) {
+                                            //NOSONAR
                                             var _value = null;
                                             shader[prop].join('\n');
                                             return _value;
@@ -81742,6 +81714,7 @@ var CartoCSS = function () {
                                         });
                                     } else {
                                         shaderArray[j++] = function (ops, shaderArray) {
+                                            //NOSONAR
                                             if (!Array.isArray(ops)) {
                                                 return ops;
                                             }
@@ -81769,12 +81742,12 @@ var CartoCSS = function () {
                                                 }
                                                 return {
                                                     "property": prop,
-                                                    "getValue": Function("attributes", "zoom", "seftFilter", "var _value = null; var isExcute=typeof seftFilter=='function'?sefgFilter():seftFilter;if(isExcute){" + body + ";} return _value; ")
+                                                    "getValue": Function("attributes", "zoom", "seftFilter", "var _value = null; var isExcute=typeof seftFilter=='function'?sefgFilter():seftFilter;if(isExcute){" + body + ";} return _value; ") //NOSONAR
                                                 };
                                             } else {
                                                 return {
                                                     "property": prop,
-                                                    "getValue": Function("attributes", "zoom", "var _value = null;" + body + "; return _value; ")
+                                                    "getValue": Function("attributes", "zoom", "var _value = null;" + body + "; return _value; ") //NOSONAR
                                                 };
                                             }
                                         }(shader[prop], shaderArray);
@@ -81806,7 +81779,31 @@ var CartoCSS = function () {
             }
             return null;
         }
-
+    }, {
+        key: "_toShaders",
+        value: function _toShaders(shaders, keys, defs) {
+            for (var i = 0, len0 = defs.length; i < len0; ++i) {
+                var def = defs[i];
+                var element_str = [];
+                for (var j = 0, len1 = def.elements.length; j < len1; j++) {
+                    element_str.push(def.elements[j]);
+                }
+                var filters = def.filters.filters;
+                var filterStr = [];
+                for (var attr in filters) {
+                    filterStr.push(filters[attr].id);
+                }
+                var key = element_str.join("/") + "::" + def.attachment + "_" + filterStr.join("_");
+                keys.push(key);
+                var shader = shaders[key] = shaders[key] || {};
+                //shader.frames = [];
+                shader.zoom = _SuperMap2.default.CartoCSS.Tree.Zoom.all;
+                var props = def.toJS(this.env);
+                for (var v in props) {
+                    (shader[v] = shader[v] || []).push(props[v].join('\n'));
+                }
+            }
+        }
         /**
          * @function SuperMap.CartoCSS.prototype.getShaders
          * @description 获取CartoCSS着色器
@@ -83653,7 +83650,7 @@ _SuperMap2.default.CartoCSS.Tree.Definition = function () {
             // merge conditions from filters with zoom condition of the
             // definition
             var zoom = this.zoom;
-            var frame_offset = this.frame_offset;
+            //var frame_offset = this.frame_offset;
             var _if = this.filters.toJS(env);
             var filters = [zoom];
             if (_if) {
@@ -83797,10 +83794,7 @@ _SuperMap2.default.CartoCSS.Tree.Definition = function () {
                         });
                     }
                     var x = _SuperMap2.default.CartoCSS.Tree.Reference.selector(attributes[j].name);
-                    if (x && x.serialization && x.serialization === 'content') {
-                        selfclosing = false;
-                        tagcontent = attributes[j].ev(env).toXML(env, true);
-                    } else if (x && x.serialization && x.serialization === 'tag') {
+                    if (x && x.serialization && (x.serialization === 'content' || x.serialization === 'tag')) {
                         selfclosing = false;
                         tagcontent = attributes[j].ev(env).toXML(env, true);
                     } else {
@@ -84425,7 +84419,6 @@ _SuperMap2.default.CartoCSS.Tree.Filterset = function () {
         key: "add",
         value: function add(filter, env) {
             var key = filter.key.toString(),
-                id,
                 op = filter.op,
                 conflict = this.conflict(filter),
                 numval;
@@ -84812,8 +84805,6 @@ _SuperMap2.default.CartoCSS.Tree.Reference = {
         if (_SuperMap2.default.CartoCSS.mapnik_reference.version.hasOwnProperty(version)) {
             this.setData(_SuperMap2.default.CartoCSS.mapnik_reference.version[version]);
             return true;
-        } else {
-            return false;
         }
         return false;
     },
@@ -84905,7 +84896,7 @@ _SuperMap2.default.CartoCSS.Tree.Reference = {
             }
         }
 
-        var i, j;
+        var i;
         if (!this.selector(selector)) {
             return false;
         } else if (value.value[0].is === 'keyword') {
@@ -85149,7 +85140,6 @@ _SuperMap2.default.CartoCSS.Tree.Ruleset = function () {
         value: function find(selector, self) {
             self = self || this;
             var rules = [],
-                rule,
                 match,
                 key = selector.toString();
 
@@ -85413,10 +85403,6 @@ _SuperMap2.default.CartoCSS.Tree.Variable = function () {
     }, {
         key: "ev",
         value: function ev(env) {
-            var variable,
-                v,
-                name = this.name;
-
             if (this._css) {
                 return this._css;
             }
@@ -85462,10 +85448,7 @@ _SuperMap2.default.CartoCSS.Tree.Zoom = function () {
     }, {
         key: "ev",
         value: function ev(env) {
-            var start = 0,
-                end = Infinity,
-                value = parseInt(this.value.ev(env).toString(), 10),
-                zoom = 0;
+            var value = parseInt(this.value.ev(env).toString(), 10);
 
             if (value > _SuperMap2.default.CartoCSS.Tree.Zoom.maxZoom || value < 0) {
                 env.error({

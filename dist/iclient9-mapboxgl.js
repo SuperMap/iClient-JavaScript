@@ -33920,7 +33920,7 @@ var WKT = function (_Format) {
                 var wktArray = _SuperMap2.default.String.trim(str).split('|');
                 var components = [];
                 for (var i = 0, len = wktArray.length; i < len; ++i) {
-                    components.push(WKT.read(wktArray[i]));
+                    components.push(this.read(wktArray[i]));
                 }
                 return components;
             }
