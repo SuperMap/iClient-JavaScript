@@ -1,8 +1,7 @@
-import SuperMap from '../../SuperMap';
-import {Util} from '../../commontypes/Util';
-import Eventful from './Eventful';
-import Transformable from './Transformable';
-import './Util';
+import {SuperMap} from '../../SuperMap';
+import {Util as CommonUtil} from '../../commontypes/Util';
+import {Eventful} from './Eventful';
+import {Transformable} from './Transformable';
 
 /**
  * @private
@@ -29,7 +28,7 @@ import './Util';
  * (end)
  */
 
-export default class Group extends SuperMap.mixin(Eventful, Transformable) {
+export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
     /**
      * APIProperty: id
@@ -90,7 +89,7 @@ export default class Group extends SuperMap.mixin(Eventful, Transformable) {
     constructor(options) {
         super(options)
         options = options || {};
-        this.id = options.id || Util.createUniqueID("smShapeGroup_");
+        this.id = options.id || CommonUtil.createUniqueID("smShapeGroup_");
         for (var key in options) {
             this[key] = options[key];
         }
@@ -175,7 +174,7 @@ export default class Group extends SuperMap.mixin(Eventful, Transformable) {
 
             this._storage.addToMap(child);
 
-            if (child instanceof SuperMap.LevelRenderer.Group) {
+            if (child instanceof Group) {
                 child.addChildrenToStorage(this._storage);
             }
         }
@@ -191,7 +190,7 @@ export default class Group extends SuperMap.mixin(Eventful, Transformable) {
      *
      */
     removeChild(child) {
-        var idx = SuperMap.LevelRenderer.Util.indexOf(this._children, child);
+        var idx = CommonUtil.indexOf(this._children, child);
 
         this._children.splice(idx, 1);
         child.parent = null;
@@ -200,7 +199,7 @@ export default class Group extends SuperMap.mixin(Eventful, Transformable) {
 
             this._storage.delFromMap(child.id);
 
-            if (child instanceof SuperMap.LevelRenderer.Group) {
+            if (child instanceof Group) {
                 child.delChildrenFromStorage(this._storage);
             }
         }
@@ -305,5 +304,3 @@ export default class Group extends SuperMap.mixin(Eventful, Transformable) {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Group"
 }
-
-SuperMap.LevelRenderer.Group = Group;

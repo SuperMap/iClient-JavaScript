@@ -1,5 +1,5 @@
-import SuperMap from '../../SuperMap';
-import ShapeParameters from './ShapeParameters';
+import {SuperMap} from '../../SuperMap';
+import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @private
@@ -9,7 +9,7 @@ import ShapeParameters from './ShapeParameters';
  * Inherits:
  *  - <SuperMap.Feature.ShapeParameters>
  */
-export default class Rectangle extends ShapeParameters {
+export class Rectangle extends ShapeParameters {
 
     /**
      * APIProperty: x
@@ -74,4 +74,5 @@ export default class Rectangle extends ShapeParameters {
 
     CLASS_NAME = "SuperMap.Feature.ShapeParameters.Rectangle"
 }
+SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Rectangle = Rectangle;

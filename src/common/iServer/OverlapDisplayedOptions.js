@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import UGCLayer from './UGCLayer';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {UGCLayer} from './UGCLayer';
 
 /**
  * @class  SuperMap.OverlapDisplayedOptions
@@ -19,7 +20,7 @@ import UGCLayer from './UGCLayer';
  *          verticalOverlappedSpaceSize - {number} 两个对象之间的纵向压盖间距，单位为0.1毫米，跟horizontalOverlappedSpaceSize 结合使用，
  *                  当两个对象的纵向间距小于该值，且横向间距小于 horizontalOverlappedSpaceSize 时认为压盖。默认值为0。
  */
-export default class OverlapDisplayedOptions {
+export class OverlapDisplayedOptions {
 
     /**
      * @member SuperMap.OverlapDisplayedOptions.prototype.allowPointOverlap -{boolean}
@@ -75,7 +76,7 @@ export default class OverlapDisplayedOptions {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
         this.ugcLayer = new UGCLayer(options);
     }
 
@@ -84,7 +85,7 @@ export default class OverlapDisplayedOptions {
      * @description 释放资源，将资源的属性置空。
      */
     destroy() {
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -131,4 +132,5 @@ export default class OverlapDisplayedOptions {
 
     CLASS_NAME = "SuperMap.OverlapDisplayedOptions"
 }
+
 SuperMap.OverlapDisplayedOptions = OverlapDisplayedOptions;

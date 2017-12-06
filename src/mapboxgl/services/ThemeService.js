@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
-import ServiceBase from './ServiceBase';
-import CommonThemeService from '../../common/iServer/ThemeService';
+import '../core/Base';
+import {ServiceBase} from './ServiceBase';
+import {ThemeService as CommonThemeService} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.ThemeService
@@ -16,7 +17,7 @@ import CommonThemeService from '../../common/iServer/ThemeService';
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
  */
-export default class ThemeService extends ServiceBase {
+export class ThemeService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -41,4 +42,5 @@ export default class ThemeService extends ServiceBase {
         themeService.processAsync(params);
     }
 }
+
 mapboxgl.supermap.ThemeService = ThemeService;

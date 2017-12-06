@@ -1,14 +1,14 @@
-import SuperMap from '../SuperMap';
-import {DataFormat} from '../../common/REST';
-import CommonServiceBase from '../../common/iServer/CommonServiceBase';
-import KernelDensityJobsService from '../../common/iServer/KernelDensityJobsService';
-import SingleObjectQueryJobsService from '../../common/iServer/SingleObjectQueryJobsService';
-import SummaryMeshJobsService from '../../common/iServer/SummaryMeshJobsService';
-import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsService';
-import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
-import OverlayGeoJobsService from '../../common/iServer/OverlayGeoJobsService';
-import BuffersAnalystJobsService from '../../common/iServer/BuffersAnalystJobsService';
-import TopologyValidatorJobsService from '../../common/iServer/TopologyValidatorJobsService';
+import {SuperMap} from '../SuperMap';
+import {DataFormat} from '@supermap/iclient-common/REST';
+import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
+import {KernelDensityJobsService} from '@supermap/iclient-common/iServer/KernelDensityJobsService';
+import {SingleObjectQueryJobsService} from '@supermap/iclient-common/iServer/SingleObjectQueryJobsService';
+import {SummaryMeshJobsService} from '@supermap/iclient-common/iServer/SummaryMeshJobsService';
+import {SummaryRegionJobsService} from '@supermap/iclient-common/iServer/SummaryRegionJobsService';
+import {VectorClipJobsService} from '@supermap/iclient-common/iServer/VectorClipJobsService';
+import {OverlayGeoJobsService} from '@supermap/iclient-common/iServer/OverlayGeoJobsService';
+import {BuffersAnalystJobsService} from '@supermap/iclient-common/iServer/BuffersAnalystJobsService';
+import {TopologyValidatorJobsService} from '@supermap/iclient-common/iServer/TopologyValidatorJobsService';
 
 /**
  * @class SuperMap.REST.ProcessingService
@@ -668,7 +668,7 @@ export class ProcessingService extends CommonServiceBase {
         return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
-    _processParams (params) {
+    _processParams(params) {
         if (!params) {
             return {};
         }
@@ -681,13 +681,13 @@ export class ProcessingService extends CommonServiceBase {
         return params;
     }
 
-    _convertPatams (points){
+    _convertPatams(points) {
         var geometryParam = {};
-        if (points.length < 1){
+        if (points.length < 1) {
             geometryParam = "";
         } else {
             var results = [];
-            for (var i = 0;i < points.length;i++) {
+            for (var i = 0; i < points.length; i++) {
                 var point = {};
                 point.x = points[i].x;
                 point.y = points[i].y;

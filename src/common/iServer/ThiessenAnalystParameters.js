@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.ThiessenAnalystParameters
@@ -11,7 +12,7 @@
  *        resultDatasourceName - {boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
  *        returnResultRegion - {boolean} 是否返回分析得到的多边形面数组，默认返回。</br>
  */
-export default class ThiessenAnalystParameters {
+export class ThiessenAnalystParameters {
     /**
      * @member SuperMap.ThiessenAnalystParameters.prototype.clipRegion  -{Object}
      * @description 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
@@ -48,7 +49,7 @@ export default class ThiessenAnalystParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -69,4 +70,5 @@ export default class ThiessenAnalystParameters {
 
     CLASS_NAME = "SuperMap.ThiessenAnalystParameters"
 }
+
 SuperMap.ThiessenAnalystParameters = ThiessenAnalystParameters;

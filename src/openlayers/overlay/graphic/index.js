@@ -1,0 +1,1 @@
+export {Graphic as OverlayGraphic} from './Graphic';

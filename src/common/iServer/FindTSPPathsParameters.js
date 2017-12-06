@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import TransportationAnalystParameter from './TransportationAnalystParameter';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindTSPPathsParameters
@@ -14,7 +15,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *        nodes - {Array<Object>|Array<number>} 配送目标集合，必设字段。点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        parameter - {@link SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。<br>
  */
-export default class FindTSPPathsParameters {
+export class FindTSPPathsParameters {
     /**
      * @member SuperMap.FindTSPPathsParameters.prototype.endNodeAssigned - {boolean}
      * @description 是否指定终止点，将指定的途经点的最后一个点作为终止点。
@@ -51,7 +52,7 @@ export default class FindTSPPathsParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

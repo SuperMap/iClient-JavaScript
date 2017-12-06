@@ -1,5 +1,4 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
+import {Shape} from './Shape';
 
 /**
  * @private
@@ -27,7 +26,7 @@ import Shape from './Shape';
  * (end)
  *
  */
-export default class SmicEllipse extends Shape {
+export class SmicEllipse extends Shape {
 
     /**
      * Property: style
@@ -73,7 +72,9 @@ export default class SmicEllipse extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
 
@@ -97,7 +98,9 @@ export default class SmicEllipse extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var k = 0.5522848;
@@ -132,7 +135,9 @@ export default class SmicEllipse extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var lineWidth;
@@ -154,4 +159,3 @@ export default class SmicEllipse extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicEllipse"
 }
-SuperMap.LevelRenderer.Shape.SmicEllipse = SmicEllipse;

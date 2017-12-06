@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import ProcessingServiceBase from './ProcessingServiceBase';
-import VectorClipJobsParameter from './VectorClipJobsParameter';
+import {SuperMap} from '../SuperMap';
+import {ProcessingServiceBase} from './ProcessingServiceBase';
+import {VectorClipJobsParameter} from './VectorClipJobsParameter';
 
 /**
  * @class SuperMap.VectorClipJobsService
@@ -9,7 +9,7 @@ import VectorClipJobsParameter from './VectorClipJobsParameter';
  * @param url -{string} 矢量裁剪分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-export default class VectorClipJobsService extends ProcessingServiceBase {
+export class VectorClipJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);

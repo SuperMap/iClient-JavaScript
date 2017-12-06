@@ -1,4 +1,4 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 
 /**
  * @class SuperMap.ServerColor
@@ -8,7 +8,7 @@
  *        green - {number}获取或设置绿色值,默认值为0。<br>
  *        blue - {number}获取或设置蓝色值,默认值为0。
  */
-export default class ServerColor {
+export class ServerColor {
 
     /**
      * @member SuperMap.ServerColor.prototype.red -{number}

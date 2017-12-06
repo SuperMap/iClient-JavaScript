@@ -1,14 +1,12 @@
 import mapboxgl from 'mapbox-gl';
-import './Base';
-import SuperMap from '../../common/SuperMap';
-import GeoJSONFormat from '../../common/format/GeoJSON';
+import '../core/Base';
+import {Bounds, GeometryPoint, GeoJSON as GeoJSONFormat} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.Util
  * @classdesc 工具类
  */
-export default class Util {
-
+export class Util {
 
     /**
      * @function mapboxgl.supermap.Util.toSuperMapGeometry
@@ -26,14 +24,14 @@ export default class Util {
     static toSuperMapBounds(bounds) {
         if (this.isArray(bounds)) {
             //左下右上
-            return new SuperMap.Bounds(
+            return new Bounds(
                 bounds[0],
                 bounds[1],
                 bounds[2],
                 bounds[3],
             );
         }
-        return new SuperMap.Bounds(
+        return new Bounds(
             bounds.getWest(),
             bounds.getSouth(),
             bounds.getEast(),
@@ -44,11 +42,11 @@ export default class Util {
     static toSuperMapPoint(lnglat) {
         //客户端可传入 geojson 对象 或者 mapboxgl lnglat 点对象,或者是点数组
         if (this.isArray(lnglat)) {
-            return new SuperMap.Geometry.Point(lnglat[0], lnglat[1]);
+            return new GeometryPoint(lnglat[0], lnglat[1]);
         } else if (lnglat.lng && lnglat.lat) {
-            return new SuperMap.Geometry.Point(lnglat.lng, lnglat.lat);
+            return new GeometryPoint(lnglat.lng, lnglat.lat);
         }
-        return new SuperMap.Geometry.Point(lnglat.geometry.coordinates[0], lnglat.geometry.coordinates[1]);
+        return new GeometryPoint(lnglat.geometry.coordinates[0], lnglat.geometry.coordinates[1]);
     }
 
     /**
@@ -80,13 +78,13 @@ export default class Util {
      * @param points - Region各个节点数组
      * @return processing服务裁剪、查询分析的分析参数
      */
-    static toProcessingParam(points){
+    static toProcessingParam(points) {
         var geometryParam = {};
-        if (points.length < 1){
+        if (points.length < 1) {
             geometryParam = "";
         } else {
             var results = [];
-            for (var i = 0;i < points.length;i++) {
+            for (var i = 0; i < points.length; i++) {
                 var point = {};
                 point.x = points[i][0];
                 point.y = points[i][1];

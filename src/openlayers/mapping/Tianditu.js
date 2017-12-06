@@ -15,7 +15,7 @@ import ol from 'openlayers/dist/ol-debug';
  *        opaque - {boolean} 是否透明。
  * @extends ol.source.WMTS{@linkdoc-openlayers/ol.source.WMTS}
  */
-export default class Tianditu extends ol.source.WMTS {
+export class Tianditu extends ol.source.WMTS {
     constructor(opt_options) {
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({

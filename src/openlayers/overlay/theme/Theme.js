@@ -1,14 +1,17 @@
 import ol from 'openlayers/dist/ol-debug';
-import Util from '../../core/Util';
-import SuperMap from '../../../common/SuperMap';
-import ServerFeature from '../../../common/iServer/ServerFeature';
-import Vector from '../../../common/commontypes/Vector';
-import ThemeFeature from './ThemeFeature';
-import LonLat from "../../../common/commontypes/LonLat";
-import Point from "../../../common/commontypes/geometry/Point";
-import GeoText from "../../../common/commontypes/geometry/GeoText";
-import LevelRenderer from "../../../common/overlay/levelRenderer/LevelRenderer";
-import "../../../common/overlay/levelRenderer/Render";
+import {Util} from '../../core/Util';
+import {
+    CommonUtil,
+    ServerFeature,
+    Vector,
+    LonLat,
+    GeometryPoint,
+    GeoText,
+    LevelRenderer
+} from '@supermap/iclient-common';
+import {ThemeFeature} from './ThemeFeature';
+
+// import "../../../common/overlay/levelRenderer/Render";
 
 /**
  * @class ol.source.Theme
@@ -18,7 +21,7 @@ import "../../../common/overlay/levelRenderer/Render";
  * @param opt_options -{Object} 可选构造参数。如：
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
-export default class Theme extends ol.source.ImageCanvas {
+export class Theme extends ol.source.ImageCanvas {
 
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
@@ -150,7 +153,7 @@ export default class Theme extends ol.source.ImageCanvas {
         if (opacity !== this.opacity) {
             this.opacity = opacity;
             var element = this.div;
-            SuperMap.Util.modifyDOMElement(element, null, null, null,
+            CommonUtil.modifyDOMElement(element, null, null, null,
                 null, null, null, opacity);
 
             if (this.map !== null) {
@@ -186,7 +189,7 @@ export default class Theme extends ol.source.ImageCanvas {
         if (features === this.features) {
             return this.removeAllFeatures();
         }
-        if (!(SuperMap.Util.isArray(features))) {
+        if (!(CommonUtil.isArray(features))) {
             features = [features];
         }
         var featuresFailRemoved = [];
@@ -194,7 +197,7 @@ export default class Theme extends ol.source.ImageCanvas {
             var feature = features[i];
             //如果我们传入的feature在features数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = SuperMap.Util.indexOf(this.features, feature);
+            var findex = CommonUtil.indexOf(this.features, feature);
             if (findex === -1) {
                 featuresFailRemoved.push(feature);
                 continue;
@@ -432,7 +435,7 @@ export default class Theme extends ol.source.ImageCanvas {
      */
     getLocalXY(coordinate) {
         var pixelP, map = this.map;
-        if (coordinate instanceof Point || coordinate instanceof GeoText) {
+        if (coordinate instanceof GeometryPoint || coordinate instanceof GeoText) {
             pixelP = map.getPixelFromCoordinate([coordinate.x, coordinate.y]);
         }
         if (coordinate instanceof LonLat) {
@@ -498,4 +501,5 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
 }
+
 ol.source.Theme = Theme;

@@ -1,5 +1,6 @@
 import L from "leaflet";
-import MapVRenderer from "./mapv/MapVRenderer";
+import '../core/Base';
+import {MapVRenderer} from "./mapv/MapVRenderer";
 
 /**
  * @class L.supermap.mapVLayer
@@ -65,13 +66,8 @@ export var MapVLayer = L.Layer.extend({
      * @description 删除地图图层
      * @param map - {L.map} 要删除的图层
      */
-    onRemove: function (map) {
+    onRemove: function () {
         L.DomUtil.remove(this.container);
-        // map.off({
-        //     moveend: this.draw,
-        //     zoomstart: this._hide,
-        //     zoomend: this._show
-        // }, this);
         this.renderer.unbindEvent();
     },
 
@@ -242,7 +238,6 @@ export var MapVLayer = L.Layer.extend({
 export var mapVLayer = function (dataSet, mapVOptions, options) {
     return new MapVLayer(dataSet, mapVOptions, options);
 };
-L.supermap.mapVLayer = mapVLayer;
 
 L.Map.include({
     /*
@@ -256,3 +251,5 @@ L.Map.include({
         return L.point(layerPoint).add(this._getMapPanePos());
     }
 });
+
+L.supermap.mapVLayer = mapVLayer;

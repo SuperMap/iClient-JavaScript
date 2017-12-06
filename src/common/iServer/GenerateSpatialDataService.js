@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import GenerateSpatialDataParameters from './GenerateSpatialDataParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {GenerateSpatialDataParameters} from './GenerateSpatialDataParameters';
 
 /**
  * @class SuperMap.GenerateSpatialDataService
@@ -50,7 +51,7 @@ import GenerateSpatialDataParameters from './GenerateSpatialDataParameters';
      *  function Error(generateSpatialDataEventArgs){//todo};
      * (end)
      */
-export default  class GenerateSpatialDataService extends SpatialAnalystBase {
+export class GenerateSpatialDataService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -105,7 +106,7 @@ export default  class GenerateSpatialDataService extends SpatialAnalystBase {
         me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
 
         me.url += "?returnContent=true";
-        jsonParameters = SuperMap.Util.toJSON(params);
+        jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }
 

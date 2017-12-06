@@ -1,5 +1,4 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
+import {Shape} from './Shape';
 
 /**
  * @private
@@ -22,7 +21,7 @@ import Shape from './Shape';
  *   levelRenderer.addShape(shape);
  * (end)
  */
-export default class SmicRectangle extends Shape {
+export class SmicRectangle extends Shape {
 
     /**
      * Property: style
@@ -69,7 +68,9 @@ export default class SmicRectangle extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
 
@@ -93,7 +94,9 @@ export default class SmicRectangle extends Shape {
      *
      */
     _buildRadiusPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         // 左上、右上、右下、左下角的半径依次为r1、r2、r3、r4
@@ -182,7 +185,9 @@ export default class SmicRectangle extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         if (!style.radius) {
@@ -212,7 +217,9 @@ export default class SmicRectangle extends Shape {
      * {Object} 边框对象。包含属性：x，y，width，height。
      */
     getRect(style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         if (style.__rect) {
@@ -238,4 +245,3 @@ export default class SmicRectangle extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicRectangle"
 }
-SuperMap.LevelRenderer.Shape.SmicRectangle = SmicRectangle;

@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {OverlayOperationType} from '../REST';
 
 /**
@@ -6,7 +7,7 @@ import {OverlayOperationType} from '../REST';
  * @classdesc 叠加分析参数基类，数据集叠加分析参数和几何对象叠加分析参数均继承此基类
  * @param options - {Object} 叠加分析参数。
  */
-export default class OverlayAnalystParameters {
+export class OverlayAnalystParameters {
 
     /**
      * @member SuperMap.OverlayAnalystParameters.prototype.operation -{SuperMap.OverlayOperationType}
@@ -17,7 +18,7 @@ export default class OverlayAnalystParameters {
     constructor(options) {
         var me = this;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 
@@ -32,4 +33,5 @@ export default class OverlayAnalystParameters {
 
     CLASS_NAME = "SuperMap.OverlayAnalystParameters"
 }
+
 SuperMap.OverlayAnalystParameters = OverlayAnalystParameters;

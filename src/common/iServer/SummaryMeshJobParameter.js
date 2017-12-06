@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {StatisticAnalystMode, SummaryType} from '../REST'
 
 /**
@@ -13,7 +14,7 @@ import {StatisticAnalystMode, SummaryType} from '../REST'
  *        fields -{number}权重索引。<br>
  *        type -{{@link SuperMap.SummaryType}} 聚合类型。
  */
-export default class SummaryMeshJobParameter {
+export class SummaryMeshJobParameter {
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{string}
@@ -67,7 +68,7 @@ export default class SummaryMeshJobParameter {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 

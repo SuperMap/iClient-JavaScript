@@ -1,6 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import GeoRelationAnalystParameters from './GeoRelationAnalystParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {GeoRelationAnalystParameters} from './GeoRelationAnalystParameters';
 
 /**
  * @class SuperMap.GeoRelationAnalystService
@@ -45,7 +45,7 @@ import GeoRelationAnalystParameters from './GeoRelationAnalystParameters';
  * (end)
  *
  */
-export default  class GeoRelationAnalystService extends SpatialAnalystBase {
+export class GeoRelationAnalystService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);

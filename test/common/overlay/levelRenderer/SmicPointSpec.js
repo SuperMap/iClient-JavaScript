@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicPoint');
+var SmicPoint = require('../../../../src/common/overlay/levelRenderer/SmicPoint').SmicPoint;
 
 describe('SmicPoint', function () {
     var canvas, ctx;
@@ -15,7 +15,7 @@ describe('SmicPoint', function () {
     });
 
     it('constructor, destroy', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
+        var shape = new SmicPoint({
             style: {x: 100, y: 100, r: 40}
         });
         expect(shape).not.toBeNull();
@@ -29,7 +29,7 @@ describe('SmicPoint', function () {
     });
 
     it('buildPath', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
+        var shape = new SmicPoint({
             style: {x: 100, y: 100, r: 40}
         });
         shape.refOriginalPosition = null;
@@ -42,7 +42,7 @@ describe('SmicPoint', function () {
     });
 
     it('getRect', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
+        var shape = new SmicPoint({
             style: {x: 100, y: 100, r: 40}
         });
         shape.refOriginalPosition = null;

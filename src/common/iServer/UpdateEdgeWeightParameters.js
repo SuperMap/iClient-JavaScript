@@ -1,4 +1,4 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
 
 /**
  * @class SuperMap.UpdateEdgeWeightParameters
@@ -10,7 +10,7 @@ import SuperMap from '../SuperMap';
  *        weightField - {string} 边的耗费字段。<br>
  *        edgeWeight - {string} 耗费权重。
  */
-export default  class UpdateEdgeWeightParameters {
+export class UpdateEdgeWeightParameters {
 
     /**
      * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{string}
@@ -43,7 +43,9 @@ export default  class UpdateEdgeWeightParameters {
     edgeWeight = "";
 
     constructor(option) {
-        if (!option) {return;}
+        if (!option) {
+            return;
+        }
 
         option.edgeId && (this.edgeId = option.edgeId);
         option.fromNodeId && (this.fromNodeId = option.fromNodeId);

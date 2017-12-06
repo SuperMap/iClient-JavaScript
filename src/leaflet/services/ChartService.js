@@ -1,9 +1,8 @@
 import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+import '../core/Base';
+import {DataFormat, ChartQueryService, ChartFeatureInfoSpecsService} from '@supermap/iclient-common';
 import {ServiceBase} from './ServiceBase';
-import ChartQueryService from '../../common/iServer/ChartQueryService';
-import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoSpecsService';
-import CommontypesConversion from '../core/CommontypesConversion';
+import {CommontypesConversion} from '../core/CommontypesConversion';
 
 /**
  * @class L.supermap.chartService
@@ -18,7 +17,7 @@ import CommontypesConversion from '../core/CommontypesConversion';
  * @param options -{Object} 可选参数。如：<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
-var ChartService = ServiceBase.extend({
+export var ChartService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -81,7 +80,7 @@ var ChartService = ServiceBase.extend({
         }
     },
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 });
 

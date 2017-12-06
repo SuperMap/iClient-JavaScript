@@ -1,6 +1,7 @@
 import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+import '../core/Base';
 import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
+import {CommonUtil} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.rangeThemeLayer
@@ -49,7 +50,7 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
     getStyleByData: function (feat) {
         var me = this,
             feature = feat,
-            style = SuperMap.Util.copyAttributesWithClip({}, me.style);
+            style = CommonUtil.copyAttributesWithClip({}, me.style);
 
         var groups = me.styleGroups,
             isSfInAttributes = false,//指定的 themeField 是否是 feature 的属性字段之一
@@ -76,7 +77,7 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
             for (var i = 0, len = groups.length; i < len; i++) {
                 if ((attribute >= groups[i].start) && (attribute < groups[i].end)) {
                     var sty1 = groups[i].style;
-                    style = SuperMap.Util.copyAttributesWithClip(style, sty1);
+                    style = CommonUtil.copyAttributesWithClip(style, sty1);
                 }
             }
 

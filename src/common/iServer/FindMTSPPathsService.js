@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
-import FindMTSPPathsParameters from './FindMTSPPathsParameters';
-import GeoJSON from '../format/GeoJSON';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
+import {FindMTSPPathsParameters} from './FindMTSPPathsParameters';
+import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindMTSPPathsService
@@ -25,7 +26,7 @@ import GeoJSON from '../format/GeoJSON';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default class FindMTSPPathsService extends NetworkAnalystServiceBase {
+export class FindMTSPPathsService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -56,7 +57,7 @@ export default class FindMTSPPathsService extends NetworkAnalystServiceBase {
         jsonObject = {
             centers: centers,
             nodes: nodes,
-            parameter: SuperMap.Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             hasLeastTotalCost: params.hasLeastTotalCost
         };
         me.request({

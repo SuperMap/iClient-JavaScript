@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.GeoCodingParameter
@@ -11,7 +12,7 @@ import SuperMap from '../SuperMap';
  *         prjCoordSys - {string} 查询结果的坐标系。</br>
  *         maxReturn - {number} 最大返回结果数。
  */
-export default class GeoCodingParameter {
+export class GeoCodingParameter {
 
     /**
      * @member SuperMap.GeoCodingParameter.prototype.address - {string}
@@ -63,7 +64,7 @@ export default class GeoCodingParameter {
             });
             options.filters = strs;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -80,4 +81,5 @@ export default class GeoCodingParameter {
     }
 
 }
+
 SuperMap.GeoCodingParameter = GeoCodingParameter;

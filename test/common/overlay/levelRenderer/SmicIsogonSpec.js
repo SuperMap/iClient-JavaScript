@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicIsogon');
+var SmicIsogon = require('../../../../src/common/overlay/levelRenderer/SmicIsogon').SmicIsogon;
 
 describe('SmicIsogon', function () {
     var originalTimeout;
@@ -23,7 +23,7 @@ describe('SmicIsogon', function () {
     });
 
     it('constructor, destroy', function () {
-        var polygon = new SuperMap.LevelRenderer.Shape.SmicIsogon({
+        var polygon = new SmicIsogon({
             style: {
                 n: 4,
                 x: 150,
@@ -47,7 +47,7 @@ describe('SmicIsogon', function () {
     });
 
     it('buildPath_n > 3', function () {
-        var polygon = new SuperMap.LevelRenderer.Shape.SmicIsogon({
+        var polygon = new SmicIsogon({
             style: {
                 n: 4,
                 x: 150,
@@ -78,7 +78,7 @@ describe('SmicIsogon', function () {
 
     //此处待开发完善修改
     xit('buildPath_n < 3', function () {
-        var polygon = new SuperMap.LevelRenderer.Shape.SmicIsogon({
+        var polygon = new SmicIsogon({
             style: {
                 n: 2,
                 x: 150,
@@ -108,7 +108,7 @@ describe('SmicIsogon', function () {
     });
 
     it('getRect_brushType = fill', function () {
-        var polygon = new SuperMap.LevelRenderer.Shape.SmicIsogon({
+        var polygon = new SmicIsogon({
             style: {
                 n: 4,
                 x: 150,
@@ -135,7 +135,7 @@ describe('SmicIsogon', function () {
         polygon.destroy();
     });
     it('getRect_brushType = null', function () {
-        var polygon = new SuperMap.LevelRenderer.Shape.SmicIsogon({
+        var polygon = new SmicIsogon({
             style: {
                 n: 4,
                 x: 150,

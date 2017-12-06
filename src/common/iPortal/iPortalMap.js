@@ -1,5 +1,6 @@
-import SuperMap from '../SuperMap';
-import IPortalServiceBase from './iPortalServiceBase';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {IPortalServiceBase} from './iPortalServiceBase';
 
 /**
  * @class SuperMap.iPortalMap
@@ -9,7 +10,7 @@ import IPortalServiceBase from './iPortalServiceBase';
  * @extends SuperMap.iPortalServiceBase
  *
  */
-export default class IPortalMap extends IPortalServiceBase {
+export class IPortalMap extends IPortalServiceBase {
 
     authorizeSetting = [];
     center = "";
@@ -38,7 +39,7 @@ export default class IPortalMap extends IPortalServiceBase {
     constructor(mapUrl, params) {
         super(mapUrl);
         params = params || {};
-        SuperMap.Util.extend(this, params);
+        Util.extend(this, params);
         this.mapUrl = mapUrl;
         // if (this.id) {
         //     this.mapUrl = mapUrl + "/" + this.id;

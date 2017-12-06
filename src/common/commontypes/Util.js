@@ -1,4 +1,4 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 import './BaseTypes';
 
 export var Util = SuperMap.Util = SuperMap.Util || {};
@@ -701,7 +701,7 @@ SuperMap.Util.isInTheSameDomain = function (url) {
 
         var documentprotocol = document.location.protocol;
         if (documentPortIndex !== -1) {
-           // documentPort = +documentSubString.substring(documentPortIndex, documentIndex);
+            // documentPort = +documentSubString.substring(documentPortIndex, documentIndex);
         } else {
             documentDomainWithPort += ':' + (documentprotocol.toLowerCase() === 'http:' ? 80 : 443);
         }

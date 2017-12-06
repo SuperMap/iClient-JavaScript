@@ -1,7 +1,8 @@
 ﻿import L from "leaflet";
+import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import SuperMapMapService from  '../../common/iServer/MapService';
-import TilesetsService from  '../../common/iServer/TilesetsService';
+import {MapService as CommonMapService, TilesetsService} from '@supermap/iclient-common';
+
 /**
  * @class  L.supermap.mapService
  * @classdesc 地图信息服务类
@@ -25,7 +26,7 @@ export var MapService = ServiceBase.extend({
         options = options || {};
         L.setOptions(this, options);
         if (options.projection) {
-            this.options.projection =  options.projection;
+            this.options.projection = options.projection;
         }
         ServiceBase.prototype.initialize.call(this, url, options);
     },
@@ -37,7 +38,7 @@ export var MapService = ServiceBase.extend({
      */
     getMapInfo: function (callback) {
         var me = this;
-        var getMapStatusService = new SuperMapMapService(me.url, {
+        var getMapStatusService = new CommonMapService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

@@ -1,13 +1,16 @@
 import mapboxgl from 'mapbox-gl';
-import Util from '../core/Util';
-import SuperMap from '../../common/SuperMap';
-import ServiceBase from './ServiceBase';
-import GetFeaturesByIDsService from '../../common/iServer/GetFeaturesByIDsService';
-import GetFeaturesBySQLService from '../../common/iServer/GetFeaturesBySQLService';
-import GetFeaturesByBoundsService from '../../common/iServer/GetFeaturesByBoundsService';
-import GetFeaturesByBufferService from '../../common/iServer/GetFeaturesByBufferService';
-import GetFeaturesByGeometryService from '../../common/iServer/GetFeaturesByGeometryService';
-import EditFeaturesService from '../../common/iServer/EditFeaturesService' ;
+import '../core/Base';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
+import {
+    DataFormat,
+    GetFeaturesByIDsService,
+    GetFeaturesBySQLService,
+    GetFeaturesByBoundsService,
+    GetFeaturesByBufferService,
+    GetFeaturesByGeometryService,
+    EditFeaturesService
+} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.FeatureService
@@ -22,7 +25,7 @@ import EditFeaturesService from '../../common/iServer/EditFeaturesService' ;
  * @param options - {Object} 创建要素数据集服务类可选参数。如：<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
-export default class FeatureService extends ServiceBase {
+export class FeatureService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
     }
@@ -213,7 +216,7 @@ export default class FeatureService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
 

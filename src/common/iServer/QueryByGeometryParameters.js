@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import QueryParameters from './QueryParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {QueryParameters} from './QueryParameters';
 import {SpatialQueryMode} from '../REST';
 
 /**
@@ -24,7 +25,7 @@ import {SpatialQueryMode} from '../REST';
  *                   面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。<br>
  *         spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式。
  */
-export default class QueryByGeometryParameters extends QueryParameters {
+export class QueryByGeometryParameters extends QueryParameters {
 
     /**
      * @member SuperMap.QueryByGeometryParameters.prototype.returnContent -{boolean}
@@ -56,7 +57,7 @@ export default class QueryByGeometryParameters extends QueryParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

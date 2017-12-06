@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.MathExpressionAnalysisParameters
@@ -15,7 +16,7 @@ import SuperMap from '../SuperMap';
  *        resultGridName - {number}指定结果数据集名称，必设字段。</br>
  *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
  */
-export default class MathExpressionAnalysisParameters {
+export class MathExpressionAnalysisParameters {
 
     /**
      * @member SuperMap.MathExpressionAnalysisParameters.prototype.dataset -{string}
@@ -73,7 +74,7 @@ export default class MathExpressionAnalysisParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 
@@ -119,7 +120,7 @@ export default class MathExpressionAnalysisParameters {
                         poi["y"] = bs[i].y;
                         points.push(poi);
                     }
-                    
+
 
                     region["points"] = points;
                     region["type"] = type;

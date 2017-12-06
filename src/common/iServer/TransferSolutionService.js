@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import TransferSolutionParameters from './TransferSolutionParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+import {TransferSolutionParameters} from './TransferSolutionParameters';
 
 /**
  * @class SuperMap.TransferSolutionService
@@ -22,7 +23,7 @@ import TransferSolutionParameters from './TransferSolutionParameters';
  * (end)
  *
  */
-export default  class TransferSolutionService extends CommonServiceBase {
+export class TransferSolutionService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -54,17 +55,27 @@ export default  class TransferSolutionService extends CommonServiceBase {
         me.url += "solutions.json?";
 
         jsonParameters = {
-            points: SuperMap.Util.toJSON(params.points),
+            points: Util.toJSON(params.points),
             walkingRatio: params['walkingRatio'],
             transferTactic: params['transferTactic'],
             solutionCount: params['solutionCount'],
             transferPreference: params["transferPreference"]
         };
-        if (params.evadeLines) {jsonParameters["evadeLines"] = SuperMap.Util.toJSON(params.evadeLines);}
-        if (params.evadeStops) {jsonParameters["evadeStops"] = SuperMap.Util.toJSON(params.evadeStops);}
-        if (params.priorLines) {jsonParameters["priorLines"] = SuperMap.Util.toJSON(params.priorLines);}
-        if (params.priorStops) {jsonParameters["priorStops"] = SuperMap.Util.toJSON(params.priorStops);}
-        if (params.travelTime) {jsonParameters["travelTime"] = params.travelTime;}
+        if (params.evadeLines) {
+            jsonParameters["evadeLines"] = Util.toJSON(params.evadeLines);
+        }
+        if (params.evadeStops) {
+            jsonParameters["evadeStops"] = Util.toJSON(params.evadeStops);
+        }
+        if (params.priorLines) {
+            jsonParameters["priorLines"] = Util.toJSON(params.priorLines);
+        }
+        if (params.priorStops) {
+            jsonParameters["priorStops"] = Util.toJSON(params.priorStops);
+        }
+        if (params.travelTime) {
+            jsonParameters["travelTime"] = params.travelTime;
+        }
 
         me.request({
             method: method,

@@ -1,4 +1,6 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Bounds} from '../commontypes/Bounds';
 import '../REST';
 
 /**
@@ -14,7 +16,7 @@ import '../REST';
  *        type - {{@link SuperMap.UGCLayerType}} 图层类型。<br>
  *        visible - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
  */
-export default class UGCLayer {
+export class UGCLayer {
 
     /**
      * @member SuperMap.UGCLayer.prototype.bounds -{SuperMap.Bounds}
@@ -66,7 +68,7 @@ export default class UGCLayer {
 
     constructor(options) {
         options = options ? options : {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -75,7 +77,7 @@ export default class UGCLayer {
      */
     destroy() {
         var me = this;
-        SuperMap.Util.reset(me);
+        Util.reset(me);
     }
 
     /**
@@ -85,10 +87,10 @@ export default class UGCLayer {
      */
     fromJson(jsonObject) {
         jsonObject = jsonObject ? jsonObject : {};
-        SuperMap.Util.extend(this, jsonObject);
+        Util.extend(this, jsonObject);
         var b = this.bounds;
         if (b) {
-            this.bounds = new SuperMap.Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
+            this.bounds = new Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
         }
     }
 
@@ -100,7 +102,7 @@ export default class UGCLayer {
      */
     toServerJSONObject() {
         var jsonObject = {};
-        jsonObject = SuperMap.Util.copyAttributes(jsonObject, this);
+        jsonObject = Util.copyAttributes(jsonObject, this);
         if (jsonObject.bounds) {
             if (jsonObject.bounds.toServerJSONObject) {
                 jsonObject.bounds = jsonObject.bounds.toServerJSONObject();

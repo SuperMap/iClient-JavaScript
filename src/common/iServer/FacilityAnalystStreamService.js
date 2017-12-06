@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
-import FacilityAnalystStreamParameters from './FacilityAnalystStreamParameters';
+import {SuperMap} from '../SuperMap';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
+import {FacilityAnalystStreamParameters} from './FacilityAnalystStreamParameters';
 
 /**
  * @class SuperMap.FacilityAnalystStreamService
@@ -12,7 +12,7 @@ import FacilityAnalystStreamParameters from './FacilityAnalystStreamParameters';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
+export class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -43,20 +43,30 @@ export default  class FacilityAnalystStreamService extends NetworkAnalystService
         //URL 通过参数类型来判断是 上游 还是下游 查询
         if (params.queryType === 0) {
             me.url = me.url + ((end === "/") ? "upstreamcirticalfaclilities" :
-                "/upstreamcirticalfaclilities") +".json?";
+                "/upstreamcirticalfaclilities") + ".json?";
         } else if (params.queryType === 1) {
             me.url = me.url + ((end === "/") ? "downstreamcirticalfaclilities" :
-                "/downstreamcirticalfaclilities") +".json?";
-        } else {return;}
+                "/downstreamcirticalfaclilities") + ".json?";
+        } else {
+            return;
+        }
 
         jsonObject = {
             sourceNodeIDs: params.sourceNodeIDs,
             isUncertainDirectionValid: params.isUncertainDirectionValid
         };
 
-        if (params.edgeID !== null && params.nodeID !== null) {return;}
-        if (params.edgeID === null && params.nodeID === null) {return;}
-        if (params.edgeID !== null) {jsonObject.edgeID = params.edgeID;} else {jsonObject.nodeID = params.nodeID;}
+        if (params.edgeID !== null && params.nodeID !== null) {
+            return;
+        }
+        if (params.edgeID === null && params.nodeID === null) {
+            return;
+        }
+        if (params.edgeID !== null) {
+            jsonObject.edgeID = params.edgeID;
+        } else {
+            jsonObject.nodeID = params.nodeID;
+        }
 
         me.request({
             method: "GET",

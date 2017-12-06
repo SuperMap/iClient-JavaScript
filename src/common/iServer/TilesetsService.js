@@ -1,5 +1,5 @@
-import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
+import {SuperMap} from '../SuperMap';
+import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.TilesetsService
@@ -13,7 +13,7 @@ import CommonServiceBase from './CommonServiceBase';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default  class TilesetsService extends CommonServiceBase {
+export class TilesetsService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);

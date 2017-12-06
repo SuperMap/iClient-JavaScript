@@ -1,5 +1,7 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {ServerType} from '../REST';
+
 /**
  * @class SuperMap.ServerInfo
  * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
@@ -9,7 +11,7 @@ import {ServerType} from '../REST';
  *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json<br>
  *        keyServiceUrl - {string} 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
  */
-export default class ServerInfo {
+export class ServerInfo {
     /**
      * @member SuperMap.ServerInfo.prototype.type -{ServerType}
      * @description 服务器类型
@@ -36,7 +38,7 @@ export default class ServerInfo {
 
     constructor(type, options) {
         this.type = type || ServerType.ISERVER;
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
         if (!this.server) {
             console.error('server url require is not  undefined')
         }

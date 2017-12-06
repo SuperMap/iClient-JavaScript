@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import ServerStyle from './ServerStyle';
-import LabelMatrixCell from './LabelMatrixCell';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerStyle} from './ServerStyle';
+import {LabelMatrixCell} from './LabelMatrixCell';
 
 /**
  * @class SuperMap.LabelSymbolCell
@@ -16,7 +17,7 @@ import LabelMatrixCell from './LabelMatrixCell';
  *        style - {{@link SuperMap.ServerStyle}} 获取或设置符号样式—— {@link SuperMap.ServerStyle} 对象。<br>
  *        symbolIDField - {string} 符号 ID 或符号 ID 所对应的字段名称。
  */
-export default  class LabelSymbolCell extends LabelMatrixCell {
+export class LabelSymbolCell extends LabelMatrixCell {
 
     /**
      * @member SuperMap.LabelSymbolCell.prototype.style -{SuperMap.ServerStyle}
@@ -42,7 +43,7 @@ export default  class LabelSymbolCell extends LabelMatrixCell {
         var me = this;
         me.style = new ServerStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

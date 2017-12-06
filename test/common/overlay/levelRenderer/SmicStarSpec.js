@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicStar');
+var SmicStar = require('../../../../src/common/overlay/levelRenderer/SmicStar').SmicStar;
 
 describe('SmicStar', function () {
     var originalTimeout;
@@ -23,7 +23,7 @@ describe('SmicStar', function () {
     });
 
     it('constructor, destroy', function () {
-        var star = new SuperMap.LevelRenderer.Shape.SmicStar({
+        var star = new SmicStar({
             style: {
                 x: 200,
                 y: 100,
@@ -48,7 +48,7 @@ describe('SmicStar', function () {
 
     //创建 n 角星（n>3）路径。
     it('buildPath', function () {
-        var star = new SuperMap.LevelRenderer.Shape.SmicStar({
+        var star = new SmicStar({
             style: {
                 x: 200,
                 y: 100,
@@ -80,7 +80,7 @@ describe('SmicStar', function () {
 
     //返回 n 角星包围盒矩形
     it('getRect_brushType = fill', function () {
-        var star = new SuperMap.LevelRenderer.Shape.SmicStar({
+        var star = new SmicStar({
             style: {
                 x: 200,
                 y: 100,
@@ -108,7 +108,7 @@ describe('SmicStar', function () {
     });
 
     it('getRect_brushType = null', function () {
-        var star = new SuperMap.LevelRenderer.Shape.SmicStar({
+        var star = new SmicStar({
             style: {
                 x: 200,
                 y: 100,

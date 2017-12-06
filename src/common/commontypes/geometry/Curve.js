@@ -1,5 +1,5 @@
-﻿import SuperMap from '../../SuperMap';
-import MultiPoint from './MultiPoint';
+﻿import {SuperMap} from '../../SuperMap';
+import {MultiPoint} from './MultiPoint';
 
 /**
  * @class SuperMap.Geometry.Curve
@@ -11,7 +11,7 @@ import MultiPoint from './MultiPoint';
  * var point2 = new SuperMap.Geometry.Point(30,40);
  * var curve = new SuperMap.Geometry.Curve([point1,point2]);
  */
-export default class Curve extends MultiPoint {
+export class Curve extends MultiPoint {
 
     /**
      * @member SuperMap.Geometry.Curve.prototype.componentTypes -{Array<string>}
@@ -27,4 +27,5 @@ export default class Curve extends MultiPoint {
 
     CLASS_NAME = "SuperMap.Geometry.Curve"
 }
+
 SuperMap.Geometry.Curve = Curve;

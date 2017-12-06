@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import QueryParameters from './QueryParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {QueryParameters} from './QueryParameters';
 
 /**
  * @class SuperMap.QueryByDistanceParameters
@@ -24,7 +25,7 @@ import QueryParameters from './QueryParameters';
  *         isNearest - {boolean} 是否为最近距离查询。<br>
  *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
  */
-export default class QueryByDistanceParameters extends QueryParameters {
+export class QueryByDistanceParameters extends QueryParameters {
 
     /**
      * @member SuperMap.QueryByDistanceParameters.prototype.distance -{number}
@@ -68,7 +69,7 @@ export default class QueryByDistanceParameters extends QueryParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

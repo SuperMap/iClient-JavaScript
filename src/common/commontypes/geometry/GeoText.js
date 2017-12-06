@@ -1,8 +1,8 @@
-import SuperMap from '../../SuperMap';
-import Geometry from '../Geometry';
-import Bounds from '../Bounds';
+import {SuperMap} from '../../SuperMap';
+import {Geometry} from '../Geometry';
+import {Bounds} from '../Bounds';
 import {Util} from '../Util';
-import Point from './Point';
+import {Point} from './Point';
 import './LineString';
 import '../Pixel';
 import '../LonLat';
@@ -15,7 +15,7 @@ import '../LonLat';
  * @param y {float} y-坐标，必设参数。
  * @param text {string} 标签中的文本内容，必设参数。
  */
-export default class GeoText extends Geometry {
+export class GeoText extends Geometry {
     /**
      * @member SuperMap.Geometry.GeoText.prototype.x -{float}
      * @description 横坐标。
@@ -322,4 +322,5 @@ export default class GeoText extends Geometry {
 
     CLASS_NAME = "SuperMap.Geometry.GeoText"
 }
+
 SuperMap.Geometry.GeoText = GeoText;

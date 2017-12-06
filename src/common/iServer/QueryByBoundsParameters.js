@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import QueryParameters from './QueryParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {QueryParameters} from './QueryParameters';
 
 /**
  * @class SuperMap.QueryByBoundsParameters
@@ -19,7 +20,7 @@ import QueryParameters from './QueryParameters';
  *         bounds - {{@link SuperMap.Bounds}} 指定的查询范围。<br>
  *                  Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
  */
-export default class QueryByBoundsParameters extends QueryParameters {
+export class QueryByBoundsParameters extends QueryParameters {
 
     /**
      * @member SuperMap.QueryByBoundsParameters.prototype.returnContent -{boolean}
@@ -41,7 +42,7 @@ export default class QueryByBoundsParameters extends QueryParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

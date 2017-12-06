@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.DensityKernelAnalystParameters
@@ -13,7 +14,7 @@ import SuperMap from '../SuperMap';
  *        resultGridName - {string} 指定结果数据集名称，必设字段。</br>
  *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
  */
-export default class DensityKernelAnalystParameters {
+export class DensityKernelAnalystParameters {
 
     /**
      * @member SuperMap.DensityKernelAnalystParameters.prototype.dataset -{string}
@@ -71,7 +72,7 @@ export default class DensityKernelAnalystParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 

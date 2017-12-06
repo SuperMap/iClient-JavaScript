@@ -1,12 +1,16 @@
-import SuperMap from '../SuperMap';
-import JSONFormat from './JSON';
-import Point from '../commontypes/geometry/Point';
-import MultiPoint from '../commontypes/geometry/MultiPoint';
-import LineString from '../commontypes/geometry/LineString';
-import MultiLineString from '../commontypes/geometry/MultiLineString';
-import LinearRing from '../commontypes/geometry/LinearRing';
-import Polygon from '../commontypes/geometry/Polygon';
-import MultiPolygon from '../commontypes/geometry/MultiPolygon';
+import {SuperMap} from '../SuperMap';
+import {Vector} from '../commontypes/Vector';
+import {Util} from '../commontypes/Util';
+import {Bounds} from '../commontypes/Bounds';
+import {Collection} from '../commontypes/geometry/Collection';
+import {JSONFormat} from './JSON';
+import {Point} from '../commontypes/geometry/Point';
+import {MultiPoint} from '../commontypes/geometry/MultiPoint';
+import {LineString} from '../commontypes/geometry/LineString';
+import {MultiLineString} from '../commontypes/geometry/MultiLineString';
+import {LinearRing} from '../commontypes/geometry/LinearRing';
+import {Polygon} from '../commontypes/geometry/Polygon';
+import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
 import {GeometryType} from '../REST';
 
 /**
@@ -14,7 +18,7 @@ import {GeometryType} from '../REST';
  * @classdesc  GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器。
  * @extends SuperMap.Format.JSON。
  */
-export default class GeoJSON extends JSONFormat {
+export class GeoJSON extends JSONFormat {
 
     /**
      * @member SuperMap.Format.GeoJSON.prototype.ignoreExtraDims - {boolean}
@@ -93,7 +97,7 @@ export default class GeoJSON extends JSONFormat {
                         default:
                             try {
                                 var geom = this.parseGeometry(obj);
-                                results.push(new SuperMap.Feature.Vector(geom));
+                                results.push(new Vector(geom));
                             } catch (err) {
                                 results = null;
                                 //SuperMap.Console.error(err);
@@ -116,7 +120,7 @@ export default class GeoJSON extends JSONFormat {
         var valid = false;
         switch (type) {
             case "Geometry":
-                if (SuperMap.Util.indexOf(
+                if (Util.indexOf(
                         ["Point", "MultiPoint", "LineString", "MultiLineString",
                             "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
                         obj.type) == -1) {
@@ -159,9 +163,9 @@ export default class GeoJSON extends JSONFormat {
             // deal with bad geometries
             throw err;
         }
-        feature = new SuperMap.Feature.Vector(geometry, attributes);
+        feature = new Vector(geometry, attributes);
         if (bbox) {
-            feature.bounds = SuperMap.Bounds.fromArray(bbox);
+            feature.bounds = Bounds.fromArray(bbox);
         }
         if (obj.id) {
             feature.fid = obj.id;
@@ -182,7 +186,7 @@ export default class GeoJSON extends JSONFormat {
         }
         var geometry;
         if (obj.type == "GeometryCollection") {
-            if (!(SuperMap.Util.isArray(obj.geometries))) {
+            if (!(Util.isArray(obj.geometries))) {
                 throw "GeometryCollection must have geometries array: " + obj;
             }
             var numGeom = obj.geometries.length;
@@ -192,9 +196,9 @@ export default class GeoJSON extends JSONFormat {
                     this, [obj.geometries[i]]
                 );
             }
-            geometry = new SuperMap.Geometry.Collection(components);
+            geometry = new Collection(components);
         } else {
-            if (!(SuperMap.Util.isArray(obj.coordinates))) {
+            if (!(Util.isArray(obj.coordinates))) {
                 throw "Geometry must have coordinates array: " + obj;
             }
             if (!this.parseCoords[obj.type.toLowerCase()]) {
@@ -365,7 +369,7 @@ export default class GeoJSON extends JSONFormat {
         var geojson = {
             "type": null
         };
-        if (SuperMap.Util.isArray(obj)) {
+        if (Util.isArray(obj)) {
             geojson.type = "FeatureCollection";
             var numFeatures = obj.length;
             geojson.features = new Array(numFeatures);
@@ -818,4 +822,5 @@ export default class GeoJSON extends JSONFormat {
 
     CLASS_NAME = "SuperMap.Format.GeoJSON"
 }
+
 SuperMap.Format.GeoJSON = GeoJSON;

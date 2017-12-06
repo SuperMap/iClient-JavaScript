@@ -1,10 +1,8 @@
-import '../../core/Base';
-import './CartoDefaultStyle';
-import './CartoStyleMap';
-import '../../../common/commontypes/Util';
-import CartoCSS from '../../../common/style/CartoCSS';
-import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
+import '../../core/Base';
+import {SuperMap, CommonUtil as Util, CartoCSS, StringExt} from "@supermap/iclient-common";
+import {DefaultStyle} from './CartoDefaultStyle';
+import {CartoStyleMap, ServerStyleMap, CompOpMap} from './CartoStyleMap';
 
 /**
  * @class L.supermap.CartoCSSToLeaflet
@@ -98,7 +96,7 @@ export class CartoCSSToLeaflet {
     getDefaultStyle(type) {
         var style = {};
         //设置默认值
-        var expandStyle = L.supermap.DefaultStyle[type];
+        var expandStyle = DefaultStyle[type];
         for (var prop in expandStyle) {
             var val = expandStyle[prop];
             style[prop] = val;
@@ -217,10 +215,10 @@ export class CartoCSSToLeaflet {
                 if (!str) {
                     return [];
                 }
-                if (SuperMap.Util.isArray(str)) {
+                if (Util.isArray(str)) {
                     return str;
                 }
-                str = SuperMap.String.trim(str).replace(/\s+/g, ",");
+                str = StringExt.trim(str).replace(/\s+/g, ",");
                 return str.replace(/\[|\]/gi, "").split(",");
         }
     }
@@ -246,7 +244,7 @@ export class CartoCSSToLeaflet {
         attributes.FEATUREID = feature.properties.id;
         attributes.SCALE = scale;
 
-        var cartoStyleMap = L.supermap.CartoStyleMap[type];
+        var cartoStyleMap = CartoStyleMap[type];
 
         var fontSize, fontName;
         for (var i = 0, len = shader.length; i < len; i++) {
@@ -263,7 +261,7 @@ export class CartoCSSToLeaflet {
                     style.fontName = fontName;
                 } else {
                     if (prop === "globalCompositeOperation") {
-                        value = L.supermap.CompOpMap[value];
+                        value = CompOpMap[value];
                         if (!value || value === "") {
                             continue;
                         }
@@ -305,7 +303,7 @@ export class CartoCSSToLeaflet {
                 "picHeight": size,
                 "style": JSON.stringify(shader)
             };
-            style.iconUrl = SuperMap.Util.urlAppend(this.mapUrl + "/symbol.png", SuperMap.Util.getParameterString(symbolParameters));
+            style.iconUrl = Util.urlAppend(this.mapUrl + "/symbol.png", Util.getParameterString(symbolParameters));
             style.iconSize = [size, size];
             return style;
         }
@@ -354,13 +352,14 @@ export class CartoCSSToLeaflet {
         var fillSymbolID = shader["fillSymbolID"] > 7 ? 0 : shader["fillSymbolID"];
         var lineSymbolID = shader["lineSymbolID"] > 5 ? 0 : shader["lineSymbolID"];
         for (var attr in shader) {
-            var obj = L.supermap.ServerStyleMap[attr];
+            var obj = ServerStyleMap[attr];
             if (!obj) {
                 continue;
             }
             var leafletStyle = obj.leafletStyle;
             switch (obj.type) {
-                case "number": {
+                case "number":
+                {
                     let value = shader[attr];
                     if (obj.unit) {
                         value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
@@ -369,7 +368,8 @@ export class CartoCSSToLeaflet {
                     break;
                 }
 
-                case "color": {
+                case "color":
+                {
                     var color = shader[attr];
                     let value, alpha = 1;
                     if (leafletStyle === "fillColor") {

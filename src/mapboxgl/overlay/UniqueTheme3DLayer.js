@@ -1,4 +1,5 @@
 import mapboxgl from 'mapbox-gl';
+import '../core/Base';
 import {Theme3DLayer} from './theme/Theme3DLayer';
 
 /**

@@ -1,4 +1,4 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 
 /**
  * @class SuperMap.Credential
@@ -12,7 +12,7 @@
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
  */
-export default class Credential {
+export class Credential {
     /**
      * @member SuperMap.Bounds.prototype.value -{string}
      * @description 访问受安全限制的服务时用于通过安全认证的验证信息。

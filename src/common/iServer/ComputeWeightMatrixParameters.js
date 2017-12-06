@@ -1,6 +1,5 @@
-﻿import SuperMap from '../SuperMap';
-import TransportationAnalystParameter from './TransportationAnalystParameter';
-import '../commontypes/geometry/Point';
+﻿import {SuperMap} from '../SuperMap';
+import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.ComputeWeightMatrixParameters
@@ -10,7 +9,7 @@ import '../commontypes/geometry/Point';
  *         nodes - {Array<Object>} 要计算耗费矩阵的点数组，必设字段。点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *         parameter - {@link SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
-export default class ComputeWeightMatrixParameters {
+export class ComputeWeightMatrixParameters {
 
     /**
      * @member SuperMap.ComputeWeightMatrixParameters.prototype.isAnalyzeById {Boolean}
@@ -58,4 +57,5 @@ export default class ComputeWeightMatrixParameters {
 
     CLASS_NAME = "SuperMap.ComputeWeightMatrixParameters"
 }
+
 SuperMap.ComputeWeightMatrixParameters = ComputeWeightMatrixParameters;

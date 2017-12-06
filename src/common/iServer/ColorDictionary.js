@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerColor from './ServerColor';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerColor} from './ServerColor';
 
 /**
  * @class SuperMap.ColorDictionary
@@ -12,7 +13,7 @@ import ServerColor from './ServerColor';
  *        elevation - {number} 高程值。<br>
  *        color - {@link SuperMap.ServerColor} 服务端颜色类。
  */
-export default class ColorDictionary {
+export class ColorDictionary {
 
     /**
      * @member SuperMap.ColorDictionary.prototype.elevation - {number}
@@ -28,7 +29,7 @@ export default class ColorDictionary {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
 
         var me = this,
             c = me.color;
@@ -42,7 +43,7 @@ export default class ColorDictionary {
      * @description 释放资源,将引用资源的属性置空。
      */
     destroy() {
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -52,7 +53,7 @@ export default class ColorDictionary {
      */
     toServerJSONObject() {
         var dataObj = {};
-        dataObj = SuperMap.Util.copyAttributes(dataObj, this);
+        dataObj = Util.copyAttributes(dataObj, this);
         return dataObj;
     }
 

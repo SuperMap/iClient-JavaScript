@@ -1,6 +1,6 @@
-import MapvRenderer from "./mapv/MapvRenderer";
 import mapboxgl from 'mapbox-gl';
 import '../core/Base';
+import {MapvRenderer} from "./mapv/MapvRenderer";
 
 /**
  * @class mapboxgl.supermap.MapvLayer

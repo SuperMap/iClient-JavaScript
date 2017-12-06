@@ -1,8 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
-import ServiceBase from './ServiceBase';
-import ChartQueryService from '../../common/iServer/ChartQueryService';
-import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoSpecsService';
+import {Util} from '../core/Util';
+import {Bounds, ChartQueryService, DataFormat, ChartFeatureInfoSpecsService} from '@supermap/iclient-common';
+import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ol.supermap.ChartService
@@ -15,9 +14,9 @@ import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoS
  *      })
  * @param url - {string} 与客户端交互的海图服务地址。
  * @param options -{Object} 交互时所需可选参数。
- * 
+ *
  */
-export default class ChartService extends ServiceBase {
+export class ChartService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -72,10 +71,10 @@ export default class ChartService extends ServiceBase {
         }
         params.returnContent = (params.returnContent == null) ? true : params.returnContent;
         if (params.filter) {
-            params.chartQueryFilterParameters = ol.supermap.Util.isArray(params.filter) ? params.filter : [params.filter];
+            params.chartQueryFilterParameters = Util.isArray(params.filter) ? params.filter : [params.filter];
         }
         if (params.bounds) {
-            params.bounds = new SuperMap.Bounds(
+            params.bounds = new Bounds(
                 params.bounds[0],
                 params.bounds[1],
                 params.bounds[2],
@@ -85,7 +84,7 @@ export default class ChartService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
 

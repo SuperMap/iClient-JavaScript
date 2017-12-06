@@ -1,6 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
-import MapvLayer from './mapv/MapvLayer';
-import Util from '../core/Util';
+import {MapvLayer} from './mapv/MapvLayer';
+import {Util} from '../core/Util';
 
 /**
  * @class ol.source.Mapv
@@ -8,7 +8,7 @@ import Util from '../core/Util';
  * @param opt_options -{Object} 参数
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
-export default class Mapv extends ol.source.ImageCanvas {
+export class Mapv extends ol.source.ImageCanvas {
 
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};

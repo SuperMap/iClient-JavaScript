@@ -1,5 +1,7 @@
-﻿import  SuperMap from '../SuperMap';
-import TransportationAnalystResultSetting from './TransportationAnalystResultSetting';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {TransportationAnalystResultSetting} from './TransportationAnalystResultSetting';
+
 /**
  * @class SuperMap.TransportationAnalystParameter
  * @classdesc 交通网络分析通用参数类。
@@ -14,7 +16,7 @@ import TransportationAnalystResultSetting from './TransportationAnalystResultSet
  *        turnWeightField - {string} 转向权重字段的名称。</br>
  *        resultSetting - {{@link SuperMap.TransportationAnalystResultSetting}} 分析结果返回内容。
  */
-export default  class TransportationAnalystParameter {
+export class TransportationAnalystParameter {
 
     /**
      * @member SuperMap.TransportationAnalystParameter.prototype.barrierEdgeIDs -{Array<number>}
@@ -61,7 +63,7 @@ export default  class TransportationAnalystParameter {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -89,4 +91,5 @@ export default  class TransportationAnalystParameter {
 
     CLASS_NAME = "SuperMap.TransportationAnalystParameter"
 }
+
 SuperMap.TransportationAnalystParameter = TransportationAnalystParameter;

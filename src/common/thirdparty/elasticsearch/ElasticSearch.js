@@ -1,5 +1,6 @@
-import SuperMap from '../../SuperMap';
-import Elasticsearch from 'elasticsearch';
+import {SuperMap} from '../../SuperMap';
+import {Events} from '../../commontypes/Events';
+import es from 'elasticsearch';
 
 /**
  * @class SuperMap.ElasticSearch
@@ -12,7 +13,7 @@ import Elasticsearch from 'elasticsearch';
  *         geoFence - {Object} 地理围栏。</br>
  */
 
-export default class ElasticSearch {
+export class ElasticSearch {
     /**
      *  @member SuperMap.ElasticSearch.prototype.url -{string}
      *  @description ElasticSearch服务地址
@@ -75,14 +76,14 @@ export default class ElasticSearch {
         options = options || {};
         let me = this;
         me.url = url;
-        me.client = new Elasticsearch.Client({
+        me.client = new es.Client({
             host: me.url
         });
         me.change = options.change;
         me.geoFence = options.geoFence;
         me.openGeoFence = options.openGeoFence;
         me.outOfGeoFence = options.outOfGeoFence;
-        me.events = new SuperMap.Events(me, null, me.EVENT_TYPES);
+        me.events = new Events(me, null, me.EVENT_TYPES);
         me.eventListeners = options.eventListeners;
         if (me.eventListeners instanceof Object) {
             me.events.on(me.eventListeners);
@@ -611,4 +612,5 @@ export default class ElasticSearch {
     }
 
 }
+
 SuperMap.ElasticSearch = ElasticSearch;

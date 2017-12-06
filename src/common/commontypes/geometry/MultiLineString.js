@@ -1,5 +1,5 @@
-﻿import SuperMap from '../../SuperMap';
-import Collection from './Collection';
+﻿import {SuperMap} from '../../SuperMap';
+import {Collection} from './Collection';
 import './LineString';
 
 
@@ -8,7 +8,7 @@ import './LineString';
  * @classdesc 几何对象多线类。
  * @extends {SuperMap.Geometry.Collection}
  * @param components - {Array<SuperMap.Geometry.LineString>} LineString数组。
- * @example 
+ * @example
  * var multi = new SuperMap.Geometry.MultiLineString([
  *      new SuperMap.Geometry.LineString([
  *          new SuperMap.Geometry.Point(1, 0),
@@ -16,7 +16,7 @@ import './LineString';
  *      ])
  *  ]);
  */
-export default class MultiLineString extends Collection {
+export class MultiLineString extends Collection {
 
     /**
      * @member SuperMap.Geometry.MultiLineString.prototype.componentTypes -{Array<string>}

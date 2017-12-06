@@ -1,8 +1,8 @@
-import SuperMap from '../../SuperMap';
-import Eventful from './Eventful';
-import Transformable from './Transformable';
-import '../../commontypes/Util';
-import './SUtil';
+import {SuperMap} from '../../SuperMap';
+import {Eventful} from './Eventful';
+import {Transformable} from './Transformable';
+import {Util as CommonUtil} from '../../commontypes/Util';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -13,7 +13,7 @@ import './SUtil';
  *  - <SuperMap.LevelRenderer.Eventful>
  *  - <SuperMap.LevelRenderer.Transformable>
  */
-export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
+export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
     /**
      * APIProperty: id
@@ -205,7 +205,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
         options = options || {};
 
-        this.id = options.id || SuperMap.Util.createUniqueID("smShape_");
+        this.id = options.id || CommonUtil.createUniqueID("smShape_");
 
         for (var key in options) {
             this[key] = options[key];
@@ -399,14 +399,14 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
      *
      */
     doClip(ctx) {
-        var clipShapeInvTransform = SuperMap.LevelRenderer.Util_matrix.create();
+        var clipShapeInvTransform = SUtil.Util_matrix.create();
 
         if (this.__clipShapes) {
             for (var i = 0; i < this.__clipShapes.length; i++) {
                 var clipShape = this.__clipShapes[i];
                 if (clipShape.needTransform) {
                     let m = clipShape.transform;
-                    SuperMap.LevelRenderer.Util_matrix.invert(clipShapeInvTransform, m);
+                    SUtil.Util_matrix.invert(clipShapeInvTransform, m);
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -446,7 +446,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
             newStyle[k] = style[k];
         }
 
-        var highlightColor = SuperMap.LevelRenderer.Util_color.getHighlightColor();
+        var highlightColor = SUtil.Util_color.getHighlightColor();
         // 根据highlightStyle扩展
         if (style.brushType != 'stroke') {
             // 带填充则用高亮色加粗边线
@@ -487,9 +487,9 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
             } else {
                 // 线型的则用原色加工高亮
                 newStyle.strokeColor = highlightStyle.strokeColor
-                    || SuperMap.LevelRenderer.Util_color.mix(
+                    || SUtil.Util_color.mix(
                         style.strokeColor,
-                        SuperMap.LevelRenderer.Util_color.toRGB(highlightColor)
+                        SUtil.Util_color.toRGB(highlightColor)
                     );
             }
         }
@@ -542,9 +542,9 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
             var originPos = [x, y];
             // 对鼠标的坐标也做相同的变换
             if (this.needTransform && this.transform) {
-                SuperMap.LevelRenderer.Util_matrix.invert(invTransform, this.transform);
+                SUtil.Util_matrix.invert(invTransform, this.transform);
 
-                SuperMap.LevelRenderer.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
+                SUtil.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
 
                 if (x == originPos[0] && y == originPos[1]) {
                     // 避免外部修改导致的 needTransform 不准确
@@ -564,7 +564,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
      * style - {Object} 样式。
      */
     buildPath(ctx, style) { // eslint-disable-line no-unused-vars
-        SuperMap.LevelRenderer.Util_log('buildPath not implemented in ' + this.type);
+        SUtil.Util_log('buildPath not implemented in ' + this.type);
     }
 
 
@@ -576,7 +576,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
      * style - {Object} 样式。
      */
     getRect(style) { // eslint-disable-line no-unused-vars
-        SuperMap.LevelRenderer.Util_log('getRect not implemented in ' + this.type);
+        SUtil.Util_log('getRect not implemented in ' + this.type);
     }
 
 
@@ -605,7 +605,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
             && y <= (rect.y + rect.height)
         ) {
             // 矩形内
-            return SuperMap.LevelRenderer.Util_area.isInside(this, this.style, x, y);
+            return SUtil.Util_area.isInside(this, this.style, x, y);
         }
 
         return false;
@@ -805,7 +805,7 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
         // Smic 方法修改 -end
 
         if (tx != null && ty != null) {
-            SuperMap.LevelRenderer.Shape._fillText(
+            Shape._fillText(
                 ctx,
                 style.text,
                 tx, ty,
@@ -876,13 +876,13 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
         }
         ctx.textAlign = textAlign;
         ctx.textBaseline = textBaseline;
-        var rect = SuperMap.LevelRenderer.Shape._getTextRect(
+        var rect = Shape._getTextRect(
             text, x, y, textFont, textAlign, textBaseline
         );
 
         text = (text + '').split('\n');
 
-        var lineHeight = SuperMap.LevelRenderer.Util_area.getTextHeight('ZH', textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', textFont);
 
         switch (textBaseline) {
             case 'top':
@@ -917,8 +917,8 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
      * {Object} 矩形区域。
      */
     static _getTextRect(text, x, y, textFont, textAlign, textBaseline) {
-        var width = SuperMap.LevelRenderer.Util_area.getTextWidth(text, textFont);
-        var lineHeight = SuperMap.LevelRenderer.Util_area.getTextHeight('ZH', textFont);
+        var width = SUtil.Util_area.getTextWidth(text, textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', textFont);
 
         text = (text + '').split('\n');
 
@@ -952,4 +952,3 @@ export default class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape"
 }
-SuperMap.LevelRenderer.Shape = Shape;

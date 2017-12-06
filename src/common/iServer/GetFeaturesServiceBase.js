@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {DataFormat} from '../REST';
-import CommonServiceBase from './CommonServiceBase';
-import GeoJSON from '../format/GeoJSON';
+import {CommonServiceBase} from './CommonServiceBase';
+import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.GetFeaturesServiceBase
@@ -22,7 +23,7 @@ import GeoJSON from '../format/GeoJSON';
  *     }
  * });
  */
-export default  class GetFeaturesServiceBase extends CommonServiceBase {
+export class GetFeaturesServiceBase extends CommonServiceBase {
     /**
      * @member SuperMap.GetFeaturesServiceBase.prototype.returnContent - {boolean}
      * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
@@ -62,7 +63,7 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
         super(url, options);
         options = options || {};
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
         var me = this, end;
         if (options && options.format) {
@@ -119,7 +120,9 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
             me.url += "&fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
         }
 
-        if (params.returnCountOnly) {me.url += "&returnCountOnly=" + params.returnContent;}
+        if (params.returnCountOnly) {
+            me.url += "&returnCountOnly=" + params.returnContent;
+        }
         jsonParameters = me.getJsonParameters(params);
         me.request({
             method: "POST",
@@ -137,7 +140,7 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         if (me.format === DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new GeoJSON();
             result.features = JSON.parse(geoJSONFormat.write(result.features));

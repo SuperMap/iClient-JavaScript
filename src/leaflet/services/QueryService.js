@@ -1,12 +1,17 @@
 ﻿import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import * as Util from  '../core/Util';
-import QueryByBoundsService from  '../../common/iServer/QueryByBoundsService';
-import QueryByDistanceService from  '../../common/iServer/QueryByDistanceService';
-import QueryBySQLService from  '../../common/iServer/QueryBySQLService';
-import QueryByGeometryService from  '../../common/iServer/QueryByGeometryService';
-import CommontypesConversion from '../core/CommontypesConversion';
+import * as Util from '../core/Util';
+import {CommontypesConversion} from '../core/CommontypesConversion';
+import {
+    GeometryPoint,
+    DataFormat,
+    QueryByBoundsService,
+    QueryByDistanceService,
+    QueryBySQLService,
+    QueryByGeometryService
+} from '@supermap/iclient-common';
+
 /**
  * @class  L.supermap.queryService
  * @classdesc 地图查询服务类。
@@ -122,13 +127,13 @@ export var QueryService = ServiceBase.extend({
             params.queryParams = [params.queryParams];
         }
 
-        if (params.bounds ) {
-            params.bounds=CommontypesConversion.toSuperMapBounds(params.bounds);
+        if (params.bounds) {
+            params.bounds = CommontypesConversion.toSuperMapBounds(params.bounds);
         }
 
         if (params.geometry) {
             if (params.geometry instanceof L.Point) {
-                params.geometry = new SuperMap.Geometry.Point(params.geometry.x, params.geometry.y);
+                params.geometry = new GeometryPoint(params.geometry.x, params.geometry.y);
             } else {
                 params.geometry = Util.toSuperMapGeometry(params.geometry);
             }
@@ -138,7 +143,7 @@ export var QueryService = ServiceBase.extend({
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 });
 

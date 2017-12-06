@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import './OnlineResources';
 
 /**
@@ -6,7 +7,7 @@ import './OnlineResources';
  * @classdesc myDatas服务资源查询参数
  * @param options -{Object} 查询参数
  */
-export default class OnlineQueryDatasParameter {
+export class OnlineQueryDatasParameter {
 
     /**
      * @member SuperMap.OnlineQueryDatasParameter.prototype.userNames -{Array<string>}
@@ -61,7 +62,7 @@ export default class OnlineQueryDatasParameter {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options)
+        Util.extend(this, options)
     }
 
 

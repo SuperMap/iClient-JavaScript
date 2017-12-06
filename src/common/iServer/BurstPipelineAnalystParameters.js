@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.BurstPipelineAnalystParameters
@@ -9,7 +10,7 @@ import SuperMap from '../SuperMap';
  *         nodeID - {number} 指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。<br>
  *         isUncertainDirectionValid - {boolean} 指定不确定流向是否有效；默认false，无效。
  */
-export default  class BurstPipelineAnalystParameters {
+export class BurstPipelineAnalystParameters {
 
     /**
      * @member SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs -{Array<number>}
@@ -42,7 +43,7 @@ export default  class BurstPipelineAnalystParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(me, options);
+        Util.extend(me, options);
     }
 
     /**
@@ -59,4 +60,5 @@ export default  class BurstPipelineAnalystParameters {
 
     CLASS_NAME = "SuperMap.BurstPipelineAnalystParameters"
 }
+
 SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters;

@@ -1,4 +1,6 @@
-require('../../../../src/common/overlay/levelRenderer/Group');
+var Shape = require('../../../../src/common/overlay/levelRenderer/Shape').Shape;
+var Group = require('../../../../src/common/overlay/levelRenderer/Group').Group;
+var Storage = require('../../../../src/common/overlay/levelRenderer/Storage').Storage;
 
 describe('Group', function () {
     var originalTimeout;
@@ -12,23 +14,23 @@ describe('Group', function () {
         testDiv.style.width = "400px";
         testDiv.style.height = "400px";
         window.document.body.appendChild(testDiv);
-        storage = new SuperMap.LevelRenderer.Storage();
+        storage = new Storage();
     });
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        group = new SuperMap.LevelRenderer.Group({id: "group"});
+        group = new Group({id: "group"});
         group.position[1] = 100;
         group.position[0] = 100;
-        group.addChild(new SuperMap.LevelRenderer.Shape({
+        group.addChild(new Shape({
             style: {
                 x: 100,
                 y: 100,
                 brushType: 'fill'
             }
         }));
-        group.addChild(new SuperMap.LevelRenderer.Group());
-        group._storage = new SuperMap.LevelRenderer.Storage();
+        group.addChild(new Group());
+        group._storage = new Storage();
     });
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
@@ -99,8 +101,8 @@ describe('Group', function () {
     });
     //添加g1的子节点，group1会默认删除该子节点
     it('addChild_group1Child', function () {
-        var group1 = new SuperMap.LevelRenderer.Group();
-        group1.addChild(new SuperMap.LevelRenderer.Group({id: "g1Child"}));
+        var group1 = new Group();
+        group1.addChild(new Group({id: "g1Child"}));
         var g1Child = group1.childAt(0);
         group.addChild(g1Child);
         expect(group).not.toBeNull();

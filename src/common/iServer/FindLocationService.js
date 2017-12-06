@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
-import FindLocationParameters from './FindLocationParameters';
-import GeoJSON from '../format/GeoJSON';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
+import {FindLocationParameters} from './FindLocationParameters';
+import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindLocationService
@@ -24,7 +25,7 @@ import GeoJSON from '../format/GeoJSON';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default class FindLocationService extends NetworkAnalystServiceBase {
+export class FindLocationService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -58,7 +59,7 @@ export default class FindLocationService extends NetworkAnalystServiceBase {
             returnEdgeFeature: true,
             returnEdgeGeometry: true,
             returnNodeFeature: true,
-            mapParameter: SuperMap.Util.toJSON(params.mapParameter),
+            mapParameter: Util.toJSON(params.mapParameter),
             supplyCenters: me.getCentersJson(params.supplyCenters)
         };
         me.request({
@@ -80,8 +81,10 @@ export default class FindLocationService extends NetworkAnalystServiceBase {
         var json = "[",
             len = params ? params.length : 0;
         for (var i = 0; i < len; i++) {
-            if (i > 0) {json += ",";}
-            json += SuperMap.Util.toJSON(params[i]);
+            if (i > 0) {
+                json += ",";
+            }
+            json += Util.toJSON(params[i]);
         }
         json += "]";
         return json;

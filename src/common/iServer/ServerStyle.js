@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerColor from './ServerColor';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerColor} from './ServerColor';
 
 /**
  * @class SuperMap.ServerStyle
@@ -22,7 +23,7 @@ import ServerColor from './ServerColor';
  *        markerSize - {number}点状符号的大小。<br>
  *        markerSymbolID - {integer} 点状符号的编码。
  */
-export default class ServerStyle {
+export class ServerStyle {
 
     /**
      * @member SuperMap.ServerStyle.prototype.fillBackColor -{SuperMap.ServerColor}
@@ -127,7 +128,7 @@ export default class ServerStyle {
         me.fillForeColor = new ServerColor(255, 0, 0);
         me.lineColor = new ServerColor(0, 0, 0);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -171,7 +172,7 @@ export default class ServerStyle {
      */
     toServerJSONObject() {
         var styleObj = {};
-        styleObj = SuperMap.Util.copyAttributes(styleObj, this);
+        styleObj = Util.copyAttributes(styleObj, this);
         //暂时先忽略serverColor往Json的转换
         return styleObj;
     }
@@ -186,7 +187,7 @@ export default class ServerStyle {
         if (!jsonObject) {
             return;
         }
-        return new SuperMap.ServerStyle({
+        return new ServerStyle({
             fillBackColor: ServerColor.fromJson(jsonObject.fillBackColor),
             fillBackOpaque: jsonObject.fillBackOpaque,
             fillForeColor: ServerColor.fromJson(jsonObject.fillForeColor),

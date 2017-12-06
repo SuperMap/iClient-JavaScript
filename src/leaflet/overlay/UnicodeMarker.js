@@ -1,5 +1,5 @@
-import '../core/Base';
 import L from "leaflet";
+import '../core/Base';
 
 /**
  * @class L.supermap.unicodeMarker
@@ -80,14 +80,14 @@ export var UnicodeMarker = L.Path.extend({
 export var unicodeMarker = function (latlng, options) {
     return new UnicodeMarker(latlng, options);
 };
-L.supermap.unicodeMarker = unicodeMarker;
+
 L.Canvas.include({
     _updateUnicode: function (layer) {
         if (!this._drawing) {
             return;
         }
         this._drawnLayers[layer._leaflet_id] = layer;
-        let pt = {x:layer._point.x,y:layer._point.y},
+        let pt = {x: layer._point.x, y: layer._point.y},
             ctx = this._ctx,
             fontStyle = [layer.options.fontStyle,
                 "normal", layer.options.fontWeight,
@@ -148,3 +148,5 @@ L.Canvas.include({
         }
     }
 });
+
+L.supermap.unicodeMarker = unicodeMarker;

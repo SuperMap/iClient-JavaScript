@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 49);
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,11 +81,1076 @@
 "use strict";
 
 
-var SuperMap = window.SuperMap = window.SuperMap || {};
-module.exports = SuperMap;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var SuperMap = exports.SuperMap = window.SuperMap = window.SuperMap || {};
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Util = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _SuperMap = __webpack_require__(0);
+
+__webpack_require__(7);
+
+var Util = exports.Util = _SuperMap.SuperMap.Util = _SuperMap.SuperMap.Util || {};
+/**
+ * @name Util
+ * @memberOf SuperMap
+ * @namespace
+ * @description common工具类。
+ */
+
+/**
+ * @description 复制源对象的所有属性到目标对象上，源对象上的没有定义的属性在目标对象上也不会被设置。
+ * @example
+ * 要复制SuperMap.Size对象的所有属性到自定义对象上，使用方法如下:
+ *     var size = new SuperMap.Size(100, 100);
+ *     var obj = {}；
+ *     SuperMap.Util.extend(obj, size);
+ * @param destination - {Object} 目标对象。
+ * @param source - {Object} 源对象，其属性将被设置到目标对象上。
+ * @return {Object} 目标对象。
+ */
+
+_SuperMap.SuperMap.Util.extend = function (destination, source) {
+    destination = destination || {};
+    if (source) {
+        for (var property in source) {
+            var value = source[property];
+            if (value !== undefined) {
+                destination[property] = value;
+            }
+        }
+
+        /**
+         * IE doesn't include the toString property when iterating over an object's
+         * properties with the for(property in object) syntax.  Explicitly check if
+         * the source has its own toString property.
+         */
+
+        /*
+         * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
+         * prototype object" when calling hawOwnProperty if the source object
+         * is an instance of window.Event.
+         */
+
+        var sourceIsEvt = typeof window.Event === "function" && source instanceof window.Event;
+
+        if (!sourceIsEvt && source.hasOwnProperty && source.hasOwnProperty("toString")) {
+            destination.toString = source.toString;
+        }
+    }
+    return destination;
+};
+/**
+ * @description 对象拷贝。
+ * @param des - {Object} 目标对象。
+ * @param soc - {Object} 源对象
+ */
+_SuperMap.SuperMap.Util.copy = function (des, soc) {
+    des = des || {};
+    var v;
+    if (soc) {
+        for (var p in des) {
+            v = soc[p];
+            if (typeof v !== 'undefined') {
+                des[p] = v;
+            }
+        }
+    }
+};
+/**
+ * @description 销毁对象，将其属性置空
+ * @param obj - {Object} 目标对象。
+ */
+_SuperMap.SuperMap.Util.reset = function (obj) {
+    obj = obj || {};
+    for (var p in obj) {
+        if (obj.hasOwnProperty(p)) {
+            if (_typeof(obj[p]) === "object" && obj[p] instanceof Array) {
+                for (var i in obj[p]) {
+                    if (obj[p][i].destroy) {
+                        obj[p][i].destroy();
+                    }
+                }
+                obj[p].length = 0;
+            } else if (_typeof(obj[p]) === "object" && obj[p] instanceof Object) {
+                if (obj[p].destroy) {
+                    obj[p].destroy();
+                }
+            }
+            obj[p] = null;
+        }
+    }
+};
+
+/**
+ * @description 获取HTML元素数组。
+ * @param argument - {String | HTMLElement | Window}
+ * @return {Array<HTMLElement>} HTML元素数组。
+ */
+_SuperMap.SuperMap.Util.getElement = function () {
+    var elements = [];
+
+    for (var i = 0, len = arguments.length; i < len; i++) {
+        var element = arguments[i];
+        if (typeof element === 'string') {
+            element = document.getElementById(element);
+        }
+        if (arguments.length === 1) {
+            return element;
+        }
+        elements.push(element);
+    }
+    return elements;
+};
+
+/**
+ * @description instance of的跨浏览器实现。
+ * @param o - {Object} 对象。
+ * @return {boolean} 是否是页面元素
+ */
+_SuperMap.SuperMap.Util.isElement = function (o) {
+    return !!(o && o.nodeType === 1);
+};
+
+/**
+ * @description 判断一个对象是否是数组。
+ * @param a - {Object} 对象。
+ * @return {boolean} 是否是数组。
+ */
+_SuperMap.SuperMap.Util.isArray = function (a) {
+    return Object.prototype.toString.call(a) === '[object Array]';
+};
+
+/**
+ * @description 从数组中删除某一项。
+ * @param array - {Array} 数组。
+ * @param item - {Object} 数组中要删除的一项。
+ * @return {Array} 执行删除操作后的数组。
+ */
+_SuperMap.SuperMap.Util.removeItem = function (array, item) {
+    for (var i = array.length - 1; i >= 0; i--) {
+        if (array[i] === item) {
+            array.splice(i, 1);
+            //break;more than once??
+        }
+    }
+    return array;
+};
+
+/**
+ * @description 获取某对象再数组中的索引值。
+ * @param array - {Array} 数组。
+ * @param obj - {Object} 对象。
+ * @return {number} 某对象再数组中的索引值。
+ */
+_SuperMap.SuperMap.Util.indexOf = function (array, obj) {
+    if (array == null) {
+        return -1;
+    } else {
+        // use the build-in function if available.
+        if (typeof array.indexOf === "function") {
+            return array.indexOf(obj);
+        } else {
+            for (var i = 0, len = array.length; i < len; i++) {
+                if (array[i] === obj) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
+};
+
+/**
+ * @description 修改某DOM元素的许多属性。
+ * @param element - {HTMLElement} 待修改的DOM元素。
+ * @param id - {string} DOM元素的id。
+ * @param px - {SuperMap.Pixel} 包含DOM元素的style属性的left和top属性。
+ * @param sz - {SuperMap.Size} 包含DOM元素的width和height属性。
+ * @param position - {string} DOM元素的position属性。
+ * @param border - {string} DOM元素的style属性的border属性。
+ * @param overflow - {string} DOM元素的style属性的overflow属性。
+ * @param opacity - {number} 不透明度值。取值范围为 (0.0 - 1.0)。
+ */
+_SuperMap.SuperMap.Util.modifyDOMElement = function (element, id, px, sz, position, border, overflow, opacity) {
+
+    if (id) {
+        element.id = id;
+    }
+    if (px) {
+        element.style.left = px.x + "px";
+        element.style.top = px.y + "px";
+    }
+    if (sz) {
+        element.style.width = sz.w + "px";
+        element.style.height = sz.h + "px";
+    }
+    if (position) {
+        element.style.position = position;
+    }
+    if (border) {
+        element.style.border = border;
+    }
+    if (overflow) {
+        element.style.overflow = overflow;
+    }
+    if (parseFloat(opacity) >= 0.0 && parseFloat(opacity) < 1.0) {
+        element.style.filter = 'alpha(opacity=' + opacity * 100 + ')';
+        element.style.opacity = opacity;
+    } else if (parseFloat(opacity) === 1.0) {
+        element.style.filter = '';
+        element.style.opacity = '';
+    }
+};
+
+/**
+ * @description Takes an object and copies any properties that don't exist from
+ *     another properties, by analogy with SuperMap.Util.extend() from
+ *     Prototype.js.
+ *
+ * @param to -{Object} The destination object.
+ * @param from -{Object} The source object.  Any properties of this object that
+ *     are undefined in the to object will be set on the to object.
+ *
+ * @return {Object} A reference to the to object.  Note that the to argument is modified
+ *     in place and returned by this function.
+ */
+_SuperMap.SuperMap.Util.applyDefaults = function (to, from) {
+    to = to || {};
+    /*
+     * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
+     * prototype object" when calling hawOwnProperty if the source object is an
+     * instance of window.Event.
+     */
+    var fromIsEvt = typeof window.Event === "function" && from instanceof window.Event;
+
+    for (var key in from) {
+        if (to[key] === undefined || !fromIsEvt && from.hasOwnProperty && from.hasOwnProperty(key) && !to.hasOwnProperty(key)) {
+            to[key] = from[key];
+        }
+    }
+    /**
+     * IE doesn't include the toString property when iterating over an object's
+     * properties with the for(property in object) syntax.  Explicitly check if
+     * the source has its own toString property.
+     */
+    if (!fromIsEvt && from && from.hasOwnProperty && from.hasOwnProperty('toString') && !to.hasOwnProperty('toString')) {
+        to.toString = from.toString;
+    }
+
+    return to;
+};
+
+/**
+ * @param params - {Object} 参数对象。
+ * @return {string} HTTP的GEI请求中的参数字符串。
+ * @description 将参数对象转换为HTTP的GEI请求中的参数字符串。例如："key1=value1&key2=value2&key3=value3"。
+ */
+_SuperMap.SuperMap.Util.getParameterString = function (params) {
+    var paramsArray = [];
+
+    for (var key in params) {
+        var value = params[key];
+        if (value != null && typeof value !== 'function') {
+            var encodedValue;
+            if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value.constructor === Array) {
+                /* value is an array; encode items and separate with "," */
+                var encodedItemArray = [];
+                var item;
+                for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
+                    item = value[itemIndex];
+                    encodedItemArray.push(encodeURIComponent(item === null || item === undefined ? "" : item));
+                }
+                encodedValue = encodedItemArray.join(",");
+            } else {
+                /* value is a string; simply encode */
+                encodedValue = encodeURIComponent(value);
+            }
+            paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
+        }
+    }
+
+    return paramsArray.join("&");
+};
+
+/**
+ * @description 给url追加参数。
+ * @param url - {string} 待追加参数的url字符串。
+ * @param paramStr - {string} 待追加的参数。
+ * @return {string} The new url
+ */
+_SuperMap.SuperMap.Util.urlAppend = function (url, paramStr) {
+    var newUrl = url;
+    if (paramStr) {
+        var parts = (url + " ").split(/[?&]/);
+        newUrl += parts.pop() === " " ? paramStr : parts.length ? "&" + paramStr : "?" + paramStr;
+    }
+    return newUrl;
+};
+
+/**
+ * @description 为了避免浮点精度错误而保留的有效位数。
+ * @type {number}
+ * @default 14
+ */
+_SuperMap.SuperMap.Util.DEFAULT_PRECISION = 14;
+
+/**
+ * @description 将字符串以接近的精度转换为数字。
+ * @param number - {string} 字符串。
+ * @param precision - {number} 精度。
+ * @return {number} 数字。
+ */
+_SuperMap.SuperMap.Util.toFloat = function (number, precision) {
+    if (precision == null) {
+        precision = _SuperMap.SuperMap.Util.DEFAULT_PRECISION;
+    }
+    if (typeof number !== "number") {
+        number = parseFloat(number);
+    }
+    return precision === 0 ? number : parseFloat(number.toPrecision(precision));
+};
+
+/**
+ * @description 角度转弧度。
+ * @param x - {number} 角度。
+ * @return {number} 弧度。
+ */
+_SuperMap.SuperMap.Util.rad = function (x) {
+    return x * Math.PI / 180;
+};
+
+/**
+ * @description 从URL字符串中解析出参数对象。
+ * @param url - {string} url。
+ * @return {Object} 解析出的参数对象。
+ */
+_SuperMap.SuperMap.Util.getParameters = function (url) {
+    // if no url specified, take it from the location bar
+    url = url === null || url === undefined ? window.location.href : url;
+
+    //parse out parameters portion of url string
+    var paramsString = "";
+    if (_SuperMap.SuperMap.String.contains(url, '?')) {
+        var start = url.indexOf('?') + 1;
+        var end = _SuperMap.SuperMap.String.contains(url, "#") ? url.indexOf('#') : url.length;
+        paramsString = url.substring(start, end);
+    }
+
+    var parameters = {};
+    var pairs = paramsString.split(/[&;]/);
+    for (var i = 0, len = pairs.length; i < len; ++i) {
+        var keyValue = pairs[i].split('=');
+        if (keyValue[0]) {
+
+            var key = keyValue[0];
+            try {
+                key = decodeURIComponent(key);
+            } catch (err) {
+                key = unescape(key);
+            }
+
+            // being liberal by replacing "+" with " "
+            var value = (keyValue[1] || '').replace(/\+/g, " ");
+
+            try {
+                value = decodeURIComponent(value);
+            } catch (err) {
+                value = unescape(value);
+            }
+
+            // follow OGC convention of comma delimited values
+            value = value.split(",");
+
+            //if there's only one value, do not return as array                    
+            if (value.length == 1) {
+                value = value[0];
+            }
+
+            parameters[key] = value;
+        }
+    }
+    return parameters;
+};
+
+/**
+ * @description 不断递增计数变量，用于生成唯一ID。
+ * @type {number}
+ * @default 0
+ */
+_SuperMap.SuperMap.Util.lastSeqID = 0;
+
+/**
+ * @description 创建唯一ID值。
+ * @param prefix {string} 前缀。
+ * @return {string} 唯一的ID值。
+ */
+_SuperMap.SuperMap.Util.createUniqueID = function (prefix) {
+    if (prefix == null) {
+        prefix = "id_";
+    }
+    _SuperMap.SuperMap.Util.lastSeqID += 1;
+    return prefix + _SuperMap.SuperMap.Util.lastSeqID;
+};
+
+/**
+ * @memberOf SuperMap
+ * @description 每单位的英尺数。
+ * @type {Object}
+ * @constant
+ */
+_SuperMap.SuperMap.INCHES_PER_UNIT = {
+    'inches': 1.0,
+    'ft': 12.0,
+    'mi': 63360.0,
+    'm': 39.3701,
+    'km': 39370.1,
+    'dd': 4374754,
+    'yd': 36
+};
+_SuperMap.SuperMap.INCHES_PER_UNIT["in"] = _SuperMap.SuperMap.INCHES_PER_UNIT.inches;
+_SuperMap.SuperMap.INCHES_PER_UNIT["degrees"] = _SuperMap.SuperMap.INCHES_PER_UNIT.dd;
+_SuperMap.SuperMap.INCHES_PER_UNIT["nmi"] = 1852 * _SuperMap.SuperMap.INCHES_PER_UNIT.m;
+
+// Units from CS-Map
+_SuperMap.SuperMap.METERS_PER_INCH = 0.02540005080010160020;
+_SuperMap.SuperMap.Util.extend(_SuperMap.SuperMap.INCHES_PER_UNIT, {
+    "Inch": _SuperMap.SuperMap.INCHES_PER_UNIT.inches,
+    "Meter": 1.0 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9001
+    "Foot": 0.30480060960121920243 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9003
+    "IFoot": 0.30480000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9002
+    "ClarkeFoot": 0.3047972651151 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9005
+    "SearsFoot": 0.30479947153867624624 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9041
+    "GoldCoastFoot": 0.30479971018150881758 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9094
+    "IInch": 0.02540000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "MicroInch": 0.00002540000000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Mil": 0.00000002540000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Centimeter": 0.01000000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Kilometer": 1000.00000000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9036
+    "Yard": 0.91440182880365760731 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "SearsYard": 0.914398414616029 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9040
+    "IndianYard": 0.91439853074444079983 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9084
+    "IndianYd37": 0.91439523 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9085
+    "IndianYd62": 0.9143988 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9086
+    "IndianYd75": 0.9143985 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9087
+    "IndianFoot": 0.30479951 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9080
+    "IndianFt37": 0.30479841 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9081
+    "IndianFt62": 0.3047996 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9082
+    "IndianFt75": 0.3047995 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9083
+    "Mile": 1609.34721869443738887477 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "IYard": 0.91440000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9096
+    "IMile": 1609.34400000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9093
+    "NautM": 1852.00000000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9030
+    "Lat-66": 110943.316488932731 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Lat-83": 110946.25736872234125 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Decimeter": 0.10000000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Millimeter": 0.00100000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Dekameter": 10.00000000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Decameter": 10.00000000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Hectometer": 100.00000000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "GermanMeter": 1.0000135965 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9031
+    "CaGrid": 0.999738 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "ClarkeChain": 20.1166194976 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9038
+    "GunterChain": 20.11684023368047 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9033
+    "BenoitChain": 20.116782494375872 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9062
+    "SearsChain": 20.11676512155 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9042
+    "ClarkeLink": 0.201166194976 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9039
+    "GunterLink": 0.2011684023368047 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9034
+    "BenoitLink": 0.20116782494375872 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9063
+    "SearsLink": 0.2011676512155 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9043
+    "Rod": 5.02921005842012 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "IntnlChain": 20.1168 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9097
+    "IntnlLink": 0.201168 / _SuperMap.SuperMap.METERS_PER_INCH, //EPSG:9098
+    "Perch": 5.02921005842012 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Pole": 5.02921005842012 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Furlong": 201.1684023368046 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Rood": 3.778266898 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "CapeFoot": 0.3047972615 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Brealey": 375.00000000000000000000 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "ModAmFt": 0.304812252984505969011938 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "Fathom": 1.8288 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "NautM-UK": 1853.184 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "50kilometers": 50000.0 / _SuperMap.SuperMap.METERS_PER_INCH,
+    "150kilometers": 150000.0 / _SuperMap.SuperMap.METERS_PER_INCH
+});
+
+//unit abbreviations supported by PROJ.4
+_SuperMap.SuperMap.Util.extend(_SuperMap.SuperMap.INCHES_PER_UNIT, {
+    "mm": _SuperMap.SuperMap.INCHES_PER_UNIT["Meter"] / 1000.0,
+    "cm": _SuperMap.SuperMap.INCHES_PER_UNIT["Meter"] / 100.0,
+    "dm": _SuperMap.SuperMap.INCHES_PER_UNIT["Meter"] * 100.0,
+    "km": _SuperMap.SuperMap.INCHES_PER_UNIT["Meter"] * 1000.0,
+    "kmi": _SuperMap.SuperMap.INCHES_PER_UNIT["nmi"], //International Nautical Mile
+    "fath": _SuperMap.SuperMap.INCHES_PER_UNIT["Fathom"], //International Fathom
+    "ch": _SuperMap.SuperMap.INCHES_PER_UNIT["IntnlChain"], //International Chain
+    "link": _SuperMap.SuperMap.INCHES_PER_UNIT["IntnlLink"], //International Link
+    "us-in": _SuperMap.SuperMap.INCHES_PER_UNIT["inches"], //U.S. Surveyor's Inch
+    "us-ft": _SuperMap.SuperMap.INCHES_PER_UNIT["Foot"], //U.S. Surveyor's Foot
+    "us-yd": _SuperMap.SuperMap.INCHES_PER_UNIT["Yard"], //U.S. Surveyor's Yard
+    "us-ch": _SuperMap.SuperMap.INCHES_PER_UNIT["GunterChain"], //U.S. Surveyor's Chain
+    "us-mi": _SuperMap.SuperMap.INCHES_PER_UNIT["Mile"], //U.S. Surveyor's Statute Mile
+    "ind-yd": _SuperMap.SuperMap.INCHES_PER_UNIT["IndianYd37"], //Indian Yard
+    "ind-ft": _SuperMap.SuperMap.INCHES_PER_UNIT["IndianFt37"], //Indian Foot
+    "ind-ch": 20.11669506 / _SuperMap.SuperMap.METERS_PER_INCH //Indian Chain
+});
+
+/**
+ * @memberOf SuperMap
+ * @description 分辨率与比例尺之间转换的常量，默认值96。
+ * @type {Object}
+ * @default 96
+ */
+_SuperMap.SuperMap.DOTS_PER_INCH = 96;
+
+/**
+ * @param scale - {number}
+ * @return {number} 返回正常的scale值
+ */
+_SuperMap.SuperMap.Util.normalizeScale = function (scale) {
+    var normScale = scale > 1.0 ? 1.0 / scale : scale;
+    return normScale;
+};
+
+/**
+ * @param scale - {number} 比例尺。
+ * @param units - {string} 比例尺单位。
+ * @return {number} 分辨率。
+ */
+_SuperMap.SuperMap.Util.getResolutionFromScale = function (scale, units) {
+    var resolution;
+    if (scale) {
+        if (units == null) {
+            units = "degrees";
+        }
+        var normScale = _SuperMap.SuperMap.Util.normalizeScale(scale);
+        resolution = 1 / (normScale * _SuperMap.SuperMap.INCHES_PER_UNIT[units] * _SuperMap.SuperMap.DOTS_PER_INCH);
+    }
+    return resolution;
+};
+
+/**
+ * @description 分辨率转比例尺。
+ * @param resolution - {number} 分辨率。
+ * @param units - {string} 分辨率单位。
+ * @return {number} 比例尺。
+ */
+_SuperMap.SuperMap.Util.getScaleFromResolution = function (resolution, units) {
+
+    if (units == null) {
+        units = "degrees";
+    }
+
+    var scale = resolution * _SuperMap.SuperMap.INCHES_PER_UNIT[units] * _SuperMap.SuperMap.DOTS_PER_INCH;
+    return scale;
+};
+
+/**
+ * @memberOf SuperMap
+ * @description 如果userAgent捕获到浏览器使用的是Gecko引擎则返回true。
+ * @constant
+ */
+_SuperMap.SuperMap.IS_GECKO = function () {
+    var ua = navigator.userAgent.toLowerCase();
+    return ua.indexOf("webkit") === -1 && ua.indexOf("gecko") !== -1;
+}();
+
+/**
+ * @memberOf SuperMap
+ * @description 浏览器名称，依赖于userAgent属性，BROWSER_NAME可以是空，或者以下浏览器：
+ *     * "opera" -- Opera
+ *     * "msie"  -- Internet Explorer
+ *     * "safari" -- Safari
+ *     * "firefox" -- Firefox
+ *     * "mozilla" -- Mozilla
+ * @constant
+ */
+_SuperMap.SuperMap.Browser = function () {
+    var name = '',
+        version = '',
+        device = 'pc',
+        uaMatch;
+    //以下进行测试
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf("msie") > -1 || ua.indexOf("trident") > -1 && ua.indexOf("rv") > -1) {
+        name = 'msie';
+        uaMatch = ua.match(/msie ([\d.]+)/) || ua.match(/rv:([\d.]+)/);
+    } else if (ua.indexOf("chrome") > -1) {
+        name = 'chrome';
+        uaMatch = ua.match(/chrome\/([\d.]+)/);
+    } else if (ua.indexOf("firefox") > -1) {
+        name = 'firefox';
+        uaMatch = ua.match(/firefox\/([\d.]+)/);
+    } else if (ua.indexOf("opera") > -1) {
+        name = 'opera';
+        uaMatch = ua.match(/version\/([\d.]+)/);
+    } else if (ua.indexOf("safari") > -1) {
+        name = 'safari';
+        uaMatch = ua.match(/version\/([\d.]+)/);
+    }
+    version = uaMatch ? uaMatch[1] : '';
+
+    if (ua.indexOf("ipad") > -1 || ua.indexOf("ipod") > -1 || ua.indexOf("iphone") > -1) {
+        device = 'apple';
+    } else if (ua.indexOf("android") > -1) {
+        uaMatch = ua.match(/version\/([\d.]+)/);
+        version = uaMatch ? uaMatch[1] : '';
+        device = 'android';
+    }
+    return { name: name, version: version, device: device };
+}();
+
+/**
+ * @description 获取浏览器相关信息。支持的浏览器包括：Opera，Internet Explorer，Safari，Firefox。
+ * @return {Object} 获取浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
+ */
+_SuperMap.SuperMap.Util.getBrowser = function () {
+    return _SuperMap.SuperMap.Browser;
+};
+
+/**
+ * @description 浏览器是否支持Canvas。
+ * @return {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
+ */
+_SuperMap.SuperMap.Util.isSupportCanvas = function () {
+    var checkRes = true,
+        broz = _SuperMap.SuperMap.Util.getBrowser();
+    if (document.createElement("canvas").getContext) {
+        if (broz.name === 'firefox' && parseFloat(broz.version) < 5) {
+            checkRes = false;
+        }
+        if (broz.name === 'safari' && parseFloat(broz.version) < 4) {
+            checkRes = false;
+        }
+        if (broz.name === 'opera' && parseFloat(broz.version) < 10) {
+            checkRes = false;
+        }
+        if (broz.name === 'msie' && parseFloat(broz.version) < 9) {
+            checkRes = false;
+        }
+    } else {
+        checkRes = false;
+    }
+    return checkRes;
+}();
+
+/**
+ * @description 判断；浏览器是否支持Canvas。
+ * @return {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
+ */
+_SuperMap.SuperMap.Util.supportCanvas = function () {
+    return _SuperMap.SuperMap.Util.isSupportCanvas;
+};
+
+//将服务端的地图单位转成SuperMap的地图单位
+_SuperMap.SuperMap.INCHES_PER_UNIT["degree"] = _SuperMap.SuperMap.INCHES_PER_UNIT.dd;
+_SuperMap.SuperMap.INCHES_PER_UNIT["meter"] = _SuperMap.SuperMap.INCHES_PER_UNIT.m;
+_SuperMap.SuperMap.INCHES_PER_UNIT["foot"] = _SuperMap.SuperMap.INCHES_PER_UNIT.ft;
+_SuperMap.SuperMap.INCHES_PER_UNIT["inch"] = _SuperMap.SuperMap.INCHES_PER_UNIT.inches;
+_SuperMap.SuperMap.INCHES_PER_UNIT["mile"] = _SuperMap.SuperMap.INCHES_PER_UNIT.mi;
+_SuperMap.SuperMap.INCHES_PER_UNIT["kilometer"] = _SuperMap.SuperMap.INCHES_PER_UNIT.km;
+_SuperMap.SuperMap.INCHES_PER_UNIT["yard"] = _SuperMap.SuperMap.INCHES_PER_UNIT.yd;
+
+/**
+ * @description 判断一个 URL 请求是否在当前域中。
+ * @param url - {string}  URL 请求字符串。
+ * @return {boolean} URL请求是否在当前域中。
+ */
+_SuperMap.SuperMap.Util.isInTheSameDomain = function (url) {
+    if (!url) {
+        return true;
+    }
+    var index = url.indexOf("//");
+    var documentUrl = document.location.toString();
+    var documentIndex = documentUrl.indexOf("//");
+    if (index === -1) {
+        return true;
+    } else {
+        var protocol;
+        var substring = protocol = url.substring(0, index);
+        var documentSubString = documentUrl.substring(documentIndex + 2);
+        documentIndex = documentSubString.indexOf("/");
+        var documentPortIndex = documentSubString.indexOf(":");
+        var documentDomainWithPort = documentSubString.substring(0, documentIndex);
+        //var documentPort;
+
+        var documentprotocol = document.location.protocol;
+        if (documentPortIndex !== -1) {
+            // documentPort = +documentSubString.substring(documentPortIndex, documentIndex);
+        } else {
+            documentDomainWithPort += ':' + (documentprotocol.toLowerCase() === 'http:' ? 80 : 443);
+        }
+        if (documentprotocol.toLowerCase() !== substring.toLowerCase()) {
+            return false;
+        }
+        substring = url.substring(index + 2);
+        var portIndex = substring.indexOf(":");
+        index = substring.indexOf("/");
+        var domainWithPort = substring.substring(0, index);
+        var domain;
+        if (portIndex !== -1) {
+            domain = substring.substring(0, portIndex);
+        } else {
+            domain = substring.substring(0, index);
+            domainWithPort += ':' + (protocol.toLowerCase() === 'http:' ? 80 : 443);
+        }
+        var documentDomain = document.domain;
+        if (domain === documentDomain && domainWithPort === documentDomainWithPort) {
+            return true;
+        }
+    }
+    return false;
+};
+
+/**
+ * @description 计算iServer服务的REST图层的显示分辨率，需要从iServer的REST图层表述中获取viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
+ * @param viewBounds - {SuperMap.Bounds} 地图的参照可视范围，即地图初始化时默认的地图显示范围。
+ * @param viewer - {SuperMap.Size} 地图初始化时默认的地图图片的尺寸。
+ * @param scale - {number} 地图初始化时默认的显示比例尺。
+ * @param coordUnit - {string} 投影坐标系统的地图单位。
+ * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则系统默认为WGS84参考系的椭球体长半轴6378137。
+ * @return {number} 返回图层显示分辨率。
+ */
+_SuperMap.SuperMap.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, datumAxis) {
+    //10000 是 0.1毫米与米的转换。DPI的计算公式：Viewer / DPI *  0.0254 * 10000 = ViewBounds * scale ，公式中的10000是为了提高计算结果的精度，以下出现的ratio皆为如此。
+    if (!viewBounds || !viewer || !scale) {
+        return;
+    }
+    var ratio = 10000,
+        rvbWidth = viewBounds.getWidth(),
+        rvbHeight = viewBounds.getHeight(),
+        rvWidth = viewer.w,
+        rvHeight = viewer.h;
+    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
+    datumAxis = datumAxis || 6378137;
+    coordUnit = coordUnit || "degrees";
+    var dpi;
+    if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+        var num1 = rvbWidth / rvWidth,
+            num2 = rvbHeight / rvHeight,
+            resolution = num1 > num2 ? num1 : num2;
+        dpi = 0.0254 * ratio / resolution / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
+    } else {
+        var _resolution = rvbWidth / rvWidth;
+        dpi = 0.0254 * ratio / _resolution / scale / ratio;
+    }
+    return dpi;
+};
+
+/**
+ * @description 将对象转换成 JSON 字符串。
+ * @param obj - {Object} 要转换成 JSON 的 Object 对象。
+ * @return {string} 返回转换后的 JSON 对象。
+ */
+_SuperMap.SuperMap.Util.toJSON = function (obj) {
+    var objInn = obj;
+    if (objInn == null) {
+        return null;
+    }
+    switch (objInn.constructor) {
+        case String:
+            //s = "'" + str.replace(/(["\\])/g, "\\$1") + "'";   string含有单引号出错
+            objInn = '"' + objInn.replace(/(["\\])/g, '\\$1') + '"';
+            objInn = objInn.replace(/\n/g, "\\n");
+            objInn = objInn.replace(/\r/g, "\\r");
+            objInn = objInn.replace("<", "&lt;");
+            objInn = objInn.replace(">", "&gt;");
+            objInn = objInn.replace(/%/g, "%25");
+            objInn = objInn.replace(/&/g, "%26");
+            return objInn;
+        case Array:
+            var arr = [];
+            for (var i = 0, len = objInn.length; i < len; i++) {
+                arr.push(_SuperMap.SuperMap.Util.toJSON(objInn[i]));
+            }
+            return "[" + arr.join(",") + "]";
+        case Number:
+            return isFinite(objInn) ? String(objInn) : null;
+        case Boolean:
+            return String(objInn);
+        case Date:
+            var dateStr = "{" + "'__type':\"System.DateTime\"," + "'Year':" + objInn.getFullYear() + "," + "'Month':" + (objInn.getMonth() + 1) + "," + "'Day':" + objInn.getDate() + "," + "'Hour':" + objInn.getHours() + "," + "'Minute':" + objInn.getMinutes() + "," + "'Second':" + objInn.getSeconds() + "," + "'Millisecond':" + objInn.getMilliseconds() + "," + "'TimezoneOffset':" + objInn.getTimezoneOffset() + "}";
+            return dateStr;
+        default:
+            if (objInn["toJSON"] != null && typeof objInn["toJSON"] === "function") {
+                return objInn.toJSON();
+            }
+            if ((typeof objInn === 'undefined' ? 'undefined' : _typeof(objInn)) === "object") {
+                if (objInn.length) {
+                    var _arr2 = [];
+                    for (var _i = 0, _len = objInn.length; _i < _len; _i++) {
+                        _arr2.push(_SuperMap.SuperMap.Util.toJSON(objInn[_i]));
+                    }
+                    return "[" + _arr2.join(",") + "]";
+                }
+                var _arr = [];
+                for (var attr in objInn) {
+                    //为解决SuperMap.Geometry类型头json时堆栈溢出的问题，attr == "parent"时不进行json转换
+                    if (typeof objInn[attr] !== "function" && attr !== "CLASS_NAME" && attr !== "parent") {
+                        _arr.push("'" + attr + "':" + _SuperMap.SuperMap.Util.toJSON(objInn[attr]));
+                    }
+                }
+
+                if (_arr.length > 0) {
+                    return "{" + _arr.join(",") + "}";
+                } else {
+                    return "{}";
+                }
+            }
+            return objInn.toString();
+    }
+};
+
+/**
+ * @description 根据比例尺和dpi计算屏幕分辨率。
+ * @param scale - {number} 比例尺。
+ * @param dpi - {number} 图像分辨率，表示每英寸内的像素个数。
+ * @param coordUnit - {string} 投影坐标系统的地图单位。
+ * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
+ * @return {number} 返回当前比例尺下的屏幕分辨率。
+ */
+_SuperMap.SuperMap.Util.getResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+    var resolution = null,
+        ratio = 10000;
+    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
+    datumAxis = datumAxis || 6378137;
+    coordUnit = coordUnit || "";
+    if (scale > 0 && dpi > 0) {
+        scale = _SuperMap.SuperMap.Util.normalizeScale(scale);
+        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+            //scale = SuperMap.Util.normalizeScale(scale);
+            resolution = 0.0254 * ratio / dpi / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
+            return resolution;
+        } else {
+            resolution = 0.0254 * ratio / dpi / scale / ratio;
+            return resolution;
+        }
+    }
+    return -1;
+};
+
+/**
+ * @description 根据resolution、dpi、coordUnit和datumAxis计算比例尺。
+ * @param resolution - {number} 用于计算比例尺的地图分辨率。
+ * @param dpi - {number} 图像分辨率，表示每英寸内的像素个数。
+ * @param coordUnit - {string} 投影坐标系统的地图单位。
+ * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
+ * @return {number} 返回当前屏幕分辨率下的比例尺。
+ */
+_SuperMap.SuperMap.Util.getScaleFromResolutionDpi = function (resolution, dpi, coordUnit, datumAxis) {
+    var scale = null,
+        ratio = 10000;
+    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
+    datumAxis = datumAxis || 6378137;
+    coordUnit = coordUnit || "";
+    if (resolution > 0 && dpi > 0) {
+        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+            scale = 0.0254 * ratio / dpi / resolution / (Math.PI * 2 * datumAxis / 360) / ratio;
+            return scale;
+        } else {
+            scale = 0.0254 * ratio / dpi / resolution / ratio;
+            return scale;
+        }
+    }
+    return -1;
+};
+
+/**
+ * @description 转换查询结果。
+ * @param result - {Object} 查询结果。
+ * @return {Object} 转换后的查询结果。
+ */
+_SuperMap.SuperMap.Util.transformResult = function (result) {
+    if (result.responseText && typeof result.responseText === "string") {
+        result = JSON.parse(result.responseText);
+    }
+    return result;
+};
+
+/**
+ * @description 属性拷贝，不拷贝方法类名(CLASS_NAME)等。
+ * @param destination - {Object} 拷贝目标。
+ * @param source - {Object} 源对象。
+ *
+ */
+_SuperMap.SuperMap.Util.copyAttributes = function (destination, source) {
+    destination = destination || {};
+    if (source) {
+        for (var property in source) {
+            var value = source[property];
+            if (value !== undefined && property !== "CLASS_NAME" && typeof value !== "function") {
+                destination[property] = value;
+            }
+        }
+    }
+    return destination;
+};
+
+/**
+ * @description 将源对象上的属性拷贝到目标对象上。（不拷贝 CLASS_NAME 和方法）
+ * @param destination - {Object} 目标对象。
+ * @param source - {Object} 源对象。
+ * @param clip - {Array<string>} 源对象中禁止拷贝到目标对象的属性，目的是防止目标对象上不可修改的属性被篡改。
+ *
+ */
+_SuperMap.SuperMap.Util.copyAttributesWithClip = function (destination, source, clip) {
+    destination = destination || {};
+    if (source) {
+        for (var property in source) {
+            //去掉禁止拷贝的属性
+            var isInClip = false;
+            if (clip && clip.length) {
+                for (var i = 0, len = clip.length; i < len; i++) {
+                    if (property === clip[i]) {
+                        isInClip = true;
+                        break;
+                    }
+                }
+            }
+            if (isInClip === true) {
+                continue;
+            }
+
+            var value = source[property];
+            if (value !== undefined && property !== "CLASS_NAME" && typeof value !== "function") {
+                destination[property] = value;
+            }
+        }
+    }
+    return destination;
+};
+
+/**
+ * @description 克隆一份Object对象
+ * @param obj - {Object}  需要克隆的对象。
+ * @return {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
+ */
+_SuperMap.SuperMap.Util.cloneObject = function (obj) {
+    // Handle the 3 simple types, and null or undefined
+    if (null === obj || "object" !== (typeof obj === 'undefined' ? 'undefined' : _typeof(obj))) {
+        return obj;
+    }
+
+    // Handle Date
+    if (obj instanceof Date) {
+        var copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+        var _copy = obj.slice(0);
+        return _copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+        var _copy2 = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) {
+                _copy2[attr] = _SuperMap.SuperMap.Util.cloneObject(obj[attr]);
+            }
+        }
+        return _copy2;
+    }
+
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+};
+
+/**
+ * @description 判断两条线段是不是有交点。
+ * @param a1 - {SuperMap.Geometry.Point}  第一条线段的起始节点。
+ * @param a2 - {SuperMap.Geometry.Point}  第一条线段的结束节点。
+ * @param b1 - {SuperMap.Geometry.Point}  第二条线段的起始节点。
+ * @param b2 - {SuperMap.Geometry.Point}  第二条线段的结束节点。
+ * @return {Object} 如果相交返回交点，如果不相交返回两条线段的位置关系。
+ */
+_SuperMap.SuperMap.Util.lineIntersection = function (a1, a2, b1, b2) {
+    var intersectValue = null;
+    var k1;
+    var k2;
+    var b = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
+    var a = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
+    var ab = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
+    //ab==0代表两条线断的斜率一样
+    if (ab != 0) {
+        k1 = b / ab;
+        k2 = a / ab;
+
+        if (k1 >= 0 && k2 <= 1 && k1 <= 1 && k2 >= 0) {
+            intersectValue = new _SuperMap.SuperMap.Geometry.Point(a1.x + k1 * (a2.x - a1.x), a1.y + k1 * (a2.y - a1.y));
+        } else {
+            intersectValue = "No Intersection";
+        }
+    } else {
+
+        if (b == 0 && a == 0) {
+            var maxy = Math.max(a1.y, a2.y);
+            var miny = Math.min(a1.y, a2.y);
+            var maxx = Math.max(a1.x, a2.x);
+            var minx = Math.min(a1.x, a2.x);
+            if ((b1.y >= miny && b1.y <= maxy || b2.y >= miny && b2.y <= maxy) && b1.x >= minx && b1.x <= maxx || b2.x >= minx && b2.x <= maxx) {
+                intersectValue = "Coincident"; //重合
+            } else {
+                intersectValue = "Parallel"; //平行
+            }
+        } else {
+            intersectValue = "Parallel"; //平行
+        }
+    }
+    return intersectValue;
+};
+
+/**
+ * @description 获取文本外接矩形宽度与高度。
+ * @param style - {SuperMap.Style} 文本样式。
+ * @param text - {string} 文本内容。
+ * @param element - {Object} DOM元素。
+ * @return {Object} 返回裁剪后的宽度，高度信息。
+ */
+_SuperMap.SuperMap.Util.getTextBounds = function (style, text, element) {
+    document.body.appendChild(element);
+    element.style.width = 'auto';
+    element.style.height = 'auto';
+    if (style.fontSize) {
+        element.style.fontSize = style.fontSize;
+    }
+    if (style.fontFamily) {
+        element.style.fontFamily = style.fontFamily;
+    }
+    if (style.fontWeight) {
+        element.style.fontWeight = style.fontWeight;
+    }
+    element.style.position = 'relative';
+    element.style.visibility = 'hidden';
+    //fix 在某些情况下，element内的文本变成竖起排列，导致宽度计算不正确的bug
+    element.style.display = 'inline-block';
+    element.innerHTML = text;
+    var textWidth = element.clientWidth;
+    var textHeight = element.clientHeight;
+    document.body.removeChild(element);
+    return {
+        textWidth: textWidth,
+        textHeight: textHeight
+    };
+};
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98,10 +1163,6 @@ exports.TopologyValidatorRule = exports.SummaryType = exports.StatisticAnalystMo
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 /**
  * @name DataFormat
  * @memberOf SuperMap
@@ -110,7 +1171,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @property {string} GEOJSON  GEOJSON
  * @property {string} ISERVER  ISERVER
  */
-var DataFormat = exports.DataFormat = _SuperMap2.default.DataFormat = {
+var DataFormat = exports.DataFormat = _SuperMap.SuperMap.DataFormat = {
   GEOJSON: "GEOJSON",
   ISERVER: "ISERVER"
 };
@@ -124,7 +1185,7 @@ var DataFormat = exports.DataFormat = _SuperMap2.default.DataFormat = {
  * @property {string} IPORTAL  IPORTAL
  * @property {string} ONLINE  ONLINE
  */
-var ServerType = exports.ServerType = _SuperMap2.default.ServerType = {
+var ServerType = exports.ServerType = _SuperMap.SuperMap.ServerType = {
   ISERVER: "ISERVER",
   IPORTAL: "IPORTAL",
   ONLINE: "ONLINE"
@@ -144,7 +1205,7 @@ var ServerType = exports.ServerType = _SuperMap2.default.ServerType = {
  * @property {string} TEXT  TEXT
  * @property {string} UNKNOWN  UNKNOWN
  */
-var GeometryType = exports.GeometryType = _SuperMap2.default.GeometryType = {
+var GeometryType = exports.GeometryType = _SuperMap.SuperMap.GeometryType = {
   LINE: "LINE",
   LINEM: "LINEM",
   POINT: "POINT",
@@ -164,7 +1225,7 @@ var GeometryType = exports.GeometryType = _SuperMap2.default.GeometryType = {
  * @property {string} ATTRIBUTEANDGEOMETRY  ATTRIBUTEANDGEOMETRY
  * @property {string} GEOMETRY  GEOMETRY
  */
-var QueryOption = exports.QueryOption = _SuperMap2.default.QueryOption = {
+var QueryOption = exports.QueryOption = _SuperMap.SuperMap.QueryOption = {
   ATTRIBUTE: "ATTRIBUTE",
   ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
   GEOMETRY: "GEOMETRY"
@@ -179,7 +1240,7 @@ var QueryOption = exports.QueryOption = _SuperMap2.default.QueryOption = {
  * @property {string} INNERJOIN  INNERJOIN
  * @property {string} LEFTJOIN  LEFTJOIN
  */
-var JoinType = exports.JoinType = _SuperMap2.default.JoinType = {
+var JoinType = exports.JoinType = _SuperMap.SuperMap.JoinType = {
   INNERJOIN: "INNERJOIN",
   LEFTJOIN: "LEFTJOIN"
 };
@@ -199,7 +1260,7 @@ var JoinType = exports.JoinType = _SuperMap2.default.JoinType = {
  * @property {string} TOUCH  TOUCH
  * @property {string} WITHIN  WITHIN
  */
-var SpatialQueryMode = exports.SpatialQueryMode = _SuperMap2.default.SpatialQueryMode = {
+var SpatialQueryMode = exports.SpatialQueryMode = _SuperMap.SuperMap.SpatialQueryMode = {
   CONTAIN: "CONTAIN",
   CROSS: "CROSS",
   DISJOINT: "DISJOINT",
@@ -221,7 +1282,7 @@ var SpatialQueryMode = exports.SpatialQueryMode = _SuperMap2.default.SpatialQuer
  * @property {string} INTERSECT 相交关系 INTERSECT  INTERSECT
  * @property {string} INTERSECT 被包含关系 WITHIN  WITHIN
  */
-var SpatialRelationType = exports.SpatialRelationType = _SuperMap2.default.SpatialRelationType = {
+var SpatialRelationType = exports.SpatialRelationType = _SuperMap.SuperMap.SpatialRelationType = {
   CONTAIN: "CONTAIN",
   INTERSECT: "INTERSECT",
   WITHIN: "WITHIN"
@@ -235,7 +1296,7 @@ var SpatialRelationType = exports.SpatialRelationType = _SuperMap2.default.Spati
  * @description  量算模式枚举。
  * 该类定义了两种测量模式：距离测量和面积测量。
  */
-var MeasureMode = exports.MeasureMode = _SuperMap2.default.MeasureMode = {
+var MeasureMode = exports.MeasureMode = _SuperMap.SuperMap.MeasureMode = {
   DISTANCE: "DISTANCE",
   AREA: "AREA"
 };
@@ -260,7 +1321,7 @@ var MeasureMode = exports.MeasureMode = _SuperMap2.default.MeasureMode = {
  * @property {string} MINUTE  MINUTE
  * @property {string} RADIAN  RADIAN
  */
-var Unit = exports.Unit = _SuperMap2.default.Unit = {
+var Unit = exports.Unit = _SuperMap.SuperMap.Unit = {
   METER: "METER",
   KILOMETER: "KILOMETER",
   MILE: "MILE",
@@ -292,7 +1353,7 @@ var Unit = exports.Unit = _SuperMap2.default.Unit = {
  * @property {string} MILLIMETER    毫米
  * @property {string} YARD    码
  */
-var BufferRadiusUnit = exports.BufferRadiusUnit = _SuperMap2.default.BufferRadiusUnit = {
+var BufferRadiusUnit = exports.BufferRadiusUnit = _SuperMap.SuperMap.BufferRadiusUnit = {
   CENTIMETER: "CENTIMETER",
   DECIMETER: "DECIMETER",
   FOOT: "FOOT",
@@ -315,7 +1376,7 @@ var BufferRadiusUnit = exports.BufferRadiusUnit = _SuperMap2.default.BufferRadiu
    * @property {string} SQLPLUS  SQLPLUS
    * @property {string} UDB  UDB
    */
-};var EngineType = exports.EngineType = _SuperMap2.default.EngineType = {
+};var EngineType = exports.EngineType = _SuperMap.SuperMap.EngineType = {
   IMAGEPLUGINS: "IMAGEPLUGINS",
   OGC: "OGC",
   ORACLEPLUS: "ORACLEPLUS",
@@ -335,7 +1396,7 @@ var BufferRadiusUnit = exports.BufferRadiusUnit = _SuperMap2.default.BufferRadiu
  * @property {string} PERCENT  PERCENT
  * @property {string} VALUE  VALUE
  */
-var ThemeGraphTextFormat = exports.ThemeGraphTextFormat = _SuperMap2.default.ThemeGraphTextFormat = {
+var ThemeGraphTextFormat = exports.ThemeGraphTextFormat = _SuperMap.SuperMap.ThemeGraphTextFormat = {
   CAPTION: "CAPTION",
   CAPTION_PERCENT: "CAPTION_PERCENT",
   CAPTION_VALUE: "CAPTION_VALUE",
@@ -362,7 +1423,7 @@ var ThemeGraphTextFormat = exports.ThemeGraphTextFormat = _SuperMap2.default.The
  * @property {string} STACK_BAR3D  STACK_BAR3D
  * @property {string} STEP  STEP
  */
-var ThemeGraphType = exports.ThemeGraphType = _SuperMap2.default.ThemeGraphType = {
+var ThemeGraphType = exports.ThemeGraphType = _SuperMap.SuperMap.ThemeGraphType = {
   AREA: "AREA",
   BAR: "BAR",
   BAR3D: "BAR3D",
@@ -387,7 +1448,7 @@ var ThemeGraphType = exports.ThemeGraphType = _SuperMap2.default.ThemeGraphType 
  * @property {string} NONE  NONE, 没有显示
  * @property {string} YAXES  YAXES. 显示Y轴的文本
  */
-var GraphAxesTextDisplayMode = exports.GraphAxesTextDisplayMode = _SuperMap2.default.GraphAxesTextDisplayMode = {
+var GraphAxesTextDisplayMode = exports.GraphAxesTextDisplayMode = _SuperMap.SuperMap.GraphAxesTextDisplayMode = {
   ALL: "ALL",
   NONE: "NONE",
   YAXES: "YAXES"
@@ -402,7 +1463,7 @@ var GraphAxesTextDisplayMode = exports.GraphAxesTextDisplayMode = _SuperMap2.def
  * @property {string} LOGARITHM  LOGARITHM
  * @property {string} SQUAREROOT  SQUAREROOT
  */
-var GraduatedMode = exports.GraduatedMode = _SuperMap2.default.GraduatedMode = {
+var GraduatedMode = exports.GraduatedMode = _SuperMap.SuperMap.GraduatedMode = {
   CONSTANT: "CONSTANT",
   LOGARITHM: "LOGARITHM",
   SQUAREROOT: "SQUAREROOT"
@@ -420,7 +1481,7 @@ var GraduatedMode = exports.GraduatedMode = _SuperMap2.default.GraduatedMode = {
  * @property {string} SQUAREROOT  SQUAREROOT
  * @property {string} STDDEVIATION  STDDEVIATION
  */
-var RangeMode = exports.RangeMode = _SuperMap2.default.RangeMode = {
+var RangeMode = exports.RangeMode = _SuperMap.SuperMap.RangeMode = {
   CUSTOMINTERVAL: "CUSTOMINTERVAL",
   EQUALINTERVAL: "EQUALINTERVAL",
   LOGARITHM: "LOGARITHM",
@@ -441,7 +1502,7 @@ var RangeMode = exports.RangeMode = _SuperMap2.default.RangeMode = {
  * @property {string} RANGE  RANGE
  * @property {string} UNIQUE  UNIQUE
  */
-var ThemeType = exports.ThemeType = _SuperMap2.default.ThemeType = {
+var ThemeType = exports.ThemeType = _SuperMap.SuperMap.ThemeType = {
   DOTDENSITY: "DOTDENSITY",
   GRADUATEDSYMBOL: "GRADUATEDSYMBOL",
   GRAPH: "GRAPH",
@@ -483,7 +1544,7 @@ var ThemeType = exports.ThemeType = _SuperMap2.default.ThemeType = {
  * @property {string} YELLOW_RED  YELLOWRED
  * @property {string} YELLOW_WHITE  YELLOWWHITE
  */
-var ColorGradientType = exports.ColorGradientType = _SuperMap2.default.ColorGradientType = {
+var ColorGradientType = exports.ColorGradientType = _SuperMap.SuperMap.ColorGradientType = {
   BLACK_WHITE: "BLACKWHITE",
   BLUE_BLACK: "BLUEBLACK",
   BLUE_RED: "BLUERED",
@@ -531,7 +1592,7 @@ var ColorGradientType = exports.ColorGradientType = _SuperMap2.default.ColorGrad
  * @property {string} MIDDLECENTER  MIDDLECENTER
  * @property {string} MIDDLERIGHT  MIDDLERIGHT
  */
-var TextAlignment = exports.TextAlignment = _SuperMap2.default.TextAlignment = {
+var TextAlignment = exports.TextAlignment = _SuperMap.SuperMap.TextAlignment = {
   TOPLEFT: "TOPLEFT",
   TOPCENTER: "TOPCENTER",
   TOPRIGHT: "TOPRIGHT",
@@ -557,7 +1618,7 @@ var TextAlignment = exports.TextAlignment = _SuperMap2.default.TextAlignment = {
  * @property {string} CONICAL  CONICAL
  * @property {string} SQUARE  SQUARE
  */
-var FillGradientMode = exports.FillGradientMode = _SuperMap2.default.FillGradientMode = {
+var FillGradientMode = exports.FillGradientMode = _SuperMap.SuperMap.FillGradientMode = {
   NONE: "NONE",
   LINEAR: "LINEAR",
   RADIAL: "RADIAL",
@@ -578,7 +1639,7 @@ var FillGradientMode = exports.FillGradientMode = _SuperMap2.default.FillGradien
  * @property {string} RB_TO_LT  RIGHT_BOTTOM_TO_LEFT_TOP
  * @property {string} RT_TO_LB  RIGHT_TOP_TO_LEFT_BOTTOM
  */
-var AlongLineDirection = exports.AlongLineDirection = _SuperMap2.default.AlongLineDirection = {
+var AlongLineDirection = exports.AlongLineDirection = _SuperMap.SuperMap.AlongLineDirection = {
   NORMAL: "ALONG_LINE_NORMAL",
   LB_TO_RT: "LEFT_BOTTOM_TO_RIGHT_TOP",
   LT_TO_RB: "LEFT_TOP_TO_RIGHT_BOTTOM",
@@ -599,7 +1660,7 @@ var AlongLineDirection = exports.AlongLineDirection = _SuperMap2.default.AlongLi
  * @property {string} ROUNDRECT  ROUNDRECT
  * @property {string} TRIANGLE  TRIANGLE
  */
-var LabelBackShape = exports.LabelBackShape = _SuperMap2.default.LabelBackShape = {
+var LabelBackShape = exports.LabelBackShape = _SuperMap.SuperMap.LabelBackShape = {
   DIAMOND: "DIAMOND",
   ELLIPSE: "ELLIPSE",
   MARKER: "MARKER",
@@ -618,7 +1679,7 @@ var LabelBackShape = exports.LabelBackShape = _SuperMap2.default.LabelBackShape 
  * @property {string} NONE  NONE
  * @property {string} OMIT  OMIT
  */
-var LabelOverLengthMode = exports.LabelOverLengthMode = _SuperMap2.default.LabelOverLengthMode = {
+var LabelOverLengthMode = exports.LabelOverLengthMode = _SuperMap.SuperMap.LabelOverLengthMode = {
   NEWLINE: "NEWLINE",
   NONE: "NONE",
   OMIT: "OMIT"
@@ -636,7 +1697,7 @@ var LabelOverLengthMode = exports.LabelOverLengthMode = _SuperMap2.default.Label
  * @property {string} SOURTH  SOURTH
  * @property {string} WEST  WEST
  */
-var DirectionType = exports.DirectionType = _SuperMap2.default.DirectionType = {
+var DirectionType = exports.DirectionType = _SuperMap.SuperMap.DirectionType = {
   EAST: "EAST",
   NONE: "NONE",
   NORTH: "NORTH",
@@ -655,7 +1716,7 @@ var DirectionType = exports.DirectionType = _SuperMap2.default.DirectionType = {
  * @property {string} NONE  NONE
  * @property {string} RIGHT  RIGHT
  */
-var SideType = exports.SideType = _SuperMap2.default.SideType = {
+var SideType = exports.SideType = _SuperMap.SuperMap.SideType = {
   LEFT: "LEFT",
   MIDDLE: "MIDDLE",
   NONE: "NONE",
@@ -673,7 +1734,7 @@ var SideType = exports.SideType = _SuperMap2.default.SideType = {
  * @property {string} NULL  NULL
  * @property {string} OPTIONALCENTER  OPTIONALCENTER
  */
-var SupplyCenterType = exports.SupplyCenterType = _SuperMap2.default.SupplyCenterType = {
+var SupplyCenterType = exports.SupplyCenterType = _SuperMap.SuperMap.SupplyCenterType = {
   FIXEDCENTER: "FIXEDCENTER",
   NULL: "NULL",
   OPTIONALCENTER: "OPTIONALCENTER"
@@ -692,7 +1753,7 @@ var SupplyCenterType = exports.SupplyCenterType = _SuperMap2.default.SupplyCente
  * @property {string} NONE  NONE
  * @property {string} RIGHT  RIGHT
  */
-var TurnType = exports.TurnType = _SuperMap2.default.TurnType = {
+var TurnType = exports.TurnType = _SuperMap.SuperMap.TurnType = {
   AHEAD: "AHEAD",
   BACK: "BACK",
   END: "END",
@@ -709,7 +1770,7 @@ var TurnType = exports.TurnType = _SuperMap2.default.TurnType = {
  * @property {string} FLAT  FLAT
  * @property {string} ROUND  ROUND
  */
-var BufferEndType = exports.BufferEndType = _SuperMap2.default.BufferEndType = {
+var BufferEndType = exports.BufferEndType = _SuperMap.SuperMap.BufferEndType = {
   FLAT: "FLAT",
   ROUND: "ROUND"
 };
@@ -727,7 +1788,7 @@ var BufferEndType = exports.BufferEndType = _SuperMap2.default.BufferEndType = {
  * @property {string} UPDATE  UPDATE
  * @property {string} XOR  XOR
  */
-var OverlayOperationType = exports.OverlayOperationType = _SuperMap2.default.OverlayOperationType = {
+var OverlayOperationType = exports.OverlayOperationType = _SuperMap.SuperMap.OverlayOperationType = {
   CLIP: "CLIP",
   ERASE: "ERASE",
   IDENTITY: "IDENTITY",
@@ -746,7 +1807,7 @@ var OverlayOperationType = exports.OverlayOperationType = _SuperMap2.default.Ove
  * @property {string} BSPLINE  BSPLINE
  * @property {string} POLISH  POLISH
  */
-var SmoothMethod = exports.SmoothMethod = _SuperMap2.default.SmoothMethod = {
+var SmoothMethod = exports.SmoothMethod = _SuperMap.SuperMap.SmoothMethod = {
   BSPLINE: "BSPLINE",
   POLISH: "POLISH"
 };
@@ -760,7 +1821,7 @@ var SmoothMethod = exports.SmoothMethod = _SuperMap2.default.SmoothMethod = {
  * @property {string} ISOLINE  ISOLINE
  * @property {string} ISOREGION  ISOREGION
  */
-var SurfaceAnalystMethod = exports.SurfaceAnalystMethod = _SuperMap2.default.SurfaceAnalystMethod = {
+var SurfaceAnalystMethod = exports.SurfaceAnalystMethod = _SuperMap.SuperMap.SurfaceAnalystMethod = {
   ISOLINE: "ISOLINE",
   ISOREGION: "ISOREGION"
 };
@@ -774,7 +1835,7 @@ var SurfaceAnalystMethod = exports.SurfaceAnalystMethod = _SuperMap2.default.Sur
  * @property {string} DATASET_ONLY  DATASET_ONLY
  * @property {string} RECORDSET_ONLY  RECORDSET_ONLY
  */
-var DataReturnMode = exports.DataReturnMode = _SuperMap2.default.DataReturnMode = {
+var DataReturnMode = exports.DataReturnMode = _SuperMap.SuperMap.DataReturnMode = {
   DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
   DATASET_ONLY: "DATASET_ONLY",
   RECORDSET_ONLY: "RECORDSET_ONLY"
@@ -790,7 +1851,7 @@ var DataReturnMode = exports.DataReturnMode = _SuperMap2.default.DataReturnMode 
  * @property {string} UPDATE  update
  * @property {string} DELETE  delete
  */
-var EditType = exports.EditType = _SuperMap2.default.EditType = {
+var EditType = exports.EditType = _SuperMap.SuperMap.EditType = {
   ADD: "add",
   UPDATE: "update",
   DELETE: "delete"
@@ -807,7 +1868,7 @@ var EditType = exports.EditType = _SuperMap2.default.EditType = {
  * @property {string} LESS_WALK  LESS_WALK
  * @property {string} MIN_DISTANCE  MIN_DISTANCE
  */
-var TransferTactic = exports.TransferTactic = _SuperMap2.default.TransferTactic = {
+var TransferTactic = exports.TransferTactic = _SuperMap.SuperMap.TransferTactic = {
   LESS_TIME: "LESS_TIME",
   LESS_TRANSFER: "LESS_TRANSFER",
   LESS_WALK: "LESS_WALK",
@@ -825,7 +1886,7 @@ var TransferTactic = exports.TransferTactic = _SuperMap2.default.TransferTactic 
  * @property {string} NO_SUBWAY  NO_SUBWAY
  * @property {string} NONE  NONE
  */
-var TransferPreference = exports.TransferPreference = _SuperMap2.default.TransferPreference = {
+var TransferPreference = exports.TransferPreference = _SuperMap.SuperMap.TransferPreference = {
   BUS: "BUS",
   SUBWAY: "SUBWAY",
   NO_SUBWAY: "NO_SUBWAY",
@@ -841,7 +1902,7 @@ var TransferPreference = exports.TransferPreference = _SuperMap2.default.Transfe
  * @property {string} GRID  GRID
  * @property {string} POINT  POINT
  */
-var GridType = exports.GridType = _SuperMap2.default.GridType = {
+var GridType = exports.GridType = _SuperMap.SuperMap.GridType = {
   CROSS: "CROSS",
   GRID: "GRID",
   POINT: "POINT"
@@ -859,7 +1920,7 @@ var GridType = exports.GridType = _SuperMap2.default.GridType = {
  * @property {string} CMYK  CMYK
  * @property {string} RGB  RGB
  */
-var ColorSpaceType = exports.ColorSpaceType = _SuperMap2.default.ColorSpaceType = {
+var ColorSpaceType = exports.ColorSpaceType = _SuperMap.SuperMap.ColorSpaceType = {
   CMYK: "CMYK",
   RGB: "RGB"
 };
@@ -874,7 +1935,7 @@ var ColorSpaceType = exports.ColorSpaceType = _SuperMap2.default.ColorSpaceType 
  * @property {string} WFS  WFS
  * @property {string} CUSTOM  CUSTOM
  */
-var LayerType = exports.LayerType = _SuperMap2.default.LayerType = {
+var LayerType = exports.LayerType = _SuperMap.SuperMap.LayerType = {
   UGC: "UGC",
   WMS: "WMS",
   WFS: "WFS",
@@ -892,7 +1953,7 @@ var LayerType = exports.LayerType = _SuperMap2.default.LayerType = {
  * @property {string} GRID  GRID
  * @property {string} IMAGE  IMAGE
  */
-var UGCLayerType = exports.UGCLayerType = _SuperMap2.default.UGCLayerType = {
+var UGCLayerType = exports.UGCLayerType = _SuperMap.SuperMap.UGCLayerType = {
   THEME: "THEME",
   VECTOR: "VECTOR",
   GRID: "GRID",
@@ -912,7 +1973,7 @@ var UGCLayerType = exports.UGCLayerType = _SuperMap2.default.UGCLayerType = {
  * @property {string} SUM  SUM, 统计所选字段的总和
  * @property {string} VARIANCE  VARIANCE, 统计所选字段的方差
  */
-var StatisticMode = exports.StatisticMode = _SuperMap2.default.StatisticMode = {
+var StatisticMode = exports.StatisticMode = _SuperMap.SuperMap.StatisticMode = {
   AVERAGE: "AVERAGE",
   MAX: "MAX",
   MIN: "MIN",
@@ -937,7 +1998,7 @@ var StatisticMode = exports.StatisticMode = _SuperMap2.default.StatisticMode = {
  * @property {string} UBIT24  UBIT24, 每个像元用24个比特(即3个字节)来表示
  * @property {string} UBIT32  UBIT32, 每个像元用32个比特(即4个字节)来表示
  */
-var PixelFormat = exports.PixelFormat = _SuperMap2.default.PixelFormat = {
+var PixelFormat = exports.PixelFormat = _SuperMap.SuperMap.PixelFormat = {
   BIT16: "BIT16",
   BIT32: "BIT32",
   BIT64: "BIT64",
@@ -960,7 +2021,7 @@ var PixelFormat = exports.PixelFormat = _SuperMap2.default.PixelFormat = {
  * @property {string} NONE  NONE, 不进行查找，使用所有的输入点进行内插分析
  * @property {string} QUADTREE  QUADTREE, 使用 QUADTREE 方式查找参与内插分析的点，仅对样条（RBF）插值和普通克吕金（Kriging）有用
  */
-var SearchMode = exports.SearchMode = _SuperMap2.default.SearchMode = {
+var SearchMode = exports.SearchMode = _SuperMap.SuperMap.SearchMode = {
   KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
   KDTREE_FIXED_RADIUS: "KDTREE_FIXED_RADIUS",
   NONE: "NONE",
@@ -976,7 +2037,7 @@ var SearchMode = exports.SearchMode = _SuperMap2.default.SearchMode = {
  * @property {string} SimpleKriging  SimpleKriging, 简单克吕金插值法
  * @property {string} UniversalKriging  UniversalKriging, 泛克吕金插值法
  */
-var InterpolationAlgorithmType = exports.InterpolationAlgorithmType = _SuperMap2.default.InterpolationAlgorithmType = {
+var InterpolationAlgorithmType = exports.InterpolationAlgorithmType = _SuperMap.SuperMap.InterpolationAlgorithmType = {
   KRIGING: "KRIGING",
   SimpleKriging: "SimpleKriging",
   UniversalKriging: "UniversalKriging"
@@ -991,7 +2052,7 @@ var InterpolationAlgorithmType = exports.InterpolationAlgorithmType = _SuperMap2
  * @property {string} GAUSSIAN  GAUSSIAN,  高斯函数（Gaussian Variogram Mode）
  * @property {string} SPHERICAL  SPHERICAL, 球型函数（Spherical Variogram Mode）
  */
-var VariogramMode = exports.VariogramMode = _SuperMap2.default.VariogramMode = {
+var VariogramMode = exports.VariogramMode = _SuperMap.SuperMap.VariogramMode = {
   EXPONENTIAL: "EXPONENTIAL",
   GAUSSIAN: "GAUSSIAN",
   SPHERICAL: "SPHERICAL"
@@ -1005,7 +2066,7 @@ var VariogramMode = exports.VariogramMode = _SuperMap2.default.VariogramMode = {
  * @property {string} EXP1  EXP1, 阶数为1
  * @property {string} EXP2  EXP2, 阶数为2
  */
-var Exponent = exports.Exponent = _SuperMap2.default.Exponent = {
+var Exponent = exports.Exponent = _SuperMap.SuperMap.Exponent = {
   EXP1: "EXP1",
   EXP2: "EXP2"
 };
@@ -1022,7 +2083,7 @@ var Exponent = exports.Exponent = _SuperMap2.default.Exponent = {
  * @property {string} SERVER  SERVER
  * @property {string} WEB  WEB
  */
-var ClientType = exports.ClientType = _SuperMap2.default.ClientType = {
+var ClientType = exports.ClientType = _SuperMap.SuperMap.ClientType = {
   IP: "IP",
   REFERER: "Referer",
   REQUESTIP: "RequestIP",
@@ -1044,7 +2105,7 @@ var ClientType = exports.ClientType = _SuperMap2.default.ClientType = {
  * @property {string} LINE  Line
  * @property {string} RING  Ring
  */
-var ChartType = exports.ChartType = _SuperMap2.default.ChartType = {
+var ChartType = exports.ChartType = _SuperMap.SuperMap.ChartType = {
   BAR: "Bar",
   BAR3D: "Bar3D",
   CIRCLE: "Circle",
@@ -1062,7 +2123,7 @@ var ChartType = exports.ChartType = _SuperMap2.default.ChartType = {
  * @property {string} CLIP  clip
  * @property {string} INTERSECT  intersect
  */
-var ClipAnalystMode = exports.ClipAnalystMode = _SuperMap2.default.ClipAnalystMode = {
+var ClipAnalystMode = exports.ClipAnalystMode = _SuperMap.SuperMap.ClipAnalystMode = {
   CLIP: "clip",
   INTERSECT: "intersect"
 };
@@ -1080,7 +2141,7 @@ var ClipAnalystMode = exports.ClipAnalystMode = _SuperMap2.default.ClipAnalystMo
  * @property {string} SQUAREYARD   SquareYard
  * @property {string} SQUAREMILE   SquareMile
  */
-var AnalystAreaUnit = exports.AnalystAreaUnit = _SuperMap2.default.AnalystAreaUnit = {
+var AnalystAreaUnit = exports.AnalystAreaUnit = _SuperMap.SuperMap.AnalystAreaUnit = {
   "SQUAREMETER": "SquareMeter",
   "SQUAREKILOMETER": "SquareKiloMeter",
   "HECTARE": "Hectare",
@@ -1101,7 +2162,7 @@ var AnalystAreaUnit = exports.AnalystAreaUnit = _SuperMap2.default.AnalystAreaUn
  * @property {string} FOOT   Foot
  * @property {string} MILE   Mile
  */
-var AnalystSizeUnit = exports.AnalystSizeUnit = _SuperMap2.default.AnalystSizeUnit = {
+var AnalystSizeUnit = exports.AnalystSizeUnit = _SuperMap.SuperMap.AnalystSizeUnit = {
   "METER": "Meter",
   "KILOMETER": "Kilometer",
   "YARD": "Yard",
@@ -1120,7 +2181,7 @@ var AnalystSizeUnit = exports.AnalystSizeUnit = _SuperMap2.default.AnalystSizeUn
  * @property {string} VARIANCE   variance
  * @property {string} STDDEVIATION   stdDeviation
  */
-var StatisticAnalystMode = exports.StatisticAnalystMode = _SuperMap2.default.StatisticAnalystMode = {
+var StatisticAnalystMode = exports.StatisticAnalystMode = _SuperMap.SuperMap.StatisticAnalystMode = {
   "MAX": "max",
   "MIN": "min",
   "AVERAGE": "average",
@@ -1136,7 +2197,7 @@ var StatisticAnalystMode = exports.StatisticAnalystMode = _SuperMap2.default.Sta
  * @property {string} SUMMARYMESH   SUMMARYMESH
  * @property {string} SUMMARYREGION SUMMARYREGION
  */
-var SummaryType = exports.SummaryType = _SuperMap2.default.SummaryType = {
+var SummaryType = exports.SummaryType = _SuperMap.SuperMap.SummaryType = {
   "SUMMARYMESH": "SUMMARYMESH",
   "SUMMARYREGION": "SUMMARYREGION"
 };
@@ -1153,7 +2214,7 @@ var SummaryType = exports.SummaryType = _SuperMap2.default.SummaryType = {
  * @property {string} LineNoOverlapWith  LineNoOverlapWith
  * @property {string} PointNoIdentical  PointNoIdentical
  */
-var TopologyValidatorRule = exports.TopologyValidatorRule = _SuperMap2.default.TopologyValidatorRule = {
+var TopologyValidatorRule = exports.TopologyValidatorRule = _SuperMap.SuperMap.TopologyValidatorRule = {
   RegionNoOverlap: "RegionNoOverlap",
   RegionNoOverlapWith: "RegionNoOverlapWith",
   RegionContainedByRegion: "RegionContainedByRegion",
@@ -1164,7 +2225,7 @@ var TopologyValidatorRule = exports.TopologyValidatorRule = _SuperMap2.default.T
 };
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1173,6 +2234,7 @@ var TopologyValidatorRule = exports.TopologyValidatorRule = _SuperMap2.default.T
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.ProcessingServiceBase = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1180,15 +2242,13 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _CommonServiceBase2 = __webpack_require__(5);
 
-var _CommonServiceBase2 = __webpack_require__(4);
+var _FetchRequest = __webpack_require__(6);
 
-var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
+var _Util = __webpack_require__(1);
 
-var _FetchRequest = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _SecurityManager = __webpack_require__(9);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1208,7 +2268,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
-var ProcessingServiceBase = function (_CommonServiceBase) {
+var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonServiceBase) {
     _inherits(ProcessingServiceBase, _CommonServiceBase);
 
     function ProcessingServiceBase(url, options) {
@@ -1298,7 +2358,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
     }, {
         key: 'serviceProcessCompleted',
         value: function serviceProcessCompleted(result, seconds) {
-            result = _SuperMap2.default.Util.transformResult(result);
+            result = _Util.Util.transformResult(result);
             seconds = seconds || 1000;
             var me = this;
             if (result) {
@@ -1336,31 +2396,17 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
             if (url.indexOf('.json') === -1) {
                 url += '.json';
             }
-            if (_SuperMap2.default.SecurityManager.getToken(url)) {
-                url += '?token=' + _SuperMap2.default.SecurityManager.getToken(url);
+            if (_SecurityManager.SecurityManager.getToken(url)) {
+                url += '?token=' + _SecurityManager.SecurityManager.getToken(url);
             }
             return url;
         }
     }]);
 
     return ProcessingServiceBase;
-}(_CommonServiceBase3.default);
+}(_CommonServiceBase2.CommonServiceBase);
 
-exports.default = ProcessingServiceBase;
-
-
-_SuperMap2.default.ProcessingServiceBase = ProcessingServiceBase;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var SuperMap = window.SuperMap = window.SuperMap || {};
-SuperMap.REST = SuperMap.REST || {};
-module.exports = SuperMap;
+_SuperMap.SuperMap.ProcessingServiceBase = ProcessingServiceBase;
 
 /***/ }),
 /* 4 */
@@ -1370,24 +2416,43 @@ module.exports = SuperMap;
 
 
 Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var SuperMap = window.SuperMap = window.SuperMap || {};
+SuperMap.REST = SuperMap.REST || {};
+exports.SuperMap = SuperMap;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.CommonServiceBase = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _FetchRequest = __webpack_require__(6);
 
-var _FetchRequest = __webpack_require__(5);
+var _Events = __webpack_require__(8);
 
-__webpack_require__(16);
+var _Credential = __webpack_require__(16);
 
-__webpack_require__(14);
+var _SecurityManager = __webpack_require__(9);
 
-__webpack_require__(38);
+var _Util = __webpack_require__(1);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _REST = __webpack_require__(2);
+
+var _JSON = __webpack_require__(22);
+
+var _BaseTypes = __webpack_require__(7);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1400,7 +2465,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-var CommonServiceBase = function () {
+var CommonServiceBase = exports.CommonServiceBase = function () {
     function CommonServiceBase(url, options) {
         _classCallCheck(this, CommonServiceBase);
 
@@ -1422,7 +2487,7 @@ var CommonServiceBase = function () {
 
         var me = this;
 
-        if (_SuperMap2.default.Util.isArray(url)) {
+        if (_Util.Util.isArray(url)) {
             me.urls = url;
             me.length = url.length;
             me.totalTimes = me.length;
@@ -1437,22 +2502,22 @@ var CommonServiceBase = function () {
             me.url = url;
         }
 
-        if (_SuperMap2.default.Util.isArray(url) && !me.isServiceSupportPolling()) {
+        if (_Util.Util.isArray(url) && !me.isServiceSupportPolling()) {
             me.url = url[0];
             me.totalTimes = 1;
         }
 
-        me.serverType = me.serverType || _SuperMap2.default.ServerType.ISERVER;
+        me.serverType = me.serverType || _REST.ServerType.ISERVER;
 
         options = options || {};
 
         if (options) {
-            _SuperMap2.default.Util.extend(this, options);
+            _Util.Util.extend(this, options);
         }
 
-        me.isInTheSameDomain = _SuperMap2.default.Util.isInTheSameDomain(me.url);
+        me.isInTheSameDomain = _Util.Util.isInTheSameDomain(me.url);
 
-        me.events = new _SuperMap2.default.Events(me, null, me.EVENT_TYPES, true);
+        me.events = new _Events.Events(me, null, me.EVENT_TYPES, true);
         if (me.eventListeners instanceof Object) {
             me.events.on(me.eventListeners);
         }
@@ -1468,7 +2533,7 @@ var CommonServiceBase = function () {
         key: 'destroy',
         value: function destroy() {
             var me = this;
-            if (_SuperMap2.default.Util.isArray(me.urls)) {
+            if (_Util.Util.isArray(me.urls)) {
                 me.urls = null;
                 me.index = null;
                 me.length = null;
@@ -1549,25 +2614,25 @@ var CommonServiceBase = function () {
                 credential = void 0,
                 value = void 0;
             switch (this.serverType) {
-                case _SuperMap2.default.ServerType.ISERVER:
-                    value = _SuperMap2.default.SecurityManager.getToken(keyUrl);
-                    credential = value ? new _SuperMap2.default.Credential(value, "token") : null;
+                case _REST.ServerType.ISERVER:
+                    value = _SecurityManager.SecurityManager.getToken(keyUrl);
+                    credential = value ? new _Credential.Credential(value, "token") : null;
                     break;
-                case _SuperMap2.default.ServerType.IPORTAL:
-                    value = _SuperMap2.default.SecurityManager.getToken(keyUrl);
-                    credential = value ? new _SuperMap2.default.Credential(value, "token") : null;
+                case _REST.ServerType.IPORTAL:
+                    value = _SecurityManager.SecurityManager.getToken(keyUrl);
+                    credential = value ? new _Credential.Credential(value, "token") : null;
                     if (!credential) {
-                        value = _SuperMap2.default.SecurityManager.getKey(keyUrl);
-                        credential = value ? new _SuperMap2.default.Credential(value, "key") : null;
+                        value = _SecurityManager.SecurityManager.getKey(keyUrl);
+                        credential = value ? new _Credential.Credential(value, "key") : null;
                     }
                     break;
-                case _SuperMap2.default.ServerType.ONLINE:
-                    value = _SuperMap2.default.SecurityManager.getKey(keyUrl);
-                    credential = value ? new _SuperMap2.default.Credential(value, "key") : null;
+                case _REST.ServerType.ONLINE:
+                    value = _SecurityManager.SecurityManager.getKey(keyUrl);
+                    credential = value ? new _Credential.Credential(value, "key") : null;
                     break;
                 default:
-                    value = _SuperMap2.default.SecurityManager.getToken(keyUrl);
-                    credential = value ? new _SuperMap2.default.Credential(value, "token") : null;
+                    value = _SecurityManager.SecurityManager.getToken(keyUrl);
+                    credential = value ? new _Credential.Credential(value, "token") : null;
                     break;
             }
             return credential;
@@ -1620,7 +2685,7 @@ var CommonServiceBase = function () {
             me.url = me.urls[me.index];
             url = url.replace(re, re.exec(me.url)[0]);
             me.options.url = url;
-            me.options.isInTheSameDomain = _SuperMap2.default.Util.isInTheSameDomain(url);
+            me.options.isInTheSameDomain = _Util.Util.isInTheSameDomain(url);
             me._commit(me.options);
         }
 
@@ -1674,7 +2739,7 @@ var CommonServiceBase = function () {
     }, {
         key: 'serviceProcessCompleted',
         value: function serviceProcessCompleted(result) {
-            result = _SuperMap2.default.Util.transformResult(result);
+            result = _Util.Util.transformResult(result);
             this.events.triggerEvent("processCompleted", { result: result });
         }
 
@@ -1687,7 +2752,7 @@ var CommonServiceBase = function () {
     }, {
         key: 'serviceProcessFailed',
         value: function serviceProcessFailed(result) {
-            result = _SuperMap2.default.Util.transformResult(result);
+            result = _Util.Util.transformResult(result);
             var error = result.error || result;
             this.events.triggerEvent("processFailed", { error: error });
         }
@@ -1696,7 +2761,7 @@ var CommonServiceBase = function () {
         value: function _commit(options) {
             if (options.method === "POST" || options.method === "PUT") {
                 if (options.params) {
-                    options.url = _SuperMap2.default.Util.urlAppend(options.url, _SuperMap2.default.Util.getParameterString(options.params || {}));
+                    options.url = _Util.Util.urlAppend(options.url, _Util.Util.getParameterString(options.params || {}));
                 }
                 options.params = options.data;
             }
@@ -1713,7 +2778,7 @@ var CommonServiceBase = function () {
             }).then(function (text) {
                 var result = text;
                 if (typeof text === "string") {
-                    result = new _SuperMap2.default.Format.JSON().read(text);
+                    result = new _JSON.JSONFormat().read(text);
                 }
                 if (!result || result.error || result.code >= 300 && result.code !== 304) {
                     if (result && result.error) {
@@ -1723,11 +2788,11 @@ var CommonServiceBase = function () {
                     }
                 }
                 if (result.error) {
-                    var failure = options.scope ? _SuperMap2.default.Function.bind(options.failure, options.scope) : options.failure;
+                    var failure = options.scope ? _BaseTypes.FunctionExt.bind(options.failure, options.scope) : options.failure;
                     failure(result);
                 } else {
                     result.succeed = result.succeed == undefined ? true : result.succeed;
-                    var success = options.scope ? _SuperMap2.default.Function.bind(options.success, options.scope) : options.success;
+                    var success = options.scope ? _BaseTypes.FunctionExt.bind(options.success, options.scope) : options.success;
                     success(result);
                 }
             });
@@ -1737,13 +2802,10 @@ var CommonServiceBase = function () {
     return CommonServiceBase;
 }();
 
-exports.default = CommonServiceBase;
-
-
-_SuperMap2.default.CommonServiceBase = CommonServiceBase;
+_SuperMap.SuperMap.CommonServiceBase = CommonServiceBase;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1756,26 +2818,26 @@ exports.FetchRequest = exports.Support = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(39);
+__webpack_require__(42);
 
-var _whatwgFetchImportable = __webpack_require__(46);
+var _whatwgFetchImportable = __webpack_require__(49);
 
 var _whatwgFetchImportable2 = _interopRequireDefault(_whatwgFetchImportable);
 
-var _fetchJsonp2 = __webpack_require__(40);
+var _fetchJsonp2 = __webpack_require__(43);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Util = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Support = exports.Support = _SuperMap2.default.Support = _SuperMap2.default.Support || {
+var Support = exports.Support = _SuperMap.SuperMap.Support = _SuperMap.SuperMap.Support || {
     cors: window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()
 };
-var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
+var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
     commit: function commit(method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -1796,12 +2858,12 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
         options = options || {};
         var type = 'GET';
         url = this._processUrl(url, options);
-        url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
+        url = _Util.Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.urlIsLong(url)) {
-            if (_SuperMap2.default.Util.isInTheSameDomain(url) || Support.cors || options.proxy) {
+            if (_Util.Util.isInTheSameDomain(url) || Support.cors || options.proxy) {
                 return this._fetch(url, params, options, type);
             }
-            if (!_SuperMap2.default.Util.isInTheSameDomain(url)) {
+            if (!_Util.Util.isInTheSameDomain(url)) {
                 url = url.replace('.json', '.jsonp');
                 return this._fetchJsonp(url, options);
             }
@@ -1813,7 +2875,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
         options = options || {};
         var type = 'DELETE';
         url = this._processUrl(url, options);
-        url = _SuperMap2.default.Util.urlAppend(url, this._getParameterString(params || {}));
+        url = _Util.Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.urlIsLong(url) && Support.cors) {
             return this._fetch(url, params, options, type);
         }
@@ -1954,7 +3016,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap2.default.FetchRequest = {
 };
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1966,10 +3028,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = undefined;
 
 var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1984,7 +3042,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param C - {Object} the class that inherits
  * @param P - {Object} the superclass to inherit from
  */
-_SuperMap2.default.inherit = function (C, P) {
+_SuperMap.SuperMap.inherit = function (C, P) {
     var F = function F() {};
     F.prototype = P.prototype;
     C.prototype = new F();
@@ -1994,7 +3052,7 @@ _SuperMap2.default.inherit = function (C, P) {
         if (typeof o === "function") {
             o = o.prototype;
         }
-        _SuperMap2.default.Util.extend(C.prototype, o);
+        _SuperMap.SuperMap.Util.extend(C.prototype, o);
     }
 };
 
@@ -2003,7 +3061,7 @@ _SuperMap2.default.inherit = function (C, P) {
  * @memberOf SuperMap
  * @param ...mixins {Class|Object}继承的类
  */
-_SuperMap2.default.mixin = function () {
+_SuperMap.SuperMap.mixin = function () {
     for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
         mixins[_key] = arguments[_key];
     }
@@ -2045,7 +3103,7 @@ _SuperMap2.default.mixin = function () {
  * @namespace
  * @description 字符串操作的一系列常用扩展函数.
  */
-var StringExt = exports.StringExt = _SuperMap2.default.String = {
+var StringExt = exports.StringExt = _SuperMap.SuperMap.String = {
 
     /**
      * @description 判断目标字符串是否以指定的子字符串开头.
@@ -2168,7 +3226,7 @@ var StringExt = exports.StringExt = _SuperMap2.default.String = {
             }
         };
 
-        return template.replace(_SuperMap2.default.String.tokenRegEx, replacer);
+        return template.replace(_SuperMap.SuperMap.String.tokenRegEx, replacer);
     },
 
     /**
@@ -2197,7 +3255,7 @@ var StringExt = exports.StringExt = _SuperMap2.default.String = {
      * @returns {Boolean} 字符串包含唯一的数值,返回true;否则返回false.
      */
     isNumeric: function isNumeric(value) {
-        return _SuperMap2.default.String.numberRegEx.test(value);
+        return _SuperMap.SuperMap.String.numberRegEx.test(value);
     },
 
     /**
@@ -2206,7 +3264,7 @@ var StringExt = exports.StringExt = _SuperMap2.default.String = {
      * @returns {number|string} 如果能转换为数值则返回数值,否则返回字符串本身.
      */
     numericIf: function numericIf(value) {
-        return _SuperMap2.default.String.isNumeric(value) ? parseFloat(value) : value;
+        return _SuperMap.SuperMap.String.isNumeric(value) ? parseFloat(value) : value;
     }
 
 };
@@ -2217,7 +3275,7 @@ var StringExt = exports.StringExt = _SuperMap2.default.String = {
  * @namespace
  * @description 数值操作的一系列常用扩展函数.
  */
-var NumberExt = exports.NumberExt = _SuperMap2.default.Number = {
+var NumberExt = exports.NumberExt = _SuperMap.SuperMap.Number = {
 
     /**
      *  @description 格式化数字时默认的小数点分隔符.
@@ -2257,8 +3315,8 @@ var NumberExt = exports.NumberExt = _SuperMap2.default.Number = {
      */
     format: function format(num, dec, tsep, dsep) {
         dec = typeof dec != "undefined" ? dec : 0;
-        tsep = typeof tsep != "undefined" ? tsep : _SuperMap2.default.Number.thousandsSeparator;
-        dsep = typeof dsep != "undefined" ? dsep : _SuperMap2.default.Number.decimalSeparator;
+        tsep = typeof tsep != "undefined" ? tsep : _SuperMap.SuperMap.Number.thousandsSeparator;
+        dsep = typeof dsep != "undefined" ? dsep : _SuperMap.SuperMap.Number.decimalSeparator;
 
         if (dec != null) {
             num = parseFloat(num.toFixed(dec));
@@ -2311,7 +3369,7 @@ if (!Number.prototype.limitSigDigs) {
  * @namespace
  * @description 函数操作的一系列常用扩展函数.
  */
-var FunctionExt = exports.FunctionExt = _SuperMap2.default.Function = {
+var FunctionExt = exports.FunctionExt = _SuperMap.SuperMap.Function = {
     /**
      * @description 绑定函数到对象.方便创建this的作用域.
      * @param func - {function} 输入函数.
@@ -2375,7 +3433,7 @@ var FunctionExt = exports.FunctionExt = _SuperMap2.default.Function = {
  * @namespace
  * @description 数组操作的一系列常用扩展函数.
  */
-var ArrayExt = exports.ArrayExt = _SuperMap2.default.Array = {
+var ArrayExt = exports.ArrayExt = _SuperMap.SuperMap.Array = {
 
     /**
      * @description 过滤数组.提供了ECMA-262标准中Array.prototype.filter函数的扩展.
@@ -2411,7 +3469,7 @@ var ArrayExt = exports.ArrayExt = _SuperMap2.default.Array = {
 };
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2420,1065 +3478,981 @@ var ArrayExt = exports.ArrayExt = _SuperMap2.default.Array = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Util = undefined;
+exports.Events = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Pixel = __webpack_require__(19);
 
-__webpack_require__(6);
+var _Event = __webpack_require__(17);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _BaseTypes = __webpack_require__(7);
 
-var Util = exports.Util = _SuperMap2.default.Util = _SuperMap2.default.Util || {};
-/**
- * @name Util
- * @memberOf SuperMap
- * @namespace
- * @description common工具类。
- */
+var _Util = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @description 复制源对象的所有属性到目标对象上，源对象上的没有定义的属性在目标对象上也不会被设置。
- * @example
- * 要复制SuperMap.Size对象的所有属性到自定义对象上，使用方法如下:
- *     var size = new SuperMap.Size(100, 100);
- *     var obj = {}；
- *     SuperMap.Util.extend(obj, size);
- * @param destination - {Object} 目标对象。
- * @param source - {Object} 源对象，其属性将被设置到目标对象上。
- * @return {Object} 目标对象。
+ * @class SuperMap.Events
+ * @classdesc 事件类。
+ * @param object - {Object} 当前事件对象被添加到的JS对象。
+ * @param element - {HTMLElement} 响应浏览器事件的dom元素。
+ * @param eventTypes - {Array<string>} 自定义应用事件的数组。
+ * @param fallThrough - {boolean} 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+ * @param options - {Object} 事件对象选项。
  */
+var Events = exports.Events = function () {
 
-_SuperMap2.default.Util.extend = function (destination, source) {
-    destination = destination || {};
-    if (source) {
-        for (var property in source) {
-            var value = source[property];
-            if (value !== undefined) {
-                destination[property] = value;
+    /**
+     * @member SuperMap.Events.prototype.extensionCount - {Object}
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.includeXY -{boolean}
+     * @description 判断是否让xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生xy属性。
+     *                可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
+     *                事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
+     *                设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
+     * @example
+     *  function named(evt) {
+     *        this.xy = this.object.events.getMousePosition(evt);
+     *  }
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.eventHandler -{function}
+     * @description 绑定在元素上的事件处理器对象。
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.element  -{HTMLElement}
+     * @description 接受浏览器事件的DOM节点。
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.listeners -{Object}
+     * @description Hashtable of Array(function): events listener functions
+     */
+    function Events(object, element, eventTypes, fallThrough, options) {
+        _classCallCheck(this, Events);
+
+        this.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
+        this.listeners = null;
+        this.object = null;
+        this.element = null;
+        this.eventTypes = null;
+        this.eventHandler = null;
+        this.fallThrough = null;
+        this.includeXY = false;
+        this.extensions = null;
+        this.extensionCount = null;
+        this.clearMouseListener = null;
+        this.CLASS_NAME = "SuperMap.Events";
+
+        _Util.Util.extend(this, options);
+        this.object = object;
+        this.fallThrough = fallThrough;
+        this.listeners = {};
+        this.extensions = {};
+        this.extensionCount = {};
+
+        this.eventTypes = [];
+        if (eventTypes != null) {
+            for (var i = 0, len = eventTypes.length; i < len; i++) {
+                this.addEventType(eventTypes[i]);
+            }
+        }
+
+        if (element != null) {
+            this.attachToElement(element);
+        }
+    }
+
+    /**
+     * @function SuperMap.Events.prototype.destroy
+     * @description 移除当前要素element上的所有事件监听和处理。
+     */
+
+    /**
+     * @member SuperMap.Events.prototype.clearMouseListener - {Object}
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.extensions - {Object}
+     * @description 事件扩展。Keys代表事件类型，values代表事件对象。
+     * @example
+     * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
+     *
+     *   SuperMap.Events.foostart = SuperMap.Class({
+     *       initialize: function(target) {
+     *           this.target = target;
+     *           this.target.register("click", this, this.doStuff, {extension: true});
+     *           // only required if extension provides more than one event type
+     *           this.target.extensions["foostart"] = true;
+     *           this.target.extensions["fooend"] = true;
+     *       },
+     *       destroy: function() {
+     *           var target = this.target;
+     *           target.unregister("click", this, this.doStuff);
+     *           delete this.target;
+     *           // only required if extension provides more than one event type
+     *           delete target.extensions["foostart"];
+     *           delete target.extensions["fooend"];
+     *       },
+     *       doStuff: function(evt) {
+     *           var propagate = true;
+     *           if (SuperMap.Event.element(evt).className === "foo") {
+     *               propagate = false;
+     *               var target = this.target;
+     *               target.triggerEvent("foostart");
+     *               window.setTimeout(function() {
+     *                   target.triggerEvent("fooend");
+     *               }, 1000);
+     *           }
+     *           return propagate;
+     *       }
+     *   });
+     *   // only required if extension provides more than one event type
+     *   SuperMap.Events.fooend = SuperMap.Events.foostart;
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.fallThrough -{boolean}
+     * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.eventTypes  -{Array<string>}
+     * @description 支持的事件类型列表。
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.object  -{Object}
+     * @description  发布应用程序事件的对象。
+     */
+
+
+    /**
+     * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
+     * @description 支持的事件。
+     * @constant
+     * @default [
+     "mouseover", "mouseout","mousedown", "mouseup", "mousemove",
+     "click", "dblclick", "rightclick", "dblrightclick","resize",
+     "focus", "blur","touchstart", "touchmove", "touchend","keydown",
+     "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
+     "MSGestureStart", "MSGestureChange", "MSGestureEnd","contextmenu"
+     ]
+     */
+
+
+    _createClass(Events, [{
+        key: 'destroy',
+        value: function destroy() {
+            for (var e in this.extensions) {
+                if (typeof this.extensions[e] !== "boolean") {
+                    this.extensions[e].destroy();
+                }
+            }
+            this.extensions = null;
+            if (this.element) {
+                _Event.Event.stopObservingElement(this.element);
+                if (this.element.hasScrollEvent) {
+                    _Event.Event.stopObserving(window, "scroll", this.clearMouseListener);
+                }
+            }
+            this.element = null;
+
+            this.listeners = null;
+            this.object = null;
+            this.eventTypes = null;
+            this.fallThrough = null;
+            this.eventHandler = null;
+        }
+
+        /**
+         * @function SuperMap.Events.prototype.addEventType
+         * @description 在此事件对象中添加新的事件类型，如果这个事件类型已经添加过了，则不做任何事情。
+         * @param eventName - {string} 事件名。
+         */
+
+    }, {
+        key: 'addEventType',
+        value: function addEventType(eventName) {
+            if (!this.listeners[eventName]) {
+                this.eventTypes.push(eventName);
+                this.listeners[eventName] = [];
             }
         }
 
         /**
-         * IE doesn't include the toString property when iterating over an object's
-         * properties with the for(property in object) syntax.  Explicitly check if
-         * the source has its own toString property.
+         * @function SuperMap.Events.prototype.attachToElement
+         * @description 给dom元素绑定浏览器事件。
+         * @param element - {HTMLDOMElement} 绑定浏览器事件的dom元素。
          */
 
-        /*
-         * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
-         * prototype object" when calling hawOwnProperty if the source object
-         * is an instance of window.Event.
-         */
-
-        var sourceIsEvt = typeof window.Event === "function" && source instanceof window.Event;
-
-        if (!sourceIsEvt && source.hasOwnProperty && source.hasOwnProperty("toString")) {
-            destination.toString = source.toString;
-        }
-    }
-    return destination;
-};
-/**
- * @description 对象拷贝。
- * @param des - {Object} 目标对象。
- * @param soc - {Object} 源对象
- */
-_SuperMap2.default.Util.copy = function (des, soc) {
-    des = des || {};
-    var v;
-    if (soc) {
-        for (var p in des) {
-            v = soc[p];
-            if (typeof v !== 'undefined') {
-                des[p] = v;
-            }
-        }
-    }
-};
-/**
- * @description 销毁对象，将其属性置空
- * @param obj - {Object} 目标对象。
- */
-_SuperMap2.default.Util.reset = function (obj) {
-    obj = obj || {};
-    for (var p in obj) {
-        if (obj.hasOwnProperty(p)) {
-            if (_typeof(obj[p]) === "object" && obj[p] instanceof Array) {
-                for (var i in obj[p]) {
-                    if (obj[p][i].destroy) {
-                        obj[p][i].destroy();
-                    }
-                }
-                obj[p].length = 0;
-            } else if (_typeof(obj[p]) === "object" && obj[p] instanceof Object) {
-                if (obj[p].destroy) {
-                    obj[p].destroy();
-                }
-            }
-            obj[p] = null;
-        }
-    }
-};
-
-/**
- * @description 获取HTML元素数组。
- * @param argument - {String | HTMLElement | Window}
- * @return {Array<HTMLElement>} HTML元素数组。
- */
-_SuperMap2.default.Util.getElement = function () {
-    var elements = [];
-
-    for (var i = 0, len = arguments.length; i < len; i++) {
-        var element = arguments[i];
-        if (typeof element === 'string') {
-            element = document.getElementById(element);
-        }
-        if (arguments.length === 1) {
-            return element;
-        }
-        elements.push(element);
-    }
-    return elements;
-};
-
-/**
- * @description instance of的跨浏览器实现。
- * @param o - {Object} 对象。
- * @return {boolean} 是否是页面元素
- */
-_SuperMap2.default.Util.isElement = function (o) {
-    return !!(o && o.nodeType === 1);
-};
-
-/**
- * @description 判断一个对象是否是数组。
- * @param a - {Object} 对象。
- * @return {boolean} 是否是数组。
- */
-_SuperMap2.default.Util.isArray = function (a) {
-    return Object.prototype.toString.call(a) === '[object Array]';
-};
-
-/**
- * @description 从数组中删除某一项。
- * @param array - {Array} 数组。
- * @param item - {Object} 数组中要删除的一项。
- * @return {Array} 执行删除操作后的数组。
- */
-_SuperMap2.default.Util.removeItem = function (array, item) {
-    for (var i = array.length - 1; i >= 0; i--) {
-        if (array[i] === item) {
-            array.splice(i, 1);
-            //break;more than once??
-        }
-    }
-    return array;
-};
-
-/**
- * @description 获取某对象再数组中的索引值。
- * @param array - {Array} 数组。
- * @param obj - {Object} 对象。
- * @return {number} 某对象再数组中的索引值。
- */
-_SuperMap2.default.Util.indexOf = function (array, obj) {
-    if (array == null) {
-        return -1;
-    } else {
-        // use the build-in function if available.
-        if (typeof array.indexOf === "function") {
-            return array.indexOf(obj);
-        } else {
-            for (var i = 0, len = array.length; i < len; i++) {
-                if (array[i] === obj) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-    }
-};
-
-/**
- * @description 修改某DOM元素的许多属性。
- * @param element - {HTMLElement} 待修改的DOM元素。
- * @param id - {string} DOM元素的id。
- * @param px - {SuperMap.Pixel} 包含DOM元素的style属性的left和top属性。
- * @param sz - {SuperMap.Size} 包含DOM元素的width和height属性。
- * @param position - {string} DOM元素的position属性。
- * @param border - {string} DOM元素的style属性的border属性。
- * @param overflow - {string} DOM元素的style属性的overflow属性。
- * @param opacity - {number} 不透明度值。取值范围为 (0.0 - 1.0)。
- */
-_SuperMap2.default.Util.modifyDOMElement = function (element, id, px, sz, position, border, overflow, opacity) {
-
-    if (id) {
-        element.id = id;
-    }
-    if (px) {
-        element.style.left = px.x + "px";
-        element.style.top = px.y + "px";
-    }
-    if (sz) {
-        element.style.width = sz.w + "px";
-        element.style.height = sz.h + "px";
-    }
-    if (position) {
-        element.style.position = position;
-    }
-    if (border) {
-        element.style.border = border;
-    }
-    if (overflow) {
-        element.style.overflow = overflow;
-    }
-    if (parseFloat(opacity) >= 0.0 && parseFloat(opacity) < 1.0) {
-        element.style.filter = 'alpha(opacity=' + opacity * 100 + ')';
-        element.style.opacity = opacity;
-    } else if (parseFloat(opacity) === 1.0) {
-        element.style.filter = '';
-        element.style.opacity = '';
-    }
-};
-
-/**
- * @description Takes an object and copies any properties that don't exist from
- *     another properties, by analogy with SuperMap.Util.extend() from
- *     Prototype.js.
- *
- * @param to -{Object} The destination object.
- * @param from -{Object} The source object.  Any properties of this object that
- *     are undefined in the to object will be set on the to object.
- *
- * @return {Object} A reference to the to object.  Note that the to argument is modified
- *     in place and returned by this function.
- */
-_SuperMap2.default.Util.applyDefaults = function (to, from) {
-    to = to || {};
-    /*
-     * FF/Windows < 2.0.0.13 reports "Illegal operation on WrappedNative
-     * prototype object" when calling hawOwnProperty if the source object is an
-     * instance of window.Event.
-     */
-    var fromIsEvt = typeof window.Event === "function" && from instanceof window.Event;
-
-    for (var key in from) {
-        if (to[key] === undefined || !fromIsEvt && from.hasOwnProperty && from.hasOwnProperty(key) && !to.hasOwnProperty(key)) {
-            to[key] = from[key];
-        }
-    }
-    /**
-     * IE doesn't include the toString property when iterating over an object's
-     * properties with the for(property in object) syntax.  Explicitly check if
-     * the source has its own toString property.
-     */
-    if (!fromIsEvt && from && from.hasOwnProperty && from.hasOwnProperty('toString') && !to.hasOwnProperty('toString')) {
-        to.toString = from.toString;
-    }
-
-    return to;
-};
-
-/**
- * @param params - {Object} 参数对象。
- * @return {string} HTTP的GEI请求中的参数字符串。
- * @description 将参数对象转换为HTTP的GEI请求中的参数字符串。例如："key1=value1&key2=value2&key3=value3"。
- */
-_SuperMap2.default.Util.getParameterString = function (params) {
-    var paramsArray = [];
-
-    for (var key in params) {
-        var value = params[key];
-        if (value != null && typeof value !== 'function') {
-            var encodedValue;
-            if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value.constructor === Array) {
-                /* value is an array; encode items and separate with "," */
-                var encodedItemArray = [];
-                var item;
-                for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
-                    item = value[itemIndex];
-                    encodedItemArray.push(encodeURIComponent(item === null || item === undefined ? "" : item));
-                }
-                encodedValue = encodedItemArray.join(",");
+    }, {
+        key: 'attachToElement',
+        value: function attachToElement(element) {
+            if (this.element) {
+                _Event.Event.stopObservingElement(this.element);
             } else {
-                /* value is a string; simply encode */
-                encodedValue = encodeURIComponent(value);
+                // keep a bound copy of handleBrowserEvent() so that we can
+                // pass the same function to both Event.observe() and .stopObserving()
+                this.eventHandler = _BaseTypes.FunctionExt.bindAsEventListener(this.handleBrowserEvent, this);
+
+                // to be used with observe and stopObserving
+                this.clearMouseListener = _BaseTypes.FunctionExt.bind(this.clearMouseCache, this);
             }
-            paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
-        }
-    }
+            this.element = element;
+            for (var i = 0, len = this.BROWSER_EVENTS.length; i < len; i++) {
+                var eventType = this.BROWSER_EVENTS[i];
 
-    return paramsArray.join("&");
-};
+                // every browser event has a corresponding application event
+                // (whether it's listened for or not).
+                this.addEventType(eventType);
 
-/**
- * @description 给url追加参数。
- * @param url - {string} 待追加参数的url字符串。
- * @param paramStr - {string} 待追加的参数。
- * @return {string} The new url
- */
-_SuperMap2.default.Util.urlAppend = function (url, paramStr) {
-    var newUrl = url;
-    if (paramStr) {
-        var parts = (url + " ").split(/[?&]/);
-        newUrl += parts.pop() === " " ? paramStr : parts.length ? "&" + paramStr : "?" + paramStr;
-    }
-    return newUrl;
-};
-
-/**
- * @description 为了避免浮点精度错误而保留的有效位数。
- * @type {number}
- * @default 14
- */
-_SuperMap2.default.Util.DEFAULT_PRECISION = 14;
-
-/**
- * @description 将字符串以接近的精度转换为数字。
- * @param number - {string} 字符串。
- * @param precision - {number} 精度。
- * @return {number} 数字。
- */
-_SuperMap2.default.Util.toFloat = function (number, precision) {
-    if (precision == null) {
-        precision = _SuperMap2.default.Util.DEFAULT_PRECISION;
-    }
-    if (typeof number !== "number") {
-        number = parseFloat(number);
-    }
-    return precision === 0 ? number : parseFloat(number.toPrecision(precision));
-};
-
-/**
- * @description 角度转弧度。
- * @param x - {number} 角度。
- * @return {number} 弧度。
- */
-_SuperMap2.default.Util.rad = function (x) {
-    return x * Math.PI / 180;
-};
-
-/**
- * @description 从URL字符串中解析出参数对象。
- * @param url - {string} url。
- * @return {Object} 解析出的参数对象。
- */
-_SuperMap2.default.Util.getParameters = function (url) {
-    // if no url specified, take it from the location bar
-    url = url === null || url === undefined ? window.location.href : url;
-
-    //parse out parameters portion of url string
-    var paramsString = "";
-    if (_SuperMap2.default.String.contains(url, '?')) {
-        var start = url.indexOf('?') + 1;
-        var end = _SuperMap2.default.String.contains(url, "#") ? url.indexOf('#') : url.length;
-        paramsString = url.substring(start, end);
-    }
-
-    var parameters = {};
-    var pairs = paramsString.split(/[&;]/);
-    for (var i = 0, len = pairs.length; i < len; ++i) {
-        var keyValue = pairs[i].split('=');
-        if (keyValue[0]) {
-
-            var key = keyValue[0];
-            try {
-                key = decodeURIComponent(key);
-            } catch (err) {
-                key = unescape(key);
+                // use Prototype to register the event cross-browser
+                _Event.Event.observe(element, eventType, this.eventHandler);
             }
-
-            // being liberal by replacing "+" with " "
-            var value = (keyValue[1] || '').replace(/\+/g, " ");
-
-            try {
-                value = decodeURIComponent(value);
-            } catch (err) {
-                value = unescape(value);
-            }
-
-            // follow OGC convention of comma delimited values
-            value = value.split(",");
-
-            //if there's only one value, do not return as array                    
-            if (value.length == 1) {
-                value = value[0];
-            }
-
-            parameters[key] = value;
+            // disable dragstart in IE so that mousedown/move/up works normally
+            _Event.Event.observe(element, "dragstart", _Event.Event.stop);
         }
-    }
-    return parameters;
-};
 
-/**
- * @description 不断递增计数变量，用于生成唯一ID。
- * @type {number}
- * @default 0
- */
-_SuperMap2.default.Util.lastSeqID = 0;
+        /**
+         * @function SuperMap.Events.prototype.on
+         * @description 在一个相同的范围内注册监听器的方法，此方法调用register函数。
+         * @example
+         * // 注册一个"loadstart"监听事件
+         * events.on({"loadstart": loadStartListener});
+         *
+         * // 同样注册一个"loadstart"监听事件
+         * events.register("loadstart", undefined, loadStartListener);
+         *
+         * // 同时为对象注册多个监听事件
+         * events.on({
+         *     "loadstart": loadStartListener,
+         *     "loadend": loadEndListener,
+         *     scope: object
+         * });
+         *
+         * // 同时为对象注册多个监听事件，多次调用register方法
+         * events.register("loadstart", object, loadStartListener);
+         * events.register("loadend", object, loadEndListener);
+         *
+         *
+         * @param  object - {Object} 添加监听的对象。
+         */
 
-/**
- * @description 创建唯一ID值。
- * @param prefix {string} 前缀。
- * @return {string} 唯一的ID值。
- */
-_SuperMap2.default.Util.createUniqueID = function (prefix) {
-    if (prefix == null) {
-        prefix = "id_";
-    }
-    _SuperMap2.default.Util.lastSeqID += 1;
-    return prefix + _SuperMap2.default.Util.lastSeqID;
-};
-
-/**
- * @memberOf SuperMap
- * @description 每单位的英尺数。
- * @type {Object}
- * @constant
- */
-_SuperMap2.default.INCHES_PER_UNIT = {
-    'inches': 1.0,
-    'ft': 12.0,
-    'mi': 63360.0,
-    'm': 39.3701,
-    'km': 39370.1,
-    'dd': 4374754,
-    'yd': 36
-};
-_SuperMap2.default.INCHES_PER_UNIT["in"] = _SuperMap2.default.INCHES_PER_UNIT.inches;
-_SuperMap2.default.INCHES_PER_UNIT["degrees"] = _SuperMap2.default.INCHES_PER_UNIT.dd;
-_SuperMap2.default.INCHES_PER_UNIT["nmi"] = 1852 * _SuperMap2.default.INCHES_PER_UNIT.m;
-
-// Units from CS-Map
-_SuperMap2.default.METERS_PER_INCH = 0.02540005080010160020;
-_SuperMap2.default.Util.extend(_SuperMap2.default.INCHES_PER_UNIT, {
-    "Inch": _SuperMap2.default.INCHES_PER_UNIT.inches,
-    "Meter": 1.0 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9001
-    "Foot": 0.30480060960121920243 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9003
-    "IFoot": 0.30480000000000000000 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9002
-    "ClarkeFoot": 0.3047972651151 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9005
-    "SearsFoot": 0.30479947153867624624 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9041
-    "GoldCoastFoot": 0.30479971018150881758 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9094
-    "IInch": 0.02540000000000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "MicroInch": 0.00002540000000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "Mil": 0.00000002540000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "Centimeter": 0.01000000000000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "Kilometer": 1000.00000000000000000000 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9036
-    "Yard": 0.91440182880365760731 / _SuperMap2.default.METERS_PER_INCH,
-    "SearsYard": 0.914398414616029 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9040
-    "IndianYard": 0.91439853074444079983 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9084
-    "IndianYd37": 0.91439523 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9085
-    "IndianYd62": 0.9143988 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9086
-    "IndianYd75": 0.9143985 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9087
-    "IndianFoot": 0.30479951 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9080
-    "IndianFt37": 0.30479841 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9081
-    "IndianFt62": 0.3047996 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9082
-    "IndianFt75": 0.3047995 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9083
-    "Mile": 1609.34721869443738887477 / _SuperMap2.default.METERS_PER_INCH,
-    "IYard": 0.91440000000000000000 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9096
-    "IMile": 1609.34400000000000000000 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9093
-    "NautM": 1852.00000000000000000000 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9030
-    "Lat-66": 110943.316488932731 / _SuperMap2.default.METERS_PER_INCH,
-    "Lat-83": 110946.25736872234125 / _SuperMap2.default.METERS_PER_INCH,
-    "Decimeter": 0.10000000000000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "Millimeter": 0.00100000000000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "Dekameter": 10.00000000000000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "Decameter": 10.00000000000000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "Hectometer": 100.00000000000000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "GermanMeter": 1.0000135965 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9031
-    "CaGrid": 0.999738 / _SuperMap2.default.METERS_PER_INCH,
-    "ClarkeChain": 20.1166194976 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9038
-    "GunterChain": 20.11684023368047 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9033
-    "BenoitChain": 20.116782494375872 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9062
-    "SearsChain": 20.11676512155 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9042
-    "ClarkeLink": 0.201166194976 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9039
-    "GunterLink": 0.2011684023368047 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9034
-    "BenoitLink": 0.20116782494375872 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9063
-    "SearsLink": 0.2011676512155 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9043
-    "Rod": 5.02921005842012 / _SuperMap2.default.METERS_PER_INCH,
-    "IntnlChain": 20.1168 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9097
-    "IntnlLink": 0.201168 / _SuperMap2.default.METERS_PER_INCH, //EPSG:9098
-    "Perch": 5.02921005842012 / _SuperMap2.default.METERS_PER_INCH,
-    "Pole": 5.02921005842012 / _SuperMap2.default.METERS_PER_INCH,
-    "Furlong": 201.1684023368046 / _SuperMap2.default.METERS_PER_INCH,
-    "Rood": 3.778266898 / _SuperMap2.default.METERS_PER_INCH,
-    "CapeFoot": 0.3047972615 / _SuperMap2.default.METERS_PER_INCH,
-    "Brealey": 375.00000000000000000000 / _SuperMap2.default.METERS_PER_INCH,
-    "ModAmFt": 0.304812252984505969011938 / _SuperMap2.default.METERS_PER_INCH,
-    "Fathom": 1.8288 / _SuperMap2.default.METERS_PER_INCH,
-    "NautM-UK": 1853.184 / _SuperMap2.default.METERS_PER_INCH,
-    "50kilometers": 50000.0 / _SuperMap2.default.METERS_PER_INCH,
-    "150kilometers": 150000.0 / _SuperMap2.default.METERS_PER_INCH
-});
-
-//unit abbreviations supported by PROJ.4
-_SuperMap2.default.Util.extend(_SuperMap2.default.INCHES_PER_UNIT, {
-    "mm": _SuperMap2.default.INCHES_PER_UNIT["Meter"] / 1000.0,
-    "cm": _SuperMap2.default.INCHES_PER_UNIT["Meter"] / 100.0,
-    "dm": _SuperMap2.default.INCHES_PER_UNIT["Meter"] * 100.0,
-    "km": _SuperMap2.default.INCHES_PER_UNIT["Meter"] * 1000.0,
-    "kmi": _SuperMap2.default.INCHES_PER_UNIT["nmi"], //International Nautical Mile
-    "fath": _SuperMap2.default.INCHES_PER_UNIT["Fathom"], //International Fathom
-    "ch": _SuperMap2.default.INCHES_PER_UNIT["IntnlChain"], //International Chain
-    "link": _SuperMap2.default.INCHES_PER_UNIT["IntnlLink"], //International Link
-    "us-in": _SuperMap2.default.INCHES_PER_UNIT["inches"], //U.S. Surveyor's Inch
-    "us-ft": _SuperMap2.default.INCHES_PER_UNIT["Foot"], //U.S. Surveyor's Foot
-    "us-yd": _SuperMap2.default.INCHES_PER_UNIT["Yard"], //U.S. Surveyor's Yard
-    "us-ch": _SuperMap2.default.INCHES_PER_UNIT["GunterChain"], //U.S. Surveyor's Chain
-    "us-mi": _SuperMap2.default.INCHES_PER_UNIT["Mile"], //U.S. Surveyor's Statute Mile
-    "ind-yd": _SuperMap2.default.INCHES_PER_UNIT["IndianYd37"], //Indian Yard
-    "ind-ft": _SuperMap2.default.INCHES_PER_UNIT["IndianFt37"], //Indian Foot
-    "ind-ch": 20.11669506 / _SuperMap2.default.METERS_PER_INCH //Indian Chain
-});
-
-/**
- * @memberOf SuperMap
- * @description 分辨率与比例尺之间转换的常量，默认值96。
- * @type {Object}
- * @default 96
- */
-_SuperMap2.default.DOTS_PER_INCH = 96;
-
-/**
- * @param scale - {number}
- * @return {number} 返回正常的scale值
- */
-_SuperMap2.default.Util.normalizeScale = function (scale) {
-    var normScale = scale > 1.0 ? 1.0 / scale : scale;
-    return normScale;
-};
-
-/**
- * @param scale - {number} 比例尺。
- * @param units - {string} 比例尺单位。
- * @return {number} 分辨率。
- */
-_SuperMap2.default.Util.getResolutionFromScale = function (scale, units) {
-    var resolution;
-    if (scale) {
-        if (units == null) {
-            units = "degrees";
-        }
-        var normScale = _SuperMap2.default.Util.normalizeScale(scale);
-        resolution = 1 / (normScale * _SuperMap2.default.INCHES_PER_UNIT[units] * _SuperMap2.default.DOTS_PER_INCH);
-    }
-    return resolution;
-};
-
-/**
- * @description 分辨率转比例尺。
- * @param resolution - {number} 分辨率。
- * @param units - {string} 分辨率单位。
- * @return {number} 比例尺。
- */
-_SuperMap2.default.Util.getScaleFromResolution = function (resolution, units) {
-
-    if (units == null) {
-        units = "degrees";
-    }
-
-    var scale = resolution * _SuperMap2.default.INCHES_PER_UNIT[units] * _SuperMap2.default.DOTS_PER_INCH;
-    return scale;
-};
-
-/**
- * @memberOf SuperMap
- * @description 如果userAgent捕获到浏览器使用的是Gecko引擎则返回true。
- * @constant
- */
-_SuperMap2.default.IS_GECKO = function () {
-    var ua = navigator.userAgent.toLowerCase();
-    return ua.indexOf("webkit") === -1 && ua.indexOf("gecko") !== -1;
-}();
-
-/**
- * @memberOf SuperMap
- * @description 浏览器名称，依赖于userAgent属性，BROWSER_NAME可以是空，或者以下浏览器：
- *     * "opera" -- Opera
- *     * "msie"  -- Internet Explorer
- *     * "safari" -- Safari
- *     * "firefox" -- Firefox
- *     * "mozilla" -- Mozilla
- * @constant
- */
-_SuperMap2.default.Browser = function () {
-    var name = '',
-        version = '',
-        device = 'pc',
-        uaMatch;
-    //以下进行测试
-    var ua = navigator.userAgent.toLowerCase();
-    if (ua.indexOf("msie") > -1 || ua.indexOf("trident") > -1 && ua.indexOf("rv") > -1) {
-        name = 'msie';
-        uaMatch = ua.match(/msie ([\d.]+)/) || ua.match(/rv:([\d.]+)/);
-    } else if (ua.indexOf("chrome") > -1) {
-        name = 'chrome';
-        uaMatch = ua.match(/chrome\/([\d.]+)/);
-    } else if (ua.indexOf("firefox") > -1) {
-        name = 'firefox';
-        uaMatch = ua.match(/firefox\/([\d.]+)/);
-    } else if (ua.indexOf("opera") > -1) {
-        name = 'opera';
-        uaMatch = ua.match(/version\/([\d.]+)/);
-    } else if (ua.indexOf("safari") > -1) {
-        name = 'safari';
-        uaMatch = ua.match(/version\/([\d.]+)/);
-    }
-    version = uaMatch ? uaMatch[1] : '';
-
-    if (ua.indexOf("ipad") > -1 || ua.indexOf("ipod") > -1 || ua.indexOf("iphone") > -1) {
-        device = 'apple';
-    } else if (ua.indexOf("android") > -1) {
-        uaMatch = ua.match(/version\/([\d.]+)/);
-        version = uaMatch ? uaMatch[1] : '';
-        device = 'android';
-    }
-    return { name: name, version: version, device: device };
-}();
-
-/**
- * @description 获取浏览器相关信息。支持的浏览器包括：Opera，Internet Explorer，Safari，Firefox。
- * @return {Object} 获取浏览器名称、版本、设备名称。对应的属性分别为 name, version, device。
- */
-_SuperMap2.default.Util.getBrowser = function () {
-    return _SuperMap2.default.Browser;
-};
-
-/**
- * @description 浏览器是否支持Canvas。
- * @return {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
- */
-_SuperMap2.default.Util.isSupportCanvas = function () {
-    var checkRes = true,
-        broz = _SuperMap2.default.Util.getBrowser();
-    if (document.createElement("canvas").getContext) {
-        if (broz.name === 'firefox' && parseFloat(broz.version) < 5) {
-            checkRes = false;
-        }
-        if (broz.name === 'safari' && parseFloat(broz.version) < 4) {
-            checkRes = false;
-        }
-        if (broz.name === 'opera' && parseFloat(broz.version) < 10) {
-            checkRes = false;
-        }
-        if (broz.name === 'msie' && parseFloat(broz.version) < 9) {
-            checkRes = false;
-        }
-    } else {
-        checkRes = false;
-    }
-    return checkRes;
-}();
-
-/**
- * @description 判断；浏览器是否支持Canvas。
- * @return {boolean} 获取当前浏览器是否支持 HTML5 Canvas 。
- */
-_SuperMap2.default.Util.supportCanvas = function () {
-    return _SuperMap2.default.Util.isSupportCanvas;
-};
-
-//将服务端的地图单位转成SuperMap的地图单位
-_SuperMap2.default.INCHES_PER_UNIT["degree"] = _SuperMap2.default.INCHES_PER_UNIT.dd;
-_SuperMap2.default.INCHES_PER_UNIT["meter"] = _SuperMap2.default.INCHES_PER_UNIT.m;
-_SuperMap2.default.INCHES_PER_UNIT["foot"] = _SuperMap2.default.INCHES_PER_UNIT.ft;
-_SuperMap2.default.INCHES_PER_UNIT["inch"] = _SuperMap2.default.INCHES_PER_UNIT.inches;
-_SuperMap2.default.INCHES_PER_UNIT["mile"] = _SuperMap2.default.INCHES_PER_UNIT.mi;
-_SuperMap2.default.INCHES_PER_UNIT["kilometer"] = _SuperMap2.default.INCHES_PER_UNIT.km;
-_SuperMap2.default.INCHES_PER_UNIT["yard"] = _SuperMap2.default.INCHES_PER_UNIT.yd;
-
-/**
- * @description 判断一个 URL 请求是否在当前域中。
- * @param url - {string}  URL 请求字符串。
- * @return {boolean} URL请求是否在当前域中。
- */
-_SuperMap2.default.Util.isInTheSameDomain = function (url) {
-    if (!url) {
-        return true;
-    }
-    var index = url.indexOf("//");
-    var documentUrl = document.location.toString();
-    var documentIndex = documentUrl.indexOf("//");
-    if (index === -1) {
-        return true;
-    } else {
-        var protocol;
-        var substring = protocol = url.substring(0, index);
-        var documentSubString = documentUrl.substring(documentIndex + 2);
-        documentIndex = documentSubString.indexOf("/");
-        var documentPortIndex = documentSubString.indexOf(":");
-        var documentDomainWithPort = documentSubString.substring(0, documentIndex);
-        //var documentPort;
-
-        var documentprotocol = document.location.protocol;
-        if (documentPortIndex !== -1) {
-            // documentPort = +documentSubString.substring(documentPortIndex, documentIndex);
-        } else {
-            documentDomainWithPort += ':' + (documentprotocol.toLowerCase() === 'http:' ? 80 : 443);
-        }
-        if (documentprotocol.toLowerCase() !== substring.toLowerCase()) {
-            return false;
-        }
-        substring = url.substring(index + 2);
-        var portIndex = substring.indexOf(":");
-        index = substring.indexOf("/");
-        var domainWithPort = substring.substring(0, index);
-        var domain;
-        if (portIndex !== -1) {
-            domain = substring.substring(0, portIndex);
-        } else {
-            domain = substring.substring(0, index);
-            domainWithPort += ':' + (protocol.toLowerCase() === 'http:' ? 80 : 443);
-        }
-        var documentDomain = document.domain;
-        if (domain === documentDomain && domainWithPort === documentDomainWithPort) {
-            return true;
-        }
-    }
-    return false;
-};
-
-/**
- * @description 计算iServer服务的REST图层的显示分辨率，需要从iServer的REST图层表述中获取viewBounds、viewer、scale、coordUnit、datumAxis 五个参数，来进行计算。
- * @param viewBounds - {SuperMap.Bounds} 地图的参照可视范围，即地图初始化时默认的地图显示范围。
- * @param viewer - {SuperMap.Size} 地图初始化时默认的地图图片的尺寸。
- * @param scale - {number} 地图初始化时默认的显示比例尺。
- * @param coordUnit - {string} 投影坐标系统的地图单位。
- * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则系统默认为WGS84参考系的椭球体长半轴6378137。
- * @return {number} 返回图层显示分辨率。
- */
-_SuperMap2.default.Util.calculateDpi = function (viewBounds, viewer, scale, coordUnit, datumAxis) {
-    //10000 是 0.1毫米与米的转换。DPI的计算公式：Viewer / DPI *  0.0254 * 10000 = ViewBounds * scale ，公式中的10000是为了提高计算结果的精度，以下出现的ratio皆为如此。
-    if (!viewBounds || !viewer || !scale) {
-        return;
-    }
-    var ratio = 10000,
-        rvbWidth = viewBounds.getWidth(),
-        rvbHeight = viewBounds.getHeight(),
-        rvWidth = viewer.w,
-        rvHeight = viewer.h;
-    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
-    datumAxis = datumAxis || 6378137;
-    coordUnit = coordUnit || "degrees";
-    var dpi;
-    if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
-        var num1 = rvbWidth / rvWidth,
-            num2 = rvbHeight / rvHeight,
-            resolution = num1 > num2 ? num1 : num2;
-        dpi = 0.0254 * ratio / resolution / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
-    } else {
-        var _resolution = rvbWidth / rvWidth;
-        dpi = 0.0254 * ratio / _resolution / scale / ratio;
-    }
-    return dpi;
-};
-
-/**
- * @description 将对象转换成 JSON 字符串。
- * @param obj - {Object} 要转换成 JSON 的 Object 对象。
- * @return {string} 返回转换后的 JSON 对象。
- */
-_SuperMap2.default.Util.toJSON = function (obj) {
-    var objInn = obj;
-    if (objInn == null) {
-        return null;
-    }
-    switch (objInn.constructor) {
-        case String:
-            //s = "'" + str.replace(/(["\\])/g, "\\$1") + "'";   string含有单引号出错
-            objInn = '"' + objInn.replace(/(["\\])/g, '\\$1') + '"';
-            objInn = objInn.replace(/\n/g, "\\n");
-            objInn = objInn.replace(/\r/g, "\\r");
-            objInn = objInn.replace("<", "&lt;");
-            objInn = objInn.replace(">", "&gt;");
-            objInn = objInn.replace(/%/g, "%25");
-            objInn = objInn.replace(/&/g, "%26");
-            return objInn;
-        case Array:
-            var arr = [];
-            for (var i = 0, len = objInn.length; i < len; i++) {
-                arr.push(_SuperMap2.default.Util.toJSON(objInn[i]));
-            }
-            return "[" + arr.join(",") + "]";
-        case Number:
-            return isFinite(objInn) ? String(objInn) : null;
-        case Boolean:
-            return String(objInn);
-        case Date:
-            var dateStr = "{" + "'__type':\"System.DateTime\"," + "'Year':" + objInn.getFullYear() + "," + "'Month':" + (objInn.getMonth() + 1) + "," + "'Day':" + objInn.getDate() + "," + "'Hour':" + objInn.getHours() + "," + "'Minute':" + objInn.getMinutes() + "," + "'Second':" + objInn.getSeconds() + "," + "'Millisecond':" + objInn.getMilliseconds() + "," + "'TimezoneOffset':" + objInn.getTimezoneOffset() + "}";
-            return dateStr;
-        default:
-            if (objInn["toJSON"] != null && typeof objInn["toJSON"] === "function") {
-                return objInn.toJSON();
-            }
-            if ((typeof objInn === 'undefined' ? 'undefined' : _typeof(objInn)) === "object") {
-                if (objInn.length) {
-                    var _arr2 = [];
-                    for (var _i = 0, _len = objInn.length; _i < _len; _i++) {
-                        _arr2.push(_SuperMap2.default.Util.toJSON(objInn[_i]));
-                    }
-                    return "[" + _arr2.join(",") + "]";
+    }, {
+        key: 'on',
+        value: function on(object) {
+            for (var type in object) {
+                if (type !== "scope" && object.hasOwnProperty(type)) {
+                    this.register(type, object.scope, object[type]);
                 }
-                var _arr = [];
-                for (var attr in objInn) {
-                    //为解决SuperMap.Geometry类型头json时堆栈溢出的问题，attr == "parent"时不进行json转换
-                    if (typeof objInn[attr] !== "function" && attr !== "CLASS_NAME" && attr !== "parent") {
-                        _arr.push("'" + attr + "':" + _SuperMap2.default.Util.toJSON(objInn[attr]));
-                    }
-                }
+            }
+        }
 
-                if (_arr.length > 0) {
-                    return "{" + _arr.join(",") + "}";
+        /**
+         * @function SuperMap.Events.prototype.register
+         * @description 在事件对象上注册一个事件。当事件被触发时，'func'函数被调用，假设我们触发一个事件，
+         *                指定SuperMap.Bounds作为‘obj’,当事件被触发时，回调函数的上下文作为Bounds对象。
+         * @param type - {string} 事件注册者的名字。
+         * @param obj - {Object} 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性。
+         * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
+         * @param priority - {boolean|Object} 当为true时将新的监听加在事件队列的前面。
+         */
+
+    }, {
+        key: 'register',
+        value: function register(type, obj, func, priority) {
+            if (type in Events && !this.extensions[type]) {
+                this.extensions[type] = new Events[type](this);
+            }
+            if (func != null && _Util.Util.indexOf(this.eventTypes, type) !== -1) {
+
+                if (obj == null) {
+                    obj = this.object;
+                }
+                var listeners = this.listeners[type];
+                if (!listeners) {
+                    listeners = [];
+                    this.listeners[type] = listeners;
+                    this.extensionCount[type] = 0;
+                }
+                var listener = { obj: obj, func: func };
+                if (priority) {
+                    listeners.splice(this.extensionCount[type], 0, listener);
+                    if ((typeof priority === 'undefined' ? 'undefined' : _typeof(priority)) === "object" && priority.extension) {
+                        this.extensionCount[type]++;
+                    }
                 } else {
-                    return "{}";
+                    listeners.push(listener);
                 }
             }
-            return objInn.toString();
-    }
-};
-
-/**
- * @description 根据比例尺和dpi计算屏幕分辨率。
- * @param scale - {number} 比例尺。
- * @param dpi - {number} 图像分辨率，表示每英寸内的像素个数。
- * @param coordUnit - {string} 投影坐标系统的地图单位。
- * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
- * @return {number} 返回当前比例尺下的屏幕分辨率。
- */
-_SuperMap2.default.Util.getResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
-    var resolution = null,
-        ratio = 10000;
-    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
-    datumAxis = datumAxis || 6378137;
-    coordUnit = coordUnit || "";
-    if (scale > 0 && dpi > 0) {
-        scale = _SuperMap2.default.Util.normalizeScale(scale);
-        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
-            //scale = SuperMap.Util.normalizeScale(scale);
-            resolution = 0.0254 * ratio / dpi / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
-            return resolution;
-        } else {
-            resolution = 0.0254 * ratio / dpi / scale / ratio;
-            return resolution;
         }
-    }
-    return -1;
-};
 
-/**
- * @description 根据resolution、dpi、coordUnit和datumAxis计算比例尺。
- * @param resolution - {number} 用于计算比例尺的地图分辨率。
- * @param dpi - {number} 图像分辨率，表示每英寸内的像素个数。
- * @param coordUnit - {string} 投影坐标系统的地图单位。
- * @param datumAxis - {number} 地理坐标系统椭球体长半轴。用户自定义地图的Options时，若未指定该参数的值，则DPI默认按照WGS84参考系的椭球体长半轴6378137来计算。
- * @return {number} 返回当前屏幕分辨率下的比例尺。
- */
-_SuperMap2.default.Util.getScaleFromResolutionDpi = function (resolution, dpi, coordUnit, datumAxis) {
-    var scale = null,
-        ratio = 10000;
-    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
-    datumAxis = datumAxis || 6378137;
-    coordUnit = coordUnit || "";
-    if (resolution > 0 && dpi > 0) {
-        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
-            scale = 0.0254 * ratio / dpi / resolution / (Math.PI * 2 * datumAxis / 360) / ratio;
-            return scale;
-        } else {
-            scale = 0.0254 * ratio / dpi / resolution / ratio;
-            return scale;
+        /**
+         * @function SuperMap.Events.prototype.registerPriority
+         * @description 相同的注册方法，但是在前面增加新的监听者事件查询而代替到方法的结束。
+         * @param type - {string} 事件注册者的名字。
+         * @param obj - {Object} 对象绑定方面的回调。如果没有特定的对象，则默认是事件的object属性。
+         * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
+         */
+
+    }, {
+        key: 'registerPriority',
+        value: function registerPriority(type, obj, func) {
+            this.register(type, obj, func, true);
         }
-    }
-    return -1;
-};
 
-/**
- * @description 转换查询结果。
- * @param result - {Object} 查询结果。
- * @return {Object} 转换后的查询结果。
- */
-_SuperMap2.default.Util.transformResult = function (result) {
-    if (result.responseText && typeof result.responseText === "string") {
-        result = JSON.parse(result.responseText);
-    }
-    return result;
-};
+        /**
+         * @function SuperMap.Events.prototype.un
+         * @description 在一个相同的范围内取消注册监听器的方法，此方法调用unregister函数。
+         * @example
+         * // 移除"loadstart" 事件监听
+         * events.un({"loadstart": loadStartListener});
+         *
+         * // 使用unregister方法移除"loadstart" 事件监听
+         * events.unregister("loadstart", undefined, loadStartListener);
+         *
+         * // 取消对象多个事件监听
+         * events.un({
+         *     "loadstart": loadStartListener,
+         *     "loadend": loadEndListener,
+         *     scope: object
+         * });
+         *
+         * // 取消对象多个事件监听，多次调用unregister方法。
+         * events.unregister("loadstart", object, loadStartListener);
+         * events.unregister("loadend", object, loadEndListener);
+         *
+         * @param object - {Object} 移除监听的对象。
+         */
 
-/**
- * @description 属性拷贝，不拷贝方法类名(CLASS_NAME)等。
- * @param destination - {Object} 拷贝目标。
- * @param source - {Object} 源对象。
- *
- */
-_SuperMap2.default.Util.copyAttributes = function (destination, source) {
-    destination = destination || {};
-    if (source) {
-        for (var property in source) {
-            var value = source[property];
-            if (value !== undefined && property !== "CLASS_NAME" && typeof value !== "function") {
-                destination[property] = value;
+    }, {
+        key: 'un',
+        value: function un(object) {
+            for (var type in object) {
+                if (type !== "scope" && object.hasOwnProperty(type)) {
+                    this.unregister(type, object.scope, object[type]);
+                }
             }
         }
-    }
-    return destination;
-};
 
-/**
- * @description 将源对象上的属性拷贝到目标对象上。（不拷贝 CLASS_NAME 和方法）
- * @param destination - {Object} 目标对象。
- * @param source - {Object} 源对象。
- * @param clip - {Array<string>} 源对象中禁止拷贝到目标对象的属性，目的是防止目标对象上不可修改的属性被篡改。
- *
- */
-_SuperMap2.default.Util.copyAttributesWithClip = function (destination, source, clip) {
-    destination = destination || {};
-    if (source) {
-        for (var property in source) {
-            //去掉禁止拷贝的属性
-            var isInClip = false;
-            if (clip && clip.length) {
-                for (var i = 0, len = clip.length; i < len; i++) {
-                    if (property === clip[i]) {
-                        isInClip = true;
+        /**
+         * @function SuperMap.Events.prototype.unregister
+         * @description 取消注册。
+         * @param type - {string} 事件类型。
+         * @param obj - {Object} 默认为 this.object。
+         * @param func - {function} 事件监听。
+         */
+
+    }, {
+        key: 'unregister',
+        value: function unregister(type, obj, func) {
+            if (obj == null) {
+                obj = this.object;
+            }
+            var listeners = this.listeners[type];
+            if (listeners != null) {
+                for (var i = 0, len = listeners.length; i < len; i++) {
+                    if (listeners[i].obj === obj && listeners[i].func === func) {
+                        listeners.splice(i, 1);
                         break;
                     }
                 }
             }
-            if (isInClip === true) {
-                continue;
-            }
-
-            var value = source[property];
-            if (value !== undefined && property !== "CLASS_NAME" && typeof value !== "function") {
-                destination[property] = value;
-            }
         }
-    }
-    return destination;
-};
 
-/**
- * @description 克隆一份Object对象
- * @param obj - {Object}  需要克隆的对象。
- * @return {Object} 返回对象的拷贝对象，注意是新的对象，不是指向。
- */
-_SuperMap2.default.Util.cloneObject = function (obj) {
-    // Handle the 3 simple types, and null or undefined
-    if (null === obj || "object" !== (typeof obj === 'undefined' ? 'undefined' : _typeof(obj))) {
-        return obj;
-    }
+        /**
+         * @function SuperMap.Events.prototype.remove
+         * @description 删除某个事件类型的所有监听，如果该事件类型没有注册，则不做任何操作。
+         * @param type - {string} 事件类型。
+         */
 
-    // Handle Date
-    if (obj instanceof Date) {
-        var copy = new Date();
-        copy.setTime(obj.getTime());
-        return copy;
-    }
-
-    // Handle Array
-    if (obj instanceof Array) {
-        var _copy = obj.slice(0);
-        return _copy;
-    }
-
-    // Handle Object
-    if (obj instanceof Object) {
-        var _copy2 = {};
-        for (var attr in obj) {
-            if (obj.hasOwnProperty(attr)) {
-                _copy2[attr] = _SuperMap2.default.Util.cloneObject(obj[attr]);
+    }, {
+        key: 'remove',
+        value: function remove(type) {
+            if (this.listeners[type] != null) {
+                this.listeners[type] = [];
             }
         }
-        return _copy2;
-    }
 
-    throw new Error("Unable to copy obj! Its type isn't supported.");
-};
+        /**
+         * @function SuperMap.Events.prototype.triggerEvent
+         * @description 触发一个特定的注册事件。
+         * @param type - {string} 触发事件类型。
+         * @param evt - {Event} 事件对象。
+         * @returns {boolean} 返回监听对象，如果返回是falee，则停止监听。
+         */
 
-/**
- * @description 判断两条线段是不是有交点。
- * @param a1 - {SuperMap.Geometry.Point}  第一条线段的起始节点。
- * @param a2 - {SuperMap.Geometry.Point}  第一条线段的结束节点。
- * @param b1 - {SuperMap.Geometry.Point}  第二条线段的起始节点。
- * @param b2 - {SuperMap.Geometry.Point}  第二条线段的结束节点。
- * @return {Object} 如果相交返回交点，如果不相交返回两条线段的位置关系。
- */
-_SuperMap2.default.Util.lineIntersection = function (a1, a2, b1, b2) {
-    var intersectValue = null;
-    var k1;
-    var k2;
-    var b = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
-    var a = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
-    var ab = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
-    //ab==0代表两条线断的斜率一样
-    if (ab != 0) {
-        k1 = b / ab;
-        k2 = a / ab;
+    }, {
+        key: 'triggerEvent',
+        value: function triggerEvent(type, evt) {
+            var listeners = this.listeners[type];
 
-        if (k1 >= 0 && k2 <= 1 && k1 <= 1 && k2 >= 0) {
-            intersectValue = new _SuperMap2.default.Geometry.Point(a1.x + k1 * (a2.x - a1.x), a1.y + k1 * (a2.y - a1.y));
-        } else {
-            intersectValue = "No Intersection";
-        }
-    } else {
-
-        if (b == 0 && a == 0) {
-            var maxy = Math.max(a1.y, a2.y);
-            var miny = Math.min(a1.y, a2.y);
-            var maxx = Math.max(a1.x, a2.x);
-            var minx = Math.min(a1.x, a2.x);
-            if ((b1.y >= miny && b1.y <= maxy || b2.y >= miny && b2.y <= maxy) && b1.x >= minx && b1.x <= maxx || b2.x >= minx && b2.x <= maxx) {
-                intersectValue = "Coincident"; //重合
-            } else {
-                intersectValue = "Parallel"; //平行
+            // fast path
+            if (!listeners || listeners.length == 0) {
+                return undefined;
             }
-        } else {
-            intersectValue = "Parallel"; //平行
-        }
-    }
-    return intersectValue;
-};
 
-/**
- * @description 获取文本外接矩形宽度与高度。
- * @param style - {SuperMap.Style} 文本样式。
- * @param text - {string} 文本内容。
- * @param element - {Object} DOM元素。
- * @return {Object} 返回裁剪后的宽度，高度信息。
- */
-_SuperMap2.default.Util.getTextBounds = function (style, text, element) {
-    document.body.appendChild(element);
-    element.style.width = 'auto';
-    element.style.height = 'auto';
-    if (style.fontSize) {
-        element.style.fontSize = style.fontSize;
-    }
-    if (style.fontFamily) {
-        element.style.fontFamily = style.fontFamily;
-    }
-    if (style.fontWeight) {
-        element.style.fontWeight = style.fontWeight;
-    }
-    element.style.position = 'relative';
-    element.style.visibility = 'hidden';
-    //fix 在某些情况下，element内的文本变成竖起排列，导致宽度计算不正确的bug
-    element.style.display = 'inline-block';
-    element.innerHTML = text;
-    var textWidth = element.clientWidth;
-    var textHeight = element.clientHeight;
-    document.body.removeChild(element);
-    return {
-        textWidth: textWidth,
-        textHeight: textHeight
-    };
-};
+            // prep evt object with object & div references
+            if (evt == null) {
+                evt = {};
+            }
+            evt.object = this.object;
+            evt.element = this.element;
+            if (!evt.type) {
+                evt.type = type;
+            }
+
+            // execute all callbacks registered for specified type
+            // get a clone of the listeners array to
+            // allow for splicing during callbacks
+            listeners = listeners.slice();
+            var continueChain;
+            for (var i = 0, len = listeners.length; i < len; i++) {
+                var callback = listeners[i];
+                // bind the context to callback.obj
+                continueChain = callback.func.apply(callback.obj, [evt]);
+
+                if (continueChain != undefined && continueChain == false) {
+                    // if callback returns false, execute no more callbacks.
+                    break;
+                }
+            }
+            // don't fall through to other DOM elements
+            if (!this.fallThrough) {
+                _Event.Event.stop(evt, true);
+            }
+            return continueChain;
+        }
+
+        /**
+         * @function SuperMap.Events.prototype.handleBrowserEvent
+         * @description 对triggerEvent函数的包装，给事件对象设置了xy属性(即当前鼠标点的xy坐标)。
+         * @param evt - {Event} 事件对象。
+         */
+
+    }, {
+        key: 'handleBrowserEvent',
+        value: function handleBrowserEvent(evt) {
+            var type = evt.type,
+                listeners = this.listeners[type];
+            if (!listeners || listeners.length == 0) {
+                // noone's listening, bail out
+                return;
+            }
+            // add clientX & clientY to all events - corresponds to average x, y
+            var touches = evt.touches;
+            if (touches && touches[0]) {
+                var x = 0;
+                var y = 0;
+                var num = touches.length;
+                var touch;
+                for (var i = 0; i < num; ++i) {
+                    touch = touches[i];
+                    x += touch.clientX;
+                    y += touch.clientY;
+                }
+                evt.clientX = x / num;
+                evt.clientY = y / num;
+            }
+            if (this.includeXY) {
+                evt.xy = this.getMousePosition(evt);
+            }
+            this.triggerEvent(type, evt);
+        }
+
+        /**
+         * @function SuperMap.Events.prototype.clearMouseCache
+         * @description 清除鼠标缓存。
+         */
+
+    }, {
+        key: 'clearMouseCache',
+        value: function clearMouseCache() {
+            this.element.scrolls = null;
+            this.element.lefttop = null;
+            var body = document.body;
+            if (body && !((body.scrollTop != 0 || body.scrollLeft != 0) && navigator.userAgent.match(/iPhone/i))) {
+                this.element.offsets = null;
+            }
+        }
+
+        /**
+         * @function SuperMap.Events.prototype.getMousePosition
+         * @param evt - {Event} 事件对象。
+         * @returns {SuperMap.Pixel} 当前的鼠标的xy坐标点。
+         */
+
+    }, {
+        key: 'getMousePosition',
+        value: function getMousePosition(evt) {
+            if (!this.includeXY) {
+                this.clearMouseCache();
+            } else if (!this.element.hasScrollEvent) {
+                _Event.Event.observe(window, "scroll", this.clearMouseListener);
+                this.element.hasScrollEvent = true;
+            }
+
+            if (!this.element.scrolls) {
+                var viewportElement = _Util.Util.getViewportElement();
+                this.element.scrolls = [viewportElement.scrollLeft, viewportElement.scrollTop];
+            }
+
+            if (!this.element.lefttop) {
+                this.element.lefttop = [document.documentElement.clientLeft || 0, document.documentElement.clientTop || 0];
+            }
+
+            if (!this.element.offsets) {
+                this.element.offsets = _Util.Util.pagePosition(this.element);
+            }
+
+            return new _Pixel.Pixel(evt.clientX + this.element.scrolls[0] - this.element.offsets[0] - this.element.lefttop[0], evt.clientY + this.element.scrolls[1] - this.element.offsets[1] - this.element.lefttop[1]);
+        }
+    }]);
+
+    return Events;
+}();
+
+_SuperMap.SuperMap.Events = Events;
+_SuperMap.SuperMap.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
 
 /***/ }),
-/* 8 */
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.SecurityManager = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _Util = __webpack_require__(1);
+
+var _FetchRequest = __webpack_require__(6);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @name SecurityManager
+ * @memberOf SuperMap
+ * @namespace
+ * @description 安全管理中心，提供iServer,iPortal,Online统一权限认证管理
+ *  > 使用说明：
+ *  > 创建任何一个服务之前调用{@link SuperMap.SecurityManager.registerToken}或
+ *  > {@link SuperMap.SecurityManager.registerKey}注册凭据。
+ *  > 发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
+ */
+var SecurityManager = exports.SecurityManager = function () {
+    function SecurityManager() {
+        _classCallCheck(this, SecurityManager);
+    }
+
+    _createClass(SecurityManager, null, [{
+        key: 'generateToken',
+
+
+        /**
+         * @description 从服务器获取一个token,在此之前要注册服务器信息
+         * @param url {string}-服务器域名+端口，如：http://localhost:8092
+         * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
+         * @return {Promise} 返回包含token信息的Promise对象
+         */
+
+        value: function generateToken(url, tokenParam) {
+            var serverInfo = this.servers[url];
+            if (!serverInfo) {
+                return;
+            }
+            return _FetchRequest.FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
+                return response.text();
+            });
+        }
+
+        /**
+         * @description 注册安全服务器相关信息
+         * @param serverInfos -{SuperMap.ServerInfo} 服务器信息
+         */
+
+    }, {
+        key: 'registerServers',
+        value: function registerServers(serverInfos) {
+            this.servers = this.servers || {};
+            if (!_Util.Util.isArray(serverInfos)) {
+                serverInfos = [serverInfos];
+            }
+            for (var i = 0; i < serverInfos.length; i++) {
+                var serverInfo = serverInfos[i];
+                this.servers[serverInfo.server] = serverInfo;
+            }
+        }
+
+        /**
+         * @description 服务请求都会自动带上这个token
+         * @param url {string} -服务器域名+端口：如http://localhost:8090
+         * @param token -{string} token
+         */
+
+    }, {
+        key: 'registerToken',
+        value: function registerToken(url, token) {
+            this.tokens = this.tokens || {};
+            if (!url || !token) {
+                return;
+            }
+            var domain = this._getTokenStorageKey(url);
+            this.tokens[domain] = token;
+        }
+
+        /**
+         * @description 注册key,ids为数组(存在一个key对应多个服务)
+         * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
+         * @param key -{string} key
+         */
+
+    }, {
+        key: 'registerKey',
+        value: function registerKey(ids, key) {
+            this.keys = this.keys || {};
+            if (!ids || ids.length < 1 || !key) {
+                return;
+            }
+
+            ids = _Util.Util.isArray(ids) ? ids : [ids];
+            for (var i = 0; i < ids.length; i++) {
+                var id = this._getUrlRestString(ids[0]) || ids[0];
+                this.keys[id] = key;
+            }
+        }
+
+        /**
+         * @description 获取服务器信息
+         * @param url {string}-服务器域名+端口，如：http://localhost:8092
+         * @returns {SuperMap.ServerInfo} 服务器信息
+         */
+
+    }, {
+        key: 'getServerInfo',
+        value: function getServerInfo(url) {
+            this.servers = this.servers || {};
+            return this.servers[url];
+        }
+
+        /**
+         * @description 根据Url获取token
+         * @param url -{string} 服务器域名+端口，如：http://localhost:8092
+         * @returns {string} token
+         */
+
+    }, {
+        key: 'getToken',
+        value: function getToken(url) {
+            if (!url) {
+                return;
+            }
+            this.tokens = this.tokens || {};
+            var domain = this._getTokenStorageKey(url);
+            return this.tokens[domain];
+        }
+
+        /**
+         * @description 根据Url获取key
+         * @param id -{string} id
+         * @returns {string} key
+         */
+
+    }, {
+        key: 'getKey',
+        value: function getKey(id) {
+            this.keys = this.keys || {};
+            var key = this._getUrlRestString(id) || id;
+            return this.keys[key];
+        }
+
+        /**
+         * @description iServer登录验证
+         * @param url -{string} iServer首页地址，如：http://localhost:8090/iserver
+         * @param username -{string} 用户名
+         * @param password -{string} 密码
+         * @param rememberme -{boolean} 是否记住
+         * @returns {Promise} 返回包含iServer登录请求结果的Promise对象
+         */
+
+    }, {
+        key: 'loginiServer',
+        value: function loginiServer(url, username, password, rememberme) {
+            var end = url.substr(url.length - 1, 1);
+            url += end === "/" ? "services/security/login.json" : "/services/security/login.json";
+            var loginInfo = {
+                username: username && username.toString(),
+                password: password && password.toString(),
+                rememberme: rememberme
+            };
+            loginInfo = JSON.stringify(loginInfo);
+            var requestOptions = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            };
+            return _FetchRequest.FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+                return response.json();
+            });
+        }
+
+        /**
+         * @description iServer登出
+         * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
+         * @returns {Promise} 是否登出成功
+         */
+
+    }, {
+        key: 'logoutiServer',
+        value: function logoutiServer(url) {
+            var end = url.substr(url.length - 1, 1);
+            url += end === "/" ? "services/security/logout" : "/services/security/logout";
+
+            var requestOptions = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                withoutFormatSuffix: true
+            };
+            return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
+                return true;
+            }).catch(function () {
+                return false;
+            });
+        }
+
+        /**
+         * @description Online登录验证
+         * @param callbackLocation -{string} 跳转位置
+         * @param newTab -{boolean}是否新窗口打开
+         */
+
+    }, {
+        key: 'loginOnline',
+        value: function loginOnline(callbackLocation, newTab) {
+            var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
+            this._open(loginUrl, newTab);
+        }
+
+        /**
+         * @description iPortal登录验证
+         * @param url -{string} iportal首页地址
+         * @param username -{string} 用户名
+         * @param password -{string} 密码
+         * @returns {Promise} 返回包含iPortal登录请求结果的Promise对象
+         */
+
+    }, {
+        key: 'loginiPortal',
+        value: function loginiPortal(url, username, password) {
+            var end = url.substr(url.length - 1, 1);
+            url += end === "/" ? "web/login.json" : "/web/login.json";
+            var loginInfo = {
+                username: username && username.toString(),
+                password: password && password.toString()
+            };
+            loginInfo = JSON.stringify(loginInfo);
+            var requestOptions = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                withCredentials: true
+            };
+            return _FetchRequest.FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
+                return response.json();
+            });
+        }
+
+        /**
+         * @description iPortal登出
+         * @param url -{string} iportal首页地址
+         * @returns {Promise} 如果登出成功，返回true;否则返回false
+         */
+
+    }, {
+        key: 'logoutiPortal',
+        value: function logoutiPortal(url) {
+            var end = url.substr(url.length - 1, 1);
+            url += end === "/" ? "services/security/logout" : "/services/security/logout";
+
+            var requestOptions = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                withCredentials: true,
+                withoutFormatSuffix: true
+            };
+            return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
+                return true;
+            }).catch(function () {
+                return false;
+            });
+        }
+
+        /**
+         * @description iManager登录验证
+         * @param url -{string} iManager地址。<br>
+         *                      地址参数为iManager首页地址，如： http://localhost:8390/imanager<br>
+         * @param loginInfoParams -{Object} iManager 登录参数<br>
+         *        userName -{string} 用户名<br>
+         *        password-{string} 密码
+         * @param options -{Object} <br>
+         *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
+         * @return {Promise} 返回包含iManager登录请求结果的Promise对象
+         */
+
+    }, {
+        key: 'loginManager',
+        value: function loginManager(url, loginInfoParams, options) {
+            if (!_Util.Util.isInTheSameDomain(url)) {
+                var isNewTab = options ? options.isNewTab : true;
+                this._open(url, isNewTab);
+                return;
+            }
+            var end = url.substr(url.length - 1, 1);
+            var requestUrl = end === "/" ? url + "icloud/security/tokens.json" : url + "/icloud/security/tokens.json";
+            var params = loginInfoParams || {};
+            var loginInfo = {
+                username: params.userName && params.userName.toString(),
+                password: params.password && params.password.toString()
+            };
+            loginInfo = JSON.stringify(loginInfo);
+            var requestOptions = {
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json'
+                }
+            };
+            var me = this;
+            return _FetchRequest.FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
+                response.text().then(function (result) {
+                    me.imanagerToken = result;
+                    return result;
+                });
+            });
+        }
+
+        /**
+         * @description 清空全部验证信息
+         */
+
+    }, {
+        key: 'destroyAllCredentials',
+        value: function destroyAllCredentials() {
+            this.keys = null;
+            this.tokens = null;
+            this.servers = null;
+        }
+
+        /**
+         * @description 清空令牌信息
+         */
+
+    }, {
+        key: 'destroyToken',
+        value: function destroyToken(url) {
+            if (!url) {
+                return;
+            }
+            var domain = this._getTokenStorageKey(url);
+            this.tokens = this.tokens || {};
+            if (this.tokens[domain]) {
+                delete this.tokens[domain];
+            }
+        }
+
+        /**
+         * @description 清空服务授权码
+         */
+
+    }, {
+        key: 'destroyKey',
+        value: function destroyKey(id) {
+            if (!id) {
+                return;
+            }
+            this.keys = this.keys || {};
+            var key = this._getUrlRestString(id) || id;
+            if (this.keys[key]) {
+                delete this.keys[key];
+            }
+        }
+    }, {
+        key: '_open',
+        value: function _open(url, newTab) {
+            newTab = newTab != null ? newTab : true;
+            var offsetX = window.screen.availWidth / 2 - this.INNER_WINDOW_WIDTH / 2;
+            var offsetY = window.screen.availHeight / 2 - this.INNER_WINDOW_HEIGHT / 2;
+            var options = "height=" + this.INNER_WINDOW_HEIGHT + ", width=" + this.INNER_WINDOW_WIDTH + ",top=" + offsetY + ", left=" + offsetX + ",toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";
+            if (newTab) {
+                window.open(url, 'login');
+            } else {
+                window.open(url, 'login', options);
+            }
+        }
+    }, {
+        key: '_getTokenStorageKey',
+        value: function _getTokenStorageKey(url) {
+            var patten = /(.*?):\/\/([^\/]+)/i;
+            var result = url.match(patten);
+            if (!result) {
+                return url;
+            }
+            return result[0];
+        }
+    }, {
+        key: '_getUrlRestString',
+        value: function _getUrlRestString(url) {
+            if (!url) {
+                return url;
+            }
+            var patten = /http:\/\/(.*\/rest)/i;
+            var result = url.match(patten);
+            if (!result) {
+                return url;
+            }
+            return result[0];
+        }
+    }]);
+
+    return SecurityManager;
+}();
+
+SecurityManager.INNER_WINDOW_WIDTH = 600;
+SecurityManager.INNER_WINDOW_HEIGHT = 600;
+SecurityManager.SSO = "https://sso.supermap.com";
+SecurityManager.ONLINE = "http://www.supermapol.com";
+
+
+_SuperMap.SuperMap.SecurityManager = SecurityManager;
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3493,15 +4467,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SuperMap = __webpack_require__(3);
+var _SuperMap = __webpack_require__(4);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _MapVRenderer = __webpack_require__(15);
 
-var _MapVRenderer = __webpack_require__(13);
+var _Util = __webpack_require__(1);
 
-var _MapVRenderer2 = _interopRequireDefault(_MapVRenderer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _LonLat = __webpack_require__(18);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3557,7 +4529,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         _this.CLASS_NAME = "SuperMap.Layer.MapVLayer";
 
         if (options) {
-            _SuperMap2.default.Util.extend(_this, options);
+            _Util.Util.extend(_this, options);
         }
         //MapV图要求使用canvas绘制，判断是否支持
         _this.canvas = document.createElement("canvas");
@@ -3702,7 +4674,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         key: 'setMap',
         value: function setMap(map) {
             _get(MapVLayer.prototype.__proto__ || Object.getPrototypeOf(MapVLayer.prototype), 'setMap', this).call(this, map);
-            this.renderer = new _MapVRenderer2.default(map, this, this.dataSet, this.options);
+            this.renderer = new _MapVRenderer.MapVRenderer(map, this, this.dataSet, this.options);
             if (!this.supported) {
                 this.map.removeLayer(this);
             } else {
@@ -3768,17 +4740,17 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
             if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
                 dest = "EPSG:3857";
             }
-            return new _SuperMap2.default.LonLat(latLng.lon, latLng.lat).transform(source, dest);
+            return new _LonLat.LonLat(latLng.lon, latLng.lat).transform(source, dest);
         }
     }]);
 
     return MapVLayer;
-}(_SuperMap2.default.Layer);
+}(_SuperMap.SuperMap.Layer);
 
-_SuperMap2.default.Layer.MapVLayer = MapVLayer;
+_SuperMap.SuperMap.Layer.MapVLayer = MapVLayer;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3791,19 +4763,11 @@ exports.AddressMatchService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SuperMap = __webpack_require__(3);
+var _SuperMap = __webpack_require__(4);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _CommonServiceBase2 = __webpack_require__(5);
 
-var _CommonServiceBase2 = __webpack_require__(4);
-
-var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
-
-var _AddressMatchService = __webpack_require__(19);
-
-var _AddressMatchService2 = _interopRequireDefault(_AddressMatchService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _AddressMatchService = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3842,7 +4806,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         key: 'code',
         value: function code(params, callback) {
             var me = this;
-            var addressMatchService = new _AddressMatchService2.default(me.url, {
+            var addressMatchService = new _AddressMatchService.AddressMatchService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -3864,7 +4828,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         key: 'decode',
         value: function decode(params, callback) {
             var me = this;
-            var addressMatchService = new _AddressMatchService2.default(me.url, {
+            var addressMatchService = new _AddressMatchService.AddressMatchService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -3877,12 +4841,12 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
     }]);
 
     return AddressMatchService;
-}(_CommonServiceBase3.default);
+}(_CommonServiceBase2.CommonServiceBase);
 
-_SuperMap2.default.REST.AddressMatchService = AddressMatchService;
+_SuperMap.SuperMap.REST.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3895,49 +4859,27 @@ exports.ProcessingService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SuperMap = __webpack_require__(3);
+var _SuperMap = __webpack_require__(4);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _REST = __webpack_require__(2);
 
-var _REST = __webpack_require__(1);
+var _CommonServiceBase2 = __webpack_require__(5);
 
-var _CommonServiceBase2 = __webpack_require__(4);
+var _KernelDensityJobsService = __webpack_require__(29);
 
-var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
+var _SingleObjectQueryJobsService = __webpack_require__(33);
 
-var _KernelDensityJobsService = __webpack_require__(25);
+var _SummaryMeshJobsService = __webpack_require__(35);
 
-var _KernelDensityJobsService2 = _interopRequireDefault(_KernelDensityJobsService);
+var _SummaryRegionJobsService = __webpack_require__(37);
 
-var _SingleObjectQueryJobsService = __webpack_require__(29);
+var _VectorClipJobsService = __webpack_require__(41);
 
-var _SingleObjectQueryJobsService2 = _interopRequireDefault(_SingleObjectQueryJobsService);
+var _OverlayGeoJobsService = __webpack_require__(31);
 
-var _SummaryMeshJobsService = __webpack_require__(31);
+var _BuffersAnalystJobsService = __webpack_require__(25);
 
-var _SummaryMeshJobsService2 = _interopRequireDefault(_SummaryMeshJobsService);
-
-var _SummaryRegionJobsService = __webpack_require__(33);
-
-var _SummaryRegionJobsService2 = _interopRequireDefault(_SummaryRegionJobsService);
-
-var _VectorClipJobsService = __webpack_require__(37);
-
-var _VectorClipJobsService2 = _interopRequireDefault(_VectorClipJobsService);
-
-var _OverlayGeoJobsService = __webpack_require__(27);
-
-var _OverlayGeoJobsService2 = _interopRequireDefault(_OverlayGeoJobsService);
-
-var _BuffersAnalystJobsService = __webpack_require__(21);
-
-var _BuffersAnalystJobsService2 = _interopRequireDefault(_BuffersAnalystJobsService);
-
-var _TopologyValidatorJobsService = __webpack_require__(35);
-
-var _TopologyValidatorJobsService2 = _interopRequireDefault(_TopologyValidatorJobsService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _TopologyValidatorJobsService = __webpack_require__(39);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3990,7 +4932,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getKernelDensityJobs(callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var kernelDensityJobsService = new _KernelDensityJobsService2.default(me.url, {
+            var kernelDensityJobsService = new _KernelDensityJobsService.KernelDensityJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4015,7 +4957,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getKernelDensityJob(id, callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var kernelDensityJobsService = new _KernelDensityJobsService2.default(me.url, {
+            var kernelDensityJobsService = new _KernelDensityJobsService.KernelDensityJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4041,7 +4983,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function addKernelDensityJob(params, callback, seconds, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var kernelDensityJobsService = new _KernelDensityJobsService2.default(me.url, {
+            var kernelDensityJobsService = new _KernelDensityJobsService.KernelDensityJobsService(me.url, {
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -4080,7 +5022,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getSummaryMeshJobs(callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var summaryMeshJobsService = new _SummaryMeshJobsService2.default(me.url, {
+            var summaryMeshJobsService = new _SummaryMeshJobsService.SummaryMeshJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4105,7 +5047,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getSummaryMeshJob(id, callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var summaryMeshJobsService = new _SummaryMeshJobsService2.default(me.url, {
+            var summaryMeshJobsService = new _SummaryMeshJobsService.SummaryMeshJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4131,7 +5073,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function addSummaryMeshJob(params, callback, seconds, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var summaryMeshJobsService = new _SummaryMeshJobsService2.default(me.url, {
+            var summaryMeshJobsService = new _SummaryMeshJobsService.SummaryMeshJobsService(me.url, {
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -4170,7 +5112,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getQueryJobs(callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var singleObjectQueryJobsService = new _SingleObjectQueryJobsService2.default(me.url, {
+            var singleObjectQueryJobsService = new _SingleObjectQueryJobsService.SingleObjectQueryJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4195,7 +5137,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getQueryJob(id, callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var singleObjectQueryJobsService = new _SingleObjectQueryJobsService2.default(me.url, {
+            var singleObjectQueryJobsService = new _SingleObjectQueryJobsService.SingleObjectQueryJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4222,7 +5164,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
-            var singleObjectQueryJobsService = new _SingleObjectQueryJobsService2.default(me.url, {
+            var singleObjectQueryJobsService = new _SingleObjectQueryJobsService.SingleObjectQueryJobsService(me.url, {
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -4261,7 +5203,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getSummaryRegionJobs(callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var summaryRegionJobsService = new _SummaryRegionJobsService2.default(me.url, {
+            var summaryRegionJobsService = new _SummaryRegionJobsService.SummaryRegionJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4286,7 +5228,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getSummaryRegionJob(id, callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var summaryRegionJobsService = new _SummaryRegionJobsService2.default(me.url, {
+            var summaryRegionJobsService = new _SummaryRegionJobsService.SummaryRegionJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4312,7 +5254,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function addSummaryRegionJob(params, callback, seconds, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var summaryRegionJobsService = new _SummaryRegionJobsService2.default(me.url, {
+            var summaryRegionJobsService = new _SummaryRegionJobsService.SummaryRegionJobsService(me.url, {
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -4351,7 +5293,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getVectorClipJobs(callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var vectorClipJobsService = new _VectorClipJobsService2.default(me.url, {
+            var vectorClipJobsService = new _VectorClipJobsService.VectorClipJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4376,7 +5318,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getVectorClipJob(id, callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var vectorClipJobsService = new _VectorClipJobsService2.default(me.url, {
+            var vectorClipJobsService = new _VectorClipJobsService.VectorClipJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4403,7 +5345,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
             var me = this,
                 param = me._processParams(params),
                 format = me._processFormat(resultFormat);
-            var vectorClipJobsService = new _VectorClipJobsService2.default(me.url, {
+            var vectorClipJobsService = new _VectorClipJobsService.VectorClipJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4443,7 +5385,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getOverlayGeoJobs(callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var overlayGeoJobsService = new _OverlayGeoJobsService2.default(me.url, {
+            var overlayGeoJobsService = new _OverlayGeoJobsService.OverlayGeoJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4468,7 +5410,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getOverlayGeoJob(id, callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var overlayGeoJobsService = new _OverlayGeoJobsService2.default(me.url, {
+            var overlayGeoJobsService = new _OverlayGeoJobsService.OverlayGeoJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4494,7 +5436,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function addOverlayGeoJob(params, callback, seconds, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var overlayGeoJobsService = new _OverlayGeoJobsService2.default(me.url, {
+            var overlayGeoJobsService = new _OverlayGeoJobsService.OverlayGeoJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4534,7 +5476,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getBuffersJobs(callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var buffersAnalystJobsService = new _BuffersAnalystJobsService2.default(me.url, {
+            var buffersAnalystJobsService = new _BuffersAnalystJobsService.BuffersAnalystJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4559,7 +5501,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getBuffersJob(id, callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var buffersAnalystJobsService = new _BuffersAnalystJobsService2.default(me.url, {
+            var buffersAnalystJobsService = new _BuffersAnalystJobsService.BuffersAnalystJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4585,7 +5527,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function addBuffersJob(params, callback, seconds, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var buffersAnalystJobsService = new _BuffersAnalystJobsService2.default(me.url, {
+            var buffersAnalystJobsService = new _BuffersAnalystJobsService.BuffersAnalystJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4625,7 +5567,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getTopologyValidatorJobs(callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var topologyValidatorJobsService = new _TopologyValidatorJobsService2.default(me.url, {
+            var topologyValidatorJobsService = new _TopologyValidatorJobsService.TopologyValidatorJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4650,7 +5592,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getTopologyValidatorJob(id, callback, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var topologyValidatorJobsService = new _TopologyValidatorJobsService2.default(me.url, {
+            var topologyValidatorJobsService = new _TopologyValidatorJobsService.TopologyValidatorJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4676,7 +5618,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function addTopologyValidatorJob(params, callback, seconds, resultFormat) {
             var me = this,
                 format = me._processFormat(resultFormat);
-            var topologyValidatorJobsService = new _TopologyValidatorJobsService2.default(me.url, {
+            var topologyValidatorJobsService = new _TopologyValidatorJobsService.TopologyValidatorJobsService(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
@@ -4744,12 +5686,12 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
     }]);
 
     return ProcessingService;
-}(_CommonServiceBase3.default);
+}(_CommonServiceBase2.CommonServiceBase);
 
-_SuperMap2.default.REST.ProcessingService = ProcessingService;
+_SuperMap.SuperMap.REST.ProcessingService = ProcessingService;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4758,6 +5700,7 @@ _SuperMap2.default.REST.ProcessingService = ProcessingService;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.TimeFlowControl = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -4765,13 +5708,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _TimeControlBase2 = __webpack_require__(18);
-
-var _TimeControlBase3 = _interopRequireDefault(_TimeControlBase2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _TimeControlBase2 = __webpack_require__(20);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4795,7 +5732,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        repeat - {boolean} 是否重复循环。默认为true。<br>
  *        reverse - {boolean} 是否反向。默认为false。
  */
-var TimeFlowControl = function (_TimeControlBase) {
+var TimeFlowControl = exports.TimeFlowControl = function (_TimeControlBase) {
     _inherits(TimeFlowControl, _TimeControlBase);
 
     function TimeFlowControl(callback, options) {
@@ -4993,15 +5930,12 @@ var TimeFlowControl = function (_TimeControlBase) {
     }]);
 
     return TimeFlowControl;
-}(_TimeControlBase3.default);
+}(_TimeControlBase2.TimeControlBase);
 
-exports.default = TimeFlowControl;
-
-
-_SuperMap2.default.TimeFlowControl = TimeFlowControl;
+_SuperMap.SuperMap.TimeFlowControl = TimeFlowControl;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5010,14 +5944,15 @@ _SuperMap2.default.TimeFlowControl = TimeFlowControl;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.ElasticSearch = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Events = __webpack_require__(8);
 
-var _elasticsearch = __webpack_require__(47);
+var _elasticsearch = __webpack_require__(50);
 
 var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
@@ -5036,7 +5971,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         geoFence - {Object} 地理围栏。</br>
  */
 
-var ElasticSearch = function () {
+var ElasticSearch = exports.ElasticSearch = function () {
 
     /**
      * @member SuperMap.ElasticSearch.prototype.events -{SuperMap.Events}
@@ -5086,7 +6021,7 @@ var ElasticSearch = function () {
         me.geoFence = options.geoFence;
         me.openGeoFence = options.openGeoFence;
         me.outOfGeoFence = options.outOfGeoFence;
-        me.events = new _SuperMap2.default.Events(me, null, me.EVENT_TYPES);
+        me.events = new _Events.Events(me, null, me.EVENT_TYPES);
         me.eventListeners = options.eventListeners;
         if (me.eventListeners instanceof Object) {
             me.events.on(me.eventListeners);
@@ -5762,12 +6697,10 @@ var ElasticSearch = function () {
     return ElasticSearch;
 }();
 
-exports.default = ElasticSearch;
-
-_SuperMap2.default.ElasticSearch = ElasticSearch;
+_SuperMap.SuperMap.ElasticSearch = ElasticSearch;
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5776,18 +6709,15 @@ _SuperMap2.default.ElasticSearch = ElasticSearch;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.MapVRenderer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SuperMap = __webpack_require__(3);
+var _SuperMap = __webpack_require__(4);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _mapv = __webpack_require__(48);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _mapv = __webpack_require__(51);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5807,7 +6737,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 var MapVBaseLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Function;
 
-var MapVRenderer = function (_MapVBaseLayer) {
+var MapVRenderer = exports.MapVRenderer = function (_MapVBaseLayer) {
     _inherits(MapVRenderer, _MapVBaseLayer);
 
     function MapVRenderer(map, layer, dataSet, options) {
@@ -6016,7 +6946,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
             if (this.options.coordType && ["bd09mc", "coordinates_mercator"].indexOf(this.options.coordType) > -1) {
                 var data = this.dataSet.get();
                 data = this.dataSet.transferCoordinate(data, function (coordinates) {
-                    var pixel = _SuperMap2.default.Projection.transform({
+                    var pixel = _SuperMap.SuperMap.Projection.transform({
                         x: coordinates[0],
                         y: coordinates[1]
                     }, "EPSG:3857", "EPSG:4326");
@@ -6191,10 +7121,8 @@ var MapVRenderer = function (_MapVBaseLayer) {
     return MapVRenderer;
 }(MapVBaseLayer);
 
-exports.default = MapVRenderer;
-
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6203,14 +7131,11 @@ exports.default = MapVRenderer;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Credential = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6226,7 +7151,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * var pixcel = new SuperMap.Credential("valueString","token");
  * pixcel.destroy();
  */
-var Credential = function () {
+var Credential = exports.Credential = function () {
 
     /**
      * @member SuperMap.Bounds.prototype.name -{string}
@@ -6316,12 +7241,11 @@ var Credential = function () {
 }();
 
 Credential.CREDENTIAL = null;
-exports.default = Credential;
 
-_SuperMap2.default.Credential = Credential;
+_SuperMap.SuperMap.Credential = Credential;
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6334,11 +7258,7 @@ exports.Event = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _Util = __webpack_require__(7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Util = __webpack_require__(1);
 
 /**
  * @name Event
@@ -6346,7 +7266,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @namespace
  * @description 事件处理函数.
  */
-var Event = exports.Event = _SuperMap2.default.Event = {
+var Event = exports.Event = _SuperMap.SuperMap.Event = {
 
     /**
      * @description  A hashtable cache of the event observers. Keyed by element._eventCacheID
@@ -6498,7 +7418,7 @@ var Event = exports.Event = _SuperMap2.default.Event = {
      * @returns {HTMLElement} The first node with the given tagName, starting from the node the event was triggered on and traversing the DOM upwards
      */
     findElement: function findElement(event, tagName) {
-        var element = _SuperMap2.default.Event.element(event);
+        var element = _SuperMap.SuperMap.Event.element(event);
         while (element.parentNode && (!element.tagName || element.tagName.toUpperCase() != tagName.toUpperCase())) {
             element = element.parentNode;
         }
@@ -6568,7 +7488,7 @@ var Event = exports.Event = _SuperMap2.default.Event = {
         var element = _Util.Util.getElement(elementParam);
         var cacheID = element._eventCacheID;
 
-        this._removeElementObservers(_SuperMap2.default.Event.observers[cacheID]);
+        this._removeElementObservers(_SuperMap.SuperMap.Event.observers[cacheID]);
     },
 
     /*
@@ -6581,7 +7501,7 @@ var Event = exports.Event = _SuperMap2.default.Event = {
             for (var i = elementObservers.length - 1; i >= 0; i--) {
                 var entry = elementObservers[i];
                 var args = new Array(entry.element, entry.name, entry.observer, entry.useCapture);
-                _SuperMap2.default.Event.stopObserving.apply(this, args);
+                _SuperMap.SuperMap.Event.stopObserving.apply(this, args);
             }
         }
     },
@@ -6609,7 +7529,7 @@ var Event = exports.Event = _SuperMap2.default.Event = {
 
         // find element's entry in this.observers cache and remove it
         var foundEntry = false;
-        var elementObservers = _SuperMap2.default.Event.observers[cacheID];
+        var elementObservers = _SuperMap.SuperMap.Event.observers[cacheID];
         if (elementObservers) {
 
             // find the specific event type in the element's list
@@ -6621,7 +7541,7 @@ var Event = exports.Event = _SuperMap2.default.Event = {
 
                     elementObservers.splice(i, 1);
                     if (elementObservers.length == 0) {
-                        delete _SuperMap2.default.Event.observers[cacheID];
+                        delete _SuperMap.SuperMap.Event.observers[cacheID];
                     }
                     foundEntry = true;
                     break;
@@ -6649,23 +7569,23 @@ var Event = exports.Event = _SuperMap2.default.Event = {
         // check for SuperMap.Event before checking for observers, because
         // SuperMap.Event may be undefined in IE if no map instance was
         // created
-        if (_SuperMap2.default.Event && _SuperMap2.default.Event.observers) {
-            for (var cacheID in _SuperMap2.default.Event.observers) {
-                var elementObservers = _SuperMap2.default.Event.observers[cacheID];
-                _SuperMap2.default.Event._removeElementObservers.apply(this, [elementObservers]);
+        if (_SuperMap.SuperMap.Event && _SuperMap.SuperMap.Event.observers) {
+            for (var cacheID in _SuperMap.SuperMap.Event.observers) {
+                var elementObservers = _SuperMap.SuperMap.Event.observers[cacheID];
+                _SuperMap.SuperMap.Event._removeElementObservers.apply(this, [elementObservers]);
             }
-            _SuperMap2.default.Event.observers = false;
+            _SuperMap.SuperMap.Event.observers = false;
         }
     },
 
     CLASS_NAME: "SuperMap.Event"
 };
-_SuperMap2.default.Event = Event;
+_SuperMap.SuperMap.Event = Event;
 /* prevent memory leaks in IE */
-_SuperMap2.default.Event.observe(window, 'unload', _SuperMap2.default.Event.unloadCache, false);
+_SuperMap.SuperMap.Event.observe(window, 'unload', _SuperMap.SuperMap.Event.unloadCache, false);
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6674,570 +7594,271 @@ _SuperMap2.default.Event.observe(window, 'unload', _SuperMap2.default.Event.unlo
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+exports.LonLat = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _Pixel = __webpack_require__(17);
-
-var _Pixel2 = _interopRequireDefault(_Pixel);
-
-var _Event = __webpack_require__(15);
-
-var _BaseTypes = __webpack_require__(6);
-
-var _Util = __webpack_require__(7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Util = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @class SuperMap.Events
- * @classdesc 事件类。
- * @param object - {Object} 当前事件对象被添加到的JS对象。
- * @param element - {HTMLElement} 响应浏览器事件的dom元素。
- * @param eventTypes - {Array<string>} 自定义应用事件的数组。
- * @param fallThrough - {boolean} 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
- * @param options - {Object} 事件对象选项。
+ * @class SuperMap.LonLat
+ * @classdesc  这个类用来表示经度和纬度对。
+ * @param lon - {number} 地图单位上的X轴坐标，如果地图是地理投影，则此值是经度，否则，此值是地图地理位置的x坐标。
+ * @param lat - {number} 地图单位上的Y轴坐标，如果地图是地理投影，则此值是纬度，否则，此值是地图地理位置的y坐标。
+ * @param location - {Array<float>} [lon, lat]  如果要同时设置，则使用传入横纵坐标组成的数组。
+ * @example
+ * var lonLat = new SuperMap.LonLat(30,45);
  */
-var Events = function () {
+var LonLat = exports.LonLat = function () {
 
     /**
-     * @member SuperMap.Events.prototype.extensionCount - {Object}
+     * @member SuperMap.LonLat.prototype.lon  -{float}
+     * @description 地图的单位的X轴（横轴）坐标，默认为0.0。
      */
+    function LonLat(lon, lat) {
+        _classCallCheck(this, LonLat);
 
+        this.lon = 0.0;
+        this.lat = 0.0;
+        this.CLASS_NAME = "SuperMap.LonLat";
 
-    /**
-     * @member SuperMap.Events.prototype.includeXY -{boolean}
-     * @description 判断是否让xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生xy属性。
-     *                可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
-     *                事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
-     *                设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
-     * @example
-     *  function named(evt) {
-     *        this.xy = this.object.events.getMousePosition(evt);
-     *  }
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.eventHandler -{function}
-     * @description 绑定在元素上的事件处理器对象。
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.element  -{HTMLElement}
-     * @description 接受浏览器事件的DOM节点。
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.listeners -{Object}
-     * @description Hashtable of Array(function): events listener functions
-     */
-    function Events(object, element, eventTypes, fallThrough, options) {
-        _classCallCheck(this, Events);
-
-        this.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
-        this.listeners = null;
-        this.object = null;
-        this.element = null;
-        this.eventTypes = null;
-        this.eventHandler = null;
-        this.fallThrough = null;
-        this.includeXY = false;
-        this.extensions = null;
-        this.extensionCount = null;
-        this.clearMouseListener = null;
-        this.CLASS_NAME = "SuperMap.Events";
-
-        _Util.Util.extend(this, options);
-        this.object = object;
-        this.fallThrough = fallThrough;
-        this.listeners = {};
-        this.extensions = {};
-        this.extensionCount = {};
-
-        this.eventTypes = [];
-        if (eventTypes != null) {
-            for (var i = 0, len = eventTypes.length; i < len; i++) {
-                this.addEventType(eventTypes[i]);
-            }
+        if (_Util.Util.isArray(lon)) {
+            lat = lon[1];
+            lon = lon[0];
         }
-
-        if (element != null) {
-            this.attachToElement(element);
-        }
+        this.lon = lon ? _Util.Util.toFloat(lon) : this.lon;
+        this.lat = lat ? _Util.Util.toFloat(lat) : this.lat;
     }
 
     /**
-     * @function SuperMap.Events.prototype.destroy
-     * @description 移除当前要素element上的所有事件监听和处理。
-     */
-
-    /**
-     * @member SuperMap.Events.prototype.clearMouseListener - {Object}
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.extensions - {Object}
-     * @description 事件扩展。Keys代表事件类型，values代表事件对象。
+     * @function SuperMap.LonLat.prototype.toString
+     * @description 返回此对象的字符串形式
      * @example
-     * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
-     *
-     *   SuperMap.Events.foostart = SuperMap.Class({
-     *       initialize: function(target) {
-     *           this.target = target;
-     *           this.target.register("click", this, this.doStuff, {extension: true});
-     *           // only required if extension provides more than one event type
-     *           this.target.extensions["foostart"] = true;
-     *           this.target.extensions["fooend"] = true;
-     *       },
-     *       destroy: function() {
-     *           var target = this.target;
-     *           target.unregister("click", this, this.doStuff);
-     *           delete this.target;
-     *           // only required if extension provides more than one event type
-     *           delete target.extensions["foostart"];
-     *           delete target.extensions["fooend"];
-     *       },
-     *       doStuff: function(evt) {
-     *           var propagate = true;
-     *           if (SuperMap.Event.element(evt).className === "foo") {
-     *               propagate = false;
-     *               var target = this.target;
-     *               target.triggerEvent("foostart");
-     *               window.setTimeout(function() {
-     *                   target.triggerEvent("fooend");
-     *               }, 1000);
-     *           }
-     *           return propagate;
-     *       }
-     *   });
-     *   // only required if extension provides more than one event type
-     *   SuperMap.Events.fooend = SuperMap.Events.foostart;
+     * var lonLat = new SuperMap.LonLat(100,50);
+     * var str = lonLat.toString();
+     * @returns {string} 例如: "lon=100,lat=50"
      */
 
 
     /**
-     * @member SuperMap.Events.prototype.fallThrough -{boolean}
-     * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+     * @member SuperMap.LonLat.prototype.lat  -{float}
+     * @description 地图的单位的Y轴（纵轴）坐标，默认为0.0。
      */
 
 
-    /**
-     * @member SuperMap.Events.prototype.eventTypes  -{Array<string>}
-     * @description 支持的事件类型列表。
-     */
+    _createClass(LonLat, [{
+        key: 'toString',
+        value: function toString() {
+            return "lon=" + this.lon + ",lat=" + this.lat;
+        }
 
+        /**
+         * @function SuperMap.LonLat.prototype.toShortString
+         * @description 将经度纬度转换成简单字符串。
+         * @example
+         * var lonLat = new SuperMap.LonLat(100,50);
+         * var str = lonLat.toShortString();
+         * @returns {string} 返回处理后的经纬度字符串。例如："100,50"
+         */
 
-    /**
-     * @member SuperMap.Events.prototype.object  -{Object}
-     * @description  发布应用程序事件的对象。
-     */
+    }, {
+        key: 'toShortString',
+        value: function toShortString() {
+            return this.lon + "," + this.lat;
+        }
 
+        /**
+         * @function SuperMap.LonLat.prototype.clone
+         * @description 复制坐标对象，并返回复制后的新对象。
+         * @example
+         * var lonLat1 = new SuperMap.LonLat(100,50);
+         * var lonLat2 = lonLat1.clone();
+         * @returns {SuperMap.LonLat}  返回相同坐标值的新的坐标对象。
+         */
 
-    /**
-     * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
-     * @description 支持的事件。
-     * @constant
-     * @default [
-     "mouseover", "mouseout","mousedown", "mouseup", "mousemove",
-     "click", "dblclick", "rightclick", "dblrightclick","resize",
-     "focus", "blur","touchstart", "touchmove", "touchend","keydown",
-     "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
-     "MSGestureStart", "MSGestureChange", "MSGestureEnd","contextmenu"
-     ]
-     */
+    }, {
+        key: 'clone',
+        value: function clone() {
+            return new LonLat(this.lon, this.lat);
+        }
 
+        /**
+         * @function SuperMap.LonLat.prototype.add
+         * @description 在已有坐标对象的经纬度基础上加上新的坐标经纬度，并返回新的坐标对象。
+         * @example
+         * var lonLat1 = new SuperMap.LonLat(100,50);
+         * //lonLat2 是新的对象
+         * var lonLat2 = lonLat1.add(100,50);
+         *
+         * @param lon - {float} 传入的精度参数。
+         * @param lat - {float} 传入的纬度参数。
+         * @returns {SuperMap.LonLat} 返回一个新的LonLat对象，此对象的经纬度是由传
+         *      入的经纬度与当前的经纬度相加所得。
+         */
 
-    _createClass(Events, [{
+    }, {
+        key: 'add',
+        value: function add(lon, lat) {
+            if (lon == null || lat == null) {
+                throw new TypeError('LonLat.add cannot receive null values');
+            }
+            return new LonLat(this.lon + _Util.Util.toFloat(lon), this.lat + _Util.Util.toFloat(lat));
+        }
+
+        /**
+         * @function SuperMap.LonLat.prototype.equals
+         * @description 判断两个坐标对象是否相等。
+         * @example
+         * var lonLat1 = new SuperMap.LonLat(100,50);
+         * var lonLat2 = new SuperMap.LonLat(100,50);
+         * var isEquals = lonLat1.equals(lonLat2);
+         *
+         * @param ll - {SuperMap.LonLat} 需要进行比较的坐标对象。
+         * @returns {boolean} 如果LonLat对象的经纬度和传入的经纬度一致则返回true,不一
+         *      致或传入的ll参数为NULL则返回false。
+         */
+
+    }, {
+        key: 'equals',
+        value: function equals(ll) {
+            var equals = false;
+            if (ll != null) {
+                equals = this.lon === ll.lon && this.lat === ll.lat || isNaN(this.lon) && isNaN(this.lat) && isNaN(ll.lon) && isNaN(ll.lat);
+            }
+            return equals;
+        }
+
+        /**
+         * APIMethod: transform
+         * 经纬度对象的投影转换。
+         * （在自身上做投影转换）
+         *
+         * 例如:
+         * (start code)
+         * var lonLat1 = new SuperMap.LonLat(100,50);
+         * //这里 lonLat1 = lonLat2
+         * var lonLat2 = lonLat1.transform(
+         *      new SuperMap.Projection("EPSG:4326"),
+         *      new SuperMap.Projection("EPSG:3857")
+         *  );
+         * (end)
+         *
+         * Parameters:
+         * source - {<SuperMap.Projection>} 源投影
+         * dest   - {<SuperMap.Projection>} 目标投影
+         *
+         * Returns:
+         * {<SuperMap.LonLat>} 返回转换后的LonLat（坐标对象）。
+         */
+
+    }, {
+        key: 'transform',
+        value: function transform(source, dest) {
+            var point = _SuperMap.SuperMap.Projection.transform({ 'x': this.lon, 'y': this.lat }, source, dest);
+            this.lon = point.x;
+            this.lat = point.y;
+            return this;
+        }
+
+        /**
+         * @function SuperMap.LonLat.prototype.wrapDateLine
+         * @description 通过传入的范围对象对坐标对象转换到该范围内。
+         * 如果经度小于给定范围最小精度，则在原经度基础上加上范围宽度，
+         * 直到精度在范围内为止，如果经度大于给定范围则在原经度基础上减去范围宽度。
+         * 换句话说就是将不在经度范围内的坐标转换到范围以内。
+         *  （只会转换lon，不会转换lat，主要用于转移到日界线以内）
+         * @example
+         * var lonLat1 = new SuperMap.LonLat(420,50);
+         * var lonLat2 = lonLat1.wrapDateLine(
+         *      new SuperMap.Bounds(-180,-90,180,90)
+         *  );
+         *
+         * @param maxExtent - {SuperMap.Bounds} 最大边界的范围。
+         * @returns {SuperMap.LonLat} 将坐标转换到范围对象以内，并返回新的坐标。
+         */
+
+    }, {
+        key: 'wrapDateLine',
+        value: function wrapDateLine(maxExtent) {
+
+            var newLonLat = this.clone();
+
+            if (maxExtent) {
+                //shift right?
+                while (newLonLat.lon < maxExtent.left) {
+                    newLonLat.lon += maxExtent.getWidth();
+                }
+
+                //shift left?
+                while (newLonLat.lon > maxExtent.right) {
+                    newLonLat.lon -= maxExtent.getWidth();
+                }
+            }
+
+            return newLonLat;
+        }
+
+        /**
+         *
+         * @function SuperMap.LonLat.prototype.destroy
+         * @description 销毁此对象。
+         * 销毁后此对象的所有属性为null，而不是初始值。
+         * @example
+         * var lonLat = new SuperMap.LonLat(100,50);
+         * lonLat.destroy();
+         */
+
+    }, {
         key: 'destroy',
         value: function destroy() {
-            for (var e in this.extensions) {
-                if (typeof this.extensions[e] !== "boolean") {
-                    this.extensions[e].destroy();
-                }
-            }
-            this.extensions = null;
-            if (this.element) {
-                _Event.Event.stopObservingElement(this.element);
-                if (this.element.hasScrollEvent) {
-                    _Event.Event.stopObserving(window, "scroll", this.clearMouseListener);
-                }
-            }
-            this.element = null;
-
-            this.listeners = null;
-            this.object = null;
-            this.eventTypes = null;
-            this.fallThrough = null;
-            this.eventHandler = null;
+            this.lon = null;
+            this.lat = null;
         }
 
         /**
-         * @function SuperMap.Events.prototype.addEventType
-         * @description 在此事件对象中添加新的事件类型，如果这个事件类型已经添加过了，则不做任何事情。
-         * @param eventName - {string} 事件名。
-         */
-
-    }, {
-        key: 'addEventType',
-        value: function addEventType(eventName) {
-            if (!this.listeners[eventName]) {
-                this.eventTypes.push(eventName);
-                this.listeners[eventName] = [];
-            }
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.attachToElement
-         * @description 给dom元素绑定浏览器事件。
-         * @param element - {HTMLDOMElement} 绑定浏览器事件的dom元素。
-         */
-
-    }, {
-        key: 'attachToElement',
-        value: function attachToElement(element) {
-            if (this.element) {
-                _Event.Event.stopObservingElement(this.element);
-            } else {
-                // keep a bound copy of handleBrowserEvent() so that we can
-                // pass the same function to both Event.observe() and .stopObserving()
-                this.eventHandler = _BaseTypes.FunctionExt.bindAsEventListener(this.handleBrowserEvent, this);
-
-                // to be used with observe and stopObserving
-                this.clearMouseListener = _BaseTypes.FunctionExt.bind(this.clearMouseCache, this);
-            }
-            this.element = element;
-            for (var i = 0, len = this.BROWSER_EVENTS.length; i < len; i++) {
-                var eventType = this.BROWSER_EVENTS[i];
-
-                // every browser event has a corresponding application event
-                // (whether it's listened for or not).
-                this.addEventType(eventType);
-
-                // use Prototype to register the event cross-browser
-                _Event.Event.observe(element, eventType, this.eventHandler);
-            }
-            // disable dragstart in IE so that mousedown/move/up works normally
-            _Event.Event.observe(element, "dragstart", _Event.Event.stop);
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.on
-         * @description 在一个相同的范围内注册监听器的方法，此方法调用register函数。
+         * @function SuperMap.LonLat.fromString
+         * @description 通过字符串生成一个<SuperMap.LonLat>对象
          * @example
-         * // 注册一个"loadstart"监听事件
-         * events.on({"loadstart": loadStartListener});
+         * var str = "100,50";
+         * var lonLat = SuperMap.LonLat.fromString(str);
          *
-         * // 同样注册一个"loadstart"监听事件
-         * events.register("loadstart", undefined, loadStartListener);
-         *
-         * // 同时为对象注册多个监听事件
-         * events.on({
-         *     "loadstart": loadStartListener,
-         *     "loadend": loadEndListener,
-         *     scope: object
-         * });
-         *
-         * // 同时为对象注册多个监听事件，多次调用register方法
-         * events.register("loadstart", object, loadStartListener);
-         * events.register("loadend", object, loadEndListener);
-         *
-         *
-         * @param  object - {Object} 添加监听的对象。
+         * @param str - {string} 字符串的格式：Lon+","+Lat。如："100,50"
+         * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
          */
 
-    }, {
-        key: 'on',
-        value: function on(object) {
-            for (var type in object) {
-                if (type !== "scope" && object.hasOwnProperty(type)) {
-                    this.register(type, object.scope, object[type]);
-                }
-            }
+    }], [{
+        key: 'fromString',
+        value: function fromString(str) {
+            var pair = str.split(",");
+            return new LonLat(pair[0], pair[1]);
         }
 
         /**
-         * @function SuperMap.Events.prototype.register
-         * @description 在事件对象上注册一个事件。当事件被触发时，'func'函数被调用，假设我们触发一个事件，
-         *                指定SuperMap.Bounds作为‘obj’,当事件被触发时，回调函数的上下文作为Bounds对象。
-         * @param type - {string} 事件注册者的名字。
-         * @param obj - {Object} 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性。
-         * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
-         * @param priority - {boolean|Object} 当为true时将新的监听加在事件队列的前面。
+         * @function SuperMap.LonLat.fromArray
+         * @description 通过数组生成一个<SuperMap.LonLat>对象
+         * @param arr - {Array<float>} 数组的格式，长度只能为2,：[Lon,Lat]。如： [5,-42]
+         * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
          */
 
     }, {
-        key: 'register',
-        value: function register(type, obj, func, priority) {
-            if (type in Events && !this.extensions[type]) {
-                this.extensions[type] = new Events[type](this);
-            }
-            if (func != null && _Util.Util.indexOf(this.eventTypes, type) !== -1) {
-
-                if (obj == null) {
-                    obj = this.object;
-                }
-                var listeners = this.listeners[type];
-                if (!listeners) {
-                    listeners = [];
-                    this.listeners[type] = listeners;
-                    this.extensionCount[type] = 0;
-                }
-                var listener = { obj: obj, func: func };
-                if (priority) {
-                    listeners.splice(this.extensionCount[type], 0, listener);
-                    if ((typeof priority === 'undefined' ? 'undefined' : _typeof(priority)) === "object" && priority.extension) {
-                        this.extensionCount[type]++;
-                    }
-                } else {
-                    listeners.push(listener);
-                }
-            }
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.registerPriority
-         * @description 相同的注册方法，但是在前面增加新的监听者事件查询而代替到方法的结束。
-         * @param type - {string} 事件注册者的名字。
-         * @param obj - {Object} 对象绑定方面的回调。如果没有特定的对象，则默认是事件的object属性。
-         * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
-         */
-
-    }, {
-        key: 'registerPriority',
-        value: function registerPriority(type, obj, func) {
-            this.register(type, obj, func, true);
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.un
-         * @description 在一个相同的范围内取消注册监听器的方法，此方法调用unregister函数。
-         * @example
-         * // 移除"loadstart" 事件监听
-         * events.un({"loadstart": loadStartListener});
-         *
-         * // 使用unregister方法移除"loadstart" 事件监听
-         * events.unregister("loadstart", undefined, loadStartListener);
-         *
-         * // 取消对象多个事件监听
-         * events.un({
-         *     "loadstart": loadStartListener,
-         *     "loadend": loadEndListener,
-         *     scope: object
-         * });
-         *
-         * // 取消对象多个事件监听，多次调用unregister方法。
-         * events.unregister("loadstart", object, loadStartListener);
-         * events.unregister("loadend", object, loadEndListener);
-         *
-         * @param object - {Object} 移除监听的对象。
-         */
-
-    }, {
-        key: 'un',
-        value: function un(object) {
-            for (var type in object) {
-                if (type !== "scope" && object.hasOwnProperty(type)) {
-                    this.unregister(type, object.scope, object[type]);
-                }
-            }
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.unregister
-         * @description 取消注册。
-         * @param type - {string} 事件类型。
-         * @param obj - {Object} 默认为 this.object。
-         * @param func - {function} 事件监听。
-         */
-
-    }, {
-        key: 'unregister',
-        value: function unregister(type, obj, func) {
-            if (obj == null) {
-                obj = this.object;
-            }
-            var listeners = this.listeners[type];
-            if (listeners != null) {
-                for (var i = 0, len = listeners.length; i < len; i++) {
-                    if (listeners[i].obj === obj && listeners[i].func === func) {
-                        listeners.splice(i, 1);
-                        break;
-                    }
-                }
-            }
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.remove
-         * @description 删除某个事件类型的所有监听，如果该事件类型没有注册，则不做任何操作。
-         * @param type - {string} 事件类型。
-         */
-
-    }, {
-        key: 'remove',
-        value: function remove(type) {
-            if (this.listeners[type] != null) {
-                this.listeners[type] = [];
-            }
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.triggerEvent
-         * @description 触发一个特定的注册事件。
-         * @param type - {string} 触发事件类型。
-         * @param evt - {Event} 事件对象。
-         * @returns {boolean} 返回监听对象，如果返回是falee，则停止监听。
-         */
-
-    }, {
-        key: 'triggerEvent',
-        value: function triggerEvent(type, evt) {
-            var listeners = this.listeners[type];
-
-            // fast path
-            if (!listeners || listeners.length == 0) {
-                return undefined;
-            }
-
-            // prep evt object with object & div references
-            if (evt == null) {
-                evt = {};
-            }
-            evt.object = this.object;
-            evt.element = this.element;
-            if (!evt.type) {
-                evt.type = type;
-            }
-
-            // execute all callbacks registered for specified type
-            // get a clone of the listeners array to
-            // allow for splicing during callbacks
-            listeners = listeners.slice();
-            var continueChain;
-            for (var i = 0, len = listeners.length; i < len; i++) {
-                var callback = listeners[i];
-                // bind the context to callback.obj
-                continueChain = callback.func.apply(callback.obj, [evt]);
-
-                if (continueChain != undefined && continueChain == false) {
-                    // if callback returns false, execute no more callbacks.
-                    break;
-                }
-            }
-            // don't fall through to other DOM elements
-            if (!this.fallThrough) {
-                _Event.Event.stop(evt, true);
-            }
-            return continueChain;
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.handleBrowserEvent
-         * @description 对triggerEvent函数的包装，给事件对象设置了xy属性(即当前鼠标点的xy坐标)。
-         * @param evt - {Event} 事件对象。
-         */
-
-    }, {
-        key: 'handleBrowserEvent',
-        value: function handleBrowserEvent(evt) {
-            var type = evt.type,
-                listeners = this.listeners[type];
-            if (!listeners || listeners.length == 0) {
-                // noone's listening, bail out
-                return;
-            }
-            // add clientX & clientY to all events - corresponds to average x, y
-            var touches = evt.touches;
-            if (touches && touches[0]) {
-                var x = 0;
-                var y = 0;
-                var num = touches.length;
-                var touch;
-                for (var i = 0; i < num; ++i) {
-                    touch = touches[i];
-                    x += touch.clientX;
-                    y += touch.clientY;
-                }
-                evt.clientX = x / num;
-                evt.clientY = y / num;
-            }
-            if (this.includeXY) {
-                evt.xy = this.getMousePosition(evt);
-            }
-            this.triggerEvent(type, evt);
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.clearMouseCache
-         * @description 清除鼠标缓存。
-         */
-
-    }, {
-        key: 'clearMouseCache',
-        value: function clearMouseCache() {
-            this.element.scrolls = null;
-            this.element.lefttop = null;
-            var body = document.body;
-            if (body && !((body.scrollTop != 0 || body.scrollLeft != 0) && navigator.userAgent.match(/iPhone/i))) {
-                this.element.offsets = null;
-            }
-        }
-
-        /**
-         * @function SuperMap.Events.prototype.getMousePosition
-         * @param evt - {Event} 事件对象。
-         * @returns {SuperMap.Pixel} 当前的鼠标的xy坐标点。
-         */
-
-    }, {
-        key: 'getMousePosition',
-        value: function getMousePosition(evt) {
-            if (!this.includeXY) {
-                this.clearMouseCache();
-            } else if (!this.element.hasScrollEvent) {
-                _Event.Event.observe(window, "scroll", this.clearMouseListener);
-                this.element.hasScrollEvent = true;
-            }
-
-            if (!this.element.scrolls) {
-                var viewportElement = _Util.Util.getViewportElement();
-                this.element.scrolls = [viewportElement.scrollLeft, viewportElement.scrollTop];
-            }
-
-            if (!this.element.lefttop) {
-                this.element.lefttop = [document.documentElement.clientLeft || 0, document.documentElement.clientTop || 0];
-            }
-
-            if (!this.element.offsets) {
-                this.element.offsets = _Util.Util.pagePosition(this.element);
-            }
-
-            return new _Pixel2.default(evt.clientX + this.element.scrolls[0] - this.element.offsets[0] - this.element.lefttop[0], evt.clientY + this.element.scrolls[1] - this.element.offsets[1] - this.element.lefttop[1]);
+        key: 'fromArray',
+        value: function fromArray(arr) {
+            var gotArr = _Util.Util.isArray(arr),
+                lon = gotArr && arr[0],
+                lat = gotArr && arr[1];
+            return new LonLat(lon, lat);
         }
     }]);
 
-    return Events;
+    return LonLat;
 }();
 
-exports.default = Events;
-
-_SuperMap2.default.Events = Events;
-_SuperMap2.default.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
-
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7246,14 +7867,11 @@ _SuperMap2.default.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Pixel = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7272,7 +7890,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *  var size = new SuperMap.Size(21,25);
  *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
  */
-var Pixel = function () {
+var Pixel = exports.Pixel = function () {
 
     /**
      * @member SuperMap.Pixel.prototype.y -{number}
@@ -7473,12 +8091,11 @@ Pixel.Mode = {
     RightBottom: "rightbottom",
     LeftBottom: "leftbottom"
 };
-exports.default = Pixel;
 
-_SuperMap2.default.Pixel = Pixel;
+_SuperMap.SuperMap.Pixel = Pixel;
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7487,14 +8104,13 @@ _SuperMap2.default.Pixel = Pixel;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.TimeControlBase = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Events = __webpack_require__(8);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7508,7 +8124,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        repeat - {boolean} 是否重复循环。默认为true。<br>
  *        reverse - {boolean} 是否反向。默认为false。<br>
  */
-var TimeControlBase = function () {
+var TimeControlBase = exports.TimeControlBase = function () {
 
     /**
      * @private
@@ -7572,7 +8188,7 @@ var TimeControlBase = function () {
         me.startTime = Number(me.startTime);
         me.endTime = Number(me.endTime);
 
-        me.events = new _SuperMap2.default.Events(this, null, this.EVENT_TYPES);
+        me.events = new _Events.Events(this, null, this.EVENT_TYPES);
         me.startTime = Date.parse(new Date(this.startTime));
         me.endTime = Date.parse(new Date(this.endTime));
 
@@ -7628,7 +8244,7 @@ var TimeControlBase = function () {
 
 
     _createClass(TimeControlBase, [{
-        key: "updateOptions",
+        key: 'updateOptions',
         value: function updateOptions(options) {
             //设置步长，刷新频率、开始结束时间、是否循环、是否反向
             var me = this;
@@ -7668,7 +8284,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "start",
+        key: 'start',
         value: function start() {
             var me = this;
 
@@ -7685,7 +8301,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "pause",
+        key: 'pause',
         value: function pause() {
             var me = this;
             me.running = false;
@@ -7698,7 +8314,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "stop",
+        key: 'stop',
         value: function stop() {
             var me = this;
             //停止时 时间设置为开始时间
@@ -7716,7 +8332,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "toggle",
+        key: 'toggle',
         value: function toggle() {
             var me = this;
 
@@ -7735,7 +8351,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "setSpeed",
+        key: 'setSpeed',
         value: function setSpeed(speed) {
             var me = this;
             if (speed >= 0) {
@@ -7752,7 +8368,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "getSpeed",
+        key: 'getSpeed',
         value: function getSpeed() {
             return this.speed;
         }
@@ -7765,7 +8381,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "setFrequency",
+        key: 'setFrequency',
         value: function setFrequency(frequency) {
             var me = this;
             if (frequency >= 0) {
@@ -7782,7 +8398,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "getFrequency",
+        key: 'getFrequency',
         value: function getFrequency() {
             return this.frequency;
         }
@@ -7795,7 +8411,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "setStartTime",
+        key: 'setStartTime',
         value: function setStartTime(startTime) {
             var me = this;
             startTime = Date.parse(new Date(startTime));
@@ -7819,7 +8435,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "getStartTime",
+        key: 'getStartTime',
         value: function getStartTime() {
             return this.startTime;
         }
@@ -7832,7 +8448,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "setEndTime",
+        key: 'setEndTime',
         value: function setEndTime(endTime) {
             var me = this;
             me.endTime = Date.parse(new Date(me.endTime));
@@ -7856,7 +8472,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "getEndTime",
+        key: 'getEndTime',
         value: function getEndTime() {
             return this.endTime;
         }
@@ -7869,7 +8485,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "setCurrentTime",
+        key: 'setCurrentTime',
         value: function setCurrentTime(currentTime) {
             var me = this;
             me.currentTime = Date.parse(new Date(me.currentTime));
@@ -7890,7 +8506,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "getCurrentTime",
+        key: 'getCurrentTime',
         value: function getCurrentTime() {
             return this.currentTime;
         }
@@ -7902,7 +8518,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "setRepeat",
+        key: 'setRepeat',
         value: function setRepeat(repeat) {
             this.repeat = repeat;
         }
@@ -7914,7 +8530,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "getRepeat",
+        key: 'getRepeat',
         value: function getRepeat() {
             return this.repeat;
         }
@@ -7926,7 +8542,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "setReverse",
+        key: 'setReverse',
         value: function setReverse(reverse) {
             this.reverse = reverse;
         }
@@ -7938,7 +8554,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "getReverse",
+        key: 'getReverse',
         value: function getReverse() {
             return this.reverse;
         }
@@ -7950,7 +8566,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "getRunning",
+        key: 'getRunning',
         value: function getRunning() {
             return this.running;
         }
@@ -7961,7 +8577,7 @@ var TimeControlBase = function () {
          */
 
     }, {
-        key: "destroy",
+        key: 'destroy',
         value: function destroy() {
             var me = this;
             me.speed = null;
@@ -7974,7 +8590,7 @@ var TimeControlBase = function () {
             me.reverse = null;
         }
     }, {
-        key: "tick",
+        key: 'tick',
         value: function tick() {
             //TODO 每次刷新执行的操作。子类实现
         }
@@ -7983,13 +8599,10 @@ var TimeControlBase = function () {
     return TimeControlBase;
 }();
 
-exports.default = TimeControlBase;
-
-
-_SuperMap2.default.TimeControlBase = TimeControlBase;
+_SuperMap.SuperMap.TimeControlBase = TimeControlBase;
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7998,6 +8611,438 @@ _SuperMap2.default.TimeControlBase = TimeControlBase;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Format = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _Util = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.Format
+ * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
+ * @param options - {Object} 可选参数。<br>
+ *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
+ */
+var Format = exports.Format = function () {
+
+    /**
+     * @member SuperMap.Format.prototype.data - {Object}
+     * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
+     */
+    function Format(options) {
+        _classCallCheck(this, Format);
+
+        this.options = null;
+        this.data = null;
+        this.keepData = false;
+        this.CLASS_NAME = "SuperMap.Format";
+
+        _Util.Util.extend(this, options);
+        this.options = options;
+    }
+
+    /**
+     * @function SuperMap.Format.prototype.destroy
+     * @description 销毁该格式类，释放相关资源。
+     */
+
+
+    /**
+     * APIProperty: keepData
+     * @member SuperMap.Format.prototype.keepData - {Object}
+     * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
+     */
+
+
+    /**
+     * @member SuperMap.Format.prototype.options - {Object}
+     * @description 可选参数。
+     */
+
+
+    _createClass(Format, [{
+        key: 'destroy',
+        value: function destroy() {}
+        //用来销毁该格式类，释放相关资源
+
+
+        /**
+         * @function SuperMap.Format.prototype.read
+         * @description 来从字符串中读取数据。
+         * @param data - {string} 读取的数据。
+         */
+
+    }, {
+        key: 'read',
+        value: function read(data) {} // eslint-disable-line no-unused-vars
+        //用来从字符串中读取数据
+
+
+        /**
+         * @function SuperMap.Format.prototype.write
+         * @description 将对象写成字符串。
+         * @param object - {Object} 可序列化的对象。
+         * @return {string} 对象被写成字符串。
+         */
+
+    }, {
+        key: 'write',
+        value: function write(object) {// eslint-disable-line no-unused-vars
+            //用来写字符串
+        }
+    }]);
+
+    return Format;
+}();
+
+_SuperMap.SuperMap.Format = Format;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.JSONFormat = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _Format2 = __webpack_require__(21);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.Format.JSON
+ * @classdesc 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
+ * @extends SuperMap.Format
+ */
+var JSONFormat = exports.JSONFormat = function (_Format) {
+    _inherits(JSONFormat, _Format);
+
+    function JSONFormat() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, JSONFormat);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = JSONFormat.__proto__ || Object.getPrototypeOf(JSONFormat)).call.apply(_ref, [this].concat(args))), _this), _this.indent = "    ", _this.space = " ", _this.newline = "\n", _this.level = 0, _this.pretty = false, _this.nativeJSON = function () {
+            return !!(window.JSON && typeof JSON.parse === "function" && typeof JSON.stringify === "function");
+        }(), _this.serialize = {
+            /**
+             * @function SuperMap.Format.JSON.serialize.object
+             * @description 把对象转换为JSON字符串。
+             * @param object - {Object} 可序列化的对象。
+             * @return {string} JSON字符串。
+             */
+            'object': function object(_object) {
+                // three special objects that we want to treat differently
+                if (_object == null) {
+                    return "null";
+                }
+                if (_object.constructor === Date) {
+                    return this.serialize.date.apply(this, [_object]);
+                }
+                if (_object.constructor === Array) {
+                    return this.serialize.array.apply(this, [_object]);
+                }
+                var pieces = ['{'];
+                this.level += 1;
+                var key, keyJSON, valueJSON;
+
+                var addComma = false;
+                for (key in _object) {
+                    if (_object.hasOwnProperty(key)) {
+                        // recursive calls need to allow for sub-classing
+                        keyJSON = this.write.apply(this, [key, this.pretty]);
+                        valueJSON = this.write.apply(this, [_object[key], this.pretty]);
+                        if (keyJSON != null && valueJSON != null) {
+                            if (addComma) {
+                                pieces.push(',');
+                            }
+                            pieces.push(this.writeNewline(), this.writeIndent(), keyJSON, ':', this.writeSpace(), valueJSON);
+                            addComma = true;
+                        }
+                    }
+                }
+
+                this.level -= 1;
+                pieces.push(this.writeNewline(), this.writeIndent(), '}');
+                return pieces.join('');
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.array
+             * @description 把数组转换成JSON字符串。
+             * @param array - {Array} 可序列化的数组。
+             * @return {string} JSON字符串。
+             */
+            'array': function array(_array) {
+                var json;
+                var pieces = ['['];
+                this.level += 1;
+
+                for (var i = 0, len = _array.length; i < len; ++i) {
+                    // recursive calls need to allow for sub-classing
+                    json = this.write.apply(this, [_array[i], this.pretty]);
+                    if (json != null) {
+                        if (i > 0) {
+                            pieces.push(',');
+                        }
+                        pieces.push(this.writeNewline(), this.writeIndent(), json);
+                    }
+                }
+
+                this.level -= 1;
+                pieces.push(this.writeNewline(), this.writeIndent(), ']');
+                return pieces.join('');
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.string
+             * @description 把字符串转换成JSON字符串。
+             * @param string - {string} 可序列化的字符串。
+             * @return {string} JSON字符串。
+             */
+            'string': function string(_string) {
+                // If the string contains no control characters, no quote characters, and no
+                // backslash characters, then we can simply slap some quotes around it.
+                // Otherwise we must also replace the offending characters with safe
+                // sequences.
+                var m = {
+                    '\b': '\\b',
+                    '\t': '\\t',
+                    '\n': '\\n',
+                    '\f': '\\f',
+                    '\r': '\\r',
+                    '"': '\\"',
+                    '\\': '\\\\'
+                };
+                /*eslint-disable no-control-regex*/
+                if (/["\\\x00-\x1f]/.test(_string)) {
+                    return '"' + _string.replace(/([\x00-\x1f\\"])/g, function (a, b) {
+                        var c = m[b];
+                        if (c) {
+                            return c;
+                        }
+                        c = b.charCodeAt();
+                        return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
+                    }) + '"';
+                }
+                return '"' + _string + '"';
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.number
+             * @description 把数字转换成JSON字符串。
+             * @param number - {number} 可序列化的数字。
+             * @return {string} JSON字符串。
+             */
+            'number': function number(_number) {
+                return isFinite(_number) ? String(_number) : "null";
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.boolean
+             * @description Transform a boolean into a JSON string.
+             * @param bool - {boolean} The boolean to be serialized.
+             * @return {string} A JSON string representing the boolean.
+             */
+            'boolean': function boolean(bool) {
+                return String(bool);
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.object
+             * @description 将日期对象转换成JSON字符串。
+             * @param date - {Date} 可序列化的日期对象。
+             * @return {string} JSON字符串。
+             */
+            'date': function date(_date) {
+                function format(number) {
+                    // Format integers to have at least two digits.
+                    return number < 10 ? '0' + number : number;
+                }
+
+                return '"' + _date.getFullYear() + '-' + format(_date.getMonth() + 1) + '-' + format(_date.getDate()) + 'T' + format(_date.getHours()) + ':' + format(_date.getMinutes()) + ':' + format(_date.getSeconds()) + '"';
+            }
+        }, _this.CLASS_NAME = "SuperMap.Format.JSON", _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    /**
+     * @member SuperMap.Format.JSON.prototype.indent - {string}
+     * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次。
+     */
+
+
+    /**
+     * @member SuperMap.Format.JSON.prototype.space -{string}
+     * @description 用于格式化输出，space字符串会在名值对的":"后边添加。
+     */
+
+
+    /**
+     * @member SuperMap.Format.JSON.prototype.newline - {string}
+     * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
+     */
+
+
+    /**
+     * @member SuperMap.Format.JSON.prototype.level - {integer}
+     * @description 用于格式化输出, 表示的是缩进级别。
+     */
+
+
+    /**
+     * @member SuperMap.Format.JSON.prototype.pretty - {boolean}
+     * @description 是否在序列化的时候使用额外的空格控制结构。在write方法中使用，默认值为false。
+     */
+
+
+    /**
+     * @member SuperMap.Format.JSON.prototype.nativeJSON - {boolean}
+     * @description 判断浏览器是否原生支持JSON格式数据。
+     */
+
+
+    _createClass(JSONFormat, [{
+        key: 'read',
+
+
+        /**
+         * @function SuperMap.Format.JSON.prototype.read
+         * @description 将一个符合json结构的字符串进行解析。
+         * @param json - {string} 符合json结构的字符串。
+         * @param filter - {function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
+         * @return {Object} 对象，数组，字符串或数字。
+         */
+        value: function read(json, filter) {
+            var object;
+            if (this.nativeJSON) {
+                try {
+                    object = JSON.parse(json, filter);
+                } catch (e) {
+                    // Fall through if the regexp test fails.
+                }
+            }
+
+            if (this.keepData) {
+                this.data = object;
+            }
+
+            return object;
+        }
+
+        /**
+         * @function SuperMap.Format.JSON.prototype.write
+         * @description 序列化一个对象到一个符合JSON格式的字符串。
+         * @param value - {object}|{string}|<Array>|{number}|{boolean} 需要被序列化的对象，数组，字符串，数字，布尔值。
+         * @param pretty - {boolean}
+         * @return {string} 符合JSON格式的字符串。
+         *
+         */
+
+    }, {
+        key: 'write',
+        value: function write(value, pretty) {
+            this.pretty = !!pretty;
+            var json = null;
+            var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+            if (this.serialize[type]) {
+                try {
+                    json = !this.pretty && this.nativeJSON ? JSON.stringify(value) : this.serialize[type].apply(this, [value]);
+                } catch (err) {
+                    //SuperMap.Console.error("Trouble serializing: " + err);
+                }
+            }
+            return json;
+        }
+
+        /**
+         * @function SuperMap.Format.JSON.prototype.writeIndent
+         * @description 根据缩进级别输出一个缩进字符串。
+         * @return {string} 一个适当的缩进字符串。
+         */
+
+    }, {
+        key: 'writeIndent',
+        value: function writeIndent() {
+            var pieces = [];
+            if (this.pretty) {
+                for (var i = 0; i < this.level; ++i) {
+                    pieces.push(this.indent);
+                }
+            }
+            return pieces.join('');
+        }
+
+        /**
+         * @function SuperMap.Format.JSON.prototype.writeNewline
+         * @description 在格式化输出模式情况下输出代表新一行的字符串。
+         * @return {string} 代表新的一行的字符串。
+         */
+
+    }, {
+        key: 'writeNewline',
+        value: function writeNewline() {
+            return this.pretty ? this.newline : '';
+        }
+
+        /**
+         * @function SuperMap.Format.JSON.prototype.writeSpace
+         * @description 在格式化输出模式情况下输出一个代表空格的字符串。
+         * @return {string} A space.
+         */
+
+    }, {
+        key: 'writeSpace',
+        value: function writeSpace() {
+            return this.pretty ? this.space : '';
+        }
+
+        /**
+         * @member SuperMap.Format.JSON.prototype.serialize
+         * @description 提供一些类型对象转JSON字符串的方法。
+         */
+
+    }]);
+
+    return JSONFormat;
+}(_Format2.Format);
+
+_SuperMap.SuperMap.Format.JSON = JSONFormat;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.AddressMatchService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8005,23 +9050,13 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _CommonServiceBase2 = __webpack_require__(5);
 
-var _CommonServiceBase2 = __webpack_require__(4);
+var _FetchRequest = __webpack_require__(6);
 
-var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
+var _GeoCodingParameter = __webpack_require__(26);
 
-var _FetchRequest = __webpack_require__(5);
-
-var _GeoCodingParameter = __webpack_require__(22);
-
-var _GeoCodingParameter2 = _interopRequireDefault(_GeoCodingParameter);
-
-var _GeoDecodingParameter = __webpack_require__(23);
-
-var _GeoDecodingParameter2 = _interopRequireDefault(_GeoDecodingParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _GeoDecodingParameter = __webpack_require__(27);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8035,7 +9070,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param options - {Object} 参数。
  * @param url {string} 地址匹配服务地址。
  */
-var AddressMatchService = function (_CommonServiceBase) {
+var AddressMatchService = exports.AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
 
     function AddressMatchService(url, options) {
@@ -8068,7 +9103,7 @@ var AddressMatchService = function (_CommonServiceBase) {
     }, {
         key: 'code',
         value: function code(url, params) {
-            if (!(params instanceof _GeoCodingParameter2.default)) {
+            if (!(params instanceof _GeoCodingParameter.GeoCodingParameter)) {
                 return;
             }
             this.processAsync(url, params);
@@ -8083,7 +9118,7 @@ var AddressMatchService = function (_CommonServiceBase) {
     }, {
         key: 'decode',
         value: function decode(url, params) {
-            if (!(params instanceof _GeoDecodingParameter2.default)) {
+            if (!(params instanceof _GeoDecodingParameter.GeoDecodingParameter)) {
                 return;
             }
             this.processAsync(url, params);
@@ -8139,14 +9174,12 @@ var AddressMatchService = function (_CommonServiceBase) {
     }]);
 
     return AddressMatchService;
-}(_CommonServiceBase3.default);
+}(_CommonServiceBase2.CommonServiceBase);
 
-exports.default = AddressMatchService;
-
-_SuperMap2.default.AddressMatchService = AddressMatchService;
+_SuperMap.SuperMap.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8155,16 +9188,15 @@ _SuperMap2.default.AddressMatchService = AddressMatchService;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.BuffersAnalystJobsParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Util = __webpack_require__(1);
 
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _REST = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8179,7 +9211,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         distanceUnit -{{@link SuperMap.AnalystSizeUnit}} 缓冲距离单位单位。 <br>
  *         distance -{string} 缓冲区半径。 <br>
  */
-var BuffersAnalystJobsParameter = function () {
+var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function () {
 
     /**
      * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{SuperMap.AnalystSizeUnit}
@@ -8210,7 +9242,7 @@ var BuffersAnalystJobsParameter = function () {
         if (!options) {
             return;
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -8247,6 +9279,7 @@ var BuffersAnalystJobsParameter = function () {
             this.distanceUnit = null;
             this.dissolveField = null;
         }
+
         /**
          * @function SuperMap.BuffersAnalystJobsParameter.toObject
          * @param BuffersAnalystJobsParameter -{Object} 缓冲区分析任务参数
@@ -8276,12 +9309,10 @@ var BuffersAnalystJobsParameter = function () {
     return BuffersAnalystJobsParameter;
 }();
 
-exports.default = BuffersAnalystJobsParameter;
-
-_SuperMap2.default.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
+_SuperMap.SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
 
 /***/ }),
-/* 21 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8290,6 +9321,7 @@ _SuperMap2.default.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.BuffersAnalystJobsService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8297,17 +9329,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _ProcessingServiceBase = __webpack_require__(3);
 
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _BuffersAnalystJobsParameter = __webpack_require__(20);
-
-var _BuffersAnalystJobsParameter2 = _interopRequireDefault(_BuffersAnalystJobsParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _BuffersAnalystJobsParameter = __webpack_require__(24);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8322,7 +9346,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param url -{string} 缓冲区分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-var BuffersAnalystJobsService = function (_ProcessingServiceBas) {
+var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_ProcessingServiceBas) {
     _inherits(BuffersAnalystJobsService, _ProcessingServiceBas);
 
     function BuffersAnalystJobsService(url, options) {
@@ -8380,20 +9404,17 @@ var BuffersAnalystJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addBuffersJob',
         value: function addBuffersJob(params, seconds) {
-            _get(BuffersAnalystJobsService.prototype.__proto__ || Object.getPrototypeOf(BuffersAnalystJobsService.prototype), 'addJob', this).call(this, this.url, params, _BuffersAnalystJobsParameter2.default, seconds);
+            _get(BuffersAnalystJobsService.prototype.__proto__ || Object.getPrototypeOf(BuffersAnalystJobsService.prototype), 'addJob', this).call(this, this.url, params, _BuffersAnalystJobsParameter.BuffersAnalystJobsParameter, seconds);
         }
     }]);
 
     return BuffersAnalystJobsService;
-}(_ProcessingServiceBase2.default);
+}(_ProcessingServiceBase.ProcessingServiceBase);
 
-exports.default = BuffersAnalystJobsService;
-
-
-_SuperMap2.default.BuffersAnalystJobsService = BuffersAnalystJobsService;
+_SuperMap.SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8402,14 +9423,13 @@ _SuperMap2.default.BuffersAnalystJobsService = BuffersAnalystJobsService;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.GeoCodingParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Util = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8424,7 +9444,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         prjCoordSys - {string} 查询结果的坐标系。</br>
  *         maxReturn - {number} 最大返回结果数。
  */
-var GeoCodingParameter = function () {
+var GeoCodingParameter = exports.GeoCodingParameter = function () {
 
     /**
      * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys - {string}
@@ -8464,7 +9484,7 @@ var GeoCodingParameter = function () {
             });
             options.filters = strs;
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -8506,12 +9526,10 @@ var GeoCodingParameter = function () {
     return GeoCodingParameter;
 }();
 
-exports.default = GeoCodingParameter;
-
-_SuperMap2.default.GeoCodingParameter = GeoCodingParameter;
+_SuperMap.SuperMap.GeoCodingParameter = GeoCodingParameter;
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8520,14 +9538,13 @@ _SuperMap2.default.GeoCodingParameter = GeoCodingParameter;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.GeoDecodingParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Util = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8543,7 +9560,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        maxReturn - {number} 最大返回结果数。<br>
  *        geoDecodingRadius - {number} 查询半径。
  */
-var GeoDecodingParameter = function () {
+var GeoDecodingParameter = exports.GeoDecodingParameter = function () {
 
     /**
      *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn - {number}
@@ -8589,7 +9606,7 @@ var GeoDecodingParameter = function () {
             });
             options.filters = strs;
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -8639,13 +9656,10 @@ var GeoDecodingParameter = function () {
     return GeoDecodingParameter;
 }();
 
-exports.default = GeoDecodingParameter;
-
-
-_SuperMap2.default.GeoDecodingParameter = GeoDecodingParameter;
+_SuperMap.SuperMap.GeoDecodingParameter = GeoDecodingParameter;
 
 /***/ }),
-/* 24 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8654,16 +9668,15 @@ _SuperMap2.default.GeoDecodingParameter = GeoDecodingParameter;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.KernelDensityJobParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Util = __webpack_require__(1);
 
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _REST = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8679,7 +9692,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        fields - {string} 权重索引。<br>
  *        radius - {number} 分析的影响半径。
  */
-var KernelDensityJobParameter = function () {
+var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () {
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit - {SuperMap.AnalystSizeUnit}
@@ -8726,7 +9739,7 @@ var KernelDensityJobParameter = function () {
         if (!options) {
             return;
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -8810,13 +9823,10 @@ var KernelDensityJobParameter = function () {
     return KernelDensityJobParameter;
 }();
 
-exports.default = KernelDensityJobParameter;
-
-
-_SuperMap2.default.KernelDensityJobParameter = KernelDensityJobParameter;
+_SuperMap.SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 
 /***/ }),
-/* 25 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8825,6 +9835,7 @@ _SuperMap2.default.KernelDensityJobParameter = KernelDensityJobParameter;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.KernelDensityJobsService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8832,17 +9843,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _ProcessingServiceBase = __webpack_require__(3);
 
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _KernelDensityJobParameter = __webpack_require__(24);
-
-var _KernelDensityJobParameter2 = _interopRequireDefault(_KernelDensityJobParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _KernelDensityJobParameter = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8857,7 +9860,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param url -{string} 核密度分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-var KernelDensityJobsService = function (_ProcessingServiceBas) {
+var KernelDensityJobsService = exports.KernelDensityJobsService = function (_ProcessingServiceBas) {
     _inherits(KernelDensityJobsService, _ProcessingServiceBas);
 
     function KernelDensityJobsService(url, options) {
@@ -8916,20 +9919,17 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addKernelDensityJob',
         value: function addKernelDensityJob(params, seconds) {
-            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'addJob', this).call(this, this.url, params, _KernelDensityJobParameter2.default, seconds);
+            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'addJob', this).call(this, this.url, params, _KernelDensityJobParameter.KernelDensityJobParameter, seconds);
         }
     }]);
 
     return KernelDensityJobsService;
-}(_ProcessingServiceBase2.default);
+}(_ProcessingServiceBase.ProcessingServiceBase);
 
-exports.default = KernelDensityJobsService;
-
-
-_SuperMap2.default.KernelDensityJobsService = KernelDensityJobsService;
+_SuperMap.SuperMap.KernelDensityJobsService = KernelDensityJobsService;
 
 /***/ }),
-/* 26 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8938,14 +9938,13 @@ _SuperMap2.default.KernelDensityJobsService = KernelDensityJobsService;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.OverlayGeoJobParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _Util = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8957,7 +9956,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         datasetOverlay -{string} 叠加对象所在的数据集名称。 <br>
  *         mode -{string} 叠加分析模式 。 <br>
  */
-var OverlayGeoJobParameter = function () {
+var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
 
     /**
      * @member SuperMap.OverlayGeoJobParameter.prototype.srcFields -{string}
@@ -8981,7 +9980,7 @@ var OverlayGeoJobParameter = function () {
         if (!options) {
             return;
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -9009,7 +10008,7 @@ var OverlayGeoJobParameter = function () {
 
 
     _createClass(OverlayGeoJobParameter, [{
-        key: "destroy",
+        key: 'destroy',
         value: function destroy() {
             this.datasetName = null;
             this.datasetOverlay = null;
@@ -9026,7 +10025,7 @@ var OverlayGeoJobParameter = function () {
          */
 
     }], [{
-        key: "toObject",
+        key: 'toObject',
         value: function toObject(OverlayGeoJobParameter, tempObj) {
             for (var name in OverlayGeoJobParameter) {
                 if (name == "datasetName") {
@@ -9043,12 +10042,10 @@ var OverlayGeoJobParameter = function () {
     return OverlayGeoJobParameter;
 }();
 
-exports.default = OverlayGeoJobParameter;
-
-_SuperMap2.default.OverlayGeoJobParameter = OverlayGeoJobParameter;
+_SuperMap.SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter;
 
 /***/ }),
-/* 27 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9057,6 +10054,7 @@ _SuperMap2.default.OverlayGeoJobParameter = OverlayGeoJobParameter;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.OverlayGeoJobsService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -9064,17 +10062,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _ProcessingServiceBase = __webpack_require__(3);
 
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _OverlayGeoJobParameter = __webpack_require__(26);
-
-var _OverlayGeoJobParameter2 = _interopRequireDefault(_OverlayGeoJobParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _OverlayGeoJobParameter = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9093,7 +10083,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
-var OverlayGeoJobsService = function (_ProcessingServiceBas) {
+var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_ProcessingServiceBas) {
     _inherits(OverlayGeoJobsService, _ProcessingServiceBas);
 
     function OverlayGeoJobsService(url, options) {
@@ -9151,19 +10141,17 @@ var OverlayGeoJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addOverlayGeoJob',
         value: function addOverlayGeoJob(params, seconds) {
-            _get(OverlayGeoJobsService.prototype.__proto__ || Object.getPrototypeOf(OverlayGeoJobsService.prototype), 'addJob', this).call(this, this.url, params, _OverlayGeoJobParameter2.default, seconds);
+            _get(OverlayGeoJobsService.prototype.__proto__ || Object.getPrototypeOf(OverlayGeoJobsService.prototype), 'addJob', this).call(this, this.url, params, _OverlayGeoJobParameter.OverlayGeoJobParameter, seconds);
         }
     }]);
 
     return OverlayGeoJobsService;
-}(_ProcessingServiceBase2.default);
+}(_ProcessingServiceBase.ProcessingServiceBase);
 
-exports.default = OverlayGeoJobsService;
-
-_SuperMap2.default.OverlayGeoJobsService = OverlayGeoJobsService;
+_SuperMap.SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 
 /***/ }),
-/* 28 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9172,16 +10160,15 @@ _SuperMap2.default.OverlayGeoJobsService = OverlayGeoJobsService;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.SingleObjectQueryJobsParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Util = __webpack_require__(1);
 
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _REST = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9193,7 +10180,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
  *         mode -{{@link SuperMap.SpatialQueryMode}} 空间查询模式 。 <br>
  */
-var SingleObjectQueryJobsParameter = function () {
+var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = function () {
 
     /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery -{string}
@@ -9216,7 +10203,7 @@ var SingleObjectQueryJobsParameter = function () {
         if (!options) {
             return;
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -9245,6 +10232,7 @@ var SingleObjectQueryJobsParameter = function () {
             this.geometryQuery = null;
             this.mode = null;
         }
+
         /**
          * @function SuperMap.SingleObjectQueryJobsParameter.toObject
          * @param singleObjectQueryJobsParameter -{Object} 单对象空间查询分析任务参数
@@ -9270,13 +10258,10 @@ var SingleObjectQueryJobsParameter = function () {
     return SingleObjectQueryJobsParameter;
 }();
 
-exports.default = SingleObjectQueryJobsParameter;
-
-
-_SuperMap2.default.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
+_SuperMap.SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
 /***/ }),
-/* 29 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9285,6 +10270,7 @@ _SuperMap2.default.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParamet
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.SingleObjectQueryJobsService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -9292,17 +10278,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _ProcessingServiceBase = __webpack_require__(3);
 
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _SingleObjectQueryJobsParameter = __webpack_require__(28);
-
-var _SingleObjectQueryJobsParameter2 = _interopRequireDefault(_SingleObjectQueryJobsParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _SingleObjectQueryJobsParameter = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9317,7 +10295,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param url -{string} 单对象空间查询分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
+var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     _inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
 
     function SingleObjectQueryJobsService(url, options) {
@@ -9375,20 +10353,17 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addQueryJob',
         value: function addQueryJob(params, seconds) {
-            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'addJob', this).call(this, this.url, params, _SingleObjectQueryJobsParameter2.default, seconds);
+            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'addJob', this).call(this, this.url, params, _SingleObjectQueryJobsParameter.SingleObjectQueryJobsParameter, seconds);
         }
     }]);
 
     return SingleObjectQueryJobsService;
-}(_ProcessingServiceBase2.default);
+}(_ProcessingServiceBase.ProcessingServiceBase);
 
-exports.default = SingleObjectQueryJobsService;
-
-
-_SuperMap2.default.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
+_SuperMap.SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
-/* 30 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9397,16 +10372,15 @@ _SuperMap2.default.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.SummaryMeshJobParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Util = __webpack_require__(1);
 
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _REST = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9422,7 +10396,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        fields -{number}权重索引。<br>
  *        type -{{@link SuperMap.SummaryType}} 聚合类型。
  */
-var SummaryMeshJobParameter = function () {
+var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.fields -{number}
@@ -9461,7 +10435,7 @@ var SummaryMeshJobParameter = function () {
         if (!options) {
             return;
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -9552,13 +10526,10 @@ var SummaryMeshJobParameter = function () {
     return SummaryMeshJobParameter;
 }();
 
-exports.default = SummaryMeshJobParameter;
-
-
-_SuperMap2.default.SummaryMeshJobParameter = SummaryMeshJobParameter;
+_SuperMap.SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 /***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9567,6 +10538,7 @@ _SuperMap2.default.SummaryMeshJobParameter = SummaryMeshJobParameter;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.SummaryMeshJobsService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -9574,17 +10546,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _ProcessingServiceBase = __webpack_require__(3);
 
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _SummaryMeshJobParameter = __webpack_require__(30);
-
-var _SummaryMeshJobParameter2 = _interopRequireDefault(_SummaryMeshJobParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _SummaryMeshJobParameter = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9603,7 +10567,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
-var SummaryMeshJobsService = function (_ProcessingServiceBas) {
+var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryMeshJobsService, _ProcessingServiceBas);
 
     function SummaryMeshJobsService(url, options) {
@@ -9661,20 +10625,17 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addSummaryMeshJob',
         value: function addSummaryMeshJob(params, seconds) {
-            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryMeshJobParameter2.default, seconds);
+            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryMeshJobParameter.SummaryMeshJobParameter, seconds);
         }
     }]);
 
     return SummaryMeshJobsService;
-}(_ProcessingServiceBase2.default);
+}(_ProcessingServiceBase.ProcessingServiceBase);
 
-exports.default = SummaryMeshJobsService;
-
-
-_SuperMap2.default.SummaryMeshJobsService = SummaryMeshJobsService;
+_SuperMap.SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 32 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9683,16 +10644,15 @@ _SuperMap2.default.SummaryMeshJobsService = SummaryMeshJobsService;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.SummaryRegionJobParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Util = __webpack_require__(1);
 
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _REST = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9714,7 +10674,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         meshSizeUnit -{{@link SuperMap.AnalystSizeUnit}} 网格大小单位。 <br>
  *         type -{{@link SuperMap.SummaryType}} 汇总类型。 <br>
  */
-var SummaryRegionJobParameter = function () {
+var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () {
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
@@ -9777,7 +10737,7 @@ var SummaryRegionJobParameter = function () {
         if (!options) {
             return;
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -9881,13 +10841,10 @@ var SummaryRegionJobParameter = function () {
     return SummaryRegionJobParameter;
 }();
 
-exports.default = SummaryRegionJobParameter;
-
-
-_SuperMap2.default.SummaryRegionJobParameter = SummaryRegionJobParameter;
+_SuperMap.SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 /***/ }),
-/* 33 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9896,6 +10853,7 @@ _SuperMap2.default.SummaryRegionJobParameter = SummaryRegionJobParameter;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.SummaryRegionJobsService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -9903,17 +10861,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _ProcessingServiceBase = __webpack_require__(3);
 
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _SummaryRegionJobParameter = __webpack_require__(32);
-
-var _SummaryRegionJobParameter2 = _interopRequireDefault(_SummaryRegionJobParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _SummaryRegionJobParameter = __webpack_require__(36);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9928,7 +10878,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param url -{string} 区域汇总分析服务地址。
  * @param options - {Object} 区域汇总分析服务可选参数。
  */
-var SummaryRegionJobsService = function (_ProcessingServiceBas) {
+var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryRegionJobsService, _ProcessingServiceBas);
 
     function SummaryRegionJobsService(url, options) {
@@ -9986,20 +10936,17 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addSummaryRegionJob',
         value: function addSummaryRegionJob(params, seconds) {
-            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryRegionJobParameter2.default, seconds);
+            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryRegionJobParameter.SummaryRegionJobParameter, seconds);
         }
     }]);
 
     return SummaryRegionJobsService;
-}(_ProcessingServiceBase2.default);
+}(_ProcessingServiceBase.ProcessingServiceBase);
 
-exports.default = SummaryRegionJobsService;
-
-
-_SuperMap2.default.SummaryRegionJobsService = SummaryRegionJobsService;
+_SuperMap.SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 34 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10008,16 +10955,15 @@ _SuperMap2.default.SummaryRegionJobsService = SummaryRegionJobsService;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.TopologyValidatorJobsParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Util = __webpack_require__(1);
 
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _REST = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10030,7 +10976,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         rule -{{@link SuperMap.TopologyValidatorRule}} 拓扑检查规则 。 <br>
  *         tolerance -{string} 容限 <br>
  */
-var TopologyValidatorJobsParameter = function () {
+var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = function () {
     function TopologyValidatorJobsParameter(options) {
         _classCallCheck(this, TopologyValidatorJobsParameter);
 
@@ -10042,7 +10988,7 @@ var TopologyValidatorJobsParameter = function () {
         if (!options) {
             return;
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -10083,6 +11029,7 @@ var TopologyValidatorJobsParameter = function () {
             this.tolerance = null;
             this.rule = null;
         }
+
         /**
          * @function SuperMap.TopologyValidatorJobsParameter.toObject
          * @param TopologyValidatorJobsParameter -{Object} 拓扑检查分析任务参数
@@ -10108,13 +11055,10 @@ var TopologyValidatorJobsParameter = function () {
     return TopologyValidatorJobsParameter;
 }();
 
-exports.default = TopologyValidatorJobsParameter;
-
-
-_SuperMap2.default.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
+_SuperMap.SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
 
 /***/ }),
-/* 35 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10123,6 +11067,7 @@ _SuperMap2.default.TopologyValidatorJobsParameter = TopologyValidatorJobsParamet
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.TopologyValidatorJobsService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -10130,17 +11075,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _ProcessingServiceBase = __webpack_require__(3);
 
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _TopologyValidatorJobsParameter = __webpack_require__(34);
-
-var _TopologyValidatorJobsParameter2 = _interopRequireDefault(_TopologyValidatorJobsParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _TopologyValidatorJobsParameter = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10155,7 +11092,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param url -{string} 拓扑检查分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-var TopologyValidatorJobsService = function (_ProcessingServiceBas) {
+var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = function (_ProcessingServiceBas) {
     _inherits(TopologyValidatorJobsService, _ProcessingServiceBas);
 
     function TopologyValidatorJobsService(url, options) {
@@ -10213,20 +11150,17 @@ var TopologyValidatorJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addTopologyValidatorJob',
         value: function addTopologyValidatorJob(params, seconds) {
-            _get(TopologyValidatorJobsService.prototype.__proto__ || Object.getPrototypeOf(TopologyValidatorJobsService.prototype), 'addJob', this).call(this, this.url, params, _TopologyValidatorJobsParameter2.default, seconds);
+            _get(TopologyValidatorJobsService.prototype.__proto__ || Object.getPrototypeOf(TopologyValidatorJobsService.prototype), 'addJob', this).call(this, this.url, params, _TopologyValidatorJobsParameter.TopologyValidatorJobsParameter, seconds);
         }
     }]);
 
     return TopologyValidatorJobsService;
-}(_ProcessingServiceBase2.default);
+}(_ProcessingServiceBase.ProcessingServiceBase);
 
-exports.default = TopologyValidatorJobsService;
-
-
-_SuperMap2.default.TopologyValidatorJobsService = TopologyValidatorJobsService;
+_SuperMap.SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
 
 /***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10235,16 +11169,15 @@ _SuperMap2.default.TopologyValidatorJobsService = TopologyValidatorJobsService;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.VectorClipJobsParameter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _Util = __webpack_require__(1);
 
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _REST = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10256,7 +11189,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         datasetOverlay -{string} 裁剪对象数据集。 <br>
  *         mode -{{@link SuperMap.ClipAnalystMode}} 裁剪分析模式 。 <br>
  */
-var VectorClipJobsParameter = function () {
+var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
 
     /**
      * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
@@ -10280,7 +11213,7 @@ var VectorClipJobsParameter = function () {
         if (options.mode && typeof options.mode === "string") {
             options.mode = options.mode.toLowerCase();
         }
-        _SuperMap2.default.Util.extend(this, options);
+        _Util.Util.extend(this, options);
     }
 
     /**
@@ -10309,6 +11242,7 @@ var VectorClipJobsParameter = function () {
             this.geometryClip = null;
             this.mode = null;
         }
+
         /**
          * @function SuperMap.VectorClipJobsParameter.toObject
          * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
@@ -10334,13 +11268,10 @@ var VectorClipJobsParameter = function () {
     return VectorClipJobsParameter;
 }();
 
-exports.default = VectorClipJobsParameter;
-
-
-_SuperMap2.default.VectorClipJobsParameter = VectorClipJobsParameter;
+_SuperMap.SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10349,6 +11280,7 @@ _SuperMap2.default.VectorClipJobsParameter = VectorClipJobsParameter;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.VectorClipJobsService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -10356,17 +11288,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
+var _ProcessingServiceBase = __webpack_require__(3);
 
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _VectorClipJobsParameter = __webpack_require__(36);
-
-var _VectorClipJobsParameter2 = _interopRequireDefault(_VectorClipJobsParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _VectorClipJobsParameter = __webpack_require__(40);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10381,7 +11305,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param url -{string} 矢量裁剪分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-var VectorClipJobsService = function (_ProcessingServiceBas) {
+var VectorClipJobsService = exports.VectorClipJobsService = function (_ProcessingServiceBas) {
     _inherits(VectorClipJobsService, _ProcessingServiceBas);
 
     function VectorClipJobsService(url, options) {
@@ -10439,373 +11363,23 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
     }, {
         key: 'addVectorClipJob',
         value: function addVectorClipJob(params, seconds) {
-            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'addJob', this).call(this, this.url, params, _VectorClipJobsParameter2.default, seconds);
+            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'addJob', this).call(this, this.url, params, _VectorClipJobsParameter.VectorClipJobsParameter, seconds);
         }
     }]);
 
     return VectorClipJobsService;
-}(_ProcessingServiceBase2.default);
+}(_ProcessingServiceBase.ProcessingServiceBase);
 
-exports.default = VectorClipJobsService;
-
-
-_SuperMap2.default.VectorClipJobsService = VectorClipJobsService;
+_SuperMap.SuperMap.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _FetchRequest = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @name SecurityManager
- * @memberOf SuperMap
- * @namespace
- * @description 安全管理中心，提供iServer,iPortal,Online统一权限认证管理
- *  > 使用说明：
- *  > 创建任何一个服务之前调用{@link SuperMap.SecurityManager.registerToken}或
- *  > {@link SuperMap.SecurityManager.registerKey}注册凭据。
- *  > 发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
- */
-_SuperMap2.default.SecurityManager = {
-
-    INNER_WINDOW_WIDTH: 600,
-    INNER_WINDOW_HEIGHT: 600,
-    /**
-     * @description 从服务器获取一个token,在此之前要注册服务器信息
-     * @param url {string}-服务器域名+端口，如：http://localhost:8092
-     * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
-     * @return {Promise} 返回包含token信息的Promise对象
-     */
-    generateToken: function generateToken(url, tokenParam) {
-        var serverInfo = this.servers[url];
-        if (!serverInfo) {
-            return;
-        }
-        return _FetchRequest.FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
-            return response.text();
-        });
-    },
-
-    /**
-     * @description 注册安全服务器相关信息
-     * @param serverInfos -{SuperMap.ServerInfo} 服务器信息
-     */
-    registerServers: function registerServers(serverInfos) {
-        this.servers = this.servers || {};
-        if (!_SuperMap2.default.Util.isArray(serverInfos)) {
-            serverInfos = [serverInfos];
-        }
-        for (var i = 0; i < serverInfos.length; i++) {
-            var serverInfo = serverInfos[i];
-            this.servers[serverInfo.server] = serverInfo;
-        }
-    },
-
-    /**
-     * @description 服务请求都会自动带上这个token
-     * @param url {string} -服务器域名+端口：如http://localhost:8090
-     * @param token -{string} token
-     */
-    registerToken: function registerToken(url, token) {
-        this.tokens = this.tokens || {};
-        if (!url || !token) {
-            return;
-        }
-        var domain = this._getTokenStorageKey(url);
-        this.tokens[domain] = token;
-    },
-
-    /**
-     * @description 注册key,ids为数组(存在一个key对应多个服务)
-     * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key -{string} key
-     */
-    registerKey: function registerKey(ids, key) {
-        this.keys = this.keys || {};
-        if (!ids || ids.length < 1 || !key) {
-            return;
-        }
-
-        ids = _SuperMap2.default.Util.isArray(ids) ? ids : [ids];
-        for (var i = 0; i < ids.length; i++) {
-            var id = this._getUrlRestString(ids[0]) || ids[0];
-            this.keys[id] = key;
-        }
-    },
-
-    /**
-     * @description 获取服务器信息
-     * @param url {string}-服务器域名+端口，如：http://localhost:8092
-     * @returns {SuperMap.ServerInfo} 服务器信息
-     */
-    getServerInfo: function getServerInfo(url) {
-        this.servers = this.servers || {};
-        return this.servers[url];
-    },
-
-    /**
-     * @description 根据Url获取token
-     * @param url -{string} 服务器域名+端口，如：http://localhost:8092
-     * @returns {string} token
-     */
-    getToken: function getToken(url) {
-        if (!url) {
-            return;
-        }
-        this.tokens = this.tokens || {};
-        var domain = this._getTokenStorageKey(url);
-        return this.tokens[domain];
-    },
-
-    /**
-     * @description 根据Url获取key
-     * @param id -{string} id
-     * @returns {string} key
-     */
-    getKey: function getKey(id) {
-        this.keys = this.keys || {};
-        var key = this._getUrlRestString(id) || id;
-        return this.keys[key];
-    },
-
-    /**
-     * @description iServer登录验证
-     * @param url -{string} iServer首页地址，如：http://localhost:8090/iserver
-     * @param username -{string} 用户名
-     * @param password -{string} 密码
-     * @param rememberme -{boolean} 是否记住
-     * @returns {Promise} 返回包含iServer登录请求结果的Promise对象
-     */
-    loginiServer: function loginiServer(url, username, password, rememberme) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "services/security/login.json" : "/services/security/login.json";
-        var loginInfo = {
-            username: username && username.toString(),
-            password: password && password.toString(),
-            rememberme: rememberme
-        };
-        loginInfo = JSON.stringify(loginInfo);
-        var requestOptions = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            }
-        };
-        return _FetchRequest.FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
-            return response.json();
-        });
-    },
-
-    /**
-     * @description iServer登出
-     * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
-     * @returns {Promise} 是否登出成功
-     */
-    logoutiServer: function logoutiServer(url) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "services/security/logout" : "/services/security/logout";
-
-        var requestOptions = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
-            withoutFormatSuffix: true
-        };
-        return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
-            return true;
-        }).catch(function () {
-            return false;
-        });
-    },
-
-    /**
-     * @description Online登录验证
-     * @param callbackLocation -{string} 跳转位置
-     * @param newTab -{boolean}是否新窗口打开
-     */
-    loginOnline: function loginOnline(callbackLocation, newTab) {
-        var loginUrl = _SuperMap2.default.SecurityManager.SSO + "/login?service=" + callbackLocation;
-        this._open(loginUrl, newTab);
-    },
-
-    /**
-     * @description iPortal登录验证
-     * @param url -{string} iportal首页地址
-     * @param username -{string} 用户名
-     * @param password -{string} 密码
-     * @returns {Promise} 返回包含iPortal登录请求结果的Promise对象
-     */
-    loginiPortal: function loginiPortal(url, username, password) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "web/login.json" : "/web/login.json";
-        var loginInfo = {
-            username: username && username.toString(),
-            password: password && password.toString()
-        };
-        loginInfo = JSON.stringify(loginInfo);
-        var requestOptions = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
-            withCredentials: true
-        };
-        return _FetchRequest.FetchRequest.post(url, loginInfo, requestOptions).then(function (response) {
-            return response.json();
-        });
-    },
-
-    /**
-     * @description iPortal登出
-     * @param url -{string} iportal首页地址
-     * @returns {Promise} 如果登出成功，返回true;否则返回false
-     */
-    logoutiPortal: function logoutiPortal(url) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "services/security/logout" : "/services/security/logout";
-
-        var requestOptions = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
-            withCredentials: true,
-            withoutFormatSuffix: true
-        };
-        return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
-            return true;
-        }).catch(function () {
-            return false;
-        });
-    },
-
-    /**
-     * @description iManager登录验证
-     * @param url -{string} iManager地址。<br>
-     *                      地址参数为iManager首页地址，如： http://localhost:8390/imanager<br>
-     * @param loginInfoParams -{Object} iManager 登录参数<br>
-     *        userName -{string} 用户名<br>
-     *        password-{string} 密码
-     * @param options -{Object} <br>
-     *        isNewTab -{boolean} 不同域时是否在新窗口打开登录页面
-     * @return {Promise} 返回包含iManager登录请求结果的Promise对象
-     */
-    loginManager: function loginManager(url, loginInfoParams, options) {
-        if (!_SuperMap2.default.Util.isInTheSameDomain(url)) {
-            var isNewTab = options ? options.isNewTab : true;
-            this._open(url, isNewTab);
-            return;
-        }
-        var end = url.substr(url.length - 1, 1);
-        var requestUrl = end === "/" ? url + "icloud/security/tokens.json" : url + "/icloud/security/tokens.json";
-        var params = loginInfoParams || {};
-        var loginInfo = {
-            username: params.userName && params.userName.toString(),
-            password: params.password && params.password.toString()
-        };
-        loginInfo = JSON.stringify(loginInfo);
-        var requestOptions = {
-            headers: {
-                'Accept': '*/*',
-                'Content-Type': 'application/json'
-            }
-        };
-        var me = this;
-        return _FetchRequest.FetchRequest.post(requestUrl, loginInfo, requestOptions).then(function (response) {
-            response.text().then(function (result) {
-                me.imanagerToken = result;
-                return result;
-            });
-        });
-    },
-
-    /**
-     * @description 清空全部验证信息
-     */
-    destroyAllCredentials: function destroyAllCredentials() {
-        this.keys = null;
-        this.tokens = null;
-        this.servers = null;
-    },
-    /**
-     * @description 清空令牌信息
-     */
-    destroyToken: function destroyToken(url) {
-        if (!url) {
-            return;
-        }
-        var domain = this._getTokenStorageKey(url);
-        this.tokens = this.tokens || {};
-        if (this.tokens[domain]) {
-            delete this.tokens[domain];
-        }
-    },
-    /**
-     * @description 清空服务授权码
-     */
-    destroyKey: function destroyKey(id) {
-        if (!id) {
-            return;
-        }
-        this.keys = this.keys || {};
-        var key = this._getUrlRestString(id) || id;
-        if (this.keys[key]) {
-            delete this.keys[key];
-        }
-    },
-
-    _open: function _open(url, newTab) {
-        newTab = newTab != null ? newTab : true;
-        var offsetX = window.screen.availWidth / 2 - this.INNER_WINDOW_WIDTH / 2;
-        var offsetY = window.screen.availHeight / 2 - this.INNER_WINDOW_HEIGHT / 2;
-        var options = "height=" + this.INNER_WINDOW_HEIGHT + ", width=" + this.INNER_WINDOW_WIDTH + ",top=" + offsetY + ", left=" + offsetX + ",toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";
-        if (newTab) {
-            window.open(url, 'login');
-        } else {
-            window.open(url, 'login', options);
-        }
-    },
-
-    _getTokenStorageKey: function _getTokenStorageKey(url) {
-        var patten = /(.*?):\/\/([^\/]+)/i;
-        var result = url.match(patten);
-        if (!result) {
-            return url;
-        }
-        return result[0];
-    },
-
-    _getUrlRestString: function _getUrlRestString(url) {
-        if (!url) {
-            return url;
-        }
-        var patten = /http:\/\/(.*\/rest)/i;
-        var result = url.match(patten);
-        if (!result) {
-            return url;
-        }
-        return result[0];
-    }
-
-};
-_SuperMap2.default.SecurityManager.SSO = "https://sso.supermap.com";
-_SuperMap2.default.SecurityManager.ONLINE = "http://www.supermapol.com";
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _promisePolyfill = __webpack_require__(43);
+var _promisePolyfill = __webpack_require__(46);
 
 var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
@@ -10814,7 +11388,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.Promise = _promisePolyfill2.default;
 
 /***/ }),
-/* 40 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10933,7 +11507,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10987,12 +11561,12 @@ exports._unrefActive = exports.active = function (item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(44);
+__webpack_require__(47);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 /***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11185,7 +11759,7 @@ process.umask = function () {
 };
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11209,7 +11783,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -11333,9 +11907,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
     return new Promise(function (resolve, reject) {
+      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
+      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -11426,10 +12000,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     root.Promise = Promise;
   }
 })(undefined);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44).setImmediate))
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11617,10 +12191,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 })(typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(45), __webpack_require__(42)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48), __webpack_require__(45)))
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11650,7 +12224,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12097,26 +12671,26 @@ var whatwgFetch = function (self) {
 module.exports = whatwgFetch;
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(10);
-__webpack_require__(9);
-__webpack_require__(11);
 __webpack_require__(12);
-module.exports = __webpack_require__(8);
+__webpack_require__(11);
+__webpack_require__(13);
+__webpack_require__(14);
+module.exports = __webpack_require__(10);
 
 
 /***/ })

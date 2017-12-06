@@ -1,14 +1,16 @@
-import SuperMap from '../../SuperMap';
-import Transformable from './Transformable';
-import '../../commontypes/Util';
-import './Util';
+import {Transformable} from './Transformable';
+import {SmicImage} from './SmicImage';
+import {Util as CommonUtil} from '../../commontypes/Util';
+import {Util} from './Util';
+import {Config} from './Config';
+import {SUtil} from './SUtil';
 
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Painter
  * Painter 绘图模块。
  */
-export default class Painter {
+export class Painter {
 
     /**
      * APIProperty: root
@@ -105,8 +107,8 @@ export default class Painter {
 
         // 创建各层canvas
         // 背景
-        //this._bgDom = SuperMap.LevelRenderer.Painter.createDom('bg', 'div', this);
-        this._bgDom = SuperMap.LevelRenderer.Painter.createDom(SuperMap.Util.createUniqueID("SuperMap.Theme_background_"), 'div', this);
+        //this._bgDom = Painter.createDom('bg', 'div', this);
+        this._bgDom = Painter.createDom(CommonUtil.createUniqueID("SuperMap.Theme_background_"), 'div', this);
         domRoot.appendChild(this._bgDom);
         this._bgDom.onselectstart = returnFalse;
         this._bgDom.style['-webkit-user-select'] = 'none';
@@ -114,8 +116,8 @@ export default class Painter {
         this._bgDom.style['-webkit-touch-callout'] = 'none';
 
         // 高亮
-        //var hoverLayer = new SuperMap.LevelRenderer.Painter.Layer('_hoverLayer_', this);
-        var hoverLayer = new SuperMap.LevelRenderer.Painter.Layer(SuperMap.Util.createUniqueID("_highLightLayer_"), this);
+        //var hoverLayer = new PaintLayer('_hoverLayer_', this);
+        var hoverLayer = new PaintLayer(CommonUtil.createUniqueID("_highLightLayer_"), this);
         this._layers['hover'] = hoverLayer;
         domRoot.appendChild(hoverLayer.dom);
         hoverLayer.initContext();
@@ -254,7 +256,7 @@ export default class Painter {
                 // Set transform
                 if (clipShape.needTransform) {
                     let m = clipShape.transform;
-                    SuperMap.LevelRenderer.Util_matrix.invert(invTransform, m);
+                    SUtil.Util_matrix.invert(invTransform, m);
                     ctx.transform(
                         m[0], m[1],
                         m[2], m[3],
@@ -282,11 +284,11 @@ export default class Painter {
                     !shape.onbrush
                     || (shape.onbrush && !shape.onbrush(ctx, false))
                 ) {
-                    if (SuperMap.LevelRenderer.Config.catchBrushException) {
+                    if (Config.catchBrushException) {
                         try {
                             shape.brush(ctx, false, this.updatePainter);
                         } catch (error) {
-                            SuperMap.LevelRenderer.Util_log(
+                            SUtil.Util_log(
                                 error,
                                 'brush error of ' + shape.type,
                                 shape
@@ -359,8 +361,8 @@ export default class Painter {
             this._zlevelList.splice(i + 1, 0, zlevel);
 
             // Create a new layer
-            //currentLayer = new SuperMap.LevelRenderer.Painter.Layer(zlevel, this);
-            currentLayer = new SuperMap.LevelRenderer.Painter.Layer(SuperMap.Util.createUniqueID("_levelLayer_" + zlevel), this);
+            //currentLayer = new PaintLayer(zlevel, this);
+            currentLayer = new PaintLayer(CommonUtil.createUniqueID("_levelLayer_" + zlevel), this);
             var prevDom = prevLayer ? prevLayer.dom : this._bgDom;
             if (prevDom.nextSibling) {
                 prevDom.parentNode.insertBefore(
@@ -377,7 +379,7 @@ export default class Painter {
             this._layers[zlevel] = currentLayer;
 
             if (this._layerConfig[zlevel]) {
-                SuperMap.LevelRenderer.Util.merge(currentLayer, this._layerConfig[zlevel], true);
+                Util.merge(currentLayer, this._layerConfig[zlevel], true);
             }
 
             currentLayer.updateTransform();
@@ -392,7 +394,7 @@ export default class Painter {
      * 获取所有已创建的层。
      *
      * Returns:
-     * {Array{<SuperMap.LevelRenderer.Painter.Layer>}} 已创建的层
+     * {Array{<Painter.Layer>}} 已创建的层
      */
     getLayers() {
         return this._layers;
@@ -504,13 +506,13 @@ export default class Painter {
             if (!this._layerConfig[zlevel]) {
                 this._layerConfig[zlevel] = config;
             } else {
-                SuperMap.LevelRenderer.Util.merge(this._layerConfig[zlevel], config, true);
+                Util.merge(this._layerConfig[zlevel], config, true);
             }
 
             var layer = this._layers[zlevel];
 
             if (layer) {
-                SuperMap.LevelRenderer.Util.merge(layer, this._layerConfig[zlevel], true);
+                Util.merge(layer, this._layerConfig[zlevel], true);
             }
         }
     }
@@ -538,7 +540,7 @@ export default class Painter {
         layer.dom.parentNode.removeChild(layer.dom);
         delete this._layers[zlevel];
 
-        this._zlevelList.splice(SuperMap.LevelRenderer.Util.indexOf(this._zlevelList, zlevel), 1);
+        this._zlevelList.splice(Util.indexOf(this._zlevelList, zlevel), 1);
     }
 
 
@@ -665,18 +667,18 @@ export default class Painter {
      * {String} 图片的Base64 url。
      */
     toDataURL(type, backgroundColor, args) {
-        //var imageDom = SuperMap.LevelRenderer.Painter.createDom('image', 'canvas', this);
-        var imageDom = SuperMap.LevelRenderer.Painter.createDom(SuperMap.Util.createUniqueID("SuperMap.Theme.image_"), 'canvas', this);
+        //var imageDom = Painter.createDom('image', 'canvas', this);
+        var imageDom = Painter.createDom(CommonUtil.createUniqueID("SuperMap.Theme.image_"), 'canvas', this);
         this._bgDom.appendChild(imageDom);
         var ctx = imageDom.getContext('2d');
-        SuperMap.LevelRenderer.Painter.devicePixelRatio != 1
-        && ctx.scale(SuperMap.LevelRenderer.Painter.devicePixelRatio, SuperMap.LevelRenderer.Painter.devicePixelRatio);
+        Painter.devicePixelRatio != 1
+        && ctx.scale(Painter.devicePixelRatio, Painter.devicePixelRatio);
 
         ctx.fillStyle = backgroundColor || '#fff';
         ctx.rect(
             0, 0,
-            this._width * SuperMap.LevelRenderer.Painter.devicePixelRatio,
-            this._height * SuperMap.LevelRenderer.Painter.devicePixelRatio
+            this._width * Painter.devicePixelRatio,
+            this._height * Painter.devicePixelRatio
         );
         ctx.fill();
 
@@ -690,11 +692,11 @@ export default class Painter {
                         // 有onbrush并且调用执行返回false或undefined则继续粉刷
                         || (shape.onbrush && !shape.onbrush(ctx, false))
                     ) {
-                        if (SuperMap.LevelRenderer.Config.catchBrushException) {
+                        if (Config.catchBrushException) {
                             try {
                                 shape.brush(ctx, false, self.updatePainter);
                             } catch (error) {
-                                SuperMap.LevelRenderer.Util_log(
+                                SUtil.Util_log(
                                     error,
                                     'brush error of ' + shape.type,
                                     shape
@@ -786,11 +788,11 @@ export default class Painter {
                 layer.setTransform(ctx);
             }
             // Retina 优化
-            if (SuperMap.LevelRenderer.Config.catchBrushException) {
+            if (Config.catchBrushException) {
                 try {
                     shape.brush(ctx, true, this.updatePainter);
                 } catch (error) {
-                    SuperMap.LevelRenderer.Util_log(
+                    SUtil.Util_log(
                         error, 'hoverBrush error of ' + shape.type, shape
                     );
                 }
@@ -833,7 +835,7 @@ export default class Painter {
             shape.brush(ctx, false);
         }
 
-        var imgShape = new SuperMap.LevelRenderer.Shape.SmicImage({
+        var imgShape = new SmicImage({
             id: id,
             style: {
                 x: 0,
@@ -867,7 +869,7 @@ export default class Painter {
 
         return function (id, e, width, height) {
             return me._shapeToImage(
-                id, e, width, height, SuperMap.LevelRenderer.Painter.devicePixelRatio
+                id, e, width, height, Painter.devicePixelRatio
             );
         };
     }
@@ -920,8 +922,8 @@ export default class Painter {
         newDom.style.top = 0;
         newDom.style.width = width + 'px';
         newDom.style.height = height + 'px';
-        newDom.setAttribute('width', width * SuperMap.LevelRenderer.Painter.devicePixelRatio);
-        newDom.setAttribute('height', height * SuperMap.LevelRenderer.Painter.devicePixelRatio);
+        newDom.setAttribute('width', width * Painter.devicePixelRatio);
+        newDom.setAttribute('height', height * Painter.devicePixelRatio);
 
         // id不作为索引用，避免可能造成的重名，定义为私有属性
         //newDom.setAttribute('data-zr-dom-id', id);
@@ -931,16 +933,16 @@ export default class Painter {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Painter"
 }
-SuperMap.LevelRenderer.Painter = Painter;
+
 /**
  * @private
- * @class SuperMap.LevelRenderer.Painter.Layer
+ * @class Painter.Layer
  * 绘制层类。
  *
  * Inherits from:
  *  - <SuperMap.LevelRenderer.Transformable>
  */
-class PaintLayer extends Transformable {
+export class PaintLayer extends Transformable {
 
     /**
      * Property: dom
@@ -1040,7 +1042,7 @@ class PaintLayer extends Transformable {
     ctx = null;
 
     /**
-     * Constructor: SuperMap.LevelRenderer.Painter.Layer
+     * Constructor: Painter.Layer
      * 构造函数。
      *
      * Parameters:
@@ -1050,7 +1052,7 @@ class PaintLayer extends Transformable {
      */
     constructor(id, painter) {
         super(id, painter);
-        this.dom = SuperMap.LevelRenderer.Painter.createDom(SuperMap.Util.createUniqueID("SuperMap.Theme" + id), 'canvas', painter);
+        this.dom = Painter.createDom(CommonUtil.createUniqueID("SuperMap.Theme" + id), 'canvas', painter);
         this.dom.onselectstart = returnFalse; // 避免页面选中的尴尬
         this.dom.style['-webkit-user-select'] = 'none';
         this.dom.style['user-select'] = 'none';
@@ -1108,7 +1110,7 @@ class PaintLayer extends Transformable {
         this.minZoom = null;
         this.ctx = null;
 
-        SuperMap.LevelRenderer.Transformable.destroy.apply(this, arguments);
+        Transformable.destroy.apply(this, arguments);
     }
 
     /**
@@ -1117,8 +1119,8 @@ class PaintLayer extends Transformable {
      */
     initContext() {
         this.ctx = this.dom.getContext('2d');
-        if (SuperMap.LevelRenderer.Painter.devicePixelRatio != 1) {
-            this.ctx.scale(SuperMap.LevelRenderer.Painter.devicePixelRatio, SuperMap.LevelRenderer.Painter.devicePixelRatio);
+        if (Painter.devicePixelRatio != 1) {
+            this.ctx.scale(Painter.devicePixelRatio, Painter.devicePixelRatio);
         }
     }
 
@@ -1127,11 +1129,11 @@ class PaintLayer extends Transformable {
      * 创建备份缓冲。
      */
     createBackBuffer() {
-        this.domBack = SuperMap.LevelRenderer.Painter.createDom(SuperMap.Util.createUniqueID("SuperMap.Theme.back-" + this.id), 'canvas', this.painter);
+        this.domBack = Painter.createDom(CommonUtil.createUniqueID("SuperMap.Theme.back-" + this.id), 'canvas', this.painter);
         this.ctxBack = this.domBack.getContext('2d');
 
-        if (SuperMap.LevelRenderer.Painter.devicePixelRatio != 1) {
-            this.ctxBack.scale(SuperMap.LevelRenderer.Painter.devicePixelRatio, SuperMap.LevelRenderer.Painter.devicePixelRatio);
+        if (Painter.devicePixelRatio != 1) {
+            this.ctxBack.scale(Painter.devicePixelRatio, Painter.devicePixelRatio);
         }
     }
 
@@ -1147,19 +1149,19 @@ class PaintLayer extends Transformable {
         this.dom.style.width = width + 'px';
         this.dom.style.height = height + 'px';
 
-        this.dom.setAttribute('width', width * SuperMap.LevelRenderer.Painter.devicePixelRatio);
-        this.dom.setAttribute('height', height * SuperMap.LevelRenderer.Painter.devicePixelRatio);
+        this.dom.setAttribute('width', width * Painter.devicePixelRatio);
+        this.dom.setAttribute('height', height * Painter.devicePixelRatio);
 
-        if (SuperMap.LevelRenderer.Painter.devicePixelRatio != 1) {
-            this.ctx.scale(SuperMap.LevelRenderer.Painter.devicePixelRatio, SuperMap.LevelRenderer.Painter.devicePixelRatio);
+        if (Painter.devicePixelRatio != 1) {
+            this.ctx.scale(Painter.devicePixelRatio, Painter.devicePixelRatio);
         }
 
         if (this.domBack) {
-            this.domBack.setAttribute('width', width * SuperMap.LevelRenderer.Painter.devicePixelRatio);
-            this.domBack.setAttribute('height', height * SuperMap.LevelRenderer.Painter.devicePixelRatio);
+            this.domBack.setAttribute('width', width * Painter.devicePixelRatio);
+            this.domBack.setAttribute('height', height * Painter.devicePixelRatio);
 
-            if (SuperMap.LevelRenderer.Painter.devicePixelRatio != 1) {
-                this.ctxBack.scale(SuperMap.LevelRenderer.Painter.devicePixelRatio, SuperMap.LevelRenderer.Painter.devicePixelRatio);
+            if (Painter.devicePixelRatio != 1) {
+                this.ctxBack.scale(Painter.devicePixelRatio, Painter.devicePixelRatio);
             }
         }
     }
@@ -1186,8 +1188,8 @@ class PaintLayer extends Transformable {
             this.ctxBack.globalCompositeOperation = 'copy';
             this.ctxBack.drawImage(
                 dom, 0, 0,
-                width / SuperMap.LevelRenderer.Painter.devicePixelRatio,
-                height / SuperMap.LevelRenderer.Painter.devicePixelRatio
+                width / Painter.devicePixelRatio,
+                height / Painter.devicePixelRatio
             );
         }
 
@@ -1196,15 +1198,15 @@ class PaintLayer extends Transformable {
             ctx.fillStyle = this.config.clearColor;
             ctx.fillRect(
                 0, 0,
-                width / SuperMap.LevelRenderer.Painter.devicePixelRatio,
-                height / SuperMap.LevelRenderer.Painter.devicePixelRatio
+                width / Painter.devicePixelRatio,
+                height / Painter.devicePixelRatio
             );
             ctx.restore();
         } else {
             ctx.clearRect(
                 0, 0,
-                width / SuperMap.LevelRenderer.Painter.devicePixelRatio,
-                height / SuperMap.LevelRenderer.Painter.devicePixelRatio
+                width / Painter.devicePixelRatio,
+                height / Painter.devicePixelRatio
             );
         }
 
@@ -1214,14 +1216,12 @@ class PaintLayer extends Transformable {
             ctx.globalAlpha = lastFrameAlpha;
             ctx.drawImage(
                 domBack, 0, 0,
-                width / SuperMap.LevelRenderer.Painter.devicePixelRatio,
-                height / SuperMap.LevelRenderer.Painter.devicePixelRatio
+                width / Painter.devicePixelRatio,
+                height / Painter.devicePixelRatio
             );
             ctx.restore();
         }
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Painter.Layer"
+    CLASS_NAME = "Painter.Layer"
 }
-
-SuperMap.LevelRenderer.Painter.Layer = PaintLayer;

@@ -1,6 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
-import ServiceBase from './ServiceBase';
-import DataFlow from '../../common/iServer/DataFlowService';
+import {ServiceBase} from './ServiceBase';
+import {DataFlowService as DataFlow} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.DataFlowService
@@ -18,7 +18,7 @@ import DataFlow from '../../common/iServer/DataFlowService';
  *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
  *        excludeField - -{Object} 排除字段
  */
-export default class DataFlowService extends ServiceBase {
+export class DataFlowService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);

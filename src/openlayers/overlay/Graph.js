@@ -1,16 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
-import '../../common/REST';
-import '../../common/overlay/Bar';
-import '../../common/overlay/Bar3D';
-import '../../common/overlay/Circle';
-import '../../common/overlay/Pie';
-import '../../common/overlay/Point';
-import '../../common/overlay/Line';
-import '../../common/overlay/Ring';
-import '../../common/overlay/ThemeVector';
-import '../../common/style/ThemeStyle';
-import SuperMap from '../../common/SuperMap';
-import Theme from './theme/Theme';
+import {CommonUtil, Bounds, LonLat, FeatureTheme} from '@supermap/iclient-common';
+import {Theme} from './theme/Theme';
 
 /**
  * @class ol.source.Graph
@@ -20,7 +10,7 @@ import Theme from './theme/Theme';
  * @param opt_options - {Object} 参数
  * @extends ol.source.Theme
  */
-export default class Graph extends Theme {
+export class Graph extends Theme {
 
     constructor(name, chartsType, opt_options) {
         super(name, opt_options);
@@ -66,7 +56,7 @@ export default class Graph extends Theme {
      */
     addFeatures(features) {
         //数组
-        if (!(SuperMap.Util.isArray(features))) {
+        if (!(CommonUtil.isArray(features))) {
             features = [features];
         }
         var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -100,7 +90,7 @@ export default class Graph extends Theme {
             var feaBounds = feature.geometry.getBounds();
             //剔除当前视图（地理）范围以外的数据
             if (extent) {
-                var bounds = new SuperMap.Bounds(extent[0], extent[1], extent[2], extent[3]);
+                var bounds = new Bounds(extent[0], extent[1], extent[2], extent[3]);
                 if (!bounds.intersectsBounds(feaBounds)) {
                     continue;
                 }
@@ -136,8 +126,8 @@ export default class Graph extends Theme {
     createThematicFeature(feature) {
         var thematicFeature;
         // 检查图表创建条件并创建图形
-        if (SuperMap.Feature.Theme[this.chartsType] && this.themeFields && this.chartsSetting) {
-            thematicFeature = new SuperMap.Feature.Theme[this.chartsType](feature, this, this.themeFields, this.chartsSetting);
+        if (FeatureTheme[this.chartsType] && this.themeFields && this.chartsSetting) {
+            thematicFeature = new FeatureTheme[this.chartsType](feature, this, this.themeFields, this.chartsSetting);
         }
         // thematicFeature 是否创建成功
         if (!thematicFeature) {
@@ -195,12 +185,12 @@ export default class Graph extends Theme {
             // 压盖判断所需 chartsBounds 集合
             var chartsBounds = [];
             var extent = this.map.getView().calculateExtent();
-            var mapBounds = new SuperMap.Bounds(extent[0], extent[1], extent[2], extent[3]);
+            var mapBounds = new Bounds(extent[0], extent[1], extent[2], extent[3]);
             if (mapBounds) {
                 // 获取地图像素 bounds
-                var mapPxLT = this.getLocalXY(new SuperMap.LonLat(mapBounds.left, mapBounds.top));
-                var mapPxRB = this.getLocalXY(new SuperMap.LonLat(mapBounds.right, mapBounds.bottom));
-                var mBounds = new SuperMap.Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
+                var mapPxLT = this.getLocalXY(new LonLat(mapBounds.left, mapBounds.top));
+                var mapPxRB = this.getLocalXY(new LonLat(mapBounds.right, mapBounds.bottom));
+                var mBounds = new Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
                 // 压盖处理 & 添加图形
                 for (var i = 0, len = charts.length; i < len; i++) {
                     var chart = charts[i];
@@ -300,7 +290,7 @@ export default class Graph extends Theme {
                 break;
             }
             for (let j = 0; j < quad2Len - 1; j++) {
-                var isLineIn = SuperMap.Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
+                var isLineIn = CommonUtil.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     OverLap = true;
                     break;
@@ -403,4 +393,5 @@ export default class Graph extends Theme {
         return Theme.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
 }
+
 ol.source.Graph = Graph;

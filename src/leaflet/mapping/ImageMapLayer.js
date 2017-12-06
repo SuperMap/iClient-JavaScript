@@ -1,7 +1,6 @@
-import '../core/Base';
 import L from "leaflet";
-import SuperMap from "../../common/SuperMap" ;
-import ServerGeometry from '../../common/iServer/ServerGeometry';
+import "../core/Base";
+import {ServerGeometry, ServerType, CommonUtil, SecurityManager, Credential} from "@supermap/iclient-common" ;
 
 /**
  * @class L.supermap.imageMapLayer
@@ -44,7 +43,7 @@ export var ImageMapLayer = L.TileLayer.extend({
         tileversion: null,
 
         crs: null,
-        serverType: SuperMap.ServerType.ISERVER,
+        serverType: ServerType.ISERVER,
 
         attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
@@ -120,7 +119,7 @@ export var ImageMapLayer = L.TileLayer.extend({
 
         if (options.clipRegionEnabled && options.clipRegion instanceof L.Path) {
             options.clipRegion = L.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
-            options.clipRegion = SuperMap.Util.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
+            options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
             params.push("clipRegionEnabled=" + options.clipRegionEnabled);
             params.push("clipRegion=" + JSON.stringify(options.clipRegion));
         }
@@ -145,25 +144,25 @@ export var ImageMapLayer = L.TileLayer.extend({
     _appendCredential: function (url) {
         var newUrl = url, credential, value;
         switch (this.options.serverType) {
-            case SuperMap.ServerType.ISERVER:
-                value = SuperMap.SecurityManager.getToken(url);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+            case ServerType.ISERVER:
+                value = SecurityManager.getToken(url);
+                credential = value ? new Credential(value, "token") : null;
                 break;
-            case SuperMap.ServerType.IPORTAL:
-                value = SuperMap.SecurityManager.getToken(url);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+            case ServerType.IPORTAL:
+                value = SecurityManager.getToken(url);
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
-                    value = SuperMap.SecurityManager.getKey(url);
-                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                    value = SecurityManager.getKey(url);
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case SuperMap.ServerType.ONLINE:
-                value = SuperMap.SecurityManager.getKey(url);
-                credential = value ? new SuperMap.Credential(value, "key") : null;
+            case ServerType.ONLINE:
+                value = SecurityManager.getKey(url);
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
-                value = SuperMap.SecurityManager.getToken(url);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+                value = SecurityManager.getToken(url);
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         if (credential) {

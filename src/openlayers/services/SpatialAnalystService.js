@@ -1,20 +1,23 @@
 import ol from 'openlayers/dist/ol-debug';
-import Util from '../core/Util';
-import SuperMap from '../../common/SuperMap';
-import ServiceBase from './ServiceBase';
-import AreaSolarRadiationService from '../../common/iServer/AreaSolarRadiationService';
-import BufferAnalystService from '../../common/iServer/BufferAnalystService';
-import DensityAnalystService from '../../common/iServer/DensityAnalystService';
-import GenerateSpatialDataService from '../../common/iServer/GenerateSpatialDataService';
-import GeoRelationAnalystService from '../../common/iServer/GeoRelationAnalystService';
-import InterpolationAnalystService from '../../common/iServer/InterpolationAnalystService';
-import MathExpressionAnalysisService from '../../common/iServer/MathExpressionAnalysisService';
-import OverlayAnalystService from '../../common/iServer/OverlayAnalystService';
-import RouteCalculateMeasureService from '../../common/iServer/RouteCalculateMeasureService';
-import RouteLocatorService from '../../common/iServer/RouteLocatorService';
-import SurfaceAnalystService from '../../common/iServer/SurfaceAnalystService';
-import TerrainCurvatureCalculationService from '../../common/iServer/TerrainCurvatureCalculationService';
-import ThiessenAnalystService from '../../common/iServer/ThiessenAnalystService';
+import {Util} from '../core/Util';
+import {
+    GeometryPoint,
+    DataFormat,
+    AreaSolarRadiationService,
+    BufferAnalystService,
+    DensityAnalystService,
+    GenerateSpatialDataService,
+    GeoRelationAnalystService,
+    InterpolationAnalystService,
+    MathExpressionAnalysisService,
+    OverlayAnalystService,
+    RouteCalculateMeasureService,
+    RouteLocatorService,
+    SurfaceAnalystService,
+    TerrainCurvatureCalculationService,
+    ThiessenAnalystService
+} from '@supermap/iclient-common';
+import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ol.supermap.SpatialAnalystService
@@ -28,7 +31,7 @@ import ThiessenAnalystService from '../../common/iServer/ThiessenAnalystService'
  * @param url - {string} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-export default class SpatialAnalystService extends ServiceBase {
+export class SpatialAnalystService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -320,7 +323,11 @@ export default class SpatialAnalystService extends ServiceBase {
                 if (Util.isArray(inputPoint)) {
                     params.inputPoints[i] = {x: inputPoint[0], y: inputPoint[1], tag: inputPoint[2]};
                 } else {
-                    params.inputPoints[i] = {x: inputPoint.getCoordinates()[0], y: inputPoint.getCoordinates()[1], tag: inputPoint.tag};
+                    params.inputPoints[i] = {
+                        x: inputPoint.getCoordinates()[0],
+                        y: inputPoint.getCoordinates()[1],
+                        tag: inputPoint.tag
+                    };
                 }
 
             }
@@ -331,7 +338,7 @@ export default class SpatialAnalystService extends ServiceBase {
                 if (Util.isArray(point)) {
                     point.setCoordinates(point);
                 }
-                params.points[i] = new SuperMap.Geometry.Point(point.getCoordinates()[0], point.getCoordinates()[1]);
+                params.points[i] = new GeometryPoint(point.getCoordinates()[0], point.getCoordinates()[1]);
             }
         }
         if (params.point) {
@@ -339,7 +346,7 @@ export default class SpatialAnalystService extends ServiceBase {
             if (Util.isArray(point)) {
                 point.setCoordinates(point);
             }
-            params.point = new SuperMap.Geometry.Point(point.getCoordinates()[0], point.getCoordinates()[1]);
+            params.point = new GeometryPoint(point.getCoordinates()[0], point.getCoordinates()[1]);
         }
         if (params.extractRegion) {
             params.extractRegion = this.convertGeometry(params.extractRegion);
@@ -381,7 +388,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     /**
@@ -394,4 +401,5 @@ export default class SpatialAnalystService extends ServiceBase {
         return Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(ol3Geometry)));
     }
 }
+
 ol.supermap.SpatialAnalystService = SpatialAnalystService;

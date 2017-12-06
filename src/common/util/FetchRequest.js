@@ -1,11 +1,12 @@
 import "./PromisePolyfill"
 import fetch from 'whatwg-fetch-importable'
 import fetchJsonp from 'fetch-jsonp';
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 export var Support = SuperMap.Support = SuperMap.Support || {
-        cors: (window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest())
-    };
+    cors: (window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest())
+};
 export var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
@@ -27,12 +28,12 @@ export var FetchRequest = SuperMap.FetchRequest = {
         options = options || {};
         var type = 'GET';
         url = this._processUrl(url, options);
-        url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.urlIsLong(url)) {
-            if (SuperMap.Util.isInTheSameDomain(url) || Support.cors || options.proxy) {
+            if (Util.isInTheSameDomain(url) || Support.cors || options.proxy) {
                 return this._fetch(url, params, options, type);
             }
-            if (!SuperMap.Util.isInTheSameDomain(url)) {
+            if (!Util.isInTheSameDomain(url)) {
                 url = url.replace('.json', '.jsonp');
                 return this._fetchJsonp(url, options);
             }
@@ -44,7 +45,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
         options = options || {};
         var type = 'DELETE';
         url = this._processUrl(url, options);
-        url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
+        url = Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.urlIsLong(url) && Support.cors) {
             return this._fetch(url, params, options, type);
         }

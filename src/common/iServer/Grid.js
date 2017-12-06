@@ -1,8 +1,9 @@
-﻿import SuperMap from '../SuperMap';
-import UGCSubLayer from './UGCSubLayer';
-import ServerColor from './ServerColor';
-import ServerStyle from './ServerStyle';
-import ColorDictionary from './ColorDictionary';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {UGCSubLayer} from './UGCSubLayer';
+import {ServerColor} from './ServerColor';
+import {ServerStyle} from './ServerStyle';
+import {ColorDictionary} from './ColorDictionary';
 import '../REST';
 
 /**
@@ -24,7 +25,7 @@ import '../REST';
  *        specialValueTransparent - {boolean} 图层的特殊值（specialValue）所处区域是否透明。<br>
  *        verticalSpacing - {number} 格网垂直间隔大小。
  */
-export default class Grid extends UGCSubLayer {
+export class Grid extends UGCSubLayer {
 
     /**
      * @member SuperMap.Grid.prototype.colorDictionarys - {Array<SuperMap.ColorDictionary>}
@@ -121,7 +122,7 @@ export default class Grid extends UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**

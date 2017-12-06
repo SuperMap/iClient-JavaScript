@@ -1,6 +1,6 @@
-import '../core/Base';
 import L from 'leaflet';
-import logoSrc from '../../common/control/img/iClient.png'
+import '../core/Base';
+import logoSrc from '@supermap/iclient-common/control/img/iClient.png';
 
 /**
  * @class L.supermap.control.logo
@@ -93,4 +93,5 @@ L.Map.addInitHook(function () {
 export var logo = function (options) {
     return new Logo(options);
 };
+
 L.supermap.control.logo = logo;

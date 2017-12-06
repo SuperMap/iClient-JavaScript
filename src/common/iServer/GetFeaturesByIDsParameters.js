@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import FilterParameter from './FilterParameter';
-import GetFeaturesParametersBase from './GetFeaturesParametersBase';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {FilterParameter} from './FilterParameter';
+import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
 
 /**
  * @class SuperMap.GetFeaturesByIDsParameters
@@ -14,7 +15,7 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  *        toIndex - {integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
-export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
+export class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
     /**
      * @member SuperMap.GetFeaturesByIDsParameters.prototype.getFeatureMode - {string}
      * @description 数据集查询模式。
@@ -39,7 +40,7 @@ export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBa
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 
@@ -80,7 +81,7 @@ export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBa
             filterParameter.fields = params.fields;
             parasByIDs.queryParameter = filterParameter;
         }
-        return SuperMap.Util.toJSON(parasByIDs);
+        return Util.toJSON(parasByIDs);
     }
 
     CLASS_NAME = "SuperMap.GetFeaturesByIDsParameters"

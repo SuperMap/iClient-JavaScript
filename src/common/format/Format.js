@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.Format
@@ -6,7 +7,7 @@ import SuperMap from '../SuperMap';
  * @param options - {Object} 可选参数。<br>
  *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */
-export default class Format {
+export class Format {
 
     /**
      * @member SuperMap.Format.prototype.options - {Object}
@@ -28,7 +29,7 @@ export default class Format {
     keepData = false;
 
     constructor(options) {
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
         this.options = options;
     }
 
@@ -61,4 +62,5 @@ export default class Format {
 
     CLASS_NAME = "SuperMap.Format"
 }
+
 SuperMap.Format = Format;

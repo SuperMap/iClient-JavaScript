@@ -1,6 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import FacilityAnalystTraceup3DParameters from './FacilityAnalystTraceup3DParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {CommonServiceBase} from './CommonServiceBase';
+import {FacilityAnalystTraceup3DParameters} from './FacilityAnalystTraceup3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystTraceup3DService
@@ -12,7 +12,7 @@ import FacilityAnalystTraceup3DParameters from './FacilityAnalystTraceup3DParame
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class FacilityAnalystTraceup3DService extends CommonServiceBase {
+export class FacilityAnalystTraceup3DService extends CommonServiceBase {
 
     /*
      * @function SuperMap.FacilityAnalystTraceup3DService.constructor

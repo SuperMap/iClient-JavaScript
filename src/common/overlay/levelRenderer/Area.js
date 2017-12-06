@@ -1,6 +1,5 @@
-import SuperMap from '../../SuperMap';
-import Util from './Util';
-import Curve from './Curve';
+import {Util} from './Util';
+import {Curve} from './Curve';
 
 /**
  * @private
@@ -8,7 +7,7 @@ import Curve from './Curve';
  * LevelRenderer 工具-图形范围判断
  *
  */
-export default class Area {
+export class Area {
 
     /**
      * Property: util
@@ -1121,4 +1120,3 @@ export default class Area {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Area"
 }
-SuperMap.LevelRenderer.Tool.Area = Area;

@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import InterpolationAnalystParameters from './InterpolationAnalystParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
 
 /**
  * @class SuperMap.InterpolationRBFAnalystParameters
@@ -40,7 +41,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  *     outputDatasetName: "myRBF"
  * });
  */
-export default  class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
+export class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
 
     /**
      * @member SuperMap.InterpolationRBFAnalystParameters.prototype.smooth - {number}
@@ -94,7 +95,7 @@ export default  class InterpolationRBFAnalystParameters extends InterpolationAna
         me.maxPointCountForInterpolation = 200;
         me.maxPointCountInNode = 50;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 

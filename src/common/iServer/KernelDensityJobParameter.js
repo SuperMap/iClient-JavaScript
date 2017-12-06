@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
 
 /**
@@ -13,7 +14,7 @@ import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
  *        fields - {string} 权重索引。<br>
  *        radius - {number} 分析的影响半径。
  */
-export default class KernelDensityJobParameter {
+export class KernelDensityJobParameter {
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.datasetName - {string}
@@ -79,7 +80,7 @@ export default class KernelDensityJobParameter {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

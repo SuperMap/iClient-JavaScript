@@ -1,6 +1,5 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
-import './SUtil';
+import {Shape} from './Shape';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -25,7 +24,7 @@ import './SUtil';
  * (end)
  *
  */
-export default class SmicSector extends Shape {
+export class SmicSector extends Shape {
 
     /**
      * Property: style
@@ -74,7 +73,9 @@ export default class SmicSector extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
     /**
@@ -96,7 +97,9 @@ export default class SmicSector extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var x = style.x + __OP[0];   // 圆心x
@@ -107,8 +110,8 @@ export default class SmicSector extends Shape {
         var endAngle = style.endAngle;              // 结束角度(0,360]
         var clockWise = style.clockWise || false;
 
-        startAngle = SuperMap.LevelRenderer.Util_math.degreeToRadian(startAngle);
-        endAngle = SuperMap.LevelRenderer.Util_math.degreeToRadian(endAngle);
+        startAngle = SUtil.Util_math.degreeToRadian(startAngle);
+        endAngle = SUtil.Util_math.degreeToRadian(endAngle);
 
         if (!clockWise) {
             // 扇形默认是逆时针方向，Y轴向上
@@ -117,8 +120,8 @@ export default class SmicSector extends Shape {
             endAngle = -endAngle;
         }
 
-        var unitX = SuperMap.LevelRenderer.Util_math.cos(startAngle);
-        var unitY = SuperMap.LevelRenderer.Util_math.sin(startAngle);
+        var unitX = SUtil.Util_math.cos(startAngle);
+        var unitY = SUtil.Util_math.sin(startAngle);
         ctx.moveTo(
             unitX * r0 + x,
             unitY * r0 + y
@@ -132,8 +135,8 @@ export default class SmicSector extends Shape {
         ctx.arc(x, y, r, startAngle, endAngle, !clockWise);
 
         ctx.lineTo(
-            SuperMap.LevelRenderer.Util_math.cos(endAngle) * r0 + x,
-            SuperMap.LevelRenderer.Util_math.sin(endAngle) * r0 + y
+            SUtil.Util_math.cos(endAngle) * r0 + x,
+            SUtil.Util_math.sin(endAngle) * r0 + y
         );
 
         if (r0 !== 0) {
@@ -160,20 +163,22 @@ export default class SmicSector extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
-        var min0 = SuperMap.LevelRenderer.Util_vector.create();
-        var min1 = SuperMap.LevelRenderer.Util_vector.create();
-        var max0 = SuperMap.LevelRenderer.Util_vector.create();
-        var max1 = SuperMap.LevelRenderer.Util_vector.create();
+        var min0 = SUtil.Util_vector.create();
+        var min1 = SUtil.Util_vector.create();
+        var max0 = SUtil.Util_vector.create();
+        var max1 = SUtil.Util_vector.create();
 
         var x = style.x + __OP[0];   // 圆心x
         var y = style.y + __OP[1];   // 圆心y
         var r0 = style.r0 || 0;     // 形内半径[0,r)
         var r = style.r;            // 扇形外半径(0,r]
-        var startAngle = SuperMap.LevelRenderer.Util_math.degreeToRadian(style.startAngle);
-        var endAngle = SuperMap.LevelRenderer.Util_math.degreeToRadian(style.endAngle);
+        var startAngle = SUtil.Util_math.degreeToRadian(style.startAngle);
+        var endAngle = SUtil.Util_math.degreeToRadian(style.endAngle);
         var clockWise = style.clockWise;
 
         if (!clockWise) {
@@ -182,19 +187,19 @@ export default class SmicSector extends Shape {
         }
 
         if (r0 > 1) {
-            SuperMap.LevelRenderer.Util_computeBoundingBox.arc(
+            SUtil.Util_computeBoundingBox.arc(
                 x, y, r0, startAngle, endAngle, !clockWise, min0, max0
             );
         } else {
             min0[0] = max0[0] = x;
             min0[1] = max0[1] = y;
         }
-        SuperMap.LevelRenderer.Util_computeBoundingBox.arc(
+        SUtil.Util_computeBoundingBox.arc(
             x, y, r, startAngle, endAngle, !clockWise, min1, max1
         );
 
-        SuperMap.LevelRenderer.Util_vector.min(min0, min0, min1);
-        SuperMap.LevelRenderer.Util_vector.max(max0, max0, max1);
+        SUtil.Util_vector.min(min0, min0, min1);
+        SUtil.Util_vector.max(max0, max0, max1);
         style.__rect = {
             x: min0[0],
             y: min0[1],
@@ -206,4 +211,3 @@ export default class SmicSector extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicSector"
 }
-SuperMap.LevelRenderer.Shape.SmicSector = SmicSector;

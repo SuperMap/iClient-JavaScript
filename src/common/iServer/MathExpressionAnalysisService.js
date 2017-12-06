@@ -1,6 +1,7 @@
-import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import MathExpressionAnalysisParameters from './MathExpressionAnalysisParameters';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {MathExpressionAnalysisParameters} from './MathExpressionAnalysisParameters';
 
 /**
  * @class SuperMap.MathExpressionAnalysisService
@@ -20,7 +21,7 @@ import MathExpressionAnalysisParameters from './MathExpressionAnalysisParameters
  * (end)
  *
  */
-export default class MathExpressionAnalysisService extends SpatialAnalystBase {
+export class MathExpressionAnalysisService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -53,7 +54,7 @@ export default class MathExpressionAnalysisService extends SpatialAnalystBase {
         }
 
         MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
-        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",

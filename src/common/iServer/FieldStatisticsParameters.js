@@ -1,5 +1,6 @@
-import SuperMap from '../SuperMap';
-import FieldParameters from './FieldParameters';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {FieldParameters} from './FieldParameters';
 
 /**
  * @class SuperMap.FieldStatisticsParameters
@@ -11,7 +12,7 @@ import FieldParameters from './FieldParameters';
  *        statisticMode - {String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>>} 字段统计方法类型。
  * @extends SuperMap.FieldParameters
  */
-export default  class FieldStatisticsParameters extends FieldParameters{
+export class FieldStatisticsParameters extends FieldParameters {
     /**
      * @member SuperMap.FieldStatisticsParameters.prototype.fieldName - {string}
      * @description 字段名
@@ -27,7 +28,7 @@ export default  class FieldStatisticsParameters extends FieldParameters{
     constructor(options) {
         super(options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

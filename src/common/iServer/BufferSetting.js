@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {BufferEndType, BufferRadiusUnit} from '../REST';
-import BufferDistance from './BufferDistance';
+import {BufferDistance} from './BufferDistance';
 
 /**
  * @class SuperMap.BufferSetting
@@ -12,7 +13,7 @@ import BufferDistance from './BufferDistance';
  *         semicircleLineSegment - {number} 圆头缓冲圆弧处线段的个数。<br>
  *         radiusUnit - {{@link SuperMap.BufferRadiusUnit}} 缓冲半径单位。
  */
-export default class BufferSetting {
+export class BufferSetting {
     /**
      * @member SuperMap.BufferSetting.prototype.endType - {SuperMap.BufferEndType}
      * @description 缓冲区端点枚举值。分为平头和圆头两种，默认为平头，即 SuperMap.BufferEndType.FLAT
@@ -52,7 +53,7 @@ export default class BufferSetting {
         me.leftDistance = new BufferDistance();
         me.rightDistance = new BufferDistance();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -76,7 +77,7 @@ export default class BufferSetting {
         me.radiusUnit = null;
     }
 
-
     CLASS_NAME = "SuperMap.BufferSetting";
 }
+
 SuperMap.BufferSetting = BufferSetting;

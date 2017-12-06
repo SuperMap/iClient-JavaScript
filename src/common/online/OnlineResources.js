@@ -1,4 +1,4 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
 
 /*
  * 服务发布状态

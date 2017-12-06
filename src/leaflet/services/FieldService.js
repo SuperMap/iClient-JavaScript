@@ -1,8 +1,8 @@
 import L from "leaflet";
+import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import GetFieldsService from '../../common/iServer/GetFieldsService';
-import FieldStatisticService from '../../common/iServer/FieldStatisticService';
-import FieldStatisticsParameters from '../../common/iServer/FieldStatisticsParameters';
+import {GetFieldsService, FieldStatisticService, FieldStatisticsParameters} from '@supermap/iclient-common';
+
 /**
  * @class  L.supermap.fieldService
  * @classdesc 字段服务类
@@ -108,4 +108,5 @@ export var FieldService = ServiceBase.extend({
 export var fieldService = function (url, options) {
     return new FieldService(url, options);
 };
+
 L.supermap.fieldService = fieldService;

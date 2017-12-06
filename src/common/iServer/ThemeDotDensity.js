@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import Theme from './Theme';
-import ServerStyle from './ServerStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Theme} from './Theme';
+import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeDotDensity
@@ -19,7 +20,7 @@ import ServerStyle from './ServerStyle';
  *        value - {string} 专题图中每一个点所代表的数值。<br>
  *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
-export default  class ThemeDotDensity extends Theme {
+export class ThemeDotDensity extends Theme {
 
     /**
      * @member SuperMap.ThemeDotDensity.prototype.dotExpression -{string}
@@ -47,7 +48,7 @@ export default  class ThemeDotDensity extends Theme {
         var me = this;
         me.style = new ServerStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -74,7 +75,7 @@ export default  class ThemeDotDensity extends Theme {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = SuperMap.Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.style) {
             if (obj.style.toServerJSONObject) {
                 obj.style = obj.style.toServerJSONObject();
@@ -90,9 +91,11 @@ export default  class ThemeDotDensity extends Theme {
      * @return {SuperMap.ThemeDotDensity} ThemeDotDensity对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeDotDensity();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.style = ServerStyle.fromJson(obj.style);
         return res;
     }

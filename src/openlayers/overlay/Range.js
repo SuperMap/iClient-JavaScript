@@ -1,7 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
-import GeoFeature from './theme/GeoFeature';
-import Vector from '../../common/overlay/ThemeVector';
+import {ShapeFactory, CommonUtil, ThemeVector} from '@supermap/iclient-common';
+import {GeoFeature} from './theme/GeoFeature';
 
 /**
  * @class ol.source.Range
@@ -10,7 +9,7 @@ import Vector from '../../common/overlay/ThemeVector';
  * @param opt_options -{Object} 参数。
  * @extends ol.source.GeoFeature
  */
-export default class Range extends GeoFeature {
+export class Range extends GeoFeature {
 
     constructor(name, opt_options) {
         super(name, opt_options);
@@ -47,10 +46,10 @@ export default class Range extends GeoFeature {
         options.isHoverAble = this.isHoverAble;
         options.isMultiHover = this.isMultiHover;
         options.isClickAble = this.isClickAble;
-        options.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(this.highlightStyle);
+        options.highlightStyle = ShapeFactory.transformStyle(this.highlightStyle);
 
-        //将数据转为专题要素（Vector）
-        var thematicFeature = new Vector(feature, this, SuperMap.Feature.ShapeFactory.transformStyle(style), options);
+        //将数据转为专题要素（ThemeVector）
+        var thematicFeature = new ThemeVector(feature, this, ShapeFactory.transformStyle(style), options);
 
         //直接添加图形到渲染器
         for (var m = 0; m < thematicFeature.shapes.length; m++) {
@@ -69,7 +68,7 @@ export default class Range extends GeoFeature {
     getStyleByData(fea) {
         var style = {};
         var feature = fea;
-        style = SuperMap.Util.copyAttributesWithClip(style, this.style);
+        style = CommonUtil.copyAttributesWithClip(style, this.style);
         if (this.themeField && this.styleGroups && this.styleGroups.length > 0 && feature.attributes) {
             var Sf = this.themeField;
             var Attrs = feature.attributes;
@@ -90,13 +89,13 @@ export default class Range extends GeoFeature {
                     if ((attr >= Gro[i].start) && (attr < Gro[i].end)) {
                         //feature.style = SuperMap.Util.copyAttributes(feature.style, this.defaultStyle);
                         var sty1 = Gro[i].style;
-                        style = SuperMap.Util.copyAttributesWithClip(style, sty1);
+                        style = CommonUtil.copyAttributesWithClip(style, sty1);
                     }
                 }
             }
         }
         if (feature.style && this.isAllowFeatureStyle === true) {
-            style = SuperMap.Util.copyAttributesWithClip(feature.style);
+            style = CommonUtil.copyAttributesWithClip(feature.style);
         }
         return style;
     }

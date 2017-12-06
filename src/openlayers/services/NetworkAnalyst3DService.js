@@ -1,10 +1,12 @@
 ﻿import ol from 'openlayers/dist/ol-debug';
-import ServiceBase from './ServiceBase';
-import FacilityAnalystSinks3DService from '../../common/iServer/FacilityAnalystSinks3DService';
-import FacilityAnalystSources3DService from '../../common/iServer/FacilityAnalystSources3DService';
-import FacilityAnalystTraceup3DService from '../../common/iServer/FacilityAnalystTraceup3DService';
-import FacilityAnalystTracedown3DService from '../../common/iServer/FacilityAnalystTracedown3DService';
-import FacilityAnalystUpstream3DService from '../../common/iServer/FacilityAnalystUpstream3DService';
+import {ServiceBase} from './ServiceBase';
+import {
+    FacilityAnalystSinks3DService,
+    FacilityAnalystSources3DService,
+    FacilityAnalystTraceup3DService,
+    FacilityAnalystTracedown3DService,
+    FacilityAnalystUpstream3DService
+} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.NetworkAnalyst3DService
@@ -21,7 +23,7 @@ import FacilityAnalystUpstream3DService from '../../common/iServer/FacilityAnaly
  * @param options - {Object} 服务所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象
  */
-export default class NetworkAnalyst3DService extends ServiceBase {
+export class NetworkAnalyst3DService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -128,4 +130,5 @@ export default class NetworkAnalyst3DService extends ServiceBase {
         facilityAnalystUpstream3DService.processAsync(params);
     }
 }
+
 ol.supermap.NetworkAnalyst3DService = NetworkAnalyst3DService;

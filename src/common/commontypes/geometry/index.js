@@ -1,0 +1,11 @@
+export {Collection} from './Collection';
+export {Curve} from './Curve';
+export {GeoText} from './GeoText';
+export {LinearRing} from './LinearRing';
+export {LineString} from './LineString';
+export {MultiLineString} from './MultiLineString';
+export {MultiPoint} from './MultiPoint';
+export {MultiPolygon} from './MultiPolygon';
+export {Point as GeometryPoint} from './Point';
+export {Polygon} from './Polygon';
+export {Rectangle} from './Rectangle';

@@ -1,17 +1,20 @@
 ﻿import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import BurstPipelineAnalystService from '../../common/iServer/BurstPipelineAnalystService';
-import ComputeWeightMatrixService from '../../common/iServer/ComputeWeightMatrixService';
-import FacilityAnalystStreamService from '../../common/iServer/FacilityAnalystStreamService';
-import FindClosestFacilitiesService from '../../common/iServer/FindClosestFacilitiesService';
-import FindLocationService from '../../common/iServer/FindLocationService';
-import FindMTSPPathsService from '../../common/iServer/FindMTSPPathsService';
-import FindPathService from '../../common/iServer/FindPathService';
-import FindServiceAreasService from '../../common/iServer/FindServiceAreasService';
-import FindTSPPathsService from '../../common/iServer/FindTSPPathsService';
-import UpdateEdgeWeightService from '../../common/iServer/UpdateEdgeWeightService';
-import UpdateTurnNodeWeightService from '../../common/iServer/UpdateTurnNodeWeightService';
+import {
+    DataFormat,
+    BurstPipelineAnalystService,
+    ComputeWeightMatrixService,
+    FacilityAnalystStreamService,
+    FindClosestFacilitiesService,
+    FindLocationService,
+    FindMTSPPathsService,
+    FindPathService,
+    FindServiceAreasService,
+    FindTSPPathsService,
+    UpdateEdgeWeightService,
+    UpdateTurnNodeWeightService
+} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.networkAnalystService
@@ -291,18 +294,24 @@ export var NetworkAnalystService = ServiceBase.extend({
             var barrierPoints = params.parameter.barrierPoints;
             if (L.Util.isArray(barrierPoints)) {
                 barrierPoints.map(function (point, key) {
-                    params.parameter.barrierPoints[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;
+                    params.parameter.barrierPoints[key] = (point instanceof L.LatLng) ? {
+                        x: point.lng,
+                        y: point.lat
+                    } : point;
                     return params.parameter.barrierPoints[key];
                 });
             } else {
-                params.parameter.barrierPoints = [(barrierPoints instanceof L.LatLng) ? {x: barrierPoints.lng, y: barrierPoints.lat} : barrierPoints];
+                params.parameter.barrierPoints = [(barrierPoints instanceof L.LatLng) ? {
+                    x: barrierPoints.lng,
+                    y: barrierPoints.lat
+                } : barrierPoints];
             }
         }
         return params;
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
 });

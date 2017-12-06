@@ -1,7 +1,7 @@
-﻿import L from "leaflet";
+﻿import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
-import GetGridCellInfosService from '../../common/iServer/GetGridCellInfosService';
-import GetGridCellInfosParameters from '../../common/iServer/GetGridCellInfosParameters'
+import '../core/Base';
+import {GetGridCellInfosService, GetGridCellInfosParameters} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.gridCellInfosService

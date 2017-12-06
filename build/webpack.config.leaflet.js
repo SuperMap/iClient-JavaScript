@@ -27,8 +27,9 @@ module.exports = {
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
         'mapv': "function(){try{return mapv}catch(e){return {}}}()",
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
-        '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
+        '@turf/turf': "function(){try{return turf}catch(e){return {}}}()"
     },
+
     module: {
         rules: [{
             //图片小于80k采用base64编码
@@ -65,16 +66,14 @@ module.exports = {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({
                 use: {
-                    loader: 'css-loader',
+                    loader: 'css-loader'
                 }
-            }),
-        }],
-
+            })
+        }]
     },
     plugins: [
         new webpack.BannerPlugin(banner),
         new ExtractTextPlugin('/../dist/' + packageName + ".css"),
         new webpack.NoEmitOnErrorsPlugin()
     ]
-
 };

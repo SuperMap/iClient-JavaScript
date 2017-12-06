@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import './JoinItem';
 import './ThemeDotDensity';
 import './ThemeGraduatedSymbol';
@@ -25,7 +26,7 @@ import './LabelThemeCell';
  *        displayOrderBys -{Array<string>} 专题图对象生成符号叠加次序排序字段。<br>
  *        fieldValuesDisplayFilter -{Object} 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
  */
-export default  class ThemeParameters {
+export class ThemeParameters {
 
     /**
      * @member SuperMap.ThemeParameters.prototype.datasetNames -{Array<string>}
@@ -76,7 +77,7 @@ export default  class ThemeParameters {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

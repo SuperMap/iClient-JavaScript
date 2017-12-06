@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.LayerStatus
@@ -9,7 +10,7 @@ import SuperMap from '../SuperMap';
  *        isVisible - {boolean} 获取或设置图层是否可见，true 表示可见。<br>
  *        displayFilter - {string} 图层显示 SQL 过滤条件。
  */
-export default class LayerStatus {
+export class LayerStatus {
 
     /**
      * @member SuperMap.LayerStatus.prototype.layerName -{string}
@@ -40,7 +41,7 @@ export default class LayerStatus {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -83,7 +84,7 @@ export default class LayerStatus {
         }
 
         if (this.fieldValuesDisplayFilter) {
-            v.push('"fieldValuesDisplayFilter":' + SuperMap.Util.toJSON(this.fieldValuesDisplayFilter));
+            v.push('"fieldValuesDisplayFilter":' + Util.toJSON(this.fieldValuesDisplayFilter));
         }
 
         json += v;

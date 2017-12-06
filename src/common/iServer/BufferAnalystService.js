@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import DatasetBufferAnalystParameters from './DatasetBufferAnalystParameters';
-import GeometryBufferAnalystParameters from './GeometryBufferAnalystParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {DatasetBufferAnalystParameters} from './DatasetBufferAnalystParameters';
+import {GeometryBufferAnalystParameters} from './GeometryBufferAnalystParameters';
 
 /**
  * @class SuperMap.BufferAnalystService
@@ -24,7 +25,7 @@ import GeometryBufferAnalystParameters from './GeometryBufferAnalystParameters';
  *
  *
  */
-export default class BufferAnalystService extends SpatialAnalystBase {
+export class BufferAnalystService extends SpatialAnalystBase {
     /**
      * @member SuperMap.BufferAnalystService.prototype.mode -{string}
      * @description 缓冲区分析类型
@@ -34,7 +35,7 @@ export default class BufferAnalystService extends SpatialAnalystBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -73,7 +74,7 @@ export default class BufferAnalystService extends SpatialAnalystBase {
             GeometryBufferAnalystParameters.toObject(parameter, parameterObject);
         }
 
-        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",
@@ -90,19 +91,20 @@ export default class BufferAnalystService extends SpatialAnalystBase {
      * @description 将含有geometry的数据转换为geojson格式。
      * @param result - {Object} 服务器返回的结果对象。
      */
-    // toGeoJSONResult(result) {
-    //     if (!result) {
-    //         return result;
-    //     }
-    //
-    //     var analystResult = super.toGeoJSONResult(result);
-    //     if (analystResult.resultGeometry) {
-    //         var geoJSONFormat = new GeoJSON();
-    //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
-    //     }
-    //     return result;
-    // }
+        // toGeoJSONResult(result) {
+        //     if (!result) {
+        //         return result;
+        //     }
+        //
+        //     var analystResult = super.toGeoJSONResult(result);
+        //     if (analystResult.resultGeometry) {
+        //         var geoJSONFormat = new GeoJSON();
+        //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
+        //     }
+        //     return result;
+        // }
 
     CLASS_NAME = "SuperMap.BufferAnalystService"
 }
+
 SuperMap.BufferAnalystService = BufferAnalystService;

@@ -1,6 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
-import Graph from './Graph';
+import {FeatureTheme} from '@supermap/iclient-common';
+import {Graph} from './Graph';
 
 /**
  * @class ol.source.RankSymbol
@@ -10,7 +10,7 @@ import Graph from './Graph';
  * @param opt_options -{Object} 参数
  * @extends ol.source.Graph
  */
-export default class RankSymbol extends Graph {
+export class RankSymbol extends Graph {
 
     constructor(name, symbolType, opt_options) {
         super(name, symbolType, opt_options);
@@ -27,7 +27,7 @@ export default class RankSymbol extends Graph {
         this.symbolType = null;
         this.symbolSetting = null;
         this.themeField = null;
-        SuperMap.Layer.Graph.prototype.destroy.apply(this, arguments);
+        Graph.prototype.destroy.apply(this, arguments);
     }
 
     /**
@@ -49,11 +49,13 @@ export default class RankSymbol extends Graph {
     createThematicFeature(feature) {
         var thematicFeature;
         // 检查图形创建条件并创建图形
-        if (SuperMap.Feature.Theme[this.symbolType] && this.themeField && this.symbolSetting) {
-            thematicFeature = new SuperMap.Feature.Theme[this.symbolType](feature, this, [this.themeField], this.symbolSetting);
+        if (FeatureTheme[this.symbolType] && this.themeField && this.symbolSetting) {
+            thematicFeature = new FeatureTheme[this.symbolType](feature, this, [this.themeField], this.symbolSetting);
         }
         // thematicFeature 是否创建成功
-        if (!thematicFeature) {return false;}
+        if (!thematicFeature) {
+            return false;
+        }
         // 对专题要素执行图形装载
         thematicFeature.assembleShapes();
         return thematicFeature;

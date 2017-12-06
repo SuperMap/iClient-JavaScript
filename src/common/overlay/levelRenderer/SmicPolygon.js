@@ -1,5 +1,6 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
+import {Shape} from './Shape';
+import {Util as CommonUtil} from '../../commontypes/Util';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -20,7 +21,7 @@ import Shape from './Shape';
  *   levelRenderer.addShape(shape);
  * (end)
  */
-export default class SmicPolygon extends Shape {
+export class SmicPolygon extends Shape {
 
     /**
      * Property: style
@@ -140,10 +141,10 @@ export default class SmicPolygon extends Shape {
             ) {
                 // 特殊处理，虚线围不成path，实线再build一次
                 this.buildPath(ctx, {
-                    lineType: 'solid',
-                    lineWidth: style.lineWidth,
-                    pointList: style.pointList
-                }
+                        lineType: 'solid',
+                        lineWidth: style.lineWidth,
+                        pointList: style.pointList
+                    }
                 );
                 hasPath = false; // 这个path不能用
             } else {
@@ -169,7 +170,7 @@ export default class SmicPolygon extends Shape {
         this.drawText(ctx, style, this.style);
 
         //岛洞
-        var hpStyle = SuperMap.Util.cloneObject(style);
+        var hpStyle = CommonUtil.cloneObject(style);
 
         if (hpStyle.pointList) {
             if (this.holePolygonPointLists && this.holePolygonPointLists.length > 0) {
@@ -195,10 +196,10 @@ export default class SmicPolygon extends Shape {
                         ) {
                             // 特殊处理，虚线围不成path，实线再build一次
                             this.buildPath(ctx, {
-                                lineType: 'solid',
-                                lineWidth: hpStyle.lineWidth,
-                                pointList: hpStyle.pointList
-                            }
+                                    lineType: 'solid',
+                                    lineWidth: hpStyle.lineWidth,
+                                    pointList: hpStyle.pointList
+                                }
                             );
                             hasPath = false; // 这个path不能用
                         } else {
@@ -263,7 +264,7 @@ export default class SmicPolygon extends Shape {
         }
 
         if (style.smooth && style.smooth !== 'spline') {
-            var controlPoints = SuperMap.LevelRenderer.SUtil_smoothBezier(pointList, style.smooth, true, style.smoothConstraint, __OP);
+            var controlPoints = SUtil.SUtil_smoothBezier(pointList, style.smooth, true, style.smoothConstraint, __OP);
 
             ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
             var cp1;
@@ -280,7 +281,7 @@ export default class SmicPolygon extends Shape {
             }
         } else {
             if (style.smooth === 'spline') {
-                pointList = SuperMap.LevelRenderer.SUtil_smoothSpline(pointList, true, null, __OP);
+                pointList = SUtil.SUtil_smoothSpline(pointList, true, null, __OP);
             }
 
             if (!style.lineType || style.lineType == 'solid') {
@@ -354,7 +355,7 @@ export default class SmicPolygon extends Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < pointList.length; i++) {
-                    SuperMap.LevelRenderer.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
                         pointList[i - 1][1] + __OP[1],
@@ -364,7 +365,7 @@ export default class SmicPolygon extends Shape {
                         [pattern1, pattern2]
                     );
                 }
-                SuperMap.LevelRenderer.SUtil_dashedLineTo(
+                SUtil.SUtil_dashedLineTo(
                     ctx,
                     pointList[pointList.length - 1][0] + __OP[0],
                     pointList[pointList.length - 1][1] + __OP[1],
@@ -414,7 +415,7 @@ export default class SmicPolygon extends Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < pointList.length; i++) {
-                    SuperMap.LevelRenderer.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0],
                         pointList[i - 1][1] + __OP[1],
@@ -424,7 +425,7 @@ export default class SmicPolygon extends Shape {
                         [pattern1, pattern2, pattern3, pattern4]
                     );
                 }
-                SuperMap.LevelRenderer.SUtil_dashedLineTo(
+                SUtil.SUtil_dashedLineTo(
                     ctx,
                     pointList[pointList.length - 1][0] + __OP[0],
                     pointList[pointList.length - 1][1] + __OP[1],
@@ -506,4 +507,3 @@ export default class SmicPolygon extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicPolygon"
 }
-SuperMap.LevelRenderer.Shape.SmicPolygon = SmicPolygon;

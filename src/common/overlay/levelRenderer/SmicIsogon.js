@@ -1,5 +1,5 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
+import {Shape} from './Shape';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -10,7 +10,7 @@ import Shape from './Shape';
  *  - <SuperMap.LevelRenderer.Shape>
  *
  */
-export default class SmicIsogon extends Shape {
+export class SmicIsogon extends Shape {
 
     /**
      * Property: style
@@ -56,7 +56,9 @@ export default class SmicIsogon extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
 
@@ -80,11 +82,13 @@ export default class SmicIsogon extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
-        var sin = SuperMap.LevelRenderer.Util_math.sin;
-        var cos = SuperMap.LevelRenderer.Util_math.cos;
+        var sin = SUtil.Util_math.sin;
+        var cos = SUtil.Util_math.cos;
         var PI = Math.PI;
 
         var n = style.n;
@@ -137,7 +141,9 @@ export default class SmicIsogon extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var lineWidth;
@@ -159,4 +165,3 @@ export default class SmicIsogon extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicIsogon"
 }
-SuperMap.LevelRenderer.Shape.SmicIsogon = SmicIsogon;

@@ -1,7 +1,6 @@
-import '../../core/Base';
-import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
-import Vector from "../../../common/commontypes/Vector"
+import "../../core/Base";
+import {LineString, Polygon, GeoText, GeometryPoint, GeometryVector as Vector} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.themeFeature
@@ -28,12 +27,12 @@ export var ThemeFeature = L.Class.extend({
         var points = [];
         if (geometry instanceof L.Polyline) {
             points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new SuperMap.Geometry.LineString(points);
+            geometry = new LineString(points);
         } else if (geometry instanceof L.Polygon) {
             points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new SuperMap.Geometry.Polygon(points);
+            geometry = new Polygon(points);
         } else if (geometry.length === 3) {
-            geometry = new SuperMap.Geometry.GeoText(geometry[1], geometry[0], geometry[2]);
+            geometry = new GeoText(geometry[1], geometry[0], geometry[2]);
         } else {
             if (geometry instanceof L.LatLng) {
                 points = [geometry.lng, geometry.lat];
@@ -43,7 +42,7 @@ export var ThemeFeature = L.Class.extend({
                 points = geometry;
             }
             if (points.length === 2) {
-                geometry = new SuperMap.Geometry.Point(points[0], points[1]);
+                geometry = new GeometryPoint(points[0], points[1]);
             }
 
         }
@@ -68,4 +67,5 @@ export var ThemeFeature = L.Class.extend({
 export var themeFeature = function (geometry, attributes) {
     return new ThemeFeature(geometry, attributes);
 };
+
 L.supermap.themeFeature = themeFeature;

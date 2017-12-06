@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import CommonServiceBase from '../../common/iServer/CommonServiceBase';
-import CommonAddressMatchService from '../../common/iServer/AddressMatchService';
+import {SuperMap} from '../SuperMap';
+import {CommonServiceBase} from '@supermap/iclient-common/iServer/CommonServiceBase';
+import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common/iServer/AddressMatchService';
 
 /**
  * @class SuperMap.REST.AddressMatchService

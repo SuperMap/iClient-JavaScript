@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import Theme from './Theme';
-import ThemeGridRangeItem from './ThemeGridRangeItem';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Theme} from './Theme';
+import {ThemeGridRangeItem} from './ThemeGridRangeItem';
 import {RangeMode, ColorGradientType} from '../REST';
 
 /**
@@ -17,7 +18,7 @@ import {RangeMode, ColorGradientType} from '../REST';
  *        rangeParameter - {number}分段参数。<br>
  *        colorGradientType - {{@link SuperMap.ColorGradientType}} 渐变颜色枚举类。
  */
-export default class ThemeGridRange extends Theme {
+export class ThemeGridRange extends Theme {
 
     /**
      * @member SuperMap.ThemeGridRange.prototype.items -{Array<SuperMap.ThemeGridRangeItem>}
@@ -61,7 +62,7 @@ export default class ThemeGridRange extends Theme {
     constructor(options) {
         super("GRIDRANGE", options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -94,9 +95,11 @@ export default class ThemeGridRange extends Theme {
      * @return {SuperMap.ThemeGridRange} ThemeGridRange对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeGridRange();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         var itemsR = obj.items;
         var len = itemsR ? itemsR.length : 0;
         res.items = [];

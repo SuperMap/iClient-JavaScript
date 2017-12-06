@@ -1,7 +1,9 @@
-﻿import SuperMap from '../SuperMap';
-import GetFeaturesParametersBase from './GetFeaturesParametersBase';
-import FilterParameter from './FilterParameter';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
+import {FilterParameter} from './FilterParameter';
+import {ServerGeometry} from './ServerGeometry';
+
 /**
  * @class SuperMap.GetFeaturesByBufferParameters
  * @classdesc 数据服务中数据集缓冲区查询参数类。
@@ -19,7 +21,7 @@ import ServerGeometry from './ServerGeometry';
  *        toIndex - {integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
-export default class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
+export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
 
 
     /**
@@ -54,7 +56,7 @@ export default class GetFeaturesByBufferParameters extends GetFeaturesParameters
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 
@@ -109,7 +111,7 @@ export default class GetFeaturesByBufferParameters extends GetFeaturesParameters
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             paramsBySql.maxFeatures = params.maxFeatures;
         }
-        return SuperMap.Util.toJSON(paramsBySql);
+        return Util.toJSON(paramsBySql);
     }
 
     CLASS_NAME = "SuperMap.GetFeaturesByBufferParameters"

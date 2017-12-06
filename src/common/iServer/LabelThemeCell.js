@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import ThemeLabel from './ThemeLabel';
-import LabelMatrixCell from './LabelMatrixCell';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ThemeLabel} from './ThemeLabel';
+import {LabelMatrixCell} from './LabelMatrixCell';
 
 /**
  * @class SuperMap.LabelThemeCell
@@ -15,7 +16,7 @@ import LabelMatrixCell from './LabelMatrixCell';
  * @param options - {Object} 可选参数。如：<br>
  *        themeLabel - {{@link SuperMap.ThemeLabel}} 使用专题图对象作为矩阵标签的一个元素。
  */
-export default  class LabelThemeCell extends LabelMatrixCell {
+export class LabelThemeCell extends LabelMatrixCell {
 
     /**
      * @member SuperMap.LabelThemeCell.prototype.themeLabel -{SuperMap.ThemeLabel}
@@ -34,7 +35,7 @@ export default  class LabelThemeCell extends LabelMatrixCell {
         var me = this;
         me.themeLabel = new ThemeLabel();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

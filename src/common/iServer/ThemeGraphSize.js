@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.ThemeGraphSize
@@ -7,7 +8,7 @@
  *         maxGraphSize - {number}统计图中显示的最大图表尺寸基准值。<br>
  *         minGraphSize - {number}统计图中显示的最小图表尺寸基准值。
  */
-export default  class ThemeGraphSize {
+export class ThemeGraphSize {
 
     /**
      * @member SuperMap.ThemeGraphSize.prototype.maxGraphSize -{number}
@@ -23,7 +24,7 @@ export default  class ThemeGraphSize {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -45,7 +46,7 @@ export default  class ThemeGraphSize {
      */
     static fromObj(obj) {
         var res = new ThemeGraphSize();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         return res;
     }
 

@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import InterpolationAnalystParameters from './InterpolationAnalystParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
 
 /**
  * @class SuperMap.InterpolationDensityAnalystParameters
@@ -31,13 +32,13 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  *      outputDatasetName: "myDensity"
  * });
  */
-export default  class InterpolationDensityAnalystParameters extends InterpolationAnalystParameters {
+export class InterpolationDensityAnalystParameters extends InterpolationAnalystParameters {
 
 
     constructor(options) {
         super(options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

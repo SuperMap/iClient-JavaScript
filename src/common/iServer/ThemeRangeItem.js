@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerStyle from './ServerStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeRangeItem
@@ -13,7 +14,7 @@ import ServerStyle from './ServerStyle';
  *        style - {{@link SuperMap.ServerStyle}} 分段专题图子项的风格。<br>
  *        visible - {boolean} 分段专题图子项是否可见。
  */
-export default  class ThemeRangeItem {
+export class ThemeRangeItem {
 
     /**
      * @member SuperMap.ThemeRangeItem.prototype.caption -{string}
@@ -55,7 +56,7 @@ export default  class ThemeRangeItem {
         var me = this;
         me.style = new ServerStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -83,7 +84,7 @@ export default  class ThemeRangeItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = SuperMap.Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.style) {
             if (obj.style.toServerJSONObject) {
                 obj.style = obj.style.toServerJSONObject();
@@ -99,9 +100,11 @@ export default  class ThemeRangeItem {
      * @return {SuperMap.ThemeRangeItem} ThemeRangeItem对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeRangeItem();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.style = ServerStyle.fromJson(obj.style);
         return res;
     }

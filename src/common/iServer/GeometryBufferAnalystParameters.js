@@ -1,6 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import BufferAnalystParameters from './BufferAnalystParameters';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {BufferAnalystParameters} from './BufferAnalystParameters';
+import {ServerGeometry} from './ServerGeometry';
+
 /**
  * @class SuperMap.GeometryBufferAnalystParameters
  * @classdesc 几何对象缓冲区分析参数类
@@ -13,7 +15,7 @@ import ServerGeometry from './ServerGeometry';
  *        bufferSetting - {{@link SuperMap.BufferSetting}} 设置缓冲区通用参数。
  * @extends SuperMap.BufferAnalystParameters
  */
-export default class GeometryBufferAnalystParameters extends BufferAnalystParameters {
+export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 
     /**
      * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
@@ -33,7 +35,7 @@ export default class GeometryBufferAnalystParameters extends BufferAnalystParame
     constructor(options) {
         super(options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

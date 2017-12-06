@@ -1,5 +1,5 @@
 import ol from 'openlayers/dist/ol-debug';
-import logoSrc from '../../common/control/img/iClient.png'
+import logoSrc from '@supermap/iclient-common/control/img/iClient.png';
 
 ol.supermap = ol.supermap || {};
 ol.supermap.control = ol.supermap.control || {};
@@ -18,7 +18,7 @@ ol.supermap.control = ol.supermap.control || {};
  *        link - {string} 跳转链接。</br>
  *        alt - {string} logo图片失效时显示文本。
  */
-export default class Logo extends ol.control.Control {
+export class Logo extends ol.control.Control {
 
     constructor(options) {
         options = options || {};
@@ -30,6 +30,7 @@ export default class Logo extends ol.control.Control {
         super(options);
         this.options = options;
         this.element = options.element = initLayerout.call(this);
+
         /*
          * @function ol.supermap.control.Logo.prototype.initLayerout
          * @description 初始化图层信息
@@ -65,6 +66,7 @@ export default class Logo extends ol.control.Control {
                 "<img src=" + imgSrc + " alt='" + alt + "'  style='border: none;" + styleSize + "white-space: nowrap;margin-bottom: 2px'></a>";
             return div;
         }
+
         /*
          * @function ol.supermap.control.Logo.prototype.setDivStyle
          * @div 获取div对象

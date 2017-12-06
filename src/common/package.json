@@ -1,0 +1,21 @@
+{
+  "name": "@supermap/iclient-common",
+  "description": "",
+  "version": "9.0.0",
+  "keywords": [
+    "SuperMap"
+  ],
+  "homepage": "http://iclient.supermap.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SuperMap/iClient-JavaScript.git"
+  },
+  "author": "SuperMap",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "elasticsearch": "13.0.1",
+    "fetch-jsonp": "1.0.6",
+    "promise-polyfill": "^6.0.2",
+    "whatwg-fetch-importable": "^1.0.3"
+  }
+}

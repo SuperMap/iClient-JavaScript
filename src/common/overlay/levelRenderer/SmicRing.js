@@ -1,5 +1,4 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
+import {Shape} from './Shape';
 
 /**
  * @private
@@ -21,7 +20,7 @@ import Shape from './Shape';
  *   levelRenderer.addShape(shape);
  * (end)
  */
-export default class SmicRing extends Shape {
+export class SmicRing extends Shape {
 
     /**
      * Property: style
@@ -67,7 +66,9 @@ export default class SmicRing extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
 
@@ -91,7 +92,9 @@ export default class SmicRing extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         // 非零环绕填充优化
@@ -117,7 +120,9 @@ export default class SmicRing extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var lineWidth;
@@ -139,4 +144,3 @@ export default class SmicRing extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicRing"
 }
-SuperMap.LevelRenderer.Shape.SmicRing = SmicRing;

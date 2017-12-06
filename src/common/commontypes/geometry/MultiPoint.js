@@ -1,5 +1,5 @@
-﻿import SuperMap from '../../SuperMap';
-import Collection from './Collection';
+﻿import {SuperMap} from '../../SuperMap';
+import {Collection} from './Collection';
 
 /**
  * @class SuperMap.Geometry.MultiPoint
@@ -11,7 +11,7 @@ import Collection from './Collection';
  * var poine2 = new SuperMap.Geometry.Point(7,8);
  * var multiPoint = new SuperMap.Geometry.MultiPoint([point1,point2]);
  */
-export default class MultiPoint extends Collection {
+export class MultiPoint extends Collection {
 
     /**
      * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
@@ -49,4 +49,5 @@ export default class MultiPoint extends Collection {
 
     CLASS_NAME = "SuperMap.Geometry.MultiPoint"
 }
+
 SuperMap.Geometry.MultiPoint = MultiPoint;

@@ -1,6 +1,5 @@
 import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
-import GeoJSONFormat from '../../common/format/GeoJSON';
+import {Unit, Bounds, GeoJSON as GeoJSONFormat} from '@supermap/iclient-common';
 
 ol.supermap = ol.supermap || {};
 
@@ -8,7 +7,7 @@ ol.supermap = ol.supermap || {};
  * @class ol.supermap.Util
  * @classdesc 工具类
  */
-export default class Util {
+export class Util {
 
     constructor() {
 
@@ -63,7 +62,7 @@ export default class Util {
      * @return {SuperMap.Bounds} 返回SuperMap的Bounds对象
      */
     static toSuperMapBounds(bounds) {
-        return new SuperMap.Bounds(
+        return new Bounds(
             bounds[0],
             bounds[1],
             bounds[2],
@@ -77,13 +76,13 @@ export default class Util {
      * @param points - Region各个节点数组
      * @return processing服务裁剪、查询分析的分析参数
      */
-    static toProcessingParam(points){
+    static toProcessingParam(points) {
         var geometryParam = {};
-        if (points.length < 1){
+        if (points.length < 1) {
             geometryParam = "";
         } else {
             var results = [];
-            for (var i = 0;i < points.length;i++) {
+            for (var i = 0; i < points.length; i++) {
                 var point = {};
                 point.x = points[i][0];
                 point.y = points[i][1];
@@ -122,16 +121,16 @@ export default class Util {
     static getMeterPerMapUnit(mapUnit) {
         var earchRadiusInMeters = 6378137;
         var meterPerMapUnit;
-        if (mapUnit === SuperMap.Unit.METER) {
+        if (mapUnit === Unit.METER) {
             meterPerMapUnit = 1;
-        } else if (mapUnit === SuperMap.Unit.DEGREE) {
+        } else if (mapUnit === Unit.DEGREE) {
             // 每度表示多少米。
             meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-        } else if (mapUnit === SuperMap.Unit.KILOMETER) {
+        } else if (mapUnit === Unit.KILOMETER) {
             meterPerMapUnit = 1.0E-3;
-        } else if (mapUnit === SuperMap.Unit.INCH) {
+        } else if (mapUnit === Unit.INCH) {
             meterPerMapUnit = 1 / 2.5399999918E-2;
-        } else if (mapUnit === SuperMap.Unit.FOOT) {
+        } else if (mapUnit === Unit.FOOT) {
             meterPerMapUnit = 0.3048;
         } else {
             return meterPerMapUnit;

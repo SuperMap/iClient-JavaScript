@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {EditType} from '../REST';
-import ServerGeometry from './ServerGeometry';
+import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.EditFeaturesParameters
@@ -11,7 +12,7 @@ import ServerGeometry from './ServerGeometry';
  *        editType - {SuperMap.EditType} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。</br>
  *        IDs - {Array<string|integer>} 删除要素时的要素的ID数组。</br>
  */
-export default class EditFeaturesParameters {
+export class EditFeaturesParameters {
 
     /**
      * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
@@ -61,7 +62,7 @@ export default class EditFeaturesParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 
@@ -91,13 +92,15 @@ export default class EditFeaturesParameters {
             features,
             editType = params.editType;
 
-        if (editType === SuperMap.EditType.DELETE) {
-            if (params.IDs === null) {return;}
+        if (editType === EditType.DELETE) {
+            if (params.IDs === null) {
+                return;
+            }
 
             features = {ids: params.IDs};
         } else {
             features = [];
-            if (params.features){
+            if (params.features) {
                 len = params.features.length;
                 for (var i = 0; i < len; i++) {
                     feature = params.features[i];
@@ -107,7 +110,7 @@ export default class EditFeaturesParameters {
             }
         }
 
-        return SuperMap.Util.toJSON(features);
+        return Util.toJSON(features);
     }
 
     CLASS_NAME = "SuperMap.EditFeaturesParameters"

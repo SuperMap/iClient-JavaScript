@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import ProcessingServiceBase from './ProcessingServiceBase';
-import SummaryMeshJobParameter from './SummaryMeshJobParameter';
+import {SuperMap} from '../SuperMap';
+import {ProcessingServiceBase} from './ProcessingServiceBase';
+import {SummaryMeshJobParameter} from './SummaryMeshJobParameter';
 
 /**
  * @class SuperMap.SummaryMeshJobsService
@@ -13,7 +13,7 @@ import SummaryMeshJobParameter from './SummaryMeshJobParameter';
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
-export default class SummaryMeshJobsService extends ProcessingServiceBase {
+export class SummaryMeshJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);

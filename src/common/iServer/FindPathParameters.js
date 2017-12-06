@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import TransportationAnalystParameter from './TransportationAnalystParameter';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindPathParameters
@@ -18,7 +19,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *                        点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。<br>
  *        parameter - {@link SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
-export default class FindPathParameters {
+export class FindPathParameters {
 
     /**
      * @member SuperMap.FindPathParameters.prototype.isAnalyzeById - {boolean}
@@ -58,7 +59,7 @@ export default class FindPathParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 

@@ -1,5 +1,8 @@
-import SuperMap from '../SuperMap';
-import Graph from './Graph';
+import {SuperMap} from '../SuperMap';
+import {Util as CommonUtil} from '../commontypes/Util';
+import {ShapeFactory} from './feature/ShapeFactory';
+import {Polygon} from './feature/Polygon';
+import {Graph} from './Graph';
 
 /**
  * @class SuperMap.Feature.Theme.Bar3D
@@ -168,7 +171,7 @@ import Graph from './Graph';
  * ]
  */
 
-export default  class Bar3D extends Graph {
+export class Bar3D extends Graph {
 
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
@@ -204,7 +207,9 @@ export default  class Bar3D extends Graph {
         sets.axisXLabelsOffset = (typeof(sets.axisXLabelsOffset) !== "undefined") ? sets.axisXLabelsOffset : [-10, 10];
 
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) {return;}
+        if (!this.initBaseParameter()) {
+            return;
+        }
 
         // 值域
         var codomain = this.DVBCodomain;
@@ -214,16 +219,22 @@ export default  class Bar3D extends Graph {
         var dvb = this.dataViewBox;
         // 用户数据值
         var fv = this.dataValues;
-        if (fv.length < 1) {return;}       // 没有数据
+        if (fv.length < 1) {
+            return;
+        }       // 没有数据
 
         // 数据溢出值域范围处理
         for (let i = 0, fvLen = fv.length; i < fvLen; i++) {
-            if (fv[i] < codomain[0] || fv[i] > codomain[1]) {return;}
+            if (fv[i] < codomain[0] || fv[i] > codomain[1]) {
+                return;
+            }
         }
 
         // 获取 x 轴上的图形信息
         var xShapeInfo = this.calculateXShapeInfo();
-        if (!xShapeInfo) {return;}
+        if (!xShapeInfo) {
+            return;
+        }
         // 每个柱条 x 位置
         var xsLoc = xShapeInfo.xPositions;
         // 柱条宽度
@@ -231,7 +242,7 @@ export default  class Bar3D extends Graph {
 
         // 坐标轴, 默认启用
         if (typeof(sets.useBackground) === "undefined" || sets.useBackground) {
-            this.shapes.push(SuperMap.Feature.ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
+            this.shapes.push(ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
         }
 
         // 坐标轴
@@ -239,7 +250,7 @@ export default  class Bar3D extends Graph {
             sets.axis3DParameter = 20;
         }
         if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
-            this.shapes = this.shapes.concat(SuperMap.Feature.ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
+            this.shapes = this.shapes.concat(ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
         }
 
         // 3d 偏移量, 默认值 10;
@@ -285,9 +296,9 @@ export default  class Bar3D extends Graph {
             }
 
             // 新建 3d 柱面顶面、侧面、正面图形参数对象
-            var polyTopSP = new SuperMap.Feature.ShapeParameters.Polygon(bar3DTopPois);
-            var polySideSP = new SuperMap.Feature.ShapeParameters.Polygon(bar3DSidePois);
-            var polyFaceSP = new SuperMap.Feature.ShapeParameters.Polygon(bar3DFacePois);
+            var polyTopSP = new Polygon(bar3DTopPois);
+            var polySideSP = new Polygon(bar3DSidePois);
+            var polyFaceSP = new Polygon(bar3DFacePois);
 
 
             // 侧面、正面图形 style 默认值
@@ -298,26 +309,38 @@ export default  class Bar3D extends Graph {
             sets.barTopStyleByFields = sets.barTopStyleByFields ? sets.barTopStyleByFields : sets.barFaceStyleByFields;
             sets.barTopStyleByCodomain = sets.barTopStyleByCodomain ? sets.barTopStyleByCodomain : sets.barFaceStyleByCodomain;
             // 顶面、侧面、正面图形 style
-            polyFaceSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true, strokeColor: "#ffffff", fillColor: "#ee9900"},
+            polyFaceSP.style = ShapeFactory.ShapeStyleTool({
+                    stroke: true,
+                    strokeColor: "#ffffff",
+                    fillColor: "#ee9900"
+                },
                 sets.barFaceStyle, sets.barFaceStyleByFields, sets.barFaceStyleByCodomain, i, fv[i]);
-            polySideSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true, strokeColor: "#ffffff", fillColor: "#ee9900"},
+            polySideSP.style = ShapeFactory.ShapeStyleTool({
+                    stroke: true,
+                    strokeColor: "#ffffff",
+                    fillColor: "#ee9900"
+                },
                 sets.barSideStyle, sets.barSideStyleByFields, sets.barSideStyleByCodomain, i, fv[i]);
-            polyTopSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true, strokeColor: "#ffffff", fillColor: "#ee9900"},
+            polyTopSP.style = ShapeFactory.ShapeStyleTool({
+                    stroke: true,
+                    strokeColor: "#ffffff",
+                    fillColor: "#ee9900"
+                },
                 sets.barTopStyle, sets.barTopStyleByFields, sets.barTopStyleByCodomain, i, fv[i]);
 
             // 3d 柱条高亮样式
             sets.barSideHoverStyle = sets.barSideHoverStyle ? sets.barSideHoverStyle : sets.barFaceHoverStyle;
             sets.barTopHoverStyle = sets.barTopHoverStyle ? sets.barTopHoverStyle : sets.barFaceHoverStyle;
-            polyFaceSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true}, sets.barFaceHoverStyle);
-            polySideSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true}, sets.barSideHoverStyle);
-            polyTopSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true}, sets.barTopHoverStyle);
+            polyFaceSP.highlightStyle = ShapeFactory.ShapeStyleTool({stroke: true}, sets.barFaceHoverStyle);
+            polySideSP.highlightStyle = ShapeFactory.ShapeStyleTool({stroke: true}, sets.barSideHoverStyle);
+            polyTopSP.highlightStyle = ShapeFactory.ShapeStyleTool({stroke: true}, sets.barTopHoverStyle);
 
             // 图形携带的数据 id 信息 & 高亮模式
             polyTopSP.refDataID = polySideSP.refDataID = polyFaceSP.refDataID = this.data.id;
             // hover 模式（组合）
             polyTopSP.isHoverByRefDataID = polySideSP.isHoverByRefDataID = polyFaceSP.isHoverByRefDataID = true;
             // 高亮组(当鼠标 hover 到组内任何一个图形，整个组的图形都会高亮。refDataHoverGroup 在 isHoverByRefDataID 为 true 时有效)
-            polyTopSP.refDataHoverGroup = polySideSP.refDataHoverGroup = polyFaceSP.refDataHoverGroup = SuperMap.Util.createUniqueID("lr_shg");
+            polyTopSP.refDataHoverGroup = polySideSP.refDataHoverGroup = polyFaceSP.refDataHoverGroup = CommonUtil.createUniqueID("lr_shg");
             // 图形携带的数据信息
             polyTopSP.dataInfo = polySideSP.dataInfo = polyFaceSP.dataInfo = {
                 field: this.fields[i],
@@ -362,7 +385,9 @@ export default  class Bar3D extends Graph {
         var sets = this.setting;     // 图表配置对象
         var fvc = this.dataValues.length;      // 数组值个数
 
-        if (fvc < 1) {return null;}
+        if (fvc < 1) {
+            return null;
+        }
 
         var xBlank;        // x 轴空白间隔参数
         var xShapePositions = [];         // x 轴上图形的位置

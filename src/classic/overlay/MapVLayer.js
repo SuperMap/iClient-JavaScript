@@ -1,5 +1,7 @@
-import SuperMap from '../SuperMap';
-import MapVRenderer from './mapv/MapVRenderer';
+import {SuperMap} from '../SuperMap';
+import {MapVRenderer} from './mapv/MapVRenderer';
+import {Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
+import {LonLat} from '@supermap/iclient-common/commontypes/LonLat';
 
 /**
  * @class SuperMap.Layer.MapVLayer
@@ -57,7 +59,7 @@ export class MapVLayer extends SuperMap.Layer {
     constructor(name, options) {
         super(name, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            CommonUtil.extend(this, options);
         }
         //MapV图要求使用canvas绘制，判断是否支持
         this.canvas = document.createElement("canvas");
@@ -226,7 +228,7 @@ export class MapVLayer extends SuperMap.Layer {
         if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
             dest = "EPSG:3857";
         }
-        return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
+        return new LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
 
     CLASS_NAME = "SuperMap.Layer.MapVLayer"

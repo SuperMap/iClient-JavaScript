@@ -1,8 +1,9 @@
-﻿import SuperMap from '../SuperMap';
-import Theme from './Theme';
-import ThemeFlow from './ThemeFlow';
-import ThemeOffset from './ThemeOffset';
-import ThemeGraduatedSymbolStyle from './ThemeGraduatedSymbolStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Theme} from './Theme';
+import {ThemeFlow} from './ThemeFlow';
+import {ThemeOffset} from './ThemeOffset';
+import {ThemeGraduatedSymbolStyle} from './ThemeGraduatedSymbolStyle';
 import {GraduatedMode} from '../REST';
 
 /**
@@ -18,7 +19,7 @@ import {GraduatedMode} from '../REST';
  *        style - {{@link SuperMap.ThemeGraduatedSymbolStyle}} 用于设置等级符号图正负和零值显示风格。<br>
  *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
-export default  class ThemeGraduatedSymbol extends Theme {
+export class ThemeGraduatedSymbol extends Theme {
 
     /**
      * @member SuperMap.ThemeGraduatedSymbol.prototype.baseValue -{number}
@@ -73,7 +74,7 @@ export default  class ThemeGraduatedSymbol extends Theme {
         me.offset = new ThemeOffset();
         me.style = new ThemeGraduatedSymbolStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -107,7 +108,7 @@ export default  class ThemeGraduatedSymbol extends Theme {
      * @return {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return SuperMap.Util.toJSON(this.toServerJSONObject());
+        return Util.toJSON(this.toServerJSONObject());
     }
 
 
@@ -150,9 +151,11 @@ export default  class ThemeGraduatedSymbol extends Theme {
      * @return {SuperMap.ThemeGraduatedSymbol} 等级符号专题图对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new SuperMap.ThemeGraduatedSymbol();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.flow = ThemeFlow.fromObj(obj);
         res.offset = ThemeOffset.fromObj(obj);
         res.style = ThemeGraduatedSymbolStyle.fromObj(obj);

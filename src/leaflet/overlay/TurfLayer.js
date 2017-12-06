@@ -1,4 +1,5 @@
 import L from "leaflet";
+import '../core/Base';
 import turf from '@turf/turf';
 
 /**
@@ -188,4 +189,5 @@ export var TurfLayer = L.GeoJSON.extend({
 export var turfLayer = function (options) {
     return new TurfLayer(options);
 };
+
 L.supermap.turfLayer = turfLayer;

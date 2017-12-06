@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.ThemeOffset
@@ -9,7 +10,7 @@
  *        offsetX - {string} 专题图中文本或符号相对于要素内点的水平偏移量。<br>
  *        offsetY - {string} 专题图中文本或符号相对于要素内点的垂直偏移量。
  */
-export default  class ThemeOffset {
+export class ThemeOffset {
 
     /**
      * @member SuperMap.ThemeOffset.prototype.offsetFixed -{boolean}
@@ -33,7 +34,7 @@ export default  class ThemeOffset {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -55,9 +56,11 @@ export default  class ThemeOffset {
      * @return {SuperMap.ThemeOffset} ThemeOffset对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeOffset();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         return res;
     }
 

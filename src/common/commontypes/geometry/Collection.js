@@ -1,5 +1,6 @@
-﻿import SuperMap from '../../SuperMap';
-import Geometry from '../Geometry';
+﻿import {SuperMap} from '../../SuperMap';
+import {Bounds} from '../Bounds';
+import {Geometry} from '../Geometry';
 import {Util} from '../Util';
 
 /**
@@ -15,7 +16,7 @@ import {Util} from '../Util';
  * var point2 = new SuperMap.Geometry.Point(30,40);
  * var col = new SuperMap.Geometry.Collection([point1,point2]);
  */
-export default class Collection extends Geometry {
+export class Collection extends Geometry {
 
     /**
      * @description 存储几何对象的数组。
@@ -83,7 +84,7 @@ export default class Collection extends Geometry {
      */
     calculateBounds() {
         this.bounds = null;
-        var bounds = new SuperMap.Bounds();
+        var bounds = new Bounds();
         var components = this.components;
         if (components) {
             for (var i = 0, len = components.length; i < len; i++) {
@@ -240,4 +241,5 @@ export default class Collection extends Geometry {
 
     CLASS_NAME = "SuperMap.Geometry.Collection"
 }
+
 SuperMap.Geometry.Collection = Collection;

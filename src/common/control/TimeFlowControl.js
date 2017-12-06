@@ -1,5 +1,5 @@
-import SuperMap from '../SuperMap';
-import TimeControlBase from './TimeControlBase';
+import {SuperMap} from '../SuperMap';
+import {TimeControlBase} from './TimeControlBase';
 
 /**
  * @class SuperMap.TimeFlowControl
@@ -17,7 +17,7 @@ import TimeControlBase from './TimeControlBase';
  *        repeat - {boolean} 是否重复循环。默认为true。<br>
  *        reverse - {boolean} 是否反向。默认为false。
  */
-export default class TimeFlowControl extends TimeControlBase {
+export class TimeFlowControl extends TimeControlBase {
 
     /**
      * @member SuperMap.TimeFlowControl.prototype.callback -{function}
@@ -44,7 +44,7 @@ export default class TimeFlowControl extends TimeControlBase {
                         return fToBind.apply(this instanceof fNOP && oThis
                             ? this
                             : oThis,
-                        aArgs.concat(Array.prototype.slice.call(arguments)));
+                            aArgs.concat(Array.prototype.slice.call(arguments)));
                     };
                 fNOP.prototype = this.prototype;
                 fBound.prototype = new fNOP();

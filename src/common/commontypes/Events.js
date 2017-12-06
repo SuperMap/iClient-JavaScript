@@ -1,5 +1,5 @@
-﻿import SuperMap from '../SuperMap';
-import Pixel from './Pixel';
+﻿import {SuperMap} from '../SuperMap';
+import {Pixel} from './Pixel';
 import {Event} from './Event';
 import {FunctionExt} from './BaseTypes';
 import {Util} from './Util';
@@ -13,7 +13,7 @@ import {Util} from './Util';
  * @param fallThrough - {boolean} 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
  * @param options - {Object} 事件对象选项。
  */
-export default class Events {
+export class Events {
 
     /**
      * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
@@ -469,7 +469,7 @@ export default class Events {
         this.element.lefttop = null;
         var body = document.body;
         if (body && !((body.scrollTop != 0 || body.scrollLeft != 0) &&
-                navigator.userAgent.match(/iPhone/i))) {
+            navigator.userAgent.match(/iPhone/i))) {
             this.element.offsets = null;
         }
     }

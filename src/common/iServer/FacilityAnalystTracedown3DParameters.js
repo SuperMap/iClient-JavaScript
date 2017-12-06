@@ -1,5 +1,5 @@
-﻿import SuperMap from '../SuperMap';
-import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystTracedown3DParameters
@@ -13,7 +13,7 @@ import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
 
  */
-export default  class FacilityAnalystTracedown3DParameters extends FacilityAnalyst3DParameters {
+export class FacilityAnalystTracedown3DParameters extends FacilityAnalyst3DParameters {
 
     constructor(options) {
         super(options);

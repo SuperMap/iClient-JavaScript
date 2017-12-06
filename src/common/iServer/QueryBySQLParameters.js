@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import QueryParameters from './QueryParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {QueryParameters} from './QueryParameters';
 
 /**
  * @class SuperMap.QueryBySQLParameters
@@ -18,7 +19,7 @@ import QueryParameters from './QueryParameters';
  *         returnCustomResult -{boolean} 仅供三维使用。<br>
  *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
  */
-export default class QueryBySQLParameters extends QueryParameters {
+export class QueryBySQLParameters extends QueryParameters {
 
     /**
      * @member SuperMap.QueryBySQLParameters.prototype.returnContent -{boolean}
@@ -34,7 +35,7 @@ export default class QueryBySQLParameters extends QueryParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

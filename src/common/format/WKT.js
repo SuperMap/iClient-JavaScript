@@ -1,5 +1,14 @@
-import SuperMap from '../SuperMap';
-import Format from './Format';
+import {SuperMap} from '../SuperMap';
+import {Format} from './Format';
+import {StringExt} from '../commontypes/BaseTypes';
+import {Vector} from '../commontypes/Vector';
+import {Point} from '../commontypes/geometry/Point';
+import {MultiPoint} from '../commontypes/geometry/MultiPoint';
+import {LineString} from '../commontypes/geometry/LineString';
+import {MultiLineString} from '../commontypes/geometry/MultiLineString';
+import {LinearRing} from '../commontypes/geometry/LinearRing';
+import {Polygon} from '../commontypes/geometry/Polygon';
+import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
 
 /**
  * @class SuperMap.Format.WKT
@@ -8,7 +17,7 @@ import Format from './Format';
  * @extends SuperMap.Format
  * @param options - {Object} 可选的选项对象，其属性将被设置到实例。option具体配置项继承自{@link SuperMap.Format}
  */
-export default class WKT extends Format {
+export class WKT extends Format {
 
     constructor(options) {
         super(options);
@@ -217,8 +226,8 @@ export default class WKT extends Format {
          *
          */
         'point': function (str) {
-            var coords = SuperMap.String.trim(str).split(this.regExes.spaces);
-            return new SuperMap.Feature.Vector(new SuperMap.Geometry.Point(coords[0], coords[1])
+            var coords = StringExt.trim(str).split(this.regExes.spaces);
+            return new Vector(new Point(coords[0], coords[1])
             );
         },
 
@@ -230,14 +239,14 @@ export default class WKT extends Format {
          */
         'multipoint': function (str) {
             var point;
-            var points = SuperMap.String.trim(str).split(',');
+            var points = StringExt.trim(str).split(',');
             var components = [];
             for (var i = 0, len = points.length; i < len; ++i) {
                 point = points[i].replace(this.regExes.trimParens, '$1');
                 components.push(this.parse.point.apply(this, [point]).geometry);
             }
-            return new SuperMap.Feature.Vector(
-                new SuperMap.Geometry.MultiPoint(components)
+            return new Vector(
+                new MultiPoint(components)
             );
         },
 
@@ -248,13 +257,13 @@ export default class WKT extends Format {
          * @private
          */
         'linestring': function (str) {
-            var points = SuperMap.String.trim(str).split(',');
+            var points = StringExt.trim(str).split(',');
             var components = [];
             for (var i = 0, len = points.length; i < len; ++i) {
                 components.push(this.parse.point.apply(this, [points[i]]).geometry);
             }
-            return new SuperMap.Feature.Vector(
-                new SuperMap.Geometry.LineString(components)
+            return new Vector(
+                new LineString(components)
             );
         },
 
@@ -266,14 +275,14 @@ export default class WKT extends Format {
          */
         'multilinestring': function (str) {
             var line;
-            var lines = SuperMap.String.trim(str).split(this.regExes.parenComma);
+            var lines = StringExt.trim(str).split(this.regExes.parenComma);
             var components = [];
             for (var i = 0, len = lines.length; i < len; ++i) {
                 line = lines[i].replace(this.regExes.trimParens, '$1');
                 components.push(this.parse.linestring.apply(this, [line]).geometry);
             }
-            return new SuperMap.Feature.Vector(
-                new SuperMap.Geometry.MultiLineString(components)
+            return new Vector(
+                new MultiLineString(components)
             );
         },
 
@@ -285,16 +294,16 @@ export default class WKT extends Format {
          */
         'polygon': function (str) {
             var ring, linestring, linearring;
-            var rings = SuperMap.String.trim(str).split(this.regExes.parenComma);
+            var rings = StringExt.trim(str).split(this.regExes.parenComma);
             var components = [];
             for (var i = 0, len = rings.length; i < len; ++i) {
                 ring = rings[i].replace(this.regExes.trimParens, '$1');
                 linestring = this.parse.linestring.apply(this, [ring]).geometry;
-                linearring = new SuperMap.LinearRing(linestring.components);
+                linearring = new LinearRing(linestring.components);
                 components.push(linearring);
             }
-            return new SuperMap.Feature.Vector(
-                new SuperMap.Geometry.Polygon(components)
+            return new Vector(
+                new Polygon(components)
             );
         },
 
@@ -307,14 +316,14 @@ export default class WKT extends Format {
          */
         'multipolygon': function (str) {
             var polygon;
-            var polygons = SuperMap.String.trim(str).split(this.regExes.doubleParenComma);
+            var polygons = StringExt.trim(str).split(this.regExes.doubleParenComma);
             var components = [];
             for (var i = 0, len = polygons.length; i < len; ++i) {
                 polygon = polygons[i].replace(this.regExes.trimParens, '$1');
                 components.push(this.parse.polygon.apply(this, [polygon]).geometry);
             }
-            return new SuperMap.Feature.Vector(
-                new SuperMap.Geometry.MultiPolygon(components)
+            return new Vector(
+                new MultiPolygon(components)
             );
         },
 
@@ -328,7 +337,7 @@ export default class WKT extends Format {
         'geometrycollection': function (str) {
             // separate components of the collection with |
             str = str.replace(/,\s*([A-Za-z])/g, '|$1');
-            var wktArray = SuperMap.String.trim(str).split('|');
+            var wktArray = StringExt.trim(str).split('|');
             var components = [];
             for (var i = 0, len = wktArray.length; i < len; ++i) {
                 components.push(this.read(wktArray[i]));
@@ -339,4 +348,5 @@ export default class WKT extends Format {
     };
     CLASS_NAME = "SuperMap.Format.WKT";
 }
+
 SuperMap.Format.WKT = WKT;

@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import './JoinItem';
 import './LinkItem';
 
@@ -15,7 +16,7 @@ import './LinkItem';
  *        groupBy - {string} 查询分组条件的字段。</br>
  *        fields - {Array<string>} 查询字段数组。</br>
  */
-export default class FilterParameter {
+export class FilterParameter {
 
     /**
      * @member SuperMap.FilterParameter.prototype.attributeFilter - {string}
@@ -95,7 +96,7 @@ export default class FilterParameter {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

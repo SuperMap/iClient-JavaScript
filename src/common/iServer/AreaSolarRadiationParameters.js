@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.AreaSolarRadiationParameters
@@ -21,7 +22,7 @@ import SuperMap from '../SuperMap';
  *        dayInterval - {number} 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）</br>
  *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
  */
-export default class AreaSolarRadiationParameters {
+export class AreaSolarRadiationParameters {
 
     /**
      *  @member SuperMap.AreaSolarRadiationParameters.prototype.dataset - {string}
@@ -123,7 +124,7 @@ export default class AreaSolarRadiationParameters {
         if (!options) {
             return this;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

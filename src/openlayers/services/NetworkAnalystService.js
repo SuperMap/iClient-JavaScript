@@ -1,18 +1,20 @@
 ﻿import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
-import Util from '../core/Util';
-import ServiceBase from './ServiceBase';
-import BurstPipelineAnalystService from '../../common/iServer/BurstPipelineAnalystService';
-import ComputeWeightMatrixService from '../../common/iServer/ComputeWeightMatrixService';
-import FacilityAnalystStreamService from '../../common/iServer/FacilityAnalystStreamService';
-import FindClosestFacilitiesService from '../../common/iServer/FindClosestFacilitiesService';
-import FindLocationService from '../../common/iServer/FindLocationService';
-import FindMTSPPathsService from '../../common/iServer/FindMTSPPathsService';
-import FindPathService from '../../common/iServer/FindPathService';
-import FindServiceAreasService from '../../common/iServer/FindServiceAreasService';
-import FindTSPPathsService from '../../common/iServer/FindTSPPathsService';
-import UpdateEdgeWeightService from '../../common/iServer/UpdateEdgeWeightService';
-import UpdateTurnNodeWeightService from '../../common/iServer/UpdateTurnNodeWeightService';
+import {
+    DataFormat,
+    BurstPipelineAnalystService,
+    ComputeWeightMatrixService,
+    FacilityAnalystStreamService,
+    FindClosestFacilitiesService,
+    FindLocationService,
+    FindMTSPPathsService,
+    FindPathService,
+    FindServiceAreasService,
+    FindTSPPathsService,
+    UpdateEdgeWeightService,
+    UpdateTurnNodeWeightService
+} from '@supermap/iclient-common';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ol.supermap.NetworkAnalystService
@@ -29,7 +31,7 @@ import UpdateTurnNodeWeightService from '../../common/iServer/UpdateTurnNodeWeig
  * @param options - {Object} 服务所需可选参数。如：<br>
  *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
  */
-export default class NetworkAnalystService extends ServiceBase {
+export class NetworkAnalystService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -317,7 +319,8 @@ export default class NetworkAnalystService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
+
 ol.supermap.NetworkAnalystService = NetworkAnalystService;

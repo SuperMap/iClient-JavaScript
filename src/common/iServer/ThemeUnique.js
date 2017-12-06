@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import Theme from './Theme';
-import ServerStyle from './ServerStyle';
-import ThemeUniqueItem from './ThemeUniqueItem';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Theme} from './Theme';
+import {ServerStyle} from './ServerStyle';
+import {ThemeUniqueItem} from './ThemeUniqueItem';
 import {ColorGradientType} from '../REST';
 
 
@@ -18,7 +19,7 @@ import {ColorGradientType} from '../REST';
  *        colorGradientType - {{@link SuperMap.ColorGradientType}} 渐变颜色枚举类。<br>
  *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
-export default class ThemeUnique extends Theme {
+export class ThemeUnique extends Theme {
 
     /**
      * @member SuperMap.ThemeUnique.prototype.defaultStyle -{SuperMap.ServerStyle}
@@ -57,7 +58,7 @@ export default class ThemeUnique extends Theme {
         var me = this;
         me.defaultStyle = new ServerStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -94,7 +95,7 @@ export default class ThemeUnique extends Theme {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = SuperMap.Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.defaultStyle) {
             if (obj.defaultStyle.toServerJSONObject) {
                 obj.defaultStyle = obj.defaultStyle.toServerJSONObject();
@@ -121,7 +122,7 @@ export default class ThemeUnique extends Theme {
         var res = new ThemeUnique();
         var uItems = obj.items;
         var len = uItems ? uItems.length : 0;
-        SuperMap.Util.extend(res, obj);
+        Util.extend(res, obj);
         res.items = [];
         res.defaultStyle = new ServerStyle.fromJson(obj.defaultStyle);
         for (var i = 0; i < len; i++) {

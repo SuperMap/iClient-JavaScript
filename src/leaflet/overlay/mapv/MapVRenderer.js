@@ -13,7 +13,7 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @param dataSet - {DataSet} 待渲染的数据集
  * @param options - {Object} 渲染的参数
  */
-export default class MapVRenderer extends BaseLayer {
+export class MapVRenderer extends BaseLayer {
 
     constructor(map, layer, dataSet, options) {
         super(map, dataSet, options);

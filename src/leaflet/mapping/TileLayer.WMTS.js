@@ -1,5 +1,5 @@
-import '../core/Base';
 import L from "leaflet";
+import "../core/Base";
 
 /**
  * @class L.supermap.wmtsLayer
@@ -70,4 +70,5 @@ export var WMTSLayer = L.TileLayer.extend({
 export var wmtsLayer = function (url, options) {
     return new WMTSLayer(url, options);
 };
+
 L.supermap.wmtsLayer = wmtsLayer;

@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerTextStyle from './ServerTextStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerTextStyle} from './ServerTextStyle';
 import {ThemeGraphTextFormat} from '../REST';
 
 /**
@@ -10,7 +11,7 @@ import {ThemeGraphTextFormat} from '../REST';
  *        graphTextFormat - {{@link SuperMap.ThemeGraphTextFormat}} 统计专题图文本显示格式。<br>
  *        graphTextStyle - {{@link SuperMap.ServerTextStyle}} 统计图上的文字标注风格。
  */
-export default  class ThemeGraphText {
+export class ThemeGraphText {
 
     /**
      * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{boolean}
@@ -35,7 +36,7 @@ export default  class ThemeGraphText {
         var me = this;
         me.graphTextStyle = new ServerTextStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -61,7 +62,7 @@ export default  class ThemeGraphText {
      */
     static fromObj(obj) {
         var res = new ThemeGraphText();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.graphTextStyle = ServerTextStyle.fromObj(obj.graphTextStyle);
         return res;
 

@@ -1,4 +1,4 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 
 /**
  * @class  SuperMap.Size
@@ -9,7 +9,7 @@
  * @example
  * var size = new SuperMap.Size(31,46);
  */
-export default class Size {
+export class Size {
 
     /**
      * @member SuperMap.Size.prototype.w -{number}
@@ -74,7 +74,7 @@ export default class Size {
         var equals = false;
         if (sz != null) {
             equals = ((this.w === sz.w && this.h === sz.h) ||
-            (isNaN(this.w) && isNaN(this.h) && isNaN(sz.w) && isNaN(sz.h)));
+                (isNaN(this.w) && isNaN(this.h) && isNaN(sz.w) && isNaN(sz.h)));
         }
         return equals;
     }

@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import QueryService from './QueryService';
-import QueryByDistanceParameters from './QueryByDistanceParameters';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {QueryService} from './QueryService';
+import {QueryByDistanceParameters} from './QueryByDistanceParameters';
+import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.QueryByDistanceService
@@ -22,7 +23,7 @@ import ServerGeometry from './ServerGeometry';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default class QueryByDistanceService extends QueryService {
+export class QueryByDistanceService extends QueryService {
 
     constructor(url, options) {
         super(url, options);
@@ -52,8 +53,8 @@ export default class QueryByDistanceService extends QueryService {
         var sg = ServerGeometry.fromGeometry(params.geometry);
 
         jsonParameters += params.isNearest ? "'queryMode':'FindNearest','queryParameters':" : "'queryMode':'DistanceQuery','queryParameters':";
-        jsonParameters += SuperMap.Util.toJSON(qp);
-        jsonParameters += ",'geometry':" + SuperMap.Util.toJSON(sg) + ",'distance':" + params.distance;
+        jsonParameters += Util.toJSON(qp);
+        jsonParameters += ",'geometry':" + Util.toJSON(sg) + ",'distance':" + params.distance;
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     }

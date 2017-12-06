@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.ChartQueryFilterParameter
@@ -10,7 +11,7 @@ import SuperMap from '../SuperMap';
  *        attributeFilter - {string} 属性字段过滤条件。<br>
  *        chartFeatureInfoSpecCode - {number}查询的物标代号。
  */
-export default class ChartQueryFilterParameter {
+export class ChartQueryFilterParameter {
 
     /**
      * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint -{boolean}
@@ -46,7 +47,7 @@ export default class ChartQueryFilterParameter {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -81,4 +82,5 @@ export default class ChartQueryFilterParameter {
 
     CLASS_NAME = "SuperMap.ChartQueryFilterParameter"
 }
+
 SuperMap.ChartQueryFilterParameter = ChartQueryFilterParameter;

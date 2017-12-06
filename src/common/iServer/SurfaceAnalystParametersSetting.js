@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 import {SmoothMethod} from '../REST';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.SurfaceAnalystParametersSetting
@@ -16,7 +17,7 @@ import {SmoothMethod} from '../REST';
  *        smoothMethod - {{@link SuperMap.SmoothMethod}} 获取或设置光滑处理所使用的方法。</br>
  *        smoothness - {number}获取或设置表面分析中等值线或等值面的边界线的光滑度。</br>
  */
-export default class SurfaceAnalystParametersSetting {
+export class SurfaceAnalystParametersSetting {
 
     /**
      * @member SuperMap.SurfaceAnalystParametersSetting.prototype.clipRegion -{Object}
@@ -72,7 +73,7 @@ export default class SurfaceAnalystParametersSetting {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -98,4 +99,5 @@ export default class SurfaceAnalystParametersSetting {
 
     CLASS_NAME = "SuperMap.SurfaceAnalystParametersSetting"
 }
+
 SuperMap.SurfaceAnalystParametersSetting = SurfaceAnalystParametersSetting;

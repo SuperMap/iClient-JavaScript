@@ -1,6 +1,5 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
-import './SUtil';
+import {Shape} from './Shape';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -22,7 +21,7 @@ import './SUtil';
  *   levelRenderer.addShape(shape);
  * (end)
  */
-export default class SmicText extends Shape {
+export class SmicText extends Shape {
 
     /**
      * Property: style
@@ -123,7 +122,7 @@ export default class SmicText extends Shape {
         ctx.textBaseline = style.textBaseline || 'middle';
 
         var text = (style.text + '').split('\n');
-        var lineHeight = SuperMap.LevelRenderer.Util_area.getTextHeight('ZH', style.textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', style.textFont);
         var rect = this.getRectNoRotation(style);
         // var x = style.x;
         var x = style.x + __OP[0];
@@ -143,9 +142,9 @@ export default class SmicText extends Shape {
             //是否渲染矩形背景及颜色
             if (style.labelRect) {
                 //+4,-2是为了让文字距边框左右边缘有点间隔
-                ctx.fillRect(rect.x-2, rect.y, rect.width + 4, rect.height);
+                ctx.fillRect(rect.x - 2, rect.y, rect.width + 4, rect.height);
                 ctx.fillStyle = style.strokeColor;
-                ctx.strokeRect(rect.x-2, rect.y, rect.width + 4, rect.height);
+                ctx.strokeRect(rect.x - 2, rect.y, rect.width + 4, rect.height);
                 ctx.fillStyle = style.textColor;
             }
 
@@ -402,10 +401,10 @@ export default class SmicText extends Shape {
         }
         var __OP = this.refOriginalPosition;
 
-        var lineHeight = SuperMap.LevelRenderer.Util_area.getTextHeight('ZH', style.textFont);
+        var lineHeight = SUtil.Util_area.getTextHeight('ZH', style.textFont);
 
-        var width = SuperMap.LevelRenderer.Util_area.getTextWidth(style.text, style.textFont);
-        var height = SuperMap.LevelRenderer.Util_area.getTextHeight(style.text, style.textFont);
+        var width = SUtil.Util_area.getTextWidth(style.text, style.textFont);
+        var height = SUtil.Util_area.getTextHeight(style.text, style.textFont);
 
         //处理文字位置，注：文本的绘制是由此 rect 决定
         var textX = style.x + __OP[0];                 // 默认start == left
@@ -558,4 +557,3 @@ export default class SmicText extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicText"
 }
-SuperMap.LevelRenderer.Shape.SmicText = SmicText;

@@ -1,9 +1,8 @@
-import '../core/Base';
-import '../../common/security/SecurityManager';
 import L from "leaflet";
+import '../core/Base';
 import {VectorGrid} from './vectortile/VectorGrid';
 import {CartoCSSToLeaflet} from './carto/CartoCSSToLeaflet';
-import SuperMap from '../../common/SuperMap';
+import {FetchRequest, Unit, ServerType, Credential, SecurityManager} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.tiledVectorLayer
@@ -93,7 +92,7 @@ export var TileVectorLayer = VectorGrid.extend({
     initLayersInfo: function () {
         var me = this;
         var layersUrl = me.url + "/layers.json";
-        SuperMap.FetchRequest.get(layersUrl, null, {
+        FetchRequest.get(layersUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json();
@@ -173,7 +172,7 @@ export var TileVectorLayer = VectorGrid.extend({
     getVectorStylesFromServer: function () {
         var me = this;
         var vectorStyleUrl = me.url + "/tileFeature/vectorstyles.json";
-        SuperMap.FetchRequest.get(vectorStyleUrl, null, {
+        FetchRequest.get(vectorStyleUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json()
@@ -326,9 +325,9 @@ export var TileVectorLayer = VectorGrid.extend({
             );
         }
 
-        var mapUnit = SuperMap.Unit.METER;
+        var mapUnit = Unit.METER;
         if (crs.code && crs.code.indexOf("4326") > -1) {
-            mapUnit = SuperMap.Unit.DEGREE;
+            mapUnit = Unit.DEGREE;
         }
         return L.Util.resolutionToScale(resolution, 96, mapUnit);
     },
@@ -425,11 +424,11 @@ export var TileVectorLayer = VectorGrid.extend({
         //切片的起始参考点，默认为地图范围的左上角。
         var crs = this._crs;
         if (crs.options && crs.options.origin) {
-            params.push("origin=" + JSON.stringify({x: crs.options.origin[0], y: crs.options.origin[1]}));
+            params["origin"] = JSON.stringify({x: crs.options.origin[0], y: crs.options.origin[1]});
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = L.point(bounds.min.x, bounds.max.y);
-            params.push("origin=" + JSON.stringify({x: tileOrigin.x, y: tileOrigin.y}));
+            params["origin"] = JSON.stringify({x: tileOrigin.x, y: tileOrigin.y});
         }
         if (options.expands) {
             params.push("expands=" + options.expands);
@@ -449,25 +448,25 @@ export var TileVectorLayer = VectorGrid.extend({
     _getCredential: function (url) {
         var credential, value;
         switch (this.options.serverType) {
-            case SuperMap.ServerType.ISERVER:
-                value = SuperMap.SecurityManager.getToken(url);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+            case ServerType.ISERVER:
+                value = SecurityManager.getToken(url);
+                credential = value ? new Credential(value, "token") : null;
                 break;
-            case SuperMap.ServerType.IPORTAL:
-                value = SuperMap.SecurityManager.getToken(url);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+            case ServerType.IPORTAL:
+                value = SecurityManager.getToken(url);
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
-                    value = SuperMap.SecurityManager.getKey(url);
-                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                    value = SecurityManager.getKey(url);
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case SuperMap.ServerType.ONLINE:
-                value = SuperMap.SecurityManager.getKey(url);
-                credential = value ? new SuperMap.Credential(value, "key") : null;
+            case ServerType.ONLINE:
+                value = SecurityManager.getKey(url);
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
-                value = SuperMap.SecurityManager.getToken(url);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+                value = SecurityManager.getToken(url);
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         if (credential) {

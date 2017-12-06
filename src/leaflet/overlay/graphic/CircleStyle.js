@@ -1,5 +1,5 @@
-import '../../core/Base';
 import L from "leaflet";
+import '../../core/Base';
 
 /**
  * @class L.supermap.circleStyle
@@ -81,4 +81,5 @@ export var CircleStyle = L.Class.extend({
 export var circleStyle = function (options) {
     return new CircleStyle(options);
 };
-L.supermap.circleStyle= circleStyle;
+
+L.supermap.circleStyle = circleStyle;

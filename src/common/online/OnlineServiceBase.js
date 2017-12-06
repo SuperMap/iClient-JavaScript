@@ -1,5 +1,6 @@
-import SuperMap from '../SuperMap';
-import '../security/SecurityManager';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+// import {SecurityManager} from '../security/SecurityManager';
 import {ServerType} from '../REST';
 import {FetchRequest} from '../util/FetchRequest';
 
@@ -8,12 +9,12 @@ import {FetchRequest} from '../util/FetchRequest';
  * @classdesc Online服务基类(使用key作为权限限制的类需要实现此类)
  * @param options -{Object} 服务参数
  */
-export default class OnlineServiceBase {
+export class OnlineServiceBase {
 
     constructor(options) {
         var me = this;
         options = options || {};
-        SuperMap.Util.extend(me, options);
+        Util.extend(me, options);
         me.serverType = ServerType.ONLINE;
     }
 

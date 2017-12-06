@@ -1,14 +1,6 @@
-/*!
- * ZRender, a high performance canvas library.
- *
- * Copyright (c) 2013, Baidu Inc.
- * All rights reserved.
- *
- * LICENSE
- * https://github.com/ecomfe/zrender/blob/master/LICENSE.txt
- */
-import SuperMap from '../../SuperMap';
+import {SuperMap} from "../../SuperMap";
 import {Util} from '../../commontypes/Util';
+import {Render} from './Render';
 
 /**
  * @private
@@ -16,7 +8,16 @@ import {Util} from '../../commontypes/Util';
  * LevelRenderer 渲染器。
  *
  */
-export default class LevelRenderer {
+export class LevelRenderer {
+
+    /**
+     * Property: _instances
+     * {Object} LevelRenderer 实例 map 索引。
+     */
+    static _instances = {};
+
+    // 工具
+    static Tool = {};
 
     /**
      * Property: version
@@ -74,8 +75,8 @@ export default class LevelRenderer {
      * {<SuperMap.LevelRenderer>} LevelRenderer 实例。
      */
     init(dom) {
-        var zr = new SuperMap.LevelRenderer.Render(Util.createUniqueID("LRenderer_"), dom);
-        SuperMap.LevelRenderer._instances[zr.id] = zr;
+        var zr = new Render(Util.createUniqueID("LRenderer_"), dom);
+        LevelRenderer._instances[zr.id] = zr;
         return zr;
     }
 
@@ -96,11 +97,12 @@ export default class LevelRenderer {
     dispose(zr) {
         if (zr) {
             zr.dispose();
+            this.delInstance(zr.id);
         } else {
-            for (var key in SuperMap.LevelRenderer._instances) {
-                SuperMap.LevelRenderer._instances[key].dispose();
+            for (var key in LevelRenderer._instances) {
+                LevelRenderer._instances[key].dispose();
             }
-            SuperMap.LevelRenderer._instances = {};
+            LevelRenderer._instances = {};
         }
 
         return this;
@@ -117,7 +119,7 @@ export default class LevelRenderer {
      * {<SuperMap.LevelRenderer.Render>} SuperMap.LevelRenderer.Render 实例。
      */
     getInstance(id) {
-        return SuperMap.LevelRenderer._instances[id];
+        return LevelRenderer._instances[id];
     }
 
     /**
@@ -136,18 +138,11 @@ export default class LevelRenderer {
      * {<SuperMap.LevelRenderer>} this。
      */
     delInstance(id) {
-        delete SuperMap.LevelRenderer._instances[id];
+        delete LevelRenderer._instances[id];
         return this;
     }
 
     CLASS_NAME = "SuperMap.LevelRenderer";
 }
-SuperMap.LevelRenderer = LevelRenderer;
-/**
- * Property: _instances
- * {Object} LevelRenderer 实例 map 索引。
- */
-SuperMap.LevelRenderer._instances = {};
 
-// 工具
-SuperMap.LevelRenderer.Tool = {};
+SuperMap.LevelRenderer = LevelRenderer;

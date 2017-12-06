@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.GetGridCellInfosParameters
@@ -9,7 +10,7 @@ import SuperMap from '../SuperMap';
  *        X - {integer} 要查询的地理位置X轴。</br>
  *        Y - {integer} 要查询的地理位置Y轴。
  */
-export default  class GetGridCellInfosParameters {
+export class GetGridCellInfosParameters {
     /**
      * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName - {string}
      * @description 数据集名称。
@@ -38,7 +39,7 @@ export default  class GetGridCellInfosParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 

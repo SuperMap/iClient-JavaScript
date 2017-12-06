@@ -1,4 +1,5 @@
 import L from "leaflet";
+import '../core/Base';
 
 /**
  * @constant L.supermap.VectorTileFormat
@@ -9,4 +10,5 @@ export var VectorTileFormat = {
     MVT: "MVT",
     PBF: "PBF"
 };
+
 L.supermap.VectorTileFormat = VectorTileFormat;

@@ -1,5 +1,5 @@
-import SuperMap from '../../SuperMap';
-import ShapeParameters from './ShapeParameters';
+import {SuperMap} from '../../SuperMap';
+import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @private
@@ -9,7 +9,7 @@ import ShapeParameters from './ShapeParameters';
  * Inherits:
  *  - <SuperMap.Feature.ShapeParameters>
  */
-export default class Polygon extends ShapeParameters {
+export class Polygon extends ShapeParameters {
 
     /**
      * APIProperty: pointList
@@ -61,4 +61,5 @@ export default class Polygon extends ShapeParameters {
 
     CLASS_NAME = "SuperMap.Feature.ShapeParameters.Polygon"
 }
+SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Polygon = Polygon;

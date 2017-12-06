@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {ClientType} from '../REST';
 
 /**
@@ -6,7 +7,7 @@ import {ClientType} from '../REST';
  * @classdesc token申请参数
  * @param options - {Object} token申请参数。
  */
-export default class TokenServiceParameter {
+export class TokenServiceParameter {
     /**
      * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
      * @description 用户名。
@@ -44,7 +45,7 @@ export default class TokenServiceParameter {
     expiration = 60;
 
     constructor(options) {
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

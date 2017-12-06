@@ -5,18 +5,15 @@
  * 非 get 接口统一返回 this 对象，支持链式调用。
  *
  */
-import SuperMap from '../../SuperMap';
-import './LevelRenderer';
-import {Util} from '../../commontypes/Util';
-import Storage from './Storage';
-import Painter from './Painter';
-import Handler from './Handler';
-import Animation from './Animation';
-import './Easing';
-import './Clip';
-import './SUtil';
+import {Util} from './Util';
+import {Util as CommonUtil} from '../../commontypes/Util';
+import {Storage} from './Storage';
+import {Painter} from './Painter';
+import {Handler} from './Handler';
+import {Animation} from './Animation';
+import {SUtil} from './SUtil';
 
-export default class Render {
+export class Render {
 
     /**
      * Property: id
@@ -398,7 +395,7 @@ export default class Render {
             }
 
             if (!target) {
-                SuperMap.LevelRenderer.Util_log(
+                SUtil.Util_log(
                     'Property "'
                     + path
                     + '" is not existed in element '
@@ -422,12 +419,12 @@ export default class Render {
                     el.__aniCount--;
                     if (el.__aniCount === 0) {
                         // 从animatingElements里移除
-                        var idx = SuperMap.LevelRenderer.Util.indexOf(animatingElements, el);
+                        var idx = Util.indexOf(animatingElements, el);
                         animatingElements.splice(idx, 1);
                     }
                 });
         } else {
-            SuperMap.LevelRenderer.Util_log('Element not existed');
+            SUtil.Util_log('Element not existed');
         }
     }
 
@@ -491,7 +488,7 @@ export default class Render {
      * {Object} image shape。
      */
     shapeToImage(e, width, height) {
-        var id = Util.createUniqueID("SuperMap.LevelRenderer.ToImage_");
+        var id = CommonUtil.createUniqueID("SuperMap.LevelRenderer.ToImage_");
         return this.painter.shapeToImage(id, e, width, height);
     }
 
@@ -577,7 +574,7 @@ export default class Render {
 
         // 释放后告诉全局删除对自己的索引，没想到啥好方法
         // zrender.delInstance(this.id);
-        SuperMap.LevelRenderer.prototype.delInstance.apply(this, [this.id]);
+
     }
 
     // SMIC-方法扩展 - start
@@ -652,4 +649,3 @@ export default class Render {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Render";
 }
-SuperMap.LevelRenderer.Render = Render;

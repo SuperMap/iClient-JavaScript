@@ -1,16 +1,13 @@
 import mapboxgl from 'mapbox-gl';
-import '../../common/REST';
-import '../../common/overlay/Bar';
-import '../../common/overlay/Bar3D';
-import '../../common/overlay/Circle';
-import '../../common/overlay/Pie';
-import '../../common/overlay/Point';
-import '../../common/overlay/Line';
-import '../../common/overlay/Ring';
-import '../../common/overlay/ThemeVector';
-import '../../common/style/ThemeStyle';
-import SuperMap from '../../common/SuperMap';
-import Theme from './theme/ThemeLayer';
+import '../core/Base';
+import {
+    CommonUtil,
+    Bounds,
+    LonLat,
+    FeatureTheme
+} from "@supermap/iclient-common";
+
+import {Theme} from './theme/ThemeLayer';
 
 /**
  * @class mapboxgl.supermap.GraphThemeLayer
@@ -20,7 +17,7 @@ import Theme from './theme/ThemeLayer';
  * @param opt_options - {Object} 参数。
  * @extends mapboxgl.supermap.ThemeLayer
  */
-export default class Graph extends Theme {
+export class Graph extends Theme {
 
     constructor(name, chartsType, opt_options) {
         super(name, opt_options);
@@ -50,7 +47,7 @@ export default class Graph extends Theme {
      */
     addFeatures(features) {
         //数组
-        if (!(SuperMap.Util.isArray(features))) {
+        if (!(CommonUtil.isArray(features))) {
             features = [features];
         }
         var ret = mapboxgl.Evented.prototype.fire('beforefeaturesadded', {features: features});
@@ -118,8 +115,8 @@ export default class Graph extends Theme {
     createThematicFeature(feature) {
         var thematicFeature;
         // 检查图表创建条件并创建图形
-        if (SuperMap.Feature.Theme[this.chartsType] && this.themeFields && this.chartsSetting) {
-            thematicFeature = new SuperMap.Feature.Theme[this.chartsType](feature, this, this.themeFields, this.chartsSetting);
+        if (FeatureTheme[this.chartsType] && this.themeFields && this.chartsSetting) {
+            thematicFeature = new FeatureTheme[this.chartsType](feature, this, this.themeFields, this.chartsSetting);
         }
         // thematicFeature 是否创建成功
         if (!thematicFeature) {
@@ -177,12 +174,12 @@ export default class Graph extends Theme {
             // 压盖判断所需 chartsBounds 集合
             var chartsBounds = [];
             var extent = this.map.getBounds();
-            var mapBounds = new SuperMap.Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
+            var mapBounds = new Bounds(extent.getWest(), extent.getSouth(), extent.getEast(), extent.getNorth());
             if (mapBounds) {
                 // 获取地图像素 bounds
-                var mapPxLT = this.getLocalXY(new SuperMap.LonLat(mapBounds.left, mapBounds.top));
-                var mapPxRB = this.getLocalXY(new SuperMap.LonLat(mapBounds.right, mapBounds.bottom));
-                var mBounds = new SuperMap.Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
+                var mapPxLT = this.getLocalXY(new LonLat(mapBounds.left, mapBounds.top));
+                var mapPxRB = this.getLocalXY(new LonLat(mapBounds.right, mapBounds.bottom));
+                var mBounds = new Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
                 // 压盖处理 & 添加图形
                 for (let i = 0, len = charts.length; i < len; i++) {
                     var chart = charts[i];
@@ -280,7 +277,7 @@ export default class Graph extends Theme {
                 break;
             }
             for (let j = 0; j < quad2Len - 1; j++) {
-                var isLineIn = SuperMap.Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
+                var isLineIn = CommonUtil.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     OverLap = true;
                     break;
@@ -379,4 +376,5 @@ export default class Graph extends Theme {
         this.clearCache();
     }
 }
+
 mapboxgl.supermap.GraphThemeLayer = Graph;

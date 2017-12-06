@@ -1,11 +1,13 @@
-﻿import SuperMap from '../SuperMap';
-import ThemeLabel from './ThemeLabel';
-import ThemeUnique from './ThemeUnique';
-import ThemeGraph from './ThemeGraph';
-import ThemeDotDensity from './ThemeDotDensity';
-import ThemeGraduatedSymbol from './ThemeGraduatedSymbol';
-import ThemeRange from './ThemeRange';
-import UGCSubLayer from './UGCSubLayer';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {LonLat} from '../commontypes/LonLat';
+import {ThemeLabel} from './ThemeLabel';
+import {ThemeUnique} from './ThemeUnique';
+import {ThemeGraph} from './ThemeGraph';
+import {ThemeDotDensity} from './ThemeDotDensity';
+import {ThemeGraduatedSymbol} from './ThemeGraduatedSymbol';
+import {ThemeRange} from './ThemeRange';
+import {UGCSubLayer} from './UGCSubLayer';
 
 /**
  * @class SuperMap.ServerTheme
@@ -14,7 +16,7 @@ import UGCSubLayer from './UGCSubLayer';
  * @param theme - {SuperMap.Theme} 专题图对象。
  * @param themeElementPosition - {SuperMap.LonLat} 专题图元素位置。
  */
-export default  class ServerTheme extends UGCSubLayer {
+export class ServerTheme extends UGCSubLayer {
 
     /**
      * @member SuperMap.ServerTheme.prototype.theme -{SuperMap.Theme}
@@ -46,7 +48,7 @@ export default  class ServerTheme extends UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -83,7 +85,7 @@ export default  class ServerTheme extends UGCSubLayer {
         }
         if (this.themeElementPosition) {
             //待测试
-            this.themeElementPosition = new SuperMap.LonLat(this.themeElementPosition.x, this.themeElementPosition.y);
+            this.themeElementPosition = new LonLat(this.themeElementPosition.x, this.themeElementPosition.y);
         }
     }
 

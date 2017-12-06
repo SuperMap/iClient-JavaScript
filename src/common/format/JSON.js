@@ -1,12 +1,12 @@
-﻿import SuperMap from '../SuperMap';
-import Format from './Format';
+﻿import {SuperMap} from '../SuperMap';
+import {Format} from './Format';
 
 /**
  * @class SuperMap.Format.JSON
  * @classdesc 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
  * @extends SuperMap.Format
  */
-export default class JSONFormat extends Format {
+export class JSONFormat extends Format {
 
     /**
      * @member SuperMap.Format.JSON.prototype.indent - {string}
@@ -157,9 +157,9 @@ export default class JSONFormat extends Format {
             for (key in object) {
                 if (object.hasOwnProperty(key)) {
                     // recursive calls need to allow for sub-classing
-                    keyJSON = SuperMap.Format.JSON.prototype.write.apply(this,
+                    keyJSON = this.write.apply(this,
                         [key, this.pretty]);
-                    valueJSON = SuperMap.Format.JSON.prototype.write.apply(this,
+                    valueJSON = this.write.apply(this,
                         [object[key], this.pretty]);
                     if (keyJSON != null && valueJSON != null) {
                         if (addComma) {
@@ -190,7 +190,7 @@ export default class JSONFormat extends Format {
 
             for (var i = 0, len = array.length; i < len; ++i) {
                 // recursive calls need to allow for sub-classing
-                json = SuperMap.Format.JSON.prototype.write.apply(this,
+                json = this.write.apply(this,
                     [array[i], this.pretty]);
                 if (json != null) {
                     if (i > 0) {

@@ -1,12 +1,13 @@
 import ol from 'openlayers/dist/ol-debug';
-import DataFlowService  from "../services/DataFlowService";
+import {DataFlowService} from "../services/DataFlowService";
+
 /**
  * @class ol.source.DataFlow
  * @classdesc 实时数据图层源。
  * @param opt_options -{Object} 参数
  * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
  */
-export default class DataFlow extends ol.source.Vector {
+export class DataFlow extends ol.source.Vector {
 
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};
@@ -16,7 +17,7 @@ export default class DataFlow extends ol.source.Vector {
             prjCoordSys: options.prjCoordSys,
             excludeField: options.excludeField
         });
-        this.idField=options.idField||'id';
+        this.idField = options.idField || 'id';
         this.dataService = new DataFlowService(options.ws, {
             geometry: options.geometry,
             prjCoordSys: options.prjCoordSys,
@@ -71,7 +72,7 @@ export default class DataFlow extends ol.source.Vector {
     _onMessageSuccessed(msg) {
         //this.clear();
         var geoID = msg.value.featureResult.properties[this.idField];
-        var feature=(new ol.format.GeoJSON()).readFeature(msg.value.featureResult);
+        var feature = (new ol.format.GeoJSON()).readFeature(msg.value.featureResult);
         if (geoID !== undefined && this.featureCache[geoID]) {
             this.removeFeature(this.featureCache[geoID]);
         }

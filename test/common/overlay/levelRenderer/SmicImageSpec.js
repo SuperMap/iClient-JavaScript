@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicImage');
+var SmicImage = require('../../../../src/common/overlay/levelRenderer/SmicImage').SmicImage;
 var img = require('../../../resources/img/baiduTileTest.png');
 
 describe('SmicImage', function () {
@@ -24,7 +24,7 @@ describe('SmicImage', function () {
     });
 
     it('constructor, destroy', function () {
-        var image = new SuperMap.LevelRenderer.Shape.SmicImage({
+        var image = new SmicImage({
             style: {
                 image: img.src,
                 x: 100,
@@ -44,7 +44,7 @@ describe('SmicImage', function () {
     });
 
     it('brush, clearCache', function (done) {
-        var image = new SuperMap.LevelRenderer.Shape.SmicImage({
+        var image = new SmicImage({
             style: {
                 image: img.src,
                 x: 100,
@@ -75,7 +75,7 @@ describe('SmicImage', function () {
     });
 
     it('getRect', function () {
-        var image = new SuperMap.LevelRenderer.Shape.SmicImage({
+        var image = new SmicImage({
             style: {
                 image: img.src,
                 x: 100,

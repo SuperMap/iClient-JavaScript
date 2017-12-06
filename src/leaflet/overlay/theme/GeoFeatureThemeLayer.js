@@ -1,11 +1,14 @@
-import '../../../common/style/ThemeStyle';
-import '../../../common/overlay/ThemeVector';
-import SuperMap from '../../../common/SuperMap';
-import {ThemeLayer} from './ThemeLayer';
-import {ThemeFeature} from './ThemeFeature';
-import ServerFeature from '../../../common/iServer/ServerFeature';
-import CommontypesConversion from '../../core/CommontypesConversion';
 import L from "leaflet";
+import {
+    CommonUtil,
+    ShapeFactory,
+    ServerFeature,
+    ThemeVector,
+    GeometryVector
+} from '@supermap/iclient-common';
+import {ThemeLayer} from './ThemeLayer';
+import {CommontypesConversion} from '../../core/CommontypesConversion';
+import {ThemeFeature} from './ThemeFeature';
 
 /**
  * @function L.supermap.GeoFeatureThemeLayer
@@ -188,7 +191,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         var me = this;
         var style = me.getStyleByData(feature);
         if (feature.style && me.isAllowFeatureStyle) {
-            style = SuperMap.Util.copyAttributesWithClip(feature.style);
+            style = CommonUtil.copyAttributesWithClip(feature.style);
         }
 
         //创建专题要素时的可选参数
@@ -197,10 +200,10 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
         options.isHoverAble = me.options.isHoverAble;
         options.isMultiHover = me.options.isMultiHover;
         options.isClickAble = me.options.isClickAble;
-        options.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(me.highlightStyle);
+        options.highlightStyle = ShapeFactory.transformStyle(me.highlightStyle);
 
         //将数据转为专题要素（Vector）
-        var thematicFeature = new SuperMap.Feature.Theme.Vector(feature, me, SuperMap.Feature.ShapeFactory.transformStyle(style), options);
+        var thematicFeature = new ThemeVector(feature, me, ShapeFactory.transformStyle(style), options);
 
         //直接添加图形到渲染器
         for (var m = 0; m < thematicFeature.shapes.length; m++) {
@@ -288,7 +291,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     _createFeature: function (feature) {
         if (feature instanceof ThemeFeature) {
             feature = feature.toFeature();
-        } else if (!(feature instanceof SuperMap.Feature.Vector)) {
+        } else if (!(feature instanceof GeometryVector)) {
             feature = new ServerFeature.fromJson(feature).toFeature();
         }
         if (!feature.hasOwnProperty("attributes") && feature.fieldNames && feature.filedValues) {

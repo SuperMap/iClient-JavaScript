@@ -1,9 +1,8 @@
 import mapboxgl from 'mapbox-gl';
-import Util from '../core/Util';
-import ServiceBase from './ServiceBase';
-import StopQueryService from '../../common/iServer/StopQueryService';
-import TransferPathService from'../../common/iServer/TransferPathService';
-import TransferSolutionService from '../../common/iServer/TransferSolutionService';
+import '../core/Base';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
+import {StopQueryService, TransferPathService, TransferSolutionService} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.TrafficTransferAnalystService
@@ -18,7 +17,7 @@ import TransferSolutionService from '../../common/iServer/TransferSolutionServic
  * @param option - {Object} 参数。<br>
  *        serverType - {String} 服务来源 iServer|iPortal|online
  */
-export default class TrafficTransferAnalystService extends ServiceBase {
+export class TrafficTransferAnalystService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -102,4 +101,5 @@ export default class TrafficTransferAnalystService extends ServiceBase {
     }
 
 }
+
 mapboxgl.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;

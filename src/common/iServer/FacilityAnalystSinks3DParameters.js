@@ -1,5 +1,5 @@
-﻿import SuperMap from '../SuperMap';
-import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystSinks3DParameters
@@ -15,7 +15,7 @@ import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
  *         isUncertainDirectionValid - {boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
  *                                               指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
  */
-export default class FacilityAnalystSinks3DParameters extends FacilityAnalyst3DParameters {
+export class FacilityAnalystSinks3DParameters extends FacilityAnalyst3DParameters {
 
     constructor(options) {
         super(options);
@@ -33,4 +33,5 @@ export default class FacilityAnalystSinks3DParameters extends FacilityAnalyst3DP
 
     CLASS_NAME = "SuperMap.FacilityAnalystSinks3DParameters"
 }
+
 SuperMap.FacilityAnalystSinks3DParameters = FacilityAnalystSinks3DParameters;

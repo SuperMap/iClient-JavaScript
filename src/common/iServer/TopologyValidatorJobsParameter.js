@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {TopologyValidatorRule} from '../REST';
 
 /**
@@ -10,13 +11,13 @@ import {TopologyValidatorRule} from '../REST';
  *         rule -{{@link SuperMap.TopologyValidatorRule}} 拓扑检查规则 。 <br>
  *         tolerance -{string} 容限 <br>
  */
-export default class TopologyValidatorJobsParameter{
+export class TopologyValidatorJobsParameter {
 
     constructor(options) {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -53,6 +54,7 @@ export default class TopologyValidatorJobsParameter{
         this.tolerance = null;
         this.rule = null;
     }
+
     /**
      * @function SuperMap.TopologyValidatorJobsParameter.toObject
      * @param TopologyValidatorJobsParameter -{Object} 拓扑检查分析任务参数

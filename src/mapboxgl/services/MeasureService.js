@@ -1,8 +1,8 @@
 import mapboxgl from 'mapbox-gl';
-import Util from '../core/Util';
-import SuperMap from '../../common/SuperMap';
-import ServiceBase from './ServiceBase';
-import CommonMeasureService from '../../common/iServer/MeasureService';
+import '../core/Base';import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
+import {Geometry, MeasureService as CommonMeasureService} from '@supermap/iclient-common';
+
 /**
  * @class mapboxgl.supermap.MeasureService
  * @classdesc 距离测量服务
@@ -12,7 +12,7 @@ import CommonMeasureService from '../../common/iServer/MeasureService';
  *         eventListeners - {Object} 需要被注册的监听器对象。
  *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
-export default class MeasureService extends ServiceBase {
+export class MeasureService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -37,6 +37,7 @@ export default class MeasureService extends ServiceBase {
     measureArea(params, callback) {
         this.measure(params, 'AREA', callback);
     }
+
     /**
      * @function mapboxgl.supermap.MeasureService.prototype.measure
      * @description 测量
@@ -60,7 +61,7 @@ export default class MeasureService extends ServiceBase {
     }
 
     _processParam(params) {
-        if (params && !(params.geometry instanceof SuperMap.Geometry)) {
+        if (params && !(params.geometry instanceof Geometry)) {
 
             params.geometry = Util.toSuperMapGeometry(params.geometry);
         }
@@ -69,4 +70,5 @@ export default class MeasureService extends ServiceBase {
     }
 
 }
+
 mapboxgl.supermap.MeasureService = MeasureService;

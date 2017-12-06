@@ -1,4 +1,9 @@
-require('../../../../src/common/overlay/levelRenderer/Painter');
+var Painter = require('../../../../src/common/overlay/levelRenderer/Painter').Painter;
+var Storage = require('../../../../src/common/overlay/levelRenderer/Storage').Storage;
+var SmicPolygon = require('../../../../src/common/overlay/levelRenderer/SmicPolygon').SmicPolygon;
+var SmicStar = require('../../../../src/common/overlay/levelRenderer/SmicStar').SmicStar;
+var SmicText = require('../../../../src/common/overlay/levelRenderer/SmicText').SmicText;
+var SmicBrokenLine = require('../../../../src/common/overlay/levelRenderer/SmicBrokenLine').SmicBrokenLine;
 
 describe('Painter', function () {
     var testDiv, storage;
@@ -14,8 +19,8 @@ describe('Painter', function () {
         window.document.body.appendChild(testDiv);
     });
     beforeEach(function () {
-        storage = new SuperMap.LevelRenderer.Storage();
-        storage.addRoot(new SuperMap.LevelRenderer.Shape.SmicStar({
+        storage = new Storage();
+        storage.addRoot(new SmicStar({
             style: {
                 x: 200,
                 y: 200,
@@ -32,7 +37,7 @@ describe('Painter', function () {
     });
 
     it('constructor, destroy, refreshHover, clearHover, getWidth, getHeight', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         painter.refreshHover();
         expect(painter).not.toBeNull();
         expect(painter.root.id).toEqual("group");
@@ -61,7 +66,7 @@ describe('Painter', function () {
 
     //渲染
     it('render', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         spyOn(painter, 'render').and.callThrough();
         painter.render();
         expect(painter.render).toHaveBeenCalled();
@@ -74,7 +79,7 @@ describe('Painter', function () {
 
     // 不强制绘制所有 shape
     it('refresh', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         spyOn(painter, 'refresh').and.callThrough();
         painter.refresh(function () {
             painter._zlevelList[0] = "test_refresh";
@@ -89,7 +94,7 @@ describe('Painter', function () {
 
     // 强制绘制所有 shape
     it('refresh_paintAll', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         spyOn(painter, 'refresh').and.callThrough();
         painter.refresh(function () {
             painter._zlevelList[0] = "test_refresh";
@@ -104,11 +109,11 @@ describe('Painter', function () {
 
     //按列表绘制图形
     it('_paintList', function () {
-        storage.addRoot(new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        storage.addRoot(new SmicPolygon({
             style: {pointList: [[0, 0], [100, 0], [100, 100], [0, 100]]},
             zlevel: 1
         }));
-        storage.addRoot(new SuperMap.LevelRenderer.Shape.SmicText({
+        storage.addRoot(new SmicText({
             style: {
                 x: 200,
                 y: 200,
@@ -117,13 +122,13 @@ describe('Painter', function () {
             },
             zlevel: 2
         }));
-        storage.addRoot(new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+        storage.addRoot(new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]]
             },
         }));
         var list = storage.getShapeList(true);
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         expect(painter._zlevelList.length).toEqual(0);
         expect(painter.storage._shapeList.length).toEqual(4);
         expect(painter.storage._shapeList[0].type).toEqual("smicstar");
@@ -141,11 +146,11 @@ describe('Painter', function () {
     });
 
     it('getLayer, getLayers', function () {
-        storage.addRoot(new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        storage.addRoot(new SmicPolygon({
             style: {pointList: [[0, 0], [100, 0], [100, 100], [0, 100]]},
             zlevel: 2
         }));
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         painter.render();
         var layer = painter.getLayer(0);
         var layers = painter.getLayers();
@@ -166,7 +171,7 @@ describe('Painter', function () {
     });
 
     it('refreshShapes, clear', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         var list = storage.getShapeList(true);
         painter.refreshShapes(list);
         expect(painter).not.toBeNull();
@@ -188,7 +193,7 @@ describe('Painter', function () {
 
     //修改指定 zlevel 的绘制参数
     it('modLayer', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         painter.render();
         var config = {
             clearColor: 0,
@@ -211,11 +216,11 @@ describe('Painter', function () {
 
 
     it('delLayer, clearHover', function () {
-        storage.addRoot(new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        storage.addRoot(new SmicPolygon({
             style: {pointList: [[0, 0], [100, 0], [100, 100], [0, 100]]},
             zlevel: 1
         }));
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         spyOn(painter, 'delLayer').and.callThrough();
         painter.delLayer(1);
         painter.render();
@@ -232,7 +237,7 @@ describe('Painter', function () {
 
     // 区域大小变化后重绘。
     it('resize', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         painter._width = 500;
         painter.resize();
         expect(painter).not.toBeNull();
@@ -243,7 +248,7 @@ describe('Painter', function () {
 
     //获取 Hover 层的 Dom。
     it('getDomHover', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         var dom = painter.getDomHover();
         expect(dom).not.toBeNull();
         expect(dom.nodeName).toEqual("CANVAS");
@@ -254,7 +259,7 @@ describe('Painter', function () {
 
     //图像导出
     it('toDataURL', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         var image = painter.toDataURL("PNG", "#fff", {});
         expect(image).not.toBeNull();
         expect(image).toContain("image/png");
@@ -262,10 +267,10 @@ describe('Painter', function () {
     });
 
     it('_shapeToImage', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         var list = storage.getShapeList(true);
         var shape = list[0];
-        var devicePixelRatio = SuperMap.LevelRenderer.Painter.devicePixelRatio;
+        var devicePixelRatio = Painter.devicePixelRatio;
         var imgShape = painter._shapeToImage('testId', shape, 400, 400, devicePixelRatio);
         expect(imgShape).not.toBeNull();
         expect(imgShape.id).toEqual("testId");
@@ -278,7 +283,7 @@ describe('Painter', function () {
     });
 
     it('updateHoverLayer', function () {
-        var painter = new SuperMap.LevelRenderer.Painter(testDiv, storage);
+        var painter = new Painter(testDiv, storage);
         var list = storage.getShapeList(true);
         painter.updateHoverLayer(list);
         expect(painter).not.toBeNull();

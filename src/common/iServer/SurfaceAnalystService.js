@@ -1,8 +1,9 @@
-﻿import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import DatasetSurfaceAnalystParameters from './DatasetSurfaceAnalystParameters';
-import GeometrySurfaceAnalystParameters from './GeometrySurfaceAnalystParameters';
-import SurfaceAnalystParameters from './SurfaceAnalystParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {Util} from '../commontypes/Util';
+import {DatasetSurfaceAnalystParameters} from './DatasetSurfaceAnalystParameters';
+import {GeometrySurfaceAnalystParameters} from './GeometrySurfaceAnalystParameters';
+import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
 
 
 /**
@@ -26,7 +27,7 @@ import SurfaceAnalystParameters from './SurfaceAnalystParameters';
  * (end)
  *
  */
-export default class SurfaceAnalystService extends SpatialAnalystBase {
+export class SurfaceAnalystService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -76,13 +77,13 @@ export default class SurfaceAnalystService extends SpatialAnalystBase {
                 ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
                 params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
             DatasetSurfaceAnalystParameters.toObject(params, parameterObject);
-            jsonParameters = SuperMap.Util.toJSON(parameterObject);
+            jsonParameters = Util.toJSON(parameterObject);
         } else if (params instanceof GeometrySurfaceAnalystParameters) {
             end = me.url.substr(me.url.length - 1, 1);
             me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
                 ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
                 ".json?returnContent=true";
-            jsonParameters = SuperMap.Util.toJSON(params);
+            jsonParameters = Util.toJSON(params);
         } else {
             return;
         }

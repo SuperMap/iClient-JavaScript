@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import ProcessingServiceBase from './ProcessingServiceBase';
-import TopologyValidatorJobsParameter from './TopologyValidatorJobsParameter';
+import {SuperMap} from '../SuperMap';
+import {ProcessingServiceBase} from './ProcessingServiceBase';
+import {TopologyValidatorJobsParameter} from './TopologyValidatorJobsParameter';
 
 /**
  * @class SuperMap.TopologyValidatorJobsService
@@ -9,7 +9,7 @@ import TopologyValidatorJobsParameter from './TopologyValidatorJobsParameter';
  * @param url -{string} 拓扑检查分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-export default class TopologyValidatorJobsService extends ProcessingServiceBase{
+export class TopologyValidatorJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);

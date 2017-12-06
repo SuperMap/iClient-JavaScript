@@ -1,4 +1,4 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 
 /**
  * @class SuperMap.Pixel
@@ -15,7 +15,7 @@
  *  var size = new SuperMap.Size(21,25);
  *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
  */
-export default class Pixel {
+export class Pixel {
 
     /**
      * @member SuperMap.Pixel.prototype.x -{number}
@@ -91,7 +91,7 @@ export default class Pixel {
         var equals = false;
         if (px != null) {
             equals = ((this.x == px.x && this.y == px.y) ||
-            (isNaN(this.x) && isNaN(this.y) && isNaN(px.x) && isNaN(px.y)));
+                (isNaN(this.x) && isNaN(this.y) && isNaN(px.x) && isNaN(px.y)));
         }
         return equals;
     }

@@ -1,7 +1,15 @@
 import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../../common/SuperMap';
+import {
+    GeometryVector,
+    GeometryPoint,
+    LineString,
+    LinearRing,
+    Polygon,
+    GeoText
+} from '@supermap/iclient-common';
 
 ol.supermap = ol.supermap || {};
+
 /**
  * @class ol.supermap.ThemeFeature
  * @classdesc 专题图要素类
@@ -9,7 +17,7 @@ ol.supermap = ol.supermap || {};
  * @param geometry - {Object} 要量算的几何对象
  * @param attributes - {Object} 属性
  */
-export default class ThemeFeature {
+export class ThemeFeature {
 
     constructor(geometry, attributes) {
         this.geometry = geometry;
@@ -23,29 +31,29 @@ export default class ThemeFeature {
     toFeature() {
         var geometry = this.geometry;
         if (geometry instanceof ol.geom.Point) {
-            geometry = new SuperMap.Geometry.Point(geometry.getCoordinates()[0], geometry.getCoordinates()[1]);
+            geometry = new GeometryPoint(geometry.getCoordinates()[0], geometry.getCoordinates()[1]);
         }
         if (geometry instanceof ol.geom.LineString) {
             let coords = geometry.getCoordinates();
             let points = [];
             for (let i = 0; i < coords.length; i++) {
-                points.push(new SuperMap.Geometry.Point(coords[i][0], coords[i][1]));
+                points.push(new GeometryPoint(coords[i][0], coords[i][1]));
             }
-            geometry = new SuperMap.Geometry.LineString(points);
+            geometry = new LineString(points);
         }
         if (geometry instanceof ol.geom.Polygon) {
             let coords = geometry.getCoordinates();
             let points = [];
             for (let i = 0; i < coords.length; i++) {
-                points.push(new SuperMap.Geometry.Point(coords[i][0], coords[i][1]));
+                points.push(new GeometryPoint(coords[i][0], coords[i][1]));
             }
-            var linearRings = new SuperMap.Geometry.LinearRing(points);
-            geometry = new SuperMap.Geometry.Polygon([linearRings]);
+            var linearRings = new LinearRing(points);
+            geometry = new Polygon([linearRings]);
         }
         if (geometry.length === 3) {
-            geometry = new SuperMap.Geometry.GeoText(geometry[0], geometry[1], geometry[2]);
+            geometry = new GeoText(geometry[0], geometry[1], geometry[2]);
         }
-        return new SuperMap.Feature.Vector(geometry, this.attributes);
+        return new GeometryVector(geometry, this.attributes);
     }
 }
 

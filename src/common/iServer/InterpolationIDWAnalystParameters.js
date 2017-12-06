@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import InterpolationAnalystParameters from './InterpolationAnalystParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
 
 /**
  * @class SuperMap.InterpolationIDWAnalystParameters
@@ -36,7 +37,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  * });
  *
  */
-export default  class InterpolationIDWAnalystParameters extends InterpolationAnalystParameters {
+export class InterpolationIDWAnalystParameters extends InterpolationAnalystParameters {
 
     /**
      * @member SuperMap.InterpolationIDWAnalystParameters.prototype.power - {number}
@@ -68,7 +69,7 @@ export default  class InterpolationIDWAnalystParameters extends InterpolationAna
         me.searchMode = null;
         me.expectedCount = 12;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 

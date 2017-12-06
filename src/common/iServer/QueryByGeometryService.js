@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import QueryService from './QueryService';
-import QueryByGeometryParameters from './QueryByGeometryParameters';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {QueryService} from './QueryService';
+import {QueryByGeometryParameters} from './QueryByGeometryParameters';
+import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.QueryByGeometryService
@@ -22,7 +23,7 @@ import ServerGeometry from './ServerGeometry';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default class QueryByGeometryService extends QueryService {
+export class QueryByGeometryService extends QueryService {
 
     /*
      * @function SuperMap.QueryByGeometryService.prototype.constructor
@@ -60,8 +61,8 @@ export default class QueryByGeometryService extends QueryService {
             sg = ServerGeometry.fromGeometry(geometry);
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'SpatialQuery','queryParameters':";
-        jsonParameters += SuperMap.Util.toJSON(qp) + ",'geometry':" + SuperMap.Util.toJSON(sg)
-            + ",'spatialQueryMode':" + SuperMap.Util.toJSON(params.spatialQueryMode);
+        jsonParameters += Util.toJSON(qp) + ",'geometry':" + Util.toJSON(sg)
+            + ",'spatialQueryMode':" + Util.toJSON(params.spatialQueryMode);
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     }

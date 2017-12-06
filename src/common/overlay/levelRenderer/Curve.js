@@ -1,5 +1,4 @@
-import SuperMap from '../../SuperMap';
-import Vector from './Vector';
+import {Vector} from './Vector';
 
 /**
  * @private
@@ -7,7 +6,7 @@ import Vector from './Vector';
  * LevelRenderer 工具-曲线
  *
  */
-export default class Curve {
+export class Curve {
 
     /**
      * Property: vector
@@ -600,4 +599,3 @@ export default class Curve {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Curve"
 }
-SuperMap.LevelRenderer.Tool.Curve = Curve;

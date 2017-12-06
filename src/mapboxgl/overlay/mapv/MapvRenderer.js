@@ -1,6 +1,7 @@
 import {baiduMapLayer, DataSet} from "mapv";
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
+
 /**
  * @private
  * @class MapvRenderer
@@ -12,7 +13,7 @@ var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
  * @extends BaseLayer
  *
  */
-export default class MapvRenderer extends BaseLayer {
+export class MapvRenderer extends BaseLayer {
     constructor(map, layer, dataSet, options) {
         super(map, dataSet, options);
         if (!BaseLayer) {

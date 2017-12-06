@@ -1,12 +1,15 @@
-import L from "leaflet";
+import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
-import GetLayersInfoService from '../../common/iServer/GetLayersInfoService';
-import SetLayerInfoService from '../../common/iServer/SetLayerInfoService';
-import SetLayersInfoService from '../../common/iServer/SetLayersInfoService';
-import SetLayerStatusService from '../../common/iServer/SetLayerStatusService';
-import SetLayerStatusParameters from '../../common/iServer/SetLayerStatusParameters';
-import SetLayerInfoParameters from '../../common/iServer/SetLayerInfoParameters';
-import SetLayersInfoParameters from '../../common/iServer/SetLayersInfoParameters';
+import '../core/Base';
+import {
+    GetLayersInfoService,
+    SetLayerInfoService,
+    SetLayersInfoService,
+    SetLayerStatusService,
+    SetLayerStatusParameters,
+    SetLayerInfoParameters,
+    SetLayersInfoParameters
+} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.layerInfoService

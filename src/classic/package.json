@@ -1,0 +1,19 @@
+{
+  "name": "@supermap/iclient-classic",
+  "description": "",
+  "version": "9.0.0",
+  "keywords": [
+    "SuperMap"
+  ],
+  "homepage": "https://github.com/SuperMap/iClient-JavaScript.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SuperMap/iClient9.git"
+  },
+  "author": "SuperMap",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "mapv": "2.0.14",
+    "@supermap/iclient-common": "9.0.0"
+  }
+}

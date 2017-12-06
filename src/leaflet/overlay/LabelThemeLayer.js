@@ -1,9 +1,7 @@
 import L from "leaflet";
-import FeatureVector from '../../common/commontypes/Vector';
-import GeoText from '../../common/commontypes/geometry/GeoText';
-import Bounds from '../../common/commontypes/Bounds';
-import {Util} from '../../common/commontypes/Util';
+import '../core/Base';
 import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
+import {GeometryVector, Bounds, GeoText, CommonUtil as Util} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.LabelThemeLayer
@@ -255,7 +253,7 @@ export var LabelThemeLayer = GeoFeatureThemeLayer.extend({
                 label.calculateBounds();
                 styTmp = Util.cloneObject(fi.style);
                 feaSty = Util.cloneObject(Util.copyAttributes(styTmp, styleTemp));
-                fea = new FeatureVector(label, fi.attributes, feaSty);
+                fea = new GeometryVector(label, fi.attributes, feaSty);
                 //赋予id
                 fea.id = fi.id;
                 fea.fid = fi.fid;

@@ -1,10 +1,11 @@
-﻿import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import InterpolationRBFAnalystParameters from './InterpolationRBFAnalystParameters';
-import InterpolationDensityAnalystParameters from './InterpolationDensityAnalystParameters';
-import InterpolationIDWAnalystParameters from './InterpolationIDWAnalystParameters';
-import InterpolationKrigingAnalystParameters from './InterpolationKrigingAnalystParameters';
-import InterpolationAnalystParameters from './InterpolationAnalystParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {InterpolationRBFAnalystParameters} from './InterpolationRBFAnalystParameters';
+import {InterpolationDensityAnalystParameters} from './InterpolationDensityAnalystParameters';
+import {InterpolationIDWAnalystParameters} from './InterpolationIDWAnalystParameters';
+import {InterpolationKrigingAnalystParameters} from './InterpolationKrigingAnalystParameters';
+import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
 
 /**
  * @class SuperMap.InterpolationAnalystService
@@ -27,7 +28,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  * (end)
  *
  */
-export default class InterpolationAnalystService extends SpatialAnalystBase {
+export class InterpolationAnalystService extends SpatialAnalystBase {
     /**
      * @member SuperMap.InterpolationAnalystService.prototype.mode -{string}
      * @description 插值分析类型。
@@ -39,7 +40,7 @@ export default class InterpolationAnalystService extends SpatialAnalystBase {
         super(url, options);
         var me = this;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 
@@ -96,7 +97,7 @@ export default class InterpolationAnalystService extends SpatialAnalystBase {
             }
         }
         InterpolationAnalystParameters.toObject(parameter, parameterObject);
-        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
 
         me.request({

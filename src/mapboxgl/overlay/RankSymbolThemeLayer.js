@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
-import SuperMap from '../../common/SuperMap';
-import Graph from './GraphThemeLayer';
+import '../core/Base';
+import {Graph} from './GraphThemeLayer';
+import {FeatureTheme} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.RankSymbolThemeLayer
@@ -10,7 +11,7 @@ import Graph from './GraphThemeLayer';
  * @param opt_options -{Object} 参数。
  * @extends mapboxgl.supermap.GraphThemeLayer
  */
-export default class RankSymbol extends Graph {
+export class RankSymbol extends Graph {
 
     constructor(name, symbolType, opt_options) {
         super(name, symbolType, opt_options);
@@ -38,11 +39,13 @@ export default class RankSymbol extends Graph {
     createThematicFeature(feature) {
         var thematicFeature;
         // 检查图形创建条件并创建图形
-        if (SuperMap.Feature.Theme[this.symbolType] && this.themeField && this.symbolSetting) {
-            thematicFeature = new SuperMap.Feature.Theme[this.symbolType](feature, this, [this.themeField], this.symbolSetting);
+        if (FeatureTheme[this.symbolType] && this.themeField && this.symbolSetting) {
+            thematicFeature = new FeatureTheme[this.symbolType](feature, this, [this.themeField], this.symbolSetting);
         }
         // thematicFeature 是否创建成功
-        if (!thematicFeature) {return false;}
+        if (!thematicFeature) {
+            return false;
+        }
         // 对专题要素执行图形装载
         thematicFeature.assembleShapes();
         return thematicFeature;

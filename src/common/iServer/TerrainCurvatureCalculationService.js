@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import TerrainCurvatureCalculationParameters from './TerrainCurvatureCalculationParameters';
+import {SuperMap} from '../SuperMap';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {TerrainCurvatureCalculationParameters} from './TerrainCurvatureCalculationParameters';
 
 /**
  * @class SuperMap.TerrainCurvatureCalculationService
@@ -20,7 +20,7 @@ import TerrainCurvatureCalculationParameters from './TerrainCurvatureCalculation
  * (end)
  *
  */
-export default class TerrainCurvatureCalculationService extends SpatialAnalystBase {
+export class TerrainCurvatureCalculationService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);

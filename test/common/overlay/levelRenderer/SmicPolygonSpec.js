@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicPolygon');
+var SmicPolygon = require('../../../../src/common/overlay/levelRenderer/SmicPolygon').SmicPolygon;
 
 describe('SmicPolygon', function () {
     var originalTimeout;
@@ -16,7 +16,7 @@ describe('SmicPolygon', function () {
     });
 
     it('constructor, destroy', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -40,7 +40,7 @@ describe('SmicPolygon', function () {
 
     //笔触 isHighlight = false 不使用高亮属性
     it('brush_isHighlight = false', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -66,7 +66,7 @@ describe('SmicPolygon', function () {
 
     //笔触 使用高亮属性
     it('brush', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -92,7 +92,7 @@ describe('SmicPolygon', function () {
     });
 
     it('buildPath_style1', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -130,7 +130,7 @@ describe('SmicPolygon', function () {
     });
 
     it('buildPath_style2', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
                 lineType: 'solid',
@@ -167,7 +167,7 @@ describe('SmicPolygon', function () {
     });
 
     it('buildPath_style3', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -192,7 +192,7 @@ describe('SmicPolygon', function () {
     });
 
     it('buildPath_style4', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -220,7 +220,7 @@ describe('SmicPolygon', function () {
     });
 
     it('buildPath_style5', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 //100x100的正方形
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -249,7 +249,7 @@ describe('SmicPolygon', function () {
     });
 
     it('getRect_style1', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
             }
@@ -273,7 +273,7 @@ describe('SmicPolygon', function () {
     });
 
     it('getRect_style2', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
             }

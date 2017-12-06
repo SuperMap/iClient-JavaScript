@@ -1,13 +1,15 @@
-import SuperMap from '../../SuperMap';
+import {SuperMap} from '../../SuperMap';
+import {Point} from '../../commontypes/geometry/Point';
+import {GeoText} from '../../commontypes/geometry/GeoText';
+import {LonLat} from '../../commontypes/LonLat';
 import {Util} from '../../commontypes/Util';
-import '../../commontypes/Feature';
 
 /**
  * @private
  * @class  SuperMap.Feature.Theme
  * 专题要素基类，此类不可实例化。
  */
-export default class Theme {
+export class Theme {
 
     /**
      * Property: id
@@ -57,9 +59,13 @@ export default class Theme {
      * {<SuperMap.Feature.Theme>} 返回一个专题要素。
      */
     constructor(data, layer) {
-        if (!data) {return;}
+        if (!data) {
+            return;
+        }
         // layer 必须已经添加到地图, 且已初始化渲染器
-        if (!layer || !layer.map || !layer.renderer) {return;}
+        if (!layer || !layer.map || !layer.renderer) {
+            return;
+        }
 
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
@@ -99,11 +105,11 @@ export default class Theme {
         var resolution = this.layer.map.getResolution();
         var extent = this.layer.map.getExtent();
 
-        if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
+        if (coordinate instanceof Point || coordinate instanceof GeoText) {
             let x = (coordinate.x / resolution + (-extent.left / resolution));
             let y = ((extent.top / resolution) - coordinate.y / resolution);
             return [x, y];
-        } else if (coordinate instanceof SuperMap.LonLat) {
+        } else if (coordinate instanceof LonLat) {
             let x = (coordinate.lon / resolution + (-extent.left / resolution));
             let y = ((extent.top / resolution) - coordinate.lat / resolution);
             return [x, y];
@@ -115,4 +121,5 @@ export default class Theme {
 
     CLASS_NAME = "SuperMap.Feature.Theme"
 }
+SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.Theme = Theme;

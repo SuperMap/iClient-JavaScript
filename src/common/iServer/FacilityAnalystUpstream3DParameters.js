@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystUpstream3DParameters
@@ -13,7 +14,7 @@ import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。<br>
  *        sourceNodeIDs - {Array<number>} 指定的设施点ID数组。
  */
-export default  class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParameters {
+export class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParameters {
 
     /**
      * @member SuperMap.FacilityAnalystUpstream3DParameters.prototype.sourceNodeIDs - {Array<number>}
@@ -24,7 +25,7 @@ export default  class FacilityAnalystUpstream3DParameters extends FacilityAnalys
     constructor(options) {
         super(options);
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 

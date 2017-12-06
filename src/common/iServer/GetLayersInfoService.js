@@ -1,9 +1,10 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import ServerTheme from './ServerTheme';
-import Grid from './Grid';
-import Image from './Image';
-import Vector from './Vector';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+import {ServerTheme} from './ServerTheme';
+import {Grid} from './Grid';
+import {UGCImage as Image} from './Image';
+import {Vector} from './Vector';
 
 /**
  * @class SuperMap.GetLayersInfoService
@@ -20,7 +21,7 @@ import Vector from './Vector';
  *         format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  *         isTempLayers - {boolean} 当前url对应的图层是否是临时图层。
  */
-export default  class GetLayersInfoService extends CommonServiceBase {
+export class GetLayersInfoService extends CommonServiceBase {
     /**
      * @member SuperMap.GetLayersInfoService.prototype.isTempLayers -{Boolean}
      * @description 当前url对应的图层是否是临时图层。
@@ -30,7 +31,7 @@ export default  class GetLayersInfoService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -40,7 +41,7 @@ export default  class GetLayersInfoService extends CommonServiceBase {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -73,7 +74,7 @@ export default  class GetLayersInfoService extends CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this, existRes, layers, len;
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
 
         existRes = !!result && result.length > 0;
         layers = existRes ? result[0].subLayers.layers : null;

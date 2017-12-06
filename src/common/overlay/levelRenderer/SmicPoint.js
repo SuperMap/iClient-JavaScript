@@ -1,5 +1,4 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
+import {Shape} from './Shape';
 
 /**
  * @private
@@ -26,7 +25,7 @@ import Shape from './Shape';
  * (end)
  *
  */
-export default class SmicPoint extends Shape {
+export class SmicPoint extends Shape {
 
     /**
      * Property: style
@@ -71,7 +70,9 @@ export default class SmicPoint extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
 
@@ -95,7 +96,9 @@ export default class SmicPoint extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         ctx.arc(style.x + __OP[0], style.y + __OP[1], style.r, 0, Math.PI * 2, true);
@@ -115,7 +118,9 @@ export default class SmicPoint extends Shape {
      * {Object} 边框对象。包含属性：x，y，width，height。
      */
     getRect(style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         if (style.__rect) {
@@ -141,4 +146,3 @@ export default class SmicPoint extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicPoint"
 }
-SuperMap.LevelRenderer.Shape.SmicPoint = SmicPoint;

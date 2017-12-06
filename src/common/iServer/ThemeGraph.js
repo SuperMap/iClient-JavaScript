@@ -1,11 +1,12 @@
-﻿import SuperMap from '../SuperMap';
-import Theme from './Theme';
-import ThemeFlow from './ThemeFlow';
-import ThemeOffset from './ThemeOffset';
-import ThemeGraphAxes from './ThemeGraphAxes';
-import ThemeGraphSize from './ThemeGraphSize';
-import ThemeGraphText from './ThemeGraphText';
-import ThemeGraphItem from './ThemeGraphItem';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Theme} from './Theme';
+import {ThemeFlow} from './ThemeFlow';
+import {ThemeOffset} from './ThemeOffset';
+import {ThemeGraphAxes} from './ThemeGraphAxes';
+import {ThemeGraphSize} from './ThemeGraphSize';
+import {ThemeGraphText} from './ThemeGraphText';
+import {ThemeGraphItem} from './ThemeGraphItem';
 import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
 
 
@@ -31,7 +32,7 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  *        roseAngle - {number}统计图中玫瑰图或三维玫瑰图用于等分的角度。<br>
  *        startAngle - {number}饼状统计图扇形的起始角度。
  */
-export default class ThemeGraph extends Theme {
+export class ThemeGraph extends Theme {
 
     /**
      * @member SuperMap.ThemeGraph.prototype.barWidth -{number}
@@ -224,7 +225,7 @@ export default class ThemeGraph extends Theme {
         me.graphText = new ThemeGraphText();
         me.offset = new ThemeOffset();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -280,7 +281,7 @@ export default class ThemeGraph extends Theme {
      * @return {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return SuperMap.Util.toJSON(this.toServerJSONObject());
+        return Util.toJSON(this.toServerJSONObject());
     }
 
     /**
@@ -341,7 +342,7 @@ export default class ThemeGraph extends Theme {
         var res = new ThemeGraph();
         var itemsG = obj.items;
         var len = itemsG ? itemsG.length : 0;
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.items = [];
         res.flow = ThemeFlow.fromObj(obj);
         res.graphAxes = ThemeGraphAxes.fromObj(obj);

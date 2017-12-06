@@ -1,5 +1,7 @@
-import SuperMap from '../../SuperMap';
-import Eventful from './Eventful';
+import {Util} from '../levelRenderer/Util';
+import {Eventful} from './Eventful';
+import {Clip} from './Clip';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -7,7 +9,7 @@ import Eventful from './Eventful';
  * @classdesc 动画主类, 调度和管理所有动画控制器。
  * @extends SuperMap.LevelRenderer.Eventful
  */
-export default class Animation extends Eventful {
+export class Animation extends Eventful {
 
     /**
      * Property: stage
@@ -81,7 +83,7 @@ export default class Animation extends Eventful {
         this.stage = options.stage || {};
 
         this.onframe = options.onframe || function () {
-            };
+        };
 
         // private properties
         this._clips = [];
@@ -114,7 +116,7 @@ export default class Animation extends Eventful {
      *
      */
     remove(clip) {
-        var idx = SuperMap.LevelRenderer.Util.indexOf(this._clips, clip);
+        var idx = Util.indexOf(this._clips, clip);
         if (idx >= 0) {
             this._clips.splice(idx, 1);
         }
@@ -239,7 +241,7 @@ export default class Animation extends Eventful {
      */
     animate(target, options) {
         options = options || {};
-        var deferred = new SuperMap.LevelRenderer.Animation.Animator(
+        var deferred = new Animation.Animator(
             target,
             options.loop,
             options.getter,
@@ -257,13 +259,13 @@ export default class Animation extends Eventful {
         var len = p0.length;
         if (arrDim == 1) {
             for (let i = 0; i < len; i++) {
-                out[i] = SuperMap.LevelRenderer.Animation._interpolateNumber(p0[i], p1[i], percent);
+                out[i] = Animation._interpolateNumber(p0[i], p1[i], percent);
             }
         } else {
             var len2 = p0[0].length;
             for (let i = 0; i < len; i++) {
                 for (let j = 0; j < len2; j++) {
-                    out[i][j] = SuperMap.LevelRenderer.Animation._interpolateNumber(
+                    out[i][j] = Animation._interpolateNumber(
                         p0[i][j], p1[i][j], percent
                     );
                 }
@@ -285,7 +287,7 @@ export default class Animation extends Eventful {
         var len = p0.length;
         if (arrDim == 1) {
             for (let i = 0; i < len; i++) {
-                out[i] = SuperMap.LevelRenderer.Animation._catmullRomInterpolate(
+                out[i] = Animation._catmullRomInterpolate(
                     p0[i], p1[i], p2[i], p3[i], t, t2, t3
                 );
             }
@@ -293,7 +295,7 @@ export default class Animation extends Eventful {
             var len2 = p0[0].length;
             for (let i = 0; i < len; i++) {
                 for (var j = 0; j < len2; j++) {
-                    out[i][j] = SuperMap.LevelRenderer.Animation._catmullRomInterpolate(
+                    out[i][j] = Animation._catmullRomInterpolate(
                         p0[i][j], p1[i][j], p2[i][j], p3[i][j],
                         t, t2, t3
                     );
@@ -313,9 +315,9 @@ export default class Animation extends Eventful {
     static _cloneValue(value) {
         var arraySlice = Array.prototype.slice;
 
-        if (SuperMap.LevelRenderer.Animation._isArrayLike(value)) {
+        if (Animation._isArrayLike(value)) {
             var len = value.length;
-            if (SuperMap.LevelRenderer.Animation._isArrayLike(value[0])) {
+            if (Animation._isArrayLike(value[0])) {
                 var ret = [];
                 for (var i = 0; i < len; i++) {
                     ret.push(arraySlice.call(value[i]));
@@ -340,13 +342,11 @@ export default class Animation extends Eventful {
     CLASS_NAME = "SuperMap.LevelRenderer.Animation"
 }
 
-SuperMap.LevelRenderer.Animation = Animation;
-
 /**
  * @private
  * @class SuperMap.LevelRenderer.Animation.Animator
  */
-SuperMap.LevelRenderer.Animation.Animator = class Animator {
+export class Animator {
 
     /**
      * Property: _tracks
@@ -471,7 +471,7 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                 if (time !== 0) {
                     this._tracks[propName].push({
                         time: 0,
-                        value: SuperMap.LevelRenderer.Animation._cloneValue(
+                        value: Animation._cloneValue(
                             this._getter(this._target, propName)
                         )
                     });
@@ -539,13 +539,13 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
             }
             // Guess data type
             var firstVal = keyframes[0].value;
-            var isValueArray = SuperMap.LevelRenderer.Animation._isArrayLike(firstVal);
+            var isValueArray = Animation._isArrayLike(firstVal);
             var isValueColor = false;
 
             // For vertices morphing
             var arrDim = (
                 isValueArray
-                && SuperMap.LevelRenderer.Animation._isArrayLike(firstVal[0])
+                && Animation._isArrayLike(firstVal[0])
             )
                 ? 2 : 1;
             // Sort keyframe as ascending
@@ -562,7 +562,7 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                 // Assume value is a color when it is a string
                 var value = keyframes[i].value;
                 if (typeof(value) == 'string') {
-                    value = SuperMap.LevelRenderer.Util_color.toArray(value);
+                    value = SUtil.Util_color.toArray(value);
                     if (value.length === 0) {    // Invalid color
                         value[0] = value[1] = value[2] = 0;
                         value[3] = 1;
@@ -625,7 +625,7 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                     p2 = kfValues[i > trackLen - 2 ? trackLen - 1 : i + 1];
                     p3 = kfValues[i > trackLen - 3 ? trackLen - 1 : i + 2];
                     if (isValueArray) {
-                        SuperMap.LevelRenderer.Animation._catmullRomInterpolateArray(
+                        Animation._catmullRomInterpolateArray(
                             p0, p1, p2, p3, w, w * w, w * w * w,
                             getter(target, propName),
                             arrDim
@@ -637,9 +637,9 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                             //     p0, p1, p2, p3, w, w * w, w * w * w,
                             //     rgba, 1
                             // );
-                            value = SuperMap.LevelRenderer.Animation.rgba2String(rgba);
+                            value = Animation.rgba2String(rgba);
                         } else {
-                            value = SuperMap.LevelRenderer.Animation._catmullRomInterpolate(
+                            value = Animation._catmullRomInterpolate(
                                 p0, p1, p2, p3, w, w * w, w * w * w
                             );
                         }
@@ -651,7 +651,7 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                     }
                 } else {
                     if (isValueArray) {
-                        SuperMap.LevelRenderer.Animation._interpolateArray(
+                        Animation._interpolateArray(
                             kfValues[i], kfValues[i + 1], w,
                             getter(target, propName),
                             arrDim
@@ -659,13 +659,13 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                     } else {
                         let value;
                         if (isValueColor) {
-                            SuperMap.LevelRenderer.Animation._interpolateArray(
+                            Animation._interpolateArray(
                                 kfValues[i], kfValues[i + 1], w,
                                 rgba, 1
                             );
-                            value = SuperMap.LevelRenderer.Animation.rgba2String(rgba);
+                            value = Animation.rgba2String(rgba);
                         } else {
-                            value = SuperMap.LevelRenderer.Animation._interpolateNumber(kfValues[i], kfValues[i + 1], w);
+                            value = Animation._interpolateNumber(kfValues[i], kfValues[i + 1], w);
                         }
                         setter(
                             target,
@@ -680,7 +680,7 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
                 }
             };
 
-            var clip = new SuperMap.LevelRenderer.Animation.Clip({
+            var clip = new Clip({
                 target: self._target,
                 life: trackMaxTime,
                 loop: self._loop,
@@ -752,6 +752,6 @@ SuperMap.LevelRenderer.Animation.Animator = class Animator {
 
 
     CLASS_NAME = "SuperMap.LevelRenderer.Animation.Animator"
-};
+}
 
 

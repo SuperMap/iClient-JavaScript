@@ -1,7 +1,5 @@
-import SuperMap from '../../SuperMap';
-import Curve from './Curve';
-import Vector from './Vector';
-import './LevelRenderer';
+import {Curve} from './Curve';
+import {Vector} from './Vector';
 
 /**
  * @private
@@ -9,7 +7,7 @@ import './LevelRenderer';
  * LevelRenderer 工具-图形 Bounds 计算
  *
  */
-export default class ComputeBoundingBox {
+export class ComputeBoundingBox {
 
     /**
      * Constructor: SuperMap.LevelRenderer.Tool.ComputeBoundingBox
@@ -17,7 +15,9 @@ export default class ComputeBoundingBox {
      *
      */
     constructor() {
-        if (arguments.length === 3) {this.computeBoundingBox(arguments);}
+        if (arguments.length === 3) {
+            this.computeBoundingBox(arguments);
+        }
     }
 
     /**
@@ -119,7 +119,7 @@ export default class ComputeBoundingBox {
      *
      */
     quadraticBezier(p0, p1, p2, min, max) {
-        var curve = new SuperMap.LevelRenderer.Tool.Curve();
+        var curve = new Curve();
 
         // Find extremities, where derivative in x dim or y dim is zero
         var t1 = curve.quadraticExtremum(p0[0], p1[0], p2[0]);
@@ -218,4 +218,3 @@ export default class ComputeBoundingBox {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.ComputeBoundingBox"
 }
-SuperMap.LevelRenderer.Tool.ComputeBoundingBox = ComputeBoundingBox;

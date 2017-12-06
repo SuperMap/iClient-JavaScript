@@ -1,8 +1,9 @@
-﻿import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import DatasetThiessenAnalystParameters from './DatasetThiessenAnalystParameters';
-import GeometryThiessenAnalystParameters from './GeometryThiessenAnalystParameters';
-import GeoJSON from '../format/GeoJSON';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {DatasetThiessenAnalystParameters} from './DatasetThiessenAnalystParameters';
+import {GeometryThiessenAnalystParameters} from './GeometryThiessenAnalystParameters';
+import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.ThiessenAnalystService
@@ -30,7 +31,7 @@ import GeoJSON from '../format/GeoJSON';
  * (end)
  *
  */
-export default class ThiessenAnalystService extends SpatialAnalystBase {
+export class ThiessenAnalystService extends SpatialAnalystBase {
     /**
      * @member SuperMap.ThiessenAnalystService.prototype.mode -{string}
      * @description 缓冲区分析类型
@@ -41,7 +42,7 @@ export default class ThiessenAnalystService extends SpatialAnalystBase {
         super(url, options);
         var me = this;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 
@@ -77,7 +78,7 @@ export default class ThiessenAnalystService extends SpatialAnalystBase {
             GeometryThiessenAnalystParameters.toObject(parameter, parameterObject);
         }
 
-        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",

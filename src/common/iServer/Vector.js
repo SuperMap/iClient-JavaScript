@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import UGCSubLayer from './UGCSubLayer';
-import ServerStyle from './ServerStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {UGCSubLayer} from './UGCSubLayer';
+import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.Vector
@@ -10,7 +11,7 @@ import ServerStyle from './ServerStyle';
  *        style - {{@link SuperMap.ServerStyle}} 矢量图层的风格。
  */
 
-export default  class Vector extends UGCSubLayer {
+export class Vector extends UGCSubLayer {
 
     /**
      * @member SuperMap.Vector.prototype.style -{SuperMap.ServerStyle}
@@ -29,7 +30,7 @@ export default  class Vector extends UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**

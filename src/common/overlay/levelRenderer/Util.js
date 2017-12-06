@@ -1,12 +1,10 @@
-import SuperMap from '../../SuperMap';
-
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Util
  * LevelRenderer 基础工具类
  *
  */
-export default class Util {
+export class Util {
 
     /**
      * Property: BUILTIN_OBJECT
@@ -152,7 +150,7 @@ export default class Util {
      * Returns:
      * {Object} 目标对象。
      */
-    merge(target, source, overwrite) {
+    static merge(target, source, overwrite) {
         for (var i in source) {
             this.mergeItem(target, source, i, overwrite);
         }
@@ -271,7 +269,7 @@ export default class Util {
      * Returns:
      * {Object}偏移量。
      */
-    indexOf(array, value) {
+    static indexOf(array, value) {
         if (array.indexOf) {
             return array.indexOf(value);
         }
@@ -313,4 +311,3 @@ export default class Util {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Util"
 }
-SuperMap.LevelRenderer.Tool.Util = Util;

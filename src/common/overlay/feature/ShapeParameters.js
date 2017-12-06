@@ -1,12 +1,10 @@
-import SuperMap from '../../SuperMap';
-import '../../commontypes/Feature';
-
+import {SuperMap} from '../../SuperMap';
 /**
  * @private
  * @class  SuperMap.Feature.ShapeParameters
  * 图形参数基类，此类不可实例化
  */
-export default class ShapeParameters {
+export class ShapeParameters {
 
     /**
      * APIProperty: refOriginalPosition
@@ -105,7 +103,7 @@ export default class ShapeParameters {
         this.highlightStyle = null;
     }
 
-
     CLASS_NAME = "SuperMap.Feature.ShapeParameters"
 }
+SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters = ShapeParameters;

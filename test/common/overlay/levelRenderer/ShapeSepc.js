@@ -1,4 +1,5 @@
-require('../../../../src/common/overlay/levelRenderer/Shape');
+var Shape = require('../../../../src/common/overlay/levelRenderer/Shape').Shape;
+var SmicPolygon = require('../../../../src/common/overlay/levelRenderer/SmicPolygon').SmicPolygon;
 
 describe('Shape', function () {
     var canvas, ctx;
@@ -25,7 +26,7 @@ describe('Shape', function () {
                 textAlign: 'center',
             }
         };
-        var shape = new SuperMap.LevelRenderer.Shape(options);
+        var shape = new Shape(options);
         expect(shape).not.toBeNull();
         expect(shape.id).not.toBeNull();
         expect(shape.style.x).toEqual(50);
@@ -62,7 +63,7 @@ describe('Shape', function () {
                 lineWidth: 1
             }
         };
-        var shape = new SuperMap.LevelRenderer.Shape(options);
+        var shape = new Shape(options);
         shape.brush(ctx, false);
         expect(shape).not.toBeNull();
         expect(shape.id).not.toBeNull();
@@ -102,7 +103,7 @@ describe('Shape', function () {
             },
             brushTypeOnly: 'stroke'
         };
-        var shape = new SuperMap.LevelRenderer.Shape(options);
+        var shape = new Shape(options);
         var style = shape.beforeBrush(ctx, true);
         expect(shape).not.toBeNull();
         expect(shape.id).not.toBeNull();
@@ -133,8 +134,8 @@ describe('Shape', function () {
                 lineWidth: 1
             }
         };
-        var shape = new SuperMap.LevelRenderer.Shape(options);
-        shape.__clipShapes[0] = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new Shape(options);
+        shape.__clipShapes[0] = new SmicPolygon({
             style: {
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
                 lineType: 'longdashdot',
@@ -166,7 +167,7 @@ describe('Shape', function () {
             brushType: 'fill',
             lineWidth: 1,
         };
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,
@@ -190,7 +191,7 @@ describe('Shape', function () {
     });
 
     it('drift', function () {
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,
@@ -210,7 +211,7 @@ describe('Shape', function () {
     });
 
     it('getRect', function () {
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,
@@ -241,7 +242,7 @@ describe('Shape', function () {
     });
 
     it('isCover', function () {
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,
@@ -262,7 +263,7 @@ describe('Shape', function () {
     });
 
     it('isCover_needTransform, getTansform ', function () {
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,
@@ -286,7 +287,7 @@ describe('Shape', function () {
     });
 
     it('drawText_textPosition = right', function () {
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,
@@ -334,7 +335,7 @@ describe('Shape', function () {
     });
 
     it('drawText_pointList', function () {
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,
@@ -378,7 +379,7 @@ describe('Shape', function () {
     });
 
     it('drawText_textPosition = start', function () {
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,
@@ -419,7 +420,7 @@ describe('Shape', function () {
     });
 
     it('drawText_textFont', function () {
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,
@@ -465,7 +466,7 @@ describe('Shape', function () {
 
     //图形发生改变
     it('modSelf', function () {
-        var shape = new SuperMap.LevelRenderer.Shape({
+        var shape = new Shape({
             style: {
                 __rect: {
                     x: 50,

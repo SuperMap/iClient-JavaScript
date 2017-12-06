@@ -9,7 +9,7 @@ import L from "leaflet";
  * @param tileSize - {number}切片大小
  * @param options - {Object} 渲染参数
  */
-export var  SVGRenderer = L.SVG.extend({
+export var SVGRenderer = L.SVG.extend({
 
     initialize: function (tileCoord, tileSize, options) {
         L.SVG.prototype.initialize.call(this, options);
@@ -76,7 +76,7 @@ export var  SVGRenderer = L.SVG.extend({
 
     _initContainer: function () {
         L.SVG.prototype._initContainer.call(this);
-       // var rect = L.SVG.create('rect');
+        // var rect = L.SVG.create('rect');
     },
 
     _addPath: function (layer) {

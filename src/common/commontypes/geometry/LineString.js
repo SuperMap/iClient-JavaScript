@@ -1,6 +1,6 @@
-﻿import SuperMap from '../../SuperMap';
-import Point from './Point';
-import Curve from './Curve';
+﻿import {SuperMap} from '../../SuperMap';
+import {Point} from './Point';
+import {Curve} from './Curve';
 
 /**
  * @class SuperMap.Geometry.LineString
@@ -16,7 +16,7 @@ import Curve from './Curve';
  *     new SuperMap.Geometry.Point(5305.19551436013, -3376.9669111768926)],
  * var roadLine = new SuperMap.Geometry.LineString(points)；
  */
-export default class LineString extends Curve {
+export class LineString extends Curve {
 
     constructor(points) {
         super(points);

@@ -1,8 +1,8 @@
-require('../../../../src/common/overlay/levelRenderer/ComputeBoundingBox');
+var ComputeBoundingBox = require('../../../../src/common/overlay/levelRenderer/ComputeBoundingBox').ComputeBoundingBox;
 
 describe('ComputeBoundingBox', function () {
     it('computeBoundingBox', function () {
-        var computeTool = new SuperMap.LevelRenderer.Tool.ComputeBoundingBox();
+        var computeTool = new ComputeBoundingBox();
         var points = [[10, 10], [5, 20], [20, 5], [20, 20]];
         var min = [], max = [];
         spyOn(computeTool, 'computeBoundingBox').and.callThrough();
@@ -18,7 +18,7 @@ describe('ComputeBoundingBox', function () {
     });
 
     it('cubeBezier', function () {
-        var computeTool = new SuperMap.LevelRenderer.Tool.ComputeBoundingBox();
+        var computeTool = new ComputeBoundingBox();
         var p0 = [15, 20];
         var p1 = [10, 30];
         var p2 = [20, 70];
@@ -35,7 +35,7 @@ describe('ComputeBoundingBox', function () {
     });
 
     it('quadraticBezier', function () {
-        var computeTool = new SuperMap.LevelRenderer.Tool.ComputeBoundingBox();
+        var computeTool = new ComputeBoundingBox();
         var p0 = [15, 20];
         var p1 = [10, 30];
         var p2 = [20, 70];
@@ -52,7 +52,7 @@ describe('ComputeBoundingBox', function () {
 
     it('arc', function () {
         var min = [], max = [];
-        var computeTool = new SuperMap.LevelRenderer.Tool.ComputeBoundingBox();
+        var computeTool = new ComputeBoundingBox();
         spyOn(computeTool, 'arc').and.callThrough();
         computeTool.arc(100, 100, 60, -30, -120, true, min, max);
         computeTool.arc(100, 100, 60, 30, 120, false, min, max);

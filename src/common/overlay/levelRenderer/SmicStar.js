@@ -1,5 +1,5 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
+import {Shape} from './Shape';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -23,7 +23,7 @@ import Shape from './Shape';
  * (end)
  *
  */
-export default class SmicStar extends Shape {
+export class SmicStar extends Shape {
 
     /**
      * Property: style
@@ -70,7 +70,9 @@ export default class SmicStar extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
     }
 
     /**
@@ -92,7 +94,9 @@ export default class SmicStar extends Shape {
      *
      */
     buildPath(ctx, style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var n = style.n;
@@ -100,8 +104,8 @@ export default class SmicStar extends Shape {
             return;
         }
 
-        var sin = SuperMap.LevelRenderer.Util_math.sin;
-        var cos = SuperMap.LevelRenderer.Util_math.cos;
+        var sin = SUtil.Util_math.sin;
+        var cos = SUtil.Util_math.cos;
         var PI = Math.PI;
 
         var x = style.x + __OP[0];
@@ -161,7 +165,9 @@ export default class SmicStar extends Shape {
             return style.__rect;
         }
 
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var lineWidth;
@@ -182,4 +188,3 @@ export default class SmicStar extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicStar"
 }
-SuperMap.LevelRenderer.Shape.SmicStar = SmicStar;

@@ -1,7 +1,9 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {EditType} from '../REST';
-import CommonServiceBase from './CommonServiceBase';
-import EditFeaturesParameters from './EditFeaturesParameters';
+import {CommonServiceBase} from './CommonServiceBase';
+import {EditFeaturesParameters} from './EditFeaturesParameters';
+
 /**
  * @class SuperMap.EditFeaturesService
  * @classdesc 数据服务中数据集添加、更新、删除服务类。
@@ -21,7 +23,7 @@ import EditFeaturesParameters from './EditFeaturesParameters';
  * };
  *
  */
-export default class EditFeaturesService extends CommonServiceBase {
+export class EditFeaturesService extends CommonServiceBase {
 
     /**
      * @member SuperMap.EditFeaturesService.prototype.returnContent -{boolean}
@@ -42,7 +44,7 @@ export default class EditFeaturesService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
         var me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
@@ -83,7 +85,7 @@ export default class EditFeaturesService extends CommonServiceBase {
         me.isUseBatch = params.isUseBatch;
         jsonParameters = EditFeaturesParameters.toJsonParameters(params);
         if (editType === EditType.DELETE) {
-            ids = SuperMap.Util.toJSON(params.IDs);
+            ids = Util.toJSON(params.IDs);
             me.url += "ids=" + ids;
             method = "DELETE";
             jsonParameters = ids;
@@ -111,4 +113,5 @@ export default class EditFeaturesService extends CommonServiceBase {
 
     CLASS_NAME = "SuperMap.EditFeaturesService"
 }
+
 SuperMap.EditFeaturesService = EditFeaturesService;

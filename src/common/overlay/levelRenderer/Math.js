@@ -1,12 +1,10 @@
-import SuperMap from '../../SuperMap';
-
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Math
  * LevelRenderer 工具-数学辅助类
  *
  */
-export default class Math {
+export class Math {
 
     /**
      * Property: _radians
@@ -88,4 +86,3 @@ export default class Math {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Math"
 }
-SuperMap.LevelRenderer.Tool.Math = Math;

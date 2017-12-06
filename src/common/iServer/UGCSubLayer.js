@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import UGCMapLayer from './UGCMapLayer';
-import JoinItem from './JoinItem';
-import DatasetInfo from './DatasetInfo';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {UGCMapLayer} from './UGCMapLayer';
+import {JoinItem} from './JoinItem';
+import {DatasetInfo} from './DatasetInfo';
 import '../REST';
 
 /**
@@ -15,7 +16,7 @@ import '../REST';
  *        representationField - {string} 存储制图表达信息的字段。<br>
  *        ugcLayerType - {{@link SuperMap.LayerType}} 图层类型
  */
-export default class UGCSubLayer extends UGCMapLayer {
+export class UGCSubLayer extends UGCMapLayer {
 
     /**
      * @member SuperMap.UGCSubLayer.prototype.datasetInfo -{SuperMap.DatasetInfo}
@@ -83,7 +84,7 @@ export default class UGCSubLayer extends UGCMapLayer {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
 

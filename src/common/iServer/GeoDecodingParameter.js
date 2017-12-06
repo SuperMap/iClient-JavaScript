@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.GeoDecodingParameter
@@ -12,7 +13,7 @@ import SuperMap from '../SuperMap';
  *        maxReturn - {number} 最大返回结果数。<br>
  *        geoDecodingRadius - {number} 查询半径。
  */
-export default class GeoDecodingParameter {
+export class GeoDecodingParameter {
     /**
      * @member SuperMap.GeoDecodingParameter.prototype.x - {number}
      * @description 查询位置的横坐标。
@@ -74,7 +75,7 @@ export default class GeoDecodingParameter {
             });
             options.filters = strs;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

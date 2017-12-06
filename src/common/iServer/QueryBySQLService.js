@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import QueryService from './QueryService';
-import QueryBySQLParameters from './QueryBySQLParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {QueryService} from './QueryService';
+import {QueryBySQLParameters} from './QueryBySQLParameters';
 
 /**
  * @class SuperMap.QueryBySQLService
@@ -28,7 +29,7 @@ import QueryBySQLParameters from './QueryBySQLParameters';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default  class QueryBySQLService extends QueryService {
+export class QueryBySQLService extends QueryService {
 
     /*
      * @function SuperMap.QueryBySQLService.prototype.constructor
@@ -64,7 +65,7 @@ export default  class QueryBySQLService extends QueryService {
             qp = null;
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'SqlQuery','queryParameters':";
-        jsonParameters += SuperMap.Util.toJSON(qp);
+        jsonParameters += Util.toJSON(qp);
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     }

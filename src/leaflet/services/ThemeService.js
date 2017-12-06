@@ -1,6 +1,8 @@
-﻿import L from "leaflet";
+﻿import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
-import SuperMapThemeService from '../../common/iServer/ThemeService';
+import '../core/Base';
+import {ThemeService as SuperMapThemeService} from '@supermap/iclient-common';
+
 /**
  * @class L.supermap.themeService
  * @classdesc 专题图服务类

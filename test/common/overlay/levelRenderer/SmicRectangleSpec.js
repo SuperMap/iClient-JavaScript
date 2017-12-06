@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicRectangle');
+var SmicRectangle = require('../../../../src/common/overlay/levelRenderer/SmicRectangle').SmicRectangle;
 
 describe('SmicRectangle', function () {
     var canvas, ctx;
@@ -15,7 +15,7 @@ describe('SmicRectangle', function () {
     });
 
     it('constructor, destroy', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
+        var shape = new SmicRectangle({
             style: {x: 0, y: 0, width: 100, height: 100, radius: [5, 5, 5, 5]}
         });
         expect(shape).not.toBeNull();
@@ -29,7 +29,7 @@ describe('SmicRectangle', function () {
     });
 
     it('buildPath_radius', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
+        var shape = new SmicRectangle({
             style: {x: 0, y: 0, width: 100, height: 100, radius: {}}
         });
         shape.refOriginalPosition = null;
@@ -66,10 +66,10 @@ describe('SmicRectangle', function () {
     });
 
     it('getRect', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
-            style: {x: 1, y: 1, width: 100, height: 100, radius: [5],brushType :'fill'}
+        var shape = new SmicRectangle({
+            style: {x: 1, y: 1, width: 100, height: 100, radius: [5], brushType: 'fill'}
         });
-        var style1= {x: 0, y: 0, width: 100, height: 100, radius: [5]};
+        var style1 = {x: 0, y: 0, width: 100, height: 100, radius: [5]};
         shape.refOriginalPosition = null;
         spyOn(shape, 'getRect').and.callThrough();
         var rect = shape.getRect(shape.style);

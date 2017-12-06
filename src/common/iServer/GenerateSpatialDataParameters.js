@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import './DataReturnOption';
 
 /**
@@ -17,7 +18,7 @@ import './DataReturnOption';
  *        retainedFields - {Array<string>} 欲保留到结果空间数据中的字段集合（系统字段除外）。</br>
  *        dataReturnOption - {@link SuperMap.DataReturnOption} 设置数据返回的最大记录。
  */
-export default  class GenerateSpatialDataParameters {
+export class GenerateSpatialDataParameters {
 
     /**
      * @member SuperMap.GenerateSpatialDataParameters.prototype.routeTable - {string}
@@ -89,7 +90,7 @@ export default  class GenerateSpatialDataParameters {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

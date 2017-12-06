@@ -1,4 +1,6 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.ClipParameter
@@ -11,7 +13,7 @@
  *          isClipInRegion - {Boolean} 是否对裁剪区内的数据集进行裁剪。<br>
  *          isExactClip - {Boolean} 是否使用精确裁剪。
  */
-export default class ClipParameter {
+export class ClipParameter {
 
     /**
      * @member SuperMap.ClipParameter.prototype.clipDatasetName -{string}
@@ -46,7 +48,7 @@ export default class ClipParameter {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -71,25 +73,33 @@ export default class ClipParameter {
      * @return {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        if (this.isClipInRegion == false) {return null;}
+        if (this.isClipInRegion == false) {
+            return null;
+        }
         var strClipParameter = "";
         var me = this;
 
-        strClipParameter += "'isClipInRegion':" + SuperMap.Util.toJSON(me.isClipInRegion);
+        strClipParameter += "'isClipInRegion':" + Util.toJSON(me.isClipInRegion);
 
-        if (me.clipDatasetName != null) {strClipParameter += "," + "'clipDatasetName':" + SuperMap.Util.toJSON(me.clipDatasetName);}
+        if (me.clipDatasetName != null) {
+            strClipParameter += "," + "'clipDatasetName':" + Util.toJSON(me.clipDatasetName);
+        }
 
-        if (me.clipDatasourceName != null) {strClipParameter += "," + "'clipDatasourceName':" + SuperMap.Util.toJSON(me.clipDatasourceName);}
+        if (me.clipDatasourceName != null) {
+            strClipParameter += "," + "'clipDatasourceName':" + Util.toJSON(me.clipDatasourceName);
+        }
 
-        if (me.isExactClip != null) {strClipParameter += "," + "'isExactClip':" + SuperMap.Util.toJSON(me.isExactClip);}
+        if (me.isExactClip != null) {
+            strClipParameter += "," + "'isExactClip':" + Util.toJSON(me.isExactClip);
+        }
 
         if (me.clipRegion != null) {
-            var serverGeometry = SuperMap.REST.ServerGeometry.fromGeometry(me.clipRegion);
+            var serverGeometry = ServerGeometry.fromGeometry(me.clipRegion);
             if (serverGeometry) {
                 var pointsCount = serverGeometry.parts[0];
                 var point2ds = serverGeometry.points.splice(0, pointsCount);
                 strClipParameter += "," + "'clipRegion':" + "{\"point2Ds\":";
-                strClipParameter += SuperMap.Util.toJSON(point2ds);
+                strClipParameter += Util.toJSON(point2ds);
                 strClipParameter += "}";
             }
         }
@@ -99,4 +109,5 @@ export default class ClipParameter {
 
     CLASS_NAME = "SuperMap.ClipParameter"
 }
+
 SuperMap.ClipParameter = ClipParameter;

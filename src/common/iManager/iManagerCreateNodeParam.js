@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.iManagerCreateNodeParam
@@ -6,7 +7,7 @@ import SuperMap from '../SuperMap';
  * @param params - {Object} iManager创建节点参数。
  *
  */
-export default class IManagerCreateNodeParam {
+export class IManagerCreateNodeParam {
 
     nodeSpec = 'SMALL';              //取值范围: ['SMALL','MEDIUM','LARGE'] 以及自定义的环境规格名称
     nodeCount = 1;                   //要创建vm的个数
@@ -19,7 +20,7 @@ export default class IManagerCreateNodeParam {
 
     constructor(params) {
         params = params || {};
-        SuperMap.Util.extend(this, params);
+        Util.extend(this, params);
     }
 
 }

@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicSector');
+var SmicSector = require('../../../../src/common/overlay/levelRenderer/SmicSector').SmicSector;
 
 describe('SmicSector', function () {
     var canvas, ctx;
@@ -15,7 +15,7 @@ describe('SmicSector', function () {
     });
 
     it('constructor, destroy', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicSector({
+        var shape = new SmicSector({
             style: {x: 100, y: 100, r: 60, r0: 30, startAngle: 0, endAngle: 180}
         });
         expect(shape).not.toBeNull();
@@ -29,7 +29,7 @@ describe('SmicSector', function () {
     });
 
     it('buildPath', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicSector({
+        var shape = new SmicSector({
             style: {x: 100, y: 100, r: 60, r0: 30, startAngle: 0, endAngle: 180}
         });
         shape.refOriginalPosition = null;
@@ -44,7 +44,7 @@ describe('SmicSector', function () {
     });
 
     it('getRect', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicSector({
+        var shape = new SmicSector({
             style: {x: 100, y: 100, r: 60, r0: 30, startAngle: 0, endAngle: 120}
         });
         var style1 = {x: 100, y: 100, r: 60, r0: 0, startAngle: 0, endAngle: 90};

@@ -23,7 +23,7 @@ module.exports = {
     externals: {
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
         'mapv': "function(){try{return mapv}catch(e){return {}}}()",
-        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
+        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()'
     },
     module: {
         rules: [{
@@ -40,7 +40,7 @@ module.exports = {
             query: {
                 presets: ['es2015'],
                 plugins: [
-                    'transform-class-properties',
+                    'transform-class-properties'
                 ]
             }
         }]

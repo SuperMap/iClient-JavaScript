@@ -1,8 +1,9 @@
-﻿import SuperMap from '../SuperMap';
-import DataReturnOption from './DataReturnOption';
-import FilterParameter from './FilterParameter';
-import OverlayAnalystParameters from './OverlayAnalystParameters';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {DataReturnOption} from './DataReturnOption';
+import {FilterParameter} from './FilterParameter';
+import {OverlayAnalystParameters} from './OverlayAnalystParameters';
+import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.DatasetOverlayAnalystParameters
@@ -20,7 +21,7 @@ import ServerGeometry from './ServerGeometry';
  *        resultSetting - {{@link SuperMap.DataReturnOption}} 结果返回设置类。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
-export default class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
+export class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
     /**
      * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateDataset -{string}
@@ -94,7 +95,7 @@ export default class DatasetOverlayAnalystParameters extends OverlayAnalystParam
         if (!options) {
             return this;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 

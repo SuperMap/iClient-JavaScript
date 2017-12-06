@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import Theme from './Theme';
-import ServerColor from './ServerColor';
-import ThemeGridUniqueItem from './ThemeGridUniqueItem';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Theme} from './Theme';
+import {ServerColor} from './ServerColor';
+import {ThemeGridUniqueItem} from './ThemeGridUniqueItem';
 
 /**
  * @class SuperMap.ThemeGridUnique
@@ -13,7 +14,7 @@ import ThemeGridUniqueItem from './ThemeGridUniqueItem';
  *        items - {Array<{@link SuperMap.ThemeGridUniqueItem}>} 栅格单值专题图子项数组。<br>
  *        defaultcolor - {{@link SuperMap.ServerColor}} 栅格单值专题图的默认颜色。
  */
-export default  class ThemeGridUnique extends Theme {
+export class ThemeGridUnique extends Theme {
 
     /**
      * @member SuperMap.ThemeGridUnique.prototype.defaultcolor -{SuperMap.ServerColor}
@@ -34,7 +35,7 @@ export default  class ThemeGridUnique extends Theme {
         var me = this;
         me.defaultcolor = new ServerColor();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -68,7 +69,7 @@ export default  class ThemeGridUnique extends Theme {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = SuperMap.Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.defaultcolor) {
             if (obj.defaultcolor.toServerJSONObject) {
                 obj.defaultcolor = obj.defaultcolor.toServerJSONObject();
@@ -95,7 +96,7 @@ export default  class ThemeGridUnique extends Theme {
         var res = new ThemeGridUnique();
         var uItems = obj.items;
         var len = uItems ? uItems.length : 0;
-        SuperMap.Util.extend(res, obj);
+        Util.extend(res, obj);
         res.items = [];
         res.defaultcolor = new ServerColor.fromJson(obj.defaultcolor);
         for (var i = 0; i < len; i++) {

@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import QueryService from './QueryService';
-import QueryByBoundsParameters from './QueryByBoundsParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {QueryService} from './QueryService';
+import {QueryByBoundsParameters} from './QueryByBoundsParameters';
 
 /**
  * @class SuperMap.QueryByBoundsService
@@ -23,7 +24,7 @@ import QueryByBoundsParameters from './QueryByBoundsParameters';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default  class QueryByBoundsService extends QueryService {
+export class QueryByBoundsService extends QueryService {
 
     constructor(url, options) {
         super(url, options);
@@ -53,7 +54,7 @@ export default  class QueryByBoundsService extends QueryService {
             bounds = params.bounds;
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'BoundsQuery','queryParameters':";
-        jsonParameters += SuperMap.Util.toJSON(qp);
+        jsonParameters += Util.toJSON(qp);
         jsonParameters += ",'bounds': {'rightTop':{'y':" + bounds.top + ",'x':" +
             bounds.right + "},'leftBottom':{'y':" + bounds.bottom + ",'x':" + bounds.left + "}}";
         jsonParameters = "{" + jsonParameters + "}";

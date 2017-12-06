@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import DatasourceConnectionInfo from './DatasourceConnectionInfo';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
 
 /**
  * @class SuperMap.LinkItem
@@ -69,7 +70,7 @@ import DatasourceConnectionInfo from './DatasourceConnectionInfo';
  *  function processFailed(e) {//todo}
  *
  */
-export default class LinkItem {
+export class LinkItem {
 
 
     /**
@@ -117,7 +118,7 @@ export default class LinkItem {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -141,4 +142,5 @@ export default class LinkItem {
 
     CLASS_NAME = "SuperMap.LinkItem"
 }
+
 SuperMap.LinkItem = LinkItem;

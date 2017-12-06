@@ -1,4 +1,6 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Geometry} from '../commontypes/Geometry';
 import './Route';
 
 /**
@@ -16,7 +18,7 @@ import './Route';
  *        startMeasure - {float} 定位线的起始M值。只当路由对象定位线时有意义。</br>
  *        endMeasure -  {float} 定位线的终止M值。只当路由对象定位线时有意义。</br>
  */
-export default class RouteLocatorParameters {
+export class RouteLocatorParameters {
     /**
      * @member SuperMap.RouteLocatorParameters.prototype.sourceRoute -{Object}
      * @description 路由对象。路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
@@ -88,7 +90,7 @@ export default class RouteLocatorParameters {
         }
         var routeFromClient = options.sourceRoute;
         var routeHandle = {};
-        if (routeFromClient && routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
+        if (routeFromClient && routeFromClient instanceof Geometry && routeFromClient.components) {
             routeHandle.type = routeFromClient.type;
             routeHandle.parts = routeFromClient.parts;
             var parts = [];
@@ -98,7 +100,7 @@ export default class RouteLocatorParameters {
             routeHandle.points = parts;
             options.sourceRoute = routeHandle;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 

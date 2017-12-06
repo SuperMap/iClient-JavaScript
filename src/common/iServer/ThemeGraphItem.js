@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerStyle from './ServerStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeGraphItem
@@ -10,7 +11,7 @@ import ServerStyle from './ServerStyle';
  *        memoryDoubleValues - {Array<number>} 内存数组方式制作专题图时的值数组。<br>
  *        uniformStyle - {{@link SuperMap.ServerStyle}} 统计专题图子项的显示风格
  */
-export default  class ThemeGraphItem {
+export class ThemeGraphItem {
 
     /**
      * @member SuperMap.ThemeGraphItem.prototype.caption -{string}
@@ -44,7 +45,7 @@ export default  class ThemeGraphItem {
         var me = this;
         me.uniformStyle = new ServerStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -67,9 +68,11 @@ export default  class ThemeGraphItem {
      * @return {SuperMap.ThemeGraphItem} ThemeGraphItem对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeGraphItem();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.uniformStyle = ServerStyle.fromJson(obj.uniformStyle);
         return res;
     }

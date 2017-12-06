@@ -1,11 +1,14 @@
 import mapboxgl from 'mapbox-gl';
-import SuperMap from '../../common/SuperMap';
-import Util from '../core/Util';
-import ServiceBase from './ServiceBase';
-import QueryByBoundsService from '../../common/iServer/QueryByBoundsService';
-import QueryByDistanceService from '../../common/iServer/QueryByDistanceService';
-import QueryBySQLService from '../../common/iServer/QueryBySQLService';
-import QueryByGeometryService from '../../common/iServer/QueryByGeometryService';
+import '../core/Base';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
+import {
+    Bounds, Geometry, GeometryPoint, DataFormat,
+    QueryByBoundsService,
+    QueryByDistanceService,
+    QueryBySQLService,
+    QueryByGeometryService
+} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.QueryService
@@ -20,7 +23,7 @@ import QueryByGeometryService from '../../common/iServer/QueryByGeometryService'
  *          //doSomething
  *      })
  */
-export default class QueryService extends ServiceBase {
+export class QueryService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -127,7 +130,7 @@ export default class QueryService extends ServiceBase {
         }
         if (params.bounds) {
             if (params.bounds instanceof Array) {
-                params.bounds = new SuperMap.Bounds(
+                params.bounds = new Bounds(
                     params.bounds[0],
                     params.bounds[1],
                     params.bounds[2],
@@ -135,7 +138,7 @@ export default class QueryService extends ServiceBase {
                 );
             }
             if (params.bounds instanceof mapboxgl.LngLatBounds) {
-                params.bounds = new SuperMap.Bounds(
+                params.bounds = new Bounds(
                     params.bounds.getSouthWest().lng,
                     params.bounds.getSouthWest().lat,
                     params.bounds.getNorthEast().lng,
@@ -148,14 +151,14 @@ export default class QueryService extends ServiceBase {
         if (params.geometry) {
 
             if (params.geometry instanceof mapboxgl.LngLat) {
-                params.geometry = new SuperMap.Geometry.Point(params.geometry.lng, params.geometry.lat);
+                params.geometry = new GeometryPoint(params.geometry.lng, params.geometry.lat);
             }
 
             if (params.geometry instanceof mapboxgl.Point) {
-                params.geometry = new SuperMap.Geometry.Point(params.geometry.x, params.geometry.y);
+                params.geometry = new GeometryPoint(params.geometry.x, params.geometry.y);
             }
 
-            if (params && !(params.geometry instanceof SuperMap.Geometry)) {
+            if (params && !(params.geometry instanceof Geometry)) {
 
                 params.geometry = Util.toSuperMapGeometry(params.geometry);
             }
@@ -164,7 +167,8 @@ export default class QueryService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
+
 mapboxgl.supermap.QueryService = QueryService;

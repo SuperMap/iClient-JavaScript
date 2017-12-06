@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import MeasureParameters from './MeasureParameters';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+import {MeasureParameters} from './MeasureParameters';
+import {ServerGeometry} from './ServerGeometry';
 import {MeasureMode} from '../REST';
 
 /**
@@ -23,7 +24,7 @@ import {MeasureMode} from '../REST';
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。<br>
  *        measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
-export default class MeasureService extends CommonServiceBase {
+export class MeasureService extends CommonServiceBase {
 
     /**
      * @member SuperMap.MeasureService.prototype.measureMode -{SuperMap.MeasureMode}
@@ -34,7 +35,7 @@ export default class MeasureService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -86,12 +87,12 @@ export default class MeasureService extends CommonServiceBase {
                 prjCoordSysTemp = '{"epsgCode"' + params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"), params.prjCoordSys.length) + "}";
             }
             paramsTemp = {
-                "point2Ds": SuperMap.Util.toJSON(point2ds),
+                "point2Ds": Util.toJSON(point2ds),
                 "unit": params.unit,
                 "prjCoordSys": prjCoordSysTemp
             };
         } else {
-            paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit};
+            paramsTemp = {"point2Ds": Util.toJSON(point2ds), "unit": params.unit};
         }
 
         me.request({

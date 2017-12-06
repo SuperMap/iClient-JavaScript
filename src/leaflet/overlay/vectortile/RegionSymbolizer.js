@@ -1,5 +1,5 @@
-import {Symbolizer} from './Symbolizer';
 import L from "leaflet";
+import {Symbolizer} from './Symbolizer';
 import {PolyBase} from './SymbolizerPolyBase';
 
 /**

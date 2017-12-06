@@ -1,7 +1,6 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
-import SmicPolygon from './SmicPolygon';
-import './SUtil';
+import {Shape} from './Shape';
+import {SmicPolygon} from './SmicPolygon';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -23,7 +22,7 @@ import './SUtil';
  * (end)
  *
  */
-export default class SmicBrokenLine extends Shape {
+export class SmicBrokenLine extends Shape {
 
     /**
      * Property: style
@@ -130,7 +129,7 @@ export default class SmicBrokenLine extends Shape {
         var len = Math.min(style.pointList.length, Math.round(style.pointListLength || style.pointList.length));
 
         if (style.smooth && style.smooth !== 'spline') {
-            var controlPoints = SuperMap.LevelRenderer.SUtil_smoothBezier(pointList, style.smooth, false, style.smoothConstraint, __OP);
+            var controlPoints = SUtil.SUtil_smoothBezier(pointList, style.smooth, false, style.smoothConstraint, __OP);
 
             ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
             var cp1;
@@ -146,7 +145,7 @@ export default class SmicBrokenLine extends Shape {
             }
         } else {
             if (style.smooth === 'spline') {
-                pointList = SuperMap.LevelRenderer.SUtil_smoothSpline(pointList, null, null, __OP);
+                pointList = SUtil.SUtil_smoothSpline(pointList, null, null, __OP);
                 len = pointList.length;
             }
             if (!style.lineType || style.lineType === 'solid') {
@@ -214,7 +213,7 @@ export default class SmicBrokenLine extends Shape {
 
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (var i = 1; i < len; i++) {
-                    SuperMap.LevelRenderer.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1],
                         pointList[i][0] + __OP[0], pointList[i][1] + __OP[1],
@@ -261,7 +260,7 @@ export default class SmicBrokenLine extends Shape {
                     * (style.lineType === 'dashed' ? 5 : 1);
                 ctx.moveTo(pointList[0][0] + __OP[0], pointList[0][1] + __OP[1]);
                 for (let i = 1; i < len; i++) {
-                    SuperMap.LevelRenderer.SUtil_dashedLineTo(
+                    SUtil.SUtil_dashedLineTo(
                         ctx,
                         pointList[i - 1][0] + __OP[0], pointList[i - 1][1] + __OP[1],
                         pointList[i][0] + __OP[0], pointList[i][1] + __OP[1],
@@ -298,4 +297,3 @@ export default class SmicBrokenLine extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicBrokenLine"
 }
-SuperMap.LevelRenderer.Shape.SmicBrokenLine = SmicBrokenLine;

@@ -1,20 +1,23 @@
 import mapboxgl from 'mapbox-gl';
-import Util from '../core/Util';
-import SuperMap from '../../common/SuperMap';
-import ServiceBase from './ServiceBase';
-import AreaSolarRadiationService from '../../common/iServer/AreaSolarRadiationService';
-import BufferAnalystService from '../../common/iServer/BufferAnalystService';
-import DensityAnalystService from '../../common/iServer/DensityAnalystService';
-import GenerateSpatialDataService from '../../common/iServer/GenerateSpatialDataService';
-import GeoRelationAnalystService from '../../common/iServer/GeoRelationAnalystService';
-import InterpolationAnalystService from '../../common/iServer/InterpolationAnalystService';
-import MathExpressionAnalysisService from '../../common/iServer/MathExpressionAnalysisService';
-import OverlayAnalystService from '../../common/iServer/OverlayAnalystService';
-import RouteCalculateMeasureService from '../../common/iServer/RouteCalculateMeasureService';
-import RouteLocatorService from '../../common/iServer/RouteLocatorService';
-import SurfaceAnalystService from '../../common/iServer/SurfaceAnalystService';
-import TerrainCurvatureCalculationService from '../../common/iServer/TerrainCurvatureCalculationService';
-import ThiessenAnalystService from '../../common/iServer/ThiessenAnalystService';
+import '../core/Base';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
+import {
+    DataFormat,
+    AreaSolarRadiationService,
+    BufferAnalystService,
+    DensityAnalystService,
+    GenerateSpatialDataService,
+    GeoRelationAnalystService,
+    InterpolationAnalystService,
+    MathExpressionAnalysisService,
+    OverlayAnalystService,
+    RouteCalculateMeasureService,
+    RouteLocatorService,
+    SurfaceAnalystService,
+    TerrainCurvatureCalculationService,
+    ThiessenAnalystService
+} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.SpatialAnalystService
@@ -28,7 +31,7 @@ import ThiessenAnalystService from '../../common/iServer/ThiessenAnalystService'
  * @param url - {string} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-export default class SpatialAnalystService extends ServiceBase {
+export class SpatialAnalystService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -396,7 +399,8 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
+
 mapboxgl.supermap.SpatialAnalystService = SpatialAnalystService;

@@ -1,11 +1,12 @@
-import '../../core/Base';
 import L from "leaflet";
+import '../../core/Base';
+
 /**
  * @constant L.supermap.DefaultStyle
  * @description 这个style对应的是默认设置
  * @private
  */
-export var DefaultStyle = L.supermap.DefaultStyle = {
+export var DefaultStyle = {
 
     /**
      * @constant L.supermap.DefaultStyle.prototype.TEXT
@@ -64,3 +65,5 @@ export var DefaultStyle = L.supermap.DefaultStyle = {
         dashArray: []
     }
 };
+
+L.supermap.DefaultStyle = DefaultStyle

@@ -9,7 +9,7 @@ import '../core/Base';
  * @param options - {Object} 可选参数。如：<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
-export default class ServiceBase extends mapboxgl.Evented {
+export class ServiceBase extends mapboxgl.Evented {
 
     constructor(url, options) {
         super();
@@ -18,4 +18,5 @@ export default class ServiceBase extends mapboxgl.Evented {
         this.fire('initialized', this);
     }
 }
+
 mapboxgl.supermap.ServiceBase = ServiceBase;

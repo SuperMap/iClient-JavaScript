@@ -1,8 +1,8 @@
-import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
+import {SuperMap} from '../SuperMap';
+import {CommonServiceBase} from './CommonServiceBase';
 import {FetchRequest} from '../util/FetchRequest';
-import GeoCodingParameter from './GeoCodingParameter';
-import GeoDecodingParameter from './GeoDecodingParameter';
+import {GeoCodingParameter} from './GeoCodingParameter';
+import {GeoDecodingParameter} from './GeoDecodingParameter';
 
 /**
  * @class SuperMap.AddressMatchService
@@ -10,7 +10,7 @@ import GeoDecodingParameter from './GeoDecodingParameter';
  * @param options - {Object} 参数。
  * @param url {string} 地址匹配服务地址。
  */
-export default class AddressMatchService extends CommonServiceBase {
+export class AddressMatchService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);

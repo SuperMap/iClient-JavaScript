@@ -1,6 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import Vector from '../commontypes/Vector';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Vector} from '../commontypes/Vector';
+import {ServerGeometry} from './ServerGeometry';
 import {Util} from '../commontypes/Util';
 
 /**
@@ -9,7 +9,7 @@ import {Util} from '../commontypes/Util';
  * 服务端矢量要素类。
  * 该类描述了服务端返回的矢量要素的相关信息，包括字段和几何信息。
  */
-export default class ServerFeature {
+export class ServerFeature {
 
     /*
      * APIProperty: fieldNames
@@ -84,7 +84,9 @@ export default class ServerFeature {
             geo = me.geometry.toGeometry();
         }
         feature = new Vector(geo, attr);
-        if (me.geometry && me.geometry.id) {feature.fid = me.geometry.id;}
+        if (me.geometry && me.geometry.id) {
+            feature.fid = me.geometry.id;
+        }
 
         return feature;
     }
@@ -108,7 +110,7 @@ export default class ServerFeature {
         if (geo) {
             geo = ServerGeometry.fromJson(geo);
         }
-        return new SuperMap.ServerFeature({
+        return new ServerFeature({
             fieldNames: jsonObject.fieldNames,
             fieldValues: jsonObject.fieldValues,
             geometry: geo

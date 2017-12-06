@@ -1,8 +1,7 @@
-import "../../core/Base";
-import {VectorFeatureType} from "./VectorFeatureType";
 import L from "leaflet";
+import {VectorFeatureType} from "./VectorFeatureType";
 import * as Util from "../../core/Util";
-import SuperMap from '../../../common/SuperMap';
+import {FetchRequest} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.VectorTileJSON
@@ -24,7 +23,7 @@ export var VectorTileJSON = L.Class.extend({
      */
     getTile: function () {
         var me = this;
-        return SuperMap.FetchRequest.get(me.url, null, {
+        return FetchRequest.get(me.url, null, {
             timeout: 10000
         }).then(function (response) {
             return response.json()

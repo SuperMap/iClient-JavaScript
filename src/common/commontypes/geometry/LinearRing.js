@@ -1,5 +1,5 @@
-﻿import SuperMap from '../../SuperMap';
-import LineString from './LineString';
+﻿import {SuperMap} from '../../SuperMap';
+import {LineString} from './LineString';
 
 /**
  * @class  SuperMap.Geometry.LinearRing
@@ -15,7 +15,7 @@ import LineString from './LineString';
  *      new SuperMap.Geometry.Point(5305.19551436013, -3376.9669111768926)],
  * var linearRing = new SuperMap.Geometry.LinearRing(points);
  */
-export default class LinearRing extends LineString {
+export class LinearRing extends LineString {
 
     /**
      * @member SuperMap.Geometry.LinearRing.prototype.componentTypes -{Array<string>}

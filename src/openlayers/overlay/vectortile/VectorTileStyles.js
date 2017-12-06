@@ -1,7 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
-import '../../../common/style/CartoCSS';
-import SuperMap from '../../../common/SuperMap';
-import StyleUtils from '../../core/StyleUtils';
+import {Unit, JSONFormat, CartoCSS} from '@supermap/iclient-common';
+import {StyleUtils} from '../../core/StyleUtils';
+import {Util} from '../../core/Util';
 
 ol.supermap = ol.supermap || {};
 
@@ -12,7 +12,7 @@ ol.supermap = ol.supermap || {};
  * @param options -{Object} 交互时所需可选参数
  * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
  */
-export default class VectorTileStyles extends ol.Observable {
+export class VectorTileStyles extends ol.Observable {
 
     constructor(options) {
         super();
@@ -23,36 +23,36 @@ export default class VectorTileStyles extends ol.Observable {
         if (options.donotNeedServerCartoCss !== undefined) {
             donotNeedServerCartoCss = options.donotNeedServerCartoCss
         }
-        ol.supermap.VectorTileStyles.setDonotNeedServerCartoCss(donotNeedServerCartoCss);
+        VectorTileStyles.setDonotNeedServerCartoCss(donotNeedServerCartoCss);
         if (options.view) {
-            ol.supermap.VectorTileStyles.setView(options.view);
+            VectorTileStyles.setView(options.view);
         }
         if (options.url) {
-            ol.supermap.VectorTileStyles.setUrl(options.url);
+            VectorTileStyles.setUrl(options.url);
         }
         if (options.cartoCss) {
-            ol.supermap.VectorTileStyles.setCartoCss(options.cartoCss);
+            VectorTileStyles.setCartoCss(options.cartoCss);
         }
         var selectedPointStyle = getDefaultSelectedPointStyle();
         if (options.selectedPointStyle) {
             selectedPointStyle = options.selectedPointStyle;
         }
-        ol.supermap.VectorTileStyles.setSelectedPointStyle(selectedPointStyle);
+        VectorTileStyles.setSelectedPointStyle(selectedPointStyle);
         var selectedLineStyle = getDefaultSelectedLineStyle();
         if (options.selectedLineStyle) {
             selectedLineStyle = options.selectedLineStyle;
         }
-        ol.supermap.VectorTileStyles.setSelectedLineStyle(selectedLineStyle);
+        VectorTileStyles.setSelectedLineStyle(selectedLineStyle);
         var selectedRegionStyle = getDefaultSelectedRegionStyle();
         if (options.selectedRegionStyle) {
             selectedRegionStyle = options.selectedRegionStyle;
         }
-        ol.supermap.VectorTileStyles.setSelectedRegionStyle(selectedRegionStyle);
+        VectorTileStyles.setSelectedRegionStyle(selectedRegionStyle);
         var selectedTextStyle = getDefaultSelectedTextStyle();
         if (options.selectedTextStyle) {
             selectedTextStyle = options.selectedTextStyle;
         }
-        ol.supermap.VectorTileStyles.setSelectedTextStyle(selectedTextStyle);
+        VectorTileStyles.setSelectedTextStyle(selectedTextStyle);
         var layersXHR = new XMLHttpRequest();
         layersXHR.onreadystatechange = function () {
             if (layersXHR.readyState == 4) {
@@ -65,13 +65,13 @@ export default class VectorTileStyles extends ol.Observable {
                         layersInfo[layers[j].name] = layers[j];
                     }
                 }
-                ol.supermap.VectorTileStyles.setLayersInfo(layersInfo);
-                if (!ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss()) {
+                VectorTileStyles.setLayersInfo(layersInfo);
+                if (!VectorTileStyles.getDonotNeedServerCartoCss()) {
                     var vectorStylesXHR = new XMLHttpRequest();
-                    vectorStylesXHR.open("GET", ol.supermap.VectorTileStyles.getUrl() + "/tileFeature/vectorstyles.json", false);
+                    vectorStylesXHR.open("GET", VectorTileStyles.getUrl() + "/tileFeature/vectorstyles.json", false);
                     vectorStylesXHR.onreadystatechange = function () {
                         if (vectorStylesXHR.readyState == 4) {
-                            var vectorStyles = new SuperMap.Format.JSON().read(vectorStylesXHR.responseText);
+                            var vectorStyles = new JSONFormat().read(vectorStylesXHR.responseText);
                             var cartoCss;
                             if (vectorStyles.style && vectorStyles.type === 'cartoCSS') {
                                 cartoCss = vectorStyles.style;
@@ -86,7 +86,7 @@ export default class VectorTileStyles extends ol.Observable {
                                 //将zoom转化为scale，以免引起混淆
                                 cartoCss = cartoCss.replace(/\[zoom/gi, "[scale");
                             }
-                            var cartoShadersArray = new SuperMap.CartoCSS(cartoCss).getShaders();
+                            var cartoShadersArray = new CartoCSS(cartoCss).getShaders();
                             var cartoShaders = {};
                             cartoShadersArray.map(function (cartoShader) {
                                 cartoShaders[cartoShader.elements[0].clean] = cartoShaders[cartoShader.elements[0].clean] || {};
@@ -94,13 +94,13 @@ export default class VectorTileStyles extends ol.Observable {
                                 cartoShaders[cartoShader.elements[0].clean][cartoShader.attachment].push(cartoShader);
                                 return cartoShader;
                             });
-                            ol.supermap.VectorTileStyles.setCartoShaders(cartoShaders);
+                            VectorTileStyles.setCartoShaders(cartoShaders);
                         }
                     };
                     vectorStylesXHR.send(null);
                 }
-                if (ol.supermap.VectorTileStyles.getCartoCss()) {
-                    var clientCartoShadersArray = new SuperMap.CartoCSS(ol.supermap.VectorTileStyles.getCartoCss()).getShaders();
+                if (VectorTileStyles.getCartoCss()) {
+                    var clientCartoShadersArray = new CartoCSS(VectorTileStyles.getCartoCss()).getShaders();
                     var clientCartoShaders = {};
                     clientCartoShadersArray.map(function (cartoShader) {
                         clientCartoShaders[cartoShader.elements[0].clean] = clientCartoShaders[cartoShader.elements[0].clean] || {};
@@ -108,19 +108,19 @@ export default class VectorTileStyles extends ol.Observable {
                         clientCartoShaders[cartoShader.elements[0].clean][cartoShader.attachment].push(cartoShader);
                         return cartoShader;
                     });
-                    ol.supermap.VectorTileStyles.setClientCartoShaders(clientCartoShaders);
+                    VectorTileStyles.setClientCartoShaders(clientCartoShaders);
                 }
             }
         };
-        layersXHR.open("GET", ol.supermap.VectorTileStyles.getUrl() + '/layers.json', false);
+        layersXHR.open("GET", VectorTileStyles.getUrl() + '/layers.json', false);
         layersXHR.send(null);
         this.on('featureSelected', function (e) {
-            ol.supermap.VectorTileStyles.setSelectedId(e.selectedId);
-            ol.supermap.VectorTileStyles.setLayerName(e.layerName);
+            VectorTileStyles.setSelectedId(e.selectedId);
+            VectorTileStyles.setLayerName(e.layerName);
         });
 
         /*
-         * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedPointStyle
+         * @function VectorTileStyles.prototype.getDefaultSelectedPointStyle
          * @description 设置默认选择后的点样式
          */
         function getDefaultSelectedPointStyle() {
@@ -135,7 +135,7 @@ export default class VectorTileStyles extends ol.Observable {
         }
 
         /*
-         * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedLineStyle
+         * @function VectorTileStyles.prototype.getDefaultSelectedLineStyle
          * @description 设置默认选择后的线样式
          */
         function getDefaultSelectedLineStyle() {
@@ -148,7 +148,7 @@ export default class VectorTileStyles extends ol.Observable {
         }
 
         /*
-         * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedRegionStyle
+         * @function VectorTileStyles.prototype.getDefaultSelectedRegionStyle
          * @description 设置默认选择后的面样式
          */
         function getDefaultSelectedRegionStyle() {
@@ -164,7 +164,7 @@ export default class VectorTileStyles extends ol.Observable {
         }
 
         /*
-         * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedTextStyle
+         * @function VectorTileStyles.prototype.getDefaultSelectedTextStyle
          * @description 设置默认选择后的文本样式
          */
         function getDefaultSelectedTextStyle() {
@@ -218,7 +218,7 @@ export default class VectorTileStyles extends ol.Observable {
     }
 
     /**
-     * @function ol.supermap.VectorTileStyles.setCartoCss
+     * @function VectorTileStyles.setCartoCss
      * @description 设置cartoCss的样式
      * @param cartoCss -{Object} cartoCss的样式
      */
@@ -398,7 +398,7 @@ export default class VectorTileStyles extends ol.Observable {
      * @param layerName -{string} 图层名
      */
     static getLayerInfo(layerName) {
-        var layersInfo = ol.supermap.VectorTileStyles.getLayersInfo();
+        var layersInfo = VectorTileStyles.getLayersInfo();
         if (layersInfo === undefined) {
             return null;
         }
@@ -436,19 +436,19 @@ export default class VectorTileStyles extends ol.Observable {
      * @param feature -{Object} 要素对象
      */
     static getStyle(originalLayerName, feature) {
-        var url = ol.supermap.VectorTileStyles.getUrl(),
-            view = ol.supermap.VectorTileStyles.getView(),
+        var url = VectorTileStyles.getUrl(),
+            view = VectorTileStyles.getView(),
             zoom = view.getZoom(),
             dpi = 96,
-            scale = ol.supermap.Util.resolutionToScale(view.getResolution(), dpi, SuperMap.Unit.METER),
+            scale = Util.resolutionToScale(view.getResolution(), dpi, Unit.METER),
             layerName = originalLayerName.replace(/(@)/gi, '___').replace(/(#)/gi, '___');
         // feature对象样式的配置遵循以下优先级：
         // 客户端CartoCSS > 服务器端CartoCSS > 服务器端layer样式 > 客户端默认样式。
-        if (ol.supermap.VectorTileStyles.getCartoCss() && ol.supermap.VectorTileStyles.getClientCartoShaders()[layerName]) {
-            return getStyleArray(ol.supermap.VectorTileStyles.getClientCartoShaders()[layerName]);
+        if (VectorTileStyles.getCartoCss() && VectorTileStyles.getClientCartoShaders()[layerName]) {
+            return getStyleArray(VectorTileStyles.getClientCartoShaders()[layerName]);
         }
-        var layerInfo = ol.supermap.VectorTileStyles.getLayerInfo(originalLayerName);
-        if (!ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss() && ol.supermap.VectorTileStyles.getCartoShaders()[layerName]) {
+        var layerInfo = VectorTileStyles.getLayerInfo(originalLayerName);
+        if (!VectorTileStyles.getDonotNeedServerCartoCss() && VectorTileStyles.getCartoShaders()[layerName]) {
             //如果是文本，这里特殊处理。
             if (feature.getProperties().textStyle || feature.getProperties().TEXT_FEATURE_CONTENT || layerInfo.type == 'LABEL' && layerInfo.textField) {
                 var featureStyle = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
@@ -457,7 +457,7 @@ export default class VectorTileStyles extends ol.Observable {
                 }
                 return featureStyle;
             }
-            return getStyleArray(ol.supermap.VectorTileStyles.getCartoShaders()[layerName]);
+            return getStyleArray(VectorTileStyles.getCartoShaders()[layerName]);
         }
         if (layerInfo) {
             return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
@@ -485,7 +485,7 @@ export default class VectorTileStyles extends ol.Observable {
             var textFeatureStyle = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
             if (layerInfo.type == 'LABEL') {
                 feature.setProperties({type: "TEXT"});
-                var cartoTextStyles = getStyleArray(ol.supermap.VectorTileStyles.getCartoShaders()[layerName]);
+                var cartoTextStyles = getStyleArray(VectorTileStyles.getCartoShaders()[layerName]);
                 var textStyle = textFeatureStyle.getText();
                 for (var i = 0; i < cartoTextStyles.length; i++) {
                     if (!textStyle) {
@@ -512,23 +512,23 @@ export default class VectorTileStyles extends ol.Observable {
         var layerName = feature.getProperties().layerName || feature.getProperties().layer;
         var id = feature.getProperties().id || parseInt(feature.getProperties().SmID);
         if (feature.getProperties().type && feature.getProperties().type.toUpperCase() === 'TEXT') {
-            selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type.toUpperCase());
+            selectedStyle = VectorTileStyles.getSelectedStyle(feature.getProperties().type.toUpperCase());
             if (feature.getProperties().texts) {
                 selectedStyle.getText().text_ = feature.getProperties().texts[0];
             } else {
                 selectedStyle.getText().text_ = "";
             }
         } else {
-            selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getGeometry().getType().toUpperCase());
+            selectedStyle = VectorTileStyles.getSelectedStyle(feature.getGeometry().getType().toUpperCase());
         }
         if (selectedStyle) {
-            var selectedLayerName = ol.supermap.VectorTileStyles.getLayerName();
-            var selectedId = ol.supermap.VectorTileStyles.getSelectedId();
+            var selectedLayerName = VectorTileStyles.getLayerName();
+            var selectedId = VectorTileStyles.getSelectedId();
             if (selectedLayerName === layerName && id === selectedId) {
                 return selectedStyle;
             }
         }
-        return ol.supermap.VectorTileStyles.getStyle(layerName, feature);
+        return VectorTileStyles.getStyle(layerName, feature);
     }
 }
 

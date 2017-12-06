@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.FacilityAnalystStreamParameters
@@ -10,7 +11,7 @@ import SuperMap from '../SuperMap';
  *         isUncertainDirectionValid - {boolean} 指定不确定流向是否有效；默认false，无效。<br>
  *         queryType - {number} 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）。
  */
-export default class FacilityAnalystStreamParameters {
+export class FacilityAnalystStreamParameters {
 
     /**
      * @member SuperMap.FacilityAnalystStreamParameters.prototype.sourceNodeIDs - {Array<number>}
@@ -48,7 +49,7 @@ export default class FacilityAnalystStreamParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(me, options);
+        Util.extend(me, options);
     }
 
 

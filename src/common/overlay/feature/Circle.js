@@ -1,5 +1,5 @@
-import SuperMap from '../../SuperMap';
-import ShapeParameters from './ShapeParameters';
+import {SuperMap} from '../../SuperMap';
+import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @private
@@ -11,7 +11,7 @@ import ShapeParameters from './ShapeParameters';
  */
 
 
-export default class Circle extends ShapeParameters {
+export class Circle extends ShapeParameters {
 
     /**
      * APIProperty: x
@@ -84,4 +84,5 @@ export default class Circle extends ShapeParameters {
 
     CLASS_NAME = "SuperMap.Feature.ShapeParameters.Circle"
 }
+SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Circle = Circle;

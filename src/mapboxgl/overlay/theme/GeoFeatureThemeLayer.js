@@ -1,8 +1,7 @@
 import mapboxgl from 'mapbox-gl';
-import {Util} from '../../../common/commontypes/Util';
-import Vector from '../../../common/overlay/ThemeVector';
-import ShapeFactory from '../../../common/overlay/feature/ShapeFactory';
-import Theme from './ThemeLayer';
+import '../../core/Base';
+import {CommonUtil as Util, ThemeVector as Vector, ShapeFactory} from '@supermap/iclient-common';
+import {Theme} from './ThemeLayer';
 
 /**
  * @class mapboxgl.supermap.GeoFeatureThemeLayer
@@ -13,7 +12,7 @@ import Theme from './ThemeLayer';
  * @extends mapboxgl.supermap.ThemeLayer
  */
 
-export default class GeoFeature extends Theme {
+export class GeoFeature extends Theme {
 
     /**
      * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.name -{string}
@@ -276,4 +275,5 @@ export default class GeoFeature extends Theme {
     }
 
 }
+
 mapboxgl.supermap.GeoFeatureThemeLayer = GeoFeature;

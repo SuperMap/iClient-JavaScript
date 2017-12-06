@@ -1,12 +1,7 @@
-import '../core/Base';
-import '../../common/security/SecurityManager';
-import SuperMap from '../../common/SuperMap';
 import L from "leaflet";
-import {ServerType, Unit} from "../../common/REST";
-import Credential from "../../common/commontypes/Credential";
+import "../core/Base";
+import {SecurityManager, ServerType, Unit, Credential, CommonUtil, ServerGeometry} from '@supermap/iclient-common';
 import * as Util from "../core/Util";
-import {Util as CommonUtil} from "../../common/commontypes/Util";
-import ServerGeometry from '../../common/iServer/ServerGeometry';
 
 /**
  * @class L.supermap.tiledMapLayer
@@ -306,7 +301,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         var crs = me._crs;
         if (crs.options && crs.options.origin) {
             params["origin"] = JSON.stringify({x: crs.options.origin[0], y: crs.options.origin[1]});
-        }else if (crs.projection && crs.projection.bounds) {
+        } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = L.point(bounds.min.x, bounds.max.y);
             params["origin"] = JSON.stringify({x: tileOrigin.x, y: tileOrigin.y});
@@ -333,23 +328,23 @@ export var TiledMapLayer = L.TileLayer.extend({
         var newUrl = url, credential, value;
         switch (this.options.serverType) {
             case ServerType.ISERVER:
-                value = SuperMap.SecurityManager.getToken(url);
+                value = SecurityManager.getToken(url);
                 credential = value ? new Credential(value, "token") : null;
                 break;
             case ServerType.IPORTAL:
-                value = SuperMap.SecurityManager.getToken(url);
+                value = SecurityManager.getToken(url);
                 credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
-                    value = SuperMap.SecurityManager.getKey(url);
+                    value = SecurityManager.getKey(url);
                     credential = value ? new Credential(value, "key") : null;
                 }
                 break;
             case ServerType.ONLINE:
-                value = SuperMap.SecurityManager.getKey(url);
+                value = SecurityManager.getKey(url);
                 credential = value ? new Credential(value, "key") : null;
                 break;
             default:
-                value = SuperMap.SecurityManager.getToken(url);
+                value = SecurityManager.getToken(url);
                 credential = value ? new Credential(value, "token") : null;
                 break;
         }
@@ -363,4 +358,5 @@ export var TiledMapLayer = L.TileLayer.extend({
 export var tiledMapLayer = function (url, options) {
     return new TiledMapLayer(url, options);
 };
+
 L.supermap.tiledMapLayer = tiledMapLayer;

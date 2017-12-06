@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerColor from './ServerColor';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerColor} from './ServerColor';
 
 /**
  * @class SuperMap.ThemeGridUniqueItem
@@ -11,7 +12,7 @@ import ServerColor from './ServerColor';
  *        unique - {number}栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。<br>
  *        visible - {boolean} 栅格单值专题图子项是否可见。
  */
-export default  class ThemeGridUniqueItem {
+export class ThemeGridUniqueItem {
 
     /**
      * @member SuperMap.ThemeGridUniqueItem.prototype.caption -{string}
@@ -41,7 +42,7 @@ export default  class ThemeGridUniqueItem {
         var me = this;
         me.color = new ServerColor();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -68,7 +69,7 @@ export default  class ThemeGridUniqueItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = SuperMap.Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.color) {
             if (obj.color.toServerJSONObject) {
                 obj.color = obj.color.toServerJSONObject();
@@ -85,7 +86,7 @@ export default  class ThemeGridUniqueItem {
      */
     static fromObj(obj) {
         var res = new ThemeGridUniqueItem();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.color = ServerColor.fromJson(obj.color);
         return res;
 

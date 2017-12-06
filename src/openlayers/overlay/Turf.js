@@ -7,7 +7,7 @@ import turf from '@turf/turf';
  * @param opt_options -{Object} 参数
  * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
  */
-export default class Turf extends ol.source.Vector {
+export class Turf extends ol.source.Vector {
 
     turfMap = {
         "Measurement.along": ["line", "distance", "units"],
@@ -197,4 +197,5 @@ export default class Turf extends ol.source.Vector {
     }
 
 }
+
 ol.source.Turf = Turf;

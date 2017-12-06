@@ -1,7 +1,6 @@
 import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../../common/SuperMap';
-import Theme from './Theme';
-import Vector from '../../../common/overlay/ThemeVector';
+import {Bounds, CommonUtil, ShapeFactory, ThemeVector as Vector} from '@supermap/iclient-common';
+import {Theme} from './Theme';
 
 /**
  * @class ol.source.GeoFeature
@@ -12,7 +11,7 @@ import Vector from '../../../common/overlay/ThemeVector';
  * @extends ol.source.Theme
  */
 
-export default class GeoFeature extends Theme {
+export class GeoFeature extends Theme {
 
     constructor(name, opt_options) {
         super(name, opt_options);
@@ -54,7 +53,7 @@ export default class GeoFeature extends Theme {
      */
     addFeatures(features) {
         //数组
-        if (!(SuperMap.Util.isArray(features))) {
+        if (!(CommonUtil.isArray(features))) {
             features = [features];
         }
         this.dispatchEvent({type: 'beforefeaturesadded', value: {features: features}});
@@ -120,7 +119,7 @@ export default class GeoFeature extends Theme {
 
             //剔除当前视图（地理）范围以外的数据
             if (extent) {
-                var bounds = new SuperMap.Bounds(extent[0], extent[1], extent[2], extent[3]);
+                var bounds = new Bounds(extent[0], extent[1], extent[2], extent[3]);
                 if (!bounds.intersectsBounds(feaBounds)) {
                     continue;
                 }
@@ -171,9 +170,9 @@ export default class GeoFeature extends Theme {
      * @param feature - {Object} 要素对象
      */
     createThematicFeature(feature) {
-        var style = SuperMap.Util.copyAttributesWithClip(this.style);
+        var style = CommonUtil.copyAttributesWithClip(this.style);
         if (feature.style && this.isAllowFeatureStyle === true) {
-            style = SuperMap.Util.copyAttributesWithClip(feature.style);
+            style = CommonUtil.copyAttributesWithClip(feature.style);
         }
         //创建专题要素时的可选参数
         var options = {};
@@ -181,9 +180,9 @@ export default class GeoFeature extends Theme {
         options.isHoverAble = this.isHoverAble;
         options.isMultiHover = this.isMultiHover;
         options.isClickAble = this.isClickAble;
-        options.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(this.highlightStyle);
+        options.highlightStyle = ShapeFactory.transformStyle(this.highlightStyle);
         //将数据转为专题要素（Vector）
-        var thematicFeature = new Vector(feature, this, SuperMap.Feature.ShapeFactory.transformStyle(style), options);
+        var thematicFeature = new Vector(feature, this, ShapeFactory.transformStyle(style), options);
         //直接添加图形到渲染器
         for (var m = 0; m < thematicFeature.shapes.length; m++) {
             this.renderer.addShape(thematicFeature.shapes[m]);
@@ -257,4 +256,5 @@ export default class GeoFeature extends Theme {
     }
 
 }
+
 ol.source.GeoFeature = GeoFeature;

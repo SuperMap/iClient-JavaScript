@@ -1,6 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import FacilityAnalystSources3DParameters from './FacilityAnalystSources3DParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {CommonServiceBase} from './CommonServiceBase';
+import {FacilityAnalystSources3DParameters} from './FacilityAnalystSources3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystSources3DService
@@ -16,7 +16,7 @@ import FacilityAnalystSources3DParameters from './FacilityAnalystSources3DParame
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class FacilityAnalystSources3DService extends CommonServiceBase {
+export class FacilityAnalystSources3DService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);

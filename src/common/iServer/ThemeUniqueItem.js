@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerStyle from './ServerStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeUniqueItem
@@ -12,7 +13,7 @@ import ServerStyle from './ServerStyle';
  *        unique - {string} 单值专题图子项的单值。<br>
  *        visible - {boolean} 单值专题图子项是否可见。
  */
-export default class ThemeUniqueItem {
+export class ThemeUniqueItem {
 
     /**
      * @member SuperMap.ThemeUniqueItem.prototype.caption -{string}
@@ -42,7 +43,7 @@ export default class ThemeUniqueItem {
         var me = this;
         me.style = new ServerStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -69,7 +70,7 @@ export default class ThemeUniqueItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = SuperMap.Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.style) {
             if (obj.style.toServerJSONObject) {
                 obj.style = obj.style.toServerJSONObject();
@@ -86,7 +87,7 @@ export default class ThemeUniqueItem {
      */
     static fromObj(obj) {
         var res = new ThemeUniqueItem();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.style = ServerStyle.fromJson(obj.style);
         return res;
 

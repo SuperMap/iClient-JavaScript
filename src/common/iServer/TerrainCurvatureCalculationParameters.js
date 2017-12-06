@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.TerrainCurvatureCalculationParameters
@@ -11,7 +12,7 @@ import SuperMap from '../SuperMap';
  *        planCurvatureName - {string} 结果数据集：平面曲率数据集的名称。</br>
  *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
  */
-export default  class TerrainCurvatureCalculationParameters {
+export class TerrainCurvatureCalculationParameters {
 
     /**
      * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.dataset -{string}
@@ -58,7 +59,7 @@ export default  class TerrainCurvatureCalculationParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 
@@ -75,6 +76,7 @@ export default  class TerrainCurvatureCalculationParameters {
         me.planCurvatureName = null;
         me.deleteExistResultDataset = true;
     }
+
     /**
      * @function SuperMap.TerrainCurvatureCalculationParameters.toObject
      * @param derrainCurvatureCalculationParameters - {Object}  地形曲率计算参数

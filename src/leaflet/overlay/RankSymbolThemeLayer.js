@@ -1,5 +1,6 @@
 import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+import '../core/Base';
+import {FeatureTheme} from '@supermap/iclient-common';
 import {GraphThemeLayer} from './GraphThemeLayer';
 
 /**
@@ -51,12 +52,14 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
         var me = this;
         var thematicFeature;
         // 检查图形创建条件并创建图形
-        if (SuperMap.Feature.Theme[me.symbolType] && me.themeField && me.symbolSetting) {
-            thematicFeature = new SuperMap.Feature.Theme[me.symbolType](feature, me, [me.themeField], me.symbolSetting);
+        if (FeatureTheme[me.symbolType] && me.themeField && me.symbolSetting) {
+            thematicFeature = new FeatureTheme[me.symbolType](feature, me, [me.themeField], me.symbolSetting);
         }
 
         // thematicFeature 是否创建成功
-        if (!thematicFeature) {return false;}
+        if (!thematicFeature) {
+            return false;
+        }
 
         // 对专题要素执行图形装载
         thematicFeature.assembleShapes();

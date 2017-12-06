@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import StopQueryParameters from './StopQueryParameters'
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+import {StopQueryParameters} from './StopQueryParameters'
 
 /**
  * @class SuperMap.StopQueryService
@@ -25,13 +26,13 @@ import StopQueryParameters from './StopQueryParameters'
  *
  */
 
-export default  class StopQueryService extends CommonServiceBase {
+export class StopQueryService extends CommonServiceBase {
 
 
     constructor(url, options) {
         super(url, options);
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -39,7 +40,7 @@ export default  class StopQueryService extends CommonServiceBase {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**

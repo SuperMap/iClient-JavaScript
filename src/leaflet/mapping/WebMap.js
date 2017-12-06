@@ -1,19 +1,25 @@
-import '../core/Base';
 import L from "leaflet";
 import jsonsql from "jsonsql";
 import proj4 from "proj4";
-import {FetchRequest as Request} from '../../common/util/FetchRequest';
-import {DataFormat} from '../../common/REST';
-import GeoJSONFormat from '../../common/format/GeoJSON';
-import ServerFeature from '../../common/iServer/ServerFeature';
-import ThemeStyle from '../../common/style/ThemeStyle';
-import Vector from '../../common/commontypes/Vector';
-import Point from '../../common/commontypes/geometry/Point';
-import {Util} from '../../common/commontypes/Util';
-import GetFeaturesBySQLParameters from '../../common/iServer/GetFeaturesBySQLParameters';
+import "../core/Base";
+import {
+    FetchRequest as Request,
+    DataFormat,
+    GeoJSON as GeoJSONFormat,
+    ServerFeature,
+    ThemeStyle,
+    GeometryVector as Vector,
+    GeometryPoint as Point,
+    CommonUtil as Util,
+    GetFeaturesBySQLParameters
+} from '@supermap/iclient-common';
 import {CartoCSSToLeaflet} from '../overlay/carto/CartoCSSToLeaflet' ;
 import {NonEarthCRS} from "../core/NonEarthCRS";
 import {Graphic} from '../overlay/graphic/Graphic';
+import {baiduTileLayer} from './BaiduTileLayer';
+import {wmtsLayer} from './TileLayer.WMTS';
+import {cloudTileLayer} from './CloudTileLayer';
+import {tiledMapLayer} from './TiledMapLayer';
 import {UniqueThemeLayer} from "../overlay/UniqueThemeLayer";
 import {RangeThemeLayer} from "../overlay/RangeThemeLayer";
 import {LabelThemeLayer} from "../overlay/LabelThemeLayer";
@@ -21,7 +27,7 @@ import {featureService} from "../services/FeatureService";
 import {ThemeFeature} from '../overlay/theme/ThemeFeature';
 import {UnicodeMarker} from '../overlay/UnicodeMarker';
 import {TiandituTileLayer} from '../mapping/TiandituTileLayer';
-import "../../common/style/supermapol-icons.css"
+import "@supermap/iclient-common/style/supermapol-icons.css";
 
 /**
  * @class L.supermap.webmap
@@ -265,7 +271,7 @@ export var WebMap = L.LayerGroup.extend({
         var layer;
         switch (type) {
             case "SUPERMAP_REST" :
-                layer = L.supermap.tiledMapLayer(layerInfo.url, {
+                layer = tiledMapLayer(layerInfo.url, {
                     transparent: true,
                     opacity: opacity
                 });
@@ -285,7 +291,7 @@ export var WebMap = L.LayerGroup.extend({
                 mapOptions.crs = L.CRS.BaiduCRS;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
-                layer = L.supermap.baiduTileLayer();
+                layer = baiduTileLayer();
                 break;
             case 'BING':
                 //todo
@@ -297,7 +303,7 @@ export var WebMap = L.LayerGroup.extend({
                 mapOptions.resolutions = this.getResolutionsFromScales(scales, 90.71446714322, layerInfo.units);
                 var identifier = layerInfo.identifier;
                 var layerName = identifier.substring(identifier.indexOf("_") + 1);
-                layer = L.supermap.wmtsLayer(layerInfo.url, {
+                layer = wmtsLayer(layerInfo.url, {
                     layer: layerName,
                     style: "default",
                     tilematrixSet: identifier,
@@ -308,7 +314,7 @@ export var WebMap = L.LayerGroup.extend({
                 mapOptions.crs = L.CRS.EPSG3857;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
-                layer = L.supermap.cloudTileLayer(layerInfo.url, {opacity: opacity});
+                layer = cloudTileLayer(layerInfo.url, {opacity: opacity});
                 break;
             case "MARKER_LAYER":
                 layer = this.createMarkersLayer(layerInfo, crs);
@@ -1182,4 +1188,5 @@ export var WebMap = L.LayerGroup.extend({
 export var webMap = function (id, options) {
     return new WebMap(id, options);
 };
+
 L.supermap.webmap = webMap;

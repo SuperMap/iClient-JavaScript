@@ -1,6 +1,7 @@
-import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import GetGridCellInfosParameters from './GetGridCellInfosParameters';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+import {GetGridCellInfosParameters} from './GetGridCellInfosParameters';
 
 /**
  * @class SuperMap.GetGridCellInfosService
@@ -19,7 +20,7 @@ import GetGridCellInfosParameters from './GetGridCellInfosParameters';
  * });
  *
  */
-export default  class GetGridCellInfosService extends CommonServiceBase {
+export class GetGridCellInfosService extends CommonServiceBase {
 
     /**
      * @member SuperMap.GetGridCellInfosService.prototype.datasetName -{string}
@@ -54,7 +55,7 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -81,7 +82,7 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
         if (!(params instanceof GetGridCellInfosParameters)) {
             return;
         }
-        SuperMap.Util.extend(this, params);
+        Util.extend(this, params);
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
         me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json") :
@@ -114,7 +115,7 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
      */
     getDatasetInfoCompleted(result) {
         var me = this;
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         me.datasetType = result.datasetInfo.type;
         me.queryGridInfos();
     }

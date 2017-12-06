@@ -1,13 +1,15 @@
 import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
-import Util from '../core/Util';
-import ServiceBase from './ServiceBase';
-import GetFeaturesByIDsService from '../../common/iServer/GetFeaturesByIDsService';
-import GetFeaturesBySQLService from '../../common/iServer/GetFeaturesBySQLService';
-import GetFeaturesByBoundsService from '../../common/iServer/GetFeaturesByBoundsService';
-import GetFeaturesByBufferService from '../../common/iServer/GetFeaturesByBufferService';
-import GetFeaturesByGeometryService from '../../common/iServer/GetFeaturesByGeometryService';
-import EditFeaturesService from '../../common/iServer/EditFeaturesService';
+import {
+    DataFormat,
+    GetFeaturesByIDsService,
+    GetFeaturesBySQLService,
+    GetFeaturesByBoundsService,
+    GetFeaturesByBufferService,
+    GetFeaturesByGeometryService,
+    EditFeaturesService
+} from '@supermap/iclient-common';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ol.supermap.FeatureService
@@ -22,7 +24,7 @@ import EditFeaturesService from '../../common/iServer/EditFeaturesService';
  * @param options -{Object} 参数。
  * @extends ol.supermap.ServiceBase
  */
-export default class FeatureService extends ServiceBase {
+export class FeatureService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -208,7 +210,8 @@ export default class FeatureService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
+
 ol.supermap.FeatureService = FeatureService;

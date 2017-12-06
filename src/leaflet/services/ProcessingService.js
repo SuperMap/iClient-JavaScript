@@ -1,15 +1,18 @@
 ﻿import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import KernelDensityJobsService from '../../common/iServer/KernelDensityJobsService';
-import SingleObjectQueryJobsService from '../../common/iServer/SingleObjectQueryJobsService';
-import SummaryMeshJobsService from '../../common/iServer/SummaryMeshJobsService';
-import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsService';
-import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
-import OverlayGeoJobsService from '../../common/iServer/OverlayGeoJobsService';
-import BuffersAnalystJobsService from '../../common/iServer/BuffersAnalystJobsService';
-import TopologyValidatorJobsService from '../../common/iServer/TopologyValidatorJobsService';
-import CommontypesConversion from '../core/CommontypesConversion';
+import {CommontypesConversion} from '../core/CommontypesConversion';
+import {
+    DataFormat,
+    KernelDensityJobsService,
+    SingleObjectQueryJobsService,
+    SummaryMeshJobsService,
+    SummaryRegionJobsService,
+    VectorClipJobsService,
+    OverlayGeoJobsService,
+    BuffersAnalystJobsService,
+    TopologyValidatorJobsService
+} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.processingService
@@ -681,7 +684,7 @@ export var ProcessingService = ServiceBase.extend({
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     },
 
     _processParams: function (params) {

@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
-import ServiceBase from './ServiceBase';
-import DataFlow from '../../common/iServer/DataFlowService';
+import '../core/Base';
+import {ServiceBase} from './ServiceBase';
+import {DataFlowService as DataFlow} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.DataFlowService
@@ -18,7 +19,7 @@ import DataFlow from '../../common/iServer/DataFlowService';
  *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
  *        excludeField - -{Object} 排除字段
  */
-export default class DataFlowService extends ServiceBase {
+export class DataFlowService extends ServiceBase {
 
 
     constructor(url, options) {
@@ -119,4 +120,5 @@ export default class DataFlowService extends ServiceBase {
         this.fire(e.eventType || e.type, e);
     }
 }
+
 mapboxgl.supermap.DataFlowService = DataFlowService;

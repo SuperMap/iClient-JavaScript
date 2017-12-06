@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicText');
+var SmicText = require('../../../../src/common/overlay/levelRenderer/SmicText').SmicText;
 
 describe('SmicText', function () {
     var originalTimeout;
@@ -16,7 +16,7 @@ describe('SmicText', function () {
     });
 
     it('constructor destroy', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label',
                 x: 100,
@@ -38,7 +38,7 @@ describe('SmicText', function () {
     });
 
     it('brush_isHighlight', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 x: 100,
                 y: 100,
@@ -56,7 +56,7 @@ describe('SmicText', function () {
     });
 
     it('brush_style1', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label1',
                 x: 100,
@@ -99,7 +99,7 @@ describe('SmicText', function () {
     });
 
     it('brush_style2', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label2',
                 x: 100,
@@ -133,7 +133,7 @@ describe('SmicText', function () {
     });
 
     it('brush_style3', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label3',
                 x: 100,
@@ -168,7 +168,7 @@ describe('SmicText', function () {
     });
 
     it('brush_style4', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label4',
                 x: 100,
@@ -202,7 +202,7 @@ describe('SmicText', function () {
     });
 
     it('brush_style5', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label5',
                 x: 100,
@@ -237,7 +237,7 @@ describe('SmicText', function () {
     });
 
     it('brush_style6', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label6',
                 x: 100,
@@ -271,7 +271,7 @@ describe('SmicText', function () {
     });
 
     it('brush_style7', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label7',
                 x: 100,
@@ -306,7 +306,7 @@ describe('SmicText', function () {
     });
 
     it('brush_style8', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label8',
                 x: 100,
@@ -341,7 +341,7 @@ describe('SmicText', function () {
 
     //返回文字包围盒矩形
     it('getRect', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label',
                 x: 100,
@@ -372,7 +372,7 @@ describe('SmicText', function () {
 
     //返回忽略旋转和maxWidth时文字包围盒矩形
     it('getRectNoRotation_style1', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label',
                 x: 100,
@@ -403,7 +403,7 @@ describe('SmicText', function () {
     });
 
     it('getRectNoRotation_style2', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label',
                 x: 100,
@@ -435,7 +435,7 @@ describe('SmicText', function () {
 
     //获取文本背景框范围 redo = true 强制重新计算textBackground
     it('getTextBackground_redo_style1', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label',
                 x: 100,
@@ -468,7 +468,7 @@ describe('SmicText', function () {
     });
 
     it('getTextBackground_redo_style2', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label',
                 x: 100,
@@ -501,7 +501,7 @@ describe('SmicText', function () {
 
     //redo = false 不强制重新计算textBackground
     it('getTextBackground', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label',
                 x: 100,

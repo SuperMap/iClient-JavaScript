@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.SetLayersInfoParameters
@@ -8,7 +9,7 @@ import SuperMap from '../SuperMap';
  *        resourceID -{string} 临时图层资源ID。<br>
  *        layersInfo -{string} 要更新的图层信息。
  */
-export default  class SetLayersInfoParameters {
+export class SetLayersInfoParameters {
 
     /**
      * @member SuperMap.SetLayersInfoParameters.prototype.isTempLayers -{boolean}
@@ -29,7 +30,7 @@ export default  class SetLayersInfoParameters {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 

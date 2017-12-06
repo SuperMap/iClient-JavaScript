@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import ThiessenAnalystParameters from './ThiessenAnalystParameters';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ThiessenAnalystParameters} from './ThiessenAnalystParameters';
+import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.GeometryThiessenAnalystParameters
@@ -11,7 +12,7 @@ import ServerGeometry from './ServerGeometry';
  * @extends SuperMap.ThiessenAnalystParameters
  */
 
-export default class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters {
+export class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters {
     /**
      * @member SuperMap.GeometryThiessenAnalystParameters.prototype.points -{Array<Object>}|{Array}
      * @description 使用点数组进行分析时使用的几何对象。点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
@@ -21,7 +22,7 @@ export default class GeometryThiessenAnalystParameters extends ThiessenAnalystPa
     constructor(options) {
         super(options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

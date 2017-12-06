@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerStyle from './ServerStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerStyle} from './ServerStyle';
 import {LabelBackShape} from '../REST';
 
 /**
@@ -9,7 +10,7 @@ import {LabelBackShape} from '../REST';
  *        labelBackShape - {{@link SuperMap.LabelBackShape}} 标签专题图中标签背景风格。<br>
  *        backStyle - {{@link SuperMap.ServerStyle}} 标签专题图中标签背景的形状枚举类。
  */
-export default  class ThemeLabelBackground {
+export class ThemeLabelBackground {
 
     /**
      * @member SuperMap.ThemeLabelBackground.prototype.labelBackShape -{SuperMap.LabelBackShape}
@@ -30,7 +31,7 @@ export default  class ThemeLabelBackground {
         var me = this;
         me.backStyle = new ServerStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -54,7 +55,9 @@ export default  class ThemeLabelBackground {
      * @return {SuperMap.ThemeLabelBackground} ThemeLabelBackground对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var t = new ThemeLabelBackground();
         t.labelBackShape = obj.labelBackShape;
         t.backStyle = ServerStyle.fromJson(obj.backStyle);

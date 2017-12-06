@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import ProcessingServiceBase from './ProcessingServiceBase';
-import SummaryRegionJobParameter from './SummaryRegionJobParameter';
+import {SuperMap} from '../SuperMap';
+import {ProcessingServiceBase} from './ProcessingServiceBase';
+import {SummaryRegionJobParameter} from './SummaryRegionJobParameter';
 
 /**
  * @class SuperMap.SummaryRegionJobsService
@@ -9,7 +9,7 @@ import SummaryRegionJobParameter from './SummaryRegionJobParameter';
  * @param url -{string} 区域汇总分析服务地址。
  * @param options - {Object} 区域汇总分析服务可选参数。
  */
-export default class SummaryRegionJobsService extends ProcessingServiceBase {
+export class SummaryRegionJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);

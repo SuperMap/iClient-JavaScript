@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import TransportationAnalystParameter from './TransportationAnalystParameter';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindClosestFacilitiesParameters
@@ -15,7 +16,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *         maxWeight - {number} 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。</br>
  *         parameter - {@link SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
-export default class FindClosestFacilitiesParameters {
+export class FindClosestFacilitiesParameters {
 
     /**
      * @member SuperMap.FindClosestFacilitiesParameters.prototype.event - {Object}
@@ -74,7 +75,7 @@ export default class FindClosestFacilitiesParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

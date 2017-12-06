@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerTextStyle from './ServerTextStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerTextStyle} from './ServerTextStyle';
 
 /**
  * @class SuperMap.ThemeLabelUniqueItem
@@ -15,7 +16,7 @@ import ServerTextStyle from './ServerTextStyle';
  *        visible - {boolean} 标签专题图子项是否可见。<br>
  *        style - {{@link SuperMap.ServerTextStyle}} 标签专题图子项文本的显示风格。
  */
-export default  class ThemeLabelUniqueItem {
+export class ThemeLabelUniqueItem {
 
     /**
      * @member SuperMap.ThemeLabelUniqueItem.prototype.caption -{string}
@@ -58,7 +59,7 @@ export default  class ThemeLabelUniqueItem {
         var me = this;
         me.style = new ServerTextStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -86,9 +87,11 @@ export default  class ThemeLabelUniqueItem {
      * @return {SuperMap.ThemeLabelUniqueItem} ThemeLabelUniqueItem对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var t = new ThemeLabelUniqueItem();
-        SuperMap.Util.copy(t, obj);
+        Util.copy(t, obj);
         return t;
     }
 

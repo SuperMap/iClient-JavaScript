@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import GeoJSON from '../format/GeoJSON';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
-import FindClosestFacilitiesParameters from './FindClosestFacilitiesParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {GeoJSON} from '../format/GeoJSON';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
+import {FindClosestFacilitiesParameters} from './FindClosestFacilitiesParameters';
 
 /**
  * @class SuperMap.FindClosestFacilitiesService
@@ -24,7 +25,7 @@ import FindClosestFacilitiesParameters from './FindClosestFacilitiesParameters';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
+export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
 
     /*
      * @function SuperMap.FindClosestFacilitiesService.prototype.constructor
@@ -63,8 +64,8 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
             expectFacilityCount: params.expectFacilityCount,
             fromEvent: params.fromEvent,
             maxWeight: params.maxWeight,
-            parameter: SuperMap.Util.toJSON(params.parameter),
-            event: SuperMap.Util.toJSON(params.event),
+            parameter: Util.toJSON(params.parameter),
+            event: Util.toJSON(params.event),
             facilities: me.getJson(params.isAnalyzeById, params.facilities)
         };
         me.request({

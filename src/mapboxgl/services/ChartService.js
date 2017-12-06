@@ -1,9 +1,8 @@
 import mapboxgl from 'mapbox-gl';
-import SuperMap from '../../common/SuperMap';
-import ServiceBase from './ServiceBase';
-import Util from '../core/Util';
-import ChartQueryService from '../../common/iServer/ChartQueryService';
-import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoSpecsService';
+import '../core/Base';
+import {ServiceBase} from './ServiceBase';
+import {Util} from '../core/Util';
+import {Bounds, DataFormat, ChartQueryService, ChartFeatureInfoSpecsService} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.ChartService
@@ -18,7 +17,7 @@ import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoS
  * @param options -{Object} 交互时所需可选参数。
  *
  */
-export default class ChartService extends ServiceBase {
+export class ChartService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
     }
@@ -78,7 +77,7 @@ export default class ChartService extends ServiceBase {
 
         if (params.bounds) {
             if (params.bounds instanceof Array) {
-                params.bounds = new SuperMap.Bounds(
+                params.bounds = new Bounds(
                     params.bounds[0],
                     params.bounds[1],
                     params.bounds[2],
@@ -86,7 +85,7 @@ export default class ChartService extends ServiceBase {
                 );
             }
             if (params.bounds instanceof mapboxgl.LngLatBounds) {
-                params.bounds = new SuperMap.Bounds(
+                params.bounds = new Bounds(
                     params.bounds.getSouthWest().lng,
                     params.bounds.getSouthWest().lat,
                     params.bounds.getNorthEast().lng,
@@ -99,7 +98,7 @@ export default class ChartService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
 

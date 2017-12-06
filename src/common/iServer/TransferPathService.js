@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import TransferPathParameters from './TransferPathParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+import {TransferPathParameters} from './TransferPathParameters';
 
 /**
  * @class SuperMap.TransferPathService
@@ -18,11 +19,12 @@ import TransferPathParameters from './TransferPathParameters';
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class TransferPathService extends CommonServiceBase {
+export class TransferPathService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
     }
+
     /**
      * @override
      */
@@ -49,8 +51,8 @@ export default  class TransferPathService extends CommonServiceBase {
         me.url += "path.json?";
 
         jsonParameters = {
-            points: SuperMap.Util.toJSON(params.points),
-            transferLines: SuperMap.Util.toJSON(params['transferLines'])
+            points: Util.toJSON(params.points),
+            transferLines: Util.toJSON(params['transferLines'])
         };
 
         me.request({

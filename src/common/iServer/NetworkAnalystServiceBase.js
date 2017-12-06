@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {DataFormat} from '../REST';
-import CommonServiceBase  from './CommonServiceBase';
+import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.NetworkAnalystServiceBase
@@ -12,7 +13,7 @@ import CommonServiceBase  from './CommonServiceBase';
  *        format - {{@link SuperMap.DataFormat}} 查询结果返回格式
  *
  */
-export default  class NetworkAnalystServiceBase extends CommonServiceBase {
+export class NetworkAnalystServiceBase extends CommonServiceBase {
 
     /**
      * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{SuperMap.DataFormat}
@@ -45,7 +46,7 @@ export default  class NetworkAnalystServiceBase extends CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this, analystResult;
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             analystResult = me.toGeoJSONResult(result);
         }
@@ -67,4 +68,5 @@ export default  class NetworkAnalystServiceBase extends CommonServiceBase {
 
     CLASS_NAME = "SuperMap.NetworkAnalystServiceBase"
 }
+
 SuperMap.NetworkAnalystServiceBase = NetworkAnalystServiceBase;

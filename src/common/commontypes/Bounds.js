@@ -1,10 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import Size from './Size';
-import Pixel from './Pixel';
-import LonLat from './LonLat';
-import Point from './geometry/Point';
-import LinearRing from './geometry/LinearRing';
-import Polygon from './geometry/Polygon';
+﻿import {SuperMap} from '../SuperMap';
+import {Size} from './Size';
+import {Pixel} from './Pixel';
+import {LonLat} from './LonLat';
 import {Util} from './Util';
 
 /**
@@ -21,7 +18,7 @@ import {Util} from './Util';
  * bounds.extend(new SuperMap.LonLat(5,6));
  * bounds.toBBOX(); // returns 4,5,5,6
  */
-export default class Bounds {
+export class Bounds {
 
     /**
      * @member SuperMap.Bounds.prototype.left - {number}
@@ -93,9 +90,9 @@ export default class Bounds {
         var equals = false;
         if (bounds != null) {
             equals = ((this.left === bounds.left) &&
-            (this.right === bounds.right) &&
-            (this.top === bounds.top) &&
-            (this.bottom === bounds.bottom));
+                (this.right === bounds.right) &&
+                (this.top === bounds.top) &&
+                (this.bottom === bounds.bottom));
         }
         return equals;
     }
@@ -174,16 +171,16 @@ export default class Bounds {
      * var geo = bounds.toGeometry();
      * @returns {SuperMap.Geometry.Polygon} 基于当前bounds坐标创建的新的多边形。
      */
-    toGeometry() {
-        return new Polygon([
-            new LinearRing([
-                new Point(this.left, this.bottom),
-                new Point(this.right, this.bottom),
-                new Point(this.right, this.top),
-                new Point(this.left, this.top)
-            ])
-        ]);
-    }
+    // toGeometry() {
+    //     return new Polygon([
+    //         new LinearRing([
+    //             new Point(this.left, this.bottom),
+    //             new Point(this.right, this.bottom),
+    //             new Point(this.right, this.top),
+    //             new Point(this.left, this.top)
+    //         ])
+    //     ]);
+    // }
 
     /**
      * @function SuperMap.Bounds.prototype.getWidth
@@ -445,10 +442,10 @@ export default class Bounds {
         var contains = false;
         if (inclusive) {
             contains = ((x >= this.left) && (x <= this.right) &&
-            (y >= this.bottom) && (y <= this.top));
+                (y >= this.bottom) && (y <= this.top));
         } else {
             contains = ((x > this.left) && (x < this.right) &&
-            (y > this.bottom) && (y < this.top));
+                (y > this.bottom) && (y < this.top));
         }
         return contains;
     }
@@ -736,4 +733,5 @@ export default class Bounds {
 
     CLASS_NAME = "SuperMap.Bounds"
 }
+
 SuperMap.Bounds = Bounds;

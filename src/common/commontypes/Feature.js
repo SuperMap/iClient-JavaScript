@@ -1,4 +1,4 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 import {Util} from './Util';
 
 /**
@@ -8,7 +8,7 @@ import {Util} from './Util';
  * @param lonlat - {SuperMap.LonLat} 经纬度。
  * @param data - {Object} 数据对象。
  */
-export default class Feature {
+export class Feature {
 
     /**
      * @deprecated

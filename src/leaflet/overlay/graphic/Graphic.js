@@ -1,5 +1,5 @@
-import '../../core/Base';
 import L from "leaflet";
+import '../../core/Base';
 
 /**
  * @class L.supermap.graphic
@@ -54,4 +54,5 @@ export var Graphic = L.Class.extend({
 export var graphic = function (options) {
     return new Graphic(options);
 };
+
 L.supermap.graphic = graphic;

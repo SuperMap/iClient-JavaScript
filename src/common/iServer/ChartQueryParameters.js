@@ -1,5 +1,6 @@
-import SuperMap from '../SuperMap';
-import ChartQueryFilterParameter from './ChartQueryFilterParameter';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ChartQueryFilterParameter} from './ChartQueryFilterParameter';
 
 /**
  * @class SuperMap.ChartQueryParameters
@@ -14,7 +15,7 @@ import ChartQueryFilterParameter from './ChartQueryFilterParameter';
  *         startRecord - {number} 查询起始记录位置，默认为0。<br>
  *         expectCount - {number} 期望查询结果返回的记录数，该值大于0。
  */
-export default class ChartQueryParameters {
+export class ChartQueryParameters {
 
     /**
      * @member SuperMap.ChartQueryParameters.prototype.queryMode -{string}
@@ -62,7 +63,7 @@ export default class ChartQueryParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -129,4 +130,5 @@ export default class ChartQueryParameters {
 
     CLASS_NAME = "SuperMap.ChartQueryParameters"
 }
+
 SuperMap.ChartQueryParameters = ChartQueryParameters;

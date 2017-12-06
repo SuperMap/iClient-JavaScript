@@ -1,5 +1,7 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {ClientType} from '../REST';
+
 /**
  * @class SuperMap.KeyServiceParameter
  * @classdesc key申请参数
@@ -9,14 +11,14 @@ import {ClientType} from '../REST';
  *        clientType - {{@link SuperMap.ClientType}} 服务端类型。<br>
  *        limitation - {number}有效期
  */
-export default class KeyServiceParameter {
+export class KeyServiceParameter {
     name = null;
     serviceIds = null;
     clientType = ClientType.SERVER;
     limitation = null;
 
     constructor(options) {
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

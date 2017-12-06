@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import ServerColor from './ServerColor';
-import ServerTextStyle from './ServerTextStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerColor} from './ServerColor';
+import {ServerTextStyle} from './ServerTextStyle';
 
 /**
  * @class SuperMap.ThemeGraphAxes
@@ -12,7 +13,7 @@ import ServerTextStyle from './ServerTextStyle';
  *         axesTextDisplayed - {boolean} 是否显示坐标轴的文本标注。<br>
  *         axesTextStyle - {{@link SuperMap.ServerTextStyle}} 统计符号的最大最小尺寸。
  */
-export default  class ThemeGraphAxes {
+export class ThemeGraphAxes {
 
     /**
      * @member SuperMap.ThemeGraphAxes.prototype.axesColor -{SuperMap.ServerColor}
@@ -50,7 +51,7 @@ export default  class ThemeGraphAxes {
         me.axesColor = new ServerColor(0, 0, 0);
         me.axesTextStyle = new ServerTextStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -80,9 +81,11 @@ export default  class ThemeGraphAxes {
      * @return {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeGraphAxes();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.axesColor = ServerColor.fromJson(obj.axesColor);
         res.axesTextStyle = ServerTextStyle.fromObj(obj.axesTextStyle);
         return res;

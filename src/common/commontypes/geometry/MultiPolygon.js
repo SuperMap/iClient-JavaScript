@@ -1,5 +1,5 @@
-﻿import SuperMap from '../../SuperMap';
-import Collection from './Collection';
+﻿import {SuperMap} from '../../SuperMap';
+import {Collection} from './Collection';
 
 /**
  * @class SuperMap.Geometry.MultiPolygon
@@ -18,7 +18,7 @@ import Collection from './Collection';
  *
  * var multiPolygon1 = new SuperMap.Geometry.MultiPolygon([polygon1,polygon2]);
  */
-export default class MultiPolygon extends Collection {
+export class MultiPolygon extends Collection {
 
     /**
      * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
@@ -34,4 +34,5 @@ export default class MultiPolygon extends Collection {
 
     CLASS_NAME = "SuperMap.Geometry.MultiPolygon"
 }
+
 SuperMap.Geometry.MultiPolygon = MultiPolygon;

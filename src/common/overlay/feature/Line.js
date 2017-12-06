@@ -1,5 +1,5 @@
-import SuperMap from '../../SuperMap';
-import ShapeParameters from './ShapeParameters';
+import {SuperMap} from '../../SuperMap';
+import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @private
@@ -9,7 +9,7 @@ import ShapeParameters from './ShapeParameters';
  * Inherits:
  *  - <SuperMap.Feature.ShapeParameters>
  */
-export default class Line extends ShapeParameters {
+export class Line extends ShapeParameters {
 
     /**
      * APIProperty: pointList
@@ -54,4 +54,5 @@ export default class Line extends ShapeParameters {
 
     CLASS_NAME = "SuperMap.Feature.ShapeParameters.Line"
 }
+SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Line = Line;

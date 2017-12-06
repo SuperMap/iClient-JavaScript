@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.FieldParameters
@@ -7,7 +8,7 @@ import SuperMap from '../SuperMap';
  *         datasource - {string} 数据源名称。<br>
  *         dataset - {string} 数据集名称。
  */
-export default class FieldParameters {
+export class FieldParameters {
     /**
      * @member SuperMap.FieldParameters.prototype.datasource - {string}
      * @description 要查询的数据集所在的数据源名称。
@@ -23,7 +24,7 @@ export default class FieldParameters {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

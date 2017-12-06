@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicCircle');
+var SmicCircle = require('../../../../src/common/overlay/levelRenderer/SmicCircle').SmicCircle;
 
 describe('SmicCircle', function () {
     var canvas, ctx;
@@ -15,7 +15,7 @@ describe('SmicCircle', function () {
     });
 
     it('constructor, destroy', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicCircle({
+        var shape = new SmicCircle({
             style: {x: 100, y: 100, r: 60}
         });
         expect(shape).not.toBeNull();
@@ -29,7 +29,7 @@ describe('SmicCircle', function () {
     });
 
     it('buildPath', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicCircle({
+        var shape = new SmicCircle({
             style: {x: 100, y: 100, r: 60}
         });
         shape.refOriginalPosition = null;
@@ -40,7 +40,7 @@ describe('SmicCircle', function () {
     });
 
     it('getRect', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicCircle({
+        var shape = new SmicCircle({
             style: {x: 100, y: 100, r: 60}
         });
         shape.refOriginalPosition = null;

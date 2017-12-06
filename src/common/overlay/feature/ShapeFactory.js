@@ -1,26 +1,21 @@
-import SuperMap from '../../SuperMap';
-import Point from './Point';
-import Line from './Line';
-import Polygon from './Polygon';
-import Rectangle from './Rectangle';
-import Sector from './Sector';
-import Label from './Label';
-import Image from './Image';
-import Circle from './Circle';
-import SmicPoint from '../levelRenderer/SmicPoint';
-import SmicText from '../levelRenderer/SmicText';
-import SmicCircle from '../levelRenderer/SmicCircle';
-import SmicBrokenLine from '../levelRenderer/SmicBrokenLine';
-import '../levelRenderer/SmicEllipse';
-import SmicImage from '../levelRenderer/SmicImage';
-import '../levelRenderer/SmicIsogon';
-import SmicPolygon from '../levelRenderer/SmicPolygon';
-import SmicRectangle from '../levelRenderer/SmicRectangle';
-import '../levelRenderer/SmicRing';
-import SmicSector from '../levelRenderer/SmicSector';
-import '../levelRenderer/SmicStar';
+import {SuperMap} from '../../SuperMap';
+import {Point} from './Point';
+import {Line} from './Line';
+import {Polygon} from './Polygon';
+import {Rectangle} from './Rectangle';
+import {Sector} from './Sector';
+import {Label} from './Label';
+import {Image} from './Image';
+import {Circle} from './Circle';
+import {SmicPoint} from '../levelRenderer/SmicPoint';
+import {SmicText} from '../levelRenderer/SmicText';
+import {SmicCircle} from '../levelRenderer/SmicCircle';
+import {SmicBrokenLine} from '../levelRenderer/SmicBrokenLine';
+import {SmicImage} from '../levelRenderer/SmicImage';
+import {SmicPolygon} from '../levelRenderer/SmicPolygon';
+import {SmicRectangle} from '../levelRenderer/SmicRectangle';
+import {SmicSector} from '../levelRenderer/SmicSector';
 import {Util} from '../../commontypes/Util';
-import '../../commontypes/Feature';
 
 /**
  * @private
@@ -48,7 +43,7 @@ import '../../commontypes/Feature';
  * 用于符号专题图：
  * 圆形 -  参数对象：<Supermap.Feature.ShapeParameters.Cilcle>
  */
-export default class ShapeFactory {
+export class ShapeFactory {
 
     /**
      * APIProperty: shapeParameters
@@ -115,8 +110,8 @@ export default class ShapeFactory {
 
             //创建图形
             let shape = new SmicPoint();
-            shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
-            shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
+            shape.style = ShapeFactory.transformStyle(style);
+            shape.highlightStyle = ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'style', 'highlightStyle']);
 
             return shape;
@@ -133,8 +128,8 @@ export default class ShapeFactory {
 
             // 创建图形
             let shape = new SmicBrokenLine();
-            shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
-            shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
+            shape.style = ShapeFactory.transformStyle(style);
+            shape.highlightStyle = ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', 'highlightStyle']);
 
             return shape;
@@ -151,8 +146,8 @@ export default class ShapeFactory {
 
             //创建图形
             let shape = new SmicPolygon();
-            shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
-            shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
+            shape.style = ShapeFactory.transformStyle(style);
+            shape.highlightStyle = ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['pointList', 'style', "highlightStyle"]);
 
             return shape;
@@ -173,8 +168,8 @@ export default class ShapeFactory {
 
             //创建图形
             let shape = new SmicRectangle();
-            shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
-            shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
+            shape.style = ShapeFactory.transformStyle(style);
+            shape.highlightStyle = ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'width', 'height', 'style', 'highlightStyle']);
 
             return shape;
@@ -199,8 +194,8 @@ export default class ShapeFactory {
 
             //创建图形
             let shape = new SmicSector();
-            shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
-            shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
+            shape.style = ShapeFactory.transformStyle(style);
+            shape.highlightStyle = ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'startAngle', 'endAngle', 'r0', 'endAngle', 'style', 'highlightStyle']);
 
             return shape;
@@ -215,8 +210,8 @@ export default class ShapeFactory {
 
             //创建图形
             let shape = new SmicText();
-            shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
-            shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
+            shape.style = ShapeFactory.transformStyle(style);
+            shape.highlightStyle = ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'text', 'style', 'highlightStyle']);
 
             return shape;
@@ -251,8 +246,8 @@ export default class ShapeFactory {
 
             //创建图形
             let shape = new SmicImage();
-            shape.style = SuperMap.Feature.ShapeFactory.transformStyle(style);
-            shape.highlightStyle = SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
+            shape.style = ShapeFactory.transformStyle(style);
+            shape.highlightStyle = ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'image', 'width', 'height', 'style', 'highlightStyle']);
 
             return shape;
@@ -267,8 +262,8 @@ export default class ShapeFactory {
 
             //创建图形
             let shape = new SmicCircle();
-            shape.style = new SuperMap.Feature.ShapeFactory.transformStyle(style);
-            shape.highlightStyle = new SuperMap.Feature.ShapeFactory.transformStyle(sps.highlightStyle);
+            shape.style = new ShapeFactory.transformStyle(style);
+            shape.highlightStyle = new ShapeFactory.transformStyle(sps.highlightStyle);
             Util.copyAttributesWithClip(shape, sps, ['x', 'y', 'r', 'style', 'highlightStyle', 'lineWidth', 'text', 'textPosition']);
 
             return shape;
@@ -279,7 +274,7 @@ export default class ShapeFactory {
 
 
     /**
-     * Function: SuperMap.Feature.ShapeFactory.transformStyle
+     * Function: ShapeFactory.transformStyle
      * 将用户 feature.style (类 Svg style 标准) 的样式，转换为 levelRenderer 的样式标准（类 CSS-Canvas 样式）
      *
      * Parameters:
@@ -343,7 +338,7 @@ export default class ShapeFactory {
                     break;
                 case "fontSize":
                     var unit = "";
-                    if (style[ss]&&style[ss].toString().indexOf("px") < 0) {
+                    if (style[ss] && style[ss].toString().indexOf("px") < 0) {
                         unit = "px";
                     }
                     fontStr[3] = style[ss] + unit;
@@ -396,7 +391,7 @@ export default class ShapeFactory {
     }
 
     /**
-     * APIFunction: SuperMap.Feature.ShapeFactory.Background
+     * APIFunction: ShapeFactory.Background
      * 创建一个矩形背景框图形对象。
      *
      * Parameters:
@@ -443,7 +438,7 @@ export default class ShapeFactory {
     }
 
     /**
-     * APIFunction: SuperMap.Feature.ShapeFactory.GraphAxis
+     * APIFunction: ShapeFactory.GraphAxis
      * 创建一个统计图表坐标轴图形对象组。
      *
      * Parameters:
@@ -805,7 +800,7 @@ export default class ShapeFactory {
     }
 
     /**
-     * APIFunction: SuperMap.Feature.ShapeFactory.ShapeStyleTool
+     * APIFunction: ShapeFactory.ShapeStyleTool
      * 一个图形 style 处理工具。此工具将指定的默认 style，通用 style，按 styleGroup 取得的 style 和按数据值 value 范围取得的 style 进行合并，得到图形最终的 style。
      *
      * Parameters:
@@ -894,4 +889,5 @@ export default class ShapeFactory {
 
     CLASS_NAME = "SuperMap.Feature.ShapeFactory"
 }
+SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeFactory = ShapeFactory;

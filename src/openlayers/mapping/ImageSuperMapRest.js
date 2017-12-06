@@ -1,8 +1,13 @@
 import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
-import ServerGeometry from '../../common/iServer/ServerGeometry';
-import  '../../common/security/SecurityManager';
-import  Util from '../core/Util';
+import {
+    Unit,
+    ServerType,
+    SecurityManager,
+    Credential,
+    ServerGeometry,
+    CommonUtil
+} from '@supermap/iclient-common';
+import {Util} from '../core/Util';
 
 /**
  * @class ol.source.ImageSuperMapRest
@@ -13,7 +18,7 @@ import  Util from '../core/Util';
  *        serverType {SuperMap.ServerType} 服务类型。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
-export default class ImageSuperMapRest extends ol.source.TileImage {
+export class ImageSuperMapRest extends ol.source.TileImage {
 
     constructor(options) {
         if (options.url === undefined) {
@@ -24,7 +29,7 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
                 html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
             });
         var layerUrl = options.url + "/image.png?";
-        options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
+        options.serverType = options.serverType || ServerType.ISERVER;
         //为url添加安全认证信息片段
         layerUrl = appendCredential(layerUrl, options.serverType);
 
@@ -38,25 +43,25 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         function appendCredential(url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {
-                case SuperMap.ServerType.ISERVER:
-                    value = SuperMap.SecurityManager.getToken(url);
-                    credential = value ? new SuperMap.Credential(value, "token") : null;
+                case ServerType.ISERVER:
+                    value = SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, "token") : null;
                     break;
-                case SuperMap.ServerType.IPORTAL:
-                    value = SuperMap.SecurityManager.getToken(url);
-                    credential = value ? new SuperMap.Credential(value, "token") : null;
+                case ServerType.IPORTAL:
+                    value = SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, "token") : null;
                     if (!credential) {
-                        value = SuperMap.SecurityManager.getKey(url);
-                        credential = value ? new SuperMap.Credential(value, "key") : null;
+                        value = SecurityManager.getKey(url);
+                        credential = value ? new Credential(value, "key") : null;
                     }
                     break;
-                case SuperMap.ServerType.ONLINE:
-                    value = SuperMap.SecurityManager.getKey(url);
-                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                case ServerType.ONLINE:
+                    value = SecurityManager.getKey(url);
+                    credential = value ? new Credential(value, "key") : null;
                     break;
                 default:
-                    value = SuperMap.SecurityManager.getToken(url);
-                    credential = value ? new SuperMap.Credential(value, "token") : null;
+                    value = SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, "token") : null;
                     break;
             }
             if (credential) {
@@ -96,7 +101,7 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         if (options.clipRegion instanceof ol.geom.Geometry) {
             options.clipRegionEnabled = true;
             options.clipRegion = Util.toSuperMapGeometry(new ol.format.GeoJSON().writeGeometryObject(options.clipRegion));
-            options.clipRegion = SuperMap.Util.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
+            options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
             layerUrl += "&clipRegionEnabled=" + options.clipRegionEnabled + "&clipRegion=" + JSON.stringify(options.clipRegion);
         }
         if (!!options.overlapDisplayed && options.overlapDisplayedOptions) {
@@ -174,9 +179,9 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
                 maxReolution = tileSize / mapJSONObj.viewer.height;
             }
             var resolutions = [];
-            var unit = SuperMap.Unit.METER;
-            if (mapJSONObj.coordUnit === SuperMap.Unit.DEGREE) {
-                unit = SuperMap.Unit.DEGREE;
+            var unit = Unit.METER;
+            if (mapJSONObj.coordUnit === Unit.DEGREE) {
+                unit = Unit.DEGREE;
             }
             if (mapJSONObj.visibleScales.length > 0) {
                 for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
@@ -187,10 +192,12 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
                     resolutions.push(maxReolution / Math.pow(2, i));
                 }
             }
+
             function sortNumber(a, b) {
                 return b - a;
             }
-            return  resolutions.sort(sortNumber);
+
+            return resolutions.sort(sortNumber);
         }
 
         options.tileGrid = new ol.tilegrid.TileGrid({
@@ -218,13 +225,14 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
             tileSize: tileSize
         });
         return new ol.tilegrid.TileGrid({
-            extent: extent,
-            minZoom: minZoom,
-            origin: origin,
-            resolutions: tilegrid.getResolutions(),
-            tileSize: tilegrid.getTileSize()
-        }
+                extent: extent,
+                minZoom: minZoom,
+                origin: origin,
+                resolutions: tilegrid.getResolutions(),
+                tileSize: tilegrid.getTileSize()
+            }
         );
     }
 }
+
 ol.source.ImageSuperMapRest = ImageSuperMapRest;

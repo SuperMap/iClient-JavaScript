@@ -1,5 +1,6 @@
-import SuperMap from '../SuperMap';
-import IPortalServiceBase from './iPortalServiceBase';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {IPortalServiceBase} from './iPortalServiceBase';
 
 /**
  * @class SuperMap.iPortalService
@@ -9,7 +10,7 @@ import IPortalServiceBase from './iPortalServiceBase';
  * @param params -{Object} 服务请求参数
  *
  */
-export default class IPortalService extends IPortalServiceBase {
+export class IPortalService extends IPortalServiceBase {
 
     addedMapNames = null;
     addedSceneNames = null;
@@ -42,7 +43,7 @@ export default class IPortalService extends IPortalServiceBase {
     constructor(serviceUrl, params) {
         super(serviceUrl);
         params = params || {};
-        SuperMap.Util.extend(this, params);
+        Util.extend(this, params);
         this.serviceUrl = serviceUrl;
         if (this.id) {
             this.serviceUrl = serviceUrl + "/" + this.id;

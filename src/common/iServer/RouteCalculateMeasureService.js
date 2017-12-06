@@ -1,6 +1,7 @@
-import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import RouteCalculateMeasureParameters from './RouteCalculateMeasureParameters';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {RouteCalculateMeasureParameters} from './RouteCalculateMeasureParameters';
 
 /**
  * @class SuperMap.RouteCalculateMeasureService
@@ -62,7 +63,7 @@ import RouteCalculateMeasureParameters from './RouteCalculateMeasureParameters';
      * (end)
      *
      */
-export default  class RouteCalculateMeasureService extends SpatialAnalystBase {
+export class RouteCalculateMeasureService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -108,7 +109,7 @@ export default  class RouteCalculateMeasureService extends SpatialAnalystBase {
         end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
         me.url += "?returnContent=true";
-        jsonParameters = SuperMap.Util.toJSON(params);
+        jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }
 

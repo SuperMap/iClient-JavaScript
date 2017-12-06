@@ -1,6 +1,6 @@
-﻿import SuperMap from '../../SuperMap';
-import Geometry from '../Geometry';
-import Bounds from '../Bounds';
+﻿import {SuperMap} from '../../SuperMap';
+import {Geometry} from '../Geometry';
+import {Bounds} from '../Bounds';
 import {Util} from '../Util';
 
 /**
@@ -14,7 +14,7 @@ import {Util} from '../Util';
  * @example
  * var point = new SuperMap.Geometry.Point(-111.04, 45.68);
  */
-export default class Point extends Geometry {
+export class Point extends Geometry {
 
     /**
      * @member SuperMap.Geometry.Point.prototype.x -{float}

@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.BufferDistance
@@ -7,7 +8,7 @@
  *         exp - {string} 以数值型的字段表达式作为缓冲区分析的距离值。<br>
  *         value - {number}以数值作为缓冲区分析的距离值。默认为100，单位：米。
  */
-export default class BufferDistance {
+export class BufferDistance {
 
     /**
      * @member SuperMap.BufferDistance.prototype.exp -{string}
@@ -25,7 +26,7 @@ export default class BufferDistance {
         if (!options) {
             return this;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

@@ -1,4 +1,4 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 /**
  *@namespace SuperMap
  */
@@ -40,6 +40,7 @@ SuperMap.mixin = function (...mixins) {
             }
         }
     }
+
     for (var index = 0; index < mixins.length; index++) {
         var mixin = mixins[index];
         copyProperties(Mix, mixin);
@@ -57,7 +58,7 @@ SuperMap.mixin = function (...mixins) {
             var key = ownKeys[index];
             if (key !== "constructor"
                 && key !== "prototype"
-                && key !== "name"&& key !== "length") {
+                && key !== "name" && key !== "length") {
                 let desc = Object.getOwnPropertyDescriptor(source, key);
                 Object.defineProperty(target, key, desc);
             }

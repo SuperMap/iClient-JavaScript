@@ -1,8 +1,13 @@
 import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
-import ServerGeometry from '../../common/iServer/ServerGeometry';
-import '../../common/security/SecurityManager';
-import Util from '../core/Util';
+import {
+    Unit,
+    ServerType,
+    SecurityManager,
+    Credential,
+    CommonUtil,
+    ServerGeometry
+} from '@supermap/iclient-common';
+import {Util} from '../core/Util';
 
 /**
  * @class ol.source.TileSuperMapRest
@@ -16,7 +21,7 @@ import Util from '../core/Util';
  *        opaque - {boolean} 是否透明。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
-export default class TileSuperMapRest extends ol.source.TileImage {
+export class TileSuperMapRest extends ol.source.TileImage {
 
     constructor(options) {
         options = options || {};
@@ -30,7 +35,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             });
 
         var layerUrl = options.url + "/tileImage.png?";
-        options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
+        options.serverType = options.serverType || ServerType.ISERVER;
         super({
             attributions: options.attributions,
             cacheSize: options.cacheSize,
@@ -57,28 +62,29 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         //当前切片在切片集中的index
         this.tileSetsIndex = -1;
         this.tempIndex = -1;
+
         function appendCredential(url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {
-                case SuperMap.ServerType.ISERVER:
-                    value = SuperMap.SecurityManager.getToken(url);
-                    credential = value ? new SuperMap.Credential(value, "token") : null;
+                case ServerType.ISERVER:
+                    value = SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, "token") : null;
                     break;
-                case SuperMap.ServerType.IPORTAL:
-                    value = SuperMap.SecurityManager.getToken(url);
-                    credential = value ? new SuperMap.Credential(value, "token") : null;
+                case ServerType.IPORTAL:
+                    value = SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, "token") : null;
                     if (!credential) {
-                        value = SuperMap.SecurityManager.getKey(url);
-                        credential = value ? new SuperMap.Credential(value, "key") : null;
+                        value = SecurityManager.getKey(url);
+                        credential = value ? new Credential(value, "key") : null;
                     }
                     break;
-                case SuperMap.ServerType.ONLINE:
-                    value = SuperMap.SecurityManager.getKey(url);
-                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                case ServerType.ONLINE:
+                    value = SecurityManager.getKey(url);
+                    credential = value ? new Credential(value, "key") : null;
                     break;
                 default:
-                    value = SuperMap.SecurityManager.getToken(url);
-                    credential = value ? new SuperMap.Credential(value, "token") : null;
+                    value = SecurityManager.getToken(url);
+                    credential = value ? new Credential(value, "token") : null;
                     break;
             }
             if (credential) {
@@ -117,7 +123,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             if (options.clipRegion instanceof ol.geom.Geometry) {
                 options.clipRegionEnabled = true;
                 options.clipRegion = Util.toSuperMapGeometry(new ol.format.GeoJSON().writeGeometryObject(options.clipRegion));
-                options.clipRegion = SuperMap.Util.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
+                options.clipRegion = CommonUtil.toJSON(ServerGeometry.fromGeometry(options.clipRegion));
                 params["clipRegionEnabled"] = options.clipRegionEnabled;
                 params["clipRegion"] = JSON.stringify(options.clipRegion);
             }
@@ -202,10 +208,10 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             var dpi = 96;
             var unit = projection.getUnits();
             if (unit === 'degrees') {
-                unit = SuperMap.Unit.DEGREE;
+                unit = Unit.DEGREE;
             }
             if (unit === 'm') {
-                unit = SuperMap.Unit.METER;
+                unit = Unit.METER;
             }
             var scale = Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
@@ -326,9 +332,9 @@ export default class TileSuperMapRest extends ol.source.TileImage {
                 maxReolution = tileSize / mapJSONObj.viewer.height;
             }
             var resolutions = [];
-            var unit = SuperMap.Unit.METER;
-            if (mapJSONObj.coordUnit === SuperMap.Unit.DEGREE) {
-                unit = SuperMap.Unit.DEGREE;
+            var unit = Unit.METER;
+            if (mapJSONObj.coordUnit === Unit.DEGREE) {
+                unit = Unit.DEGREE;
             }
             if (mapJSONObj.visibleScalesEnabled && mapJSONObj.visibleScales && mapJSONObj.visibleScales.length > 0) {
                 for (let i = 0; i < mapJSONObj.visibleScales.length; i++) {
@@ -339,10 +345,12 @@ export default class TileSuperMapRest extends ol.source.TileImage {
                     resolutions.push(maxReolution / Math.pow(2, i));
                 }
             }
+
             function sortNumber(a, b) {
                 return b - a;
             }
-            return  resolutions.sort(sortNumber);
+
+            return resolutions.sort(sortNumber);
         }
 
         options.tileGrid = new ol.tilegrid.TileGrid({
@@ -369,12 +377,12 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             tileSize: tileSize
         });
         return new ol.tilegrid.TileGrid({
-            extent: extent,
-            minZoom: minZoom,
-            origin: origin,
-            resolutions: tilegrid.getResolutions(),
-            tileSize: tilegrid.getTileSize()
-        }
+                extent: extent,
+                minZoom: minZoom,
+                origin: origin,
+                resolutions: tilegrid.getResolutions(),
+                tileSize: tilegrid.getTileSize()
+            }
         );
     }
 }

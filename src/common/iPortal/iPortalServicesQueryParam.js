@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.iPortalServicesQueryParam
@@ -6,7 +7,7 @@ import SuperMap from '../SuperMap';
  * @param params -{Object} 服务参数
  *
  */
-export default  class IPortalServicesQueryParam {
+export class IPortalServicesQueryParam {
 
     tags = [];
     userNames = '';
@@ -26,7 +27,7 @@ export default  class IPortalServicesQueryParam {
 
     constructor(params) {
         params = params || {};
-        SuperMap.Util.extend(this, params);
+        Util.extend(this, params);
     }
 
 }

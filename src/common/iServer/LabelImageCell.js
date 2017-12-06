@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import LabelMatrixCell from './LabelMatrixCell';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {LabelMatrixCell} from './LabelMatrixCell';
 
 /**
  * @class SuperMap.LabelImageCell
@@ -18,7 +19,7 @@ import LabelMatrixCell from './LabelMatrixCell';
  *        width - {number}设置图片的宽度，单位为毫米。<br>
  *        sizeFixed - {boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
  */
-export default  class LabelImageCell extends LabelMatrixCell {
+export class LabelImageCell extends LabelMatrixCell {
 
     /**
      * @member SuperMap.LabelImageCell.prototype.height -{number}
@@ -59,7 +60,7 @@ export default  class LabelImageCell extends LabelMatrixCell {
     constructor(options) {
         super(options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

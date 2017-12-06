@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import BufferSetting from './BufferSetting';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {BufferSetting} from './BufferSetting';
 
 /**
  * @class SuperMap.BufferAnalystParameters
@@ -7,7 +8,7 @@ import BufferSetting from './BufferSetting';
  * @param options - {Object} 参数。如:</br>
  *        bufferSetting - {@link SuperMap.BufferSetting} 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
  */
-export default class BufferAnalystParameters {
+export class BufferAnalystParameters {
     /**
      * @member SuperMap.BufferAnalystParameters.prototype.bufferSetting - {SuperMap.BufferSetting}
      * @description 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
@@ -20,7 +21,7 @@ export default class BufferAnalystParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 
@@ -38,4 +39,5 @@ export default class BufferAnalystParameters {
 
     CLASS_NAME = "SuperMap.BufferAnalystParameters"
 }
+
 SuperMap.BufferAnalystParameters = BufferAnalystParameters;

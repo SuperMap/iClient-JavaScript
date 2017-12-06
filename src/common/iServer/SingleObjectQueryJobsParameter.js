@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {SpatialQueryMode} from '../REST';
 
 /**
@@ -9,7 +10,7 @@ import {SpatialQueryMode} from '../REST';
  *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
  *         mode -{{@link SuperMap.SpatialQueryMode}} 空间查询模式 。 <br>
  */
-export default  class SingleObjectQueryJobsParameter {
+export class SingleObjectQueryJobsParameter {
 
     /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{string}
@@ -39,7 +40,7 @@ export default  class SingleObjectQueryJobsParameter {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -52,6 +53,7 @@ export default  class SingleObjectQueryJobsParameter {
         this.geometryQuery = null;
         this.mode = null;
     }
+
     /**
      * @function SuperMap.SingleObjectQueryJobsParameter.toObject
      * @param singleObjectQueryJobsParameter -{Object} 单对象空间查询分析任务参数

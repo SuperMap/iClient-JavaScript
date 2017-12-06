@@ -1,8 +1,7 @@
 import mapboxgl from 'mapbox-gl';
-import Point from '../../../common/commontypes/geometry/Point';
-import GeoText from '../../../common/commontypes/geometry/GeoText';
-import Vector from '../../../common/commontypes/Vector';
-import Util from '../../core/Util';
+import '../../core/Base';
+import {GeometryPoint as Point, GeoText, GeometryVector as Vector} from '@supermap/iclient-common';
+import {Util} from '../../core/Util';
 
 /**
  * @class mapboxgl.supermap.ThemeFeature
@@ -10,7 +9,7 @@ import Util from '../../core/Util';
  * @param geometry - {Object} 专题图要素几何对象，geojson格式。
  * @param attributes - {Object} 几何对象属性
  */
-export default class ThemeFeature {
+export class ThemeFeature {
 
     constructor(geometry, attributes) {
         this.geometry = geometry;

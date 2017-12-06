@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {AnalystSizeUnit} from '../REST';
 
 /**
@@ -12,7 +13,7 @@ import {AnalystSizeUnit} from '../REST';
  *         distanceUnit -{{@link SuperMap.AnalystSizeUnit}} 缓冲距离单位单位。 <br>
  *         distance -{string} 缓冲区半径。 <br>
  */
-export default class BuffersAnalystJobsParameter{
+export class BuffersAnalystJobsParameter {
 
     /**
      * @member SuperMap.BuffersAnalystJobsParameter.prototype.datasetName -{string}
@@ -42,7 +43,7 @@ export default class BuffersAnalystJobsParameter{
      * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{SuperMap.AnalystSizeUnit}
      * @description 缓冲距离单位。
      */
-    distanceUnit =AnalystSizeUnit.METER;
+    distanceUnit = AnalystSizeUnit.METER;
 
     /**
      * @member SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField -{string}
@@ -54,7 +55,7 @@ export default class BuffersAnalystJobsParameter{
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -69,6 +70,7 @@ export default class BuffersAnalystJobsParameter{
         this.distanceUnit = null;
         this.dissolveField = null;
     }
+
     /**
      * @function SuperMap.BuffersAnalystJobsParameter.toObject
      * @param BuffersAnalystJobsParameter -{Object} 缓冲区分析任务参数
@@ -92,4 +94,5 @@ export default class BuffersAnalystJobsParameter{
     }
 
 }
+
 SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;

@@ -1,5 +1,4 @@
-import SuperMap from '../../SuperMap';
-import Shape from './Shape';
+import {Shape} from './Shape';
 
 /**
  * @private
@@ -21,7 +20,10 @@ import Shape from './Shape';
  * (end)
  *
  */
-export default class SmicImage extends Shape {
+export class SmicImage extends Shape {
+
+    static _needsRefresh = [];
+    static _refreshTimeout = null;
 
     /**
      * Property: style
@@ -73,7 +75,9 @@ export default class SmicImage extends Shape {
      */
     constructor(options) {
         super(options);
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         this._imageCache = {};
     }
 
@@ -99,7 +103,9 @@ export default class SmicImage extends Shape {
      *
      */
     brush(ctx, isHighlight, refresh) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         var style = this.style || {};
@@ -122,13 +128,13 @@ export default class SmicImage extends Shape {
                 image = new Image();
                 image.onload = function () {
                     image.onload = null;
-                    clearTimeout(SuperMap.LevelRenderer.Shape.SmicImage._refreshTimeout);
-                    SuperMap.LevelRenderer.Shape.SmicImage._needsRefresh.push(me);
+                    clearTimeout(SmicImage._refreshTimeout);
+                    SmicImage._needsRefresh.push(me);
                     // 防止因为缓存短时间内触发多次onload事件
-                    SuperMap.LevelRenderer.Shape.SmicImage._refreshTimeout = setTimeout(function () {
-                        refresh && refresh(SuperMap.LevelRenderer.Shape.SmicImage._needsRefresh);
+                    SmicImage._refreshTimeout = setTimeout(function () {
+                        refresh && refresh(SmicImage._needsRefresh);
                         // 清空 needsRefresh
-                        SuperMap.LevelRenderer.Shape.SmicImage._needsRefresh = [];
+                        SmicImage._needsRefresh = [];
                     }, 10);
                 };
 
@@ -222,7 +228,9 @@ export default class SmicImage extends Shape {
      * {Object} 边框对象。包含属性：x，y，width，height。
      */
     getRect(style) {
-        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {this.refOriginalPosition = [0, 0];}
+        if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
+            this.refOriginalPosition = [0, 0];
+        }
         var __OP = this.refOriginalPosition;
 
         return {
@@ -251,7 +259,3 @@ export default class SmicImage extends Shape {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicImage"
 }
-SuperMap.LevelRenderer.Shape.SmicImage = SmicImage;
-
-SuperMap.LevelRenderer.Shape.SmicImage._needsRefresh = [];
-SuperMap.LevelRenderer.Shape.SmicImage._refreshTimeout = null;

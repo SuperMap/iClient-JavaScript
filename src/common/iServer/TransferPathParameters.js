@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import './TransferLine';
 
 /**
@@ -10,7 +11,7 @@ import './TransferLine';
  *                  点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
  *
  */
-export default class TransferPathParameters {
+export class TransferPathParameters {
     /**
      * @member SuperMap.TransferPathParameters.prototype.transferLines -{Array<SuperMap.TransferLine>}
      * @description 本换乘分段内可乘车的路线集合，通过交通换乘方案查询得到
@@ -29,7 +30,7 @@ export default class TransferPathParameters {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -37,7 +38,7 @@ export default class TransferPathParameters {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -48,7 +49,7 @@ export default class TransferPathParameters {
      */
     static toJson(params) {
         if (params) {
-            return SuperMap.Util.toJSON(params);
+            return Util.toJSON(params);
         }
     }
 

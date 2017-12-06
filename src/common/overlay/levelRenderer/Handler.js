@@ -1,6 +1,6 @@
-import SuperMap from '../../SuperMap';
-import Eventful from './Eventful';
-import './Config';
+import {Eventful} from './Eventful';
+import {Config} from './Config';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -10,7 +10,7 @@ import './Config';
  * Inherits from:
  *  - <SuperMap.LevelRenderer.Eventful>
  */
-export default class Handler extends Eventful {
+export class Handler extends Eventful {
 
     /**
      * Property: root
@@ -125,7 +125,7 @@ export default class Handler extends Eventful {
                 this._isMouseDown = 0;
 
                 // 分发SuperMap.LevelRenderer.Config.EVENT.RESIZE事件，global
-                this.dispatch(SuperMap.LevelRenderer.Config.EVENT.RESIZE, event);
+                this.dispatch(Config.EVENT.RESIZE, event);
             },
 
             /**
@@ -147,7 +147,7 @@ export default class Handler extends Eventful {
 
                     // 判断没有发生拖拽才触发click事件
                     if (this._clickThreshold < 10) {
-                        this._dispatchAgency(_lastHover, SuperMap.LevelRenderer.Config.EVENT.CLICK, event);
+                        this._dispatchAgency(_lastHover, Config.EVENT.CLICK, event);
                     }
                 }
 
@@ -174,7 +174,7 @@ export default class Handler extends Eventful {
 
                     // 判断没有发生拖拽才触发dblclick事件
                     if (this._clickThreshold < 5) {
-                        this._dispatchAgency(_lastHover, SuperMap.LevelRenderer.Config.EVENT.DBLCLICK, event);
+                        this._dispatchAgency(_lastHover, Config.EVENT.DBLCLICK, event);
                     }
                 }
 
@@ -230,7 +230,7 @@ export default class Handler extends Eventful {
                 }
 
                 // 分发SuperMap.LevelRenderer.Config.EVENT.MOUSEWHEEL事件
-                this._dispatchAgency(this._lastHover, SuperMap.LevelRenderer.Config.EVENT.MOUSEWHEEL, event);
+                this._dispatchAgency(this._lastHover, Config.EVENT.MOUSEWHEEL, event);
                 this._mousemoveHandler(event);
             },
 
@@ -249,8 +249,8 @@ export default class Handler extends Eventful {
                 event = this._zrenderEventFixed(event);
                 this._lastX = this._mouseX;
                 this._lastY = this._mouseY;
-                this._mouseX = SuperMap.LevelRenderer.Util_event.getX(event);
-                this._mouseY = SuperMap.LevelRenderer.Util_event.getY(event);
+                this._mouseX = SUtil.Util_event.getX(event);
+                this._mouseY = SUtil.Util_event.getY(event);
                 var dx = this._mouseX - this._lastX;
                 var dy = this._mouseY - this._lastY;
 
@@ -322,7 +322,7 @@ export default class Handler extends Eventful {
                 this.root.style.cursor = cursor;
 
                 // 分发SuperMap.LevelRenderer.Config.EVENT.MOUSEMOVE事件
-                this._dispatchAgency(this._lastHover, SuperMap.LevelRenderer.Config.EVENT.MOUSEMOVE, event);
+                this._dispatchAgency(this._lastHover, Config.EVENT.MOUSEMOVE, event);
 
                 if (this._draggingTarget || this._hasfound || this.storage.hasHoverShape()) {
                     this.painter.refreshHover();
@@ -364,7 +364,7 @@ export default class Handler extends Eventful {
 
                 this.painter.refreshHover();
 
-                this.dispatch(SuperMap.LevelRenderer.Config.EVENT.GLOBALOUT, event);
+                this.dispatch(Config.EVENT.GLOBALOUT, event);
             },
 
             /**
@@ -392,7 +392,7 @@ export default class Handler extends Eventful {
 
                 // 分发SuperMap.LevelRenderer.Config.EVENT.MOUSEDOWN事件
                 this._mouseDownTarget = this._lastHover;
-                this._dispatchAgency(this._lastHover, SuperMap.LevelRenderer.Config.EVENT.MOUSEDOWN, event);
+                this._dispatchAgency(this._lastHover, Config.EVENT.MOUSEDOWN, event);
                 this._lastDownButton = event.button;
             },
 
@@ -411,7 +411,7 @@ export default class Handler extends Eventful {
                 this._mouseDownTarget = null;
 
                 // 分发SuperMap.LevelRenderer.Config.EVENT.MOUSEUP事件
-                this._dispatchAgency(this._lastHover, SuperMap.LevelRenderer.Config.EVENT.MOUSEUP, event);
+                this._dispatchAgency(this._lastHover, Config.EVENT.MOUSEUP, event);
                 this._processDrop(event);
                 this._processDragEnd(event);
             },
@@ -425,7 +425,7 @@ export default class Handler extends Eventful {
              *
              */
             touchstart: function (event) {
-                // SuperMap.LevelRenderer.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                // SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                 event = this._zrenderEventFixed(event, true);
                 this._lastTouchMoment = new Date();
 
@@ -446,7 +446,7 @@ export default class Handler extends Eventful {
                 event = this._zrenderEventFixed(event, true);
                 this._mousemoveHandler(event);
                 if (this._isDragging) {
-                    SuperMap.LevelRenderer.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                    SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                 }
             },
 
@@ -459,18 +459,18 @@ export default class Handler extends Eventful {
              *
              */
             touchend: function (event) {
-                // SuperMap.LevelRenderer.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                // SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                 event = this._zrenderEventFixed(event, true);
                 this._mouseupHandler(event);
 
                 var now = new Date();
-                if (now - this._lastTouchMoment < SuperMap.LevelRenderer.Config.EVENT.touchClickDelay) {
+                if (now - this._lastTouchMoment < Config.EVENT.touchClickDelay) {
                     this._mobildFindFixed(event);
                     this._clickHandler(event);
-                    if (now - this._lastClickMoment < SuperMap.LevelRenderer.Config.EVENT.touchClickDelay / 2) {
+                    if (now - this._lastClickMoment < Config.EVENT.touchClickDelay / 2) {
                         this._dblclickHandler(event);
                         if (this._lastHover && this._lastHover.clickable) {
-                            SuperMap.LevelRenderer.Util_event.stop(event);// 阻止浏览器默认事件，重要
+                            SUtil.Util_event.stop(event);// 阻止浏览器默认事件，重要
                         }
                     }
                     this._lastClickMoment = now;
@@ -485,7 +485,7 @@ export default class Handler extends Eventful {
         if (window.addEventListener) {
             window.addEventListener('resize', this._resizeHandler);
 
-            if (SuperMap.LevelRenderer.Util_env.os.tablet || SuperMap.LevelRenderer.Util_env.os.phone) {
+            if (SUtil.Util_env.os.tablet || SUtil.Util_env.os.phone) {
                 // mobile支持
                 root.addEventListener('touchstart', this._touchstartHandler);
                 root.addEventListener('touchmove', this._touchmoveHandler);
@@ -682,7 +682,7 @@ export default class Handler extends Eventful {
         this._mouseY = null;
         this._findHover = null;
 
-        SuperMap.LevelRenderer.Eventful.prototype.destroy.apply(this, arguments);
+        Eventful.prototype.destroy.apply(this, arguments);
     }
 
 
@@ -730,7 +730,7 @@ export default class Handler extends Eventful {
      *
      */
     trigger(eventName, eventArgs) {
-        var EVENT = SuperMap.LevelRenderer.Config.EVENT;
+        var EVENT = Config.EVENT;
         switch (eventName) {
             case EVENT.RESIZE:
             case EVENT.CLICK:
@@ -756,7 +756,7 @@ export default class Handler extends Eventful {
         if (window.removeEventListener) {
             window.removeEventListener('resize', this._resizeHandler);
 
-            if (SuperMap.LevelRenderer.Util_env.os.tablet || SuperMap.LevelRenderer.Util_env.os.phone) {
+            if (SUtil.Util_env.os.tablet || SUtil.Util_env.os.phone) {
                 // mobile支持
                 root.removeEventListener('touchstart', this._touchstartHandler);
                 root.removeEventListener('touchmove', this._touchmoveHandler);
@@ -824,10 +824,10 @@ export default class Handler extends Eventful {
             _draggingTarget.invisible = true;
             this.storage.mod(_draggingTarget.id);
 
-            // 分发 SuperMap.LevelRenderer.Config.EVENT.DRAGSTART事件
+            // 分发 Config.EVENT.DRAGSTART事件
             this._dispatchAgency(
                 _draggingTarget,
-                SuperMap.LevelRenderer.Config.EVENT.DRAGSTART,
+                Config.EVENT.DRAGSTART,
                 event
             );
             this.painter.refresh();
@@ -848,7 +848,7 @@ export default class Handler extends Eventful {
             // 分发SuperMap.LevelRenderer.Config.EVENT.DRAGENTER事件
             this._dispatchAgency(
                 this._lastHover,
-                SuperMap.LevelRenderer.Config.EVENT.DRAGENTER,
+                Config.EVENT.DRAGENTER,
                 event,
                 this._draggingTarget
             );
@@ -869,7 +869,7 @@ export default class Handler extends Eventful {
             // 分发SuperMap.LevelRenderer.Config.EVENT.DRAGOVER事件
             this._dispatchAgency(
                 this._lastHover,
-                SuperMap.LevelRenderer.Config.EVENT.DRAGOVER,
+                Config.EVENT.DRAGOVER,
                 event,
                 this._draggingTarget
             );
@@ -890,7 +890,7 @@ export default class Handler extends Eventful {
             // 分发SuperMap.LevelRenderer.Config.EVENT.DRAGLEAVE事件
             this._dispatchAgency(
                 this._lastHover,
-                SuperMap.LevelRenderer.Config.EVENT.DRAGLEAVE,
+                Config.EVENT.DRAGLEAVE,
                 event,
                 this._draggingTarget
             );
@@ -915,7 +915,7 @@ export default class Handler extends Eventful {
             // 分发SuperMap.LevelRenderer.Config.EVENT.DROP事件
             this._dispatchAgency(
                 this._lastHover,
-                SuperMap.LevelRenderer.Config.EVENT.DROP,
+                Config.EVENT.DROP,
                 event,
                 this._draggingTarget
             );
@@ -936,7 +936,7 @@ export default class Handler extends Eventful {
             // 分发SuperMap.LevelRenderer.Config.EVENT.DRAGEND事件
             this._dispatchAgency(
                 this._draggingTarget,
-                SuperMap.LevelRenderer.Config.EVENT.DRAGEND,
+                Config.EVENT.DRAGEND,
                 event
             );
 
@@ -958,7 +958,7 @@ export default class Handler extends Eventful {
      */
     _processOverShape(event) {
         // 分发SuperMap.LevelRenderer.Config.EVENT.MOUSEOVER事件
-        this._dispatchAgency(this._lastHover, SuperMap.LevelRenderer.Config.EVENT.MOUSEOVER, event);
+        this._dispatchAgency(this._lastHover, Config.EVENT.MOUSEOVER, event);
     }
 
 
@@ -972,7 +972,7 @@ export default class Handler extends Eventful {
      */
     _processOutShape(event) {
         // 分发SuperMap.LevelRenderer.Config.EVENT.MOUSEOUT事件
-        this._dispatchAgency(this._lastHover, SuperMap.LevelRenderer.Config.EVENT.MOUSEOUT, event);
+        this._dispatchAgency(this._lastHover, Config.EVENT.MOUSEOUT, event);
     }
 
 
@@ -1035,7 +1035,7 @@ export default class Handler extends Eventful {
      *
      */
     _iterateAndFindHover() {
-        var invTransform = SuperMap.LevelRenderer.Util_matrix.create();
+        var invTransform = SUtil.Util_matrix.create();
 
         var list = this.storage.getShapeList();
         var currentZLevel;
@@ -1050,8 +1050,8 @@ export default class Handler extends Eventful {
                 tmp[1] = this._mouseY;
 
                 if (currentLayer.needTransform) {
-                    SuperMap.LevelRenderer.Util_matrix.invert(invTransform, currentLayer.transform);
-                    SuperMap.LevelRenderer.Util_vector.applyTransform(tmp, tmp, invTransform);
+                    SUtil.Util_matrix.invert(invTransform, currentLayer.transform);
+                    SUtil.Util_vector.applyTransform(tmp, tmp, invTransform);
                 }
             }
 
@@ -1168,4 +1168,3 @@ export default class Handler extends Eventful {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Handler"
 }
-SuperMap.LevelRenderer.Handler = Handler;

@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {StatisticAnalystMode, SummaryType, AnalystSizeUnit} from '../REST'
 
 /**
@@ -19,7 +20,7 @@ import {StatisticAnalystMode, SummaryType, AnalystSizeUnit} from '../REST'
  *         meshSizeUnit -{{@link SuperMap.AnalystSizeUnit}} 网格大小单位。 <br>
  *         type -{{@link SuperMap.SummaryType}} 汇总类型。 <br>
  */
-export default class SummaryRegionJobParameter {
+export class SummaryRegionJobParameter {
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{string}
@@ -55,7 +56,8 @@ export default class SummaryRegionJobParameter {
      * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
      * @description 以标准属字段统计的字段名称。
      */
-    standardFields = StatisticAnalystMode.AVERAGE;;
+    standardFields = StatisticAnalystMode.AVERAGE;
+    ;
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
@@ -109,7 +111,7 @@ export default class SummaryRegionJobParameter {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

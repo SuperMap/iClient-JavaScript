@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.OverlayGeoJobParameter
@@ -8,7 +9,7 @@ import SuperMap from '../SuperMap';
  *         datasetOverlay -{string} 叠加对象所在的数据集名称。 <br>
  *         mode -{string} 叠加分析模式 。 <br>
  */
-export  default  class OverlayGeoJobParameter {
+export class OverlayGeoJobParameter {
 
     /**
      * @member SuperMap.OverlayGeoJobParameter.prototype.datasetName -{string}
@@ -44,7 +45,7 @@ export  default  class OverlayGeoJobParameter {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -65,9 +66,9 @@ export  default  class OverlayGeoJobParameter {
      * @param tempObj - {Object} 目标对象。
      * @description 生成点聚合分析任务对象
      */
-    static  toObject(OverlayGeoJobParameter,tempObj){
-        for (var name in OverlayGeoJobParameter){
-            if (name == "datasetName"){
+    static toObject(OverlayGeoJobParameter, tempObj) {
+        for (var name in OverlayGeoJobParameter) {
+            if (name == "datasetName") {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = OverlayGeoJobParameter[name];
                 continue;
@@ -78,4 +79,5 @@ export  default  class OverlayGeoJobParameter {
     }
 
 }
+
 SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter;

@@ -1,12 +1,13 @@
-import SuperMap from '../SuperMap';
-import '../security/SecurityManager';
+import {SuperMap} from '../SuperMap';
+import {SecurityManager} from '../security/SecurityManager';
 import {FetchRequest} from '../util/FetchRequest';
+
 /**
  * @class SuperMap.iManagerServiceBase
  * @classdesc iManager服务基类(有权限限制的类需要实现此类)。
  * @param url - {string} iManager首页地址，如：http://localhost:8390/imanager。
  */
-export default class IManagerServiceBase {
+export class IManagerServiceBase {
 
     constructor(url) {
         if (url) {
@@ -35,7 +36,7 @@ export default class IManagerServiceBase {
         if (!requestOptions.hasOwnProperty("withCredentials")) {
             requestOptions['withCredentials'] = true;
         }
-        var token = SuperMap.SecurityManager.imanagerToken;
+        var token = SecurityManager.imanagerToken;
         if (token) {
             if (!requestOptions.headers) {
                 requestOptions.headers = [];

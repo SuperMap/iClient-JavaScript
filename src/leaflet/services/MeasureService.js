@@ -1,9 +1,8 @@
-﻿import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+﻿import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
+import '../core/Base';
 import * as Util from '../core/Util';
-import SuperMapMeasureService from '../../common/iServer/MeasureService' ;
-import MeasureParameters from '../../common/iServer/MeasureParameters' ;
+import {MeasureMode, MeasureService as CommonMeasureService, MeasureParameters} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.measureService
@@ -35,7 +34,7 @@ export var MeasureService = ServiceBase.extend({
      * @param callback - {function} 回调函数
      */
     measureDistance: function (params, callback) {
-        this.measure(SuperMap.MeasureMode.DISTANCE, params, callback);
+        this.measure(MeasureMode.DISTANCE, params, callback);
         return this;
     },
 
@@ -46,7 +45,7 @@ export var MeasureService = ServiceBase.extend({
      * @param callback - {function} 回调函数
      */
     measureArea: function (params, callback) {
-        this.measure(SuperMap.MeasureMode.AREA, params, callback);
+        this.measure(MeasureMode.AREA, params, callback);
         return this;
     },
 
@@ -63,7 +62,7 @@ export var MeasureService = ServiceBase.extend({
         if (params.geometry) {
             params.geometry = Util.toSuperMapGeometry(params.geometry);
         }
-        var measureService = new SuperMapMeasureService(me.url, {
+        var measureService = new CommonMeasureService(me.url, {
             serverType: me.options.serverType,
             measureMode: type,
             eventListeners: {

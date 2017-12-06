@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
-import BurstPipelineAnalystParameters from './BurstPipelineAnalystParameters';
+import {SuperMap} from '../SuperMap';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
+import {BurstPipelineAnalystParameters} from './BurstPipelineAnalystParameters';
 
 /**
  * @class SuperMap.BurstPipelineAnalystService
@@ -12,7 +12,7 @@ import BurstPipelineAnalystParameters from './BurstPipelineAnalystParameters';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
+export class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);

@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import TransportationAnalystParameter from './TransportationAnalystParameter';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {TransportationAnalystParameter} from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindServiceAreasParameters
@@ -14,7 +15,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *        weights - {Array<number>} 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
  *        parameter - {@link SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
-export default class FindServiceAreasParameters {
+export class FindServiceAreasParameters {
 
     /**
      * @member SuperMap.FindServiceAreasParameters.prototype.isAnalyzeById - {boolean}
@@ -68,7 +69,7 @@ export default class FindServiceAreasParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

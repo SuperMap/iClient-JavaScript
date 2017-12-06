@@ -1,21 +1,24 @@
 import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+import '../core/Base';
 import {ServiceBase} from './ServiceBase';
 import * as Util from '../core/Util';
-import AreaSolarRadiationService from '../../common/iServer/AreaSolarRadiationService';
-import BufferAnalystService from '../../common/iServer/BufferAnalystService';
-import DensityAnalystService from '../../common/iServer/DensityAnalystService';
-import GenerateSpatialDataService from '../../common/iServer/GenerateSpatialDataService';
-import GeoRelationAnalystService from '../../common/iServer/GeoRelationAnalystService';
-import InterpolationAnalystService from '../../common/iServer/InterpolationAnalystService';
-import MathExpressionAnalysisService from '../../common/iServer/MathExpressionAnalysisService';
-import OverlayAnalystService from '../../common/iServer/OverlayAnalystService';
-import RouteCalculateMeasureService from '../../common/iServer/RouteCalculateMeasureService';
-import RouteLocatorService from '../../common/iServer/RouteLocatorService';
-import SurfaceAnalystService from '../../common/iServer/SurfaceAnalystService';
-import TerrainCurvatureCalculationService from '../../common/iServer/TerrainCurvatureCalculationService';
-import ThiessenAnalystService from '../../common/iServer/ThiessenAnalystService';
-import CommontypesConversion from '../core/CommontypesConversion';
+import {CommontypesConversion} from '../core/CommontypesConversion';
+import {
+    DataFormat,
+    AreaSolarRadiationService,
+    BufferAnalystService,
+    DensityAnalystService,
+    GenerateSpatialDataService,
+    GeoRelationAnalystService,
+    InterpolationAnalystService,
+    MathExpressionAnalysisService,
+    OverlayAnalystService,
+    RouteCalculateMeasureService,
+    RouteLocatorService,
+    SurfaceAnalystService,
+    TerrainCurvatureCalculationService,
+    ThiessenAnalystService
+} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.spatialAnalystService
@@ -386,10 +389,11 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 });
 export var spatialAnalystService = function (url, options) {
     return new SpatialAnalystService(url, options);
 };
+
 L.supermap.spatialAnalystService = spatialAnalystService;

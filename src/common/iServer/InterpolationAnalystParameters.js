@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import './ClipParameter';
 import {PixelFormat} from '../REST';
 
@@ -19,7 +20,7 @@ import {PixelFormat} from '../REST';
  *        inputPoints - {Array <Object>} 用于做插值分析的离散点集合。点类型可以是：SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。</br>
  *        InterpolationAnalystType - {string} 插值分析类型（dataset或geometry），默认为dataset 。</br>
  */
-export default class InterpolationAnalystParameters {
+export class InterpolationAnalystParameters {
     /**
      * @member SuperMap.InterpolationAnalystParameters.prototype.bounds - {Object}
      * @description 插值分析的范围，用于确定结果栅格数据集的范围。
@@ -119,7 +120,7 @@ export default class InterpolationAnalystParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicBrokenLine');
+var SmicBrokenLine = require('../../../../src/common/overlay/levelRenderer/SmicBrokenLine').SmicBrokenLine;
 
 describe('SmicBrokenLine', function () {
     var originalTimeout;
@@ -23,7 +23,7 @@ describe('SmicBrokenLine', function () {
     });
 
     it('constructor, destroy', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+        var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
                 smooth: 'bezier'
@@ -50,7 +50,7 @@ describe('SmicBrokenLine', function () {
 
     //只有一个点时，将不会继续绘制路径，直接退出
     it('buildPath_onePoint', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+        var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
                 smooth: 'bezier'
@@ -73,7 +73,7 @@ describe('SmicBrokenLine', function () {
 
     //buildPath_pointList情况下，smooth = bezier
     it('buildPath_smooth = bezier', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+        var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
                 smooth: 'bezier'
@@ -97,7 +97,7 @@ describe('SmicBrokenLine', function () {
 
     //buildPath_pointList情况下，smooth = spline
     it('buildPath_smooth = spline', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+        var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
                 smooth: 'spline'
@@ -121,7 +121,7 @@ describe('SmicBrokenLine', function () {
 
     //buildPath_pointList情况下，smooth = spline 测试不同的style.lineType（默认为solid）
     it('buildPath_lineType', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+        var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
                 lineCap: "round",
@@ -166,7 +166,7 @@ describe('SmicBrokenLine', function () {
     });
 
     it('getRect', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+        var shape = new SmicBrokenLine({
             style: {
                 pointList: [[0, 0], [100, 100], [100, 0]],
                 lineCap: "round",

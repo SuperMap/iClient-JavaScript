@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerStyle from './ServerStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerStyle} from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeFlow
@@ -10,7 +11,7 @@ import ServerStyle from './ServerStyle';
  *        leaderLineDisplayed - {boolean} 是否显示标签或符号和它标注的对象之间的牵引线。<br>
  *        leaderLineStyle - {{@link SuperMap.ServerStyle}} 标签或符号与其标注对象之间牵引线的风格。
  */
-export default  class ThemeFlow {
+export class ThemeFlow {
 
     /**
      * @member SuperMap.ThemeFlow.prototype.flowEnabled -{boolean}
@@ -39,7 +40,7 @@ export default  class ThemeFlow {
         var me = this;
         me.leaderLineStyle = new ServerStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -68,7 +69,7 @@ export default  class ThemeFlow {
             return;
         }
         var res = new ThemeFlow();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.leaderLineStyle = ServerStyle.fromJson(obj.leaderLineStyle);
         return res;
     }

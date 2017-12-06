@@ -1,5 +1,8 @@
-import SuperMap from '../SuperMap';
-import Graph from './Graph';
+import {SuperMap} from '../SuperMap';
+import {ShapeFactory} from './feature/ShapeFactory';
+import {Point} from './feature/Point';
+import {Line as RenderLine} from './feature/Line';
+import {Graph} from './Graph';
 
 /**
  * @class SuperMap.Feature.Theme.Line
@@ -92,7 +95,7 @@ import Graph from './Graph';
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
  */
-export default class Line extends Graph {
+export class Line extends Graph {
     /*
      * @function SuperMap.Feature.Theme.Line.prototype.Constructor
      * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
@@ -132,7 +135,9 @@ export default class Line extends Graph {
         }
 
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) {return;}
+        if (!this.initBaseParameter()) {
+            return;
+        }
 
         var dvb = this.dataViewBox;
 
@@ -143,24 +148,28 @@ export default class Line extends Graph {
         var uv = this.DVBUnitValue;
         // 数据值数组
         var fv = this.dataValues;
-        if (fv.length < 1) {return;}       // 没有数据
+        if (fv.length < 1) {
+            return;
+        }       // 没有数据
 
         // 获取 x 轴上的图形信息
         var xShapeInfo = this.calculateXShapeInfo();
-        if (!xShapeInfo) {return;}
+        if (!xShapeInfo) {
+            return;
+        }
         // 折线每个节点的 x 位置
         var xsLoc = xShapeInfo.xPositions;
 
         // 背景框，默认启用
         if (typeof(sets.useBackground) === "undefined" || sets.useBackground) {
             // 将背景框图形添加到模型的 shapes 数组，注意添加顺序，后添加的图形在先添加的图形之上。
-            this.shapes.push(SuperMap.Feature.ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
+            this.shapes.push(ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
         }
 
         // 折线图必须使用坐标轴
-        this.shapes = this.shapes.concat(SuperMap.Feature.ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
+        this.shapes = this.shapes.concat(ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
 
-       // var isDataEffective = true;
+        // var isDataEffective = true;
 
         var xPx;        // 折线节点 x 坐标
         var yPx;        // 折线节点 y 坐标
@@ -170,7 +179,7 @@ export default class Line extends Graph {
         for (var i = 0, len = fv.length; i < len; i++) {
             // 数据溢出值域检查
             if (fv[i] < codomain[0] || fv[i] > codomain[1]) {
-               // isDataEffective = false;
+                // isDataEffective = false;
                 return null;
             }
 
@@ -178,11 +187,11 @@ export default class Line extends Graph {
             yPx = dvb[1] - (fv[i] - codomain[0]) / uv;
 
             // 折线节点参数对象
-            var poiSP = new SuperMap.Feature.ShapeParameters.Point(xPx, yPx);
+            var poiSP = new Point(xPx, yPx);
             // 折线节点 style
-            poiSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool({fillColor: "#ee9900"}, sets.pointStyle, sets.pointStyleByFields, sets.pointStyleByCodomain, i, fv[i]);
+            poiSP.style = ShapeFactory.ShapeStyleTool({fillColor: "#ee9900"}, sets.pointStyle, sets.pointStyleByFields, sets.pointStyleByCodomain, i, fv[i]);
             // 折线节点 hover 样式
-            poiSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.pointHoverStyle);
+            poiSP.highlightStyle = ShapeFactory.ShapeStyleTool(null, sets.pointHoverStyle);
 
             // 折线节点 hover click
             if (typeof(sets.pointHoverAble) !== "undefined") {
@@ -208,8 +217,8 @@ export default class Line extends Graph {
         }
 
         // 折线参数对象
-        var lineSP = new SuperMap.Feature.ShapeParameters.Line(poiLists);
-        lineSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool({strokeColor: "#ee9900"}, sets.lineStyle);
+        var lineSP = new RenderLine(poiLists);
+        lineSP.style = ShapeFactory.ShapeStyleTool({strokeColor: "#ee9900"}, sets.lineStyle);
         // 禁止事件响应
         lineSP.clickable = false;
         lineSP.hoverable = false;
@@ -247,7 +256,9 @@ export default class Line extends Graph {
         var sets = this.setting;     // 图表配置对象
         var fvc = this.dataValues.length;      // 数组值个数
 
-        if (fvc < 1) {return null;}
+        if (fvc < 1) {
+            return null;
+        }
 
         var xBlank;        // x 轴空白间隔参数
         var xShapePositions = [];         // x 轴上图形的位置

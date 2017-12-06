@@ -1,8 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
-import Util from '../core/Util';
-import ServiceBase from './ServiceBase';
-import GetFieldsService from '../../common/iServer/GetFieldsService';
-import FieldStatisticService from '../../common/iServer/FieldStatisticService';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
+import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.FieldService
@@ -15,7 +14,7 @@ import FieldStatisticService from '../../common/iServer/FieldStatisticService';
  * @param options -{Object} 参数。
  * @extends ol.supermap.ServiceBase
  */
-export default class FieldService extends ServiceBase {
+export class FieldService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -27,7 +26,7 @@ export default class FieldService extends ServiceBase {
      * @param params {SuperMap.FieldParameters} 字段信息查询参数类
      * @param callback - {function} 回调函数
      */
-    getFields(params,callback) {
+    getFields(params, callback) {
         var me = this;
         var getFieldsService = new GetFieldsService(me.url, {
             serverType: me.options.serverType,
@@ -60,11 +59,11 @@ export default class FieldService extends ServiceBase {
         //针对每种统计方式分别进行请求
         for (var mode in modes) {
             me.currentStatisticResult[modes[mode]] = null;
-            me._fieldStatisticRequest(params.datasource,params.dataset,fieldName, modes[mode]);
+            me._fieldStatisticRequest(params.datasource, params.dataset, fieldName, modes[mode]);
         }
     }
 
-    _fieldStatisticRequest(datasource,dataset,fieldName, statisticMode) {
+    _fieldStatisticRequest(datasource, dataset, fieldName, statisticMode) {
         var me = this;
         var statisticService = new FieldStatisticService(me.url, {
             eventListeners: {

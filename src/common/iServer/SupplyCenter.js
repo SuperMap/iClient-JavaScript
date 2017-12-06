@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.SupplyCenter
@@ -9,7 +10,7 @@
  *        resourceValue - {number}资源供给中心能提供的最大服务量或商品数量，必设参数。<br>
  *        type - {{@link SuperMap.SupplyCenterType}} 资源供给中心点的类型常量。
  */
-export default  class SupplyCenter {
+export class SupplyCenter {
 
     /**
      * @member SuperMap.SupplyCenter.prototype.maxWeight -{number}
@@ -40,7 +41,7 @@ export default  class SupplyCenter {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

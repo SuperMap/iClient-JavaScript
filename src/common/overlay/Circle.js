@@ -1,5 +1,8 @@
-import SuperMap from '../SuperMap';
-import RankSymbol from './RankSymbol';
+import {SuperMap} from '../SuperMap';
+import {Theme} from './feature/Theme';
+import {Circle as RenderCircle} from './feature/Circle';
+import {ShapeFactory} from './feature/ShapeFactory';
+import {RankSymbol} from './RankSymbol';
 
 /**
  * @class SuperMap.Feature.Theme.Circle
@@ -22,7 +25,7 @@ import RankSymbol from './RankSymbol';
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
  */
-export default class Circle extends RankSymbol {
+export class Circle extends RankSymbol {
 
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
@@ -45,14 +48,18 @@ export default class Circle extends RankSymbol {
         var defaultFillColor = "#ff9277";
 
         // setting 属性是否已成功赋值
-        if (!this.setting) {return false;}
+        if (!this.setting) {
+            return false;
+        }
         var sets = this.setting;
         // 检测 setting 的必设参数
-        if (!(sets.codomain)) {return false;}
+        if (!(sets.codomain)) {
+            return false;
+        }
 
         // 数据
         var decimalNumber = (typeof(sets.decimalNumber) !== "undefined" && !isNaN(sets.decimalNumber)) ? sets.decimalNumber : -1;
-        var dataEffective = SuperMap.Feature.Theme.getDataValues(this.data, this.fields, decimalNumber);
+        var dataEffective = Theme.getDataValues(this.data, this.fields, decimalNumber);
         this.dataValues = dataEffective ? dataEffective : [];
 
         // 数据值数组
@@ -61,8 +68,12 @@ export default class Circle extends RankSymbol {
         //if(fv[0] < 0) return;            //数据为负值
 
         //用户应该定义最大 最小半径  默认最大半径MaxR:100 最小半径MinR:0;
-        if (!sets.maxR) {sets.maxR = 100;}
-        if (!sets.minR) {sets.minR = 0;}
+        if (!sets.maxR) {
+            sets.maxR = 100;
+        }
+        if (!sets.minR) {
+            sets.minR = 0;
+        }
 
         // 值域范围
         var codomain = this.DVBCodomain;
@@ -83,7 +94,9 @@ export default class Circle extends RankSymbol {
         this.height = 2 * r;
 
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) {return;}
+        if (!this.initBaseParameter()) {
+            return;
+        }
 
         //假如用户设置了值域范围 没有在值域范围直接返回
         if (codomain) {
@@ -95,10 +108,10 @@ export default class Circle extends RankSymbol {
         var dvbCenter = this.DVBCenterPoint;        // 数据视图框中心作为圆心
 
         //圆形对象参数
-        var circleSP = new SuperMap.Feature.ShapeParameters.Circle(dvbCenter[0], dvbCenter[1], r);
+        var circleSP = new RenderCircle(dvbCenter[0], dvbCenter[1], r);
 
         //circleSP.sytle 初始化
-        circleSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.circleStyle, null, null, 0);
+        circleSP.style = ShapeFactory.ShapeStyleTool(null, sets.circleStyle, null, null, 0);
         //图形的填充颜色
         if (typeof (sets.fillColor) !== "undefined") {
             //用户自定义
@@ -108,7 +121,7 @@ export default class Circle extends RankSymbol {
             circleSP.style.fillColor = defaultFillColor;
         }
         //圆形 Hover样式
-        circleSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.circleHoverStyle);
+        circleSP.highlightStyle = ShapeFactory.ShapeStyleTool(null, sets.circleHoverStyle);
         //圆形 Hover 与 click 设置
         if (typeof(sets.circleHoverAble) !== "undefined") {
             circleSP.hoverable = sets.circleHoverAble;

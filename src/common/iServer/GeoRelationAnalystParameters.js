@@ -1,6 +1,8 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import '../REST';
 import './FilterParameter';
+
 /**
  * @class SuperMap.GeoRelationAnalystParameters
  * @classdesc
@@ -15,7 +17,7 @@ import './FilterParameter';
  *        startRecord - {integer} 分析结果起始记录位置，默认为0。</br>
  *        expectCount - {integer} 空间关系分析期望返回结果记录数，默认为500条，如果实际不足500条结果则返回所有分析结果。</br>
  */
-export default class GeoRelationAnalystParameters {
+export class GeoRelationAnalystParameters {
     /**
      *  @member SuperMap.GeoRelationAnalystParameters.prototype.dataset - {string}
      *  @description 源数据集名称。
@@ -74,7 +76,7 @@ export default class GeoRelationAnalystParameters {
     constructor(options) {
         var me = this;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 

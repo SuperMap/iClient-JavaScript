@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import '../security/SecurityManager';
-import OnlineData from './OnlineData';
+import {SuperMap} from '../SuperMap';
+import {SecurityManager} from '../security/SecurityManager';
+import {OnlineData} from './OnlineData';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
@@ -14,7 +14,7 @@ import {FetchRequest} from '../util/FetchRequest';
  *      service.updateDataInfo();
  * })
  */
-export default class Online {
+export class Online {
 
     //TODO 目前并没有对接Online的所有操作，需要补充完整
     //所有查询返回的是一个Promise,在外部使用的时候通过Promise的then方法获取异步结果
@@ -42,7 +42,7 @@ export default class Online {
      * @description 登录Online
      */
     login() {
-        SuperMap.SecurityManager.loginOnline(this.rootUrl, true);
+        SecurityManager.loginOnline(this.rootUrl, true);
     }
 
     /**

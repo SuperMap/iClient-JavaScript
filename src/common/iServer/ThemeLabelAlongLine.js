@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {AlongLineDirection} from '../REST';
 
 /**
@@ -12,7 +13,7 @@ import {AlongLineDirection} from '../REST';
  *        repeatIntervalFixed - {boolean} 循环标注间隔是否固定。<br>
  *        labelRepeatInterval - {number}沿线且循环标注时循环标注的间隔。
  */
-export default class ThemeLabelAlongLine {
+export class ThemeLabelAlongLine {
 
     /**
      * @member SuperMap.ThemeLabelAlongLine.prototype.isAlongLine -{boolean}
@@ -56,7 +57,7 @@ export default class ThemeLabelAlongLine {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -82,9 +83,11 @@ export default class ThemeLabelAlongLine {
      * @return {SuperMap.ThemeLabelAlongLine} ThemeLabelAlongLine对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var t = new ThemeLabelAlongLine();
-        SuperMap.Util.copy(t, obj);
+        Util.copy(t, obj);
         return t;
     }
 

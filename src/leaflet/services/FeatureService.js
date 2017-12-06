@@ -1,14 +1,17 @@
 import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+import '../core/Base';
 import {ServiceBase} from './ServiceBase';
 import * as Util from '../core/Util';
-import GetFeaturesByIDsService from '../../common/iServer/GetFeaturesByIDsService';
-import GetFeaturesBySQLService from '../../common/iServer/GetFeaturesBySQLService';
-import GetFeaturesByBoundsService from '../../common/iServer/GetFeaturesByBoundsService';
-import GetFeaturesByBufferService from '../../common/iServer/GetFeaturesByBufferService';
-import GetFeaturesByGeometryService from '../../common/iServer/GetFeaturesByGeometryService';
-import EditFeaturesService from '../../common/iServer/EditFeaturesService' ;
-import CommontypesConversion from '../core/CommontypesConversion';
+import {CommontypesConversion} from '../core/CommontypesConversion';
+import {
+    DataFormat,
+    GetFeaturesByIDsService,
+    GetFeaturesBySQLService,
+    GetFeaturesByBoundsService,
+    GetFeaturesByBufferService,
+    GetFeaturesByGeometryService,
+    EditFeaturesService
+} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.featureService
@@ -212,7 +215,7 @@ export var FeatureService = ServiceBase.extend({
     },
 
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 });
 

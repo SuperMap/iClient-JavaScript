@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import ServerTextStyle from './ServerTextStyle';
-import LabelMixedTextStyle from './LabelMixedTextStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerTextStyle} from './ServerTextStyle';
+import {LabelMixedTextStyle} from './LabelMixedTextStyle';
 
 /**
  * @class SuperMap.ThemeLabelText
@@ -14,7 +15,7 @@ import LabelMixedTextStyle from './LabelMixedTextStyle';
  *        uniformStyle - {{@link SuperMap.ServerTextStyle}} 统一文本风格。<br>
  *        uniformMixedStyle - {{@link SuperMap.LabelMixedTextStyle}} 标签专题图统一的文本复合风格。
  */
-export default  class ThemeLabelText {
+export class ThemeLabelText {
 
     /**
      * @member SuperMap.ThemeLabelText.prototype.maxTextHeight -{number}
@@ -64,7 +65,7 @@ export default  class ThemeLabelText {
         var me = this;
         me.uniformStyle = new ServerTextStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -95,9 +96,11 @@ export default  class ThemeLabelText {
      * @return {SuperMap.ThemeLabelText} ThemeLabelText对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeLabelText();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.uniformStyle = ServerTextStyle.fromObj(obj.uniformStyle);
         res.uniformMixedStyle = LabelMixedTextStyle.fromObj(obj.uniformMixedStyle);
         return res;

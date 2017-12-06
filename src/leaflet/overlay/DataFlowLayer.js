@@ -1,4 +1,5 @@
 import L from "leaflet";
+import '../core/Base';
 import {DataFlowService} from "../services/DataFlowService";
 
 /**
@@ -145,4 +146,5 @@ export var DataFlowLayer = L.GeoJSON.extend({
 export var dataFlowLayer = function (url, options) {
     return new DataFlowLayer(url, options);
 };
+
 L.supermap.dataFlowLayer = dataFlowLayer;

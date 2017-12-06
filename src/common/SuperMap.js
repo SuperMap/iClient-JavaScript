@@ -1,2 +1,1 @@
-var SuperMap = window.SuperMap = window.SuperMap || {};
-module.exports = SuperMap;
+export var SuperMap = window.SuperMap = window.SuperMap || {};

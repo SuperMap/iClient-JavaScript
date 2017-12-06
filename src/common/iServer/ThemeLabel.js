@@ -1,12 +1,13 @@
-﻿import SuperMap from '../SuperMap';
-import Theme from './Theme';
-import ThemeLabelItem from './ThemeLabelItem';
-import ThemeUniqueItem from './ThemeUniqueItem';
-import ThemeFlow from './ThemeFlow';
-import ThemeOffset from './ThemeOffset';
-import ThemeLabelText from './ThemeLabelText';
-import ThemeLabelAlongLine from './ThemeLabelAlongLine';
-import ThemeLabelBackground from './ThemeLabelBackground';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Theme} from './Theme';
+import {ThemeLabelItem} from './ThemeLabelItem';
+import {ThemeUniqueItem} from './ThemeUniqueItem';
+import {ThemeFlow} from './ThemeFlow';
+import {ThemeOffset} from './ThemeOffset';
+import {ThemeLabelText} from './ThemeLabelText';
+import {ThemeLabelAlongLine} from './ThemeLabelAlongLine';
+import {ThemeLabelBackground} from './ThemeLabelBackground';
 import {LabelOverLengthMode} from '../REST';
 
 /**
@@ -31,7 +32,7 @@ import {LabelOverLengthMode} from '../REST';
  *         textSpace - {number} 沿线标注，相邻两个文字之间的间距，单位当前设置的字高。<br>
  *         memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
-export default class ThemeLabel extends Theme {
+export class ThemeLabel extends Theme {
 
     /**
      * @member SuperMap.ThemeLabel.prototype.alongLine -{SuperMap.ThemeLabelAlongLine}
@@ -155,7 +156,7 @@ export default class ThemeLabel extends Theme {
         me.offset = new ThemeOffset();
         me.text = new ThemeLabelText();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -212,7 +213,7 @@ export default class ThemeLabel extends Theme {
      * @return {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
-        return SuperMap.Util.toJSON(this.toServerJSONObject());
+        return Util.toJSON(this.toServerJSONObject());
     }
 
     /**
@@ -278,14 +279,20 @@ export default class ThemeLabel extends Theme {
      * @return {SuperMap.ThemeLabel} ThemeLabel对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var lab = new ThemeLabel();
         var itemsL = obj.items, itemsU = obj.uniqueItems, cells = obj.matrixCells;
         obj.matrixCells = null;
-        SuperMap.Util.copy(lab, obj);
+        Util.copy(lab, obj);
         lab.alongLine = ThemeLabelAlongLine.fromObj(obj);
         lab.background = ThemeLabelBackground.fromObj(obj);
-        lab.flow = new ThemeFlow({flowEnabled: obj.flowEnabled, leaderLineDisplayed: obj.leaderLineDisplayed, leaderLineStyle: obj.leaderLineStyle});
+        lab.flow = new ThemeFlow({
+            flowEnabled: obj.flowEnabled,
+            leaderLineDisplayed: obj.leaderLineDisplayed,
+            leaderLineStyle: obj.leaderLineStyle
+        });
         if (itemsL) {
             lab.items = [];
             for (var i = 0, len = itemsL.length; i < len; i++) {

@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import OverlayAnalystParameters from './OverlayAnalystParameters';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {OverlayAnalystParameters} from './OverlayAnalystParameters';
+import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.GeometryOverlayAnalystParameters
@@ -18,7 +19,7 @@ import ServerGeometry from './ServerGeometry';
  *        operation - {{@link SuperMap.OverlayOperationType}} 叠加操作枚举值。</br>
  * @extends SuperMap.OverlayAnalystParameters
  */
-export default class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
+export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 
     /**
      * @member SuperMap.GeometryOverlayAnalystParameters.prototype.operateGeometry -{Object}
@@ -42,7 +43,7 @@ export default class GeometryOverlayAnalystParameters extends OverlayAnalystPara
     constructor(options) {
         super(options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

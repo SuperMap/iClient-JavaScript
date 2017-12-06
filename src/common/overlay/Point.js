@@ -1,5 +1,7 @@
-import SuperMap from '../SuperMap';
-import Graph from './Graph';
+import {SuperMap} from '../SuperMap';
+import {ShapeFactory} from './feature/ShapeFactory';
+import {Point as FeaturePoint} from './feature/Point';
+import {Graph} from './Graph';
 
 /**
  * @class SuperMap.Feature.Theme.Point
@@ -91,7 +93,7 @@ import Graph from './Graph';
  *@extends {SuperMap.Feature.Theme.Graph}
 
  */
-export default  class Point extends Graph {
+export class Point extends Graph {
 
     constructor(data, layer, fields, setting, lonlat, options) {
         super(data, layer, fields, setting, lonlat, options);
@@ -104,6 +106,7 @@ export default  class Point extends Graph {
     destroy() {
         super.destroy();
     }
+
     /**
      * @function SuperMap.Feature.Theme.prototype.Point.assembleShapes
      * @description 装配图形（扩展接口）。
@@ -122,7 +125,9 @@ export default  class Point extends Graph {
         }
 
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) {return;}
+        if (!this.initBaseParameter()) {
+            return;
+        }
 
         var dvb = this.dataViewBox;
 
@@ -135,18 +140,20 @@ export default  class Point extends Graph {
 
         // 获取 x 轴上的图形信息
         var xShapeInfo = this.calculateXShapeInfo();
-        if (!xShapeInfo) {return;}
+        if (!xShapeInfo) {
+            return;
+        }
         // 折线每个节点的 x 位置
         var xsLoc = xShapeInfo.xPositions;
 
         // 背景框，默认启用
         if (typeof(sets.useBackground) === "undefined" || sets.useBackground) {
             // 将背景框图形添加到模型的 shapes 数组，注意添加顺序，后添加的图形在先添加的图形之上。
-            this.shapes.push(SuperMap.Feature.ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
+            this.shapes.push(ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
         }
 
         // 点状图必须使用坐标轴
-        this.shapes = this.shapes.concat(SuperMap.Feature.ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
+        this.shapes = this.shapes.concat(ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
 
         var xPx;        // 图形点 x 坐标
         var yPx;        // 图形点 y 坐标
@@ -161,11 +168,11 @@ export default  class Point extends Graph {
             yPx = dvb[1] - (fv[i] - codomain[0]) / uv;
 
             // 图形点参数对象
-            var poiSP = new SuperMap.Feature.ShapeParameters.Point(xPx, yPx);
+            var poiSP = new FeaturePoint(xPx, yPx);
             // 图形点 style
-            poiSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool({fillColor: "#ee9900"}, sets.pointStyle, sets.pointStyleByFields, sets.pointStyleByCodomain, i, fv[i]);
+            poiSP.style = ShapeFactory.ShapeStyleTool({fillColor: "#ee9900"}, sets.pointStyle, sets.pointStyleByFields, sets.pointStyleByCodomain, i, fv[i]);
             // 图形点 hover 样式
-            poiSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.pointHoverStyle);
+            poiSP.highlightStyle = ShapeFactory.ShapeStyleTool(null, sets.pointHoverStyle);
 
             // 图形点 hover click
             if (typeof(sets.pointHoverAble) !== "undefined") {
@@ -214,7 +221,9 @@ export default  class Point extends Graph {
         var sets = this.setting;     // 图表配置对象
         var fvc = this.dataValues.length;      // 数组值个数
 
-        if (fvc < 1) {return null;}
+        if (fvc < 1) {
+            return null;
+        }
 
         var xBlank;        // x 轴空白间隔参数
         var xShapePositions = [];         // x 轴上图形的位置

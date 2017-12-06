@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import ComputeWeightMatrixParameters from './ComputeWeightMatrixParameters';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ComputeWeightMatrixParameters} from './ComputeWeightMatrixParameters';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
 
 /**
  * @class SuperMap.ComputeWeightMatrixService
@@ -22,7 +23,7 @@ import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
+export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -49,9 +50,9 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
         }
         var me = this, jsonObject,
             end = me.url.substr(me.url.length - 1, 1);
-        me.url = me.url + ((end === "/") ? "weightmatrix" : "/weightmatrix") + ".json?" ;
+        me.url = me.url + ((end === "/") ? "weightmatrix" : "/weightmatrix") + ".json?";
         jsonObject = {
-            parameter: SuperMap.Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)
         };
         me.request({
@@ -76,12 +77,16 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
 
         if (isAnalyzeById === false) {
             for (let i = 0; i < len; i++) {
-                if (i > 0) {jsonString += ",";}
+                if (i > 0) {
+                    jsonString += ",";
+                }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
         } else if (isAnalyzeById == true) {
             for (let i = 0; i < len; i++) {
-                if (i > 0) {jsonString += ",";}
+                if (i > 0) {
+                    jsonString += ",";
+                }
                 jsonString += params[i];
             }
         }
@@ -91,4 +96,5 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
 
     CLASS_NAME = "SuperMap.ComputeWeightMatrixService"
 }
+
 SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService;

@@ -1,6 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import GetFeaturesServiceBase from './GetFeaturesServiceBase';
-import GetFeaturesBySQLParameters from './GetFeaturesBySQLParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {GetFeaturesServiceBase} from './GetFeaturesServiceBase';
+import {GetFeaturesBySQLParameters} from './GetFeaturesBySQLParameters';
 
 /**
  * @class SuperMap.GetFeaturesBySQLService
@@ -27,7 +27,7 @@ import GetFeaturesBySQLParameters from './GetFeaturesBySQLParameters';
  * function getFeaturesError(object){//todo};
  *
  */
-export default  class GetFeaturesBySQLService extends GetFeaturesServiceBase {
+export class GetFeaturesBySQLService extends GetFeaturesServiceBase {
 
     constructor(url, options) {
         super(url, options);

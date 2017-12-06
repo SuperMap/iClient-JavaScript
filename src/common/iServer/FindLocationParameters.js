@@ -1,5 +1,5 @@
-﻿import SuperMap from '../SuperMap';
-import './SupplyCenter';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.FindLocationParameters
@@ -11,7 +11,7 @@ import './SupplyCenter';
  *        turnWeightField - {string} 转向权值字段的名称。<br>
  *        weightName - {string} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
  */
-export default class FindLocationParameters {
+export class FindLocationParameters {
 
     /**
      * @member SuperMap.FindLocationParameters.prototype.expectedSupplyCenterCount - {number}
@@ -53,7 +53,7 @@ export default class FindLocationParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

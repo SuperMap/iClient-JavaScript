@@ -12,7 +12,7 @@ import ol from 'openlayers/dist/ol-debug';
  *        opaque - {boolean} 是否透明。
  * @extends ol.source.XYZ{@linkdoc-openlayers/ol.source.XYZ}
  */
-export default class SuperMapCloud extends ol.source.XYZ {
+export class SuperMapCloud extends ol.source.XYZ {
 
     constructor(opt_options) {
         var options = opt_options || {};

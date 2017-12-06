@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicRing');
+var SmicRing = require('../../../../src/common/overlay/levelRenderer/SmicRing').SmicRing;
 
 describe('SmicRing', function () {
     var canvas, ctx;
@@ -15,7 +15,7 @@ describe('SmicRing', function () {
     });
 
     it('constructor, destroy', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicRing({
+        var shape = new SmicRing({
             style: {x: 100, y: 100, r0: 30, r: 50}
         });
         expect(shape).not.toBeNull();
@@ -31,7 +31,7 @@ describe('SmicRing', function () {
     });
 
     it('buildPath', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicRing({
+        var shape = new SmicRing({
             style: {x: 100, y: 100, r0: 30, r: 50}
         });
         shape.refOriginalPosition = null;
@@ -42,7 +42,7 @@ describe('SmicRing', function () {
     });
 
     it('getRect', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicRing({
+        var shape = new SmicRing({
             style: {x: 100, y: 100, r0: 30, r: 50}
         });
         var style1 = {x: 100, y: 100, r0: 30, r: 50, brushType: 'fill'};

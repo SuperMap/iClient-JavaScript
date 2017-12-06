@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import ThiessenAnalystParameters from './ThiessenAnalystParameters';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ThiessenAnalystParameters} from './ThiessenAnalystParameters';
+import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.DatasetThiessenAnalystParameters
@@ -9,7 +10,7 @@ import ServerGeometry from './ServerGeometry';
  *        filterQueryParameter - {@link SuperMap.FilterParameter} 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
  * @extends SuperMap.ThiessenAnalystParameters
  */
-export default class DatasetThiessenAnalystParameters extends ThiessenAnalystParameters {
+export class DatasetThiessenAnalystParameters extends ThiessenAnalystParameters {
 
     /**
      * @member SuperMap.DatasetThiessenAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
@@ -31,7 +32,7 @@ export default class DatasetThiessenAnalystParameters extends ThiessenAnalystPar
     constructor(options) {
         super(options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

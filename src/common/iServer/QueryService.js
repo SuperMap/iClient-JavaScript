@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import QueryParameters from './QueryParameters';
-import GeoJSON from '../format/GeoJSON';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+import {QueryParameters} from './QueryParameters';
+import {GeoJSON} from '../format/GeoJSON';
 import {DataFormat} from '../REST';
 
 /**
@@ -21,7 +22,7 @@ import {DataFormat} from '../REST';
  *		   }
  * };
  */
-export default  class QueryService extends CommonServiceBase {
+export class QueryService extends CommonServiceBase {
 
     /*
      * Property: returnContent
@@ -46,7 +47,7 @@ export default  class QueryService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
         var me = this, end;
         if (!me.url) {
@@ -119,8 +120,8 @@ export default  class QueryService extends CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = SuperMap.Util.transformResult(result);
-        if (result && result.recordsets && me.format === SuperMap.DataFormat.GEOJSON) {
+        result = Util.transformResult(result);
+        if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
             var geoJSONFormat = new GeoJSON();
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {

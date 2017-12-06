@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {TextAlignment} from '../REST';
-import ServerColor from './ServerColor';
+import {ServerColor} from './ServerColor';
 
 /**
  * @class SuperMap.ServerTextStyle
@@ -26,7 +27,7 @@ import ServerColor from './ServerColor';
  *        underline - {boolean} 文本字体是否加下划线。<br>
  *        rotation -  {number} 文本旋转的角度。
  */
-export default class ServerTextStyle {
+export class ServerTextStyle {
 
     /**
      * @member SuperMap.ServerTextStyle.prototype.align -{SuperMap.TextAlignment}
@@ -143,7 +144,7 @@ export default class ServerTextStyle {
         me.backColor = new ServerColor(255, 255, 255);
         me.foreColor = new ServerColor(0, 0, 0);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -188,7 +189,7 @@ export default class ServerTextStyle {
      */
     static fromObj(obj) {
         var res = new ServerTextStyle(obj);
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.backColor = ServerColor.fromJson(obj.backColor);
         res.foreColor = ServerColor.fromJson(obj.foreColor);
         return res;

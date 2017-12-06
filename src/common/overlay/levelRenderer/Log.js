@@ -1,4 +1,4 @@
-import SuperMap from '../../SuperMap';
+import {Config} from './Config';
 
 /**
  * @private
@@ -6,7 +6,7 @@ import SuperMap from '../../SuperMap';
  * LevelRenderer 工具-日志
  *
  */
-export default class Log {
+export class Log {
 
     /**
      * Constructor: SuperMap.LevelRenderer.Tool.Log
@@ -15,13 +15,13 @@ export default class Log {
      */
     constructor() {
         return function () {
-            if (SuperMap.LevelRenderer.Config.debugMode === 0) {
+            if (Config.debugMode === 0) {
                 return;
-            } else if (SuperMap.LevelRenderer.Config.debugMode == 1) {
+            } else if (Config.debugMode == 1) {
                 for (let k in arguments) {
                     throw new Error(arguments[k]);
                 }
-            } else if (SuperMap.LevelRenderer.Config.debugMode > 1) {
+            } else if (Config.debugMode > 1) {
                 for (let k in arguments) {
                     console.log(arguments[k]);
                 }
@@ -40,4 +40,3 @@ export default class Log {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Log"
 }
-SuperMap.LevelRenderer.Tool.Log = Log;

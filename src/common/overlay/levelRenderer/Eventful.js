@@ -1,6 +1,3 @@
-import SuperMap from '../../SuperMap';
-import '../levelRenderer/LevelRenderer';
-
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Eventful
@@ -9,7 +6,7 @@ import '../levelRenderer/LevelRenderer';
  * 此类不可实例化。
  *
  */
-export default class Eventful {
+export class Eventful {
 
     /**
      * Property: _handlers
@@ -267,4 +264,3 @@ export default class Eventful {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Eventful"
 }
-SuperMap.LevelRenderer.Eventful = Eventful;

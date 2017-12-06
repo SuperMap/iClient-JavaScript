@@ -1,4 +1,6 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+
 /**
  * @class SuperMap.GetFeaturesParametersBase
  * @classdesc 要素查询参数基类
@@ -8,7 +10,7 @@
  *        fromIndex - {integer} 查询结果的最小索引号。</br>
  *        toIndex - {integer} 查询结果的最大索引号。</br>
  */
-export default  class GetFeaturesParametersBase {
+export class GetFeaturesParametersBase {
 
     /**
      * @member SuperMap.GetFeaturesParametersBase.prototype.datasetName - {Array<string>}
@@ -52,7 +54,7 @@ export default  class GetFeaturesParametersBase {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

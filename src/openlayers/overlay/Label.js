@@ -1,11 +1,13 @@
 import ol from 'openlayers/dist/ol-debug';
-import FeatureVector from '../../common/commontypes/Vector';
-import ThemeVector from '../../common/overlay/ThemeVector';
-import ShapeFactory from '../../common/overlay/feature/ShapeFactory';
-import GeoText from '../../common/commontypes/geometry/GeoText';
-import Bounds from '../../common/commontypes/Bounds';
-import {Util} from '../../common/commontypes/Util';
-import GeoFeature from './theme/GeoFeature';
+import {
+    GeometryVector as FeatureVector,
+    ThemeVector,
+    ShapeFactory,
+    GeoText,
+    Bounds,
+    CommonUtil
+} from '@supermap/iclient-common';
+import {GeoFeature} from './theme/GeoFeature';
 
 /**
  * @class ol.source.Label
@@ -14,7 +16,7 @@ import GeoFeature from './theme/GeoFeature';
  * @param opt_options -{Object} 参数。
  * @extends ol.source.GeoFeature
  */
-export default class Label extends GeoFeature {
+export class Label extends GeoFeature {
 
     constructor(name, opt_options) {
         super(name, opt_options);
@@ -259,8 +261,8 @@ export default class Label extends GeoFeature {
                 var center = bounds.getCenterLonLat();
                 var label = new GeoText(center.lon, center.lat, fi.attributes[this.themeField]);
                 label.calculateBounds();
-                styTmp = Util.cloneObject(fi.style);
-                feaSty = Util.cloneObject(Util.copyAttributes(styTmp, styleTemp));
+                styTmp = CommonUtil.cloneObject(fi.style);
+                feaSty = CommonUtil.cloneObject(CommonUtil.copyAttributes(styTmp, styleTemp));
                 fea = new FeatureVector(label, fi.attributes, feaSty);
                 //赋予id
                 fea.id = fi.id;
@@ -281,12 +283,12 @@ export default class Label extends GeoFeature {
      */
     getStyleByData(feat) {
         var feature = feat;
-        feature.style = Util.copyAttributes(feature.style, this.defaultStyle);
+        feature.style = CommonUtil.copyAttributes(feature.style, this.defaultStyle);
         //将style赋给标签
         if (this.style && this.style.fontSize && parseFloat(this.style.fontSize) < 12) {
             this.style.fontSize = "12px";
         }
-        feature.style = Util.copyAttributes(feature.style, this.style);
+        feature.style = CommonUtil.copyAttributes(feature.style, this.style);
 
         if (this.themeField && this.styleGroups && feature.attributes) {
             var Sf = this.themeField;
@@ -311,7 +313,7 @@ export default class Label extends GeoFeature {
                         if (sty1 && sty1.fontSize && parseFloat(sty1.fontSize) < 12) {
                             sty1.fontSize = "12px";
                         }
-                        feature.style = Util.copyAttributes(feature.style, sty1);
+                        feature.style = CommonUtil.copyAttributes(feature.style, sty1);
                     }
                 }
             }
@@ -357,12 +359,12 @@ export default class Label extends GeoFeature {
      */
     setStyle(feat) {
         var feature = feat;
-        feature.style = Util.copyAttributes(feature.style, this.defaultStyle);
+        feature.style = CommonUtil.copyAttributes(feature.style, this.defaultStyle);
         //将style赋给标签
         if (this.style && this.style.fontSize && parseFloat(this.style.fontSize) < 12) {
             this.style.fontSize = "12px";
         }
-        feature.style = Util.copyAttributes(feature.style, this.style);
+        feature.style = CommonUtil.copyAttributes(feature.style, this.style);
 
         if (this.groupField && this.styleGroups && feature.attributes) {
             var Sf = this.groupField;
@@ -387,7 +389,7 @@ export default class Label extends GeoFeature {
                         if (sty1 && sty1.fontSize && parseFloat(sty1.fontSize) < 12) {
                             sty1.fontSize = "12px";
                         }
-                        feature.style = Util.copyAttributes(feature.style, sty1);
+                        feature.style = CommonUtil.copyAttributes(feature.style, sty1);
                     }
                 }
             }
@@ -482,7 +484,7 @@ export default class Label extends GeoFeature {
         var labB, left, bottom, top, right;
         var labelSize = feature.geometry.bsInfo;
         var style = feature.style;
-        var locationPx = Util.cloneObject(loc);
+        var locationPx = CommonUtil.cloneObject(loc);
 
         //处理文字对齐
         if (style.labelAlign && style.labelAlign !== "cm") {
@@ -570,7 +572,7 @@ export default class Label extends GeoFeature {
                 "b": -1
             };
 
-        style = Util.extend({
+        style = CommonUtil.extend({
             fontColor: "#000000",
             labelAlign: "cm"
         }, style);
@@ -736,7 +738,7 @@ export default class Label extends GeoFeature {
         var offsetX = 0, offsetY = 0, aspectH = "", aspectW = "";
         for (var i = 0; i < bqLen - 1; i++) {
             for (var j = 0; j < quadLen - 1; j++) {
-                var isLineIn = Util.lineIntersection(bounddQuad[i], bounddQuad[i + 1], quadrilateral[j], quadrilateral[j + 1]);
+                var isLineIn = CommonUtil.lineIntersection(bounddQuad[i], bounddQuad[i + 1], quadrilateral[j], quadrilateral[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     //设置避让信息
                     setInfo(quadrilateral[j]);
@@ -841,7 +843,7 @@ export default class Label extends GeoFeature {
                 break;
             }
             for (var j = 0; j < quad2Len - 1; j++) {
-                var isLineIn = Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
+                var isLineIn = CommonUtil.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     OverLap = true;
                     break;

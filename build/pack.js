@@ -16,7 +16,7 @@ program.command('- <key> [modules]')
             console.log(key + "值输入有误，可选值为" + packages.toString());
             return;
         }
-
+        shell.exec('npm install ./src/common');
         var modulePaths = "";
         if (key === "common") {
             modulePaths = getCommonModulePaths();

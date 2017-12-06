@@ -10,7 +10,7 @@ ol.supermap = ol.supermap || {};
  *        serverType -{SuperMap.ServerType} 服务来源 iServer|iPortal|online <br>
  * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
  */
-export default class ServiceBase extends ol.Observable {
+export class ServiceBase extends ol.Observable {
     constructor(url, options) {
         super(url, options);
         this.options = options || {};

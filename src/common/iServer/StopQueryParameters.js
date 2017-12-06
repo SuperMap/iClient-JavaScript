@@ -1,11 +1,12 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.StopQueryParameters
  * @classdesc 站点查询参数类。
  * @param options - {Object} 可选参数。
  */
-export default  class StopQueryParameters {
+export class StopQueryParameters {
     /**
      *  @member SuperMap.StopQueryParameters.prototype.keyWord -{string}
      *  @description 站点名称关键字。
@@ -20,7 +21,7 @@ export default  class StopQueryParameters {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -28,7 +29,7 @@ export default  class StopQueryParameters {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     CLASS_NAME = "SuperMap.StopQueryParameters"

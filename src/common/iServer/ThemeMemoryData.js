@@ -1,4 +1,4 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 
 /**
  * @class SuperMap.ThemeMemoryData
@@ -6,7 +6,7 @@
  * @param srcData - {Array} 原始值数组。
  * @param targetData - {Array} 外部值数组。
  */
-export default  class ThemeMemoryData {
+export class ThemeMemoryData {
 
     /**
      * @member SuperMap.ThemeMemoryData.prototype.srcData -{Array}

@@ -1,7 +1,7 @@
+import L from "leaflet";
 import {Symbolizer} from './Symbolizer';
 import {CanvasRenderer} from './CanvasRenderer';
 import {SVGRenderer} from './SVGRenderer';
-import L from "leaflet";
 
 /**
  * @class L.supermap.TextSymbolizer

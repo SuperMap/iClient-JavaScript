@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
-import UpdateEdgeWeightParameters from './UpdateEdgeWeightParameters';
+import {SuperMap} from '../SuperMap';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
+import {UpdateEdgeWeightParameters} from './UpdateEdgeWeightParameters';
 
 /**
  * @class SuperMap.UpdateEdgeWeightService
@@ -20,7 +20,7 @@ import UpdateEdgeWeightParameters from './UpdateEdgeWeightParameters';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
+export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -80,7 +80,9 @@ export default  class UpdateEdgeWeightService extends NetworkAnalystServiceBase 
         }
         var paramStr = "";
         for (var attr in params) {
-            if (params[attr] === "" || params[attr] === "edgeWeight") {continue;}
+            if (params[attr] === "" || params[attr] === "edgeWeight") {
+                continue;
+            }
             switch (attr) {
                 case "edgeId":
                     paramStr += "/edgeweight/" + params[attr];

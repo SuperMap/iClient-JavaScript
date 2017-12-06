@@ -1,5 +1,6 @@
-import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.ChartFeatureInfoSpecsService
@@ -16,7 +17,7 @@ import CommonServiceBase from './CommonServiceBase';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default class ChartFeatureInfoSpecsService extends CommonServiceBase {
+export class ChartFeatureInfoSpecsService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -28,7 +29,7 @@ export default class ChartFeatureInfoSpecsService extends CommonServiceBase {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -44,7 +45,7 @@ export default class ChartFeatureInfoSpecsService extends CommonServiceBase {
             end = me.url.substr(me.url.length - 1, 1);
         if (!me.isTempLayers) {
             me.url += (end === "/") ? '' : '/';
-            me.url += "chartFeatureInfoSpecs.json?" ;
+            me.url += "chartFeatureInfoSpecs.json?";
         } else {
             me.url += ".json?";
         }

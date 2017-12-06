@@ -1,4 +1,6 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Bounds} from '../commontypes/Bounds';
 
 /**
  * @class SuperMap.DatasetInfo
@@ -22,7 +24,7 @@
  *        type - {string} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
  *                        网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  */
-export default class DatasetInfo {
+export class DatasetInfo {
 
     /**
      * @member SuperMap.DatasetInfo.prototype.bounds - {SuperMap.Bounds}
@@ -81,10 +83,10 @@ export default class DatasetInfo {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
         var b = this.bounds;
         if (b) {
-            this.bounds = new SuperMap.Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
+            this.bounds = new Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
         }
     }
 
@@ -93,7 +95,7 @@ export default class DatasetInfo {
      * @description 释放资源,将引用资源的属性置空。
      */
     destroy() {
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -103,7 +105,7 @@ export default class DatasetInfo {
      */
     toServerJSONObject() {
         var dataObj = {};
-        dataObj = SuperMap.Util.copyAttributes(dataObj, this);
+        dataObj = Util.copyAttributes(dataObj, this);
         if (dataObj.bounds) {
             if (dataObj.bounds.toServerJSONObject) {
                 dataObj.bounds = dataObj.bounds.toServerJSONObject();
@@ -115,4 +117,5 @@ export default class DatasetInfo {
 
     CLASS_NAME = "SuperMap.DatasetInfo"
 }
+
 SuperMap.DatasetInfo = DatasetInfo;

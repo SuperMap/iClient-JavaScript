@@ -1,8 +1,8 @@
 import L from "leaflet";
 import Pbf from 'pbf';
 import VectorTileSpec from 'vector-tile';
-import SuperMap from '../../../common/SuperMap';
 import {VectorFeatureType} from './VectorFeatureType';
+import {FetchRequest} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.VectorTilePBF
@@ -24,7 +24,7 @@ export var VectorTilePBF = L.Class.extend({
      */
     getTile: function () {
         var me = this;
-        return SuperMap.FetchRequest.get(me.url, null, {
+        return FetchRequest.get(me.url, null, {
             timeout: 10000
         }).then(function (response) {
             if (!response.ok) {

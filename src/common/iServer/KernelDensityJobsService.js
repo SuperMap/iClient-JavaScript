@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import ProcessingServiceBase from './ProcessingServiceBase';
-import KernelDensityJobParameter from './KernelDensityJobParameter';
+import {SuperMap} from '../SuperMap';
+import {ProcessingServiceBase} from './ProcessingServiceBase';
+import {KernelDensityJobParameter} from './KernelDensityJobParameter';
 
 /**
  * @class SuperMap.KernelDensityJobsService
@@ -9,7 +9,7 @@ import KernelDensityJobParameter from './KernelDensityJobParameter';
  * @param url -{string} 核密度分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-export default class KernelDensityJobsService extends ProcessingServiceBase {
+export class KernelDensityJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);

@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import ProcessingServiceBase from './ProcessingServiceBase';
-import OverlayGeoJobParameter from './OverlayGeoJobParameter';
+import {SuperMap} from '../SuperMap';
+import {ProcessingServiceBase} from './ProcessingServiceBase';
+import {OverlayGeoJobParameter} from './OverlayGeoJobParameter';
 
 /**
  * @class SuperMap.OverlayGeoJobsService
@@ -13,7 +13,7 @@ import OverlayGeoJobParameter from './OverlayGeoJobParameter';
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
-export default class OverlayGeoJobsService extends ProcessingServiceBase {
+export class OverlayGeoJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -31,7 +31,7 @@ export default class OverlayGeoJobsService extends ProcessingServiceBase {
      * @function SuperMap.OverlayGeoJobsService.prototype.getOverlayGeoJobs
      * @description 获取叠加分析任务
      */
-    getOverlayGeoJobs(){
+    getOverlayGeoJobs() {
         super.getJobs(this.url);
     }
 

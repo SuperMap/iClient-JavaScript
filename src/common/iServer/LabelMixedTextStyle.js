@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerTextStyle from './ServerTextStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerTextStyle} from './ServerTextStyle';
 
 /**
  * @class SuperMap.LabelMixedTextStyle
@@ -21,7 +22,7 @@ import ServerTextStyle from './ServerTextStyle';
  *        splitIndexes - {Array<number>} 分段索引值，分段索引值用来对文本中的字符进行分段。<br>
  *        styles - {Array<{@link SuperMap.ServerTextStyle}>} 文本样式集合。
  */
-export default class LabelMixedTextStyle {
+export class LabelMixedTextStyle {
 
     /**
      * @member SuperMap.LabelMixedTextStyle.prototype.defaultStyle -{SuperMap.ServerTextStyle}
@@ -65,7 +66,7 @@ export default class LabelMixedTextStyle {
         var me = this;
         me.defaultStyle = new ServerTextStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -99,10 +100,12 @@ export default class LabelMixedTextStyle {
      * @return {SuperMap.LabelMixedTextStyle} 返回新的LabelMixedTextStyle对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new LabelMixedTextStyle();
         var stys = obj.styles;
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.defaultStyle = new ServerTextStyle(obj.defaultStyle);
         if (stys) {
             res.styles = [];

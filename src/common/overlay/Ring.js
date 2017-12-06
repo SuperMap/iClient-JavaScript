@@ -1,5 +1,7 @@
-import SuperMap from '../SuperMap';
-import Graph from './Graph';
+import {SuperMap} from '../SuperMap';
+import {ShapeFactory} from './feature/ShapeFactory';
+import {Sector} from './feature/Sector';
+import {Graph} from './Graph';
 
 /**
  * @class SuperMap.Feature.Theme.Ring
@@ -71,7 +73,7 @@ import Graph from './Graph';
  *
  * @extends {SuperMap.Feature.Theme.Graph}
  */
-export default class Ring extends Graph {
+export class Ring extends Graph {
 
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
@@ -91,7 +93,9 @@ export default class Ring extends Graph {
      */
     assembleShapes() {
         // 重要步骤：初始化参数
-        if (!this.initBaseParameter()) {return;}
+        if (!this.initBaseParameter()) {
+            return;
+        }
 
         // 一个默认 style 组
         var defaultStyleGroup = [
@@ -108,12 +112,14 @@ export default class Ring extends Graph {
 
         // 背景框，默认不启用
         if (sets.useBackground) {
-            this.shapes.push(SuperMap.Feature.ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
+            this.shapes.push(ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
         }
 
         // 数据值数组
         var fv = this.dataValues;
-        if (fv.length < 1) {return;}       // 没有数据
+        if (fv.length < 1) {
+            return;
+        }       // 没有数据
 
         // 值域范围
         var codomain = this.DVBCodomain;
@@ -163,17 +169,17 @@ export default class Ring extends Graph {
             }
 
             // 扇形参数对象
-            var sectorSP = new SuperMap.Feature.ShapeParameters.Sector(dvbCenter[0], dvbCenter[1], r, startAngle, endAngle, r0);
+            var sectorSP = new Sector(dvbCenter[0], dvbCenter[1], r, startAngle, endAngle, r0);
             // 扇形样式
             if (typeof(sets.sectorStyleByFields) === "undefined") {
                 // 使用默认 style 组
                 var colorIndex = i % defaultStyleGroup.length;
-                sectorSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, defaultStyleGroup, null, colorIndex);
+                sectorSP.style = ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, defaultStyleGroup, null, colorIndex);
             } else {
-                sectorSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, sets.sectorStyleByFields, sets.sectorStyleByCodomain, i, fv[i]);
+                sectorSP.style = ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, sets.sectorStyleByFields, sets.sectorStyleByCodomain, i, fv[i]);
             }
             // 扇形 hover 样式
-            sectorSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorHoverStyle);
+            sectorSP.highlightStyle = ShapeFactory.ShapeStyleTool(null, sets.sectorHoverStyle);
             // 扇形 hover 与 click 设置
             if (typeof(sets.sectorHoverAble) !== "undefined") {
                 sectorSP.hoverable = sets.sectorHoverAble;

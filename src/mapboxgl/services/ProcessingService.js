@@ -1,15 +1,18 @@
 import mapboxgl from 'mapbox-gl';
-import SuperMap from '../../common/SuperMap';
-import Util from '../core/Util';
-import ServiceBase from './ServiceBase';
-import KernelDensityJobsService from '../../common/iServer/KernelDensityJobsService';
-import SingleObjectQueryJobsService from '../../common/iServer/SingleObjectQueryJobsService';
-import SummaryMeshJobsService from '../../common/iServer/SummaryMeshJobsService';
-import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsService';
-import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
-import OverlayGeoJobsService from '../../common/iServer/OverlayGeoJobsService';
-import BuffersAnalystJobsService from '../../common/iServer/BuffersAnalystJobsService';
-import TopologyValidatorJobsService from '../../common/iServer/TopologyValidatorJobsService';
+import '../core/Base';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
+import {
+    DataFormat,
+    KernelDensityJobsService,
+    SingleObjectQueryJobsService,
+    SummaryMeshJobsService,
+    SummaryRegionJobsService,
+    VectorClipJobsService,
+    OverlayGeoJobsService,
+    BuffersAnalystJobsService,
+    TopologyValidatorJobsService
+} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.ProcessingService
@@ -23,7 +26,7 @@ import TopologyValidatorJobsService from '../../common/iServer/TopologyValidator
  * @param url -{string} 分布式分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数
  */
-export default class ProcessingService extends ServiceBase {
+export class ProcessingService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -674,7 +677,7 @@ export default class ProcessingService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     _processParams(params) {

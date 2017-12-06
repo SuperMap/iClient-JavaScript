@@ -1,7 +1,9 @@
-﻿import SuperMap from '../SuperMap';
-import FilterParameter from './FilterParameter';
-import SurfaceAnalystParameters from './SurfaceAnalystParameters';
-import ServerGeometry from './ServerGeometry';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {FilterParameter} from './FilterParameter';
+import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
+import {ServerGeometry} from './ServerGeometry';
+import {Geometry} from '../commontypes/Geometry';
 
 /**
  * @class SuperMap.DatasetSurfaceAnalystParameters
@@ -16,7 +18,7 @@ import ServerGeometry from './ServerGeometry';
  *        surfaceAnalystMethod - {{@link SuperMap.SurfaceAnalystMethod}} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
  * @extends SuperMap.SurfaceAnalystParameters
  */
-export default class DatasetSurfaceAnalystParameters extends SurfaceAnalystParameters {
+export class DatasetSurfaceAnalystParameters extends SurfaceAnalystParameters {
     /**
      * @member SuperMap.DatasetSurfaceAnalystParameters.prototype.dataset -{string}
      * @description 要用来做数据集表面分析的数据源中数据集的名称。
@@ -43,7 +45,7 @@ export default class DatasetSurfaceAnalystParameters extends SurfaceAnalystParam
         var me = this;
         me.filterQueryParameter = new FilterParameter();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -75,7 +77,7 @@ export default class DatasetSurfaceAnalystParameters extends SurfaceAnalystParam
                 tempObj.filterQueryParameter = datasetSurfaceAnalystParameters.filterQueryParameter;
             }
             if (name === "extractParameter") {
-                if (datasetSurfaceAnalystParameters.extractParameter.clipRegion instanceof SuperMap.Geometry && datasetSurfaceAnalystParameters.extractParameter.clipRegion.components) {
+                if (datasetSurfaceAnalystParameters.extractParameter.clipRegion instanceof Geometry && datasetSurfaceAnalystParameters.extractParameter.clipRegion.components) {
                     datasetSurfaceAnalystParameters.extractParameter.clipRegion = ServerGeometry.fromGeometry(datasetSurfaceAnalystParameters.extractParameter.clipRegion);
                 }
                 tempObj.extractParameter = datasetSurfaceAnalystParameters.extractParameter;

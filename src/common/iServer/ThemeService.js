@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import ThemeParameters from './ThemeParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+import {ThemeParameters} from './ThemeParameters';
 
 /**
  * @class SuperMap.ThemeService
@@ -17,7 +18,7 @@ import ThemeParameters from './ThemeParameters';
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class ThemeService extends CommonServiceBase {
+export class ThemeService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -73,7 +74,7 @@ export default  class ThemeService extends CommonServiceBase {
         jsonParameters += "[{'type': 'UGC','subLayers': {'layers': [";
         for (var themeID in parameter.themes) {
             themeObj = parameter.themes[themeID];
-            var jsonTheme = SuperMap.Util.toJSON(themeObj);
+            var jsonTheme = Util.toJSON(themeObj);
             jsonTheme = jsonTheme.slice(0, -1);
 
             jsonParameters += "{'theme': " + jsonTheme + "},'type': 'UGC','ugcLayerType': 'THEME',";
@@ -96,11 +97,11 @@ export default  class ThemeService extends CommonServiceBase {
 
             fieldValuesDisplayFilter = parameter.fieldValuesDisplayFilter;
             if (fieldValuesDisplayFilter) {
-                jsonParameters += "'fieldValuesDisplayFilter':" + SuperMap.Util.toJSON(fieldValuesDisplayFilter) + ",";
+                jsonParameters += "'fieldValuesDisplayFilter':" + Util.toJSON(fieldValuesDisplayFilter) + ",";
             }
 
             if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[themeID]) {
-                jsonParameters += "'joinItems':[" + SuperMap.Util.toJSON(parameter.joinItems[themeID]) + "],";
+                jsonParameters += "'joinItems':[" + Util.toJSON(parameter.joinItems[themeID]) + "],";
             }
             if (parameter.datasetNames && parameter.dataSourceNames) {
                 var datasetID = parameter.datasetNames[themeID] ? themeID : (parameter.datasetNames.length - 1);

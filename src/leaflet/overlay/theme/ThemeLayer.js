@@ -1,10 +1,5 @@
-import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
-import Point from "../../../common/commontypes/geometry/Point";
-import GeoText from "../../../common/commontypes/geometry/GeoText";
-import LevelRenderer from "../../../common/overlay/levelRenderer/LevelRenderer";
-import "../../../common/overlay/levelRenderer/Render";
-import '../../core/Base';
+import {CommonUtil, GeometryPoint as Point, GeoText, LevelRenderer} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.ThemeLayer
@@ -429,7 +424,7 @@ export var ThemeLayer = L.Layer.extend({
 
     _updateOpacity: function () {
         var me = this;
-        SuperMap.Util.modifyDOMElement(me.container, null, null, null, null, null, null, me.options.opacity);
+        CommonUtil.modifyDOMElement(me.container, null, null, null, null, null, null, me.options.opacity);
         if (me._map !== null) {
             me._map.fire("changelayer", {layer: me, property: "opacity"});
         }

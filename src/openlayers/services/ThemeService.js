@@ -1,6 +1,6 @@
 ﻿import ol from 'openlayers/dist/ol-debug';
-import ServiceBase from './ServiceBase';
-import CommonThemeService from '../../common/iServer/ThemeService';
+import {ServiceBase} from './ServiceBase';
+import {ThemeService as CommonThemeService} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.ThemeService
@@ -16,7 +16,7 @@ import CommonThemeService from '../../common/iServer/ThemeService';
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        serverType - {SuperMap.ServerType} 服务来源 iServer|iPortal|online
  */
-export default class ThemeService extends ServiceBase {
+export class ThemeService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);

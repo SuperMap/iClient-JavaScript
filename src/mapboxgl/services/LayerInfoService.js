@@ -1,9 +1,12 @@
 import mapboxgl from 'mapbox-gl';
-import ServiceBase from './ServiceBase';
-import GetLayersInfoService from '../../common/iServer/GetLayersInfoService';
-import SetLayerInfoService from '../../common/iServer/SetLayerInfoService';
-import SetLayersInfoService from '../../common/iServer/SetLayersInfoService';
-import SetLayerStatusService from '../../common/iServer/SetLayerStatusService';
+import '../core/Base';
+import {ServiceBase} from './ServiceBase';
+import {
+    GetLayersInfoService,
+    SetLayerInfoService,
+    SetLayersInfoService,
+    SetLayerStatusService
+} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.LayerInfoService
@@ -18,7 +21,7 @@ import SetLayerStatusService from '../../common/iServer/SetLayerStatusService';
  * @param options - {Object} 服务所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default class LayerInfoService extends ServiceBase {
+export class LayerInfoService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -121,4 +124,5 @@ export default class LayerInfoService extends ServiceBase {
         setLayerStatusService.processAsync(params);
     }
 }
+
 mapboxgl.supermap.LayerInfoService = LayerInfoService;

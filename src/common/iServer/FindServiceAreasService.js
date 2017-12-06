@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
-import FindServiceAreasParameters from './FindServiceAreasParameters';
-import GeoJSON from '../format/GeoJSON';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
+import {FindServiceAreasParameters} from './FindServiceAreasParameters';
+import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindServiceAreasService
@@ -24,7 +25,7 @@ import GeoJSON from '../format/GeoJSON';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象
  */
-export default class FindServiceAreasService extends NetworkAnalystServiceBase {
+export class FindServiceAreasService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -53,7 +54,7 @@ export default class FindServiceAreasService extends NetworkAnalystServiceBase {
         jsonObject = {
             isFromCenter: params.isFromCenter,
             isCenterMutuallyExclusive: params.isCenterMutuallyExclusive,
-            parameter: SuperMap.Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             centers: me.getJson(params.isAnalyzeById, params.centers),
             weights: me.getJson(true, params.weights)
         };

@@ -1,4 +1,3 @@
-import'../../core/Base';
 import L from "leaflet";
 import {VectorFeatureType} from './VectorFeatureType';
 import {TextSymbolizer} from './TextSymbolizer';

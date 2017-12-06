@@ -1,5 +1,5 @@
-import SuperMap from '../../SuperMap';
-import ShapeParameters from './ShapeParameters';
+import {SuperMap} from '../../SuperMap';
+import {ShapeParameters} from './ShapeParameters';
 
 /**
  * @private
@@ -9,7 +9,7 @@ import ShapeParameters from './ShapeParameters';
  * Inherits:
  *  - <SuperMap.Feature.ShapeParameters>
  */
-export default class Image extends ShapeParameters {
+export class Image extends ShapeParameters {
 
     /**
      * APIProperty: x
@@ -119,4 +119,5 @@ export default class Image extends ShapeParameters {
 
     CLASS_NAME = "SuperMap.Feature.ShapeParameters.Image"
 }
+SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Image = Image;

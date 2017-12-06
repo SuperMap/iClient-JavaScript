@@ -1,5 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+
 /**
  * @class SuperMap.GetFieldsService
  * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
@@ -21,7 +23,7 @@ import CommonServiceBase from './CommonServiceBase';
  * };
  *
  */
-export default  class GetFieldsService extends CommonServiceBase {
+export class GetFieldsService extends CommonServiceBase {
     /**
      * @member SuperMap.GetFieldsService.prototype.datasource -{string}
      * @description 要查询的数据集所在的数据源名称。
@@ -37,7 +39,7 @@ export default  class GetFieldsService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

@@ -1,6 +1,7 @@
-import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import AreaSolarRadiationParameters from './AreaSolarRadiationParameters';
+import {SuperMap} from '../SuperMap';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {AreaSolarRadiationParameters} from './AreaSolarRadiationParameters';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.AreaSolarRadiationService
@@ -20,7 +21,7 @@ import AreaSolarRadiationParameters from './AreaSolarRadiationParameters';
  * (end)
  *
  */
-export default class AreaSolarRadiationService extends SpatialAnalystBase {
+export class AreaSolarRadiationService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -52,12 +53,12 @@ export default class AreaSolarRadiationService extends SpatialAnalystBase {
 
         var parameterObject = {};
 
-        if (parameter instanceof SuperMap.AreaSolarRadiationParameter) {
+        if (parameter instanceof AreaSolarRadiationParameters) {
             me.url += 'datasets/' + parameter.dataset + '/solarradiation';
         }
 
-        SuperMap.AreaSolarRadiationParameters.toObject(parameter, parameterObject);
-        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
+        AreaSolarRadiationParameters.toObject(parameter, parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
 
         me.request({
@@ -71,5 +72,6 @@ export default class AreaSolarRadiationService extends SpatialAnalystBase {
 
     CLASS_NAME = "SuperMap.AreaSolarRadiationService";
 }
+
 SuperMap.AreaSolarRadiationService = AreaSolarRadiationService;
 

@@ -1,5 +1,6 @@
-import SuperMap from '../SuperMap';
-import OnlineServiceBase from './OnlineServiceBase';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {OnlineServiceBase} from './OnlineServiceBase';
 
 /**
  * @class SuperMap.OnlineData
@@ -7,7 +8,7 @@ import OnlineServiceBase from './OnlineServiceBase';
  * @param serviceRootUrl -{string} 服务根地址
  * @param options -{string} 服务相关参数
  */
-export default class OnlineData extends OnlineServiceBase {
+export class OnlineData extends OnlineServiceBase {
     //MD5
     MD5 = null;
     //文件类型。
@@ -56,7 +57,7 @@ export default class OnlineData extends OnlineServiceBase {
         super(serviceRootUrl);
         var me = this;
         options = options || {};
-        SuperMap.Util.extend(me, options);
+        Util.extend(me, options);
         me.serviceUrl = serviceRootUrl;
         if (me.id) {
             me.serviceUrl = serviceRootUrl + "/" + me.id;
@@ -74,7 +75,7 @@ export default class OnlineData extends OnlineServiceBase {
         }
         var me = this;
         return me.request("GET", this.serviceUrl).then(function (result) {
-            SuperMap.Util.extend(me, result);
+            Util.extend(me, result);
         });
     }
 

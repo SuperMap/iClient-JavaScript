@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
-import FindPathParameters from './FindPathParameters';
-import GeoJSON from '../format/GeoJSON';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
+import {FindPathParameters} from './FindPathParameters';
+import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindPathService
@@ -24,7 +25,7 @@ import GeoJSON from '../format/GeoJSON';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class FindPathService extends NetworkAnalystServiceBase {
+export class FindPathService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -52,7 +53,7 @@ export default  class FindPathService extends NetworkAnalystServiceBase {
         me.url = me.url + ((end === "/") ? "path" : "/path") + ".json?";
         jsonObject = {
             hasLeastEdgeCount: params.hasLeastEdgeCount,
-            parameter: SuperMap.Util.toJSON(params.parameter),
+            parameter: Util.toJSON(params.parameter),
             nodes: me.getJson(params.isAnalyzeById, params.nodes)
         };
         me.request({
@@ -77,12 +78,16 @@ export default  class FindPathService extends NetworkAnalystServiceBase {
 
         if (isAnalyzeById === false) {
             for (let i = 0; i < len; i++) {
-                if (i > 0) {jsonString += ",";}
+                if (i > 0) {
+                    jsonString += ",";
+                }
                 jsonString += '{"x":' + params[i].x + ',"y":' + params[i].y + '}';
             }
         } else if (isAnalyzeById == true) {
             for (let i = 0; i < len; i++) {
-                if (i > 0) {jsonString += ",";}
+                if (i > 0) {
+                    jsonString += ",";
+                }
                 jsonString += params[i];
             }
         }

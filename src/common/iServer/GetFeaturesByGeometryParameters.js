@@ -1,8 +1,9 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {SpatialQueryMode} from '../REST';
-import FilterParameter from './FilterParameter';
-import GetFeaturesParametersBase from './GetFeaturesParametersBase';
-import ServerGeometry from './ServerGeometry';
+import {FilterParameter} from './FilterParameter';
+import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
+import {ServerGeometry} from './ServerGeometry';
 
 /**
  * @class SuperMap.GetFeaturesByGeometryParameters
@@ -22,7 +23,7 @@ import ServerGeometry from './ServerGeometry';
  *        toIndex - {integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
-export default class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
+export class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
 
 
     /**
@@ -63,7 +64,7 @@ export default class GetFeaturesByGeometryParameters extends GetFeaturesParamete
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 
@@ -121,7 +122,7 @@ export default class GetFeaturesByGeometryParameters extends GetFeaturesParamete
             parasByGeometry.maxFeatures = params.maxFeatures;
         }
 
-        return SuperMap.Util.toJSON(parasByGeometry);
+        return Util.toJSON(parasByGeometry);
     }
 
     CLASS_NAME = "SuperMap.GetFeaturesByGeometryParameters"

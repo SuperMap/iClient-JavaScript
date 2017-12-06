@@ -26,7 +26,7 @@ module.exports = {
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
         'mapv': "function(){try{return mapv}catch(e){return {}}}()",
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
-        '@turf/turf': "function(){try{return turf}catch(e){return {}}}()",
+        '@turf/turf': "function(){try{return turf}catch(e){return {}}}()"
     },
 
     module: {
@@ -55,17 +55,17 @@ module.exports = {
             query: {
                 presets: ['es2015'],
                 plugins: [
-                    'transform-class-properties',
+                    'transform-class-properties'
                 ]
             }
         }, {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({
                 use: {
-                    loader: 'css-loader',
+                    loader: 'css-loader'
                 }
-            }),
-        }],
+            })
+        }]
     },
     plugins: [
         new webpack.BannerPlugin(banner),

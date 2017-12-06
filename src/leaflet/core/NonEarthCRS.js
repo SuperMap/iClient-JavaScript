@@ -1,4 +1,3 @@
-import "../core/Base";
 import L from "leaflet";
 
 L.Projection = {};

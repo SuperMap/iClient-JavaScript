@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
-import UpdateTurnNodeWeightParameters from './UpdateTurnNodeWeightParameters';
+import {SuperMap} from '../SuperMap';
+import {NetworkAnalystServiceBase} from './NetworkAnalystServiceBase';
+import {UpdateTurnNodeWeightParameters} from './UpdateTurnNodeWeightParameters';
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightService
@@ -18,7 +18,7 @@ import UpdateTurnNodeWeightParameters from './UpdateTurnNodeWeightParameters';
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-export default  class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
+export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -78,7 +78,9 @@ export default  class UpdateTurnNodeWeightService extends NetworkAnalystServiceB
         }
         var paramStr = "";
         for (var attr in params) {
-            if (params[attr] === "" || params[attr] === "turnNodeWeight") {continue;}
+            if (params[attr] === "" || params[attr] === "turnNodeWeight") {
+                continue;
+            }
             switch (attr) {
                 case "nodeId":
                     paramStr += "/turnnodeweight/" + params[attr];

@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import ProcessingServiceBase from './ProcessingServiceBase';
-import SingleObjectQueryJobsParameter from './SingleObjectQueryJobsParameter';
+import {SuperMap} from '../SuperMap';
+import {ProcessingServiceBase} from './ProcessingServiceBase';
+import {SingleObjectQueryJobsParameter} from './SingleObjectQueryJobsParameter';
 
 /**
  * @class SuperMap.SingleObjectQueryJobsService
@@ -9,7 +9,7 @@ import SingleObjectQueryJobsParameter from './SingleObjectQueryJobsParameter';
  * @param url -{string} 单对象空间查询分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-export default class SingleObjectQueryJobsService extends ProcessingServiceBase {
+export class SingleObjectQueryJobsService extends ProcessingServiceBase {
 
     constructor(url, options) {
         super(url, options);

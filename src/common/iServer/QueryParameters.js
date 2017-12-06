@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import './FilterParameter';
 import {GeometryType, QueryOption} from '../REST';
 
@@ -16,7 +17,7 @@ import {GeometryType, QueryOption} from '../REST';
  *         holdTime - {number}资源在服务端保存的时间。<br>
  *         returnCustomResult -{boolean} 仅供三维使用。
  */
-export default  class QueryParameters {
+export class QueryParameters {
 
     /**
      * @member SuperMap.QueryParameters.prototype.customParams -{string}
@@ -87,7 +88,7 @@ export default  class QueryParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

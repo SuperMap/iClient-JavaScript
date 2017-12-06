@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import Theme from './Theme';
-import ThemeRangeItem from './ThemeRangeItem';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Theme} from './Theme';
+import {ThemeRangeItem} from './ThemeRangeItem';
 import {RangeMode, ColorGradientType} from '../REST';
 
 /**
@@ -18,7 +19,7 @@ import {RangeMode, ColorGradientType} from '../REST';
  *        colorGradientType - {{@link SuperMap.ColorGradientType}} 渐变颜色枚举类。<br>
  *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
-export default class ThemeRange extends Theme {
+export class ThemeRange extends Theme {
 
     /**
      * @member SuperMap.ThemeRange.prototype.precision -{string}
@@ -73,7 +74,7 @@ export default class ThemeRange extends Theme {
     constructor(options) {
         super("RANGE", options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -107,9 +108,11 @@ export default class ThemeRange extends Theme {
      * @return {SuperMap.ThemeRange} ThemeRange对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeRange();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         var itemsR = obj.items;
         var len = itemsR ? itemsR.length : 0;
         res.items = [];

@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerStyle from './ServerStyle';
+﻿import {SuperMap} from '../SuperMap';
+import {ServerStyle} from './ServerStyle';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.ThemeGraduatedSymbolStyle
@@ -11,7 +12,7 @@ import ServerStyle from './ServerStyle';
  *        zeroDisplayed - {boolean} 是否显示0值。默认为 false。<br>
  *        zeroStyle - {{@link SuperMap.ServerStyle}} 0值的等级符号风格。
  */
-export default  class ThemeGraduatedSymbolStyle {
+export class ThemeGraduatedSymbolStyle {
 
     /**
      * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed -{boolean}
@@ -48,7 +49,7 @@ export default  class ThemeGraduatedSymbolStyle {
         me.positiveStyle = new ServerStyle();
         me.zeroStyle = new ServerStyle();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -72,9 +73,11 @@ export default  class ThemeGraduatedSymbolStyle {
      * @return {SuperMap.ThemeGraduatedSymbolStyle} ThemeGraduatedSymbolStyle对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeGraduatedSymbolStyle();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.negativeStyle = ServerStyle.fromJson(obj.negativeStyle);
         res.positiveStyle = ServerStyle.fromJson(obj.positiveStyle);
         res.zeroStyle = ServerStyle.fromJson(obj.zeroStyle);

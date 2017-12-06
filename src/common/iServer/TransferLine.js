@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.TransferLine
@@ -14,7 +15,7 @@
  *        endStopName - {string} 下车站点名称。</br>
  *        endStopAliasName - {string} 下车站点别名。</br>
  */
-export default  class TransferLine {
+export class TransferLine {
     /**
      * @memberSuperMap.TransferLine.prototype.lineID -{number}
      * @description 乘车路线名称。
@@ -71,7 +72,7 @@ export default  class TransferLine {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
 
@@ -80,7 +81,7 @@ export default  class TransferLine {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**

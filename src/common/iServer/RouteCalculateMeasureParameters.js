@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import './Route';
 
 /**
@@ -11,7 +12,7 @@ import './Route';
  *        tolerance - {float} 【可选参数】容限值。</br>
  *        isIgnoreGap - {float}  【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
  */
-export default class RouteCalculateMeasureParameters {
+export class RouteCalculateMeasureParameters {
 
     /**
      * @member SuperMap.RouteCalculateMeasureParameters.prototype.sourceRoute -{Object}
@@ -44,7 +45,7 @@ export default class RouteCalculateMeasureParameters {
         if (!options) {
             return this;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**

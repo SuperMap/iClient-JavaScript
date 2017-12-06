@@ -1,11 +1,14 @@
 import mapboxgl from 'mapbox-gl';
-import FeatureVector from '../../common/commontypes/Vector';
-import GeoText from '../../common/commontypes/geometry/GeoText';
-import Bounds from '../../common/commontypes/Bounds';
-import {Util} from '../../common/commontypes/Util';
-import ShapeFactory from '../../common/overlay/feature/ShapeFactory';
-import GeoFeature from './theme/GeoFeatureThemeLayer';
-import Vector from '../../common/overlay/ThemeVector';
+import '../core/Base';
+import {
+    GeometryVector as FeatureVector,
+    GeoText,
+    Bounds,
+    CommonUtil as Util,
+    ShapeFactory,
+    ThemeVector as Vector
+} from '@supermap/iclient-common';
+import {GeoFeature} from './theme/GeoFeatureThemeLayer';
 
 /**
  * @class mapboxgl.supermap.LabelThemeLayer
@@ -14,7 +17,7 @@ import Vector from '../../common/overlay/ThemeVector';
  * @param opt_options -{Object} 参数
  * @extends mapboxgl.supermap.GeoFeatureThemeLayer
  */
-export default class Label extends GeoFeature {
+export class Label extends GeoFeature {
 
     /**
      * @member mapboxgl.supermap.LabelThemeLayer.prototype.isOverLay -{boolean}

@@ -1,13 +1,14 @@
-import SuperMap from '../SuperMap';
-import IManagerServiceBase from './iManagerServiceBase';
-import IManagerCreateNodeParam from './iManagerCreateNodeParam';
+import {SuperMap} from '../SuperMap';
+import {IManagerServiceBase} from './iManagerServiceBase';
+import {IManagerCreateNodeParam} from './iManagerCreateNodeParam';
+
 /**
  * @class SuperMap.iManager
  * @classdesc iManager服务类。
  * @param serviceUrl - {string} iManager首页地址。
  *
  */
-export default class IManager extends IManagerServiceBase {
+export class IManager extends IManagerServiceBase {
 
     constructor(iManagerUrl) {
         super(iManagerUrl);

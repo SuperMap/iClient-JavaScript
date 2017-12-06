@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
-import SetLayerStatusParameters from './SetLayerStatusParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
+import {SetLayerStatusParameters} from './SetLayerStatusParameters';
 
 /**
  * @class SuperMap.SetLayerStatusService
@@ -16,7 +17,7 @@ import SetLayerStatusParameters from './SetLayerStatusParameters';
  *         serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *         format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default  class SetLayerStatusService extends CommonServiceBase {
+export class SetLayerStatusService extends CommonServiceBase {
 
     lastparams = null;
 
@@ -26,7 +27,7 @@ export default  class SetLayerStatusService extends CommonServiceBase {
         super(url, options);
         var me = this;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
         me.mapUrl = url;
     }
@@ -36,7 +37,7 @@ export default  class SetLayerStatusService extends CommonServiceBase {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -105,7 +106,7 @@ export default  class SetLayerStatusService extends CommonServiceBase {
      */
     createTempLayerComplete(result) {
         var me = this;
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         if (result.succeed) {
             me.lastparams.resourceID = result.newResourceID;
         }
@@ -134,7 +135,7 @@ export default  class SetLayerStatusService extends CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         if (result != null && me.lastparams != null) {
             result.newResourceID = me.lastparams.resourceID;
         }

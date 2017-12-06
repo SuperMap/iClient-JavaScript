@@ -1,6 +1,8 @@
-import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
+import {SuperMap} from '../SuperMap';
+import {CommonServiceBase} from './CommonServiceBase';
 import {FetchRequest} from '../util/FetchRequest';
+import {Util} from '../commontypes/Util';
+import {SecurityManager} from '../security/SecurityManager';
 
 /**
  * @class SuperMap.ProcessingServiceBase
@@ -14,7 +16,7 @@ import {FetchRequest} from '../util/FetchRequest';
  *        index - {number}服务访问地址在数组中的位置。<br>
  *        length - {number}服务访问地址数组长度。
  */
-export default class ProcessingServiceBase extends CommonServiceBase {
+export class ProcessingServiceBase extends CommonServiceBase {
 
     constructor(url, options) {
         options = options || {};
@@ -85,7 +87,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
     }
 
     serviceProcessCompleted(result, seconds) {
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;
         if (result) {
@@ -94,19 +96,19 @@ export default class ProcessingServiceBase extends CommonServiceBase {
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
-                        me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
-                        if (job.state.runState === 'LOST' || job.state.runState === 'KILLED'|| job.state.runState === 'FAILED') {
-                            clearInterval(id);
-                            me.events.triggerEvent("processFailed", {error: job.state.errorMsg, state: job.state.runState});
-                        }
-                        if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
-                            clearInterval(id);
-                            me.events.triggerEvent("processCompleted", {result: job});
-                        }
-                    }).catch(function (e) {
+                    me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
+                    if (job.state.runState === 'LOST' || job.state.runState === 'KILLED' || job.state.runState === 'FAILED') {
                         clearInterval(id);
-                        me.events.triggerEvent("processFailed", {error: e});
-                    });
+                        me.events.triggerEvent("processFailed", {error: job.state.errorMsg, state: job.state.runState});
+                    }
+                    if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
+                        clearInterval(id);
+                        me.events.triggerEvent("processCompleted", {result: job});
+                    }
+                }).catch(function (e) {
+                    clearInterval(id);
+                    me.events.triggerEvent("processFailed", {error: e});
+                });
             }, seconds);
         }
     }
@@ -120,8 +122,8 @@ export default class ProcessingServiceBase extends CommonServiceBase {
         if (url.indexOf('.json') === -1) {
             url += '.json';
         }
-        if (SuperMap.SecurityManager.getToken(url)) {
-            url += '?token=' + SuperMap.SecurityManager.getToken(url);
+        if (SecurityManager.getToken(url)) {
+            url += '?token=' + SecurityManager.getToken(url);
         }
         return url;
     }

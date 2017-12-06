@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {ClipAnalystMode} from '../REST';
 
 /**
@@ -9,7 +10,7 @@ import {ClipAnalystMode} from '../REST';
  *         datasetOverlay -{string} 裁剪对象数据集。 <br>
  *         mode -{{@link SuperMap.ClipAnalystMode}} 裁剪分析模式 。 <br>
  */
-export default class VectorClipJobsParameter {
+export class VectorClipJobsParameter {
 
     /**
      * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
@@ -40,7 +41,7 @@ export default class VectorClipJobsParameter {
         if (options.mode && typeof options.mode === "string") {
             options.mode = options.mode.toLowerCase();
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -53,6 +54,7 @@ export default class VectorClipJobsParameter {
         this.geometryClip = null;
         this.mode = null;
     }
+
     /**
      * @function SuperMap.VectorClipJobsParameter.toObject
      * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数

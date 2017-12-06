@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {Unit} from '../REST';
 
 /**
@@ -13,7 +14,7 @@ import {Unit} from '../REST';
  *         prjCoordSys -{string} 用来指定该量算操作所使用的投影,该项默认值为空。<br>
  *         distanceMode -{string} 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
  */
-export default class MeasureParameters {
+export class MeasureParameters {
 
     /**
      * @member SuperMap.MeasureParameters.prototype.geometry -{Object}
@@ -50,7 +51,7 @@ export default class MeasureParameters {
         }
         this.geometry = geometry;
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

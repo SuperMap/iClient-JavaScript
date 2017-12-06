@@ -1,7 +1,5 @@
-import '../core/Base';
 import L from "leaflet";
-import './graphic/CircleStyle';
-import './graphic/Graphic';
+import '../core/Base';
 
 /**
  * @class L.supermap.graphicLayer
@@ -23,94 +21,94 @@ import './graphic/Graphic';
  */
 export var GraphicLayer = L.Path.extend({
 
-    initialize: function (graphics, options) {
-        options = options || {};
-        L.setOptions(this, options);
-        this.graphics = graphics;
-    },
+        initialize: function (graphics, options) {
+            options = options || {};
+            L.setOptions(this, options);
+            this.graphics = graphics;
+        },
 
-    /**
+        /**
          * @private
          * @function L.supermap.graphicLayer.prototype.getEvents
          * @description 获取事件
          * @return {Object} 返回该图层支持的事件对象
          */
-    getEvents: function () {
-        var events = {
-            click: this._handleClick
-        };
-        return events;
-    },
+        getEvents: function () {
+            var events = {
+                click: this._handleClick
+            };
+            return events;
+        },
 
-    /**
+        /**
          * @private
          * @function L.supermap.graphicLayer.prototype.onAdd
          * @description 添加图形
          */
-    onAdd: function () {
-        this._canvas = document.createElement('canvas');
-        var width = this._map.getPixelBounds().getSize().x;
-        var height = this._map.getPixelBounds().getSize().y;
-        this._canvas.width = width;
-        this._canvas.height = height;
-        this._ctx = this._canvas.getContext('2d');
-        L.Path.prototype.onAdd.call(this);
-    },
+        onAdd: function () {
+            this._canvas = document.createElement('canvas');
+            var width = this._map.getPixelBounds().getSize().x;
+            var height = this._map.getPixelBounds().getSize().y;
+            this._canvas.width = width;
+            this._canvas.height = height;
+            this._ctx = this._canvas.getContext('2d');
+            L.Path.prototype.onAdd.call(this);
+        },
 
-    _update: function () {
-        if (this._map) {
-            this._updatePath();
-        }
-    },
-
-    _updatePath: function () {
-        this._renderer._drawGraphics(this._getGraphicsInBounds());
-    },
-
-    _project: function () {
-        var me = this;
-        me._getGraphicsInBounds().map(function (graphic) {
-            var point = me._map.latLngToLayerPoint(graphic.getLatLng());
-            var w = me._clickTolerance();
-            var p = [graphic._anchor + w, graphic._anchor + w];
-            graphic._pxBounds = new L.Bounds(point.subtract(p), point.add(p));
-            return graphic;
-        });
-        me._pxBounds = L.bounds(L.point(0, 0), L.point(this._canvas.width, this._canvas.height));
-    },
-
-    _getGraphicsInBounds: function () {
-        var me = this;
-        var graphicsInBounds = [];
-        var viewBounds = me._map.getBounds();
-        this.graphics.map(function (graphic) {
-            if (viewBounds.contains(graphic.getLatLng())) {
-                graphicsInBounds.push(graphic);
+        _update: function () {
+            if (this._map) {
+                this._updatePath();
             }
-            return graphic;
-        });
-        return graphicsInBounds;
-    },
+        },
 
-    _containsPoint: function () {
-        return false;
-    },
+        _updatePath: function () {
+            this._renderer._drawGraphics(this._getGraphicsInBounds());
+        },
 
-    _handleClick: function (evt) {
-        var me = this;
-        var graphics = me._getGraphicsInBounds();
-        for (var i = 0; i < graphics.length; i++) {
-            var center = me._map.latLngToLayerPoint(graphics[i].getLatLng());
-            var canvas = graphics[i].getCanvas();
-            var p1 = L.point(center.x - canvas.width / 2, center.y - canvas.height / 2),
-                p2 = L.point(center.x + canvas.width / 2, center.y + canvas.height / 2),
-                bounds = L.bounds(p1, p2);
-            if (bounds.contains(me._map.latLngToLayerPoint(evt.latlng))) {
-                return me.options.handleClick.call(me, graphics[i]);
+        _project: function () {
+            var me = this;
+            me._getGraphicsInBounds().map(function (graphic) {
+                var point = me._map.latLngToLayerPoint(graphic.getLatLng());
+                var w = me._clickTolerance();
+                var p = [graphic._anchor + w, graphic._anchor + w];
+                graphic._pxBounds = new L.Bounds(point.subtract(p), point.add(p));
+                return graphic;
+            });
+            me._pxBounds = L.bounds(L.point(0, 0), L.point(this._canvas.width, this._canvas.height));
+        },
+
+        _getGraphicsInBounds: function () {
+            var me = this;
+            var graphicsInBounds = [];
+            var viewBounds = me._map.getBounds();
+            this.graphics.map(function (graphic) {
+                if (viewBounds.contains(graphic.getLatLng())) {
+                    graphicsInBounds.push(graphic);
+                }
+                return graphic;
+            });
+            return graphicsInBounds;
+        },
+
+        _containsPoint: function () {
+            return false;
+        },
+
+        _handleClick: function (evt) {
+            var me = this;
+            var graphics = me._getGraphicsInBounds();
+            for (var i = 0; i < graphics.length; i++) {
+                var center = me._map.latLngToLayerPoint(graphics[i].getLatLng());
+                var canvas = graphics[i].getCanvas();
+                var p1 = L.point(center.x - canvas.width / 2, center.y - canvas.height / 2),
+                    p2 = L.point(center.x + canvas.width / 2, center.y + canvas.height / 2),
+                    bounds = L.bounds(p1, p2);
+                if (bounds.contains(me._map.latLngToLayerPoint(evt.latlng))) {
+                    return me.options.handleClick.call(me, graphics[i]);
+                }
             }
         }
     }
-}
 );
 
 L.Canvas.include({

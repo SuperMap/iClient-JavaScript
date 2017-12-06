@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {DataReturnMode} from '../REST';
 
 /**
@@ -11,7 +12,7 @@ import {DataReturnMode} from '../REST';
  *         dataReturnMode - {@link SuperMap.DataReturnMode} 数据返回模式，默认为SuperMap.DataReturnMode.RECORDSET_ONLY。<br>
  *         deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为true。<br>
  */
-export default class DataReturnOption {
+export class DataReturnOption {
 
     /**
      * @member SuperMap.DataReturnOption.prototype.expectCount -{number}
@@ -41,7 +42,7 @@ export default class DataReturnOption {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

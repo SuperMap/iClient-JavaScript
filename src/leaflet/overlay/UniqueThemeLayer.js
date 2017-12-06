@@ -1,6 +1,7 @@
 import L from "leaflet";
-import SuperMap from '../../common/SuperMap';
+import '../core/Base';
 import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
+import {CommonUtil} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.uniqueThemeLayer
@@ -50,7 +51,7 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
     getStyleByData: function (feat) {
         var me = this,
             feature = feat,
-            style = SuperMap.Util.copyAttributesWithClip({}, me.style);
+            style = CommonUtil.copyAttributesWithClip({}, me.style);
 
 
         var groups = me.styleGroups,
@@ -76,7 +77,7 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
             for (var i = 0, len = groups.length; i < len; i++) {
                 if ((attribute).toString() === ( groups[i].value).toString()) {
                     var sty1 = groups[i].style;
-                    style = SuperMap.Util.copyAttributesWithClip(style, sty1);
+                    style = CommonUtil.copyAttributesWithClip(style, sty1);
                 }
 
             }

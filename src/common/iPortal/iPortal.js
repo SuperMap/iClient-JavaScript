@@ -1,10 +1,10 @@
-import SuperMap from '../SuperMap';
-import IPortalServicesQueryParam from './iPortalServicesQueryParam';
-import IPortalMapsQueryParam from './iPortalMapsQueryParam';
+import {SuperMap} from '../SuperMap';
+import {IPortalServicesQueryParam} from './iPortalServicesQueryParam';
+import {IPortalMapsQueryParam} from './iPortalMapsQueryParam';
 import {FetchRequest} from '../util/FetchRequest';
-import IPortalService from './iPortalService';
-import IPortalMap from './iPortalMap';
-import IPortalServiceBase from './iPortalServiceBase';
+import {IPortalService} from './iPortalService';
+import {IPortalMap} from './iPortalMap';
+import {IPortalServiceBase} from './iPortalServiceBase';
 
 /**
  * @class SuperMap.iPortal
@@ -13,7 +13,7 @@ import IPortalServiceBase from './iPortalServiceBase';
  * @param iportalUrl -{string} 地址
  *
  */
-export default class IPortal extends IPortalServiceBase {
+export class IPortal extends IPortalServiceBase {
 
     constructor(iportalUrl) {
         super(iportalUrl);

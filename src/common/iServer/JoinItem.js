@@ -1,4 +1,6 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+
 /**
  * @class SuperMap.JoinItem
  * @classdesc 连接信息类。
@@ -34,7 +36,7 @@
  *  function processFailed(e) {//todo}
  * (end)
  */
-export default  class JoinItem {
+export class JoinItem {
     /**
      * @member SuperMap.JoinItem.prototype.foreignTableName -{string}
      * @description 外部表的名称。
@@ -62,7 +64,7 @@ export default  class JoinItem {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -84,7 +86,7 @@ export default  class JoinItem {
      */
     toServerJSONObject() {
         var dataObj = {};
-        dataObj = SuperMap.Util.copyAttributes(dataObj, this);
+        dataObj = Util.copyAttributes(dataObj, this);
         //joinFilter基本是个纯属性对象，这里不再做转换
         return dataObj;
     }
@@ -92,4 +94,5 @@ export default  class JoinItem {
 
     CLASS_NAME = "SuperMap.JoinItem"
 }
+
 SuperMap.JoinItem = JoinItem;

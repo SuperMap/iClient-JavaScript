@@ -1,5 +1,4 @@
 ﻿import L from "leaflet";
-import "../core/Base"
 
 /**
  * @class L.supermap.ServiceBase

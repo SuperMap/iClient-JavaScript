@@ -1,12 +1,12 @@
-import SuperMap from '../../SuperMap';
-import Group from './Group';
+import {Util} from './Util';
+import {Group} from './Group';
 
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Storage
  * 内容（图像）仓库 (M) 。
  */
-export default class Storage {
+export class Storage {
 
     /**
      * Property: _elements
@@ -290,9 +290,9 @@ export default class Storage {
                             target[name] = params[name];
                         }
                     }
-                    SuperMap.LevelRenderer.Util.merge(el, target, true);
+                    Util.merge(el, target, true);
                 } else {
-                    SuperMap.LevelRenderer.Util.merge(el, params, true);
+                    Util.merge(el, params, true);
                 }
             }
         }
@@ -429,7 +429,7 @@ export default class Storage {
             el = elId;
         }
 
-        var idx = SuperMap.LevelRenderer.Util.indexOf(this._roots, el);
+        var idx = Util.indexOf(this._roots, el);
         if (idx >= 0) {
             this.delFromMap(el.id);
             this._roots.splice(idx, 1);
@@ -520,4 +520,3 @@ export default class Storage {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Storage"
 }
-SuperMap.LevelRenderer.Storage = Storage;

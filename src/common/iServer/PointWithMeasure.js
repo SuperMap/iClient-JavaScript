@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import Point from '../commontypes/geometry/Point';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {Point} from '../commontypes/geometry/Point';
 
 /**
  * @class SuperMap.PointWithMeasure
@@ -10,7 +11,7 @@ import Point from '../commontypes/geometry/Point';
  *        y - {number}获取当前点对象在地理坐标系下的 Y 坐标值。</br>
  * @extends SuperMap.Geometry.Point
  */
-export default class PointWithMeasure extends Point {
+export class PointWithMeasure extends Point {
 
     /**
      * @member SuperMap.PointWithMeasure.prototype.measure -{number}
@@ -21,7 +22,7 @@ export default class PointWithMeasure extends Point {
     constructor(options) {
         super(options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -79,7 +80,7 @@ export default class PointWithMeasure extends Point {
         if (!jsonObject) {
             return;
         }
-        return new SuperMap.PointWithMeasure({
+        return new PointWithMeasure({
             x: jsonObject.x,
             y: jsonObject.y,
             measure: jsonObject.measure

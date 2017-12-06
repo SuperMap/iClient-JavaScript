@@ -1,12 +1,12 @@
-import '../../core/Base';
 import L from "leaflet";
+import '../../core/Base';
 
 /**
  * @constant L.supermap.CartoStyleMap
  * @description CartoCSS中的style属性名与leaflet的style属性名的对应表
  * @private
  */
-export var CartoStyleMap  = L.supermap.CartoStyleMap = {
+export var CartoStyleMap = {
 
     /*
      * @constant L.supermap.CartoStyleMap.prototype.TEXT
@@ -16,7 +16,7 @@ export var CartoStyleMap  = L.supermap.CartoStyleMap = {
         "text-size": "fontSize",
         "text-face-name": "fontFamily",
         "text-align": "textAlign",
-        "text-name":"textName",
+        "text-name": "textName",
         'text-weight': 'fontWeight',
         "text-halo-color": "color",
         "text-fill": "fillColor",
@@ -73,7 +73,7 @@ export var CartoStyleMap  = L.supermap.CartoStyleMap = {
  * @description 服务端传过来的style属性名与leaflet的style属性名的对应表
  * @private
  */
-L.supermap.ServerStyleMap = {
+export var ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.lineWidth
@@ -133,7 +133,7 @@ L.supermap.ServerStyleMap = {
  * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
  * @private
  */
-L.supermap.CompOpMap = {
+export var CompOpMap = {
     "clear": "",
     "src": "",
     "dst": "",
@@ -169,3 +169,7 @@ L.supermap.CompOpMap = {
     "color": "",
     "value": ""
 };
+
+L.supermap.CartoStyleMap = CartoStyleMap;
+L.supermap.ServerStyleMap = ServerStyleMap;
+L.supermap.CompOpMap = CompOpMap;

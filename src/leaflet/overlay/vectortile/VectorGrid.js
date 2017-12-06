@@ -1,13 +1,13 @@
 /**
  * Inspired by https://github.com/Leaflet/Leaflet.VectorGrid
  */
+import L from "leaflet";
 import {SVGRenderer} from './SVGRenderer';
 import {CanvasRenderer} from './CanvasRenderer';
 import {VectorTile} from './VectorTile';
 import {TextSymbolizer} from './TextSymbolizer';
 import {VectorTileFormat} from '../VectorTileFormat';
 import {VectorFeatureType} from './VectorFeatureType';
-import L from "leaflet";
 
 /**
  * @class L.supermap.VectorGrid

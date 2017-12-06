@@ -1,8 +1,7 @@
 ﻿import L from "leaflet";
+import '../core/Base';
 import {ServiceBase} from './ServiceBase';
-import StopQueryService from '../../common/iServer/StopQueryService';
-import TransferPathService from '../../common/iServer/TransferPathService';
-import TransferSolutionService from '../../common/iServer/TransferSolutionService';
+import {StopQueryService, TransferPathService, TransferSolutionService} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.trafficTransferAnalystService

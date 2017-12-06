@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import  './LayerStatus';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import './LayerStatus';
 
 /**
  * @class SuperMap.SetLayerStatusParameters
@@ -11,7 +12,7 @@ import  './LayerStatus';
  *        holdTime - {string} 获取或设置资源在服务端保存的时间。<br>
  *        resourceID - {string} 获取或设置资源服务 ID。
  */
-export default  class SetLayerStatusParameters {
+export class SetLayerStatusParameters {
 
     /**
      * @member SuperMap.SetLayerStatusParameters.prototype.layerStatusList -{Array<SuperMap.LayerStatus>}
@@ -37,7 +38,7 @@ export default  class SetLayerStatusParameters {
         var me = this;
         me.layerStatusList = [];
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

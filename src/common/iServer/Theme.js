@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import './ThemeMemoryData';
 
 /**
@@ -8,7 +9,7 @@ import './ThemeMemoryData';
  * @param options - {Object} 可选参数。如：<br>
  *        memoryData - {{@link SuperMap.ThemeMemoryData}} 专题图内存数据。
  */
-export default class Theme {
+export class Theme {
 
     /**
      * @member SuperMap.Theme.prototype.memoryData -{SuperMap.ThemeMemoryData}
@@ -30,7 +31,7 @@ export default class Theme {
         }
         this.type = type;
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

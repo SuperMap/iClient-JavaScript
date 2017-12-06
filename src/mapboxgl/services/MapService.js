@@ -1,7 +1,8 @@
 import mapboxgl from 'mapbox-gl';
-import ServiceBase from './ServiceBase';
-import CommonMapService  from '../../common/iServer/MapService';
-import TilesetsService from '../../common/iServer/TilesetsService';
+import '../core/Base';
+import {ServiceBase} from './ServiceBase';
+import {MapService as CommonMapService, TilesetsService} from '@supermap/iclient-common';
+
 /**
  * @class mapboxgl.supermap.MapService
  * @classdesc 地图信息服务类
@@ -15,7 +16,7 @@ import TilesetsService from '../../common/iServer/TilesetsService';
  *           //doSomething
  *      })
  */
-export default class MapService extends ServiceBase {
+export class MapService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -59,4 +60,5 @@ export default class MapService extends ServiceBase {
         tilesetsService.processAsync();
     }
 }
+
 mapboxgl.supermap.MapService = MapService;

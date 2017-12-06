@@ -1,6 +1,8 @@
-import L from "leaflet";
+import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
-import CommonMatchAddressService from'../../common/iServer/AddressMatchService';
+import '../core/Base';
+import {AddressMatchService as CommonMatchAddressService} from '@supermap/iclient-common';
+
 /**
  * @class L.supermap.addressMatchService
  * @constructs L.supermap.addressMatchService

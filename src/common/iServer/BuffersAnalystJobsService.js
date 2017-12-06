@@ -1,6 +1,6 @@
-import SuperMap from '../SuperMap';
-import ProcessingServiceBase from './ProcessingServiceBase';
-import BuffersAnalystJobsParameter from './BuffersAnalystJobsParameter';
+import {SuperMap} from '../SuperMap';
+import {ProcessingServiceBase} from './ProcessingServiceBase';
+import {BuffersAnalystJobsParameter} from './BuffersAnalystJobsParameter';
 
 /**
  * @class SuperMap.BuffersAnalystJobsService
@@ -9,7 +9,7 @@ import BuffersAnalystJobsParameter from './BuffersAnalystJobsParameter';
  * @param url -{string} 缓冲区分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-export default class BuffersAnalystJobsService extends ProcessingServiceBase{
+export class BuffersAnalystJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/buffers";

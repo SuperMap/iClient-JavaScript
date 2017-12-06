@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import GetFeaturesParametersBase from './GetFeaturesParametersBase';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
 import './FilterParameter';
 
 /**
@@ -13,7 +14,7 @@ import './FilterParameter';
  *         toIndex - {integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
-export default  class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
+export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
 
     /**
      * @function SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode - {string}
@@ -65,7 +66,7 @@ export default  class GetFeaturesBySQLParameters extends GetFeaturesParametersBa
         if (params.maxFeatures && !isNaN(params.maxFeatures)) {
             paramsBySql.maxFeatures = params.maxFeatures;
         }
-        return SuperMap.Util.toJSON(paramsBySql);
+        return Util.toJSON(paramsBySql);
     }
 
     CLASS_NAME = "SuperMap.GetFeaturesBySQLParameters"

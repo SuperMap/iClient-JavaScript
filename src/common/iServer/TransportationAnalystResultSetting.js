@@ -1,4 +1,6 @@
-﻿import  SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+
 /**
  * @class SuperMap.TransportationAnalystResultSetting
  * @classdesc 交通网络分析结果参数类。
@@ -13,7 +15,7 @@
  *        returnPathGuides - {boolean} 返回分析结果中是否包含行驶导引集合。</br>
  *        returnRoutes - {boolean} 返回分析结果中是否包含路由对象的集合。
  */
-export default  class TransportationAnalystResultSetting {
+export class TransportationAnalystResultSetting {
 
     /**
      * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeFeatures -{boolean}
@@ -68,7 +70,7 @@ export default  class TransportationAnalystResultSetting {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -89,4 +91,5 @@ export default  class TransportationAnalystResultSetting {
 
     CLASS_NAME = "SuperMap.TransportationAnalystResultSetting"
 }
+
 SuperMap.TransportationAnalystResultSetting = TransportationAnalystResultSetting;

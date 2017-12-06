@@ -1,6 +1,6 @@
-﻿import SuperMap from '../../SuperMap';
-import Geometry from '../Geometry';
-import Bounds from '../Bounds';
+﻿import {SuperMap} from '../../SuperMap';
+import {Geometry} from '../Geometry';
+import {Bounds} from '../Bounds';
 
 /**
  * @class  SuperMap.Geometry.Rectangle
@@ -19,7 +19,7 @@ import Bounds from '../Bounds';
  *  var recttangle = new SuperMap.Geometry.Rectangle(x, y, w, h);
  */
 
-export default class Rectangle extends Geometry {
+export class Rectangle extends Geometry {
 
     /**
      * @member SuperMap.Geometry.Rectangle.prototype.x -{float}
@@ -44,7 +44,7 @@ export default class Rectangle extends Geometry {
      * @description 矩形的高度。
      */
     height = null;
-    
+
     constructor(x, y, width, height) {
         super(x, y, width, height);
 
@@ -78,4 +78,5 @@ export default class Rectangle extends Geometry {
 
     CLASS_NAME = "SuperMap.Geometry.Rectangle"
 }
+
 SuperMap.Geometry.Rectangle = Rectangle;

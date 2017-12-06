@@ -1,6 +1,7 @@
-import SuperMap from '../SuperMap';
-import Theme from '../overlay/feature/Theme';
-import '../overlay/feature/ShapeFactory';
+import {SuperMap} from '../SuperMap';
+import {Bounds} from '../commontypes/Bounds';
+import {Theme} from './feature/Theme';
+import {ShapeFactory} from './feature/ShapeFactory';
 
 /**
  * @class SuperMap.Feature.Theme.Graph
@@ -17,7 +18,7 @@ import '../overlay/feature/ShapeFactory';
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Graph} 返回一个统计专题要素。
  */
-export default class Graph extends Theme {
+export class Graph extends Theme {
 
     /**
      * @member SuperMap.Feature.Theme.Graph.prototype.shapeFactory -{SuperMap.Feature.ShapeFactory}
@@ -190,7 +191,7 @@ export default class Graph extends Theme {
 
         me.fields = fields ? fields : [];
 
-        me.shapeFactory = new SuperMap.Feature.ShapeFactory();
+        me.shapeFactory = new ShapeFactory();
     }
 
     /**
@@ -253,7 +254,7 @@ export default class Graph extends Theme {
 
         // 数据
         var decimalNumber = (typeof(sets.decimalNumber) !== "undefined" && !isNaN(sets.decimalNumber)) ? sets.decimalNumber : -1;
-        var dataEffective = SuperMap.Feature.Theme.getDataValues(this.data, this.fields, decimalNumber);
+        var dataEffective = Theme.getDataValues(this.data, this.fields, decimalNumber);
         this.dataValues = dataEffective ? dataEffective : [];
 
         // 基础参数  width, height, codomain
@@ -331,7 +332,9 @@ export default class Graph extends Theme {
      * @return {Array<number>} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
     resetLocation(lonlat) {
-        if (lonlat) {this.lonlat = lonlat;}
+        if (lonlat) {
+            this.lonlat = lonlat;
+        }
 
         // 获取地理位置对应的像素坐标 newLocalLX
         var newLocalLX = this.getLocalXY(this.lonlat);
@@ -345,7 +348,7 @@ export default class Graph extends Theme {
         var w = this.width;
         var h = this.height;
         var loc = this.location;
-        this.chartBounds = new SuperMap.Bounds(loc[0] - w / 2, loc[1] + h / 2, loc[0] + w / 2, loc[1] - h / 2);
+        this.chartBounds = new Bounds(loc[0] - w / 2, loc[1] + h / 2, loc[0] + w / 2, loc[1] - h / 2);
 
         //重新计算当前渐变色
         this.resetLinearGradient();
@@ -471,8 +474,10 @@ export default class Graph extends Theme {
  * @param decimalNumber - {number} 小数位处理参数，对获取到的属性数据值进行小数位处理。
  * @return {Array<string>} 字段名数组对应的属性数据值数组。
  */
-SuperMap.Feature.Theme.getDataValues = function (data, fields, decimalNumber) {
-    if (!data.attributes) {return false;}
+Theme.getDataValues = function (data, fields, decimalNumber) {
+    if (!data.attributes) {
+        return false;
+    }
 
     var fieldsValue = [];
 
@@ -501,4 +506,5 @@ SuperMap.Feature.Theme.getDataValues = function (data, fields, decimalNumber) {
         return false;
     }
 };
+
 SuperMap.Feature.Theme.Graph = Graph;

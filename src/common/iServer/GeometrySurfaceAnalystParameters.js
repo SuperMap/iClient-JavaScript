@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import SurfaceAnalystParameters from './SurfaceAnalystParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
 
 /**
  * @class SuperMap.GeometrySurfaceAnalystParameters
@@ -14,7 +15,7 @@ import SurfaceAnalystParameters from './SurfaceAnalystParameters';
  *        surfaceAnalystMethod - {SuperMap.SurfaceAnalystMethod} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
  * @extends SuperMap.SurfaceAnalystParameters
  */
-export default class GeometrySurfaceAnalystParameters extends SurfaceAnalystParameters {
+export class GeometrySurfaceAnalystParameters extends SurfaceAnalystParameters {
 
     /**
      * @member SuperMap.GeometrySurfaceAnalystParameters.prototype.points - {Array<Object>}
@@ -33,7 +34,7 @@ export default class GeometrySurfaceAnalystParameters extends SurfaceAnalystPara
     constructor(options) {
         super(options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

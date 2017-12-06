@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import UGCLayer from './UGCLayer';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {UGCLayer} from './UGCLayer';
 import './OverlapDisplayedOptions';
 
 /**
@@ -18,7 +19,7 @@ import './OverlapDisplayedOptions';
  *        overlapDisplayedOptions - {{@link SuperMap.OverlapDisplayedOptions}} 地图的压盖过滤显示选项，当
  *                                   overlapDisplayed 为 false 时有效。
  */
-export default class UGCMapLayer extends UGCLayer {
+export class UGCMapLayer extends UGCLayer {
 
     /**
      * @member SuperMap.UGCMapLayer.prototype.completeLineSymbolDisplayed -{boolean}
@@ -88,7 +89,7 @@ export default class UGCMapLayer extends UGCLayer {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
 

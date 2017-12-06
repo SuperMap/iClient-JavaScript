@@ -1,11 +1,15 @@
 ﻿import ol from 'openlayers/dist/ol-debug';
-import SuperMap from '../../common/SuperMap';
-import Util from '../core/Util';
-import ServiceBase from './ServiceBase';
-import QueryByBoundsService from '../../common/iServer/QueryByBoundsService';
-import QueryByDistanceService from '../../common/iServer/QueryByDistanceService';
-import QueryBySQLService from '../../common/iServer/QueryBySQLService';
-import QueryByGeometryService from '../../common/iServer/QueryByGeometryService';
+import {
+    DataFormat,
+    Bounds,
+    GeometryPoint,
+    QueryByBoundsService,
+    QueryByDistanceService,
+    QueryBySQLService,
+    QueryByGeometryService
+} from '@supermap/iclient-common';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
 
 /**
  * @class ol.supermap.QueryService
@@ -20,7 +24,7 @@ import QueryByGeometryService from '../../common/iServer/QueryByGeometryService'
  *          //doSomething
  *      })
  */
-export default class QueryService extends ServiceBase {
+export class QueryService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -124,7 +128,7 @@ export default class QueryService extends ServiceBase {
             params.queryParams = [params.queryParams];
         }
         if (params.bounds) {
-            params.bounds = new SuperMap.Bounds(
+            params.bounds = new Bounds(
                 params.bounds[0],
                 params.bounds[1],
                 params.bounds[2],
@@ -133,7 +137,7 @@ export default class QueryService extends ServiceBase {
         }
         if (params.geometry) {
             if (params.geometry instanceof ol.geom.Point) {
-                params.geometry = new SuperMap.Geometry.Point(params.geometry.getCoordinates()[0], params.geometry.getCoordinates()[1]);
+                params.geometry = new GeometryPoint(params.geometry.getCoordinates()[0], params.geometry.getCoordinates()[1]);
             } else {
                 params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
             }
@@ -142,7 +146,8 @@ export default class QueryService extends ServiceBase {
     }
 
     _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 }
+
 ol.supermap.QueryService = QueryService;

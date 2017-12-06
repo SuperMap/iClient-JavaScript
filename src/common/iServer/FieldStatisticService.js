@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
+﻿import {SuperMap} from '../SuperMap';
+import {CommonServiceBase} from './CommonServiceBase';
+import {Util} from '../commontypes/Util';
 import './FieldStatisticsParameters';
 
 /**
@@ -28,7 +29,7 @@ import './FieldStatisticsParameters';
  */
 
 
-export default  class FieldStatisticService extends CommonServiceBase {
+export class FieldStatisticService extends CommonServiceBase {
 
     /**
      * @member SuperMap.FieldStatisticService.prototype.datasource -{string}
@@ -59,7 +60,7 @@ export default  class FieldStatisticService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 

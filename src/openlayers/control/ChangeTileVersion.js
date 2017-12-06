@@ -1,6 +1,6 @@
 import './css/ChangeTileVersion.css';
 import ol from 'openlayers/dist/ol-debug';
-import MapService from "../services/MapService"
+import {MapService} from "../services/MapService"
 
 ol.supermap = ol.supermap || {};
 ol.supermap.control = ol.supermap.control || {};
@@ -25,7 +25,7 @@ ol.supermap.control = ol.supermap.control || {};
  *      });
  *      map.addControl(control)
  */
-export default class ChangeTileVersion extends ol.control.Control {
+export class ChangeTileVersion extends ol.control.Control {
 
     constructor(options) {
         options = options || {};

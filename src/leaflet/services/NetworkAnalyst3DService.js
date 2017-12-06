@@ -1,10 +1,13 @@
-﻿import L from "leaflet";
+﻿import L from 'leaflet';
 import {ServiceBase} from './ServiceBase';
-import FacilityAnalystSinks3DService from '../../common/iServer/FacilityAnalystSinks3DService';
-import FacilityAnalystSources3DService from '../../common/iServer/FacilityAnalystSources3DService';
-import FacilityAnalystTraceup3DService from '../../common/iServer/FacilityAnalystTraceup3DService';
-import FacilityAnalystTracedown3DService from '../../common/iServer/FacilityAnalystTracedown3DService';
-import FacilityAnalystUpstream3DService from '../../common/iServer/FacilityAnalystUpstream3DService';
+import '../core/Base';
+import {
+    FacilityAnalystSinks3DService,
+    FacilityAnalystSources3DService,
+    FacilityAnalystTraceup3DService,
+    FacilityAnalystTracedown3DService,
+    FacilityAnalystUpstream3DService
+} from '@supermap/iclient-common';
 
 /**
  * @class L.supermap.networkAnalyst3DService

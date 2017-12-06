@@ -1,7 +1,6 @@
+import L from "leaflet";
 import '../core/Base';
 import './css/ChangeTileVersion.css';
-import '../mapping/TiledMapLayer' ;
-import L from "leaflet";
 import {MapService} from "../services/MapService";
 
 /**

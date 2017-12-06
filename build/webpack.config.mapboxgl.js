@@ -1,5 +1,7 @@
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var pkg = require('../package.json');
+var packageName = "iclient9-mapboxgl";
 var banner = `
     iclient9-mapboxgl.(${pkg.homepage})
     Copyright© 2000-2017 SuperMap Software Co. Ltd
@@ -13,7 +15,7 @@ module.exports = {
     //入口文件输出配置
     output: {
         path: __dirname + '/../dist',
-        filename: 'iclient9-mapboxgl.js'
+        filename: packageName + ".js"
     },
 
     //其它解决方案配置
@@ -30,12 +32,12 @@ module.exports = {
     module: {
         noParse: /[\/\\]node_modules[\/\\]mapbox-gl[\/\\]dist[\/\\]mapbox-gl\.js$/,
         rules: [{
-            //图片小于30k采用base64编码
-            test: /\.(png|jpg|jpeg|gif|woff)$/,
+            //图片小于80k采用base64编码
+            test: /\.(png|jpg|jpeg|gif|woff|woff2|svg|eot|ttf)$/,
             use: [{
                 loader: 'url-loader',
                 options: {
-                    limit: 30000
+                    limit: 80000
                 }
             }]
         }, {
@@ -53,13 +55,21 @@ module.exports = {
             query: {
                 presets: ['es2015'],
                 plugins: [
-                    'transform-class-properties',
+                    'transform-class-properties'
                 ]
             }
+        }, {
+            test: /\.css$/,
+            use: ExtractTextPlugin.extract({
+                use: {
+                    loader: 'css-loader'
+                }
+            })
         }]
     },
     plugins: [
         new webpack.BannerPlugin(banner),
+        new ExtractTextPlugin('/../dist/' + packageName + ".css"),
         new webpack.NoEmitOnErrorsPlugin()
     ]
 };

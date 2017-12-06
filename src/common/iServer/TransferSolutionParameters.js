@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {TransferPreference, TransferTactic} from '../REST';
 
 /**
@@ -18,7 +19,7 @@ import {TransferPreference, TransferTactic} from '../REST';
  *        priorStops - {Array<number>} 优先站点的ID，默认为null。</br>
  *        travelTime - {string} 出行的时间。</br>
  */
-export default class TransferSolutionParameters {
+export class TransferSolutionParameters {
 
 
     /**
@@ -98,7 +99,7 @@ export default class TransferSolutionParameters {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -106,7 +107,7 @@ export default class TransferSolutionParameters {
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
 
@@ -118,7 +119,7 @@ export default class TransferSolutionParameters {
      */
     static toJson(params) {
         if (params) {
-            return SuperMap.Util.toJSON(params);
+            return Util.toJSON(params);
         }
     }
 

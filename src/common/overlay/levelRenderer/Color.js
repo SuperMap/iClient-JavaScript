@@ -1,6 +1,4 @@
-import SuperMap from '../../SuperMap';
-import Util from './Util';
-import './LevelRenderer';
+import {Util} from './Util';
 
 /**
  * @private
@@ -8,7 +6,7 @@ import './LevelRenderer';
  * LevelRenderer 工具-颜色辅助类
  *
  */
-export default class Color {
+export class Color {
 
     /**
      * Property: util
@@ -915,7 +913,7 @@ export default class Color {
             rgb = [d[0] + d[1], d[2] + d[3], d[4] + d[5]];
             data = this.map(rgb,
                 function (c) {
-                    return SuperMap.LevelRenderer.Tool.Color.prototype.adjust.call(this, parseInt(c, 16), [0, 255]);
+                    return Color.prototype.adjust.call(this, parseInt(c, 16), [0, 255]);
                 }
             );
 
@@ -930,7 +928,7 @@ export default class Color {
                     c = Math.floor(
                         c.indexOf('%') > 0 ? parseInt(c, 0) * 2.55 : c
                     );
-                    return SuperMap.LevelRenderer.Tool.Color.prototype.adjust.call(this, c, [0, 255]);
+                    return Color.prototype.adjust.call(this, c, [0, 255]);
                 }
             );
 
@@ -946,7 +944,7 @@ export default class Color {
             a = hsxa[3];
             data = this.map([s, x],
                 function (c) {
-                    return SuperMap.LevelRenderer.Tool.Color.prototype.adjust.call(this, parseFloat(c) / 100, [0, 1]);
+                    return Color.prototype.adjust.call(this, parseFloat(c) / 100, [0, 1]);
                 }
             );
             data.unshift(h);
@@ -1266,6 +1264,3 @@ export default class Color {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Color"
 }
-SuperMap.LevelRenderer.Tool.Color = Color;
-
-

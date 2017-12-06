@@ -1,4 +1,12 @@
-require('../../../../src/common/overlay/levelRenderer/Area');
+var Area = require('../../../../src/common/overlay/levelRenderer/Area').Area;
+var SmicEllipse = require('../../../../src/common/overlay/levelRenderer/SmicEllipse').SmicEllipse;
+var SmicPolygon = require('../../../../src/common/overlay/levelRenderer/SmicPolygon').SmicPolygon;
+var SmicRing = require('../../../../src/common/overlay/levelRenderer/SmicRing').SmicRing;
+var SmicPoint = require('../../../../src/common/overlay/levelRenderer/SmicPoint').SmicPoint;
+var Shape = require('../../../../src/common/overlay/levelRenderer/Shape').Shape;
+var SmicSector = require('../../../../src/common/overlay/levelRenderer/SmicSector').SmicSector;
+var SmicText = require('../../../../src/common/overlay/levelRenderer/SmicText').SmicText;
+var SmicImage = require('../../../../src/common/overlay/levelRenderer/SmicImage').SmicImage;
 
 describe('Area', function () {
     var originalTimeout;
@@ -11,7 +19,7 @@ describe('Area', function () {
     });
 
     it("initialize", function () {
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         expect(init.TEXT_CACHE_MAX).toBe(5000);
         expect(parseFloat(init.PI2.toFixed(15))).toBe(6.283185307179586);
         expect(init.roots.toString()).toBe('-1,-1,-1');
@@ -20,14 +28,14 @@ describe('Area', function () {
 
     it("normalizeRadian", function () {
         var angle = 360;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.normalizeRadian(angle);
         expect(result).not.toBeNull();
         expect(result).toBe(1.8584374907635848);
     });
 
     it("isInside", function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
+        var shape = new SmicEllipse({
             style: {
                 x: 100,
                 y: 100,
@@ -53,7 +61,7 @@ describe('Area', function () {
         };
         var x = 209;
         var y = 110;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.isInside(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
@@ -61,7 +69,7 @@ describe('Area', function () {
 
     it("isInside_mathReturn_not_undefined", function () {
 
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 // 100x100 的正方形
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -75,25 +83,25 @@ describe('Area', function () {
         };
         var x = 209;
         var y = 110;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.isInside(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("isInside_switch_path_smicellipse", function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse();
+        var shape = new SmicEllipse();
         var area = {};
         var x = 100;
         var y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.isInside(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("isInside_switch_path_trochoid", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape["type"] = "trochoid";
         shape["style"] = {
             "r1": 20,
@@ -109,46 +117,46 @@ describe('Area', function () {
         };
         var x = 100;
         var y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.isInside(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("isInside_switch_path_rose", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape["type"] = "rose";
         shape["style"] = {"maxr": 10};
         var area = {"maxr": 10}, x = 100, y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.isInside(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("isInside_switch_path_default", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape["style"] = {"maxr": 10};
         var area = {"maxr": 10}, x = 100, y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.isInside(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("isInside_switch_path_ellipse", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape["type"] = "ellipse";
         shape["style"] = {"maxr": 10};
         var area = {"maxr": 10}, x = 100, y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.isInside(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_bezier-curve_and_area.cpX2_equalTo_undefined", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
         shape.x2 = 20;
@@ -172,14 +180,14 @@ describe('Area', function () {
         };
         var x = 100;
         var y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_bezier-curve_and_area.cpX2_not_equalTo_undefined", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
         shape.x2 = 20;
@@ -203,14 +211,14 @@ describe('Area', function () {
         };
         var x = 100;
         var y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_line", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
         shape.x2 = 20;
@@ -225,14 +233,14 @@ describe('Area', function () {
         };
         var x = 100;
         var y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_broken-line_false", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.type = "broken-line";
 
         var area = {
@@ -241,14 +249,14 @@ describe('Area', function () {
         };
         var x = 100;
         var y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_broken-line_true", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.type = "broken-line";
         var area = {
             pointList: [[100, 1], [90, 100], [1, 1]],
@@ -256,14 +264,14 @@ describe('Area', function () {
         };
         var x = 10;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeTruthy();
     });
 
     it("_mathMethod_smicbroken-line", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
         shape.x2 = 20;
@@ -280,14 +288,14 @@ describe('Area', function () {
         };
         var x = 100;
         var y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_ring", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
         shape.x2 = 20;
@@ -308,14 +316,14 @@ describe('Area', function () {
         };
         var x = 100;
         var y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_smicring", function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicRing({
+        var shape = new SmicRing({
             style: {
                 x: 100,
                 y: 100,
@@ -337,14 +345,14 @@ describe('Area', function () {
         };
         var x = 100;
         var y = 200;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_circle", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
         shape.x2 = 20;
@@ -373,14 +381,14 @@ describe('Area', function () {
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeTruthy();
     });
 
     it("_mathMethod_smicpoint", function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
+        var shape = new SmicPoint({
             style: {
                 x: 100,
                 y: 100,
@@ -406,14 +414,14 @@ describe('Area', function () {
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeTruthy();
     });
 
     it("_mathMethod_sector", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
         shape.x2 = 20;
@@ -446,14 +454,14 @@ describe('Area', function () {
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_smicsector", function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicSector({
+        var shape = new SmicSector({
             style: {
                 x: 100,
                 y: 100,
@@ -480,14 +488,14 @@ describe('Area', function () {
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_path", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.x1 = 10;
         shape.y1 = 10;
         shape.x2 = 20;
@@ -530,27 +538,27 @@ describe('Area', function () {
         };
         var x = 20;
         var y = 10000;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
     });
 
     it("_mathMethod_polygon", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.type = "polygon";
         var area = {
             pointList: [[0, 0], [100, 100], [100, 0]]
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeTruthy();
     });
 
     it("_mathMethod_smicpolygon", function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: {
                 pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
                 color: 'blue'
@@ -578,28 +586,28 @@ describe('Area', function () {
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.isInside(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeTruthy();
     });
 
     it("_mathMethod_text", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.type = "text";
         var area = {
             __rect: {x: 10, y: 5, width: 30, height: 50}
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeTruthy();
     });
 
     it("_mathMethod_smictext", function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'smictext',
                 x: 100,
@@ -615,14 +623,14 @@ describe('Area', function () {
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_rectangle", function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: {
                 text: 'Label',
                 x: 100,
@@ -638,14 +646,14 @@ describe('Area', function () {
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
     });
 
     it("_mathMethod_image", function () {
-        var shape = new SuperMap.LevelRenderer.Shape();
+        var shape = new Shape();
         shape.type = "image";
         var area = {
             x: 10,
@@ -655,13 +663,13 @@ describe('Area', function () {
         };
         var x = 20;
         var y = 10;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
     });
 
     it("_mathMethod_smicimage", function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicImage({
+        var shape = new SmicImage({
             style: {
                 image: 'test.jpg',
                 x: 100,
@@ -678,7 +686,7 @@ describe('Area', function () {
         };
         var x = 165;
         var y = 100;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init._mathMethod(shape, area, x, y);
         expect(result).not.toBeNull();
         expect(result).toBeFalsy();
@@ -687,7 +695,7 @@ describe('Area', function () {
 
     it("windingQuadratic", function () {
         var x0 = 5, y0 = 6, x1 = 10, y1 = 5, x2 = 15, y2 = 10, x = 0, y = 6;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.windingQuadratic(x0, y0, x1, y1, x2, y2, x, y);
         expect(result).not.toBeNull();
         expect(result).toBe(0);
@@ -695,7 +703,7 @@ describe('Area', function () {
 
     it("windingArc", function () {
         var cx = 10, cy = 10, r = 5, startAngle = 30, endAngle = 60, anticlockwise = 1, x = 8, y = 12;
-        var init = new SuperMap.LevelRenderer.Tool.Area();
+        var init = new Area();
         var result = init.windingArc(cx, cy, r, startAngle, endAngle, anticlockwise, x, y);
         expect(result).not.toBeNull();
     });

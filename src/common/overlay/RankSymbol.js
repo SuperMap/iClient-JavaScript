@@ -1,5 +1,6 @@
-import SuperMap from '../SuperMap';
-import Graph from './Graph';
+import {SuperMap} from '../SuperMap';
+import {ShapeFactory} from './feature/ShapeFactory';
+import {Graph} from './Graph';
 
 /**
  * @class SuperMap.Feature.Theme.RankSymbol
@@ -17,7 +18,7 @@ import Graph from './Graph';
  * @extends SuperMap.Feature.Theme.Graph
  *
  */
-export default class RankSymbol extends Graph {
+export class RankSymbol extends Graph {
     /**
      * @member SuperMap.Feature.Theme.RankSymbol.prototype.setting -{Object}
      * @description 符号配置对象，该对象控制着图表的可视化显示。
@@ -53,7 +54,7 @@ export default class RankSymbol extends Graph {
 
         this.fields = fields ? fields : [];
 
-        this.shapeFactory = new SuperMap.Feature.ShapeFactory();
+        this.shapeFactory = new ShapeFactory();
     }
 
     /**
@@ -83,7 +84,9 @@ export default class RankSymbol extends Graph {
         var isSuccess = true;
 
         // setting 属性是否已成功赋值
-        if (!this.setting) {return false;}
+        if (!this.setting) {
+            return false;
+        }
         var sets = this.setting;
 
         // 图表偏移

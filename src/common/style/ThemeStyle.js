@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.ThemeStyle
@@ -34,7 +35,7 @@ import SuperMap from '../SuperMap';
  *         labelXOffset - {number} 附加文本在x轴方向的偏移量; 默认值 0。<br>
  *         labelYOffset - {number} 附加文本在y轴方向的偏移量; 默认值 0。<br>
  */
-export default class ThemeStyle {
+export class ThemeStyle {
 
     /**
      * @member SuperMap.ThemeStyle.prototype.fill - {boolean}
@@ -182,7 +183,8 @@ export default class ThemeStyle {
 
     constructor(options) {
         options = options || {};
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 }
+
 SuperMap.ThemeStyle = ThemeStyle;

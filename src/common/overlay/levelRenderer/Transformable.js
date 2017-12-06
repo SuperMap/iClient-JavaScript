@@ -1,5 +1,4 @@
-import SuperMap from '../../SuperMap';
-import './SUtil';
+import {SUtil} from './SUtil';
 
 /**
  * @private
@@ -9,7 +8,7 @@ import './SUtil';
  * 此类不可实例化。
  *
  */
-export default class Transformable {
+export class Transformable {
 
     /**
      * APIProperty: position
@@ -110,8 +109,8 @@ export default class Transformable {
 
         var origin = [0, 0];
 
-        var m = this.transform || SuperMap.LevelRenderer.Util_matrix.create();
-        SuperMap.LevelRenderer.Util_matrix.identity(m);
+        var m = this.transform || SUtil.Util_matrix.create();
+        SUtil.Util_matrix.identity(m);
 
         if (this.needLocalTransform) {
             if (
@@ -123,15 +122,15 @@ export default class Transformable {
                 let haveOrigin = isNotAroundZero(origin[0])
                     || isNotAroundZero(origin[1]);
                 if (haveOrigin) {
-                    SuperMap.LevelRenderer.Util_matrix.translate(
+                    SUtil.Util_matrix.translate(
                         m, m, origin
                     );
                 }
-                SuperMap.LevelRenderer.Util_matrix.scale(m, m, this.scale);
+                SUtil.Util_matrix.scale(m, m, this.scale);
                 if (haveOrigin) {
                     origin[0] = -origin[0];
                     origin[1] = -origin[1];
-                    SuperMap.LevelRenderer.Util_matrix.translate(
+                    SUtil.Util_matrix.translate(
                         m, m, origin
                     );
                 }
@@ -144,29 +143,29 @@ export default class Transformable {
                     let haveOrigin = isNotAroundZero(origin[0])
                         || isNotAroundZero(origin[1]);
                     if (haveOrigin) {
-                        SuperMap.LevelRenderer.Util_matrix.translate(
+                        SUtil.Util_matrix.translate(
                             m, m, origin
                         );
                     }
-                    SuperMap.LevelRenderer.Util_matrix.rotate(m, m, this.rotation[0]);
+                    SUtil.Util_matrix.rotate(m, m, this.rotation[0]);
                     if (haveOrigin) {
                         origin[0] = -origin[0];
                         origin[1] = -origin[1];
-                        SuperMap.LevelRenderer.Util_matrix.translate(
+                        SUtil.Util_matrix.translate(
                             m, m, origin
                         );
                     }
                 }
             } else {
                 if (this.rotation !== 0) {
-                    SuperMap.LevelRenderer.Util_matrix.rotate(m, m, this.rotation);
+                    SUtil.Util_matrix.rotate(m, m, this.rotation);
                 }
             }
 
             if (
                 isNotAroundZero(this.position[0]) || isNotAroundZero(this.position[1])
             ) {
-                SuperMap.LevelRenderer.Util_matrix.translate(m, m, this.position);
+                SUtil.Util_matrix.translate(m, m, this.position);
             }
         }
 
@@ -176,9 +175,9 @@ export default class Transformable {
         // 应用父节点变换
         if (this.parent && this.parent.needTransform) {
             if (this.needLocalTransform) {
-                SuperMap.LevelRenderer.Util_matrix.mul(this.transform, this.parent.transform, this.transform);
+                SUtil.Util_matrix.mul(this.transform, this.parent.transform, this.transform);
             } else {
-                SuperMap.LevelRenderer.Util_matrix.copy(this.transform, this.parent.transform);
+                SUtil.Util_matrix.copy(this.transform, this.parent.transform);
             }
         }
 
@@ -214,18 +213,18 @@ export default class Transformable {
      *
      */
     lookAt = (function () {
-        var v = SuperMap.LevelRenderer.Util_vector.create();
+        var v = SUtil.Util_vector.create();
         // {Array{Number}|Float32Array} target
         return function (target) {
             if (!this.transform) {
-                this.transform = SuperMap.LevelRenderer.Util_matrix.create();
+                this.transform = SUtil.Util_matrix.create();
             }
             var m = this.transform;
-            SuperMap.LevelRenderer.Util_vector.sub(v, target, this.position);
+            SUtil.Util_vector.sub(v, target, this.position);
             if (isAroundZero(v[0]) && isAroundZero(v[1])) {
                 return;
             }
-            SuperMap.LevelRenderer.Util_vector.normalize(v, v);
+            SUtil.Util_vector.normalize(v, v);
             // Y Axis
             // TODO Scale origin ?
             m[2] = v[0] * this.scale[1];
@@ -284,4 +283,3 @@ export default class Transformable {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Transformable"
 }
-SuperMap.LevelRenderer.Transformable = Transformable;

@@ -1,19 +1,9 @@
-import SuperMap from '../../common/SuperMap';
-import '../../common/REST';
-import '../../common/overlay/Bar';
-import '../../common/overlay/Bar3D';
-import '../../common/overlay/Circle';
-import '../../common/overlay/Pie';
-import '../../common/overlay/Point';
-import '../../common/overlay/Line';
-import '../../common/overlay/Ring';
-import '../../common/overlay/ThemeVector';
-import '../../common/style/ThemeStyle';
+import L from "leaflet";
+import '../core/Base';
+import {Bounds, LonLat, GeometryVector, CommonUtil, ServerFeature, FeatureTheme} from '@supermap/iclient-common';
 import {ThemeFeature} from './theme/ThemeFeature';
 import {ThemeLayer} from './theme/ThemeLayer';
-import ServerFeature from '../../common/iServer/ServerFeature';
-import L from "leaflet";
-import CommontypesConversion from '../core/CommontypesConversion';
+import {CommontypesConversion} from '../core/CommontypesConversion';
 
 /**
  * @class L.supermap.GraphThemeLayer
@@ -110,10 +100,6 @@ export var GraphThemeLayer = ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
-        if (bounds && bounds instanceof L.LatLngBounds) {
-            var crs = this._map.options.crs;
-            bounds = L.bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
-        }
         bounds = CommontypesConversion.toSuperMapBounds(bounds);
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
@@ -156,8 +142,8 @@ export var GraphThemeLayer = ThemeLayer.extend({
         var me = this;
         var thematicFeature;
         // 检查图表创建条件并创建图形
-        if (SuperMap.Feature.Theme[me.chartsType] && me.themeFields && me.chartsSetting) {
-            thematicFeature = new SuperMap.Feature.Theme[me.chartsType](feature, me, me.themeFields, me.chartsSetting);
+        if (FeatureTheme[me.chartsType] && me.themeFields && me.chartsSetting) {
+            thematicFeature = new FeatureTheme[me.chartsType](feature, me, me.themeFields, me.chartsSetting);
         }
 
         // thematicFeature 是否创建成功
@@ -253,7 +239,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
                 break;
             }
             for (let j = 0; j < quad2Len - 1; j++) {
-                var isLineIn = SuperMap.Util.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
+                var isLineIn = CommonUtil.lineIntersection(quadrilateral[i], quadrilateral[i + 1], quadrilateral2[j], quadrilateral2[j + 1]);
                 if (isLineIn.CLASS_NAME === "SuperMap.Geometry.Point") {
                     OverLap = true;
                     break;
@@ -421,15 +407,18 @@ export var GraphThemeLayer = ThemeLayer.extend({
         var me = this;
         // 压盖判断所需 chartsBounds 集合
         var mapBounds = me._map.getBounds();
-        var crs = this._map.options.crs;
-        mapBounds = L.bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
-        mapBounds = CommontypesConversion.toSuperMapBounds(mapBounds);
+        mapBounds = new Bounds(
+            mapBounds.getWest(),
+            mapBounds.getSouth(),
+            mapBounds.getEast(),
+            mapBounds.getNorth()
+        );
         var charts = me.charts;
         var chartsBounds = [];
         // 获取地图像素 bounds
-        var mapPxLT = me.getLocalXY(new SuperMap.LonLat(mapBounds.left, mapBounds.top));
-        var mapPxRB = me.getLocalXY(new SuperMap.LonLat(mapBounds.right, mapBounds.bottom));
-        var mBounds = new SuperMap.Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
+        var mapPxLT = me.getLocalXY(new LonLat(mapBounds.left, mapBounds.top));
+        var mapPxRB = me.getLocalXY(new LonLat(mapBounds.right, mapBounds.bottom));
+        var mBounds = new Bounds(mapPxLT[0], mapPxRB[1], mapPxRB[0], mapPxLT[1]);
 
         // 压盖处理 & 添加图形
         for (var i = 0, len = charts.length; i < len; i++) {
@@ -478,7 +467,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     _createFeature: function (feature) {
         if (feature instanceof ThemeFeature) {
             feature = feature.toFeature();
-        } else if (!(feature instanceof SuperMap.Feature.Vector)) {
+        } else if (!(feature instanceof GeometryVector)) {
             feature = new ServerFeature.fromJson(feature).toFeature();
         }
         if (!feature.hasOwnProperty("attributes") && feature.fieldNames && feature.filedValues) {
@@ -496,4 +485,5 @@ export var GraphThemeLayer = ThemeLayer.extend({
 export var graphThemeLayer = function (name, chartsType, options) {
     return new GraphThemeLayer(name, chartsType, options);
 };
+
 L.supermap.graphThemeLayer = graphThemeLayer;

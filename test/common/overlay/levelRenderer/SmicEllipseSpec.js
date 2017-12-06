@@ -1,4 +1,4 @@
-require('../../../../src/common/overlay/levelRenderer/SmicEllipse');
+var SmicEllipse = require('../../../../src/common/overlay/levelRenderer/SmicEllipse').SmicEllipse;
 
 describe('SmicEllipse', function () {
     var canvas, ctx;
@@ -15,7 +15,7 @@ describe('SmicEllipse', function () {
     });
 
     it('constructor, destroy', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
+        var shape = new SmicEllipse({
             style: {x: 100, y: 100, a: 40, b: 20}
         });
         expect(shape).not.toBeNull();
@@ -29,7 +29,7 @@ describe('SmicEllipse', function () {
     });
 
     it('buildPath', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
+        var shape = new SmicEllipse({
             style: {x: 100, y: 100, a: 40, b: 20}
         });
         shape.refOriginalPosition = null;
@@ -46,7 +46,7 @@ describe('SmicEllipse', function () {
     });
 
     it('getRect', function () {
-        var shape = new SuperMap.LevelRenderer.Shape.SmicEllipse({
+        var shape = new SmicEllipse({
             style: {x: 100, y: 100, a: 40, b: 20}
         });
         var style1 = {x: 100, y: 100, a: 40, b: 20, brushType: 'stroke'};

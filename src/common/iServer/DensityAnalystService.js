@@ -1,6 +1,7 @@
-import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import DensityKernelAnalystParameters from './DensityKernelAnalystParameters';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {DensityKernelAnalystParameters} from './DensityKernelAnalystParameters';
 
 /**
  * @class SuperMap.DensityAnalystService
@@ -19,7 +20,7 @@ import DensityKernelAnalystParameters from './DensityKernelAnalystParameters';
  *     }
  *  );
  */
-export default class DensityAnalystService extends SpatialAnalystBase {
+export class DensityAnalystService extends SpatialAnalystBase {
 
     /**
      * @member SuperMap.DensityAnalystService.prototype.mode -{string}
@@ -31,7 +32,7 @@ export default class DensityAnalystService extends SpatialAnalystBase {
         super(url, options);
         var me = this;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 
@@ -58,13 +59,13 @@ export default class DensityAnalystService extends SpatialAnalystBase {
         }
         var parameterObject = new Object();
 
-        if (parameter instanceof SuperMap.DensityKernelAnalystParameters) {
+        if (parameter instanceof DensityKernelAnalystParameters) {
             me.url += 'datasets/' + parameter.dataset + '/densityanalyst/kernel';
             me.mode = "kernel";
         }
 
         DensityKernelAnalystParameters.toObject(parameter, parameterObject);
-        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
 
         me.request({
@@ -78,4 +79,5 @@ export default class DensityAnalystService extends SpatialAnalystBase {
 
     CLASS_NAME = "SuperMap.DensityAnalystService"
 }
+
 SuperMap.DensityAnalystService = DensityAnalystService;

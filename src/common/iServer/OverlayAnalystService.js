@@ -1,7 +1,8 @@
-﻿import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import DatasetOverlayAnalystParameters from './DatasetOverlayAnalystParameters';
-import GeometryOverlayAnalystParameters from './GeometryOverlayAnalystParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {DatasetOverlayAnalystParameters} from './DatasetOverlayAnalystParameters';
+import {GeometryOverlayAnalystParameters} from './GeometryOverlayAnalystParameters';
 
 /**
  * @class SuperMap.OverlayAnalystService
@@ -24,7 +25,7 @@ import GeometryOverlayAnalystParameters from './GeometryOverlayAnalystParameters
  * (end)
  */
 
-export default class OverlayAnalystService extends SpatialAnalystBase {
+export class OverlayAnalystService extends SpatialAnalystBase {
 
     /**
      * @member SuperMap.OverlayAnalystService.prototype.mode -{string}
@@ -36,7 +37,7 @@ export default class OverlayAnalystService extends SpatialAnalystBase {
         super(url, options);
         var me = this;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 
@@ -72,7 +73,7 @@ export default class OverlayAnalystService extends SpatialAnalystBase {
             GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
 
-        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
+        var jsonParameters = Util.toJSON(parameterObject);
         me.url += '.json?returnContent=true';
         me.request({
             method: "POST",

@@ -1,27 +1,31 @@
 import ol from 'openlayers/dist/ol-debug';
 import jsonsql from "jsonsql";
 import proj4 from "proj4";
-import {FetchRequest} from '../../common/util/FetchRequest';
-import {DataFormat} from '../../common/REST';
-import ServerFeature from '../../common/iServer/ServerFeature';
-import ThemeStyle from '../../common/style/ThemeStyle';
-import {Util} from '../../common/commontypes/Util';
-import GeoJSONFormat from '../../common/format/GeoJSON';
-import Point from '../../common/commontypes/geometry/Point';
-import Vector from '../../common/commontypes/Vector';
-import GetFeaturesBySQLParameters from '../../common/iServer/GetFeaturesBySQLParameters';
-import StyleUtils from '../core/StyleUtils';
-import Graphic from '../overlay/graphic/Graphic';
-import ThemeFeature from '../overlay/theme/ThemeFeature';
-import FeatureService from "../services/FeatureService";
-import TiandituTileLayer from '../mapping/Tianditu';
-import UniqueThemeSource from "../overlay/Unique";
-import RangeThemeSource from "../overlay/Range";
-import LabelThemeSource from "../overlay/Label";
-import Logo from '../control/Logo';
-import "../../common/style/supermapol-icons.css"
+import {
+    FetchRequest,
+    DataFormat,
+    ServerFeature,
+    ThemeStyle,
+    CommonUtil,
+    GeoJSON as GeoJSONFormat,
+    GeometryPoint,
+    GeometryVector,
+    GetFeaturesBySQLParameters
+} from '@supermap/iclient-common';
+import {Util} from '../core/Util';
+import {StyleUtils} from '../core/StyleUtils';
+import {Graphic} from '../overlay/graphic/Graphic';
+import {ThemeFeature} from '../overlay/theme/ThemeFeature';
+import {FeatureService} from "../services/FeatureService";
+import {Tianditu as TiandituTileLayer} from '../mapping/Tianditu';
+import {Unique as UniqueThemeSource} from "../overlay/Unique";
+import {Range as RangeThemeSource} from "../overlay/Range";
+import {Label as LabelThemeSource} from "../overlay/Label";
+import {Logo} from '../control/Logo';
+import "@supermap/iclient-common/style/supermapol-icons.css";
 
 ol.supermap = ol.supermap || {};
+
 /**
  * @class ol.supermap.WebMap
  * @classdesc 对接iPortal/Online地图类。
@@ -34,9 +38,9 @@ ol.supermap = ol.supermap || {};
  *        credentialValue - {string} 凭证值。
  * @extends ol.Observable{@linkdoc-openlayers/ol.Observable}
  */
-export default class WebMap extends ol.Observable {
+export class WebMap extends ol.Observable {
 
-    EventType = {
+    static EventType = {
         WEBMAPLOADEND: 'webmaploadend'
     };
 
@@ -83,7 +87,7 @@ export default class WebMap extends ol.Observable {
      * @param layersJson - {JSON} 图层的json信息
      */
     createLayersByJson(layersJson) {
-        if (!ol.supermap.Util.isArray(layersJson)) {
+        if (!Util.isArray(layersJson)) {
             return;
         }
         if (layersJson.length === 0) {
@@ -127,7 +131,7 @@ export default class WebMap extends ol.Observable {
                     }
                     me.createLayer(type, layerInfo);
                 }
-                me.dispatchEvent({type: ol.supermap.WebMap.EventType.WEBMAPLOADEND, value: this});
+                me.dispatchEvent({type: WebMap.EventType.WEBMAPLOADEND, value: this});
             });
             view.fit(viewOptions.extent);
 
@@ -179,7 +183,7 @@ export default class WebMap extends ol.Observable {
             return resolutions;
         }
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+            resolutions.push(CommonUtil.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
     }
@@ -297,7 +301,7 @@ export default class WebMap extends ol.Observable {
         var resolutions = ol.wellKnownScale.getResolutions(wellKnownScaleSet);
         if (!resolutions && scales) {
             for (var i = 0; i < scales.length; i++) {
-                resolutions.push(Util.getResolutionFromScaleDpi(scales[i], 90.71446714322, units));
+                resolutions.push(CommonUtil.getResolutionFromScaleDpi(scales[i], 90.71446714322, units));
             }
         }
         var origin = ol.wellKnownScale.getOrigin(wellKnownScaleSet);
@@ -351,7 +355,7 @@ export default class WebMap extends ol.Observable {
                 return StyleUtils.getStyleFromiPortalMarker(feature.getProperties().icon);
             },
             source: new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(ol.supermap.Util.toGeoJSON(markers)),
+                features: (new ol.format.GeoJSON()).readFeatures(Util.toGeoJSON(markers)),
                 wrapX: false
             })
         });
@@ -376,7 +380,7 @@ export default class WebMap extends ol.Observable {
                     return StyleUtils.getStyleFromiPortalStyle(style, feature.getGeometry().getType(), feature.getProperties().style);
                 },
                 source: new ol.source.Vector({
-                    features: (new ol.format.GeoJSON()).readFeatures(ol.supermap.Util.toGeoJSON(layerInfo.features)),
+                    features: (new ol.format.GeoJSON()).readFeatures(Util.toGeoJSON(layerInfo.features)),
                     wrapX: false
                 })
             });
@@ -410,7 +414,7 @@ export default class WebMap extends ol.Observable {
                         },
                         datasetNames: [datasourceName + ":" + dataset.name]
                     });
-                    new ol.supermap.GetFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", fun);
+                    new FeatureService(url).getFeaturesBySQL(sqlParam).on("complete", fun);
                 }
             }
         }
@@ -630,7 +634,7 @@ export default class WebMap extends ol.Observable {
         } else {
             style = settings[0].style;
         }
-        var layerStyle = Util.extend(new ThemeStyle(), style);
+        var layerStyle = CommonUtil.extend(new ThemeStyle(), style);
         layerStyle.fontWeight = "bold";
         layerStyle.fontSize = "14px";
         //默认显示标签边框背景
@@ -757,8 +761,8 @@ export default class WebMap extends ol.Observable {
                     if (sqlResult.length > 0) {
                         var lon = feature.geometry.points[0].x,
                             lat = feature.geometry.points[0].y;
-                        var point = new Point(lon, lat);
-                        var vector = new Vector(point, feature.attributes, feature.style);
+                        var point = new GeometryPoint(lon, lat);
+                        var vector = new GeometryVector(point, feature.attributes, feature.style);
                         newFeautures.push(vector);
                     }
                 }
@@ -1049,12 +1053,12 @@ export default class WebMap extends ol.Observable {
             }
             lon = parseFloat(lon);
             lat = parseFloat(lat);
-            var geometry = new Point(lon, lat);
+            var geometry = new GeometryPoint(lon, lat);
             var pointGraphic;
             if (isGraphic) {
                 pointGraphic = new Graphic(geometry, attrArr[i], null);
             } else {
-                pointGraphic = new Vector(geometry, attrArr[i], null);
+                pointGraphic = new GeometryVector(geometry, attrArr[i], null);
             }
             features.push(pointGraphic);
         }
@@ -1213,6 +1217,3 @@ export default class WebMap extends ol.Observable {
 }
 
 ol.supermap.WebMap = WebMap;
-ol.supermap.WebMap.EventType = {
-    WEBMAPLOADEND: 'webmaploadend'
-};

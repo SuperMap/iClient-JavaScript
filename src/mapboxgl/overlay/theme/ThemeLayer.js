@@ -1,13 +1,14 @@
 import mapboxgl from 'mapbox-gl';
 import '../../core/Base';
-import ServerFeature from '../../../common/iServer/ServerFeature';
-import ThemeFeature from './ThemeFeature';
-import LonLat from "../../../common/commontypes/LonLat";
-import Point from "../../../common/commontypes/geometry/Point";
-import GeoText from "../../../common/commontypes/geometry/GeoText";
-import LevelRenderer from "../../../common/overlay/levelRenderer/LevelRenderer";
-import {Util} from '../../../common/commontypes/Util';
-import "../../../common/overlay/levelRenderer/Render";
+import {ThemeFeature} from './ThemeFeature';
+import {
+    ServerFeature,
+    LonLat,
+    GeometryPoint as Point,
+    GeoText,
+    LevelRenderer,
+    CommonUtil as Util
+} from '@supermap/iclient-common';
 
 /**
  * @private
@@ -16,7 +17,7 @@ import "../../../common/overlay/levelRenderer/Render";
  * @param name - {string} 图层名。
  * @param options -{Object} 参数。
  */
-export default class Theme {
+export class Theme {
 
     /**
      * @member mapboxgl.supermap.ThemeLayer.prototype.name -{string}
@@ -350,4 +351,5 @@ export default class Theme {
         this.map.getCanvasContainer().removeChild(this.div);
     }
 }
+
 mapboxgl.supermap.ThemeLayer = Theme;

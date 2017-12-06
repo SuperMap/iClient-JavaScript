@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import ServerColor from './ServerColor';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {ServerColor} from './ServerColor';
 
 /**
  * @class SuperMap.ThemeGridRangeItem
@@ -13,7 +14,7 @@ import ServerColor from './ServerColor';
  *        start - {number}栅格分段专题图子项的起始值。<br>
  *        visible - {boolean} 栅格分段专题图子项是否可见。
  */
-export default class ThemeGridRangeItem {
+export class ThemeGridRangeItem {
 
     /**
      * @member SuperMap.ThemeGridRangeItem.prototype.caption -{string}
@@ -50,7 +51,7 @@ export default class ThemeGridRangeItem {
         var me = this;
         me.color = new ServerColor();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -78,7 +79,7 @@ export default class ThemeGridRangeItem {
      */
     toServerJSONObject() {
         var obj = {};
-        obj = SuperMap.Util.copyAttributes(obj, this);
+        obj = Util.copyAttributes(obj, this);
         if (obj.color) {
             if (obj.color.toServerJSONObject) {
                 obj.color = obj.color.toServerJSONObject();
@@ -94,9 +95,11 @@ export default class ThemeGridRangeItem {
      * @return {SuperMap.ThemeGridRangeItem} ThemeGridRangeItem对象
      */
     static fromObj(obj) {
-        if (!obj) {return;}
+        if (!obj) {
+            return;
+        }
         var res = new ThemeGridRangeItem();
-        SuperMap.Util.copy(res, obj);
+        Util.copy(res, obj);
         res.color = ServerColor.fromJson(obj.color);
         return res;
     }

@@ -1,12 +1,10 @@
-import SuperMap from '../../SuperMap';
-
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Matrix
  * LevelRenderer 工具-3x2矩阵操作类
  *
  */
-export default class Matrix {
+export class Matrix {
 
     /**
      * Property: ArrayCtor
@@ -253,4 +251,3 @@ export default class Matrix {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Matrix"
 }
-SuperMap.LevelRenderer.Tool.Matrix = Matrix;

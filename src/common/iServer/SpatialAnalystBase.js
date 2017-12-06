@@ -1,7 +1,9 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {DataFormat} from '../REST';
-import CommonServiceBase from './CommonServiceBase';
-import GeoJSON from '../format/GeoJSON';
+import {CommonServiceBase} from './CommonServiceBase';
+import {GeoJSON} from '../format/GeoJSON';
+
 /**
  * @class SuperMap.SpatialAnalystBase
  * @classdesc 空间分析服务基类。
@@ -9,7 +11,7 @@ import GeoJSON from '../format/GeoJSON';
  * @param options -{Object} 参数。
  * @extends SuperMap.CommonServiceBase
  */
-export default class SpatialAnalystBase extends CommonServiceBase {
+export class SpatialAnalystBase extends CommonServiceBase {
     /**
      * @member SuperMap.SpatialAnalystBase.prototype.format -{string}
      * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式，参数格式为"ISERVER","GEOJSON",GEOJSON
@@ -40,7 +42,7 @@ export default class SpatialAnalystBase extends CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this, analystResult;
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             analystResult = me.toGeoJSONResult(result);
         }
@@ -70,7 +72,7 @@ export default class SpatialAnalystBase extends CommonServiceBase {
         } else if (result.recordset && result.recordset.features) {
             result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
         }
-        if(result.resultGeometry){
+        if (result.resultGeometry) {
             result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
         }
 
@@ -79,4 +81,5 @@ export default class SpatialAnalystBase extends CommonServiceBase {
 
     CLASS_NAME = "SuperMap.SpatialAnalystBase";
 }
+
 SuperMap.SpatialAnalystBase = SpatialAnalystBase;

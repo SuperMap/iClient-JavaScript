@@ -1,6 +1,7 @@
-import ServiceBase from './ServiceBase';
 import mapboxgl from 'mapbox-gl';
-import CommonAddressMatchService from '../../common/iServer/AddressMatchService';
+import '../core/Base';
+import {ServiceBase} from './ServiceBase';
+import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.AddressMatchService
@@ -14,7 +15,7 @@ import CommonAddressMatchService from '../../common/iServer/AddressMatchService'
  * @param options -{Object} 交互时所需可选参数。
  * @extends mapboxgl.supermap.ServiceBase
  */
-export default class AddressMatchService extends ServiceBase {
+export class AddressMatchService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
     }

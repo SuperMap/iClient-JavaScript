@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.FacilityAnalyst3DParameters
@@ -13,7 +14,7 @@
  *         isUncertainDirectionValid - {boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
  *                                               指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
  */
-export default class FacilityAnalyst3DParameters {
+export class FacilityAnalyst3DParameters {
 
     /**
      * @member SuperMap.FacilityAnalyst3DParameters.prototype.edgeID - {number}
@@ -45,7 +46,7 @@ export default class FacilityAnalyst3DParameters {
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(me, options);
+        Util.extend(me, options);
     }
 
     /**
@@ -63,4 +64,5 @@ export default class FacilityAnalyst3DParameters {
 
     CLASS_NAME = "SuperMap.FacilityAnalyst3DParameters"
 }
+
 SuperMap.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;

@@ -6,7 +6,7 @@ import ol from 'openlayers/dist/ol-debug';
  * @param geometry - {Object} 几何对象
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}
  */
-export default class Graphic extends ol.Object {
+export class Graphic extends ol.Object {
 
     constructor(geometry) {
         super();
@@ -21,7 +21,7 @@ export default class Graphic extends ol.Object {
      * @description 复制当前信息
      */
     clone() {
-        var clone = new ol.supermap.Graphic();
+        var clone = new Graphic();
         clone.setId(this.id_);
         clone.setGeometry(this.geometry_);
         clone.setStyle(this.style_);
@@ -128,4 +128,5 @@ export default class Graphic extends ol.Object {
         this.style_ = null;
     }
 }
+
 ol.Graphic = Graphic;

@@ -1,7 +1,8 @@
 ﻿import ol from 'openlayers/dist/ol-debug';
-import Util from '../core/Util';
-import ServiceBase from './ServiceBase';
-import CommonMeasureService from '../../common/iServer/MeasureService';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
+import {MeasureService as CommonMeasureService} from '@supermap/iclient-common';
+
 /**
  * @class ol.supermap.MeasureService
  * @classdesc 距离测量服务
@@ -11,7 +12,7 @@ import CommonMeasureService from '../../common/iServer/MeasureService';
  *         eventListeners - {Object} 需要被注册的监听器对象。
  *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
-export default class MeasureService extends ServiceBase {
+export class MeasureService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -36,6 +37,7 @@ export default class MeasureService extends ServiceBase {
     measureArea(params, callback) {
         this.measure(params, 'AREA', callback);
     }
+
     /**
      * @function ol.supermap.MeasureService.prototype.measure
      * @description 测量

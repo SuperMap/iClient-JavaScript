@@ -1,7 +1,8 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {SpatialQueryMode} from '../REST';
-import FilterParameter from './FilterParameter';
-import GetFeaturesParametersBase from './GetFeaturesParametersBase';
+import {FilterParameter} from './FilterParameter';
+import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
 
 /**
  * @class SuperMap.GetFeaturesByBoundsParameters
@@ -19,7 +20,7 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  * @extends SuperMap.GetFeaturesParametersBase
  */
 
-export default class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
+export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
     /**
      * @member SuperMap.GetFeaturesByBoundsParameters.prototype.getFeatureMode - {string}
      * @description 数据集查询模式。范围查询有"BOUNDS"，"BOUNDS_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到BOUNDS_ATTRIBUTEFILTER访问服务。
@@ -63,7 +64,7 @@ export default class GetFeaturesByBoundsParameters extends GetFeaturesParameters
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        Util.extend(this, options);
     }
 
     /**
@@ -124,7 +125,7 @@ export default class GetFeaturesByBoundsParameters extends GetFeaturesParameters
             parasByBounds.maxFeatures = params.maxFeatures;
         }
 
-        return SuperMap.Util.toJSON(parasByBounds);
+        return Util.toJSON(parasByBounds);
     }
 
     CLASS_NAME = "SuperMap.GetFeaturesByBoundsParameters"

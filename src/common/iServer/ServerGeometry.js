@@ -1,13 +1,13 @@
-﻿import SuperMap from '../SuperMap';
-import Point from '../commontypes/geometry/Point';
-import MultiPoint from '../commontypes/geometry/MultiPoint';
-import LinearRing from '../commontypes/geometry/LinearRing';
-import LineString from '../commontypes/geometry/LineString';
-import MultiLineString from '../commontypes/geometry/MultiLineString';
-import Polygon from '../commontypes/geometry/Polygon';
-import MultiPolygon from '../commontypes/geometry/MultiPolygon';
-import ServerStyle from './ServerStyle';
-import Route from './Route';
+﻿import {SuperMap} from '../SuperMap';
+import {Point} from '../commontypes/geometry/Point';
+import {MultiPoint} from '../commontypes/geometry/MultiPoint';
+import {LinearRing} from '../commontypes/geometry/LinearRing';
+import {LineString} from '../commontypes/geometry/LineString';
+import {MultiLineString} from '../commontypes/geometry/MultiLineString';
+import {Polygon} from '../commontypes/geometry/Polygon';
+import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
+import {ServerStyle} from './ServerStyle';
+import {Route} from './Route';
 import {Util} from '../commontypes/Util';
 import {GeometryType} from '../REST';
 
@@ -18,7 +18,7 @@ import {GeometryType} from '../REST';
  * 该类描述几何对象（矢量）的特征数据（坐标点对、几何对象的类型等）。
  * 基于服务端的空间分析、空间关系运算、查询等 GIS 服务功能使用服务端几何对象。
  */
-export default class ServerGeometry {
+export class ServerGeometry {
 
     /*
      * APIProperty: id
@@ -227,7 +227,7 @@ export default class ServerGeometry {
                 //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
                 if (pointList[0].equals(pointList[geoParts[0] - 1])) {
                     lineEPS = LineString.createLineEPS(pointList);
-                    return new SuperMap.Geometry.LineRing(lineEPS);
+                    return new LinearRing(lineEPS);
                 } else {
                     lineEPS = LineString.createLineEPS(pointList);
                     return new LineString(lineEPS);
@@ -660,4 +660,5 @@ export default class ServerGeometry {
 
     CLASS_NAME = "SuperMap.ServerGeometry"
 }
+
 SuperMap.ServerGeometry = ServerGeometry;

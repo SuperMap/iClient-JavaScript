@@ -1,8 +1,8 @@
-﻿import SuperMap from '../../SuperMap';
-import Collection from './Collection';
-import  './Point';
-import  './LineString';
-import  './LinearRing';
+﻿import {SuperMap} from '../../SuperMap';
+import {Collection} from './Collection';
+import './Point';
+import './LineString';
+import './LinearRing';
 
 /**
  * @class SuperMap.Geometry.Polygon
@@ -18,7 +18,7 @@ import  './LinearRing';
  *  var linearRings = new SuperMap.Geometry.LinearRing(points),
  *  var  region = new SuperMap.Geometry.Polygon([linearRings]);
  */
-export default class Polygon extends Collection {
+export class Polygon extends Collection {
 
     /**
      * @member SuperMap.Geometry.Polygon.prototype.componentTypes -{Array<string>}

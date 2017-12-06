@@ -1,6 +1,7 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
 import {ServerType} from '../REST';
-import '../security/SecurityManager';
+import {SecurityManager} from '../security/SecurityManager';
+import {Credential} from '../commontypes/Credential';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
@@ -8,7 +9,7 @@ import {FetchRequest} from '../util/FetchRequest';
  * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
  * @param url - {string} iPortal服务地址
  */
-export default class IPortalServiceBase {
+export class IPortalServiceBase {
 
     constructor(url) {
         var me = this;
@@ -69,11 +70,11 @@ export default class IPortalServiceBase {
 
     getCredential() {
         var credential,
-            value = SuperMap.SecurityManager.getToken(this.serviceUrl);
-        credential = value ? new SuperMap.Credential(value, "token") : null;
+            value = SecurityManager.getToken(this.serviceUrl);
+        credential = value ? new Credential(value, "token") : null;
         if (!credential) {
             value = this.getKey();
-            credential = value ? new SuperMap.Credential(value, "key") : null;
+            credential = value ? new Credential(value, "key") : null;
         }
         return credential;
     }

@@ -1,6 +1,7 @@
-﻿import SuperMap from '../SuperMap';
-import UGCSubLayer from './UGCSubLayer';
-import ServerColor from './ServerColor';
+﻿import {SuperMap} from '../SuperMap';
+import {UGCSubLayer} from './UGCSubLayer';
+import {ServerColor} from './ServerColor';
+import {Util} from '../commontypes/Util';
 import '../REST';
 
 /**
@@ -16,7 +17,7 @@ import '../REST';
  *        transparentColor - {@link SuperMap.ServerColor} 返回背景透明色。<br>
  *        transparentColorTolerance - {integer} 背景透明色容限。
  */
-export default class UGCImage extends UGCSubLayer {
+export class UGCImage extends UGCSubLayer {
 
     /**
      * @member SuperMap.Image.prototype.brightness - {integer}
@@ -71,7 +72,7 @@ export default class UGCImage extends UGCSubLayer {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**

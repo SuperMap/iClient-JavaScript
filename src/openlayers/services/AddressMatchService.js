@@ -1,6 +1,6 @@
-import ServiceBase  from './ServiceBase';
+import {ServiceBase} from './ServiceBase';
 import ol from 'openlayers/dist/ol-debug';
-import CommonAddressMatchService from '../../common/iServer/AddressMatchService';
+import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common';
 
 /**
  * @class ol.supermap.AddressMatchService
@@ -14,7 +14,7 @@ import CommonAddressMatchService from '../../common/iServer/AddressMatchService'
  * @param options -{Object} 交互时所需可选参数。
  * @extends ol.supermap.ServiceBase
  */
-export default class AddressMatchService extends ServiceBase {
+export class AddressMatchService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);

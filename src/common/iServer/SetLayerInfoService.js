@@ -1,5 +1,6 @@
-import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
 import './SetLayerInfoParameters';
 
 /**
@@ -14,13 +15,13 @@ import './SetLayerInfoParameters';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default class SetLayerInfoService extends CommonServiceBase {
+export class SetLayerInfoService extends CommonServiceBase {
 
 
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -29,7 +30,7 @@ export default class SetLayerInfoService extends CommonServiceBase {
      */
     destroy() {
         super.destroy();
-        SuperMap.Util.reset(this);
+        Util.reset(this);
     }
 
     /**
@@ -44,7 +45,7 @@ export default class SetLayerInfoService extends CommonServiceBase {
         }
         var me = this;
         me.url += ".json";
-        var jsonParamsStr = SuperMap.Util.toJSON(params);
+        var jsonParamsStr = Util.toJSON(params);
         me.request({
             method: "PUT",
             data: jsonParamsStr,

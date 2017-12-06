@@ -1,12 +1,10 @@
-import SuperMap from '../../SuperMap';
-
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Http
  * LevelRenderer 工具-Http
  *
  */
-export default class Http {
+export class Http {
 
     /**
      * Constructor: SuperMap.LevelRenderer.Tool.Http
@@ -67,4 +65,3 @@ export default class Http {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Http"
 }
-SuperMap.LevelRenderer.Tool.Http = Http;

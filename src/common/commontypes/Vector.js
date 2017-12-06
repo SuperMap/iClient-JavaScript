@@ -1,5 +1,5 @@
-﻿import SuperMap from '../SuperMap';
-import Feature from './Feature';
+﻿import {SuperMap} from '../SuperMap';
+import {Feature} from './Feature';
 import {Util} from './Util';
 
 // TRASH THIS
@@ -31,7 +31,7 @@ SuperMap.State = {
  *  var pointFeature = new SuperMap.Feature.Vector(geometry,null,style);
  *  vectorLayer.addFeatures(pointFeature);
  */
-export default class Vector extends Feature {
+export class Vector extends Feature {
 
     /**
      * @member SuperMap.Feature.Vector.prototype.fid -{string}

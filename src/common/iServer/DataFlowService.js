@@ -1,5 +1,7 @@
-import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
+import {SuperMap} from '../SuperMap';
+import {CommonServiceBase} from './CommonServiceBase';
+import {Util} from '../commontypes/Util';
+import {SecurityManager} from '../security/SecurityManager';
 
 /**
  * @class SuperMap.DataFlowService
@@ -12,7 +14,7 @@ import CommonServiceBase from './CommonServiceBase';
  *        geometry - {Array<Object>} 设置增添的几何要素对象数组。
  *        excludeField - -{Object} 排除字段
  */
-export default class DataFlowService extends CommonServiceBase {
+export class DataFlowService extends CommonServiceBase {
 
     /**
      * @member SuperMap.DataFlowService.prototype.geometry -{Aarry<Object>}
@@ -48,7 +50,7 @@ export default class DataFlowService extends CommonServiceBase {
             me.url += "/";
         }
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 
@@ -169,7 +171,7 @@ export default class DataFlowService extends CommonServiceBase {
      * @override
      */
     destroy() {
-        SuperMap.CommonServiceBase.prototype.destroy.apply(this, arguments);
+        CommonServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
         me.geometry = null;
         me.prjCoordSys = null;
@@ -188,7 +190,7 @@ export default class DataFlowService extends CommonServiceBase {
                 geometry: this.geometry
             }
         };
-        return SuperMap.Util.toJSON(filter);
+        return Util.toJSON(filter);
     }
 
 
@@ -221,7 +223,7 @@ export default class DataFlowService extends CommonServiceBase {
     }
 
     _appendCredentials(url) {
-        var token = SuperMap.SecurityManager.getToken(url);
+        var token = SecurityManager.getToken(url);
         if (token) {
             url += "?token=" + token;
         }

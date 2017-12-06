@@ -1,12 +1,10 @@
-import SuperMap from '../../SuperMap';
-
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Event
  * LevelRenderer 工具-事件辅助类
  *
  */
-export default class Event {
+export class Event {
 
     /**
      * Property: stop
@@ -88,4 +86,3 @@ export default class Event {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Event"
 }
-SuperMap.LevelRenderer.Tool.Event = Event;

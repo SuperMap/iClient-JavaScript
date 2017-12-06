@@ -1,9 +1,10 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {DataFormat} from '../REST';
-import CommonServiceBase from './CommonServiceBase';
-import QueryParameters from './QueryParameters';
-import ChartQueryParameters from './ChartQueryParameters';
-import GeoJSON from '../format/GeoJSON';
+import {CommonServiceBase} from './CommonServiceBase';
+import {QueryParameters} from './QueryParameters';
+import {ChartQueryParameters} from './ChartQueryParameters';
+import {GeoJSON} from '../format/GeoJSON';
 
 /**
  * @class SuperMap.ChartQueryService
@@ -43,7 +44,7 @@ import GeoJSON from '../format/GeoJSON';
  *    });
  * chartQueryService.processAsync(chartQueryParameters);
  */
-export default class ChartQueryService extends CommonServiceBase {
+export class ChartQueryService extends CommonServiceBase {
 
     /**
      * @member SuperMap.ChartQueryService.prototype.returnContent -{boolean}
@@ -62,7 +63,7 @@ export default class ChartQueryService extends CommonServiceBase {
         super(url, options);
         options = options || {};
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
         var me = this, end;
         if (options && options.format) {
@@ -90,7 +91,7 @@ export default class ChartQueryService extends CommonServiceBase {
      */
     destroy() {
         var me = this;
-        SuperMap.CommonServiceBase.prototype.destroy.apply(this, arguments);
+        CommonServiceBase.prototype.destroy.apply(this, arguments);
         me.returnContent = null;
         me.format = null;
     }
@@ -129,7 +130,7 @@ export default class ChartQueryService extends CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
@@ -160,4 +161,5 @@ export default class ChartQueryService extends CommonServiceBase {
 
     CLASS_NAME = "SuperMap.ChartQueryService"
 }
+
 SuperMap.ChartQueryService = ChartQueryService;

@@ -1,4 +1,5 @@
 import ol from 'openlayers/dist/ol-debug';
+
 /**
  * @class ol.source.BaiduMap
  * @classdesc 百度地图图层源。
@@ -11,7 +12,7 @@ import ol from 'openlayers/dist/ol-debug';
  *        opaque - {boolean} 是否透明。
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
-export default class BaiduMap extends ol.source.TileImage {
+export class BaiduMap extends ol.source.TileImage {
     constructor(opt_options) {
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({

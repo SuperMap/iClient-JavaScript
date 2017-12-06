@@ -1,5 +1,5 @@
-import '../core/Base';
 import L from "leaflet";
+import '../core/Base';
 import echarts from "echarts";
 
 /**
@@ -146,7 +146,7 @@ export var EchartsLayer = L.Layer.extend({
         this._ec.setOption(this._echartsOptions);
     },
 
-    onRemove: function (map) {
+    onRemove: function () {
         // 销毁echarts实例
         this._ec.dispose();
     },
@@ -237,5 +237,5 @@ LeafletMapCoordSys.create = function (ecModel, api) {
 export var echartsLayer = function (echartsOptions, options) {
     return new EchartsLayer(echartsOptions, options);
 };
-L.supermap.echartsLayer = echartsLayer;
 
+L.supermap.echartsLayer = echartsLayer;

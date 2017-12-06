@@ -1,13 +1,13 @@
-﻿import SuperMap from '../SuperMap';
-import WKT from '../format/WKT';
-import Vector from './Vector';
+﻿import {SuperMap} from '../SuperMap';
+// import {WKT} from '../format/WKT';
+// import {Vector} from './Vector';
 import {Util} from './Util';
 
 /**
  * @class SuperMap.Geometry
  * @classdesc 几何对象类，描述地理对象的几何图形。
  */
-export default class Geometry {
+export class Geometry {
 
     /**
      * @member SuperMap.Geometry.prototype.id -{string}
@@ -152,22 +152,23 @@ export default class Geometry {
     }
 
 
-    /**
-     * @function SuperMap.Geometry.prototype.toString
-     * @description 返回geometry对象的字符串表述，需要引入{@link SuperMap.Format.WKT}。此方法只能在子类实现，在父类使用会报错。
-     * @returns {string} geometry对象的字符串表述(Well-Known Text)
-     */
-    toString() {
-        var string;
-        if (WKT) {
-            var wkt = new WKT();
-            string = wkt.write(new Vector(this));
-        } else {
-            string = Object.prototype.toString.call(this);
-        }
-        return string;
-    }
+    // /**
+    //  * @function SuperMap.Geometry.prototype.toString
+    //  * @description 返回geometry对象的字符串表述，需要引入{@link SuperMap.Format.WKT}。此方法只能在子类实现，在父类使用会报错。
+    //  * @returns {string} geometry对象的字符串表述(Well-Known Text)
+    //  */
+    // toString() {
+        // var string;
+        // if (WKT) {
+        //     var wkt = new WKT();
+        //     string = wkt.write(new Vector(this));
+        // } else {
+        //     string = Object.prototype.toString.call(this);
+        // }
+        // return string;
+    // }
 
     CLASS_NAME = "SuperMap.Geometry"
 }
+
 SuperMap.Geometry = Geometry;

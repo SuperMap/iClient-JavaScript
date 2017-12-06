@@ -1,15 +1,24 @@
-import SuperMap from '../SuperMap';
-import ThemeFeature from '../overlay/feature/Theme';
-import '../commontypes/geometry/Rectangle';
-import '../commontypes/geometry/Point';
-import '../commontypes/geometry/MultiPoint';
-import '../commontypes/geometry/LineString';
-import '../commontypes/geometry/MultiLineString';
-import '../commontypes/geometry/LinearRing';
-import '../commontypes/geometry/Polygon';
-import '../commontypes/geometry/MultiPolygon';
-import '../commontypes/geometry/Curve';
-import '../commontypes/geometry/GeoText';
+import {SuperMap} from '../SuperMap';
+import {Geometry} from '../commontypes/Geometry';
+import {Util as CommonUtil} from '../commontypes/Util';
+import {Theme} from './feature/Theme';
+import {Rectangle} from '../commontypes/geometry/Rectangle';
+import {Point} from '../commontypes/geometry/Point';
+import {Collection} from '../commontypes/geometry/Collection';
+import {MultiPoint} from '../commontypes/geometry/MultiPoint';
+import {LineString} from '../commontypes/geometry/LineString';
+import {MultiLineString} from '../commontypes/geometry/MultiLineString';
+import {LinearRing} from '../commontypes/geometry/LinearRing';
+import {Polygon} from '../commontypes/geometry/Polygon';
+import {MultiPolygon} from '../commontypes/geometry/MultiPolygon';
+import {Curve} from '../commontypes/geometry/Curve';
+import {GeoText} from '../commontypes/geometry/GeoText';
+import {SmicPoint} from './levelRenderer/SmicPoint';
+import {SmicBrokenLine} from './levelRenderer/SmicBrokenLine';
+import {SmicText} from './levelRenderer/SmicText';
+import {SmicRectangle} from './levelRenderer/SmicRectangle';
+import {SmicPolygon} from './levelRenderer/SmicPolygon';
+import {LonLat} from '../commontypes/LonLat';
 
 
 /**
@@ -26,7 +35,7 @@ import '../commontypes/geometry/GeoText';
  *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
  *        highlightStyle - {Object} 高亮样式。
  */
-export default class ThemeVector extends ThemeFeature {
+export class ThemeVector extends Theme {
 
     /**
      * @member SuperMap.Feature.Theme.Vector.prototype.dataBounds - {SuperMap.Bounds}
@@ -82,21 +91,21 @@ export default class ThemeVector extends ThemeFeature {
         if (!data.geometry) {
             return;
         }
-        if (!(data.geometry instanceof SuperMap.Geometry)) {
+        if (!(data.geometry instanceof Geometry)) {
             return;
         }
         this.style = style ? style : {};
         this.data = data;
         this.layer = layer;
-        this.id = SuperMap.Util.createUniqueID(this.CLASS_NAME + "_");
+        this.id = CommonUtil.createUniqueID(this.CLASS_NAME + "_");
         this.location = [];
         this.shapes = [];
         if (options) {
-            SuperMap.Util.copyAttributesWithClip(this, options, ["shapeOptions", "dataBounds"])
+            CommonUtil.copyAttributesWithClip(this, options, ["shapeOptions", "dataBounds"])
         }
         if (shapeOptions) {
             this.shapeOptions = {};
-            SuperMap.Util.copyAttributesWithClip(this.shapeOptions, shapeOptions);
+            CommonUtil.copyAttributesWithClip(this.shapeOptions, shapeOptions);
         }
 
         //设置基础参数 dataBounds、lonlat、location
@@ -106,28 +115,28 @@ export default class ThemeVector extends ThemeFeature {
         this.location = this.getLocalXY(this.lonlat);
 
         //将地理要素转为专题要素
-        if (geometry instanceof SuperMap.Geometry.LinearRing) {
+        if (geometry instanceof LinearRing) {
             this.lineToTF(geometry);
-        } else if (geometry instanceof SuperMap.Geometry.LineString) {
+        } else if (geometry instanceof LineString) {
             this.lineToTF(geometry);
-        } else if (geometry instanceof SuperMap.Geometry.Curve) {
+        } else if (geometry instanceof Curve) {
             //独立几何体
-        } else if (geometry instanceof SuperMap.Geometry.MultiPoint) {
+        } else if (geometry instanceof MultiPoint) {
             this.multiPointToTF(geometry);
-        } else if (geometry instanceof SuperMap.Geometry.MultiLineString) {
+        } else if (geometry instanceof MultiLineString) {
 
             this.multiLineStringToTF(geometry);
-        } else if (geometry instanceof SuperMap.Geometry.MultiPolygon) {
+        } else if (geometry instanceof MultiPolygon) {
             this.multiPolygonToTF(geometry);
-        } else if (geometry instanceof SuperMap.Geometry.Polygon) {
+        } else if (geometry instanceof Polygon) {
             this.polygonToTF(geometry);
-        } else if (geometry instanceof SuperMap.Geometry.Collection) {
+        } else if (geometry instanceof Collection) {
             //独立几何体
-        } else if (geometry instanceof SuperMap.Geometry.Point) {
+        } else if (geometry instanceof Point) {
             this.pointToTF(geometry);
-        } else if (geometry instanceof SuperMap.Geometry.Rectangle) {
+        } else if (geometry instanceof Rectangle) {
             this.rectangleToTF(geometry);
-        } else if (geometry instanceof SuperMap.Geometry.GeoText) {
+        } else if (geometry instanceof GeoText) {
             this.geoTextToTF(geometry);
         }
 
@@ -194,11 +203,11 @@ export default class ThemeVector extends ThemeFeature {
 
         //赋 style
         var style = new Object();
-        style = SuperMap.Util.copyAttributesWithClip(style, this.style, ['pointList']);
+        style = CommonUtil.copyAttributesWithClip(style, this.style, ['pointList']);
         style.pointList = pointList;
 
         //创建图形
-        var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+        var shape = new SmicBrokenLine({
             style: style,
             clickable: this.isClickAble,
             hoverable: this.isHoverAble
@@ -220,7 +229,7 @@ export default class ThemeVector extends ThemeFeature {
 
         //添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做
         if (this.shapeOptions) {
-            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+            CommonUtil.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -276,12 +285,12 @@ export default class ThemeVector extends ThemeFeature {
             //赋 style
             var style = new Object();
             style.r = 6; //防止漏设此参数，默认 6 像素
-            style = SuperMap.Util.copyAttributesWithClip(style, this.style);
+            style = CommonUtil.copyAttributesWithClip(style, this.style);
             style.x = refLocal[0];
             style.y = refLocal[1];
 
             //创建图形
-            var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
+            var shape = new SmicPoint({
                 style: style,
                 clickable: this.isClickAble,
                 hoverable: this.isHoverAble
@@ -303,7 +312,7 @@ export default class ThemeVector extends ThemeFeature {
 
             //修改一些 shape 可选属性，通常不需要这么做
             if (this.shapeOptions) {
-                SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+                CommonUtil.copyAttributesWithClip(shape, this.shapeOptions);
             }
 
             this.shapes.push(shape);
@@ -355,12 +364,12 @@ export default class ThemeVector extends ThemeFeature {
         //赋 style
         var style = new Object();
         style.r = 6; //防止漏设此参数，默认 6 像素
-        style = SuperMap.Util.copyAttributesWithClip(style, this.style);
+        style = CommonUtil.copyAttributesWithClip(style, this.style);
         style.x = localLX[0] - location[0];
         style.y = localLX[1] - location[1];
 
         //创建图形
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
+        var shape = new SmicPoint({
             style: style,
             clickable: this.isClickAble,
             hoverable: this.isHoverAble
@@ -382,7 +391,7 @@ export default class ThemeVector extends ThemeFeature {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+            CommonUtil.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -474,11 +483,11 @@ export default class ThemeVector extends ThemeFeature {
 
         //赋 style
         var style = {};
-        style = SuperMap.Util.copyAttributesWithClip(style, this.style, ['pointList']);
+        style = CommonUtil.copyAttributesWithClip(style, this.style, ['pointList']);
         style.pointList = pointList;
 
         //创建图形
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+        var shape = new SmicPolygon({
             style: style,
             clickable: this.isClickAble,
             hoverable: this.isHoverAble
@@ -505,7 +514,7 @@ export default class ThemeVector extends ThemeFeature {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+            CommonUtil.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -520,7 +529,7 @@ export default class ThemeVector extends ThemeFeature {
     rectangleToTF(geometry) {
         //参考位置，参考中心为
         var location = this.location;
-        var ll = new SuperMap.LonLat(geometry.x, geometry.y);
+        var ll = new LonLat(geometry.x, geometry.y);
 
         //地图分辨率
         var res = this.layer.map.getResolution();
@@ -531,7 +540,7 @@ export default class ThemeVector extends ThemeFeature {
         //赋 style
         var style = new Object();
         style.r = 6; //防止漏设此参数，默认 6 像素
-        style = SuperMap.Util.copyAttributesWithClip(style, this.style);
+        style = CommonUtil.copyAttributesWithClip(style, this.style);
         style.x = localLX[0] - location[0];
         // SuperMap.Geometry.Rectangle 使用左下角定位， SmicRectangle 使用左上角定位，需要转换
         style.y = (localLX[1] - location[1]) - 2 * geometry.width / res;
@@ -539,7 +548,7 @@ export default class ThemeVector extends ThemeFeature {
         style.height = geometry.height / res;
 
         //创建图形
-        var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
+        var shape = new SmicRectangle({
             style: style,
             clickable: this.isClickAble,
             hoverable: this.isHoverAble
@@ -561,7 +570,7 @@ export default class ThemeVector extends ThemeFeature {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+            CommonUtil.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -582,13 +591,13 @@ export default class ThemeVector extends ThemeFeature {
         //赋 style
         var style = new Object();
         style.r = 6; //防止漏设此参数，默认 6 像素
-        style = SuperMap.Util.copyAttributesWithClip(style, this.style, ["x", "y", "text"]);
+        style = CommonUtil.copyAttributesWithClip(style, this.style, ["x", "y", "text"]);
         style.x = localLX[0] - location[0];
         style.y = localLX[1] - location[1];
         style.text = geometry.text;
 
         //创建图形
-        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+        var shape = new SmicText({
             style: style,
             clickable: this.isClickAble,
             hoverable: this.isHoverAble
@@ -610,7 +619,7 @@ export default class ThemeVector extends ThemeFeature {
 
         //修改一些 shape 可选属性，通常不需要这么做
         if (this.shapeOptions) {
-            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+            CommonUtil.copyAttributesWithClip(shape, this.shapeOptions);
         }
 
         this.shapes.push(shape);
@@ -658,4 +667,4 @@ export default class ThemeVector extends ThemeFeature {
     CLASS_NAME = "SuperMap.Feature.Theme.Vector"
 }
 
-SuperMap.Feature.Theme.Vector = ThemeVector;
+SuperMap.Feature.Theme.ThemeVector = ThemeVector;

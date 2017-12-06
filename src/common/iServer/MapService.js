@@ -1,5 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import CommonServiceBase from './CommonServiceBase';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {CommonServiceBase} from './CommonServiceBase';
 
 /**
  * @class SuperMap.MapService
@@ -19,7 +20,7 @@ import CommonServiceBase from './CommonServiceBase';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default class MapService extends CommonServiceBase {
+export class MapService extends CommonServiceBase {
 
     /**
      * @member  SuperMap.MapService.prototype.projection -{string}
@@ -30,7 +31,7 @@ export default class MapService extends CommonServiceBase {
     constructor(url, options) {
         super(url, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
         var me = this;
 
@@ -88,7 +89,7 @@ export default class MapService extends CommonServiceBase {
      */
     serviceProcessCompleted(result) {
         var me = this;
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
         var isCodeValid = result.code && codeStatus;
         if (!result.code || isCodeValid) {

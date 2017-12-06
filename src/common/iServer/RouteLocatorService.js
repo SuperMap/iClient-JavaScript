@@ -1,6 +1,7 @@
-import SuperMap from '../SuperMap';
-import SpatialAnalystBase from './SpatialAnalystBase';
-import RouteLocatorParameters from './RouteLocatorParameters';
+import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {SpatialAnalystBase} from './SpatialAnalystBase';
+import {RouteLocatorParameters} from './RouteLocatorParameters';
 
 /**
  * @class SuperMap.RouteLocatorService
@@ -57,7 +58,7 @@ import RouteLocatorParameters from './RouteLocatorParameters';
      * (end)
      *
      */
-export default  class RouteLocatorService extends SpatialAnalystBase {
+export class RouteLocatorService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
@@ -108,7 +109,7 @@ export default  class RouteLocatorService extends SpatialAnalystBase {
         }
         me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
         me.url += "?returnContent=true";
-        jsonParameters = SuperMap.Util.toJSON(params);
+        jsonParameters = Util.toJSON(params);
         return jsonParameters;
     }
 

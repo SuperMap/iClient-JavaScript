@@ -1,6 +1,9 @@
-﻿import SuperMap from '../SuperMap';
-import PointWithMeasure from './PointWithMeasure';
-import Collection from '../commontypes/geometry/Collection';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {LinearRing} from '../commontypes/geometry/LinearRing';
+import {LineString} from '../commontypes/geometry/LineString';
+import {PointWithMeasure} from './PointWithMeasure';
+import {Collection} from '../commontypes/geometry/Collection';
 
 /**
  * @class SuperMap.Route
@@ -15,7 +18,7 @@ import Collection from '../commontypes/geometry/Collection';
  *         type - {string} 数据类型，如："LINEM"</br>
  * @extends SuperMap.Geometry.Collection
  */
-export default  class Route extends Collection {
+export class Route extends Collection {
 
     /**
      * @member SuperMap.Route.prototype.id -{number}
@@ -97,7 +100,7 @@ export default  class Route extends Collection {
     constructor(points, options) {
         super(points, options);
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -197,9 +200,9 @@ export default  class Route extends Collection {
                 pointIndex += geoParts[i];
                 //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
                 if (pointList[0].equals(pointList[geoParts[i] - 1])) {
-                    lineList.push(new SuperMap.Geometry.LinearRing(pointList));
+                    lineList.push(new LinearRing(pointList));
                 } else {
-                    lineList.push(new SuperMap.Geometry.LineString(pointList));
+                    lineList.push(new LineString(pointList));
                 }
                 pointList = [];
             }

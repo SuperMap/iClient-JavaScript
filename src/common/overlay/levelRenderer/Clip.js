@@ -1,5 +1,4 @@
-import SuperMap from '../../SuperMap';
-import './Animation';
+import {Animation} from './Animation';
 
 /**
  * @private
@@ -7,7 +6,7 @@ import './Animation';
  * 动画片段
  *
  */
-export default class Clip {
+export class Clip {
 
 
     /**
@@ -82,7 +81,7 @@ export default class Clip {
     }
 
     step(time) {
-        var Easing = new SuperMap.LevelRenderer.Animation.easing();
+        var Easing = new Animation.easing();
         var percent = (time - this._startTime) / this._life;
 
         // 还没开始
@@ -136,4 +135,3 @@ export default class Clip {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Animation.Clip"
 }
-SuperMap.LevelRenderer.Animation.Clip = Clip;

@@ -1,7 +1,9 @@
-﻿import SuperMap from '../SuperMap';
-import DataReturnOption from './DataReturnOption';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
+import {DataReturnOption} from './DataReturnOption';
 import {SurfaceAnalystMethod} from '../REST';
-import SurfaceAnalystParametersSetting from './SurfaceAnalystParametersSetting';
+import {SurfaceAnalystParametersSetting} from './SurfaceAnalystParametersSetting';
+
 /**
  * @class SuperMap.SurfaceAnalystParameters
  * @classdesc 表面分析提取操作参数类。
@@ -13,7 +15,7 @@ import SurfaceAnalystParametersSetting from './SurfaceAnalystParametersSetting';
  *        resultSetting - {{@link SuperMap.DataReturnOption}} 结果返回设置类。</br>
  *        surfaceAnalystMethod - {{@link SuperMap.SurfaceAnalystMethod}} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
  */
-export default  class SurfaceAnalystParameters {
+export class SurfaceAnalystParameters {
 
     /**
      * @member SuperMap.SurfaceAnalystParameters.prototype.resolution -{number}
@@ -45,7 +47,7 @@ export default  class SurfaceAnalystParameters {
         me.extractParameter = new SurfaceAnalystParametersSetting();
         me.resultSetting = new DataReturnOption();
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -70,4 +72,5 @@ export default  class SurfaceAnalystParameters {
 
     CLASS_NAME = "SuperMap.SurfaceAnalystParameters"
 }
+
 SuperMap.SurfaceAnalystParameters = SurfaceAnalystParameters;

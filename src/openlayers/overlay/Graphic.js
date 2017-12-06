@@ -1,6 +1,5 @@
 import ol from 'openlayers/dist/ol-debug';
-import Util from '../core/Util';
-import './graphic/Graphic';
+import {Util} from '../core/Util';
 
 /**
  * @class ol.source.Graphic
@@ -8,7 +7,7 @@ import './graphic/Graphic';
  * @param options -{Object} 图形参数
  * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
-export default class Graphic extends ol.source.ImageCanvas {
+export class Graphic extends ol.source.ImageCanvas {
 
     constructor(options) {
         super({

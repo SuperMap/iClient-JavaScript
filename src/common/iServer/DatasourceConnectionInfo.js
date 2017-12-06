@@ -1,4 +1,5 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {EngineType} from '../REST'; // eslint-disable-line no-unused-vars
 
 /**
@@ -20,7 +21,7 @@ import {EngineType} from '../REST'; // eslint-disable-line no-unused-vars
  *         server - {string} 数据库服务器名或 SDB 文件名。</br>
  *         user - {string} 登录数据库的用户名。</br>
  */
-export default class DatasourceConnectionInfo {
+export class DatasourceConnectionInfo {
     /**
      * @member SuperMap.DatasourceConnectionInfo.prototype.alias -{string}
      * @description 数据源别名。
@@ -103,7 +104,7 @@ export default class DatasourceConnectionInfo {
 
     constructor(options) {
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
     }
 
@@ -128,4 +129,5 @@ export default class DatasourceConnectionInfo {
 
     CLASS_NAME = "SuperMap.DatasourceConnectionInfo"
 }
+
 SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;

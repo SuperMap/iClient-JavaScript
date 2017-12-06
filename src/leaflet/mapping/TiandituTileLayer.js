@@ -1,5 +1,5 @@
-import '../core/Base';
 import L from "leaflet";
+import "../core/Base";
 import {WMTSLayer} from "./TileLayer.WMTS";
 
 /**
@@ -56,4 +56,5 @@ export var TiandituTileLayer = WMTSLayer.extend({
 export var tiandituTileLayer = function (options) {
     return new TiandituTileLayer(options);
 };
+
 L.supermap.tiandituTileLayer = tiandituTileLayer;

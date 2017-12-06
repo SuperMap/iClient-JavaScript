@@ -1,8 +1,8 @@
 import mapboxgl from 'mapbox-gl';
-import Util from '../core/Util';
-import ServiceBase from './ServiceBase';
-import GetFieldsService from '../../common/iServer/GetFieldsService';
-import FieldStatisticService from '../../common/iServer/FieldStatisticService';
+import '../core/Base';
+import {Util} from '../core/Util';
+import {ServiceBase} from './ServiceBase';
+import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.FieldService
@@ -15,7 +15,7 @@ import FieldStatisticService from '../../common/iServer/FieldStatisticService';
  * @param options -{Object} 参数。
  * @extends mapboxgl.supermap.ServiceBase
  */
-export default class FieldService extends ServiceBase {
+export class FieldService extends ServiceBase {
     constructor(url, options) {
         super(url, options);
     }

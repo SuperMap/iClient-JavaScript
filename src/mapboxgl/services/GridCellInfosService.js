@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
-import ServiceBase from './ServiceBase';
-import GetGridCellInfosService from '../../common/iServer/GetGridCellInfosService';
+import '../core/Base';
+import {ServiceBase} from './ServiceBase';
+import {GetGridCellInfosService} from '@supermap/iclient-common';
 
 /**
  * @class mapboxgl.supermap.GridCellInfosService
@@ -18,7 +19,7 @@ import GetGridCellInfosService from '../../common/iServer/GetGridCellInfosServic
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default class GridCellInfosService extends ServiceBase {
+export class GridCellInfosService extends ServiceBase {
 
     constructor(url, options) {
         super(url, options);
@@ -45,4 +46,5 @@ export default class GridCellInfosService extends ServiceBase {
         gridCellQueryService.processAsync(params);
     }
 }
+
 mapboxgl.supermap.GridCellInfosService = GridCellInfosService;

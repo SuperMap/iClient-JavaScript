@@ -1,6 +1,5 @@
 import L from "leaflet";
-import GeoJSONFormat from '../../common/format/GeoJSON';
-import SuperMap from '../../common/SuperMap';
+import {GeoJSON as GeoJSONFormat, Unit} from '@supermap/iclient-common';
 
 export var supermap_callbacks = {};
 L.Util.supermap_callbacks = supermap_callbacks;
@@ -42,16 +41,16 @@ export var toSuperMapGeometry = function (geometry) {
 export var getMeterPerMapUnit = function (mapUnit) {
     var earchRadiusInMeters = 6378137;
     var meterPerMapUnit;
-    if (mapUnit === SuperMap.Unit.METER) {
+    if (mapUnit === Unit.METER) {
         meterPerMapUnit = 1;
-    } else if (mapUnit === SuperMap.Unit.DEGREE) {
+    } else if (mapUnit === Unit.DEGREE) {
         // 每度表示多少米。
         meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-    } else if (mapUnit === SuperMap.Unit.KILOMETER) {
+    } else if (mapUnit === Unit.KILOMETER) {
         meterPerMapUnit = 1.0E-3;
-    } else if (mapUnit === SuperMap.Unit.INCH) {
+    } else if (mapUnit === Unit.INCH) {
         meterPerMapUnit = 1 / 2.5399999918E-2;
-    } else if (mapUnit === SuperMap.Unit.FOOT) {
+    } else if (mapUnit === Unit.FOOT) {
         meterPerMapUnit = 0.3048;
     } else {
         return meterPerMapUnit;
@@ -97,6 +96,7 @@ export var GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxi
 export var NormalizeScale = function (scale) {
     return (scale > 1.0) ? (1.0 / scale) : scale;
 };
+
 L.Util.toGeoJSON = toGeoJSON;
 L.Util.toSuperMapGeometry = toSuperMapGeometry;
 L.Util.resolutionToScale = resolutionToScale;

@@ -1,5 +1,9 @@
-import SuperMap from '../SuperMap';
-import Graph from './Graph';
+import {SuperMap} from '../SuperMap';
+import {ShapeFactory} from './feature/ShapeFactory';
+import {Polygon} from './feature/Polygon';
+import {Color} from './levelRenderer/Color';
+import {Util as CommonUtil} from '../commontypes/Util';
+import {Graph} from './Graph';
 
 /**
  * @class SuperMap.Feature.Theme.Bar
@@ -87,7 +91,7 @@ import Graph from './Graph';
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Bar} 返回一个柱状图表对象。
  */
-export default class Bar extends Graph {
+export class Bar extends Graph {
 
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
@@ -171,13 +175,13 @@ export default class Bar extends Graph {
         // 背景框，默认启用
         if (typeof(sets.useBackground) === "undefined" || sets.useBackground) {
             // 将背景框图形添加到模型的 shapes 数组，注意添加顺序，后添加的图形在先添加的图形之上。
-            this.shapes.push(SuperMap.Feature.ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
+            this.shapes.push(ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
         }
 
         // 坐标轴, 默认启用
         if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
             // 添加坐标轴图形数组
-            this.shapes = this.shapes.concat(SuperMap.Feature.ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
+            this.shapes = this.shapes.concat(ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
         }
 
         for (var i = 0; i < fv.length; i++) {
@@ -193,7 +197,7 @@ export default class Bar extends Graph {
             ];
 
             // 柱条参数对象（一个面参数对象）
-            var barParams = new SuperMap.Feature.ShapeParameters.Polygon(poiLists);
+            var barParams = new Polygon(poiLists);
 
             // 柱条 阴影 style
             if (typeof(sets.showShadow) === "undefined" || sets.showShadow) {
@@ -213,7 +217,7 @@ export default class Bar extends Graph {
                     }
                 }
                 barParams.style = {};
-                SuperMap.Util.copyAttributesWithClip(barParams.style, deafaultShawdow);
+                CommonUtil.copyAttributesWithClip(barParams.style, deafaultShawdow);
             }
 
             // 图形携带的数据信息
@@ -328,7 +332,7 @@ export default class Bar extends Graph {
                     var color2 = barLinearGradient[index][1];
 
                     //颜色
-                    var zcolor = new SuperMap.LevelRenderer.Tool.Color();
+                    var zcolor = new Color();
                     var linearGradient = zcolor.getLinearGradient(x1, 0, x2, 0,
                         [[0, color1], [1, color2]]);
 

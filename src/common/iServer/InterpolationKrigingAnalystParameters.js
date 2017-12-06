@@ -1,7 +1,9 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 import {VariogramMode, Exponent} from '../REST';
 import './ThiessenAnalystParameters';
-import InterpolationAnalystParameters from './InterpolationAnalystParameters';
+import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
+
 /**
  * @class SuperMap.InterpolationKrigingAnalystParameters
  * @classdesc 克吕金插值分析参数类。
@@ -91,7 +93,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  * });
  *
  */
-export default class InterpolationKrigingAnalystParameters extends InterpolationAnalystParameters {
+export class InterpolationKrigingAnalystParameters extends InterpolationAnalystParameters {
 
     /**
      * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.type - {SuperMap.InterpolationAlgorithmType}
@@ -199,7 +201,7 @@ export default class InterpolationKrigingAnalystParameters extends Interpolation
         me.maxPointCountForInterpolation = 200;
         me.maxPointCountInNode = 50;
         if (options) {
-            SuperMap.Util.extend(me, options);
+            Util.extend(me, options);
         }
     }
 

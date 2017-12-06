@@ -1,4 +1,4 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightParameters
@@ -10,7 +10,7 @@ import SuperMap from '../SuperMap';
  *        weightField - {string} 转向结点的耗费字段。<br>
  *        turnNodeWeight - {string} 耗费权重
  */
-export default  class UpdateTurnNodeWeightParameters {
+export class UpdateTurnNodeWeightParameters {
 
     /**
      * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{string}
@@ -43,7 +43,9 @@ export default  class UpdateTurnNodeWeightParameters {
     turnNodeWeight = "";
 
     constructor(option) {
-        if (!option) {return;}
+        if (!option) {
+            return;
+        }
 
         option.nodeId && (this.nodeId = option.nodeId);
         option.fromEdgeId && (this.fromEdgeId = option.fromEdgeId);

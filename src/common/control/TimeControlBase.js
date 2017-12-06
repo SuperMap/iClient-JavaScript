@@ -1,4 +1,5 @@
-import SuperMap from '../SuperMap';
+import {SuperMap} from '../SuperMap';
+import {Events} from '../commontypes/Events';
 
 /**
  * @class SuperMap.TimeControlBase
@@ -10,7 +11,7 @@ import SuperMap from '../SuperMap';
  *        repeat - {boolean} 是否重复循环。默认为true。<br>
  *        reverse - {boolean} 是否反向。默认为false。<br>
  */
-export default  class TimeControlBase {
+export class TimeControlBase {
 
     /**
      * @member SuperMap.TimeControlBase.prototype.speed -{number}
@@ -99,7 +100,7 @@ export default  class TimeControlBase {
         me.startTime = Number(me.startTime);
         me.endTime = Number(me.endTime);
 
-        me.events = new SuperMap.Events(this, null, this.EVENT_TYPES);
+        me.events = new Events(this, null, this.EVENT_TYPES);
         me.startTime = Date.parse(new Date(this.startTime));
         me.endTime = Date.parse(new Date(this.endTime));
 

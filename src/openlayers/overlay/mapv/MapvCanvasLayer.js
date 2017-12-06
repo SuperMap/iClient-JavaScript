@@ -11,7 +11,7 @@
  *        height - {number} 画布高。<br>
  *        mixBlendMode - {string} 最小混合模式。
  */
-export default class MapvCanvasLayer {
+export class MapvCanvasLayer {
 
     constructor(options) {
         this.options = options || {};

@@ -1,6 +1,6 @@
-﻿import SuperMap from '../SuperMap';
-import GetFeaturesServiceBase from './GetFeaturesServiceBase';
-import GetFeaturesByBufferParameters from './GetFeaturesByBufferParameters';
+﻿import {SuperMap} from '../SuperMap';
+import {GetFeaturesServiceBase} from './GetFeaturesServiceBase';
+import {GetFeaturesByBufferParameters} from './GetFeaturesByBufferParameters';
 
 /**
  * @class SuperMap.GetFeaturesByBufferService
@@ -24,7 +24,7 @@ import GetFeaturesByBufferParameters from './GetFeaturesByBufferParameters';
  * function GetFeaturesError(object){//todo};
  */
 
-export default  class GetFeaturesByBufferService extends GetFeaturesServiceBase {
+export class GetFeaturesByBufferService extends GetFeaturesServiceBase {
 
     constructor(url, options) {
         super(url, options);

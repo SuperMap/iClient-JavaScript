@@ -1,12 +1,10 @@
-import SuperMap from '../../SuperMap';
-
 /**
  * @private
  * @class  SuperMap.LevelRenderer.Tool.Vector
  * LevelRenderer 二维向量类
  *
  */
-export default class Vector {
+export class Vector {
 
     /**
      * Property: ArrayCtor
@@ -443,4 +441,3 @@ export default class Vector {
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Vector"
 }
-SuperMap.LevelRenderer.Tool.Vector = Vector;

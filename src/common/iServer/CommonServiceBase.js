@@ -1,8 +1,12 @@
-﻿import SuperMap from '../SuperMap';
+﻿import {SuperMap} from '../SuperMap';
 import {FetchRequest} from "../util/FetchRequest";
-import '../../common/commontypes/Events';
-import '../../common/commontypes/Credential';
-import '../security/SecurityManager';
+import {Events} from '../commontypes/Events';
+import {Credential} from '../commontypes/Credential';
+import {SecurityManager} from '../security/SecurityManager';
+import {Util} from '../commontypes/Util';
+import {ServerType} from '../REST';
+import {JSONFormat as JSON} from '../format/JSON';
+import {FunctionExt} from '../commontypes/BaseTypes';
 
 /**
  * @class SuperMap.CommonServiceBase
@@ -13,7 +17,7 @@ import '../security/SecurityManager';
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。参数格式为"ISERVER","GEOJSON"。
  */
-export default class CommonServiceBase {
+export class CommonServiceBase {
 
     EVENT_TYPES = ["processCompleted", "processFailed"];
 
@@ -46,7 +50,7 @@ export default class CommonServiceBase {
     constructor(url, options) {
         let me = this;
 
-        if (SuperMap.Util.isArray(url)) {
+        if (Util.isArray(url)) {
             me.urls = url;
             me.length = url.length;
             me.totalTimes = me.length;
@@ -61,22 +65,22 @@ export default class CommonServiceBase {
             me.url = url;
         }
 
-        if (SuperMap.Util.isArray(url) && !me.isServiceSupportPolling()) {
+        if (Util.isArray(url) && !me.isServiceSupportPolling()) {
             me.url = url[0];
             me.totalTimes = 1;
         }
 
-        me.serverType = me.serverType || SuperMap.ServerType.ISERVER;
+        me.serverType = me.serverType || ServerType.ISERVER;
 
         options = options || {};
 
         if (options) {
-            SuperMap.Util.extend(this, options);
+            Util.extend(this, options);
         }
 
-        me.isInTheSameDomain = SuperMap.Util.isInTheSameDomain(me.url);
+        me.isInTheSameDomain = Util.isInTheSameDomain(me.url);
 
-        me.events = new SuperMap.Events(me, null, me.EVENT_TYPES, true);
+        me.events = new Events(me, null, me.EVENT_TYPES, true);
         if (me.eventListeners instanceof Object) {
             me.events.on(me.eventListeners);
         }
@@ -88,7 +92,7 @@ export default class CommonServiceBase {
      */
     destroy() {
         let me = this;
-        if (SuperMap.Util.isArray(me.urls)) {
+        if (Util.isArray(me.urls)) {
             me.urls = null;
             me.index = null;
             me.length = null;
@@ -161,25 +165,25 @@ export default class CommonServiceBase {
     getCredential(url) {
         let keyUrl = url, credential, value;
         switch (this.serverType) {
-            case SuperMap.ServerType.ISERVER:
-                value = SuperMap.SecurityManager.getToken(keyUrl);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+            case ServerType.ISERVER:
+                value = SecurityManager.getToken(keyUrl);
+                credential = value ? new Credential(value, "token") : null;
                 break;
-            case SuperMap.ServerType.IPORTAL:
-                value = SuperMap.SecurityManager.getToken(keyUrl);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+            case ServerType.IPORTAL:
+                value = SecurityManager.getToken(keyUrl);
+                credential = value ? new Credential(value, "token") : null;
                 if (!credential) {
-                    value = SuperMap.SecurityManager.getKey(keyUrl);
-                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                    value = SecurityManager.getKey(keyUrl);
+                    credential = value ? new Credential(value, "key") : null;
                 }
                 break;
-            case SuperMap.ServerType.ONLINE:
-                value = SuperMap.SecurityManager.getKey(keyUrl);
-                credential = value ? new SuperMap.Credential(value, "key") : null;
+            case ServerType.ONLINE:
+                value = SecurityManager.getKey(keyUrl);
+                credential = value ? new Credential(value, "key") : null;
                 break;
             default:
-                value = SuperMap.SecurityManager.getToken(keyUrl);
-                credential = value ? new SuperMap.Credential(value, "token") : null;
+                value = SecurityManager.getToken(keyUrl);
+                credential = value ? new Credential(value, "token") : null;
                 break;
         }
         return credential;
@@ -225,7 +229,7 @@ export default class CommonServiceBase {
         me.url = me.urls[me.index];
         url = url.replace(re, re.exec(me.url)[0]);
         me.options.url = url;
-        me.options.isInTheSameDomain = SuperMap.Util.isInTheSameDomain(url);
+        me.options.isInTheSameDomain = Util.isInTheSameDomain(url);
         me._commit(me.options);
     }
 
@@ -275,7 +279,7 @@ export default class CommonServiceBase {
      * @param result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         this.events.triggerEvent("processCompleted", {result: result});
     }
 
@@ -285,7 +289,7 @@ export default class CommonServiceBase {
      * @param result - {Object} 服务器返回的结果对象。
      */
     serviceProcessFailed(result) {
-        result = SuperMap.Util.transformResult(result);
+        result = Util.transformResult(result);
         let error = result.error || result;
         this.events.triggerEvent("processFailed", {error: error});
     }
@@ -293,8 +297,8 @@ export default class CommonServiceBase {
     _commit(options) {
         if (options.method === "POST" || options.method === "PUT") {
             if (options.params) {
-                options.url = SuperMap.Util.urlAppend(options.url,
-                    SuperMap.Util.getParameterString(options.params || {}));
+                options.url = Util.urlAppend(options.url,
+                    Util.getParameterString(options.params || {}));
             }
             options.params = options.data;
         }
@@ -311,7 +315,7 @@ export default class CommonServiceBase {
         }).then(function (text) {
             var result = text;
             if (typeof text === "string") {
-                result = new SuperMap.Format.JSON().read(text);
+                result = new JSON().read(text);
             }
             if (!result || result.error || result.code >= 300 && result.code !== 304) {
                 if (result && result.error) {
@@ -321,11 +325,11 @@ export default class CommonServiceBase {
                 }
             }
             if (result.error) {
-                var failure = (options.scope) ? SuperMap.Function.bind(options.failure, options.scope) : options.failure;
+                var failure = (options.scope) ? FunctionExt.bind(options.failure, options.scope) : options.failure;
                 failure(result);
             } else {
                 result.succeed = result.succeed == undefined ? true : result.succeed;
-                var success = (options.scope) ? SuperMap.Function.bind(options.success, options.scope) : options.success;
+                var success = (options.scope) ? FunctionExt.bind(options.success, options.scope) : options.success;
                 success(result);
             }
 
