@@ -31,8 +31,10 @@ describe('leaflet_GraphicLayer', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(function () {
+        //canvas渲染时由于Path 相关的子类 -> map.remove()会有重绘操作，从而引起刷新延迟会报错，故弃之
+        map.off();
+        map = null;
         window.document.body.removeChild(testDiv);
-        map.remove();
     });
 
     it('initialize', function (done) {
@@ -58,6 +60,7 @@ describe('leaflet_GraphicLayer', function () {
             });
         }
         var graphicLayer = L.supermap.graphicLayer(graphics).addTo(map);
+
         setTimeout(function () {
             expect(graphicLayer.graphics.length).toEqual(count);
             for (var i = 0; i < graphicLayer.graphics.length; i++) {
@@ -66,7 +69,7 @@ describe('leaflet_GraphicLayer', function () {
             }
             var isContainsPoint = graphicLayer._containsPoint();
             expect(isContainsPoint).not.toBe("false");
-            map.removeLayer(graphicLayer);
+            graphicLayer.remove();
             done();
         }, 1000)
     });
