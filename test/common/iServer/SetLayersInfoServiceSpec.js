@@ -4,8 +4,7 @@ require('../../../src/common/util/FetchRequest');
 
 var setLayersFailedEventArgsSystem = null;
 var setLayersEventArgsSystem = null;
-var id;
-var url = GlobeParameter.WorldURL;
+var url = "http://supermap:8090/iserver/services/map-world/rest/maps/World";
 var options = {
     eventListeners: {
         "processCompleted": setLayersInfoCompleted,
@@ -13,21 +12,19 @@ var options = {
     },
     isTempLayers: false
 };
-
 function initSetLayersInfoService() {
     return new SuperMap.SetLayersInfoService(url, options);
 }
-
 function setLayersInfoCompleted(setLayersInfoArgs) {
     setLayersEventArgsSystem = setLayersInfoArgs;
 }
-
 function setLayersFailed(serviceFailedEventArgs) {
     setLayersFailedEventArgsSystem = serviceFailedEventArgs;
 }
 
 describe('SetLayersInfoService', function () {
     var originalTimeout;
+    var id;
     var FetchRequest = SuperMap.FetchRequest;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -45,6 +42,15 @@ describe('SetLayersInfoService', function () {
         var setLayersInfoService = initSetLayersInfoService();
         expect(setLayersInfoService).not.toBeNull();
         expect(setLayersInfoService.url).toEqual(url);
+        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(url + "/tempLayersSet.json?");
+            var expectParams = "[{'completeLineSymbolDisplayed':false,'visible':true,'maxScale':0,'caption':null,'description':\"\",'symbolScalable':false,'subLayers':{'layers':[{'joinItems':null,'completeLineSymbolDisplayed':false,'ugcLayerType':\"VECTOR\",'displayFilter':null,'visible':true,'maxScale':1.350238165824801e-8,'fieldValuesDisplayFilter':{'fieldName':\"\",'values':[],'fieldValuesDisplayMode':\"DISABLE\"},'caption':\"continent_T@World\",'description':\"\",'symbolScalable':false,'subLayers':{},'type':\"UGC\",'datasetInfo':{'charset':null,'isReadOnly':false,'encodeType':null,'recordCount':0,'bounds':{'top':65.22103117946571,'left':-150.51082428252954,'bottom':-84.34257921576281,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571}},'name':\"continent_T\",'isFileCache':false,'description':null,'prjCoordSys':null,'type':\"TEXT\",'dataSourceName':\"World\",'tableName':null},'queryable':false,'opaqueRate':100,'minVisibleGeometrySize':0.4,'name':\"continent_T@World\",'bounds':{'top':65.22103117946571,'left':-150.51082428252954,'bottom':-84.34257921576281,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571}},'style':{'fillGradientOffsetRatioX':0,'markerSize':2.4,'fillForeColor':{'red':208,'green':255,'blue':240,'alpha':255},'fillGradientOffsetRatioY':0,'markerWidth':0,'markerAngle':0,'fillSymbolID':0,'lineColor':{'red':0,'green':128,'blue':0,'alpha':255},'markerSymbolID':0,'lineWidth':0.1,'markerHeight':0,'fillOpaqueRate':100,'fillBackOpaque':true,'fillBackColor':{'red':255,'green':255,'blue':255,'alpha':255},'fillGradientMode':\"NONE\",'lineSymbolID':0,'fillGradientAngle':0},'displayOrderBy':null,'symbolScale':0,'minScale':3.3755954145620026e-9,'representationField':\"\",'colorDictionary':null}]},'type':\"UGC\",'queryable':false,'opaqueRate':100,'minVisibleGeometrySize':0,'name':\"World Map\",'bounds':{'top':118.05408801141,'left':-180,'bottom':-90,'leftBottom':{'x':-180,'y':-90},'right':180,'rightTop':{'x':180,'y':118.05408801141}},'symbolScale':0,'minScale':0,'ugcLayerType':\"VECTOR\",'object':null}]";
+            expect(params).toBe(expectParams);
+            expect(options).not.toBeNull();
+            var escapedJson = "{\"postResultType\":\"CreateChild\",\"newResourceID\":\"9e195daff6974da6b366eb37c97e5ad9_a932e5360977478596dfa4cfd9936d53\",\"succeed\":true,\"newResourceLocation\":\"http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/9e195daff6974da6b366eb37c97e5ad9_a932e5360977478596dfa4cfd9936d53.json\"}";
+            return Promise.resolve(new Response(escapedJson));
+        });
         setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         setLayersInfoService.processAsync(layers);
         setTimeout(function () {
@@ -58,7 +64,7 @@ describe('SetLayersInfoService', function () {
             id = serviceResult.newResourceID;
             setLayersInfoService.destroy();
             done();
-        }, 5000)
+        }, 1000)
     });
 
     //修改临时图层的信息 isTempLayers=true
@@ -74,6 +80,16 @@ describe('SetLayersInfoService', function () {
         var layers = layersInfo;
         layers.description = "test";
         setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
+        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+            expect(method).toBe('PUT');
+            expect(testUrl).toBe(url + "/tempLayersSet/" + id + ".json?");
+            var expectParams = "[{'completeLineSymbolDisplayed':false,'visible':true,'maxScale':0,'caption':null,'description':\"test\",'symbolScalable':false,'subLayers':{'layers':[{'joinItems':null,'completeLineSymbolDisplayed':false,'ugcLayerType':\"VECTOR\",'displayFilter':null,'visible':true,'maxScale':1.350238165824801e-8,'fieldValuesDisplayFilter':{'fieldName':\"\",'values':[],'fieldValuesDisplayMode':\"DISABLE\"},'caption':\"continent_T@World\",'description':\"\",'symbolScalable':false,'subLayers':{},'type':\"UGC\",'datasetInfo':{'charset':null,'isReadOnly':false,'encodeType':null,'recordCount':0,'bounds':{'top':65.22103117946571,'left':-150.51082428252954,'bottom':-84.34257921576281,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571}},'name':\"continent_T\",'isFileCache':false,'description':null,'prjCoordSys':null,'type':\"TEXT\",'dataSourceName':\"World\",'tableName':null},'queryable':false,'opaqueRate':100,'minVisibleGeometrySize':0.4,'name':\"continent_T@World\",'bounds':{'top':65.22103117946571,'left':-150.51082428252954,'bottom':-84.34257921576281,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571}},'style':{'fillGradientOffsetRatioX':0,'markerSize':2.4,'fillForeColor':{'red':208,'green':255,'blue':240,'alpha':255},'fillGradientOffsetRatioY':0,'markerWidth':0,'markerAngle':0,'fillSymbolID':0,'lineColor':{'red':0,'green':128,'blue':0,'alpha':255},'markerSymbolID':0,'lineWidth':0.1,'markerHeight':0,'fillOpaqueRate':100,'fillBackOpaque':true,'fillBackColor':{'red':255,'green':255,'blue':255,'alpha':255},'fillGradientMode':\"NONE\",'lineSymbolID':0,'fillGradientAngle':0},'displayOrderBy':null,'symbolScale':0,'minScale':3.3755954145620026e-9,'representationField':\"\",'colorDictionary':null}]},'type':\"UGC\",'queryable':false,'opaqueRate':100,'minVisibleGeometrySize':0,'name':\"World Map\",'bounds':{'top':118.05408801141,'left':-180,'bottom':-90,'leftBottom':{'x':-180,'y':-90},'right':180,'rightTop':{'x':180,'y':118.05408801141}},'symbolScale':0,'minScale':0,'ugcLayerType':\"VECTOR\",'object':null}]";
+            expect(params).toBe(expectParams);
+            expect(options).not.toBeNull();
+            var escapedJson = "{\"succeed\":true}";
+            return Promise.resolve(new Response(escapedJson));
+        });
+        setLayersInfoService.events.on({"processCompleted": setLayersInfoCompleted});
         setLayersInfoService.processAsync(layers);
         setTimeout(function () {
             expect(setLayersEventArgsSystem.type).toEqual("processCompleted");
@@ -82,20 +98,24 @@ describe('SetLayersInfoService', function () {
             expect(serviceResult.succeed).toBeTruthy();
             setLayersInfoService.destroy();
             done();
-        }, 4000)
+        }, 1000)
     });
 
     //失败事件
     it('failedEvent', function (done) {
-        var wrongLayer = layerInfo;
-        var testUrl = "http://supermap:8090/iserver/services/map-world/rest/maps/World";
-        var setLayersInfoService = new SuperMap.SetLayersInfoService(testUrl, options);
-        spyOn(FetchRequest, 'commit').and.callFake(function () {
+        var wrongLayerInfo = layerInfo;
+        var setLayersInfoService = new SuperMap.SetLayersInfoService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(url + "/tempLayersSet.json?");
+            var expectParams = "[{'bounds':{'bottom':-84.34257921576281,'left':-150.51082428252954,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571},'top':65.22103117946571},'caption':\"continent_T@World\",'completeLineSymbolDisplayed':false,'datasetInfo':{'bounds':{'bottom':-84.34257921576281,'left':-150.51082428252954,'leftBottom':{'x':-150.51082428252954,'y':-84.34257921576281},'right':154.27853258850513,'rightTop':{'x':154.27853258850513,'y':65.22103117946571},'top':65.22103117946571},'charset':null,'dataSourceName':\"World\",'description':null,'encodeType':null,'isFileCache':false,'isReadOnly':false,'name':\"continent_T\",'prjCoordSys':null,'recordCount':0,'tableName':null,'type':\"TEXT\"},'description':\"\",'displayFilter':null,'displayOrderBy':null,'fieldValuesDisplayFilter':{'fieldName':\"\",'fieldValuesDisplayMode':\"DISABLE\",'values':[]},'joinItems':null,'maxScale':1.350238165824801e-8,'minScale':3.3755954145620026e-9,'minVisibleGeometrySize':0.4,'name':\"continent_T@World.1\",'opaqueRate':100,'queryable':false,'representationField':\"\",'style':{'fillBackColor':{'alpha':255,'blue':255,'green':255,'red':255},'fillBackOpaque':true,'fillForeColor':{'alpha':255,'blue':240,'green':255,'red':208},'fillGradientAngle':0,'fillGradientMode':\"NONE\",'fillGradientOffsetRatioX':0,'fillGradientOffsetRatioY':0,'fillOpaqueRate':100,'fillSymbolID':0,'lineColor':{'alpha':255,'blue':0,'green':128,'red':0},'lineSymbolID':0,'lineWidth':0.1,'markerAngle':0,'markerHeight':0,'markerSize':2.4,'markerSymbolID':0,'markerWidth':0},'subLayers':{'layers':[]},'symbolScalable':false,'symbolScale':0,'type':\"UGC\",'ugcLayerType':\"VECTOR\",'visible':true,'object':null}]";
+            expect(params).toBe(expectParams);
+            expect(options).not.toBeNull();
             var escapedJson = "{\"succeed\":false,\"error\":{\"code\":500,\"errorMsg\":\"Index:0不在（0，-1）范围之内。\"}}";
             return Promise.resolve(new Response(escapedJson));
         });
         setLayersInfoService.events.on({"processFailed": setLayersFailed});
-        setLayersInfoService.processAsync(wrongLayer);
+        setLayersInfoService.processAsync(wrongLayerInfo);
         setTimeout(function () {
             expect(setLayersEventArgsSystem).toBeNull();
             expect(setLayersFailedEventArgsSystem).not.toBeNull();

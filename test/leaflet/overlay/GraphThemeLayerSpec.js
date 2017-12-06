@@ -175,20 +175,20 @@ describe('leaflet_GraphThemeLayer', function () {
     });
 
     // 此方法为iclient8的私有方法,不支持leaflet对象,此处测试传入iclient对象的情况
-    //it('isPointInPoly', function () {
-    //    var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
-    //    graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
-    //    graphThemeLayer.chartsSetting = {
-    //        width: 240,
-    //        height: 100,
-    //        codomain: [0, 40000]
-    //    };
-    //    var point = {"x": 2, "y": 5};
-    //    var polygon = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
-    //    var isPointInPoly = graphThemeLayer.isPointInPoly(point, polygon);
-    //    expect(isPointInPoly).toBeTruthy();
-    //    graphThemeLayer.clear();
-    //});
+    it('isPointInPoly', function () {
+        var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
+        graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+        graphThemeLayer.chartsSetting = {
+            width: 240,
+            height: 100,
+            codomain: [0, 40000]
+        };
+        var point = {"x": 2, "y": 5};
+        var polygon = [{"x": 1, "y": 1}, {"x": 3, "y": 1}, {"x": 6, "y": 4}, {"x": 2, "y": 10}, {"x": 1, "y": 1}];
+        var isPointInPoly = graphThemeLayer.isPointInPoly(point, polygon);
+        expect(isPointInPoly).toBeTruthy();
+        graphThemeLayer.clear();
+    });
 
     //overlayWeightField默认为空
     it('drawCharts_overlayWeightField = null', function () {

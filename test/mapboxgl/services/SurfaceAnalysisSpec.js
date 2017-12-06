@@ -1,19 +1,21 @@
 require('../../../src/mapboxgl/services/SpatialAnalystService');
 var mapboxgl = require('mapbox-gl');
+require('../../../src/common/util/FetchRequest');
 
-var url = GlobeParameter.spatialAnalystURL;
+var url = "http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
 var options = {
     serverType: 'iServer'
 };
 describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', function () {
-    var serviceResult;
+    var serviceResult = null;
     var originalTimeout;
+    var FetchRequest = SuperMap.FetchRequest;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        serviceResult = null;
     });
     afterEach(function () {
+        serviceResult = null;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
@@ -35,36 +37,38 @@ describe('mapboxgl_SpatialAnalystService_surfaceAnalysis', function () {
             resolution: 3000
         });
         var service = new mapboxgl.supermap.SpatialAnalystService(url, options);
+        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+            expect(method).toBe('POST');
+            expect(testUrl).toBe(url + "/datasets/SamplesP@Interpolation/isoline.json?returnContent=true");
+            var expectParams = "{'resolution':3000,'extractParameter':{'clipRegion':null,'datumValue':0,'expectedZValues':null,'interval':2,'resampleTolerance':0,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1000,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'zValueFieldName':\"AVG_TMP\",'filterQueryParameter':{'attributeFilter':null,'name':null,'joinItems':null,'linkItems':null,'ids':null,'orderBy':null,'groupBy':null,'fields':null}}";
+            expect(params).toBe(expectParams);
+            expect(options).not.toBeNull();
+            return Promise.resolve(new Response(surfaceAnalystEscapedJson));
+        });
         service.surfaceAnalysis(datasetSurfaceAnalystParameters, function (result) {
             serviceResult = result;
-            try {
-                expect(service).not.toBeNull();
-                expect(serviceResult).not.toBeNull();
-                expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toEqual(true);
-                expect(serviceResult.result.recordset.features.type).toEqual("FeatureCollection");
-                var features = serviceResult.result.recordset.features.features;
-                expect(features.length).toBeGreaterThan(0);
-                for (var i = 0; i < features.length; i++) {
-                    expect(features[i].id).not.toBeNull();
-                    expect(features[i].properties.ID).toEqual(features[i].id);
-                    expect(features[i].properties).not.toBeNull();
-                    expect(features[i].type).toEqual("Feature");
-                    expect(features[i].geometry.type).toEqual("LineString");
-                    expect(features[i].geometry.coordinates.length).toBeGreaterThan(2);
-                    for (var j = 0; j < features[i].geometry.coordinates.length; j++) {
-                        expect(features[i].geometry.coordinates[j].length).toEqual(2);
-                    }
-                }
-                expect(serviceResult.result.recordset.fieldCaptions.length).toEqual(11);
-                expect(serviceResult.result.recordset.fieldTypes.length).toEqual(serviceResult.result.recordset.fieldCaptions.length);
-                expect(serviceResult.result.recordset.fields.length).toEqual(serviceResult.result.recordset.fieldCaptions.length);
-                done();
-            } catch (e) {
-                console.log("'surfaceAnalysis'案例失败" + e.name + ":" + e.message);
-                expect(false).toBeTruthy();
-                done();
+            expect(service).not.toBeNull();
+            expect(serviceResult).not.toBeNull();
+            expect(serviceResult.type).toEqual("processCompleted");
+            expect(serviceResult.result.succeed).toEqual(true);
+            expect(serviceResult.result.recordset.features.type).toEqual("FeatureCollection");
+            var features = serviceResult.result.recordset.features.features;
+            expect(features.length).toEqual(1);
+            expect(features[0].id).toEqual(2);
+            expect(features[0].properties.ID).toEqual(2);
+            expect(features[0].properties.ID).toEqual(2);
+            expect(features[0].type).toEqual("Feature");
+            expect(features[0].geometry.type).toEqual("LineString");
+            expect(features[0].geometry.coordinates.length).toEqual(7);
+            for (var j = 0; j < features[0].geometry.coordinates.length; j++) {
+                expect(features[0].geometry.coordinates[j].length).toEqual(2);
             }
+            var recordset = serviceResult.result.recordset;
+            expect(recordset.fieldCaptions.length).toEqual(11);
+            expect(recordset.fieldTypes.length).toEqual(11);
+            expect(recordset.fields.length).toEqual(11);
+            datasetSurfaceAnalystParameters.destroy();
+            done();
         });
     });
 });

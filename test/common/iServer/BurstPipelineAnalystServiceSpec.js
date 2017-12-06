@@ -19,7 +19,6 @@ function analyzeFailed(serviceFailedEventArgs) {
 function analyzeCompleted(analyseEventArgs) {
     serviceCompletedEventArgsSystem = analyseEventArgs;
 }
-
 describe('BurstPipelineAnalystService', function () {
     var originalTimeout;
     var FetchRequest = SuperMap.FetchRequest;
@@ -42,6 +41,8 @@ describe('BurstPipelineAnalystService', function () {
         expect(burstPipelineAnalystParams.edgeID).toBeNull();
         expect(burstPipelineAnalystParams.nodeID).toBeNull();
         expect(burstPipelineAnalystParams.isUncertainDirectionValid).toBeFalsy();
+        burstPipelineAnalystService.destroy();
+        burstPipelineAnalystParams.destroy();
     });
 
     it('constructor, destroy', function () {
@@ -64,7 +65,7 @@ describe('BurstPipelineAnalystService', function () {
         expect(burstPipelineAnalystParams.isUncertainDirectionValid).toBeFalsy();
     });
 
-    //参数不存在, 直接返回
+    //参数不存在, 直接返回, 此处不应该直接返回,应该报错？待与开发协商
     it('processAsync_noParams', function (done) {
         var burstPipelineAnalystService = initBurstPipelineAnalystService();
         burstPipelineAnalystService.processAsync();
@@ -85,9 +86,16 @@ describe('BurstPipelineAnalystService', function () {
             nodeID: null,
             isUncertainDirectionValid: true
         });
-        spyOn(FetchRequest, 'commit').and.callFake(function () {
-            var burstPipelineEscapedJson = "{\"normalNodes\":[],\"edges\":[1,2,3,4,5,6,7,8,9],\"criticalNodes\":[2]}";
-            return Promise.resolve(new Response(burstPipelineEscapedJson));
+        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+            expect(method).toBe('GET');
+            expect(testUrl).toBe(url + "/burstAnalyse.json?");
+            expect(params.edgeID).toEqual(3434);
+            expect(params.isUncertainDirectionValid).toBe(true);
+            expect(params.sourceNodeIDs[0]).toEqual(1);
+            expect(params.sourceNodeIDs[1]).toEqual(2);
+            expect(options).not.toBeNull();
+            var escapedJson = "{\"normalNodes\":[],\"edges\":[1,2,3,4,5,6,7,8,9],\"criticalNodes\":[2]}";
+            return Promise.resolve(new Response(escapedJson));
         });
         burstPipelineAnalystService.processAsync(burstPipelineAnalystParams);
         setTimeout(function () {
