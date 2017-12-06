@@ -45,7 +45,10 @@ describe('TilesetsService', function () {
     //成功事件
     it('processAsync_success', function (done) {
         var tilesetsService = initTilesetsService_Register();
-        spyOn(FetchRequest, 'commit').and.callFake(function () {
+        spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
+            expect(method).toBe('GET');
+            expect(testUrl).toBe(tileSetsURL + "/tilesets.json?");
+            expect(options).not.toBeNull();
             return Promise.resolve(new Response(tilesetsEscapedJson));
         });
         tilesetsService.processAsync();
