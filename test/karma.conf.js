@@ -17,7 +17,7 @@ module.exports = function (config) {
             debug: true,
             transform: [
                 [require('babelify'), {
-                    presets: ["es2015"],
+                    presets: ["env"],
                     ignore: ["**/libs/**", "**/test/**"],
                     plugins: ['transform-class-properties','istanbul']
                 }],
