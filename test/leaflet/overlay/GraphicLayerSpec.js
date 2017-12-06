@@ -13,6 +13,15 @@ describe('leaflet_GraphicLayer', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
+
+        map = L.map('map', {
+            preferCanvas: true,
+            crs: L.CRS.EPSG4326,
+            center: {lon: 0, lat: 0},
+            maxZoom: 18,
+            zoom: 1
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
     });
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -22,19 +31,11 @@ describe('leaflet_GraphicLayer', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(function () {
-        map.remove();
         window.document.body.removeChild(testDiv);
+        map.remove();
     });
 
     it('initialize', function (done) {
-        map = L.map('map', {
-            preferCanvas: true,
-            crs: L.CRS.EPSG4326,
-            center: {lon: 0, lat: 0},
-            maxZoom: 18,
-            zoom: 1
-        });
-        L.supermap.tiledMapLayer(url).addTo(map);
         var colorCount = 5, count = 5;
         var graphics = [];
         var e = 45;
@@ -65,6 +66,7 @@ describe('leaflet_GraphicLayer', function () {
             }
             var isContainsPoint = graphicLayer._containsPoint();
             expect(isContainsPoint).not.toBe("false");
+            map.removeLayer(graphicLayer);
             done();
         }, 1000)
     });
