@@ -31,9 +31,7 @@ describe('leaflet_GraphicLayer', function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
     afterAll(function () {
-        //canvas渲染时由于Path 相关的子类 -> map.remove()会有重绘操作，从而引起刷新延迟会报错，故弃之
-        map.off();
-        map = null;
+        map.remove();
         window.document.body.removeChild(testDiv);
     });
 
@@ -69,8 +67,14 @@ describe('leaflet_GraphicLayer', function () {
             }
             var isContainsPoint = graphicLayer._containsPoint();
             expect(isContainsPoint).not.toBe("false");
+            //map.remove()时，canvas渲染的场景下render会先移除canvas的ctx，而path的移除会有重绘操作。
+            //从而引起刷新延迟会报错，故在此移除重绘
+            graphicLayer.on('remove', function () {
+                var requestAnimId = map.getRenderer(graphicLayer)._redrawRequest;
+                (requestAnimId != null) && L.Util.cancelAnimFrame(requestAnimId);
+                done();
+            });
             graphicLayer.remove();
-            done();
         }, 1000)
     });
 });
