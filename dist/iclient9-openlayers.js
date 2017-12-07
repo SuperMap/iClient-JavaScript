@@ -54978,8 +54978,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// import "../../../common/overlay/levelRenderer/Render";
-
 /**
  * @class ol.source.Theme
  * @classdesc 专题图基类。
@@ -55514,7 +55512,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
             if (feature instanceof _ThemeFeature.ThemeFeature) {
                 return feature.toFeature();
             }
-            if (feature instanceof _iclientCommon.Vector) {
+            if (feature instanceof _iclientCommon.GeometryVector) {
                 return feature;
             }
             return new _iclientCommon.ServerFeature.fromJson(feature).toFeature();

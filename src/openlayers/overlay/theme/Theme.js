@@ -3,15 +3,13 @@ import {Util} from '../../core/Util';
 import {
     CommonUtil,
     ServerFeature,
-    Vector,
+    GeometryVector as Vector,
     LonLat,
     GeometryPoint,
     GeoText,
     LevelRenderer
 } from '@supermap/iclient-common';
 import {ThemeFeature} from './ThemeFeature';
-
-// import "../../../common/overlay/levelRenderer/Render";
 
 /**
  * @class ol.source.Theme
@@ -495,7 +493,6 @@ export class Theme extends ol.source.ImageCanvas {
         }
         if (feature instanceof Vector) {
             return feature;
-
         }
         return new ServerFeature.fromJson(feature).toFeature();
     }
