@@ -419,7 +419,7 @@ export class Render {
                     el.__aniCount--;
                     if (el.__aniCount === 0) {
                         // 从animatingElements里移除
-                        var idx = Util.indexOf(animatingElements, el);
+                        var idx = new Util().indexOf(animatingElements, el);
                         animatingElements.splice(idx, 1);
                     }
                 });

@@ -379,7 +379,7 @@ export class Painter {
             this._layers[zlevel] = currentLayer;
 
             if (this._layerConfig[zlevel]) {
-                Util.merge(currentLayer, this._layerConfig[zlevel], true);
+                new Util().merge(currentLayer, this._layerConfig[zlevel], true);
             }
 
             currentLayer.updateTransform();
@@ -506,13 +506,13 @@ export class Painter {
             if (!this._layerConfig[zlevel]) {
                 this._layerConfig[zlevel] = config;
             } else {
-                Util.merge(this._layerConfig[zlevel], config, true);
+                new Util().merge(this._layerConfig[zlevel], config, true);
             }
 
             var layer = this._layers[zlevel];
 
             if (layer) {
-                Util.merge(layer, this._layerConfig[zlevel], true);
+                new Util().merge(layer, this._layerConfig[zlevel], true);
             }
         }
     }
@@ -540,7 +540,7 @@ export class Painter {
         layer.dom.parentNode.removeChild(layer.dom);
         delete this._layers[zlevel];
 
-        this._zlevelList.splice(Util.indexOf(this._zlevelList, zlevel), 1);
+        this._zlevelList.splice(new Util().indexOf(this._zlevelList, zlevel), 1);
     }
 
 
@@ -1223,5 +1223,5 @@ export class PaintLayer extends Transformable {
         }
     }
 
-    CLASS_NAME = "Painter.Layer"
+    CLASS_NAME = "SuperMap.LevelRenderer.Painter.Layer"
 }

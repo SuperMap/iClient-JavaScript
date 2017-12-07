@@ -108,7 +108,8 @@ export class Storage {
 
         // 遍历: 'down' | 'up'
         switch (option.normal) {
-            case 'down': {
+            case 'down':
+            {
                 // 降序遍历，高层优先
                 let l = this._shapeList.length;
                 while (l--) {
@@ -119,7 +120,8 @@ export class Storage {
                 break;
             }
             // case 'up':
-            default: {
+            default:
+            {
                 // 升序遍历，底层优先
                 for (let i = 0, l = this._shapeList.length; i < l; i++) {
                     if (fun(this._shapeList[i])) {
@@ -290,9 +292,9 @@ export class Storage {
                             target[name] = params[name];
                         }
                     }
-                    Util.merge(el, target, true);
+                    new Util().merge(el, target, true);
                 } else {
-                    Util.merge(el, params, true);
+                    new Util().merge(el, params, true);
                 }
             }
         }
@@ -429,7 +431,7 @@ export class Storage {
             el = elId;
         }
 
-        var idx = Util.indexOf(this._roots, el);
+        var idx = new Util().indexOf(this._roots, el);
         if (idx >= 0) {
             this.delFromMap(el.id);
             this._roots.splice(idx, 1);

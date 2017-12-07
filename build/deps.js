@@ -399,12 +399,22 @@ deps = {
             "GraphicLayer": {
                 "name": "高效率点图层",
                 "src": [
-                    "./src/leaflet/overlay/GraphicLayer.js"
+                    "./src/leaflet/overlay/GraphicLayer.js",
+                    "./src/leaflet/overlay/graphic/CircleStyle.js",
+                    "./src/leaflet/overlay/graphic/Graphic.js"
                 ],
                 "modules": [{
                     "name": "L.supermap.graphicLayer",
                     "des": "高效率点图层",
                     "des_en": "high efficiency point layer"
+                }, {
+                    "name": "L.supermap.circleStyle",
+                    "des": "圆形要素风格",
+                    "des_en": "circle style"
+                }, {
+                    "name": "L.supermap.graphic",
+                    "des": "高效率点",
+                    "des_en": "graphic"
                 }]
             },
 

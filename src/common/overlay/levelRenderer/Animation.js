@@ -116,7 +116,7 @@ export class Animation extends Eventful {
      *
      */
     remove(clip) {
-        var idx = Util.indexOf(this._clips, clip);
+        var idx = new Util().indexOf(this._clips, clip);
         if (idx >= 0) {
             this._clips.splice(idx, 1);
         }

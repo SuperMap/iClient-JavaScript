@@ -150,7 +150,7 @@ export class Util {
      * Returns:
      * {Object} 目标对象。
      */
-    static merge(target, source, overwrite) {
+    merge(target, source, overwrite) {
         for (var i in source) {
             this.mergeItem(target, source, i, overwrite);
         }
@@ -269,7 +269,7 @@ export class Util {
      * Returns:
      * {Object}偏移量。
      */
-    static indexOf(array, value) {
+    indexOf(array, value) {
         if (array.indexOf) {
             return array.indexOf(value);
         }

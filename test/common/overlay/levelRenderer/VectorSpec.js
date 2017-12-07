@@ -1,8 +1,8 @@
-require('../../../../src/common/overlay/levelRenderer/Vector');
+var Vector = require('../../../../src/common/overlay/levelRenderer/Vector').Vector;
 
 describe('Vector', function () {
     it('constructor, create, copy', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'copy').and.callThrough();
         var outVector = vector.create(10, 10);
@@ -22,7 +22,7 @@ describe('Vector', function () {
     });
 
     it('set', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'set').and.callThrough();
         var outVector = vector.create();
@@ -35,7 +35,7 @@ describe('Vector', function () {
     });
 
     it('add', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'add').and.callThrough();
         var vector0 = vector.create();
@@ -49,7 +49,7 @@ describe('Vector', function () {
     });
 
     it('scaleAndAdd', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'scaleAndAdd').and.callThrough();
         var vector0 = vector.create();
@@ -63,7 +63,7 @@ describe('Vector', function () {
     });
 
     it('sub', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'sub').and.callThrough();
         var vector0 = vector.create();
@@ -77,7 +77,7 @@ describe('Vector', function () {
     });
 
     it('len, lenSquare, length, lengthSquare', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'len').and.callThrough();
         spyOn(vector, 'lenSquare').and.callThrough();
@@ -100,7 +100,7 @@ describe('Vector', function () {
     });
 
     it('mul, div', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'mul').and.callThrough();
         spyOn(vector, 'div').and.callThrough();
@@ -119,7 +119,7 @@ describe('Vector', function () {
     });
 
     it('dot', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'dot').and.callThrough();
         var vector1 = vector.create(10, 10);
@@ -131,7 +131,7 @@ describe('Vector', function () {
     });
 
     it('scale', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'scale').and.callThrough();
         var vector0 = vector.create();
@@ -144,7 +144,7 @@ describe('Vector', function () {
     });
 
     it('normalize', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'normalize').and.callThrough();
         var vector0 = vector.create();
@@ -162,7 +162,7 @@ describe('Vector', function () {
     });
 
     it('distance, distanceSquare, dist, distSquare', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'distance').and.callThrough();
         spyOn(vector, 'distanceSquare').and.callThrough();
@@ -186,7 +186,7 @@ describe('Vector', function () {
     });
 
     it('negate', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'negate').and.callThrough();
         var vector0 = vector.create();
@@ -199,7 +199,7 @@ describe('Vector', function () {
     });
 
     it('lerp', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'lerp').and.callThrough();
         var vector0 = vector.create();
@@ -213,10 +213,10 @@ describe('Vector', function () {
     });
 
     it('applyTransform', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'applyTransform').and.callThrough();
-        var m = [1,2,3,4,5,6];
+        var m = [1, 2, 3, 4, 5, 6];
         var vector0 = vector.create();
         var vector1 = vector.create(10, 10);
         vector.applyTransform(vector0, vector1, m);
@@ -227,7 +227,7 @@ describe('Vector', function () {
     });
 
     it('min, max', function () {
-        var vector = new SuperMap.LevelRenderer.Tool.Vector();
+        var vector = new Vector();
         spyOn(vector, 'create').and.callThrough();
         spyOn(vector, 'min').and.callThrough();
         spyOn(vector, 'max').and.callThrough();

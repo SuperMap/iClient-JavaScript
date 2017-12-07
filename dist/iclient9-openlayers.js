@@ -11102,8 +11102,14 @@ var Util = exports.Util = function () {
          */
 
     }, {
-        key: 'getContext',
+        key: 'merge',
+        value: function merge(target, source, overwrite) {
+            for (var i in source) {
+                this.mergeItem(target, source, i, overwrite);
+            }
 
+            return target;
+        }
 
         /**
          * Method: getContext
@@ -11112,6 +11118,9 @@ var Util = exports.Util = function () {
          * Returns:
          * {Object} Cavans 上下文。
          */
+
+    }, {
+        key: 'getContext',
         value: function getContext() {
             if (!this._ctx) {
                 this._ctx = document.createElement('canvas').getContext('2d');
@@ -11222,8 +11231,18 @@ var Util = exports.Util = function () {
          */
 
     }, {
-        key: 'inherits',
-
+        key: 'indexOf',
+        value: function indexOf(array, value) {
+            if (array.indexOf) {
+                return array.indexOf(value);
+            }
+            for (var i = 0, len = array.length; i < len; i++) {
+                if (array[i] === value) {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
         /**
          * APIMethod: inherits
@@ -11236,6 +11255,9 @@ var Util = exports.Util = function () {
          * Returns:
          * {Object}偏移量。
          */
+
+    }, {
+        key: 'inherits',
         value: function inherits(clazz, baseClazz) {
             var clazzPrototype = clazz.prototype;
 
@@ -11248,28 +11270,6 @@ var Util = exports.Util = function () {
                 clazz.prototype[prop] = clazzPrototype[prop];
             }
             clazz.constructor = clazz;
-        }
-    }], [{
-        key: 'merge',
-        value: function merge(target, source, overwrite) {
-            for (var i in source) {
-                this.mergeItem(target, source, i, overwrite);
-            }
-
-            return target;
-        }
-    }, {
-        key: 'indexOf',
-        value: function indexOf(array, value) {
-            if (array.indexOf) {
-                return array.indexOf(value);
-            }
-            for (var i = 0, len = array.length; i < len; i++) {
-                if (array[i] === value) {
-                    return i;
-                }
-            }
-            return -1;
         }
     }]);
 
@@ -23021,7 +23021,7 @@ var Animation = exports.Animation = function (_Eventful) {
     }, {
         key: 'remove',
         value: function remove(clip) {
-            var idx = _Util.Util.indexOf(this._clips, clip);
+            var idx = new _Util.Util().indexOf(this._clips, clip);
             if (idx >= 0) {
                 this._clips.splice(idx, 1);
             }
@@ -51589,7 +51589,7 @@ var Painter = exports.Painter = function () {
                 this._layers[zlevel] = currentLayer;
 
                 if (this._layerConfig[zlevel]) {
-                    _Util2.Util.merge(currentLayer, this._layerConfig[zlevel], true);
+                    new _Util2.Util().merge(currentLayer, this._layerConfig[zlevel], true);
                 }
 
                 currentLayer.updateTransform();
@@ -51726,13 +51726,13 @@ var Painter = exports.Painter = function () {
                 if (!this._layerConfig[zlevel]) {
                     this._layerConfig[zlevel] = config;
                 } else {
-                    _Util2.Util.merge(this._layerConfig[zlevel], config, true);
+                    new _Util2.Util().merge(this._layerConfig[zlevel], config, true);
                 }
 
                 var layer = this._layers[zlevel];
 
                 if (layer) {
-                    _Util2.Util.merge(layer, this._layerConfig[zlevel], true);
+                    new _Util2.Util().merge(layer, this._layerConfig[zlevel], true);
                 }
             }
         }
@@ -51762,7 +51762,7 @@ var Painter = exports.Painter = function () {
             layer.dom.parentNode.removeChild(layer.dom);
             delete this._layers[zlevel];
 
-            this._zlevelList.splice(_Util2.Util.indexOf(this._zlevelList, zlevel), 1);
+            this._zlevelList.splice(new _Util2.Util().indexOf(this._zlevelList, zlevel), 1);
         }
 
         /**
@@ -52260,7 +52260,7 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
         _this.maxZoom = Infinity;
         _this.minZoom = 0;
         _this.ctx = null;
-        _this.CLASS_NAME = "Painter.Layer";
+        _this.CLASS_NAME = "SuperMap.LevelRenderer.Painter.Layer";
 
         _this.dom = Painter.createDom(_Util.Util.createUniqueID("SuperMap.Theme" + id), 'canvas', painter);
         _this.dom.onselectstart = returnFalse; // 避免页面选中的尴尬
@@ -52986,7 +52986,7 @@ var Render = exports.Render = function () {
                     el.__aniCount--;
                     if (el.__aniCount === 0) {
                         // 从animatingElements里移除
-                        var idx = _Util.Util.indexOf(animatingElements, el);
+                        var idx = new _Util.Util().indexOf(animatingElements, el);
                         animatingElements.splice(idx, 1);
                     }
                 });
@@ -54036,9 +54036,9 @@ var Storage = exports.Storage = function () {
                                 target[name] = params[name];
                             }
                         }
-                        _Util.Util.merge(el, target, true);
+                        new _Util.Util().merge(el, target, true);
                     } else {
-                        _Util.Util.merge(el, params, true);
+                        new _Util.Util().merge(el, params, true);
                     }
                 }
             }
@@ -54192,7 +54192,7 @@ var Storage = exports.Storage = function () {
                 el = elId;
             }
 
-            var idx = _Util.Util.indexOf(this._roots, el);
+            var idx = new _Util.Util().indexOf(this._roots, el);
             if (idx >= 0) {
                 this.delFromMap(el.id);
                 this._roots.splice(idx, 1);

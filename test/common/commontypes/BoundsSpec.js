@@ -42,17 +42,6 @@ describe('Bounds', function () {
         bounds.destroy();
     });
 
-    //基于当前边界范围创建一个新的多边形对象
-    it('toGeometry', function () {
-        var bounds = new SuperMap.Bounds(-180, -90, 100, 80);
-        var geo = bounds.toGeometry();
-        expect(geo).not.toBeNull();
-        expect(geo.CLASS_NAME).toEqual("SuperMap.Geometry.Polygon");
-        expect(geo.id).toContain("SuperMap.Geometry");
-        expect(geo.componentTypes[0]).toEqual("SuperMap.Geometry.LinearRing");
-        bounds.destroy();
-    });
-
     it('getSize, getCenterPixel', function () {
         var bounds = new SuperMap.Bounds(-180, -90, 100, 80);
         var size = bounds.getSize();
