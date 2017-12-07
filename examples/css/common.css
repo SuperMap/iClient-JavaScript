@@ -1,9 +1,5 @@
 @charset "UTF-8";
 /*重写AdmineLTE 的部分效果 start*/
-* {
-    font-family: "Helvetica Neue", Helvetica, Arial,  "Heiti SC","Microsoft Yahei", sans-serif;
-}
-
 body {
     font-family: "Helvetica Neue", Helvetica, Arial,  "Heiti SC","Microsoft Yahei", sans-serif;
 }
