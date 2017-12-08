@@ -64,7 +64,6 @@ export var MapVLayer = L.Layer.extend({
      * @private
      * @function L.supermap.mapVLayer.prototype.onRemove
      * @description 删除地图图层
-     * @param map - {L.map} 要删除的图层
      */
     onRemove: function () {
         L.DomUtil.remove(this.container);

@@ -347,7 +347,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
      * @function L.supermap.GraphThemeLayer.prototype.getWeightFieldValue
      * @description 获取权重字段的值。
      * @param feature - {SuperMap.Feature.Vector} 矢量要素。
-     * @param fields - {Array<string>} 字段名数组。
+     * @param weightField - {Array<string>} 字段名数组。
      * @param defaultValue - {number}当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
      */
     getWeightFieldValue: function (feature, weightField, defaultValue) {

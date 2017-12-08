@@ -3,6 +3,7 @@ import {MapvCanvasLayer} from './MapvCanvasLayer';
 import {baiduMapLayer, DataSet} from "mapv";
 
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
+
 /**
  * @class MapvLayer
  * @classdesc MapV图层类。
@@ -53,6 +54,8 @@ export class MapvLayer extends BaiduMapLayer {
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
         map.on('movestart', this.moveStartEvent.bind(this));
         map.on('moveend', this.moveEndEvent.bind(this));
+        map.getView().on('change:center', this.zoomEvent.bind(this));
+        map.on('pointerdrag', this.dragEvent.bind(this));
         this.bindEvent();
     }
 
@@ -90,6 +93,22 @@ export class MapvLayer extends BaiduMapLayer {
     mousemoveEvent(e) {
         var pixel = e.pixel;
         super.mousemoveEvent({x: pixel[0], y: pixel[1]}, e);
+    }
+
+    /**
+     * @function MapvLayer.prototype.dragEvent
+     * @description 鼠标拖动事件
+     */
+    dragEvent() {
+        this.clear(this.getContext());
+    }
+
+    /**
+     * @function MapvLayer.prototype.zoomEvent
+     * @description 缩放事件
+     */
+    zoomEvent() {
+        this.clear(this.getContext());
     }
 
     /**
@@ -231,7 +250,7 @@ export class MapvLayer extends BaiduMapLayer {
         var context = self.canvasLayer.canvas.getContext(self.context);
         if (self.isEnabledTime()) {
             if (time === undefined) {
-                this.clear(context);
+                self.clear(context);
                 return;
             }
             if (self.context == '2d') {
@@ -251,6 +270,9 @@ export class MapvLayer extends BaiduMapLayer {
         } else {
             context.clear(context.COLOR_BUFFER_BIT);
         }
+        var ext = map.getView().calculateExtent();
+        var topLeft = map.getPixelFromCoordinate([ext[0], ext[3]]);
+
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
                 var pixelP = map.getPixelFromCoordinate(coordinate);
@@ -258,7 +280,7 @@ export class MapvLayer extends BaiduMapLayer {
                 var center = map.getPixelFromCoordinate(map.getView().getCenter());
                 var scaledP = scale(pixelP, center, self.pixelRatio);
                 var rotatedP = rotate(scaledP, rotation, center);
-                var result = [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
+                var result = [rotatedP[0] + self.offset[0] - topLeft[0], rotatedP[1] + self.offset[1] - topLeft[1]];
                 return result;
             }
         };
@@ -280,11 +302,7 @@ export class MapvLayer extends BaiduMapLayer {
         if (time !== undefined) {
             dataGetOptions.filter = function (item) {
                 var trails = animationOptions.trails || 10;
-                if (time && item.time > time - trails && item.time < time) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return (time && item.time > (time - trails) && item.time < time);
             };
         }
         if (self.isEnabledTime() && !self.notFirst) {
@@ -295,6 +313,7 @@ export class MapvLayer extends BaiduMapLayer {
         self.processData(data);
         self.options._size = self.options.size;
         var pixel = map.getPixelFromCoordinate([0, 0]);
+        pixel = [pixel[0] - topLeft[0], pixel[1] - topLeft[1]];
         this.drawContext(context, new DataSet(data), self.options, {x: pixel[0], y: pixel[1]});
         if (self.isEnabledTime()) {
             this.source.changed();
@@ -316,7 +335,6 @@ export class MapvLayer extends BaiduMapLayer {
             }
         }
     }
-
 
     getContext() {
         return this.canvasLayer.canvas.getContext(this.context);
