@@ -100,6 +100,10 @@ export var GraphThemeLayer = ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
+        if (bounds && bounds instanceof L.LatLngBounds) {
+            var crs = this._map.options.crs;
+            bounds = L.bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
+        }
         bounds = CommontypesConversion.toSuperMapBounds(bounds);
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
@@ -407,12 +411,9 @@ export var GraphThemeLayer = ThemeLayer.extend({
         var me = this;
         // 压盖判断所需 chartsBounds 集合
         var mapBounds = me._map.getBounds();
-        mapBounds = new Bounds(
-            mapBounds.getWest(),
-            mapBounds.getSouth(),
-            mapBounds.getEast(),
-            mapBounds.getNorth()
-        );
+        var crs = this._map.options.crs;
+        mapBounds = L.bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
+        mapBounds = CommontypesConversion.toSuperMapBounds(mapBounds);
         var charts = me.charts;
         var chartsBounds = [];
         // 获取地图像素 bounds
