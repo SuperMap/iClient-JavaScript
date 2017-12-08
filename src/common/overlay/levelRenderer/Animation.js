@@ -83,7 +83,7 @@ export class Animation extends Eventful {
         this.stage = options.stage || {};
 
         this.onframe = options.onframe || function () {
-        };
+            };
 
         // private properties
         this._clips = [];
@@ -241,7 +241,7 @@ export class Animation extends Eventful {
      */
     animate(target, options) {
         options = options || {};
-        var deferred = new Animation.Animator(
+        var deferred = new Animator(
             target,
             options.loop,
             options.getter,

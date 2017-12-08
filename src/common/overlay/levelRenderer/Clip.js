@@ -1,4 +1,4 @@
-import {Animation} from './Animation';
+import {Easing as AEasing} from './Easing';
 
 /**
  * @private
@@ -81,7 +81,7 @@ export class Clip {
     }
 
     step(time) {
-        var Easing = new Animation.easing();
+        var easing = new AEasing();
         var percent = (time - this._startTime) / this._life;
 
         // 还没开始
@@ -92,7 +92,7 @@ export class Clip {
         percent = Math.min(percent, 1);
 
         var easingFunc = typeof this.easing == 'string'
-            ? Easing[this.easing]
+            ? easing[this.easing]
             : this.easing;
         var schedule = typeof easingFunc === 'function'
             ? easingFunc(percent)
