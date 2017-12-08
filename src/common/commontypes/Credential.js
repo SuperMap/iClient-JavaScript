@@ -13,36 +13,22 @@
  * pixcel.destroy();
  */
 export class Credential {
-    /**
-     * @member SuperMap.Bounds.prototype.value -{string}
-     * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
-     */
-    value = "";
 
-    /**
-     * @member SuperMap.Bounds.prototype.name -{string}
-     * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
-     */
-    name = "token";
-    /**
-     * @member SuperMap.Credential.CREDENTIAL -{SuperMap.Credential}
-     * @description 这个对象保存一个安全类的实例，在服务端需要安全验证的时候必须进行设置。
-     * @constant
-     * @example
-     * 代码实例:
-     *  // 当iServer启用服务安全的时候，下边的代码是必须的。安全证书类能够接收一个value和一个name参数。
-     *  var value = "(以iServer为例，这里是申请的token值)";
-     *  var name = "token";
-     *  // 默认name参数为token，所以当使用iServer服务的时候可以不进行设置。
-     *  SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(value, name);
-     *
-     */
-
-    static CREDENTIAL = null;
 
     constructor(value, name) {
-        this.value = value ? value : this.value;
-        this.name = name ? name : this.name;
+
+        /**
+         * @member SuperMap.Bounds.prototype.value -{string}
+         * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
+         */
+        this.value = value ? value : "";
+
+        /**
+         * @member SuperMap.Bounds.prototype.name -{string}
+         * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
+         */
+        this.name = name ? name : "token";
+        this.CLASS_NAME = "SuperMap.Credential";
     }
 
     /**
@@ -85,7 +71,21 @@ export class Credential {
         this.name = null;
     }
 
-
-    CLASS_NAME = "SuperMap.Credential"
 }
+
+/**
+ * @member SuperMap.Credential.CREDENTIAL -{SuperMap.Credential}
+ * @description 这个对象保存一个安全类的实例，在服务端需要安全验证的时候必须进行设置。
+ * @constant
+ * @example
+ * 代码实例:
+ *  // 当iServer启用服务安全的时候，下边的代码是必须的。安全证书类能够接收一个value和一个name参数。
+ *  var value = "(以iServer为例，这里是申请的token值)";
+ *  var name = "token";
+ *  // 默认name参数为token，所以当使用iServer服务的时候可以不进行设置。
+ *  SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(value, name);
+ *
+ */
+
+Credential.CREDENTIAL = null;
 SuperMap.Credential = Credential;

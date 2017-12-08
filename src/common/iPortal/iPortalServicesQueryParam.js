@@ -9,24 +9,24 @@ import {Util} from '../commontypes/Util';
  */
 export class IPortalServicesQueryParam {
 
-    tags = [];
-    userNames = '';
-    types = [];
-    checkStatus = '';
-    offline = false;
-    orderBy = '';
-    orderType = '';
-    keywords = [];
-    currentPage = 0;
-    pageSize = 0;
-    isBatch = false;
-    dirIds = [];
-    isNotInDir = false;
-    filterFields = [];
-    authorizedOnly = false;
 
     constructor(params) {
         params = params || {};
+        this.tags = [];
+        this.userNames = '';
+        this.types = [];
+        this.checkStatus = '';
+        this.offline = false;
+        this.orderBy = '';
+        this.orderType = '';
+        this.keywords = [];
+        this.currentPage = 0;
+        this.pageSize = 0;
+        this.isBatch = false;
+        this.dirIds = [];
+        this.isNotInDir = false;
+        this.filterFields = [];
+        this.authorizedOnly = false;
         Util.extend(this, params);
     }
 

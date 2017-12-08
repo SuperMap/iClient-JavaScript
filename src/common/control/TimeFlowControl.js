@@ -19,15 +19,15 @@ import {TimeControlBase} from './TimeControlBase';
  */
 export class TimeFlowControl extends TimeControlBase {
 
-    /**
-     * @member SuperMap.TimeFlowControl.prototype.callback -{function}
-     * @description 每次刷新执行的回调函数
-     */
-    callback = null;
 
     constructor(callback, options) {
         super(options);
         var me = this;
+        /**
+         * @member SuperMap.TimeFlowControl.prototype.callback -{function}
+         * @description 每次刷新执行的回调函数
+         */
+        me.callback = callback;
 
         //先让IE下支持bind方法
         if (!Function.prototype.bind) {
@@ -55,8 +55,8 @@ export class TimeFlowControl extends TimeControlBase {
         me.update = me.update.bind(me);
 
         me.oldTime = me.currentTime;
-        //记录回调函数
-        me.callback = callback;
+
+        me.CLASS_NAME = "SuperMap.TimeFlowControl";
     }
 
 
@@ -194,7 +194,7 @@ export class TimeFlowControl extends TimeControlBase {
 
     }
 
-    CLASS_NAME = "SuperMap.TimeFlowControl"
+
 }
 
 SuperMap.TimeFlowControl = TimeFlowControl;

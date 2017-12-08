@@ -14,6 +14,7 @@ export class AddressMatchService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.AddressMatchService";
     }
 
     /**
@@ -87,7 +88,6 @@ export class AddressMatchService extends CommonServiceBase {
     serviceProcessFailed(result) {
         super.serviceProcessFailed(result);
     }
-
-    CLASS_NAME = "SuperMap.AddressMatchService";
 }
+
 SuperMap.AddressMatchService = AddressMatchService;

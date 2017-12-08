@@ -12,38 +12,38 @@ import {Util} from '../commontypes/Util';
  */
 export class BurstPipelineAnalystParameters {
 
-    /**
-     * @member SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs -{Array<number>}
-     * @description 指定的设施点ID数组,可以为空。
-     */
-    sourceNodeIDs = null;
-
-    /**
-     * @member SuperMap.BurstPipelineAnalystParameters.prototype.edgeID -{number}
-     * @description 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
-     */
-    edgeID = null;
-
-    /**
-     * @member SuperMap.BurstPipelineAnalystParameters.prototype.nodeID -{number}
-     * @description 指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。
-     */
-    nodeID = null;
-
-    /**
-     * @member SuperMap.BurstPipelineAnalystParameters.prototype.isUncertainDirectionValid -{boolean}
-     * @description 指定不确定流向是否有效，默认为false。
-     * 指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行。
-     * 指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
-     */
-    isUncertainDirectionValid = false;
 
     constructor(options) {
         var me = this;
-        if (!options) {
-            return;
-        }
+        /**
+         * @member SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs -{Array<number>}
+         * @description 指定的设施点ID数组,可以为空。
+         */
+        this.sourceNodeIDs = null;
+
+        /**
+         * @member SuperMap.BurstPipelineAnalystParameters.prototype.edgeID -{number}
+         * @description 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
+         */
+        this.edgeID = null;
+
+        /**
+         * @member SuperMap.BurstPipelineAnalystParameters.prototype.nodeID -{number}
+         * @description 指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。
+         */
+        this.nodeID = null;
+
+        /**
+         * @member SuperMap.BurstPipelineAnalystParameters.prototype.isUncertainDirectionValid -{boolean}
+         * @description 指定不确定流向是否有效，默认为false。
+         * 指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行。
+         * 指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
+         */
+        this.isUncertainDirectionValid = false;
+
         Util.extend(me, options);
+
+        this.CLASS_NAME = "SuperMap.BurstPipelineAnalystParameters";
     }
 
     /**
@@ -58,7 +58,7 @@ export class BurstPipelineAnalystParameters {
         me.isUncertainDirectionValid = null;
     }
 
-    CLASS_NAME = "SuperMap.BurstPipelineAnalystParameters"
+
 }
 
 SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters;

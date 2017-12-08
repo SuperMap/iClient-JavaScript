@@ -21,30 +21,30 @@ import {ServerGeometry} from './ServerGeometry';
  */
 export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 
-    /**
-     * @member SuperMap.GeometryOverlayAnalystParameters.prototype.operateGeometry -{Object}
-     * @description 叠加分析的操作几何对象。必设字段。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
-     */
-    operateGeometry = null;
-
-    /**
-     * @member SuperMap.GeometryOverlayAnalystParameters.prototype.sourceGeometry -{Object}
-     * @description 叠加分析的源几何对象。必设字段。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。
-     */
-    sourceGeometry = null;
-
 
     constructor(options) {
         super(options);
+        /**
+         * @member SuperMap.GeometryOverlayAnalystParameters.prototype.operateGeometry -{Object}
+         * @description 叠加分析的操作几何对象。必设字段。</br>
+         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+         */
+        this.operateGeometry = null;
+
+        /**
+         * @member SuperMap.GeometryOverlayAnalystParameters.prototype.sourceGeometry -{Object}
+         * @description 叠加分析的源几何对象。必设字段。</br>
+         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。
+         */
+        this.sourceGeometry = null;
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.GeometryOverlayAnalystParameters";
     }
 
     /**
@@ -83,8 +83,6 @@ export class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
             }
         }
     }
-
-    CLASS_NAME = "SuperMap.GeometryOverlayAnalystParameters"
 }
 
 SuperMap.GeometryOverlayAnalystParameters = GeometryOverlayAnalystParameters;

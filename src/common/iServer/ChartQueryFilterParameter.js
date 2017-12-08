@@ -13,41 +13,41 @@ import {Util} from '../commontypes/Util';
  */
 export class ChartQueryFilterParameter {
 
-    /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint -{boolean}
-     * @description 是否查询点。
-     */
-    isQueryPoint = null;
-
-    /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryLine -{boolean}
-     * @description 是否查询线。
-     */
-    isQueryLine = null;
-
-    /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion -{boolean}
-     * @description 是否查询面。
-     */
-    isQueryRegion = null;
-
-    /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.attributeFilter -{string}
-     * @description 属性字段过滤条件。
-     */
-    attributeFilter = null;
-
-    /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode -{number}
-     * @description 查询的物标代号。
-     */
-    chartFeatureInfoSpecCode = null;
 
     constructor(options) {
-        if (!options) {
-            return;
-        }
+        /**
+         * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint -{boolean}
+         * @description 是否查询点。
+         */
+        this.isQueryPoint = null;
+
+        /**
+         * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryLine -{boolean}
+         * @description 是否查询线。
+         */
+        this.isQueryLine = null;
+
+        /**
+         * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion -{boolean}
+         * @description 是否查询面。
+         */
+        this.isQueryRegion = null;
+
+        /**
+         * @member SuperMap.ChartQueryFilterParameter.prototype.attributeFilter -{string}
+         * @description 属性字段过滤条件。
+         */
+        this.attributeFilter = null;
+
+        /**
+         * @member SuperMap.ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode -{number}
+         * @description 查询的物标代号。
+         */
+        this.chartFeatureInfoSpecCode = null;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.ChartQueryFilterParameter";
     }
 
     /**
@@ -80,7 +80,7 @@ export class ChartQueryFilterParameter {
         return json;
     }
 
-    CLASS_NAME = "SuperMap.ChartQueryFilterParameter"
+
 }
 
 SuperMap.ChartQueryFilterParameter = ChartQueryFilterParameter;

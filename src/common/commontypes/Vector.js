@@ -33,61 +33,61 @@ SuperMap.State = {
  */
 export class Vector extends Feature {
 
-    /**
-     * @member SuperMap.Feature.Vector.prototype.fid -{string}
-     * @description fid
-     */
-    fid = null;
-
-    /**
-     * @member SuperMap.Feature.Vector.prototype.geometry -{SuperMap.Geometry}
-     * @description 该属性用于存放几何信息。
-     */
-    geometry = null;
-
-    /**
-     * @member SuperMap.Feature.Vector.prototype.attributes -{Object}
-     * @description 描述要素的任意的可序列化属性。
-     */
-    attributes = null;
-
-    /**
-     * @member SuperMap.Feature.Vector.prototype.bounds -{SuperMap.Bounds}
-     * @description The box bounding that feature's geometry, that
-     *     property can be set by an <SuperMap.Format> object when
-     *     deserializing the feature, so in most cases it represents an
-     *     information set by the server.
-     */
-    bounds = null;
-
-    /**
-     * @member SuperMap.Feature.Vector.prototype.state -{string}
-     * @description state
-     */
-    state = null;
-
-    /**
-     * @member SuperMap.Feature.Vector.prototype.style -{Object}
-     * @description 要素的样式属性，地图查询返回的feature的style，8C变为null。
-     */
-    style = null;
-
-    /**
-     * @member SuperMap.Feature.Vector.prototype.url -{string}
-     * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 <SuperMap.HTTP> 。
-     */
-    url = null;
 
     constructor(geometry, attributes, style) {
         super(null, null, attributes);
-        this.lonlat = null;
+        /**
+         * @member SuperMap.Feature.Vector.prototype.fid -{string}
+         * @description fid
+         */
+        this.fid = null;
+
+        /**
+         * @member SuperMap.Feature.Vector.prototype.geometry -{SuperMap.Geometry}
+         * @description 该属性用于存放几何信息。
+         */
         this.geometry = geometry ? geometry : null;
-        this.state = null;
+
+        /**
+         * @member SuperMap.Feature.Vector.prototype.attributes -{Object}
+         * @description 描述要素的任意的可序列化属性。
+         */
         this.attributes = {};
+
         if (attributes) {
             this.attributes = Util.extend(this.attributes, attributes);
         }
+
+        /**
+         * @member SuperMap.Feature.Vector.prototype.bounds -{SuperMap.Bounds}
+         * @description The box bounding that feature's geometry, that
+         *     property can be set by an <SuperMap.Format> object when
+         *     deserializing the feature, so in most cases it represents an
+         *     information set by the server.
+         */
+        this.bounds = null;
+
+        /**
+         * @member SuperMap.Feature.Vector.prototype.state -{string}
+         * @description state
+         */
+        this.state = null;
+
+        /**
+         * @member SuperMap.Feature.Vector.prototype.style -{Object}
+         * @description 要素的样式属性，地图查询返回的feature的style，8C变为null。
+         */
         this.style = style ? style : null;
+
+        /**
+         * @member SuperMap.Feature.Vector.prototype.url -{string}
+         * @description 如果设置了这个属性，在更新或者删除要素时需要考虑 <SuperMap.HTTP> 。
+         */
+        this.url = null;
+
+        this.lonlat = null;
+
+        this.CLASS_NAME = "SuperMap.Feature.Vector";
     }
 
     /**
@@ -313,9 +313,8 @@ export class Vector extends Feature {
             display: "none"
         }
     };
-
-    CLASS_NAME = "SuperMap.Feature.Vector"
 }
+
 SuperMap.Feature.Vector = Vector;
 
 

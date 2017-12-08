@@ -29,6 +29,8 @@ export class FindPathService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
+
+        this.CLASS_NAME = "SuperMap.FindPathService";
     }
 
     /**
@@ -123,7 +125,6 @@ export class FindPathService extends NetworkAnalystServiceBase {
         return result;
     }
 
-    CLASS_NAME = "SuperMap.FindPathService"
 }
 
 SuperMap.FindPathService = FindPathService;

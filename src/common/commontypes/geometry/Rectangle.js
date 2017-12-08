@@ -21,38 +21,34 @@ import {Bounds} from '../Bounds';
 
 export class Rectangle extends Geometry {
 
-    /**
-     * @member SuperMap.Geometry.Rectangle.prototype.x -{float}
-     * @description 矩形左下角点的横坐标。
-     */
-    x = null;
-
-    /**
-     * @member SuperMap.Geometry.Rectangle.prototype.y -{float}
-     * @description 矩形左下角点的纵坐标。
-     */
-    y = null;
-
-    /**
-     * @member SuperMap.Geometry.Rectangle.prototype.width -{float}
-     * @description 矩形的宽度。
-     */
-    width = null;
-
-    /**
-     * @member SuperMap.Geometry.Rectangle.prototype.height -{float}
-     * @description 矩形的高度。
-     */
-    height = null;
 
     constructor(x, y, width, height) {
         super(x, y, width, height);
-
+        /**
+         * @member SuperMap.Geometry.Rectangle.prototype.x -{float}
+         * @description 矩形左下角点的横坐标。
+         */
         this.x = x;
+
+        /**
+         * @member SuperMap.Geometry.Rectangle.prototype.y -{float}
+         * @description 矩形左下角点的纵坐标。
+         */
         this.y = y;
 
+        /**
+         * @member SuperMap.Geometry.Rectangle.prototype.width -{float}
+         * @description 矩形的宽度。
+         */
         this.width = width;
+
+        /**
+         * @member SuperMap.Geometry.Rectangle.prototype.height -{float}
+         * @description 矩形的高度。
+         */
         this.height = height;
+
+        this.CLASS_NAME = "SuperMap.Geometry.Rectangle";
     }
 
     /**
@@ -76,7 +72,7 @@ export class Rectangle extends Geometry {
         return area;
     }
 
-    CLASS_NAME = "SuperMap.Geometry.Rectangle"
+
 }
 
 SuperMap.Geometry.Rectangle = Rectangle;

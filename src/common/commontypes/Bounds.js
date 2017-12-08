@@ -20,35 +20,6 @@ import {Util} from './Util';
  */
 export class Bounds {
 
-    /**
-     * @member SuperMap.Bounds.prototype.left - {number}
-     * @description 最小的水平坐标系。
-     */
-    left = null;
-
-    /**
-     * @member SuperMap.Bounds.prototype.bottom - {number}
-     * @description 最小的垂直坐标系。
-     */
-    bottom = null;
-
-    /**
-     * @member SuperMap.Bounds.prototype.right - {number}
-     * @description 最大的水平坐标系。
-     */
-    right = null;
-
-    /**
-     * @member SuperMap.Bounds.prototype.top - {number}
-     * @description 最大的垂直坐标系。
-     */
-    top = null;
-
-    /**
-     * @member SuperMap.Bounds.prototype.centerLonLat - {SuperMap.LonLat}
-     * @description bounds的地图空间的中心点。用 getCenterLonLat() 获得。
-     */
-    centerLonLat = null;
 
     constructor(left, bottom, right, top) {
         if (Util.isArray(left)) {
@@ -57,10 +28,36 @@ export class Bounds {
             bottom = left[1];
             left = left[0];
         }
+        /**
+         * @member SuperMap.Bounds.prototype.left - {number}
+         * @description 最小的水平坐标系。
+         */
         this.left = left != null ? Util.toFloat(left) : this.left;
+
+        /**
+         * @member SuperMap.Bounds.prototype.bottom - {number}
+         * @description 最小的垂直坐标系。
+         */
         this.bottom = bottom != null ? Util.toFloat(bottom) : this.bottom;
+
+        /**
+         * @member SuperMap.Bounds.prototype.right - {number}
+         * @description 最大的水平坐标系。
+         */
         this.right = right != null ? Util.toFloat(right) : this.right;
+
+        /**
+         * @member SuperMap.Bounds.prototype.top - {number}
+         * @description 最大的垂直坐标系。
+         */
         this.top = top != null ? Util.toFloat(top) : this.top;
+
+        /**
+         * @member SuperMap.Bounds.prototype.centerLonLat - {SuperMap.LonLat}
+         * @description bounds的地图空间的中心点。用 getCenterLonLat() 获得。
+         */
+        this.centerLonLat = null;
+        this.CLASS_NAME = "SuperMap.Bounds";
     }
 
     /**
@@ -731,7 +728,6 @@ export class Bounds {
         return opp;
     }
 
-    CLASS_NAME = "SuperMap.Bounds"
 }
 
 SuperMap.Bounds = Bounds;

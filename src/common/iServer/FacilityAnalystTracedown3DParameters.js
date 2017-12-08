@@ -17,6 +17,7 @@ export class FacilityAnalystTracedown3DParameters extends FacilityAnalyst3DParam
 
     constructor(options) {
         super(options);
+        this.CLASS_NAME = "SuperMap.FacilityAnalystTracedown3DParameters";
     }
 
     /**
@@ -27,7 +28,7 @@ export class FacilityAnalystTracedown3DParameters extends FacilityAnalyst3DParam
         super.destroy();
     }
 
-    CLASS_NAME = "SuperMap.FacilityAnalystTracedown3DParameters"
+
 }
 
 SuperMap.FacilityAnalystTracedown3DParameters = FacilityAnalystTracedown3DParameters;

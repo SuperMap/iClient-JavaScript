@@ -24,23 +24,26 @@ import {CommonServiceBase} from './CommonServiceBase';
  *
  */
 export class GetFieldsService extends CommonServiceBase {
-    /**
-     * @member SuperMap.GetFieldsService.prototype.datasource -{string}
-     * @description 要查询的数据集所在的数据源名称。
-     */
-    datasource = null;
 
-    /**
-     *  @member SuperMap.GetFieldsService.prototype.dataset -{string}
-     *  @description 要查询的数据集名称。
-     */
-    dataset = null;
 
     constructor(url, options) {
         super(url, options);
+        /**
+         * @member SuperMap.GetFieldsService.prototype.datasource -{string}
+         * @description 要查询的数据集所在的数据源名称。
+         */
+        this.datasource = null;
+
+        /**
+         *  @member SuperMap.GetFieldsService.prototype.dataset -{string}
+         *  @description 要查询的数据集名称。
+         */
+        this.dataset = null;
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.GetFieldsService";
     }
 
 
@@ -74,9 +77,6 @@ export class GetFieldsService extends CommonServiceBase {
             failure: me.serviceProcessFailed
         });
     }
-
-
-    CLASS_NAME = "SuperMap.GetFieldsService"
 }
 
 SuperMap.GetFieldsService = GetFieldsService;

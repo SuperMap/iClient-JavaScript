@@ -16,31 +16,30 @@ import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
  * @extends SuperMap.GetFeaturesParametersBase
  */
 export class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
-    /**
-     * @member SuperMap.GetFeaturesByIDsParameters.prototype.getFeatureMode - {string}
-     * @description 数据集查询模式。
-     */
-    getFeatureMode = "ID";
-
-    /**
-     * @member SuperMap.GetFeaturesByIDsParameters.prototype.IDs - {Array<integer>}
-     * @description 所要查询指定的元素ID信息。
-     */
-    IDs = null;
-
-    /**
-     *  @member SuperMap.GetFeaturesByIDsParameters.prototype.fields - {Array<string>}
-     *  @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
-     */
-    fields = null;
 
 
     constructor(options) {
         super(options);
-        if (!options) {
-            return;
-        }
+        /**
+         * @member SuperMap.GetFeaturesByIDsParameters.prototype.getFeatureMode - {string}
+         * @description 数据集查询模式。
+         */
+        this.getFeatureMode = "ID";
+
+        /**
+         * @member SuperMap.GetFeaturesByIDsParameters.prototype.IDs - {Array<integer>}
+         * @description 所要查询指定的元素ID信息。
+         */
+        this.IDs = null;
+
+        /**
+         *  @member SuperMap.GetFeaturesByIDsParameters.prototype.fields - {Array<string>}
+         *  @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
+         */
+        this.fields = null;
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.GetFeaturesByIDsParameters";
     }
 
 
@@ -84,7 +83,6 @@ export class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
         return Util.toJSON(parasByIDs);
     }
 
-    CLASS_NAME = "SuperMap.GetFeaturesByIDsParameters"
 }
 
 SuperMap.GetFeaturesByIDsParameters = GetFeaturesByIDsParameters;

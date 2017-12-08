@@ -16,23 +16,6 @@ import {SecurityManager} from '../security/SecurityManager';
  */
 export class DataFlowService extends CommonServiceBase {
 
-    /**
-     * @member SuperMap.DataFlowService.prototype.geometry -{Aarry<Object>}
-     * @description 设置增添的几何要素对象数组。
-     */
-    geometry = null;
-
-    /**
-     * @member SuperMap.DataFlowService.prototype.prjCoordSys -{Object}
-     * @description 动态投影参数
-     */
-    prjCoordSys = null;
-
-    /**
-     * @member SuperMap.DataFlowService.prototype.excludeField -{Object}
-     * @description 排除字段
-     */
-    excludeField = null;
 
     constructor(url, options) {
         options = options || {};
@@ -44,6 +27,24 @@ export class DataFlowService extends CommonServiceBase {
         options.EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"]
         super(url, options);
 
+        /**
+         * @member SuperMap.DataFlowService.prototype.geometry -{Aarry<Object>}
+         * @description 设置增添的几何要素对象数组。
+         */
+        this.geometry = null;
+
+        /**
+         * @member SuperMap.DataFlowService.prototype.prjCoordSys -{Object}
+         * @description 动态投影参数
+         */
+        this.prjCoordSys = null;
+
+        /**
+         * @member SuperMap.DataFlowService.prototype.excludeField -{Object}
+         * @description 排除字段
+         */
+        this.excludeField = null;
+
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
         if (end !== '/') {
@@ -52,6 +53,8 @@ export class DataFlowService extends CommonServiceBase {
         if (options) {
             Util.extend(me, options);
         }
+
+        this.CLASS_NAME = "SuperMap.DataFlowService";
     }
 
     /**
@@ -230,8 +233,6 @@ export class DataFlowService extends CommonServiceBase {
         return url;
     }
 
-
-    CLASS_NAME = "SuperMap.DataFlowService"
 }
 
 SuperMap.DataFlowService = DataFlowService;

@@ -13,17 +13,17 @@ import {Collection} from './Collection';
  */
 export class MultiPoint extends Collection {
 
-    /**
-     * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.Point}"]
-     */
-    componentTypes = ["SuperMap.Geometry.Point"];
-
 
     constructor(components) {
         super(components);
+        /**
+         * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
+         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @readonly
+         * @default ["{@link SuperMap.Geometry.Point}"]
+         */
+        this.componentTypes = ["SuperMap.Geometry.Point"];
+        this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
     }
 
     /**
@@ -47,7 +47,6 @@ export class MultiPoint extends Collection {
     }
 
 
-    CLASS_NAME = "SuperMap.Geometry.MultiPoint"
 }
 
 SuperMap.Geometry.MultiPoint = MultiPoint;

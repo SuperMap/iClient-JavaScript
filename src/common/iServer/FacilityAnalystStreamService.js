@@ -16,6 +16,7 @@ export class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.FacilityAnalystStreamService";
     }
 
 
@@ -77,7 +78,6 @@ export class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
         });
     }
 
-    CLASS_NAME = "SuperMap.FacilityAnalystStreamService"
 }
 
 SuperMap.FacilityAnalystStreamService = FacilityAnalystStreamService;

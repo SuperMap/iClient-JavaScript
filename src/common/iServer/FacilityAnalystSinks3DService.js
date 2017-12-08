@@ -27,6 +27,7 @@ export class FacilityAnalystSinks3DService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.FacilityAnalystSinks3DService";
     }
 
 
@@ -66,8 +67,6 @@ export class FacilityAnalystSinks3DService extends CommonServiceBase {
         });
     }
 
-
-    CLASS_NAME = "SuperMap.FacilityAnalystSinks3DService"
 }
 
 SuperMap.FacilityAnalystSinks3DService = FacilityAnalystSinks3DService;

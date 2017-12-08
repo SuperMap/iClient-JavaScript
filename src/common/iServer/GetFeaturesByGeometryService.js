@@ -27,6 +27,7 @@ export class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.GetFeaturesByGeometryService";
     }
 
     /**
@@ -48,7 +49,7 @@ export class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
         return GetFeaturesByGeometryParameters.toJsonParameters(params);
     }
 
-    CLASS_NAME = "SuperMap.GetFeaturesByGeometryService"
+
 }
 
 SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService;

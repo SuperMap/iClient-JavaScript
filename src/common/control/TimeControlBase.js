@@ -13,102 +13,97 @@ import {Events} from '../commontypes/Events';
  */
 export class TimeControlBase {
 
-    /**
-     * @member SuperMap.TimeControlBase.prototype.speed -{number}
-     * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
-     */
-    speed = 1;
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.frequency -{number}
-     * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
-     */
-    frequency = 1000;
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.startTime -{number}
-     * @description 记录的起始时间，必须为数字，
-     *              如果不设置，初始化时为0，建议设置
-     */
-    startTime = null;
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.endTime -{number}
-     * @description 记录的结束时间，必须为数字，
-     *              如果不设置，初始化时以当前时间进行设置，建议设置
-     */
-    endTime = null;
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.repeat -{boolean}
-     * @description 是否重复循环，默认为true。
-     */
-    repeat = true;
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.currentTime -{number}
-     * @description 记录近期的时间，也就是当前帧运行到的时间。
-     */
-    currentTime = null;
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.oldTime -{number}
-     * @description 记录上一帧的时间，也就是之前运行到的时间。
-     */
-    oldTime = null;
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.running -{boolean}
-     * @description 记录当前是否处于运行中，默认为false。
-     */
-    running = false;
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.reverse -{boolean}
-     * @description 是否反向，默认为false。
-     */
-    reverse = false;
-
-    /**
-     * @private
-     * @member SuperMap.TimeControlBase.prototype.EVENT_TYPES -{Array<string>}
-     * @description 此类支持的事件类型。
-     *
-     */
-    EVENT_TYPES = ["start", "pause", "stop"];
-
-    /**
-     * @private
-     * @member SuperMap.TimeControlBase.prototype.events -{SuperMap.Events}
-     * @description 事件
-     */
-    events = null;
 
     constructor(options) {
         //设置步长，刷新频率、开始结束时间、是否循环、是否反向
         var me = this;
         options = options || {};
-        me.speed = ( options.speed && options.speed >= 0) ? options.speed : me.speed;
-        me.frequency = (options.speed && options.frequency >= 0) ? options.frequency : me.frequency;
-        me.startTime = (options.startTime && options.startTime != null) ? options.startTime : 0;
-        me.endTime =  (options.endTime && options.endTime != null && options.endTime >= me.startTime) ? options.endTime : +new Date();
-        me.repeat = ( options.repeat != undefined) ? options.repeat : me.repeat;
-        me.reverse = (options.reverse != undefined) ? options.reverse : me.reverse;
+
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.speed -{number}
+         * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
+         */
+        this.speed = (options.speed && options.speed >= 0) ? options.speed : 1;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.frequency -{number}
+         * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
+         */
+        this.frequency = (options.speed && options.frequency >= 0) ? options.frequency : 1000;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.startTime -{number}
+         * @description 记录的起始时间，必须为数字，
+         *              如果不设置，初始化时为0，建议设置
+         */
+        this.startTime = (options.startTime && options.startTime != null) ? options.startTime : 0;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.endTime -{number}
+         * @description 记录的结束时间，必须为数字，
+         *              如果不设置，初始化时以当前时间进行设置，建议设置
+         */
+        this.endTime = (options.endTime && options.endTime != null && options.endTime >= me.startTime) ? options.endTime : +new Date();
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.repeat -{boolean}
+         * @description 是否重复循环，默认为true。
+         */
+        this.repeat = (options.repeat !== undefined) ? options.repeat : true;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.reverse -{boolean}
+         * @description 是否反向，默认为false。
+         */
+        this.reverse = (options.reverse !== undefined) ? options.reverse : false;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.currentTime -{number}
+         * @description 记录近期的时间，也就是当前帧运行到的时间。
+         */
+        this.currentTime = null;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.oldTime -{number}
+         * @description 记录上一帧的时间，也就是之前运行到的时间。
+         */
+        this.oldTime = null;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.running -{boolean}
+         * @description 记录当前是否处于运行中，默认为false。
+         */
+        this.running = false;
+
+
+        /**
+         * @private
+         * @member SuperMap.TimeControlBase.prototype.EVENT_TYPES -{Array<string>}
+         * @description 此类支持的事件类型。
+         *
+         */
+        this.EVENT_TYPES = ["start", "pause", "stop"];
+
+        /**
+         * @private
+         * @member SuperMap.TimeControlBase.prototype.events -{SuperMap.Events}
+         * @description 事件
+         */
+        me.events = new Events(this, null, this.EVENT_TYPES);
 
         me.speed = Number(me.speed);
         me.frequency = Number(me.frequency);
         me.startTime = Number(me.startTime);
         me.endTime = Number(me.endTime);
 
-        me.events = new Events(this, null, this.EVENT_TYPES);
-        me.startTime = Date.parse(new Date(this.startTime));
-        me.endTime = Date.parse(new Date(this.endTime));
-
-        //初始化处于非运行阶段
-        me.running = false;
+        me.startTime = Date.parse(new Date(me.startTime));
+        me.endTime = Date.parse(new Date(me.endTime));
 
         //初始化当前时间
         me.currentTime = me.startTime;
+
+        this.CLASS_NAME = "SuperMap.TimeControlBase";
     }
 
 
@@ -426,8 +421,6 @@ export class TimeControlBase {
         //TODO 每次刷新执行的操作。子类实现
     }
 
-
-    CLASS_NAME = "SuperMap.TimeControlBase"
 }
 
 SuperMap.TimeControlBase = TimeControlBase;

@@ -25,6 +25,7 @@ export class AreaSolarRadiationService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.AreaSolarRadiationService";
     }
 
     /**
@@ -69,8 +70,6 @@ export class AreaSolarRadiationService extends SpatialAnalystBase {
             failure: me.serviceProcessFailed
         });
     }
-
-    CLASS_NAME = "SuperMap.AreaSolarRadiationService";
 }
 
 SuperMap.AreaSolarRadiationService = AreaSolarRadiationService;

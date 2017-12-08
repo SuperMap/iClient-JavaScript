@@ -16,39 +16,33 @@ import {Util} from '../Util';
  */
 export class Point extends Geometry {
 
-    /**
-     * @member SuperMap.Geometry.Point.prototype.x -{float}
-     * @description 横坐标。
-     */
-    x = null;
-
-    /**
-     * @member SuperMap.Geometry.Point.prototype.y -{float}
-     * @description 纵坐标。
-     */
-    y = null;
-
-    /**
-     * @member SuperMap.Geometry.Point.prototype.tag -{string}
-     * @description  用来存储额外的属性，比如差值分析中的Z值。
-     */
-    tag = null;
-
-    /**
-     * @member SuperMap.Geometry.Point.prototype.tag -{string}
-     * @description  用来存储点的类型
-     */
-    type = null;
 
     constructor(x, y, type, tag) {
         super(x, y, type, tag);
-
+        /**
+         * @member SuperMap.Geometry.Point.prototype.x -{float}
+         * @description 横坐标。
+         */
         this.x = parseFloat(x);
+
+        /**
+         * @member SuperMap.Geometry.Point.prototype.y -{float}
+         * @description 纵坐标。
+         */
         this.y = parseFloat(y);
-        if (tag || tag == 0) {
-            this.tag = parseFloat(tag);
-        }
+
+        /**
+         * @member SuperMap.Geometry.Point.prototype.tag -{string}
+         * @description  用来存储额外的属性，比如差值分析中的Z值。
+         */
+        this.tag = (tag || tag == 0) ? parseFloat(tag) : null;
+
+        /**
+         * @member SuperMap.Geometry.Point.prototype.tag -{string}
+         * @description  用来存储点的类型
+         */
         this.type = type || "Point";
+        this.CLASS_NAME = "SuperMap.Geometry.Point";
     }
 
     /**
@@ -139,6 +133,7 @@ export class Point extends Geometry {
         return [this];
     }
 
-    CLASS_NAME = "SuperMap.Geometry.Point"
+
 }
+
 SuperMap.Geometry.Point = Point;

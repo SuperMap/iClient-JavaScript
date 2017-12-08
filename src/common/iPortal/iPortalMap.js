@@ -12,33 +12,32 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  */
 export class IPortalMap extends IPortalServiceBase {
 
-    authorizeSetting = [];
-    center = "";
-    controls = null;
-    checkStatus = "";
-    createTime = 0;
-    description = "";
-    epsgCode = 0;
-    extent = "";
-    id = 0;
-    isDefaultBottomMap = false;
-    layers = [];
-    level = null;
-    nickname = "";
-    sourceType = "";
-    status = null;
-    tags = [];
-    thumbnail = "";
-    title = "";
-    units = null;
-    updateTime = 0;
-    userName = "";
-    visitCount = 0;
-
 
     constructor(mapUrl, params) {
         super(mapUrl);
         params = params || {};
+        this.authorizeSetting = [];
+        this.center = "";
+        this.controls = null;
+        this.checkStatus = "";
+        this.createTime = 0;
+        this.description = "";
+        this.epsgCode = 0;
+        this.extent = "";
+        this.id = 0;
+        this.isDefaultBottomMap = false;
+        this.layers = [];
+        this.level = null;
+        this.nickname = "";
+        this.sourceType = "";
+        this.status = null;
+        this.tags = [];
+        this.thumbnail = "";
+        this.title = "";
+        this.units = null;
+        this.updateTime = 0;
+        this.userName = "";
+        this.visitCount = 0;
         Util.extend(this, params);
         this.mapUrl = mapUrl;
         // if (this.id) {

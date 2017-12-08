@@ -46,22 +46,24 @@ import {GeoJSON} from '../format/GeoJSON';
  */
 export class ChartQueryService extends CommonServiceBase {
 
-    /**
-     * @member SuperMap.ChartQueryService.prototype.returnContent -{boolean}
-     * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
-     */
-    returnContent = null;
-
-    /**
-     * @member SuperMap.ChartQueryService.prototype.format -{SuperMap.DataFormat}
-     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-     *              参数格式为"ISERVER","GEOJSON",GEOJSON
-     */
-    format = DataFormat.GEOJSON;
 
     constructor(url, options) {
         super(url, options);
         options = options || {};
+
+        /**
+         * @member SuperMap.ChartQueryService.prototype.returnContent -{boolean}
+         * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
+         */
+        this.returnContent = null;
+
+        /**
+         * @member SuperMap.ChartQueryService.prototype.format -{SuperMap.DataFormat}
+         * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+         *              参数格式为"ISERVER","GEOJSON",GEOJSON
+         */
+        this.format = DataFormat.GEOJSON;
+
         if (options) {
             Util.extend(this, options);
         }
@@ -82,6 +84,8 @@ export class ChartQueryService extends CommonServiceBase {
         //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
         // }
         me.url += (end === "/") ? "queryResults.json?" : "/queryResults.json?";
+
+        this.CLASS_NAME = "SuperMap.ChartQueryService";
     }
 
 
@@ -158,8 +162,6 @@ export class ChartQueryService extends CommonServiceBase {
             returnContent: params.returnContent
         });
     }
-
-    CLASS_NAME = "SuperMap.ChartQueryService"
 }
 
 SuperMap.ChartQueryService = ChartQueryService;

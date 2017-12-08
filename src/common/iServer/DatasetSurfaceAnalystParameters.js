@@ -19,34 +19,35 @@ import {Geometry} from '../commontypes/Geometry';
  * @extends SuperMap.SurfaceAnalystParameters
  */
 export class DatasetSurfaceAnalystParameters extends SurfaceAnalystParameters {
-    /**
-     * @member SuperMap.DatasetSurfaceAnalystParameters.prototype.dataset -{string}
-     * @description 要用来做数据集表面分析的数据源中数据集的名称。
-     * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：Country@World。必设字段。
-     */
-    dataset = null;
-
-    /**
-     *  @member SuperMap.DatasetSurfaceAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
-     *  @description 获取或设置查询过滤条件参数。
-     */
-    filterQueryParameter = null;
-
-    /**
-     * @member SuperMap.DatasetSurfaceAnalystParameters.prototype.zValueFieldName -{string}
-     * @description 获取或设置用于提取操作的字段名称。
-     * 提取等值线时，将使用该字段中的值，对点记录集中的点数据进行插值分析，得到栅格数据集（中间结果），接着从栅格数据集提取等值线。
-     */
-    zValueFieldName = null;
 
 
     constructor(options) {
         super(options);
-        var me = this;
-        me.filterQueryParameter = new FilterParameter();
+        /**
+         * @member SuperMap.DatasetSurfaceAnalystParameters.prototype.dataset -{string}
+         * @description 要用来做数据集表面分析的数据源中数据集的名称。
+         * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：Country@World。必设字段。
+         */
+        this.dataset = null;
+
+        /**
+         *  @member SuperMap.DatasetSurfaceAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
+         *  @description 获取或设置查询过滤条件参数。
+         */
+        this.filterQueryParameter = new FilterParameter();
+
+        /**
+         * @member SuperMap.DatasetSurfaceAnalystParameters.prototype.zValueFieldName -{string}
+         * @description 获取或设置用于提取操作的字段名称。
+         * 提取等值线时，将使用该字段中的值，对点记录集中的点数据进行插值分析，得到栅格数据集（中间结果），接着从栅格数据集提取等值线。
+         */
+        this.zValueFieldName = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.DatasetSurfaceAnalystParameters";
     }
 
     /**
@@ -91,7 +92,6 @@ export class DatasetSurfaceAnalystParameters extends SurfaceAnalystParameters {
         }
     }
 
-    CLASS_NAME = "SuperMap.DatasetSurfaceAnalystParameters"
 }
 
 SuperMap.DatasetSurfaceAnalystParameters = DatasetSurfaceAnalystParameters;

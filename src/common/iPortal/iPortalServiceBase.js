@@ -15,6 +15,7 @@ export class IPortalServiceBase {
         var me = this;
         me.serviceUrl = url;
         me.serverType = ServerType.iPortal;
+        me.CLASS_NAME = "SuperMap.iPortalServiceBase";
     }
 
     /**
@@ -89,9 +90,6 @@ export class IPortalServiceBase {
         //或
         //return SuperMap.SecurityManager.getKey(this.serviceUrl);
     }
-
-
-    CLASS_NAME = "SuperMap.iPortalServiceBase"
 
 }
 

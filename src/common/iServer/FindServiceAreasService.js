@@ -29,6 +29,8 @@ export class FindServiceAreasService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
+
+        this.CLASS_NAME = "SuperMap.FindServiceAreasService";
     }
 
     /**
@@ -126,7 +128,6 @@ export class FindServiceAreasService extends NetworkAnalystServiceBase {
         return result;
     }
 
-    CLASS_NAME = "SuperMap.FindServiceAreasService"
 }
 
 SuperMap.FindServiceAreasService = FindServiceAreasService;

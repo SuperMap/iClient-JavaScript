@@ -17,26 +17,28 @@ import {ServerGeometry} from './ServerGeometry';
  */
 export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 
-    /**
-     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
-     * @description 要做缓冲区分析的几何对象。必设字段。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
-     */
-    sourceGeometry = null;
-
-    /**
-     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometrySRID -{number}
-     * @description 缓冲区几何对象投影坐标参数, 如 4326，3857。
-     */
-    sourceGeometrySRID = null;
 
     constructor(options) {
         super(options);
+        /**
+         * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
+         * @description 要做缓冲区分析的几何对象。必设字段。</br>
+         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+         */
+        this.sourceGeometry = null;
+
+        /**
+         * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometrySRID -{number}
+         * @description 缓冲区几何对象投影坐标参数, 如 4326，3857。
+         */
+        this.sourceGeometrySRID = null;
+
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = " SuperMap.GeometryBufferAnalystParameters";
     }
 
     /**
@@ -76,7 +78,6 @@ export class GeometryBufferAnalystParameters extends BufferAnalystParameters {
         }
     }
 
-    CLASS_NAME = " SuperMap.GeometryBufferAnalystParameters"
 }
 
 SuperMap.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters;

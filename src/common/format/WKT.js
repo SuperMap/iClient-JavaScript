@@ -28,6 +28,7 @@ export class WKT extends Format {
             'doubleParenComma': /\)\s*\)\s*,\s*\(\s*\(/,  // can't use {2} here
             'trimParens': /^\s*\(?(.*?)\)?\s*$/
         };
+        this.CLASS_NAME = "SuperMap.Format.WKT";
     }
 
 
@@ -346,7 +347,6 @@ export class WKT extends Format {
         }
 
     };
-    CLASS_NAME = "SuperMap.Format.WKT";
 }
 
 SuperMap.Format.WKT = WKT;

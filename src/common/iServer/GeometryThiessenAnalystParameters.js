@@ -13,17 +13,19 @@ import {ServerGeometry} from './ServerGeometry';
  */
 
 export class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters {
-    /**
-     * @member SuperMap.GeometryThiessenAnalystParameters.prototype.points -{Array<Object>}|{Array}
-     * @description 使用点数组进行分析时使用的几何对象。点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
-     */
-    points = null;
+
 
     constructor(options) {
         super(options);
+        /**
+         * @member SuperMap.GeometryThiessenAnalystParameters.prototype.points -{Array<Object>}|{Array}
+         * @description 使用点数组进行分析时使用的几何对象。点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
+         */
+        this.points = null;
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.GeometryThiessenAnalystParameters";
     }
 
     /**
@@ -58,7 +60,7 @@ export class GeometryThiessenAnalystParameters extends ThiessenAnalystParameters
         }
     }
 
-    CLASS_NAME = "SuperMap.GeometryThiessenAnalystParameters"
+
 }
 
 SuperMap.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters;

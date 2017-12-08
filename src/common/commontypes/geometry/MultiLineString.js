@@ -18,18 +18,20 @@ import './LineString';
  */
 export class MultiLineString extends Collection {
 
-    /**
-     * @member SuperMap.Geometry.MultiLineString.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.LineString}"]
-     */
-    componentTypes = ["SuperMap.Geometry.LineString"];
 
     constructor(components) {
         super(components);
+        /**
+         * @member SuperMap.Geometry.MultiLineString.prototype.componentTypes -{Array<string>}
+         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @readonly
+         * @default ["{@link SuperMap.Geometry.LineString}"]
+         */
+        this.componentTypes = ["SuperMap.Geometry.LineString"];
+        this.CLASS_NAME = "SuperMap.Geometry.MultiLineString";
     }
 
-    CLASS_NAME = "SuperMap.Geometry.MultiLineString"
+
 }
+
 SuperMap.Geometry.MultiLineString = MultiLineString;

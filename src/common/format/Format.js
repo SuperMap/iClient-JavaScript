@@ -9,28 +9,29 @@ import {Util} from '../commontypes/Util';
  */
 export class Format {
 
-    /**
-     * @member SuperMap.Format.prototype.options - {Object}
-     * @description 可选参数。
-     */
-    options = null;
-
-    /**
-     * @member SuperMap.Format.prototype.data - {Object}
-     * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
-     */
-    data = null;
-
-    /**
-     * APIProperty: keepData
-     * @member SuperMap.Format.prototype.keepData - {Object}
-     * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
-     */
-    keepData = false;
 
     constructor(options) {
+        /**
+         * @member SuperMap.Format.prototype.data - {Object}
+         * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
+         */
+        this.data = null;
+
+        /**
+         * APIProperty: keepData
+         * @member SuperMap.Format.prototype.keepData - {Object}
+         * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
+         */
+        this.keepData = false;
+
         Util.extend(this, options);
+        /**
+         * @member SuperMap.Format.prototype.options - {Object}
+         * @description 可选参数。
+         */
         this.options = options;
+
+        this.CLASS_NAME = "SuperMap.Format";
     }
 
     /**
@@ -59,8 +60,6 @@ export class Format {
     write(object) { // eslint-disable-line no-unused-vars
         //用来写字符串
     }
-
-    CLASS_NAME = "SuperMap.Format"
 }
 
 SuperMap.Format = Format;

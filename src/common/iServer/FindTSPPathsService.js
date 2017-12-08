@@ -30,6 +30,8 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
+
+        this.CLASS_NAME = "SuperMap.FindTSPPathsService";
     }
 
     /**
@@ -124,7 +126,6 @@ export class FindTSPPathsService extends NetworkAnalystServiceBase {
         return result;
     }
 
-    CLASS_NAME = "SuperMap.FindTSPPathsService"
 }
 
 SuperMap.FindTSPPathsService = FindTSPPathsService;

@@ -12,28 +12,32 @@ import {ServerGeometry} from './ServerGeometry';
  */
 export class DatasetThiessenAnalystParameters extends ThiessenAnalystParameters {
 
-    /**
-     * @member SuperMap.DatasetThiessenAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
-     * @description 过滤条件，对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
-     * @example
-     *  var filterQueryParameter = new SuperMap.FilterParameter({
-     *   name: "Countries@World",
-     *   attributeFilter: "SmID>100"
-     *  });
-     */
-    filterQueryParameter = null;
-
-    /**
-     * @member SuperMap.DatasetThiessenAnalystParameters.prototype.dataset -{string}
-     * @description 数据集名称待分析的数据集名称，请使用"datasetName@datasourceName"格式来表示。
-     */
-    dataset = null;
 
     constructor(options) {
         super(options);
+        /**
+         * @member SuperMap.DatasetThiessenAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
+         * @description 过滤条件，对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
+         * @example
+         *  var filterQueryParameter = new SuperMap.FilterParameter({
+         *   name: "Countries@World",
+         *   attributeFilter: "SmID>100"
+         *  });
+         */
+        this.filterQueryParameter = null;
+
+        /**
+         * @member SuperMap.DatasetThiessenAnalystParameters.prototype.dataset -{string}
+         * @description 数据集名称待分析的数据集名称，请使用"datasetName@datasourceName"格式来表示。
+         */
+        this.dataset = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+
+        this.CLASS_NAME = "SuperMap.DatasetThiessenAnalystParameters";
     }
 
     /**
@@ -66,7 +70,6 @@ export class DatasetThiessenAnalystParameters extends ThiessenAnalystParameters 
         }
     }
 
-    CLASS_NAME = "SuperMap.DatasetThiessenAnalystParameters"
 }
 
 SuperMap.DatasetThiessenAnalystParameters = DatasetThiessenAnalystParameters;

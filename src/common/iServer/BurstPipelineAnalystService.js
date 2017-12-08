@@ -16,6 +16,7 @@ export class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.BurstPipelineAnalystService";
     }
 
     /**
@@ -66,7 +67,7 @@ export class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
         });
     }
 
-    CLASS_NAME = "SuperMap.BurstPipelineAnalystService"
+
 }
 
 SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService;

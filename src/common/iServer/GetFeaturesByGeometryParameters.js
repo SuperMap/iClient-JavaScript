@@ -26,45 +26,43 @@ import {ServerGeometry} from './ServerGeometry';
 export class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
 
 
-    /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.getFeatureMode - {string}
-     * @description 数据集查询模式。几何查询有"SPATIAL"，"SPATIAL_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到SPATIAL_ATTRIBUTEFILTER访问服务。
-     */
-    getFeatureMode = "SPATIAL";
-
-    /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.geometry - {Object}
-     * @description 用于查询的几何对象。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
-     */
-    geometry = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.fields - {Array<string>}
-     * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
-     */
-    fields = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.attributeFilter -{string}
-     *  @description 几何查询属性过滤条件。
-     */
-    attributeFilter = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.spatialQueryMode - {SuperMap.SpatialQueryMode}
-     * @description 空间查询模式常量，必设参数，默认为CONTAIN。
-     */
-    spatialQueryMode = SpatialQueryMode.CONTAIN;
-
     constructor(options) {
         super(options);
-        if (!options) {
-            return;
-        }
+        /**
+         * @member SuperMap.GetFeaturesByGeometryParameters.prototype.getFeatureMode - {string}
+         * @description 数据集查询模式。几何查询有"SPATIAL"，"SPATIAL_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到SPATIAL_ATTRIBUTEFILTER访问服务。
+         */
+        this.getFeatureMode = "SPATIAL";
+
+        /**
+         * @member SuperMap.GetFeaturesByGeometryParameters.prototype.geometry - {Object}
+         * @description 用于查询的几何对象。</br>
+         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+         */
+        this.geometry = null;
+
+        /**
+         * @member SuperMap.GetFeaturesByGeometryParameters.prototype.fields - {Array<string>}
+         * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
+         */
+        this.fields = null;
+
+        /**
+         * @member SuperMap.GetFeaturesByGeometryParameters.prototype.attributeFilter -{string}
+         *  @description 几何查询属性过滤条件。
+         */
+        this.attributeFilter = null;
+
+        /**
+         * @member SuperMap.GetFeaturesByGeometryParameters.prototype.spatialQueryMode - {SuperMap.SpatialQueryMode}
+         * @description 空间查询模式常量，必设参数，默认为CONTAIN。
+         */
+        this.spatialQueryMode = SpatialQueryMode.CONTAIN;
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.GetFeaturesByGeometryParameters";
     }
 
 
@@ -125,7 +123,6 @@ export class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
         return Util.toJSON(parasByGeometry);
     }
 
-    CLASS_NAME = "SuperMap.GetFeaturesByGeometryParameters"
 }
 
 SuperMap.GetFeaturesByGeometryParameters = GetFeaturesByGeometryParameters;

@@ -22,17 +22,19 @@ import {Vector} from './Vector';
  *         isTempLayers - {boolean} 当前url对应的图层是否是临时图层。
  */
 export class GetLayersInfoService extends CommonServiceBase {
-    /**
-     * @member SuperMap.GetLayersInfoService.prototype.isTempLayers -{Boolean}
-     * @description 当前url对应的图层是否是临时图层。
-     */
-    isTempLayers = false;
+
 
     constructor(url, options) {
         super(url, options);
+        /**
+         * @member SuperMap.GetLayersInfoService.prototype.isTempLayers -{Boolean}
+         * @description 当前url对应的图层是否是临时图层。
+         */
+        this.isTempLayers = false;
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.GetLayersInfoService";
     }
 
     /**
@@ -128,7 +130,7 @@ export class GetLayersInfoService extends CommonServiceBase {
         }
     }
 
-    CLASS_NAME = "SuperMap.GetLayersInfoService"
+
 }
 
 SuperMap.GetLayersInfoService = GetLayersInfoService;

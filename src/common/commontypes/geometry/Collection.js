@@ -18,24 +18,25 @@ import {Util} from '../Util';
  */
 export class Collection extends Geometry {
 
-    /**
-     * @description 存储几何对象的数组。
-     * @member SuperMap.Geometry.Collection.prototype.components -{Array<SuperMap.Geometry>}
-     */
-    components = null;
-
-    /**
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @member SuperMap.Geometry.Collection.prototype.componentTypes -{Array<string>}
-     */
-    componentTypes = null;
 
     constructor(components) {
         super();
+
+        /**
+         * @description 存储几何对象的数组。
+         * @member SuperMap.Geometry.Collection.prototype.components -{Array<SuperMap.Geometry>}
+         */
         this.components = [];
+
+        /**
+         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @member SuperMap.Geometry.Collection.prototype.componentTypes -{Array<string>}
+         */
+        this.componentTypes = null;
         if (components != null) {
             this.addComponents(components);
         }
+        this.CLASS_NAME = "SuperMap.Geometry.Collection";
     }
 
     /**
@@ -238,8 +239,6 @@ export class Collection extends Geometry {
         return vertices;
     }
 
-
-    CLASS_NAME = "SuperMap.Geometry.Collection"
 }
 
 SuperMap.Geometry.Collection = Collection;

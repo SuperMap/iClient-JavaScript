@@ -20,16 +20,17 @@ import './LinearRing';
  */
 export class Polygon extends Collection {
 
-    /**
-     * @member SuperMap.Geometry.Polygon.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.LinearRing}"]
-     */
-    componentTypes = ["SuperMap.Geometry.LinearRing"];
 
     constructor(components) {
-        super(components)
+        super(components);
+        /**
+         * @member SuperMap.Geometry.Polygon.prototype.componentTypes -{Array<string>}
+         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @readonly
+         * @default ["{@link SuperMap.Geometry.LinearRing}"]
+         */
+        this.componentTypes = ["SuperMap.Geometry.LinearRing"];
+        this.CLASS_NAME = "SuperMap.Geometry.Polygon";
     }
 
     /**
@@ -48,7 +49,7 @@ export class Polygon extends Collection {
         return area;
     }
 
-    CLASS_NAME = "SuperMap.Geometry.Polygon"
+
 }
 
 SuperMap.Geometry.Polygon = Polygon;

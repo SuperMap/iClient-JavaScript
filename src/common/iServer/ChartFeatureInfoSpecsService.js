@@ -21,6 +21,7 @@ export class ChartFeatureInfoSpecsService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.ChartFeatureInfoSpecsService";
     }
 
     /**
@@ -57,8 +58,6 @@ export class ChartFeatureInfoSpecsService extends CommonServiceBase {
             failure: me.serviceProcessFailed
         });
     }
-
-    CLASS_NAME = "SuperMap.ChartFeatureInfoSpecsService"
 }
 
 SuperMap.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService;

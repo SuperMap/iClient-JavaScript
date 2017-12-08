@@ -26,68 +26,72 @@ import {Bounds} from '../commontypes/Bounds';
  */
 export class DatasetInfo {
 
-    /**
-     * @member SuperMap.DatasetInfo.prototype.bounds - {SuperMap.Bounds}
-     * @description 数据集范围，该字段只读。
-     */
-    bounds = null;
-
-    /**
-     * @member SuperMap.DatasetInfo.prototype.dataSourceName - {string}
-     * @description 数据源名称，该字段只读。
-     */
-    dataSourceName = null;
-
-    /**
-     * @member SuperMap.DatasetInfo.prototype.description - {string}
-     * @description 数据集的描述信息。
-     */
-    description = null;
-
-    /**
-     * @member SuperMap.DatasetInfo.prototype.encodeType - {string}
-     * @description 数据集存储时的压缩编码方式，该字段只读。
-     */
-    encodeType = null;
-
-    /**
-     * @member SuperMap.DatasetInfo.prototype.isReadOnly - {boolean}
-     * @description 数据集是否为只读。
-     */
-    isReadOnly = null;
-
-    /**
-     * @member SuperMap.DatasetInfo.prototype.name - {string}
-     * @description 数据集名称，该字段必须且只读。
-     */
-    name = null;
-
-    /**
-     * @member SuperMap.DatasetInfo.prototype.prjCoordSys - {SuperMap.Projection}
-     * @description 数据集的投影信息。
-     */
-    prjCoordSys = null;
-
-    /**
-     * @member SuperMap.DatasetInfo.prototype.tableName - {string}
-     * @description 表名，该字段只读。
-     */
-    tableName = null;
-
-    /**
-     * @member SuperMap.DatasetInfo.prototype.type - {string}
-     * @description 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
-     *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
-     */
-    type = null;
 
     constructor(options) {
         options = options || {};
+
+        /**
+         * @member SuperMap.DatasetInfo.prototype.bounds - {SuperMap.Bounds}
+         * @description 数据集范围，该字段只读。
+         */
+        this.bounds = null;
+
+        /**
+         * @member SuperMap.DatasetInfo.prototype.dataSourceName - {string}
+         * @description 数据源名称，该字段只读。
+         */
+        this.dataSourceName = null;
+
+        /**
+         * @member SuperMap.DatasetInfo.prototype.description - {string}
+         * @description 数据集的描述信息。
+         */
+        this.description = null;
+
+        /**
+         * @member SuperMap.DatasetInfo.prototype.encodeType - {string}
+         * @description 数据集存储时的压缩编码方式，该字段只读。
+         */
+        this.encodeType = null;
+
+        /**
+         * @member SuperMap.DatasetInfo.prototype.isReadOnly - {boolean}
+         * @description 数据集是否为只读。
+         */
+        this.isReadOnly = null;
+
+        /**
+         * @member SuperMap.DatasetInfo.prototype.name - {string}
+         * @description 数据集名称，该字段必须且只读。
+         */
+        this.name = null;
+
+        /**
+         * @member SuperMap.DatasetInfo.prototype.prjCoordSys - {SuperMap.Projection}
+         * @description 数据集的投影信息。
+         */
+        this.prjCoordSys = null;
+
+        /**
+         * @member SuperMap.DatasetInfo.prototype.tableName - {string}
+         * @description 表名，该字段只读。
+         */
+        this.tableName = null;
+
+        /**
+         * @member SuperMap.DatasetInfo.prototype.type - {string}
+         * @description 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
+         *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
+         */
+        this.type = null;
+
         Util.extend(this, options);
+
         var b = this.bounds;
         if (b) {
             this.bounds = new Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
         }
+        this.CLASS_NAME = "SuperMap.DatasetInfo";
     }
 
     /**
@@ -113,9 +117,6 @@ export class DatasetInfo {
         }
         return dataObj;
     }
-
-
-    CLASS_NAME = "SuperMap.DatasetInfo"
 }
 
 SuperMap.DatasetInfo = DatasetInfo;

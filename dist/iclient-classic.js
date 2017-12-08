@@ -2469,23 +2469,35 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
     function CommonServiceBase(url, options) {
         _classCallCheck(this, CommonServiceBase);
 
-        this.EVENT_TYPES = ["processCompleted", "processFailed"];
-        this.events = null;
-        this.eventListeners = null;
-        this.url = null;
-        this.urls = null;
-        this.serverType = null;
-        this.index = null;
-        this.length = null;
-        this.options = null;
-        this.totalTimes = null;
-        this.POLLING_TIMES = 3;
-        this._processSuccess = null;
-        this._processFailed = null;
-        this.isInTheSameDomain = null;
-        this.CLASS_NAME = "SuperMap.CommonServiceBase";
-
         var me = this;
+
+        this.EVENT_TYPES = ["processCompleted", "processFailed"];
+
+        this.events = null;
+
+        this.eventListeners = null;
+
+        this.url = null;
+
+        this.urls = null;
+
+        this.serverType = null;
+
+        this.index = null;
+
+        this.length = null;
+
+        this.options = null;
+
+        this.totalTimes = null;
+
+        this.POLLING_TIMES = 3;
+
+        this._processSuccess = null;
+
+        this._processFailed = null;
+
+        this.isInTheSameDomain = null;
 
         if (_Util.Util.isArray(url)) {
             me.urls = url;
@@ -2521,6 +2533,8 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
         if (me.eventListeners instanceof Object) {
             me.events.on(me.eventListeners);
         }
+
+        this.CLASS_NAME = "SuperMap.CommonServiceBase";
     }
 
     /**
@@ -3506,65 +3520,123 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 事件对象选项。
  */
 var Events = exports.Events = function () {
-
-    /**
-     * @member SuperMap.Events.prototype.extensionCount - {Object}
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.includeXY -{boolean}
-     * @description 判断是否让xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生xy属性。
-     *                可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
-     *                事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
-     *                设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
-     * @example
-     *  function named(evt) {
-     *        this.xy = this.object.events.getMousePosition(evt);
-     *  }
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.eventHandler -{function}
-     * @description 绑定在元素上的事件处理器对象。
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.element  -{HTMLElement}
-     * @description 接受浏览器事件的DOM节点。
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.listeners -{Object}
-     * @description Hashtable of Array(function): events listener functions
-     */
     function Events(object, element, eventTypes, fallThrough, options) {
         _classCallCheck(this, Events);
 
+        /**
+         * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
+         * @description 支持的事件。
+         * @constant
+         * @default [
+         "mouseover", "mouseout","mousedown", "mouseup", "mousemove",
+         "click", "dblclick", "rightclick", "dblrightclick","resize",
+         "focus", "blur","touchstart", "touchmove", "touchend","keydown",
+         "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
+         "MSGestureStart", "MSGestureChange", "MSGestureEnd","contextmenu"
+         ]
+         */
         this.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
-        this.listeners = null;
-        this.object = null;
+
+        /**
+         * @member SuperMap.Events.prototype.listeners -{Object}
+         * @description Hashtable of Array(function): events listener functions
+         */
+        this.listeners = {};
+
+        /**
+         * @member SuperMap.Events.prototype.object  -{Object}
+         * @description  发布应用程序事件的对象。
+         */
+        this.object = object;
+
+        /**
+         * @member SuperMap.Events.prototype.element  -{HTMLElement}
+         * @description 接受浏览器事件的DOM节点。
+         */
         this.element = null;
-        this.eventTypes = null;
+
+        /**
+         * @member SuperMap.Events.prototype.eventTypes  -{Array<string>}
+         * @description 支持的事件类型列表。
+         */
+        this.eventTypes = [];
+
+        /**
+         * @member SuperMap.Events.prototype.eventHandler -{function}
+         * @description 绑定在元素上的事件处理器对象。
+         */
         this.eventHandler = null;
-        this.fallThrough = null;
+
+        /**
+         * @member SuperMap.Events.prototype.fallThrough -{boolean}
+         * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+         */
+        this.fallThrough = fallThrough;
+
+        /**
+         * @member SuperMap.Events.prototype.includeXY -{boolean}
+         * @description 判断是否让xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生xy属性。
+         *                可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
+         *                事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
+         *                设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
+         * @example
+         *  function named(evt) {
+         *        this.xy = this.object.events.getMousePosition(evt);
+         *  }
+         */
         this.includeXY = false;
-        this.extensions = null;
-        this.extensionCount = null;
+
+        /**
+         * @member SuperMap.Events.prototype.extensions - {Object}
+         * @description 事件扩展。Keys代表事件类型，values代表事件对象。
+         * @example
+         * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
+         *
+         *   SuperMap.Events.foostart = SuperMap.Class({
+        *       initialize: function(target) {
+        *           this.target = target;
+        *           this.target.register("click", this, this.doStuff, {extension: true});
+        *           // only required if extension provides more than one event type
+        *           this.target.extensions["foostart"] = true;
+        *           this.target.extensions["fooend"] = true;
+        *       },
+        *       destroy: function() {
+        *           var target = this.target;
+        *           target.unregister("click", this, this.doStuff);
+        *           delete this.target;
+        *           // only required if extension provides more than one event type
+        *           delete target.extensions["foostart"];
+        *           delete target.extensions["fooend"];
+        *       },
+        *       doStuff: function(evt) {
+        *           var propagate = true;
+        *           if (SuperMap.Event.element(evt).className === "foo") {
+        *               propagate = false;
+        *               var target = this.target;
+        *               target.triggerEvent("foostart");
+        *               window.setTimeout(function() {
+        *                   target.triggerEvent("fooend");
+        *               }, 1000);
+        *           }
+        *           return propagate;
+        *       }
+        *   });
+         *   // only required if extension provides more than one event type
+         *   SuperMap.Events.fooend = SuperMap.Events.foostart;
+         */
+        this.extensions = {};
+
+        /**
+         * @member SuperMap.Events.prototype.extensionCount - {Object}
+         */
+        this.extensionCount = {};
+        /**
+         * @member SuperMap.Events.prototype.clearMouseListener - {Object}
+         */
         this.clearMouseListener = null;
-        this.CLASS_NAME = "SuperMap.Events";
 
         _Util.Util.extend(this, options);
-        this.object = object;
-        this.fallThrough = fallThrough;
-        this.listeners = {};
-        this.extensions = {};
-        this.extensionCount = {};
 
-        this.eventTypes = [];
         if (eventTypes != null) {
             for (var i = 0, len = eventTypes.length; i < len; i++) {
                 this.addEventType(eventTypes[i]);
@@ -3574,87 +3646,13 @@ var Events = exports.Events = function () {
         if (element != null) {
             this.attachToElement(element);
         }
+
+        this.CLASS_NAME = "SuperMap.Events";
     }
 
     /**
      * @function SuperMap.Events.prototype.destroy
      * @description 移除当前要素element上的所有事件监听和处理。
-     */
-
-    /**
-     * @member SuperMap.Events.prototype.clearMouseListener - {Object}
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.extensions - {Object}
-     * @description 事件扩展。Keys代表事件类型，values代表事件对象。
-     * @example
-     * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
-     *
-     *   SuperMap.Events.foostart = SuperMap.Class({
-     *       initialize: function(target) {
-     *           this.target = target;
-     *           this.target.register("click", this, this.doStuff, {extension: true});
-     *           // only required if extension provides more than one event type
-     *           this.target.extensions["foostart"] = true;
-     *           this.target.extensions["fooend"] = true;
-     *       },
-     *       destroy: function() {
-     *           var target = this.target;
-     *           target.unregister("click", this, this.doStuff);
-     *           delete this.target;
-     *           // only required if extension provides more than one event type
-     *           delete target.extensions["foostart"];
-     *           delete target.extensions["fooend"];
-     *       },
-     *       doStuff: function(evt) {
-     *           var propagate = true;
-     *           if (SuperMap.Event.element(evt).className === "foo") {
-     *               propagate = false;
-     *               var target = this.target;
-     *               target.triggerEvent("foostart");
-     *               window.setTimeout(function() {
-     *                   target.triggerEvent("fooend");
-     *               }, 1000);
-     *           }
-     *           return propagate;
-     *       }
-     *   });
-     *   // only required if extension provides more than one event type
-     *   SuperMap.Events.fooend = SuperMap.Events.foostart;
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.fallThrough -{boolean}
-     * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.eventTypes  -{Array<string>}
-     * @description 支持的事件类型列表。
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.object  -{Object}
-     * @description  发布应用程序事件的对象。
-     */
-
-
-    /**
-     * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
-     * @description 支持的事件。
-     * @constant
-     * @default [
-     "mouseover", "mouseout","mousedown", "mouseup", "mousemove",
-     "click", "dblclick", "rightclick", "dblrightclick","resize",
-     "focus", "blur","touchstart", "touchmove", "touchend","keydown",
-     "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
-     "MSGestureStart", "MSGestureChange", "MSGestureEnd","contextmenu"
-     ]
      */
 
 
@@ -5740,10 +5738,12 @@ var TimeFlowControl = exports.TimeFlowControl = function (_TimeControlBase) {
 
         var _this = _possibleConstructorReturn(this, (TimeFlowControl.__proto__ || Object.getPrototypeOf(TimeFlowControl)).call(this, options));
 
-        _this.callback = null;
-        _this.CLASS_NAME = "SuperMap.TimeFlowControl";
-
         var me = _this;
+        /**
+         * @member SuperMap.TimeFlowControl.prototype.callback -{function}
+         * @description 每次刷新执行的回调函数
+         */
+        me.callback = callback;
 
         //先让IE下支持bind方法
         if (!Function.prototype.bind) {
@@ -5768,20 +5768,14 @@ var TimeFlowControl = exports.TimeFlowControl = function (_TimeControlBase) {
         me.update = me.update.bind(me);
 
         me.oldTime = me.currentTime;
-        //记录回调函数
-        me.callback = callback;
+
+        me.CLASS_NAME = "SuperMap.TimeFlowControl";
         return _this;
     }
 
     /**
      * @function SuperMap.TimeFlowControl.prototype.updateOptions
      * @override
-     */
-
-
-    /**
-     * @member SuperMap.TimeFlowControl.prototype.callback -{function}
-     * @description 每次刷新执行的回调函数
      */
 
 
@@ -7152,20 +7146,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * pixcel.destroy();
  */
 var Credential = exports.Credential = function () {
-
-    /**
-     * @member SuperMap.Bounds.prototype.name -{string}
-     * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
-     */
     function Credential(value, name) {
         _classCallCheck(this, Credential);
 
-        this.value = "";
-        this.name = "token";
-        this.CLASS_NAME = "SuperMap.Credential";
+        /**
+         * @member SuperMap.Bounds.prototype.value -{string}
+         * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
+         */
+        this.value = value ? value : "";
 
-        this.value = value ? value : this.value;
-        this.name = name ? name : this.name;
+        /**
+         * @member SuperMap.Bounds.prototype.name -{string}
+         * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
+         */
+        this.name = name ? name : "token";
+        this.CLASS_NAME = "SuperMap.Credential";
     }
 
     /**
@@ -7175,25 +7170,6 @@ var Credential = exports.Credential = function () {
      * //这里 str = "token=valueString";
      * var str = credential.getUrlParameters();
      * @returns {string} 返回安全信息组成的url片段。
-     */
-
-    /**
-     * @member SuperMap.Credential.CREDENTIAL -{SuperMap.Credential}
-     * @description 这个对象保存一个安全类的实例，在服务端需要安全验证的时候必须进行设置。
-     * @constant
-     * @example
-     * 代码实例:
-     *  // 当iServer启用服务安全的时候，下边的代码是必须的。安全证书类能够接收一个value和一个name参数。
-     *  var value = "(以iServer为例，这里是申请的token值)";
-     *  var name = "token";
-     *  // 默认name参数为token，所以当使用iServer服务的时候可以不进行设置。
-     *  SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(value, name);
-     *
-     */
-
-    /**
-     * @member SuperMap.Bounds.prototype.value -{string}
-     * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
      */
 
 
@@ -7240,8 +7216,21 @@ var Credential = exports.Credential = function () {
     return Credential;
 }();
 
-Credential.CREDENTIAL = null;
+/**
+ * @member SuperMap.Credential.CREDENTIAL -{SuperMap.Credential}
+ * @description 这个对象保存一个安全类的实例，在服务端需要安全验证的时候必须进行设置。
+ * @constant
+ * @example
+ * 代码实例:
+ *  // 当iServer启用服务安全的时候，下边的代码是必须的。安全证书类能够接收一个value和一个name参数。
+ *  var value = "(以iServer为例，这里是申请的token值)";
+ *  var name = "token";
+ *  // 默认name参数为token，所以当使用iServer服务的时候可以不进行设置。
+ *  SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(value, name);
+ *
+ */
 
+Credential.CREDENTIAL = null;
 _SuperMap.SuperMap.Credential = Credential;
 
 /***/ }),
@@ -7614,24 +7603,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * var lonLat = new SuperMap.LonLat(30,45);
  */
 var LonLat = exports.LonLat = function () {
-
-    /**
-     * @member SuperMap.LonLat.prototype.lon  -{float}
-     * @description 地图的单位的X轴（横轴）坐标，默认为0.0。
-     */
     function LonLat(lon, lat) {
         _classCallCheck(this, LonLat);
-
-        this.lon = 0.0;
-        this.lat = 0.0;
-        this.CLASS_NAME = "SuperMap.LonLat";
 
         if (_Util.Util.isArray(lon)) {
             lat = lon[1];
             lon = lon[0];
         }
-        this.lon = lon ? _Util.Util.toFloat(lon) : this.lon;
-        this.lat = lat ? _Util.Util.toFloat(lat) : this.lat;
+        /**
+         * @member SuperMap.LonLat.prototype.lon  -{float}
+         * @description 地图的单位的X轴（横轴）坐标，默认为0.0。
+         */
+        this.lon = lon ? _Util.Util.toFloat(lon) : 0.0;
+
+        /**
+         * @member SuperMap.LonLat.prototype.lat  -{float}
+         * @description 地图的单位的Y轴（纵轴）坐标，默认为0.0。
+         */
+        this.lat = lat ? _Util.Util.toFloat(lat) : 0.0;
+        this.CLASS_NAME = "SuperMap.LonLat";
     }
 
     /**
@@ -7641,12 +7631,6 @@ var LonLat = exports.LonLat = function () {
      * var lonLat = new SuperMap.LonLat(100,50);
      * var str = lonLat.toString();
      * @returns {string} 例如: "lon=100,lat=50"
-     */
-
-
-    /**
-     * @member SuperMap.LonLat.prototype.lat  -{float}
-     * @description 地图的单位的Y轴（纵轴）坐标，默认为0.0。
      */
 
 
@@ -7891,22 +7875,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *  var offset = new SuperMap.Pixel(-(size.w/2), -size.h);
  */
 var Pixel = exports.Pixel = function () {
-
-    /**
-     * @member SuperMap.Pixel.prototype.y -{number}
-     * @description y坐标，默认为0.0
-     */
     function Pixel(x, y, mode) {
         _classCallCheck(this, Pixel);
 
-        this.x = 0.0;
-        this.y = 0.0;
-        this.mode = null;
-        this.CLASS_NAME = "SuperMap.Pixel";
+        /**
+         * @member SuperMap.Pixel.prototype.x -{number}
+         * @description x坐标，默认为0.0
+         */
+        this.x = x ? parseFloat(x) : 0.0;
 
-        this.x = x ? parseFloat(x) : this.x;
-        this.y = y ? parseFloat(y) : this.y;
+        /**
+         * @member SuperMap.Pixel.prototype.y -{number}
+         * @description y坐标，默认为0.0
+         */
+        this.y = y ? parseFloat(y) : 0.0;
+
+        /**
+         * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
+         * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
+         * 值有<br>
+         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightTop}
+         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightBottom}
+         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
+         *
+         * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+         *
+         * @default {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+         */
         this.mode = mode;
+        this.CLASS_NAME = "SuperMap.Pixel";
     }
 
     /**
@@ -7918,27 +7916,6 @@ var Pixel = exports.Pixel = function () {
      * var str = pixcel.toString();
      *
      * @returns {string} 例如: "x=200.4,y=242.2"
-     */
-
-
-    /**
-     * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
-     * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
-     * 值有<br>
-     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightTop}
-     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightBottom}
-     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
-     *
-     * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-     *
-     * @default {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-     */
-
-
-    /**
-     * @member SuperMap.Pixel.prototype.x -{number}
-     * @description x坐标，默认为0.0
      */
 
 
@@ -8092,6 +8069,7 @@ Pixel.Mode = {
     LeftBottom: "leftbottom"
 };
 
+
 _SuperMap.SuperMap.Pixel = Pixel;
 
 /***/ }),
@@ -8125,121 +8103,101 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        reverse - {boolean} 是否反向。默认为false。<br>
  */
 var TimeControlBase = exports.TimeControlBase = function () {
-
-    /**
-     * @private
-     * @member SuperMap.TimeControlBase.prototype.EVENT_TYPES -{Array<string>}
-     * @description 此类支持的事件类型。
-     *
-     */
-
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.running -{boolean}
-     * @description 记录当前是否处于运行中，默认为false。
-     */
-
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.currentTime -{number}
-     * @description 记录近期的时间，也就是当前帧运行到的时间。
-     */
-
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.endTime -{number}
-     * @description 记录的结束时间，必须为数字，
-     *              如果不设置，初始化时以当前时间进行设置，建议设置
-     */
-
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.frequency -{number}
-     * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
-     */
     function TimeControlBase(options) {
         _classCallCheck(this, TimeControlBase);
-
-        this.speed = 1;
-        this.frequency = 1000;
-        this.startTime = null;
-        this.endTime = null;
-        this.repeat = true;
-        this.currentTime = null;
-        this.oldTime = null;
-        this.running = false;
-        this.reverse = false;
-        this.EVENT_TYPES = ["start", "pause", "stop"];
-        this.events = null;
-        this.CLASS_NAME = "SuperMap.TimeControlBase";
 
         //设置步长，刷新频率、开始结束时间、是否循环、是否反向
         var me = this;
         options = options || {};
-        me.speed = options.speed && options.speed >= 0 ? options.speed : me.speed;
-        me.frequency = options.speed && options.frequency >= 0 ? options.frequency : me.frequency;
-        me.startTime = options.startTime && options.startTime != null ? options.startTime : 0;
-        me.endTime = options.endTime && options.endTime != null && options.endTime >= me.startTime ? options.endTime : +new Date();
-        me.repeat = options.repeat != undefined ? options.repeat : me.repeat;
-        me.reverse = options.reverse != undefined ? options.reverse : me.reverse;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.speed -{number}
+         * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
+         */
+        this.speed = options.speed && options.speed >= 0 ? options.speed : 1;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.frequency -{number}
+         * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
+         */
+        this.frequency = options.speed && options.frequency >= 0 ? options.frequency : 1000;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.startTime -{number}
+         * @description 记录的起始时间，必须为数字，
+         *              如果不设置，初始化时为0，建议设置
+         */
+        this.startTime = options.startTime && options.startTime != null ? options.startTime : 0;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.endTime -{number}
+         * @description 记录的结束时间，必须为数字，
+         *              如果不设置，初始化时以当前时间进行设置，建议设置
+         */
+        this.endTime = options.endTime && options.endTime != null && options.endTime >= me.startTime ? options.endTime : +new Date();
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.repeat -{boolean}
+         * @description 是否重复循环，默认为true。
+         */
+        this.repeat = options.repeat !== undefined ? options.repeat : true;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.reverse -{boolean}
+         * @description 是否反向，默认为false。
+         */
+        this.reverse = options.reverse !== undefined ? options.reverse : false;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.currentTime -{number}
+         * @description 记录近期的时间，也就是当前帧运行到的时间。
+         */
+        this.currentTime = null;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.oldTime -{number}
+         * @description 记录上一帧的时间，也就是之前运行到的时间。
+         */
+        this.oldTime = null;
+
+        /**
+         * @member SuperMap.TimeControlBase.prototype.running -{boolean}
+         * @description 记录当前是否处于运行中，默认为false。
+         */
+        this.running = false;
+
+        /**
+         * @private
+         * @member SuperMap.TimeControlBase.prototype.EVENT_TYPES -{Array<string>}
+         * @description 此类支持的事件类型。
+         *
+         */
+        this.EVENT_TYPES = ["start", "pause", "stop"];
+
+        /**
+         * @private
+         * @member SuperMap.TimeControlBase.prototype.events -{SuperMap.Events}
+         * @description 事件
+         */
+        me.events = new _Events.Events(this, null, this.EVENT_TYPES);
 
         me.speed = Number(me.speed);
         me.frequency = Number(me.frequency);
         me.startTime = Number(me.startTime);
         me.endTime = Number(me.endTime);
 
-        me.events = new _Events.Events(this, null, this.EVENT_TYPES);
-        me.startTime = Date.parse(new Date(this.startTime));
-        me.endTime = Date.parse(new Date(this.endTime));
-
-        //初始化处于非运行阶段
-        me.running = false;
+        me.startTime = Date.parse(new Date(me.startTime));
+        me.endTime = Date.parse(new Date(me.endTime));
 
         //初始化当前时间
         me.currentTime = me.startTime;
+
+        this.CLASS_NAME = "SuperMap.TimeControlBase";
     }
 
     /**
      * @function SuperMap.TimeControlBase.prototype.updateOptions
      * @param options - {Object} 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
-     */
-
-
-    /**
-     * @private
-     * @member SuperMap.TimeControlBase.prototype.events -{SuperMap.Events}
-     * @description 事件
-     */
-
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.reverse -{boolean}
-     * @description 是否反向，默认为false。
-     */
-
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.oldTime -{number}
-     * @description 记录上一帧的时间，也就是之前运行到的时间。
-     */
-
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.repeat -{boolean}
-     * @description 是否重复循环，默认为true。
-     */
-
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.startTime -{number}
-     * @description 记录的起始时间，必须为数字，
-     *              如果不设置，初始化时为0，建议设置
-     */
-
-
-    /**
-     * @member SuperMap.TimeControlBase.prototype.speed -{number}
-     * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
      */
 
 
@@ -8628,39 +8586,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */
 var Format = exports.Format = function () {
-
-    /**
-     * @member SuperMap.Format.prototype.data - {Object}
-     * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
-     */
     function Format(options) {
         _classCallCheck(this, Format);
 
-        this.options = null;
+        /**
+         * @member SuperMap.Format.prototype.data - {Object}
+         * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
+         */
         this.data = null;
+
+        /**
+         * APIProperty: keepData
+         * @member SuperMap.Format.prototype.keepData - {Object}
+         * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
+         */
         this.keepData = false;
-        this.CLASS_NAME = "SuperMap.Format";
 
         _Util.Util.extend(this, options);
+        /**
+         * @member SuperMap.Format.prototype.options - {Object}
+         * @description 可选参数。
+         */
         this.options = options;
+
+        this.CLASS_NAME = "SuperMap.Format";
     }
 
     /**
      * @function SuperMap.Format.prototype.destroy
      * @description 销毁该格式类，释放相关资源。
-     */
-
-
-    /**
-     * APIProperty: keepData
-     * @member SuperMap.Format.prototype.keepData - {Object}
-     * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
-     */
-
-
-    /**
-     * @member SuperMap.Format.prototype.options - {Object}
-     * @description 可选参数。
      */
 
 
@@ -8735,20 +8689,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var JSONFormat = exports.JSONFormat = function (_Format) {
     _inherits(JSONFormat, _Format);
 
-    function JSONFormat() {
-        var _ref;
-
-        var _temp, _this, _ret;
-
+    function JSONFormat(options) {
         _classCallCheck(this, JSONFormat);
 
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
+        /**
+         * @member SuperMap.Format.JSON.prototype.indent - {string}
+         * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次。
+         */
+        var _this = _possibleConstructorReturn(this, (JSONFormat.__proto__ || Object.getPrototypeOf(JSONFormat)).call(this, options));
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = JSONFormat.__proto__ || Object.getPrototypeOf(JSONFormat)).call.apply(_ref, [this].concat(args))), _this), _this.indent = "    ", _this.space = " ", _this.newline = "\n", _this.level = 0, _this.pretty = false, _this.nativeJSON = function () {
-            return !!(window.JSON && typeof JSON.parse === "function" && typeof JSON.stringify === "function");
-        }(), _this.serialize = {
+        _this.serialize = {
             /**
              * @function SuperMap.Format.JSON.serialize.object
              * @description 把对象转换为JSON字符串。
@@ -8886,56 +8836,56 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
 
                 return '"' + _date.getFullYear() + '-' + format(_date.getMonth() + 1) + '-' + format(_date.getDate()) + 'T' + format(_date.getHours()) + ':' + format(_date.getMinutes()) + ':' + format(_date.getSeconds()) + '"';
             }
-        }, _this.CLASS_NAME = "SuperMap.Format.JSON", _temp), _possibleConstructorReturn(_this, _ret);
+        };
+        _this.indent = "    ";
+
+        /**
+         * @member SuperMap.Format.JSON.prototype.space -{string}
+         * @description 用于格式化输出，space字符串会在名值对的":"后边添加。
+         */
+        _this.space = " ";
+
+        /**
+         * @member SuperMap.Format.JSON.prototype.newline - {string}
+         * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
+         */
+        _this.newline = "\n";
+
+        /**
+         * @member SuperMap.Format.JSON.prototype.level - {integer}
+         * @description 用于格式化输出, 表示的是缩进级别。
+         */
+        _this.level = 0;
+
+        /**
+         * @member SuperMap.Format.JSON.prototype.pretty - {boolean}
+         * @description 是否在序列化的时候使用额外的空格控制结构。在write方法中使用，默认值为false。
+         */
+        _this.pretty = false;
+
+        /**
+         * @member SuperMap.Format.JSON.prototype.nativeJSON - {boolean}
+         * @description 判断浏览器是否原生支持JSON格式数据。
+         */
+        _this.nativeJSON = function () {
+            return !!(window.JSON && typeof JSON.parse === "function" && typeof JSON.stringify === "function");
+        }();
+
+        _this.CLASS_NAME = "SuperMap.Format.JSON";
+        return _this;
     }
 
     /**
-     * @member SuperMap.Format.JSON.prototype.indent - {string}
-     * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次。
-     */
-
-
-    /**
-     * @member SuperMap.Format.JSON.prototype.space -{string}
-     * @description 用于格式化输出，space字符串会在名值对的":"后边添加。
-     */
-
-
-    /**
-     * @member SuperMap.Format.JSON.prototype.newline - {string}
-     * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
-     */
-
-
-    /**
-     * @member SuperMap.Format.JSON.prototype.level - {integer}
-     * @description 用于格式化输出, 表示的是缩进级别。
-     */
-
-
-    /**
-     * @member SuperMap.Format.JSON.prototype.pretty - {boolean}
-     * @description 是否在序列化的时候使用额外的空格控制结构。在write方法中使用，默认值为false。
-     */
-
-
-    /**
-     * @member SuperMap.Format.JSON.prototype.nativeJSON - {boolean}
-     * @description 判断浏览器是否原生支持JSON格式数据。
+     * @function SuperMap.Format.JSON.prototype.read
+     * @description 将一个符合json结构的字符串进行解析。
+     * @param json - {string} 符合json结构的字符串。
+     * @param filter - {function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
+     * @return {Object} 对象，数组，字符串或数字。
      */
 
 
     _createClass(JSONFormat, [{
         key: 'read',
-
-
-        /**
-         * @function SuperMap.Format.JSON.prototype.read
-         * @description 将一个符合json结构的字符串进行解析。
-         * @param json - {string} 符合json结构的字符串。
-         * @param filter - {function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
-         * @return {Object} 对象，数组，字符串或数字。
-         */
         value: function read(json, filter) {
             var object;
             if (this.nativeJSON) {
@@ -9212,60 +9162,55 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         distance -{string} 缓冲区半径。 <br>
  */
 var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function () {
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{SuperMap.AnalystSizeUnit}
-     * @description 缓冲距离单位。
-     */
-
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.distance -{string}
-     * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
-     */
-
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
     function BuffersAnalystJobsParameter(options) {
         _classCallCheck(this, BuffersAnalystJobsParameter);
 
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.datasetName -{string}
+         * @description 数据集名。
+         */
         this.datasetName = "";
-        this.bounds = "";
-        this.distance = "";
-        this.distanceField = "";
-        this.distanceUnit = _REST.AnalystSizeUnit.METER;
-        this.dissolveField = "";
 
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.bounds - {Object}
+         * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+         */
+        this.bounds = "";
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distance -{string}
+         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
+         */
+        this.distance = "";
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{string}
+         * @description 缓冲距离字段，
+         */
+        this.distanceField = "";
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{SuperMap.AnalystSizeUnit}
+         * @description 缓冲距离单位。
+         */
+        this.distanceUnit = _REST.AnalystSizeUnit.METER;
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField -{string}
+         * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
+         */
+        this.dissolveField = "";
         if (!options) {
-            return;
+            return this;
         }
         _Util.Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.BuffersAnalystJobsParameter";
     }
 
     /**
      * @function SuperMap.BuffersAnalystJobsParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField -{string}
-     * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
-     */
-
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{string}
-     * @description 缓冲距离字段，
-     */
-
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.bounds - {Object}
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
      */
 
 
@@ -9354,9 +9299,8 @@ var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_P
 
         var _this = _possibleConstructorReturn(this, (BuffersAnalystJobsService.__proto__ || Object.getPrototypeOf(BuffersAnalystJobsService)).call(this, url, options));
 
-        _this.CLASS_NAME = "SuperMap.BuffersAnalystJobsService";
-
         _this.url += "/spatialanalyst/buffers";
+        _this.CLASS_NAME = "SuperMap.BuffersAnalystJobsService";
         return _this;
     }
 
@@ -9421,7 +9365,7 @@ _SuperMap.SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.GeoCodingParameter = undefined;
 
@@ -9445,85 +9389,75 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         maxReturn - {number} 最大返回结果数。
  */
 var GeoCodingParameter = exports.GeoCodingParameter = function () {
+  function GeoCodingParameter(options) {
+    _classCallCheck(this, GeoCodingParameter);
 
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys - {string}
-     * @description  查询结果的坐标系。
-     */
-
-
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.toIndex - {number}
-     * @description 设置返回对象的结束索引值。
-     */
-
-
+    if (options.filters) {
+      var strs = [];
+      var fields = options.filters.split(',');
+      fields.map(function (field) {
+        strs.push("\"" + field + "\"");
+        return field;
+      });
+      options.filters = strs;
+    }
     /**
      * @member SuperMap.GeoCodingParameter.prototype.address - {string}
      * @description 地点关键词。
      */
-    function GeoCodingParameter(options) {
-        _classCallCheck(this, GeoCodingParameter);
-
-        this.address = null;
-        this.fromIndex = null;
-        this.toIndex = null;
-        this.filters = null;
-        this.prjCoordSys = null;
-        this.maxReturn = null;
-
-        if (!options) {
-            return;
-        }
-        if (options.filters) {
-            var strs = [];
-            var fields = options.filters.split(',');
-            fields.map(function (field) {
-                strs.push("\"" + field + "\"");
-                return field;
-            });
-            options.filters = strs;
-        }
-        _Util.Util.extend(this, options);
-    }
-
-    /**
-     * @function SuperMap.GeoCodingParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.maxReturn - {number}
-     * @description 最大返回结果数。
-     */
-
-
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.filters - {Array<string>}
-     * @description 过滤字段，限定查询区域。
-     */
-
+    this.address = null;
 
     /**
      * @member SuperMap.GeoCodingParameter.prototype.fromIndex - {number}
      * @description 设置返回对象的起始索引值。
      */
+    this.fromIndex = null;
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.toIndex - {number}
+     * @description 设置返回对象的结束索引值。
+     */
+    this.toIndex = null;
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.filters - {Array<string>}
+     * @description 过滤字段，限定查询区域。
+     */
+    this.filters = null;
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys - {string}
+     * @description  查询结果的坐标系。
+     */
+    this.prjCoordSys = null;
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.maxReturn - {number}
+     * @description 最大返回结果数。
+     */
+    this.maxReturn = null;
+    _Util.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.GeoCodingParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
 
 
-    _createClass(GeoCodingParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.address = null;
-            this.fromIndex = null;
-            this.toIndex = null;
-            this.filters = null;
-            this.prjCoordSys = null;
-            this.maxReturn = null;
-        }
-    }]);
+  _createClass(GeoCodingParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.address = null;
+      this.fromIndex = null;
+      this.toIndex = null;
+      this.filters = null;
+      this.prjCoordSys = null;
+      this.maxReturn = null;
+    }
+  }]);
 
-    return GeoCodingParameter;
+  return GeoCodingParameter;
 }();
 
 _SuperMap.SuperMap.GeoCodingParameter = GeoCodingParameter;
@@ -9536,7 +9470,7 @@ _SuperMap.SuperMap.GeoCodingParameter = GeoCodingParameter;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.GeoDecodingParameter = undefined;
 
@@ -9561,99 +9495,88 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        geoDecodingRadius - {number} 查询半径。
  */
 var GeoDecodingParameter = exports.GeoDecodingParameter = function () {
+  function GeoDecodingParameter(options) {
+    _classCallCheck(this, GeoDecodingParameter);
 
-    /**
-     *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn - {number}
-     *  @description 最大返回结果数。
-     */
-
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.filters - {Array<string>}
-     * @description 过滤字段，限定查询区域。
-     */
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.fromIndex - {number}
-     * @description  设置返回对象的起始索引值。
-     */
-
+    if (options.filters) {
+      var strs = [];
+      var fields = options.filters.split(',');
+      fields.map(function (field) {
+        strs.push("\"" + field + "\"");
+        return field;
+      });
+      options.filters = strs;
+    }
     /**
      * @member SuperMap.GeoDecodingParameter.prototype.x - {number}
      * @description 查询位置的横坐标。
      */
-    function GeoDecodingParameter(options) {
-        _classCallCheck(this, GeoDecodingParameter);
-
-        this.x = null;
-        this.y = null;
-        this.fromIndex = null;
-        this.toIndex = null;
-        this.filters = null;
-        this.prjCoordSys = null;
-        this.maxReturn = null;
-        this.geoDecodingRadius = null;
-
-        if (!options) {
-            return;
-        }
-        if (options.filters) {
-            var strs = [];
-            var fields = options.filters.split(',');
-            fields.map(function (field) {
-                strs.push("\"" + field + "\"");
-                return field;
-            });
-            options.filters = strs;
-        }
-        _Util.Util.extend(this, options);
-    }
-
-    /**
-     * @function SuperMap.GeoDecodingParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius - {number}
-     * @description 查询半径。
-     */
-
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys - {string}
-     * @description 查询结果的坐标系。
-     */
-
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.toIndex - {number}
-     * @description 设置返回对象的结束索引值。
-     */
-
+    this.x = null;
 
     /**
      * @member SuperMap.GeoDecodingParameter.prototype.y - {number}
      * @description 查询位置的纵坐标。
      */
+    this.y = null;
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.fromIndex - {number}
+     * @description  设置返回对象的起始索引值。
+     */
+    this.fromIndex = null;
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.toIndex - {number}
+     * @description 设置返回对象的结束索引值。
+     */
+    this.toIndex = null;
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.filters - {Array<string>}
+     * @description 过滤字段，限定查询区域。
+     */
+    this.filters = null;
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys - {string}
+     * @description 查询结果的坐标系。
+     */
+    this.prjCoordSys = null;
+
+    /**
+     *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn - {number}
+     *  @description 最大返回结果数。
+     */
+    this.maxReturn = null;
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius - {number}
+     * @description 查询半径。
+     */
+    this.geoDecodingRadius = null;
+    _Util.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.GeoDecodingParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
 
 
-    _createClass(GeoDecodingParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.x = null;
-            this.y = null;
-            this.fromIndex = null;
-            this.toIndex = null;
-            this.filters = null;
-            this.prjCoordSys = null;
-            this.maxReturn = null;
-            this.geoDecodingRadius = null;
-        }
-    }]);
+  _createClass(GeoDecodingParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.x = null;
+      this.y = null;
+      this.fromIndex = null;
+      this.toIndex = null;
+      this.filters = null;
+      this.prjCoordSys = null;
+      this.maxReturn = null;
+      this.geoDecodingRadius = null;
+    }
+  }]);
 
-    return GeoDecodingParameter;
+  return GeoDecodingParameter;
 }();
 
 _SuperMap.SuperMap.GeoDecodingParameter = GeoDecodingParameter;
@@ -11783,7 +11706,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -11907,9 +11830,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 

@@ -11,35 +11,35 @@ import {Util} from '../commontypes/Util';
  *        Y - {integer} 要查询的地理位置Y轴。
  */
 export class GetGridCellInfosParameters {
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName - {string}
-     * @description 数据集名称。
-     */
-    datasetName = null;
 
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName - {string}
-     * @description  数据源名称。
-     */
-    dataSourceName = null;
-
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.X - {integer}
-     * @description 要查询的地理位置X轴。
-     */
-    X = null;
-
-    /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.Y - {integer}
-     * @description 要查询的地理位置Y轴。
-     */
-    Y = null;
 
     constructor(options) {
-        if (!options) {
-            return;
-        }
+        /**
+         * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName - {string}
+         * @description 数据集名称。
+         */
+        this.datasetName = null;
+
+        /**
+         * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName - {string}
+         * @description  数据源名称。
+         */
+        this.dataSourceName = null;
+
+        /**
+         * @member SuperMap.GetGridCellInfosParameters.prototype.X - {integer}
+         * @description 要查询的地理位置X轴。
+         */
+        this.X = null;
+
+        /**
+         * @member SuperMap.GetGridCellInfosParameters.prototype.Y - {integer}
+         * @description 要查询的地理位置Y轴。
+         */
+        this.Y = null;
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.GetGridCellInfosParameters";
     }
 
 
@@ -56,7 +56,6 @@ export class GetGridCellInfosParameters {
     }
 
 
-    CLASS_NAME = "SuperMap.GetGridCellInfosParameters"
 }
 
 SuperMap.GetGridCellInfosParameters = GetGridCellInfosParameters;

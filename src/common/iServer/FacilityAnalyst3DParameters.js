@@ -16,37 +16,35 @@ import {Util} from '../commontypes/Util';
  */
 export class FacilityAnalyst3DParameters {
 
-    /**
-     * @member SuperMap.FacilityAnalyst3DParameters.prototype.edgeID - {number}
-     * @description 指定的弧段ID。
-     */
-    edgeID = null;
-
-    /**
-     * @member SuperMap.FacilityAnalyst3DParameters.prototype.nodeID - {number}
-     * @description 指定的结点ID。
-     */
-    nodeID = null;
-
-    /**
-     * @member SuperMap.FacilityAnalyst3DParameters.prototype.weightName - string}
-     * @description 指定的权值字段信息对象的名称。
-     */
-    weightName = null;
-
-    /**
-     * @member SuperMap.FacilityAnalyst3DParameters.prototype.isUncertainDirectionValid - {boolean}
-     * @description 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
-     *                指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
-     */
-    isUncertainDirectionValid = false;
 
     constructor(options) {
-        var me = this;
-        if (!options) {
-            return;
-        }
-        Util.extend(me, options);
+        /**
+         * @member SuperMap.FacilityAnalyst3DParameters.prototype.edgeID - {number}
+         * @description 指定的弧段ID。
+         */
+        this.edgeID = null;
+
+        /**
+         * @member SuperMap.FacilityAnalyst3DParameters.prototype.nodeID - {number}
+         * @description 指定的结点ID。
+         */
+        this.nodeID = null;
+
+        /**
+         * @member SuperMap.FacilityAnalyst3DParameters.prototype.weightName - string}
+         * @description 指定的权值字段信息对象的名称。
+         */
+        this.weightName = null;
+
+        /**
+         * @member SuperMap.FacilityAnalyst3DParameters.prototype.isUncertainDirectionValid - {boolean}
+         * @description 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
+         *                指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
+         */
+        this.isUncertainDirectionValid = false;
+        Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.FacilityAnalyst3DParameters";
+
     }
 
     /**
@@ -60,9 +58,6 @@ export class FacilityAnalyst3DParameters {
         me.weightName = null;
         me.isUncertainDirectionValid = null;
     }
-
-
-    CLASS_NAME = "SuperMap.FacilityAnalyst3DParameters"
 }
 
 SuperMap.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;

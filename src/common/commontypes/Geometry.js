@@ -9,39 +9,40 @@ import {Util} from './Util';
  */
 export class Geometry {
 
-    /**
-     * @member SuperMap.Geometry.prototype.id -{string}
-     * @description  此几何对象的唯一标示符。
-     *
-     */
-    id = null;
-
-    /**
-     * @member SuperMap.Geometry.prototype.parent -{SuperMap.Geometry}
-     * @description This is set when a Geometry is added as component
-     * of another geometry
-     */
-    parent = null;
-
-    /**
-     * @member SuperMap.Geometry.prototype.bounds -{SuperMap.Bounds}
-     * @description 几何对象的范围
-     *
-     */
-    bounds = null;
-
-    /**
-     * @member SuperMap.Geometry.prototype.SRID -{interger}
-     * @description 投影坐标参数。通过该参数，服务器判断Geometry对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
-     * @example
-     *   var geometry= new SuperMap.Geometry();
-     *   geometry. SRID=4326;
-     *
-     */
-    SRID = null;
 
     constructor() {
+        /**
+         * @member SuperMap.Geometry.prototype.id -{string}
+         * @description  此几何对象的唯一标示符。
+         *
+         */
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
+
+        /**
+         * @member SuperMap.Geometry.prototype.parent -{SuperMap.Geometry}
+         * @description This is set when a Geometry is added as component
+         * of another geometry
+         */
+        this.parent = null;
+
+        /**
+         * @member SuperMap.Geometry.prototype.bounds -{SuperMap.Bounds}
+         * @description 几何对象的范围
+         *
+         */
+        this.bounds = null;
+
+        /**
+         * @member SuperMap.Geometry.prototype.SRID -{interger}
+         * @description 投影坐标参数。通过该参数，服务器判断Geometry对象的坐标参考系是否与数据集相同，如果不同，则在数据入库前进行投影变换。
+         * @example
+         *   var geometry= new SuperMap.Geometry();
+         *   geometry. SRID=4326;
+         *
+         */
+        this.SRID = null;
+
+        this.CLASS_NAME = "SuperMap.Geometry";
     }
 
 
@@ -158,17 +159,15 @@ export class Geometry {
     //  * @returns {string} geometry对象的字符串表述(Well-Known Text)
     //  */
     // toString() {
-        // var string;
-        // if (WKT) {
-        //     var wkt = new WKT();
-        //     string = wkt.write(new Vector(this));
-        // } else {
-        //     string = Object.prototype.toString.call(this);
-        // }
-        // return string;
+    // var string;
+    // if (WKT) {
+    //     var wkt = new WKT();
+    //     string = wkt.write(new Vector(this));
+    // } else {
+    //     string = Object.prototype.toString.call(this);
     // }
-
-    CLASS_NAME = "SuperMap.Geometry"
+    // return string;
+    // }
 }
 
 SuperMap.Geometry = Geometry;

@@ -9,23 +9,26 @@ import {Util} from '../commontypes/Util';
  *         dataset - {string} 数据集名称。
  */
 export class FieldParameters {
-    /**
-     * @member SuperMap.FieldParameters.prototype.datasource - {string}
-     * @description 要查询的数据集所在的数据源名称。
-     */
-    datasource = null;
-
-    /**
-     *  @member SuperMap.FieldParameters.prototype.dataset - {string}
-     *  @description 要查询的数据集名称。
-     */
-    dataset = null;
 
 
     constructor(options) {
+        /**
+         * @member SuperMap.FieldParameters.prototype.datasource - {string}
+         * @description 要查询的数据集所在的数据源名称。
+         */
+        this.datasource = null;
+
+        /**
+         *  @member SuperMap.FieldParameters.prototype.dataset - {string}
+         *  @description 要查询的数据集名称。
+         */
+        this.dataset = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.FieldParameters";
     }
 
     /**
@@ -38,8 +41,6 @@ export class FieldParameters {
         me.dataset = null;
     }
 
-
-    CLASS_NAME = "SuperMap.FieldParameters"
 }
 
 SuperMap.FieldParameters = FieldParameters;

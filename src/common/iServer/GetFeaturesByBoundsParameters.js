@@ -21,50 +21,41 @@ import {GetFeaturesParametersBase} from './GetFeaturesParametersBase';
  */
 
 export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
-    /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.getFeatureMode - {string}
-     * @description 数据集查询模式。范围查询有"BOUNDS"，"BOUNDS_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到BOUNDS_ATTRIBUTEFILTER访问服务。
-     */
-    getFeatureMode = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.bounds - {Object}
-     * @description 用于查询的范围对象。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
-     *
-     */
-    bounds = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.fields - {Array<string>}
-     * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
-     */
-    fields = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.attributeFilter - {string}
-     * @description 范围查询属性过滤条件。
-     */
-    attributeFilter = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.spatialQueryMode - {SuperMap.SpatialQueryMode}
-     * @description 空间查询模式常量，必设参数，默认为CONTAIN。
-     */
-    spatialQueryMode = SpatialQueryMode.CONTAIN;
-
-    static  getFeatureMode = {
-        "BOUNDS": "BOUNDS",
-        "BOUNDS_ATTRIBUTEFILTER": "BOUNDS_ATTRIBUTEFILTER"
-    };
-
 
     constructor(options) {
         super(options);
+        /**
+         * @member SuperMap.GetFeaturesByBoundsParameters.prototype.getFeatureMode - {string}
+         * @description 数据集查询模式。范围查询有"BOUNDS"，"BOUNDS_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到BOUNDS_ATTRIBUTEFILTER访问服务。
+         */
         this.getFeatureMode = GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS;
-        if (!options) {
-            return;
-        }
+
+        /**
+         * @member SuperMap.GetFeaturesByBoundsParameters.prototype.bounds - {Object}
+         * @description 用于查询的范围对象。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
+         *
+         */
+        this.bounds = null;
+
+        /**
+         * @member SuperMap.GetFeaturesByBoundsParameters.prototype.fields - {Array<string>}
+         * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
+         */
+        this.fields = null;
+
+        /**
+         * @member SuperMap.GetFeaturesByBoundsParameters.prototype.attributeFilter - {string}
+         * @description 范围查询属性过滤条件。
+         */
+        this.attributeFilter = null;
+
+        /**
+         * @member SuperMap.GetFeaturesByBoundsParameters.prototype.spatialQueryMode - {SuperMap.SpatialQueryMode}
+         * @description 空间查询模式常量，必设参数，默认为CONTAIN。
+         */
+        this.spatialQueryMode = SpatialQueryMode.CONTAIN;
         Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.GetFeaturesByBoundsParameters";
     }
 
     /**
@@ -128,7 +119,12 @@ export class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
         return Util.toJSON(parasByBounds);
     }
 
-    CLASS_NAME = "SuperMap.GetFeaturesByBoundsParameters"
+
 }
+
+GetFeaturesByBoundsParameters.getFeatureMode = {
+    "BOUNDS": "BOUNDS",
+    "BOUNDS_ATTRIBUTEFILTER": "BOUNDS_ATTRIBUTEFILTER"
+};
 
 SuperMap.GetFeaturesByBoundsParameters = GetFeaturesByBoundsParameters;

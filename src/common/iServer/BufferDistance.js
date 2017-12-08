@@ -10,23 +10,23 @@ import {Util} from '../commontypes/Util';
  */
 export class BufferDistance {
 
-    /**
-     * @member SuperMap.BufferDistance.prototype.exp -{string}
-     * @description 以数值型的字段表达式作为缓冲区分析的距离值。
-     */
-    exp = null;
-
-    /**
-     * @member SuperMap.BufferDistance.prototype.value -{number}
-     * @description 以数值作为缓冲区分析的距离值。默认为100，单位：米。
-     */
-    value = 100;
 
     constructor(options) {
-        if (!options) {
-            return this;
-        }
+        /**
+         * @member SuperMap.BufferDistance.prototype.exp -{string}
+         * @description 以数值型的字段表达式作为缓冲区分析的距离值。
+         */
+        this.exp = null;
+
+        /**
+         * @member SuperMap.BufferDistance.prototype.value -{number}
+         * @description 以数值作为缓冲区分析的距离值。默认为100，单位：米。
+         */
+        this.value = 100;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.BufferDistance";
     }
 
     /**
@@ -38,6 +38,7 @@ export class BufferDistance {
         this.value = null;
     }
 
-    CLASS_NAME = "SuperMap.BufferDistance"
+
 }
+
 SuperMap.BufferDistance = BufferDistance;

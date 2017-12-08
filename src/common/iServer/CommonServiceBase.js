@@ -19,36 +19,36 @@ import {FunctionExt} from '../commontypes/BaseTypes';
  */
 export class CommonServiceBase {
 
-    EVENT_TYPES = ["processCompleted", "processFailed"];
-
-    events = null;
-
-    eventListeners = null;
-
-    url = null;
-
-    urls = null;
-
-    serverType = null;
-
-    index = null;
-
-    length = null;
-
-    options = null;
-
-    totalTimes = null;
-
-    POLLING_TIMES = 3;
-
-    _processSuccess = null;
-
-    _processFailed = null;
-
-    isInTheSameDomain = null;
-
     constructor(url, options) {
         let me = this;
+
+        this.EVENT_TYPES = ["processCompleted", "processFailed"];
+
+        this.events = null;
+
+        this.eventListeners = null;
+
+        this.url = null;
+
+        this.urls = null;
+
+        this.serverType = null;
+
+        this.index = null;
+
+        this.length = null;
+
+        this.options = null;
+
+        this.totalTimes = null;
+
+        this.POLLING_TIMES = 3;
+
+        this._processSuccess = null;
+
+        this._processFailed = null;
+
+        this.isInTheSameDomain = null;
 
         if (Util.isArray(url)) {
             me.urls = url;
@@ -84,6 +84,8 @@ export class CommonServiceBase {
         if (me.eventListeners instanceof Object) {
             me.events.on(me.eventListeners);
         }
+
+        this.CLASS_NAME = "SuperMap.CommonServiceBase";
     }
 
     /**
@@ -335,8 +337,6 @@ export class CommonServiceBase {
 
         })
     }
-
-    CLASS_NAME = "SuperMap.CommonServiceBase";
 }
 
 SuperMap.CommonServiceBase = CommonServiceBase;

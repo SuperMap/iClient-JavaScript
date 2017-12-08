@@ -28,6 +28,8 @@ export class GetFeaturesByBufferService extends GetFeaturesServiceBase {
 
     constructor(url, options) {
         super(url, options);
+
+        this.CLASS_NAME = "SuperMap.GetFeaturesByBufferService";
     }
 
     /**
@@ -51,7 +53,6 @@ export class GetFeaturesByBufferService extends GetFeaturesServiceBase {
         return SuperMap.GetFeaturesByBufferParameters.toJsonParameters(params);
     }
 
-    CLASS_NAME = "SuperMap.GetFeaturesByBufferService"
 }
 
 SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService;

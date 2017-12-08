@@ -38,6 +38,8 @@ export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
      */
     constructor(url, options) {
         super(url, options);
+
+        this.CLASS_NAME = "SuperMap.FindClosestFacilitiesService";
     }
 
     /**
@@ -137,7 +139,6 @@ export class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
         return result;
     }
 
-    CLASS_NAME = "SuperMap.FindClosestFacilitiesService"
 }
 
 SuperMap.FindClosestFacilitiesService = FindClosestFacilitiesService;

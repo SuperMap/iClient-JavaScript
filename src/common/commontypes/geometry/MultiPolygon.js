@@ -20,19 +20,20 @@ import {Collection} from './Collection';
  */
 export class MultiPolygon extends Collection {
 
-    /**
-     * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.Polygon}"]
-     */
-    componentTypes = ["SuperMap.Geometry.Polygon"];
 
     constructor(components) {
-        super(components)
+        super(components);
+        /**
+         * @member SuperMap.Geometry.MultiPolygon.prototype.componentTypes -{Array<string>}
+         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @readonly
+         * @default ["{@link SuperMap.Geometry.Polygon}"]
+         */
+        this.componentTypes = ["SuperMap.Geometry.Polygon"];
+        this.CLASS_NAME = "SuperMap.Geometry.MultiPolygon";
     }
 
-    CLASS_NAME = "SuperMap.Geometry.MultiPolygon"
+
 }
 
 SuperMap.Geometry.MultiPolygon = MultiPolygon;

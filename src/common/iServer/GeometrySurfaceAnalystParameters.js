@@ -17,25 +17,26 @@ import {SurfaceAnalystParameters} from './SurfaceAnalystParameters';
  */
 export class GeometrySurfaceAnalystParameters extends SurfaceAnalystParameters {
 
-    /**
-     * @member SuperMap.GeometrySurfaceAnalystParameters.prototype.points - {Array<Object>}
-     * @description 获取或设置用于表面分析的坐标点数组。点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
-     */
-    points = null;
-
-    /**
-     * @member SuperMap.GeometrySurfaceAnalystParameters.prototype.zValues - {Array<number>}
-     * @description 获取或设置用于提取操作的值。提取等值线时，将使用该数组中的值，
-     * 对几何对象中的坐标点数组进行插值分析，得到栅格数据集（中间结果），接着从栅格数据集提取等值线。
-     */
-    zValues = null;
-
 
     constructor(options) {
         super(options);
+        /**
+         * @member SuperMap.GeometrySurfaceAnalystParameters.prototype.points - {Array<Object>}
+         * @description 获取或设置用于表面分析的坐标点数组。点类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
+         */
+        this.points = null;
+
+        /**
+         * @member SuperMap.GeometrySurfaceAnalystParameters.prototype.zValues - {Array<number>}
+         * @description 获取或设置用于提取操作的值。提取等值线时，将使用该数组中的值，
+         * 对几何对象中的坐标点数组进行插值分析，得到栅格数据集（中间结果），接着从栅格数据集提取等值线。
+         */
+        this.zValues = null;
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.GeometrySurfaceAnalystParameters";
     }
 
     /**
@@ -54,8 +55,6 @@ export class GeometrySurfaceAnalystParameters extends SurfaceAnalystParameters {
         me.zValues = null;
     }
 
-
-    CLASS_NAME = "SuperMap.GeometrySurfaceAnalystParameters"
 }
 
 SuperMap.GeometrySurfaceAnalystParameters = GeometrySurfaceAnalystParameters;

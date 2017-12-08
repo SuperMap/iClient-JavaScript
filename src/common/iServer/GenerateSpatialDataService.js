@@ -55,6 +55,8 @@ export class GenerateSpatialDataService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
+
+        this.CLASS_NAME = "SuperMap.GenerateSpatialDataService";
     }
 
     /**
@@ -111,7 +113,6 @@ export class GenerateSpatialDataService extends SpatialAnalystBase {
     }
 
 
-    CLASS_NAME = "SuperMap.GenerateSpatialDataService"
 }
 
 SuperMap.GenerateSpatialDataService = GenerateSpatialDataService;

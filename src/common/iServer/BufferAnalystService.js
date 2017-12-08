@@ -26,17 +26,19 @@ import {GeometryBufferAnalystParameters} from './GeometryBufferAnalystParameters
  *
  */
 export class BufferAnalystService extends SpatialAnalystBase {
-    /**
-     * @member SuperMap.BufferAnalystService.prototype.mode -{string}
-     * @description 缓冲区分析类型
-     */
-    mode = null;
+
 
     constructor(url, options) {
         super(url, options);
+        /**
+         * @member SuperMap.BufferAnalystService.prototype.mode -{string}
+         * @description 缓冲区分析类型
+         */
+        this.mode = null;
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.BufferAnalystService";
     }
 
 
@@ -91,20 +93,20 @@ export class BufferAnalystService extends SpatialAnalystBase {
      * @description 将含有geometry的数据转换为geojson格式。
      * @param result - {Object} 服务器返回的结果对象。
      */
-        // toGeoJSONResult(result) {
-        //     if (!result) {
-        //         return result;
-        //     }
-        //
-        //     var analystResult = super.toGeoJSONResult(result);
-        //     if (analystResult.resultGeometry) {
-        //         var geoJSONFormat = new GeoJSON();
-        //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
-        //     }
-        //     return result;
-        // }
+    // toGeoJSONResult(result) {
+    //     if (!result) {
+    //         return result;
+    //     }
+    //
+    //     var analystResult = super.toGeoJSONResult(result);
+    //     if (analystResult.resultGeometry) {
+    //         var geoJSONFormat = new GeoJSON();
+    //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
+    //     }
+    //     return result;
+    // }
 
-    CLASS_NAME = "SuperMap.BufferAnalystService"
+
 }
 
 SuperMap.BufferAnalystService = BufferAnalystService;

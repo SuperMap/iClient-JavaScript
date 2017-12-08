@@ -18,45 +18,43 @@ import {FilterParameter} from './FilterParameter';
  * @extends SuperMap.BufferAnalystParameters
  */
 export class DatasetBufferAnalystParameters extends BufferAnalystParameters {
-    /**
-     * @member SuperMap.DatasetBufferAnalystParameters.prototype.dataset -{string}
-     * @description 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
-     */
-    dataset = null;
 
-    /**
-     *  @member SuperMap.DatasetBufferAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
-     *  @description 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析。
-     */
-    filterQueryParameter = null;
-
-    /**
-     * @member SuperMap.DatasetBufferAnalystParameters.prototype.resultSetting -{SuperMap.DataReturnOption}
-     * @description 结果返回设置类。
-     */
-    resultSetting = null;
-
-    /**
-     * @member SuperMap.DatasetBufferAnalystParameters.prototype.isAttributeRetained -{boolean}
-     * @description 是否保留进行缓冲区分析的对象的字段属性，默认为 true。当 isUnion 字段为 false 时该字段有效。
-     */
-    isAttributeRetained = true;
-
-    /**
-     * @member SuperMap.DatasetBufferAnalystParameters.prototype.isUnion -{boolean}
-     * @description 是否将缓冲区与源记录集中的对象合并后返回。对于面对象而言，要求源数据集中的面对象不相交。默认为 false。
-     */
-    isUnion = false;
 
     constructor(options) {
         super(options);
-        var me = this;
-        me.filterQueryParameter = new FilterParameter();
-        me.resultSetting = new DataReturnOption();
-        if (!options) {
-            return;
-        }
+        /**
+         * @member SuperMap.DatasetBufferAnalystParameters.prototype.dataset -{string}
+         * @description 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
+         */
+        this.dataset = null;
+
+        /**
+         *  @member SuperMap.DatasetBufferAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
+         *  @description 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析。
+         */
+        this.filterQueryParameter = new FilterParameter();
+
+        /**
+         * @member SuperMap.DatasetBufferAnalystParameters.prototype.resultSetting -{SuperMap.DataReturnOption}
+         * @description 结果返回设置类。
+         */
+        this.resultSetting = new DataReturnOption();
+
+        /**
+         * @member SuperMap.DatasetBufferAnalystParameters.prototype.isAttributeRetained -{boolean}
+         * @description 是否保留进行缓冲区分析的对象的字段属性，默认为 true。当 isUnion 字段为 false 时该字段有效。
+         */
+        this.isAttributeRetained = true;
+
+        /**
+         * @member SuperMap.DatasetBufferAnalystParameters.prototype.isUnion -{boolean}
+         * @description 是否将缓冲区与源记录集中的对象合并后返回。对于面对象而言，要求源数据集中的面对象不相交。默认为 false。
+         */
+        this.isUnion = false;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.DatasetBufferAnalystParameters";
     }
 
 
@@ -102,7 +100,6 @@ export class DatasetBufferAnalystParameters extends BufferAnalystParameters {
         }
     }
 
-    CLASS_NAME = "SuperMap.DatasetBufferAnalystParameters"
 }
 
 

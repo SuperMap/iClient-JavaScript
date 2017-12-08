@@ -31,37 +31,38 @@ import './FieldStatisticsParameters';
 
 export class FieldStatisticService extends CommonServiceBase {
 
-    /**
-     * @member SuperMap.FieldStatisticService.prototype.datasource -{string}
-     * @description 数据集所在的数据源名称。
-     */
-    datasource = null;
-
-
-    /**
-     * @member SuperMap.FieldStatisticService.prototype.dataset -{string}
-     * @description 数据集名称。
-     */
-    dataset = null;
-
-    /**
-     * @member SuperMap.FieldStatisticService.prototype.field -{string}
-     * @description 查询统计的目标字段名称。
-     */
-    field = null;
-
-    /**
-     * @member SuperMap.FieldStatisticService.prototype.statisticMode -{string}
-     * @description 字段查询统计的方法类型。
-     */
-    statisticMode = null;
-
 
     constructor(url, options) {
         super(url, options);
+        /**
+         * @member SuperMap.FieldStatisticService.prototype.datasource -{string}
+         * @description 数据集所在的数据源名称。
+         */
+        this.datasource = null;
+
+
+        /**
+         * @member SuperMap.FieldStatisticService.prototype.dataset -{string}
+         * @description 数据集名称。
+         */
+        this.dataset = null;
+
+        /**
+         * @member SuperMap.FieldStatisticService.prototype.field -{string}
+         * @description 查询统计的目标字段名称。
+         */
+        this.field = null;
+
+        /**
+         * @member SuperMap.FieldStatisticService.prototype.statisticMode -{string}
+         * @description 字段查询统计的方法类型。
+         */
+        this.statisticMode = null;
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.FieldStatisticService";
     }
 
 
@@ -98,8 +99,6 @@ export class FieldStatisticService extends CommonServiceBase {
         });
     }
 
-
-    CLASS_NAME = "SuperMap.FieldStatisticService"
 }
 
 SuperMap.FieldStatisticService = FieldStatisticService;

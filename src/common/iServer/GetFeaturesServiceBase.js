@@ -24,44 +24,46 @@ import {GeoJSON} from '../format/GeoJSON';
  * });
  */
 export class GetFeaturesServiceBase extends CommonServiceBase {
-    /**
-     * @member SuperMap.GetFeaturesServiceBase.prototype.returnContent - {boolean}
-     * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
-     * 如果为 true，则直接返回新创建资源，即查询结果的表述。
-     * 如果为 false，则返回的是查询结果资源的 URI。默认为 false。
-     */
-    returnContent = true;
-
-    /**
-     * @member SuperMap.GetFeaturesServiceBase.prototype.fromIndex - {integer}
-     * @description 查询结果的最小索引号。
-     * 默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
-     */
-    fromIndex = 0;
-
-    /**
-     * @member SuperMap.GetFeaturesServiceBase.prototype.toIndex - {integer}
-     * @description 查询结果的最大索引号。
-     * 如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
-     */
-    toIndex = 19;
-
-    /**
-     * @member SuperMap.GetFeaturesServiceBase.prototype.maxFeatures - {integer}
-     * @description 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
-     */
-    maxFeatures = null;
-
-    /**
-     * @member SuperMap.GetFeaturesServiceBase.prototype.format - {string}
-     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。
-     *  参数格式为"ISERVER","GEOJSON",GEOJSON
-     */
-    format = DataFormat.GEOJSON;
 
     constructor(url, options) {
         super(url, options);
         options = options || {};
+
+        /**
+         * @member SuperMap.GetFeaturesServiceBase.prototype.returnContent - {boolean}
+         * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
+         * 如果为 true，则直接返回新创建资源，即查询结果的表述。
+         * 如果为 false，则返回的是查询结果资源的 URI。默认为 false。
+         */
+        this.returnContent = true;
+
+        /**
+         * @member SuperMap.GetFeaturesServiceBase.prototype.fromIndex - {integer}
+         * @description 查询结果的最小索引号。
+         * 默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
+         */
+        this.fromIndex = 0;
+
+        /**
+         * @member SuperMap.GetFeaturesServiceBase.prototype.toIndex - {integer}
+         * @description 查询结果的最大索引号。
+         * 如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
+         */
+        this.toIndex = 19;
+
+        /**
+         * @member SuperMap.GetFeaturesServiceBase.prototype.maxFeatures - {integer}
+         * @description 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
+         */
+        this.maxFeatures = null;
+
+        /**
+         * @member SuperMap.GetFeaturesServiceBase.prototype.format - {string}
+         * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式。
+         *  参数格式为"ISERVER","GEOJSON",GEOJSON
+         */
+        this.format = DataFormat.GEOJSON;
+
         if (options) {
             Util.extend(this, options);
         }
@@ -78,6 +80,8 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         //     me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
         // }
         me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
+
+        this.CLASS_NAME = "SuperMap.GetFeaturesServiceBase";
     }
 
     /**
@@ -148,7 +152,7 @@ export class GetFeaturesServiceBase extends CommonServiceBase {
         me.events.triggerEvent("processCompleted", {result: result});
     }
 
-    CLASS_NAME = "SuperMap.GetFeaturesServiceBase"
+
 }
 
 SuperMap.GetFeaturesServiceBase = GetFeaturesServiceBase;

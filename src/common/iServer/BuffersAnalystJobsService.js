@@ -13,6 +13,7 @@ export class BuffersAnalystJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/buffers";
+        this.CLASS_NAME = "SuperMap.BuffersAnalystJobsService";
     }
 
     /**
@@ -48,8 +49,6 @@ export class BuffersAnalystJobsService extends ProcessingServiceBase {
     addBuffersJob(params, seconds) {
         super.addJob(this.url, params, BuffersAnalystJobsParameter, seconds);
     }
-
-    CLASS_NAME = "SuperMap.BuffersAnalystJobsService"
 }
 
 SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;

@@ -27,6 +27,7 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.ComputeWeightMatrixService";
     }
 
 
@@ -93,8 +94,6 @@ export class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
         jsonString += ']';
         return jsonString;
     }
-
-    CLASS_NAME = "SuperMap.ComputeWeightMatrixService"
 }
 
 SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService;

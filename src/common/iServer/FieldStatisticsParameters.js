@@ -13,23 +13,27 @@ import {FieldParameters} from './FieldParameters';
  * @extends SuperMap.FieldParameters
  */
 export class FieldStatisticsParameters extends FieldParameters {
-    /**
-     * @member SuperMap.FieldStatisticsParameters.prototype.fieldName - {string}
-     * @description 字段名
-     */
-    fieldName = null;
 
-    /**
-     * @member SuperMap.FieldStatisticsParameters.prototype.statisticMode -{string<SuperMap.StatisticMode>}|{Array<string{SuperMap.StatisticMode}>}
-     * @description 字段统计方法类型
-     */
-    statisticMode = null;
 
     constructor(options) {
         super(options);
+        /**
+         * @member SuperMap.FieldStatisticsParameters.prototype.fieldName - {string}
+         * @description 字段名
+         */
+        this.fieldName = null;
+
+        /**
+         * @member SuperMap.FieldStatisticsParameters.prototype.statisticMode -{string<SuperMap.StatisticMode>}|{Array<string{SuperMap.StatisticMode}>}
+         * @description 字段统计方法类型
+         */
+        this.statisticMode = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.FieldStatisticsParameters";
     }
 
     /**
@@ -42,8 +46,6 @@ export class FieldStatisticsParameters extends FieldParameters {
         me.statisticMode = null;
     }
 
-
-    CLASS_NAME = "SuperMap.FieldStatisticsParameters"
 }
 
 SuperMap.FieldStatisticsParameters = FieldStatisticsParameters;

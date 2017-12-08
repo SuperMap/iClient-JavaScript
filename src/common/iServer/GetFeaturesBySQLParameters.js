@@ -16,25 +16,24 @@ import './FilterParameter';
  */
 export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
 
-    /**
-     * @function SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode - {string}
-     * @description 数据集查询模式。
-     */
-    getFeatureMode = "SQL";
-
-    /**
-     * @function SuperMap.GetFeaturesBySQLParameters.prototype.queryParameter - {SuperMap.FilterParameter}
-     * @description 查询过滤条件参数类。
-     */
-    queryParameter = null;
-
 
     constructor(options) {
         super(options);
-        if (!options) {
-            return;
-        }
-        SuperMap.Util.extend(this, options);
+        /**
+         * @function SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode - {string}
+         * @description 数据集查询模式。
+         */
+        this.getFeatureMode = "SQL";
+
+        /**
+         * @function SuperMap.GetFeaturesBySQLParameters.prototype.queryParameter - {SuperMap.FilterParameter}
+         * @description 查询过滤条件参数类。
+         */
+        this.queryParameter = null;
+
+        Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.GetFeaturesBySQLParameters";
     }
 
     /**
@@ -69,7 +68,6 @@ export class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
         return Util.toJSON(paramsBySql);
     }
 
-    CLASS_NAME = "SuperMap.GetFeaturesBySQLParameters"
 }
 
 SuperMap.GetFeaturesBySQLParameters = GetFeaturesBySQLParameters;

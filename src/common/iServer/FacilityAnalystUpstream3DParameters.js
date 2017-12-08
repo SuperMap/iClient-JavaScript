@@ -16,16 +16,17 @@ import {FacilityAnalyst3DParameters} from './FacilityAnalyst3DParameters';
  */
 export class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParameters {
 
-    /**
-     * @member SuperMap.FacilityAnalystUpstream3DParameters.prototype.sourceNodeIDs - {Array<number>}
-     * @description 指定的设施点ID数组。
-     */
-    sourceNodeIDs = null;
 
     constructor(options) {
         super(options);
         options = options || {};
+        /**
+         * @member SuperMap.FacilityAnalystUpstream3DParameters.prototype.sourceNodeIDs - {Array<number>}
+         * @description 指定的设施点ID数组。
+         */
+        this.sourceNodeIDs = null;
         Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.FacilityAnalystUpstream3DParameters";
     }
 
 
@@ -38,7 +39,7 @@ export class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParame
         this.sourceNodeIDs = null;
     }
 
-    CLASS_NAME = "SuperMap.FacilityAnalystUpstream3DParameters"
+
 }
 
 SuperMap.FacilityAnalystUpstream3DParameters = FacilityAnalystUpstream3DParameters;

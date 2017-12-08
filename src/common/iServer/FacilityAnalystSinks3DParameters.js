@@ -19,6 +19,7 @@ export class FacilityAnalystSinks3DParameters extends FacilityAnalyst3DParameter
 
     constructor(options) {
         super(options);
+        this.CLASS_NAME = "SuperMap.FacilityAnalystSinks3DParameters";
     }
 
 
@@ -31,7 +32,6 @@ export class FacilityAnalystSinks3DParameters extends FacilityAnalyst3DParameter
     }
 
 
-    CLASS_NAME = "SuperMap.FacilityAnalystSinks3DParameters"
 }
 
 SuperMap.FacilityAnalystSinks3DParameters = FacilityAnalystSinks3DParameters;

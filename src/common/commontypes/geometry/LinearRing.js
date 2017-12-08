@@ -17,16 +17,17 @@ import {LineString} from './LineString';
  */
 export class LinearRing extends LineString {
 
-    /**
-     * @member SuperMap.Geometry.LinearRing.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @readonly
-     * @default ["{@link SuperMap.Geometry.Point}"]
-     */
-    componentTypes = ["SuperMap.Geometry.Point"];
 
     constructor(points) {
         super(points);
+        /**
+         * @member SuperMap.Geometry.LinearRing.prototype.componentTypes -{Array<string>}
+         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @readonly
+         * @default ["{@link SuperMap.Geometry.Point}"]
+         */
+        this.componentTypes = ["SuperMap.Geometry.Point"];
+        this.CLASS_NAME = "SuperMap.Geometry.LinearRing";
     }
 
     /**
@@ -108,6 +109,7 @@ export class LinearRing extends LineString {
         return (nodes === true) ? [] : this.components.slice(0, this.components.length - 1);
     }
 
-    CLASS_NAME = "SuperMap.Geometry.LinearRing"
+
 }
+
 SuperMap.Geometry.LinearRing = LinearRing;

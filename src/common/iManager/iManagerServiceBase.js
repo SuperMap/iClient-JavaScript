@@ -14,6 +14,7 @@ export class IManagerServiceBase {
             var end = url.substr(url.length - 1, 1);
             this.serviceUrl = end === "/" ? url.substr(0, url.length - 2) : url;
         }
+        this.CLASS_NAME = "SuperMap.iManagerServiceBase";
     }
 
     /**
@@ -50,8 +51,6 @@ export class IManagerServiceBase {
             return response.json();
         });
     }
-
-    CLASS_NAME = "SuperMap.iManagerServiceBase"
 
 }
 

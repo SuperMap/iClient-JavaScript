@@ -15,20 +15,22 @@ import {ServerColor} from './ServerColor';
  */
 export class ColorDictionary {
 
-    /**
-     * @member SuperMap.ColorDictionary.prototype.elevation - {number}
-     * @description 高程值。
-     */
-    elevation = null;
-
-    /**
-     * @member SuperMap.ColorDictionary.prototype.color - {SuperMap.ServerColor}
-     * @description 服务端颜色类。
-     */
-    color = null;
 
     constructor(options) {
         options = options || {};
+
+        /**
+         * @member SuperMap.ColorDictionary.prototype.elevation - {number}
+         * @description 高程值。
+         */
+        this.elevation = null;
+
+        /**
+         * @member SuperMap.ColorDictionary.prototype.color - {SuperMap.ServerColor}
+         * @description 服务端颜色类。
+         */
+        this.color = null;
+
         Util.extend(this, options);
 
         var me = this,
@@ -36,6 +38,8 @@ export class ColorDictionary {
         if (c) {
             me.color = new ServerColor(c.red, c.green, c.blue);
         }
+
+        this.CLASS_NAME = "SuperMap.ColorDictionary";
     }
 
     /**
@@ -56,8 +60,6 @@ export class ColorDictionary {
         dataObj = Util.copyAttributes(dataObj, this);
         return dataObj;
     }
-
-    CLASS_NAME = "SuperMap.ColorDictionary"
 }
 
 SuperMap.ColorDictionary = ColorDictionary;

@@ -30,6 +30,8 @@ export class FindMTSPPathsService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
+
+        this.CLASS_NAME = "SuperMap.FindMTSPPathsService";
     }
 
     /**
@@ -127,7 +129,6 @@ export class FindMTSPPathsService extends NetworkAnalystServiceBase {
         return result;
     }
 
-    CLASS_NAME = "SuperMap.FindMTSPPathsService"
 }
 
 SuperMap.FindMTSPPathsService = FindMTSPPathsService;

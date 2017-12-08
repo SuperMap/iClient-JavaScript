@@ -11,22 +11,19 @@
  */
 export class Size {
 
-    /**
-     * @member SuperMap.Size.prototype.w -{number}
-     * @description  宽，默认值为0.0
-     */
-    w = 0.0;
-
-    /**
-     * @member SuperMap.Size.prototype.h -{number}
-     * @description 高，默认值为0.0
-     */
-    h = 0.0;
-
-
     constructor(w, h) {
-        this.w = w ? parseFloat(w) : this.w;
-        this.h = w ? parseFloat(h) : this.h;
+        /**
+         * @member SuperMap.Size.prototype.w -{number}
+         * @description  宽，默认值为0.0
+         */
+        this.w = w ? parseFloat(w) : 0.0;
+
+        /**
+         * @member SuperMap.Size.prototype.h -{number}
+         * @description 高，默认值为0.0
+         */
+        this.h = w ? parseFloat(h) : 0.0;
+        this.CLASS_NAME = "SuperMap.Size";
     }
 
 
@@ -91,8 +88,6 @@ export class Size {
         this.w = null;
         this.h = null;
     }
-
-
-    CLASS_NAME = "SuperMap.Size"
 }
+
 SuperMap.Size = Size;

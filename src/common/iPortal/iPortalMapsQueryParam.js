@@ -9,25 +9,24 @@ import {Util} from '../commontypes/Util';
  */
 export class IPortalMapsQueryParam {
 
-    userNames = null;
-    tags = null;
-    suggest = false;
-    sourceTypes = null;
-    keywords = null;
-    epsgCode = null;
-    orderBy = null;
-    currentPage = null;
-    pageSize = null;
-    dirIds = null;
-    isNotInDir = false;
-    updateStart = null;
-    updateEnd = null;
-    visitStart = null;
-    visitEnd = null;
-    filterFields = null;
-
     constructor(params) {
         params = params || {};
+        this.userNames = null;
+        this.tags = null;
+        this.suggest = false;
+        this.sourceTypes = null;
+        this.keywords = null;
+        this.epsgCode = null;
+        this.orderBy = null;
+        this.currentPage = null;
+        this.pageSize = null;
+        this.dirIds = null;
+        this.isNotInDir = false;
+        this.updateStart = null;
+        this.updateEnd = null;
+        this.visitStart = null;
+        this.visitEnd = null;
+        this.filterFields = null;
         Util.extend(this, params);
     }
 

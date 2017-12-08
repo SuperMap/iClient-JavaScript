@@ -16,6 +16,7 @@ export class FacilityAnalystUpstream3DService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.FacilityAnalystUpstream3DService";
     }
 
     /**
@@ -53,8 +54,6 @@ export class FacilityAnalystUpstream3DService extends CommonServiceBase {
             failure: me.serviceProcessFailed
         });
     }
-
-    CLASS_NAME = "SuperMap.FacilityAnalystUpstream3DService"
 }
 
 SuperMap.FacilityAnalystUpstream3DService = FacilityAnalystUpstream3DService;

@@ -15,41 +15,44 @@ import {ServerGeometry} from './ServerGeometry';
  */
 export class ClipParameter {
 
-    /**
-     * @member SuperMap.ClipParameter.prototype.clipDatasetName -{string}
-     * @description 用于裁剪的数据集名，当clipRegion不设置时起作用。
-     */
-    clipDatasetName = null;
-
-    /**
-     * @member SuperMap.ClipParameter.prototype.clipDatasourceName -{string}
-     * @description 用于裁剪的数据集所在数据源的名字。
-     */
-    clipDatasourceName = null;
-
-    /**
-     * @member SuperMap.ClipParameter.prototype.clipRegion -{Object}
-     * @description 用户指定的裁剪区域，优先使用。<br>
-     * 面对象可以是SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。
-     */
-    clipRegion = null;
-
-    /**
-     * @member SuperMap.ClipParameter.prototype.isClipInRegion -{boolean}
-     * @description 是否对裁剪区内的数据集进行裁剪。
-     */
-    isClipInRegion = false;
-
-    /**
-     * @member SuperMap.ClipParameter.prototype.isExactClip -{boolean}
-     * @description 是否使用精确裁剪。
-     */
-    isExactClip = null;
 
     constructor(options) {
+        /**
+         * @member SuperMap.ClipParameter.prototype.clipDatasetName -{string}
+         * @description 用于裁剪的数据集名，当clipRegion不设置时起作用。
+         */
+        this.clipDatasetName = null;
+
+        /**
+         * @member SuperMap.ClipParameter.prototype.clipDatasourceName -{string}
+         * @description 用于裁剪的数据集所在数据源的名字。
+         */
+        this.clipDatasourceName = null;
+
+        /**
+         * @member SuperMap.ClipParameter.prototype.clipRegion -{Object}
+         * @description 用户指定的裁剪区域，优先使用。<br>
+         * 面对象可以是SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON。
+         */
+        this.clipRegion = null;
+
+        /**
+         * @member SuperMap.ClipParameter.prototype.isClipInRegion -{boolean}
+         * @description 是否对裁剪区内的数据集进行裁剪。
+         */
+        this.isClipInRegion = false;
+
+        /**
+         * @member SuperMap.ClipParameter.prototype.isExactClip -{boolean}
+         * @description 是否使用精确裁剪。
+         */
+        this.isExactClip = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ClipParameter";
     }
 
 
@@ -106,8 +109,6 @@ export class ClipParameter {
         return "{" + strClipParameter + "}";
     }
 
-
-    CLASS_NAME = "SuperMap.ClipParameter"
 }
 
 SuperMap.ClipParameter = ClipParameter;

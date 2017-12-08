@@ -22,41 +22,42 @@ import {GetGridCellInfosParameters} from './GetGridCellInfosParameters';
  */
 export class GetGridCellInfosService extends CommonServiceBase {
 
-    /**
-     * @member SuperMap.GetGridCellInfosService.prototype.datasetName -{string}
-     * @description 数据集名称。
-     */
-    datasetName = null;
-
-    /**
-     * @member SuperMap.GetGridCellInfosService.prototype.dataSourceName -{string}
-     * @description 数据源名称。
-     */
-    dataSourceName = null;
-
-    /**
-     * @member SuperMap.GetGridCellInfosService.prototype.datasetType -{string}
-     * @description 数据集类型。
-     */
-    datasetType = null;
-
-    /**
-     * @member SuperMap.GetGridCellInfosService.prototype.X -{number}
-     * @description 要查询的地理位置X轴
-     */
-    X = null;
-
-    /**
-     * @member SuperMap.GetGridCellInfosService.prototype.Y-{number}
-     * @description 要查询的地理位置Y轴
-     */
-    Y = null;
 
     constructor(url, options) {
         super(url, options);
+        /**
+         * @member SuperMap.GetGridCellInfosService.prototype.datasetName -{string}
+         * @description 数据集名称。
+         */
+        this.datasetName = null;
+
+        /**
+         * @member SuperMap.GetGridCellInfosService.prototype.dataSourceName -{string}
+         * @description 数据源名称。
+         */
+        this.dataSourceName = null;
+
+        /**
+         * @member SuperMap.GetGridCellInfosService.prototype.datasetType -{string}
+         * @description 数据集类型。
+         */
+        this.datasetType = null;
+
+        /**
+         * @member SuperMap.GetGridCellInfosService.prototype.X -{number}
+         * @description 要查询的地理位置X轴
+         */
+        this.X = null;
+
+        /**
+         * @member SuperMap.GetGridCellInfosService.prototype.Y-{number}
+         * @description 要查询的地理位置Y轴
+         */
+        this.Y = null;
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.GetGridCellInfosService";
     }
 
     /**
@@ -152,8 +153,6 @@ export class GetGridCellInfosService extends CommonServiceBase {
         var me = this;
         me.serviceProcessFailed(result);
     }
-
-    CLASS_NAME = "SuperMap.GetGridCellInfosService"
 }
 
 SuperMap.GetGridCellInfosService = GetGridCellInfosService;

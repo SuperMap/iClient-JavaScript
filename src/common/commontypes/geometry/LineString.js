@@ -20,6 +20,7 @@ export class LineString extends Curve {
 
     constructor(points) {
         super(points);
+        this.CLASS_NAME = "SuperMap.Geometry.LineString";
     }
 
     /**
@@ -317,8 +318,6 @@ export class LineString extends Curve {
         }
         return [bezierPts, j];
     }
-
-    CLASS_NAME = "SuperMap.Geometry.LineString"
 }
 
 SuperMap.Geometry.LineString = LineString;

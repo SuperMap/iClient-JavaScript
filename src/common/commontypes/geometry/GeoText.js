@@ -16,45 +16,40 @@ import '../LonLat';
  * @param text {string} 标签中的文本内容，必设参数。
  */
 export class GeoText extends Geometry {
-    /**
-     * @member SuperMap.Geometry.GeoText.prototype.x -{float}
-     * @description 横坐标。
-     */
-    x = null;
-
-    /**
-     * @member SuperMap.Geometry.GeoText.prototype.y -{float}
-     * @description 纵坐标。
-     */
-    y = null;
-
-    /**
-     * @member SuperMap.Geometry.GeoText.prototype.text -{string}
-     * @description 标签中的文本内容。
-     */
-    text = null;
-
-    /**
-     * @member SuperMap.Geometry.GeoText.prototype.bsInfo -{Object}
-     * @description 标签范围的基础信息，包含下面2个属性。
-     *  * w: bounds 的宽；
-     *  * h: bounds 的高度；
-
-     */
-    bsInfo = null;
 
     constructor(x, y, text) {
         super(x, y, text);
+        /**
+         * @member SuperMap.Geometry.GeoText.prototype.x -{float}
+         * @description 横坐标。
+         */
+        this.x = parseFloat(x);
 
+        /**
+         * @member SuperMap.Geometry.GeoText.prototype.y -{float}
+         * @description 纵坐标。
+         */
+        this.y = parseFloat(y);
+
+        /**
+         * @member SuperMap.Geometry.GeoText.prototype.text -{string}
+         * @description 标签中的文本内容。
+         */
+        this.text = text.toString();
+
+        /**
+         * @member SuperMap.Geometry.GeoText.prototype.bsInfo -{Object}
+         * @description 标签范围的基础信息，包含下面2个属性。
+         *  * w: bounds 的宽；
+         *  * h: bounds 的高度；
+
+         */
         this.bsInfo = {
             "h": null,
             "w": null
         };
-
-        this.x = parseFloat(x);
-        this.y = parseFloat(y);
-        this.text = text.toString();
         this.element = document.createElement('span');
+        this.CLASS_NAME = "SuperMap.Geometry.GeoText";
     }
 
     /**
@@ -320,7 +315,7 @@ export class GeoText extends Geometry {
         return textCharCount;
     }
 
-    CLASS_NAME = "SuperMap.Geometry.GeoText"
+
 }
 
 SuperMap.Geometry.GeoText = GeoText;

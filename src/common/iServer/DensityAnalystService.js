@@ -22,18 +22,20 @@ import {DensityKernelAnalystParameters} from './DensityKernelAnalystParameters';
  */
 export class DensityAnalystService extends SpatialAnalystBase {
 
-    /**
-     * @member SuperMap.DensityAnalystService.prototype.mode -{string}
-     * @description 密度分析类型。
-     */
-    mode = null;
 
     constructor(url, options) {
         super(url, options);
-        var me = this;
+        /**
+         * @member SuperMap.DensityAnalystService.prototype.mode -{string}
+         * @description 密度分析类型。
+         */
+        this.mode = null;
+
         if (options) {
-            Util.extend(me, options);
+            Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.DensityAnalystService";
     }
 
     /**
@@ -77,7 +79,6 @@ export class DensityAnalystService extends SpatialAnalystBase {
         });
     }
 
-    CLASS_NAME = "SuperMap.DensityAnalystService"
 }
 
 SuperMap.DensityAnalystService = DensityAnalystService;

@@ -1,4 +1,4 @@
-﻿import {SuperMap} from  '../SuperMap'
+﻿import {SuperMap} from '../SuperMap'
 import {Util} from './Util';
 
 /**
@@ -12,25 +12,24 @@ import {Util} from './Util';
  */
 export class LonLat {
 
-    /**
-     * @member SuperMap.LonLat.prototype.lon  -{float}
-     * @description 地图的单位的X轴（横轴）坐标，默认为0.0。
-     */
-    lon = 0.0;
-
-    /**
-     * @member SuperMap.LonLat.prototype.lat  -{float}
-     * @description 地图的单位的Y轴（纵轴）坐标，默认为0.0。
-     */
-    lat = 0.0;
 
     constructor(lon, lat) {
         if (Util.isArray(lon)) {
             lat = lon[1];
             lon = lon[0];
         }
-        this.lon = lon ? Util.toFloat(lon) : this.lon;
-        this.lat = lat ? Util.toFloat(lat) : this.lat;
+        /**
+         * @member SuperMap.LonLat.prototype.lon  -{float}
+         * @description 地图的单位的X轴（横轴）坐标，默认为0.0。
+         */
+        this.lon = lon ? Util.toFloat(lon) : 0.0;
+
+        /**
+         * @member SuperMap.LonLat.prototype.lat  -{float}
+         * @description 地图的单位的Y轴（纵轴）坐标，默认为0.0。
+         */
+        this.lat = lat ? Util.toFloat(lat) : 0.0;
+        this.CLASS_NAME = "SuperMap.LonLat";
     }
 
     /**
@@ -106,7 +105,7 @@ export class LonLat {
         var equals = false;
         if (ll != null) {
             equals = ((this.lon === ll.lon && this.lat === ll.lat) ||
-            (isNaN(this.lon) && isNaN(this.lat) && isNaN(ll.lon) && isNaN(ll.lat)));
+                (isNaN(this.lon) && isNaN(this.lat) && isNaN(ll.lon) && isNaN(ll.lat)));
         }
         return equals;
     }
@@ -218,6 +217,6 @@ export class LonLat {
         return new LonLat(lon, lat);
     }
 
-    CLASS_NAME = "SuperMap.LonLat"
+
 }
 

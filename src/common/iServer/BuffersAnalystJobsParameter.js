@@ -15,47 +15,49 @@ import {AnalystSizeUnit} from '../REST';
  */
 export class BuffersAnalystJobsParameter {
 
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    datasetName = "";
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.bounds - {Object}
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
-     */
-    bounds = "";
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.distance -{string}
-     * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
-     */
-    distance = "";
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{string}
-     * @description 缓冲距离字段，
-     */
-    distanceField = "";
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{SuperMap.AnalystSizeUnit}
-     * @description 缓冲距离单位。
-     */
-    distanceUnit = AnalystSizeUnit.METER;
-
-    /**
-     * @member SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField -{string}
-     * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
-     */
-    dissolveField = "";
 
     constructor(options) {
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.datasetName -{string}
+         * @description 数据集名。
+         */
+        this.datasetName = "";
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.bounds - {Object}
+         * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+         */
+        this.bounds = "";
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distance -{string}
+         * @description 缓冲距离，或称为缓冲区半径。当缓冲距离字段位空时，此参数有效。
+         */
+        this.distance = "";
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{string}
+         * @description 缓冲距离字段，
+         */
+        this.distanceField = "";
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.distanceField -{SuperMap.AnalystSizeUnit}
+         * @description 缓冲距离单位。
+         */
+        this.distanceUnit = AnalystSizeUnit.METER;
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.dissolveField -{string}
+         * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
+         */
+        this.dissolveField = "";
         if (!options) {
-            return;
+            return this;
         }
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.BuffersAnalystJobsParameter";
     }
 
     /**

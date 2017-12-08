@@ -20,6 +20,7 @@ export class FacilityAnalystSources3DParameters extends FacilityAnalyst3DParamet
 
     constructor(options) {
         super(options);
+        this.CLASS_NAME = "SuperMap.FacilityAnalystSources3DParameters";
     }
 
     /**
@@ -31,7 +32,6 @@ export class FacilityAnalystSources3DParameters extends FacilityAnalyst3DParamet
     }
 
 
-    CLASS_NAME = "SuperMap.FacilityAnalystSources3DParameters"
 }
 
 SuperMap.FacilityAnalystSources3DParameters = FacilityAnalystSources3DParameters;

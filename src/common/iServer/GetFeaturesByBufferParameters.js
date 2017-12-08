@@ -24,39 +24,36 @@ import {ServerGeometry} from './ServerGeometry';
 export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
 
 
-    /**
-     * @member SuperMap.GetFeaturesByBufferParameters.prototype.bufferDistance - {number}
-     * @description buffer距离,单位与所查询图层对应的数据集单位相同。
-     */
-    bufferDistance = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByBufferParameters.prototype.queryParameter - {string}
-     * @description 属性查询条件。
-     */
-    attributeFilter = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByBufferParameters.prototype.geometry
-     * @description 空间查询条件。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
-     */
-    geometry = null;
-
-    /**
-     * @member SuperMap.GetFeaturesByBufferParameters.prototype.fields - {Array<string>}
-     * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
-     */
-    fields = null;
-
     constructor(options) {
         super(options);
-        if (!options) {
-            return;
-        }
+        /**
+         * @member SuperMap.GetFeaturesByBufferParameters.prototype.bufferDistance - {number}
+         * @description buffer距离,单位与所查询图层对应的数据集单位相同。
+         */
+        this.bufferDistance = null;
+
+        /**
+         * @member SuperMap.GetFeaturesByBufferParameters.prototype.queryParameter - {string}
+         * @description 属性查询条件。
+         */
+        this.attributeFilter = null;
+
+        /**
+         * @member SuperMap.GetFeaturesByBufferParameters.prototype.geometry
+         * @description 空间查询条件。</br>
+         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。</br>
+         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。</br>
+         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+         */
+        this.geometry = null;
+
+        /**
+         * @member SuperMap.GetFeaturesByBufferParameters.prototype.fields - {Array<string>}
+         * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
+         */
+        this.fields = null;
         Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.GetFeaturesByBufferParameters";
     }
 
 
@@ -114,7 +111,7 @@ export class GetFeaturesByBufferParameters extends GetFeaturesParametersBase {
         return Util.toJSON(paramsBySql);
     }
 
-    CLASS_NAME = "SuperMap.GetFeaturesByBufferParameters"
+
 }
 
 SuperMap.GetFeaturesByBufferParameters = GetFeaturesByBufferParameters;

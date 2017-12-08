@@ -15,85 +15,87 @@ import {Util} from './Util';
  */
 export class Events {
 
-    /**
-     * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
-     * @description 支持的事件。
-     * @constant
-     * @default [
-     "mouseover", "mouseout","mousedown", "mouseup", "mousemove",
-     "click", "dblclick", "rightclick", "dblrightclick","resize",
-     "focus", "blur","touchstart", "touchmove", "touchend","keydown",
-     "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
-     "MSGestureStart", "MSGestureChange", "MSGestureEnd","contextmenu"
-     ]
-     */
-    BROWSER_EVENTS = [
-        "mouseover", "mouseout",
-        "mousedown", "mouseup", "mousemove",
-        "click", "dblclick", "rightclick", "dblrightclick",
-        "resize", "focus", "blur",
-        "touchstart", "touchmove", "touchend",
-        "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
-        "MSGestureStart", "MSGestureChange", "MSGestureEnd",
-        "contextmenu"
-    ];
 
-    /**
-     * @member SuperMap.Events.prototype.listeners -{Object}
-     * @description Hashtable of Array(function): events listener functions
-     */
-    listeners = null;
+    constructor(object, element, eventTypes, fallThrough, options) {
+        /**
+         * @member SuperMap.Events.prototype.BROWSER_EVENTS -{Array<string>}
+         * @description 支持的事件。
+         * @constant
+         * @default [
+         "mouseover", "mouseout","mousedown", "mouseup", "mousemove",
+         "click", "dblclick", "rightclick", "dblrightclick","resize",
+         "focus", "blur","touchstart", "touchmove", "touchend","keydown",
+         "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
+         "MSGestureStart", "MSGestureChange", "MSGestureEnd","contextmenu"
+         ]
+         */
+        this.BROWSER_EVENTS = [
+            "mouseover", "mouseout",
+            "mousedown", "mouseup", "mousemove",
+            "click", "dblclick", "rightclick", "dblrightclick",
+            "resize", "focus", "blur",
+            "touchstart", "touchmove", "touchend",
+            "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup",
+            "MSGestureStart", "MSGestureChange", "MSGestureEnd",
+            "contextmenu"
+        ];
 
-    /**
-     * @member SuperMap.Events.prototype.object  -{Object}
-     * @description  发布应用程序事件的对象。
-     */
-    object = null;
+        /**
+         * @member SuperMap.Events.prototype.listeners -{Object}
+         * @description Hashtable of Array(function): events listener functions
+         */
+        this.listeners = {};
 
-    /**
-     * @member SuperMap.Events.prototype.element  -{HTMLElement}
-     * @description 接受浏览器事件的DOM节点。
-     */
-    element = null;
+        /**
+         * @member SuperMap.Events.prototype.object  -{Object}
+         * @description  发布应用程序事件的对象。
+         */
+        this.object = object;
 
-    /**
-     * @member SuperMap.Events.prototype.eventTypes  -{Array<string>}
-     * @description 支持的事件类型列表。
-     */
-    eventTypes = null;
+        /**
+         * @member SuperMap.Events.prototype.element  -{HTMLElement}
+         * @description 接受浏览器事件的DOM节点。
+         */
+        this.element = null;
 
-    /**
-     * @member SuperMap.Events.prototype.eventHandler -{function}
-     * @description 绑定在元素上的事件处理器对象。
-     */
-    eventHandler = null;
+        /**
+         * @member SuperMap.Events.prototype.eventTypes  -{Array<string>}
+         * @description 支持的事件类型列表。
+         */
+        this.eventTypes = [];
 
-    /**
-     * @member SuperMap.Events.prototype.fallThrough -{boolean}
-     * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
-     */
-    fallThrough = null;
+        /**
+         * @member SuperMap.Events.prototype.eventHandler -{function}
+         * @description 绑定在元素上的事件处理器对象。
+         */
+        this.eventHandler = null;
 
-    /**
-     * @member SuperMap.Events.prototype.includeXY -{boolean}
-     * @description 判断是否让xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生xy属性。
-     *                可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
-     *                事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
-     *                设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
-     * @example
-     *  function named(evt) {
-     *        this.xy = this.object.events.getMousePosition(evt);
-     *  }
-     */
-    includeXY = false;
+        /**
+         * @member SuperMap.Events.prototype.fallThrough -{boolean}
+         * @description 是否允许事件处理之后向上传递（冒泡），为false的时候阻止事件冒泡。
+         */
+        this.fallThrough = fallThrough;
 
-    /**
-     * @member SuperMap.Events.prototype.extensions - {Object}
-     * @description 事件扩展。Keys代表事件类型，values代表事件对象。
-     * @example
-     * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
-     *
-     *   SuperMap.Events.foostart = SuperMap.Class({
+        /**
+         * @member SuperMap.Events.prototype.includeXY -{boolean}
+         * @description 判断是否让xy属性自动创建到浏览器上的鼠标事件，一般设置为false，如果设置为true，鼠标事件将会在事件传递过程中自动产生xy属性。
+         *                可根据事件对象的'evt.object'属性在相关的事件句柄上调用getMousePosition函数。这个选项习惯默认为false的原因在于，当创建一个
+         *                事件对象，其主要目的是管理。在一个div的相对定位的鼠标事件,将其设为true也是有意义的。这个选项也可以用来控制是否抵消缓存。如果
+         *                设为false不抵消，如果设为true，用this.clearMouseCache() 清除缓存偏移（边界元素偏移，元素在页面的位置偏移）。
+         * @example
+         *  function named(evt) {
+         *        this.xy = this.object.events.getMousePosition(evt);
+         *  }
+         */
+        this.includeXY = false;
+
+        /**
+         * @member SuperMap.Events.prototype.extensions - {Object}
+         * @description 事件扩展。Keys代表事件类型，values代表事件对象。
+         * @example
+         * 以扩展"foostart" 和 "fooend" 事件为例。展示替换css属性为foo的元素的click事件。
+         *
+         *   SuperMap.Events.foostart = SuperMap.Class({
      *       initialize: function(target) {
      *           this.target = target;
      *           this.target.register("click", this, this.doStuff, {extension: true});
@@ -122,29 +124,22 @@ export class Events {
      *           return propagate;
      *       }
      *   });
-     *   // only required if extension provides more than one event type
-     *   SuperMap.Events.fooend = SuperMap.Events.foostart;
-     */
-    extensions = null;
-
-    /**
-     * @member SuperMap.Events.prototype.extensionCount - {Object}
-     */
-    extensionCount = null;
-    /**
-     * @member SuperMap.Events.prototype.clearMouseListener - {Object}
-     */
-    clearMouseListener = null;
-
-    constructor(object, element, eventTypes, fallThrough, options) {
-        Util.extend(this, options);
-        this.object = object;
-        this.fallThrough = fallThrough;
-        this.listeners = {};
+         *   // only required if extension provides more than one event type
+         *   SuperMap.Events.fooend = SuperMap.Events.foostart;
+         */
         this.extensions = {};
-        this.extensionCount = {};
 
-        this.eventTypes = [];
+        /**
+         * @member SuperMap.Events.prototype.extensionCount - {Object}
+         */
+        this.extensionCount = {};
+        /**
+         * @member SuperMap.Events.prototype.clearMouseListener - {Object}
+         */
+        this.clearMouseListener = null;
+
+        Util.extend(this, options);
+
         if (eventTypes != null) {
             for (var i = 0, len = eventTypes.length; i < len; i++) {
                 this.addEventType(eventTypes[i]);
@@ -154,6 +149,8 @@ export class Events {
         if (element != null) {
             this.attachToElement(element);
         }
+
+        this.CLASS_NAME = "SuperMap.Events";
     }
 
     /**
@@ -469,7 +466,7 @@ export class Events {
         this.element.lefttop = null;
         var body = document.body;
         if (body && !((body.scrollTop != 0 || body.scrollLeft != 0) &&
-            navigator.userAgent.match(/iPhone/i))) {
+                navigator.userAgent.match(/iPhone/i))) {
             this.element.offsets = null;
         }
     }
@@ -514,8 +511,8 @@ export class Events {
         );
     }
 
-    CLASS_NAME = "SuperMap.Events"
 }
+
 SuperMap.Events = Events;
 SuperMap.Events.prototype.BROWSER_EVENTS = [
     "mouseover", "mouseout",

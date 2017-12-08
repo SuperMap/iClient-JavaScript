@@ -19,51 +19,53 @@ import '../REST';
  */
 export class UGCImage extends UGCSubLayer {
 
-    /**
-     * @member SuperMap.Image.prototype.brightness - {integer}
-     * @description 影像图层的亮度。
-     */
-    brightness = null;
-
-    /**
-     * @member SuperMap.Image.prototype.colorSpaceType - {SuperMap.ColorSpaceType}
-     * @description 返回影像图层的色彩显示模式。
-     */
-    colorSpaceType = null;
-
-    /**
-     * @member SuperMap.Image.prototype.contrast - {integer}
-     * @description 影像图层的对比度。
-     */
-    contrast = null;
-
-    /**
-     * @member SuperMap.Image.prototype.displayBandIndexes - {Array<integer>}
-     * @description 返回当前影像图层显示的波段索引。
-     */
-    displayBandIndexes = null;
-
-    /**
-     * @member SuperMap.Image.prototype.transparent - {boolean}
-     * @description 是否背景透明。
-     */
-    transparent = null;
-
-    /**
-     * @member SuperMap.Image.prototype.transparentColor - {SuperMap.ServerColor}
-     * @description 返回背景透明色。
-     */
-    transparentColor = null;
-
-    /**
-     * @member SuperMap.Image.prototype.transparentColorTolerance - {integer}
-     * @description 背景透明色容限。
-     */
-    transparentColorTolerance = null;
 
     constructor(options) {
         options = options || {};
         super(options);
+        /**
+         * @member SuperMap.Image.prototype.brightness - {integer}
+         * @description 影像图层的亮度。
+         */
+        this.brightness = null;
+
+        /**
+         * @member SuperMap.Image.prototype.colorSpaceType - {SuperMap.ColorSpaceType}
+         * @description 返回影像图层的色彩显示模式。
+         */
+        this.colorSpaceType = null;
+
+        /**
+         * @member SuperMap.Image.prototype.contrast - {integer}
+         * @description 影像图层的对比度。
+         */
+        this.contrast = null;
+
+        /**
+         * @member SuperMap.Image.prototype.displayBandIndexes - {Array<integer>}
+         * @description 返回当前影像图层显示的波段索引。
+         */
+        this.displayBandIndexes = null;
+
+        /**
+         * @member SuperMap.Image.prototype.transparent - {boolean}
+         * @description 是否背景透明。
+         */
+        this.transparent = null;
+
+        /**
+         * @member SuperMap.Image.prototype.transparentColor - {SuperMap.ServerColor}
+         * @description 返回背景透明色。
+         */
+        this.transparentColor = null;
+
+        /**
+         * @member SuperMap.Image.prototype.transparentColorTolerance - {integer}
+         * @description 背景透明色容限。
+         */
+        this.transparentColorTolerance = null;
+
+        this.CLASS_NAME = "SuperMap.Image";
     }
 
     /**
@@ -98,7 +100,6 @@ export class UGCImage extends UGCSubLayer {
     }
 
 
-    CLASS_NAME = "SuperMap.Image"
 }
 
 SuperMap.Image = UGCImage;

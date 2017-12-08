@@ -49,6 +49,7 @@ export class GeoRelationAnalystService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.GeoRelationAnalystService";
     }
 
     /**
@@ -89,7 +90,7 @@ export class GeoRelationAnalystService extends SpatialAnalystBase {
         });
     }
 
-    CLASS_NAME = "SuperMap.GeoRelationAnalystService"
+
 }
 
 SuperMap.GeoRelationAnalystService = GeoRelationAnalystService;

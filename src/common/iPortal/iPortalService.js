@@ -12,37 +12,38 @@ import {IPortalServiceBase} from './iPortalServiceBase';
  */
 export class IPortalService extends IPortalServiceBase {
 
-    addedMapNames = null;
-    addedSceneNames = null;
-    authorizeSetting = [];
-    checkStatus = "";
-    createTime = 0;
-    description = "";
-    enable = true;
-    id = 0;
-    isBatch = false;
-    isDataItemService = false;
-    linkPage = null;
-    mapInfos = [];
-    metadata = null;
-    nickname = "";
-    offline = false;
-    proxiedUrl = null;
-    resTitle = "";
-    scenes = [];
-    serviceRootUrlId = null;
-    tags = [];
-    thumbnail = null;
-    type = "";
-    updateTime = 0;
-    userName = "";
-    verifyReason = null;
-    version = null;
-    visitCount = 0;
+
 
     constructor(serviceUrl, params) {
         super(serviceUrl);
         params = params || {};
+        this.addedMapNames = null;
+        this.addedSceneNames = null;
+        this.authorizeSetting = [];
+        this.checkStatus = "";
+        this.createTime = 0;
+        this.description = "";
+        this.enable = true;
+        this.id = 0;
+        this.isBatch = false;
+        this.isDataItemService = false;
+        this.linkPage = null;
+        this.mapInfos = [];
+        this.metadata = null;
+        this.nickname = "";
+        this.offline = false;
+        this.proxiedUrl = null;
+        this.resTitle = "";
+        this.scenes = [];
+        this.serviceRootUrlId = null;
+        this.tags = [];
+        this.thumbnail = null;
+        this.type = "";
+        this.updateTime = 0;
+        this.userName = "";
+        this.verifyReason = null;
+        this.version = null;
+        this.visitCount = 0;
         Util.extend(this, params);
         this.serviceUrl = serviceUrl;
         if (this.id) {

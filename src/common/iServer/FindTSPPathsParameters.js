@@ -16,43 +16,41 @@ import {TransportationAnalystParameter} from './TransportationAnalystParameter';
  *        parameter - {@link SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。<br>
  */
 export class FindTSPPathsParameters {
-    /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.endNodeAssigned - {boolean}
-     * @description 是否指定终止点，将指定的途经点的最后一个点作为终止点。
-     *               true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。
-     */
-    endNodeAssigned = false;
 
-    /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.isAnalyzeById - {boolean}
-     * @description 是否通过节点 ID 号来指定途经点，默认为 false，即通过坐标点指定。
-     */
-    isAnalyzeById = false;
-
-    /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.nodes - {Array<Object>|Array<number>}
-     * @description 旅行商分析途经点数组，必设字段。
-     *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
-     *              当 SuperMap.FindTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；
-     *              当 SuperMap.FindTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
-     */
-    nodes = null;
-
-    /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.parameter - {SuperMap.TransportationAnalystParameter}
-     * @description 交通网络分析通用参数。通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。
-     *              SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting
-     *              字段，则返回结果空间信息等都为空。
-     */
-    parameter = null;
 
     constructor(options) {
-        var me = this;
-        me.parameter = new TransportationAnalystParameter();
-        if (!options) {
-            return;
-        }
+        /**
+         * @member SuperMap.FindTSPPathsParameters.prototype.endNodeAssigned - {boolean}
+         * @description 是否指定终止点，将指定的途经点的最后一个点作为终止点。
+         *               true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。
+         */
+        this.endNodeAssigned = false;
+
+        /**
+         * @member SuperMap.FindTSPPathsParameters.prototype.isAnalyzeById - {boolean}
+         * @description 是否通过节点 ID 号来指定途经点，默认为 false，即通过坐标点指定。
+         */
+        this.isAnalyzeById = false;
+
+        /**
+         * @member SuperMap.FindTSPPathsParameters.prototype.nodes - {Array<Object>|Array<number>}
+         * @description 旅行商分析途经点数组，必设字段。
+         *              点坐标类型可以是SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
+         *              当 SuperMap.FindTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；
+         *              当 SuperMap.FindTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
+         */
+        this.nodes = null;
+
+        /**
+         * @member SuperMap.FindTSPPathsParameters.prototype.parameter - {SuperMap.TransportationAnalystParameter}
+         * @description 交通网络分析通用参数。通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。
+         *              SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting
+         *              字段，则返回结果空间信息等都为空。
+         */
+        this.parameter = new TransportationAnalystParameter();
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.FindTSPPathsParameters";
     }
 
     /**
@@ -70,7 +68,6 @@ export class FindTSPPathsParameters {
         }
     }
 
-    CLASS_NAME = "SuperMap.FindTSPPathsParameters"
 }
 
 SuperMap.FindTSPPathsParameters = FindTSPPathsParameters;

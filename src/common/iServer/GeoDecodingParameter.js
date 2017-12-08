@@ -14,58 +14,10 @@ import {Util} from '../commontypes/Util';
  *        geoDecodingRadius - {number} 查询半径。
  */
 export class GeoDecodingParameter {
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.x - {number}
-     * @description 查询位置的横坐标。
-     */
-    x = null;
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.y - {number}
-     * @description 查询位置的纵坐标。
-     */
-    y = null;
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.fromIndex - {number}
-     * @description  设置返回对象的起始索引值。
-     */
-    fromIndex = null;
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.toIndex - {number}
-     * @description 设置返回对象的结束索引值。
-     */
-    toIndex = null;
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.filters - {Array<string>}
-     * @description 过滤字段，限定查询区域。
-     */
-    filters = null;
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys - {string}
-     * @description 查询结果的坐标系。
-     */
-    prjCoordSys = null;
-
-    /**
-     *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn - {number}
-     *  @description 最大返回结果数。
-     */
-    maxReturn = null;
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius - {number}
-     * @description 查询半径。
-     */
-    geoDecodingRadius = null;
 
 
     constructor(options) {
-        if (!options) {
-            return;
-        }
+
         if (options.filters) {
             let strs = [];
             let fields = options.filters.split(',');
@@ -75,6 +27,52 @@ export class GeoDecodingParameter {
             });
             options.filters = strs;
         }
+        /**
+         * @member SuperMap.GeoDecodingParameter.prototype.x - {number}
+         * @description 查询位置的横坐标。
+         */
+        this.x = null;
+
+        /**
+         * @member SuperMap.GeoDecodingParameter.prototype.y - {number}
+         * @description 查询位置的纵坐标。
+         */
+        this.y = null;
+        /**
+         * @member SuperMap.GeoDecodingParameter.prototype.fromIndex - {number}
+         * @description  设置返回对象的起始索引值。
+         */
+        this.fromIndex = null;
+
+        /**
+         * @member SuperMap.GeoDecodingParameter.prototype.toIndex - {number}
+         * @description 设置返回对象的结束索引值。
+         */
+        this.toIndex = null;
+
+        /**
+         * @member SuperMap.GeoDecodingParameter.prototype.filters - {Array<string>}
+         * @description 过滤字段，限定查询区域。
+         */
+        this.filters = null;
+
+        /**
+         * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys - {string}
+         * @description 查询结果的坐标系。
+         */
+        this.prjCoordSys = null;
+
+        /**
+         *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn - {number}
+         *  @description 最大返回结果数。
+         */
+        this.maxReturn = null;
+
+        /**
+         * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius - {number}
+         * @description 查询半径。
+         */
+        this.geoDecodingRadius = null;
         Util.extend(this, options);
     }
 

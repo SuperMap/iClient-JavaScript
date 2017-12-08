@@ -22,90 +22,94 @@ import {EngineType} from '../REST'; // eslint-disable-line no-unused-vars
  *         user - {string} 登录数据库的用户名。</br>
  */
 export class DatasourceConnectionInfo {
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.alias -{string}
-     * @description 数据源别名。
-     */
-    alias = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.connect -{boolean}
-     * @description 数据源是否自动连接数据。
-     */
-    connect = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.dataBase -{string}
-     * @description 数据源连接的数据库名。
-     */
-    dataBase = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.driver -{string}
-     * @description 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
-     * 其中，对于SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
-     * 对于SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
-     * 对于 iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
-     */
-    driver = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.engineType -{EngineType}
-     * @description 数据源连接的引擎类型。
-     */
-    engineType = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive -{boolean}
-     * @description 是否以独占方式打开数据源。
-     */
-    exclusive = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable -{boolean}
-     * @description 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable打开。
-     */
-    OpenLinkTable = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.password -{string}
-     * @description 登录数据源连接的数据库或文件的密码。
-     */
-    password = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.readOnly -{boolean}
-     * @description 是否以只读方式打开数据源。
-     */
-    readOnly = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.server -{string}
-     * @description 数据库服务器名、文件名或服务地址。
-     * 1.对于SDB和UDB文件，为其文件的绝对路径。注意：当绝对路径的长度超过UTF-8编码格式的260字节长度，该数据源无法打开。
-     * 2.对于Oracle数据库，其服务器名为其TNS服务名称。
-     * 3.对于SQL Server数据库，其服务器名为其系统的DSN(Database Source Name)名称。
-     * 4.对于PostgreSQL数据库，其服务器名为“IP:端口号”，默认的端口号是 5432。
-     * 5.对于DB2数据库，已经进行了编目，所以不需要进行服务器的设置。
-     * 6.对于 Kingbase 数据库，其服务器名为其 IP 地址。
-     * 7.对于GoogleMaps数据源，其服务器地址，默认设置为“http://maps.google.com”，且不可更改。
-     * 8.对于SuperMapCould数据源，为其服务地址。
-     * 9.对于MAPWORLD数据源，为其服务地址，默认设置为“http://www.tianditu.cn”，且不可更改。
-     * 10.对于OGC和REST数据源，为其服务地址。
-     */
-    server = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.user -{string}
-     * @description 登录数据库的用户名。
-     */
-    user = null;
 
 
     constructor(options) {
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.alias -{string}
+         * @description 数据源别名。
+         */
+        this.alias = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.connect -{boolean}
+         * @description 数据源是否自动连接数据。
+         */
+        this.connect = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.dataBase -{string}
+         * @description 数据源连接的数据库名。
+         */
+        this.dataBase = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.driver -{string}
+         * @description 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
+         * 其中，对于SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
+         * 对于SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
+         * 对于 iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
+         */
+        this.driver = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.engineType -{EngineType}
+         * @description 数据源连接的引擎类型。
+         */
+        this.engineType = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive -{boolean}
+         * @description 是否以独占方式打开数据源。
+         */
+        this.exclusive = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable -{boolean}
+         * @description 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable打开。
+         */
+        this.OpenLinkTable = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.password -{string}
+         * @description 登录数据源连接的数据库或文件的密码。
+         */
+        this.password = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.readOnly -{boolean}
+         * @description 是否以只读方式打开数据源。
+         */
+        this.readOnly = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.server -{string}
+         * @description 数据库服务器名、文件名或服务地址。
+         * 1.对于SDB和UDB文件，为其文件的绝对路径。注意：当绝对路径的长度超过UTF-8编码格式的260字节长度，该数据源无法打开。
+         * 2.对于Oracle数据库，其服务器名为其TNS服务名称。
+         * 3.对于SQL Server数据库，其服务器名为其系统的DSN(Database Source Name)名称。
+         * 4.对于PostgreSQL数据库，其服务器名为“IP:端口号”，默认的端口号是 5432。
+         * 5.对于DB2数据库，已经进行了编目，所以不需要进行服务器的设置。
+         * 6.对于 Kingbase 数据库，其服务器名为其 IP 地址。
+         * 7.对于GoogleMaps数据源，其服务器地址，默认设置为“http://maps.google.com”，且不可更改。
+         * 8.对于SuperMapCould数据源，为其服务地址。
+         * 9.对于MAPWORLD数据源，为其服务地址，默认设置为“http://www.tianditu.cn”，且不可更改。
+         * 10.对于OGC和REST数据源，为其服务地址。
+         */
+        this.server = null;
+
+        /**
+         * @member SuperMap.DatasourceConnectionInfo.prototype.user -{string}
+         * @description 登录数据库的用户名。
+         */
+        this.user = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.DatasourceConnectionInfo";
     }
 
     /**
@@ -127,7 +131,6 @@ export class DatasourceConnectionInfo {
         me.user = null;
     }
 
-    CLASS_NAME = "SuperMap.DatasourceConnectionInfo"
 }
 
 SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;

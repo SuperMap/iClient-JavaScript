@@ -8,43 +8,48 @@ import {Format} from './Format';
  */
 export class JSONFormat extends Format {
 
-    /**
-     * @member SuperMap.Format.JSON.prototype.indent - {string}
-     * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次。
-     */
-    indent = "    ";
+    constructor(options) {
+        super(options);
+        /**
+         * @member SuperMap.Format.JSON.prototype.indent - {string}
+         * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次。
+         */
+        this.indent = "    ";
 
-    /**
-     * @member SuperMap.Format.JSON.prototype.space -{string}
-     * @description 用于格式化输出，space字符串会在名值对的":"后边添加。
-     */
-    space = " ";
+        /**
+         * @member SuperMap.Format.JSON.prototype.space -{string}
+         * @description 用于格式化输出，space字符串会在名值对的":"后边添加。
+         */
+        this.space = " ";
 
-    /**
-     * @member SuperMap.Format.JSON.prototype.newline - {string}
-     * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
-     */
-    newline = "\n";
+        /**
+         * @member SuperMap.Format.JSON.prototype.newline - {string}
+         * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
+         */
+        this.newline = "\n";
 
-    /**
-     * @member SuperMap.Format.JSON.prototype.level - {integer}
-     * @description 用于格式化输出, 表示的是缩进级别。
-     */
-    level = 0;
+        /**
+         * @member SuperMap.Format.JSON.prototype.level - {integer}
+         * @description 用于格式化输出, 表示的是缩进级别。
+         */
+        this.level = 0;
 
-    /**
-     * @member SuperMap.Format.JSON.prototype.pretty - {boolean}
-     * @description 是否在序列化的时候使用额外的空格控制结构。在write方法中使用，默认值为false。
-     */
-    pretty = false;
+        /**
+         * @member SuperMap.Format.JSON.prototype.pretty - {boolean}
+         * @description 是否在序列化的时候使用额外的空格控制结构。在write方法中使用，默认值为false。
+         */
+        this.pretty = false;
 
-    /**
-     * @member SuperMap.Format.JSON.prototype.nativeJSON - {boolean}
-     * @description 判断浏览器是否原生支持JSON格式数据。
-     */
-    nativeJSON = (function () {
-        return !!(window.JSON && typeof JSON.parse === "function" && typeof JSON.stringify === "function");
-    })();
+        /**
+         * @member SuperMap.Format.JSON.prototype.nativeJSON - {boolean}
+         * @description 判断浏览器是否原生支持JSON格式数据。
+         */
+        this.nativeJSON = (function () {
+            return !!(window.JSON && typeof JSON.parse === "function" && typeof JSON.stringify === "function");
+        })();
+
+        this.CLASS_NAME = "SuperMap.Format.JSON";
+    }
 
     /**
      * @function SuperMap.Format.JSON.prototype.read
@@ -281,8 +286,6 @@ export class JSONFormat extends Format {
                 format(date.getSeconds()) + '"';
         }
     };
-
-    CLASS_NAME = "SuperMap.Format.JSON"
 }
 
 SuperMap.Format.JSON = JSONFormat;

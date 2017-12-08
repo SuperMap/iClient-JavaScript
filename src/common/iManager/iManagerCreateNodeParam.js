@@ -9,17 +9,16 @@ import {Util} from '../commontypes/Util';
  */
 export class IManagerCreateNodeParam {
 
-    nodeSpec = 'SMALL';              //取值范围: ['SMALL','MEDIUM','LARGE'] 以及自定义的环境规格名称
-    nodeCount = 1;                   //要创建vm的个数
-    nodeName = '';                   //vm名称
-    password = '';                   //vm的密码,空表示随机分配
-    description = '';                //描述信息
-    physicalMachineName = '';        //vm所属的物理机名称.
-    ips = [];                        //vm的ip,空数组表示随机分配
-    userName = '';                   //vm所属用户
-
     constructor(params) {
         params = params || {};
+        this.nodeSpec = 'SMALL';              //取值范围: ['SMALL','MEDIUM','LARGE'] 以及自定义的环境规格名称
+        this.nodeCount = 1;                   //要创建vm的个数
+        this.nodeName = '';                   //vm名称
+        this.password = '';                   //vm的密码,空表示随机分配
+        this.description = '';                //描述信息
+        this.physicalMachineName = '';        //vm所属的物理机名称.
+        this.ips = [];                        //vm的ip,空数组表示随机分配
+        this.userName = '';                   //vm所属用户
         Util.extend(this, params);
     }
 

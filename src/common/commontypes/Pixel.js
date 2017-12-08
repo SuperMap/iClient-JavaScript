@@ -17,37 +17,35 @@
  */
 export class Pixel {
 
-    /**
-     * @member SuperMap.Pixel.prototype.x -{number}
-     * @description x坐标，默认为0.0
-     */
-    x = 0.0;
-
-    /**
-     * @member SuperMap.Pixel.prototype.y -{number}
-     * @description y坐标，默认为0.0
-     */
-    y = 0.0;
-
-    /**
-     * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
-     * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
-     * 值有<br>
-     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightTop}
-     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightBottom}
-     * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
-     *
-     * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-     *
-     * @default {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
-     */
-    mode = null;
 
     constructor(x, y, mode) {
-        this.x = x ? parseFloat(x) : this.x;
-        this.y = y ? parseFloat(y) : this.y;
+        /**
+         * @member SuperMap.Pixel.prototype.x -{number}
+         * @description x坐标，默认为0.0
+         */
+        this.x = x ? parseFloat(x) : 0.0;
+
+        /**
+         * @member SuperMap.Pixel.prototype.y -{number}
+         * @description y坐标，默认为0.0
+         */
+        this.y = y ? parseFloat(y) : 0.0;
+
+        /**
+         * @member SuperMap.Pixel.prototype.mode -{SuperMap.Pixel.Mode}
+         * @description 坐标模式，有左上、右上、右下、左下这几种模式，分别表示相对于左上角、右上角、右下角、左下角的坐标。<br>
+         * 值有<br>
+         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightTop}
+         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.RightBottom}
+         * * {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftBottom}
+         *
+         * 这四种 默认值为：{@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+         *
+         * @default {@link SuperMap.Pixel.Mode|SuperMap.Pixel.Mode.LeftTop}
+         */
         this.mode = mode;
+        this.CLASS_NAME = "SuperMap.Pixel";
     }
 
     /**
@@ -190,7 +188,7 @@ export class Pixel {
     };
 
 
-    CLASS_NAME = "SuperMap.Pixel"
 }
+
 SuperMap.Pixel = Pixel;
 

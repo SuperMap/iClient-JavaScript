@@ -20,11 +20,17 @@ import {GeometryType} from '../REST';
  */
 export class GeoJSON extends JSONFormat {
 
-    /**
-     * @member SuperMap.Format.GeoJSON.prototype.ignoreExtraDims - {boolean}
-     * @description 忽略维度超过2的几何要素。
-     */
-    ignoreExtraDims = false;
+
+    constructor(options) {
+        super(options);
+        /**
+         * @member SuperMap.Format.GeoJSON.prototype.ignoreExtraDims - {boolean}
+         * @description 忽略维度超过2的几何要素。
+         */
+        this.ignoreExtraDims = false;
+
+        this.CLASS_NAME = "SuperMap.Format.GeoJSON";
+    }
 
     /**
      * @function SuperMap.Format.GeoJSON.prototype.read
@@ -819,8 +825,6 @@ export class GeoJSON extends JSONFormat {
     isPointsEquals(point1, point2) {
         return (point1.x === point2.x && point1.y === point2.y);
     }
-
-    CLASS_NAME = "SuperMap.Format.GeoJSON"
 }
 
 SuperMap.Format.GeoJSON = GeoJSON;

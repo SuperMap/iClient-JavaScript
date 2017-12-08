@@ -17,53 +17,52 @@ import {ChartQueryFilterParameter} from './ChartQueryFilterParameter';
  */
 export class ChartQueryParameters {
 
-    /**
-     * @member SuperMap.ChartQueryParameters.prototype.queryMode -{string}
-     * @description 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。
-     */
-    queryMode = null;
-
-    /**
-     * @member SuperMap.ChartQueryParameters.prototype.bounds - {Object}
-     * @description 海图查询范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
-     */
-    bounds = null;
-
-    /**
-     * @member SuperMap.ChartQueryParameters.prototype.chartLayerNames - {Array<string>}
-     * @description 查询的海图图层的名称。
-     */
-    chartLayerNames = null;
-
-    /**
-     * @member SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters - {Array<SuperMap.ChartQueryFilterParameter>}
-     * @description 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
-     */
-    chartQueryFilterParameters = null;
-
-    /**
-     * @member SuperMap.ChartQueryParameters.prototype.returnContent - {boolean}
-     * @description 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。默认为 true，表示返回 recordsets。
-     */
-    returnContent = true;
-
-    /**
-     * @member SuperMap.ChartQueryParameters.prototype.startRecord - {number}
-     * @description 查询起始记录位置，默认为0。
-     */
-    startRecord = 0;
-
-    /**
-     * @member SuperMap.ChartQueryParameters.prototype.expectCount - {number}
-     * @description 期望查询结果返回的记录数，该值大于0。
-     */
-    expectCount = null;
 
     constructor(options) {
-        if (!options) {
-            return;
-        }
+        /**
+         * @member SuperMap.ChartQueryParameters.prototype.queryMode -{string}
+         * @description 海图查询模式类型，支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。
+         */
+        this.queryMode = null;
+
+        /**
+         * @member SuperMap.ChartQueryParameters.prototype.bounds - {Object}
+         * @description 海图查询范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
+         */
+        this.bounds = null;
+
+        /**
+         * @member SuperMap.ChartQueryParameters.prototype.chartLayerNames - {Array<string>}
+         * @description 查询的海图图层的名称。
+         */
+        this.chartLayerNames = null;
+
+        /**
+         * @member SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters - {Array<SuperMap.ChartQueryFilterParameter>}
+         * @description 海图查询过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
+         */
+        this.chartQueryFilterParameters = null;
+
+        /**
+         * @member SuperMap.ChartQueryParameters.prototype.returnContent - {boolean}
+         * @description 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的资源 resourceInfo。默认为 true，表示返回 recordsets。
+         */
+        this.returnContent = true;
+
+        /**
+         * @member SuperMap.ChartQueryParameters.prototype.startRecord - {number}
+         * @description 查询起始记录位置，默认为0。
+         */
+        this.startRecord = 0;
+
+        /**
+         * @member SuperMap.ChartQueryParameters.prototype.expectCount - {number}
+         * @description 期望查询结果返回的记录数，该值大于0。
+         */
+        this.expectCount = null;
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.ChartQueryParameters";
     }
 
     /**
@@ -127,8 +126,6 @@ export class ChartQueryParameters {
         json = "{" + json + "}";
         return json;
     }
-
-    CLASS_NAME = "SuperMap.ChartQueryParameters"
 }
 
 SuperMap.ChartQueryParameters = ChartQueryParameters;

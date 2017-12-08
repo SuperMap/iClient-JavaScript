@@ -10,37 +10,34 @@ import {Util} from './Util';
  */
 export class Feature {
 
-    /**
-     * @deprecated
-     * @member SuperMap.Feature.prototype.layer - {SuperMap.Layer}
-     * @description 图层。
-     */
-    layer = null;
-
-    /**
-     * @member SuperMap.Feature.prototype.id - {string}
-     * @description 要素id。
-     */
-    id = null;
-
-    /**
-     * @member SuperMap.Feature.prototype.lonlat - {SuperMap.LonLat}
-     * @description 经纬度。
-     *
-     */
-    lonlat = null;
-
-    /**
-     * @member SuperMap.Feature.prototype.data - {Object}
-     * @description 数据对象。
-     */
-    data = null;
 
     constructor(layer, lonlat, data) {
+        /**
+         * @deprecated
+         * @member SuperMap.Feature.prototype.layer - {SuperMap.Layer}
+         * @description 图层。
+         */
         this.layer = layer;
-        this.lonlat = lonlat;
-        this.data = (data != null) ? data : {};
+
+        /**
+         * @member SuperMap.Feature.prototype.id - {string}
+         * @description 要素id。
+         */
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
+
+        /**
+         * @member SuperMap.Feature.prototype.lonlat - {SuperMap.LonLat}
+         * @description 经纬度。
+         *
+         */
+        this.lonlat = lonlat;
+
+        /**
+         * @member SuperMap.Feature.prototype.data - {Object}
+         * @description 数据对象。
+         */
+        this.data = (data != null) ? data : {};
+        this.CLASS_NAME = "SuperMap.Feature";
     }
 
     /**
@@ -52,7 +49,6 @@ export class Feature {
         this.lonlat = null;
         this.data = null;
     }
-
-    CLASS_NAME = "SuperMap.Feature"
 }
+
 SuperMap.Feature = Feature;
