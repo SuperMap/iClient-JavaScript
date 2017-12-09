@@ -11,6 +11,7 @@ export class Geometry {
 
 
     constructor() {
+        this.CLASS_NAME = "SuperMap.Geometry";
         /**
          * @member SuperMap.Geometry.prototype.id -{string}
          * @description  此几何对象的唯一标示符。
@@ -41,8 +42,6 @@ export class Geometry {
          *
          */
         this.SRID = null;
-
-        this.CLASS_NAME = "SuperMap.Geometry";
     }
 
 

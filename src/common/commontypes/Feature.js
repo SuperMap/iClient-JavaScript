@@ -12,6 +12,7 @@ export class Feature {
 
 
     constructor(layer, lonlat, data) {
+        this.CLASS_NAME = "SuperMap.Feature";
         /**
          * @deprecated
          * @member SuperMap.Feature.prototype.layer - {SuperMap.Layer}
@@ -37,7 +38,7 @@ export class Feature {
          * @description 数据对象。
          */
         this.data = (data != null) ? data : {};
-        this.CLASS_NAME = "SuperMap.Feature";
+
     }
 
     /**
