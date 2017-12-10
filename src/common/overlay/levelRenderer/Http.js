@@ -28,21 +28,14 @@ export class Http {
      * Returns:
      * {Number} cos 值。
      */
-    get(url, onsuccess, onerror, opts) {// eslint-disable-line no-unused-vars
+    get(url, onsuccess, onerror) {
         if (typeof(url) === 'object') {
             var obj = url;
             url = obj.url;
             onsuccess = obj.onsuccess;
             onerror = obj.onerror;
-            opts = obj;// eslint-disable-line no-unused-vars
 
-        } else {
-            if (typeof(onerror) === 'object') {
-                opts = onerror;// eslint-disable-line no-unused-vars
-
-            }
         }
-        /* jshint ignore:start */
         var xhr = window.XMLHttpRequest
             ? new XMLHttpRequest()
             : new window.ActiveXObject('Microsoft.XMLHTTP');
@@ -60,7 +53,6 @@ export class Http {
         };
 
         xhr.send(null);
-        /* jshint ignore:end */
     }
 
     CLASS_NAME = "SuperMap.LevelRenderer.Tool.Http"

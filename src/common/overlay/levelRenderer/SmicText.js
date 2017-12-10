@@ -149,41 +149,6 @@ export class SmicText extends Shape {
             }
 
             switch (style.brushType) {
-                case 'fill':
-                    this.setCtxGlobalAlpha(ctx, "fill", style);
-                    if (style.textRotation && style.textRotation !== 0) {
-                        ctx.save();
-                        ctx.translate(ox, oy);
-                        ctx.rotate(style.textRotation * Math.PI / 180);
-                        if (style.textBaseline == 'top') {
-                            if (style.maxWidth) {
-                                ctx.fillText(text[i], 0, lineHeight * i, style.maxWidth);
-                            } else {
-                                ctx.fillText(text[i], 0, lineHeight * i);
-                            }
-                        } else if (style.textBaseline == 'bottom') {
-                            if (style.maxWidth) {
-                                ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height, style.maxWidth);
-                            } else {
-                                ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height);
-                            }
-                        } else {
-                            if (style.maxWidth) {
-                                ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2, style.maxWidth);
-                            } else {
-                                ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2);
-                            }
-                        }
-                        ctx.restore();
-                    } else {
-                        if (style.maxWidth) {
-                            ctx.fillText(text[i], x, y, style.maxWidth);
-                        } else {
-                            ctx.fillText(text[i], x, y);
-                        }
-                    }
-                    this.setCtxGlobalAlpha(ctx, "reset", style);
-                    break;
                 case 'stroke':
                     this.setCtxGlobalAlpha(ctx, "stroke", style);
                     if (style.textRotation && style.textRotation !== 0) {
@@ -301,6 +266,7 @@ export class SmicText extends Shape {
                     }
                     break;
                 default:
+                    //fill or others
                     this.setCtxGlobalAlpha(ctx, "fill", style);
                     if (style.textRotation && style.textRotation !== 0) {
                         ctx.save();

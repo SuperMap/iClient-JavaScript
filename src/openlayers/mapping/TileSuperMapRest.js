@@ -66,10 +66,6 @@ export class TileSuperMapRest extends ol.source.TileImage {
         function appendCredential(url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {
-                case ServerType.ISERVER:
-                    value = SecurityManager.getToken(url);
-                    credential = value ? new Credential(value, "token") : null;
-                    break;
                 case ServerType.IPORTAL:
                     value = SecurityManager.getToken(url);
                     credential = value ? new Credential(value, "token") : null;
@@ -83,6 +79,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
                     credential = value ? new Credential(value, "key") : null;
                     break;
                 default:
+                    //iserver or others
                     value = SecurityManager.getToken(url);
                     credential = value ? new Credential(value, "token") : null;
                     break;

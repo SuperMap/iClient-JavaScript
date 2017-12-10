@@ -327,10 +327,6 @@ export var TiledMapLayer = L.TileLayer.extend({
     _appendCredential: function (url) {
         var newUrl = url, credential, value;
         switch (this.options.serverType) {
-            case ServerType.ISERVER:
-                value = SecurityManager.getToken(url);
-                credential = value ? new Credential(value, "token") : null;
-                break;
             case ServerType.IPORTAL:
                 value = SecurityManager.getToken(url);
                 credential = value ? new Credential(value, "token") : null;
@@ -344,6 +340,7 @@ export var TiledMapLayer = L.TileLayer.extend({
                 credential = value ? new Credential(value, "key") : null;
                 break;
             default:
+                //iserver or others
                 value = SecurityManager.getToken(url);
                 credential = value ? new Credential(value, "token") : null;
                 break;

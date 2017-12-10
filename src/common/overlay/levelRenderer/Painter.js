@@ -138,7 +138,7 @@ export class Painter {
         }
 
         // 什么都不干的空方法
-        function doNothing() { // eslint-disable-line no-unused-vars
+        function doNothing() { // eslint-disable-line no-unused-vars //NOSONAR
 
         }
     }

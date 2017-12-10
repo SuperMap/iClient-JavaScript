@@ -129,9 +129,6 @@ export var DataFlowLayer = L.GeoJSON.extend({
                 layer.setLatLngs(latlngs);
                 break;
             case 'MultiLineString':
-                latlngs = L.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
-                layer.setLatLngs(latlngs);
-                break;
             case 'Polygon':
                 latlngs = L.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
                 layer.setLatLngs(latlngs);

@@ -448,10 +448,6 @@ export var TileVectorLayer = VectorGrid.extend({
     _getCredential: function (url) {
         var credential, value;
         switch (this.options.serverType) {
-            case ServerType.ISERVER:
-                value = SecurityManager.getToken(url);
-                credential = value ? new Credential(value, "token") : null;
-                break;
             case ServerType.IPORTAL:
                 value = SecurityManager.getToken(url);
                 credential = value ? new Credential(value, "token") : null;
@@ -465,6 +461,7 @@ export var TileVectorLayer = VectorGrid.extend({
                 credential = value ? new Credential(value, "key") : null;
                 break;
             default:
+                //iserver or others
                 value = SecurityManager.getToken(url);
                 credential = value ? new Credential(value, "token") : null;
                 break;

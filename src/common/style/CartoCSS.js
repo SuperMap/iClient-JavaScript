@@ -3532,7 +3532,7 @@ SuperMap.CartoCSS.Tree.Definition = class Definition {
         var filter = this.filters.toString();
         if (!(filter in existing)) {existing[filter] = SuperMap.CartoCSS.Tree.Zoom.all;}
 
-        var available = SuperMap.CartoCSS.Tree.Zoom.all, xml = '', zoom, symbolizers,
+        var available = SuperMap.CartoCSS.Tree.Zoom.all, xml = '', symbolizers,
             zooms = {available: SuperMap.CartoCSS.Tree.Zoom.all};
         for (var i = 0; i < this.rules.length && available; i++) {
             zooms.rule = this.rules[i].zoom;

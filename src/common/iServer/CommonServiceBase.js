@@ -167,10 +167,6 @@ export class CommonServiceBase {
     getCredential(url) {
         let keyUrl = url, credential, value;
         switch (this.serverType) {
-            case ServerType.ISERVER:
-                value = SecurityManager.getToken(keyUrl);
-                credential = value ? new Credential(value, "token") : null;
-                break;
             case ServerType.IPORTAL:
                 value = SecurityManager.getToken(keyUrl);
                 credential = value ? new Credential(value, "token") : null;
@@ -184,6 +180,7 @@ export class CommonServiceBase {
                 credential = value ? new Credential(value, "key") : null;
                 break;
             default:
+                //iServer or others
                 value = SecurityManager.getToken(keyUrl);
                 credential = value ? new Credential(value, "token") : null;
                 break;
