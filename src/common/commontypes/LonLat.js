@@ -1,5 +1,4 @@
-﻿import {SuperMap} from '../SuperMap'
-import {Util} from './Util';
+﻿import {Util} from './Util';
 
 /**
  * @class SuperMap.LonLat
@@ -108,36 +107,6 @@ export class LonLat {
                 (isNaN(this.lon) && isNaN(this.lat) && isNaN(ll.lon) && isNaN(ll.lat)));
         }
         return equals;
-    }
-
-    /**
-     * APIMethod: transform
-     * 经纬度对象的投影转换。
-     * （在自身上做投影转换）
-     *
-     * 例如:
-     * (start code)
-     * var lonLat1 = new SuperMap.LonLat(100,50);
-     * //这里 lonLat1 = lonLat2
-     * var lonLat2 = lonLat1.transform(
-     *      new SuperMap.Projection("EPSG:4326"),
-     *      new SuperMap.Projection("EPSG:3857")
-     *  );
-     * (end)
-     *
-     * Parameters:
-     * source - {<SuperMap.Projection>} 源投影
-     * dest   - {<SuperMap.Projection>} 目标投影
-     *
-     * Returns:
-     * {<SuperMap.LonLat>} 返回转换后的LonLat（坐标对象）。
-     */
-    transform(source, dest) {
-        var point = SuperMap.Projection.transform(
-            {'x': this.lon, 'y': this.lat}, source, dest);
-        this.lon = point.x;
-        this.lat = point.y;
-        return this;
     }
 
     /**

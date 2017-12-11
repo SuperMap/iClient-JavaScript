@@ -2628,10 +2628,6 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
                 credential = void 0,
                 value = void 0;
             switch (this.serverType) {
-                case _REST.ServerType.ISERVER:
-                    value = _SecurityManager.SecurityManager.getToken(keyUrl);
-                    credential = value ? new _Credential.Credential(value, "token") : null;
-                    break;
                 case _REST.ServerType.IPORTAL:
                     value = _SecurityManager.SecurityManager.getToken(keyUrl);
                     credential = value ? new _Credential.Credential(value, "token") : null;
@@ -2645,6 +2641,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
                     credential = value ? new _Credential.Credential(value, "key") : null;
                     break;
                 default:
+                    //iServer or others
                     value = _SecurityManager.SecurityManager.getToken(keyUrl);
                     credential = value ? new _Credential.Credential(value, "token") : null;
                     break;
@@ -7587,8 +7584,6 @@ exports.LonLat = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SuperMap = __webpack_require__(0);
-
 var _Util = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7635,7 +7630,7 @@ var LonLat = exports.LonLat = function () {
 
 
     _createClass(LonLat, [{
-        key: 'toString',
+        key: "toString",
         value: function toString() {
             return "lon=" + this.lon + ",lat=" + this.lat;
         }
@@ -7650,7 +7645,7 @@ var LonLat = exports.LonLat = function () {
          */
 
     }, {
-        key: 'toShortString',
+        key: "toShortString",
         value: function toShortString() {
             return this.lon + "," + this.lat;
         }
@@ -7665,7 +7660,7 @@ var LonLat = exports.LonLat = function () {
          */
 
     }, {
-        key: 'clone',
+        key: "clone",
         value: function clone() {
             return new LonLat(this.lon, this.lat);
         }
@@ -7685,7 +7680,7 @@ var LonLat = exports.LonLat = function () {
          */
 
     }, {
-        key: 'add',
+        key: "add",
         value: function add(lon, lat) {
             if (lon == null || lat == null) {
                 throw new TypeError('LonLat.add cannot receive null values');
@@ -7707,45 +7702,13 @@ var LonLat = exports.LonLat = function () {
          */
 
     }, {
-        key: 'equals',
+        key: "equals",
         value: function equals(ll) {
             var equals = false;
             if (ll != null) {
                 equals = this.lon === ll.lon && this.lat === ll.lat || isNaN(this.lon) && isNaN(this.lat) && isNaN(ll.lon) && isNaN(ll.lat);
             }
             return equals;
-        }
-
-        /**
-         * APIMethod: transform
-         * 经纬度对象的投影转换。
-         * （在自身上做投影转换）
-         *
-         * 例如:
-         * (start code)
-         * var lonLat1 = new SuperMap.LonLat(100,50);
-         * //这里 lonLat1 = lonLat2
-         * var lonLat2 = lonLat1.transform(
-         *      new SuperMap.Projection("EPSG:4326"),
-         *      new SuperMap.Projection("EPSG:3857")
-         *  );
-         * (end)
-         *
-         * Parameters:
-         * source - {<SuperMap.Projection>} 源投影
-         * dest   - {<SuperMap.Projection>} 目标投影
-         *
-         * Returns:
-         * {<SuperMap.LonLat>} 返回转换后的LonLat（坐标对象）。
-         */
-
-    }, {
-        key: 'transform',
-        value: function transform(source, dest) {
-            var point = _SuperMap.SuperMap.Projection.transform({ 'x': this.lon, 'y': this.lat }, source, dest);
-            this.lon = point.x;
-            this.lat = point.y;
-            return this;
         }
 
         /**
@@ -7766,7 +7729,7 @@ var LonLat = exports.LonLat = function () {
          */
 
     }, {
-        key: 'wrapDateLine',
+        key: "wrapDateLine",
         value: function wrapDateLine(maxExtent) {
 
             var newLonLat = this.clone();
@@ -7797,7 +7760,7 @@ var LonLat = exports.LonLat = function () {
          */
 
     }, {
-        key: 'destroy',
+        key: "destroy",
         value: function destroy() {
             this.lon = null;
             this.lat = null;
@@ -7815,7 +7778,7 @@ var LonLat = exports.LonLat = function () {
          */
 
     }], [{
-        key: 'fromString',
+        key: "fromString",
         value: function fromString(str) {
             var pair = str.split(",");
             return new LonLat(pair[0], pair[1]);
@@ -7829,7 +7792,7 @@ var LonLat = exports.LonLat = function () {
          */
 
     }, {
-        key: 'fromArray',
+        key: "fromArray",
         value: function fromArray(arr) {
             var gotArr = _Util.Util.isArray(arr),
                 lon = gotArr && arr[0],

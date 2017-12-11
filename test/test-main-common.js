@@ -68,6 +68,9 @@ require('./common/control/TimeFlowControlSpec.js');
 /**common -- format**/
 require('./common/format/JSONSpec.js');
 
+/**common -- style**/
+require('./common/style/CartoCSSSpec.js');
+
 /**common -- security**/
 require('./common/security/SecurityManagerSpec.js');
 

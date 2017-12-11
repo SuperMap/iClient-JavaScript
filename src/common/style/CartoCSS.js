@@ -1,4 +1,5 @@
 import {SuperMap} from '../SuperMap';
+import toPairs from 'lodash/toPairs';
 
 /**
  * @class SuperMap.CartoCSS
@@ -2898,7 +2899,15 @@ CartoCSS['mapnik_reference'] = {
 
 SuperMap.CartoCSS = CartoCSS;
 SuperMap.CartoCSS.Tree = {};
-
+SuperMap.CartoCSS.Tree.operate = function(op, a, b) {
+    switch (op) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '%': return a % b;
+        case '/': return a / b;
+    }
+};
 SuperMap.CartoCSS.Tree.functions = {
     rgb: function (r, g, b) {
         return this.rgba(r, g, b, 1.0);
@@ -3148,7 +3157,7 @@ SuperMap.CartoCSS.Tree.Call = class Call {
         } else {
             var fn = SuperMap.CartoCSS.Tree.Reference.mapnikFunctions[this.name];
             if (fn === undefined) {
-                var functions = _.pairs(SuperMap.CartoCSS.Tree.Reference.mapnikFunctions);
+                var functions = toPairs(SuperMap.CartoCSS.Tree.Reference.mapnikFunctions);
                 // cheap closest, needs improvement.
                 var name = this.name;
                 var mean = functions.map(function (f) {
@@ -3380,176 +3389,6 @@ SuperMap.CartoCSS.Tree.Definition = class Definition {
         }
         return shaderAttrs;
     }
-
-    clone(filters) {
-        //if (filters) assert.ok(filters instanceof SuperMap.CartoCSS.Tree.Filterset);
-        var clone = Object.create(SuperMap.CartoCSS.Tree.Definition.prototype);
-        clone.rules = this.rules.slice();
-        clone.ruleIndex = _.clone(this.ruleIndex);
-        clone.filters = filters ? filters : this.filters.clone();
-        clone.attachment = this.attachment;
-        return clone;
-    }
-
-    addRules(rules) {
-        var added = 0;
-
-        // Add only unique rules.
-        for (var i = 0; i < rules.length; i++) {
-            if (!this.ruleIndex[rules[i].id]) {
-                this.rules.push(rules[i]);
-                this.ruleIndex[rules[i].id] = true;
-                added++;
-            }
-        }
-
-        return added;
-    }
-
-    appliesTo(id, classes) {
-        for (var i = 0, l = this.elements.length; i < l; i++) {
-            var elem = this.elements[i];
-            if (!(elem.wildcard ||
-                    (elem.type === 'class' && classes[elem.clean]) ||
-                    (elem.type === 'id' && id === elem.clean))) {return false;}
-        }
-        return true;
-    }
-
-    symbolizersToXML(env, symbolizers, zoom) {
-        var xml = zoom.toXML(env).join('') + this.filters.toXML(env);
-
-        // Sort symbolizers by the index of their first property definition
-        var sym_order = [], indexes = [];
-        for (var key in symbolizers) {
-            indexes = [];
-            for (var prop in symbolizers[key]) {
-                indexes.push(symbolizers[key][prop].index);
-            }
-            var min_idx = Math.min.apply(Math, indexes);
-            sym_order.push([key, min_idx]);
-        }
-
-        // Get a simple list of the symbolizers, in order
-        function symbolizerList(sym_order) {
-            return sym_order.sort(function (a, b) {
-                return a[1] - b[1];
-            })
-                .map(function (v) {
-                    return v[0];
-                });
-        }
-
-        sym_order = symbolizerList(sym_order);
-        var sym_count = 0;
-
-        for (var i = 0; i < sym_order.length; i++) {
-            var attributes = symbolizers[sym_order[i]];
-            var symbolizer = sym_order[i].split('/').pop();
-
-            // Skip the magical * symbolizer which is used for universal properties
-            // which are bubbled up to Style elements intead of Symbolizer elements.
-            if (symbolizer === '*') {continue;}
-            sym_count++;
-
-            var fail = SuperMap.CartoCSS.Tree.Reference.requiredProperties(symbolizer, attributes);
-            if (fail) {
-                var rule = attributes[Object.keys(attributes).shift()];
-                env.error({
-                    message: fail,
-                    index: rule.index,
-                    filename: rule.filename
-                });
-            }
-
-            function symbolizerName(symbolizer) {
-                function capitalize(str) {
-                    return str[1].toUpperCase();
-                }
-
-                return symbolizer.charAt(0).toUpperCase() +
-                    symbolizer.slice(1).replace(/\-./, capitalize) + 'Symbolizer';
-            }
-
-            var name = symbolizerName(symbolizer);
-
-            var selfclosing = true, tagcontent;
-            xml += '    <' + name + ' ';
-            for (var j in attributes) {
-                if (symbolizer === 'map') {
-                    env.error({
-                        message: 'Map properties are not permitted in other rules',
-                        index: attributes[j].index,
-                        filename: attributes[j].filename
-                    });
-                }
-                var x = SuperMap.CartoCSS.Tree.Reference.selector(attributes[j].name);
-                if (x && x.serialization && (x.serialization === 'content' || x.serialization === 'tag')) {
-                    selfclosing = false;
-                    tagcontent = attributes[j].ev(env).toXML(env, true);
-                } else {
-                    xml += attributes[j].ev(env).toXML(env) + ' ';
-                }
-            }
-            if (selfclosing) {
-                xml += '/>\n';
-            } else if (typeof tagcontent !== "undefined") {
-                if (tagcontent.indexOf('<') != -1) {
-                    xml += '>' + tagcontent + '</' + name + '>\n';
-                } else {
-                    xml += '><![CDATA[' + tagcontent + ']]></' + name + '>\n';
-                }
-            }
-        }
-        if (!sym_count || !xml) {return '';}
-        return '  <Rule>\n' + xml + '  </Rule>\n';
-    }
-
-    collectSymbolizers(zooms, i) {
-        var symbolizers = {}, child;
-
-        for (var j = i; j < this.rules.length; j++) {
-            child = this.rules[j];
-            var key = child.instance + '/' + child.symbolizer;
-            if (zooms.current & child.zoom &&
-                (!(key in symbolizers) ||
-                    (!(child.name in symbolizers[key])))) {
-                zooms.current &= child.zoom;
-                if (!(key in symbolizers)) {
-                    symbolizers[key] = {};
-                }
-                symbolizers[key][child.name] = child;
-            }
-        }
-
-        if (Object.keys(symbolizers).length) {
-            zooms.rule &= (zooms.available &= ~zooms.current);
-            return symbolizers;
-        }
-    }
-
-    toXML(env, existing) {
-        var filter = this.filters.toString();
-        if (!(filter in existing)) {existing[filter] = SuperMap.CartoCSS.Tree.Zoom.all;}
-
-        var available = SuperMap.CartoCSS.Tree.Zoom.all, xml = '', symbolizers,
-            zooms = {available: SuperMap.CartoCSS.Tree.Zoom.all};
-        for (var i = 0; i < this.rules.length && available; i++) {
-            zooms.rule = this.rules[i].zoom;
-            if (!(existing[filter] & zooms.rule)) {continue;}
-
-            while (zooms.current = zooms.rule & available) {
-                if (symbolizers = this.collectSymbolizers(zooms, i)) {
-                    if (!(existing[filter] & zooms.current)) {continue;}
-                    xml += this.symbolizersToXML(env, symbolizers,
-                        (new SuperMap.CartoCSS.Tree.Zoom()).setZoom(existing[filter] & zooms.current));
-                    existing[filter] &= ~zooms.current;
-                }
-            }
-        }
-
-        return xml;
-    }
 };
 
 SuperMap.CartoCSS.Tree.Dimension = class Dimension {
@@ -3572,7 +3411,7 @@ SuperMap.CartoCSS.Tree.Dimension = class Dimension {
     }
 
     ev(env) {
-        if (this.unit && !_.contains(this.all_units, this.unit)) {
+        if (this.unit && this.all_units.indexOf(this.unit)<0) {
             env.error({
                 message: "Invalid unit: '" + this.unit + "'",
                 index: this.index
@@ -3581,7 +3420,7 @@ SuperMap.CartoCSS.Tree.Dimension = class Dimension {
         }
 
         // normalize units which are not px or %
-        if (this.unit && _.contains(this.physical_units, this.unit)) {
+        if (this.unit && this.physical_units.indexOf(this.unit)>=0) {
             if (!env.ppi) {
                 env.error({
                     message: "ppi is not set, so metric units can't be used",
@@ -3741,40 +3580,6 @@ SuperMap.CartoCSS.Tree.Filter = class Filter {
         return this;
     }
 
-    toXML(env) {
-        if (SuperMap.CartoCSS.Tree.Reference.data.filter) {
-            if (this.key.is === 'keyword' && -1 === SuperMap.CartoCSS.Tree.Reference.data.filter.value.indexOf(this.key.toString())) {
-                env.error({
-                    message: this.key.toString() + ' is not a valid keyword in a filter expression',
-                    index: this.index,
-                    filename: this.filename
-                });
-            }
-            if (this.val.is === 'keyword' && -1 === SuperMap.CartoCSS.Tree.Reference.data.filter.value.indexOf(this.val.toString())) {
-                env.error({
-                    message: this.val.toString() + ' is not a valid keyword in a filter expression',
-                    index: this.index,
-                    filename: this.filename
-                });
-            }
-        }
-        var key = this.key.toString(false);
-        var val = this.val.toString(this.val.is == 'string');
-
-        if (
-            (this.ops[this.op][1] === 'numeric' && isNaN(val) && this.val.is !== 'field') ||
-            (this.ops[this.op][1] === 'string' && (val)[0] != "'")
-        ) {
-            env.error({
-                message: 'Cannot use operator "' + this.op + '" with value ' + this.val,
-                index: this.index,
-                filename: this.filename
-            });
-        }
-
-        return key + this.ops[this.op][0] + val + (this.ops[this.op][2] || '');
-    }
-
     toString() {
         return '[' + this.id + ']';
     }
@@ -3783,18 +3588,6 @@ SuperMap.CartoCSS.Tree.Filter = class Filter {
 SuperMap.CartoCSS.Tree.Filterset = class Filterset {
     constructor() {
         this.filters = {};
-    }
-
-    toXML(env) {
-        var filters = [];
-        for (var id in this.filters) {
-            filters.push('(' + this.filters[id].toXML(env).trim() + ')');
-        }
-        if (filters.length) {
-            return '    <Filter>' + filters.join(' and ') + '</Filter>\n';
-        } else {
-            return '';
-        }
     }
 
     toJS(env) {
@@ -4054,39 +3847,7 @@ SuperMap.CartoCSS.Tree.Fontset = class Fontset {
         this.fonts = fonts;
         this.name = 'fontset-' + env.effects.length;
     }
-
-    toXML(env) {
-        return '<FontSet name="' +
-            this.name +
-            '">\n' +
-            this.fonts.map(function (f) {
-                return '  <Font face-name="' + f + '"/>';
-            }).join('\n') +
-            '\n</FontSet>';
-    }
 };
-
-SuperMap.CartoCSS.Tree.Imagefilter = class Imagefilter {
-    is = 'imagefilter';
-
-    constructor(filter, args) {
-        this.filter = filter;
-        this.args = args || null;
-    }
-
-    ev() {
-        return this;
-    }
-
-    toString() {
-        if (this.args) {
-            return this.filter + '(' + this.args.join(',') + ')';
-        } else {
-            return this.filter;
-        }
-    }
-};
-
 SuperMap.CartoCSS.Tree.Invalid = class Invalid {
     is = 'invalid';
 
@@ -4377,7 +4138,7 @@ SuperMap.CartoCSS.Tree.Reference = {
             for (var i in value.value) {
                 for (var j in value.value[i].value) {
                     if (value.value[i].value[j].is !== 'call') {return false;}
-                    var f = _.find(this.selector(selector).functions, function (x) {
+                    var f = find(this.selector(selector).functions, function (x) {//NOSONAR
                         return x[0] === value.value[i].value[j].name;
                     });
                     if (!(f && f[1] === -1)) {
@@ -4489,77 +4250,6 @@ SuperMap.CartoCSS.Tree.Rule = class Rule {
     toString() {
         return '[' + SuperMap.CartoCSS.Tree.Zoom.toString(this.zoom) + '] ' + this.name + ': ' + this.value;
     }
-
-    toXML(env, content, sep, format) {
-        if (!SuperMap.CartoCSS.Tree.Reference.validSelector(this.name)) {
-            function getMean(name) {
-                return Object.keys(SuperMap.CartoCSS.Tree.Reference.selector_cache).map(function (f) {
-                    return [f, SuperMap.CartoCSS.Tree.Reference.editDistance(name, f)];
-                }).sort(function (a, b) {
-                    return a[1] - b[1];
-                });
-            }
-
-            var mean = getMean(this.name);
-            var mean_message = '';
-            if (mean[0][1] < 3) {
-                mean_message = '. Did you mean ' + mean[0][0] + '?';
-            }
-            return env.error({
-                message: "Unrecognized rule: " + this.name + mean_message,
-                index: this.index,
-                type: 'syntax',
-                filename: this.filename
-            });
-        }
-
-        if ((this.value instanceof SuperMap.CartoCSS.Tree.Value) && !SuperMap.CartoCSS.Tree.Reference.validValue(env, this.name, this.value)) {
-            if (!SuperMap.CartoCSS.Tree.Reference.selector(this.name)) {
-                return env.error({
-                    message: 'Unrecognized property: ' +
-                    this.name,
-                    index: this.index,
-                    type: 'syntax',
-                    filename: this.filename
-                });
-            } else {
-                var typename;
-                if (SuperMap.CartoCSS.Tree.Reference.selector(this.name).validate) {
-                    typename = SuperMap.CartoCSS.Tree.Reference.selector(this.name).validate;
-                } else if (typeof SuperMap.CartoCSS.Tree.Reference.selector(this.name).type === 'object') {
-                    typename = 'keyword (options: ' + SuperMap.CartoCSS.Tree.Reference.selector(this.name).type.join(', ') + ')';
-                } else {
-                    typename = SuperMap.CartoCSS.Tree.Reference.selector(this.name).type;
-                }
-                return env.error({
-                    message: 'Invalid value for ' +
-                    this.name +
-                    ', the type ' + typename +
-                    ' is expected. ' + this.value +
-                    ' (of type ' + this.value.value[0].is + ') ' +
-                    ' was given.',
-                    index: this.index,
-                    type: 'syntax',
-                    filename: this.filename
-                });
-            }
-        }
-
-        if (this.variable) {
-            return '';
-        } else if (SuperMap.CartoCSS.Tree.Reference.isFont(this.name) && this.value.value.length > 1) {
-            var f = SuperMap.CartoCSS.Tree._getFontSet(env, this.value.value);
-            return 'fontset-name="' + f.name + '"';
-        } else if (content) {
-            return this.value.toString(env, this.name, sep);
-        } else {
-            return SuperMap.CartoCSS.Tree.Reference.selectorName(this.name) +
-                '="' +
-                this.value.toString(env, this.name) +
-                '"';
-        }
-    }
-
     ev(context) {
         return new SuperMap.CartoCSS.Tree.Rule(this.name,
             this.value.ev(context),
@@ -4937,29 +4627,6 @@ SuperMap.CartoCSS.Tree.Zoom = class Zoom {
         }
         return str;
     }
-
-    toXML() {
-        var conditions = [];
-        if (this.zoom != SuperMap.CartoCSS.Tree.Zoom.all) {
-            var start = null, end = null;
-            for (var i = 0; i <= SuperMap.CartoCSS.Tree.Zoom.maxZoom; i++) {
-                if (this.zoom & (1 << i)) {
-                    if (start === null) {start = i;}
-                    end = i;
-                }
-            }
-            if (start > 0) {
-                conditions.push('    <MaxScaleDenominator>' +
-                    SuperMap.CartoCSS.Tree.Zoom.ranges[start] + '</MaxScaleDenominator>\n');
-            }
-            if (end < 22) {
-                conditions.push('    <MinScaleDenominator>' +
-                    SuperMap.CartoCSS.Tree.Zoom.ranges[end + 1] + '</MinScaleDenominator>\n');
-            }
-        }
-        return conditions;
-    }
-
 };
 
 // Covers all zoomlevels from 0 to 22

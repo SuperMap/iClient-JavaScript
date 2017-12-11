@@ -146,7 +146,6 @@ export class SmicPolygon extends Shape {
                         pointList: style.pointList
                     }
                 );
-                hasPath = false; // 这个path不能用
             } else {
                 this.buildPath(ctx, style);
                 hasPath = true; // 这个path能用
@@ -201,7 +200,6 @@ export class SmicPolygon extends Shape {
                                     pointList: hpStyle.pointList
                                 }
                             );
-                            hasPath = false; // 这个path不能用
                         } else {
                             this.buildPath(ctx, hpStyle);
                             hasPath = true; // 这个path能用
