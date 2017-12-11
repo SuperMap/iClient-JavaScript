@@ -142,6 +142,11 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
          * @param tileUrl -{string} 瓦片地址
          */
         function tileLoadFunction(tile, tileUrl) {
+            var regWidth = new RegExp("(^|\\?|&)" + 'width' + "=([^&]*)(\\s|&|$)");
+            var regHeight = new RegExp("(^|\\?|&)" + 'height' + "=([^&]*)(\\s|&|$)");
+            var width = Number(tileUrl.match(regWidth)[2]);
+            var height = Number(tileUrl.match(regHeight)[2]);
+
             tile.setLoader(function () {
                 FetchRequest.get(tileUrl).then(function (response) {
                     if (tile.getFormat() instanceof ol.format.GeoJSON) {
@@ -178,6 +183,7 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
                         features = tile.getFormat().readFeatures(Util.toGeoJSON(features));
                     }
                     tile.setFeatures(features);
+                    tile.setExtent([0, 0, width, height]);
                     tile.setProjection(new ol.proj.Projection({
                         code: 'TILE_PIXELS',
                         units: 'tile-pixels'
@@ -277,6 +283,7 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
             extent: extent,
             resolutions: resolutions
         });
+        // options.projection = 'EPSG:' + mapJSONObj.prjCoordSys.epsgCode;
         return options;
     }
 }

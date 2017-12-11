@@ -2619,10 +2619,6 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
                 credential = void 0,
                 value = void 0;
             switch (this.serverType) {
-                case _REST.ServerType.ISERVER:
-                    value = _SecurityManager.SecurityManager.getToken(keyUrl);
-                    credential = value ? new _Credential.Credential(value, "token") : null;
-                    break;
                 case _REST.ServerType.IPORTAL:
                     value = _SecurityManager.SecurityManager.getToken(keyUrl);
                     credential = value ? new _Credential.Credential(value, "token") : null;
@@ -2636,6 +2632,7 @@ var CommonServiceBase = exports.CommonServiceBase = function () {
                     credential = value ? new _Credential.Credential(value, "key") : null;
                     break;
                 default:
+                    //iServer or others
                     value = _SecurityManager.SecurityManager.getToken(keyUrl);
                     credential = value ? new _Credential.Credential(value, "token") : null;
                     break;
@@ -25381,41 +25378,6 @@ var SmicText = exports.SmicText = function (_Shape) {
                 }
 
                 switch (style.brushType) {
-                    case 'fill':
-                        this.setCtxGlobalAlpha(ctx, "fill", style);
-                        if (style.textRotation && style.textRotation !== 0) {
-                            ctx.save();
-                            ctx.translate(ox, oy);
-                            ctx.rotate(style.textRotation * Math.PI / 180);
-                            if (style.textBaseline == 'top') {
-                                if (style.maxWidth) {
-                                    ctx.fillText(text[i], 0, lineHeight * i, style.maxWidth);
-                                } else {
-                                    ctx.fillText(text[i], 0, lineHeight * i);
-                                }
-                            } else if (style.textBaseline == 'bottom') {
-                                if (style.maxWidth) {
-                                    ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height, style.maxWidth);
-                                } else {
-                                    ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height);
-                                }
-                            } else {
-                                if (style.maxWidth) {
-                                    ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2, style.maxWidth);
-                                } else {
-                                    ctx.fillText(text[i], 0, lineHeight * (i + 1) - rect.height / 2 - lineHeight / 2);
-                                }
-                            }
-                            ctx.restore();
-                        } else {
-                            if (style.maxWidth) {
-                                ctx.fillText(text[i], x, y, style.maxWidth);
-                            } else {
-                                ctx.fillText(text[i], x, y);
-                            }
-                        }
-                        this.setCtxGlobalAlpha(ctx, "reset", style);
-                        break;
                     case 'stroke':
                         this.setCtxGlobalAlpha(ctx, "stroke", style);
                         if (style.textRotation && style.textRotation !== 0) {
@@ -25533,6 +25495,7 @@ var SmicText = exports.SmicText = function (_Shape) {
                         }
                         break;
                     default:
+                        //fill or others
                         this.setCtxGlobalAlpha(ctx, "fill", style);
                         if (style.textRotation && style.textRotation !== 0) {
                             ctx.save();
@@ -50679,20 +50642,13 @@ var Http = exports.Http = function () {
 
     _createClass(Http, [{
         key: 'get',
-        value: function get(url, onsuccess, onerror, opts) {
-            // eslint-disable-line no-unused-vars
+        value: function get(url, onsuccess, onerror) {
             if ((typeof url === 'undefined' ? 'undefined' : _typeof(url)) === 'object') {
                 var obj = url;
                 url = obj.url;
                 onsuccess = obj.onsuccess;
                 onerror = obj.onerror;
-                opts = obj; // eslint-disable-line no-unused-vars
-            } else {
-                if ((typeof onerror === 'undefined' ? 'undefined' : _typeof(onerror)) === 'object') {
-                    opts = onerror; // eslint-disable-line no-unused-vars
-                }
             }
-            /* jshint ignore:start */
             var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new window.ActiveXObject('Microsoft.XMLHTTP');
             xhr.open('GET', url, true);
             xhr.onreadystatechange = function () {
@@ -50708,7 +50664,6 @@ var Http = exports.Http = function () {
             };
 
             xhr.send(null);
-            /* jshint ignore:end */
         }
     }]);
 
@@ -51329,7 +51284,7 @@ var Painter = exports.Painter = function () {
         }
 
         // 什么都不干的空方法
-        function doNothing() {// eslint-disable-line no-unused-vars
+        function doNothing() {// eslint-disable-line no-unused-vars //NOSONAR
 
         }
     }
@@ -57649,10 +57604,6 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
                 credential,
                 value;
             switch (serverType) {
-                case _iclientCommon.ServerType.ISERVER:
-                    value = _iclientCommon.SecurityManager.getToken(url);
-                    credential = value ? new _iclientCommon.Credential(value, "token") : null;
-                    break;
                 case _iclientCommon.ServerType.IPORTAL:
                     value = _iclientCommon.SecurityManager.getToken(url);
                     credential = value ? new _iclientCommon.Credential(value, "token") : null;
@@ -57666,6 +57617,7 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
                     credential = value ? new _iclientCommon.Credential(value, "key") : null;
                     break;
                 default:
+                    //iserver or others
                     value = _iclientCommon.SecurityManager.getToken(url);
                     credential = value ? new _iclientCommon.Credential(value, "token") : null;
                     break;
@@ -58012,10 +57964,6 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
                 credential,
                 value;
             switch (serverType) {
-                case _iclientCommon.ServerType.ISERVER:
-                    value = _iclientCommon.SecurityManager.getToken(url);
-                    credential = value ? new _iclientCommon.Credential(value, "token") : null;
-                    break;
                 case _iclientCommon.ServerType.IPORTAL:
                     value = _iclientCommon.SecurityManager.getToken(url);
                     credential = value ? new _iclientCommon.Credential(value, "token") : null;
@@ -58029,6 +57977,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
                     credential = value ? new _iclientCommon.Credential(value, "key") : null;
                     break;
                 default:
+                    //iserver or others
                     value = _iclientCommon.SecurityManager.getToken(url);
                     credential = value ? new _iclientCommon.Credential(value, "token") : null;
                     break;
@@ -60145,7 +60094,7 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
                 this.resolution = resolution;
                 this.extent = extent;
             }
-            return this.context.canvas;
+            return canvas2;
         }
         return _this;
     }
@@ -60654,10 +60603,6 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
                 credential,
                 value;
             switch (serverType) {
-                case _iclientCommon.ServerType.ISERVER:
-                    value = _iclientCommon.SecurityManager.getToken(url);
-                    credential = value ? new _iclientCommon.Credential(value, "token") : null;
-                    break;
                 case _iclientCommon.ServerType.IPORTAL:
                     value = _iclientCommon.SecurityManager.getToken(url);
                     credential = value ? new _iclientCommon.Credential(value, "token") : null;
@@ -60671,6 +60616,7 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
                     credential = value ? new _iclientCommon.Credential(value, "key") : null;
                     break;
                 default:
+                    //iserver or others
                     value = _iclientCommon.SecurityManager.getToken(url);
                     credential = value ? new _iclientCommon.Credential(value, "token") : null;
                     break;
@@ -60758,6 +60704,11 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
          * @param tileUrl -{string} 瓦片地址
          */
         function tileLoadFunction(tile, tileUrl) {
+            var regWidth = new RegExp("(^|\\?|&)" + 'width' + "=([^&]*)(\\s|&|$)");
+            var regHeight = new RegExp("(^|\\?|&)" + 'height' + "=([^&]*)(\\s|&|$)");
+            var width = Number(tileUrl.match(regWidth)[2]);
+            var height = Number(tileUrl.match(regHeight)[2]);
+
             tile.setLoader(function () {
                 _iclientCommon.FetchRequest.get(tileUrl).then(function (response) {
                     if (tile.getFormat() instanceof _olDebug2.default.format.GeoJSON) {
@@ -60794,6 +60745,7 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
                         features = tile.getFormat().readFeatures(_Util.Util.toGeoJSON(features));
                     }
                     tile.setFeatures(features);
+                    tile.setExtent([0, 0, width, height]);
                     tile.setProjection(new _olDebug2.default.proj.Projection({
                         code: 'TILE_PIXELS',
                         units: 'tile-pixels'
@@ -60895,6 +60847,7 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
                 extent: extent,
                 resolutions: resolutions
             });
+            // options.projection = 'EPSG:' + mapJSONObj.prjCoordSys.epsgCode;
             return options;
         }
     }]);
@@ -84215,7 +84168,6 @@ _SuperMap.SuperMap.CartoCSS.Tree.Definition = function () {
 
             var available = _SuperMap.SuperMap.CartoCSS.Tree.Zoom.all,
                 xml = '',
-                zoom,
                 symbolizers,
                 zooms = { available: _SuperMap.SuperMap.CartoCSS.Tree.Zoom.all };
             for (var i = 0; i < this.rules.length && available; i++) {
@@ -92755,7 +92707,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -92879,9 +92831,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -93652,7 +93604,108 @@ module.exports = whatwgFetch;
 /* 468 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\git\\SuperMap\\iClient-JavaScript","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {
+	"_from": "proj4@2.3.15",
+	"_id": "proj4@2.3.15",
+	"_inBundle": false,
+	"_integrity": "sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=",
+	"_location": "/proj4",
+	"_phantomChildren": {},
+	"_requested": {
+		"type": "version",
+		"registry": true,
+		"raw": "proj4@2.3.15",
+		"name": "proj4",
+		"escapedName": "proj4",
+		"rawSpec": "2.3.15",
+		"saveSpec": null,
+		"fetchSpec": "2.3.15"
+	},
+	"_requiredBy": [
+		"/"
+	],
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz",
+	"_shasum": "5ad06e8bca30be0ffa389a49e4565f51f06d089e",
+	"_spec": "proj4@2.3.15",
+	"_where": "G:\\github-iClient\\iClient9",
+	"author": "",
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
+	},
+	"bundleDependencies": false,
+	"contributors": [
+		{
+			"name": "Mike Adair",
+			"email": "madair@dmsolutions.ca"
+		},
+		{
+			"name": "Richard Greenwood",
+			"email": "rich@greenwoodmap.com"
+		},
+		{
+			"name": "Calvin Metcalf",
+			"email": "calvin.metcalf@gmail.com"
+		},
+		{
+			"name": "Richard Marsden",
+			"url": "http://www.winwaed.com"
+		},
+		{
+			"name": "T. Mittan"
+		},
+		{
+			"name": "D. Steinwand"
+		},
+		{
+			"name": "S. Nelson"
+		}
+	],
+	"dependencies": {
+		"mgrs": "~0.0.2"
+	},
+	"deprecated": false,
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"devDependencies": {
+		"browserify": "~12.0.1",
+		"chai": "~1.8.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"grunt": "~0.4.2",
+		"grunt-browserify": "~4.0.1",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~0.8.0",
+		"grunt-contrib-uglify": "~0.11.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"istanbul": "~0.2.4",
+		"mocha": "~1.17.1",
+		"tin": "~0.4.0"
+	},
+	"directories": {
+		"test": "test",
+		"doc": "docs"
+	},
+	"homepage": "https://github.com/proj4js/proj4js#readme",
+	"jam": {
+		"main": "dist/proj4.js",
+		"include": [
+			"dist/proj4.js",
+			"README.md",
+			"AUTHORS",
+			"LICENSE.md"
+		]
+	},
+	"license": "MIT",
+	"main": "lib/index.js",
+	"name": "proj4",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
+	},
+	"scripts": {
+		"test": "./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"
+	},
+	"version": "2.3.15"
+};
 
 /***/ }),
 /* 469 */

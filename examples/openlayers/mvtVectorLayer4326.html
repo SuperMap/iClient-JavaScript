@@ -8,7 +8,7 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 <script type="text/javascript">
-    var url = (window.isLocal ? window.server : "http://117.122.248.69:8090")+"/iserver/services/map-world/rest/maps/World";
+    var url = (window.isLocal ? window.server : "http://117.122.248.69:8090") + "/iserver/services/map-world/rest/maps/World";
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var map = new ol.Map({
             target: 'map',
@@ -27,6 +27,10 @@
         var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
         var vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
         vectorTileOptions.format = new ol.format.MVT({featureClass: ol.Feature});
+        vectorTileOptions.format.defaultDataProjection = new ol.proj.Projection({
+            code: '',
+            units: ol.proj.Units.TILE_PIXELS
+        });
         var vectorLayer = new ol.layer.VectorTile({
             source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
             style: vectorTileStyles.getFeatureStyle
@@ -35,7 +39,8 @@
 
         map.on('click', function (e) {
             map.forEachFeatureAtPixel(e.pixel, function (feature) {
-                vectorTileStyles.dispatchEvent({type: 'featureSelected',
+                vectorTileStyles.dispatchEvent({
+                    type: 'featureSelected',
                     selectedId: feature.getId(),
                     layerName: feature.getProperties().layer
                 });
