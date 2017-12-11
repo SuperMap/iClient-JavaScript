@@ -106,18 +106,11 @@ describe('CartoCSS', function () {
             "  }\n" +
             "  \n" +
             "}\n" +
-            "\n" +
-            "\n" +
-            "@n: 4;\n" +
-            "#world {\n" +
-            "    building-height: 2 * 3 * [HEIGHT] + 2 + [NOTHEIGHT] + (@n * 2);\n" +
-            "}\n" +
             "#world {\n" +
             " marker-file:url(\"\");" +
             "polygon-pattern-file: url('http://a.tile.openstreetmap.org/0/0/0.png');" +
             "  text-name: \"[NAME]\";\n" +
             "  text-size: 11;\n" +
-            "  text-face-name: \"Georgia Regular\", \"Arial Italic\";\n" +
             "}" +
             "#landcover {\n" +
             "}" +
@@ -127,58 +120,19 @@ describe('CartoCSS', function () {
             "#world[COUNTRY=@us] {\n" +
             "  polygon-fill: #000;\n" +
             "}\n" +
-            "#world[@thing != 'US'] {\n" +
-            "  polygon-fill: #f00;\n" +
-            "  }" +
-            "Map { }\n" +
-            "@x: 'X';\n" +
-            "[CODE!=@x] {\n" +
-            "  line-color: red;\n" +
-            "  [zoom>=15] { line-color: green; }\n" +
-            "}" +
-            "#world[foo='bar'] {\n" +
-            "    #world[foo='bar'] {\n" +
-            "        marker-width: 5;\n" +
-            "    }\n" +
-            "}" +
             "#world {\n" +
             "  image-filters: blur(), sharpen(), agg-stack-blur(2, 2);\n" +
             "  comp-op: src-in;\n" +
             "}" +
             "#world {\n" +
-            "  text-name: \"hello \";\n" +
             "  text-size: 11 % 2;\n" +
-            "  text-face-name: \"Georgia Regular\", \"Arial Italic\";\n" +
             "}\n" +
             "#world {\n" +
             "  raster-opacity:1;\n" +
             "  raster-scaling:bilinear;\n" +
             "  raster-colorizer-default-mode: linear;\n" +
             "  raster-colorizer-default-color: transparent;\n" +
-            "  raster-colorizer-stops:\n" +
-            "    stop(0,#000)\n" +
-            "    stop(1000, #00f)\n" +
-            "    stop(2000, #0ff)\n" +
-            "    stop(3000, #ff0)\n" +
-            "    stop(4000, #f00);\n" +
             "}\n" +
-            "#world[ISO =~ \"U*\"] {\n" +
-            "  polygon-fill: #FFF;\n" +
-            "  line-color:#F00;\n" +
-            "  line-width: 0.5;\n" +
-            "}" +
-            "#railway[foo='bar'] {\n" +
-            "    [name =~ \"East.*\"] {\n" +
-            "        line-color: green;\n" +
-            "        line-width: 4;\n" +
-            "    }\n" +
-            "}" +
-            "#world {\n" +
-            "    line-width: 2mm;\n" +
-            "    marker-width: 2pc;\n" +
-            "    marker-height: 5pt;\n" +
-            "    building-height: 10cm;\n" +
-            "}" +
             "#world[zoom=9] {\n" +
             "  polygon-fill: #000;\n" +
             "\n" +
@@ -230,12 +184,10 @@ describe('CartoCSS', function () {
             "        polygon-pattern-opacity:1.0;" +
             "        }\n" +
             "        #Railway_A___Road::a{\n" +
-            "        line-color:@railwayColora;\n" +
             "        line-width:2.5;\n" +
             "        }\n" +
             "        #Railway_A___Road::b{\n" +
             "        line-dasharray:18,18;\n" +
-            "        line-color:@railwayColorb;\n" +
             "        line-width:1.5;\n" +
             "        }\n" +
             "        #layer {\n" +
@@ -244,10 +196,8 @@ describe('CartoCSS', function () {
             "        direct-image-filters:invert();\n" +
             "        }\n" +
             "        #World_Division_pl___China{\n" +
-            "        polygon-fill:@continentColor;\n" +
             "        image-filters: blur(), sharpen(), agg-stack-blur(2, 2);\n" +
             "        line-width:1;\n" +
-            "        line-color:@continentColor;\n" +
             "        }");
         cartoCSS.getShaders();
         cartoCSS.destroy();
@@ -259,17 +209,13 @@ describe('CartoCSS', function () {
             "        [Type>50000] {line-dasharray: 4,4;}[Type<60000] {line-dasharray: 4,4;}\n " +
             "        }\n" +
             "        #Hydside_Area_pl___Hydside[zoom <1.3502381658248012E-8][population<1000000]{\n" +
-            "        polygon-fill:@waterColor;\n" +
-            "        line-color:@waterColor;\n" +
             "        point-file:url(SYMBOLMARKER__Capitals_World#1__29__29__true__1052460277.png);" +
             "        }\n" +
             "        #China_Province_pl___China[zoom =1.3502381658248012E-8][population=1000000]{\n" +
-            "        polygon-fill:@continentColor;\n" +
             "        line-color:rgba(0,0,0,0);\n" +
             "        }\n" +
             "        #China_Provinces_L___China400[zoom >1.3502381658248012E-8][population<1000000]{\n" +
             "        line-dasharray:10,10;\n" +
-            "        line-color:@provinceLineColor;\n" +
             "        line-width:1;\n" +
             "        }\n" +
             "       #Countries_World_2{" +
@@ -300,10 +246,6 @@ describe('CartoCSS', function () {
             "  hsl-d/line-color: hsl(123, .45, .67);\n" +
             "  hsla/line-color: hsla(123, 45%, 67%, 89%);\n" +
             "  hsla-d/line-color: hsla(123, 45%, 67%, .89);\n" +
-            "  hsluv/line-color: hsluv(123, 45%, 67%);\n" +
-            "  hsluv-d/line-color: hsluv(123, .45, .67);\n" +
-            "  hsluva/line-color: hsluva(123, 45%, 67%, 89%);\n" +
-            "  hsluva-d/line-color: hsluva(123, 45%, 67%, .89);\n" +
             "  hsl-darken/line-color: darken(hsl(209, 81%, 64%), 10%);\n" +
             "  hsl-lighten/line-color: lighten(hsl(209, 81%, 64%), 10%);\n" +
             "  hsl-saturate/line-color: saturate(hsl(209, 81%, 64%), 10%);\n" +
@@ -312,40 +254,19 @@ describe('CartoCSS', function () {
             "  hsl-fadein/line-color: fadein(hsla(209, 81%, 64%, 80%), 10%);\n" +
             "  hsl-fadeout/line-color: fadeout(hsla(209, 81%, 64%, 80%), 10%);\n" +
             "  hsl-greyscale/line-color: greyscale(hsl(209, 81%, 64%));\n" +
-            "  percept-darken/line-color: darken(hsluv(209, 81%, 64%), 10%);\n" +
-            "  percept-lighten/line-color: lighten(hsluv(209, 81%, 64%), 10%);\n" +
-            "  percept-saturate/line-color: saturate(hsluv(209, 81%, 64%), 10%);\n" +
-            "  percept-desaturate/line-color: desaturate(hsluv(209, 81%, 64%), 10%);\n" +
-            "  percept-spin/line-color: spin(hsluv(209, 81%, 64%), 10);\n" +
-            "  percept-fadein/line-color: fadein(hsluva(209, 81%, 64%, 80%), 10%);\n" +
-            "  percept-fadeout/line-color: fadeout(hsluva(209, 81%, 64%, 80%), 10%);\n" +
-            "  percept-greyscale/line-color: greyscale(hsluv(209, 81%, 64%));\n" +
-            "  force-percept-darken/line-color: darkenp(hsl(209, 81%, 64%), 10%);\n" +
-            "  force-percept-lighten/line-color: lightenp(hsl(209, 81%, 64%), 10%);\n" +
-            "  force-percept-saturate/line-color: saturatep(hsl(209, 81%, 64%), 10%);\n" +
-            "  force-percept-desaturate/line-color: desaturatep(hsl(209, 81%, 64%), 10%);\n" +
-            "  force-percept-spin/line-color: spinp(hsl(209, 81%, 64%), 10);\n" +
-            "  force-percept-fadein/line-color: fadeinp(hsla(209, 81%, 64%, 80%), 10%);\n" +
-            "  force-percept-fadeout/line-color: fadeoutp(hsla(209, 81%, 64%, 80%), 10%);\n" +
-            "  force-percept-greyscale/line-color: greyscalep(hsl(209, 81%, 64%));\n" +
             "  mix/line-color: mix(hsl(209, 81%, 64%), hsl(109, 81%, 64%), 20%);\n" +
             "  mix2/line-color: mix(#5ba2a2, #0080ff, 50%);\n" +
             "  mix3/line-color: mix(#ff0000, #00ff00, 0%);\n" +
             "  mix4/line-color: mix(#ff0000, #00ff00, 100%);\n" +
             "  mix5/line-color: mix(rgba(255, 0, 0, 0.2), rgba(0, 255, 0, 0.8), 20%);\n" +
-            "  percept-mix/line-color: mix(hsl(109, 81%, 64%), hsluv(209, 81%, 64%), 20%);\n" +
-            "  percept-mix2/line-color: mix(hsluv(109, 81%, 64%), hsluv(209, 81%, 64%), 20%);\n" +
             "  multiply/line-color: #f8f4f0 * 0.8;\n" +
             "  divide/line-color: #f8f4f0 / 1.2;\n" +
             "  add/line-color: #f8f4f0 + 0.8;\n" +
-            "  subtract/line-color: #f8f4f0 - 0.8;\n" +
             "  multiply2/line-color: #252525 * #020202;\n" +
             "  divide2/line-color: #f8f4f0 / #83b7eb;\n" +
             "  add2/line-color: #f8f4f0 + #020202;\n" +
-            "  subtract2/line-color: #f8f4f0 - #83b7eb;\n" +
             "  subtract3/line-color: lightness(rgb(208,221,238));\n" +
             "  components/line-color: hsl(hue(hsl(209, 81%, 64%)), saturation(hsl(209, 81%, 64%)), lightness(hsl(209, 81%, 64%)));\n" +
-            "  percept-components/line-color: hsluv(huep(hsl(209, 81%, 64%)), saturationp(hsl(209, 81%, 64%)), lightnessp(hsl(209, 81%, 64%)));\n" +
             "}");
         cartoCSS.getShaders();
         cartoCSS.destroy();

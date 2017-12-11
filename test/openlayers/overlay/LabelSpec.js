@@ -258,8 +258,8 @@ describe('openlayers_Label', function () {
             feature.style.labelYOffset = 1;
             var location = themeSource.getLabelPxLocation(feature);
             expect(location).not.toBeNull();
-            expect(location.x).toEqual(33.691771733333326);
-            expect(location.y).toEqual(369.16040391111113);
+            expect(location.x).toEqual(33.918438400000014);
+            expect(location.y).toEqual(369.43862613333334);
             done();
         }, 2000)
     });
