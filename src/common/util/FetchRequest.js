@@ -4,9 +4,18 @@ import fetchJsonp from 'fetch-jsonp';
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 
-export var Support = SuperMap.Support = SuperMap.Support || {
-    cors: (window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest())
-};
+/**
+ * @member SuperMap.CORS
+ * @description 是否支持跨域
+ * @type {boolean}
+ */
+export var CORS = SuperMap.CORS = SuperMap.CORS || (window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest());
+/**
+ * @member SuperMap.RequestTimeout
+ * @description 请求超时时间，默认45s
+ * @type {number}
+ */
+export var RequestTimeout = SuperMap.RequestTimeout = SuperMap.RequestTimeout || 45000;
 export var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
@@ -30,7 +39,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
         url = this._processUrl(url, options);
         url = Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.urlIsLong(url)) {
-            if (Util.isInTheSameDomain(url) || Support.cors || options.proxy) {
+            if (Util.isInTheSameDomain(url) || CORS || options.proxy) {
                 return this._fetch(url, params, options, type);
             }
             if (!Util.isInTheSameDomain(url)) {
@@ -46,7 +55,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
         var type = 'DELETE';
         url = this._processUrl(url, options);
         url = Util.urlAppend(url, this._getParameterString(params || {}));
-        if (!this.urlIsLong(url) && Support.cors) {
+        if (!this.urlIsLong(url) && CORS) {
             return this._fetch(url, params, options, type);
         }
         return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
@@ -125,7 +134,8 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 headers: options.headers,
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
                 credentials: options.withCredentials ? 'include' : 'omit',
-                mode: 'cors'
+                mode: 'cors',
+                timeout:RequestTimeout
             }).then(function (response) {
                 return response;
             }));
@@ -135,7 +145,8 @@ export var FetchRequest = SuperMap.FetchRequest = {
             body: type === 'PUT' || type === 'POST' ? params : undefined,
             headers: options.headers,
             credentials: options.withCredentials ? 'include' : 'omit',
-            mode: 'cors'
+            mode: 'cors',
+            timeout:RequestTimeout
         }).then(function (response) {
             return response;
         });

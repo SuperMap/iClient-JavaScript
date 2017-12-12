@@ -1,1 +1,1 @@
-export {Support, FetchRequest} from './FetchRequest';
+export {CORS, RequestTimeout, FetchRequest} from './FetchRequest';

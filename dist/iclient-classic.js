@@ -2825,7 +2825,7 @@ _SuperMap.SuperMap.CommonServiceBase = CommonServiceBase;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.FetchRequest = exports.Support = undefined;
+exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -2845,9 +2845,18 @@ var _Util = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Support = exports.Support = _SuperMap.SuperMap.Support = _SuperMap.SuperMap.Support || {
-    cors: window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()
-};
+/**
+ * @member SuperMap.CORS
+ * @description 是否支持跨域
+ * @type {boolean}
+ */
+var CORS = exports.CORS = _SuperMap.SuperMap.CORS = _SuperMap.SuperMap.CORS || window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest();
+/**
+ * @member SuperMap.RequestTimeout
+ * @description 请求超时时间，默认45s
+ * @type {number}
+ */
+var RequestTimeout = exports.RequestTimeout = _SuperMap.SuperMap.RequestTimeout = _SuperMap.SuperMap.RequestTimeout || 45000;
 var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
     commit: function commit(method, url, params, options) {
         method = method ? method.toUpperCase() : method;
@@ -2871,7 +2880,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
         url = this._processUrl(url, options);
         url = _Util.Util.urlAppend(url, this._getParameterString(params || {}));
         if (!this.urlIsLong(url)) {
-            if (_Util.Util.isInTheSameDomain(url) || Support.cors || options.proxy) {
+            if (_Util.Util.isInTheSameDomain(url) || CORS || options.proxy) {
                 return this._fetch(url, params, options, type);
             }
             if (!_Util.Util.isInTheSameDomain(url)) {
@@ -2887,7 +2896,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
         var type = 'DELETE';
         url = this._processUrl(url, options);
         url = _Util.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (!this.urlIsLong(url) && Support.cors) {
+        if (!this.urlIsLong(url) && CORS) {
             return this._fetch(url, params, options, type);
         }
         return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
@@ -2966,7 +2975,8 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
                 headers: options.headers,
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
                 credentials: options.withCredentials ? 'include' : 'omit',
-                mode: 'cors'
+                mode: 'cors',
+                timeout: RequestTimeout
             }).then(function (response) {
                 return response;
             }));
@@ -2976,7 +2986,8 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
             body: type === 'PUT' || type === 'POST' ? params : undefined,
             headers: options.headers,
             credentials: options.withCredentials ? 'include' : 'omit',
-            mode: 'cors'
+            mode: 'cors',
+            timeout: RequestTimeout
         }).then(function (response) {
             return response;
         });
