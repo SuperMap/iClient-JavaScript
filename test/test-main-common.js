@@ -24,7 +24,10 @@ require('./common/iServer/GetFeaturesBySQLServiceSpec.js');
 require('./common/iServer/GetFieldsServiceSpec.js');
 require('./common/iServer/GetGridCellInfosServiceSpec.js');
 require('./common/iServer/GetLayersInfoServiceSpec.js');
+require('./common/iServer/GridSpec.js');
+require('./common/iServer/ImageSpec.js');
 require('./common/iServer/InterpolationAnalystServiceSpec.js');
+require('./common/iServer/LabelMixedStyleSpec.js');
 require('./common/iServer/MapServiceSpec.js');
 require('./common/iServer/MathExpressionAnalysisServiceSpec.js');
 require('./common/iServer/MeasureServiceSpec.js');
@@ -67,6 +70,7 @@ require('./common/control/TimeFlowControlSpec.js');
 
 /**common -- format**/
 require('./common/format/JSONSpec.js');
+require('./common/format/WKTSpec.js');
 
 /**common -- style**/
 require('./common/style/CartoCSSSpec.js');
@@ -75,7 +79,11 @@ require('./common/style/CartoCSSSpec.js');
 require('./common/security/SecurityManagerSpec.js');
 
 /**common -- commonTypes**/
+require('./common/commonTypes/BaseTypesSpec.js');
 require('./common/commonTypes/BoundsSpec.js');
+require('./common/commonTypes/DateSpec.js');
+require('./common/commonTypes/LonLatSpec.js');
+require('./common/commonTypes/VectorSpec.js');
 require('./common/commonTypes/geometry/GeoTextSpec.js');
 require('./common/commonTypes/geometry/LineStringSpec.js');
 require('./common/commonTypes/geometry/LinearRingSpec.js');
@@ -83,12 +91,16 @@ require('./common/commonTypes/geometry/LinearRingSpec.js');
 /**common -- overlay**/
 require('./common/overlay/feature/ShapeFactorySpec.js');
 require('./common/overlay/levelRenderer/AreaSpec.js');
+require('./common/overlay/levelRenderer/ClipSpec.js');
 require('./common/overlay/levelRenderer/ColorSpec.js');
 require('./common/overlay/levelRenderer/ComputeBoundingBoxSpec');
 require('./common/overlay/levelRenderer/CurveSpec.js');
 require('./common/overlay/levelRenderer/EasingSpec.js');
 require('./common/overlay/levelRenderer/GroupSpec.js');
+require('./common/overlay/levelRenderer/LevelRendererSpec.js');
+require('./common/overlay/levelRenderer/MatrixSpec.js');
 require('./common/overlay/levelRenderer/PainterSpec.js');
+require('./common/overlay/levelRenderer/RenderSpec.js');
 require('./common/overlay/levelRenderer/ShapeSepc.js');
 require('./common/overlay/levelRenderer/SmicBrokenLineSpec.js');
 require('./common/overlay/levelRenderer/SmicCircleSpec.js');
@@ -102,5 +114,7 @@ require('./common/overlay/levelRenderer/SmicRingSpec.js');
 require('./common/overlay/levelRenderer/SmicSectorSpec.js');
 require('./common/overlay/levelRenderer/SmicStarSpec.js');
 require('./common/overlay/levelRenderer/SmicTextSpec.js');
+require('./common/overlay/levelRenderer/StorageSpec.js');
+require('./common/overlay/levelRenderer/UtilSpec.js');
 require('./common/overlay/levelRenderer/VectorSpec.js');
 require('./common/overlay/GraphSpec');
