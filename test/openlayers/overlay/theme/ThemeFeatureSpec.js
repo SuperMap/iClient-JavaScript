@@ -40,7 +40,6 @@ describe('openlayers_ThemeFeature', function () {
     });
     afterAll(function () {
         window.document.body.removeChild(testDiv);
-        map.remove();
     });
 
     it("toFeature", function () {

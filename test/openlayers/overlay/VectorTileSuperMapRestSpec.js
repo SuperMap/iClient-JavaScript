@@ -40,7 +40,6 @@ describe('openlayers_VectorTileSuperMapRest', function () {
     });
     afterAll(function () {
         window.document.body.removeChild(testDiv);
-        map.remove();
     });
 
     it('initialize', function (done) {

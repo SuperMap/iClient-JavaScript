@@ -3,7 +3,7 @@ require('../../resources/chinaConsumptionLevel');
 
 var url = GlobeParameter.China4326URL;
 describe('openlayers_Graph', function () {
-    var testDiv, map;
+    var testDiv, map, tileLayer;
     beforeAll(function () {
         testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -21,16 +21,16 @@ describe('openlayers_Graph', function () {
                 projection: "EPSG:4326"
             })
         });
-        var layer = new ol.layer.Tile({
+        tileLayer = new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest({
                 url: url
             })
         });
-        map.addLayer(layer);
+        map.addLayer(tileLayer);
     });
     afterAll(function () {
+        map.removeLayer(tileLayer);
         window.document.body.removeChild(testDiv);
-        map.remove();
     });
 
     it('constructor, destroy', function (done) {
@@ -93,7 +93,7 @@ describe('openlayers_Graph', function () {
             },
             isOverLay: false
         });
-        expect(graphThemeSource.isOverLay).toBeFalsy();      
+        expect(graphThemeSource.isOverLay).toBeFalsy();
         //setOpacity
         graphThemeSource.setOpacity(0.6);
         expect(graphThemeSource.opacity).toEqual(0.6);
@@ -134,6 +134,7 @@ describe('openlayers_Graph', function () {
         graphThemeSource.offset = 3;
         graphThemeSource.fire('move', event);
         graphThemeSource.clear();
+        map.removeLayer(layer);
         done();
     });
 
@@ -244,6 +245,7 @@ describe('openlayers_Graph', function () {
             graphThemeSource.removeAllFeatures();
             expect(graphThemeSource.features.length).toEqual(0);
             graphThemeSource.clear();
+            map.removeLayer(layer);
             done();
         }, 3000);
     });
@@ -322,6 +324,7 @@ describe('openlayers_Graph', function () {
         setTimeout(function () {
             expect(graphThemeSource.context).not.toBeUndefined();
             graphThemeSource.clear();
+            map.removeLayer(layer);
             done();
         }, 3000);
     });

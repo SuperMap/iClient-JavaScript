@@ -40,7 +40,6 @@ describe('openlayers_GeoFeature', function () {
     });
     afterAll(function () {
         window.document.body.removeChild(testDiv);
-        map.remove();
     });
 
     var features = [{

@@ -123,7 +123,6 @@ describe('openlayers_Label', function () {
     });
     afterAll(function () {
         window.document.body.removeChild(testDiv);
-        map.remove();
     });
 
     it('constructor, destroy', function () {
