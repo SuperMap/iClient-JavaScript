@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>属性汇总分析</title>
+    <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
+    <style>
+        .control {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #map {
+            position: absolute;
+        }
+        .echarts {
+            position: absolute;
+            top: 30px;
+            left: 10px;
+            width: 400px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="width: 100%;height: 100%"></div>
+<div id="control" class="control" style='width:350px'>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">属性汇总分析</h3>
+        </div>
+        <div class="panel-body">
+            <div class="input-group">
+                <span class="input-group-addon">输入数据<span title="必填字段" style="color: red;"> * </span>　</span>
+                <input id="datasetName" type="text" class="form-control"
+                       value="samples_processing_newyorkZone_R"/>
+            </div>
+            <p></p>
+            <div class='input-group'>
+                <span class='input-group-addon'>分组字段　　</span>
+                <input id='groupField' type='text' class='form-control' value='borough'/>
+            </div>
+            <p></p>
+            <div class='input-group'>
+                <span class='input-group-addon'>属性字段</span>
+                <input id='attributeField' type='text' class='form-control' value='LocationID'/>
+            </div><p></p>
+            <div class='input-group'>
+                <span class='input-group-addon'>统计模式</span>
+                <input id='statisticModes' type='text' class='form-control' value='sum'/>
+            </div><p></p>
+            <div align="right">
+                <input type="button" id='btn' class="btn btn-primary" value="汇总"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="echarts" class="echarts"></div>
+<script type="text/javascript" include="echarts" src="../../dist/include-classic.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
+    var chartLayer,
+        processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+        mapURL = host + "/iserver/services/map-world/rest/maps/World",
+        token = '15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..',
+        map = new SuperMap.Map("map", {
+            controls: [
+                new SuperMap.Control.Navigation(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.LayerSwitcher()
+
+            ], allOverlays: true
+        });
+    map.addControl(new SuperMap.Control.MousePosition());
+    var layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapURL, null, {maxResolution: "auto"});
+    layer.events.on({"layerInitialized": addLayer});
+
+    function addLayer() {
+        map.addLayers([layer]);
+        map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
+    }
+
+    var processingService = new SuperMap.REST.ProcessingService(processingsUrl);
+    if (!window.isLocal) {
+        SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090/iserver', token);
+    }
+
+    $('#btn').on('click', function () {
+        if ($('#msg_container')[0]) {
+            $('#msg_container').remove();
+        }
+        widgets.loader.showLoader();
+        $("#echarts").html("");
+        $("#echarts").hide();
+        var summaryAttributesJobsParameter = new SuperMap.SummaryAttributesJobsParameter({
+            datasetName: $('#datasetName').val(),
+            groupField: $('#groupField').val(),
+            attributeField: $('#attributeField').val(),
+            statisticModes: $('#statisticModes').val()
+        });
+        processingService.addSummaryAttributesJob(summaryAttributesJobsParameter, function (serviceResult) {
+            if (serviceResult.error) {
+                widgets.loader.removeLoader();
+                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error;
+                widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
+                return;
+            }
+            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                if (info.serviceType === 'RESTDATA') {
+                    var dataUrl = info.serviceAddress + '/data';
+                    var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+
+                    getFeatureParam = new SuperMap.REST.FilterParameter({
+                        name: "analystResult@UntitledDatasource",
+                        attributeFilter: "SMID > 0"
+                    });
+                    getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters({
+                        queryParameter: getFeatureParam,
+                        datasetNames: ["UntitledDatasource:analystResult"]
+                    });
+                    getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(dataUrl, {
+                        eventListeners: {"processCompleted": function (getFeaturesEventArgs) {
+                            result = getFeaturesEventArgs.result.features;
+                            var names = [];
+                            var data1 = [];
+                            var data2 = [];
+                            for (var i = 0;i < result.length;i++){
+                                names.push(result[i].attributes.BOROUGH);
+                                data1.push(parseFloat(result[i].attributes.RECORDCOUNT));
+                                data2.push(parseFloat(result[i].attributes.SUM_LOCATIONID0));
+                            }
+                            $("#echarts").show();
+                            var ChartDom = document.createElement("div");
+                            ChartDom.id = "piechart";
+                            ChartDom.style.width = "400px";
+                            ChartDom.style.height = "300px";
+                            ChartDom.style.left = "10px";
+                            ChartDom.style.top = "80px";
+                            ChartDom.style.position = "absolute";
+                            $("#echarts").append(ChartDom);
+                            var chart = echarts.init(ChartDom);
+                            option = {
+                                backgroundColor: '#0E2A43',
+                                legend: {
+                                    bottom: 20,
+                                    textStyle:{
+                                        color:'#fff',
+                                    },
+                                    data: ['RECORDCOUNT', 'SUM_LOCATIONID0']
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '20%',
+                                    containLabel: true
+                                },
+                                tooltip: {
+                                    show:"true",
+                                    trigger: 'axis',
+                                    axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                                        type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                                    }
+                                },
+                                xAxis:  {
+                                    type: 'value',
+                                    axisTick : {show: false},
+                                    axisLine: {
+                                        show: false,
+                                        lineStyle:{
+                                            color:'#fff',
+                                        }
+                                    },
+                                    splitLine: {
+                                        show: false
+                                    },
+                                },
+                                yAxis: [
+                                    {
+                                        type: 'category',
+                                        data: names,
+                                        axisTick : {show: false},
+                                        axisLine: {
+                                            show: true,
+                                            lineStyle:{
+                                                color:'#fff',
+                                            }
+                                        }
+                                    },
+                                    {
+                                        type: 'category',
+                                        data: names,
+                                        axisLine: {show:false},
+                                        axisTick: {show:false},
+                                        axisLabel: {show:false},
+                                        splitArea: {show:false},
+                                        splitLine: {show:false}
+                                    }
+                                ],
+                                series: [
+                                    {
+                                        name: 'RECORDCOUNT',
+                                        type: 'bar',
+                                        itemStyle:{
+                                            normal: {
+                                                show: true,
+                                                color: '#5de3e1',
+                                                barBorderRadius:50,
+                                                borderWidth:0,
+                                                borderColor:'#333',
+                                            }
+                                        },
+                                        data: data1,
+                                        barGap:'0%',
+                                        barCategoryGap:'50%'
+                                    },
+                                    {
+                                        name: 'SUM_LOCATIONID0',
+                                        type: 'bar',
+                                        yAxisIndex:1,
+                                        itemStyle:{
+                                            normal: {
+                                                show: true,
+                                                color: '#277ace',
+                                                barBorderRadius:50,
+                                                borderWidth:0,
+                                                borderColor:'#333',
+                                            }
+                                        },
+                                        data: data2,
+                                        barGap:'0%',
+                                        barCategoryGap:'50%'
+                                    }
+                                ]
+                            };
+                            chart.setOption(option);
+                            widgets.loader.removeLoader();
+                        }, "processFailed": function (e) {
+                            widgets.alert.showAlert(e.error.errorMsg,false);
+                        }}
+                    });
+                    getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+                }
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>

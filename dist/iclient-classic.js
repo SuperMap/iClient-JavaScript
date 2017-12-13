@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 52);
+/******/ 	return __webpack_require__(__webpack_require__.s = 54);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2829,13 +2829,13 @@ exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(42);
+__webpack_require__(44);
 
-var _whatwgFetchImportable = __webpack_require__(49);
+var _whatwgFetchImportable = __webpack_require__(51);
 
 var _whatwgFetchImportable2 = _interopRequireDefault(_whatwgFetchImportable);
 
-var _fetchJsonp2 = __webpack_require__(43);
+var _fetchJsonp2 = __webpack_require__(45);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
@@ -4875,17 +4875,19 @@ var _KernelDensityJobsService = __webpack_require__(29);
 
 var _SingleObjectQueryJobsService = __webpack_require__(33);
 
-var _SummaryMeshJobsService = __webpack_require__(35);
+var _SummaryMeshJobsService = __webpack_require__(37);
 
-var _SummaryRegionJobsService = __webpack_require__(37);
+var _SummaryRegionJobsService = __webpack_require__(39);
 
-var _VectorClipJobsService = __webpack_require__(41);
+var _VectorClipJobsService = __webpack_require__(43);
 
 var _OverlayGeoJobsService = __webpack_require__(31);
 
 var _BuffersAnalystJobsService = __webpack_require__(25);
 
-var _TopologyValidatorJobsService = __webpack_require__(39);
+var _TopologyValidatorJobsService = __webpack_require__(41);
+
+var _SummaryAttributesJobsService = __webpack_require__(35);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4922,6 +4924,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         _this.overlayGeoJobs = {};
         _this.buffersJobs = {};
         _this.topologyValidatorJobs = {};
+        _this.summaryAttributesJobs = {};
         return _this;
     }
 
@@ -5651,6 +5654,97 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         value: function getTopologyValidatorJobState(id) {
             return this.topologyValidatorJobs[id];
         }
+
+        /**
+         * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobs
+         * @description 获取属性汇总分析的列表。
+         * @param callback - {function} 请求结果的回调函数。
+         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         */
+
+    }, {
+        key: 'getSummaryAttributesJobs',
+        value: function getSummaryAttributesJobs(callback, resultFormat) {
+            var me = this,
+                format = me._processFormat(resultFormat);
+            var summaryAttributesJobsService = new _SummaryAttributesJobsService.SummaryAttributesJobsService(me.url, {
+                serverType: me.serverType,
+                eventListeners: {
+                    scope: me,
+                    processCompleted: callback,
+                    processFailed: callback
+                },
+                format: format
+            });
+            summaryAttributesJobsService.getSummaryAttributesJobs();
+        }
+
+        /**
+         * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJob
+         * @description 获取某一个属性汇总分析。
+         * @param id - {string}空间分析的id。
+         * @param callback - {function} 请求结果的回调函数。
+         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         */
+
+    }, {
+        key: 'getSummaryAttributesJob',
+        value: function getSummaryAttributesJob(id, callback, resultFormat) {
+            var me = this,
+                format = me._processFormat(resultFormat);
+            var summaryAttributesJobsService = new _SummaryAttributesJobsService.SummaryAttributesJobsService(me.url, {
+                serverType: me.serverType,
+                eventListeners: {
+                    scope: me,
+                    processCompleted: callback,
+                    processFailed: callback
+                },
+                format: format
+            });
+            summaryAttributesJobsService.getSummaryAttributesJob(id);
+        }
+
+        /**
+         * @function SuperMap.REST.ProcessingService.prototype.addSummaryAttributesJob
+         * @description 新建一个属性汇总分析。
+         * @param params -{SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
+         * @param callback - {function} 请求结果的回调函数。
+         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         */
+
+    }, {
+        key: 'addSummaryAttributesJob',
+        value: function addSummaryAttributesJob(params, callback, seconds, resultFormat) {
+            var me = this,
+                format = me._processFormat(resultFormat);
+            var summaryAttributesJobsService = new _SummaryAttributesJobsService.SummaryAttributesJobsService(me.url, {
+                serverType: me.serverType,
+                eventListeners: {
+                    scope: me,
+                    processCompleted: callback,
+                    processFailed: callback,
+                    processRunning: function processRunning(job) {
+                        me.summaryAttributesJobs[job.id] = job.state;
+                    }
+                },
+                format: format
+            });
+            summaryAttributesJobsService.addSummaryAttributesJob(params, seconds);
+        }
+
+        /**
+         * @function SuperMap.REST.ProcessingService.prototype.getSummaryAttributesJobState
+         * @description 获取属性汇总分析的状态。
+         * @param id - {string} 属性汇总分析的id。
+         * @return {Object} 属性汇总分析的状态
+         */
+
+    }, {
+        key: 'getSummaryAttributesJobState',
+        value: function getSummaryAttributesJobState(id) {
+            return this.summaryAttributesJobs[id];
+        }
     }, {
         key: '_processFormat',
         value: function _processFormat(resultFormat) {
@@ -5954,7 +6048,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Events = __webpack_require__(8);
 
-var _elasticsearch = __webpack_require__(50);
+var _elasticsearch = __webpack_require__(52);
 
 var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
@@ -6719,7 +6813,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(4);
 
-var _mapv = __webpack_require__(51);
+var _mapv = __webpack_require__(53);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7131,7 +7225,7 @@ var MapVRenderer = exports.MapVRenderer = function (_MapVBaseLayer) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Credential = undefined;
 
@@ -7154,74 +7248,74 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * pixcel.destroy();
  */
 var Credential = exports.Credential = function () {
-    function Credential(value, name) {
-        _classCallCheck(this, Credential);
+  function Credential(value, name) {
+    _classCallCheck(this, Credential);
 
-        /**
-         * @member SuperMap.Bounds.prototype.value -{string}
-         * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
-         */
-        this.value = value ? value : "";
+    /**
+     * @member SuperMap.Bounds.prototype.value -{string}
+     * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
+     */
+    this.value = value ? value : "";
 
-        /**
-         * @member SuperMap.Bounds.prototype.name -{string}
-         * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
-         */
-        this.name = name ? name : "token";
-        this.CLASS_NAME = "SuperMap.Credential";
+    /**
+     * @member SuperMap.Bounds.prototype.name -{string}
+     * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
+     */
+    this.name = name ? name : "token";
+    this.CLASS_NAME = "SuperMap.Credential";
+  }
+
+  /**
+   * @function SuperMap.Credential.prototype.getUrlParameters
+   * @example
+   * var credential = new SuperMap.Credential("valueString","token");
+   * //这里 str = "token=valueString";
+   * var str = credential.getUrlParameters();
+   * @returns {string} 返回安全信息组成的url片段。
+   */
+
+
+  _createClass(Credential, [{
+    key: "getUrlParameters",
+    value: function getUrlParameters() {
+      //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
+      return this.name + "=" + this.value;
     }
 
     /**
-     * @function SuperMap.Credential.prototype.getUrlParameters
+     * @function SuperMap.Bounds.prototype.getValue
+     * @description 获取value
      * @example
-     * var credential = new SuperMap.Credential("valueString","token");
-     * //这里 str = "token=valueString";
-     * var str = credential.getUrlParameters();
-     * @returns {string} 返回安全信息组成的url片段。
+     * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
+     * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
+     * var str = credential.getValue();
+     * @returns {string} 返回value字符串，在iServer服务下该value值即为token值。
      */
 
+  }, {
+    key: "getValue",
+    value: function getValue() {
+      return this.value;
+    }
 
-    _createClass(Credential, [{
-        key: "getUrlParameters",
-        value: function getUrlParameters() {
-            //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
-            return this.name + "=" + this.value;
-        }
+    /**
+     *
+     * @function SuperMap.Credential.prototype.destroy
+     * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
+     * @example
+     * var credential = new SuperMap.Credential("valueString","token");
+     * credential.destroy();
+     */
 
-        /**
-         * @function SuperMap.Bounds.prototype.getValue
-         * @description 获取value
-         * @example
-         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
-         * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
-         * var str = credential.getValue();
-         * @returns {string} 返回value字符串，在iServer服务下该value值即为token值。
-         */
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.value = null;
+      this.name = null;
+    }
+  }]);
 
-    }, {
-        key: "getValue",
-        value: function getValue() {
-            return this.value;
-        }
-
-        /**
-         *
-         * @function SuperMap.Credential.prototype.destroy
-         * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
-         * @example
-         * var credential = new SuperMap.Credential("valueString","token");
-         * credential.destroy();
-         */
-
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.value = null;
-            this.name = null;
-        }
-    }]);
-
-    return Credential;
+  return Credential;
 }();
 
 /**
@@ -8541,7 +8635,7 @@ _SuperMap.SuperMap.TimeControlBase = TimeControlBase;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Format = undefined;
 
@@ -8560,71 +8654,71 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */
 var Format = exports.Format = function () {
-    function Format(options) {
-        _classCallCheck(this, Format);
-
-        /**
-         * @member SuperMap.Format.prototype.data - {Object}
-         * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
-         */
-        this.data = null;
-
-        /**
-         * APIProperty: keepData
-         * @member SuperMap.Format.prototype.keepData - {Object}
-         * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
-         */
-        this.keepData = false;
-
-        _Util.Util.extend(this, options);
-        /**
-         * @member SuperMap.Format.prototype.options - {Object}
-         * @description 可选参数。
-         */
-        this.options = options;
-
-        this.CLASS_NAME = "SuperMap.Format";
-    }
+  function Format(options) {
+    _classCallCheck(this, Format);
 
     /**
-     * @function SuperMap.Format.prototype.destroy
-     * @description 销毁该格式类，释放相关资源。
+     * @member SuperMap.Format.prototype.data - {Object}
+     * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
+     */
+    this.data = null;
+
+    /**
+     * APIProperty: keepData
+     * @member SuperMap.Format.prototype.keepData - {Object}
+     * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
+     */
+    this.keepData = false;
+
+    _Util.Util.extend(this, options);
+    /**
+     * @member SuperMap.Format.prototype.options - {Object}
+     * @description 可选参数。
+     */
+    this.options = options;
+
+    this.CLASS_NAME = "SuperMap.Format";
+  }
+
+  /**
+   * @function SuperMap.Format.prototype.destroy
+   * @description 销毁该格式类，释放相关资源。
+   */
+
+
+  _createClass(Format, [{
+    key: 'destroy',
+    value: function destroy() {}
+    //用来销毁该格式类，释放相关资源
+
+
+    /**
+     * @function SuperMap.Format.prototype.read
+     * @description 来从字符串中读取数据。
+     * @param data - {string} 读取的数据。
      */
 
-
-    _createClass(Format, [{
-        key: 'destroy',
-        value: function destroy() {}
-        //用来销毁该格式类，释放相关资源
-
-
-        /**
-         * @function SuperMap.Format.prototype.read
-         * @description 来从字符串中读取数据。
-         * @param data - {string} 读取的数据。
-         */
-
-    }, {
-        key: 'read',
-        value: function read(data) {} // eslint-disable-line no-unused-vars
-        //用来从字符串中读取数据
+  }, {
+    key: 'read',
+    value: function read(data) {} // eslint-disable-line no-unused-vars
+    //用来从字符串中读取数据
 
 
-        /**
-         * @function SuperMap.Format.prototype.write
-         * @description 将对象写成字符串。
-         * @param object - {Object} 可序列化的对象。
-         * @return {string} 对象被写成字符串。
-         */
+    /**
+     * @function SuperMap.Format.prototype.write
+     * @description 将对象写成字符串。
+     * @param object - {Object} 可序列化的对象。
+     * @return {string} 对象被写成字符串。
+     */
 
-    }, {
-        key: 'write',
-        value: function write(object) {// eslint-disable-line no-unused-vars
-            //用来写字符串
-        }
-    }]);
+  }, {
+    key: 'write',
+    value: function write(object) {// eslint-disable-line no-unused-vars
+      //用来写字符串
+    }
+  }]);
 
-    return Format;
+  return Format;
 }();
 
 _SuperMap.SuperMap.Format = Format;
@@ -9563,7 +9657,7 @@ _SuperMap.SuperMap.GeoDecodingParameter = GeoDecodingParameter;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.KernelDensityJobParameter = undefined;
 
@@ -9591,133 +9685,133 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () {
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit - {SuperMap.AnalystSizeUnit}
-     * @description 搜索半径单位。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit - {SuperMap.AnalystSizeUnit}
+   * @description 搜索半径单位。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radius - {number}
-     * @description 分析的影响半径。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.radius - {number}
+   * @description 分析的影响半径。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshType - {number}
-     * @description 分析类型。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.meshType - {number}
+   * @description 分析类型。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.resolution - {number}
-     * @description 网格大小。
-     */
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.resolution - {number}
+   * @description 网格大小。
+   */
 
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName - {string}
-     * @description 数据集名。
-     */
-    function KernelDensityJobParameter(options) {
-        _classCallCheck(this, KernelDensityJobParameter);
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.datasetName - {string}
+   * @description 数据集名。
+   */
+  function KernelDensityJobParameter(options) {
+    _classCallCheck(this, KernelDensityJobParameter);
 
-        this.datasetName = "";
-        this.query = "";
-        this.resolution = 80;
-        this.method = 0;
-        this.meshType = 0;
-        this.fields = "";
-        this.radius = 300;
-        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-        this.radiusUnit = _REST.AnalystSizeUnit.METER;
-        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
+    this.datasetName = "";
+    this.query = "";
+    this.resolution = 80;
+    this.method = 0;
+    this.meshType = 0;
+    this.fields = "";
+    this.radius = 300;
+    this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+    this.radiusUnit = _REST.AnalystSizeUnit.METER;
+    this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
-        if (!options) {
-            return;
-        }
-        _Util.Util.extend(this, options);
+    if (!options) {
+      return;
+    }
+    _Util.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.KernelDensityJobParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit - {SuperMap.AnalystAreaUnit}
+   * @description 面积单位。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit - {SuperMap.AnalystSizeUnit}
+   * @description 网格大小单位。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.fields - {string}
+   * @description 权重索引。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.method - {number}
+   * @description 分析方法。
+   */
+
+
+  /**
+   * @member SuperMap.KernelDensityJobParameter.prototype.query - {Object}
+   * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+   */
+
+
+  _createClass(KernelDensityJobParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.datasetName = null;
+      this.query = null;
+      this.resolution = null;
+      this.method = null;
+      this.radius = null;
+      this.meshType = null;
+      this.fields = null;
+      this.meshSizeUnit = null;
+      this.radiusUnit = null;
+      this.areaUnit = null;
     }
 
     /**
-     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.KernelDensityJobParameter.toObject
+     * @param kernelDensityJobParameter -{SuperMap.KernelDensityJobParameter} 密度分析任务参数类。
+     * @param tempObj - {SuperMap.KernelDensityJobParameter} 密度分析任务参数对象。
+     * @description 将密度分析任务参数对象转换为JSON对象。
+     * @return JSON对象。
      */
 
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit - {SuperMap.AnalystAreaUnit}
-     * @description 面积单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit - {SuperMap.AnalystSizeUnit}
-     * @description 网格大小单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.fields - {string}
-     * @description 权重索引。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.method - {number}
-     * @description 分析方法。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.query - {Object}
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
-     */
-
-
-    _createClass(KernelDensityJobParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.query = null;
-            this.resolution = null;
-            this.method = null;
-            this.radius = null;
-            this.meshType = null;
-            this.fields = null;
-            this.meshSizeUnit = null;
-            this.radiusUnit = null;
-            this.areaUnit = null;
+  }], [{
+    key: 'toObject',
+    value: function toObject(kernelDensityJobParameter, tempObj) {
+      for (var name in kernelDensityJobParameter) {
+        if (name === "datasetName") {
+          tempObj['input'] = tempObj['input'] || {};
+          tempObj['input'][name] = kernelDensityJobParameter[name];
+          continue;
         }
-
-        /**
-         * @function SuperMap.KernelDensityJobParameter.toObject
-         * @param kernelDensityJobParameter -{SuperMap.KernelDensityJobParameter} 密度分析任务参数类。
-         * @param tempObj - {SuperMap.KernelDensityJobParameter} 密度分析任务参数对象。
-         * @description 将密度分析任务参数对象转换为JSON对象。
-         * @return JSON对象。
-         */
-
-    }], [{
-        key: 'toObject',
-        value: function toObject(kernelDensityJobParameter, tempObj) {
-            for (var name in kernelDensityJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = kernelDensityJobParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                if (name === 'query') {
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
-                } else {
-                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
-                }
-            }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        if (name === 'query') {
+          tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+        } else {
+          tempObj['analyst'][name] = kernelDensityJobParameter[name];
         }
-    }]);
+      }
+    }
+  }]);
 
-    return KernelDensityJobParameter;
+  return KernelDensityJobParameter;
 }();
 
 _SuperMap.SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
@@ -10055,7 +10149,7 @@ _SuperMap.SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.SingleObjectQueryJobsParameter = undefined;
 
@@ -10079,80 +10173,80 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = function () {
 
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery -{string}
-     * @description 查询对象所在的几何对象。
-     */
+  /**
+   * @member SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery -{string}
+   * @description 查询对象所在的几何对象。
+   */
 
 
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    function SingleObjectQueryJobsParameter(options) {
-        _classCallCheck(this, SingleObjectQueryJobsParameter);
+  /**
+   * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{string}
+   * @description 数据集名。
+   */
+  function SingleObjectQueryJobsParameter(options) {
+    _classCallCheck(this, SingleObjectQueryJobsParameter);
 
-        this.datasetName = "";
-        this.datasetQuery = "";
-        this.geometryQuery = "";
-        this.mode = _REST.SpatialQueryMode.CONTAIN;
+    this.datasetName = "";
+    this.datasetQuery = "";
+    this.geometryQuery = "";
+    this.mode = _REST.SpatialQueryMode.CONTAIN;
 
-        if (!options) {
-            return;
-        }
-        _Util.Util.extend(this, options);
+    if (!options) {
+      return;
+    }
+    _Util.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.SingleObjectQueryJobsParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  /**
+   * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
+   * @description 空间查询模式 。
+   */
+
+
+  /**
+   * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{string}
+   * @description 查询对象所在的数据集名称。
+   */
+
+
+  _createClass(SingleObjectQueryJobsParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.datasetName = null;
+      this.datasetQuery = null;
+      this.geometryQuery = null;
+      this.mode = null;
     }
 
     /**
-     * @function SuperMap.SingleObjectQueryJobsParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.SingleObjectQueryJobsParameter.toObject
+     * @param singleObjectQueryJobsParameter -{Object} 单对象空间查询分析任务参数
+     * @param tempObj - {Object} 目标对象
+     * @description 生成单对象空间查询分析任务对象
      */
 
-
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
-     * @description 空间查询模式 。
-     */
-
-
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{string}
-     * @description 查询对象所在的数据集名称。
-     */
-
-
-    _createClass(SingleObjectQueryJobsParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.datasetQuery = null;
-            this.geometryQuery = null;
-            this.mode = null;
+  }], [{
+    key: 'toObject',
+    value: function toObject(singleObjectQueryJobsParameter, tempObj) {
+      for (var name in singleObjectQueryJobsParameter) {
+        if (name === "datasetName") {
+          tempObj['input'] = tempObj['input'] || {};
+          tempObj['input'][name] = singleObjectQueryJobsParameter[name];
+          continue;
         }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
+      }
+    }
+  }]);
 
-        /**
-         * @function SuperMap.SingleObjectQueryJobsParameter.toObject
-         * @param singleObjectQueryJobsParameter -{Object} 单对象空间查询分析任务参数
-         * @param tempObj - {Object} 目标对象
-         * @description 生成单对象空间查询分析任务对象
-         */
-
-    }], [{
-        key: 'toObject',
-        value: function toObject(singleObjectQueryJobsParameter, tempObj) {
-            for (var name in singleObjectQueryJobsParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = singleObjectQueryJobsParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
-            }
-        }
-    }]);
-
-    return SingleObjectQueryJobsParameter;
+  return SingleObjectQueryJobsParameter;
 }();
 
 _SuperMap.SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
@@ -10261,6 +10355,193 @@ _SuperMap.SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
 /* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.SummaryAttributesJobsParameter = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _Util = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.SummaryAttributesJobsParameter
+ * @classdesc 属性汇总分析任务参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *        datasetName -{string} 数据集名。<br>
+ *        groupField -{string}分组字段。<br>
+ *        attributeField -{string} 属性字段。<br>
+ *        statisticModes -{string} 统计模式。<br>
+ */
+var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = function () {
+    function SummaryAttributesJobsParameter(options) {
+        _classCallCheck(this, SummaryAttributesJobsParameter);
+
+        if (!options) {
+            return;
+        }
+        this.datasetName = "";
+        this.groupField = "";
+        this.attributeField = "";
+        this.statisticModes = "";
+        _Util.Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.SummaryAttributesJobsParameter.destroy
+     * @override
+     */
+
+
+    _createClass(SummaryAttributesJobsParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.groupField = null;
+            this.attributeField = null;
+            this.statisticModes = null;
+        }
+
+        /**
+         * @function SuperMap.SummaryAttributesJobsParameter.toObject
+         * @param SummaryAttributesJobsParameter -{Object} 属性汇总任务参数
+         * @param tempObj - {Object} 目标对象
+         * @description 生成属性汇总分析任务对象
+         */
+
+    }], [{
+        key: 'toObject',
+        value: function toObject(SummaryAttributesJobsParameter, tempObj) {
+            for (var name in SummaryAttributesJobsParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = SummaryAttributesJobsParameter[name];
+                    continue;
+                }
+                tempObj['analyst'] = tempObj['analyst'] || {};
+                tempObj['analyst'][name] = SummaryAttributesJobsParameter[name];
+            }
+        }
+    }]);
+
+    return SummaryAttributesJobsParameter;
+}();
+
+_SuperMap.SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.SummaryAttributesJobsService = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _ProcessingServiceBase = __webpack_require__(3);
+
+var _SummaryAttributesJobsParameter = __webpack_require__(34);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.SummaryAttributesJobsService
+ * @classdesc 属性汇总分析服务类
+ * @extends SuperMap.ProcessingServiceBase
+ * @param url -{string} 汇总统计分析服务地址。
+ * @param options - {Object} 交互服务时所需可选参数。
+ */
+var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = function (_ProcessingServiceBas) {
+    _inherits(SummaryAttributesJobsService, _ProcessingServiceBas);
+
+    function SummaryAttributesJobsService(url, options) {
+        _classCallCheck(this, SummaryAttributesJobsService);
+
+        var _this = _possibleConstructorReturn(this, (SummaryAttributesJobsService.__proto__ || Object.getPrototypeOf(SummaryAttributesJobsService)).call(this, url, options));
+
+        _this.CLASS_NAME = "SuperMap.SummaryAttributesJobsService";
+
+        _this.url += "/spatialanalyst/summaryattributes";
+        return _this;
+    }
+
+    /**
+     *@override
+     */
+
+
+    _createClass(SummaryAttributesJobsService, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(SummaryAttributesJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryAttributesJobsService.prototype), 'destroy', this).call(this);
+        }
+
+        /**
+         * @function SuperMap.SummaryAttributesJobsService.protitype.getSummaryAttributesJobs
+         * @description 获取属性汇总分析所有任务
+         */
+
+    }, {
+        key: 'getSummaryAttributesJobs',
+        value: function getSummaryAttributesJobs() {
+            _get(SummaryAttributesJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryAttributesJobsService.prototype), 'getJobs', this).call(this, this.url);
+        }
+
+        /**
+         * @function SuperMap.SummaryAttributesJobsService.protitype.getSummaryAttributesJob
+         * @description 获取指定id的属性汇总分析服务
+         * @param id -{string} 指定要获取数据的id
+         */
+
+    }, {
+        key: 'getSummaryAttributesJob',
+        value: function getSummaryAttributesJob(id) {
+            _get(SummaryAttributesJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryAttributesJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+        }
+
+        /**
+         * @function SuperMap.SummaryAttributesJobsService.protitype.addSummaryAttributesJob
+         * @description 新建属性汇总分析服务
+         * @param params - {SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
+         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+         */
+
+    }, {
+        key: 'addSummaryAttributesJob',
+        value: function addSummaryAttributesJob(params, seconds) {
+            _get(SummaryAttributesJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryAttributesJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryAttributesJobsParameter.SummaryAttributesJobsParameter, seconds);
+        }
+    }]);
+
+    return SummaryAttributesJobsService;
+}(_ProcessingServiceBase.ProcessingServiceBase);
+
+_SuperMap.SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;
+
+/***/ }),
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10426,7 +10707,7 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
 _SuperMap.SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10445,7 +10726,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(3);
 
-var _SummaryMeshJobParameter = __webpack_require__(34);
+var _SummaryMeshJobParameter = __webpack_require__(36);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10532,14 +10813,14 @@ var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_Process
 _SuperMap.SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.SummaryRegionJobParameter = undefined;
 
@@ -10573,175 +10854,175 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () {
 
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-     * @description 网格大小单位。
-     */
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+   * @description 网格大小单位。
+   */
 
 
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.meshType -{number}
-     * @description 网格面汇总类型。
-     */
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.meshType -{number}
+   * @description 网格面汇总类型。
+   */
 
 
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{string}
-     * @description 以权重字段统计的字段名称。
-     */
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{string}
+   * @description 以权重字段统计的字段名称。
+   */
 
 
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
-     * @description 以标准属字段统计的统计模式。
-     */
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
+   * @description 以标准属字段统计的统计模式。
+   */
 
 
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{boolean}
-     * @description 以标准属字段统计。
-     */
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{boolean}
+   * @description 以标准属字段统计。
+   */
 
 
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{boolean}
-     * @description 是否统计长度或面积。
-     */
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{boolean}
+   * @description 是否统计长度或面积。
+   */
 
 
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    function SummaryRegionJobParameter(options) {
-        _classCallCheck(this, SummaryRegionJobParameter);
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{string}
+   * @description 数据集名。
+   */
+  function SummaryRegionJobParameter(options) {
+    _classCallCheck(this, SummaryRegionJobParameter);
 
-        this.datasetName = "";
-        this.regionDataset = "";
-        this.sumShape = true;
-        this.query = "";
-        this.standardSummaryFields = false;
-        this.standardFields = _REST.StatisticAnalystMode.AVERAGE;
-        this.standardStatisticModes = "";
-        this.weightedSummaryFields = false;
-        this.weightedFields = "";
-        this.weightedStatisticModes = "";
-        this.meshType = 0;
-        this.resolution = 100;
-        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-        this.type = _REST.SummaryType.SUMMARYMESH;
+    this.datasetName = "";
+    this.regionDataset = "";
+    this.sumShape = true;
+    this.query = "";
+    this.standardSummaryFields = false;
+    this.standardFields = _REST.StatisticAnalystMode.AVERAGE;
+    this.standardStatisticModes = "";
+    this.weightedSummaryFields = false;
+    this.weightedFields = "";
+    this.weightedStatisticModes = "";
+    this.meshType = 0;
+    this.resolution = 100;
+    this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+    this.type = _REST.SummaryType.SUMMARYMESH;
 
-        if (!options) {
-            return;
-        }
-        _Util.Util.extend(this, options);
+    if (!options) {
+      return;
+    }
+    _Util.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.SummaryRegionJobParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.type -{SuperMap.SummaryType}
+   * @description 汇总类型。
+   */
+
+
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
+   * @description 网格大小。
+   */
+
+
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes -{SuperMap.StatisticAnalystMode}
+   * @description 以权重字段统计的统计模式。
+   */
+
+
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{boolean}
+   * @description 以权重字段统计。
+   */
+
+
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
+   * @description 以标准属字段统计的字段名称。
+   */
+
+
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.query
+   * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
+   */
+
+
+  /**
+   * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{string}
+   * @description 汇总数据源（多边形汇总时用到的参数）。
+   */
+
+
+  _createClass(SummaryRegionJobParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.datasetName = null;
+      this.sumShape = null;
+      this.query = null;
+      this.standardSummaryFields = null;
+      this.standardFields = null;
+      this.standardStatisticModes = null;
+      this.weightedSummaryFields = null;
+      this.weightedFields = null;
+      this.weightedStatisticModes = null;
+      this.meshType = null;
+      this.resolution = null;
+      this.meshSizeUnit = null;
+      this.type = null;
     }
 
     /**
-     * @function SuperMap.SummaryRegionJobParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.SummaryRegionJobParameter.toObject
+     * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。
+     * @param tempObj - {Object} 目标对象。
+     * @description 生成区域汇总分析服务对象
      */
 
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.type -{SuperMap.SummaryType}
-     * @description 汇总类型。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
-     * @description 网格大小。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes -{SuperMap.StatisticAnalystMode}
-     * @description 以权重字段统计的统计模式。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{boolean}
-     * @description 以权重字段统计。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
-     * @description 以标准属字段统计的字段名称。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.query
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{string}
-     * @description 汇总数据源（多边形汇总时用到的参数）。
-     */
-
-
-    _createClass(SummaryRegionJobParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.sumShape = null;
-            this.query = null;
-            this.standardSummaryFields = null;
-            this.standardFields = null;
-            this.standardStatisticModes = null;
-            this.weightedSummaryFields = null;
-            this.weightedFields = null;
-            this.weightedStatisticModes = null;
-            this.meshType = null;
-            this.resolution = null;
-            this.meshSizeUnit = null;
-            this.type = null;
+  }], [{
+    key: 'toObject',
+    value: function toObject(summaryRegionJobParameter, tempObj) {
+      for (var name in summaryRegionJobParameter) {
+        if (name === "datasetName") {
+          tempObj['input'] = tempObj['input'] || {};
+          tempObj['input'][name] = summaryRegionJobParameter[name];
+          continue;
         }
-
-        /**
-         * @function SuperMap.SummaryRegionJobParameter.toObject
-         * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。
-         * @param tempObj - {Object} 目标对象。
-         * @description 生成区域汇总分析服务对象
-         */
-
-    }], [{
-        key: 'toObject',
-        value: function toObject(summaryRegionJobParameter, tempObj) {
-            for (var name in summaryRegionJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = summaryRegionJobParameter[name];
-                    continue;
-                }
-                if (name === "type") {
-                    tempObj['type'] = summaryRegionJobParameter[name];
-                    continue;
-                }
-                if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
-                    tempObj['analyst'] = tempObj['analyst'] || {};
-                    if (name === 'query') {
-                        tempObj['analyst'][name] = summaryRegionJobParameter[name].toBBOX();
-                    } else {
-                        tempObj['analyst'][name] = summaryRegionJobParameter[name];
-                    }
-                }
-            }
+        if (name === "type") {
+          tempObj['type'] = summaryRegionJobParameter[name];
+          continue;
         }
-    }]);
+        if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
+          tempObj['analyst'] = tempObj['analyst'] || {};
+          if (name === 'query') {
+            tempObj['analyst'][name] = summaryRegionJobParameter[name].toBBOX();
+          } else {
+            tempObj['analyst'][name] = summaryRegionJobParameter[name];
+          }
+        }
+      }
+    }
+  }]);
 
-    return SummaryRegionJobParameter;
+  return SummaryRegionJobParameter;
 }();
 
 _SuperMap.SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10760,7 +11041,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(3);
 
-var _SummaryRegionJobParameter = __webpack_require__(36);
+var _SummaryRegionJobParameter = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10843,7 +11124,7 @@ var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_Pro
 _SuperMap.SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10955,7 +11236,7 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
 _SuperMap.SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10974,7 +11255,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(3);
 
-var _TopologyValidatorJobsParameter = __webpack_require__(38);
+var _TopologyValidatorJobsParameter = __webpack_require__(40);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11057,14 +11338,14 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
 _SuperMap.SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.VectorClipJobsParameter = undefined;
 
@@ -11088,87 +11369,87 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
 
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
-     * @description 裁剪几何对象。
-     */
+  /**
+   * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
+   * @description 裁剪几何对象。
+   */
 
 
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    function VectorClipJobsParameter(options) {
-        _classCallCheck(this, VectorClipJobsParameter);
+  /**
+   * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
+   * @description 数据集名。
+   */
+  function VectorClipJobsParameter(options) {
+    _classCallCheck(this, VectorClipJobsParameter);
 
-        this.datasetName = "";
-        this.datasetVectorClip = "";
-        this.geometryClip = "";
-        this.mode = _REST.ClipAnalystMode.CLIP;
+    this.datasetName = "";
+    this.datasetVectorClip = "";
+    this.geometryClip = "";
+    this.mode = _REST.ClipAnalystMode.CLIP;
 
-        options = options || {};
-        if (options.mode && typeof options.mode === "string") {
-            options.mode = options.mode.toLowerCase();
-        }
-        _Util.Util.extend(this, options);
+    options = options || {};
+    if (options.mode && typeof options.mode === "string") {
+      options.mode = options.mode.toLowerCase();
+    }
+    _Util.Util.extend(this, options);
+  }
+
+  /**
+   * @function SuperMap.VectorClipJobsParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  /**
+   * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
+   * @description 裁剪分析模式 。
+   */
+
+
+  /**
+   * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
+   * @description 裁剪对象数据集。
+   */
+
+
+  _createClass(VectorClipJobsParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.datasetName = null;
+      this.datasetVectorClip = null;
+      this.geometryClip = null;
+      this.mode = null;
     }
 
     /**
-     * @function SuperMap.VectorClipJobsParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.VectorClipJobsParameter.toObject
+     * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
+     * @param tempObj - {Object} 目标对象。
+     * @description 矢量裁剪分析任务对象
      */
 
-
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
-     * @description 裁剪分析模式 。
-     */
-
-
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
-     * @description 裁剪对象数据集。
-     */
-
-
-    _createClass(VectorClipJobsParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.datasetVectorClip = null;
-            this.geometryClip = null;
-            this.mode = null;
+  }], [{
+    key: 'toObject',
+    value: function toObject(vectorClipJobsParameter, tempObj) {
+      for (var name in vectorClipJobsParameter) {
+        if (name === "datasetName") {
+          tempObj['input'] = tempObj['input'] || {};
+          tempObj['input'][name] = vectorClipJobsParameter[name];
+          continue;
         }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        tempObj['analyst'][name] = vectorClipJobsParameter[name];
+      }
+    }
+  }]);
 
-        /**
-         * @function SuperMap.VectorClipJobsParameter.toObject
-         * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
-         * @param tempObj - {Object} 目标对象。
-         * @description 矢量裁剪分析任务对象
-         */
-
-    }], [{
-        key: 'toObject',
-        value: function toObject(vectorClipJobsParameter, tempObj) {
-            for (var name in vectorClipJobsParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = vectorClipJobsParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = vectorClipJobsParameter[name];
-            }
-        }
-    }]);
-
-    return VectorClipJobsParameter;
+  return VectorClipJobsParameter;
 }();
 
 _SuperMap.SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11187,7 +11468,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(3);
 
-var _VectorClipJobsParameter = __webpack_require__(40);
+var _VectorClipJobsParameter = __webpack_require__(42);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11270,13 +11551,13 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
 _SuperMap.SuperMap.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _promisePolyfill = __webpack_require__(46);
+var _promisePolyfill = __webpack_require__(48);
 
 var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
@@ -11285,7 +11566,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.Promise = _promisePolyfill2.default;
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11404,7 +11685,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11458,12 +11739,12 @@ exports._unrefActive = exports.active = function (item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(47);
+__webpack_require__(49);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11656,7 +11937,7 @@ process.umask = function () {
 };
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11680,7 +11961,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -11804,9 +12085,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -11897,10 +12178,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     root.Promise = Promise;
   }
 })(undefined);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(44).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(46).setImmediate))
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12088,10 +12369,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 })(typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48), __webpack_require__(45)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50), __webpack_require__(47)))
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12121,7 +12402,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12568,19 +12849,19 @@ var whatwgFetch = function (self) {
 module.exports = whatwgFetch;
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);

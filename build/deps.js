@@ -97,6 +97,7 @@ deps = {
             "./src/common/iServer/SummaryRegionJobsService.js",
             "./src/common/iServer/TopologyValidatorJobsService",
             "./src/common/iServer/VectorClipJobsService.js",
+            "./src/common/iServer/SummaryAttributesJobsService.js",
             //AddressService
             "./src/common/iServer/AddressMatchService.js",
             //DataFlowService

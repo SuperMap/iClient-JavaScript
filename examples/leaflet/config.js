@@ -360,6 +360,11 @@ var exampleConfig = {
                     thumbnail: "l_vectorClipJob.png",
                     fileName: "vectorClipJobService"
                 }, {
+                    name: "属性汇总分析",
+                    name_en: "summary attributes",
+                    thumbnail: "l_summaryAttributes.png",
+                    fileName: "summaryAttributesJobService"
+                }, {
                     name: "拓扑检查分析",
                     name_en: "topology validator",
                     thumbnail: "l_topologyValidatorJobService.png",

@@ -356,6 +356,11 @@ var exampleConfig = {
                     thumbnail: "ol_vectorClipJob.png",
                     fileName: "vectorClipJobService"
                 }, {
+                    name: "属性汇总分析",
+                    name_en: "summary attributes",
+                    thumbnail: "ol_summaryAttributes.png",
+                    fileName: "summaryAttributesJobService"
+                }, {
                     name: "拓扑检查分析",
                     name_en: "topology validator",
                     thumbnail: "ol_topologyValidatorJobService.png",

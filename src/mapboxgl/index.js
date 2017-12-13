@@ -120,6 +120,7 @@ export {
     SetLayerStatusParameters,
     SingleObjectQueryJobsParameter,
     StopQueryParameters,
+    SummaryAttributesJobsParameter,
     SummaryMeshJobParameter,
     SummaryRegionJobParameter,
     SupplyCenter,

@@ -149,6 +149,8 @@ export {SingleObjectQueryJobsService} from './SingleObjectQueryJobsService';
 export {SpatialAnalystBase} from './SpatialAnalystBase';
 export {StopQueryParameters} from './StopQueryParameters';
 export {StopQueryService} from './StopQueryService';
+export {SummaryAttributesJobsParameter} from './SummaryAttributesJobsParameter';
+export {SummaryAttributesJobsService} from './SummaryAttributesJobsService';
 export {SummaryMeshJobParameter} from './SummaryMeshJobParameter';
 export {SummaryMeshJobsService} from './SummaryMeshJobsService';
 export {SummaryRegionJobParameter} from './SummaryRegionJobParameter';

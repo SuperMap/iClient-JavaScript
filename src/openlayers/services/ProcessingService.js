@@ -8,7 +8,8 @@ import {
     VectorClipJobsService,
     OverlayGeoJobsService,
     BuffersAnalystJobsService,
-    TopologyValidatorJobsService
+    TopologyValidatorJobsService,
+    SummaryAttributesJobsService
 } from '@supermap/iclient-common';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
@@ -37,6 +38,7 @@ export class ProcessingService extends ServiceBase {
         this.overlayGeoJobs = {};
         this.buffersJobs = {};
         this.topologyValidatorJobs = {};
+        this.summaryAttributesJobs = {};
     }
 
     /**
@@ -673,6 +675,86 @@ export class ProcessingService extends ServiceBase {
      */
     getTopologyValidatorJobState(id) {
         return this.topologyValidatorJobs[id];
+    }
+
+    /**
+     * @function ol.supermap.processingService.prototype.getSummaryAttributesJobs
+     * @description 获取拓扑检查属性汇总分析的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    getSummaryAttributesJobs(callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        summaryAttributesJobsService.getSummaryAttributesJobs();
+    }
+
+    /**
+     * @function ol.supermap.processingService.prototype.getSummaryAttributesJob
+     * @description 获取某一个属性汇总分析。
+     * @param id - {string}空间分析的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    getSummaryAttributesJob(id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        summaryAttributesJobsService.getSummaryAttributesJob(id);
+    }
+
+    /**
+     * @function ol.supermap.processingService.prototype.addSummaryAttributesJob
+     * @description 新建一个属性汇总分析。
+     * @param params -{SuperMap.SummaryAttributesJobsParameter} 创建一个空间分析的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     */
+    addSummaryAttributesJob(params, callback, seconds, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var summaryAttributesJobsService = new SummaryAttributesJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.summaryAttributesJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        summaryAttributesJobsService.addSummaryAttributesJob(param, seconds);
+    }
+
+    /**
+     * @function ol.supermap.processingService.prototype.getSummaryAttributesJobState
+     * @description 获取属性汇总分析的状态。
+     * @param id - {string} 属性汇总分析的id。
+     * @return {Object} 属性汇总分析的状态
+     */
+    getSummaryAttributesJobState(id) {
+        return this.summaryAttributesJobs[id];
     }
 
     _processFormat(resultFormat) {

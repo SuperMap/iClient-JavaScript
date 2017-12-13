@@ -2,6 +2,7 @@ export {ElasticSearch} from '@supermap/iclient-common/thirdparty/elasticsearch/E
 export {SecurityManager} from '@supermap/iclient-common/security/SecurityManager';
 export {KernelDensityJobParameter} from '@supermap/iclient-common/iServer/KernelDensityJobParameter';
 export {SingleObjectQueryJobsParameter} from '@supermap/iclient-common/iServer/SingleObjectQueryJobsParameter';
+export {SummaryAttributesJobsParameter} from '@supermap/iclient-common/iServer/SummaryAttributesJobsParameter';
 export {SummaryMeshJobParameter} from '@supermap/iclient-common/iServer/SummaryMeshJobParameter';
 export {SummaryRegionJobParameter} from '@supermap/iclient-common/iServer/SummaryRegionJobParameter';
 export {OverlayGeoJobParameter} from '@supermap/iclient-common/iServer/OverlayGeoJobParameter';
