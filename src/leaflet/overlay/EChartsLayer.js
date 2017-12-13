@@ -195,7 +195,7 @@ LeafletMapCoordSys.prototype.getBMap = function () {
     return this._LeafletMap
 }
 
-LeafletMapCoordSys.prototype.prepareCustoms = function (data) {
+LeafletMapCoordSys.prototype.prepareCustoms = function () {
     var zrUtil = echarts.util;
 
     var rect = this.getViewRect();

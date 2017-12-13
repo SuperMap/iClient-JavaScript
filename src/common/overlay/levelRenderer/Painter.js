@@ -129,10 +129,11 @@ export class Painter {
             return false;
         }
 
+        /* eslint-disable */
         // 什么都不干的空方法
-        function doNothing() {  // eslint-disable-line no-unused-vars
-            //NOSONAR
+        function doNothing() {  //NOSONAR
         }
+        /* eslint-enable */
     }
 
 
