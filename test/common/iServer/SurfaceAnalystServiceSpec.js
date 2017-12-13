@@ -1,6 +1,6 @@
 ﻿require('../../../src/common/iServer/SurfaceAnalystService');
 require('../../../src/common/util/FetchRequest');
-//require('../../resources/SurfaceAnalystServiceResult');
+require('../../../src/common/commontypes/Util');
 
 var surfaceAnalystEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
@@ -27,6 +27,7 @@ describe('SurfaceAnalystService', function () {
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+        SuperMap.Util.lastSeqID = 0;
     });
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
@@ -167,7 +168,7 @@ describe('SurfaceAnalystService', function () {
         spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
             expect(method).toBe('POST');
             expect(testUrl).toBe(spatialAnalystURL + "/geometry/isoline.json?returnContent=true");
-            var expectParams = "{'resolution':3000,'extractParameter':{'clipRegion':null,'datumValue':-3,'expectedZValues':null,'interval':0.5,'resampleTolerance':0.7,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'surfaceAnalystMethod':\"ISOLINE\",'points':[{'id':\"SuperMap.Geometry_2\",'bounds':null,'SRID':null,'x':-4000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_3\",'bounds':null,'SRID':null,'x':-4500,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_4\",'bounds':null,'SRID':null,'x':-3000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_5\",'bounds':null,'SRID':null,'x':-3000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_6\",'bounds':null,'SRID':null,'x':-2500,'y':2500,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_7\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_8\",'bounds':null,'SRID':null,'x':-2000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_9\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_10\",'bounds':null,'SRID':null,'x':2000,'y':4000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_11\",'bounds':null,'SRID':null,'x':0,'y':0,'tag':null,'type':\"Point\"}],'zValues':[-3,-2,0,-1,-3,0,1,0,1,1]}";
+            var expectParams = "{'resolution':3000,'extractParameter':{'clipRegion':null,'datumValue':-3,'expectedZValues':null,'interval':0.5,'resampleTolerance':0.7,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'surfaceAnalystMethod':\"ISOLINE\",'points':[{'id':\"SuperMap.Geometry_1\",'bounds':null,'SRID':null,'x':-4000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_2\",'bounds':null,'SRID':null,'x':-4500,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_3\",'bounds':null,'SRID':null,'x':-3000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_4\",'bounds':null,'SRID':null,'x':-3000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_5\",'bounds':null,'SRID':null,'x':-2500,'y':2500,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_6\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_7\",'bounds':null,'SRID':null,'x':-2000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_8\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_9\",'bounds':null,'SRID':null,'x':2000,'y':4000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_10\",'bounds':null,'SRID':null,'x':0,'y':0,'tag':null,'type':\"Point\"}],'zValues':[-3,-2,0,-1,-3,0,1,0,1,1]}";
             expect(params).toBe(expectParams);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalysis_Geometry_ISOLINE));
@@ -220,6 +221,8 @@ describe('SurfaceAnalystService', function () {
         spyOn(FetchRequest, 'commit').and.callFake(function (method, testUrl, params, options) {
             expect(method).toBe('POST');
             expect(testUrl).toBe(spatialAnalystURL + "/geometry/isoregion.json?returnContent=true");
+            var expectParams = "{'resolution':3000,'extractParameter':{'clipRegion':null,'datumValue':-3,'expectedZValues':null,'interval':0.5,'resampleTolerance':0.7,'smoothMethod':\"BSPLINE\",'smoothness':3},'resultSetting':{'expectCount':1,'dataset':null,'dataReturnMode':\"RECORDSET_ONLY\",'deleteExistResultDataset':true},'surfaceAnalystMethod':\"ISOREGION\",'points':[{'id':\"SuperMap.Geometry_1\",'bounds':null,'SRID':null,'x':-4000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_2\",'bounds':null,'SRID':null,'x':-4500,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_3\",'bounds':null,'SRID':null,'x':-3000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_4\",'bounds':null,'SRID':null,'x':-3000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_5\",'bounds':null,'SRID':null,'x':-2500,'y':2500,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_6\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_7\",'bounds':null,'SRID':null,'x':-2000,'y':3000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_8\",'bounds':null,'SRID':null,'x':-2000,'y':2000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_9\",'bounds':null,'SRID':null,'x':2000,'y':4000,'tag':null,'type':\"Point\"},{'id':\"SuperMap.Geometry_10\",'bounds':null,'SRID':null,'x':0,'y':0,'tag':null,'type':\"Point\"}],'zValues':[-3,0,10,20,13,8,5,20,10,15]}";
+            expect(params).toBe(expectParams);
             expect(options).not.toBeNull();
             return Promise.resolve(new Response(surfaceAnalysis_Geometry_ISOREGION));
         });
