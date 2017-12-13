@@ -19,7 +19,7 @@ module.exports = function (config) {
                 [require('babelify'), {
                     presets: ["env"],
                     ignore: ["**/libs/**", "**/test/**"],
-                    plugins: ['transform-class-properties','istanbul']
+                    plugins: ['istanbul']
                 }],
                 require('browserify-css'),
                 require('browserify-imgify')
