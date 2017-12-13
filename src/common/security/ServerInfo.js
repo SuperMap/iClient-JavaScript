@@ -17,7 +17,7 @@ export class ServerInfo {
          * @member SuperMap.ServerInfo.prototype.type -{ServerType}
          * @description 服务器类型
          */
-        this.type = null;
+        this.type = type;
 
         /**
          * @member SuperMap.ServerInfo.prototype.server -{string}
