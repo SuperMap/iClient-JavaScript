@@ -1,0 +1,182 @@
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>ECharts Bar</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" include="echarts" src="../../dist/include-mapboxgl.js"></script>
+<script type="text/javascript">
+    var data;
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Image <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span>" +" with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient </a></span>"
+        + "| <a href='http://echarts.baidu.com' target='_blank'>© 2017 百度 ECharts</a>";
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var tileURL = host + '/iserver/services/map-world/rest/maps/世界地图_Gray/zxyTileImage.png?prjCoordSys={"epsgCode":3857}&z={z}&x={x}&y={y}';
+    var url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+    var chart, div, popup = '';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [tileURL],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 18
+            }]
+        },
+        center: [120.14322240845, 30.236064370321],
+        zoom: 5
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.loadImage('../img/marker-icon.png', function (error, image) {
+        if (error) throw error;
+        map.addImage('positionPoint', image);
+    });
+
+    map.on('load', function () {
+
+        option = {
+            legend: {
+                data: ['降雨量', '径流量'],
+                align: 'left'
+            },
+            toolbox: {
+                feature: {
+                    magicType: {
+                        type: ['stack', 'tiled']
+                    },
+                    saveAsImage: {
+                        pixelRatio: 2
+                    }
+                }
+            },
+            tooltip: {},
+            xAxis: {
+                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                silent: false,
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {},
+            series: [{
+                name: 'bar',
+                type: 'bar',
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            }, {
+                name: 'bar2',
+                type: 'bar',
+                animationDelay: function (idx) {
+                    return idx * 10 + 100;
+                }
+            }],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function (idx) {
+                return idx * 5;
+            }
+        };
+
+        div = document.createElement('div');
+        chart = echarts.init(div, '', {
+            width: 500,
+            height: 300
+        });
+        chart.setOption(option);
+        query();
+    });
+
+    function query() {
+        var sqlParam = new SuperMap.QueryBySQLParameters({
+            queryParams: [{
+                name: "China_ProCenCity_pt@China",
+                attributeFilter: "1 = 1"
+            }, {
+                name: "China_Capital_pt@China",
+                attributeFilter: "1 = 1"
+            }]
+        });
+
+        queryService = new mapboxgl.supermap.QueryService(url).queryBySQL(sqlParam, function (serviceResult) {
+
+            var recordsets = serviceResult && serviceResult.result && serviceResult.result.recordsets;
+            features = recordsets && recordsets[0] && recordsets[0].features;
+            map.addLayer({
+                "id": "points",
+                "type": "symbol",
+                "layout": {
+                    "icon-image": "positionPoint",
+                    "icon-size": 0.8,
+                    "icon-offset": [0, -15] //设置偏移量
+                },
+                "source": {
+                    "type": "geojson",
+                    "data": features
+                }
+            });
+
+            map.on('click', 'points', function (e) {
+                popup = new mapboxgl.Popup();
+                popup.setLngLat(e.lngLat.toArray())
+                    .setDOMContent(div) // sets a popup on this marker
+                    .addTo(map);
+
+                var data1 = [];
+                var data2 = [];
+                for (var i = 0; i < 7; i++) {
+                    var data = Math.random().toFixed(2);
+                    data1.push(data);
+                    data2.push(data * (Math.random() + 1.5));
+                }
+
+                    chart.setOption({
+                    title: {
+                        text: e.features[0].properties.NAME,
+                        subtext: '数据纯属虚构'
+                    },
+                    series: [
+                        {
+                            name: '降雨量',
+                            data: data1
+                        },
+                        {
+                            name: '径流量',
+                            data: data2
+                        }
+                    ]
+                });
+
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -53,15 +53,13 @@
 
     function measureArea(e) {
         if (!e.features) {
-        widgets.alert.showAlert
-            alert("没有获取到数据,请重新绘制");
-            return;
+            widgets.alert.showAlert("没有获取到数据,请重新绘制", false);
         }
         var param = new SuperMap.MeasureParameters(e.features[0]);
         new mapboxgl.supermap.MeasureService(url).measureArea(param, function (serviceResult) {
             var area = serviceResult.result.area;
             var rounded_area = Math.round(area * 100) / 100;
-           widgets.alert.showAlert(rounded_area + "平方米");
+            widgets.alert.showAlert(rounded_area + "平方米", true);
         });
     }
 
@@ -71,8 +69,6 @@
 
     map.on('draw.create', measureArea);
     map.on('draw.delete', removeMsg);
-
-
 </script>
 </body>
 </html>

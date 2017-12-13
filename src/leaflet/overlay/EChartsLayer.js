@@ -20,7 +20,7 @@ export var EchartsLayer = L.Layer.extend({
     _echartsOptions: null,
 
     options: {
-        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermap.io/' target='_blank'>SuperMap iClient</a></span>",
         loadWhileAnimating: true
     },
 
@@ -95,13 +95,13 @@ export var EchartsLayer = L.Layer.extend({
         echarts.extendComponentView({
             type: 'LeafletMap',
             render: function (LeafletMapModel, ecModel, api) {
-                var rendering = true
+                var rendering = true;
                 var leafletMap = echarts.leafletMap;
-                var viewportRoot = api.getZr().painter.getViewportRoot()
+                var viewportRoot = api.getZr().painter.getViewportRoot();
                 var coordSys = LeafletMapModel.coordinateSystem;
                 var moveHandler = function () {
                     if (rendering) {
-                        return
+                        return;
                     }
                     var bounds = map.getBounds();
                     var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
@@ -113,16 +113,16 @@ export var EchartsLayer = L.Layer.extend({
                     api.dispatchAction({
                         type: 'LeafletMapLayout'
                     })
-                }
+                };
 
                 function zoomEndHandler() {
                     if (rendering) {
-                        return
+                        return;
                     }
 
                     api.dispatchAction({
                         type: 'LeafletMapLayout'
-                    })
+                    });
                     me._enableEchartsContainer();
                 }
 
@@ -137,10 +137,10 @@ export var EchartsLayer = L.Layer.extend({
                 } else {
                     leafletMap.on('moveend', moveHandler);
                 }
-                leafletMap.on('zoomend', zoomEndHandler)
-                this._oldMoveHandler = moveHandler
-                this._oldZoomEndHandler = zoomEndHandler
-                rendering = false
+                leafletMap.on('zoomend', zoomEndHandler);
+                this._oldMoveHandler = moveHandler;
+                this._oldZoomEndHandler = zoomEndHandler;
+                rendering = false;
             }
         });
         this._ec.setOption(this._echartsOptions);
@@ -195,11 +195,62 @@ LeafletMapCoordSys.prototype.getBMap = function () {
     return this._LeafletMap
 }
 
+LeafletMapCoordSys.prototype.prepareCustoms = function (data) {
+    var zrUtil = echarts.util;
+
+    var rect = this.getViewRect();
+    return {
+        coordSys: {
+            // The name exposed to user is always 'cartesian2d' but not 'grid'.
+            type: 'leaflet',
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            height: rect.height
+        },
+        api: {
+            coord: zrUtil.bind(this.dataToPoint, this),
+            size: zrUtil.bind(dataToCoordSize, this)
+        }
+    };
+
+    function dataToCoordSize(dataSize, dataItem) {
+        dataItem = dataItem || [0, 0];
+        return zrUtil.map([0, 1], function (dimIdx) {
+            var val = dataItem[dimIdx];
+            var halfSize = dataSize[dimIdx] / 2;
+            var p1 = [];
+            var p2 = [];
+            p1[dimIdx] = val - halfSize;
+            p2[dimIdx] = val + halfSize;
+            p1[1 - dimIdx] = p2[1 - dimIdx] = dataItem[1 - dimIdx];
+            return Math.abs(this.dataToPoint(p1)[dimIdx] - this.dataToPoint(p2)[dimIdx]);
+        }, this);
+    }
+}
+
 LeafletMapCoordSys.prototype.dataToPoint = function (data) {
+    //处理数据中的null值
+    if (data[1] === null) {
+        data[1] = 85.4;
+    }
+
+    data[1] = this.fixLat(data[1]);
+
     var point = new L.latLng(data[1], data[0]);
     var px = this._LeafletMap.latLngToLayerPoint(point);
     var mapOffset = this._mapOffset;
     return [px.x - mapOffset[0], px.y - mapOffset[1]];
+}
+
+LeafletMapCoordSys.prototype.fixLat = function (lat) {
+    if (lat >= 90) {
+        return 89.99999999999999;
+    }
+    if (lat <= -90) {
+        return -89.99999999999999;
+    }
+    return lat;
 }
 
 LeafletMapCoordSys.prototype.pointToData = function (pt) {

@@ -59760,7 +59760,7 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
     _echartsOptions: null,
 
     options: {
-        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermap.io/' target='_blank'>SuperMap iClient</a></span>",
         loadWhileAnimating: true
     },
 
@@ -59933,11 +59933,62 @@ LeafletMapCoordSys.prototype.getBMap = function () {
     return this._LeafletMap;
 };
 
+LeafletMapCoordSys.prototype.prepareCustoms = function (data) {
+    var zrUtil = _echarts2["default"].util;
+
+    var rect = this.getViewRect();
+    return {
+        coordSys: {
+            // The name exposed to user is always 'cartesian2d' but not 'grid'.
+            type: 'leaflet',
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            height: rect.height
+        },
+        api: {
+            coord: zrUtil.bind(this.dataToPoint, this),
+            size: zrUtil.bind(dataToCoordSize, this)
+        }
+    };
+
+    function dataToCoordSize(dataSize, dataItem) {
+        dataItem = dataItem || [0, 0];
+        return zrUtil.map([0, 1], function (dimIdx) {
+            var val = dataItem[dimIdx];
+            var halfSize = dataSize[dimIdx] / 2;
+            var p1 = [];
+            var p2 = [];
+            p1[dimIdx] = val - halfSize;
+            p2[dimIdx] = val + halfSize;
+            p1[1 - dimIdx] = p2[1 - dimIdx] = dataItem[1 - dimIdx];
+            return Math.abs(this.dataToPoint(p1)[dimIdx] - this.dataToPoint(p2)[dimIdx]);
+        }, this);
+    }
+};
+
 LeafletMapCoordSys.prototype.dataToPoint = function (data) {
+    //处理数据中的null值
+    if (data[1] === null) {
+        data[1] = 85.4;
+    }
+
+    data[1] = this.fixLat(data[1]);
+
     var point = new _leaflet2["default"].latLng(data[1], data[0]);
     var px = this._LeafletMap.latLngToLayerPoint(point);
     var mapOffset = this._mapOffset;
     return [px.x - mapOffset[0], px.y - mapOffset[1]];
+};
+
+LeafletMapCoordSys.prototype.fixLat = function (lat) {
+    if (lat >= 90) {
+        return 89.99999999999999;
+    }
+    if (lat <= -90) {
+        return -89.99999999999999;
+    }
+    return lat;
 };
 
 LeafletMapCoordSys.prototype.pointToData = function (pt) {
@@ -90971,7 +91022,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -91095,9 +91146,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -95904,7 +95955,7 @@ exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 545 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 546 */

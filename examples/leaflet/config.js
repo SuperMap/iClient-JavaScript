@@ -560,7 +560,7 @@ var exampleConfig = {
                 name_en: "ECharts",
                 content: [
                     {
-                        name: "散点地图",
+                        name: "全国空气质量图",
                         name_en: "scatter",
                         thumbnail: "l_echartsEffectScatter.png",
                         fileName: "echartsEffectScatter"
@@ -612,6 +612,12 @@ var exampleConfig = {
                         name_en: "pie chart",
                         thumbnail: "l_echartsPie.png",
                         fileName: "echartsPie"
+                    },
+                    {
+                        name: "世界飞机航线图",
+                        name_en: "Airplane route map",
+                        thumbnail: "l_echartsLinesAirline.png",
+                        fileName: "echartsLinesAirline"
                     }
                 ]
 

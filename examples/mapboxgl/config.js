@@ -339,16 +339,58 @@ var exampleConfig = {
                 name_en: "ECharts",
                 content: [
                     {
-                        name: "air quality of China",
+                        name: "全国空气质量图",
                         name_en: "ECharts",
                         thumbnail: "echarts_effectScatter.png",
                         fileName: "echarts_effectScatter"
                     },
                     {
-                        name: "模拟迁徙图",
+                        name: "迁徙图",
                         name_en: "Mock migration",
                         thumbnail: "echarts_geoline.gif",
                         fileName: "echarts_geoline"
+                    },
+                    {
+                        name: "热力图",
+                        name_en: "heat map",
+                        thumbnail: "echarts_heatmap.png",
+                        fileName: "echarts_heatmap"
+                    },
+                    {
+                        name: "线路图",
+                        name_en: "line",
+                        thumbnail: "echarts_linesBus.png",
+                        fileName: "echarts_linesBus"
+                    },
+                    {
+                        name: "长春公交路径图",
+                        name_en: "Changchun public transport network",
+                        thumbnail: "echarts_ChangchunPublicTransportNetwork.gif",
+                        fileName: "echarts_ChangchunPublicTransportNetwork"
+                    },
+                    {
+                        name: "折线图",
+                        name_en: "line chart",
+                        thumbnail: "echarts_lineMarker.png",
+                        fileName: "echarts_lineMarker"
+                    },
+                    {
+                        name: "柱状图",
+                        name_en: "bar chart",
+                        thumbnail: "echarts_bar.png",
+                        fileName: "echarts_bar"
+                    },
+                    {
+                        name: "散点图",
+                        name_en: "scatter chart",
+                        thumbnail: "echarts_scatter.png",
+                        fileName: "echarts_scatter"
+                    },
+                    {
+                        name: "饼图",
+                        name_en: "pie chart",
+                        thumbnail: "echarts_pie.png",
+                        fileName: "echarts_pie"
                     },
                     {
                         name: "世界飞机航线图",
@@ -362,23 +404,12 @@ var exampleConfig = {
                         thumbnail: "echarts_scatterWeibo.png",
                         fileName: "echarts_scatterWeibo"
                     },
-                    {
-                        name: "长春公交路径图",
-                        name_en: "Changchun public transport network",
-                        thumbnail: "echarts_ChangchunPublicTransportNetwork.gif",
-                        fileName: "echarts_ChangchunPublicTransportNetwork"
-                    },
+
                     {
                         name: "格网图",
                         name_en: "cell map",
                         thumbnail: "echarts_cellMap.png",
                         fileName: "echarts_cellMap"
-                    },
-                    {
-                        name: "全球风能可视化",
-                        name_en: "Global wind visualization",
-                        thumbnail: "echartsGL_GlobalWind.gif",
-                        fileName: "echartsGL_GlobalWind"
                     }
                 ]
             },
@@ -415,6 +446,12 @@ var exampleConfig = {
                         name_en: "taxi trajectory map Of ChengDu",
                         thumbnail: "echartsGL_taxiTrajectoryMap.gif",
                         fileName: "echartsGL_taxiTrajectoryMap"
+                    },
+                    {
+                        name: "全球风能可视化",
+                        name_en: "Global wind visualization",
+                        thumbnail: "echartsGL_GlobalWind.gif",
+                        fileName: "echartsGL_GlobalWind"
                     }
                 ]
             },

@@ -46,7 +46,7 @@
             inputScript("https://cdn.bootcss.com/Turf.js/4.6.1/turf.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
+            inputScript("http://cdn.bootcss.com/echarts/3.8.0/echarts.min.js");
         }
         if (inArray(includes, 'd3')) {
             inputScript("https://cdn.bootcss.com/d3/4.10.2/d3.min.js");
