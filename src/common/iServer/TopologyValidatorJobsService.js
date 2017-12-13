@@ -14,6 +14,7 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/topologyvalidator";
+        this.CLASS_NAME = "SuperMap.TopologyValidatorJobsService";
     }
 
     /**
@@ -50,7 +51,6 @@ export class TopologyValidatorJobsService extends ProcessingServiceBase {
         super.addJob(this.url, params, TopologyValidatorJobsParameter, seconds);
     }
 
-    CLASS_NAME = "SuperMap.TopologyValidatorJobsService"
 }
 
 SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;

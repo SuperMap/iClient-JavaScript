@@ -6,11 +6,6 @@
  */
 export class Matrix {
 
-    /**
-     * Property: ArrayCtor
-     * {Object} 数组类型控制
-     */
-    ArrayCtor = null;
 
     /**
      * Constructor: SuperMap.LevelRenderer.Tool.Matrix
@@ -18,9 +13,15 @@ export class Matrix {
      *
      */
     constructor() {
+        /**
+         * Property: ArrayCtor
+         * {Object} 数组类型控制
+         */
         this.ArrayCtor = typeof Float32Array === 'undefined'
             ? Array
             : Float32Array;
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Matrix";
     }
 
 
@@ -248,6 +249,4 @@ export class Matrix {
         return out;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Matrix"
 }

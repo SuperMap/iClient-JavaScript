@@ -19,32 +19,31 @@ import {
  */
 export class Theme {
 
-    /**
-     * @member mapboxgl.supermap.ThemeLayer.prototype.name -{string}
-     * @description 专题图图层名称
-     */
-    name = null;
-
-    /**
-     * @member mapboxgl.supermap.ThemeLayer.prototype.opacity -{float}
-     * @description 图层透明度
-     */
-    opacity = 1;
-
-    /**
-     * @member mapboxgl.supermap.ThemeLayer.prototype.map -{mapboxgl.Map}
-     * @description map对象
-     */
-    map = null;
 
 
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
-        options.name = name;
+        /**
+         * @member mapboxgl.supermap.ThemeLayer.prototype.name -{string}
+         * @description 专题图图层名称
+         */
+        this.name = name;
+
+        /**
+         * @member mapboxgl.supermap.ThemeLayer.prototype.opacity -{float}
+         * @description 图层透明度
+         */
+        this.opacity = 1;
+
+        /**
+         * @member mapboxgl.supermap.ThemeLayer.prototype.map -{mapboxgl.Map}
+         * @description map对象
+         */
+        this.map = options.map;
+
         this.features = [];
         this.TFEvents = [];
         this.movingOffset = [0, 0];
-        this.map = options.map;
         this.div = document.createElement('div');
         var container = this.map.getCanvasContainer();
         var canvas = this.map.getCanvas();

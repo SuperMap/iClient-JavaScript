@@ -97,6 +97,7 @@ export class Point extends Graph {
 
     constructor(data, layer, fields, setting, lonlat, options) {
         super(data, layer, fields, setting, lonlat, options);
+        this.CLASS_NAME = "SuperMap.Feature.Theme.Point";
     }
 
     /**
@@ -263,7 +264,6 @@ export class Point extends Graph {
         };
     }
 
-    CLASS_NAME = "SuperMap.Feature.Theme.Point"
 }
 
 SuperMap.Feature.Theme.Point = Point;

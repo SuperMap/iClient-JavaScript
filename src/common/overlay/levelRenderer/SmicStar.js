@@ -54,11 +54,6 @@ export class SmicStar extends Shape {
      */
     //打开接口 style
 
-    /**
-     * Property: type
-     * {String} 图形类型。
-     */
-    type = 'smicstar';
 
     /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicStar
@@ -70,9 +65,17 @@ export class SmicStar extends Shape {
      */
     constructor(options) {
         super(options);
+        /**
+         * Property: type
+         * {String} 图形类型。
+         */
+        this.type = 'smicstar';
+
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicStar";
     }
 
     /**
@@ -186,5 +189,4 @@ export class SmicStar extends Shape {
         return style.__rect;
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicStar"
 }

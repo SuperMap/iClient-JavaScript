@@ -55,13 +55,6 @@ export class SmicEllipse extends Shape {
      * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
      */
     //打开接口 style
-
-    /**
-     * Property: type
-     * {String} 图形类型。
-     */
-    type = 'smicellipse';
-
     /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicEllipse
      * 构造函数。
@@ -72,9 +65,18 @@ export class SmicEllipse extends Shape {
      */
     constructor(options) {
         super(options);
+
+        /**
+         * Property: type
+         * {String} 图形类型。
+         */
+        this.type = 'smicellipse';
+
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicEllipse";
     }
 
 
@@ -156,6 +158,4 @@ export class SmicEllipse extends Shape {
         return style.__rect;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicEllipse"
 }

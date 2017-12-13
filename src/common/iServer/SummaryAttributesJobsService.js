@@ -14,6 +14,7 @@ export class SummaryAttributesJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/summaryattributes";
+        this.CLASS_NAME = "SuperMap.SummaryAttributesJobsService";
     }
 
     /**
@@ -50,7 +51,6 @@ export class SummaryAttributesJobsService extends ProcessingServiceBase {
         super.addJob(this.url, params, SummaryAttributesJobsParameter, seconds);
     }
 
-    CLASS_NAME = "SuperMap.SummaryAttributesJobsService"
 }
 
 SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;

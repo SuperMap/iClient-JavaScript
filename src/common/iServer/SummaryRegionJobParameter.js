@@ -22,96 +22,98 @@ import {StatisticAnalystMode, SummaryType, AnalystSizeUnit} from '../REST'
  */
 export class SummaryRegionJobParameter {
 
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    datasetName = "";
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{string}
-     * @description 汇总数据源（多边形汇总时用到的参数）。
-     */
-    regionDataset = "";
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{boolean}
-     * @description 是否统计长度或面积。
-     */
-    sumShape = true;
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.query
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
-     */
-    query = "";
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{boolean}
-     * @description 以标准属字段统计。
-     */
-    standardSummaryFields = false;
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
-     * @description 以标准属字段统计的字段名称。
-     */
-    standardFields = StatisticAnalystMode.AVERAGE;
-    ;
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
-     * @description 以标准属字段统计的统计模式。
-     */
-    standardStatisticModes = "";
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{boolean}
-     * @description 以权重字段统计。
-     */
-    weightedSummaryFields = false;
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{string}
-     * @description 以权重字段统计的字段名称。
-     */
-    weightedFields = "";
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes -{SuperMap.StatisticAnalystMode}
-     * @description 以权重字段统计的统计模式。
-     */
-    weightedStatisticModes = "";
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.meshType -{number}
-     * @description 网格面汇总类型。
-     */
-    meshType = 0;
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
-     * @description 网格大小。
-     */
-    resolution = 100;
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-     * @description 网格大小单位。
-     */
-    meshSizeUnit = AnalystSizeUnit.METER;
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.type -{SuperMap.SummaryType}
-     * @description 汇总类型。
-     */
-    type = SummaryType.SUMMARYMESH;
-
     constructor(options) {
         if (!options) {
             return;
         }
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{string}
+         * @description 数据集名。
+         */
+        this.datasetName = "";
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{string}
+         * @description 汇总数据源（多边形汇总时用到的参数）。
+         */
+        this.regionDataset = "";
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{boolean}
+         * @description 是否统计长度或面积。
+         */
+        this.sumShape = true;
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.query
+         * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
+         */
+        this.query = "";
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{boolean}
+         * @description 以标准属字段统计。
+         */
+        this.standardSummaryFields = false;
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
+         * @description 以标准属字段统计的字段名称。
+         */
+        this.standardFields = StatisticAnalystMode.AVERAGE;
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
+         * @description 以标准属字段统计的统计模式。
+         */
+        this.standardStatisticModes = "";
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{boolean}
+         * @description 以权重字段统计。
+         */
+        this.weightedSummaryFields = false;
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{string}
+         * @description 以权重字段统计的字段名称。
+         */
+        this.weightedFields = "";
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes -{SuperMap.StatisticAnalystMode}
+         * @description 以权重字段统计的统计模式。
+         */
+        this.weightedStatisticModes = "";
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.meshType -{number}
+         * @description 网格面汇总类型。
+         */
+        this.meshType = 0;
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
+         * @description 网格大小。
+         */
+        this.resolution = 100;
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+         * @description 网格大小单位。
+         */
+        this.meshSizeUnit = AnalystSizeUnit.METER;
+
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.type -{SuperMap.SummaryType}
+         * @description 汇总类型。
+         */
+        this.type = SummaryType.SUMMARYMESH;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
     }
 
     /**

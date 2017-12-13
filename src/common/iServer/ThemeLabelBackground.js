@@ -12,27 +12,27 @@ import {LabelBackShape} from '../REST';
  */
 export class ThemeLabelBackground {
 
-    /**
-     * @member SuperMap.ThemeLabelBackground.prototype.labelBackShape -{SuperMap.LabelBackShape}
-     * @description 标签专题图中标签背景风格。当背景形状
-     *              labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
-     */
-    labelBackShape = LabelBackShape.NONE;
-
-    /**
-     * @member SuperMap.ThemeLabelBackground.prototype.backStyle -{SuperMap.ServerStyle}
-     * @description 标签专题图中标签背景的形状枚举类。背景类型可
-     *              以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，默认为 {@link SuperMap.LabelBackShape.NONE}，
-     *              即不使用任何的形状作为标签的背景。
-     */
-    backStyle = null;
-
     constructor(options) {
-        var me = this;
-        me.backStyle = new ServerStyle();
+        /**
+         * @member SuperMap.ThemeLabelBackground.prototype.labelBackShape -{SuperMap.LabelBackShape}
+         * @description 标签专题图中标签背景风格。当背景形状
+         *              labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
+         */
+        this.labelBackShape = LabelBackShape.NONE;
+
+        /**
+         * @member SuperMap.ThemeLabelBackground.prototype.backStyle -{SuperMap.ServerStyle}
+         * @description 标签专题图中标签背景的形状枚举类。背景类型可
+         *              以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，默认为 {@link SuperMap.LabelBackShape.NONE}，
+         *              即不使用任何的形状作为标签的背景。
+         */
+        this.backStyle = new ServerStyle();
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ThemeLabelBackground";
     }
 
     /**
@@ -65,7 +65,6 @@ export class ThemeLabelBackground {
         return t;
     }
 
-    CLASS_NAME = "SuperMap.ThemeLabelBackground"
 }
 
 SuperMap.ThemeLabelBackground = ThemeLabelBackground;

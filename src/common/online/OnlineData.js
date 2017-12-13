@@ -9,59 +9,59 @@ import {OnlineServiceBase} from './OnlineServiceBase';
  * @param options -{string} 服务相关参数
  */
 export class OnlineData extends OnlineServiceBase {
-    //MD5
-    MD5 = null;
-    //文件类型。
-    type = null;
-    //数据上传者名称。
-    userName = null;
-    //文件名称。
-    fileName = null;
-    //文件大小，单位为 B 。
-    size = null;
-    //服务发布状态。
-    serviceStatus = null;
-    //服务 id 。
-    serviceId = null;
-    //数据项 id 。
-    id = null;
-    //最后修改时间。
-    lastModfiedTime = null;
-    //文件状态。
-    status = null;
-    //数据文件存储 id 。
-    storageId = null;
-    //数据的发布信息。
-    publishInfo = null;
-    //数据的权限信息。
-    authorizeSetting = null;
-    //用户的昵称。
-    nickname = null;
-    //数据的标签。
-    tags = [];
-    //数据的描述信息。
-    description = null;
-    //数据发布的服务信息集合。
-    dataItemServices = null;
-    //数据坐标类型。
-    coordType = null;
-    //数据审核信息
-    dataCheckResult = null;
-    //数据元数据信息
-    dataMetaInfo = null;
-    //数据的缩略图路径。
-    thumbnail = null;
 
     //TODO 目前并没有对接服务支持的所有操作，日后需要补充完整
     constructor(serviceRootUrl, options) {
         super(serviceRootUrl);
-        var me = this;
         options = options || {};
-        Util.extend(me, options);
-        me.serviceUrl = serviceRootUrl;
-        if (me.id) {
-            me.serviceUrl = serviceRootUrl + "/" + me.id;
+        //MD5
+        this.MD5 = null;
+        //文件类型。
+        this.type = null;
+        //数据上传者名称。
+        this.userName = null;
+        //文件名称。
+        this.fileName = null;
+        //文件大小，单位为 B 。
+        this.size = null;
+        //服务发布状态。
+        this.serviceStatus = null;
+        //服务 id 。
+        this.serviceId = null;
+        //数据项 id 。
+        this.id = null;
+        //最后修改时间。
+        this.lastModfiedTime = null;
+        //文件状态。
+        this.status = null;
+        //数据文件存储 id 。
+        this.storageId = null;
+        //数据的发布信息。
+        this.publishInfo = null;
+        //数据的权限信息。
+        this.authorizeSetting = null;
+        //用户的昵称。
+        this.nickname = null;
+        //数据的标签。
+        this.tags = [];
+        //数据的描述信息。
+        this.description = null;
+        //数据发布的服务信息集合。
+        this.dataItemServices = null;
+        //数据坐标类型。
+        this.coordType = null;
+        //数据审核信息
+        this.dataCheckResult = null;
+        //数据元数据信息
+        this.dataMetaInfo = null;
+        //数据的缩略图路径。
+        this.thumbnail = null;
+
+        Util.extend(this, options);
+        if (this.id) {
+            this.serviceUrl = serviceRootUrl + "/" + this.id;
         }
+        this.CLASS_NAME = "SuperMap.OnlineData";
     }
 
     /**
@@ -97,8 +97,6 @@ export class OnlineData extends OnlineServiceBase {
         return this.authorizeSetting;
     }
 
-
-    CLASS_NAME = "SuperMap.OnlineData"
 
 }
 

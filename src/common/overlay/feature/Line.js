@@ -11,20 +11,6 @@ import {ShapeParameters} from './ShapeParameters';
  */
 export class Line extends ShapeParameters {
 
-    /**
-     * APIProperty: pointList
-     * {Array} 线要素节点数组，二维数组。
-     *
-     * 数组形如：
-     * (start code)
-     *  [
-     *  [10, 20],         //节点
-     *  [30, 40],
-     *  [25, 30]         //最后一个节点和第一个节点不必相同，绘制时自动封闭
-     *   ]
-     * (end)
-     */
-    pointList = null;
 
 
     /**
@@ -39,7 +25,23 @@ export class Line extends ShapeParameters {
      */
     constructor(pointList) {
         super(pointList);
+        /**
+         * APIProperty: pointList
+         * {Array} 线要素节点数组，二维数组。
+         *
+         * 数组形如：
+         * (start code)
+         *  [
+         *  [10, 20],         //节点
+         *  [30, 40],
+         *  [25, 30]         //最后一个节点和第一个节点不必相同，绘制时自动封闭
+         *   ]
+         * (end)
+         */
         this.pointList = pointList;
+
+        this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Line";
+
     }
 
     /**
@@ -51,8 +53,6 @@ export class Line extends ShapeParameters {
         super.destroy();
     }
 
-
-    CLASS_NAME = "SuperMap.Feature.ShapeParameters.Line"
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Line = Line;

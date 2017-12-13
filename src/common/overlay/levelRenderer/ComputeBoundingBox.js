@@ -18,6 +18,8 @@ export class ComputeBoundingBox {
         if (arguments.length === 3) {
             this.computeBoundingBox(arguments);
         }
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.ComputeBoundingBox";
     }
 
     /**
@@ -215,6 +217,4 @@ export class ComputeBoundingBox {
             }
         }
     }
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.ComputeBoundingBox"
 }

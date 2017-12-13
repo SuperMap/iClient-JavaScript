@@ -14,38 +14,40 @@ import './Route';
  */
 export class RouteCalculateMeasureParameters {
 
-    /**
-     * @member SuperMap.RouteCalculateMeasureParameters.prototype.sourceRoute -{Object}
-     * @description 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象；<br>
-     * 路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
-     */
-    sourceRoute = null;
-
-    /**
-     * @member SuperMap.RouteCalculateMeasureParameters.prototype.point -{Object}
-     * @description 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
-     * 点坐标对象可以是:SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
-     */
-    point = null;
-
-    /**
-     * @member SuperMap.RouteCalculateMeasureParameters.prototype.tolerance -{float}
-     * @description 【可选参数】容限值。
-     */
-    tolerance = null;
-
-    /**
-     * @member SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap -{boolean}
-     * @description 【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
-     * @default false
-     */
-    isIgnoreGap = false;
-
     constructor(options) {
         if (!options) {
             return this;
         }
+        /**
+         * @member SuperMap.RouteCalculateMeasureParameters.prototype.sourceRoute -{Object}
+         * @description 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象；<br>
+         * 路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
+         */
+        this.sourceRoute = null;
+
+        /**
+         * @member SuperMap.RouteCalculateMeasureParameters.prototype.point -{Object}
+         * @description 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
+         * 点坐标对象可以是:SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
+         */
+        this.point = null;
+
+        /**
+         * @member SuperMap.RouteCalculateMeasureParameters.prototype.tolerance -{float}
+         * @description 【可选参数】容限值。
+         */
+        this.tolerance = null;
+
+        /**
+         * @member SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap -{boolean}
+         * @description 【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
+         * @default false
+         */
+        this.isIgnoreGap = false;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.RouteCalculateMeasureParameters";
     }
 
     /**
@@ -63,8 +65,6 @@ export class RouteCalculateMeasureParameters {
             me.isIgnoreGap = false;
         }
     }
-
-    CLASS_NAME = "SuperMap.RouteCalculateMeasureParameters"
 }
 
 SuperMap.RouteCalculateMeasureParameters = RouteCalculateMeasureParameters;

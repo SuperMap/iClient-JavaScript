@@ -17,6 +17,16 @@ import ol from 'openlayers/dist/ol-debug';
  */
 export class Tianditu extends ol.source.WMTS {
     constructor(opt_options) {
+        Tianditu.layerLabelMap = {
+            "vec": "cva",
+            "ter": "cta",
+            "img": "cia"
+        }
+        Tianditu.layerZoomMap = {
+            "vec": 18,
+            "ter": 14,
+            "img": 18
+        }
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({
             html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
@@ -66,16 +76,7 @@ export class Tianditu extends ol.source.WMTS {
         return ol.source.Tianditu.default3857TileGrid();
     }
 
-    static layerLabelMap = {
-        "vec": "cva",
-        "ter": "cta",
-        "img": "cia"
-    }
-    static layerZoomMap = {
-        "vec": 18,
-        "ter": 14,
-        "img": 18
-    }
+
 
     /**
      * @function ol.source.Tianditu.default4326TileGrid

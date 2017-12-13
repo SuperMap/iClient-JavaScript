@@ -10,91 +10,78 @@ import {Curve} from './Curve';
 export class Area {
 
     /**
-     * Property: util
-     * {<SuperMap.LevelRenderer.Tool.Util>} 基础工具对象
-     */
-    util = null;
-
-    /**
-     * Property: curve
-     * {<SuperMap.LevelRenderer.Tool.Curve>} 曲线工具对象
-     */
-    curve = null;
-
-    /**
-     * Property: _ctx
-     * {Object} Cavans2D 渲染上下文
-     */
-    _ctx = null;
-
-    /**
-     * Property: _textWidthCache
-     * {Object} 文本宽度缓存
-     */
-    _textWidthCache = null;
-
-    /**
-     * Property: _textHeightCache
-     * {Object} 文本高度缓存
-     */
-    _textHeightCache = null;
-
-    /**
-     * Property: _textWidthCacheCounter
-     * {Object} 文本宽度缓存数量
-     */
-    _textWidthCacheCounter = null;
-
-    /**
-     * Property: _textHeightCacheCounter
-     * {Object} 文本高度缓存数量
-     */
-    _textHeightCacheCounter = null;
-
-    /**
-     * Property: TEXT_CACHE_MAX
-     * {Object} 文本最大缓存数量
-     */
-    TEXT_CACHE_MAX = null;
-
-    /**
-     * Property: PI2
-     * {Object} 2*PI 的值
-     */
-    PI2 = null;
-
-    /**
-     * Property: roots
-     * {Array} 临时数组
-     */
-    roots = null;
-
-    /**
-     * Property: extrema
-     * {Array} 临时数组
-     */
-    extrema = null;
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Tool.Area
      * 构造函数。
      *
      */
     constructor() {
+        /**
+         * Property: util
+         * {<SuperMap.LevelRenderer.Tool.Util>} 基础工具对象
+         */
         this.util = new Util();
+
+        /**
+         * Property: curve
+         * {<SuperMap.LevelRenderer.Tool.Curve>} 曲线工具对象
+         */
         this.curve = new Curve();
 
+        /**
+         * Property: _ctx
+         * {Object} Cavans2D 渲染上下文
+         */
+        this._ctx = null;
+
+        /**
+         * Property: _textWidthCache
+         * {Object} 文本宽度缓存
+         */
         this._textWidthCache = {};
+
+        /**
+         * Property: _textHeightCache
+         * {Object} 文本高度缓存
+         */
         this._textHeightCache = {};
+
+        /**
+         * Property: _textWidthCacheCounter
+         * {Object} 文本宽度缓存数量
+         */
         this._textWidthCacheCounter = 0;
+
+        /**
+         * Property: _textHeightCacheCounter
+         * {Object} 文本高度缓存数量
+         */
         this._textHeightCacheCounter = 0;
+
+        /**
+         * Property: TEXT_CACHE_MAX
+         * {Object} 文本最大缓存数量
+         */
         this.TEXT_CACHE_MAX = 5000;
 
+        /**
+         * Property: PI2
+         * {Object} 2*PI 的值
+         */
         this.PI2 = Math.PI * 2;
 
-        // 临时数组
+        /**
+         * Property: roots
+         * {Array} 临时数组
+         */
         this.roots = [-1, -1, -1];
+
+        /**
+         * Property: extrema
+         * {Array} 临时数组
+         */
         this.extrema = [-1, -1];
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Area";
     }
 
     /**
@@ -1117,6 +1104,4 @@ export class Area {
         }
         return height;
     }
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Area"
 }

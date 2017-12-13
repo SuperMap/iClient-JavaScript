@@ -39,38 +39,36 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  */
 export class InterpolationIDWAnalystParameters extends InterpolationAnalystParameters {
 
-    /**
-     * @member SuperMap.InterpolationIDWAnalystParameters.prototype.power - {number}
-     * @description 距离权重计算的幂次，默认值为2。
-     * 该值决定了权值下降的速度，幂次越大，随距离的增大权值下降越快，距离预测点越远的点的权值也越小。
-     * 理论上，参数值必须大于0，但是0.5到3之间时运算结果更合理，因此推荐值为0.5~3。
-     */
-    power = 2;
 
-    /**
-     * @member SuperMap.InterpolationIDWAnalystParameters.prototype.searchMode - {SuperMap.SearchMode}
-     * @description 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。必设参数。
-     * 具体如下：
-     * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
-     * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。
-     */
-    searchMode = null;
-
-    /**
-     * @member SuperMap.InterpolationIDWAnalystParameters.prototype.expectedCount - {number}
-     * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
-     */
-    expectedCount = 12;
 
     constructor(options) {
         super(options);
-        var me = this;
-        me.power = 2;
-        me.searchMode = null;
-        me.expectedCount = 12;
+        /**
+         * @member SuperMap.InterpolationIDWAnalystParameters.prototype.power - {number}
+         * @description 距离权重计算的幂次，默认值为2。
+         * 该值决定了权值下降的速度，幂次越大，随距离的增大权值下降越快，距离预测点越远的点的权值也越小。
+         * 理论上，参数值必须大于0，但是0.5到3之间时运算结果更合理，因此推荐值为0.5~3。
+         */
+        this.power = 2;
+
+        /**
+         * @member SuperMap.InterpolationIDWAnalystParameters.prototype.searchMode - {SuperMap.SearchMode}
+         * @description 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。必设参数。
+         * 具体如下：
+         * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
+         * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。
+         */
+        this.searchMode = null;
+
+        /**
+         * @member SuperMap.InterpolationIDWAnalystParameters.prototype.expectedCount - {number}
+         * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
+         */
+        this.expectedCount = 12;
         if (options) {
-            Util.extend(me, options);
+            Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.InterpolationIDWAnalystParameters";
     }
 
     /**
@@ -84,8 +82,6 @@ export class InterpolationIDWAnalystParameters extends InterpolationAnalystParam
         me.searchMode = null;
         me.expectedCount = null;
     }
-
-    CLASS_NAME = "SuperMap.InterpolationIDWAnalystParameters"
 }
 
 SuperMap.InterpolationIDWAnalystParameters = InterpolationIDWAnalystParameters;

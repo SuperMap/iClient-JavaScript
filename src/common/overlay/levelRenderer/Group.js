@@ -31,54 +31,6 @@ import {Transformable} from './Transformable';
 export class Group extends SuperMap.mixin(Eventful, Transformable) {
 
     /**
-     * APIProperty: id
-     * {String} Group 的唯一标识。
-     */
-    id = null;
-
-    /**
-     * APIProperty: type
-     * {Readonly{String}} 类型，默认值：'group'。
-     */
-    type = null;
-
-    //http://www.w3.org/TR/2dcontext/#clipping-region
-    /**
-     * APIProperty: clipShape
-     * {String} 用于裁剪的图形(shape)，所有 Group 内的图形在绘制时都会被这个图形裁剪，该图形会继承 Group 的变换。
-     *
-     */
-    clipShape = null;
-
-    /**
-     * Property: _children
-     * {Array}
-     *
-     */
-    _children = null;
-
-    /**
-     * Property: _storage
-     * {Array}
-     *
-     */
-    _storage = null;
-
-    /**
-     * Property: __dirty
-     * {Boolean} 默认值：true。
-     *
-     */
-    __dirty = true;
-
-    /**
-     * APIProperty: ignore
-     * {Boolean} 是否忽略该 Group 及其所有子节点。默认值：false。
-     *
-     */
-    ignore = false;
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Group
      * 构造函数。
      *
@@ -89,16 +41,56 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
     constructor(options) {
         super(options)
         options = options || {};
-        this.id = options.id || CommonUtil.createUniqueID("smShapeGroup_");
-        for (var key in options) {
-            this[key] = options[key];
-        }
+        /**
+         * APIProperty: id
+         * {String} Group 的唯一标识。
+         */
+        this.id = null;
 
+        /**
+         * APIProperty: type
+         * {Readonly{String}} 类型，默认值：'group'。
+         */
         this.type = 'group';
+
+        //http://www.w3.org/TR/2dcontext/#clipping-region
+        /**
+         * APIProperty: clipShape
+         * {String} 用于裁剪的图形(shape)，所有 Group 内的图形在绘制时都会被这个图形裁剪，该图形会继承 Group 的变换。
+         *
+         */
         this.clipShape = null;
+
+        /**
+         * Property: _children
+         * {Array}
+         *
+         */
         this._children = [];
+
+        /**
+         * Property: _storage
+         * {Array}
+         *
+         */
         this._storage = null;
+
+        /**
+         * Property: __dirty
+         * {Boolean} 默认值：true。
+         *
+         */
         this.__dirty = true;
+
+        /**
+         * APIProperty: ignore
+         * {Boolean} 是否忽略该 Group 及其所有子节点。默认值：false。
+         *
+         */
+        this.ignore = false;
+        CommonUtil.extend(this, options);
+        this.id = this.id || CommonUtil.createUniqueID("smShapeGroup_");
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Group";
     }
 
 
@@ -301,6 +293,4 @@ export class Group extends SuperMap.mixin(Eventful, Transformable) {
         this.__dirty = true;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Group"
 }

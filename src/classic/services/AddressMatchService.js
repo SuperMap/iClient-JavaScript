@@ -13,6 +13,7 @@ export class AddressMatchService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.REST.AddressMatchService";
     }
 
     /**
@@ -52,8 +53,6 @@ export class AddressMatchService extends CommonServiceBase {
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
     }
-
-    CLASS_NAME = "SuperMap.REST.AddressMatchService"
 }
 
 SuperMap.REST.AddressMatchService = AddressMatchService;

@@ -53,12 +53,6 @@ export class SmicRectangle extends Shape {
     //打开接口 style
 
     /**
-     * Property: type
-     * {String} 图形类型.
-     */
-    type = 'smicrectangle';
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicRectangle
      * 构造函数。
      *
@@ -68,9 +62,15 @@ export class SmicRectangle extends Shape {
      */
     constructor(options) {
         super(options);
+        /**
+         * Property: type
+         * {String} 图形类型.
+         */
+        this.type = 'smicrectangle';
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicRectangle";
     }
 
 
@@ -242,6 +242,4 @@ export class SmicRectangle extends Shape {
         return style.__rect;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicRectangle"
 }

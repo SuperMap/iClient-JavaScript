@@ -8,64 +8,32 @@ import {Util} from './Util';
  */
 export class Color {
 
-    /**
-     * Property: util
-     * {<SuperMap.LevelRenderer.Tool.Util>} LevelRenderer 基础工具对象
-     */
-    util = null;
 
-    /**
-     * Property: _ctx
-     * {Object} _ctx
-     */
-    _ctx = null;
-
-    /**
-     * Property: palette
-     * {Array} 默认色板
-     * 色板是一个包含图表默认颜色系列的数组，当色板中所有颜色被使用过后，又将从新回到色板中的第一个颜色。
-     *
-     * [
-     * '#ff9277', '#dddd00', '#ffc877', '#bbe3ff', '#d5ffbb', '#bbbbff', '#ddb000', '#b0dd00', '#e2bbff', '#ffbbe3',
-     * '#ff7777', '#ff9900', '#83dd00', '#77e3ff', '#778fff', '#c877ff', '#ff77ab', '#ff6600', '#aa8800', '#77c7ff',  '
-     * #ad77ff', '#ff77ff', '#dd0083', '#777700', '#00aa00', '#0088aa', '#8400dd', '#aa0088', '#dd0000', '#772e00'
-     * ];
-     */
-    palette = null;
-
-    /**
-     * Property: _palette
-     * {Array} 复位色板，用于复位  palette
-     */
-    _palette = null;
-
-    /**
-     * Property: highlightColor
-     * {String} 高亮色
-     */
-    highlightColor = null;
-
-    /**
-     * Property: _highlightColor
-     * {String} 复位高亮色
-     */
-    _highlightColor = null;
-
-    /**
-     * Property: colorRegExp
-     * {String} 颜色格式，正则表达式。
-     */
-    colorRegExp = null;
-
-    /**
-     * Property: _nameColors
-     * {String} 颜色名。
-     */
-    _nameColors = null;
 
     constructor() {
+        /**
+         * Property: util
+         * {<SuperMap.LevelRenderer.Tool.Util>} LevelRenderer 基础工具对象
+         */
         this.util = new Util();
 
+        /**
+         * Property: _ctx
+         * {Object} _ctx
+         */
+        this._ctx = null;
+
+        /**
+         * Property: palette
+         * {Array} 默认色板
+         * 色板是一个包含图表默认颜色系列的数组，当色板中所有颜色被使用过后，又将从新回到色板中的第一个颜色。
+         *
+         * [
+         * '#ff9277', '#dddd00', '#ffc877', '#bbe3ff', '#d5ffbb', '#bbbbff', '#ddb000', '#b0dd00', '#e2bbff', '#ffbbe3',
+         * '#ff7777', '#ff9900', '#83dd00', '#77e3ff', '#778fff', '#c877ff', '#ff77ab', '#ff6600', '#aa8800', '#77c7ff',  '
+         * #ad77ff', '#ff77ff', '#dd0083', '#777700', '#00aa00', '#0088aa', '#8400dd', '#aa0088', '#dd0000', '#772e00'
+         * ];
+         */
         this.palette = [
             '#ff9277', ' #dddd00', ' #ffc877', ' #bbe3ff', ' #d5ffbb',
             '#bbbbff', ' #ddb000', ' #b0dd00', ' #e2bbff', ' #ffbbe3',
@@ -75,14 +43,34 @@ export class Color {
             '#0088aa', ' #8400dd', ' #aa0088', ' #dd0000', ' #772e00'
         ];
 
+        /**
+         * Property: _palette
+         * {Array} 复位色板，用于复位  palette
+         */
         this._palette = this.palette;
 
+        /**
+         * Property: highlightColor
+         * {String} 高亮色
+         */
         this.highlightColor = 'rgba(0,0,255,1)';
 
+        /**
+         * Property: _highlightColor
+         * {String} 复位高亮色
+         */
         this._highlightColor = this.highlightColor;
 
+        /**
+         * Property: colorRegExp
+         * {String} 颜色格式，正则表达式。
+         */
         this.colorRegExp = /^\s*((#[a-f\d]{6})|(#[a-f\d]{3})|rgba?\(\s*([\d\.]+%?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+%?)?)\s*\)|hsba?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+)?)%?\s*\)|hsla?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+)?)%?\s*\))\s*$/i;
 
+        /**
+         * Property: _nameColors
+         * {String} 颜色名。
+         */
         this._nameColors = {
             aliceblue: '#f0f8ff',
             antiquewhite: '#faebd7',
@@ -232,6 +220,8 @@ export class Color {
             yellow: '#ff0',
             yellowgreen: '#9acd32'
         };
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Color";
     }
 
     /**
@@ -1262,5 +1252,4 @@ export class Color {
         return [H, S, L];
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Color"
 }

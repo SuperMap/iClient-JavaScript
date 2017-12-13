@@ -40,12 +40,11 @@ ol.supermap = ol.supermap || {};
  */
 export class WebMap extends ol.Observable {
 
-    static EventType = {
-        WEBMAPLOADEND: 'webmaploadend'
-    };
-
     constructor(id, options) {
         super();
+        WebMap.EventType = {
+            WEBMAPLOADEND: 'webmaploadend'
+        };
         this.id = id;
         options = options || {};
         this.target = options.target || 'map';
@@ -53,6 +52,16 @@ export class WebMap extends ol.Observable {
         this.server = options.server || 'http://www.supermapol.com';
         this.credentialValue = options.credentialValue;
         this.credentialKey = options.credentialKey || 'key';
+        this.SERVER_TYPE_MAP = {
+            "EPSG:4326": "WGS84",
+            "EPSG:3857": "MERCATOR",
+            "EPSG:900913": "MERCATOR",
+            "EPSG:102113": "MERCATOR",
+            "EPSG:910101": "GCJ02",
+            "EPSG:910111": "GCJ02MERCATOR",
+            "EPSG:910102": "BD",
+            "EPSG:910112": "BDMERCATOR"
+        }
         this.load();
     }
 
@@ -1202,17 +1211,6 @@ export class WebMap extends ol.Observable {
         }
         return viewOptions;
 
-    }
-
-    SERVER_TYPE_MAP = {
-        "EPSG:4326": "WGS84",
-        "EPSG:3857": "MERCATOR",
-        "EPSG:900913": "MERCATOR",
-        "EPSG:102113": "MERCATOR",
-        "EPSG:910101": "GCJ02",
-        "EPSG:910111": "GCJ02MERCATOR",
-        "EPSG:910102": "BD",
-        "EPSG:910112": "BDMERCATOR"
     }
 }
 

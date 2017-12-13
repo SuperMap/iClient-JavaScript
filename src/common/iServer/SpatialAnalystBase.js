@@ -12,17 +12,16 @@ import {GeoJSON} from '../format/GeoJSON';
  * @extends SuperMap.CommonServiceBase
  */
 export class SpatialAnalystBase extends CommonServiceBase {
-    /**
-     * @member SuperMap.SpatialAnalystBase.prototype.format -{string}
-     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式，参数格式为"ISERVER","GEOJSON",GEOJSON
-     */
-    format = DataFormat.GEOJSON;
+
 
     constructor(url, options) {
         super(url, options);
-        if (options && options.format) {
-            this.format = options.format.toUpperCase();
-        }
+        /**
+         * @member SuperMap.SpatialAnalystBase.prototype.format -{string}
+         * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式，参数格式为"ISERVER","GEOJSON",GEOJSON
+         */
+        this.format = DataFormat.GEOJSON;
+        this.CLASS_NAME = "SuperMap.SpatialAnalystBase";
     }
 
     /**
@@ -79,7 +78,6 @@ export class SpatialAnalystBase extends CommonServiceBase {
         return result;
     }
 
-    CLASS_NAME = "SuperMap.SpatialAnalystBase";
 }
 
 SuperMap.SpatialAnalystBase = SpatialAnalystBase;

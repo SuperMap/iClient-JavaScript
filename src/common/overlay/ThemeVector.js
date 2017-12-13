@@ -37,54 +37,6 @@ import {LonLat} from '../commontypes/LonLat';
  */
 export class ThemeVector extends Theme {
 
-    /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.dataBounds - {SuperMap.Bounds}
-     * @description 用户数据的（feature.geometry）地理范围。
-     */
-    dataBounds = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel - {number}
-     * @description 节点抽稀像素距离，默认值 2。
-     */
-    nodesClipPixel = 2;
-
-    /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.isHoverAble - {boolean}
-     * @description 图形是否可 hover，默认 true。
-     */
-    isHoverAble = true;
-
-    /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.isMultiHover - {boolean}
-     * @description 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。
-     */
-    isMultiHover = true;
-
-    /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.isClickAble - {boolean}
-     * @description 图形是否可点击，默认 true。
-     */
-    isClickAble = true;
-
-    /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.highlightStyle - {Object}
-     * @description 高亮样式。
-     */
-    highlightStyle = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.shapeOptions - {Object}
-     * @description 添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做。
-     */
-    shapeOptions = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.style - {Object}
-     * @description 可视化图形的 style。在子类中规定其对象结构和默认属性值。
-     */
-    style = null;
-
     constructor(data, layer, style, options, shapeOptions) {
         super(data, layer);
         //数据的 geometry 属性必须存在且类型是 SuperMap.Geometry 或其子类的类型
@@ -94,23 +46,67 @@ export class ThemeVector extends Theme {
         if (!(data.geometry instanceof Geometry)) {
             return;
         }
+
+        /**
+         * @member SuperMap.Feature.Theme.Vector.prototype.dataBounds - {SuperMap.Bounds}
+         * @description 用户数据的（feature.geometry）地理范围。
+         */
+        this.dataBounds = data.geometry.getBounds();
+
+        /**
+         * @member SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel - {number}
+         * @description 节点抽稀像素距离，默认值 2。
+         */
+        this.nodesClipPixel = 2;
+
+        /**
+         * @member SuperMap.Feature.Theme.Vector.prototype.isHoverAble - {boolean}
+         * @description 图形是否可 hover，默认 true。
+         */
+        this.isHoverAble = true;
+
+        /**
+         * @member SuperMap.Feature.Theme.Vector.prototype.isMultiHover - {boolean}
+         * @description 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。
+         */
+        this.isMultiHover = true;
+
+        /**
+         * @member SuperMap.Feature.Theme.Vector.prototype.isClickAble - {boolean}
+         * @description 图形是否可点击，默认 true。
+         */
+        this.isClickAble = true;
+
+        /**
+         * @member SuperMap.Feature.Theme.Vector.prototype.highlightStyle - {Object}
+         * @description 高亮样式。
+         */
+        this.highlightStyle = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Vector.prototype.shapeOptions - {Object}
+         * @description 添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做。
+         */
+        this.shapeOptions = {};
+
+        /**
+         * @member SuperMap.Feature.Theme.Vector.prototype.style - {Object}
+         * @description 可视化图形的 style。在子类中规定其对象结构和默认属性值。
+         */
+        this.style = style || {};
+
+
+        this.CLASS_NAME = "SuperMap.Feature.Theme.Vector";
         this.style = style ? style : {};
-        this.data = data;
-        this.layer = layer;
-        this.id = CommonUtil.createUniqueID(this.CLASS_NAME + "_");
-        this.location = [];
-        this.shapes = [];
         if (options) {
             CommonUtil.copyAttributesWithClip(this, options, ["shapeOptions", "dataBounds"])
         }
         if (shapeOptions) {
-            this.shapeOptions = {};
             CommonUtil.copyAttributesWithClip(this.shapeOptions, shapeOptions);
         }
 
         //设置基础参数 dataBounds、lonlat、location
         var geometry = data.geometry;
-        this.dataBounds = geometry.getBounds();
         this.lonlat = this.dataBounds.getCenterLonLat();
         this.location = this.getLocalXY(this.lonlat);
 
@@ -663,8 +659,6 @@ export class ThemeVector extends Theme {
         return this.layer.getLocalXY(lonlat);
     }
 
-
-    CLASS_NAME = "SuperMap.Feature.Theme.Vector"
 }
 
 SuperMap.Feature.Theme.ThemeVector = ThemeVector;

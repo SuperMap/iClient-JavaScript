@@ -77,6 +77,7 @@ export class Ring extends Graph {
 
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
+        this.CLASS_NAME = "SuperMap.Feature.Theme.Ring";
     }
 
     /**
@@ -206,7 +207,6 @@ export class Ring extends Graph {
         this.shapesConvertToRelativeCoordinate();
     }
 
-    CLASS_NAME = "SuperMap.Feature.Theme.Ring"
 }
 
 SuperMap.Feature.Theme.Ring = Ring;

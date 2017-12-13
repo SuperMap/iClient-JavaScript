@@ -17,6 +17,7 @@ export class TilesetsService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.TilesetsService";
     }
 
     /**
@@ -46,8 +47,6 @@ export class TilesetsService extends CommonServiceBase {
             failure: me.serviceProcessFailed
         });
     }
-
-    CLASS_NAME = "SuperMap.TilesetsService"
 }
 
 SuperMap.TilesetsService = TilesetsService;

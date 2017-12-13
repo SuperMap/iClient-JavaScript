@@ -27,6 +27,7 @@ export class TransferSolutionService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.TransferSolutionService";
     }
 
     /**
@@ -86,7 +87,6 @@ export class TransferSolutionService extends CommonServiceBase {
         });
     }
 
-    CLASS_NAME = "SuperMap.TransferSolutionService"
 }
 
 SuperMap.TransferSolutionService = TransferSolutionService;

@@ -175,6 +175,7 @@ export class Bar3D extends Graph {
 
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
+        this.CLASS_NAME = "SuperMap.Feature.Theme.Bar3D";
     }
 
     /**
@@ -425,8 +426,6 @@ export class Bar3D extends Graph {
             "width": xShapeWidth
         };
     }
-
-    CLASS_NAME = "SuperMap.Feature.Theme.Bar3D"
 }
 
 SuperMap.Feature.Theme.Bar3D = Bar3D;

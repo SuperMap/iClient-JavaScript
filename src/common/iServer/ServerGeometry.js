@@ -21,54 +21,6 @@ import {GeometryType} from '../REST';
 export class ServerGeometry {
 
     /*
-     * APIProperty: id
-     * {String} 服务端几何对象唯一标识符。
-     */
-    id = 0;
-
-    /*
-     * APIProperty: style
-     * {<SuperMap.ServerStyle>} 服务端几何对象的风格(ServerStyle)。
-     */
-    style = null;
-    /*
-     * APIProperty: parts
-     * {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。
-     * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。
-     * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，
-     * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，
-     * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。
-     * 2.通常情况，一个简单几何对象的子对象就是它本身，
-     * 因此对于简单对象来说的该字段为长度为1的整型数组，
-     * 该字段的值就是这个简单对象节点的个数。
-     * 如果一个几何对象是由几个简单对象组合而成的，
-     * 例如，一个岛状几何对象由3个简单的多边形组成而成，
-     * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为3的整型数组，
-     * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。
-     */
-    parts = null;
-    /*
-     * APIProperty: points
-     * {Array(<Point>)} 组成几何对象的节点的坐标对数组。
-     * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，
-     * 该字段存放了组成几何对象的点坐标的数组。
-     * 对于简单的面对象，他的起点和终点的坐标点相同。
-     * 2.对于复杂的几何对象，根据 Parts 属性来确定每一个组成复杂几何对象的简单对象所对应的节点的个数，
-     * 从而确定 Points 字段中坐标对的分配归属问题。
-     */
-    points = null;
-    /*
-     * APIProperty: type
-     * {<SuperMap.GeometryType>} 几何对象的类型(GeometryType)。
-     */
-    type = null;
-    /*
-     * APIProperty: prjCoordSys
-     * {Object}投影坐标参数,现仅在缓冲区分析中有效。
-     */
-    prjCoordSys = null;
-
-    /*
      * Constructor: SuperMap.ServerGeometry
      * 服务端几何对象类构造函数。
      *
@@ -83,9 +35,59 @@ export class ServerGeometry {
      * type - {<SuperMap.GeometryType>} 几何对象的类型。
      */
     constructor(options) {
+
+        /*
+         * APIProperty: id
+         * {String} 服务端几何对象唯一标识符。
+         */
+        this.id = 0;
+
+        /*
+         * APIProperty: style
+         * {<SuperMap.ServerStyle>} 服务端几何对象的风格(ServerStyle)。
+         */
+        this.style = null;
+        /*
+         * APIProperty: parts
+         * {Array(Number)} 服务端几何对象中各个子对象所包含的节点个数。
+         * 1.几何对象从结构上可以分为简单几何对象和复杂几何对象。
+         * 简单几何对象与复杂几何对象的区别：简单的几何对象一般为单一对象，
+         * 而复杂的几何对象由多个简单对象组成或经过一定的空间运算之后产生，
+         * 如：矩形为简单的区域对象，而中空的矩形为复杂的区域对象。
+         * 2.通常情况，一个简单几何对象的子对象就是它本身，
+         * 因此对于简单对象来说的该字段为长度为1的整型数组，
+         * 该字段的值就是这个简单对象节点的个数。
+         * 如果一个几何对象是由几个简单对象组合而成的，
+         * 例如，一个岛状几何对象由3个简单的多边形组成而成，
+         * 那么这个岛状的几何对象的 Parts 字段值就是一个长度为3的整型数组，
+         * 数组中每个成员的值分别代表这三个多边形所包含的节点个数。
+         */
+        this.parts = null;
+        /*
+         * APIProperty: points
+         * {Array(<Point>)} 组成几何对象的节点的坐标对数组。
+         * 1.所有几何对象（点、线、面）都是由一些简单的点坐标组成的，
+         * 该字段存放了组成几何对象的点坐标的数组。
+         * 对于简单的面对象，他的起点和终点的坐标点相同。
+         * 2.对于复杂的几何对象，根据 Parts 属性来确定每一个组成复杂几何对象的简单对象所对应的节点的个数，
+         * 从而确定 Points 字段中坐标对的分配归属问题。
+         */
+        this.points = null;
+        /*
+         * APIProperty: type
+         * {<SuperMap.GeometryType>} 几何对象的类型(GeometryType)。
+         */
+        this.type = null;
+        /*
+         * APIProperty: prjCoordSys
+         * {Object}投影坐标参数,现仅在缓冲区分析中有效。
+         */
+        this.prjCoordSys = null;
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ServerGeometry";
     }
 
     /*
@@ -658,7 +660,6 @@ export class ServerGeometry {
         }
     }
 
-    CLASS_NAME = "SuperMap.ServerGeometry"
 }
 
 SuperMap.ServerGeometry = ServerGeometry;

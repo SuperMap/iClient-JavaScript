@@ -6,11 +6,6 @@
  */
 export class Event {
 
-    /**
-     * Property: stop
-     * {Function} 停止冒泡和阻止默认行为
-     */
-    stop = null;
 
     /**
      * Constructor: SuperMap.LevelRenderer.Tool.Event
@@ -18,6 +13,10 @@ export class Event {
      *
      */
     constructor() {
+        /**
+         * Property: stop
+         * {Function} 停止冒泡和阻止默认行为
+         */
         this.stop = typeof window.addEventListener === 'function'
             ? function (e) {
                 e.preventDefault();
@@ -28,6 +27,8 @@ export class Event {
                 e.returnValue = false;
                 e.cancelBubble = true;
             };
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Event";
     }
 
 
@@ -82,7 +83,4 @@ export class Event {
             || typeof e.wheelDelta != 'undefined' && e.wheelDelta
             || typeof e.detail != 'undefined' && -e.detail;
     }
-
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Event"
 }

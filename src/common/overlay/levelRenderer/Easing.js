@@ -13,7 +13,7 @@ export class Easing {
      *
      */
     constructor() {
-
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Animation.easing";
     }
 
 
@@ -389,5 +389,4 @@ export class Easing {
         return this.BounceOut(k * 2 - 1) * 0.5 + 0.5;
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Animation.easing"
 }

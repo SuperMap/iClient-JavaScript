@@ -9,17 +9,18 @@ import {OverlayOperationType} from '../REST';
  */
 export class OverlayAnalystParameters {
 
-    /**
-     * @member SuperMap.OverlayAnalystParameters.prototype.operation -{SuperMap.OverlayOperationType}
-     * @description 指定叠加分析操作类型。
-     */
-    operation = OverlayOperationType.UNION;
 
     constructor(options) {
-        var me = this;
+        /**
+         * @member SuperMap.OverlayAnalystParameters.prototype.operation -{SuperMap.OverlayOperationType}
+         * @description 指定叠加分析操作类型。
+         */
+        this.operation = OverlayOperationType.UNION;
+
         if (options) {
-            Util.extend(me, options);
+            Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.OverlayAnalystParameters";
     }
 
     /**
@@ -31,7 +32,7 @@ export class OverlayAnalystParameters {
         me.operation = null;
     }
 
-    CLASS_NAME = "SuperMap.OverlayAnalystParameters"
+
 }
 
 SuperMap.OverlayAnalystParameters = OverlayAnalystParameters;

@@ -17,32 +17,34 @@ export class TopologyValidatorJobsParameter {
         if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.TopologyValidatorJobsParameter.prototype.datasetName -{string}
+         * @description 数据集名。
+         */
+        this.datasetName = "";
+
+        /**
+         * @member SuperMap.TopologyValidatorJobsParameter.prototype.datasetTopology -{string}
+         * @description 拓扑检查对象所在的数据集名称。
+         */
+        this.datasetTopology = "";
+
+        /**
+         * @member SuperMap.TopologyValidatorJobsParameter.prototype.tolerance -{string}
+         * @description 容限，指定的拓扑错误检查时使用的容限。
+         */
+        this.tolerance = "";
+
+        /**
+         * @member SuperMap.TopologyValidatorJobsParameter.prototype.rule -{SuperMap.TopologyValidatorRule}
+         * @description 拓扑检查模式 。
+         */
+        this.rule = TopologyValidatorRule.RegionNoOverlap;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.TopologyValidatorJobsParameter";
     }
-
-    /**
-     * @member SuperMap.TopologyValidatorJobsParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    datasetName = "";
-
-    /**
-     * @member SuperMap.TopologyValidatorJobsParameter.prototype.datasetTopology -{string}
-     * @description 拓扑检查对象所在的数据集名称。
-     */
-    datasetTopology = "";
-
-    /**
-     * @member SuperMap.TopologyValidatorJobsParameter.prototype.tolerance -{string}
-     * @description 容限，指定的拓扑错误检查时使用的容限。
-     */
-    tolerance = "";
-
-    /**
-     * @member SuperMap.TopologyValidatorJobsParameter.prototype.rule -{SuperMap.TopologyValidatorRule}
-     * @description 拓扑检查模式 。
-     */
-    rule = TopologyValidatorRule.RegionNoOverlap;
 
     /**
      * @function SuperMap.TopologyValidatorJobsParameter.prototype.destroy

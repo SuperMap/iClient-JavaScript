@@ -22,9 +22,6 @@ import {Shape} from './Shape';
  */
 export class SmicImage extends Shape {
 
-    static _needsRefresh = [];
-    static _refreshTimeout = null;
-
     /**
      * Property: style
      * {Object} 绘制样式。
@@ -54,18 +51,6 @@ export class SmicImage extends Shape {
     //打开接口 style
 
     /**
-     * Property: type
-     * {String} 图形类型。
-     */
-    type = 'smicimage';
-
-    /**
-     * Property: _imageCache
-     * {String} 图片缓存。
-     */
-    _imageCache = null;
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicImage
      * 构造函数。
      *
@@ -75,10 +60,21 @@ export class SmicImage extends Shape {
      */
     constructor(options) {
         super(options);
+        /**
+         * Property: type
+         * {String} 图形类型。
+         */
+        this.type = 'smicimage';
+
+        /**
+         * Property: _imageCache
+         * {String} 图片缓存。
+         */
+        this._imageCache = {};
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
-        this._imageCache = {};
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicImage";
     }
 
 
@@ -256,6 +252,6 @@ export class SmicImage extends Shape {
         this._imageCache = {};
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicImage"
 }
+SmicImage._needsRefresh = [];
+SmicImage._refreshTimeout = null;

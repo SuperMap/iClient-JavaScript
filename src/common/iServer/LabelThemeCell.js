@@ -18,25 +18,25 @@ import {LabelMatrixCell} from './LabelMatrixCell';
  */
 export class LabelThemeCell extends LabelMatrixCell {
 
-    /**
-     * @member SuperMap.LabelThemeCell.prototype.themeLabel -{SuperMap.ThemeLabel}
-     * @description 使用专题图对象作为矩阵标签的一个元素。
-     */
-    themeLabel = null;
-
-    /**
-     * @member SuperMap.LabelThemeCell.prototype.type -{string}
-     * @description 制作矩阵专题图时是必须的。
-     */
-    type = "THEME";
 
     constructor(options) {
         super(options);
-        var me = this;
-        me.themeLabel = new ThemeLabel();
+        /**
+         * @member SuperMap.LabelThemeCell.prototype.themeLabel -{SuperMap.ThemeLabel}
+         * @description 使用专题图对象作为矩阵标签的一个元素。
+         */
+        this.themeLabel =  new ThemeLabel();
+
+        /**
+         * @member SuperMap.LabelThemeCell.prototype.type -{string}
+         * @description 制作矩阵专题图时是必须的。
+         */
+        this.type = "THEME";
+
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = " SuperMap.LabelThemeCell";
     }
 
     /**
@@ -51,7 +51,7 @@ export class LabelThemeCell extends LabelMatrixCell {
         }
     }
 
-    CLASS_NAME = " SuperMap.LabelThemeCell"
+
 }
 
 SuperMap.LabelThemeCell = LabelThemeCell;

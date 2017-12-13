@@ -18,63 +18,65 @@ import {Util} from '../commontypes/Util';
  */
 export class MathExpressionAnalysisParameters {
 
-    /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.dataset -{string}
-     * @description 要用来做栅格代数运算数据源中数据集的名称。
-     * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
-     *
-     */
-    dataset = null;
-
-    /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.extractRegion
-     * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
-     * > 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
-     * > 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
-     */
-    extractRegion = null;
-
-    /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.expression -{string}
-     * @description 指定的栅格运算表达式。如："[DatasourceAlias1.Raster1]*2-10"；必设字段。
-     */
-    expression = null;
-
-    /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.isZip -{boolean}
-     * @description 是否对结果数据集进行压缩处理。默认为false，表示不压缩。
-     */
-    isZip = false;
-
-    /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.ignoreNoValue -{boolean}
-     * @description 是否忽略无值栅格数据，默认为false。
-     */
-    ignoreNoValue = false;
-
-    /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.targetDatasource -{string}
-     * @description 指定存储结果数据集的数据源，必设字段。
-     */
-    targetDatasource = null;
-
-    /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.resultGridName -{string}
-     * @description 指定结果数据集名称，必设字段。
-     */
-    resultGridName = null;
-
-    /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.deleteExistResultDataset -{boolean}
-     * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
-     */
-    deleteExistResultDataset = false;
-
     constructor(options) {
         if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.MathExpressionAnalysisParameters.prototype.dataset -{string}
+         * @description 要用来做栅格代数运算数据源中数据集的名称。
+         * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
+         *
+         */
+        this.dataset = null;
+
+        /**
+         * @member SuperMap.MathExpressionAnalysisParameters.prototype.extractRegion
+         * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
+         * > 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
+         * > 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
+         */
+        this.extractRegion = null;
+
+        /**
+         * @member SuperMap.MathExpressionAnalysisParameters.prototype.expression -{string}
+         * @description 指定的栅格运算表达式。如："[DatasourceAlias1.Raster1]*2-10"；必设字段。
+         */
+        this.expression = null;
+
+        /**
+         * @member SuperMap.MathExpressionAnalysisParameters.prototype.isZip -{boolean}
+         * @description 是否对结果数据集进行压缩处理。默认为false，表示不压缩。
+         */
+        this.isZip = false;
+
+        /**
+         * @member SuperMap.MathExpressionAnalysisParameters.prototype.ignoreNoValue -{boolean}
+         * @description 是否忽略无值栅格数据，默认为false。
+         */
+        this.ignoreNoValue = false;
+
+        /**
+         * @member SuperMap.MathExpressionAnalysisParameters.prototype.targetDatasource -{string}
+         * @description 指定存储结果数据集的数据源，必设字段。
+         */
+        this.targetDatasource = null;
+
+        /**
+         * @member SuperMap.MathExpressionAnalysisParameters.prototype.resultGridName -{string}
+         * @description 指定结果数据集名称，必设字段。
+         */
+        this.resultGridName = null;
+
+        /**
+         * @member SuperMap.MathExpressionAnalysisParameters.prototype.deleteExistResultDataset -{boolean}
+         * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
+         */
+        this.deleteExistResultDataset = false;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.MathExpressionAnalysisParameters"
     }
 
 
@@ -130,8 +132,6 @@ export class MathExpressionAnalysisParameters {
             }
         }
     }
-
-    CLASS_NAME = "SuperMap.MathExpressionAnalysisParameters"
 }
 
 SuperMap.MathExpressionAnalysisParameters = MathExpressionAnalysisParameters;

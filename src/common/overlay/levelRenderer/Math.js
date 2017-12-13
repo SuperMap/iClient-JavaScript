@@ -6,11 +6,7 @@
  */
 export class Math {
 
-    /**
-     * Property: _radians
-     * {Number} 角度与弧度转化参数
-     */
-    _radians = null;
+
 
     /**
      * Constructor: SuperMap.LevelRenderer.Tool.Math
@@ -18,7 +14,13 @@ export class Math {
      *
      */
     constructor() {
+        /**
+         * Property: _radians
+         * {Number} 角度与弧度转化参数
+         */
         this._radians = window.Math.PI / 180;
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Math";
     }
 
 
@@ -83,6 +85,4 @@ export class Math {
         return angle / this._radians;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Math"
 }

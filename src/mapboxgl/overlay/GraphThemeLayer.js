@@ -229,7 +229,7 @@ export class Graph extends Theme {
      * @description  通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
      * @param featureID - {number} 要素ID。
      */
-    getShapesByFeatureID = function (featureID) {
+    getShapesByFeatureID (featureID) {
         var list = [];
         var shapeList = this.renderer.getAllShapes();
         if (!featureID) {

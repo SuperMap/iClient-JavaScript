@@ -8,11 +8,7 @@
  */
 export class Eventful {
 
-    /**
-     * Property: _handlers
-     * {Object} 事件处理对象（事件分发器）。
-     */
-    _handlers = {};
+
 
 
     /*
@@ -38,7 +34,13 @@ export class Eventful {
      * ondrop - {Function} 默认值：null。
      */
     constructor() {
+        /**
+         * Property: _handlers
+         * {Object} 事件处理对象（事件分发器）。
+         */
         this._handlers = {};
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Eventful";
     }
 
 
@@ -262,5 +264,4 @@ export class Eventful {
         return this;
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Eventful"
 }

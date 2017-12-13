@@ -20,25 +20,26 @@ import './SetLayersInfoParameters';
  */
 export class SetLayersInfoService extends CommonServiceBase {
 
-    /**
-     * @member SuperMap.SetLayersInfoService.prototype.resourceID - {string}
-     * @description 图层资源ID，临时图层的资源ID标记。
-     */
-    resourceID = null;
-
-    /**
-     * @function SuperMap.SetLayersInfoService.prototype.isTempLayers -{boolean}
-     * @description 当前url对应的图层是否是临时图层。
-     */
-    isTempLayers = false;
 
     constructor(url, options) {
         super(url, options);
+        /**
+         * @member SuperMap.SetLayersInfoService.prototype.resourceID - {string}
+         * @description 图层资源ID，临时图层的资源ID标记。
+         */
+        this.resourceID = null;
+
+        /**
+         * @function SuperMap.SetLayersInfoService.prototype.isTempLayers -{boolean}
+         * @description 当前url对应的图层是否是临时图层。
+         */
+        this.isTempLayers = false;
+
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-        this.resourceID = options.resourceID;
-        this.isTempLayers = options.isTempLayers;
+
+        this.CLASS_NAME = "SuperMap.SetLayersInfoService";
     }
 
     /**
@@ -118,7 +119,6 @@ export class SetLayersInfoService extends CommonServiceBase {
         });
     }
 
-    CLASS_NAME = "SuperMap.SetLayersInfoService"
 }
 
 SuperMap.SetLayersInfoService = SetLayersInfoService;

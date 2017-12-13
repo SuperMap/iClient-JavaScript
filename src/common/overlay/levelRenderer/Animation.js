@@ -2,6 +2,7 @@ import {Util} from '../levelRenderer/Util';
 import {Eventful} from './Eventful';
 import {Clip} from './Clip';
 import {SUtil} from './SUtil';
+import {Util as CommonUtil} from "../../commontypes/Util";
 
 /**
  * @private
@@ -11,40 +12,6 @@ import {SUtil} from './SUtil';
  */
 export class Animation extends Eventful {
 
-    /**
-     * Property: stage
-     * {Object}
-     *
-     */
-    stage = null;
-
-    /**
-     * Property: onframe
-     * {Object}
-     *
-     */
-    onframe = null;
-
-    /**
-     * Property: _clips
-     * {Array}
-     *
-     */
-    _clips = [];
-
-    /**
-     * Property: _running
-     * {Boolean}
-     *
-     */
-    _running = false;
-
-    /**
-     * Property: _time
-     * {Number}
-     *
-     */
-    _time = 0;
 
     /*
      * Constructor: SuperMap.LevelRenderer.Animation
@@ -79,18 +46,46 @@ export class Animation extends Eventful {
         super(options);
 
         options = options || {};
+        /**
+         * Property: stage
+         * {Object}
+         *
+         */
+        this.stage = {};
 
-        this.stage = options.stage || {};
+        /**
+         * Property: onframe
+         * {Object}
+         *
+         */
+        this.onframe = function () {
+        };
 
-        this.onframe = options.onframe || function () {
-            };
-
-        // private properties
+        /**
+         * Property: _clips
+         * {Array}
+         *
+         */
         this._clips = [];
 
+        /**
+         * Property: _running
+         * {Boolean}
+         *
+         */
         this._running = false;
 
+        /**
+         * Property: _time
+         * {Number}
+         *
+         */
         this._time = 0;
+
+        CommonUtil.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Animation";
+
     }
 
 
@@ -338,8 +333,6 @@ export class Animation extends Eventful {
 
         return 'rgba(' + rgba.join(',') + ')';
     }
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Animation"
 }
 
 /**
@@ -347,66 +340,6 @@ export class Animation extends Eventful {
  * @class SuperMap.LevelRenderer.Animation.Animator
  */
 export class Animator {
-
-    /**
-     * Property: _tracks
-     * {Object}
-     */
-    _tracks = null;
-
-    /**
-     * Property: _target
-     * {Object}
-     */
-    _target = null;
-
-    /**
-     * Property: _loop
-     * {Boolean}
-     */
-    _loop = null;
-
-    /**
-     * Property: _getter
-     * {Function}
-     */
-    _getter = null;
-
-    /**
-     * Property: _setter
-     * {Function}
-     */
-    _setter = null;
-
-    /**
-     * Property: _clipCount
-     * {Number}
-     */
-    _clipCount = 0;
-
-    /**
-     * Property: _delay
-     * {Number}
-     */
-    _delay = 0;
-
-    /**
-     * Property: _doneList
-     * {Array}
-     */
-    _doneList = [];
-
-    /**
-     * Property: _onframeList
-     * {Array}
-     */
-    _onframeList = [];
-
-    /**
-     * Property: _clipList
-     * {Array}
-     */
-    _clipList = [];
 
     /*
      * Constructor: SuperMap.LevelRenderer.Animation.Animator
@@ -420,24 +353,66 @@ export class Animator {
      *
      */
     constructor(target, loop, getter, setter) {
+        /**
+         * Property: _tracks
+         * {Object}
+         */
         this._tracks = {};
+
+        /**
+         * Property: _target
+         * {Object}
+         */
         this._target = target;
 
+        /**
+         * Property: _loop
+         * {Boolean}
+         */
         this._loop = loop || false;
 
+        /**
+         * Property: _getter
+         * {Function}
+         */
         this._getter = getter || _defaultGetter;
+
+        /**
+         * Property: _setter
+         * {Function}
+         */
         this._setter = setter || _defaultSetter;
 
+        /**
+         * Property: _clipCount
+         * {Number}
+         */
         this._clipCount = 0;
 
+        /**
+         * Property: _delay
+         * {Number}
+         */
         this._delay = 0;
 
+        /**
+         * Property: _doneList
+         * {Array}
+         */
         this._doneList = [];
 
+        /**
+         * Property: _onframeList
+         * {Array}
+         */
         this._onframeList = [];
 
+        /**
+         * Property: _clipList
+         * {Array}
+         */
         this._clipList = [];
-
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Animation.Animator";
         //Function
         function _defaultGetter(target, key) {
             return target[key];
@@ -750,8 +725,6 @@ export class Animator {
         return this;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Animation.Animator"
 }
 
 

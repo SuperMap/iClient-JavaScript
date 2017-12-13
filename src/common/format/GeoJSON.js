@@ -30,6 +30,325 @@ export class GeoJSON extends JSONFormat {
         this.ignoreExtraDims = false;
 
         this.CLASS_NAME = "SuperMap.Format.GeoJSON";
+        /**
+         * @member SuperMap.Format.GeoJSON.prototype.parseCoords - {Object}
+         * @description 一个属性名对应着GeoJSON对象的几何类型的对象。每个属性其实都是一个实际上做解析用的方法。
+         */
+        this.parseCoords = {
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.point
+             * @description 将一组坐标成一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的一组坐标。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "point": function (array) {
+                if (this.ignoreExtraDims == false &&
+                    array.length != 2) {
+                    throw "Only 2D points are supported: " + array;
+                }
+                return new Point(array[0], array[1]);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.multipoint
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "multipoint": function (array) {
+                var points = [];
+                var p = null;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        p = this.parseCoords["point"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    points.push(p);
+                }
+                return new MultiPoint(points);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.linestring
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "linestring": function (array) {
+                var points = [];
+                var p = null;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        p = this.parseCoords["point"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    points.push(p);
+                }
+                return new LineString(points);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.multilinestring
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "multilinestring": function (array) {
+                var lines = [];
+                var l = null;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        l = this.parseCoords["linestring"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    lines.push(l);
+                }
+                return new MultiLineString(lines);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.polygon
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "polygon": function (array) {
+                var rings = [];
+                var r, l;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        l = this.parseCoords["linestring"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    r = new LinearRing(l.components);
+                    rings.push(r);
+                }
+                return new Polygon(rings);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.multipolygon
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "multipolygon": function (array) {
+                var polys = [];
+                var p = null;
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    try {
+                        p = this.parseCoords["polygon"].apply(this, [array[i]]);
+                    } catch (err) {
+                        throw err;
+                    }
+                    polys.push(p);
+                }
+                return new MultiPolygon(polys);
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.parseCoords.box
+             * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+             * @param array - {Object} GeoJSON片段中的坐标组数组。
+             * @return {SuperMap.Geometry} 一个几何对象。
+             */
+            "box": function (array) {
+                if (array.length != 2) {
+                    throw "GeoJSON box coordinates must have 2 elements";
+                }
+                return new Polygon([
+                    new LinearRing([
+                        new Point(array[0][0], array[0][1]),
+                        new Point(array[1][0], array[0][1]),
+                        new Point(array[1][0], array[1][1]),
+                        new Point(array[0][0], array[1][1]),
+                        new Point(array[0][0], array[0][1])
+                    ])
+                ]);
+            }
+
+        };
+        /**
+         * Property: extract
+         * 一个属性名对应着GeoJSON类型的对象。其值为相应的实际的解析方法。
+         */
+        this.extract = {
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.feature
+             * @description 返回一个表示单个要素对象的GeoJSON的一部分。
+             * @param feature - iServer要素对象
+             * @return {Object} 一个表示点的对象。
+             */
+            'feature': function (feature) {
+                var geom = this.extract.geometry.apply(this, [feature.geometry]);
+                var json = {
+                    "type": "Feature",
+                    "properties": this.createAttributes(feature),
+                    "geometry": geom
+                };
+
+                if (feature.geometry && feature.geometry.type === 'TEXT') {
+                    json.properties.texts = feature.geometry.texts;
+                    json.properties.textStyle = feature.geometry.textStyle;
+                }
+                if (feature.fid !== null) {
+                    json.id = feature.fid;
+                }
+                if (feature.ID !== null) {
+                    json.id = feature.ID;
+                }
+                return json;
+            },
+
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.geometry
+             * @description 返回一个表示单个几何对象的GeoJSON的一部分。
+             * @param geometry -iServer 几何对象
+             * @return {Object} 一个表示几何体的对象。
+             */
+            'geometry': function (geometry) {
+                if (geometry == null) {
+                    return null;
+                }
+                var geo = this.toGeometry(geometry);
+                var geometryType = geo.type;
+                var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
+                geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
+                var json;
+                if (geometryType === "Collection") {
+                    json = {
+                        "type": "GeometryCollection",
+                        "geometries": data
+                    };
+                } else {
+                    json = {
+                        "type": geometryType,
+                        "coordinates": data
+                    };
+                }
+                return json;
+            },
+
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.point
+             * @description 从一个点对象中返回一个坐标组。
+             * @param point - {SuperMap.Geometry.Point} 一个点对象。
+             * @return {Array} 一个表示一个点的坐标组。
+             */
+            'point': function (point) {
+                var p = [point.x, point.y];
+                for (var name in point) {
+                    if (name !== "x" && name !== "y" && !isNaN(point[name])) {
+                        p.push(point[name]);
+                    }
+                }
+                return p;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.point
+             * @description 从一个文本对象中返回一个坐标组。
+             * @param geo 一个文本对象。
+             * @return {Array} 一个表示一个点的坐标组。
+             */
+            'text': function (geo) {
+                return [geo.points[0].x, geo.points[0].y];
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.multipoint
+             * @description 从一个多点对象中返一个坐标组数组。
+             * @param multipoint - {SuperMap.Geometry.MultiPoint} 多点对象。
+             * @return {Array} 一个表示多点的坐标组数组。
+             */
+            'multipoint': function (multipoint) {
+                var array = [];
+                for (var i = 0, len = multipoint.components.length; i < len; ++i) {
+                    array.push(this.extract.point.apply(this, [multipoint.components[i]]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.linestring
+             * @description 从一个线对象中返回一个坐标组数组。
+             * @param linestring - {SuperMap.Geometry.Linestring} 线对象。
+             * @return {Array} 一个表示线对象的坐标组数组。
+             */
+            'linestring': function (linestring) {
+                var array = [];
+                for (var i = 0, len = linestring.components.length; i < len; ++i) {
+                    array.push(this.extract.point.apply(this, [linestring.components[i]]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.multilinestring
+             * @description 从一个多线对象中返回一个线数组。
+             * @param multilinestring - {SuperMap.Geometry.MultiLinestring} 多线对象
+             *
+             * @return {Array} 一个表示多线的线数组。
+             */
+            'multilinestring': function (multilinestring) {
+                var array = [];
+                for (var i = 0, len = multilinestring.components.length; i < len; ++i) {
+                    array.push(this.extract.linestring.apply(this, [{components: multilinestring.components[i]}]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.polygon
+             * @description 从一个面对象中返回一组线环。
+             * @polygon - {SuperMap.Geometry.Polygon} 面对象。
+             * @return {Array} 一组表示面的线环。
+             */
+            'polygon': function (polygon) {
+                var array = [];
+                for (var i = 0, len = polygon.components.length; i < len; ++i) {
+                    array.push(this.extract.linestring.apply(this, [{components: polygon.components[i]}]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.multipolygon
+             * @description 从一个多面对象中返回一组面。
+             * @param multipolygon - {SuperMap.Geometry.MultiPolygon} 多面对象。
+             * @return {Array} 一组表示多面的面。
+             */
+            'multipolygon': function (multipolygon) {
+                var array = [];
+                for (var i = 0, len = multipolygon.components.length; i < len; ++i) {
+                    array.push(this.extract.polygon.apply(this, [{components: multipolygon.components[i]}]));
+                }
+                return array;
+            },
+
+            /**
+             * @function SuperMap.Format.GeoJSON.extract.collection
+             * @description 从一个几何要素集合中一组几何要素数组。
+             * @param collection - {SuperMap.Geometry.Collection} 几何要素集合。
+             * @return {Array} 一组表示几何要素集合的几何要素数组。
+             */
+            'collection': function (collection) {
+                var len = collection.components.length;
+                var array = new Array(len);
+                for (var i = 0; i < len; ++i) {
+                    array[i] = this.extract.geometry.apply(this, [{
+                        type: "Collection",
+                        components: collection.components[i]
+                    }]);
+                }
+                return array;
+            }
+        };
     }
 
     /**
@@ -223,148 +542,6 @@ export class GeoJSON extends JSONFormat {
     }
 
     /**
-     * @member SuperMap.Format.GeoJSON.prototype.parseCoords - {Object}
-     * @description 一个属性名对应着GeoJSON对象的几何类型的对象。每个属性其实都是一个实际上做解析用的方法。
-     */
-    parseCoords = {
-        /**
-         * @function SuperMap.Format.GeoJSON.parseCoords.point
-         * @description 将一组坐标成一个<SuperMap.Geometry>对象。
-         * @param array - {Object} GeoJSON片段中的一组坐标。
-         * @return {SuperMap.Geometry} 一个几何对象。
-         */
-        "point": function (array) {
-            if (this.ignoreExtraDims == false &&
-                array.length != 2) {
-                throw "Only 2D points are supported: " + array;
-            }
-            return new Point(array[0], array[1]);
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.parseCoords.multipoint
-         * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-         * @param array - {Object} GeoJSON片段中的坐标组数组。
-         * @return {SuperMap.Geometry} 一个几何对象。
-         */
-        "multipoint": function (array) {
-            var points = [];
-            var p = null;
-            for (var i = 0, len = array.length; i < len; ++i) {
-                try {
-                    p = this.parseCoords["point"].apply(this, [array[i]]);
-                } catch (err) {
-                    throw err;
-                }
-                points.push(p);
-            }
-            return new MultiPoint(points);
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.parseCoords.linestring
-         * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-         * @param array - {Object} GeoJSON片段中的坐标组数组。
-         * @return {SuperMap.Geometry} 一个几何对象。
-         */
-        "linestring": function (array) {
-            var points = [];
-            var p = null;
-            for (var i = 0, len = array.length; i < len; ++i) {
-                try {
-                    p = this.parseCoords["point"].apply(this, [array[i]]);
-                } catch (err) {
-                    throw err;
-                }
-                points.push(p);
-            }
-            return new LineString(points);
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.parseCoords.multilinestring
-         * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-         * @param array - {Object} GeoJSON片段中的坐标组数组。
-         * @return {SuperMap.Geometry} 一个几何对象。
-         */
-        "multilinestring": function (array) {
-            var lines = [];
-            var l = null;
-            for (var i = 0, len = array.length; i < len; ++i) {
-                try {
-                    l = this.parseCoords["linestring"].apply(this, [array[i]]);
-                } catch (err) {
-                    throw err;
-                }
-                lines.push(l);
-            }
-            return new MultiLineString(lines);
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.parseCoords.polygon
-         * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-         * @return {SuperMap.Geometry} 一个几何对象。
-         */
-        "polygon": function (array) {
-            var rings = [];
-            var r, l;
-            for (var i = 0, len = array.length; i < len; ++i) {
-                try {
-                    l = this.parseCoords["linestring"].apply(this, [array[i]]);
-                } catch (err) {
-                    throw err;
-                }
-                r = new LinearRing(l.components);
-                rings.push(r);
-            }
-            return new Polygon(rings);
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.parseCoords.multipolygon
-         * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-         * @param array - {Object} GeoJSON片段中的坐标组数组。
-         * @return {SuperMap.Geometry} 一个几何对象。
-         */
-        "multipolygon": function (array) {
-            var polys = [];
-            var p = null;
-            for (var i = 0, len = array.length; i < len; ++i) {
-                try {
-                    p = this.parseCoords["polygon"].apply(this, [array[i]]);
-                } catch (err) {
-                    throw err;
-                }
-                polys.push(p);
-            }
-            return new MultiPolygon(polys);
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.parseCoords.box
-         * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-         * @param array - {Object} GeoJSON片段中的坐标组数组。
-         * @return {SuperMap.Geometry} 一个几何对象。
-         */
-        "box": function (array) {
-            if (array.length != 2) {
-                throw "GeoJSON box coordinates must have 2 elements";
-            }
-            return new Polygon([
-                new LinearRing([
-                    new Point(array[0][0], array[0][1]),
-                    new Point(array[1][0], array[0][1]),
-                    new Point(array[1][0], array[1][1]),
-                    new Point(array[0][0], array[1][1]),
-                    new Point(array[0][0], array[0][1])
-                ])
-            ]);
-        }
-
-    };
-
-    /**
      * @function SuperMap.Format.GeoJSON.write
      * @description 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
      * @param obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
@@ -432,185 +609,6 @@ export class GeoJSON extends JSONFormat {
         }
         return crs;
     }
-
-    /**
-     * Property: extract
-     * 一个属性名对应着GeoJSON类型的对象。其值为相应的实际的解析方法。
-     */
-    extract = {
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.feature
-         * @description 返回一个表示单个要素对象的GeoJSON的一部分。
-         * @param feature - iServer要素对象
-         * @return {Object} 一个表示点的对象。
-         */
-        'feature': function (feature) {
-            var geom = this.extract.geometry.apply(this, [feature.geometry]);
-            var json = {
-                "type": "Feature",
-                "properties": this.createAttributes(feature),
-                "geometry": geom
-            };
-
-            if (feature.geometry && feature.geometry.type === 'TEXT') {
-                json.properties.texts = feature.geometry.texts;
-                json.properties.textStyle = feature.geometry.textStyle;
-            }
-            if (feature.fid !== null) {
-                json.id = feature.fid;
-            }
-            if (feature.ID !== null) {
-                json.id = feature.ID;
-            }
-            return json;
-        },
-
-
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.geometry
-         * @description 返回一个表示单个几何对象的GeoJSON的一部分。
-         * @param geometry -iServer 几何对象
-         * @return {Object} 一个表示几何体的对象。
-         */
-        'geometry': function (geometry) {
-            if (geometry == null) {
-                return null;
-            }
-            var geo = this.toGeometry(geometry);
-            var geometryType = geo.type;
-            var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
-            geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
-            var json;
-            if (geometryType === "Collection") {
-                json = {
-                    "type": "GeometryCollection",
-                    "geometries": data
-                };
-            } else {
-                json = {
-                    "type": geometryType,
-                    "coordinates": data
-                };
-            }
-            return json;
-        },
-
-
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.point
-         * @description 从一个点对象中返回一个坐标组。
-         * @param point - {SuperMap.Geometry.Point} 一个点对象。
-         * @return {Array} 一个表示一个点的坐标组。
-         */
-        'point': function (point) {
-            var p = [point.x, point.y];
-            for (var name in point) {
-                if (name !== "x" && name !== "y" && !isNaN(point[name])) {
-                    p.push(point[name]);
-                }
-            }
-            return p;
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.point
-         * @description 从一个文本对象中返回一个坐标组。
-         * @param geo 一个文本对象。
-         * @return {Array} 一个表示一个点的坐标组。
-         */
-        'text': function (geo) {
-            return [geo.points[0].x, geo.points[0].y];
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.multipoint
-         * @description 从一个多点对象中返一个坐标组数组。
-         * @param multipoint - {SuperMap.Geometry.MultiPoint} 多点对象。
-         * @return {Array} 一个表示多点的坐标组数组。
-         */
-        'multipoint': function (multipoint) {
-            var array = [];
-            for (var i = 0, len = multipoint.components.length; i < len; ++i) {
-                array.push(this.extract.point.apply(this, [multipoint.components[i]]));
-            }
-            return array;
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.linestring
-         * @description 从一个线对象中返回一个坐标组数组。
-         * @param linestring - {SuperMap.Geometry.Linestring} 线对象。
-         * @return {Array} 一个表示线对象的坐标组数组。
-         */
-        'linestring': function (linestring) {
-            var array = [];
-            for (var i = 0, len = linestring.components.length; i < len; ++i) {
-                array.push(this.extract.point.apply(this, [linestring.components[i]]));
-            }
-            return array;
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.multilinestring
-         * @description 从一个多线对象中返回一个线数组。
-         * @param multilinestring - {SuperMap.Geometry.MultiLinestring} 多线对象
-         *
-         * @return {Array} 一个表示多线的线数组。
-         */
-        'multilinestring': function (multilinestring) {
-            var array = [];
-            for (var i = 0, len = multilinestring.components.length; i < len; ++i) {
-                array.push(this.extract.linestring.apply(this, [{components: multilinestring.components[i]}]));
-            }
-            return array;
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.polygon
-         * @description 从一个面对象中返回一组线环。
-         * @polygon - {SuperMap.Geometry.Polygon} 面对象。
-         * @return {Array} 一组表示面的线环。
-         */
-        'polygon': function (polygon) {
-            var array = [];
-            for (var i = 0, len = polygon.components.length; i < len; ++i) {
-                array.push(this.extract.linestring.apply(this, [{components: polygon.components[i]}]));
-            }
-            return array;
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.multipolygon
-         * @description 从一个多面对象中返回一组面。
-         * @param multipolygon - {SuperMap.Geometry.MultiPolygon} 多面对象。
-         * @return {Array} 一组表示多面的面。
-         */
-        'multipolygon': function (multipolygon) {
-            var array = [];
-            for (var i = 0, len = multipolygon.components.length; i < len; ++i) {
-                array.push(this.extract.polygon.apply(this, [{components: multipolygon.components[i]}]));
-            }
-            return array;
-        },
-
-        /**
-         * @function SuperMap.Format.GeoJSON.extract.collection
-         * @description 从一个几何要素集合中一组几何要素数组。
-         * @param collection - {SuperMap.Geometry.Collection} 几何要素集合。
-         * @return {Array} 一组表示几何要素集合的几何要素数组。
-         */
-        'collection': function (collection) {
-            var len = collection.components.length;
-            var array = new Array(len);
-            for (var i = 0; i < len; ++i) {
-                array[i] = this.extract.geometry.apply(this, [{
-                    type: "Collection",
-                    components: collection.components[i]
-                }]);
-            }
-            return array;
-        }
-    };
 
     createAttributes(feature) {
         if (!feature) {

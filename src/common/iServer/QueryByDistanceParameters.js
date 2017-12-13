@@ -27,49 +27,53 @@ import {QueryParameters} from './QueryParameters';
  */
 export class QueryByDistanceParameters extends QueryParameters {
 
-    /**
-     * @member SuperMap.QueryByDistanceParameters.prototype.distance -{number}
-     * @description 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。
-     *               当查找最近地物时，该属性无效。
-     * @default 0
-     */
-    distance = 0;
-
-    /**
-     * @member SuperMap.QueryByDistanceParameters.prototype.geometry
-     * @description 用于查询的地理对象，必设属性。<br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
-     */
-    geometry = null;
-
-    /**
-     * @member SuperMap.QueryByDistanceParameters.prototype.isNearest -{boolean}
-     * @description 是否为最近距离查询。<br>
-     *               建议该属性与 expectCount （继承自 {@link SuperMap.QueryParameters}）属性联合使用。<br>
-     *               当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），<br>
-     *               则查找结果为查询总记录中距离中心最近的expectCount个地物。<br>
-     *               当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），<br>
-     *               则查找结果为从查询总记录中随机抽取的expectCount个地物。<br>
-     *               目前查询结果不支持按远近距离排序。
-     */
-    isNearest = null;
-
-    /**
-     * @member SuperMap.QueryByDistanceParameters.prototype.returnContent -{boolean}
-     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
-     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
-     *               为 false，则返回的是查询结果资源的 URI。默认为 true。
-     */
-    returnContent = true;
 
     constructor(options) {
-        super(options);
         if (!options) {
             return;
         }
+        super(options);
+        /**
+         * @member SuperMap.QueryByDistanceParameters.prototype.distance -{number}
+         * @description 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。
+         *               当查找最近地物时，该属性无效。
+         * @default 0
+         */
+        this.distance = 0;
+
+        /**
+         * @member SuperMap.QueryByDistanceParameters.prototype.geometry
+         * @description 用于查询的地理对象，必设属性。<br>
+         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+         */
+        this.geometry = null;
+
+        /**
+         * @member SuperMap.QueryByDistanceParameters.prototype.isNearest -{boolean}
+         * @description 是否为最近距离查询。<br>
+         *               建议该属性与 expectCount （继承自 {@link SuperMap.QueryParameters}）属性联合使用。<br>
+         *               当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），<br>
+         *               则查找结果为查询总记录中距离中心最近的expectCount个地物。<br>
+         *               当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），<br>
+         *               则查找结果为从查询总记录中随机抽取的expectCount个地物。<br>
+         *               目前查询结果不支持按远近距离排序。
+         */
+        this.isNearest = null;
+
+        /**
+         * @member SuperMap.QueryByDistanceParameters.prototype.returnContent -{boolean}
+         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
+         *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
+         *               为 false，则返回的是查询结果资源的 URI。默认为 true。
+         */
+        this.returnContent = true;
+
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.QueryByDistanceParameters";
     }
 
     /**
@@ -88,7 +92,7 @@ export class QueryByDistanceParameters extends QueryParameters {
         }
     }
 
-    CLASS_NAME = "SuperMap.QueryByDistanceParameters"
+
 }
 
 SuperMap.QueryByDistanceParameters = QueryByDistanceParameters;

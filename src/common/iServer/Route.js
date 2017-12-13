@@ -20,88 +20,90 @@ import {Collection} from '../commontypes/geometry/Collection';
  */
 export class Route extends Collection {
 
-    /**
-     * @member SuperMap.Route.prototype.id -{number}
-     * @description 路由对象在数据库中的id。
-     */
-    id = null;
+    constructor(points, options) {
+        super(points, options);
 
-    /**
-     * @member SuperMap.Route.prototype.center -{number}
-     * @description 路由对象的中心点
-     */
-    center = null;
+        /**
+         * @member SuperMap.Route.prototype.id -{number}
+         * @description 路由对象在数据库中的id。
+         */
+        this.id = null;
 
-    /**
-     * @member SuperMap.Route.prototype.style -{string}
-     * @description 路由对象的样式
-     */
-    style = null;
+        /**
+         * @member SuperMap.Route.prototype.center -{number}
+         * @description 路由对象的中心点
+         */
+        this.center = null;
 
-    /**
-     * @member SuperMap.Route.prototype.length -{number}
-     * @description 路由对象的长度。单位与数据集的单位相同。
-     */
-    length = null;
+        /**
+         * @member SuperMap.Route.prototype.style -{string}
+         * @description 路由对象的样式
+         */
+        this.style = null;
 
-    /**
-     *  @member SuperMap.Route.prototype.maxM -{number}
-     *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
-     */
-    maxM = null;
+        /**
+         * @member SuperMap.Route.prototype.length -{number}
+         * @description 路由对象的长度。单位与数据集的单位相同。
+         */
+        this.length = null;
 
-    /**
-     * @member SuperMap.Route.prototype.minM -{number}
-     * @description 最小线性度量值，即所有结点到起始点的量算距离中最小值。
-     */
-    minM = null;
+        /**
+         *  @member SuperMap.Route.prototype.maxM -{number}
+         *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
+         */
+        this.maxM = null;
 
-    /**
-     * @member SuperMap.Route.prototype.parts -{Array<number>}
-     * @description 服务端几何对象中各个子对象所包含的节点个数。
-     */
-    parts = null;
+        /**
+         * @member SuperMap.Route.prototype.minM -{number}
+         * @description 最小线性度量值，即所有结点到起始点的量算距离中最小值。
+         */
+        this.minM = null;
 
-    /**
-     * @member SuperMap.Route.prototype.points -{Array<Object>}
-     * @description 路由对象的所有路由点。
-     * @example
-     * (start code)
-     * [
-     *  {
+        /**
+         * @member SuperMap.Route.prototype.parts -{Array<number>}
+         * @description 服务端几何对象中各个子对象所包含的节点个数。
+         */
+        this.parts = null;
+
+        /**
+         * @member SuperMap.Route.prototype.points -{Array<Object>}
+         * @description 路由对象的所有路由点。
+         * @example
+         * (start code)
+         * [
+         *  {
      *      "measure": 0,
      *      "y": -4377.027184298267,
      *      "x": 4020.0045221720466
      *  },
-     *  {
+         *  {
      *      "measure": 37.33288381391519,
      *      "y": -4381.569363260499,
      *      "x": 4057.0600591960642
      *  }
-     * ]
-     * (end)
-     */
-    points = null;
+         * ]
+         * (end)
+         */
+        this.points = null;
 
-    /**
-     * @member SuperMap.Route.prototype.type -{string}
-     * @description 服务端几何对象类型。
-     */
-    type = null;
+        /**
+         * @member SuperMap.Route.prototype.type -{string}
+         * @description 服务端几何对象类型。
+         */
+        this.type = null;
 
-    /**
-     * @member SuperMap.Route.prototype.componentTypes -{Array<string>}
-     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-     * @default ["{@link SuperMap.Geometry.LinearRing}", "{@link SuperMap.Geometry.LineString}"];
-     */
-    componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
+        /**
+         * @member SuperMap.Route.prototype.componentTypes -{Array<string>}
+         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+         * @default ["{@link SuperMap.Geometry.LinearRing}", "{@link SuperMap.Geometry.LineString}"];
+         */
+        this.componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
 
-
-    constructor(points, options) {
-        super(points, options);
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.Route";
     }
 
     /**
@@ -223,7 +225,6 @@ export class Route extends Collection {
         });
     }
 
-    CLASS_NAME = "SuperMap.Route"
 }
 
 SuperMap.Route = Route;

@@ -12,10 +12,9 @@ import {FetchRequest} from '../util/FetchRequest';
 export class IPortalServiceBase {
 
     constructor(url) {
-        var me = this;
-        me.serviceUrl = url;
-        me.serverType = ServerType.iPortal;
-        me.CLASS_NAME = "SuperMap.iPortalServiceBase";
+        this.serviceUrl = url;
+        this.serverType = ServerType.iPortal;
+        this.CLASS_NAME = "SuperMap.iPortalServiceBase";
     }
 
     /**

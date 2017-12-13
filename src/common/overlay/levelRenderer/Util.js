@@ -6,53 +6,6 @@
  */
 export class Util {
 
-    /**
-     * Property: BUILTIN_OBJECT
-     * {Object} 用于处理merge时无法遍历Date等对象的问题
-     */
-    BUILTIN_OBJECT = null;
-
-    /**
-     * Property: _ctx
-     * {Object}
-     */
-    _ctx = null;
-
-    /**
-     * Property: _canvas
-     * {Object}
-     */
-    _canvas = null;
-
-    /**
-     * Property: _pixelCtx
-     * {Object}
-     */
-    _pixelCtx = null;
-
-    /**
-     * Property: _width
-     * {Object}
-     */
-    _width = null;
-
-    /**
-     * Property: _height
-     * {Object}
-     */
-    _height = null;
-
-    /**
-     * Property: _offsetX
-     * {Object}
-     */
-    _offsetX = 0;
-
-    /**
-     * Property: _offsetY
-     * {Object}
-     */
-    _offsetY = 0;
 
     /**
      * Constructor: SuperMap.LevelRenderer.Tool.Util
@@ -60,6 +13,10 @@ export class Util {
      *
      */
     constructor() {
+        /**
+         * Property: BUILTIN_OBJECT
+         * {Object} 用于处理merge时无法遍历Date等对象的问题
+         */
         this.BUILTIN_OBJECT = {
             '[object Function]': 1,
             '[object RegExp]': 1,
@@ -67,6 +24,51 @@ export class Util {
             '[object Error]': 1,
             '[object CanvasGradient]': 1
         };
+
+        /**
+         * Property: _ctx
+         * {Object}
+         */
+        this._ctx = null;
+
+        /**
+         * Property: _canvas
+         * {Object}
+         */
+        this._canvas = null;
+
+        /**
+         * Property: _pixelCtx
+         * {Object}
+         */
+        this._pixelCtx = null;
+
+        /**
+         * Property: _width
+         * {Object}
+         */
+        this._width = null;
+
+        /**
+         * Property: _height
+         * {Object}
+         */
+        this._height = null;
+
+        /**
+         * Property: _offsetX
+         * {Object}
+         */
+        this._offsetX = 0;
+
+        /**
+         * Property: _offsetY
+         * {Object}
+         */
+        this._offsetY = 0;
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Util";
+
     }
 
 
@@ -307,7 +309,4 @@ export class Util {
         }
         clazz.constructor = clazz;
     }
-
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Util"
 }

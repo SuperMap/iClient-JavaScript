@@ -30,6 +30,8 @@ export class ProcessingServiceBase extends CommonServiceBase {
          */
         options.EVENT_TYPES = ["processCompleted", "processFailed", "processRunning"];
         super(url, options)
+
+        this.CLASS_NAME = "SuperMap.ProcessingServiceBase";
     }
 
     /**
@@ -128,7 +130,6 @@ export class ProcessingServiceBase extends CommonServiceBase {
         return url;
     }
 
-    CLASS_NAME = "SuperMap.ProcessingServiceBase"
 }
 
 SuperMap.ProcessingServiceBase = ProcessingServiceBase;

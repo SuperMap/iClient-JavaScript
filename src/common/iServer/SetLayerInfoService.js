@@ -23,6 +23,7 @@ export class SetLayerInfoService extends CommonServiceBase {
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.SetLayerInfoService";
     }
 
     /**
@@ -54,8 +55,6 @@ export class SetLayerInfoService extends CommonServiceBase {
             failure: me.serviceProcessFailed
         });
     }
-
-    CLASS_NAME = "SuperMap.SetLayerInfoService"
 }
 
 SuperMap.SetLayerInfoService = SetLayerInfoService;

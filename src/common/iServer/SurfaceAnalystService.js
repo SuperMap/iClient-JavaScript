@@ -31,6 +31,7 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.SurfaceAnalystService";
     }
 
     /**
@@ -87,11 +88,8 @@ export class SurfaceAnalystService extends SpatialAnalystBase {
         } else {
             return;
         }
-
         return jsonParameters;
     }
-
-    CLASS_NAME = "SuperMap.SurfaceAnalystService"
 }
 
 SuperMap.SurfaceAnalystService = SurfaceAnalystService;

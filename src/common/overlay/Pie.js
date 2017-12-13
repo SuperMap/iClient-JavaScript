@@ -74,6 +74,7 @@ export class Pie extends Graph {
 
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
+        this.CLASS_NAME = "SuperMap.Feature.Theme.Pie";
     }
 
     /**
@@ -199,8 +200,6 @@ export class Pie extends Graph {
         this.shapesConvertToRelativeCoordinate();
     }
 
-
-    CLASS_NAME = "SuperMap.Feature.Theme.Pie"
 }
 
 SuperMap.Feature.Theme.Pie = Pie;

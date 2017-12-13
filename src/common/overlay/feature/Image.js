@@ -11,59 +11,6 @@ import {ShapeParameters} from './ShapeParameters';
  */
 export class Image extends ShapeParameters {
 
-    /**
-     * APIProperty: x
-     * {Number} 图片左上角横坐标。
-     */
-    x = null;
-
-    /**
-     * APIProperty: y
-     * {Number} 左上角纵坐标。
-     */
-    y = null;
-
-    /**
-     * APIProperty: image
-     * {String} 图片地址。
-     */
-    image = null;
-
-    /**
-     * APIProperty: width
-     * {Number} 绘制到画布上的宽度，默认为图片高度。
-     */
-    width = null;
-
-    /**
-     * APIProperty: height
-     * {Number} 绘制到画布上的高度，默认为图片高度。
-     */
-    height = null;
-
-    /**
-     * Property: sx
-     * {Number} 从图片中裁剪的左上角横坐标。
-     */
-    sx = null;
-
-    /**
-     * Property: sy
-     * {Number} 从图片中裁剪的左上角纵坐标。
-     */
-    sy = null;
-
-    /**
-     * Property: sWidth
-     * {Number} 从图片中裁剪的宽度，默认为图片高度。
-     */
-    sWidth = null;
-
-    /**
-     * Property: sHeight
-     * {Number} 绘制到画布上的高度，默认为图片高度。
-     */
-    sHeight = null;
 
     /**
      * Constructor: SuperMap.Feature.ShapeParameters.Image
@@ -85,17 +32,62 @@ export class Image extends ShapeParameters {
     //     * sHeight - {Number} 绘制到画布上的高度，默认为图片高度。
     constructor(x, y, image, width, height, sx, sy, sWidth, sHeight) {
         super(x, y, image, width, height, sx, sy, sWidth, sHeight);
-
+        /**
+         * APIProperty: x
+         * {Number} 图片左上角横坐标。
+         */
         this.x = x;
+
+        /**
+         * APIProperty: y
+         * {Number} 左上角纵坐标。
+         */
         this.y = y;
+
+        /**
+         * APIProperty: image
+         * {String} 图片地址。
+         */
         this.image = image;
 
+        /**
+         * APIProperty: width
+         * {Number} 绘制到画布上的宽度，默认为图片高度。
+         */
         this.width = width;
+
+        /**
+         * APIProperty: height
+         * {Number} 绘制到画布上的高度，默认为图片高度。
+         */
         this.height = height;
+
+        /**
+         * Property: sx
+         * {Number} 从图片中裁剪的左上角横坐标。
+         */
         this.sx = sx;
+
+        /**
+         * Property: sy
+         * {Number} 从图片中裁剪的左上角纵坐标。
+         */
         this.sy = sy;
+
+        /**
+         * Property: sWidth
+         * {Number} 从图片中裁剪的宽度，默认为图片高度。
+         */
         this.sWidth = sWidth;
+
+        /**
+         * Property: sHeight
+         * {Number} 绘制到画布上的高度，默认为图片高度。
+         */
         this.sHeight = sHeight;
+
+        this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Image";
+
     }
 
 
@@ -115,9 +107,6 @@ export class Image extends ShapeParameters {
         this.sHeight = null;
         super.destroy();
     }
-
-
-    CLASS_NAME = "SuperMap.Feature.ShapeParameters.Image"
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Image = Image;

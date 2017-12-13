@@ -11,24 +11,6 @@ import {Render} from './Render';
 export class LevelRenderer {
 
     /**
-     * Property: _instances
-     * {Object} LevelRenderer 实例 map 索引。
-     */
-    static _instances = {};
-
-    // 工具
-    static Tool = {};
-
-    /**
-     * Property: version
-     * {String} 版本。zRender（Baidu） 的版本号，
-     * 记录当前 LevelRenderer 是在 zRender 的那个版本上构建而来。
-     * 在每次完整评判和实施由 zRender（Baidu）升级带来的 LevelRenderer 升级后修改。
-     *
-     */
-    version = '2.0.4';
-
-    /**
      * Constructor: SuperMap.LevelRenderer
      * 构造函数。
      *
@@ -49,6 +31,25 @@ export class LevelRenderer {
      * (end)
      */
     constructor() {
+        /**
+         * Property: _instances
+         * {Object} LevelRenderer 实例 map 索引。
+         */
+        LevelRenderer._instances = {};
+
+        // 工具
+        LevelRenderer.Tool = {};
+
+        /**
+         * Property: version
+         * {String} 版本。zRender（Baidu） 的版本号，
+         * 记录当前 LevelRenderer 是在 zRender 的那个版本上构建而来。
+         * 在每次完整评判和实施由 zRender（Baidu）升级带来的 LevelRenderer 升级后修改。
+         *
+         */
+        this.version = '2.0.4';
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer";
 
     }
 
@@ -142,7 +143,6 @@ export class LevelRenderer {
         return this;
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer";
 }
 
 SuperMap.LevelRenderer = LevelRenderer;

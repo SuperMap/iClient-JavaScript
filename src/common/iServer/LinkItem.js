@@ -73,53 +73,56 @@ import {DatasourceConnectionInfo} from './DatasourceConnectionInfo';
 export class LinkItem {
 
 
-    /**
-     * @member SuperMap.LinkItem.prototype.datasourceConnectionInfo -{SuperMap.DatasourceConnectionInfo}
-     * @description 关联的外部数据源信息 。
-     */
-    datasourceConnectionInfo = null;
-
-    /**
-     * @member SuperMap.LinkItem.prototype.foreignKeys -{Array<string>}
-     * @description 主空间数据集的外键。
-     */
-    foreignKeys = null;
-
-    /**
-     * @member SuperMap.LinkItem.prototype.foreignTable - {string}
-     * @description 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。
-     */
-    foreignTable = null;
-
-    /**
-     * @member SuperMap.LinkItem.prototype.linkFields - {Array<string>}
-     * @description 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返
-     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。
-     */
-    linkFields = null;
-
-    /**
-     * @member SuperMap.LinkItem.prototype.linkFilter -{string}
-     * @description 与外部属性表的连接条件。
-     */
-    linkFilter = null;
-
-    /**
-     * @member SuperMap.LinkItem.prototype.name -{string}
-     * @description 此关联信息对象的名称。
-     */
-    name = null;
-
-    /**
-     * @member SuperMap.LinkItem.prototype.primaryKeys -{Array<string>}
-     * @description 需要关联的外部属性表的主键。
-     */
-    primaryKeys = null;
-
     constructor(options) {
+
+        /**
+         * @member SuperMap.LinkItem.prototype.datasourceConnectionInfo -{SuperMap.DatasourceConnectionInfo}
+         * @description 关联的外部数据源信息 。
+         */
+        this.datasourceConnectionInfo = null;
+
+        /**
+         * @member SuperMap.LinkItem.prototype.foreignKeys -{Array<string>}
+         * @description 主空间数据集的外键。
+         */
+        this.foreignKeys = null;
+
+        /**
+         * @member SuperMap.LinkItem.prototype.foreignTable - {string}
+         * @description 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。
+         */
+        this.foreignTable = null;
+
+        /**
+         * @member SuperMap.LinkItem.prototype.linkFields - {Array<string>}
+         * @description 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返
+         * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。
+         */
+        this.linkFields = null;
+
+        /**
+         * @member SuperMap.LinkItem.prototype.linkFilter -{string}
+         * @description 与外部属性表的连接条件。
+         */
+        this.linkFilter = null;
+
+        /**
+         * @member SuperMap.LinkItem.prototype.name -{string}
+         * @description 此关联信息对象的名称。
+         */
+        this.name = null;
+
+        /**
+         * @member SuperMap.LinkItem.prototype.primaryKeys -{Array<string>}
+         * @description 需要关联的外部属性表的主键。
+         */
+        this.primaryKeys = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.LinkItem";
     }
 
     /**
@@ -140,7 +143,6 @@ export class LinkItem {
         me.primaryKeys = null;
     }
 
-    CLASS_NAME = "SuperMap.LinkItem"
 }
 
 SuperMap.LinkItem = LinkItem;

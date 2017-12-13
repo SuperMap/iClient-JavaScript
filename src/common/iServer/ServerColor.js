@@ -10,45 +10,30 @@
  */
 export class ServerColor {
 
-    /**
-     * @member SuperMap.ServerColor.prototype.red -{number}
-     * @description 获取或设置红色值,默认值为255。
-     * @default 255
-     */
-    red = 255;
-
-    /**
-     * @member SuperMap.ServerColor.prototype.green -{number}
-     * @description 获取或设置绿色值,默认值为0。
-     * @default 0
-     */
-    green = 0;
-
-    /**
-     * @member SuperMap.ServerColor.prototype.blue -{number}
-     * @description 获取或设置蓝色值,默认值为0。
-     * @default 0
-     */
-    blue = 0;
-
     constructor(red, green, blue) {
-        if (!red && red != 0) {
-            this.red = 255;
-        } else {
-            this.red = red;
-        }
 
-        if (!green && green != 0) {
-            this.green = 0;
-        } else {
-            this.green = green;
-        }
+        /**
+         * @member SuperMap.ServerColor.prototype.red -{number}
+         * @description 获取或设置红色值,默认值为255。
+         * @default 255
+         */
+        this.red = (!red && red != 0)?255:red;
 
-        if (!blue && blue != 0) {
-            this.blue = 0;
-        } else {
-            this.blue = blue;
-        }
+        /**
+         * @member SuperMap.ServerColor.prototype.green -{number}
+         * @description 获取或设置绿色值,默认值为0。
+         * @default 0
+         */
+        this.green = green||0;
+
+        /**
+         * @member SuperMap.ServerColor.prototype.blue -{number}
+         * @description 获取或设置蓝色值,默认值为0。
+         * @default 0
+         */
+        this.blue = blue||0;
+
+        this.CLASS_NAME = "SuperMap.ServerColor";
     }
 
     /**
@@ -94,7 +79,6 @@ export class ServerColor {
         return color;
     }
 
-    CLASS_NAME = "SuperMap.ServerColor"
 }
 
 SuperMap.ServerColor = ServerColor;

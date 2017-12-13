@@ -34,6 +34,7 @@ export class QueryByGeometryService extends QueryService {
      */
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.QueryByGeometryService";
     }
 
     /**
@@ -67,7 +68,6 @@ export class QueryByGeometryService extends QueryService {
         return jsonParameters;
     }
 
-    CLASS_NAME = "SuperMap.QueryByGeometryService"
 }
 
 SuperMap.QueryByGeometryService = QueryByGeometryService;

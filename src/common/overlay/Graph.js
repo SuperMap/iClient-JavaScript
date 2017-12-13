@@ -20,178 +20,174 @@ import {ShapeFactory} from './feature/ShapeFactory';
  */
 export class Graph extends Theme {
 
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.shapeFactory -{SuperMap.Feature.ShapeFactory}
-     * @description 内置的图形工厂对象，调用其 createShape 方法创建图形。
-     */
-    shapeFactory = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.shapeParameters -{Object}
-     * @description 当前图形参数对象，<SuperMap.Feature.ShapeParameters> 的子类对象。
-     */
-    shapeParameters = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.RelativeCoordinate -{bool}
-     * @description 图形是否已经计算了相对坐标。
-     */
-    RelativeCoordinate = false;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.setting -{Object}
-     * @description 图表配置对象，该对象控制着图表的可视化显示。<br>
-     *              下面是此配置对象的 7 个基础可设属性：<br>
-     *              Symbolizer properties:<br>
-     *              width - {number}专题要素（图表）宽度，必设参数。<br>
-     *              height - {number}专题要素（图表）高度，必设参数。<br>
-     *              codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
-     *              XOffset - {number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
-     *              YOffset - {number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
-     *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox
-     *                                                    （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
-     *              decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
-     *                                       如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
-     *              除了以上 7 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
-     *              请在此类的子类中查看 setting 对象的可设属性和属性含义。
-     */
-    setting = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.origonPoint - {Array<number>} {ReadOnly}
-     * @description 专题要素（图表）原点，图表左上角点像素坐标，是长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-     */
-    origonPoint = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.chartBox - {Array<number>} {ReadOnly}
-     * @description 专题要素（图表）区域，即图表框，长度为 4 的一维数组，数组的 4 个元素依次表示图表框左端 x 坐标值、
-     *              下端 y坐标值、 右端 x坐标值、 上端 y 坐标值；[left, bottom, right, top]。
-     */
-    chartBox = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.chartBounds - {SuperMap.Bounds} {ReadOnly}
-     * @description 图表 Bounds 随着 lonlat、XOffset、YOffset 更新，注意 chartBounds 是图表像素范围，不是地理范围。
-     */
-    chartBounds = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.width - {number}{ReadOnly}
-     * @description 专题要素（图表）宽度 ，必设属性。
-     */
-    width = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.height - {number}{ReadOnly}
-     * @description 专题要素（图表）高度 ，必设属性。
-     */
-    height = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.XOffset - {number}{ReadOnly}
-     * @description 专题要素（图表）在 X 方向上的偏移值，单位像素。
-     */
-    XOffset = 0;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.YOffset - {number}{ReadOnly}
-     * @description 专题要素（图表）在 Y 方向上的偏移值，单位像素。
-     */
-    YOffset = 0;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBParameter - {Array<number>} {ReadOnly}
-     * @description 数据视图框参数，长度为 4 的一维数组（数组元素值 >= 0），[leftOffset, bottomOffset, rightOffset, topOffset]，chartBox 内偏距值。
-     *               此属性用于指定数据视图框 dataViewBox 的范围。
-     */
-    DVBParameter = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.dataViewBox - {Array<number>} {ReadOnly}
-     * @description 数据视图框，长度为 4 的一维数组，[left, bottom, right, top]。
-     *              dataViewBox 是统计专题要素最核心的内容，它负责解释数据在一个像素区域里的数据可视化含义，
-     *              这种含义用可视化图形表达出来，这些表示数据的图形和一些辅助图形组合在一起构成统计专题图表。
-     */
-    dataViewBox = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBCodomain - {Array<number>} {ReadOnly}
-     * @description 数据视图框的内允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
-     *              dataViewBox 中允许的数据范围，对数据溢出值域范围情况的处理需要在 assembleShapes 中进行。
-     */
-    DVBCodomain = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBCenterPoint - {Array<number>} {ReadOnly}
-     * @description 数据视图框中心点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-     */
-    DVBCenterPoint = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBUnitValue - {string} {ReadOnly}
-     * @description 单位值。在 assembleShapes() 中初始化其具体意义，例如：饼图的 DVBUnitValue 可以定义为"360/数据总和"，
-     *              折线图的 DVBUnitValue 可以定义为 "DVBCodomain/DVBHeight"。
-     */
-    DVBUnitValue = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBOrigonPoint - {Array<number>} {ReadOnly}
-     * @description 数据视图框原点，数据视图框左上角点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-     */
-    DVBOrigonPoint = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBWidth - {number}{ReadOnly}
-     * @description 数据视图框宽度。
-     */
-    DVBWidth = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBHeight - {number}{ReadOnly}
-     * @description 数据视图框高度。
-     */
-    DVBHeight = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.origonPointOffset - {Array<number>} {ReadOnly}
-     * @description 数据视图框原点相对于图表框的原点偏移量，长度为 2 的一维数组，第一个元素表示 x 偏移量，第二个元素表示 y 偏移量。
-     */
-    origonPointOffset = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.fields - {Array<string>}
-     * @description 数据{SuperMap.Feature.Vector}属性字段。
-     */
-    fields = null;
-
-    /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.dataValues {Array<number>}
-     * @description 图表展示的数据值，通过 fields 从数据feature属性中获得。
-     */
-    dataValues = null;
 
     constructor(data, layer, fields, setting, lonlat, options) {
         super(data, layer, fields, setting, lonlat, options);
-        var me = this;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.shapeFactory -{SuperMap.Feature.ShapeFactory}
+         * @description 内置的图形工厂对象，调用其 createShape 方法创建图形。
+         */
+        this.shapeFactory = new ShapeFactory();
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.shapeParameters -{Object}
+         * @description 当前图形参数对象，<SuperMap.Feature.ShapeParameters> 的子类对象。
+         */
+        this.shapeParameters = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.RelativeCoordinate -{bool}
+         * @description 图形是否已经计算了相对坐标。
+         */
+        this.RelativeCoordinate = false;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.setting -{Object}
+         * @description 图表配置对象，该对象控制着图表的可视化显示。<br>
+         *              下面是此配置对象的 7 个基础可设属性：<br>
+         *              Symbolizer properties:<br>
+         *              width - {number}专题要素（图表）宽度，必设参数。<br>
+         *              height - {number}专题要素（图表）高度，必设参数。<br>
+         *              codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
+         *              XOffset - {number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
+         *              YOffset - {number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
+         *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox
+         *                                                    （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
+         *              decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
+         *                                       如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
+         *              除了以上 7 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
+         *              请在此类的子类中查看 setting 对象的可设属性和属性含义。
+         */
+        this.setting = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.origonPoint - {Array<number>} {ReadOnly}
+         * @description 专题要素（图表）原点，图表左上角点像素坐标，是长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+         */
+        this.origonPoint = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.chartBox - {Array<number>} {ReadOnly}
+         * @description 专题要素（图表）区域，即图表框，长度为 4 的一维数组，数组的 4 个元素依次表示图表框左端 x 坐标值、
+         *              下端 y坐标值、 右端 x坐标值、 上端 y 坐标值；[left, bottom, right, top]。
+         */
+        this.chartBox = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.chartBounds - {SuperMap.Bounds} {ReadOnly}
+         * @description 图表 Bounds 随着 lonlat、XOffset、YOffset 更新，注意 chartBounds 是图表像素范围，不是地理范围。
+         */
+        this.chartBounds = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.width - {number}{ReadOnly}
+         * @description 专题要素（图表）宽度 ，必设属性。
+         */
+        this.width = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.height - {number}{ReadOnly}
+         * @description 专题要素（图表）高度 ，必设属性。
+         */
+        this.height = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.XOffset - {number}{ReadOnly}
+         * @description 专题要素（图表）在 X 方向上的偏移值，单位像素。
+         */
+        this.XOffset = 0;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.YOffset - {number}{ReadOnly}
+         * @description 专题要素（图表）在 Y 方向上的偏移值，单位像素。
+         */
+        this.YOffset = 0;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.DVBParameter - {Array<number>} {ReadOnly}
+         * @description 数据视图框参数，长度为 4 的一维数组（数组元素值 >= 0），[leftOffset, bottomOffset, rightOffset, topOffset]，chartBox 内偏距值。
+         *               此属性用于指定数据视图框 dataViewBox 的范围。
+         */
+        this.DVBParameter = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.dataViewBox - {Array<number>} {ReadOnly}
+         * @description 数据视图框，长度为 4 的一维数组，[left, bottom, right, top]。
+         *              dataViewBox 是统计专题要素最核心的内容，它负责解释数据在一个像素区域里的数据可视化含义，
+         *              这种含义用可视化图形表达出来，这些表示数据的图形和一些辅助图形组合在一起构成统计专题图表。
+         */
+        this.dataViewBox = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.DVBCodomain - {Array<number>} {ReadOnly}
+         * @description 数据视图框的内允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
+         *              dataViewBox 中允许的数据范围，对数据溢出值域范围情况的处理需要在 assembleShapes 中进行。
+         */
+        this.DVBCodomain = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.DVBCenterPoint - {Array<number>} {ReadOnly}
+         * @description 数据视图框中心点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+         */
+        this.DVBCenterPoint = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.DVBUnitValue - {string} {ReadOnly}
+         * @description 单位值。在 assembleShapes() 中初始化其具体意义，例如：饼图的 DVBUnitValue 可以定义为"360/数据总和"，
+         *              折线图的 DVBUnitValue 可以定义为 "DVBCodomain/DVBHeight"。
+         */
+        this.DVBUnitValue = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.DVBOrigonPoint - {Array<number>} {ReadOnly}
+         * @description 数据视图框原点，数据视图框左上角点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+         */
+        this.DVBOrigonPoint = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.DVBWidth - {number}{ReadOnly}
+         * @description 数据视图框宽度。
+         */
+        this.DVBWidth = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.DVBHeight - {number}{ReadOnly}
+         * @description 数据视图框高度。
+         */
+        this.DVBHeight = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.origonPointOffset - {Array<number>} {ReadOnly}
+         * @description 数据视图框原点相对于图表框的原点偏移量，长度为 2 的一维数组，第一个元素表示 x 偏移量，第二个元素表示 y 偏移量。
+         */
+        this.origonPointOffset = null;
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.fields - {Array<string>}
+         * @description 数据{SuperMap.Feature.Vector}属性字段。
+         */
+        this.fields = fields || [];
+
+        /**
+         * @member SuperMap.Feature.Theme.Graph.prototype.dataValues {Array<number>}
+         * @description 图表展示的数据值，通过 fields 从数据feature属性中获得。
+         */
+        this.dataValues = null;
         // 图表位置
         if (lonlat) {
-            me.lonlat = lonlat;
+            this.lonlat = lonlat;
         } else {
             // 默认使用 bounds 中心
-            var geometry = data.geometry;
-            var dataBounds = geometry.getBounds();
-            me.lonlat = dataBounds.getCenterLonLat();
+            this.lonlat = this.data.geometry.getBounds().getCenterLonLat();
         }
 
         // 配置项检测与赋值
         if (setting && setting.width && setting.height && setting.codomain) {
-            me.setting = setting;
+            this.setting = setting;
         }
+        this.CLASS_NAME = "SuperMap.Feature.Theme.Graph";
 
-        me.fields = fields ? fields : [];
-
-        me.shapeFactory = new ShapeFactory();
     }
 
     /**
@@ -462,8 +458,6 @@ export class Graph extends Theme {
         return this.layer.getLocalXY(lonlat);
     }
 
-
-    CLASS_NAME = "SuperMap.Feature.Theme.Graph"
 }
 
 /**

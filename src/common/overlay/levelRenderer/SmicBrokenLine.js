@@ -58,24 +58,6 @@ export class SmicBrokenLine extends Shape {
     //打开接口 style
 
     /**
-     * Property: brushTypeOnly
-     * {String}  线条只能描边。
-     */
-    brushTypeOnly = 'stroke';
-
-    /**
-     * Property: textPosition
-     * {String} 文本位置。
-     */
-    textPosition = 'end';
-
-    /**
-     * Property: type
-     * {String} 图形类型.
-     */
-    type = 'smicbroken-line';
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicBrokenLine
      * 构造函数。
      *
@@ -85,9 +67,28 @@ export class SmicBrokenLine extends Shape {
      */
     constructor(options) {
         super(options);
+        /**
+         * Property: brushTypeOnly
+         * {String}  线条只能描边。
+         */
+        this.brushTypeOnly = 'stroke';
+
+        /**
+         * Property: textPosition
+         * {String} 文本位置。
+         */
+        this.textPosition = 'end';
+
+        /**
+         * Property: type
+         * {String} 图形类型.
+         */
+        this.type = 'smicbroken-line';
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicBrokenLine";
     }
 
 
@@ -294,6 +295,4 @@ export class SmicBrokenLine extends Shape {
         return SmicPolygon.prototype.getRect.apply(this, [style, __OP]);
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicBrokenLine"
 }

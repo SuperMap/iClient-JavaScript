@@ -12,25 +12,28 @@ import './TransferLine';
  *
  */
 export class TransferPathParameters {
-    /**
-     * @member SuperMap.TransferPathParameters.prototype.transferLines -{Array<SuperMap.TransferLine>}
-     * @description 本换乘分段内可乘车的路线集合，通过交通换乘方案查询得到
-     */
-    transferLines = null;
-
-
-    /**
-     *  @member SuperMap.TransferPathParameters.prototype.points -{Array<string>|Array<Object>}
-     *  @description 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
-     *  两种查询方式：
-     *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；
-     *           2. 按照起止点的坐标进行查询，则points参数的类型为Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
-     */
-    points = false;
 
     constructor(options) {
         options = options || {};
+        /**
+         * @member SuperMap.TransferPathParameters.prototype.transferLines -{Array<SuperMap.TransferLine>}
+         * @description 本换乘分段内可乘车的路线集合，通过交通换乘方案查询得到
+         */
+        this.transferLines = null;
+
+
+        /**
+         *  @member SuperMap.TransferPathParameters.prototype.points -{Array<string>|Array<Object>}
+         *  @description 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
+         *  两种查询方式：
+         *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；
+         *           2. 按照起止点的坐标进行查询，则points参数的类型为Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
+         */
+        this.points = false;
+
         Util.extend(this, options);
+
+       this.CLASS_NAME = "SuperMap.TransferPathParameters";
     }
 
     /**
@@ -53,7 +56,6 @@ export class TransferPathParameters {
         }
     }
 
-    CLASS_NAME = "SuperMap.TransferPathParameters"
 }
 
 SuperMap.TransferPathParameters = TransferPathParameters;

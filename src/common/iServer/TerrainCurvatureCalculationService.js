@@ -24,6 +24,7 @@ export class TerrainCurvatureCalculationService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.TerrainCurvatureCalculationService";
     }
 
     /**
@@ -63,8 +64,6 @@ export class TerrainCurvatureCalculationService extends SpatialAnalystBase {
             failure: me.serviceProcessFailed
         });
     }
-
-    CLASS_NAME = "SuperMap.TerrainCurvatureCalculationService"
 }
 
 SuperMap.TerrainCurvatureCalculationService = TerrainCurvatureCalculationService;

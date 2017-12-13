@@ -1,5 +1,4 @@
 import {SuperMap} from '../SuperMap';
-import {ShapeFactory} from './feature/ShapeFactory';
 import {Graph} from './Graph';
 
 /**
@@ -19,42 +18,28 @@ import {Graph} from './Graph';
  *
  */
 export class RankSymbol extends Graph {
-    /**
-     * @member SuperMap.Feature.Theme.RankSymbol.prototype.setting -{Object}
-     * @description 符号配置对象，该对象控制着图表的可视化显示。
-     * 下面是此配置对象的 5 个基础可设属性：</br>
-     * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
-     * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
-     * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
-     * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-     * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
-     * 除了以上 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
-     * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
-     */
-    setting = null;
 
     constructor(data, layer, fields, setting, lonlat, options) {
         super(data, layer, fields, setting, lonlat, options);
-
-        // 图表位置
-        if (lonlat) {
-            this.lonlat = lonlat;
-        } else {
-            // 默认使用 bounds 中心
-            var geometry = data.geometry;
-            var dataBounds = geometry.getBounds();
-            this.lonlat = dataBounds.getCenterLonLat();
-        }
-
+        /**
+         * @member SuperMap.Feature.Theme.RankSymbol.prototype.setting -{Object}
+         * @description 符号配置对象，该对象控制着图表的可视化显示。
+         * 下面是此配置对象的 5 个基础可设属性：</br>
+         * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+         * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
+         * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
+         * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
+         * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+         * 除了以上 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
+         * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
+         */
+        this.setting = null;
         // 配置项检测与赋值
         if (setting && setting.codomain) {
             this.setting = setting;
             this.DVBCodomain = this.setting.codomain;
         }
-
-        this.fields = fields ? fields : [];
-
-        this.shapeFactory = new ShapeFactory();
+        this.CLASS_NAME = "SuperMap.Feature.Theme.RankSymbol";
     }
 
     /**
@@ -155,9 +140,6 @@ export class RankSymbol extends Graph {
 
         return isSuccess;
     }
-
-
-    CLASS_NAME = "SuperMap.Feature.Theme.RankSymbol"
 }
 
 SuperMap.Feature.Theme.RankSymbol = RankSymbol;

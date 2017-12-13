@@ -12,35 +12,37 @@ import {SpatialQueryMode} from '../REST';
  */
 export class SingleObjectQueryJobsParameter {
 
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    datasetName = "";
-
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{string}
-     * @description 查询对象所在的数据集名称。
-     */
-    datasetQuery = "";
-
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery -{string}
-     * @description 查询对象所在的几何对象。
-     */
-    geometryQuery = "";
-
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
-     * @description 空间查询模式 。
-     */
-    mode = SpatialQueryMode.CONTAIN;
-
     constructor(options) {
         if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{string}
+         * @description 数据集名。
+         */
+        this.datasetName = "";
+
+        /**
+         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{string}
+         * @description 查询对象所在的数据集名称。
+         */
+        this.datasetQuery = "";
+
+        /**
+         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.geometryQuery -{string}
+         * @description 查询对象所在的几何对象。
+         */
+        this.geometryQuery = "";
+
+        /**
+         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
+         * @description 空间查询模式 。
+         */
+        this.mode = SpatialQueryMode.CONTAIN;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
     }
 
     /**

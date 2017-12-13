@@ -53,10 +53,7 @@ module.exports = {
             exclude: /classic/,
             loader: 'babel-loader',
             query: {
-                presets: ['es2015'],
-                plugins: [
-                    'transform-class-properties'
-                ]
+                presets: ['es2015']
             }
         }, {
             test: /\.css$/,

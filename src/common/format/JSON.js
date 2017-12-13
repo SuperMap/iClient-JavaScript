@@ -49,6 +49,160 @@ export class JSONFormat extends Format {
         })();
 
         this.CLASS_NAME = "SuperMap.Format.JSON";
+        /**
+         * @member SuperMap.Format.JSON.prototype.serialize
+         * @description 提供一些类型对象转JSON字符串的方法。
+         */
+        this.serialize = {
+            /**
+             * @function SuperMap.Format.JSON.serialize.object
+             * @description 把对象转换为JSON字符串。
+             * @param object - {Object} 可序列化的对象。
+             * @return {string} JSON字符串。
+             */
+            'object': function (object) {
+                // three special objects that we want to treat differently
+                if (object == null) {
+                    return "null";
+                }
+                if (object.constructor === Date) {
+                    return this.serialize.date.apply(this, [object]);
+                }
+                if (object.constructor === Array) {
+                    return this.serialize.array.apply(this, [object]);
+                }
+                var pieces = ['{'];
+                this.level += 1;
+                var key, keyJSON, valueJSON;
+
+                var addComma = false;
+                for (key in object) {
+                    if (object.hasOwnProperty(key)) {
+                        // recursive calls need to allow for sub-classing
+                        keyJSON = this.write.apply(this,
+                            [key, this.pretty]);
+                        valueJSON = this.write.apply(this,
+                            [object[key], this.pretty]);
+                        if (keyJSON != null && valueJSON != null) {
+                            if (addComma) {
+                                pieces.push(',');
+                            }
+                            pieces.push(this.writeNewline(), this.writeIndent(),
+                                keyJSON, ':', this.writeSpace(), valueJSON);
+                            addComma = true;
+                        }
+                    }
+                }
+
+                this.level -= 1;
+                pieces.push(this.writeNewline(), this.writeIndent(), '}');
+                return pieces.join('');
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.array
+             * @description 把数组转换成JSON字符串。
+             * @param array - {Array} 可序列化的数组。
+             * @return {string} JSON字符串。
+             */
+            'array': function (array) {
+                var json;
+                var pieces = ['['];
+                this.level += 1;
+
+                for (var i = 0, len = array.length; i < len; ++i) {
+                    // recursive calls need to allow for sub-classing
+                    json = this.write.apply(this,
+                        [array[i], this.pretty]);
+                    if (json != null) {
+                        if (i > 0) {
+                            pieces.push(',');
+                        }
+                        pieces.push(this.writeNewline(), this.writeIndent(), json);
+                    }
+                }
+
+                this.level -= 1;
+                pieces.push(this.writeNewline(), this.writeIndent(), ']');
+                return pieces.join('');
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.string
+             * @description 把字符串转换成JSON字符串。
+             * @param string - {string} 可序列化的字符串。
+             * @return {string} JSON字符串。
+             */
+            'string': function (string) {
+                // If the string contains no control characters, no quote characters, and no
+                // backslash characters, then we can simply slap some quotes around it.
+                // Otherwise we must also replace the offending characters with safe
+                // sequences.
+                var m = {
+                    '\b': '\\b',
+                    '\t': '\\t',
+                    '\n': '\\n',
+                    '\f': '\\f',
+                    '\r': '\\r',
+                    '"': '\\"',
+                    '\\': '\\\\'
+                };
+                /*eslint-disable no-control-regex*/
+                if (/["\\\x00-\x1f]/.test(string)) {
+                    return '"' + string.replace(/([\x00-\x1f\\"])/g, function (a, b) {
+                        var c = m[b];
+                        if (c) {
+                            return c;
+                        }
+                        c = b.charCodeAt();
+                        return '\\u00' +
+                            Math.floor(c / 16).toString(16) +
+                            (c % 16).toString(16);
+                    }) + '"';
+                }
+                return '"' + string + '"';
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.number
+             * @description 把数字转换成JSON字符串。
+             * @param number - {number} 可序列化的数字。
+             * @return {string} JSON字符串。
+             */
+            'number': function (number) {
+                return isFinite(number) ? String(number) : "null";
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.boolean
+             * @description Transform a boolean into a JSON string.
+             * @param bool - {boolean} The boolean to be serialized.
+             * @return {string} A JSON string representing the boolean.
+             */
+            'boolean': function (bool) {
+                return String(bool);
+            },
+
+            /**
+             * @function SuperMap.Format.JSON.serialize.object
+             * @description 将日期对象转换成JSON字符串。
+             * @param date - {Date} 可序列化的日期对象。
+             * @return {string} JSON字符串。
+             */
+            'date': function (date) {
+                function format(number) {
+                    // Format integers to have at least two digits.
+                    return (number < 10) ? '0' + number : number;
+                }
+
+                return '"' + date.getFullYear() + '-' +
+                    format(date.getMonth() + 1) + '-' +
+                    format(date.getDate()) + 'T' +
+                    format(date.getHours()) + ':' +
+                    format(date.getMinutes()) + ':' +
+                    format(date.getSeconds()) + '"';
+            }
+        };
     }
 
     /**
@@ -132,160 +286,6 @@ export class JSONFormat extends Format {
         return (this.pretty) ? this.space : '';
     }
 
-    /**
-     * @member SuperMap.Format.JSON.prototype.serialize
-     * @description 提供一些类型对象转JSON字符串的方法。
-     */
-    serialize = {
-        /**
-         * @function SuperMap.Format.JSON.serialize.object
-         * @description 把对象转换为JSON字符串。
-         * @param object - {Object} 可序列化的对象。
-         * @return {string} JSON字符串。
-         */
-        'object': function (object) {
-            // three special objects that we want to treat differently
-            if (object == null) {
-                return "null";
-            }
-            if (object.constructor === Date) {
-                return this.serialize.date.apply(this, [object]);
-            }
-            if (object.constructor === Array) {
-                return this.serialize.array.apply(this, [object]);
-            }
-            var pieces = ['{'];
-            this.level += 1;
-            var key, keyJSON, valueJSON;
-
-            var addComma = false;
-            for (key in object) {
-                if (object.hasOwnProperty(key)) {
-                    // recursive calls need to allow for sub-classing
-                    keyJSON = this.write.apply(this,
-                        [key, this.pretty]);
-                    valueJSON = this.write.apply(this,
-                        [object[key], this.pretty]);
-                    if (keyJSON != null && valueJSON != null) {
-                        if (addComma) {
-                            pieces.push(',');
-                        }
-                        pieces.push(this.writeNewline(), this.writeIndent(),
-                            keyJSON, ':', this.writeSpace(), valueJSON);
-                        addComma = true;
-                    }
-                }
-            }
-
-            this.level -= 1;
-            pieces.push(this.writeNewline(), this.writeIndent(), '}');
-            return pieces.join('');
-        },
-
-        /**
-         * @function SuperMap.Format.JSON.serialize.array
-         * @description 把数组转换成JSON字符串。
-         * @param array - {Array} 可序列化的数组。
-         * @return {string} JSON字符串。
-         */
-        'array': function (array) {
-            var json;
-            var pieces = ['['];
-            this.level += 1;
-
-            for (var i = 0, len = array.length; i < len; ++i) {
-                // recursive calls need to allow for sub-classing
-                json = this.write.apply(this,
-                    [array[i], this.pretty]);
-                if (json != null) {
-                    if (i > 0) {
-                        pieces.push(',');
-                    }
-                    pieces.push(this.writeNewline(), this.writeIndent(), json);
-                }
-            }
-
-            this.level -= 1;
-            pieces.push(this.writeNewline(), this.writeIndent(), ']');
-            return pieces.join('');
-        },
-
-        /**
-         * @function SuperMap.Format.JSON.serialize.string
-         * @description 把字符串转换成JSON字符串。
-         * @param string - {string} 可序列化的字符串。
-         * @return {string} JSON字符串。
-         */
-        'string': function (string) {
-            // If the string contains no control characters, no quote characters, and no
-            // backslash characters, then we can simply slap some quotes around it.
-            // Otherwise we must also replace the offending characters with safe
-            // sequences.
-            var m = {
-                '\b': '\\b',
-                '\t': '\\t',
-                '\n': '\\n',
-                '\f': '\\f',
-                '\r': '\\r',
-                '"': '\\"',
-                '\\': '\\\\'
-            };
-            /*eslint-disable no-control-regex*/
-            if (/["\\\x00-\x1f]/.test(string)) {
-                return '"' + string.replace(/([\x00-\x1f\\"])/g, function (a, b) {
-                    var c = m[b];
-                    if (c) {
-                        return c;
-                    }
-                    c = b.charCodeAt();
-                    return '\\u00' +
-                        Math.floor(c / 16).toString(16) +
-                        (c % 16).toString(16);
-                }) + '"';
-            }
-            return '"' + string + '"';
-        },
-
-        /**
-         * @function SuperMap.Format.JSON.serialize.number
-         * @description 把数字转换成JSON字符串。
-         * @param number - {number} 可序列化的数字。
-         * @return {string} JSON字符串。
-         */
-        'number': function (number) {
-            return isFinite(number) ? String(number) : "null";
-        },
-
-        /**
-         * @function SuperMap.Format.JSON.serialize.boolean
-         * @description Transform a boolean into a JSON string.
-         * @param bool - {boolean} The boolean to be serialized.
-         * @return {string} A JSON string representing the boolean.
-         */
-        'boolean': function (bool) {
-            return String(bool);
-        },
-
-        /**
-         * @function SuperMap.Format.JSON.serialize.object
-         * @description 将日期对象转换成JSON字符串。
-         * @param date - {Date} 可序列化的日期对象。
-         * @return {string} JSON字符串。
-         */
-        'date': function (date) {
-            function format(number) {
-                // Format integers to have at least two digits.
-                return (number < 10) ? '0' + number : number;
-            }
-
-            return '"' + date.getFullYear() + '-' +
-                format(date.getMonth() + 1) + '-' +
-                format(date.getDate()) + 'T' +
-                format(date.getHours()) + ':' +
-                format(date.getMinutes()) + ':' +
-                format(date.getSeconds()) + '"';
-        }
-    };
 }
 
 SuperMap.Format.JSON = JSONFormat;

@@ -14,6 +14,7 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/density";
+        this.CLASS_NAME = "SuperMap.KernelDensityJobsService";
     }
 
     /**
@@ -51,7 +52,6 @@ export class KernelDensityJobsService extends ProcessingServiceBase {
         super.addJob(this.url, params, KernelDensityJobParameter, seconds);
     }
 
-    CLASS_NAME = "SuperMap.KernelDensityJobsService"
 }
 
 SuperMap.KernelDensityJobsService = KernelDensityJobsService;

@@ -9,8 +9,8 @@ export class Env {
         // Zepto.js
         // (c) 2010-2013 Thomas Fuchs
         // Zepto.js may be freely distributed under the MIT license.
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Env";
         var me = this;
-
         function detect(ua) {
             var os = me.os = {};
             var browser = me.browser = {};
@@ -119,5 +119,4 @@ export class Env {
         return detect(navigator.userAgent);
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Env"
 }

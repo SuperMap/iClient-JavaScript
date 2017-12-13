@@ -27,6 +27,7 @@ export class QueryByDistanceService extends QueryService {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.QueryByDistanceService";
     }
 
     /**
@@ -59,7 +60,6 @@ export class QueryByDistanceService extends QueryService {
         return jsonParameters;
     }
 
-    CLASS_NAME = "SuperMap.QueryByDistanceService"
 }
 
 SuperMap.QueryByDistanceService = QueryByDistanceService;

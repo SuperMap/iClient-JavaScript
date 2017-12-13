@@ -22,62 +22,63 @@ import {UGCLayer} from './UGCLayer';
  */
 export class OverlapDisplayedOptions {
 
-    /**
-     * @member SuperMap.OverlapDisplayedOptions.prototype.allowPointOverlap -{boolean}
-     * @description 点和点压盖时是否显示压盖的点对象。默认值为true。
-     */
-    allowPointOverlap = true;
-
-    /**
-     * @member SuperMap.OverlapDisplayedOptions.prototype.allowPointWithTextDisplay -{boolean}
-     * @description 标签和相应普通图层上的点是否一起过滤显示,如果过滤显示，
-     * 只以图层集合中对应数据集的索引最小的图层的点风格来绘制点。默认值为true。
-     */
-    allowPointWithTextDisplay = true;
-
-    /**
-     * @member SuperMap.OverlapDisplayedOptions.prototype.allowTextOverlap -{boolean}
-     * @description 文本压盖时是否显示压盖的文本对象。默认值为false。
-     */
-    allowTextOverlap = false;
-
-    /**
-     * @member SuperMap.OverlapDisplayedOptions.prototype.allowTextAndPointOverlap -{boolean}
-     * @description  文本和点压盖时是否显示压盖的文本或点对象(此属性不处理文本之间的压盖和点之间的压盖)。默认值为true。
-     */
-    allowTextAndPointOverlap = true;
-
-    /**
-     * @member SuperMap.OverlapDisplayedOptions.prototype.allowThemeGraduatedSymbolOverlap -{boolean}
-     * @description 等级符号元素压盖时是否显示压盖的等级符号元素。默认值为false。
-     */
-    allowThemeGraduatedSymbolOverlap = false;
-
-    /**
-     * @member SuperMap.OverlapDisplayedOptions.prototype.allowThemeGraphOverlap -{boolean}
-     * @description 统计专题图元素压盖时是否显示压盖的统计专题图元素。默认值为false。
-     */
-    allowThemeGraphOverlap = false;
-
-    /**
-     * @member SuperMap.OverlapDisplayedOptions.prototype.horizontalOverlappedSpaceSize -{number}
-     * @description 两个对象之间的横向压盖间距，单位为0.1毫米，跟 verticalOverlappedSpaceSize 结合使用，
-     * 当两个对象的横向间距小于该值，且纵向间距小于 verticalOverlappedSpaceSize 时认为压盖。默认值为0。
-     */
-    horizontalOverlappedSpaceSize = 0;
-
-    /**
-     * @member SuperMap.OverlapDisplayedOptions.prototype.verticalOverlappedSpaceSize -{number}
-     * @description 两个对象之间的纵向压盖间距，单位为0.1毫米，跟 horizontalOverlappedSpaceSize 结合使用，
-     * 当两个对象的纵向间距小于该值，且横向间距小于 horizontalOverlappedSpaceSize 时认为压盖。默认值为0。
-     */
-    verticalOverlappedSpaceSize = 0;
-
-
     constructor(options) {
         options = options || {};
+        /**
+         * @member SuperMap.OverlapDisplayedOptions.prototype.allowPointOverlap -{boolean}
+         * @description 点和点压盖时是否显示压盖的点对象。默认值为true。
+         */
+        this.allowPointOverlap = true;
+
+        /**
+         * @member SuperMap.OverlapDisplayedOptions.prototype.allowPointWithTextDisplay -{boolean}
+         * @description 标签和相应普通图层上的点是否一起过滤显示,如果过滤显示，
+         * 只以图层集合中对应数据集的索引最小的图层的点风格来绘制点。默认值为true。
+         */
+        this.allowPointWithTextDisplay = true;
+
+        /**
+         * @member SuperMap.OverlapDisplayedOptions.prototype.allowTextOverlap -{boolean}
+         * @description 文本压盖时是否显示压盖的文本对象。默认值为false。
+         */
+        this.allowTextOverlap = false;
+
+        /**
+         * @member SuperMap.OverlapDisplayedOptions.prototype.allowTextAndPointOverlap -{boolean}
+         * @description  文本和点压盖时是否显示压盖的文本或点对象(此属性不处理文本之间的压盖和点之间的压盖)。默认值为true。
+         */
+        this.allowTextAndPointOverlap = true;
+
+        /**
+         * @member SuperMap.OverlapDisplayedOptions.prototype.allowThemeGraduatedSymbolOverlap -{boolean}
+         * @description 等级符号元素压盖时是否显示压盖的等级符号元素。默认值为false。
+         */
+        this.allowThemeGraduatedSymbolOverlap = false;
+
+        /**
+         * @member SuperMap.OverlapDisplayedOptions.prototype.allowThemeGraphOverlap -{boolean}
+         * @description 统计专题图元素压盖时是否显示压盖的统计专题图元素。默认值为false。
+         */
+        this.allowThemeGraphOverlap = false;
+
+        /**
+         * @member SuperMap.OverlapDisplayedOptions.prototype.horizontalOverlappedSpaceSize -{number}
+         * @description 两个对象之间的横向压盖间距，单位为0.1毫米，跟 verticalOverlappedSpaceSize 结合使用，
+         * 当两个对象的横向间距小于该值，且纵向间距小于 verticalOverlappedSpaceSize 时认为压盖。默认值为0。
+         */
+        this.horizontalOverlappedSpaceSize = 0;
+
+        /**
+         * @member SuperMap.OverlapDisplayedOptions.prototype.verticalOverlappedSpaceSize -{number}
+         * @description 两个对象之间的纵向压盖间距，单位为0.1毫米，跟 horizontalOverlappedSpaceSize 结合使用，
+         * 当两个对象的纵向间距小于该值，且横向间距小于 horizontalOverlappedSpaceSize 时认为压盖。默认值为0。
+         */
+        this.verticalOverlappedSpaceSize = 0;
+
         Util.extend(this, options);
         this.ugcLayer = new UGCLayer(options);
+
+        this.CLASS_NAME = "SuperMap.OverlapDisplayedOptions";
     }
 
     /**
@@ -129,8 +130,6 @@ export class OverlapDisplayedOptions {
         return str;
     }
 
-
-    CLASS_NAME = "SuperMap.OverlapDisplayedOptions"
 }
 
 SuperMap.OverlapDisplayedOptions = OverlapDisplayedOptions;

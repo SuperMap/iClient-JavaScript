@@ -21,59 +21,6 @@ import './OverlapDisplayedOptions';
  */
 export class UGCMapLayer extends UGCLayer {
 
-    /**
-     * @member SuperMap.UGCMapLayer.prototype.completeLineSymbolDisplayed -{boolean}
-     * @description 是否显示完整线型。
-     */
-    completeLineSymbolDisplayed = null;
-
-    /**
-     * @member SuperMap.UGCMapLayer.prototype.maxScale -{number}
-     * @description 地图最大比例尺。
-     */
-    maxScale = null;
-
-    /**
-     * @member SuperMap.UGCMapLayer.prototype.minScale -{number}
-     * @description 地图最小比例尺。
-     */
-    minScale = null;
-
-    /**
-     * @member SuperMap.UGCMapLayer.prototype.minVisibleGeometrySize -{number}
-     * @description 几何对象的最小可见大小，以像素为单位。
-     */
-    minVisibleGeometrySize = null;
-
-    /**
-     * @member SuperMap.UGCMapLayer.prototype.opaqueRate -{integer}
-     * @description 图层的不透明度。
-     */
-    opaqueRate = null;
-    /**
-     * @member SuperMap.UGCMapLayer.prototype.symbolScalable -{boolean}
-     * @description 是否允许图层的符号大小随图缩放。
-     */
-    symbolScalable = null;
-
-    /**
-     * @member SuperMap.UGCMapLayer.prototype.symbolScale -{number}
-     * @description 图层的符号缩放基准比例尺。
-     */
-    symbolScale = null;
-
-    /**
-     * @member SuperMap.UGCMapLayer.prototype.overlapDisplayed -{boolean}
-     * @description 地图对象在同一范围内时，是否重叠显示，默认为False。
-     */
-    overlapDisplayed = null;
-
-    /**
-     * @member SuperMap.UGCMapLayer.prototype.overlapDisplayedOptions -{SuperMap.OverlapDisplayedOptions}
-     * @description 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
-     */
-    overlapDisplayedOptions = null;
-
     /*
      * Constructor: SuperMap.UGCMapLayer
      * UGC 地图图层类构造函数。
@@ -81,6 +28,60 @@ export class UGCMapLayer extends UGCLayer {
     constructor(options) {
         options = options || {};
         super(options);
+        /**
+         * @member SuperMap.UGCMapLayer.prototype.completeLineSymbolDisplayed -{boolean}
+         * @description 是否显示完整线型。
+         */
+        this.completeLineSymbolDisplayed = null;
+
+        /**
+         * @member SuperMap.UGCMapLayer.prototype.maxScale -{number}
+         * @description 地图最大比例尺。
+         */
+        this.maxScale = null;
+
+        /**
+         * @member SuperMap.UGCMapLayer.prototype.minScale -{number}
+         * @description 地图最小比例尺。
+         */
+        this.minScale = null;
+
+        /**
+         * @member SuperMap.UGCMapLayer.prototype.minVisibleGeometrySize -{number}
+         * @description 几何对象的最小可见大小，以像素为单位。
+         */
+        this.minVisibleGeometrySize = null;
+
+        /**
+         * @member SuperMap.UGCMapLayer.prototype.opaqueRate -{integer}
+         * @description 图层的不透明度。
+         */
+        this.opaqueRate = null;
+        /**
+         * @member SuperMap.UGCMapLayer.prototype.symbolScalable -{boolean}
+         * @description 是否允许图层的符号大小随图缩放。
+         */
+        this.symbolScalable = null;
+
+        /**
+         * @member SuperMap.UGCMapLayer.prototype.symbolScale -{number}
+         * @description 图层的符号缩放基准比例尺。
+         */
+        this.symbolScale = null;
+
+        /**
+         * @member SuperMap.UGCMapLayer.prototype.overlapDisplayed -{boolean}
+         * @description 地图对象在同一范围内时，是否重叠显示，默认为False。
+         */
+        this.overlapDisplayed = null;
+
+        /**
+         * @member SuperMap.UGCMapLayer.prototype.overlapDisplayedOptions -{SuperMap.OverlapDisplayedOptions}
+         * @description 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
+         */
+        this.overlapDisplayedOptions = null;
+
+        this.CLASS_NAME = "SuperMap.UGCMapLayer";
     }
 
     /**
@@ -112,7 +113,6 @@ export class UGCMapLayer extends UGCLayer {
         return super.toServerJSONObject();
     }
 
-    CLASS_NAME = "SuperMap.UGCMapLayer"
 }
 
 SuperMap.UGCMapLayer = UGCMapLayer;

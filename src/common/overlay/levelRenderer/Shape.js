@@ -16,183 +16,6 @@ import {SUtil} from './SUtil';
 export class Shape extends SuperMap.mixin(Eventful, Transformable) {
 
     /**
-     * APIProperty: id
-     * {String} 唯一标识。
-     */
-    id = null;
-
-    /**
-     * APIProperty: style
-     * {Object} 基础绘制样式。
-     *
-     * Symbolizer properties:
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
-     *
-     */
-    style = null;
-
-    /**
-     * APIProperty: style.__rect
-     * {Object} 包围图形的最小矩形盒子。该对象包含以下属性：
-     *
-     * Symbolizer properties:
-     * x - {Number} 左上角顶点x轴坐标。
-     * y - {Number} 左上角顶点y轴坐标。
-     * width - {Number} 包围盒矩形宽度。
-     * height - {Number} 包围盒矩形高度。
-     */
-
-    /**
-     * Property: highlightStyle
-     * {Object} 高亮样式。
-     *
-     * Symbolizer properties:
-     * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
-     * color - {String} 填充颜色。默认值："#000000'"。
-     * strokeColor - {String} 描边颜色。默认值："#000000'"。
-     * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
-     * lineWidth - {Number} 描边宽度。默认值：1。
-     * opacity - {Number} 绘制透明度。默认值：1。
-     * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
-     * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
-     * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
-     * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
-     * text - {String} 图形中的附加文本。默认值：""。
-     * textColor - {String} 文本颜色。默认值："#000000'"。
-     * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
-     * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
-     * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
-     * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
-     */
-    highlightStyle = null;
-
-    /**
-     * APIProperty: parent
-     * {Object} 父节点，只读属性。<SuperMap.LevelRenderer.Group>
-     */
-    parent = null;
-
-    /**
-     * Property: __dirty
-     * {Boolean}
-     */
-    __dirty = null;
-
-    /**
-     * Property: __clipShapes
-     * {Array}
-     */
-    __clipShapes = null;
-
-    /**
-     * APIProperty: invisible
-     * {Boolean} 图形是否可见，为 true 时不绘制图形，但是仍能触发鼠标事件。默认值：false。
-     */
-    invisible = false;
-
-    /**
-     * APIProperty: ignore
-     * {Boolean} 图形是否忽略，为 true 时忽略图形的绘制以及事件触发。默认值：false。
-     */
-    ignore = false;
-
-    /**
-     * APIProperty: zlevel
-     * {Number} z 层 level，决定绘画在哪层 canvas 中。默认值：0。
-     */
-    zlevel = 0;
-
-    /**
-     * APIProperty: draggable
-     * {Boolean} 是否可拖拽。默认值：false。
-     */
-    draggable = false;
-
-    /**
-     * APIProperty: clickable
-     * {Boolean} 是否可点击。默认值：false。
-     */
-    clickable = false;
-
-    /**
-     * APIProperty: hoverable
-     * {Boolean} 是否可以 hover。默认值：true。
-     */
-    hoverable = true;
-
-    /**
-     * APIProperty: z
-     * {Number} z值，跟zlevel一样影响shape绘制的前后顺序，z值大的shape会覆盖在z值小的上面，
-     * 但是并不会创建新的canvas，所以优先级低于zlevel，而且频繁改动的开销比zlevel小很多。
-     * 默认值：0。
-     */
-    z = 0;
-
-    //地理扩展
-    /**
-     * APIProperty: refOriginalPosition
-     * {Array} 图形参考原点位置，图形的参考中心位置。
-     * refOriginalPosition 是长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-     *
-     * refOriginalPosition 表示图形的参考中心，通常情况下，图形是使用 canvas 的原点位置作为位置参考，
-     * 但 refOriginalPosition 可以改变图形的参考位置，例如： refOriginalPosition = [80, 80],
-     * 图形圆的 style.x = 20, style.y = 20，那么圆在 canvas 中的实际位置是 [100, 100]。
-     *
-     * 图形（Shape） 的所有位置相关属性都是以 refOriginalPosition 为参考中心，
-     * 也就是说图形的所有位置信息在 canvas 中都是以 refOriginalPosition 为参考的相对位置，只有
-     * refOriginalPosition 的值为 [0, 0] 时，形的位置信息才是 canvas 绝对位置。
-     *
-     * 图形的位置信息通常有：style.pointList，style.x，style.y。
-     *
-     * refOriginalPosition。默认值是： [0, 0]。
-     */
-    refOriginalPosition = null;
-
-    /**
-     * APIProperty: refDataID
-     * {String} 图形所关联数据的 ID。
-     *
-     */
-    refDataID = null;
-
-    /**
-     * APIProperty: isHoverByRefDataID
-     * {Boolean} 是否根据 refDataID 进行高亮。用于同时高亮所有 refDataID 相同的图形。
-     *
-     */
-    isHoverByRefDataID = false;
-
-    /**
-     * APIProperty: refDataHoverGroup
-     * {String} 高亮图形组的组名。此属性在 refDataID 有效且 isHoverByRefDataID 为 true 时生效。
-     * 一旦设置此属性，且属性值有效，只有关联同一个数据的图形且此属性相同的图形才会高亮。
-     *
-     */
-    refDataHoverGroup = null;
-
-    /**
-     * APIProperty: dataInfo
-     * {Object} 图形的数据信息。
-     *
-     */
-    dataInfo = null;
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Shape
      * 构造函数。
      *
@@ -204,24 +27,210 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
         super(options);
 
         options = options || {};
+        /**
+         * APIProperty: id
+         * {String} 唯一标识。
+         */
+        this.id = null;
 
-        this.id = options.id || CommonUtil.createUniqueID("smShape_");
+        /**
+         * APIProperty: style
+         * {Object} 基础绘制样式。
+         *
+         * Symbolizer properties:
+         * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+         * color - {String} 填充颜色。默认值："#000000'"。
+         * strokeColor - {String} 描边颜色。默认值："#000000'"。
+         * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+         * lineWidth - {Number} 描边宽度。默认值：1。
+         * opacity - {Number} 绘制透明度。默认值：1。
+         * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
+         * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
+         * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
+         * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
+         * text - {String} 图形中的附加文本。默认值：""。
+         * textColor - {String} 文本颜色。默认值："#000000'"。
+         * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
+         * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+         * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+         * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+         *
+         */
+        this.style = {};
 
-        for (var key in options) {
-            this[key] = options[key];
-        }
+        /**
+         * APIProperty: style.__rect
+         * {Object} 包围图形的最小矩形盒子。该对象包含以下属性：
+         *
+         * Symbolizer properties:
+         * x - {Number} 左上角顶点x轴坐标。
+         * y - {Number} 左上角顶点y轴坐标。
+         * width - {Number} 包围盒矩形宽度。
+         * height - {Number} 包围盒矩形高度。
+         */
 
-        this.style = this.style || {};
+        /**
+         * Property: highlightStyle
+         * {Object} 高亮样式。
+         *
+         * Symbolizer properties:
+         * brushType - {String} 画笔类型。可设值："fill", "stroke", "both"。默认值："fill"。
+         * color - {String} 填充颜色。默认值："#000000'"。
+         * strokeColor - {String} 描边颜色。默认值："#000000'"。
+         * lineCape - {String} 线帽样式。可设值："butt", "round", "square"。默认值："butt"。
+         * lineWidth - {Number} 描边宽度。默认值：1。
+         * opacity - {Number} 绘制透明度。默认值：1。
+         * shadowBlur - {Number} 阴影模糊度，大于0有效。默认值：0。
+         * shadowColor - {Number} 阴影颜色。默认值："#000000'"。
+         * shadowOffsetX - {Number} 阴影横向偏移。默认值：0。
+         * shadowOffsetY - {Number} 阴影纵向偏移。默认值：0。
+         * text - {String} 图形中的附加文本。默认值：""。
+         * textColor - {String} 文本颜色。默认值："#000000'"。
+         * textFont - {String} 附加文本样式。示例:'bold 18px verdana'。
+         * textPosition - {String} 附加文本位置。可设值："inside", "left", "right", top", "bottom", "end"。默认值："end"。
+         * textAlign - {String} 附加文本水平对齐。可设值："start", "end", "left", "right", "center"。默认根据 textPosition 自动设置。
+         * textBaseline - {String} 附加文本垂直对齐。可设值："top", "bottom", "middle", "alphabetic", "hanging", "ideographic"。默认根据 textPosition 自动设置。
+         */
+        this.highlightStyle = null;
 
-        this.highlightStyle = this.highlightStyle || null;
-
+        /**
+         * APIProperty: parent
+         * {Object} 父节点，只读属性。<SuperMap.LevelRenderer.Group>
+         */
         this.parent = null;
 
+        /**
+         * Property: __dirty
+         * {Boolean}
+         */
         this.__dirty = true;
 
+        /**
+         * Property: __clipShapes
+         * {Array}
+         */
         this.__clipShapes = [];
 
+        /**
+         * APIProperty: invisible
+         * {Boolean} 图形是否可见，为 true 时不绘制图形，但是仍能触发鼠标事件。默认值：false。
+         */
+        this.invisible = false;
+
+        /**
+         * APIProperty: ignore
+         * {Boolean} 图形是否忽略，为 true 时忽略图形的绘制以及事件触发。默认值：false。
+         */
+        this.ignore = false;
+
+        /**
+         * APIProperty: zlevel
+         * {Number} z 层 level，决定绘画在哪层 canvas 中。默认值：0。
+         */
+        this.zlevel = 0;
+
+        /**
+         * APIProperty: draggable
+         * {Boolean} 是否可拖拽。默认值：false。
+         */
+        this.draggable = false;
+
+        /**
+         * APIProperty: clickable
+         * {Boolean} 是否可点击。默认值：false。
+         */
+        this.clickable = false;
+
+        /**
+         * APIProperty: hoverable
+         * {Boolean} 是否可以 hover。默认值：true。
+         */
+        this.hoverable = true;
+
+        /**
+         * APIProperty: z
+         * {Number} z值，跟zlevel一样影响shape绘制的前后顺序，z值大的shape会覆盖在z值小的上面，
+         * 但是并不会创建新的canvas，所以优先级低于zlevel，而且频繁改动的开销比zlevel小很多。
+         * 默认值：0。
+         */
+        this.z = 0;
+
+        //地理扩展
+        /**
+         * APIProperty: refOriginalPosition
+         * {Array} 图形参考原点位置，图形的参考中心位置。
+         * refOriginalPosition 是长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+         *
+         * refOriginalPosition 表示图形的参考中心，通常情况下，图形是使用 canvas 的原点位置作为位置参考，
+         * 但 refOriginalPosition 可以改变图形的参考位置，例如： refOriginalPosition = [80, 80],
+         * 图形圆的 style.x = 20, style.y = 20，那么圆在 canvas 中的实际位置是 [100, 100]。
+         *
+         * 图形（Shape） 的所有位置相关属性都是以 refOriginalPosition 为参考中心，
+         * 也就是说图形的所有位置信息在 canvas 中都是以 refOriginalPosition 为参考的相对位置，只有
+         * refOriginalPosition 的值为 [0, 0] 时，形的位置信息才是 canvas 绝对位置。
+         *
+         * 图形的位置信息通常有：style.pointList，style.x，style.y。
+         *
+         * refOriginalPosition。默认值是： [0, 0]。
+         */
         this.refOriginalPosition = [0, 0];
+
+        /**
+         * APIProperty: refDataID
+         * {String} 图形所关联数据的 ID。
+         *
+         */
+        this.refDataID = null;
+
+        /**
+         * APIProperty: isHoverByRefDataID
+         * {Boolean} 是否根据 refDataID 进行高亮。用于同时高亮所有 refDataID 相同的图形。
+         *
+         */
+        this.isHoverByRefDataID = false;
+
+        /**
+         * APIProperty: refDataHoverGroup
+         * {String} 高亮图形组的组名。此属性在 refDataID 有效且 isHoverByRefDataID 为 true 时生效。
+         * 一旦设置此属性，且属性值有效，只有关联同一个数据的图形且此属性相同的图形才会高亮。
+         *
+         */
+        this.refDataHoverGroup = null;
+
+        /**
+         * APIProperty: dataInfo
+         * {Object} 图形的数据信息。
+         *
+         */
+        this.dataInfo = null;
+        CommonUtil.extend(this, options);
+        this.id = this.id  || CommonUtil.createUniqueID("smShape_");
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape";
+        /**
+         * APIMethod: getTansform
+         * 变换鼠标位置到 shape 的局部坐标空间
+         *
+         */
+        this.getTansform = (function () {
+            var invTransform = [];
+
+            return function (x, y) {
+                var originPos = [x, y];
+                // 对鼠标的坐标也做相同的变换
+                if (this.needTransform && this.transform) {
+                    SUtil.Util_matrix.invert(invTransform, this.transform);
+
+                    SUtil.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
+
+                    if (x == originPos[0] && y == originPos[1]) {
+                        // 避免外部修改导致的 needTransform 不准确
+                        this.updateNeedTransform();
+                    }
+                }
+                return originPos;
+            };
+        })();
+
     }
 
 
@@ -530,30 +539,7 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
     }
 
 
-    /**
-     * APIMethod: getTansform
-     * 变换鼠标位置到 shape 的局部坐标空间
-     *
-     */
-    getTansform = (function () {
-        var invTransform = [];
 
-        return function (x, y) {
-            var originPos = [x, y];
-            // 对鼠标的坐标也做相同的变换
-            if (this.needTransform && this.transform) {
-                SUtil.Util_matrix.invert(invTransform, this.transform);
-
-                SUtil.Util_matrix.mulVector(originPos, invTransform, [x, y, 1]);
-
-                if (x == originPos[0] && y == originPos[1]) {
-                    // 避免外部修改导致的 needTransform 不准确
-                    this.updateNeedTransform();
-                }
-            }
-            return originPos;
-        };
-    })();
 
     /**
      * APIMethod: buildPath
@@ -950,5 +936,4 @@ export class Shape extends SuperMap.mixin(Eventful, Transformable) {
         };
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape"
 }

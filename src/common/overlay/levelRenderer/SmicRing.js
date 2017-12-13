@@ -51,12 +51,6 @@ export class SmicRing extends Shape {
     //打开接口 style
 
     /**
-     * Property: type
-     * {String} 图形类型。
-     */
-    type = 'smicring';
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicRing
      * 构造函数。
      *
@@ -66,9 +60,16 @@ export class SmicRing extends Shape {
      */
     constructor(options) {
         super(options);
+        /**
+         * Property: type
+         * {String} 图形类型。
+         */
+        this.type = 'smicring';
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicRing";
+
     }
 
 
@@ -141,6 +142,4 @@ export class SmicRing extends Shape {
         return style.__rect;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicRing"
 }

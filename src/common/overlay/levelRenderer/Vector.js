@@ -7,12 +7,6 @@
 export class Vector {
 
     /**
-     * Property: ArrayCtor
-     * {Object} 数组类型控制
-     */
-    ArrayCtor = null;
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Tool.Vector
      * 构造函数。
      *
@@ -21,6 +15,8 @@ export class Vector {
         this.ArrayCtor = typeof Float32Array === 'undefined'
             ? Array
             : Float32Array;
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Vector";
     }
 
     /**
@@ -439,5 +435,4 @@ export class Vector {
         return this.distanceSquare(v1, v2);
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Vector"
 }

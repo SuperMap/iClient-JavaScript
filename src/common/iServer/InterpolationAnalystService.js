@@ -29,18 +29,18 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  *
  */
 export class InterpolationAnalystService extends SpatialAnalystBase {
-    /**
-     * @member SuperMap.InterpolationAnalystService.prototype.mode -{string}
-     * @description 插值分析类型。
-     */
 
-    mode = null;
 
     constructor(url, options) {
         super(url, options);
-        var me = this;
+        /**
+         * @member SuperMap.InterpolationAnalystService.prototype.mode -{string}
+         * @description 插值分析类型。
+         */
+
+        this.mode = null;
         if (options) {
-            Util.extend(me, options);
+            Util.extend(this, options);
         }
     }
 
@@ -51,6 +51,7 @@ export class InterpolationAnalystService extends SpatialAnalystBase {
     destroy() {
         super.destroy();
         this.mode = null;
+        this.CLASS_NAME = "SuperMap.InterpolationAnalystService";
     }
 
     /**
@@ -108,10 +109,6 @@ export class InterpolationAnalystService extends SpatialAnalystBase {
             failure: me.serviceProcessFailed
         });
     }
-
-
-    CLASS_NAME = "SuperMap.InterpolationAnalystService"
-
 }
 
 SuperMap.InterpolationAnalystService = InterpolationAnalystService;

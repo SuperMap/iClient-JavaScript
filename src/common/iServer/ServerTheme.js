@@ -18,18 +18,6 @@ import {UGCSubLayer} from './UGCSubLayer';
  */
 export class ServerTheme extends UGCSubLayer {
 
-    /**
-     * @member SuperMap.ServerTheme.prototype.theme -{SuperMap.Theme}
-     * @description 专题图对象。
-     */
-    theme = null;
-
-    /**
-     * @member SuperMap.ServerTheme.prototype.themeElementPosition -{SuperMap.LonLat}
-     * @description 专题图元素位置。
-     */
-    themeElementPosition = null;
-
     /*
      * @class SuperMap.ServerTheme
      * @description UGC 专题图图层类类构造函数。
@@ -39,6 +27,21 @@ export class ServerTheme extends UGCSubLayer {
     constructor(options) {
         options = options || {};
         super(options);
+
+        /**
+         * @member SuperMap.ServerTheme.prototype.theme -{SuperMap.Theme}
+         * @description 专题图对象。
+         */
+        this.theme = null;
+
+        /**
+         * @member SuperMap.ServerTheme.prototype.themeElementPosition -{SuperMap.LonLat}
+         * @description 专题图元素位置。
+         */
+        this.themeElementPosition = null;
+
+        this.CLASS_NAME = "SuperMap.ServerTheme";
+
     }
 
 
@@ -110,8 +113,6 @@ export class ServerTheme extends UGCSubLayer {
         return jsonObject;
     }
 
-
-    CLASS_NAME = "SuperMap.ServerTheme"
 }
 
 SuperMap.ServerTheme = ServerTheme;

@@ -22,6 +22,7 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.UpdateTurnNodeWeightService";
     }
 
     /**
@@ -101,7 +102,6 @@ export class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
         return paramStr;
     }
 
-    CLASS_NAME = "SuperMap.UpdateTurnNodeWeightService"
 }
 
 SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService;

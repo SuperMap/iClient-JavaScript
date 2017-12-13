@@ -22,102 +22,98 @@ import '../../core/Base';
  */
 export class Theme3DLayer {
 
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.id -{string}
-     * @description mapbox gl图层id
-     */
-    id = null;
 
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.map -{object}
-     * @description mapbox gl地图对象
-     */
-    map = null;
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.opacity -{number}
-     * @description 图层透明度，默认1
-     */
-    opacity = 1;
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.parseNumber -{boolean}
-     * @description 是否进行数据预处理,有些字段是string类型，需要转换为number
-     */
-    parseNumber = false;
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.enableHighlight -{boolean}
-     * @description 是否开启高亮,默认false
-     */
-    enableHighlight = false;
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.highlight -{Object}
-     * @description 高亮相关配置,默认null
-     */
-    highlight = null;
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.baseHeightField -{string}
-     * @description 数据中表示基础高度的字段
-     */
-    baseHeightField = null;
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.height -{number}
-     * @description 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度
-     */
-    height = null;
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.heightField -{string}
-     * @description 数据中表示高度的字段
-     */
-    heightField = null;
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.themeField -{string}
-     * @description 专题展示的字段
-     */
-    themeField = null;
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.showLegend -{Boolean}
-     * @description 是否显示图例
-     */
-    showLegend = true;
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendTitle -{string}
-     * @description 图例标题
-     */
-    legendTitle = null;
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendTheme -{string}
-     * @description 图例主题，取值：'light','dark'
-     * @default 'light'
-     */
-    legendTheme = 'light';
-
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendOrientation -{string}
-     * @description 图例方向，取值：'horizontal','vertical'，默认：'horizontal'
-     * @default 'horizontal'
-     */
-    legendOrientation = 'horizontal';
-    /**
-     * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendPosition -{string}
-     * @description 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'
-     * @default 'bottom-right'
-     */
-    legendPosition = 'bottom-right';
 
     constructor(id, layerOptions) {
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.id -{string}
+         * @description mapbox gl图层id
+         */
         this.id = id;
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.map -{object}
+         * @description mapbox gl地图对象
+         */
+        this.map = null;
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.opacity -{number}
+         * @description 图层透明度，默认1
+         */
+        this.opacity = 1;
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.parseNumber -{boolean}
+         * @description 是否进行数据预处理,有些字段是string类型，需要转换为number
+         */
+        this.parseNumber = false;
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.enableHighlight -{boolean}
+         * @description 是否开启高亮,默认false
+         */
+        this.enableHighlight = false;
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.highlight -{Object}
+         * @description 高亮相关配置,默认null
+         */
+        this.highlight = {color: "#ADA91E"};
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.baseHeightField -{string}
+         * @description 数据中表示基础高度的字段
+         */
+        this.baseHeightField = null;
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.height -{number}
+         * @description 高度。如果数据指定的heightField(默认height)没有可以表示高度的字段，可以为所有数据统一设置一个高度
+         */
+        this.height = null;
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.heightField -{string}
+         * @description 数据中表示高度的字段
+         */
+        this.heightField = 'height';
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.themeField -{string}
+         * @description 专题展示的字段
+         */
+        this.themeField = this.heightField;
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.showLegend -{Boolean}
+         * @description 是否显示图例
+         */
+        this.showLegend = true;
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendTitle -{string}
+         * @description 图例标题
+         */
+        this.legendTitle = null;
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendTheme -{string}
+         * @description 图例主题，取值：'light','dark'
+         * @default 'light'
+         */
+        this.legendTheme = 'light';
+
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendOrientation -{string}
+         * @description 图例方向，取值：'horizontal','vertical'，默认：'horizontal'
+         * @default 'horizontal'
+         */
+        this.legendOrientation = 'horizontal';
+        /**
+         * @member  mapboxgl.supermap.Theme3DLayer.prototype.legendPosition -{string}
+         * @description 图例位置，取值：'top-right'|'top-left'|'bottom-left'|'bottom-right'
+         * @default 'bottom-right'
+         */
+        this.legendPosition = 'bottom-right';
         this._extend(this, layerOptions);
-        this.heightField = layerOptions.heightField || 'height';
-        this.themeField = layerOptions.themeField || this.heightField;
-        this.highlight = layerOptions.highlight || {color: "#ADA91E"};
     }
 
     /**

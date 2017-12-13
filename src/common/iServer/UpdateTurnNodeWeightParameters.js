@@ -1,4 +1,5 @@
 import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightParameters
@@ -12,46 +13,41 @@ import {SuperMap} from '../SuperMap';
  */
 export class UpdateTurnNodeWeightParameters {
 
-    /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{string}
-     * @description 转向结点的id
-     */
-    nodeId = "";
-
-    /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId -{string}
-     * @description 起始边的id
-     */
-    fromEdgeId = "";
-
-    /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId -{string}
-     * @description 终止边的id
-     */
-    toEdgeId = "";
-
-    /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField -{string}
-     * @description 转向结点的耗费字段
-     */
-    weightField = "";
-
-    /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight -{string}
-     * @description 耗费权重
-     */
-    turnNodeWeight = "";
-
-    constructor(option) {
-        if (!option) {
+    constructor(options) {
+        if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{string}
+         * @description 转向结点的id
+         */
+        this.nodeId = "";
 
-        option.nodeId && (this.nodeId = option.nodeId);
-        option.fromEdgeId && (this.fromEdgeId = option.fromEdgeId);
-        option.toEdgeId && (this.toEdgeId = option.toEdgeId);
-        option.weightField && (this.weightField = option.weightField);
-        option.turnNodeWeight && (this.turnNodeWeight = option.turnNodeWeight);
+        /**
+         * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId -{string}
+         * @description 起始边的id
+         */
+        this.fromEdgeId = "";
+
+        /**
+         * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId -{string}
+         * @description 终止边的id
+         */
+        this.toEdgeId = "";
+
+        /**
+         * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField -{string}
+         * @description 转向结点的耗费字段
+         */
+        this.weightField = "";
+
+        /**
+         * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight -{string}
+         * @description 耗费权重
+         */
+        this.turnNodeWeight = "";
+        Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.UpdateTurnNodeWeightParameters";
     }
 
     /**
@@ -66,8 +62,6 @@ export class UpdateTurnNodeWeightParameters {
         this.turnNodeWeight = null;
     }
 
-
-    CLASS_NAME = "SuperMap.UpdateTurnNodeWeightParameters"
 }
 
 SuperMap.UpdateTurnNodeWeightParameters = UpdateTurnNodeWeightParameters;

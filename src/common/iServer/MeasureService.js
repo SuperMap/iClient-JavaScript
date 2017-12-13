@@ -26,17 +26,20 @@ import {MeasureMode} from '../REST';
  */
 export class MeasureService extends CommonServiceBase {
 
-    /**
-     * @member SuperMap.MeasureService.prototype.measureMode -{SuperMap.MeasureMode}
-     * @description 量算模式，包括距离量算模式和面积量算模式。默认值为：MeasureMode.DISTANCE 。
-     */
-    measureMode = MeasureMode.DISTANCE;
 
     constructor(url, options) {
         super(url, options);
+        /**
+         * @member SuperMap.MeasureService.prototype.measureMode -{SuperMap.MeasureMode}
+         * @description 量算模式，包括距离量算模式和面积量算模式。默认值为：MeasureMode.DISTANCE 。
+         */
+        this.measureMode = MeasureMode.DISTANCE;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.MeasureService";
     }
 
     /**
@@ -105,7 +108,6 @@ export class MeasureService extends CommonServiceBase {
 
     }
 
-    CLASS_NAME = "SuperMap.MeasureService"
 }
 
 SuperMap.MeasureService = MeasureService;

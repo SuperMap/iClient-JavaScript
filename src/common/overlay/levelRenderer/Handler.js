@@ -13,69 +13,6 @@ import {SUtil} from './SUtil';
 export class Handler extends Eventful {
 
     /**
-     * Property: root
-     * {HTMLElement} 绘图区域。
-     *
-     */
-    root = null;
-
-    /**
-     * Property: storage
-     * {<SuperMap.LevelRenderer.Storage>} Storage 实例。
-     *
-     */
-    storage = null;
-
-    /**
-     * Property: painter
-     * {<SuperMap.LevelRenderer.Painter>} Painter 实例。
-     *
-     */
-    painter = null;
-
-    /**
-     * Property: _lastX
-     * {Number} 默认值：0。
-     *
-     */
-    _lastX = 0;
-
-    /**
-     * Property: _lastY
-     * {Number} 默认值：0。
-     *
-     */
-    _lastY = 0;
-
-    /**
-     * Property: _mouseX
-     * {Number} 默认值：0。
-     *
-     */
-    _mouseX = 0;
-
-    /**
-     * Property: _mouseY
-     * {Number} 默认值：0。
-     *
-     */
-    _mouseY = 0;
-
-    /**
-     * Property: _findHover
-     * {Function} 查找 Hover 图形。
-     *
-     */
-    _findHover = null;
-
-    /**
-     * Property: _domHover
-     * {Object} 高亮 DOM。
-     *
-     */
-    _domHover = null;
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Handler
      * 构造函数。
      *
@@ -87,9 +24,68 @@ export class Handler extends Eventful {
      */
     constructor(root, storage, painter) {
         super(root, storage, painter);
+        /**
+         * Property: root
+         * {HTMLElement} 绘图区域。
+         *
+         */
         this.root = root;
+
+        /**
+         * Property: storage
+         * {<SuperMap.LevelRenderer.Storage>} Storage 实例。
+         *
+         */
         this.storage = storage;
+
+        /**
+         * Property: painter
+         * {<SuperMap.LevelRenderer.Painter>} Painter 实例。
+         *
+         */
         this.painter = painter;
+
+        /**
+         * Property: _lastX
+         * {Number} 默认值：0。
+         *
+         */
+        this._lastX = 0;
+
+        /**
+         * Property: _lastY
+         * {Number} 默认值：0。
+         *
+         */
+        this._lastY = 0;
+
+        /**
+         * Property: _mouseX
+         * {Number} 默认值：0。
+         *
+         */
+        this._mouseX = 0;
+
+        /**
+         * Property: _mouseY
+         * {Number} 默认值：0。
+         *
+         */
+        this._mouseY = 0;
+
+        /**
+         * Property: _findHover
+         * {Function} 查找 Hover 图形。
+         *
+         */
+        this._findHover = null;
+
+        /**
+         * Property: _domHover
+         * {Object} 高亮 DOM。
+         *
+         */
+        this._domHover = null;
 
         // 各种事件标识的私有变量
         // this._hasfound = false;              // 是否找到 hover 图形元素
@@ -102,14 +98,10 @@ export class Handler extends Eventful {
         // this._lastTouchMoment;
         // this._lastDownButton;
 
-        this._lastX = 0;
-        this._lastY = 0;
-        this._mouseX = 0;
-        this._mouseY = 0;
-
         this._findHover = bind3Arg(findHover, this);
         this._domHover = painter.getDomHover();
 
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Handler";
         var domHandlers = {
             /**
              * Method: resize
@@ -1166,5 +1158,4 @@ export class Handler extends Eventful {
 
     // SMIC-方法扩展 - end
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Handler"
 }

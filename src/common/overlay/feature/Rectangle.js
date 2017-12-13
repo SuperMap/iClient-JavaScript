@@ -11,29 +11,7 @@ import {ShapeParameters} from './ShapeParameters';
  */
 export class Rectangle extends ShapeParameters {
 
-    /**
-     * APIProperty: x
-     * {Number} 左上角 x 坐标。
-     */
-    x = null;
 
-    /**
-     * APIProperty: y
-     * {Number} 左上角 y 坐标。
-     */
-    y = null;
-
-    /**
-     * APIProperty: width
-     * {Number} 宽度。
-     */
-    width = null;
-
-    /**
-     * APIProperty: height
-     * {Number} 高度。
-     */
-    height = null;
 
     /**
      * Constructor: SuperMap.Feature.ShapeParameters.Rectangle
@@ -50,11 +28,31 @@ export class Rectangle extends ShapeParameters {
      */
     constructor(x, y, width, height) {
         super(x, y, width, height);
-
+        /**
+         * APIProperty: x
+         * {Number} 左上角 x 坐标。
+         */
         this.x = !isNaN(x) ? x : 0;
+
+        /**
+         * APIProperty: y
+         * {Number} 左上角 y 坐标。
+         */
         this.y = !isNaN(x) ? y : 0;
+
+        /**
+         * APIProperty: width
+         * {Number} 宽度。
+         */
         this.width = !isNaN(width) ? width : 0;
+
+        /**
+         * APIProperty: height
+         * {Number} 高度。
+         */
         this.height = !isNaN(height) ? height : 0;
+
+        this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Rectangle";
     }
 
 
@@ -71,8 +69,6 @@ export class Rectangle extends ShapeParameters {
         super.destroy();
     }
 
-
-    CLASS_NAME = "SuperMap.Feature.ShapeParameters.Rectangle"
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Rectangle = Rectangle;

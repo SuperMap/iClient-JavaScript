@@ -23,6 +23,7 @@ export class TransferPathService extends CommonServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.TransferPathService";
     }
 
     /**
@@ -64,7 +65,6 @@ export class TransferPathService extends CommonServiceBase {
         });
     }
 
-    CLASS_NAME = "SuperMap.TransferPathService"
 }
 
 SuperMap.TransferPathService = TransferPathService;

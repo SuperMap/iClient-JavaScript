@@ -10,22 +10,24 @@ import {Util} from '../commontypes/Util';
  */
 export class ThemeGraphSize {
 
-    /**
-     * @member SuperMap.ThemeGraphSize.prototype.maxGraphSize -{number}
-     * @description 获取或设置统计图中显示的最大图表尺寸基准值，默认为0像素。
-     */
-    maxGraphSize = 0;
-
-    /**
-     * @member SuperMap.ThemeGraphSize.prototype.minGraphSize -{number}
-     * @description 获取或设置统计图中显示的最小图表尺寸基准值，默认为0像素。
-     */
-    minGraphSize = 0;
-
     constructor(options) {
+        /**
+         * @member SuperMap.ThemeGraphSize.prototype.maxGraphSize -{number}
+         * @description 获取或设置统计图中显示的最大图表尺寸基准值，默认为0像素。
+         */
+        this.maxGraphSize = 0;
+
+        /**
+         * @member SuperMap.ThemeGraphSize.prototype.minGraphSize -{number}
+         * @description 获取或设置统计图中显示的最小图表尺寸基准值，默认为0像素。
+         */
+        this.minGraphSize = 0;
+
         if (options) {
             Util.extend(this, options);
         }
+
+       this.CLASS_NAME = "SuperMap.ThemeGraphSize";
     }
 
     /**
@@ -50,7 +52,6 @@ export class ThemeGraphSize {
         return res;
     }
 
-    CLASS_NAME = "SuperMap.ThemeGraphSize"
 }
 
 SuperMap.ThemeGraphSize = ThemeGraphSize;

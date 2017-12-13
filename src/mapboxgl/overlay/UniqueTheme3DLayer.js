@@ -12,14 +12,14 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  */
 export class UniqueTheme3DLayer extends Theme3DLayer {
 
-    /**
-     * @member  mapboxgl.supermap.UniqueTheme3DLayer.prototype.colorStops -{Array}
-     * @description 数据颜色数组，如[["绿地","#CD7054"],["道路","#AD1283"]]
-     */
-    colorStops = null;
 
     constructor(id, layerOptions) {
         super(id, layerOptions);
+        /**
+         * @member  mapboxgl.supermap.UniqueTheme3DLayer.prototype.colorStops -{Array}
+         * @description 数据颜色数组，如[["绿地","#CD7054"],["道路","#AD1283"]]
+         */
+        this.colorStops = null;
         this._extend(this, layerOptions);
     }
 

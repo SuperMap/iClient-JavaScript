@@ -18,57 +18,59 @@ import '../REST';
  */
 export class UGCLayer {
 
-    /**
-     * @member SuperMap.UGCLayer.prototype.bounds -{SuperMap.Bounds}
-     * @description 图层范围。
-     */
-    bounds = null;
-
-    /**
-     * @member SuperMap.UGCLayer.prototype.caption -{string}
-     * @description 图层的标题。
-     */
-    caption = null;
-
-    /**
-     * @member SuperMap.UGCLayer.prototype.description -{string}
-     * @description 图层的描述信息。
-     */
-    description = null;
-
-    /**
-     * @member SuperMap.UGCLayer.prototype.name -{string}
-     * @description 图层的名称。
-     */
-    name = null;
-
-    /**
-     * @member SuperMap.UGCLayer.prototype.queryable -{boolean}
-     * @description 图层中的对象是否可以查询。
-     */
-    queryable = null;
-
-    /**
-     * @member SuperMap.UGCLayer.prototype.subLayers -{Array}
-     * @description 子图层集。
-     */
-    subLayers = null;
-
-    /**
-     * @member SuperMap.UGCLayer.prototype.type -{SuperMap.UGCLayerType}
-     * @description 图层类型。
-     */
-    type = null;
-
-    /**
-     * @member SuperMap.UGCLayer.prototype.visible -{boolean}
-     * @description 图层是否可视。
-     */
-    visible = null;
-
     constructor(options) {
-        options = options ? options : {};
+        options =  options || {};
+        /**
+         * @member SuperMap.UGCLayer.prototype.bounds -{SuperMap.Bounds}
+         * @description 图层范围。
+         */
+        this.bounds = null;
+
+        /**
+         * @member SuperMap.UGCLayer.prototype.caption -{string}
+         * @description 图层的标题。
+         */
+        this.caption = null;
+
+        /**
+         * @member SuperMap.UGCLayer.prototype.description -{string}
+         * @description 图层的描述信息。
+         */
+        this.description = null;
+
+        /**
+         * @member SuperMap.UGCLayer.prototype.name -{string}
+         * @description 图层的名称。
+         */
+        this.name = null;
+
+        /**
+         * @member SuperMap.UGCLayer.prototype.queryable -{boolean}
+         * @description 图层中的对象是否可以查询。
+         */
+        this.queryable = null;
+
+        /**
+         * @member SuperMap.UGCLayer.prototype.subLayers -{Array}
+         * @description 子图层集。
+         */
+        this.subLayers = null;
+
+        /**
+         * @member SuperMap.UGCLayer.prototype.type -{SuperMap.UGCLayerType}
+         * @description 图层类型。
+         */
+        this.type = null;
+
+        /**
+         * @member SuperMap.UGCLayer.prototype.visible -{boolean}
+         * @description 图层是否可视。
+         */
+        this.visible = null;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.UGCLayer";
     }
 
     /**
@@ -111,8 +113,6 @@ export class UGCLayer {
         return jsonObject;
     }
 
-
-    CLASS_NAME = "SuperMap.UGCLayer"
 }
 
 SuperMap.UGCLayer = UGCLayer;

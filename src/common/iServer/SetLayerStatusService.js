@@ -19,17 +19,17 @@ import {SetLayerStatusParameters} from './SetLayerStatusParameters';
  */
 export class SetLayerStatusService extends CommonServiceBase {
 
-    lastparams = null;
 
-    mapUrl = null;
 
     constructor(url, options) {
         super(url, options);
-        var me = this;
+        this.lastparams = null;
+
+        this.mapUrl = url;
         if (options) {
-            Util.extend(me, options);
+            Util.extend(this, options);
         }
-        me.mapUrl = url;
+        this.CLASS_NAME = "SuperMap.SetLayerStatusService";
     }
 
     /**
@@ -142,7 +142,6 @@ export class SetLayerStatusService extends CommonServiceBase {
         me.events.triggerEvent("processCompleted", {result: result});
     }
 
-    CLASS_NAME = "SuperMap.SetLayerStatusService"
 }
 
 SuperMap.SetLayerStatusService = SetLayerStatusService;

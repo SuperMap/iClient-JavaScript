@@ -1,6 +1,7 @@
 import {SuperMap} from '../../SuperMap';
 import {Events} from '../../commontypes/Events';
 import es from 'elasticsearch';
+import {Util} from "../../commontypes/Util";
 
 /**
  * @class SuperMap.ElasticSearch
@@ -14,79 +15,71 @@ import es from 'elasticsearch';
  */
 
 export class ElasticSearch {
-    /**
-     *  @member SuperMap.ElasticSearch.prototype.url -{string}
-     *  @description ElasticSearch服务地址
-     */
-    url = null;
-    /**
-     *  @member SuperMap.ElasticSearch.prototype.client -{Object}
-     *  @description client ES客户端
-     */
-    client = null;
-    /**
-     *  @member SuperMap.ElasticSearch.prototype.change -{function}
-     *  @description 服务器返回数据后执行的函数
-     */
-    change = null;
-    /**
-     *  @member SuperMap.ElasticSearch.prototype.openGeoFence -{boolean}
-     *  @description 是否开启地理围栏验证，默认为不开启。
-     */
-    openGeoFence = false;
-    /**
-     *  @member SuperMap.ElasticSearch.prototype.outOfGeoFence -{function}
-     *  @description 数据超出地理围栏后执行的函数
-     */
-    outOfGeoFence = null;
 
-    /**
-     * @member SuperMap.ElasticSearch.prototype.geoFence -{Object}
-     * @description 地理围栏
-     * @example {
+    constructor(url, options) {
+        options = options || {};
+        /**
+         *  @member SuperMap.ElasticSearch.prototype.url -{string}
+         *  @description ElasticSearch服务地址
+         */
+        this.url = url;
+        /**
+         *  @member SuperMap.ElasticSearch.prototype.client -{Object}
+         *  @description client ES客户端
+         */
+        this.client = new es.Client({
+            host: this.url
+        });
+        /**
+         *  @member SuperMap.ElasticSearch.prototype.change -{function}
+         *  @description 服务器返回数据后执行的函数
+         */
+        this.change = null;
+        /**
+         *  @member SuperMap.ElasticSearch.prototype.openGeoFence -{boolean}
+         *  @description 是否开启地理围栏验证，默认为不开启。
+         */
+        this.openGeoFence = false;
+        /**
+         *  @member SuperMap.ElasticSearch.prototype.outOfGeoFence -{function}
+         *  @description 数据超出地理围栏后执行的函数
+         */
+        this.outOfGeoFence = null;
+
+        /**
+         * @member SuperMap.ElasticSearch.prototype.geoFence -{Object}
+         * @description 地理围栏
+         * @example {
      *    radius: 1000,//单位是m
      *    center: [104.40, 30.43],
      *    unit: 'meter|degree'
      *  }
-     */
-    geoFence = null;
+         */
+        this.geoFence = null;
 
-    /*
-     * Constant: EVENT_TYPES
-     * {Array<String>}
-     * 此类支持的事件类型。
-     *
-     */
-    EVENT_TYPES = ['change', 'error', 'outOfGeoFence'];
+        /*
+         * Constant: EVENT_TYPES
+         * {Array<String>}
+         * 此类支持的事件类型。
+         *
+         */
+        this.EVENT_TYPES = ['change', 'error', 'outOfGeoFence'];
 
-    /**
-     * @member SuperMap.ElasticSearch.prototype.events -{SuperMap.Events}
-     * @description 事件
-     */
-    events = null;
+        /**
+         * @member SuperMap.ElasticSearch.prototype.events -{SuperMap.Events}
+         * @description 事件
+         */
+        this.events = new Events(this, null, this.EVENT_TYPES);
 
-    /**
-     * @member SuperMap.ElasticSearch.prototype.eventListeners -{Object}
-     * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
-     * 相当于调用 SuperMap.Events.on(eventListeners)。
-     */
-    eventListeners = null;
-
-    constructor(url, options) {
-        options = options || {};
-        let me = this;
-        me.url = url;
-        me.client = new es.Client({
-            host: me.url
-        });
-        me.change = options.change;
-        me.geoFence = options.geoFence;
-        me.openGeoFence = options.openGeoFence;
-        me.outOfGeoFence = options.outOfGeoFence;
-        me.events = new Events(me, null, me.EVENT_TYPES);
-        me.eventListeners = options.eventListeners;
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
+        /**
+         * @member SuperMap.ElasticSearch.prototype.eventListeners -{Object}
+         * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
+         * 相当于调用 SuperMap.Events.on(eventListeners)。
+         */
+        this.eventListeners = null;
+        Util.extend(this, options);
+        if (this.eventListeners instanceof Object) {
+            this.events.on(this.eventListeners);
         }
     }
 

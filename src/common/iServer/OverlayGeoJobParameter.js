@@ -11,41 +11,41 @@ import {Util} from '../commontypes/Util';
  */
 export class OverlayGeoJobParameter {
 
-    /**
-     * @member SuperMap.OverlayGeoJobParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    datasetName = "";
-
-    /**
-     * @member SuperMap.OverlayGeoJobParameter.prototype.datasetOverlay -{string}
-     * @description 叠加对象所在的数据集名称。
-     */
-    datasetOverlay = "";
-
-    /**
-     * @member SuperMap.OverlayGeoJobParameter.prototype.mode -{string}
-     * @description 叠加分析模式
-     */
-    mode = "";
-
-    /**
-     * @member SuperMap.OverlayGeoJobParameter.prototype.srcFields -{string}
-     * @description 输入数据需要保留的字段
-     */
-    srcFields = "";
-
-    /**
-     * @member SuperMap.OverlayGeoJobParameter.prototype.overlayFields -{string}
-     * @description 叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效。
-     */
-    overlayFields = "";
-
     constructor(options) {
         if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.OverlayGeoJobParameter.prototype.datasetName -{string}
+         * @description 数据集名。
+         */
+        this.datasetName = "";
+
+        /**
+         * @member SuperMap.OverlayGeoJobParameter.prototype.datasetOverlay -{string}
+         * @description 叠加对象所在的数据集名称。
+         */
+        this.datasetOverlay = "";
+
+        /**
+         * @member SuperMap.OverlayGeoJobParameter.prototype.mode -{string}
+         * @description 叠加分析模式
+         */
+        this.mode = "";
+
+        /**
+         * @member SuperMap.OverlayGeoJobParameter.prototype.srcFields -{string}
+         * @description 输入数据需要保留的字段
+         */
+        this.srcFields = "";
+
+        /**
+         * @member SuperMap.OverlayGeoJobParameter.prototype.overlayFields -{string}
+         * @description 叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效。
+         */
+        this.overlayFields = "";
         Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
     }
 
     /**

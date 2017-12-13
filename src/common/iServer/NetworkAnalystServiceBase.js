@@ -15,19 +15,17 @@ import {CommonServiceBase} from './CommonServiceBase';
  */
 export class NetworkAnalystServiceBase extends CommonServiceBase {
 
-    /**
-     * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{SuperMap.DataFormat}
-     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-     *              参数格式为"ISERVER","GEOJSON"
-     * @default "GEOJSON"
-     */
-    format = DataFormat.GEOJSON;
-
     constructor(url, options) {
         super(url, options);
-        if (options && options.format) {
-            this.format = options.format.toUpperCase();
-        }
+        /**
+         * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{SuperMap.DataFormat}
+         * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+         *              参数格式为"ISERVER","GEOJSON"
+         * @default "GEOJSON"
+         */
+        this.format = DataFormat.GEOJSON;
+
+        this.CLASS_NAME = "SuperMap.NetworkAnalystServiceBase";
     }
 
     /**
@@ -65,8 +63,6 @@ export class NetworkAnalystServiceBase extends CommonServiceBase {
     toGeoJSONResult(result) { // eslint-disable-line no-unused-vars
         return null;
     }
-
-    CLASS_NAME = "SuperMap.NetworkAnalystServiceBase"
 }
 
 SuperMap.NetworkAnalystServiceBase = NetworkAnalystServiceBase;

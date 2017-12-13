@@ -57,11 +57,6 @@ export class SmicSector extends Shape {
      */
     //打开接口 style
 
-    /**
-     * Property: type
-     * {String} 图形类型。
-     */
-    type = 'smicsector';
 
     /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicSector
@@ -73,9 +68,15 @@ export class SmicSector extends Shape {
      */
     constructor(options) {
         super(options);
+        /**
+         * Property: type
+         * {String} 图形类型。
+         */
+        this.type = 'smicsector';
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicSector";
     }
 
     /**
@@ -209,5 +210,4 @@ export class SmicSector extends Shape {
         return style.__rect;
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicSector"
 }

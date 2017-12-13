@@ -16,33 +16,34 @@ import toPairs from 'lodash/toPairs';
  */
 /*eslint no-useless-escape: "off"*/
 export class CartoCSS {
-    env = null;
-
-    /**
-     * @member SuperMap.CartoCSS.prototype.parser
-     * @description 解析器
-     */
-    parser = null;
-
-    /**
-     * @member SuperMap.CartoCSS.prototype.ruleSet
-     * @description CartoCSS规则对象
-     */
-    ruleSet = null;
-
-    /**
-     * @member SuperMap.CartoCSS.prototype.cartoStr
-     * @description CartoCSS样式表字符串
-     */
-    cartoStr = "";
-
-    /**
-     * @member SuperMap.CartoCSS.prototype.shaders
-     * @description Carto着色器集
-     */
-    shaders = null;
 
     constructor(cartoStr) {
+        this.env = null;
+
+        /**
+         * @member SuperMap.CartoCSS.prototype.parser
+         * @description 解析器
+         */
+        this.parser = null;
+
+        /**
+         * @member SuperMap.CartoCSS.prototype.ruleSet
+         * @description CartoCSS规则对象
+         */
+        this.ruleSet = null;
+
+        /**
+         * @member SuperMap.CartoCSS.prototype.cartoStr
+         * @description CartoCSS样式表字符串
+         */
+        this.cartoStr = "";
+
+        /**
+         * @member SuperMap.CartoCSS.prototype.shaders
+         * @description Carto着色器集
+         */
+        this.shaders = null;
+
         if (typeof cartoStr === "string") {
             this.cartoStr = cartoStr;
             this.env = {
@@ -3098,9 +3099,9 @@ SuperMap.CartoCSS.Tree.functions = {
 };
 
 SuperMap.CartoCSS.Tree.Call = class Call {
-    is = 'call';
 
     constructor(name, args, index) {
+        this.is = 'call';
         this.name = name;
         this.args = args;
         this.index = index;
@@ -3209,9 +3210,9 @@ SuperMap.CartoCSS.Tree.Call = class Call {
 };
 
 SuperMap.CartoCSS.Tree.Color = class Color {
-    is = 'color';
 
     constructor(rgb, a) {
+        this.is = 'color';
         // The end goal here, is to parse the arguments
         // into an integer triplet, such as `128, 255, 0`
         //
@@ -3392,19 +3393,20 @@ SuperMap.CartoCSS.Tree.Definition = class Definition {
 };
 
 SuperMap.CartoCSS.Tree.Dimension = class Dimension {
-    is = 'float';
-    physical_units = ['m', 'cm', 'in', 'mm', 'pt', 'pc'];
-    screen_units = ['px', '%'];
-    all_units = ['m', 'cm', 'in', 'mm', 'pt', 'pc', 'px', '%'];
-    densities = {
-        m: 0.0254,
-        mm: 25.4,
-        cm: 2.54,
-        pt: 72,
-        pc: 6
-    };
+
 
     constructor(value, unit, index) {
+        this.is = 'float';
+        this.physical_units = ['m', 'cm', 'in', 'mm', 'pt', 'pc'];
+        this.screen_units = ['px', '%'];
+        this.all_units = ['m', 'cm', 'in', 'mm', 'pt', 'pc', 'px', '%'];
+        this.densities = {
+            m: 0.0254,
+            mm: 25.4,
+            cm: 2.54,
+            pt: 72,
+            pc: 6
+        };
         this.value = parseFloat(value);
         this.unit = unit || null;
         this.index = index;
@@ -3514,9 +3516,10 @@ SuperMap.CartoCSS.Tree.Element = class Element {
 };
 
 SuperMap.CartoCSS.Tree.Expression = class Expression {
-    is = 'expression';
+
 
     constructor(value) {
+        this.is = 'expression';
         this.value = value;
     }
 
@@ -3538,9 +3541,9 @@ SuperMap.CartoCSS.Tree.Expression = class Expression {
 };
 
 SuperMap.CartoCSS.Tree.Field = class Field {
-    is = 'field';
 
     constructor(content) {
+        this.is = 'field';
         this.value = content || '';
     }
 
@@ -3554,17 +3557,18 @@ SuperMap.CartoCSS.Tree.Field = class Field {
 };
 
 SuperMap.CartoCSS.Tree.Filter = class Filter {
-    ops = {
-        '<': [' &lt; ', 'numeric'],
-        '>': [' &gt; ', 'numeric'],
-        '=': [' = ', 'both'],
-        '!=': [' != ', 'both'],
-        '<=': [' &lt;= ', 'numeric'],
-        '>=': [' &gt;= ', 'numeric'],
-        '=~': ['.match(', 'string', ')']
-    };
 
     constructor(key, op, val, index, filename) {
+        this.ops = {
+            '<': [' &lt; ', 'numeric'],
+            '>': [' &gt; ', 'numeric'],
+            '=': [' = ', 'both'],
+            '!=': [' != ', 'both'],
+            '<=': [' &lt;= ', 'numeric'],
+            '>=': [' &gt;= ', 'numeric'],
+            '=~': ['.match(', 'string', ')']
+        };
+
         this.key = key;
         this.op = op;
         this.val = val;
@@ -3849,9 +3853,9 @@ SuperMap.CartoCSS.Tree.Fontset = class Fontset {
     }
 };
 SuperMap.CartoCSS.Tree.Invalid = class Invalid {
-    is = 'invalid';
 
     constructor(chunk, index, message) {
+        this.is = 'invalid';
         this.chunk = chunk;
         this.index = index;
         this.type = 'syntax';
@@ -3909,9 +3913,9 @@ SuperMap.CartoCSS.Tree.Literal = class Literal {
 };
 
 SuperMap.CartoCSS.Tree.Operation = class Operation {
-    is = 'operation';
 
     constructor(op, operands, index) {
+        this.is = 'operation';
         this.op = op.trim();
         this.operands = operands;
         this.index = index;
@@ -3993,9 +3997,9 @@ SuperMap.CartoCSS.Tree.Operation = class Operation {
 };
 
 SuperMap.CartoCSS.Tree.Quoted = class Quoted {
-    is = 'string';
 
     constructor(content) {
+        this.is = 'string';
         this.value = content || '';
     }
 
@@ -4217,9 +4221,9 @@ SuperMap.CartoCSS.Tree.Reference = {
 SuperMap.CartoCSS.Tree.Reference.setVersion("latest");
 
 SuperMap.CartoCSS.Tree.Rule = class Rule {
-    is = 'rule';
 
     constructor(name, value, index, filename) {
+        this.is = 'rule';
         var parts = name.split('/');
         this.name = parts.pop();
         this.instance = parts.length ? parts[0] : '__default__';
@@ -4259,9 +4263,9 @@ SuperMap.CartoCSS.Tree.Rule = class Rule {
 };
 
 SuperMap.CartoCSS.Tree.Ruleset = class Ruleset {
-    is = 'ruleset';
 
     constructor(selectors, rules) {
+        this.is = 'ruleset';
         this.selectors = selectors;
         this.rules = rules;
         // static cache of find() function
@@ -4466,9 +4470,9 @@ SuperMap.CartoCSS.Tree.Selector = class Selector {
 /*style:class Invalid ),*/
 
 SuperMap.CartoCSS.Tree.URL = class URL {
-    is = 'uri';
 
     constructor(val, paths) {
+        this.is = 'uri';
         this.value = val;
         this.paths = paths;
     }
@@ -4483,9 +4487,9 @@ SuperMap.CartoCSS.Tree.URL = class URL {
 };
 
 SuperMap.CartoCSS.Tree.Value = class Value {
-    is = 'value';
 
     constructor(value) {
+        this.is = 'value';
         this.value = value;
     }
 
@@ -4530,9 +4534,8 @@ SuperMap.CartoCSS.Tree.Value = class Value {
 };
 
 SuperMap.CartoCSS.Tree.Variable = class Variable {
-    is = 'variable';
-
     constructor(name, index, filename) {
+        this.is = 'variable';
         this.name = name;
         this.index = index;
         this.filename = filename;

@@ -24,6 +24,7 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.UpdateEdgeWeightService";
     }
 
     /**
@@ -103,7 +104,6 @@ export class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
         return paramStr;
     }
 
-    CLASS_NAME = "SuperMap.UpdateEdgeWeightService"
 }
 
 SuperMap.UpdateEdgeWeightService = UpdateEdgeWeightService;

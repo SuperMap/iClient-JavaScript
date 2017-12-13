@@ -59,19 +59,6 @@ export class SmicPolygon extends Shape {
     //打开接口 style
 
     /**
-     * Property: type
-     * {String} 图形类型.
-     */
-    type = 'smicpolygon';
-
-    /**
-     * APIProperty: _holePolygonPointList
-     * {Array} 岛洞面多边形顶点数组（三维数组）
-     *
-     */
-    holePolygonPointLists = null;
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicPolygon
      * 构造函数。
      *
@@ -81,9 +68,23 @@ export class SmicPolygon extends Shape {
      */
     constructor(options) {
         super(options);
+        /**
+         * Property: type
+         * {String} 图形类型.
+         */
+        this.type = 'smicpolygon';
+
+        /**
+         * APIProperty: _holePolygonPointList
+         * {Array} 岛洞面多边形顶点数组（三维数组）
+         *
+         */
+        this.holePolygonPointLists = null;
+
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicPolygon";
     }
 
 
@@ -502,6 +503,4 @@ export class SmicPolygon extends Shape {
         return style.__rect;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicPolygon"
 }

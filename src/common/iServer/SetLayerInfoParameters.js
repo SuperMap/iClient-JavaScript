@@ -11,27 +11,29 @@ import {Util} from '../commontypes/Util';
  */
 export class SetLayerInfoParameters {
 
-    /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.resourceID -{string}
-     * @description 临时图层的资源ID
-     */
-    resourceID = null;
-
-    /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.tempLayerName -{string}
-     * @description 临时图层下子图层(或者其子图层)名,如：Countries@World.3@@World
-     */
-    tempLayerName = null;
-
-    /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.layerInfo -{Object}
-     * @description 要更新的图层信息。(包含修改和未修改的所有字段)。该参数可以通过图层信息服务获取，然后对返回值中subLayers.layers[i]图层信息属性进行修改。
-     */
-    layerInfo = null;
-
     constructor(options) {
         options = options || {};
+        /**
+         * @member SuperMap.SetLayerInfoParameters.prototype.resourceID -{string}
+         * @description 临时图层的资源ID
+         */
+        this.resourceID = null;
+
+        /**
+         * @member SuperMap.SetLayerInfoParameters.prototype.tempLayerName -{string}
+         * @description 临时图层下子图层(或者其子图层)名,如：Countries@World.3@@World
+         */
+        this.tempLayerName = null;
+
+        /**
+         * @member SuperMap.SetLayerInfoParameters.prototype.layerInfo -{Object}
+         * @description 要更新的图层信息。(包含修改和未修改的所有字段)。该参数可以通过图层信息服务获取，然后对返回值中subLayers.layers[i]图层信息属性进行修改。
+         */
+        this.layerInfo = null;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.SetLayerInfoParameters";
     }
 
     /**
@@ -45,8 +47,6 @@ export class SetLayerInfoParameters {
         me.layerInfo = null;
     }
 
-
-    CLASS_NAME = "SuperMap.SetLayerInfoParameters"
 }
 
 SuperMap.SetLayerInfoParameters = SetLayerInfoParameters;

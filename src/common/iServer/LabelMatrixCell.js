@@ -7,7 +7,10 @@
  *              符号类型的矩阵标签元素类、图片类型的矩阵标签元素类和专题图类型的矩阵标签元素类均继承自该类。
  */
 export class LabelMatrixCell {
-    CLASS_NAME = "LabelMatrixCell"
+    constructor() {
+        this.CLASS_NAME = "LabelMatrixCell";
+    }
+
 }
 
 SuperMap.LabelMatrixCell = LabelMatrixCell;

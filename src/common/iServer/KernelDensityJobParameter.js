@@ -16,71 +16,73 @@ import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
  */
 export class KernelDensityJobParameter {
 
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName - {string}
-     * @description 数据集名。
-     */
-    datasetName = "";
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.query - {Object}
-     * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
-     */
-    query = "";
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.resolution - {number}
-     * @description 网格大小。
-     */
-    resolution = 80;
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.method - {number}
-     * @description 分析方法。
-     */
-    method = 0;
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshType - {number}
-     * @description 分析类型。
-     */
-    meshType = 0;
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.fields - {string}
-     * @description 权重索引。
-     */
-    fields = "";
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radius - {number}
-     * @description 分析的影响半径。
-     */
-    radius = 300;
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit - {SuperMap.AnalystSizeUnit}
-     * @description 网格大小单位。
-     */
-    meshSizeUnit = AnalystSizeUnit.METER;
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit - {SuperMap.AnalystSizeUnit}
-     * @description 搜索半径单位。
-     */
-    radiusUnit = AnalystSizeUnit.METER;
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit - {SuperMap.AnalystAreaUnit}
-     * @description 面积单位。
-     */
-    areaUnit = AnalystAreaUnit.SQUAREMILE;
-
     constructor(options) {
         if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.datasetName - {string}
+         * @description 数据集名。
+         */
+        this.datasetName = "";
+
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.query - {Object}
+         * @description 分析范围。范围类型可以是SuperMap.Bounds|L.Bounds|ol.extent。 <br>
+         */
+        this.query = "";
+
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.resolution - {number}
+         * @description 网格大小。
+         */
+        this.resolution = 80;
+
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.method - {number}
+         * @description 分析方法。
+         */
+        this.method = 0;
+
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.meshType - {number}
+         * @description 分析类型。
+         */
+        this.meshType = 0;
+
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.fields - {string}
+         * @description 权重索引。
+         */
+        this.fields = "";
+
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.radius - {number}
+         * @description 分析的影响半径。
+         */
+        this.radius = 300;
+
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit - {SuperMap.AnalystSizeUnit}
+         * @description 网格大小单位。
+         */
+        this.meshSizeUnit = AnalystSizeUnit.METER;
+
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit - {SuperMap.AnalystSizeUnit}
+         * @description 搜索半径单位。
+         */
+        this.radiusUnit = AnalystSizeUnit.METER;
+
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit - {SuperMap.AnalystAreaUnit}
+         * @description 面积单位。
+         */
+        this.areaUnit = AnalystAreaUnit.SQUAREMILE;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
     }
 
     /**
@@ -122,7 +124,5 @@ export class KernelDensityJobParameter {
             }
         }
     }
-
 }
-
 SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;

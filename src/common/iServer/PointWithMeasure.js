@@ -13,17 +13,20 @@ import {Point} from '../commontypes/geometry/Point';
  */
 export class PointWithMeasure extends Point {
 
-    /**
-     * @member SuperMap.PointWithMeasure.prototype.measure -{number}
-     * @description 度量值，即路由对象属性值 M。
-     */
-    measure = null;
-
     constructor(options) {
         super(options);
+
+        /**
+         * @member SuperMap.PointWithMeasure.prototype.measure -{number}
+         * @description 度量值，即路由对象属性值 M。
+         */
+        this.measure = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.PointWithMeasure";
     }
 
     /**
@@ -87,7 +90,6 @@ export class PointWithMeasure extends Point {
         });
     }
 
-    CLASS_NAME = "SuperMap.PointWithMeasure"
 }
 
 SuperMap.PointWithMeasure = PointWithMeasure;

@@ -19,45 +19,45 @@ import {ServerTextStyle} from './ServerTextStyle';
  */
 export class ThemeLabelItem {
 
-    /**
-     * @member SuperMap.ThemeLabelItem.prototype.caption -{string}
-     * @description 标签专题子项的标题。
-     */
-    caption = null;
-
-    /**
-     * @member SuperMap.ThemeLabelItem.prototype.end -{number}
-     * @description 标签专题图子项的终止值。如果该子项是分段中最后一个子项，那么该终止值就是分段的最大值；
-     *              如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常。默认为0。
-     */
-    end = 0;
-
-    /**
-     * @member SuperMap.ThemeLabelItem.prototype.start -{number}
-     * @description 标签专题图子项的分段起始值。如果该子项是分段中第一项，那么该起始值就是分段的最小值；
-     *              如果该子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。默认为0。
-     */
-    start = 0;
-
-    /**
-     * @member SuperMap.ThemeLabelItem.prototype.visible -{boolean}
-     * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
-     */
-    visible = true;
-
-    /**
-     * @member SuperMap.ThemeLabelItem.prototype.style -{SuperMap.ServerTextStyle}
-     * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：<br>
-     *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
-     */
-    style = null;
-
     constructor(options) {
-        var me = this;
-        me.style = new ServerTextStyle();
+        /**
+         * @member SuperMap.ThemeLabelItem.prototype.caption -{string}
+         * @description 标签专题子项的标题。
+         */
+        this.caption = null;
+
+        /**
+         * @member SuperMap.ThemeLabelItem.prototype.end -{number}
+         * @description 标签专题图子项的终止值。如果该子项是分段中最后一个子项，那么该终止值就是分段的最大值；
+         *              如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常。默认为0。
+         */
+        this.end = 0;
+
+        /**
+         * @member SuperMap.ThemeLabelItem.prototype.start -{number}
+         * @description 标签专题图子项的分段起始值。如果该子项是分段中第一项，那么该起始值就是分段的最小值；
+         *              如果该子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。默认为0。
+         */
+        this.start = 0;
+
+        /**
+         * @member SuperMap.ThemeLabelItem.prototype.visible -{boolean}
+         * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
+         */
+        this.visible = true;
+
+        /**
+         * @member SuperMap.ThemeLabelItem.prototype.style -{SuperMap.ServerTextStyle}
+         * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：<br>
+         *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
+         */
+        this.style = new ServerTextStyle();
+
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.ThemeLabelItem";
+
     }
 
 
@@ -92,7 +92,6 @@ export class ThemeLabelItem {
         return t;
     }
 
-    CLASS_NAME = "SuperMap.ThemeLabelItem"
 }
 
 SuperMap.ThemeLabelItem = ThemeLabelItem;

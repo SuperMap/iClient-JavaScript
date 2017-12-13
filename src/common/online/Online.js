@@ -24,6 +24,8 @@ export class Online {
 
         var mContentUrl = this.webUrl + "/mycontent";
         this.mDatasUrl = mContentUrl + "/datas";
+
+        this.CLASS_NAME = "SuperMap.Online";
     }
 
     /**
@@ -69,9 +71,6 @@ export class Online {
             return services;
         });
     }
-
-
-    CLASS_NAME = "SuperMap.Online"
 }
 
 SuperMap.Online = Online;

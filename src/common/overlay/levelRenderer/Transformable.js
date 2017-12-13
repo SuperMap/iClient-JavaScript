@@ -11,49 +11,78 @@ import {SUtil} from './SUtil';
 export class Transformable {
 
     /**
-     * APIProperty: position
-     * {Array{Number}} 平移， 默认值：[0, 0]。
-     */
-    position = [0, 0];
-
-    /**
-     * APIProperty: rotation
-     * {Array{Number}} 旋转，可以通过数组二三项指定旋转的原点， 默认值：[0, 0, 0]。
-     */
-    rotation = [0, 0, 0];
-
-    /**
-     * APIProperty: scale
-     * {Array{Number}} 缩放，可以通过数组三四项指定缩放的原点， 默认值：[1, 1, 0, 0]。
-     */
-    scale = [1, 1, 0, 0];
-
-    /**
-     * Property: needLocalTransform
-     * {Boolean} 是否变换。默认值：false。
-     */
-    needLocalTransform = false;
-
-    /**
-     * APIProperty: needTransform
-     * {Boolean} 是否有坐标变换。默认值：false。
-     */
-    needTransform = false;
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Transformable
      * 构造函数。
      */
     constructor() {
+        /**
+         * APIProperty: position
+         * {Array{Number}} 平移， 默认值：[0, 0]。
+         */
         this.position = [0, 0];
 
+        /**
+         * APIProperty: rotation
+         * {Array{Number}} 旋转，可以通过数组二三项指定旋转的原点， 默认值：[0, 0, 0]。
+         */
         this.rotation = [0, 0, 0];
 
+        /**
+         * APIProperty: scale
+         * {Array{Number}} 缩放，可以通过数组三四项指定缩放的原点， 默认值：[1, 1, 0, 0]。
+         */
         this.scale = [1, 1, 0, 0];
 
+        /**
+         * Property: needLocalTransform
+         * {Boolean} 是否变换。默认值：false。
+         */
         this.needLocalTransform = false;
 
+        /**
+         * APIProperty: needTransform
+         * {Boolean} 是否有坐标变换。默认值：false。
+         */
         this.needTransform = false;
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Transformable";
+        /**
+         * APIMethod: lookAt
+         * 设置图形的朝向。
+         *
+         */
+        this.lookAt = (function () {
+            var v = SUtil.Util_vector.create();
+            // {Array{Number}|Float32Array} target
+            return function (target) {
+                if (!this.transform) {
+                    this.transform = SUtil.Util_matrix.create();
+                }
+                var m = this.transform;
+                SUtil.Util_vector.sub(v, target, this.position);
+                if (isAroundZero(v[0]) && isAroundZero(v[1])) {
+                    return;
+                }
+                SUtil.Util_vector.normalize(v, v);
+                // Y Axis
+                // TODO Scale origin ?
+                m[2] = v[0] * this.scale[1];
+                m[3] = v[1] * this.scale[1];
+                // X Axis
+                m[0] = v[1] * this.scale[0];
+                m[1] = -v[0] * this.scale[0];
+                // Position
+                m[4] = this.position[0];
+                m[5] = this.position[1];
+
+                this.decomposeTransform();
+
+                function isAroundZero(val) {
+                    var EPSILON = 5e-5;
+                    return val > -EPSILON && val < EPSILON;
+                }
+            };
+        })();
     }
 
     /**
@@ -207,43 +236,6 @@ export class Transformable {
     }
 
 
-    /**
-     * APIMethod: lookAt
-     * 设置图形的朝向。
-     *
-     */
-    lookAt = (function () {
-        var v = SUtil.Util_vector.create();
-        // {Array{Number}|Float32Array} target
-        return function (target) {
-            if (!this.transform) {
-                this.transform = SUtil.Util_matrix.create();
-            }
-            var m = this.transform;
-            SUtil.Util_vector.sub(v, target, this.position);
-            if (isAroundZero(v[0]) && isAroundZero(v[1])) {
-                return;
-            }
-            SUtil.Util_vector.normalize(v, v);
-            // Y Axis
-            // TODO Scale origin ?
-            m[2] = v[0] * this.scale[1];
-            m[3] = v[1] * this.scale[1];
-            // X Axis
-            m[0] = v[1] * this.scale[0];
-            m[1] = -v[0] * this.scale[0];
-            // Position
-            m[4] = this.position[0];
-            m[5] = this.position[1];
-
-            this.decomposeTransform();
-
-            function isAroundZero(val) {
-                var EPSILON = 5e-5;
-                return val > -EPSILON && val < EPSILON;
-            }
-        };
-    })();
 
     /**
      * APIMethod: decomposeTransform
@@ -280,6 +272,4 @@ export class Transformable {
         }
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Transformable"
 }

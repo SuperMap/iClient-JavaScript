@@ -22,27 +22,29 @@ import {QueryParameters} from './QueryParameters';
  */
 export class QueryByBoundsParameters extends QueryParameters {
 
-    /**
-     * @member SuperMap.QueryByBoundsParameters.prototype.returnContent -{boolean}
-     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
-     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
-     *               为 false，则返回的是查询结果资源的 URI。默认为 true。
-     */
-    returnContent = true;
-
-    /**
-     * @member SuperMap.QueryByBoundsParameters.prototype.bounds
-     * @description 指定的查询范围。<br>
-     * Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
-     */
-    bounds = null;
-
     constructor(options) {
-        super(options);
         if (!options) {
             return;
         }
+        super(options);
+        /**
+         * @member SuperMap.QueryByBoundsParameters.prototype.returnContent -{boolean}
+         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
+         *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
+         *               为 false，则返回的是查询结果资源的 URI。默认为 true。
+         */
+        this.returnContent = true;
+
+        /**
+         * @member SuperMap.QueryByBoundsParameters.prototype.bounds
+         * @description 指定的查询范围。<br>
+         * Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。
+         */
+        this.bounds = null;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.QueryByBoundsParameters";
     }
 
     /**
@@ -58,8 +60,6 @@ export class QueryByBoundsParameters extends QueryParameters {
         }
 
     }
-
-    CLASS_NAME = "SuperMap.QueryByBoundsParameters"
 }
 
 SuperMap.QueryByBoundsParameters = QueryByBoundsParameters;

@@ -18,35 +18,6 @@ import '../REST';
  */
 export class UGCSubLayer extends UGCMapLayer {
 
-    /**
-     * @member SuperMap.UGCSubLayer.prototype.datasetInfo -{SuperMap.DatasetInfo}
-     * @description 数据集信息。
-     */
-    datasetInfo = null;
-
-    /**
-     * @member SuperMap.UGCSubLayer.prototype.displayFilter -{string}
-     * @description 图层显示过滤条件。
-     */
-    displayFilter = null;
-
-    /**
-     * @member SuperMap.UGCSubLayer.prototype.joinItems -{SuperMap.JoinItem}
-     * @description 连接信息类。
-     */
-    joinItems = null;
-
-    /**
-     * @member SuperMap.UGCSubLayer.prototype.representationField -{string}
-     * @description 存储制图表达信息的字段。
-     */
-    representationField = null;
-
-    /**
-     * @member SuperMap.UGCSubLayer.prototype.ugcLayerType -{SuperMap.LayerType}
-     * @description 图层类型。
-     */
-    ugcLayerType = null;
 
     /*
      * Constructor: SuperMap.UGCSubLayer
@@ -56,6 +27,37 @@ export class UGCSubLayer extends UGCMapLayer {
     constructor(options) {
         options = options || {};
         super(options);
+        /**
+         * @member SuperMap.UGCSubLayer.prototype.datasetInfo -{SuperMap.DatasetInfo}
+         * @description 数据集信息。
+         */
+        this.datasetInfo = null;
+
+        /**
+         * @member SuperMap.UGCSubLayer.prototype.displayFilter -{string}
+         * @description 图层显示过滤条件。
+         */
+        this.displayFilter = null;
+
+        /**
+         * @member SuperMap.UGCSubLayer.prototype.joinItems -{SuperMap.JoinItem}
+         * @description 连接信息类。
+         */
+        this.joinItems = null;
+
+        /**
+         * @member SuperMap.UGCSubLayer.prototype.representationField -{string}
+         * @description 存储制图表达信息的字段。
+         */
+        this.representationField = null;
+
+        /**
+         * @member SuperMap.UGCSubLayer.prototype.ugcLayerType -{SuperMap.LayerType}
+         * @description 图层类型。
+         */
+        this.ugcLayerType = null;
+
+        this.CLASS_NAME = "SuperMap.UGCSubLayer";
     }
 
 
@@ -113,7 +115,6 @@ export class UGCSubLayer extends UGCMapLayer {
         return jsonObject;
     }
 
-    CLASS_NAME = "SuperMap.UGCSubLayer"
 }
 
 SuperMap.UGCSubLayer = UGCSubLayer;

@@ -14,6 +14,7 @@ export class VectorClipJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/vectorclip";
+        this.CLASS_NAME = "SuperMap.VectorClipJobsService";
     }
 
     /**
@@ -50,7 +51,6 @@ export class VectorClipJobsService extends ProcessingServiceBase {
         super.addJob(this.url, params, VectorClipJobsParameter, seconds);
     }
 
-    CLASS_NAME = "SuperMap.VectorClipJobsService"
 }
 
 SuperMap.VectorClipJobsService = VectorClipJobsService;

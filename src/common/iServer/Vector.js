@@ -13,15 +13,16 @@ import {ServerStyle} from './ServerStyle';
 
 export class Vector extends UGCSubLayer {
 
-    /**
-     * @member SuperMap.Vector.prototype.style -{SuperMap.ServerStyle}
-     * @description 矢量图层的风格。
-     */
-    style = null;
-
     constructor(options) {
         options = options || {};
         super(options);
+        /**
+         * @member SuperMap.Vector.prototype.style -{SuperMap.ServerStyle}
+         * @description 矢量图层的风格。
+         */
+        this.style = null;
+
+        this.CLASS_NAME = "SuperMap.Vector";
     }
 
     /**
@@ -60,8 +61,6 @@ export class Vector extends UGCSubLayer {
         }
         return jsonObject;
     }
-
-    CLASS_NAME = "SuperMap.Vector"
 }
 
 SuperMap.Vector = Vector;

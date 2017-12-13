@@ -12,6 +12,7 @@ export class Http {
      *
      */
     constructor() {
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Http"
 
     }
 
@@ -55,5 +56,4 @@ export class Http {
         xhr.send(null);
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Http"
 }

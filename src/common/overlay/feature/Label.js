@@ -12,25 +12,6 @@ import {ShapeParameters} from './ShapeParameters';
 export class Label extends ShapeParameters {
 
     /**
-     * APIProperty: x
-     * {Number} 标签 x 坐标。
-     */
-    x = null;
-
-    /**
-     * APIProperty: y
-     * {Number} 标签 y 坐标。
-     */
-    y = null;
-
-    /**
-     * APIProperty: text
-     * {String} 标签的文本内容。
-     */
-    text = null;
-
-
-    /**
      * Constructor: SuperMap.Feature.ShapeParameters.Label
      * 创建一个标签参数对象。
      *
@@ -44,10 +25,25 @@ export class Label extends ShapeParameters {
      */
     constructor(x, y, text) {
         super(x, y, text);
-
+        /**
+         * APIProperty: x
+         * {Number} 标签 x 坐标。
+         */
         this.x = x;
+
+        /**
+         * APIProperty: y
+         * {Number} 标签 y 坐标。
+         */
         this.y = y;
+
+        /**
+         * APIProperty: text
+         * {String} 标签的文本内容。
+         */
         this.text = text;
+
+        this.CLASS_NAME = "SuperMap.Feature.ShapeParameters.Label";
     }
 
 
@@ -64,7 +60,6 @@ export class Label extends ShapeParameters {
     }
 
 
-    CLASS_NAME = "SuperMap.Feature.ShapeParameters.Label"
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeParameters.Label = Label;

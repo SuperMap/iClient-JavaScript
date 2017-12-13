@@ -14,43 +14,41 @@ import {Util} from '../commontypes/Util';
  */
 export class ThemeGraduatedSymbolStyle {
 
-    /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed -{boolean}
-     * @description 是否显示负值。默认为 false。
-     */
-    negativeDisplayed = false;
-
-    /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeStyle -{SuperMap.ServerStyle} 负值的等级符号风格。
-     */
-    negativeStyle = null;
-
-    /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.positiveStyle -{SuperMap.ServerStyle}
-     * @description 正值的等级符号风格。
-     */
-    positiveStyle = null;
-
-    /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroDisplayed -{boolean}
-     * @description 是否显示0值。默认为 false。
-     */
-    zeroDisplayed = false;
-
-    /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroStyle -{SuperMap.ServerStyle}
-     * @description 0值的等级符号风格。
-     */
-    zeroStyle = null;
-
     constructor(options) {
-        var me = this;
-        me.negativeStyle = new ServerStyle();
-        me.positiveStyle = new ServerStyle();
-        me.zeroStyle = new ServerStyle();
+        /**
+         * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed -{boolean}
+         * @description 是否显示负值。默认为 false。
+         */
+        this.negativeDisplayed = false;
+
+        /**
+         * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeStyle -{SuperMap.ServerStyle} 负值的等级符号风格。
+         */
+        this.negativeStyle = new ServerStyle();
+
+        /**
+         * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.positiveStyle -{SuperMap.ServerStyle}
+         * @description 正值的等级符号风格。
+         */
+        this.positiveStyle = new ServerStyle();
+
+        /**
+         * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroDisplayed -{boolean}
+         * @description 是否显示0值。默认为 false。
+         */
+        this.zeroDisplayed = false;
+
+        /**
+         * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroStyle -{SuperMap.ServerStyle}
+         * @description 0值的等级符号风格。
+         */
+        this.zeroStyle = new ServerStyle();
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ThemeGraduatedSymbolStyle";
     }
 
     /**
@@ -84,7 +82,6 @@ export class ThemeGraduatedSymbolStyle {
         return res;
     }
 
-    CLASS_NAME = "SuperMap.ThemeGraduatedSymbolStyle"
 }
 
 

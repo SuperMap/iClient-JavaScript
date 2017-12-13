@@ -14,55 +14,54 @@ import {Theme} from './ThemeLayer';
 
 export class GeoFeature extends Theme {
 
-    /**
-     * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.name -{string}
-     * @description 专题图图层名称
-     */
-    name = null;
-    /**
-     * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.style -{SuperMap.ThemeStyle}
-     * @description 专题图图层全局样式
-     */
-    style = null;
-
-    /**
-     * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.highlightStyle -{SuperMap.ThemeStyle}
-     * @description 专题图图层高亮样式
-     */
-    highlightStyle = null;
-
-    /**
-     * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.nodesClipPixel -{number}
-     * @description 节点抽稀像素距离，默认值 2。
-     */
-    nodesClipPixel = 2;
-
-    /**
-     * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isHoverAble -{boolean}
-     * @description 图形是否在 hover 时高亮 ，默认值：false。
-     */
-    isHoverAble = false;
-    /**
-     * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isMultiHover -{boolean}
-     * @description 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。
-     */
-    isMultiHover = false;
-    /**
-     * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isClickAble -{boolean}
-     * @description  图形是否可点击，默认 true
-     */
-    isClickAble = true;
-
-    /**
-     * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isAllowFeatureStyle -{boolean}
-     * @description  是否允许 feature 样式（style） 中的有效属性应用到专题图层。<br>
-     *               默认值为： false，禁止对专题要素使用数据（feature）的 style。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
-     *               的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
-     */
-    isAllowFeatureStyle = false;
-
     constructor(name, opt_options) {
         super(name, opt_options);
+        /**
+         * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.name -{string}
+         * @description 专题图图层名称
+         */
+        this.name = null;
+        /**
+         * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.style -{SuperMap.ThemeStyle}
+         * @description 专题图图层全局样式
+         */
+        this.style = null;
+
+        /**
+         * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.highlightStyle -{SuperMap.ThemeStyle}
+         * @description 专题图图层高亮样式
+         */
+        this.highlightStyle = null;
+
+        /**
+         * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.nodesClipPixel -{number}
+         * @description 节点抽稀像素距离，默认值 2。
+         */
+        this.nodesClipPixel = 2;
+
+        /**
+         * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isHoverAble -{boolean}
+         * @description 图形是否在 hover 时高亮 ，默认值：false。
+         */
+        this.isHoverAble = false;
+        /**
+         * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isMultiHover -{boolean}
+         * @description 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。
+         */
+        this.isMultiHover = false;
+        /**
+         * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isClickAble -{boolean}
+         * @description  图形是否可点击，默认 true
+         */
+        this.isClickAble = true;
+
+        /**
+         * @member mapboxgl.supermap.GeoFeatureThemeLayer.prototype.isAllowFeatureStyle -{boolean}
+         * @description  是否允许 feature 样式（style） 中的有效属性应用到专题图层。<br>
+         *               默认值为： false，禁止对专题要素使用数据（feature）的 style。此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
+         *               的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
+         */
+        this.isAllowFeatureStyle = false;
         Util.extend(this, opt_options);
         this.cache = opt_options.cache || {};
         this.cacheFields = opt_options.cacheFields || [];

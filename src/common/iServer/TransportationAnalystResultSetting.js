@@ -17,60 +17,63 @@ import {Util} from '../commontypes/Util';
  */
 export class TransportationAnalystResultSetting {
 
-    /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeFeatures -{boolean}
-     * @description 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。
-     */
-    returnEdgeFeatures = false;
-
-    /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeGeometry -{boolean}
-     * @description 返回的弧段要素集合中是否包含几何对象信息。默认为 false。
-     */
-    returnEdgeGeometry = false;
-
-    /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeIDs -{boolean}
-     * @description 返回结果中是否包含经过弧段 ID 集合。默认为 false。
-     */
-    returnEdgeIDs = false;
-
-    /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeFeatures -{boolean}
-     * @description 是否在分析结果中包含结点要素集合。
-     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。
-     */
-    returnNodeFeatures = false;
-
-    /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeGeometry -{boolean}
-     * @description 返回的结点要素集合中是否包含几何对象信息。默认为 false。
-     */
-    returnNodeGeometry = false;
-
-    /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeIDs -{boolean}
-     * @description 返回结果中是否包含经过结点 ID 集合。默认为 false。
-     */
-    returnNodeIDs = false;
-
-    /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnPathGuides -{boolean}
-     * @description 返回分析结果中是否包含行驶导引集合。
-     */
-    returnPathGuides = false;
-
-    /**
-     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnRoutes -{boolean}
-     * @description 返回分析结果中是否包含路由对象的集合。
-     */
-    returnRoutes = false;
-
     constructor(options) {
         if (!options) {
             return;
         }
+
+        /**
+         * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeFeatures -{boolean}
+         * @description 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。
+         */
+        this.returnEdgeFeatures = false;
+
+        /**
+         * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeGeometry -{boolean}
+         * @description 返回的弧段要素集合中是否包含几何对象信息。默认为 false。
+         */
+        this.returnEdgeGeometry = false;
+
+        /**
+         * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeIDs -{boolean}
+         * @description 返回结果中是否包含经过弧段 ID 集合。默认为 false。
+         */
+        this.returnEdgeIDs = false;
+
+        /**
+         * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeFeatures -{boolean}
+         * @description 是否在分析结果中包含结点要素集合。
+         * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。
+         */
+        this.returnNodeFeatures = false;
+
+        /**
+         * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeGeometry -{boolean}
+         * @description 返回的结点要素集合中是否包含几何对象信息。默认为 false。
+         */
+        this.returnNodeGeometry = false;
+
+        /**
+         * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeIDs -{boolean}
+         * @description 返回结果中是否包含经过结点 ID 集合。默认为 false。
+         */
+        this.returnNodeIDs = false;
+
+        /**
+         * @member SuperMap.TransportationAnalystResultSetting.prototype.returnPathGuides -{boolean}
+         * @description 返回分析结果中是否包含行驶导引集合。
+         */
+        this.returnPathGuides = false;
+
+        /**
+         * @member SuperMap.TransportationAnalystResultSetting.prototype.returnRoutes -{boolean}
+         * @description 返回分析结果中是否包含路由对象的集合。
+         */
+        this.returnRoutes = false;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.TransportationAnalystResultSetting";
     }
 
     /**
@@ -89,7 +92,6 @@ export class TransportationAnalystResultSetting {
         me.returnRoutes = null;
     }
 
-    CLASS_NAME = "SuperMap.TransportationAnalystResultSetting"
 }
 
 SuperMap.TransportationAnalystResultSetting = TransportationAnalystResultSetting;

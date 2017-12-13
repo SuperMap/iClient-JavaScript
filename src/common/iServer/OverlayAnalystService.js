@@ -27,18 +27,20 @@ import {GeometryOverlayAnalystParameters} from './GeometryOverlayAnalystParamete
 
 export class OverlayAnalystService extends SpatialAnalystBase {
 
-    /**
-     * @member SuperMap.OverlayAnalystService.prototype.mode -{string}
-     * @description 叠加分析类型
-     */
-    mode = null;
-
     constructor(url, options) {
         super(url, options);
-        var me = this;
+
+        /**
+         * @member SuperMap.OverlayAnalystService.prototype.mode -{string}
+         * @description 叠加分析类型
+         */
+        this.mode = null;
+
         if (options) {
-            Util.extend(me, options);
+            Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.OverlayAnalystService";
     }
 
     /**
@@ -83,8 +85,6 @@ export class OverlayAnalystService extends SpatialAnalystBase {
             failure: me.serviceProcessFailed
         });
     }
-
-    CLASS_NAME = "SuperMap.OverlayAnalystService"
 }
 
 SuperMap.OverlayAnalystService = OverlayAnalystService;

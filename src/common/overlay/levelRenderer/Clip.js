@@ -70,6 +70,7 @@ export class Clip {
         this.onframe = options.onframe;
         this.ondestroy = options.ondestroy;
         this.onrestart = options.onrestart;
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Animation.Clip";
     }
 
     /**
@@ -133,5 +134,4 @@ export class Clip {
         }
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Animation.Clip"
 }

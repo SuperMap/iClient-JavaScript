@@ -19,76 +19,79 @@ import {GeometryType, QueryOption} from '../REST';
  */
 export class QueryParameters {
 
-    /**
-     * @member SuperMap.QueryParameters.prototype.customParams -{string}
-     * @description 自定义参数，供扩展使用。
-     */
-    customParams = null;
-
-    /**
-     * @member SuperMap.QueryParameters.prototype.prjCoordSys -{Object}
-     * @description 自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}
-     */
-    prjCoordSys = null;
-
-    /**
-     * @member SuperMap.QueryParameters.prototype.expectCount -{number}
-     * @description 期望返回结果记录个数，默认返回100000条查询记录，
-     *               如果实际不足100000条则返回实际记录条数。
-     * @default 100000
-     */
-    expectCount = 100000;
-
-    /**
-     * @member SuperMap.QueryParameters.prototype.networkType -{SuperMap.GeometryType}
-     * @description 网络数据集对应的查询类型，
-     *               分为点和线两种类型，默认为线几何对象类型，即{@link GeometryType.LINE | SuperMap.GeometryType.LINE}。
-     * @default  {@link SuperMap.GeometryType.LINE}
-     */
-    networkType = GeometryType.LINE;
-
-    /**
-     * @member SuperMap.QueryParameters.prototype.queryOption -{SuperMap.QueryOption}
-     * @description 查询结果类型枚举类。
-     *               该类描述查询结果返回类型，包括只返回属性、
-     *               只返回几何实体以及返回属性和几何实体。
-     * @default {@link SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY}
-     */
-    queryOption = QueryOption.ATTRIBUTEANDGEOMETRY;
-
-    /**
-     * @member SuperMap.QueryParameters.prototype.queryParams -{Array<SuperMap.FilterParameter>}
-     * @description 查询过滤条件参数数组。
-     *               该类用于设置查询数据集的查询过滤参数。
-     */
-    queryParams = null;
-
-    /**
-     * @member SuperMap.QueryParameters.prototype.startRecord -{number}
-     * @description 查询起始记录号，默认值为0。
-     * @default 0
-     */
-    startRecord = 0;
-
-    /**
-     * @member SuperMap.QueryParameters.prototype.holdTime -{number}
-     * @description 资源在服务端保存的时间。默认为10（分钟）。
-     * @default 10
-     */
-    holdTime = 10;
-
-    /**
-     * @member SuperMap.QueryParameters.prototype.returnCustomResult -{boolean}
-     * @description 仅供三维使用。
-     * @default false
-     */
-    returnCustomResult = false;
 
     constructor(options) {
         if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.QueryParameters.prototype.customParams -{string}
+         * @description 自定义参数，供扩展使用。
+         */
+        this.customParams = null;
+
+        /**
+         * @member SuperMap.QueryParameters.prototype.prjCoordSys -{Object}
+         * @description 自定义参数，供SuperMap Online提供的动态投影查询扩展使用。如 {"epsgCode":3857}
+         */
+        this.prjCoordSys = null;
+
+        /**
+         * @member SuperMap.QueryParameters.prototype.expectCount -{number}
+         * @description 期望返回结果记录个数，默认返回100000条查询记录，
+         *               如果实际不足100000条则返回实际记录条数。
+         * @default 100000
+         */
+        this.expectCount = 100000;
+
+        /**
+         * @member SuperMap.QueryParameters.prototype.networkType -{SuperMap.GeometryType}
+         * @description 网络数据集对应的查询类型，
+         *               分为点和线两种类型，默认为线几何对象类型，即{@link GeometryType.LINE | SuperMap.GeometryType.LINE}。
+         * @default  {@link SuperMap.GeometryType.LINE}
+         */
+        this.networkType = GeometryType.LINE;
+
+        /**
+         * @member SuperMap.QueryParameters.prototype.queryOption -{SuperMap.QueryOption}
+         * @description 查询结果类型枚举类。
+         *               该类描述查询结果返回类型，包括只返回属性、
+         *               只返回几何实体以及返回属性和几何实体。
+         * @default {@link SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY}
+         */
+        this.queryOption = QueryOption.ATTRIBUTEANDGEOMETRY;
+
+        /**
+         * @member SuperMap.QueryParameters.prototype.queryParams -{Array<SuperMap.FilterParameter>}
+         * @description 查询过滤条件参数数组。
+         *               该类用于设置查询数据集的查询过滤参数。
+         */
+        this.queryParams = null;
+
+        /**
+         * @member SuperMap.QueryParameters.prototype.startRecord -{number}
+         * @description 查询起始记录号，默认值为0。
+         * @default 0
+         */
+        this.startRecord = 0;
+
+        /**
+         * @member SuperMap.QueryParameters.prototype.holdTime -{number}
+         * @description 资源在服务端保存的时间。默认为10（分钟）。
+         * @default 10
+         */
+        this.holdTime = 10;
+
+        /**
+         * @member SuperMap.QueryParameters.prototype.returnCustomResult -{boolean}
+         * @description 仅供三维使用。
+         * @default false
+         */
+        this.returnCustomResult = false;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.QueryParameters";
     }
 
     /**
@@ -113,8 +116,6 @@ export class QueryParameters {
         me.prjCoordSys = null;
     }
 
-
-    CLASS_NAME = "SuperMap.QueryParameters"
 }
 
 SuperMap.QueryParameters = QueryParameters;

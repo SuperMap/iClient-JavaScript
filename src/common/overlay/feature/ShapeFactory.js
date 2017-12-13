@@ -45,11 +45,7 @@ import {Util} from '../../commontypes/Util';
  */
 export class ShapeFactory {
 
-    /**
-     * APIProperty: shapeParameters
-     * {Object} 图形参数对象， <SuperMap.Feature.ShapeParameters> 子类对象。必设参数，默认值 null。
-     */
-    shapeParameters = null;
+
 
     /**
      * Constructor: SuperMap.Feature.ShapeFactory
@@ -62,7 +58,13 @@ export class ShapeFactory {
      * {Object} 返回图形工厂类对象。
      */
     constructor(shapeParameters) {
+        /**
+         * APIProperty: shapeParameters
+         * {Object} 图形参数对象， <SuperMap.Feature.ShapeParameters> 子类对象。必设参数，默认值 null。
+         */
         this.shapeParameters = shapeParameters;
+
+        this.CLASS_NAME = "SuperMap.Feature.ShapeFactory";
     }
 
 
@@ -887,7 +889,6 @@ export class ShapeFactory {
         return finalStyle;
     }
 
-    CLASS_NAME = "SuperMap.Feature.ShapeFactory"
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.ShapeFactory = ShapeFactory;

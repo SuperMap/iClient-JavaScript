@@ -18,52 +18,53 @@ import {TransportationAnalystResultSetting} from './TransportationAnalystResultS
  */
 export class TransportationAnalystParameter {
 
-    /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.barrierEdgeIDs -{Array<number>}
-     * @description 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。
-     */
-    barrierEdgeIDs = null;
-
-    /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.barrierNodeIDs -{Array<number>}
-     * @description 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。
-     */
-    barrierNodeIDs = null;
-
-    /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.barrierPoints -{Array<Point>}
-     * @description 网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。</br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
-     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。
-     */
-    barrierPoints = null;
-
-    /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.weightFieldName -{string}
-     * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。
-     * 该字段默值为服务器发布的所有耗费字段的第一个字段。
-     */
-    weightFieldName = null;
-
-    /**
-     * @member SuperMap.TransportationAnalystParameter.prototype.turnWeightField -{string}
-     * @description 转向权重字段的名称。
-     */
-    turnWeightField = null;
-
-    /**
-     *  @member SuperMap.TransportationAnalystParameter.prototype.resultSetting -{SuperMap.TransportationAnalystResultSetting}
-     *  @description 分析结果返回内容。
-     */
-    resultSetting = null;
-
     constructor(options) {
-        var me = this;
-        me.resultSetting = new TransportationAnalystResultSetting();
+
         if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.TransportationAnalystParameter.prototype.barrierEdgeIDs -{Array<number>}
+         * @description 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。
+         */
+        this.barrierEdgeIDs = null;
+
+        /**
+         * @member SuperMap.TransportationAnalystParameter.prototype.barrierNodeIDs -{Array<number>}
+         * @description 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。
+         */
+        this.barrierNodeIDs = null;
+
+        /**
+         * @member SuperMap.TransportationAnalystParameter.prototype.barrierPoints -{Array<Point>}
+         * @description 网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。</br>
+         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
+         * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。
+         */
+        this.barrierPoints = null;
+
+        /**
+         * @member SuperMap.TransportationAnalystParameter.prototype.weightFieldName -{string}
+         * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。
+         * 该字段默值为服务器发布的所有耗费字段的第一个字段。
+         */
+        this.weightFieldName = null;
+
+        /**
+         * @member SuperMap.TransportationAnalystParameter.prototype.turnWeightField -{string}
+         * @description 转向权重字段的名称。
+         */
+        this.turnWeightField = null;
+
+        /**
+         *  @member SuperMap.TransportationAnalystParameter.prototype.resultSetting -{SuperMap.TransportationAnalystResultSetting}
+         *  @description 分析结果返回内容。
+         */
+        this.resultSetting = new TransportationAnalystResultSetting();
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.TransportationAnalystParameter";
     }
 
     /**
@@ -88,8 +89,6 @@ export class TransportationAnalystParameter {
         me.barrierPoints = null;
     }
 
-
-    CLASS_NAME = "SuperMap.TransportationAnalystParameter"
 }
 
 SuperMap.TransportationAnalystParameter = TransportationAnalystParameter;

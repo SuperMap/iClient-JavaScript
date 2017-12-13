@@ -43,60 +43,55 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  */
 export class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
 
-    /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.smooth - {number}
-     * @description 光滑系数，值域为 0到1，默认值为0.1，常用取值如0、0.001、0.01、0.1、和0.5。
-     * 该值表示插值函数曲线与点的逼近程度，此数值越大，函数曲线与点的偏差越大，反之越小。
-     */
-    smooth = 0.1;
-
-    /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.tension - {number}
-     * @description 张力系数，默认为40，常用取值如0、1、5和10。
-     * 用于调整结果栅格数据表面的特性，张力越大，插值时每个点对计算结果影响越小，反之越大。
-     */
-    tension = 40;
-
-    /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.searchMode - {SuperMap.SearchMode}
-     * @description 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。
-     * 具体如下：
-     * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
-     * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。
-     * {QUADTREE} 使用 QUADTREE 方式查找参与内插分析的点（块查找）。
-     */
-    searchMode = null;
-
-    /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.expectedCount - {number}
-     * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。默认值为12。
-     */
-    expectedCount = 12;
-
-    /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.maxPointCountForInterpolation - {number}
-     * @description 【块查找】方式下，最多参与插值的点数。默认值为200。
-     */
-    maxPointCountForInterpolation = 200;
-
-    /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.maxPointCountInNode - {number}
-     * @description 【块查找】方式下，单个块内最多参与运算点数。默认值为50。
-     */
-    maxPointCountInNode = 50;
-
     constructor(options) {
         super(options);
-        var me = this;
-        me.smooth = 0.1;
-        me.tension = 40;
-        me.searchMode = null;
-        me.expectedCount = 12;
-        me.maxPointCountForInterpolation = 200;
-        me.maxPointCountInNode = 50;
+        /**
+         * @member SuperMap.InterpolationRBFAnalystParameters.prototype.smooth - {number}
+         * @description 光滑系数，值域为 0到1，默认值为0.1，常用取值如0、0.001、0.01、0.1、和0.5。
+         * 该值表示插值函数曲线与点的逼近程度，此数值越大，函数曲线与点的偏差越大，反之越小。
+         */
+        this.smooth = 0.1;
+
+        /**
+         * @member SuperMap.InterpolationRBFAnalystParameters.prototype.tension - {number}
+         * @description 张力系数，默认为40，常用取值如0、1、5和10。
+         * 用于调整结果栅格数据表面的特性，张力越大，插值时每个点对计算结果影响越小，反之越大。
+         */
+        this.tension = 40;
+
+        /**
+         * @member SuperMap.InterpolationRBFAnalystParameters.prototype.searchMode - {SuperMap.SearchMode}
+         * @description 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。
+         * 具体如下：
+         * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
+         * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。
+         * {QUADTREE} 使用 QUADTREE 方式查找参与内插分析的点（块查找）。
+         */
+        this.searchMode = null;
+
+        /**
+         * @member SuperMap.InterpolationRBFAnalystParameters.prototype.expectedCount - {number}
+         * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。默认值为12。
+         */
+        this.expectedCount = 12;
+
+        /**
+         * @member SuperMap.InterpolationRBFAnalystParameters.prototype.maxPointCountForInterpolation - {number}
+         * @description 【块查找】方式下，最多参与插值的点数。默认值为200。
+         */
+        this.maxPointCountForInterpolation = 200;
+
+        /**
+         * @member SuperMap.InterpolationRBFAnalystParameters.prototype.maxPointCountInNode - {number}
+         * @description 【块查找】方式下，单个块内最多参与运算点数。默认值为50。
+         */
+        this.maxPointCountInNode = 50;
+
         if (options) {
-            Util.extend(me, options);
+            Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.InterpolationRBFAnalystParameters";
+
     }
 
 
@@ -128,8 +123,6 @@ export class InterpolationRBFAnalystParameters extends InterpolationAnalystParam
 
         }
     }
-
-    CLASS_NAME = "SuperMap.InterpolationRBFAnalystParameters"
 }
 
 SuperMap.InterpolationRBFAnalystParameters = InterpolationRBFAnalystParameters;

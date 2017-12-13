@@ -1,7 +1,5 @@
 import {SuperMap} from '../SuperMap';
 import {MapVRenderer} from './mapv/MapVRenderer';
-import {Util as CommonUtil} from '@supermap/iclient-common/commontypes/Util';
-import {LonLat} from '@supermap/iclient-common/commontypes/LonLat';
 
 /**
  * @class SuperMap.Layer.MapVLayer
@@ -13,37 +11,6 @@ import {LonLat} from '@supermap/iclient-common/commontypes/LonLat';
  *        options - {Object} mapv 绘图风格配置信息
  */
 export class MapVLayer extends SuperMap.Layer {
-
-    /**
-     * @member SuperMap.Layer.MapVLayer.prototype.dataSet -{mapv.DataSet}
-     * @description mapv dataset 对象
-     */
-    dataSet = null;
-
-    /**
-     * @member SuperMap.Layer.MapVLayer.prototype.options -{Object}
-     * @description mapv 绘图风格配置信息
-     */
-    options = null;
-
-    /**
-     * @member SuperMap.Layer.MapVLayer.prototype.supported -{boolean}
-     * @description 当前浏览器是否支持canvas绘制，默认为false。决定了MapV图是否可用，内部判断使用。
-     */
-    supported = false;
-
-    /**
-     * @member SuperMap.Layer.MapVLayer.prototype.canvas {Canvas}
-     * @description MapV图主绘制面板。
-     */
-    canvas = null;
-
-    /**
-     * @private
-     * @member SuperMap.Layer.MapVLayer.prototype.canvasContext -{CanvasContext}
-     * @description MapV图主绘制对象。
-     */
-    canvasContext = null;
 
     /*
      * @function SuperMap.Layer.MapVLayer.prototype.
@@ -58,8 +25,40 @@ export class MapVLayer extends SuperMap.Layer {
      */
     constructor(name, options) {
         super(name, options);
+
+        /**
+         * @member SuperMap.Layer.MapVLayer.prototype.dataSet -{mapv.DataSet}
+         * @description mapv dataset 对象
+         */
+        this.dataSet = null;
+
+        /**
+         * @member SuperMap.Layer.MapVLayer.prototype.options -{Object}
+         * @description mapv 绘图风格配置信息
+         */
+        this.options = null;
+
+        /**
+         * @member SuperMap.Layer.MapVLayer.prototype.supported -{boolean}
+         * @description 当前浏览器是否支持canvas绘制，默认为false。决定了MapV图是否可用，内部判断使用。
+         */
+        this.supported = false;
+
+        /**
+         * @member SuperMap.Layer.MapVLayer.prototype.canvas {Canvas}
+         * @description MapV图主绘制面板。
+         */
+        this.canvas = null;
+
+        /**
+         * @private
+         * @member SuperMap.Layer.MapVLayer.prototype.canvasContext -{CanvasContext}
+         * @description MapV图主绘制对象。
+         */
+        this.canvasContext = null;
+
         if (options) {
-            CommonUtil.extend(this, options);
+            SuperMap.Util.extend(this, options);
         }
         //MapV图要求使用canvas绘制，判断是否支持
         this.canvas = document.createElement("canvas");
@@ -81,6 +80,8 @@ export class MapVLayer extends SuperMap.Layer {
         }
         this.attribution = "© 2017 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermap.io' " +
             "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
+
+        this.CLASS_NAME = "SuperMap.Layer.MapVLayer";
     }
 
 
@@ -228,10 +229,9 @@ export class MapVLayer extends SuperMap.Layer {
         if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
             dest = "EPSG:3857";
         }
-        return new LonLat(latLng.lon, latLng.lat).transform(source, dest);
+        return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
     }
 
-    CLASS_NAME = "SuperMap.Layer.MapVLayer"
 }
 
 SuperMap.Layer.MapVLayer = MapVLayer;

@@ -8,51 +8,48 @@ import {Group} from './Group';
  */
 export class Storage {
 
-    /**
-     * Property: _elements
-     * {Object} 所有常规形状，id 索引的 map。
-     *
-     */
-    _elements = null;
-
-    /**
-     * Property: _hoverElements
-     * {Array} 高亮层形状，不稳定，动态增删，数组位置也是 z 轴方向，靠前显示在下方。
-     *
-     */
-    _hoverElements = null;
-
-    /**
-     * Property: _roots
-     * {Array} _roots。
-     *
-     */
-    _roots = null;
-
-    /**
-     * Property: _shapeList
-     * {Array}  _shapeList。
-     *
-     */
-    _shapeList = null;
-
-    /**
-     * Property: _shapeListOffset
-     * {Number}  _shapeListOffset。默认值：0。
-     *
-     */
-    _shapeListOffset = 0;
 
     /**
      * Constructor: SuperMap.LevelRenderer.Storage
      * 构造函数。
      */
     constructor() {
+        /**
+         * Property: _elements
+         * {Object} 所有常规形状，id 索引的 map。
+         *
+         */
         this._elements = {};
+
+        /**
+         * Property: _hoverElements
+         * {Array} 高亮层形状，不稳定，动态增删，数组位置也是 z 轴方向，靠前显示在下方。
+         *
+         */
         this._hoverElements = [];
+
+        /**
+         * Property: _roots
+         * {Array} _roots。
+         *
+         */
         this._roots = [];
+
+        /**
+         * Property: _shapeList
+         * {Array}  _shapeList。
+         *
+         */
         this._shapeList = [];
+
+        /**
+         * Property: _shapeListOffset
+         * {Number}  _shapeListOffset。默认值：0。
+         *
+         */
         this._shapeListOffset = 0;
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Storage";
     }
 
     /**
@@ -520,5 +517,4 @@ export class Storage {
         return a.zlevel - b.zlevel;
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Storage"
 }

@@ -24,50 +24,49 @@ import {ServerTextStyle} from './ServerTextStyle';
  */
 export class LabelMixedTextStyle {
 
-    /**
-     * @member SuperMap.LabelMixedTextStyle.prototype.defaultStyle -{SuperMap.ServerTextStyle}
-     * @description 默认的文本复合风格，即 SuperMap.ServerTextStyle 各字段的默认值。
-     */
-    defaultStyle = null;
-
-    /**
-     * @member SuperMap.LabelMixedTextStyle.prototype.separator -{string}
-     * @description 文本的分隔符，分隔符的风格与前一个字符的风格一样。文本的分隔符是一个将文本分割开的符号，
-     *              比如文本 “5_109” 被 “_” 隔符为 “5” 和 “109” 两部分，假设有风格数组：style1、style2。
-     *              在显示时，“5” 和分隔符 “_” 使用 Style1 风格渲染，字符串 “109” 使用 Style2 的风格。
-     */
-    separator = null;
-
-    /**
-     * @member SuperMap.LabelMixedTextStyle.prototype.separatorEnabled -{boolean}
-     * @description 文本的分隔符是否有效。分隔符有效时利用分隔符对文本进行分段；无效时根据文本中字符的位置进行分段。
-     *              分段后，同一分段内的字符具有相同的显示风格。默认为 false。
-     */
-    separatorEnabled = false;
-
-    /**
-     * @member SuperMap.LabelMixedTextStyle.prototype.splitIndexes -{Array<number>}
-     * @description 分段索引值，分段索引值用来对文本中的字符进行分段。
-     *              文本中字符的索引值是以0开始的整数，比如文本“珠穆朗玛峰”，第一个字符（“珠”）的索引值为0，第二个字符（“穆”）的索引值为1，
-     *              以此类推；当设置分段索引值数组为[1，3，4，9]时，字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，
-     *              可以看出索引号为0的字符（即“珠” ）在第一个分段内，索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，
-     *              索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
-     */
-    splitIndexes = null;
-
-    /**
-     * @member SuperMap.LabelMixedTextStyle.prototype.styles -{Array<SuperMap.ServerTextStyle>}
-     * @description 文本样式集合。文本样式集合中的样式根据索引与不同分段一一对应，
-     *              如果有分段没有风格对应则使用 defaultStyle。
-     */
-    styles = null;
-
     constructor(options) {
-        var me = this;
-        me.defaultStyle = new ServerTextStyle();
+        /**
+         * @member SuperMap.LabelMixedTextStyle.prototype.defaultStyle -{SuperMap.ServerTextStyle}
+         * @description 默认的文本复合风格，即 SuperMap.ServerTextStyle 各字段的默认值。
+         */
+        this.defaultStyle = null;
+
+        /**
+         * @member SuperMap.LabelMixedTextStyle.prototype.separator -{string}
+         * @description 文本的分隔符，分隔符的风格与前一个字符的风格一样。文本的分隔符是一个将文本分割开的符号，
+         *              比如文本 “5_109” 被 “_” 隔符为 “5” 和 “109” 两部分，假设有风格数组：style1、style2。
+         *              在显示时，“5” 和分隔符 “_” 使用 Style1 风格渲染，字符串 “109” 使用 Style2 的风格。
+         */
+        this.separator = null;
+
+        /**
+         * @member SuperMap.LabelMixedTextStyle.prototype.separatorEnabled -{boolean}
+         * @description 文本的分隔符是否有效。分隔符有效时利用分隔符对文本进行分段；无效时根据文本中字符的位置进行分段。
+         *              分段后，同一分段内的字符具有相同的显示风格。默认为 false。
+         */
+        this.separatorEnabled = false;
+
+        /**
+         * @member SuperMap.LabelMixedTextStyle.prototype.splitIndexes -{Array<number>}
+         * @description 分段索引值，分段索引值用来对文本中的字符进行分段。
+         *              文本中字符的索引值是以0开始的整数，比如文本“珠穆朗玛峰”，第一个字符（“珠”）的索引值为0，第二个字符（“穆”）的索引值为1，
+         *              以此类推；当设置分段索引值数组为[1，3，4，9]时，字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，
+         *              可以看出索引号为0的字符（即“珠” ）在第一个分段内，索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，
+         *              索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
+         */
+        this.splitIndexes = null;
+
+        /**
+         * @member SuperMap.LabelMixedTextStyle.prototype.styles -{Array<SuperMap.ServerTextStyle>}
+         * @description 文本样式集合。文本样式集合中的样式根据索引与不同分段一一对应，
+         *              如果有分段没有风格对应则使用 defaultStyle。
+         */
+        this.styles = new ServerTextStyle();
+
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.LabelMixedTextStyle"
     }
 
     /**
@@ -116,7 +115,6 @@ export class LabelMixedTextStyle {
         return res;
     }
 
-    CLASS_NAME = "SuperMap.LabelMixedTextStyle"
 }
 
 SuperMap.LabelMixedTextStyle = LabelMixedTextStyle;

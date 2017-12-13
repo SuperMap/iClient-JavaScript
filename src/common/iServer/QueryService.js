@@ -25,19 +25,6 @@ import {DataFormat} from '../REST';
 export class QueryService extends CommonServiceBase {
 
     /*
-     * Property: returnContent
-     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
-     */
-    returnContent = false;
-
-    /*
-     *  Property: format
-     *  {string} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-     *  参数格式为"ISERVER","GEOJSON",GEOJSON
-     */
-    format = DataFormat.GEOJSON;
-
-    /*
      * @function SuperMap.QueryService.prototype.constructor
      * @description 查询服务基类构造函数。
      * @param url - {string} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
@@ -46,9 +33,25 @@ export class QueryService extends CommonServiceBase {
      */
     constructor(url, options) {
         super(url, options);
+
+        /*
+         * Property: returnContent
+         * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
+         */
+        this.returnContent = false;
+
+        /*
+         *  Property: format
+         *  {string} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+         *  参数格式为"ISERVER","GEOJSON",GEOJSON
+         */
+        this.format = DataFormat.GEOJSON;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.QueryService";
         var me = this, end;
         if (!me.url) {
             return;
@@ -152,7 +155,6 @@ export class QueryService extends CommonServiceBase {
         });
     }
 
-    CLASS_NAME = "SuperMap.QueryService"
 }
 
 SuperMap.QueryService = QueryService;

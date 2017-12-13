@@ -13,64 +13,6 @@ import {SUtil} from './SUtil';
 export class Painter {
 
     /**
-     * APIProperty: root
-     * {HTMLElement} 绘图容器。
-     *
-     */
-    root = null;
-
-    /**
-     * APIProperty: storage
-     * {Array} 图形仓库。
-     *
-     */
-    storage = null;
-
-    /**
-     * Property: _domRoot
-     * {HTMLElement} 容器根 dom 对象。
-     *
-     */
-    _domRoot = null;
-
-    /**
-     * Property: _layers
-     * {Object} 绘制层对象。
-     *
-     */
-    _layers = null;
-
-    /**
-     * Property: _zlevelList
-     * {Array} 层列表。
-     *
-     */
-    _zlevelList = null;
-
-    /**
-     * Property: _layerConfig
-     * {Object} 绘制层配置对象。
-     *
-     */
-    _layerConfig = null;
-
-    /**
-     * Property: _bgDom
-     * {Object} 背景层 Canvas （Dom）。
-     *
-     */
-    _bgDom = null;
-
-    /**
-     * Property: shapeToImage
-     * {Function} 形状转图像函数。
-     *
-     */
-    shapeToImage = null;
-    // retina 屏幕优化
-    static devicePixelRatio = Math.max((window.devicePixelRatio || 1), 1);
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Painter
      * 构造函数。
      *
@@ -80,10 +22,66 @@ export class Painter {
      *
      */
     constructor(root, storage) {
+        /**
+         * APIProperty: root
+         * {HTMLElement} 绘图容器。
+         *
+         */
         this.root = root;
+
+        /**
+         * APIProperty: storage
+         * {Array} 图形仓库。
+         *
+         */
         this.storage = storage;
 
-        root.innerHTML = '';
+        /**
+         * Property: _domRoot
+         * {HTMLElement} 容器根 dom 对象。
+         *
+         */
+        this._domRoot = null;
+
+        /**
+         * Property: _layers
+         * {Object} 绘制层对象。
+         *
+         */
+        this._layers = {};
+
+        /**
+         * Property: _zlevelList
+         * {Array} 层列表。
+         *
+         */
+        this._zlevelList = [];
+
+        /**
+         * Property: _layerConfig
+         * {Object} 绘制层配置对象。
+         *
+         */
+        this._layerConfig = {};
+
+        /**
+         * Property: _bgDom
+         * {Object} 背景层 Canvas （Dom）。
+         *
+         */
+        this._bgDom = null;
+
+        /**
+         * Property: shapeToImage
+         * {Function} 形状转图像函数。
+         *
+         */
+        this.shapeToImage = null;
+        // retina 屏幕优化
+        Painter.devicePixelRatio = Math.max((window.devicePixelRatio || 1), 1);
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Painter";
+        this.root.innerHTML = '';
         this._width = this._getWidth(); // 宽，缓存记录
         this._height = this._getHeight(); // 高，缓存记录
 
@@ -95,13 +93,7 @@ export class Painter {
         domRoot.style.overflow = 'hidden';
         domRoot.style.width = this._width + 'px';
         domRoot.style.height = this._height + 'px';
-        root.appendChild(domRoot);
-
-        this._layers = {};
-
-        this._zlevelList = [];
-
-        this._layerConfig = {};
+        this.root.appendChild(domRoot);
 
         this.shapeToImage = this._createShapeToImageProcessor();
 
@@ -930,8 +922,6 @@ export class Painter {
         newDom.setAttribute('id', id);
         return newDom;
     }
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Painter"
 }
 
 /**
@@ -945,103 +935,6 @@ export class Painter {
 export class PaintLayer extends Transformable {
 
     /**
-     * Property: dom
-     * {Object} dom。
-     */
-    dom = null;
-
-    /**
-     * Property: domBack
-     * {Object} domBack。
-     */
-    domBack = null;
-
-    /**
-     * Property: ctxBack
-     * {Object} ctxBack。
-     */
-    ctxBack = null;
-
-    /**
-     * Property: painter
-     * {<SuperMap.LevelRenderer.Painter>} painter。
-     */
-    painter = null;
-
-    /**
-     * Property: unusedCount
-     * {Number} unusedCount。
-     */
-    unusedCount = null;
-
-    /**
-     * Property: config
-     * {Object} config。
-     */
-    config = null;
-
-    /**
-     * Property: dirty
-     * {Boolean} dirty。
-     */
-    dirty = null;
-
-    /**
-     * Property: elCount
-     * {Number} elCount。
-     */
-    elCount = null;
-
-    // Configs
-    /**
-     * Property: clearColor
-     * {String} 每次清空画布的颜色。默认值：0；
-     */
-    clearColor = 0;
-
-    /**
-     * Property: motionBlur
-     * {Boolean} 是否开启动态模糊。默认值：false；
-     */
-    motionBlur = false;
-
-    /**
-     * Property: lastFrameAlpha
-     * {Number} 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显
-     */
-    lastFrameAlpha = 0.7;
-
-    /**
-     * Property: zoomable
-     * {Boolean} 层是否支持鼠标平移操作。默认值：false；
-     */
-    zoomable = false;
-
-    /**
-     * Property: panable
-     * {Boolean} 层是否支持鼠标缩放操作。默认值：false；
-     */
-    panable = false;
-
-    /**
-     * Property: maxZoom
-     * {Number} maxZoom。默认值：Infinity。
-     */
-    maxZoom = Infinity;
-
-    /**
-     * Property: minZoom
-     * {Number} minZoom。默认值：0。
-     */
-    minZoom = 0;
-
-    /**
-     * Property: ctx
-     * {Object} Cavans 上下文。
-     */
-    ctx = null;
-
-    /**
      * Constructor: Painter.Layer
      * 构造函数。
      *
@@ -1052,40 +945,113 @@ export class PaintLayer extends Transformable {
      */
     constructor(id, painter) {
         super(id, painter);
+        /**
+         * Property: dom
+         * {Object} dom。
+         */
+        this.dom = null;
+
+        /**
+         * Property: domBack
+         * {Object} domBack。
+         */
+        this.domBack = null;
+
+        /**
+         * Property: ctxBack
+         * {Object} ctxBack。
+         */
+        this.ctxBack = null;
+
+        /**
+         * Property: painter
+         * {<SuperMap.LevelRenderer.Painter>} painter。
+         */
+        this.painter = painter;
+
+        /**
+         * Property: unusedCount
+         * {Number} unusedCount。
+         */
+        this.unusedCount = 0;
+
+        /**
+         * Property: config
+         * {Object} config。
+         */
+        this.config = null;
+
+        /**
+         * Property: dirty
+         * {Boolean} dirty。
+         */
+        this.dirty = true;
+
+        /**
+         * Property: elCount
+         * {Number} elCount。
+         */
+        this.elCount = 0;
+
+        // Configs
+        /**
+         * Property: clearColor
+         * {String} 每次清空画布的颜色。默认值：0；
+         */
+        this.clearColor = 0;
+
+        /**
+         * Property: motionBlur
+         * {Boolean} 是否开启动态模糊。默认值：false；
+         */
+        this.motionBlur = false;
+
+        /**
+         * Property: lastFrameAlpha
+         * {Number} 在开启动态模糊的时候使用，与上一帧混合的alpha值，值越大尾迹越明显
+         */
+        this.lastFrameAlpha = 0.7;
+
+        /**
+         * Property: zoomable
+         * {Boolean} 层是否支持鼠标平移操作。默认值：false；
+         */
+        this.zoomable = false;
+
+        /**
+         * Property: panable
+         * {Boolean} 层是否支持鼠标缩放操作。默认值：false；
+         */
+        this.panable = false;
+
+        /**
+         * Property: maxZoom
+         * {Number} maxZoom。默认值：Infinity。
+         */
+        this.maxZoom = Infinity;
+
+        /**
+         * Property: minZoom
+         * {Number} minZoom。默认值：0。
+         */
+        this.minZoom = 0;
+
+        /**
+         * Property: ctx
+         * {Object} Cavans 上下文。
+         */
+        this.ctx = null;
         this.dom = Painter.createDom(CommonUtil.createUniqueID("SuperMap.Theme" + id), 'canvas', painter);
         this.dom.onselectstart = returnFalse; // 避免页面选中的尴尬
         this.dom.style['-webkit-user-select'] = 'none';
         this.dom.style['user-select'] = 'none';
         this.dom.style['-webkit-touch-callout'] = 'none';
-
-        this.domBack = null;
-        this.ctxBack = null;
-
-        this.painter = painter;
-
-        this.unusedCount = 0;
-
-        this.config = null;
-
-        this.dirty = true;
-
-        this.elCount = 0;
-
-        // Configs
-        this.clearColor = 0;
-        this.motionBlur = false;
-        this.lastFrameAlpha = 0.7;
-        this.zoomable = false;
-        this.panable = false;
-
-        this.maxZoom = Infinity;    //Infinity 正无穷
-        this.minZoom = 0;
-
         // Function
         // 返回false的方法，用于避免页面被选中
         function returnFalse() {
             return false;
         }
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Painter.Layer";
     }
 
     /**
@@ -1223,5 +1189,4 @@ export class PaintLayer extends Transformable {
         }
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Painter.Layer"
 }

@@ -21,47 +21,49 @@ import {LabelMatrixCell} from './LabelMatrixCell';
  */
 export class LabelImageCell extends LabelMatrixCell {
 
-    /**
-     * @member SuperMap.LabelImageCell.prototype.height -{number}
-     * @description 设置图片的高度，单位为毫米。
-     */
-    height = 0;
-
-    /**
-     * @member SuperMap.LabelImageCell.prototype.pathField -{string}
-     * @description 设置矩阵标签元素所使用的图片路径对应的字段名。
-     */
-    pathField = null;
-
-    /**
-     * @member SuperMap.LabelImageCell.prototype.rotation -{number}
-     * @description 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
-     */
-    rotation = 0.0;
-
-    /**
-     * @member SuperMap.LabelImageCell.prototype.width -{number}
-     * @description 设置图片的宽度，单位为毫米。
-     */
-    width = 0;
-
-    /**
-     * @member SuperMap.LabelImageCell.prototype.sizeFixed -{boolean}
-     * @description 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
-     */
-    sizeFixed = false;
-
-    /**
-     * @member SuperMap.LabelImageCell.prototype.type -{boolean}
-     * @description 制作矩阵专题图时是必须的。
-     */
-    type = "IMAGE";
-
     constructor(options) {
         super(options);
+        /**
+         * @member SuperMap.LabelImageCell.prototype.height -{number}
+         * @description 设置图片的高度，单位为毫米。
+         */
+        this.height = 0;
+
+        /**
+         * @member SuperMap.LabelImageCell.prototype.pathField -{string}
+         * @description 设置矩阵标签元素所使用的图片路径对应的字段名。
+         */
+        this.pathField = null;
+
+        /**
+         * @member SuperMap.LabelImageCell.prototype.rotation -{number}
+         * @description 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
+         */
+        this.rotation = 0.0;
+
+        /**
+         * @member SuperMap.LabelImageCell.prototype.width -{number}
+         * @description 设置图片的宽度，单位为毫米。
+         */
+        this.width = 0;
+
+        /**
+         * @member SuperMap.LabelImageCell.prototype.sizeFixed -{boolean}
+         * @description 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
+         */
+        this.sizeFixed = false;
+
+        /**
+         * @member SuperMap.LabelImageCell.prototype.type -{boolean}
+         * @description 制作矩阵专题图时是必须的。
+         */
+        this.type = "IMAGE";
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.LabelImageCell";
     }
 
     /**
@@ -76,9 +78,6 @@ export class LabelImageCell extends LabelMatrixCell {
         me.width = null;
         me.sizeFixed = null;
     }
-
-
-    CLASS_NAME = "SuperMap.LabelImageCell"
 }
 
 SuperMap.LabelImageCell = LabelImageCell;

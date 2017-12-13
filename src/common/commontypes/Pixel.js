@@ -46,6 +46,24 @@ export class Pixel {
          */
         this.mode = mode;
         this.CLASS_NAME = "SuperMap.Pixel";
+        /**
+         * @member SuperMap.Pixel.Mode
+         * @enum {string}
+         * @readonly
+         * @description 模式
+         *
+         * * SuperMap.Pixel.Mode.LeftTop 左上模式
+         * * SuperMap.Pixel.Mode.RightTop 右上模式
+         * * SuperMap.Pixel.Mode.RightBottom 右下模式
+         * * SuperMap.Pixel.Mode.LeftBottom 左下模式
+         */
+
+        Pixel.Mode = {
+            LeftTop: "lefttop",
+            RightTop: "righttop",
+            RightBottom: "rightbottom",
+            LeftBottom: "leftbottom"
+        };
     }
 
     /**
@@ -167,27 +185,6 @@ export class Pixel {
         this.y = null;
         this.mode = null;
     }
-
-    /**
-     * @member SuperMap.Pixel.Mode
-     * @enum {string}
-     * @readonly
-     * @description 模式
-     *
-     * * SuperMap.Pixel.Mode.LeftTop 左上模式
-     * * SuperMap.Pixel.Mode.RightTop 右上模式
-     * * SuperMap.Pixel.Mode.RightBottom 右下模式
-     * * SuperMap.Pixel.Mode.LeftBottom 左下模式
-     */
-
-    static Mode = {
-        LeftTop: "lefttop",
-        RightTop: "righttop",
-        RightBottom: "rightbottom",
-        LeftBottom: "leftbottom"
-    };
-
-
 }
 
 SuperMap.Pixel = Pixel;

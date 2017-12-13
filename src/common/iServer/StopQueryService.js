@@ -33,6 +33,7 @@ export class StopQueryService extends CommonServiceBase {
         super(url, options);
         options = options || {};
         Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.StopQueryService";
     }
 
     /**
@@ -68,7 +69,6 @@ export class StopQueryService extends CommonServiceBase {
         });
     }
 
-    CLASS_NAME = "SuperMap.StopQueryService"
 }
 
 SuperMap.StopQueryService = StopQueryService;

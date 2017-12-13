@@ -12,10 +12,10 @@ import {FetchRequest} from '../util/FetchRequest';
 export class OnlineServiceBase {
 
     constructor(options) {
-        var me = this;
         options = options || {};
-        Util.extend(me, options);
-        me.serverType = ServerType.ONLINE;
+        Util.extend(this, options);
+        this.serverType = ServerType.ONLINE;
+        this.CLASS_NAME = "SuperMap.OnlineServiceBase";
     }
 
     /**
@@ -63,8 +63,6 @@ export class OnlineServiceBase {
         //或
         //return SecurityManager.getKey(this.serviceUrl);
     }
-
-    CLASS_NAME = "SuperMap.OnlineServiceBase"
 
 }
 

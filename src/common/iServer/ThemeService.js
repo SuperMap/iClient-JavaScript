@@ -29,6 +29,8 @@ export class ThemeService extends CommonServiceBase {
             me = this;
         end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? "tempLayersSet.json?" : "/tempLayersSet.json?";
+
+        this.CLASS_NAME = "SuperMap.ThemeService";
     }
 
     /**
@@ -124,7 +126,6 @@ export class ThemeService extends CommonServiceBase {
         return jsonParameters;
     }
 
-    CLASS_NAME = "SuperMap.ThemeService"
 }
 
 SuperMap.ThemeService = ThemeService;

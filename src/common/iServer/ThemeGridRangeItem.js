@@ -16,43 +16,42 @@ import {ServerColor} from './ServerColor';
  */
 export class ThemeGridRangeItem {
 
-    /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.caption -{string}
-     * @description 栅格分段专题图子项的标题。
-     */
-    caption = null;
-
-    /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
-     * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
-     */
-    color = null;
-
-    /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.end -{number}
-     * @description 栅格分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。
-     */
-    end = 0;
-
-    /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.start -{number}
-     * @description 栅格分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。
-     */
-    start = 0;
-
-
-    /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.visible -{boolean}
-     * @description 栅格分段专题图子项是否可见。默认为 true。
-     */
-    visible = true;
-
     constructor(options) {
-        var me = this;
-        me.color = new ServerColor();
+        /**
+         * @member SuperMap.ThemeGridRangeItem.prototype.caption -{string}
+         * @description 栅格分段专题图子项的标题。
+         */
+        this.caption = null;
+
+        /**
+         * @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
+         * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
+         */
+        this.color =  new ServerColor();
+
+        /**
+         * @member SuperMap.ThemeGridRangeItem.prototype.end -{number}
+         * @description 栅格分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。
+         */
+        this.end = 0;
+
+        /**
+         * @member SuperMap.ThemeGridRangeItem.prototype.start -{number}
+         * @description 栅格分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。
+         */
+        this.start = 0;
+
+
+        /**
+         * @member SuperMap.ThemeGridRangeItem.prototype.visible -{boolean}
+         * @description 栅格分段专题图子项是否可见。默认为 true。
+         */
+        this.visible = true;
+
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.ThemeGridRangeItem";
     }
 
     /**
@@ -104,7 +103,6 @@ export class ThemeGridRangeItem {
         return res;
     }
 
-    CLASS_NAME = "SuperMap.ThemeGridRangeItem"
 }
 
 SuperMap.ThemeGridRangeItem = ThemeGridRangeItem;

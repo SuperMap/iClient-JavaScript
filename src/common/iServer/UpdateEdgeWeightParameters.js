@@ -1,4 +1,5 @@
 import {SuperMap} from '../SuperMap';
+import {Util} from '../commontypes/Util';
 
 /**
  * @class SuperMap.UpdateEdgeWeightParameters
@@ -12,46 +13,43 @@ import {SuperMap} from '../SuperMap';
  */
 export class UpdateEdgeWeightParameters {
 
-    /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{string}
-     * @description 所在边的id
-     */
-    edgeId = "";
-
-    /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId -{string}
-     * @description 起始转向点的id
-     */
-    fromNodeId = "";
-
-    /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId -{string}
-     * @description 终止转向点的id
-     */
-    toNodeId = "";
-
-    /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.weightField -{string}
-     * @description 边的耗费字段
-     */
-    weightField = "";
-
-    /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight -{string}
-     * @description 耗费权重
-     */
-    edgeWeight = "";
-
-    constructor(option) {
-        if (!option) {
+    constructor(options) {
+        if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{string}
+         * @description 所在边的id
+         */
+        this.edgeId = "";
 
-        option.edgeId && (this.edgeId = option.edgeId);
-        option.fromNodeId && (this.fromNodeId = option.fromNodeId);
-        option.toNodeId && (this.toNodeId = option.toNodeId);
-        option.weightField && (this.weightField = option.weightField);
-        option.edgeWeight && (this.edgeWeight = option.edgeWeight);
+        /**
+         * @member SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId -{string}
+         * @description 起始转向点的id
+         */
+        this.fromNodeId = "";
+
+        /**
+         * @member SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId -{string}
+         * @description 终止转向点的id
+         */
+        this.toNodeId = "";
+
+        /**
+         * @member SuperMap.UpdateEdgeWeightParameters.prototype.weightField -{string}
+         * @description 边的耗费字段
+         */
+        this.weightField = "";
+
+        /**
+         * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight -{string}
+         * @description 耗费权重
+         */
+        this.edgeWeight = "";
+
+        Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.UpdateEdgeWeightParameters";
     }
 
 
@@ -67,8 +65,6 @@ export class UpdateEdgeWeightParameters {
         this.edgeWeight = null;
     }
 
-
-    CLASS_NAME = "SuperMap.UpdateEdgeWeightParameters"
 }
 
 SuperMap.UpdateEdgeWeightParameters = UpdateEdgeWeightParameters;

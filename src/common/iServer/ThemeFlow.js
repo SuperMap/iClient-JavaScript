@@ -13,35 +13,35 @@ import {ServerStyle} from './ServerStyle';
  */
 export class ThemeFlow {
 
-    /**
-     * @member SuperMap.ThemeFlow.prototype.flowEnabled -{boolean}
-     * @description 是否流动显示标签或符号。<br>
-     *              对于标签专题图而言，对于跨越比较大的区域和线条状的几何对象，在一个地图窗口中不能完全显示的情况下，如果其标签位置比较固定，<br>
-     *              在当前地图窗口中该对象的标签不可见，则需要通过平移地图来查看对象的标签信息。如果采用了流动显示的效果，在当前地图窗口中，对象即使是部分显示，<br>
-     *              其标签也会显示在当前地图窗口中。当平移地图时，对象的标签会随之移动，以保证在当前地图窗口中部分或全部显示的对象其标签都可见，从而可以方便地查看各要素的标签信息。
-     */
-    flowEnabled = false;
-
-    /**
-     * @member SuperMap.ThemeFlow.prototype.leaderLineDisplayed -{boolean}
-     * @description 是否显示标签或符号和它标注的对象之间的牵引线。默认值为 false，即不显示标签或符号和它标注的对象之间的牵引线。<br>
-     *              只有当 flowEnabled 为 true 时，牵引线才起作用。在当标签流动显示时，其位置不固定，由于牵引线始终指向要素的内点，<br>
-     *              因而通过牵引线显示功能可以找到流动的标签或符号实际对应的要素。或者渲染符号偏移它所指向的对象时，图与对象之间可以采用牵引线进行连接。
-     */
-    leaderLineDisplayed = false;
-
-    /**
-     * @member SuperMap.ThemeFlow.prototype.leaderLineStyle -{SuperMap.ServerStyle}
-     * @description 标签或符号与其标注对象之间牵引线的风格。
-     */
-    leaderLineStyle = null;
-
     constructor(options) {
-        var me = this;
-        me.leaderLineStyle = new ServerStyle();
+        /**
+         * @member SuperMap.ThemeFlow.prototype.flowEnabled -{boolean}
+         * @description 是否流动显示标签或符号。<br>
+         *              对于标签专题图而言，对于跨越比较大的区域和线条状的几何对象，在一个地图窗口中不能完全显示的情况下，如果其标签位置比较固定，<br>
+         *              在当前地图窗口中该对象的标签不可见，则需要通过平移地图来查看对象的标签信息。如果采用了流动显示的效果，在当前地图窗口中，对象即使是部分显示，<br>
+         *              其标签也会显示在当前地图窗口中。当平移地图时，对象的标签会随之移动，以保证在当前地图窗口中部分或全部显示的对象其标签都可见，从而可以方便地查看各要素的标签信息。
+         */
+        this.flowEnabled = false;
+
+        /**
+         * @member SuperMap.ThemeFlow.prototype.leaderLineDisplayed -{boolean}
+         * @description 是否显示标签或符号和它标注的对象之间的牵引线。默认值为 false，即不显示标签或符号和它标注的对象之间的牵引线。<br>
+         *              只有当 flowEnabled 为 true 时，牵引线才起作用。在当标签流动显示时，其位置不固定，由于牵引线始终指向要素的内点，<br>
+         *              因而通过牵引线显示功能可以找到流动的标签或符号实际对应的要素。或者渲染符号偏移它所指向的对象时，图与对象之间可以采用牵引线进行连接。
+         */
+        this.leaderLineDisplayed = false;
+
+        /**
+         * @member SuperMap.ThemeFlow.prototype.leaderLineStyle -{SuperMap.ServerStyle}
+         * @description 标签或符号与其标注对象之间牵引线的风格。
+         */
+        this.leaderLineStyle =  new ServerStyle();
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ThemeFlow";
     }
 
     /**
@@ -74,7 +74,6 @@ export class ThemeFlow {
         return res;
     }
 
-    CLASS_NAME = "SuperMap.ThemeFlow"
 }
 
 SuperMap.ThemeFlow = ThemeFlow;

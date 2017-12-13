@@ -25,6 +25,8 @@ export class MathExpressionAnalysisService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
+
+        this.CLASS_NAME = "SuperMap.MathExpressionAnalysisService";
     }
 
     /**
@@ -65,8 +67,6 @@ export class MathExpressionAnalysisService extends SpatialAnalystBase {
         });
     }
 
-
-    CLASS_NAME = "SuperMap.MathExpressionAnalysisService"
 }
 
 SuperMap.MathExpressionAnalysisService = MathExpressionAnalysisService;

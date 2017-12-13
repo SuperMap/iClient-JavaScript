@@ -19,32 +19,32 @@ import {LabelMatrixCell} from './LabelMatrixCell';
  */
 export class LabelSymbolCell extends LabelMatrixCell {
 
-    /**
-     * @member SuperMap.LabelSymbolCell.prototype.style -{SuperMap.ServerStyle}
-     * @description 获取或设置符号样式—— {@link SuperMap.ServerStyle} 对象，包括符号大小（{@link SuperMap.ServerStyle.markerSize}）
-     *              和符号旋转（{@link SuperMap.ServerStyle.markerAngle}）角度，其中用于设置符号 ID 的属性（{@link SuperMap.ServerStyle.markerSymbolID}）在此处不起作用。
-     */
-    style = null;
-
-    /**
-     * @member SuperMap.LabelSymbolCell.prototype.symbolIDField -{string}
-     * @description 获取或设置符号 ID 或符号 ID 所对应的字段名称，必设属性。
-     */
-    symbolIDField = null;
-
-    /**
-     * @member SuperMap.LabelSymbolCell.prototype.type -{string}
-     * @description 制作矩阵专题图时是必须的。
-     */
-    type = "SYMBOL";
-
     constructor(options) {
         super(options);
-        var me = this;
-        me.style = new ServerStyle();
+        /**
+         * @member SuperMap.LabelSymbolCell.prototype.style -{SuperMap.ServerStyle}
+         * @description 获取或设置符号样式—— {@link SuperMap.ServerStyle} 对象，包括符号大小（{@link SuperMap.ServerStyle.markerSize}）
+         *              和符号旋转（{@link SuperMap.ServerStyle.markerAngle}）角度，其中用于设置符号 ID 的属性（{@link SuperMap.ServerStyle.markerSymbolID}）在此处不起作用。
+         */
+        this.style = new ServerStyle();
+
+        /**
+         * @member SuperMap.LabelSymbolCell.prototype.symbolIDField -{string}
+         * @description 获取或设置符号 ID 或符号 ID 所对应的字段名称，必设属性。
+         */
+        this.symbolIDField = null;
+
+        /**
+         * @member SuperMap.LabelSymbolCell.prototype.type -{string}
+         * @description 制作矩阵专题图时是必须的。
+         */
+        this.type = "SYMBOL";
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.LabelSymbolCell";
     }
 
     /**
@@ -60,8 +60,6 @@ export class LabelSymbolCell extends LabelMatrixCell {
         me.symbolIDField = null;
     }
 
-
-    CLASS_NAME = "SuperMap.LabelSymbolCell"
 }
 
 SuperMap.LabelSymbolCell = LabelSymbolCell;

@@ -29,6 +29,7 @@ export class Circle extends RankSymbol {
 
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
+        this.CLASS_NAME = "SuperMap.Feature.Theme.Circle";
     }
 
     /**
@@ -146,7 +147,6 @@ export class Circle extends RankSymbol {
         this.shapesConvertToRelativeCoordinate();
     }
 
-    CLASS_NAME = "SuperMap.Feature.Theme.Circle"
 }
 
 SuperMap.Feature.Theme.Circle = Circle;

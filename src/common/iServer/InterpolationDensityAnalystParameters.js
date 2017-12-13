@@ -40,6 +40,7 @@ export class InterpolationDensityAnalystParameters extends InterpolationAnalystP
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.InterpolationDensityAnalystParameters";
     }
 
     /**
@@ -49,8 +50,6 @@ export class InterpolationDensityAnalystParameters extends InterpolationAnalystP
     destroy() {
         super.destroy();
     }
-
-    CLASS_NAME = "SuperMap.InterpolationDensityAnalystParameters"
 }
 
 SuperMap.InterpolationDensityAnalystParameters = InterpolationDensityAnalystParameters;

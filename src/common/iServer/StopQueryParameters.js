@@ -7,21 +7,24 @@ import {Util} from '../commontypes/Util';
  * @param options - {Object} 可选参数。
  */
 export class StopQueryParameters {
-    /**
-     *  @member SuperMap.StopQueryParameters.prototype.keyWord -{string}
-     *  @description 站点名称关键字。
-     */
-    keyWord = null;
-
-    /**
-     * @member SuperMap.StopQueryParameters.prototype.returnPosition -{boolean}
-     * @description 是否返回站点坐标信息。
-     */
-    returnPosition = false;
 
     constructor(options) {
         options = options || {};
+        /**
+         *  @member SuperMap.StopQueryParameters.prototype.keyWord -{string}
+         *  @description 站点名称关键字。
+         */
+        this.keyWord = null;
+
+        /**
+         * @member SuperMap.StopQueryParameters.prototype.returnPosition -{boolean}
+         * @description 是否返回站点坐标信息。
+         */
+        this.returnPosition = false;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.StopQueryParameters";
     }
 
     /**
@@ -32,7 +35,6 @@ export class StopQueryParameters {
         Util.reset(this);
     }
 
-    CLASS_NAME = "SuperMap.StopQueryParameters"
 }
 
 SuperMap.StopQueryParameters = StopQueryParameters;

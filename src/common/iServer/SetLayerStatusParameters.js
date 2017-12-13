@@ -14,32 +14,32 @@ import './LayerStatus';
  */
 export class SetLayerStatusParameters {
 
-    /**
-     * @member SuperMap.SetLayerStatusParameters.prototype.layerStatusList -{Array<SuperMap.LayerStatus>}
-     * @description 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。<br>
-     *                集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。
-     */
-    layerStatusList = null;
-
-    /**
-     * @member SuperMap.SetLayerStatusParameters.prototype.holdTime -{number}
-     * @description 获取或设置资源在服务端保存的时间。 默认为 15 分钟。
-     */
-    holdTime = 15;
-
-    /**
-     * @member SuperMap.SetLayerStatusParameters.prototype.resourceID -{string}
-     * @description 获取或设置资源服务 ID 。非必设参数，如果设置该参数则会在指定的 TempLayer 进行图层的显示控制；<br>
-     *                如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 进行图层的显示控制。
-     */
-    resourceID = null;
-
     constructor(options) {
-        var me = this;
-        me.layerStatusList = [];
+        /**
+         * @member SuperMap.SetLayerStatusParameters.prototype.layerStatusList -{Array<SuperMap.LayerStatus>}
+         * @description 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。<br>
+         *                集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。
+         */
+        this.layerStatusList = [];
+
+        /**
+         * @member SuperMap.SetLayerStatusParameters.prototype.holdTime -{number}
+         * @description 获取或设置资源在服务端保存的时间。 默认为 15 分钟。
+         */
+        this.holdTime = 15;
+
+        /**
+         * @member SuperMap.SetLayerStatusParameters.prototype.resourceID -{string}
+         * @description 获取或设置资源服务 ID 。非必设参数，如果设置该参数则会在指定的 TempLayer 进行图层的显示控制；<br>
+         *                如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 进行图层的显示控制。
+         */
+        this.resourceID = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+
     }
 
     /**
@@ -73,8 +73,6 @@ export class SetLayerStatusParameters {
         return json;
     }
 
-
-    CLASS_NAME = "SuperMap.SetLayerStatusParameters"
 }
 
 SuperMap.SetLayerStatusParameters = SetLayerStatusParameters;

@@ -18,6 +18,7 @@ export class OverlayGeoJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/overlay";
+        this.CLASS_NAME = "SuperMap.OverlayGeoJobsService";
     }
 
     /**
@@ -54,6 +55,5 @@ export class OverlayGeoJobsService extends ProcessingServiceBase {
         super.addJob(this.url, params, OverlayGeoJobParameter, seconds);
     }
 
-    CLASS_NAME = "SuperMap.OverlayGeoJobsService";
 }
 SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;

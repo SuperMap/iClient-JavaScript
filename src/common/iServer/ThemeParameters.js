@@ -28,57 +28,59 @@ import './LabelThemeCell';
  */
 export class ThemeParameters {
 
-    /**
-     * @member SuperMap.ThemeParameters.prototype.datasetNames -{Array<string>}
-     * @description 要制作专题图的数据集数组，必设。
-     */
-    datasetNames = null;
-
-    /**
-     * @member SuperMap.ThemeParameters.prototype.dataSourceNames -{Array<string>}
-     * @description 要制作专题图的数据集所在的数据源数组，必设。
-     */
-    dataSourceNames = null;
-
-    /**
-     * @member SuperMap.ThemeParameters.prototype.joinItems -{Array<SuperMap.JoinItem>}
-     * @description 设置与外部表的连接信息 JoinItem 数组。
-     *               使用此属性可以制作与外部表连接的专题图。
-     */
-    joinItems = null;
-
-    /**
-     * @member SuperMap.ThemeParameters.prototype.themes -{Array<SuperMap.Theme>}
-     * @description 专题图对象列表。
-     *               该参数为实例化的各类专题图对象的集合。
-     */
-    themes = null;
-
-    /**
-     * @member SuperMap.ThemeParameters.prototype.displayFilters -{Array<string>}
-     * @description 专题图属性过滤条件。
-     */
-    displayFilters = null;
-
-    /**
-     * @member SuperMap.ThemeParameters.prototype.displayOrderBys -{Array<string>}
-     * @description 专题图对象生成符号叠加次序排序字段
-     */
-    displayOrderBys = null;
-
-    /**
-     * @member SuperMap.ThemeParameters.prototype.fieldValuesDisplayFilter -{Object}
-     * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
-     *  * values：{Array<number>} - 就是要过滤的值；<br>
-     *  * fieldName：{string} - 要过滤的字段名称 只支持数字类型的字段；<br>
-     *  * fieldValuesDisplayMode：{string} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
-     */
-    fieldValuesDisplayFilter = null;
-
     constructor(options) {
+        /**
+         * @member SuperMap.ThemeParameters.prototype.datasetNames -{Array<string>}
+         * @description 要制作专题图的数据集数组，必设。
+         */
+        this.datasetNames = null;
+
+        /**
+         * @member SuperMap.ThemeParameters.prototype.dataSourceNames -{Array<string>}
+         * @description 要制作专题图的数据集所在的数据源数组，必设。
+         */
+        this.dataSourceNames = null;
+
+        /**
+         * @member SuperMap.ThemeParameters.prototype.joinItems -{Array<SuperMap.JoinItem>}
+         * @description 设置与外部表的连接信息 JoinItem 数组。
+         *               使用此属性可以制作与外部表连接的专题图。
+         */
+        this.joinItems = null;
+
+        /**
+         * @member SuperMap.ThemeParameters.prototype.themes -{Array<SuperMap.Theme>}
+         * @description 专题图对象列表。
+         *               该参数为实例化的各类专题图对象的集合。
+         */
+        this.themes = null;
+
+        /**
+         * @member SuperMap.ThemeParameters.prototype.displayFilters -{Array<string>}
+         * @description 专题图属性过滤条件。
+         */
+        this.displayFilters = null;
+
+        /**
+         * @member SuperMap.ThemeParameters.prototype.displayOrderBys -{Array<string>}
+         * @description 专题图对象生成符号叠加次序排序字段
+         */
+        this.displayOrderBys = null;
+
+        /**
+         * @member SuperMap.ThemeParameters.prototype.fieldValuesDisplayFilter -{Object}
+         * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
+         *  * values：{Array<number>} - 就是要过滤的值；<br>
+         *  * fieldName：{string} - 要过滤的字段名称 只支持数字类型的字段；<br>
+         *  * fieldValuesDisplayMode：{string} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
+         */
+        this.fieldValuesDisplayFilter = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ThemeParameters";
     }
 
 
@@ -104,8 +106,6 @@ export class ThemeParameters {
         }
     }
 
-
-    CLASS_NAME = "SuperMap.ThemeParameters"
 }
 
 SuperMap.ThemeParameters = ThemeParameters;

@@ -12,13 +12,14 @@ import {ClientType} from '../REST';
  *        limitation - {number}有效期
  */
 export class KeyServiceParameter {
-    name = null;
-    serviceIds = null;
-    clientType = ClientType.SERVER;
-    limitation = null;
 
     constructor(options) {
+        this.name = null;
+        this.serviceIds = null;
+        this.clientType = ClientType.SERVER;
+        this.limitation = null;
         Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.KeyServiceParameter";
     }
 
     /**
@@ -35,7 +36,6 @@ export class KeyServiceParameter {
         }
     }
 
-    CLASS_NAME = "SuperMap.KeyServiceParameter"
 }
 
 SuperMap.KeyServiceParameter = KeyServiceParameter;

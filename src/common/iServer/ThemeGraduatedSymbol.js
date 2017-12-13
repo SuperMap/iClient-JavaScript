@@ -21,61 +21,59 @@ import {GraduatedMode} from '../REST';
  */
 export class ThemeGraduatedSymbol extends Theme {
 
-    /**
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.baseValue -{number}
-     * @description 等级符号专题图的基准值，单位同专题变量的单位。<br>
-     *              依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于<br>
-     *              ThemeValueSection.positiveStyle（或 zeroStyle，negativeStyle）.markerSize * value / basevalue，<br>
-     *              其中 value 是 expression 所指定字段对应的值经过分级计算之后的值。默认值为0，建议通过多次尝试设置该值才能达到较好的显示效果。
-     */
-    baseValue = 0;
-
-    /**
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.expression -{string}
-     * @description 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。必设字段。
-     */
-    expression = null;
-
-    /**
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.flow -{SuperMap.ThemeFlow}
-     * @description 等级符号专题图符号流动显示与牵引线设置类。<br>
-     *              通过该字段可以设置等级符号是否流动显示和牵引线风格。
-     */
-    flow = null;
-
-    /**
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.graduatedMode -{SuperMap.GraduatedMode}
-     * @description 等级符号专题图分级模式。<br>
-     *              分级主要是为了减少制作等级符号专题图中数据大小之间的差异。如果数据之间差距较大，则可以采用对数或者平方根的分级方式来进行，<br>
-     *              这样就减少了数据之间的绝对大小的差异，使得等级符号图的视觉效果比较好，同时不同类别之间的比较也是有意义的。<br>
-     *              有三种分级模式：常数、对数和平方根，对于有值为负数的字段，在用对数或平方根方式分级时，默认对负数取正。<br>
-     *              不同的分级模式用于确定符号大小的数值是不相同的：常数按照字段的原始数据进行；对数则是对每条记录对应的专题变量取自然对数；<br>
-     *              平方根则是对其取平方根，然后用最终得到的结果来确定其等级符号的大小。<br>
-     *              默认值为 SuperMap.GraduatedMode.CONSTANT。
-     */
-    graduatedMode = GraduatedMode.CONSTANT;
-
-    /**
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.offset -{SuperMap.ThemeOffset}
-     * @description 用于设置等级符号图相对于要素内点的偏移量。
-     */
-    offset = null;
-
-    /**
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.style -{SuperMap.ThemeGraduatedSymbolStyle}
-     * @description 用于设置等级符号图正负和零值显示风格。
-     */
-    style = null;
-
     constructor(options) {
         super("GRADUATEDSYMBOL", options);
-        var me = this;
-        me.flow = new ThemeFlow();
-        me.offset = new ThemeOffset();
-        me.style = new ThemeGraduatedSymbolStyle();
+        /**
+         * @member SuperMap.ThemeGraduatedSymbol.prototype.baseValue -{number}
+         * @description 等级符号专题图的基准值，单位同专题变量的单位。<br>
+         *              依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于<br>
+         *              ThemeValueSection.positiveStyle（或 zeroStyle，negativeStyle）.markerSize * value / basevalue，<br>
+         *              其中 value 是 expression 所指定字段对应的值经过分级计算之后的值。默认值为0，建议通过多次尝试设置该值才能达到较好的显示效果。
+         */
+        this.baseValue = 0;
+
+        /**
+         * @member SuperMap.ThemeGraduatedSymbol.prototype.expression -{string}
+         * @description 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。必设字段。
+         */
+        this.expression = null;
+
+        /**
+         * @member SuperMap.ThemeGraduatedSymbol.prototype.flow -{SuperMap.ThemeFlow}
+         * @description 等级符号专题图符号流动显示与牵引线设置类。<br>
+         *              通过该字段可以设置等级符号是否流动显示和牵引线风格。
+         */
+        this.flow = new ThemeFlow();
+
+        /**
+         * @member SuperMap.ThemeGraduatedSymbol.prototype.graduatedMode -{SuperMap.GraduatedMode}
+         * @description 等级符号专题图分级模式。<br>
+         *              分级主要是为了减少制作等级符号专题图中数据大小之间的差异。如果数据之间差距较大，则可以采用对数或者平方根的分级方式来进行，<br>
+         *              这样就减少了数据之间的绝对大小的差异，使得等级符号图的视觉效果比较好，同时不同类别之间的比较也是有意义的。<br>
+         *              有三种分级模式：常数、对数和平方根，对于有值为负数的字段，在用对数或平方根方式分级时，默认对负数取正。<br>
+         *              不同的分级模式用于确定符号大小的数值是不相同的：常数按照字段的原始数据进行；对数则是对每条记录对应的专题变量取自然对数；<br>
+         *              平方根则是对其取平方根，然后用最终得到的结果来确定其等级符号的大小。<br>
+         *              默认值为 SuperMap.GraduatedMode.CONSTANT。
+         */
+        this.graduatedMode = GraduatedMode.CONSTANT;
+
+        /**
+         * @member SuperMap.ThemeGraduatedSymbol.prototype.offset -{SuperMap.ThemeOffset}
+         * @description 用于设置等级符号图相对于要素内点的偏移量。
+         */
+        this.offset =  new ThemeOffset();
+
+        /**
+         * @member SuperMap.ThemeGraduatedSymbol.prototype.style -{SuperMap.ThemeGraduatedSymbolStyle}
+         * @description 用于设置等级符号图正负和零值显示风格。
+         */
+        this.style =  new ThemeGraduatedSymbolStyle();
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ThemeGraduatedSymbol";
     }
 
     /**
@@ -162,7 +160,6 @@ export class ThemeGraduatedSymbol extends Theme {
         return res;
     }
 
-    CLASS_NAME = "SuperMap.ThemeGraduatedSymbol"
 }
 
 SuperMap.ThemeGraduatedSymbol = ThemeGraduatedSymbol;

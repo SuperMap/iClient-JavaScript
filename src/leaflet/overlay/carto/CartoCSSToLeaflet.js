@@ -12,19 +12,18 @@ import {CartoStyleMap, ServerStyleMap, CompOpMap} from './CartoStyleMap';
  */
 export class CartoCSSToLeaflet {
 
-    /**
-     * @member L.supermap.CartoCSSToLeaflet.prototype.cartoCSS
-     * @description CartoCSS样式
-     */
-    cartoCSS = null;
-
-    /**
-     * @member L.supermap.CartoCSSToLeaflet.prototype.mapUrl
-     * @description 地图服务地址
-     */
-    mapUrl = null;
 
     constructor(url) {
+        /**
+         * @member L.supermap.CartoCSSToLeaflet.prototype.cartoCSS
+         * @description CartoCSS样式
+         */
+        this.cartoCSS = null;
+
+        /**
+         * @member L.supermap.CartoCSSToLeaflet.prototype.mapUrl
+         * @description 地图服务地址
+         */
         this.mapUrl = url;
     }
 

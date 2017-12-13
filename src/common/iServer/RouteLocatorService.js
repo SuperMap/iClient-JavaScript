@@ -62,6 +62,7 @@ export class RouteLocatorService extends SpatialAnalystBase {
 
     constructor(url, options) {
         super(url, options);
+        this.CLASS_NAME = "SuperMap.RouteLocatorService";
     }
 
     /**
@@ -113,7 +114,6 @@ export class RouteLocatorService extends SpatialAnalystBase {
         return jsonParameters;
     }
 
-    CLASS_NAME = "SuperMap.RouteLocatorService"
 }
 
 SuperMap.RouteLocatorService = RouteLocatorService;

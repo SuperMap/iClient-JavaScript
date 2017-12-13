@@ -12,36 +12,36 @@ import {ClipAnalystMode} from '../REST';
  */
 export class VectorClipJobsParameter {
 
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
-     * @description 数据集名。
-     */
-    datasetName = "";
-
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
-     * @description 裁剪对象数据集。
-     */
-    datasetVectorClip = "";
-
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
-     * @description 裁剪几何对象。
-     */
-    geometryClip = "";
-
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
-     * @description 裁剪分析模式 。
-     */
-    mode = ClipAnalystMode.CLIP;
-
     constructor(options) {
         options = options || {};
-        if (options.mode && typeof options.mode === "string") {
-            options.mode = options.mode.toLowerCase();
-        }
+
+        /**
+         * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
+         * @description 数据集名。
+         */
+        this.datasetName = "";
+
+        /**
+         * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
+         * @description 裁剪对象数据集。
+         */
+        this.datasetVectorClip = "";
+
+        /**
+         * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
+         * @description 裁剪几何对象。
+         */
+        this.geometryClip = "";
+
+        /**
+         * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
+         * @description 裁剪分析模式 。
+         */
+        this.mode = ClipAnalystMode.CLIP;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
     }
 
     /**

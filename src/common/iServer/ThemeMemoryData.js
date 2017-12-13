@@ -8,25 +8,20 @@
  */
 export class ThemeMemoryData {
 
-    /**
-     * @member SuperMap.ThemeMemoryData.prototype.srcData -{Array}
-     * @description 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
-     */
-    srcData = null;
-
-    /**
-     * @member SuperMap.ThemeMemoryData.prototype.targetData -{Array}
-     * @description 外部值数组，即用于制作专题图的内存数据，设定该属性值后，会将 srcData 属性所指定的原始值替换掉制作专题图，但数据库中的值并不会改变。
-     */
-    targetData = null;
-
     constructor(srcData, targetData) {
-        if (srcData) {
-            this.srcData = srcData;
-        }
-        if (targetData) {
-            this.targetData = targetData;
-        }
+        /**
+         * @member SuperMap.ThemeMemoryData.prototype.srcData -{Array}
+         * @description 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
+         */
+        this.srcData = srcData;
+
+        /**
+         * @member SuperMap.ThemeMemoryData.prototype.targetData -{Array}
+         * @description 外部值数组，即用于制作专题图的内存数据，设定该属性值后，会将 srcData 属性所指定的原始值替换掉制作专题图，但数据库中的值并不会改变。
+         */
+        this.targetData = targetData;
+
+        this.CLASS_NAME = "SuperMap.ThemeMemoryData";
     }
 
     /**
@@ -62,8 +57,6 @@ export class ThemeMemoryData {
         }
     }
 
-
-    CLASS_NAME = "SuperMap.ThemeMemoryData"
 }
 
 SuperMap.ThemeMemoryData = ThemeMemoryData;

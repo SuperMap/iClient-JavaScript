@@ -95,114 +95,101 @@ import {InterpolationAnalystParameters} from './InterpolationAnalystParameters';
  */
 export class InterpolationKrigingAnalystParameters extends InterpolationAnalystParameters {
 
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.type - {SuperMap.InterpolationAlgorithmType}
-     * @description 克吕金插值的类型。必设参数。
-     * 具体如下：
-     * {KRIGING} 普通克吕金插值法。
-     * {SimpleKriging} 简单克吕金插值法。
-     * {UniversalKriging} 泛克吕金插值法。
-     */
-    type = null;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.mean - {number}
-     * @description 【简单克吕金】方式下，插值字段的平均值。
-     * 即采样点插值字段值总和除以采样点数目。
-     */
-    mean = null;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.angle - {number}
-     * @description 克吕金算法中旋转角度值。默认值为0。
-     * 此角度值指示了每个查找邻域相对于水平方向逆时针旋转的角度。
-     */
-    angle = 0;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.nugget - {number}
-     * @description 克吕金算法中块金效应值。默认值为0。
-     */
-    nugget = 0;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.range - {number}
-     * @description 克吕金算法中自相关阈值，单位与原数据集单位相同。默认值为0。
-     */
-    range = 0;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.sill - {number}
-     * @description 克吕金算法中基台值。默认值为0。
-     */
-    sill = 0;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.variogramMode - {SuperMap.VariogramMode}
-     * @description 克吕金插值时的半变函数类型。
-     * 默认值为 SuperMap.VariogramMode.SPHERICAL。
-     * 用户所选择的半变函数类型会影响未知点的预测，特别是曲线在原点处的不同形状有重要意义。
-     * 曲线在原点处越陡，则较近领域对该预测值的影响就越大，因此输出表面就会越不光滑。
-     */
-    variogramMode = VariogramMode.SPHERICAL;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.exponent - {SuperMap.Exponent}
-     * @description 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数。
-     * 默认值为 SuperMap.Exponent.EXP1。
-     */
-    exponent = Exponent.EXP1;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.searchMode - {SuperMap.SearchMode}
-     * @description 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。
-     * 简单克吕金和泛克吕金不支持块查找。
-     * 具体如下：
-     * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
-     * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。
-     * {QUADTREE} 使用 QUADTREE 方式查找参与内插分析的点（块查找）。
-     */
-    searchMode = null;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.expectedCount - {number}
-     * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
-     * 【定长查找】方式下，设置查找的最小点数，默认值为12。
-     */
-    expectedCount = 12;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.maxPointCountForInterpolation - {number}
-     * @description 【块查找】方式下，最多参与插值的点数。默认值为200。
-     * 仅用于普通克吕金插值，简单克吕金和泛克吕金不支持块查找。
-     */
-    maxPointCountForInterpolation = 200;
-
-    /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.maxPointCountForInterpolation - {number}
-     * @description 【块查找】方式下，设置单个块内最多参与运算点数。默认值为50。
-     * 仅用于普通克吕金插值，简单克吕金和泛克吕金不支持块查找。
-     */
-    maxPointCountInNode = 50;
-
     constructor(options) {
         super(options);
-        var me = this;
-        me.type = null;
-        me.mean = null;
-        me.angle = 0;
-        me.nugget = 0;
-        me.range = 0;
-        me.sill = 0;
-        me.variogramMode = "SPHERICAL";
-        me.exponent = "EXP1";
-        me.searchMode = null;
-        me.expectedCount = 12;
-        me.maxPointCountForInterpolation = 200;
-        me.maxPointCountInNode = 50;
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.type - {SuperMap.InterpolationAlgorithmType}
+         * @description 克吕金插值的类型。必设参数。
+         * 具体如下：
+         * {KRIGING} 普通克吕金插值法。
+         * {SimpleKriging} 简单克吕金插值法。
+         * {UniversalKriging} 泛克吕金插值法。
+         */
+        this.type = null;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.mean - {number}
+         * @description 【简单克吕金】方式下，插值字段的平均值。
+         * 即采样点插值字段值总和除以采样点数目。
+         */
+        this.mean = null;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.angle - {number}
+         * @description 克吕金算法中旋转角度值。默认值为0。
+         * 此角度值指示了每个查找邻域相对于水平方向逆时针旋转的角度。
+         */
+        this.angle = 0;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.nugget - {number}
+         * @description 克吕金算法中块金效应值。默认值为0。
+         */
+        this.nugget = 0;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.range - {number}
+         * @description 克吕金算法中自相关阈值，单位与原数据集单位相同。默认值为0。
+         */
+        this.range = 0;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.sill - {number}
+         * @description 克吕金算法中基台值。默认值为0。
+         */
+        this.sill = 0;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.variogramMode - {SuperMap.VariogramMode}
+         * @description 克吕金插值时的半变函数类型。
+         * 默认值为 SuperMap.VariogramMode.SPHERICAL。
+         * 用户所选择的半变函数类型会影响未知点的预测，特别是曲线在原点处的不同形状有重要意义。
+         * 曲线在原点处越陡，则较近领域对该预测值的影响就越大，因此输出表面就会越不光滑。
+         */
+        this.variogramMode = VariogramMode.SPHERICAL;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.exponent - {SuperMap.Exponent}
+         * @description 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数。
+         * 默认值为 SuperMap.Exponent.EXP1。
+         */
+        this.exponent = Exponent.EXP1;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.searchMode - {SuperMap.SearchMode}
+         * @description 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。
+         * 简单克吕金和泛克吕金不支持块查找。
+         * 具体如下：
+         * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
+         * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。
+         * {QUADTREE} 使用 QUADTREE 方式查找参与内插分析的点（块查找）。
+         */
+        this.searchMode = null;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.expectedCount - {number}
+         * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
+         * 【定长查找】方式下，设置查找的最小点数，默认值为12。
+         */
+        this.expectedCount = 12;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.maxPointCountForInterpolation - {number}
+         * @description 【块查找】方式下，最多参与插值的点数。默认值为200。
+         * 仅用于普通克吕金插值，简单克吕金和泛克吕金不支持块查找。
+         */
+        this.maxPointCountForInterpolation = 200;
+
+        /**
+         * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.maxPointCountForInterpolation - {number}
+         * @description 【块查找】方式下，设置单个块内最多参与运算点数。默认值为50。
+         * 仅用于普通克吕金插值，简单克吕金和泛克吕金不支持块查找。
+         */
+        this.maxPointCountInNode = 50;
         if (options) {
-            Util.extend(me, options);
+            Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.InterpolationKrigingAnalystParameters";
     }
 
     /**
@@ -226,8 +213,6 @@ export class InterpolationKrigingAnalystParameters extends InterpolationAnalystP
         me.maxPointCountForInterpolation = null;
         me.maxPointCountInNode = null;
     }
-
-    CLASS_NAME = "SuperMap.InterpolationKrigingAnalystParameters"
 }
 
 SuperMap.InterpolationKrigingAnalystParameters = InterpolationKrigingAnalystParameters;

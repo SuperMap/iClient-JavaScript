@@ -10,25 +10,6 @@ import {Util} from '../commontypes/Util';
  * 该类描述了服务端返回的矢量要素的相关信息，包括字段和几何信息。
  */
 export class ServerFeature {
-
-    /*
-     * APIProperty: fieldNames
-     * {Array(String)} 矢量要素的属性字段名集合。
-     */
-    fieldNames = null;
-
-    /*
-     * APIProperty: fieldValues
-     * {Array(String)} 矢量要素的属性字段值集合。
-     */
-    fieldValues = null;
-
-    /*
-     * APIProperty: geometry
-     * {<SuperMap.ServerGeometry>} 矢量要素的几何信息。
-     */
-    geometry = null;
-
     /*
      * Constructor: SuperMap.ServerFeature
      * 服务端矢量要素类构造函数。
@@ -42,9 +23,29 @@ export class ServerFeature {
      * geometry - {<SuperMap.ServerGeometry>} 矢量要素的几何信息。
      */
     constructor(options) {
+
+        /*
+         * APIProperty: fieldNames
+         * {Array(String)} 矢量要素的属性字段名集合。
+         */
+        this.fieldNames = null;
+
+        /*
+         * APIProperty: fieldValues
+         * {Array(String)} 矢量要素的属性字段值集合。
+         */
+        this.fieldValues = null;
+
+        /*
+         * APIProperty: geometry
+         * {<SuperMap.ServerGeometry>} 矢量要素的几何信息。
+         */
+        this.geometry = null;
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ServerFeature";
     }
 
     /*
@@ -117,7 +118,6 @@ export class ServerFeature {
         });
     }
 
-    CLASS_NAME = "SuperMap.ServerFeature"
 }
 
 

@@ -9,39 +9,36 @@ import {Vector} from './Vector';
 export class Curve {
 
     /**
-     * Property: vector
-     * {<SuperMap.LevelRenderer.Tool.Vector>} 矢量工具
-     */
-    vector = null;
-
-    /**
-     * Property: EPSILON
-     * {Number} e
-     */
-    EPSILON = null;
-
-    /**
-     * Property: THREE_SQRT
-     * {Number} 3 的平方根
-     */
-    THREE_SQRT = null;
-
-    /**
-     * Property: ONE_THIRD
-     * {Number} 1/3
-     */
-    ONE_THIRD = null;
-
-    /**
      * Constructor: SuperMap.LevelRenderer.Tool.Curve
      * 构造函数。
      *
      */
     constructor() {
+        /**
+         * Property: vector
+         * {<SuperMap.LevelRenderer.Tool.Vector>} 矢量工具
+         */
         this.vector = new Vector();
+
+        /**
+         * Property: EPSILON
+         * {Number} e
+         */
         this.EPSILON = 1e-4;
+
+        /**
+         * Property: THREE_SQRT
+         * {Number} 3 的平方根
+         */
         this.THREE_SQRT = Math.sqrt(3);
+
+        /**
+         * Property: ONE_THIRD
+         * {Number} 1/3
+         */
         this.ONE_THIRD = 1 / 3;
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Curve";
     }
 
 
@@ -596,6 +593,4 @@ export class Curve {
         return Math.sqrt(d);
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Curve"
 }

@@ -40,11 +40,7 @@ export class SmicIsogon extends Shape {
      */
     //打开接口 style
 
-    /**
-     * Property: type
-     * {String} 图形类型。
-     */
-    type = 'smicisogon';
+
 
     /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicIsogon
@@ -56,9 +52,15 @@ export class SmicIsogon extends Shape {
      */
     constructor(options) {
         super(options);
+        /**
+         * Property: type
+         * {String} 图形类型。
+         */
+        this.type = 'smicisogon';
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicIsogon";
     }
 
 
@@ -162,6 +164,4 @@ export class SmicIsogon extends Shape {
         return style.__rect;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicIsogon"
 }

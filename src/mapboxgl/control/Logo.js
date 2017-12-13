@@ -19,18 +19,19 @@ import logoSrc from '@supermap/iclient-common/control/img/iClient.png';
  */
 export class Logo {
 
-    //logo图片地址
-    imageUrl = null;
-    //跳转链接
-    link = null;
-    //logo图片宽
-    width = null;
-    //logo图片高
-    height = null;
-    //logo图片失效时显示文本
-    alt = "SuperMap iClient";
+
 
     constructor(options) {
+        //logo图片地址
+        this.imageUrl = null;
+        //跳转链接
+        this.link = null;
+        //logo图片宽
+        this.width = null;
+        //logo图片高
+        this.height = null;
+        //logo图片失效时显示文本
+        this.alt = "SuperMap iClient";
         this._extend(this, options)
     }
 

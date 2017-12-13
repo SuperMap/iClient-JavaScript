@@ -15,36 +15,36 @@ import {ServerStyle} from './ServerStyle';
  */
 export class ThemeUniqueItem {
 
-    /**
-     * @member SuperMap.ThemeUniqueItem.prototype.caption -{string}
-     * @description 单值专题图子项的标题。
-     */
-    caption = null;
-
-    /**
-     * @member SuperMap.ThemeUniqueItem.prototype.style -{SuperMap.ServerStyle}
-     * @description 单值专题图子项的显示风格。
-     */
-    style = null;
-
-    /**
-     * @member SuperMap.ThemeUniqueItem.prototype.unique -{string}
-     * @description 单值专题图子项的值，可以为数字、字符串等。
-     */
-    unique = null;
-
-    /**
-     * @member SuperMap.ThemeUniqueItem.prototype.visible -{boolean}
-     * @description 单值专题图子项的可见性。默认为 true，表示可见。
-     */
-    visible = true;
-
     constructor(options) {
-        var me = this;
-        me.style = new ServerStyle();
+        /**
+         * @member SuperMap.ThemeUniqueItem.prototype.caption -{string}
+         * @description 单值专题图子项的标题。
+         */
+        this.caption = null;
+
+        /**
+         * @member SuperMap.ThemeUniqueItem.prototype.style -{SuperMap.ServerStyle}
+         * @description 单值专题图子项的显示风格。
+         */
+        this.style = new ServerStyle();
+
+        /**
+         * @member SuperMap.ThemeUniqueItem.prototype.unique -{string}
+         * @description 单值专题图子项的值，可以为数字、字符串等。
+         */
+        this.unique = null;
+
+        /**
+         * @member SuperMap.ThemeUniqueItem.prototype.visible -{boolean}
+         * @description 单值专题图子项的可见性。默认为 true，表示可见。
+         */
+        this.visible = true;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ThemeUniqueItem";
     }
 
     /**
@@ -93,7 +93,6 @@ export class ThemeUniqueItem {
 
     }
 
-    CLASS_NAME = "SuperMap.ThemeUniqueItem"
 }
 
 SuperMap.ThemeUniqueItem = ThemeUniqueItem;

@@ -107,6 +107,7 @@ export class Line extends Graph {
      */
     constructor(data, layer, fields, setting, lonlat, options) {
         super(data, layer, fields, setting, lonlat, options);
+        this.CLASS_NAME = "SuperMap.Feature.Theme.Line";
     }
 
     /**
@@ -298,7 +299,6 @@ export class Line extends Graph {
         };
     }
 
-    CLASS_NAME = "SuperMap.Feature.Theme.Line"
 }
 
 SuperMap.Feature.Theme.Line = Line;

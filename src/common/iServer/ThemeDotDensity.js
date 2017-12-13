@@ -22,34 +22,33 @@ import {ServerStyle} from './ServerStyle';
  */
 export class ThemeDotDensity extends Theme {
 
-    /**
-     * @member SuperMap.ThemeDotDensity.prototype.dotExpression -{string}
-     * @description 创建点密度专题图的字段或字段表达式。点的数目或密集程度的来源。
-     */
-    dotExpression = null;
-
-    /**
-     * @member SuperMap.ThemeDotDensity.prototype.style -{SuperMap.ServerStyle}
-     * @description 点密度专题图中点的风格。
-     */
-    style = null;
-
-    /**
-     * @member SuperMap.ThemeDotDensity.prototype.value -{number}
-     * @description 专题图中每一个点所代表的数值。<br>
-     *              点值的确定与地图比例尺以及点的大小有关。地图比例尺越大，相应的图面范围也越大，<br>
-     *              点相应就可以越多，此时点值就可以设置相对小一些。点形状越大，<br>
-     *              点值相应就应该设置的小一些。点值过大或过小都是不合适的。
-     */
-    value = null;
-
     constructor(options) {
         super("DOTDENSITY", options);
-        var me = this;
-        me.style = new ServerStyle();
+        /**
+         * @member SuperMap.ThemeDotDensity.prototype.dotExpression -{string}
+         * @description 创建点密度专题图的字段或字段表达式。点的数目或密集程度的来源。
+         */
+        this.dotExpression = null;
+
+        /**
+         * @member SuperMap.ThemeDotDensity.prototype.style -{SuperMap.ServerStyle}
+         * @description 点密度专题图中点的风格。
+         */
+        this.style =  new ServerStyle();
+
+        /**
+         * @member SuperMap.ThemeDotDensity.prototype.value -{number}
+         * @description 专题图中每一个点所代表的数值。<br>
+         *              点值的确定与地图比例尺以及点的大小有关。地图比例尺越大，相应的图面范围也越大，<br>
+         *              点相应就可以越多，此时点值就可以设置相对小一些。点形状越大，<br>
+         *              点值相应就应该设置的小一些。点值过大或过小都是不合适的。
+         */
+        this.value = null;
+
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.ThemeDotDensity";
     }
 
     /**
@@ -100,7 +99,7 @@ export class ThemeDotDensity extends Theme {
         return res;
     }
 
-    CLASS_NAME = "SuperMap.ThemeDotDensity"
+
 }
 
 SuperMap.ThemeDotDensity = ThemeDotDensity;

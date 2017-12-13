@@ -95,6 +95,7 @@ export class Bar extends Graph {
 
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
+        this.CLASS_NAME = "SuperMap.Feature.Theme.Bar";
     }
 
     /**
@@ -343,7 +344,6 @@ export class Bar extends Graph {
         }
     }
 
-    CLASS_NAME = "SuperMap.Feature.Theme.Bar"
 }
 
 SuperMap.Feature.Theme.Bar = Bar;

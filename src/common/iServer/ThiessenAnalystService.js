@@ -32,18 +32,19 @@ import {GeoJSON} from '../format/GeoJSON';
  *
  */
 export class ThiessenAnalystService extends SpatialAnalystBase {
-    /**
-     * @member SuperMap.ThiessenAnalystService.prototype.mode -{string}
-     * @description 缓冲区分析类型
-     */
-    mode = null;
+
 
     constructor(url, options) {
         super(url, options);
-        var me = this;
+        /**
+         * @member SuperMap.ThiessenAnalystService.prototype.mode -{string}
+         * @description 缓冲区分析类型
+         */
+        this.mode = null;
         if (options) {
-            Util.extend(me, options);
+            Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.ThiessenAnalystService";
     }
 
     /**
@@ -106,8 +107,6 @@ export class ThiessenAnalystService extends SpatialAnalystBase {
         }
         return result;
     }
-
-    CLASS_NAME = "SuperMap.ThiessenAnalystService"
 }
 
 SuperMap.ThiessenAnalystService = ThiessenAnalystService;

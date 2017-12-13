@@ -27,31 +27,32 @@ import {Theme3DLayer} from './theme/Theme3DLayer';
  *       });
  */
 export class RangeTheme3DLayer extends Theme3DLayer {
-    /**
-     * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.heightStops -{Array}
-     * @description 数据高度分段数组
-     */
-    heightStops = null;
-
-    /**
-     * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.colorStops -{Array}
-     * @description 数据颜色分段数组
-     */
-    colorStops = null;
-    /**
-     * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.base -{number}
-     * @description 数据分段线性增量
-     */
-    base = null;
-
-    /**
-     * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.legendRatio -{number}
-     * @description 图例数值扩大系数
-     */
-    legendRatio = 1;
 
     constructor(id, layerOptions) {
         super(id, layerOptions);
+        /**
+         * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.heightStops -{Array}
+         * @description 数据高度分段数组
+         */
+        this.heightStops = null;
+
+        /**
+         * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.colorStops -{Array}
+         * @description 数据颜色分段数组
+         */
+        this.colorStops = null;
+        /**
+         * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.base -{number}
+         * @description 数据分段线性增量
+         */
+        this.base = null;
+
+        /**
+         * @member  mapboxgl.supermap.RangeTheme3DLayer.prototype.legendRatio -{number}
+         * @description 图例数值扩大系数
+         */
+        this.legendRatio = 1;
+
         this._extend(this, layerOptions);
     }
 

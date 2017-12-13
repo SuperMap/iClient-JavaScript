@@ -12,21 +12,6 @@ import {Util} from './Util';
 import {Vector} from './Vector';
 
 export class SUtil {
-    // 把所有工具对象放到全局静态变量上，以便直接调用工具方法，
-// 避免使用工具时频繁的创建工具对象带来的性能消耗。
-    static Util_area = new Area();
-    static Util_color = new Color();
-    static Util_computeBoundingBox = new ComputeBoundingBox();
-    static Util_curve = new Curve();
-    static Util_env = new Env();
-    static Util_event = new Event();
-    static Util_http = new Http();
-    static Util_log = new Log();
-    static Util_math = new SMath();
-    static Util_matrix = new Matrix();
-    static Util = new Util();
-    static Util_vector = new Vector();
-
     /**
      * APIFunction: SuperMap.LevelRenderer.SUtil_smoothBezier
      * 贝塞尔平滑曲线。
@@ -239,3 +224,17 @@ export class SUtil {
         ctx.lineTo(x2, y2);
     }
 }
+// 把所有工具对象放到全局静态变量上，以便直接调用工具方法，
+// 避免使用工具时频繁的创建工具对象带来的性能消耗。
+SUtil.Util_area = new Area();
+SUtil.Util_color = new Color();
+SUtil.Util_computeBoundingBox = new ComputeBoundingBox();
+SUtil.Util_curve = new Curve();
+SUtil.Util_env = new Env();
+SUtil.Util_event = new Event();
+SUtil.Util_http = new Http();
+SUtil.Util_log = new Log();
+SUtil.Util_math = new SMath();
+SUtil.Util_matrix = new Matrix();
+SUtil.Util = new Util();
+SUtil.Util_vector = new Vector();

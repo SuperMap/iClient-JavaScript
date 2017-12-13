@@ -12,37 +12,38 @@ import {Util} from '../commontypes/Util';
  */
 export class LayerStatus {
 
-    /**
-     * @member SuperMap.LayerStatus.prototype.layerName -{string}
-     * @description 获取或设置图层名称。必设属性。
-     */
-    layerName = null;
-
-    /**
-     * @member SuperMap.LayerStatus.prototype.isVisible -{boolean}
-     * @description 获取或设置图层是否可见，true 表示可见。必设属性。
-     */
-    isVisible = null;
-
-    /**
-     * @member SuperMap.LayerStatus.prototype.displayFilter -{string}
-     * @description 图层显示 SQL 过滤条件，如 layerStatus.displayFilter = "smid < 10"，表示仅显示 smid 值小于 10 的对象。
-     */
-    displayFilter = null;
-
-    /**
-     * @member SuperMap.LayerStatus.prototype.fieldValuesDisplayFilter -{Object}
-     * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
-     *              values：{Array<number>} - 就是要过滤的值；<br>
-     *              fieldName：{string} - 要过滤的字段名称 只支持数字类型的字段；<br>
-     *              fieldValuesDisplayMode：{string} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
-     */
-    fieldValuesDisplayFilter = null;
-
     constructor(options) {
+        /**
+         * @member SuperMap.LayerStatus.prototype.layerName -{string}
+         * @description 获取或设置图层名称。必设属性。
+         */
+        this.layerName = null;
+
+        /**
+         * @member SuperMap.LayerStatus.prototype.isVisible -{boolean}
+         * @description 获取或设置图层是否可见，true 表示可见。必设属性。
+         */
+        this.isVisible = null;
+
+        /**
+         * @member SuperMap.LayerStatus.prototype.displayFilter -{string}
+         * @description 图层显示 SQL 过滤条件，如 layerStatus.displayFilter = "smid < 10"，表示仅显示 smid 值小于 10 的对象。
+         */
+        this.displayFilter = null;
+
+        /**
+         * @member SuperMap.LayerStatus.prototype.fieldValuesDisplayFilter -{Object}
+         * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
+         *              values：{Array<number>} - 就是要过滤的值；<br>
+         *              fieldName：{string} - 要过滤的字段名称 只支持数字类型的字段；<br>
+         *              fieldValuesDisplayMode：{string} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
+         */
+        this.fieldValuesDisplayFilter = null;
+
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.LayerStatus";
     }
 
     /**
@@ -93,7 +94,6 @@ export class LayerStatus {
         return json;
     }
 
-    CLASS_NAME = "SuperMap.LayerStatus"
 }
 
 SuperMap.LayerStatus = LayerStatus;

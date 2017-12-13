@@ -12,33 +12,35 @@ import {ServerType} from '../REST';
  *        keyServiceUrl - {string} 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
  */
 export class ServerInfo {
-    /**
-     * @member SuperMap.ServerInfo.prototype.type -{ServerType}
-     * @description 服务器类型
-     */
-    type = null;
-
-    /**
-     * @member SuperMap.ServerInfo.prototype.server -{string}
-     * @description 必填，服务器地址
-     */
-    server = null;
-
-    /**
-     * @member SuperMap.ServerInfo.prototype.tokenServiceUrl -{string}
-     * @description 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
-     */
-    tokenServiceUrl = null;
-
-    /**
-     * @member SuperMap.ServerInfo.prototype.keyServiceUrl -{string}
-     * @description 非必填。如：http://supermapiserver:8092/web/mycontent/keys/register.json
-     */
-    keyServiceUrl = null;
-
     constructor(type, options) {
-        this.type = type || ServerType.ISERVER;
+        /**
+         * @member SuperMap.ServerInfo.prototype.type -{ServerType}
+         * @description 服务器类型
+         */
+        this.type = null;
+
+        /**
+         * @member SuperMap.ServerInfo.prototype.server -{string}
+         * @description 必填，服务器地址
+         */
+        this.server = null;
+
+        /**
+         * @member SuperMap.ServerInfo.prototype.tokenServiceUrl -{string}
+         * @description 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+         */
+        this.tokenServiceUrl = null;
+
+        /**
+         * @member SuperMap.ServerInfo.prototype.keyServiceUrl -{string}
+         * @description 非必填。如：http://supermapiserver:8092/web/mycontent/keys/register.json
+         */
+        this.keyServiceUrl = null;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.ServerInfo";
+        this.type = this.type || ServerType.ISERVER;
         if (!this.server) {
             console.error('server url require is not  undefined')
         }
@@ -63,7 +65,6 @@ export class ServerInfo {
         }
     }
 
-    CLASS_NAME = "SuperMap.ServerInfo"
 }
 
 SuperMap.ServerInfo = ServerInfo;

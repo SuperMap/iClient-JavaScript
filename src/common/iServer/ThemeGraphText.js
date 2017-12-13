@@ -13,31 +13,32 @@ import {ThemeGraphTextFormat} from '../REST';
  */
 export class ThemeGraphText {
 
-    /**
-     * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{boolean}
-     * @description 是否显示统计图上的文字标注。默认为 false，即不显示。
-     */
-    graphTextDisplayed = false;
-
-    /**
-     * @member SuperMap.ThemeGraphText.prototype.graphTextFormat -{SuperMap.ThemeGraphTextFormat}
-     * @description 统计专题图文本显示格式。<br>
-     *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。默认为 SuperMap.ThemeGraphTextFormat.CAPTION。
-     */
-    graphTextFormat = ThemeGraphTextFormat.CAPTION;
-
-    /**
-     * @member SuperMap.ThemeGraphText.prototype.graphTextStyle -{SuperMap.ServerTextStyle}
-     * @description 统计图上的文字标注风格。
-     */
-    graphTextStyle = null;
-
     constructor(options) {
-        var me = this;
-        me.graphTextStyle = new ServerTextStyle();
+
+        /**
+         * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{boolean}
+         * @description 是否显示统计图上的文字标注。默认为 false，即不显示。
+         */
+        this.graphTextDisplayed = false;
+
+        /**
+         * @member SuperMap.ThemeGraphText.prototype.graphTextFormat -{SuperMap.ThemeGraphTextFormat}
+         * @description 统计专题图文本显示格式。<br>
+         *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。默认为 SuperMap.ThemeGraphTextFormat.CAPTION。
+         */
+        this.graphTextFormat = ThemeGraphTextFormat.CAPTION;
+
+        /**
+         * @member SuperMap.ThemeGraphText.prototype.graphTextStyle -{SuperMap.ServerTextStyle}
+         * @description 统计图上的文字标注风格。
+         */
+        this.graphTextStyle =  new ServerTextStyle();
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ThemeGraphText";
     }
 
     /**
@@ -68,7 +69,6 @@ export class ThemeGraphText {
 
     }
 
-    CLASS_NAME = "SuperMap.ThemeGraphText"
 }
 
 SuperMap.ThemeGraphText = ThemeGraphText;

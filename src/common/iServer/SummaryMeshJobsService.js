@@ -18,6 +18,7 @@ export class SummaryMeshJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/aggregatepoints";
+        this.CLASS_NAME = "SuperMap.SummaryMeshJobsService";
     }
 
     /**
@@ -54,7 +55,6 @@ export class SummaryMeshJobsService extends ProcessingServiceBase {
         super.addJob(this.url, params, SummaryMeshJobParameter, seconds);
     }
 
-    CLASS_NAME = "SuperMap.SummaryMeshJobsService"
 }
 
 SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;

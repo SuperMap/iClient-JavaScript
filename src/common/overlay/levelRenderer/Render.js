@@ -15,54 +15,6 @@ import {SUtil} from './SUtil';
 
 export class Render {
 
-    /**
-     * Property: id
-     * {String}  唯一标识。
-     *
-     */
-    id = null;
-
-    /**
-     * Property: storage
-     * {<SuperMap.LevelRenderer.Storage>} 图形仓库对象。
-     *
-     */
-    storage = null;
-
-    /**
-     * Property: painter
-     * {<SuperMap.LevelRenderer.Painter>} 绘制器对象。
-     *
-     */
-    painter = null;
-
-    /**
-     * Property: handler
-     * {<SuperMap.LevelRenderer.Handler>} 事件处理对象。
-     *
-     */
-    handler = null;
-
-    /**
-     * Property: animatingElements
-     * {Array} 动画控制数组。
-     *
-     */
-    animatingElements = null;
-
-    /**
-     * Property: animation
-     * {<SuperMap.LevelRenderer.animation.Animation>} 动画对象。
-     *
-     */
-    animation = null;
-
-    /**
-     * Property: _needsRefreshNextFrame
-     * {Boolean} 是否需要刷新下一帧。
-     *
-     */
-    _needsRefreshNextFrame = null;
 
     /*
      * Constructor: SuperMap.LevelRenderer.Render
@@ -73,22 +25,61 @@ export class Render {
      * dom - {HTMLElement} Dom 对象。
      */
     constructor(id, dom) {
+        /**
+         * Property: id
+         * {String}  唯一标识。
+         *
+         */
         this.id = id;
 
+        /**
+         * Property: storage
+         * {<SuperMap.LevelRenderer.Storage>} 图形仓库对象。
+         *
+         */
         this.storage = new Storage();
+
+        /**
+         * Property: painter
+         * {<SuperMap.LevelRenderer.Painter>} 绘制器对象。
+         *
+         */
         this.painter = new Painter(dom, this.storage);
+
+        /**
+         * Property: handler
+         * {<SuperMap.LevelRenderer.Handler>} 事件处理对象。
+         *
+         */
         this.handler = new Handler(dom, this.storage, this.painter);
 
+        /**
+         * Property: animatingElements
+         * {Array} 动画控制数组。
+         *
+         */
         this.animatingElements = [];
 
+        /**
+         * Property: animation
+         * {<SuperMap.LevelRenderer.animation.Animation>} 动画对象。
+         *
+         */
         this.animation = new Animation({
             stage: {
                 update: Render.getFrameCallback(this)
             }
         });
-        this.animation.start();
 
+        /**
+         * Property: _needsRefreshNextFrame
+         * {Boolean} 是否需要刷新下一帧。
+         *
+         */
         this._needsRefreshNextFrame = false;
+        this.animation.start();
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Render";
+
     }
 
     /**
@@ -647,5 +638,5 @@ export class Render {
 
     // SMIC-方法扩展 - end
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Render";
+
 }

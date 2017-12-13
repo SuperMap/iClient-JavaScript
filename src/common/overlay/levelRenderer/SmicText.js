@@ -47,11 +47,6 @@ export class SmicText extends Shape {
      */
     //打开接口 style
 
-    /**
-     * APIProperty: type
-     * {String} 图形类型.
-     */
-    type = 'smictext';
 
     /**
      * Constructor: SuperMap.LevelRenderer.Shape.SmicText
@@ -63,9 +58,15 @@ export class SmicText extends Shape {
      */
     constructor(options) {
         super(options);
+        /**
+         * APIProperty: type
+         * {String} 图形类型.
+         */
+        this.type = 'smictext';
         if (!this.refOriginalPosition || this.refOriginalPosition.length !== 2) {
             this.refOriginalPosition = [0, 0];
         }
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicText";
     }
 
 
@@ -520,6 +521,4 @@ export class SmicText extends Shape {
         return loc;
     }
 
-
-    CLASS_NAME = "SuperMap.LevelRenderer.Shape.SmicText"
 }

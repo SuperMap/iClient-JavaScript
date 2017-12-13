@@ -14,11 +14,6 @@ import {FetchRequest} from '../util/FetchRequest';
  */
 export class SecurityManager {
 
-    static INNER_WINDOW_WIDTH = 600;
-    static INNER_WINDOW_HEIGHT = 600;
-    static SSO = "https://sso.supermap.com";
-    static ONLINE = "http://www.supermapol.com";
-
     /**
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {string}-服务器域名+端口，如：http://localhost:8092
@@ -343,6 +338,9 @@ export class SecurityManager {
         return result[0];
     }
 }
-
+SecurityManager.INNER_WINDOW_WIDTH = 600;
+SecurityManager.INNER_WINDOW_HEIGHT = 600;
+SecurityManager.SSO = "https://sso.supermap.com";
+SecurityManager.ONLINE = "http://www.supermapol.com";
 SuperMap.SecurityManager = SecurityManager;
 

@@ -18,49 +18,48 @@ import {ServerTextStyle} from './ServerTextStyle';
  */
 export class ThemeLabelUniqueItem {
 
-    /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.caption -{string}
-     * @description 标签专题子项的标题。
-     */
-    caption = null;
-
-    /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.unique -{string}
-     * @description 单值专题图子项的值，可以为数字、字符串等。
-     */
-    unique = null;
-
-    /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetX -{number}
-     * @description 标签在X方向偏移量。
-     */
-    offsetX = 0;
-
-    /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetY -{number}
-     * @description 标签在Y方向偏移量。
-     */
-    offsetY = 0;
-
-    /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.visible -{boolean}
-     * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
-     */
-    visible = true;
-
-    /**
-     * @member SuperMap.ThemeLabelUniqueItem.prototype.style -{SuperMap.ServerTextStyle}
-     * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
-     *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelUniqueItem.style（单值子项的文本风格），uniformStyle（统一文本风格）。
-     */
-    style = null;
-
     constructor(options) {
-        var me = this;
-        me.style = new ServerTextStyle();
+        /**
+         * @member SuperMap.ThemeLabelUniqueItem.prototype.caption -{string}
+         * @description 标签专题子项的标题。
+         */
+        this.caption = null;
+
+        /**
+         * @member SuperMap.ThemeLabelUniqueItem.prototype.unique -{string}
+         * @description 单值专题图子项的值，可以为数字、字符串等。
+         */
+        this.unique = null;
+
+        /**
+         * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetX -{number}
+         * @description 标签在X方向偏移量。
+         */
+        this.offsetX = 0;
+
+        /**
+         * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetY -{number}
+         * @description 标签在Y方向偏移量。
+         */
+        this.offsetY = 0;
+
+        /**
+         * @member SuperMap.ThemeLabelUniqueItem.prototype.visible -{boolean}
+         * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
+         */
+        this.visible = true;
+
+        /**
+         * @member SuperMap.ThemeLabelUniqueItem.prototype.style -{SuperMap.ServerTextStyle}
+         * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
+         *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelUniqueItem.style（单值子项的文本风格），uniformStyle（统一文本风格）。
+         */
+        this.style = new ServerTextStyle();
+
         if (options) {
             Util.extend(this, options);
         }
+        this.CLASS_NAME = "SuperMap.ThemeLabelUniqueItem";
     }
 
     /**
@@ -95,7 +94,6 @@ export class ThemeLabelUniqueItem {
         return t;
     }
 
-    CLASS_NAME = "SuperMap.ThemeLabelUniqueItem"
 }
 
 SuperMap.ThemeLabelUniqueItem = ThemeLabelUniqueItem;

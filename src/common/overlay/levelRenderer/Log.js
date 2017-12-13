@@ -14,6 +14,8 @@ export class Log {
      *
      */
     constructor() {
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Log";
         return function () {
             if (Config.debugMode === 0) {
                 return;
@@ -38,5 +40,4 @@ export class Log {
          */
     }
 
-    CLASS_NAME = "SuperMap.LevelRenderer.Tool.Log"
 }

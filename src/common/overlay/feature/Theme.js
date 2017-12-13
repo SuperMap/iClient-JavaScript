@@ -12,42 +12,6 @@ import {Util} from '../../commontypes/Util';
 export class Theme {
 
     /**
-     * Property: id
-     * {String} 专题要素唯一标识。
-     */
-    id = null;
-
-    /**
-     * APIProperty: lonlat
-     * {<SuperMap.LonLat>} 专题要素地理参考位置。子类中必须根据用户数据（或地理位置参数）对其赋值。
-     */
-    lonlat = null;
-
-    /**
-     * APIProperty: location
-     * {Array} 专题要素像素参考位置。通常由地理参考位置决定。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-     */
-    location = null;
-
-    /**
-     * APIProperty: data
-     * {Object} {ReadOnly} 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如： <SuperMap.Feature.Vector> 。
-     */
-    data = null;
-
-    /**
-     * APIProperty: shapes
-     * {Array} {ReadOnly} 构成此专题要素的可视化图形对象数组，数组顺序控制渲染。
-     */
-    shapes = null;
-
-    /**
-     * APIProperty: layer
-     * {<SuperMap.Layer.Theme>} {ReadOnly} 此专题要素所在专题图层。
-     */
-    layer = null;
-
-    /**
      * Constructor: SuperMap.Feature.Theme
      * 构造函数。
      *
@@ -59,6 +23,7 @@ export class Theme {
      * {<SuperMap.Feature.Theme>} 返回一个专题要素。
      */
     constructor(data, layer) {
+
         if (!data) {
             return;
         }
@@ -67,13 +32,44 @@ export class Theme {
             return;
         }
 
+        /**
+         * Property: id
+         * {String} 专题要素唯一标识。
+         */
         this.id = Util.createUniqueID(this.CLASS_NAME + "_");
 
+        /**
+         * APIProperty: lonlat
+         * {<SuperMap.LonLat>} 专题要素地理参考位置。子类中必须根据用户数据（或地理位置参数）对其赋值。
+         */
+        this.lonlat = null;
+
+        /**
+         * APIProperty: location
+         * {Array} 专题要素像素参考位置。通常由地理参考位置决定。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+         */
+        this.location = [];
+
+        /**
+         * APIProperty: data
+         * {Object} {ReadOnly} 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如： <SuperMap.Feature.Vector> 。
+         */
         this.data = data;
+
+        /**
+         * APIProperty: shapes
+         * {Array} {ReadOnly} 构成此专题要素的可视化图形对象数组，数组顺序控制渲染。
+         */
+        this.shapes = [];
+
+        /**
+         * APIProperty: layer
+         * {<SuperMap.Layer.Theme>} {ReadOnly} 此专题要素所在专题图层。
+         */
         this.layer = layer;
 
-        this.location = [];
-        this.shapes = [];
+        this.CLASS_NAME = "SuperMap.Feature.Theme";
+
     }
 
 
@@ -118,8 +114,6 @@ export class Theme {
         }
     }
 
-
-    CLASS_NAME = "SuperMap.Feature.Theme"
 }
 SuperMap.Feature = SuperMap.Feature || {};
 SuperMap.Feature.Theme = Theme;

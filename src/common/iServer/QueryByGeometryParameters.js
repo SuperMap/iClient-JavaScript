@@ -27,37 +27,41 @@ import {SpatialQueryMode} from '../REST';
  */
 export class QueryByGeometryParameters extends QueryParameters {
 
-    /**
-     * @member SuperMap.QueryByGeometryParameters.prototype.returnContent -{boolean}
-     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
-     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
-     *               为 false，则返回的是查询结果资源的 URI。默认为 true。
-     * @default true
-     */
-    returnContent = true;
-
-    /**
-     * @member SuperMap.QueryByGeometryParameters.prototype.geometry
-     * @description 用于查询的几何对象。<br>
-     * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
-     * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
-     * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
-     */
-    geometry = null;
-
-    /**
-     * @member SuperMap.QueryByGeometryParameters.prototype.spatialQueryMode -{SpatialQueryMode}
-     * @description 空间查询模式。
-     * @default {@link SuperMap.SpatialQueryMode.INTERSECT}
-     */
-    spatialQueryMode = SpatialQueryMode.INTERSECT;
 
     constructor(options) {
-        super(options);
         if (!options) {
             return;
         }
+        super(options);
+
+        /**
+         * @member SuperMap.QueryByGeometryParameters.prototype.returnContent -{boolean}
+         * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
+         *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
+         *               为 false，则返回的是查询结果资源的 URI。默认为 true。
+         * @default true
+         */
+        this.returnContent = true;
+
+        /**
+         * @member SuperMap.QueryByGeometryParameters.prototype.geometry
+         * @description 用于查询的几何对象。<br>
+         * 点类型可以是：SuperMap.Geometry.Point|L.Point|L.GeoJSON|ol.geom.Point|ol.format.GeoJSON。<br>
+         * 线类型可以是：SuperMap.Geometry.LineString|SuperMap.Geometry.LinearRing|L.Polyline|L.GeoJSON|ol.geom.LineString|ol.format.GeoJSON。<br>
+         * 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|L.GeoJSON|ol.geom.Polygon|ol.format.GeoJSON
+         */
+        this.geometry = null;
+
+        /**
+         * @member SuperMap.QueryByGeometryParameters.prototype.spatialQueryMode -{SpatialQueryMode}
+         * @description 空间查询模式。
+         * @default {@link SuperMap.SpatialQueryMode.INTERSECT}
+         */
+        this.spatialQueryMode = SpatialQueryMode.INTERSECT;
+
         Util.extend(this, options);
+
+        this.CLASS_NAME = "SuperMap.QueryByGeometryParameters";
     }
 
     /**
@@ -72,7 +76,7 @@ export class QueryByGeometryParameters extends QueryParameters {
         me.spatialQueryMode = null;
     }
 
-    CLASS_NAME = "SuperMap.QueryByGeometryParameters"
+
 }
 
 SuperMap.QueryByGeometryParameters = QueryByGeometryParameters;

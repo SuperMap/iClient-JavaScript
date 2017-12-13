@@ -14,36 +14,36 @@ import {ServerColor} from './ServerColor';
  */
 export class ThemeGridUniqueItem {
 
-    /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.caption -{string}
-     * @description 栅格单值专题图子项的名称。
-     */
-    caption = null;
-
-    /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.color -{SuperMap.ServerColor}
-     * @description 栅格单值专题图子项的显示颜色。
-     */
-    color = null;
-
-    /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.unique -{number}
-     * @description 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。
-     */
-    unique = null;
-
-    /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.visible -{boolean}
-     * @description 栅格单值专题图子项是否可见。默认为true。
-     */
-    visible = true;
-
     constructor(options) {
-        var me = this;
-        me.color = new ServerColor();
+        /**
+         * @member SuperMap.ThemeGridUniqueItem.prototype.caption -{string}
+         * @description 栅格单值专题图子项的名称。
+         */
+        this.caption = null;
+
+        /**
+         * @member SuperMap.ThemeGridUniqueItem.prototype.color -{SuperMap.ServerColor}
+         * @description 栅格单值专题图子项的显示颜色。
+         */
+        this.color = new ServerColor();
+
+        /**
+         * @member SuperMap.ThemeGridUniqueItem.prototype.unique -{number}
+         * @description 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。
+         */
+        this.unique = null;
+
+        /**
+         * @member SuperMap.ThemeGridUniqueItem.prototype.visible -{boolean}
+         * @description 栅格单值专题图子项是否可见。默认为true。
+         */
+        this.visible = true;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ThemeGridUniqueItem";
     }
 
     /**
@@ -92,7 +92,6 @@ export class ThemeGridUniqueItem {
 
     }
 
-    CLASS_NAME = "SuperMap.ThemeGridUniqueItem"
 }
 
 SuperMap.ThemeGridUniqueItem = ThemeGridUniqueItem;

@@ -14,6 +14,7 @@ export class SingleObjectQueryJobsService extends ProcessingServiceBase {
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/query";
+        this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsService";
     }
 
     /**
@@ -50,7 +51,6 @@ export class SingleObjectQueryJobsService extends ProcessingServiceBase {
         super.addJob(this.url, params, SingleObjectQueryJobsParameter, seconds);
     }
 
-    CLASS_NAME = "SuperMap.SingleObjectQueryJobsService"
 }
 
 SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;

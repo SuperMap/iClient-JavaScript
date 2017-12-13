@@ -22,14 +22,16 @@ import {CommonServiceBase} from './CommonServiceBase';
  */
 export class MapService extends CommonServiceBase {
 
-    /**
-     * @member  SuperMap.MapService.prototype.projection -{string}
-     * @description 根据投影参数获取地图状态信息。如"EPSG:4326"
-     */
-    projection = null;
 
     constructor(url, options) {
         super(url, options);
+        /**
+         * @member  SuperMap.MapService.prototype.projection -{string}
+         * @description 根据投影参数获取地图状态信息。如"EPSG:4326"
+         */
+        this.projection = null;
+
+        this.CLASS_NAME = "SuperMap.MapService";
         if (options) {
             Util.extend(this, options);
         }
@@ -100,7 +102,6 @@ export class MapService extends CommonServiceBase {
         }
     }
 
-    CLASS_NAME = "SuperMap.MapService"
 }
 
 SuperMap.MapService = MapService;

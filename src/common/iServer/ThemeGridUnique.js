@@ -16,27 +16,27 @@ import {ThemeGridUniqueItem} from './ThemeGridUniqueItem';
  */
 export class ThemeGridUnique extends Theme {
 
-    /**
-     * @member SuperMap.ThemeGridUnique.prototype.defaultcolor -{SuperMap.ServerColor}
-     * @description 栅格单值专题图的默认颜色。
-     *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
-     */
-    defaultcolor = null;
-
-    /**
-     * @member SuperMap.ThemeGridUnique.prototype.items -{Array<SuperMap.ThemeGridUniqueItem>}
-     * @description 栅格单值专题图子项数组。
-     *              栅格单值专题图将值相同的单元格归为一类，每一类是一个专题图子项。
-     */
-    items = null;
-
     constructor(options) {
         super("GRIDUNIQUE", options);
-        var me = this;
-        me.defaultcolor = new ServerColor();
+        /**
+         * @member SuperMap.ThemeGridUnique.prototype.defaultcolor -{SuperMap.ServerColor}
+         * @description 栅格单值专题图的默认颜色。
+         *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
+         */
+        this.defaultcolor = new ServerColor();
+
+        /**
+         * @member SuperMap.ThemeGridUnique.prototype.items -{Array<SuperMap.ThemeGridUniqueItem>}
+         * @description 栅格单值专题图子项数组。
+         *              栅格单值专题图将值相同的单元格归为一类，每一类是一个专题图子项。
+         */
+        this.items = null;
+
         if (options) {
             Util.extend(this, options);
         }
+
+        this.CLASS_NAME = "SuperMap.ThemeGridUnique";
     }
 
     /**
@@ -105,7 +105,6 @@ export class ThemeGridUnique extends Theme {
         return res;
     }
 
-    CLASS_NAME = "SuperMap.ThemeGridUnique"
 }
 
 SuperMap.ThemeGridUnique = ThemeGridUnique;

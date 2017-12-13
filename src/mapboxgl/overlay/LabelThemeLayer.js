@@ -19,39 +19,38 @@ import {GeoFeature} from './theme/GeoFeatureThemeLayer';
  */
 export class Label extends GeoFeature {
 
-    /**
-     * @member mapboxgl.supermap.LabelThemeLayer.prototype.isOverLay -{boolean}
-     * @description 是否进行压盖处理，如果设为true，将隐藏被压盖的标签，默认为true。
-     */
-    isOverLay = true;
-    /**
-     * @member mapboxgl.supermap.LabelThemeLayer.prototype.isAvoid -{boolean}
-     * @description 是否进行地图边缘的避让处理，如果设为true，将把与地图边缘相交的标签移到地图范围内，默认为 true，在地图边缘处做避让处理。
-     */
-    isAvoid = true;
-
-    /**
-     * @member mapboxgl.supermap.LabelThemeLayer.prototype.themeField -{string}
-     * @description  用于指定专题要素样式的属性字段名称。<br>
-     *               此属性字段是要用户数据（feature） attributes 中包含的字段，且字段对应的值的类型必须是数值型。<br>
-     *               使用标签分组显示还需要设置 styleGroups 属性。<br>
-     */
-    themeField = null;
-
-    /**
-     * @member mapboxgl.supermap.LabelThemeLayer.prototype.styleGroups -{Array<Object>}
-     * @description  分组样式。 使用此属性需要设置 themeField 属性。<br>
-     *      1.没有同时设置 themeField 和 styleGroups，则所有专题要素都使用本图层的 style 进行渲染；<br>
-     *      2.同时设置 themeField 和 styleGroups，则按照 themeField 指定的字段名称获取用户数据（feature）attributes 中对应的属性值；<br>
-     *          a.如果属性值等于 styleGroups 数组里某个元素定义的 value 值，则此专题要素取 styleGroups 数组中该元素定义的 style 进行渲染。<br>
-     *          b.如果属性值不等于 styleGroups 数组里任何元素定义的 value 值，则此专题要素按照本图层的 style 进行渲染。<br>
-     *      此数组每个元素对象必须有两个属性：value : 与字段 themeField 相对应的属性值；style：专题要素 style。
-     */
-    styleGroups = null;
-
-
     constructor(name, opt_options) {
         super(name, opt_options);
+        /**
+         * @member mapboxgl.supermap.LabelThemeLayer.prototype.isOverLay -{boolean}
+         * @description 是否进行压盖处理，如果设为true，将隐藏被压盖的标签，默认为true。
+         */
+        this.isOverLay = true;
+        /**
+         * @member mapboxgl.supermap.LabelThemeLayer.prototype.isAvoid -{boolean}
+         * @description 是否进行地图边缘的避让处理，如果设为true，将把与地图边缘相交的标签移到地图范围内，默认为 true，在地图边缘处做避让处理。
+         */
+        this.isAvoid = true;
+
+        /**
+         * @member mapboxgl.supermap.LabelThemeLayer.prototype.themeField -{string}
+         * @description  用于指定专题要素样式的属性字段名称。<br>
+         *               此属性字段是要用户数据（feature） attributes 中包含的字段，且字段对应的值的类型必须是数值型。<br>
+         *               使用标签分组显示还需要设置 styleGroups 属性。<br>
+         */
+        this.themeField = null;
+
+        /**
+         * @member mapboxgl.supermap.LabelThemeLayer.prototype.styleGroups -{Array<Object>}
+         * @description  分组样式。 使用此属性需要设置 themeField 属性。<br>
+         *      1.没有同时设置 themeField 和 styleGroups，则所有专题要素都使用本图层的 style 进行渲染；<br>
+         *      2.同时设置 themeField 和 styleGroups，则按照 themeField 指定的字段名称获取用户数据（feature）attributes 中对应的属性值；<br>
+         *          a.如果属性值等于 styleGroups 数组里某个元素定义的 value 值，则此专题要素取 styleGroups 数组中该元素定义的 style 进行渲染。<br>
+         *          b.如果属性值不等于 styleGroups 数组里任何元素定义的 value 值，则此专题要素按照本图层的 style 进行渲染。<br>
+         *      此数组每个元素对象必须有两个属性：value : 与字段 themeField 相对应的属性值；style：专题要素 style。
+         */
+        this.styleGroups = null;
+
         Util.extend(this, opt_options);
         this.defaultStyle = {
             //默认文本样式
