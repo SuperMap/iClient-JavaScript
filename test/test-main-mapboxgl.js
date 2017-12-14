@@ -26,6 +26,7 @@ require('./mapboxgl/services/LayerInfoServiceSpec.js');
 require('./mapboxgl/services/MapServiceSpec.js');
 require('./mapboxgl/services/MathExpressionAnalysisSpec.js');
 require('./mapboxgl/services/MeasureServiceSpec.js');
+//require('./mapboxgl/services/NetworkAnalystServiceSpec.js');
 require('./mapboxgl/services/OverlayAnalysisSpec.js');
 require('./mapboxgl/services/ProcessingServiceSpec.js');
 require('./mapboxgl/services/QueryServiceSpec.js');
@@ -35,6 +36,7 @@ require('./mapboxgl/services/SurfaceAnalysisSpec.js');
 require('./mapboxgl/services/TerrainCurvatureCalculateSpec.js');
 require('./mapboxgl/services/ThemeServiceSpec.js');
 require('./mapboxgl/services/ThiessenAnalysisSpec.js');
+require('./mapboxgl/services/TrafficTransferAnalystServiceSpec.js');
 
 
 
