@@ -32,6 +32,7 @@ require('./openlayers/overlay/GraphSpec.js');
 require('./openlayers/overlay/LabelSpec');
 require('./openlayers/overlay/MapvSpec.js');
 require('./openlayers/overlay/RangeSpec.js');
+require('./openlayers/overlay/UniqueSpec.js');
 require('./openlayers/overlay/VectorTileSuperMapRestSpec.js');
 require('./openlayers/overlay/theme/GeoFeatureSpec.js');
 require('./openlayers/overlay/theme/ThemeFeatureSpec.js');

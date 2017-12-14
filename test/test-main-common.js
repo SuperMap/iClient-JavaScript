@@ -1,9 +1,13 @@
 /**common -- iServer**/
 require('./common/iServer/AddressMatchServiceSpec.js');
+require('./common/iServer/AreaSolarRadiationParametersSpec.js');
 require('./common/iServer/BufferAnalystServiceSpec.js');
 require('./common/iServer/BufferDistanceSpec.js');
 require('./common/iServer/BufferSettingSpec.js');
 require('./common/iServer/BurstPipelineAnalystServiceSpec.js');
+require('./common/iServer/ChartQueryFilterParameterSpec.js');
+require('./common/iServer/ChartQueryParametersSpec.js');
+require('./common/iServer/ClipParameterSpec.js');
 require('./common/iServer/ComputeWeightMatrixServiceSpec.js');
 require('./common/iServer/DensityAnalystServiceSpec.js');
 require('./common/iServer/EditFeaturesServiceSpec.js');
@@ -115,6 +119,10 @@ require('./common/overlay/levelRenderer/SmicSectorSpec.js');
 require('./common/overlay/levelRenderer/SmicStarSpec.js');
 require('./common/overlay/levelRenderer/SmicTextSpec.js');
 require('./common/overlay/levelRenderer/StorageSpec.js');
+require('./common/overlay/levelRenderer/TransformableSpec.js');
 require('./common/overlay/levelRenderer/UtilSpec.js');
 require('./common/overlay/levelRenderer/VectorSpec.js');
 require('./common/overlay/GraphSpec');
+
+/**common -- online**/
+require('./common/online/OnlineSpec.js');
