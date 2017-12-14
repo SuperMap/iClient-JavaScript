@@ -1,4 +1,4 @@
-require('../../../src/leaflet/services/spatialAnalystService');
+require('../../../src/leaflet/services/SpatialAnalystService');
 var request = require('request');
 
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;

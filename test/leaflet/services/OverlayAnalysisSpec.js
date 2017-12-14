@@ -1,4 +1,4 @@
-require('../../../src/leaflet/services/spatialAnalystService');
+require('../../../src/leaflet/services/SpatialAnalystService');
 require('../../../src/common/util/FetchRequest');
 
 var spatialAnalystURL = "http://supermap:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
