@@ -1,6 +1,6 @@
 import L from "leaflet";
 import Pbf from 'pbf';
-import VectorTileSpec from 'vector-tile';
+import VectorTile from '@mapbox/vector-tile';
 import {VectorFeatureType} from './VectorFeatureType';
 import {FetchRequest} from '@supermap/iclient-common';
 
@@ -35,7 +35,7 @@ export var VectorTilePBF = L.Class.extend({
                 return new Promise(function (resolve) {
                     reader.addEventListener("loadend", function () {
                         var pbf = new Pbf(reader.result);
-                        return resolve(new VectorTileSpec.VectorTile(pbf));
+                        return resolve(new VectorTile(pbf));
                     });
                     reader.readAsArrayBuffer(blob);
                 });

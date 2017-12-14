@@ -16,6 +16,7 @@
     "elasticsearch": "13.0.1",
     "fetch-jsonp": "1.0.6",
     "promise-polyfill": "^6.0.2",
-    "whatwg-fetch-importable": "^1.0.3"
+    "whatwg-fetch-importable": "^1.0.3",
+    "lodash": "^4.17.4"
   }
 }
