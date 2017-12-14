@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {Unit, Bounds, GeoJSON as GeoJSONFormat} from '@supermap/iclient-common';
 
 ol.supermap = ol.supermap || {};

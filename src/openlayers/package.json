@@ -17,7 +17,7 @@
     "@turf/turf": "^4.7.1",
     "echarts": "3.6.2",
     "mapv": "2.0.14",
-    "openlayers": "4.6.3",
+    "openlayers": "4.6.4",
     "@supermap/iclient-common": "9.0.0",
     "jsonsql": "^0.2.5"
   }

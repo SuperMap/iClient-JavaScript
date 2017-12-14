@@ -90,7 +90,7 @@
     "mapbox-gl": "0.38.0",
     "mapv": "2.0.14",
     "nightwatch": "^0.9.5",
-    "openlayers": "4.6.3",
+    "openlayers": "^4.6.4",
     "pngjs": "^3.3.0",
     "request": "^2.83.0",
     "selenium-server": "^2.53.1",

@@ -1,6 +1,7 @@
 // 开发代码有bug，因为用的静态方法，所以一旦设置了客户端样式就会一直保留，其它变量也可能有未被清除掉的现象。
 // 本测试待开发改好bug后需要调整测顺序，验证出图结果。
 // 目前一旦将使用客户端样式的测试放到最前面，则会影响后续测试。
+var ol = require('openlayers');
 require('../../../../src/openlayers/overlay/vectortile/VectorTileStyles');
 
 var url = GlobeParameter.ChinaURL;

@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/mapping/ImageSuperMapRest');
 
 var url = GlobeParameter.imageURL;

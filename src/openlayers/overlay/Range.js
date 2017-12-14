@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {ShapeFactory, CommonUtil, ThemeVector} from '@supermap/iclient-common';
 import {GeoFeature} from './theme/GeoFeature';
 

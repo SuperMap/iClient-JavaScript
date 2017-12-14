@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import turf from '@turf/turf';
 
 /**
@@ -8,8 +8,6 @@ import turf from '@turf/turf';
  * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
  */
 export class Turf extends ol.source.Vector {
-
-
 
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};

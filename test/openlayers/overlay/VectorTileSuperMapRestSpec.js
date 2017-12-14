@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/overlay/VectorTileSuperMapRest');
 
 var url = GlobeParameter.ChinaURL;

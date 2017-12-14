@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {Util} from '../core/Util';
 import {ServiceBase} from './ServiceBase';
 import {GetFieldsService, FieldStatisticService} from '@supermap/iclient-common';

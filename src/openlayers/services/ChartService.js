@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {Util} from '../core/Util';
 import {Bounds, ChartQueryService, DataFormat, ChartFeatureInfoSpecsService} from '@supermap/iclient-common';
 import {ServiceBase} from './ServiceBase';

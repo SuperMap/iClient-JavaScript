@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {
     Unit,
     ServerType,
@@ -182,17 +182,17 @@ export class TileSuperMapRest extends ol.source.TileImage {
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
                 if (me.extent) {
-                    me.tileGrid = ol.source.TileSuperMapRest.createTileGrid(options.extent);
+                    me.tileGrid = TileSuperMapRest.createTileGrid(options.extent);
                     if (me.resolutions) {
                         me.tileGrid.resolutions = me.resolutions;
                     }
                 } else {
                     if (projection.getCode() === "EPSG:3857") {
-                        me.tileGrid = ol.source.TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+                        me.tileGrid = TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
                         me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
                     }
                     if (projection.getCode() === "EPSG:4326") {
-                        me.tileGrid = ol.source.TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+                        me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
                         me.extent = [-180, -90, 180, 90];
                     }
                 }

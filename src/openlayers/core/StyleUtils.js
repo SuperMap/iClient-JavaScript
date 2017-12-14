@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {SuperMap, CommonUtil, StringExt} from '@supermap/iclient-common';
 import {StyleMap} from '../overlay/vectortile/StyleMap';
 import {DeafultCanvasStyle} from '../overlay/vectortile/DeafultCanvasStyle';

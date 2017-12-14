@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/services/TrafficTransferAnalystService');
 
 var url = GlobeParameter.trafficTransferURL;

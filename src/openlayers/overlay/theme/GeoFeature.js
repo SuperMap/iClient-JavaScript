@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {Bounds, CommonUtil, ShapeFactory, ThemeVector as Vector} from '@supermap/iclient-common';
 import {Theme} from './Theme';
 

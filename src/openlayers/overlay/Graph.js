@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {CommonUtil, Bounds, LonLat, FeatureTheme} from '@supermap/iclient-common';
 import {Theme} from './theme/Theme';
 

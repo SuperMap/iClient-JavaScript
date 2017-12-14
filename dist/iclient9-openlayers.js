@@ -2839,9 +2839,9 @@ exports.Util = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -2849,7 +2849,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-_olDebug2.default.supermap = _olDebug2.default.supermap || {};
+_openlayers2.default.supermap = _openlayers2.default.supermap || {};
 
 /**
  * @class ol.supermap.Util
@@ -3128,7 +3128,7 @@ var Util = exports.Util = function () {
     return Util;
 }();
 
-_olDebug2.default.supermap.Util = Util;
+_openlayers2.default.supermap.Util = Util;
 
 /***/ }),
 /* 8 */
@@ -3142,9 +3142,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ServiceBase = undefined;
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3154,7 +3154,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-_olDebug2.default.supermap = _olDebug2.default.supermap || {};
+_openlayers2.default.supermap = _openlayers2.default.supermap || {};
 
 /**
  * @class ol.supermap.ServiceBase
@@ -3180,9 +3180,9 @@ var ServiceBase = exports.ServiceBase = function (_ol$Observable) {
     }
 
     return ServiceBase;
-}(_olDebug2.default.Observable);
+}(_openlayers2.default.Observable);
 
-_olDebug2.default.supermap.ServiceBase = ServiceBase;
+_openlayers2.default.supermap.ServiceBase = ServiceBase;
 
 /***/ }),
 /* 9 */
@@ -25396,9 +25396,9 @@ exports.GeoFeature = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -25710,7 +25710,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
     return GeoFeature;
 }(_Theme2.Theme);
 
-_olDebug2.default.source.GeoFeature = GeoFeature;
+_openlayers2.default.source.GeoFeature = GeoFeature;
 
 /***/ }),
 /* 107 */
@@ -27261,9 +27261,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Logo = undefined;
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iClient = __webpack_require__(289);
 
@@ -27277,8 +27277,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-_olDebug2.default.supermap = _olDebug2.default.supermap || {};
-_olDebug2.default.supermap.control = _olDebug2.default.supermap.control || {};
+_openlayers2.default.supermap = _openlayers2.default.supermap || {};
+_openlayers2.default.supermap.control = _openlayers2.default.supermap.control || {};
 
 /**
  * @class ol.supermap.control.Logo
@@ -27372,9 +27372,9 @@ var Logo = exports.Logo = function (_ol$control$Control) {
     }
 
     return Logo;
-}(_olDebug2.default.control.Control);
+}(_openlayers2.default.control.Control);
 
-_olDebug2.default.supermap.control.Logo = Logo;
+_openlayers2.default.supermap.control.Logo = Logo;
 
 /***/ }),
 /* 119 */
@@ -27390,9 +27390,9 @@ exports.Tianditu = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27434,17 +27434,17 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
             "img": 18
         };
         var options = opt_options || {};
-        var attributions = options.attributions || new _olDebug2.default.Attribution({
+        var attributions = options.attributions || new _openlayers2.default.Attribution({
             html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " + "src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " + "<span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         options.layerType = options.layerType || "vec";
-        options.layerType = options.isLabel ? _olDebug2.default.source.Tianditu.layerLabelMap[options.layerType] : options.layerType;
+        options.layerType = options.isLabel ? _openlayers2.default.source.Tianditu.layerLabelMap[options.layerType] : options.layerType;
         options.matrixSet = options.projection === 'EPSG:4326' || options.projection === 'EPSG:4490' ? "c" : "w";
         if (!options.url && !options.urls) {
             options.url = "http://t{0-7}.tianditu.com/{layer}_{proj}/wmts?";
         }
         options.url = options.url.replace("{layer}", options.layerType).replace("{proj}", options.matrixSet);
-        var tileGrid = options.tileGrid || _olDebug2.default.source.Tianditu.getTileGrid(options.projection || 'EPSG:3857');
+        var tileGrid = options.tileGrid || _openlayers2.default.source.Tianditu.getTileGrid(options.projection || 'EPSG:3857');
         return _possibleConstructorReturn(this, (Tianditu.__proto__ || Object.getPrototypeOf(Tianditu)).call(this, {
             version: options.version || '1.0.0',
             format: options.format || 'tiles',
@@ -27457,7 +27457,7 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
             cacheSize: options.cacheSize,
             crossOrigin: options.crossOrigin,
             opaque: options.opaque === undefined ? true : options.opaque,
-            maxZoom: _olDebug2.default.source.Tianditu.layerZoomMap[options.layerType],
+            maxZoom: _openlayers2.default.source.Tianditu.layerZoomMap[options.layerType],
             reprojectionErrorThreshold: options.reprojectionErrorThreshold,
             tileLoadFunction: options.tileLoadFunction,
             url: options.url,
@@ -27479,9 +27479,9 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
         key: "getTileGrid",
         value: function getTileGrid(projection) {
             if (projection === "EPSG:4326" || projection === "EPSG:4490") {
-                return _olDebug2.default.source.Tianditu.default4326TileGrid();
+                return _openlayers2.default.source.Tianditu.default4326TileGrid();
             }
-            return _olDebug2.default.source.Tianditu.default3857TileGrid();
+            return _openlayers2.default.source.Tianditu.default3857TileGrid();
         }
 
         /**
@@ -27499,7 +27499,7 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
                 tdt_WGS84_resolutions.push(0.703125 * 2 / Math.pow(2, i));
                 matrixIds.push(i);
             }
-            var tileGird = new _olDebug2.default.tilegrid.WMTS({
+            var tileGird = new _openlayers2.default.tilegrid.WMTS({
                 extent: [-180, -90, 180, 90],
                 resolutions: tdt_WGS84_resolutions,
                 origin: [-180, 90],
@@ -27524,7 +27524,7 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
                 tdt_Mercator_resolutions.push(78271.5169640203125 * 2 / Math.pow(2, i));
                 matrixIds.push(i);
             }
-            var tileGird = new _olDebug2.default.tilegrid.WMTS({
+            var tileGird = new _openlayers2.default.tilegrid.WMTS({
                 extent: [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892],
                 resolutions: tdt_Mercator_resolutions,
                 matrixIds: matrixIds,
@@ -27536,9 +27536,9 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
     }]);
 
     return Tianditu;
-}(_olDebug2.default.source.WMTS);
+}(_openlayers2.default.source.WMTS);
 
-_olDebug2.default.source.Tianditu = Tianditu;
+_openlayers2.default.source.Tianditu = Tianditu;
 
 /***/ }),
 /* 120 */
@@ -27556,9 +27556,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -28018,7 +28018,7 @@ var Graph = exports.Graph = function (_Theme) {
     return Graph;
 }(_Theme2.Theme);
 
-_olDebug2.default.source.Graph = Graph;
+_openlayers2.default.source.Graph = Graph;
 
 /***/ }),
 /* 121 */
@@ -28036,9 +28036,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -28492,7 +28492,7 @@ var Label = exports.Label = function (_GeoFeature) {
             //将标签的地理位置转为像素位置
             var locationTmp = geoText.getCentroid();
             var locTmp = this.map.getPixelFromCoordinate([locationTmp.x, locationTmp.y]);
-            var loc = new _olDebug2.default.geom.Point([locTmp[0], locTmp[1]]);
+            var loc = new _openlayers2.default.geom.Point([locTmp[0], locTmp[1]]);
 
             //偏移处理
             if (styleTmp.labelXOffset || styleTmp.labelYOffset) {
@@ -28732,10 +28732,10 @@ var Label = exports.Label = function (_GeoFeature) {
     }, {
         key: 'rotationBounds',
         value: function rotationBounds(bounds, rotationCenterPoi, angle) {
-            var ltPoi = new _olDebug2.default.geom.Point([bounds.left, bounds.top]);
-            var rtPoi = new _olDebug2.default.geom.Point([bounds.right, bounds.top]);
-            var rbPoi = new _olDebug2.default.geom.Point([bounds.right, bounds.bottom]);
-            var lbPoi = new _olDebug2.default.geom.Point([bounds.left, bounds.bottom]);
+            var ltPoi = new _openlayers2.default.geom.Point([bounds.left, bounds.top]);
+            var rtPoi = new _openlayers2.default.geom.Point([bounds.right, bounds.top]);
+            var rbPoi = new _openlayers2.default.geom.Point([bounds.right, bounds.bottom]);
+            var lbPoi = new _openlayers2.default.geom.Point([bounds.left, bounds.bottom]);
 
             var ver = [];
             ver.push(this.getRotatedLocation(ltPoi.getCoordinates()[0], ltPoi.getCoordinates()[1], rotationCenterPoi.x, rotationCenterPoi.y, angle));
@@ -28959,7 +28959,7 @@ var Label = exports.Label = function (_GeoFeature) {
     return Label;
 }(_GeoFeature2.GeoFeature);
 
-_olDebug2.default.source.Label = Label;
+_openlayers2.default.source.Label = Label;
 
 /***/ }),
 /* 122 */
@@ -28975,9 +28975,9 @@ exports.Range = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -29114,7 +29114,7 @@ var Range = exports.Range = function (_GeoFeature) {
     return Range;
 }(_GeoFeature2.GeoFeature);
 
-_olDebug2.default.source.Range = Range;
+_openlayers2.default.source.Range = Range;
 
 /***/ }),
 /* 123 */
@@ -29130,9 +29130,9 @@ exports.Unique = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -29264,7 +29264,7 @@ var Unique = exports.Unique = function (_GeoFeature) {
     return Unique;
 }(_GeoFeature2.GeoFeature);
 
-_olDebug2.default.source.Unique = Unique;
+_openlayers2.default.source.Unique = Unique;
 
 /***/ }),
 /* 124 */
@@ -29280,9 +29280,9 @@ exports.DataFlowService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _ServiceBase2 = __webpack_require__(8);
 
@@ -29437,7 +29437,7 @@ var DataFlowService = exports.DataFlowService = function (_ServiceBase) {
     return DataFlowService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.DataFlowService = DataFlowService;
+_openlayers2.default.supermap.DataFlowService = DataFlowService;
 
 /***/ }),
 /* 125 */
@@ -29453,9 +29453,9 @@ exports.FeatureService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -29652,7 +29652,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
                 params.bounds = _Util.Util.toSuperMapBounds(params.bounds);
             }
             if (params.geometry) {
-                params.geometry = _Util.Util.toSuperMapGeometry(JSON.parse(new _olDebug2.default.format.GeoJSON().writeGeometry(params.geometry)));
+                params.geometry = _Util.Util.toSuperMapGeometry(JSON.parse(new _openlayers2.default.format.GeoJSON().writeGeometry(params.geometry)));
             }
             if (params.editType) {
                 params.editType = params.editType.toLowerCase();
@@ -29690,7 +29690,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
             if (geoFeature.getId()) {
                 feature.id = geoFeature.getId();
             }
-            feature.geometry = _Util.Util.toSuperMapGeometry(new _olDebug2.default.format.GeoJSON().writeFeatureObject(geoFeature));
+            feature.geometry = _Util.Util.toSuperMapGeometry(new _openlayers2.default.format.GeoJSON().writeFeatureObject(geoFeature));
             return feature;
         }
     }, {
@@ -29703,7 +29703,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
     return FeatureService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.FeatureService = FeatureService;
+_openlayers2.default.supermap.FeatureService = FeatureService;
 
 /***/ }),
 /* 126 */
@@ -29719,9 +29719,9 @@ exports.MapService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _ServiceBase2 = __webpack_require__(8);
 
@@ -29806,7 +29806,7 @@ var MapService = exports.MapService = function (_ServiceBase) {
     return MapService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.MapService = MapService;
+_openlayers2.default.supermap.MapService = MapService;
 
 /***/ }),
 /* 127 */
@@ -50528,10 +50528,11 @@ var Painter = exports.Painter = function () {
             return false;
         }
 
+        /* eslint-disable */
         // 什么都不干的空方法
-        function doNothing() {// eslint-disable-line no-unused-vars
-            //NOSONAR
-        }
+        function doNothing() {} //NOSONAR
+
+        /* eslint-enable */
     }
 
     /**
@@ -53403,9 +53404,9 @@ exports.StyleUtils = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -53417,7 +53418,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-_olDebug2.default.supermap = _olDebug2.default.supermap || {};
+_openlayers2.default.supermap = _openlayers2.default.supermap || {};
 
 /**
  * @class ol.supermap.StyleUtils
@@ -53457,8 +53458,8 @@ var StyleUtils = exports.StyleUtils = function () {
                     };
                     var imageUrl = _iclientCommon.CommonUtil.urlAppend(url + "/symbol.png", _iclientCommon.CommonUtil.getParameterString(symbolParameters));
                     style.pointFile = imageUrl;
-                    return new _olDebug2.default.style.Style({
-                        image: new _olDebug2.default.style.Icon({
+                    return new _openlayers2.default.style.Style({
+                        image: new _openlayers2.default.style.Icon({
                             src: style.pointFile
                         })
                     });
@@ -53744,19 +53745,19 @@ var StyleUtils = exports.StyleUtils = function () {
         key: 'toOLPointStyle',
         value: function toOLPointStyle(style) {
             if (style.pointFile !== '') {
-                return new _olDebug2.default.style.Style({
-                    image: new _olDebug2.default.style.Icon({
+                return new _openlayers2.default.style.Style({
+                    image: new _openlayers2.default.style.Icon({
                         src: style.pointFile
                     })
                 });
             }
-            return new _olDebug2.default.style.Style({
-                image: new _olDebug2.default.style.Circle({
+            return new _openlayers2.default.style.Style({
+                image: new _openlayers2.default.style.Circle({
                     radius: style.pointRadius,
-                    fill: new _olDebug2.default.style.Fill({
+                    fill: new _openlayers2.default.style.Fill({
                         color: style.fillStyle
                     }),
-                    stroke: new _olDebug2.default.style.Stroke({
+                    stroke: new _openlayers2.default.style.Stroke({
                         color: style.pointHaloColor,
                         width: style.pointHaloRadius
                     })
@@ -53774,8 +53775,8 @@ var StyleUtils = exports.StyleUtils = function () {
     }, {
         key: 'toOLLineStyle',
         value: function toOLLineStyle(style) {
-            return new _olDebug2.default.style.Style({
-                stroke: new _olDebug2.default.style.Stroke({
+            return new _openlayers2.default.style.Style({
+                stroke: new _openlayers2.default.style.Stroke({
                     color: style.strokeStyle,
                     width: style.lineWidth,
                     lineCap: style.lineCap,
@@ -53797,10 +53798,10 @@ var StyleUtils = exports.StyleUtils = function () {
     }, {
         key: 'toOLPolygonStyle',
         value: function toOLPolygonStyle(style) {
-            var fill = new _olDebug2.default.style.Fill({
+            var fill = new _openlayers2.default.style.Fill({
                 color: style.fillStyle
             });
-            var stroke = new _olDebug2.default.style.Stroke({
+            var stroke = new _openlayers2.default.style.Stroke({
                 color: style.strokeStyle,
                 width: style.lineWidth,
                 lineCap: style.lineCap,
@@ -53809,7 +53810,7 @@ var StyleUtils = exports.StyleUtils = function () {
                 lineJoin: style.lineJoin,
                 miterLimit: style.miterLimit
             });
-            return new _olDebug2.default.style.Style({
+            return new _openlayers2.default.style.Style({
                 fill: fill,
                 stroke: stroke
             });
@@ -53826,16 +53827,16 @@ var StyleUtils = exports.StyleUtils = function () {
     }, {
         key: 'toOLTextStyle',
         value: function toOLTextStyle(style, text) {
-            return new _olDebug2.default.style.Style({
-                text: new _olDebug2.default.style.Text({
+            return new _openlayers2.default.style.Style({
+                text: new _openlayers2.default.style.Text({
                     font: (style.fontStyle || '') + ' ' + (style.fontWeight || '') + ' ' + (style.fontSize || '') + ' ' + style.fontFamily,
                     text: text,
                     textAlign: style.textAlign,
                     textBaseline: style.textBaseline,
-                    fill: new _olDebug2.default.style.Fill({
+                    fill: new _openlayers2.default.style.Fill({
                         color: style.foreColor
                     }),
-                    stroke: new _olDebug2.default.style.Stroke({
+                    stroke: new _openlayers2.default.style.Stroke({
                         color: style.backColor
                     }),
                     offsetX: style.offsetX,
@@ -53900,8 +53901,8 @@ var StyleUtils = exports.StyleUtils = function () {
             if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
                 icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
             }
-            return new _olDebug2.default.style.Style({
-                image: new _olDebug2.default.style.Icon({
+            return new _openlayers2.default.style.Style({
+                image: new _openlayers2.default.style.Icon({
                     src: icon,
                     opacity: 1,
                     size: [48, 43],
@@ -53933,8 +53934,8 @@ var StyleUtils = exports.StyleUtils = function () {
                     if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
                         pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
                     }
-                    return new _olDebug2.default.style.Style({
-                        image: new _olDebug2.default.style.Icon({
+                    return new _openlayers2.default.style.Style({
+                        image: new _openlayers2.default.style.Icon({
                             src: pointStyle.externalGraphic,
                             opacity: pointStyle.graphicOpacity,
                             size: [pointStyle.graphicWidth, pointStyle.graphicHeight]
@@ -53942,12 +53943,12 @@ var StyleUtils = exports.StyleUtils = function () {
                         })
                     });
                 }
-                return new _olDebug2.default.style.Style({
-                    image: new _olDebug2.default.style.Circle({
-                        fill: new _olDebug2.default.style.Fill({
+                return new _openlayers2.default.style.Style({
+                    image: new _openlayers2.default.style.Circle({
+                        fill: new _openlayers2.default.style.Fill({
                             color: me.hexToRgba(pointStyle.fillColor, pointStyle.fillOpacity)
                         }),
-                        stroke: new _olDebug2.default.style.Stroke({
+                        stroke: new _openlayers2.default.style.Stroke({
                             color: me.hexToRgba(pointStyle.strokeColor, pointStyle.strokeOpacity),
                             lineCap: pointStyle.strokeLineCap,
                             lineDash: this.dashStyle(pointStyle, 1),
@@ -53959,8 +53960,8 @@ var StyleUtils = exports.StyleUtils = function () {
             }
             if (type === 'LineString' || type === 'MultiLineString' || type === 'Box') {
                 var lineStyle = featureStyle || iPortalStyle.lineStyle;
-                return new _olDebug2.default.style.Style({
-                    stroke: new _olDebug2.default.style.Stroke({
+                return new _openlayers2.default.style.Style({
+                    stroke: new _openlayers2.default.style.Stroke({
                         color: me.hexToRgba(lineStyle.strokeColor, lineStyle.strokeOpacity),
                         lineCap: lineStyle.strokeLineCap,
                         lineDash: this.dashStyle(lineStyle, 1),
@@ -53970,11 +53971,11 @@ var StyleUtils = exports.StyleUtils = function () {
             }
             if (type === 'Polygon' || type === 'MultiPolygon') {
                 var polygonStyle = featureStyle || iPortalStyle.polygonStyle;
-                return new _olDebug2.default.style.Style({
-                    fill: new _olDebug2.default.style.Fill({
+                return new _openlayers2.default.style.Style({
+                    fill: new _openlayers2.default.style.Fill({
                         color: me.hexToRgba(polygonStyle.fillColor, polygonStyle.fillOpacity)
                     }),
-                    stroke: new _olDebug2.default.style.Stroke({
+                    stroke: new _openlayers2.default.style.Stroke({
                         color: me.hexToRgba(polygonStyle.strokeColor, polygonStyle.strokeOpacity),
                         lineCap: polygonStyle.strokeLineCap,
                         lineDash: this.dashStyle(polygonStyle, 1),
@@ -54035,7 +54036,7 @@ var StyleUtils = exports.StyleUtils = function () {
     return StyleUtils;
 }();
 
-_olDebug2.default.supermap.StyleUtils = StyleUtils;
+_openlayers2.default.supermap.StyleUtils = StyleUtils;
 
 /***/ }),
 /* 270 */
@@ -54051,9 +54052,9 @@ exports.Theme = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _Util = __webpack_require__(7);
 
@@ -54086,7 +54087,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
         var options = opt_options ? opt_options : {};
 
         var _this = _possibleConstructorReturn(this, (Theme.__proto__ || Object.getPrototypeOf(Theme)).call(this, {
-            attributions: options.attributions || new _olDebug2.default.Attribution({
+            attributions: options.attributions || new _openlayers2.default.Attribution({
                 html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
@@ -54611,9 +54612,9 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
     }]);
 
     return Theme;
-}(_olDebug2.default.source.ImageCanvas);
+}(_openlayers2.default.source.ImageCanvas);
 
-_olDebug2.default.source.Theme = Theme;
+_openlayers2.default.source.Theme = Theme;
 
 /***/ }),
 /* 271 */
@@ -54629,9 +54630,9 @@ exports.ThemeFeature = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -54639,7 +54640,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-_olDebug2.default.supermap = _olDebug2.default.supermap || {};
+_openlayers2.default.supermap = _openlayers2.default.supermap || {};
 
 /**
  * @class ol.supermap.ThemeFeature
@@ -54667,10 +54668,10 @@ var ThemeFeature = exports.ThemeFeature = function () {
         key: 'toFeature',
         value: function toFeature() {
             var geometry = this.geometry;
-            if (geometry instanceof _olDebug2.default.geom.Point) {
+            if (geometry instanceof _openlayers2.default.geom.Point) {
                 geometry = new _iclientCommon.GeometryPoint(geometry.getCoordinates()[0], geometry.getCoordinates()[1]);
             }
-            if (geometry instanceof _olDebug2.default.geom.LineString) {
+            if (geometry instanceof _openlayers2.default.geom.LineString) {
                 var coords = geometry.getCoordinates();
                 var points = [];
                 for (var i = 0; i < coords.length; i++) {
@@ -54678,7 +54679,7 @@ var ThemeFeature = exports.ThemeFeature = function () {
                 }
                 geometry = new _iclientCommon.LineString(points);
             }
-            if (geometry instanceof _olDebug2.default.geom.Polygon) {
+            if (geometry instanceof _openlayers2.default.geom.Polygon) {
                 var _coords = geometry.getCoordinates();
                 var _points = [];
                 for (var _i = 0; _i < _coords.length; _i++) {
@@ -54697,7 +54698,7 @@ var ThemeFeature = exports.ThemeFeature = function () {
     return ThemeFeature;
 }();
 
-_olDebug2.default.supermap.ThemeFeature = ThemeFeature;
+_openlayers2.default.supermap.ThemeFeature = ThemeFeature;
 
 /***/ }),
 /* 272 */
@@ -56338,9 +56339,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(516);
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _MapService = __webpack_require__(126);
 
@@ -56352,8 +56353,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-_olDebug2.default.supermap = _olDebug2.default.supermap || {};
-_olDebug2.default.supermap.control = _olDebug2.default.supermap.control || {};
+_openlayers2.default.supermap = _openlayers2.default.supermap || {};
+_openlayers2.default.supermap.control = _openlayers2.default.supermap.control || {};
 
 /**
  * @class ol.supermap.control.ChangeTileVersion
@@ -56813,9 +56814,9 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
     }]);
 
     return ChangeTileVersion;
-}(_olDebug2.default.control.Control);
+}(_openlayers2.default.control.Control);
 
-_olDebug2.default.supermap.control.ChangeTileVersion = ChangeTileVersion;
+_openlayers2.default.supermap.control.ChangeTileVersion = ChangeTileVersion;
 
 /***/ }),
 /* 291 */
@@ -56831,9 +56832,9 @@ exports.BaiduMap = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56862,10 +56863,10 @@ var BaiduMap = exports.BaiduMap = function (_ol$source$TileImage) {
         _classCallCheck(this, BaiduMap);
 
         var options = opt_options || {};
-        var attributions = options.attributions || new _olDebug2.default.Attribution({
+        var attributions = options.attributions || new _openlayers2.default.Attribution({
             html: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
-        var tileGrid = _olDebug2.default.source.BaiduMap.defaultTileGrid();
+        var tileGrid = _openlayers2.default.source.BaiduMap.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
 
         var url = options.url !== undefined ? options.url : "http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408";
@@ -56892,7 +56893,7 @@ var BaiduMap = exports.BaiduMap = function (_ol$source$TileImage) {
                 }).replace("{-y}", function () {
                     var z = tileCoord[0];
                     var range = tileGrid.getFullTileRange(z);
-                    _olDebug2.default.asserts.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
+                    _openlayers2.default.asserts.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
                     var y = range.getHeight() + tileCoord[2];
                     return y.toString();
                 });
@@ -56910,7 +56911,7 @@ var BaiduMap = exports.BaiduMap = function (_ol$source$TileImage) {
     _createClass(BaiduMap, null, [{
         key: 'defaultTileGrid',
         value: function defaultTileGrid() {
-            var tileGird = new _olDebug2.default.tilegrid.TileGrid({
+            var tileGird = new _openlayers2.default.tilegrid.TileGrid({
                 extent: [-33554432, -33554432, 33554432, 33554432],
                 resolutions: [131072 * 2, 131072, 65536, 32768, 16284, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],
                 origin: [0, 0],
@@ -56921,9 +56922,9 @@ var BaiduMap = exports.BaiduMap = function (_ol$source$TileImage) {
     }]);
 
     return BaiduMap;
-}(_olDebug2.default.source.TileImage);
+}(_openlayers2.default.source.TileImage);
 
-_olDebug2.default.source.BaiduMap = BaiduMap;
+_openlayers2.default.source.BaiduMap = BaiduMap;
 
 /***/ }),
 /* 292 */
@@ -56939,9 +56940,9 @@ exports.ImageSuperMapRest = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -56973,7 +56974,7 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
         if (options.url === undefined) {
             return _possibleConstructorReturn(_this);
         }
-        options.attributions = options.attributions || new _olDebug2.default.Attribution({
+        options.attributions = options.attributions || new _openlayers2.default.Attribution({
             html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
         });
         var layerUrl = options.url + "/image.png?";
@@ -57045,9 +57046,9 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
         if (options.prjCoordSys) {
             layerUrl += "prjCoordSys=" + JSON.stringify(options.prjCoordSys);
         }
-        if (options.clipRegion instanceof _olDebug2.default.geom.Geometry) {
+        if (options.clipRegion instanceof _openlayers2.default.geom.Geometry) {
             options.clipRegionEnabled = true;
-            options.clipRegion = _Util.Util.toSuperMapGeometry(new _olDebug2.default.format.GeoJSON().writeGeometryObject(options.clipRegion));
+            options.clipRegion = _Util.Util.toSuperMapGeometry(new _openlayers2.default.format.GeoJSON().writeGeometryObject(options.clipRegion));
             options.clipRegion = _iclientCommon.CommonUtil.toJSON(_iclientCommon.ServerGeometry.fromGeometry(options.clipRegion));
             layerUrl += "&clipRegionEnabled=" + options.clipRegionEnabled + "&clipRegion=" + JSON.stringify(options.clipRegion);
         }
@@ -57093,7 +57094,7 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
                 this.tileGrid = this.getTileGridForProjection(projection);
             }
             var tileExtent = this.tileGrid.getTileCoordExtent(tileCoord, this.tmpExtent_);
-            var tileSize = _olDebug2.default.size.toSize(this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
+            var tileSize = _openlayers2.default.size.toSize(this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
             return encodeURI(layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}");
         }
         return _this;
@@ -57150,7 +57151,7 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
                 return resolutions.sort(sortNumber);
             }
 
-            options.tileGrid = new _olDebug2.default.tilegrid.TileGrid({
+            options.tileGrid = new _openlayers2.default.tilegrid.TileGrid({
                 extent: extent,
                 resolutions: resolutions
             });
@@ -57171,13 +57172,13 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
     }, {
         key: 'createTileGrid',
         value: function createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
-            var tilegrid = _olDebug2.default.tilegrid.createXYZ({
+            var tilegrid = _openlayers2.default.tilegrid.createXYZ({
                 extent: extent,
                 maxZoom: maxZoom,
                 minZoom: minZoom,
                 tileSize: tileSize
             });
-            return new _olDebug2.default.tilegrid.TileGrid({
+            return new _openlayers2.default.tilegrid.TileGrid({
                 extent: extent,
                 minZoom: minZoom,
                 origin: origin,
@@ -57188,9 +57189,9 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$TileIma
     }]);
 
     return ImageSuperMapRest;
-}(_olDebug2.default.source.TileImage);
+}(_openlayers2.default.source.TileImage);
 
-_olDebug2.default.source.ImageSuperMapRest = ImageSuperMapRest;
+_openlayers2.default.source.ImageSuperMapRest = ImageSuperMapRest;
 
 /***/ }),
 /* 293 */
@@ -57204,9 +57205,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SuperMapCloud = undefined;
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57236,7 +57237,7 @@ var SuperMapCloud = exports.SuperMapCloud = function (_ol$source$XYZ) {
 
         var options = opt_options || {};
 
-        var attributions = options.attributions || new _olDebug2.default.Attribution({
+        var attributions = options.attributions || new _openlayers2.default.Attribution({
             html: "Map Data ©2014 SuperMap - GS(2014)6070号-data©Navinfo with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         var mapName = options.mapName || 'quanguo';
@@ -57257,9 +57258,9 @@ var SuperMapCloud = exports.SuperMapCloud = function (_ol$source$XYZ) {
     }
 
     return SuperMapCloud;
-}(_olDebug2.default.source.XYZ);
+}(_openlayers2.default.source.XYZ);
 
-_olDebug2.default.source.SuperMapCloud = SuperMapCloud;
+_openlayers2.default.source.SuperMapCloud = SuperMapCloud;
 
 /***/ }),
 /* 294 */
@@ -57275,9 +57276,9 @@ exports.TileSuperMapRest = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -57314,7 +57315,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
             return _possibleConstructorReturn(_this);
         }
 
-        options.attributions = options.attributions || new _olDebug2.default.Attribution({
+        options.attributions = options.attributions || new _openlayers2.default.Attribution({
             html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
 
@@ -57404,9 +57405,9 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
                 params["layersID"] = options.layersID.toString();
             }
 
-            if (options.clipRegion instanceof _olDebug2.default.geom.Geometry) {
+            if (options.clipRegion instanceof _openlayers2.default.geom.Geometry) {
                 options.clipRegionEnabled = true;
-                options.clipRegion = _Util.Util.toSuperMapGeometry(new _olDebug2.default.format.GeoJSON().writeGeometryObject(options.clipRegion));
+                options.clipRegion = _Util.Util.toSuperMapGeometry(new _openlayers2.default.format.GeoJSON().writeGeometryObject(options.clipRegion));
                 options.clipRegion = _iclientCommon.CommonUtil.toJSON(_iclientCommon.ServerGeometry.fromGeometry(options.clipRegion));
                 params["clipRegionEnabled"] = options.clipRegionEnabled;
                 params["clipRegion"] = JSON.stringify(options.clipRegion);
@@ -57469,17 +57470,17 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!me.tileGrid) {
                 if (me.extent) {
-                    me.tileGrid = _olDebug2.default.source.TileSuperMapRest.createTileGrid(options.extent);
+                    me.tileGrid = TileSuperMapRest.createTileGrid(options.extent);
                     if (me.resolutions) {
                         me.tileGrid.resolutions = me.resolutions;
                     }
                 } else {
                     if (projection.getCode() === "EPSG:3857") {
-                        me.tileGrid = _olDebug2.default.source.TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+                        me.tileGrid = TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
                         me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
                     }
                     if (projection.getCode() === "EPSG:4326") {
-                        me.tileGrid = _olDebug2.default.source.TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+                        me.tileGrid = TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
                         me.extent = [-180, -90, 180, 90];
                     }
                 }
@@ -57498,7 +57499,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
                 unit = _iclientCommon.Unit.METER;
             }
             var scale = _Util.Util.resolutionToScale(resolution, dpi, unit);
-            var tileSize = _olDebug2.default.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
+            var tileSize = _openlayers2.default.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
             return encodeURI(layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
         }
@@ -57660,7 +57661,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
                 return resolutions.sort(sortNumber);
             }
 
-            options.tileGrid = new _olDebug2.default.tilegrid.TileGrid({
+            options.tileGrid = new _openlayers2.default.tilegrid.TileGrid({
                 extent: extent,
                 resolutions: resolutions
             });
@@ -57680,13 +57681,13 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
     }, {
         key: 'createTileGrid',
         value: function createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
-            var tilegrid = _olDebug2.default.tilegrid.createXYZ({
+            var tilegrid = _openlayers2.default.tilegrid.createXYZ({
                 extent: extent,
                 maxZoom: maxZoom,
                 minZoom: minZoom,
                 tileSize: tileSize
             });
-            return new _olDebug2.default.tilegrid.TileGrid({
+            return new _openlayers2.default.tilegrid.TileGrid({
                 extent: extent,
                 minZoom: minZoom,
                 origin: origin,
@@ -57697,9 +57698,9 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
     }]);
 
     return TileSuperMapRest;
-}(_olDebug2.default.source.TileImage);
+}(_openlayers2.default.source.TileImage);
 
-_olDebug2.default.source.TileSuperMapRest = TileSuperMapRest;
+_openlayers2.default.source.TileSuperMapRest = TileSuperMapRest;
 
 /***/ }),
 /* 295 */
@@ -57715,9 +57716,9 @@ exports.WebMap = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _jsonsql = __webpack_require__(430);
 
@@ -57759,7 +57760,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-_olDebug2.default.supermap = _olDebug2.default.supermap || {};
+_openlayers2.default.supermap = _openlayers2.default.supermap || {};
 
 /**
  * @class ol.supermap.WebMap
@@ -57866,9 +57867,9 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
             }
             var viewOptions = this._getViewOptions(baseLayerJson);
             if (!this.map) {
-                var view = new _olDebug2.default.View(viewOptions);
-                var controls = _olDebug2.default.control.defaults({ attributionOptions: { collapsed: false } }).extend([new _Logo.Logo()]);
-                this.map = new _olDebug2.default.Map({
+                var view = new _openlayers2.default.View(viewOptions);
+                var controls = _openlayers2.default.control.defaults({ attributionOptions: { collapsed: false } }).extend([new _Logo.Logo()]);
+                this.map = new _openlayers2.default.Map({
                     target: this.target,
                     view: view,
                     controls: controls
@@ -57907,7 +57908,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         key: "toProjection",
         value: function toProjection(epsgCode, type, extent) {
             if (epsgCode == -1000) {
-                return new _olDebug2.default.proj.Projection({
+                return new _openlayers2.default.proj.Projection({
                     extent: extent,
                     units: 'm'
                 });
@@ -57969,15 +57970,15 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
             var layer;
             switch (type) {
                 case "SUPERMAP_REST":
-                    layer = new _olDebug2.default.layer.Tile({
-                        source: new _olDebug2.default.source.TileSuperMapRest({
+                    layer = new _openlayers2.default.layer.Tile({
+                        source: new _openlayers2.default.source.TileSuperMapRest({
                             url: layerInfo.url,
                             transparent: true,
-                            tileGrid: scales ? new _olDebug2.default.tilegrid.TileGrid({
+                            tileGrid: scales ? new _openlayers2.default.tilegrid.TileGrid({
                                 extent: extent,
                                 resolutions: this.getResolutionsFromScales(scales, 96)
-                            }) : _olDebug2.default.source.TileSuperMapRest.createTileGrid(extent),
-                            attributions: new _olDebug2.default.Attribution({
+                            }) : _openlayers2.default.source.TileSuperMapRest.createTileGrid(extent),
+                            attributions: new _openlayers2.default.Attribution({
                                 html: ";Map Data <span>© <a href='http://www.supermapol.com'>SuperMap Online</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
                             })
                         }),
@@ -57993,13 +57994,13 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
                     layer = this.createTiandituLayer(layerInfo, epsgCode);
                     break;
                 case "BAIDU":
-                    layer = new _olDebug2.default.layer.Tile({
-                        source: new _olDebug2.default.source.BaiduMap()
+                    layer = new _openlayers2.default.layer.Tile({
+                        source: new _openlayers2.default.source.BaiduMap()
                     });
                     break;
                 case 'BING':
-                    layer = new _olDebug2.default.layer.Tile({
-                        source: new _olDebug2.default.source.BingMaps()
+                    layer = new _openlayers2.default.layer.Tile({
+                        source: new _openlayers2.default.source.BingMaps()
                     });
                     break;
                 case "WMS":
@@ -58010,21 +58011,21 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
                     var wellKnownScaleSet = identifier.split("_")[0];
                     var layerName = identifier.substring(identifier.indexOf("_") + 1);
                     var info = this.getWmtsResolutionsAndMatrixIds(wellKnownScaleSet, layerInfo.units, scales, origin, extent);
-                    layer = new _olDebug2.default.layer.Tile({
+                    layer = new _openlayers2.default.layer.Tile({
                         opacity: opacity,
-                        source: new _olDebug2.default.source.WMTS({
+                        source: new _openlayers2.default.source.WMTS({
                             url: layerInfo.url,
                             layer: layerName,
                             matrixSet: identifier,
                             format: 'image/png',
-                            tileGrid: new _olDebug2.default.tilegrid.WMTS(info),
+                            tileGrid: new _openlayers2.default.tilegrid.WMTS(info),
                             style: 'default'
                         })
                     });
                     break;
                 case "CLOUD":
-                    layer = new _olDebug2.default.layer.Tile({
-                        source: new _olDebug2.default.source.SuperMapCloud()
+                    layer = new _openlayers2.default.layer.Tile({
+                        source: new _openlayers2.default.source.SuperMapCloud()
                     });
                     break;
                 case "MARKER_LAYER":
@@ -58063,21 +58064,21 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
     }, {
         key: "getWmtsResolutionsAndMatrixIds",
         value: function getWmtsResolutionsAndMatrixIds(wellKnownScaleSet, units, scales, mapOrigin, mapExtent) {
-            var resolutions = _olDebug2.default.wellKnownScale.getResolutions(wellKnownScaleSet);
+            var resolutions = _openlayers2.default.wellKnownScale.getResolutions(wellKnownScaleSet);
             if (!resolutions && scales) {
                 for (var i = 0; i < scales.length; i++) {
                     resolutions.push(_iclientCommon.CommonUtil.getResolutionFromScaleDpi(scales[i], 90.71446714322, units));
                 }
             }
-            var origin = _olDebug2.default.wellKnownScale.getOrigin(wellKnownScaleSet);
+            var origin = _openlayers2.default.wellKnownScale.getOrigin(wellKnownScaleSet);
             if (!origin) {
                 origin = mapOrigin;
             }
-            var extent = _olDebug2.default.wellKnownScale.getExtent(wellKnownScaleSet);
+            var extent = _openlayers2.default.wellKnownScale.getExtent(wellKnownScaleSet);
             if (!extent) {
                 extent = mapExtent;
             }
-            var matrixIds = _olDebug2.default.wellKnownScale.generateMatrixIds(resolutions.length);
+            var matrixIds = _openlayers2.default.wellKnownScale.generateMatrixIds(resolutions.length);
             return {
                 resolutions: resolutions,
                 origin: origin,
@@ -58099,7 +58100,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         value: function createTiandituLayer(layerInfo, epsgCode) {
             var type = layerInfo.type.split('_')[1].toLowerCase();
             var isLabel = layerInfo.layerType === 'OVERLAY_LAYER';
-            var layer = new _olDebug2.default.layer.Tile({
+            var layer = new _openlayers2.default.layer.Tile({
                 source: new _Tianditu.Tianditu({
                     layerType: type,
                     isLabel: isLabel,
@@ -58121,12 +58122,12 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
         value: function createMarkersLayer(layerInfo) {
             var markers = layerInfo.markers || [];
             //todo offset
-            var layer = new _olDebug2.default.layer.Vector({
+            var layer = new _openlayers2.default.layer.Vector({
                 style: function style(feature) {
                     return _StyleUtils.StyleUtils.getStyleFromiPortalMarker(feature.getProperties().icon);
                 },
-                source: new _olDebug2.default.source.Vector({
-                    features: new _olDebug2.default.format.GeoJSON().readFeatures(_Util.Util.toGeoJSON(markers)),
+                source: new _openlayers2.default.source.Vector({
+                    features: new _openlayers2.default.format.GeoJSON().readFeatures(_Util.Util.toGeoJSON(markers)),
                     wrapX: false
                 })
             });
@@ -58149,12 +58150,12 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
             //isVisible = layerInfo.isVisible;
             //todo readonly = layerInfo.readonly;
             if (!layerInfo.url) {
-                var layer = new _olDebug2.default.layer.Vector({
+                var layer = new _openlayers2.default.layer.Vector({
                     style: function style(feature) {
                         return _StyleUtils.StyleUtils.getStyleFromiPortalStyle(_style, feature.getGeometry().getType(), feature.getProperties().style);
                     },
-                    source: new _olDebug2.default.source.Vector({
-                        features: new _olDebug2.default.format.GeoJSON().readFeatures(_Util.Util.toGeoJSON(layerInfo.features)),
+                    source: new _openlayers2.default.source.Vector({
+                        features: new _openlayers2.default.format.GeoJSON().readFeatures(_Util.Util.toGeoJSON(layerInfo.features)),
                         wrapX: false
                     })
                 });
@@ -58167,12 +58168,12 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
                 _style = layerInfo.style;
                 var me = this;
                 var fun = function fun(serviceResult) {
-                    var layer = new _olDebug2.default.layer.Vector({
+                    var layer = new _openlayers2.default.layer.Vector({
                         style: function style(feature) {
                             return _StyleUtils.StyleUtils.getStyleFromiPortalStyle(_style, feature.getGeometry().getType(), feature.getProperties().style);
                         },
-                        source: new _olDebug2.default.source.Vector({
-                            features: new _olDebug2.default.format.GeoJSON().readFeatures(serviceResult.element.result),
+                        source: new _openlayers2.default.source.Vector({
+                            features: new _openlayers2.default.format.GeoJSON().readFeatures(serviceResult.element.result),
                             wrapX: false
                         })
                     });
@@ -58211,9 +58212,9 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
             if (!subLayers || subLayers === "undefined" || subLayers === "null") {
                 subLayers = "0";
             }
-            return new _olDebug2.default.layer.Tile({
+            return new _openlayers2.default.layer.Tile({
                 opacity: opacity,
-                source: new _olDebug2.default.source.TileWMS({
+                source: new _openlayers2.default.source.TileWMS({
                     url: url,
                     params: {
                         'LAYERS': subLayers,
@@ -58284,7 +58285,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
             var imageStyleOptions = {};
 
             if (featureStyle.fill) {
-                imageStyleOptions.fill = new _olDebug2.default.style.Fill({
+                imageStyleOptions.fill = new _openlayers2.default.style.Fill({
                     color: featureStyle.fillColor
                 });
             }
@@ -58292,33 +58293,33 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
                 imageStyleOptions.radius = parseFloat(featureStyle.pointRadius);
             }
             if (featureStyle.strokeColor || featureStyle.strokeWidth) {
-                imageStyleOptions.stroke = new _olDebug2.default.style.Stroke({
+                imageStyleOptions.stroke = new _openlayers2.default.style.Stroke({
                     color: featureStyle.strokeColor,
                     width: featureStyle.strokeWidth,
                     lineCap: featureStyle.strokeLineCap
                 });
             }
-            var pointStyle = new _olDebug2.default.style.Style({
-                image: new _olDebug2.default.style.Circle(imageStyleOptions)
+            var pointStyle = new _openlayers2.default.style.Style({
+                image: new _openlayers2.default.style.Circle(imageStyleOptions)
             });
             if (featureStyle.unicode) {
                 var label = featureStyle.label.replace(/^&#x/, '');
                 label = String.fromCharCode(parseInt(label, 16));
-                pointStyle.setText(new _olDebug2.default.style.Text({
+                pointStyle.setText(new _openlayers2.default.style.Text({
                     text: label,
                     font: featureStyle.fontSize + " supermapol-icons",
-                    fill: new _olDebug2.default.style.Fill({ color: featureStyle.fontColor })
+                    fill: new _openlayers2.default.style.Fill({ color: featureStyle.fontColor })
                 }));
             }
 
-            var vectorSource = new _olDebug2.default.source.Vector({
+            var vectorSource = new _openlayers2.default.source.Vector({
                 features: [],
                 wrapX: false
             });
 
             this.registerThemeEvent(vectorSource);
 
-            return new _olDebug2.default.layer.Vector({
+            return new _openlayers2.default.layer.Vector({
                 source: vectorSource,
                 style: pointStyle,
                 opacity: opacity
@@ -58362,7 +58363,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
                     that.events.triggerEvent("uniquefeatureclicked", currenFeature, unique);
                 }
             });
-            var themeLayer = new _olDebug2.default.layer.Image({
+            var themeLayer = new _openlayers2.default.layer.Image({
                 source: unique
             });
 
@@ -58405,7 +58406,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
             range.themeField = themeField;
             range.styleGroups = styleGroups;
             this.registerThemeEvent(range);
-            var themeLayer = new _olDebug2.default.layer.Image({
+            var themeLayer = new _openlayers2.default.layer.Image({
                 source: range
             });
             themeLayer.setOpacity(opacity);
@@ -58456,7 +58457,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
             label.styleGroups = [];
 
             this.registerThemeEvent(label);
-            var themeLayer = new _olDebug2.default.layer.Image({
+            var themeLayer = new _openlayers2.default.layer.Image({
                 source: label
             });
             themeLayer.setOpacity(opacity);
@@ -58489,8 +58490,8 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
                 blur = themeSettings.settings[0].blur;
             }
 
-            var layer = new _olDebug2.default.layer.Heatmap({
-                source: new _olDebug2.default.source.Vector({
+            var layer = new _openlayers2.default.layer.Heatmap({
+                source: new _openlayers2.default.source.Vector({
                     features: [],
                     wrapX: false
                 }),
@@ -58637,7 +58638,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
                     me.addFeature2LabelLayer(layer.labelLayer, features, layerInfo);
                 }
 
-                if (layer instanceof _olDebug2.default.layer.Heatmap) {
+                if (layer instanceof _openlayers2.default.layer.Heatmap) {
                     var heatFeatures = [],
                         featureWeight;
                     if (themeSettings.settings && themeSettings.settings[0] && themeSettings.settings[0].featureWeight) {
@@ -58646,21 +58647,21 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
                     for (var _i = 0, _len = features.length; _i < _len; _i++) {
                         var geometry = features[_i].geometry;
                         var attributes = features[_i].attributes;
-                        var feature = new _olDebug2.default.Feature(attributes);
-                        feature.set("geometry", new _olDebug2.default.geom.Point([geometry.x, geometry.y]));
+                        var feature = new _openlayers2.default.Feature(attributes);
+                        feature.set("geometry", new _openlayers2.default.geom.Point([geometry.x, geometry.y]));
                         if (featureWeight) {
                             feature.set(featureWeight, parseFloat(feature.get(featureWeight)) - 5);
                         }
                         heatFeatures.push(feature);
                     }
                     source.addFeatures(heatFeatures);
-                } else if (layer instanceof _olDebug2.default.layer.Vector) {
+                } else if (layer instanceof _openlayers2.default.layer.Vector) {
                     var feats = [];
                     for (var j = 0, _len2 = features.length; j < _len2; j++) {
                         var _geometry = features[j].geometry;
                         var _attributes = features[j].attributes;
-                        var _feature = new _olDebug2.default.Feature(_attributes);
-                        _feature.set("geometry", new _olDebug2.default.geom.Point([_geometry.x, _geometry.y]));
+                        var _feature = new _openlayers2.default.Feature(_attributes);
+                        _feature.set("geometry", new _openlayers2.default.geom.Point([_geometry.x, _geometry.y]));
                         feats.push(_feature);
                     }
                     source.addFeatures(feats);
@@ -59041,9 +59042,9 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
     }]);
 
     return WebMap;
-}(_olDebug2.default.Observable);
+}(_openlayers2.default.Observable);
 
-_olDebug2.default.supermap.WebMap = WebMap;
+_openlayers2.default.supermap.WebMap = WebMap;
 
 /***/ }),
 /* 296 */
@@ -59059,9 +59060,9 @@ exports.DataFlow = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _DataFlowService = __webpack_require__(124);
 
@@ -59161,7 +59162,7 @@ var DataFlow = exports.DataFlow = function (_ol$source$Vector) {
         value: function _onMessageSuccessed(msg) {
             //this.clear();
             var geoID = msg.value.featureResult.properties[this.idField];
-            var feature = new _olDebug2.default.format.GeoJSON().readFeature(msg.value.featureResult);
+            var feature = new _openlayers2.default.format.GeoJSON().readFeature(msg.value.featureResult);
             if (geoID !== undefined && this.featureCache[geoID]) {
                 this.removeFeature(this.featureCache[geoID]);
             }
@@ -59172,9 +59173,9 @@ var DataFlow = exports.DataFlow = function (_ol$source$Vector) {
     }]);
 
     return DataFlow;
-}(_olDebug2.default.source.Vector);
+}(_openlayers2.default.source.Vector);
 
-_olDebug2.default.source.DataFlow = DataFlow;
+_openlayers2.default.source.DataFlow = DataFlow;
 
 /***/ }),
 /* 297 */
@@ -59190,9 +59191,9 @@ exports.Graphic = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _Util = __webpack_require__(7);
 
@@ -59247,24 +59248,24 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
             var height = this.map.getSize()[1] * pixelRatio;
             var context = _Util.Util.createCanvasContext2D(mapWidth, mapHeight);
             var offset = [(mapWidth - width) / 2 / pixelRatio, (mapHeight - height) / 2 / pixelRatio];
-            var vectorContext = _olDebug2.default.render.toContext(context, { size: [mapWidth, mapHeight], pixelRatio: pixelRatio });
+            var vectorContext = _openlayers2.default.render.toContext(context, { size: [mapWidth, mapHeight], pixelRatio: pixelRatio });
             var graphics = this.getGraphicsInExtent(extent);
             var me = this;
             graphics.map(function (graphic) {
                 var style = graphic.getStyle();
                 if (me.selected === graphic) {
                     var defaultHighLightStyle = style;
-                    if (style instanceof _olDebug2.default.style.Circle) {
-                        defaultHighLightStyle = new _olDebug2.default.style.Circle({
+                    if (style instanceof _openlayers2.default.style.Circle) {
+                        defaultHighLightStyle = new _openlayers2.default.style.Circle({
                             radius: style.getRadius(),
-                            fill: new _olDebug2.default.style.Fill({
+                            fill: new _openlayers2.default.style.Fill({
                                 color: 'rgba(0, 153, 255, 1)'
                             }),
                             stroke: style.getStroke(),
                             snapToPixel: style.getSnapToPixel()
                         });
-                    } else if (style instanceof _olDebug2.default.style.RegularShape) {
-                        defaultHighLightStyle = new _olDebug2.default.style.RegularShape({
+                    } else if (style instanceof _openlayers2.default.style.RegularShape) {
+                        defaultHighLightStyle = new _openlayers2.default.style.RegularShape({
                             radius: style.getRadius(),
                             radius2: style.getRadius2(),
                             points: style.getPoints(),
@@ -59272,7 +59273,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
                             snapToPixel: style.getSnapToPixel(),
                             rotation: style.getRotation(),
                             rotateWithView: style.getRotateWithView(),
-                            fill: new _olDebug2.default.style.Fill({
+                            fill: new _openlayers2.default.style.Fill({
                                 color: 'rgba(0, 153, 255, 1)'
                             }),
                             stroke: style.getStroke()
@@ -59280,7 +59281,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
                     }
                     style = me.highLightStyle || defaultHighLightStyle;
                 }
-                vectorContext.setStyle(new _olDebug2.default.style.Style({
+                vectorContext.setStyle(new _openlayers2.default.style.Style({
                     image: style
                 }));
                 var geometry = graphic.getGeometry();
@@ -59291,7 +59292,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
                 var scaledP = scale(pixelP, center, pixelRatio);
                 var rotatedP = rotate(scaledP, rotation, center);
                 var result = [rotatedP[0] + offset[0], rotatedP[1] + offset[1]];
-                var pixelGeometry = new _olDebug2.default.geom.Point(result);
+                var pixelGeometry = new _openlayers2.default.geom.Point(result);
                 vectorContext.drawGeometry(pixelGeometry);
                 return graphic;
             });
@@ -59333,7 +59334,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
                 return graphics;
             }
             this.graphics_.map(function (graphic) {
-                if (_olDebug2.default.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
+                if (_openlayers2.default.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
                     graphics.push(graphic);
                 }
                 return graphic;
@@ -59356,7 +59357,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
             var graphics = this.getGraphicsInExtent();
             for (var i = graphics.length - 1; i > 0; i--) {
                 var center = graphics[i].getGeometry().getCoordinates();
-                var image = new _olDebug2.default.style.Style({
+                var image = new _openlayers2.default.style.Style({
                     image: graphics[i].getStyle()
                 }).getImage();
                 var extent = [];
@@ -59364,7 +59365,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
                 extent[2] = center[0] + image.getAnchor()[0] * resolution;
                 extent[1] = center[1] - image.getAnchor()[1] * resolution;
                 extent[3] = center[1] + image.getAnchor()[1] * resolution;
-                if (_olDebug2.default.extent.containsCoordinate(extent, coordinate)) {
+                if (_openlayers2.default.extent.containsCoordinate(extent, coordinate)) {
                     this.selected = graphics[i];
                     this.changed();
                     callback(graphics[i]);
@@ -59378,9 +59379,9 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
     }]);
 
     return Graphic;
-}(_olDebug2.default.source.ImageCanvas);
+}(_openlayers2.default.source.ImageCanvas);
 
-_olDebug2.default.source.Graphic = Graphic;
+_openlayers2.default.source.Graphic = Graphic;
 
 /***/ }),
 /* 298 */
@@ -59396,9 +59397,9 @@ exports.Mapv = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _MapvLayer = __webpack_require__(425);
 
@@ -59427,7 +59428,7 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
         var options = opt_options ? opt_options : {};
 
         var _this = _possibleConstructorReturn(this, (Mapv.__proto__ || Object.getPrototypeOf(Mapv)).call(this, {
-            attributions: options.attributions || new _olDebug2.default.Attribution({
+            attributions: options.attributions || new _openlayers2.default.Attribution({
                 html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
@@ -59561,9 +59562,9 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
     }]);
 
     return Mapv;
-}(_olDebug2.default.source.ImageCanvas);
+}(_openlayers2.default.source.ImageCanvas);
 
-_olDebug2.default.source.Mapv = Mapv;
+_openlayers2.default.source.Mapv = Mapv;
 
 /***/ }),
 /* 299 */
@@ -59579,9 +59580,9 @@ exports.RankSymbol = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -59679,7 +59680,7 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
     return RankSymbol;
 }(_Graph2.Graph);
 
-_olDebug2.default.source.RankSymbol = RankSymbol;
+_openlayers2.default.source.RankSymbol = RankSymbol;
 
 /***/ }),
 /* 300 */
@@ -59695,9 +59696,9 @@ exports.Turf = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _turf = __webpack_require__(520);
 
@@ -59726,7 +59727,7 @@ var Turf = exports.Turf = function (_ol$source$Vector) {
         var options = opt_options ? opt_options : {};
 
         var _this = _possibleConstructorReturn(this, (Turf.__proto__ || Object.getPrototypeOf(Turf)).call(this, {
-            attributions: options.attributions || new _olDebug2.default.Attribution({
+            attributions: options.attributions || new _openlayers2.default.Attribution({
                 html: "<span>© <a href='http://turfjs.org/' target='_blank'>turfjs</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
             }),
             features: options.features,
@@ -59884,7 +59885,7 @@ var Turf = exports.Turf = function (_ol$source$Vector) {
             var result = _turf2.default[type.split('.')[1]].apply(this, this.parse(type, args));
             var features = null;
             try {
-                features = new _olDebug2.default.format.GeoJSON().readFeatures(result);
+                features = new _openlayers2.default.format.GeoJSON().readFeatures(result);
             } catch (e) {
                 if (callback) {
                     callback(result);
@@ -59918,9 +59919,9 @@ var Turf = exports.Turf = function (_ol$source$Vector) {
     }]);
 
     return Turf;
-}(_olDebug2.default.source.Vector);
+}(_openlayers2.default.source.Vector);
 
-_olDebug2.default.source.Turf = Turf;
+_openlayers2.default.source.Turf = Turf;
 
 /***/ }),
 /* 301 */
@@ -59936,9 +59937,9 @@ exports.VectorTileSuperMapRest = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _Util = __webpack_require__(7);
 
@@ -59954,7 +59955,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-_olDebug2.default.supermap = _olDebug2.default.supermap || {};
+_openlayers2.default.supermap = _openlayers2.default.supermap || {};
 
 /**
  * @class ol.source.VectorTileSuperMapRest
@@ -59973,11 +59974,11 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
             return _possibleConstructorReturn(_this);
         }
         options.crossOrigin = 'anonymous';
-        options.attributions = options.attributions || new _olDebug2.default.Attribution({
+        options.attributions = options.attributions || new _openlayers2.default.Attribution({
             html: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
         });
         var layerUrl = options.url + '/tileFeature.json?';
-        if (options.format instanceof _olDebug2.default.format.MVT) {
+        if (options.format instanceof _openlayers2.default.format.MVT) {
             layerUrl = options.url + '/tileFeature.mvt?';
         }
         //为url添加安全认证信息片段
@@ -60043,7 +60044,7 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
         var _this = _possibleConstructorReturn(this, (VectorTileSuperMapRest.__proto__ || Object.getPrototypeOf(VectorTileSuperMapRest)).call(this, {
             attributions: options.attributions,
             cacheSize: options.cacheSize,
-            format: options.format || new _olDebug2.default.format.GeoJSON(),
+            format: options.format || new _openlayers2.default.format.GeoJSON(),
             logo: options.logo,
             overlaps: options.overlaps,
             projection: options.projection,
@@ -60052,7 +60053,7 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
             tileGrid: options.tileGrid,
             tilePixelRatio: options.tilePixelRatio,
             tileUrlFunction: tileUrlFunction,
-            tileLoadFunction: options.format instanceof _olDebug2.default.format.MVT ? undefined : tileLoadFunction,
+            tileLoadFunction: options.format instanceof _openlayers2.default.format.MVT ? undefined : tileLoadFunction,
             url: options.url,
             urls: options.urls,
             wrapX: options.wrapX !== undefined ? options.wrapX : false
@@ -60078,7 +60079,7 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
                 unit = _iclientCommon.Unit.METER;
             }
             var scale = _Util.Util.resolutionToScale(resolution, dpi, unit);
-            var tileSize = _olDebug2.default.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
+            var tileSize = _openlayers2.default.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
         }
 
@@ -60097,12 +60098,12 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
 
             tile.setLoader(function () {
                 _iclientCommon.FetchRequest.get(tileUrl).then(function (response) {
-                    if (tile.getFormat() instanceof _olDebug2.default.format.GeoJSON) {
+                    if (tile.getFormat() instanceof _openlayers2.default.format.GeoJSON) {
                         return response.json();
                     }
                 }).then(function (tileFeatureJson) {
                     var features = [];
-                    if (tile.getFormat() instanceof _olDebug2.default.format.GeoJSON) {
+                    if (tile.getFormat() instanceof _openlayers2.default.format.GeoJSON) {
                         tileFeatureJson.recordsets.map(function (recordset) {
                             recordset.features.map(function (feature) {
                                 var points = [];
@@ -60132,7 +60133,7 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
                     }
                     tile.setFeatures(features);
                     tile.setExtent([0, 0, width, height]);
-                    tile.setProjection(new _olDebug2.default.proj.Projection({
+                    tile.setProjection(new _openlayers2.default.proj.Projection({
                         code: 'TILE_PIXELS',
                         units: 'tile-pixels'
                     }));
@@ -60229,7 +60230,7 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
                 return scales;
             }
 
-            options.tileGrid = new _olDebug2.default.tilegrid.TileGrid({
+            options.tileGrid = new _openlayers2.default.tilegrid.TileGrid({
                 extent: extent,
                 resolutions: resolutions
             });
@@ -60239,9 +60240,9 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
     }]);
 
     return VectorTileSuperMapRest;
-}(_olDebug2.default.source.VectorTile);
+}(_openlayers2.default.source.VectorTile);
 
-_olDebug2.default.source.VectorTileSuperMapRest = VectorTileSuperMapRest;
+_openlayers2.default.source.VectorTileSuperMapRest = VectorTileSuperMapRest;
 
 /***/ }),
 /* 302 */
@@ -60259,9 +60260,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _ServiceBase2 = __webpack_require__(8);
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -60343,7 +60344,7 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
     return AddressMatchService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.AddressMatchService = AddressMatchService;
+_openlayers2.default.supermap.AddressMatchService = AddressMatchService;
 
 /***/ }),
 /* 303 */
@@ -60359,9 +60360,9 @@ exports.ChartService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _Util = __webpack_require__(7);
 
@@ -60473,7 +60474,7 @@ var ChartService = exports.ChartService = function (_ServiceBase) {
     return ChartService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.ChartService = ChartService;
+_openlayers2.default.supermap.ChartService = ChartService;
 
 /***/ }),
 /* 304 */
@@ -60489,9 +60490,9 @@ exports.FieldService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _Util = __webpack_require__(7);
 
@@ -60619,7 +60620,7 @@ var FieldService = exports.FieldService = function (_ServiceBase) {
     return FieldService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.FieldService = FieldService;
+_openlayers2.default.supermap.FieldService = FieldService;
 
 /***/ }),
 /* 305 */
@@ -60635,9 +60636,9 @@ exports.GridCellInfosService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _ServiceBase2 = __webpack_require__(8);
 
@@ -60705,7 +60706,7 @@ var GridCellInfosService = exports.GridCellInfosService = function (_ServiceBase
     return GridCellInfosService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.GridCellInfosService = GridCellInfosService;
+_openlayers2.default.supermap.GridCellInfosService = GridCellInfosService;
 
 /***/ }),
 /* 306 */
@@ -60721,9 +60722,9 @@ exports.LayerInfoService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _ServiceBase2 = __webpack_require__(8);
 
@@ -60873,7 +60874,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
     return LayerInfoService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.LayerInfoService = LayerInfoService;
+_openlayers2.default.supermap.LayerInfoService = LayerInfoService;
 
 /***/ }),
 /* 307 */
@@ -60889,9 +60890,9 @@ exports.MeasureService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _Util = __webpack_require__(7);
 
@@ -60980,7 +60981,7 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
         key: '_processParam',
         value: function _processParam(params) {
             if (params && params.geometry) {
-                params.geometry = _Util.Util.toSuperMapGeometry(JSON.parse(new _olDebug2.default.format.GeoJSON().writeGeometry(params.geometry)));
+                params.geometry = _Util.Util.toSuperMapGeometry(JSON.parse(new _openlayers2.default.format.GeoJSON().writeGeometry(params.geometry)));
             }
             return params;
         }
@@ -60989,7 +60990,7 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
     return MeasureService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.MeasureService = MeasureService;
+_openlayers2.default.supermap.MeasureService = MeasureService;
 
 /***/ }),
 /* 308 */
@@ -61005,9 +61006,9 @@ exports.NetworkAnalyst3DService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _ServiceBase2 = __webpack_require__(8);
 
@@ -61165,7 +61166,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
     return NetworkAnalyst3DService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.NetworkAnalyst3DService = NetworkAnalyst3DService;
+_openlayers2.default.supermap.NetworkAnalyst3DService = NetworkAnalyst3DService;
 
 /***/ }),
 /* 309 */
@@ -61181,9 +61182,9 @@ exports.NetworkAnalystService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -61487,7 +61488,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
             }
             if (params.centers && _Util.Util.isArray(params.centers)) {
                 params.centers.map(function (point, key) {
-                    params.centers[key] = point instanceof _olDebug2.default.geom.Point ? {
+                    params.centers[key] = point instanceof _openlayers2.default.geom.Point ? {
                         x: point.getCoordinates()[0],
                         y: point.getCoordinates()[1]
                     } : point;
@@ -61497,7 +61498,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
 
             if (params.nodes && _Util.Util.isArray(params.nodes)) {
                 params.nodes.map(function (point, key) {
-                    params.nodes[key] = point instanceof _olDebug2.default.geom.Point ? {
+                    params.nodes[key] = point instanceof _openlayers2.default.geom.Point ? {
                         x: point.getCoordinates()[0],
                         y: point.getCoordinates()[1]
                     } : point;
@@ -61505,13 +61506,13 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
                 });
             }
 
-            if (params.event && params.event instanceof _olDebug2.default.geom.Point) {
+            if (params.event && params.event instanceof _openlayers2.default.geom.Point) {
                 params.event = { x: params.event.getCoordinates()[0], y: params.event.getCoordinates()[1] };
             }
 
             if (params.facilities && _Util.Util.isArray(params.facilities)) {
                 params.facilities.map(function (point, key) {
-                    params.facilities[key] = point instanceof _olDebug2.default.geom.Point ? {
+                    params.facilities[key] = point instanceof _openlayers2.default.geom.Point ? {
                         x: point.getCoordinates()[0],
                         y: point.getCoordinates()[1]
                     } : point;
@@ -61522,14 +61523,14 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
                 var barrierPoints = params.parameter.barrierPoints;
                 if (_Util.Util.isArray(barrierPoints)) {
                     barrierPoints.map(function (point, key) {
-                        params.parameter.barrierPoints[key] = point instanceof _olDebug2.default.geom.Point ? {
+                        params.parameter.barrierPoints[key] = point instanceof _openlayers2.default.geom.Point ? {
                             x: point.getCoordinates()[0],
                             y: point.getCoordinates()[1]
                         } : point;
                         return params.parameter.barrierPoints[key];
                     });
                 } else {
-                    params.parameter.barrierPoints = [barrierPoints instanceof _olDebug2.default.geom.Point ? {
+                    params.parameter.barrierPoints = [barrierPoints instanceof _openlayers2.default.geom.Point ? {
                         x: barrierPoints.getCoordinates()[0],
                         y: barrierPoints.getCoordinates()[1]
                     } : barrierPoints];
@@ -61547,7 +61548,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
     return NetworkAnalystService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.NetworkAnalystService = NetworkAnalystService;
+_openlayers2.default.supermap.NetworkAnalystService = NetworkAnalystService;
 
 /***/ }),
 /* 310 */
@@ -61563,9 +61564,9 @@ exports.ProcessingService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -62467,7 +62468,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
     return ProcessingService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.ProcessingService = ProcessingService;
+_openlayers2.default.supermap.ProcessingService = ProcessingService;
 
 /***/ }),
 /* 311 */
@@ -62483,9 +62484,9 @@ exports.QueryService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -62638,10 +62639,10 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
                 params.bounds = new _iclientCommon.Bounds(params.bounds[0], params.bounds[1], params.bounds[2], params.bounds[3]);
             }
             if (params.geometry) {
-                if (params.geometry instanceof _olDebug2.default.geom.Point) {
+                if (params.geometry instanceof _openlayers2.default.geom.Point) {
                     params.geometry = new _iclientCommon.GeometryPoint(params.geometry.getCoordinates()[0], params.geometry.getCoordinates()[1]);
                 } else {
-                    params.geometry = _Util.Util.toSuperMapGeometry(JSON.parse(new _olDebug2.default.format.GeoJSON().writeGeometry(params.geometry)));
+                    params.geometry = _Util.Util.toSuperMapGeometry(JSON.parse(new _openlayers2.default.format.GeoJSON().writeGeometry(params.geometry)));
                 }
             }
             return params;
@@ -62656,7 +62657,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
     return QueryService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.QueryService = QueryService;
+_openlayers2.default.supermap.QueryService = QueryService;
 
 /***/ }),
 /* 312 */
@@ -62672,9 +62673,9 @@ exports.SpatialAnalystService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _Util = __webpack_require__(7);
 
@@ -63072,7 +63073,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
                 params.sourceGeometry = this.convertGeometry(params.sourceGeometry);
             }
             if (params.sourceRoute) {
-                if (params.sourceRoute instanceof _olDebug2.default.geom.LineString && params.sourceRoute.getCoordinates()) {
+                if (params.sourceRoute instanceof _openlayers2.default.geom.LineString && params.sourceRoute.getCoordinates()) {
                     var target = {};
                     target.type = "LINEM";
                     target.parts = [params.sourceRoute.getCoordinates()[0].length];
@@ -63115,14 +63116,14 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
     }, {
         key: 'convertGeometry',
         value: function convertGeometry(ol3Geometry) {
-            return _Util.Util.toSuperMapGeometry(JSON.parse(new _olDebug2.default.format.GeoJSON().writeGeometry(ol3Geometry)));
+            return _Util.Util.toSuperMapGeometry(JSON.parse(new _openlayers2.default.format.GeoJSON().writeGeometry(ol3Geometry)));
         }
     }]);
 
     return SpatialAnalystService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.SpatialAnalystService = SpatialAnalystService;
+_openlayers2.default.supermap.SpatialAnalystService = SpatialAnalystService;
 
 /***/ }),
 /* 313 */
@@ -63138,9 +63139,9 @@ exports.ThemeService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _ServiceBase2 = __webpack_require__(8);
 
@@ -63204,7 +63205,7 @@ var ThemeService = exports.ThemeService = function (_ServiceBase) {
     return ThemeService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.ThemeService = ThemeService;
+_openlayers2.default.supermap.ThemeService = ThemeService;
 
 /***/ }),
 /* 314 */
@@ -63220,9 +63221,9 @@ exports.TrafficTransferAnalystService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _Util = __webpack_require__(7);
 
@@ -63337,7 +63338,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
             }
             if (params.points && _Util.Util.isArray(params.points)) {
                 params.points.map(function (point, key) {
-                    params.points[key] = point instanceof _olDebug2.default.geom.Point ? {
+                    params.points[key] = point instanceof _openlayers2.default.geom.Point ? {
                         x: point.getCoordinates()[0],
                         y: point.getCoordinates()[1]
                     } : point;
@@ -63351,7 +63352,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
     return TrafficTransferAnalystService;
 }(_ServiceBase2.ServiceBase);
 
-_olDebug2.default.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
+_openlayers2.default.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
 
 /***/ }),
 /* 315 */
@@ -80345,7 +80346,7 @@ var ServerInfo = exports.ServerInfo = function ServerInfo(type, options) {
      * @member SuperMap.ServerInfo.prototype.type -{ServerType}
      * @description 服务器类型
      */
-    this.type = null;
+    this.type = type;
 
     /**
      * @member SuperMap.ServerInfo.prototype.server -{string}
@@ -85386,9 +85387,9 @@ exports.Graphic = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -85412,7 +85413,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
 
         var _this = _possibleConstructorReturn(this, (Graphic.__proto__ || Object.getPrototypeOf(Graphic)).call(this));
 
-        if (geometry instanceof _olDebug2.default.geom.Geometry) {
+        if (geometry instanceof _openlayers2.default.geom.Geometry) {
             _this.geometry_ = geometry;
         }
         _this.setStyle();
@@ -85501,7 +85502,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
         key: 'setStyle',
         value: function setStyle(style) {
             this.style_ = style;
-            this.styleFunction_ = !style ? undefined : _olDebug2.default.Graphic.createStyleFunction(new _olDebug2.default.style.Style({ image: style }));
+            this.styleFunction_ = !style ? undefined : _openlayers2.default.Graphic.createStyleFunction(new _openlayers2.default.style.Style({ image: style }));
             this.changed();
         }
 
@@ -85563,9 +85564,9 @@ var Graphic = exports.Graphic = function (_ol$Object) {
     }]);
 
     return Graphic;
-}(_olDebug2.default.Object);
+}(_openlayers2.default.Object);
 
-_olDebug2.default.Graphic = Graphic;
+_openlayers2.default.Graphic = Graphic;
 
 /***/ }),
 /* 424 */
@@ -85712,9 +85713,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _MapvCanvasLayer = __webpack_require__(424);
 
@@ -85899,7 +85900,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
                     map.on('click', me.clickEvent);
                 }
                 if (me.options.methods.mousemove) {
-                    me.pointerInteraction = new _olDebug2.default.interaction.Pointer();
+                    me.pointerInteraction = new _openlayers2.default.interaction.Pointer();
                     me.pointerInteraction.handleMoveEvent_ = function (event) {
                         me.mousemoveEvent(event);
                     };
@@ -86057,7 +86058,8 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
                     var center = map.getPixelFromCoordinate(map.getView().getCenter());
                     var scaledP = scale(pixelP, center, self.pixelRatio);
                     var rotatedP = rotate(scaledP, rotation, center);
-                    var result = [rotatedP[0] + self.offset[0] - topLeft[0], rotatedP[1] + self.offset[1] - topLeft[1]];
+                    // var result = [rotatedP[0] + self.offset[0] - topLeft[0], rotatedP[1] + self.offset[1] - topLeft[1]];
+                    var result = [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
                     return result;
                 }
             };
@@ -86529,9 +86531,9 @@ exports.VectorTileStyles = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _olDebug = __webpack_require__(3);
+var _openlayers = __webpack_require__(3);
 
-var _olDebug2 = _interopRequireDefault(_olDebug);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
@@ -86547,7 +86549,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-_olDebug2.default.supermap = _olDebug2.default.supermap || {};
+_openlayers2.default.supermap = _openlayers2.default.supermap || {};
 
 /**
  * @class ol.supermap.VectorTileStyles
@@ -86673,10 +86675,10 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
          * @description 设置默认选择后的点样式
          */
         function getDefaultSelectedPointStyle() {
-            return new _olDebug2.default.style.Style({
-                image: new _olDebug2.default.style.Circle({
+            return new _openlayers2.default.style.Style({
+                image: new _openlayers2.default.style.Circle({
                     radius: 5,
-                    fill: new _olDebug2.default.style.Fill({
+                    fill: new _openlayers2.default.style.Fill({
                         color: 'blue'
                     })
                 })
@@ -86688,8 +86690,8 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
          * @description 设置默认选择后的线样式
          */
         function getDefaultSelectedLineStyle() {
-            return new _olDebug2.default.style.Style({
-                stroke: new _olDebug2.default.style.Stroke({
+            return new _openlayers2.default.style.Style({
+                stroke: new _openlayers2.default.style.Stroke({
                     color: 'blue',
                     width: 3
                 })
@@ -86701,11 +86703,11 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
          * @description 设置默认选择后的面样式
          */
         function getDefaultSelectedRegionStyle() {
-            return new _olDebug2.default.style.Style({
-                fill: new _olDebug2.default.style.Fill({
+            return new _openlayers2.default.style.Style({
+                fill: new _openlayers2.default.style.Fill({
                     color: [0, 0, 255, 0.5]
                 }),
-                stroke: new _olDebug2.default.style.Stroke({
+                stroke: new _openlayers2.default.style.Stroke({
                     color: 'blue',
                     width: 3
                 })
@@ -86717,13 +86719,13 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
          * @description 设置默认选择后的文本样式
          */
         function getDefaultSelectedTextStyle() {
-            return new _olDebug2.default.style.Style({
-                text: new _olDebug2.default.style.Text({
+            return new _openlayers2.default.style.Style({
+                text: new _openlayers2.default.style.Text({
                     font: '15px 微软雅黑',
-                    fill: new _olDebug2.default.style.Fill({
+                    fill: new _openlayers2.default.style.Fill({
                         color: 'blue'
                     }),
-                    stroke: new _olDebug2.default.style.Stroke({
+                    stroke: new _openlayers2.default.style.Stroke({
                         color: 'white',
                         width: 1
                     })
@@ -87161,9 +87163,9 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
     }]);
 
     return VectorTileStyles;
-}(_olDebug2.default.Observable);
+}(_openlayers2.default.Observable);
 
-_olDebug2.default.supermap.VectorTileStyles = VectorTileStyles;
+_openlayers2.default.supermap.VectorTileStyles = VectorTileStyles;
 
 /***/ }),
 /* 429 */
@@ -93860,7 +93862,7 @@ module.exports = whatwgFetch;
 /* 517 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\codes\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 518 */

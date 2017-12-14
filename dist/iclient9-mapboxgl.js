@@ -47610,10 +47610,11 @@ var Painter = exports.Painter = function () {
             return false;
         }
 
+        /* eslint-disable */
         // 什么都不干的空方法
-        function doNothing() {// eslint-disable-line no-unused-vars
-            //NOSONAR
-        }
+        function doNothing() {} //NOSONAR
+
+        /* eslint-enable */
     }
 
     /**
@@ -74988,7 +74989,7 @@ var ServerInfo = exports.ServerInfo = function ServerInfo(type, options) {
      * @member SuperMap.ServerInfo.prototype.type -{ServerType}
      * @description 服务器类型
      */
-    this.type = null;
+    this.type = type;
 
     /**
      * @member SuperMap.ServerInfo.prototype.server -{string}
@@ -80033,6 +80034,12 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _mapv = __webpack_require__(253);
 
+var _mapboxGl = __webpack_require__(3);
+
+var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -80311,7 +80318,7 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
 
             var dataGetOptions = {
                 transferCoordinate: function transferCoordinate(coordinate) {
-                    var worldPoint = map.transform.locationPoint(new window.mapboxgl.LngLat(coordinate[0], coordinate[1]));
+                    var worldPoint = map.transform.locationPoint(new _mapboxGl2.default.LngLat(coordinate[0], coordinate[1]));
                     return [worldPoint.x, worldPoint.y];
                 }
             };
@@ -80329,7 +80336,7 @@ var MapvRenderer = exports.MapvRenderer = function (_BaseLayer) {
 
             self.options._size = self.options.size;
 
-            var worldPoint = map.project(new window.mapboxgl.LngLat(0, 0));
+            var worldPoint = map.project(new _mapboxGl2.default.LngLat(0, 0));
             this.drawContext(context, new _mapv.DataSet(data), self.options, worldPoint);
 
             self.options.updateCallback && self.options.updateCallback(time);

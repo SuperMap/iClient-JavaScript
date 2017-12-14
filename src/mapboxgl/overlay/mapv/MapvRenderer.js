@@ -1,4 +1,5 @@
 import {baiduMapLayer, DataSet} from "mapv";
+import mapboxgl from 'mapbox-gl';
 
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -230,7 +231,7 @@ export class MapvRenderer extends BaseLayer {
 
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                var worldPoint = map.transform.locationPoint((new window.mapboxgl.LngLat(coordinate[0], coordinate[1])));
+                var worldPoint = map.transform.locationPoint((new mapboxgl.LngLat(coordinate[0], coordinate[1])));
                 return [worldPoint.x, worldPoint.y];
             }
         };
@@ -248,7 +249,7 @@ export class MapvRenderer extends BaseLayer {
 
         self.options._size = self.options.size;
 
-        var worldPoint = map.project(new window.mapboxgl.LngLat(0, 0));
+        var worldPoint = map.project(new mapboxgl.LngLat(0, 0));
         this.drawContext(context, new DataSet(data), self.options, worldPoint);
 
         self.options.updateCallback && self.options.updateCallback(time);

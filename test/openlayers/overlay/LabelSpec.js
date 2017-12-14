@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/overlay/Label');
 require('../../resources/themeLabelData');
 

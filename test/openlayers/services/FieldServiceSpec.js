@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/services/FieldService');
 
 var url = GlobeParameter.dataServiceURL;

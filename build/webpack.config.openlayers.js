@@ -22,7 +22,7 @@ module.exports = {
         extensions: ['.js', '.json', '.css']
     },
     externals: {
-        'openlayers/dist/ol-debug': 'ol',
+        'openlayers': 'ol',
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
         'mapv': "function(){try{return mapv}catch(e){return {}}}()",
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',

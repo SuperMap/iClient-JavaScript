@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../../src/openlayers/overlay/theme/ThemeFeature');
 
 describe('openlayers_ThemeFeature', function () {

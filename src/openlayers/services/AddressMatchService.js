@@ -1,5 +1,5 @@
 import {ServiceBase} from './ServiceBase';
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {AddressMatchService as CommonAddressMatchService} from '@supermap/iclient-common';
 
 /**

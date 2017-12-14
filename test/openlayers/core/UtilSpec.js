@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/core/Util.js');
 
 describe('openlayers_Util', function () {

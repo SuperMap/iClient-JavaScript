@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/control/ChangeTileVersion');
 
 describe('openlayers_ChangeTileVersion', function () {

@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/services/FeatureService');
 var featureServiceURL = GlobeParameter.dataServiceURL;
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;

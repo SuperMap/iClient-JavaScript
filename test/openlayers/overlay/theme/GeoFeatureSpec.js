@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../../src/openlayers/overlay/theme/GeoFeature');
 
 describe('openlayers_GeoFeature', function () {

@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {Unit, JSONFormat, CartoCSS} from '@supermap/iclient-common';
 import {StyleUtils} from '../../core/StyleUtils';
 import {Util} from '../../core/Util';

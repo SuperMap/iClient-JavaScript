@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import {MapvCanvasLayer} from './MapvCanvasLayer';
 import {baiduMapLayer, DataSet} from "mapv";
 
@@ -280,7 +280,8 @@ export class MapvLayer extends BaiduMapLayer {
                 var center = map.getPixelFromCoordinate(map.getView().getCenter());
                 var scaledP = scale(pixelP, center, self.pixelRatio);
                 var rotatedP = rotate(scaledP, rotation, center);
-                var result = [rotatedP[0] + self.offset[0] - topLeft[0], rotatedP[1] + self.offset[1] - topLeft[1]];
+                // var result = [rotatedP[0] + self.offset[0] - topLeft[0], rotatedP[1] + self.offset[1] - topLeft[1]];
+                var result = [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
                 return result;
             }
         };

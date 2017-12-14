@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/overlay/Mapv');
 var mapv = require('mapv');
 window.mapv = mapv;

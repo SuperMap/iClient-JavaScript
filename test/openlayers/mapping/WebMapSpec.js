@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/mapping/WebMap');
 require('../../../src/common/util/FetchRequest');
 

@@ -1,4 +1,4 @@
-import ol from 'openlayers/dist/ol-debug';
+import ol from 'openlayers';
 import jsonsql from "jsonsql";
 import proj4 from "proj4";
 import {

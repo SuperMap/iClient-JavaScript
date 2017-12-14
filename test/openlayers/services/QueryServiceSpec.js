@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/services/QueryService');
 
 var url = GlobeParameter.WorldURL;

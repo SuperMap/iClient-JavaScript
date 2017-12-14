@@ -1,4 +1,4 @@
-﻿import ol from 'openlayers/dist/ol-debug';
+﻿import ol from 'openlayers';
 import {
     DataFormat,
     BurstPipelineAnalystService,

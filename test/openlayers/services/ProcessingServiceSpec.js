@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/services/ProcessingService');
 require('../../../src/common/util/FetchRequest');
 require('../../../src/common/security/SecurityManager');

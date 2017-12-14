@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/services/LayerInfoService');
 require('../../resources/LayersInfo');
 var url = GlobeParameter.WorldURL;

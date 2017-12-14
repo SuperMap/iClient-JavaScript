@@ -1,17 +1,32 @@
-# SuperMap iClient for Leaflet
-[introduce]:http://iclient.supermap.io/introduction/leaflet.html#introduce
-[sourcecode]:https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet
+# @supermap/iclient-leaflet
 
-## 简介(Introduction)
-&nbsp;&nbsp;&nbsp;<font style="font-weight:bolder;font-size:16px;">English：</font>[SuperMap iClient for Leaflet][introduce] is a set of GIS client application development kit for using SuperMap services with Leaflet.
-Support for SuperMap iServer/iExpress/iPortal/Online tiles, services and more,but also provide excellent visualization capabilities.
+@supermap/iclient-leaflet 是一套基于Leaflet的云GIS网络客户端开发平台， 支持访问SuperMap iServer / iExpress / iPortal / iManager / Online的地图、服务和资源，为用户提供了完整专业的GIS能力， 同时提供了优秀的可视化功能。
 
-&nbsp;&nbsp;&nbsp;<font style="font-weight:bolder;font-size:16px;">中文：</font>[SuperMap iClient for Leaflet][introduce]是一套基于Leaflet的GIS客户端应用程序开发工具，
-支持SuperMap iServer / iExpress / iPortal / Online地图和服务，同时提供了优秀的可视化功能。
+## 简介
+* 官网：[http://iclient.supermap.io](http://iclient.supermap.io)
+* 源码：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet)
 
-* 官网(website)：[http://iclient.supermap.io/introduction/leaflet.html#introduce][introduce]
+## 安装
 
-* 源码(source code)：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet][sourcecode]
+```
+ npm install @supermap/iclient-leaflet
+```
 
-## 许可(License)
-[ Apache License 2.0 ](../../LICENSE)
+## 开发
+
+```
+import L from 'leaflet';
+import {tiledMapLayer} from '@supermap/iclient-leaflet';
+
+var url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+var map = L.map('map', {
+    crs: L.CRS.EPSG4326,
+    center: [0, 0],
+    maxZoom: 18,
+    zoom: 1
+});
+tiledMapLayer(url).addTo(map);
+```
+
+## 示例
+ [https://github.com/SuperMap/iClient-JavaScript/tree/master/examples/leaflet](https://github.com/SuperMap/iClient-JavaScript/tree/master/examples/leaflet)

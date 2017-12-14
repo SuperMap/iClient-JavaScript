@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 require('../../../src/openlayers/core/StyleUtils.js');
 require('../../resources/china_cartoCSS.js');
 require('../../resources/china_layers.js');
