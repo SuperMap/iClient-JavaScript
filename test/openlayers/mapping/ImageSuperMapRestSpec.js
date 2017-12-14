@@ -74,6 +74,6 @@ describe('openlayers_ImageSuperMapRest', function () {
         var coords = new ol.geom.Point(120.14, 30.24);
         var tileUrl = imageTileSource.tileUrlFunction(coords, pixelRatio, tempOptions);
         expect(tileUrl).toBe(GlobeParameter.mapServiceURL + "%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Day/image.png?&transparent=true&cacheEnabled=false&width=256&height=256&viewBounds=%7B%22leftBottom%22%20:%20%7B%22x%22:NaN,%22y%22:NaN%7D,%22rightTop%22%20:%20%7B%22x%22:NaN,%22y%22:NaN%7D%7D");
-        expect(imageTileSource.tileGrid.tileSize_).toEqual(256);
+        expect(imageTileSource.getTileGrid().getTileSize()).toEqual(256);
     });
 });

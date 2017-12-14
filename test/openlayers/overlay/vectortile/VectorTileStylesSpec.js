@@ -63,10 +63,10 @@ describe('openlayers_VectorTileStyles', function () {
         setTimeout(function () {
             expect(style).not.toBeNull();
             expect(style.length).toEqual(1);
-            expect(style[0].stroke_.color_).toBe("rgba(232, 212, 85, 1)");
-            expect(style[0].stroke_.width_).toEqual(1.5118110236220474);
-            expect(style[0].stroke_.lineJoin_).toBe("round");
-            expect(style[0].stroke_.miterLimit_).toEqual(10);
+            expect(style[0].getStroke().getColor()).toBe("rgba(232, 212, 85, 1)");
+            expect(style[0].getStroke().getWidth()).toEqual(1.5118110236220474);
+            expect(style[0].getStroke().getLineJoin()).toBe("round");
+            expect(style[0].getStroke().getMiterLimit()).toEqual(10);
             vectorTileStyles = null;
             done();
         }, 1000);
@@ -161,10 +161,10 @@ describe('openlayers_VectorTileStyles', function () {
         setTimeout(function () {
             expect(style).not.toBeNull();
             expect(style.length).toEqual(1);
-            expect(style[0].stroke_.color_).toBe("rgba(232, 212, 85, 1)");
-            expect(style[0].stroke_.width_).toEqual(1.5118110236220474);
-            expect(style[0].stroke_.lineJoin_).toBe("round");
-            expect(style[0].stroke_.miterLimit_).toEqual(10);
+            expect(style[0].getStroke().getColor()).toBe("rgba(232, 212, 85, 1)");
+            expect(style[0].getStroke().getWidth()).toEqual(1.5118110236220474);
+            expect(style[0].getStroke().getLineJoin()).toBe("round");
+            expect(style[0].getStroke().getMiterLimit()).toEqual(10);
             vectorTileStyles = null;
             done();
         }, 1000);
@@ -222,10 +222,10 @@ describe('openlayers_VectorTileStyles', function () {
         var styleLine = vectorTileStyles.getFeatureStyle(featureLine);
         setTimeout(function () {
             expect(styleLine).not.toBeNull();
-            expect(styleLine.stroke_.color_).toBe("rgba(232,212,85,1)");
-            expect(styleLine.stroke_.width_).toEqual(3.77952);
-            expect(styleLine.stroke_.lineJoin_).toBe("round");
-            expect(styleLine.stroke_.miterLimit_).toEqual(10);
+            expect(styleLine.getStroke().getColor()).toBe("rgba(232,212,85,1)");
+            expect(styleLine.getStroke().getWidth()).toEqual(3.77952);
+            expect(styleLine.getStroke().getLineJoin()).toBe("round");
+            expect(styleLine.getStroke().getMiterLimit()).toEqual(10);
         }, 1000);
         // featureRegionJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内背景面对象
         var featureRegionJSON = {
@@ -246,11 +246,11 @@ describe('openlayers_VectorTileStyles', function () {
         var styleRegion = vectorTileStyles.getFeatureStyle(featureRegion);
         setTimeout(function () {
             expect(styleRegion).not.toBeNull();
-            expect(styleRegion.fill_.color_).toBe("rgba(255,255,255,1)");
-            expect(styleRegion.stroke_.color_).toBe("rgba(120,113,102,0)");
-            expect(styleRegion.stroke_.width_).toEqual(0.94488);
-            expect(styleRegion.stroke_.lineJoin_).toBe("round");
-            expect(styleRegion.stroke_.miterLimit_).toEqual(10);
+            expect(styleRegion.getFill().getColor()).toBe("rgba(255,255,255,1)");
+            expect(styleRegion.getStroke().getColor()).toBe("rgba(120,113,102,0)");
+            expect(styleRegion.getStroke().getWidth()).toEqual(0.94488);
+            expect(styleRegion.getStroke().getLineJoin()).toBe("round");
+            expect(styleRegion.getStroke().getMiterLimit()).toEqual(10);
             vectorTileStyles = null;
             done();
         }, 1000);
@@ -345,10 +345,10 @@ describe('openlayers_VectorTileStyles', function () {
         var styleLine = vectorTileStyles.getFeatureStyle(featureLine);
         setTimeout(function () {
             expect(styleLine).not.toBeNull();
-            expect(styleLine.stroke_.color_).toBe("rgba(232,212,85,1)");
-            expect(styleLine.stroke_.width_).toEqual(3.77952);
-            expect(styleLine.stroke_.lineJoin_).toBe("round");
-            expect(styleLine.stroke_.miterLimit_).toEqual(10);
+            expect(styleLine.getStroke().getColor()).toBe("rgba(232,212,85,1)");
+            expect(styleLine.getStroke().getWidth()).toEqual(3.77952);
+            expect(styleLine.getStroke().getLineJoin()).toBe("round");
+            expect(styleLine.getStroke().getMiterLimit()).toEqual(10);
         }, 1000);
         // featureRegionJSON通过JSON.stringify((new ol.format.GeoJSON()).writeFeatureObject(feature)获得,其中feature为视野范围内背景面对象
         var featureRegionJSON = {
@@ -370,11 +370,11 @@ describe('openlayers_VectorTileStyles', function () {
         setTimeout(function () {
             expect(styleRegion).not.toBeNull();
             expect(styleRegion.length).toEqual(1);
-            expect(styleRegion[0].fill_.color_).toBe("rgba(8, 48, 75, 1)");
-            expect(styleRegion[0].stroke_.color_).toBe("rgba(0, 0, 0, 0)");
-            expect(styleRegion[0].stroke_.width_).toEqual(1);
-            expect(styleRegion[0].stroke_.lineJoin_).toBe("round");
-            expect(styleRegion[0].stroke_.miterLimit_).toEqual(10);
+            expect(styleRegion[0].getFill().getColor()).toBe("rgba(8, 48, 75, 1)");
+            expect(styleRegion[0].getStroke().getColor()).toBe("rgba(0, 0, 0, 0)");
+            expect(styleRegion[0].getStroke().getWidth()).toEqual(1);
+            expect(styleRegion[0].getStroke().getLineJoin()).toBe("round");
+            expect(styleRegion[0].getStroke().getMiterLimit()).toEqual(10);
             vectorTileStyles = null;
             done();
         }, 1000);
