@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 var Unique = require('../../../src/openlayers/overlay/Unique').Unique;
 
 describe('openlayers_Unique', function () {
