@@ -171,7 +171,7 @@ describe('leaflet_TextSymbolizer', function () {
     });
 
     //CanvasRenderer
-    xit('render, makeInteractive, updateStyle', function () {
+    it('render, makeInteractive, updateStyle', function () {
         var canvasRenderer = new CanvasRenderer({x: 1686, y: 755, Z: 10}, {x: 256, y: 256}, {interactive: true});
         var feature = {
             geometry: [{x: 10, y: 10, type: "Point"}],
@@ -183,8 +183,10 @@ describe('leaflet_TextSymbolizer', function () {
         var style = {
             interactive: true,
         };
-        var textSymbolizer1 = new TextSymbolizer(feature);
         canvasRenderer.addTo(map);
+
+        var textSymbolizer1 = new TextSymbolizer(feature);
+
         spyOn(textSymbolizer1, '_updateBounds').and.callThrough();
         textSymbolizer1.render(canvasRenderer, style);
         textSymbolizer1.makeInteractive();
@@ -196,9 +198,6 @@ describe('leaflet_TextSymbolizer', function () {
         expect(tileCoord.x).toEqual(1686);
         expect(tileCoord.y).toEqual(755);
         expect(tileCoord.Z).toEqual(10);
-        canvasRenderer.removeFrom(map);
-        expect(canvasRenderer._map).toBeUndefined();
     });
-
 });
 

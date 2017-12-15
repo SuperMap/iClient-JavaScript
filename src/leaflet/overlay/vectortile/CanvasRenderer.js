@@ -56,8 +56,8 @@ export var CanvasRenderer = L.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.addTo
-     * @description 添加到切片地图
-     * @param map - {L.map} 切片地图
+     * @description 添加到地图
+     * @param map - {L.map} map对象
      */
     addTo: function (map) {
         this._map = map;
@@ -65,8 +65,8 @@ export var CanvasRenderer = L.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.removeFrom
-     * @description 删除切片地图
-     * @param map - {L.map} 切片地图
+     * @description 从地图移除
+     * @param map - {L.map} map对象
      */
     removeFrom: function (map) { // eslint-disable-line no-unused-vars
         delete this._map;
