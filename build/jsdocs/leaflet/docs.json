@@ -10,11 +10,18 @@
         "allowUnknownTags": true,
         "linkdoc-leaflet":"http://leafletjs.com/reference-1.0.3.html"
     },
+    "i18n": {
+        "defaultLang": "en",
+        "possibleLang": ["en"],
+        "dbFilePath":"./build/jsdocs/leaflet"
+    },
     "source": {
         "includePattern": ".+\\.js?$",
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service.js?$",
         "include": [
             "src/common","src/leaflet"
+           // "src/leaflet/mapping/BaiduTileLayer.js"
+           // "src/common/util/FetchRequest.js"
         ],
         "exclude": [
             "src/common/overlay/feature","src/common/overlay/levelRenderer"
