@@ -89,6 +89,13 @@
             inputCSS("http://cdn.bootcss.com/leaflet.pm/0.16.0/leaflet.pm.min.css");
             inputScript("http://cdn.bootcss.com/leaflet.pm/0.16.0/leaflet.pm.min.js");
         }
+        if (inArray(includes, 'leaflet.miniMap')) {
+            inputCSS("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-miniMap/dist/Control.MiniMap.min.css");
+            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-miniMap/dist/Control.MiniMap.min.js");
+        }
+        if (inArray(includes, 'leaflet.sidebyside')) {
+            inputScript("http://iclient.supermap.io/libs/leaflet/plugins/leaflet-side-by-side/leaflet-side-by-side.min.js");
+        }
     }
 
     load();

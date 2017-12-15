@@ -842,6 +842,46 @@ var exampleConfig = {
                     thumbnail: "l_changeTileVersion.png",
                     fileName: "changeTileVersion"
                 }]
+            },
+            "leafletOfficialControl": {
+                name: "基础控件",
+                name_en: "base control",
+                content: [{
+                    name: "缩放控件",
+                    name_en: "zoom control",
+                    thumbnail: "l_controler_zoom.png",
+                    fileName: "controler_zoom"
+                }, {
+                    name: "比例尺控件",
+                    name_en: "scaleline control",
+                    thumbnail: "l_controler_scaleline.png",
+                    fileName: "controler_scaleline"
+                }, {
+                    name: "版权控件",
+                    name_en: "attribution control",
+                    thumbnail: "l_controler_attribution.png",
+                    fileName: "controler_attribution"
+                }, {
+                    name: "图层切换",
+                    name_en: "layer switch control",
+                    thumbnail: "l_controler_layerswitcher.png",
+                    fileName: "controler_layerswitcher"
+                }, {
+                    name: "自定义图标",
+                    name_en: "markers with custom icons",
+                    thumbnail: "l_controler_markersWithCustomIcons.png",
+                    fileName: "controler_markersWithCustomIcons"
+                }, {
+                    name: "卷帘",
+                    name_en: "roller blinds",
+                    thumbnail: "l_controler_layerswitch.png",
+                    fileName: "controler_layerswitch"
+                }, {
+                    name: "鹰眼图",
+                    name_en: "overview map control",
+                    thumbnail: "l_controler_overviewMap.png",
+                    fileName: "controler_overviewMap"
+                }]
             }
         }
     },
