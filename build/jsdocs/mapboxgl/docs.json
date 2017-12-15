@@ -9,6 +9,11 @@
         "allowUnknownTags": true,
         "linkdoc-openlayers":"https://www.mapbox.com/mapbox-gl-js/api/"
     },
+    "i18n": {
+        "defaultLang": "en",
+        "possibleLang": ["en"],
+        "dbFilePath":"./build/jsdocs/mapboxgl"
+    },
     "source": {
         "includePattern": ".+\\.js?$",
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base.js?$",

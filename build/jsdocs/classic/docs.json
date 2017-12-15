@@ -8,6 +8,11 @@
     "tags": {
         "allowUnknownTags": true
     },
+    "i18n": {
+        "defaultLang": "en",
+        "possibleLang": ["en"],
+        "dbFilePath":"./build/jsdocs/classic"
+    },
     "source": {
         "includePattern": ".+\\.js?$",
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base|Parameters.js?$",

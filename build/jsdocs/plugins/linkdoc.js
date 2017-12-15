@@ -1,7 +1,7 @@
 'use strict';
 
 var logger = require('jsdoc/util/logger');
-
+var env = require('jsdoc/env');
 exports.handlers = {
     newDoclet: function (e) {
         if (e.doclet.augments) {
