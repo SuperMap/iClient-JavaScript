@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>卷帘控件</title>
+    <script type="text/javascript" include="compare" src="../../dist/include-mapboxgl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+        body * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id='before' class='map'></div>
+<div id='after' class='map'></div>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        chinaUrl = host + '/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}',
+        chinaDarkUrl = host + '/iserver/services/map-china400/rest/maps/ChinaDark/zxyTileImage.png?z={z}&x={x}&y={y}',
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " + " with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>";
+    var beforeMap = new mapboxgl.Map({
+        container: 'before',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [chinaUrl],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "before",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }],
+        },
+        center: [0, 0],
+        zoom: 0
+    });
+
+    beforeMap.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+    beforeMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    var afterMap = new mapboxgl.Map({
+        container: 'after',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": [chinaDarkUrl],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "after",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }],
+        },
+        center: [0, 0],
+        zoom: 0
+    });
+
+    //mapbox 卷帘（对比）控件
+    var map = new mapboxgl.Compare(beforeMap, afterMap, {
+        // Set this to enable comparing two maps by mouse movement:
+        // mousemove: true
+    });
+</script>
+</body>
+</html>

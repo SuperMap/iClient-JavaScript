@@ -1,65 +1,73 @@
-﻿(function() {
+﻿(function () {
     var r = new RegExp("(^|(.*?\\/))(include-mapboxgl\.js)(\\?|$)"),
-    s = document.getElementsByTagName('script'), targetScript;
-    for(var i=0;i<s.length; i++) {
+        s = document.getElementsByTagName('script'), targetScript;
+    for (var i = 0; i < s.length; i++) {
         var src = s[i].getAttribute('src');
-        if(src) {
+        if (src) {
             var m = src.match(r);
-            if(m) {
-                targetScript =s[i];
+            if (m) {
+                targetScript = s[i];
                 break;
             }
         }
     }
-    function inputScript(url){
+
+    function inputScript(url) {
         var script = '<script type="text/javascript" src="' + url + '"><' + '/script>';
         document.writeln(script);
     }
-    function inputCSS(url){
+
+    function inputCSS(url) {
         var css = '<link rel="stylesheet" href="' + url + '">';
         document.writeln(css);
     }
-    function inArray(arr,item){
+
+    function inArray(arr, item) {
         for (i in arr) {
-            if (arr[i] == item){
+            if (arr[i] == item) {
                 return true;
             }
         }
         return false;
     }
+
     //加载类库资源文件
     function load() {
-        var includes=(targetScript.getAttribute('include')||"").split(",");
-        var excludes=(targetScript.getAttribute('exclude')||"").split(",");
-        if(!inArray(excludes,'mapbox-gl')) {
+        var includes = (targetScript.getAttribute('include') || "").split(",");
+        var excludes = (targetScript.getAttribute('exclude') || "").split(",");
+        if (!inArray(excludes, 'mapbox-gl')) {
             inputCSS("https://cdn.bootcss.com/mapbox-gl/0.39.1/mapbox-gl.css");
             inputScript("https://cdn.bootcss.com/mapbox-gl/0.39.1/mapbox-gl.js");
         }
-        if(inArray(includes,'draw')){
-            inputCSS("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-draw.css");
-            inputScript("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-draw.js");
+        if (inArray(includes, 'draw')) {
+            inputCSS("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-draw/mapbox-gl-draw.css");
+            inputScript("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-draw/mapbox-gl-draw.js");
         }
-
-        if(inArray(includes,'mapv')){
+        if (inArray(includes, 'compare')) {
+            inputCSS("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-compare/mapbox-gl-compare.css");
+            inputScript("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-compare/mapbox-gl-compare.js");
+        }
+        if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
-        if(inArray(includes,'echarts')){
+        if (inArray(includes, 'echarts')) {
             inputScript("https://cdn.bootcss.com/echarts/3.8.0/echarts.min.js");
             inputScript("http://iclient.supermap.io/libs/echartsLayer/EchartsLayer.js");
         }
         if (!inArray(excludes, 'iclient9-mapboxgl')) {
             inputScript("../../dist/iclient9-mapboxgl.min.js");
         }
-        if(inArray(includes,'proj4')){
+        if (inArray(includes, 'proj4')) {
             inputScript("https://cdn.bootcss.com/proj4js/2.4.3/proj4.js");
         }
-        if(inArray(includes,'echarts-gl')){
+        if (inArray(includes, 'echarts-gl')) {
             inputScript("http://echarts.baidu.com/resource/echarts-gl-latest/dist/echarts-gl.js");
         }
-        if(inArray(includes,'shapefile')){
+        if (inArray(includes, 'shapefile')) {
             inputScript("https://unpkg.com/shapefile@0.6.6/dist/shapefile.js");
         }
     }
+
     load();
     window.isLocal = false;
     window.server = "http://localhost:8090";

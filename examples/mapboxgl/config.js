@@ -565,7 +565,52 @@ var exampleConfig = {
             }
         }
     },
-
+    "control": {
+        name: "控件",
+        name_en: "control",
+        content: {
+            "BasicControl": {
+                name: "MapboxGL 基本控件",
+                name_en: "Basic Control",
+                content: [{
+                    name: "导航控件",
+                    name_en: "Navigation Control",
+                    thumbnail: "control_navigationControl.png",
+                    fileName: "control_navigationControl"
+                }, {
+                    name: "比例尺控件",
+                    name_en: "Scale Control",
+                    thumbnail: "control_scaleControl.png",
+                    fileName: "control_scaleControl"
+                }, {
+                    name: "全屏控件",
+                    name_en: "Fullscreen Control",
+                    thumbnail: "control_fullscreenControl.png",
+                    fileName: "control_fullscreenControl"
+                }, {
+                    name: "定位控件",
+                    name_en: "Geolocate Control",
+                    thumbnail: "control_geolocateControl.png",
+                    fileName: "control_geolocateControl"
+                }, {
+                    name: "版权控件",
+                    name_en: "Attribution Control",
+                    thumbnail: "control_attributionControl.png",
+                    fileName: "control_attributionControl"
+                }, {
+                    name: "绘图控件",
+                    name_en: "Draw Control",
+                    thumbnail: "control_drawControl.png",
+                    fileName: "control_drawControl"
+                }, {
+                    name: "卷帘控件",
+                    name_en: "Swipe between maps",
+                    thumbnail: "control_swipeBetweenMaps.png",
+                    fileName: "control_swipeBetweenMaps"
+                }]
+            }
+        }
+    },
     "GTC": {
         name: "GTC",
         name_en: "GTC",
@@ -594,6 +639,7 @@ var exampleConfig = {
 var sideBarIconConfig = {
     "iServer": "fa-server",
     "viz": "fa-map",
+    "control": "fa-sliders",
     "GTC": "fa-globe",
 };
 
