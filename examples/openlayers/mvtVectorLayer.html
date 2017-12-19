@@ -27,6 +27,8 @@
         var vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
         vectorTileOptions.format = new ol.format.MVT({featureClass: ol.Feature});
         var vectorLayer = new ol.layer.VectorTile({
+            //设置避让参数
+            declutter: true,
             source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
             style: vectorTileStyles.getFeatureStyle
         });

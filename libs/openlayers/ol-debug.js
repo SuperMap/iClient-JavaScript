@@ -1,6 +1,6 @@
 // OpenLayers. See https://openlayers.org/
 // License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
-// Version: v4.6.3
+// Version: v4.6.4
 ;(function (root, factory) {
   if (typeof exports === "object") {
     module.exports = factory();
@@ -25609,6 +25609,7 @@ goog.require('ol');
 goog.require('ol.ImageCanvas');
 goog.require('ol.LayerType');
 goog.require('ol.ViewHint');
+goog.require('ol.array');
 goog.require('ol.extent');
 goog.require('ol.layer.VectorRenderType');
 goog.require('ol.obj');
@@ -25639,6 +25640,11 @@ ol.renderer.canvas.ImageLayer = function(imageLayer) {
    * @type {ol.Transform}
    */
   this.imageTransform_ = ol.transform.create();
+
+  /**
+   * @type {!Array.<string>}
+   */
+  this.skippedFeatures_ = [];
 
   /**
    * @private
@@ -25744,11 +25750,15 @@ ol.renderer.canvas.ImageLayer.prototype.prepareFrame = function(frameState, laye
           rotation: 0
         }))
       }));
-      if (vectorRenderer.prepareFrame(imageFrameState, layerState) && vectorRenderer.replayGroupChanged) {
+      var skippedFeatures = Object.keys(imageFrameState.skippedFeatureUids).sort();
+      if (vectorRenderer.prepareFrame(imageFrameState, layerState) &&
+          (vectorRenderer.replayGroupChanged ||
+          !ol.array.equals(skippedFeatures, this.skippedFeatures_))) {
         context.canvas.width = imageFrameState.size[0] * pixelRatio;
         context.canvas.height = imageFrameState.size[1] * pixelRatio;
         vectorRenderer.composeFrame(imageFrameState, layerState, context);
         this.image_ = new ol.ImageCanvas(renderedExtent, viewResolution, pixelRatio, context.canvas);
+        this.skippedFeatures_ = skippedFeatures;
       }
     } else {
       image = imageSource.getImage(
@@ -96439,7 +96449,7 @@ goog.exportProperty(
     ol.control.ZoomToExtent.prototype,
     'un',
     ol.control.ZoomToExtent.prototype.un);
-ol.VERSION = 'v4.6.3';
+ol.VERSION = 'v4.6.4';
 OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
