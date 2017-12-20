@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>版权控件</title>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+</head>
+<body>
+<div id="map" class="map"></div>
+<script>
+    var map,
+        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World";
+
+    map = new ol.Map({
+        controls: ol.control.defaults({attribution: false, zoom: false}),
+        target: 'map',
+        view: new ol.View({
+            center: [0, 0],
+            zoom: 2,
+            projection: 'EPSG:4326'
+        })
+    });
+
+    var layer = new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: url
+        }),
+        projection: 'EPSG:4326'
+    });
+    //添加版权控件
+    map.addControl(new ol.control.Attribution({collapsed: false}));
+    map.addLayer(layer);
+</script>
+</body>
+</html>

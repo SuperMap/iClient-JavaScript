@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>缩放控件</title>
+    <script type="text/javascript" src="../../dist/include-openlayers.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%"></div>
+<script type="text/javascript">
+    var map,
+        url = (window.isLocal ? window.server : "http://support.supermap.com.cn:8090") + "/iserver/services/map-world/rest/maps/World";
+
+    map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({attribution: false, zoom: false, rotate: false}),
+        view: new ol.View({
+            center: [0, 0],
+            zoom: 3,
+            projection: 'EPSG:4326'
+        })
+    });
+
+    var ele;
+    //禁用双击缩放
+    function disableDoubleClickZoom() {
+        map.getInteractions().forEach(function (element, index, array) {
+            if (element instanceof (ol.interaction.DoubleClickZoom)) {
+                ele = element;
+                ele.setActive(false);
+            }
+        });
+    }
+    //禁用拖动
+    function disableDragPan() {
+        map.getInteractions().forEach(function (element, index, array) {
+            if (element instanceof ol.interaction.DragPan) {
+                ele = element;
+                ele.setActive(false);
+            }
+        });
+    }
+    //禁用鼠标wheel操作
+    function disableMouseWheelZoom() {
+        map.getInteractions().forEach(function (element, index, array) {
+            if (element instanceof ol.interaction.MouseWheelZoom) {
+                ele = element;
+                ele.setActive(false);
+            }
+        });
+    }
+    disableDoubleClickZoom();
+    disableDragPan();
+    disableMouseWheelZoom();
+
+    var layer = new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: url
+        }),
+        projection: 'EPSG:4326'
+    });
+
+    //zoom控件
+    zoomControl = new ol.control.Zoom();
+    map.addControl(zoomControl);
+
+    //zoomBar控件
+    map.addControl(new ol.control.ZoomSlider({}));
+    map.addLayer(layer);
+
+</script>
+</body>
+</html>

@@ -760,6 +760,41 @@ var exampleConfig = {
                     thumbnail: "ol_changeTileVersion.png",
                     fileName: "changeTileVersion"
                 }]
+            },
+            "openlayersOfficialControl": {
+                name: "基础控件",
+                name_en: "base control",
+                content: [{
+                    name: "缩放控件",
+                    name_en: "zoom control",
+                    thumbnail: "ol_controler_zoom.png",
+                    fileName: "controler_zoom"
+                }, {
+                    name: "比例尺控件",
+                    name_en: "scaleline control",
+                    thumbnail: "ol_controler_scaleline.png",
+                    fileName: "controler_scaleline"
+                }, {
+                    name: "版权控件",
+                    name_en: "attribution control",
+                    thumbnail: "ol_controler_attribution.png",
+                    fileName: "controler_attribution"
+                }, {
+                    name: "图层切换",
+                    name_en: "layer switch control",
+                    thumbnail: "ol_controler_layerswitcher.png",
+                    fileName: "controler_layerswitcher"
+                }, {
+                    name: "卷帘",
+                    name_en: "roller blinds",
+                    thumbnail: "ol_controler_layerswitch.png",
+                    fileName: "controler_layerswitch"
+                }, {
+                    name: "鹰眼图",
+                    name_en: "overview map control",
+                    thumbnail: "ol_controler_overviewMap.png",
+                    fileName: "controler_overviewMap"
+                }]
             }
         }
     },

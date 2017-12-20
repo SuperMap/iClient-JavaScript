@@ -60,8 +60,10 @@
         if (inArray(includes, 'animatedclusterlayer')) {
             inputScript("http://iclient.supermap.io/libs/openlayers/plugins/animatedclusterlayer/animatedclusterlayer.js");
         }
-        if (inArray(includes, 'datgui')) {
-            inputScript("http://cdn.bootcss.com/dat-gui/0.6.5/dat.gui.js");
+
+        if (inArray(includes, 'layerswitcher')) {
+            inputCSS("http://iclient.supermap.io/libs/openlayers/plugins/ol3-layerswitcher/ol3-layerswitcher.css");
+            inputScript("http://iclient.supermap.io/libs/openlayers/plugins/ol3-layerswitcher/ol3-layerswitcher.js");
         }
     }
 
