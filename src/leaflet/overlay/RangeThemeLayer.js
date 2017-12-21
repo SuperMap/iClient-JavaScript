@@ -75,7 +75,8 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
         //判断属性值是否属于styleGroups的某一个范围，以便对获取分组 style
         if (isSfInAttributes && isValidStyleGroup) {
             for (var i = 0, len = groups.length; i < len; i++) {
-                if ((attribute >= groups[i].start) && (attribute <= groups[i].end)) {
+				var isContianed = i === len-1 ? ((attribute >= groups[i].start) && (attribute <= groups[i].end)) : ((attribute >= groups[i].start) && (attribute < groups[i].end));
+                if (isContianed) {
                     var sty1 = groups[i].style;
                     style = CommonUtil.copyAttributesWithClip(style, sty1);
                 }
