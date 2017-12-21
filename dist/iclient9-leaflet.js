@@ -2247,15 +2247,15 @@ __webpack_require__(445);
 
 __webpack_require__(444);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  *SuperMap Leaflet基类
  * 定义命名空间
  * 提供公共模块
  */
-_leaflet2["default"].supermap = _leaflet2["default"].supermap || {};
-_leaflet2["default"].supermap.control = _leaflet2["default"].supermap.control || {};
+_leaflet2.default.supermap = _leaflet2.default.supermap || {};
+_leaflet2.default.supermap.control = _leaflet2.default.supermap.control || {};
 
 /***/ }),
 /* 5 */
@@ -2436,7 +2436,7 @@ Object.keys(_util).forEach(function (key) {
 
 var REST = _interopRequireWildcard(_REST);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 exports.REST = REST;
 
@@ -2865,7 +2865,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.ServiceBase
@@ -2875,7 +2875,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param options - {Object} 可选参数。如：<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
-var ServiceBase = exports.ServiceBase = _leaflet2["default"].Evented.extend({
+var ServiceBase = exports.ServiceBase = _leaflet2.default.Evented.extend({
 
     options: {
         url: null,
@@ -2888,7 +2888,7 @@ var ServiceBase = exports.ServiceBase = _leaflet2["default"].Evented.extend({
             url = url.indexOf("/") !== url.length - 1 ? url : url.substr(0, url.length - 1);
         }
         this.url = url;
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         this.fire("initialized", this);
     },
 
@@ -3553,7 +3553,7 @@ var ServerGeometry = exports.ServerGeometry = function () {
         /*
          * Function: SuperMap.Geometry.IsClockWise
          * 判断linearRing中的点的顺序，顺时针？逆时针
-         * 返回值大于0 逆时针; 小于0 顺时针
+         * 返回值大于0, 逆时针; 小于0, 顺时针
          *
          * Parameters:
          * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。
@@ -4119,8 +4119,8 @@ var SUtil = exports.SUtil = function () {
          * Parameters:
          * points - {Array} 线段顶点数组。
          * isLoop - {Boolean} isLoop。
-         * constraint - {Array} 将计算出来的控制点约束在一个包围盒内，比如 [[0 0] [100 100]] 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
-         * originalPosition - {Array} 参考原点。默认值：[0 0]。
+         * constraint - {Array} 将计算出来的控制点约束在一个包围盒内，比如 [[0, 0], [100, 100]], 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
+         * originalPosition - {Array} 参考原点。默认值：[0, 0]。
          *
          * Returns:
          * {Array} 生成的平滑节点数组。
@@ -4550,7 +4550,7 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
          * Parameters:
          * ctx - {CanvasRenderingContext2D} Context2D 上下文。
          * isHighlight - {Boolean} 是否使用高亮属性。
-         * updateCallback - {Function} 需要异步加载资源的 shape 可以通过这个 callback(e)
+         * updateCallback - {Function} 需要异步加载资源的 shape 可以通过这个 callback(e),
          * 让painter更新视图，base.brush 没用，需要的话重载 brush。
          *
          */
@@ -4652,7 +4652,7 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
 
         /**
          * APIMethod: setContext
-         * 设置 fillStyle strokeStyle shadow 等通用绘制样式。
+         * 设置 fillStyle, strokeStyle, shadow 等通用绘制样式。
          *
          * Parameters:
          * ctx - {CanvasRenderingContext2D} Context2D 上下文。
@@ -5100,7 +5100,7 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
          *
          * Parameters:
          * _ctx - {Object} Cavans 上下文
-         * type - {String} one of 'stroke' 'fill' or 'reset'
+         * type - {String} one of 'stroke', 'fill', or 'reset'
          * style - {Object} Symbolizer hash
          */
 
@@ -6437,7 +6437,7 @@ var LineString = exports.LineString = function (_Curve) {
         /**
          * @function SuperMap.Geometry.LineString.prototype.getSortedSegments
          * @returns {Array} An array of segment objects.  Segment objects have properties
-         *     x1 y1 x2 and y2.  The start point is represented by x1 and y1.
+         *     x1, y1, x2, and y2.  The start point is represented by x1 and y1.
          *     The end point is represented by x2 and y2.  Start and end are
          *     ordered so that x1 < x2.
          */
@@ -6506,9 +6506,9 @@ var LineString = exports.LineString = function (_Curve) {
          * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的圆弧控制点。
          * @example
          * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050));
-         * points.push(new SuperMap.Geometry.Point(260));
+         * points.push(new SuperMap.Geometry.Point(-50,30));
+         * points.push(new SuperMap.Geometry.Point(-30,50));
+         * points.push(new SuperMap.Geometry.Point(2,60));
          *
          * var circle = SuperMap.Geometry.LineString.calculateCircle(points);
          */
@@ -6650,15 +6650,15 @@ var LineString = exports.LineString = function (_Curve) {
         /**
          * @function SuperMap.Geometry.LineString.createLineEPS
          * @description 根据点的类型画出不同类型的曲线
-         * 点的类型有三种 LTypeArc LTypeCurve NONE
+         * 点的类型有三种, LTypeArc, LTypeCurve, NONE
          * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
          * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的lineEPS控制点。
          * @example
          * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-5030));
-         * points.push(new SuperMap.Geometry.Point(-3050"LTypeArc"));
-         * points.push(new SuperMap.Geometry.Point(260));
-         * points.push(new SuperMap.Geometry.Point(820));
+         * points.push(new SuperMap.Geometry.Point(-50,30));
+         * points.push(new SuperMap.Geometry.Point(-30,50,"LTypeArc"));
+         * points.push(new SuperMap.Geometry.Point(2,60));
+         * points.push(new SuperMap.Geometry.Point(8,20));
          *
          * var lineEPS = SuperMap.Geometry.LineString.createLineEPS(points);
          */
@@ -6842,8 +6842,8 @@ var Point = exports.Point = function (_Geometry) {
          * @function SuperMap.Geometry.Point.prototype.equals
          * @description 判断两个点对象是否相等。如果两个点对象具有相同的坐标，则认为是相等的。
          * @example
-         * var point= new SuperMap.Geometry.Point(00);
-         * var point1={x:0y:0};
+         * var point= new SuperMap.Geometry.Point(0,0);
+         * var point1={x:0,y:0};
          * var result= point.equals(point1);
          * @param geom - {SuperMap.Geometry.Point} 需要判断的点对象。
          *
@@ -6877,7 +6877,7 @@ var Point = exports.Point = function (_Geometry) {
 
         /**
          * @function SuperMap.Geometry.Point.prototype.toShortString
-         * @returns {string} 字符串代表点对象。(ex. <i>"5 42"</i>)
+         * @returns {string} 字符串代表点对象。(ex. <i>"5, 42"</i>)
          */
 
     }, {
@@ -7014,7 +7014,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                 return response.json();
             }).then(function (result) {
                 me.events.triggerEvent("processCompleted", { result: result });
-            })["catch"](function (e) {
+            }).catch(function (e) {
                 me.eventListeners.processFailed({ error: e });
             });
         }
@@ -7048,7 +7048,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                 } else {
                     me.serviceProcessFailed(result);
                 }
-            })["catch"](function (e) {
+            }).catch(function (e) {
                 me.serviceProcessFailed({ error: e });
             });
         }
@@ -7072,7 +7072,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                             clearInterval(id);
                             me.events.triggerEvent("processCompleted", { result: job });
                         }
-                    })["catch"](function (e) {
+                    }).catch(function (e) {
                         clearInterval(id);
                         me.events.triggerEvent("processFailed", { error: e });
                     });
@@ -7242,7 +7242,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @member SuperMap.CORS
@@ -7267,7 +7267,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
             case 'PUT':
                 return this.put(url, params, options);
             case 'DELETE':
-                return this["delete"](url, params, options);
+                return this.delete(url, params, options);
             default:
                 return this.get(url, params, options);
         }
@@ -7290,7 +7290,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
         return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
     },
 
-    "delete": function _delete(url, params, options) {
+    delete: function _delete(url, params, options) {
         options = options || {};
         var type = 'DELETE';
         url = this._processUrl(url, options);
@@ -7369,7 +7369,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
         }
         if (options.timeout) {
-            return this._timeout(options.timeout, (0, _whatwgFetchImportable2["default"])(url, {
+            return this._timeout(options.timeout, (0, _whatwgFetchImportable2.default)(url, {
                 method: type,
                 headers: options.headers,
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
@@ -7380,7 +7380,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
                 return response;
             }));
         }
-        return (0, _whatwgFetchImportable2["default"])(url, {
+        return (0, _whatwgFetchImportable2.default)(url, {
             method: type,
             body: type === 'PUT' || type === 'POST' ? params : undefined,
             headers: options.headers,
@@ -7394,7 +7394,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
 
     _fetchJsonp: function _fetchJsonp(url, options) {
         options = options || {};
-        return (0, _fetchJsonp3["default"])(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
+        return (0, _fetchJsonp3.default)(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
             return response;
         });
     },
@@ -7538,11 +7538,11 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.equals
          * @description 判断两个 bounds 对象是否相等。
          * @example
-         * var bounds1 = new SuperMap.Bounds(-180-9018090);
-         * var bounds2 = new SuperMap.Bounds(-180-9018090);
+         * var bounds1 = new SuperMap.Bounds(-180,-90,180,90);
+         * var bounds2 = new SuperMap.Bounds(-180,-90,180,90);
          * var isEquals = bounds1.equals(bounds2);
          * @param bounds - {SuperMap.Bounds} 需要进行计较的 bounds。
-         * @returns {boolean} 如果 bounds 对象的边和传入的 bounds 一致则返回true不一致或传入的 bounds 参数为NULL则返回false。
+         * @returns {boolean} 如果 bounds 对象的边和传入的 bounds 一致则返回true,不一致或传入的 bounds 参数为NULL则返回false。
          */
 
     }, {
@@ -7559,9 +7559,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toString
          * @description 返回此对象的字符串形式
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9018090);
+         * var bounds = new SuperMap.Bounds(-180,-90,180,90);
          * var str = bounds.toString();
-         * @returns {string} 边界对象的字符串表示形式（leftbottomrighttop），例如: "-180-9018090"
+         * @returns {string} 边界对象的字符串表示形式（left,bottom,right,top），例如: "-180,-90,180,90"
          */
 
     }, {
@@ -7574,14 +7574,14 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toArray
          * @description 边界对象的数组表示形式 。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * //array1 = [-180,-90,100,80];
          * var array1 = bounds.toArray();
          * //array1 = [-90,-180,80,100];
          * var array2 = bounds.toArray(true);
          * @param reverseAxisOrder - {boolean} 是否反转轴顺序，
-         * 如果设为true，则倒转顺序（bottomlefttopright）否则按正常轴顺序（leftbottomrighttop）。
-         * @returns {Array} left bottom right top数组。
+         * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
+         * @returns {Array} left, bottom, right, top数组。
          */
 
     }, {
@@ -7598,17 +7598,17 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toBBOX
          * @description 取小数点后decimal位数字进行四舍五入再转换为BBOX字符串。
          * @example
-         * var bounds = new SuperMap.Bounds(-1.1234567-1.76543211.44444441.5555555);
+         * var bounds = new SuperMap.Bounds(-1.1234567,-1.7654321,1.4444444,1.5555555);
          * //str1 = "-1.123457,-1.765432,1.444444,1.555556";
          * var str1 = bounds.toBBOX();
          * //str2 = "-1.1,-1.8,1.4,1.6";
          * var str2 = bounds.toBBOX(1);
          * //str2 = "-1.8,-1.1,1.6,1.4";
-         * var str2 = bounds.toBBOX(1true);
+         * var str2 = bounds.toBBOX(1,true);
          * @param decimal - {integer} 边界方位坐标的有效数字个数，默认为6。
          * @param  reverseAxisOrder - {boolean} 是否是反转轴顺序。
-         * 如果设为true，则倒转顺序（bottomlefttopright）否则按正常轴顺序（leftbottomrighttop）。
-         * @returns {string} 边界对象的字符串表示形式，如："5421045"。
+         * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
+         * @returns {string} 边界对象的字符串表示形式，如："5,42,10,45"。
          */
 
     }, {
@@ -7633,7 +7633,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toGeometry
          * @description 基于当前边界范围创建一个新的多边形对象。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * //SuperMap.Geometry.Polygon对象
          * var geo = bounds.toGeometry();
          * @returns {SuperMap.Geometry.Polygon} 基于当前bounds坐标创建的新的多边形。
@@ -7653,7 +7653,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getWidth
          * @description 获取bounds的宽度。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * //width = 280;
          * var width = bounds.getWidth();
          * @returns {float} 获取当前bounds的宽度（right减去left）。
@@ -7669,7 +7669,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getHeight
          * @description 获取bounds的高度。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * //height = 170;
          * var height = bounds.getHeight();
          * @returns {float} 返回边界高度（top减去bottom）。
@@ -7685,7 +7685,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getSize
          * @description 获取边框大小。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * var size = bounds.getSize();
          * @returns {SuperMap.Size} 返回边框大小。
          */
@@ -7700,7 +7700,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getCenterPixel
          * @description 获取像素格式的范围中心点。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * var pixel = bounds.getCenterPixel();
          * @returns {SuperMap.Pixel} 返回像素格式的当前范围的中心点。
          */
@@ -7715,7 +7715,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getCenterLonLat
          * @description 获取地理格式的范围中心点。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * var lonlat = bounds.getCenterLonLat();
          * @returns {SuperMap.LonLat} 返回当前地理范围的中心点。
          */
@@ -7733,7 +7733,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.scale
          * @description 按照比例扩大/缩小出一个新的bounds。
          * @example
-         * var bounds = new SuperMap.Bounds(-50-504040);
+         * var bounds = new SuperMap.Bounds(-50,-50,40,40);
          * var bounds2 = bounds.scale(2);
          * @param ratio - {float} 需要扩大的比例，默认为1。
          * @param origin - {SuperMap.Pixel|SuperMap.LonLat} 扩大时的基准点，默认为当前bounds的中心点。
@@ -7771,9 +7771,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.add
          * @description 在当前的dounds上按照传入的坐标点进行平移，返回新的范围。
          * @example
-         * var bounds1 = new SuperMap.Bounds(-50-504040);
+         * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
          * //bounds2 是新的 bounds
-         * var bounds2 = bounds.add(2010);
+         * var bounds2 = bounds.add(20,10);
          * @param x - {float} 传入坐标点的x坐标。
          * @param y - {float} 传入坐标点的y坐标。
          * @returns {SuperMap.Bounds} 返回一个新的bounds，此bounds的坐标是由传入的x，y参数与当前bounds坐标计算所得。
@@ -7792,9 +7792,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.extend
          * @description 在当前bounds上扩展bounds，支持point，lanlat和bounds。扩展后的bounds的范围是两者的结合。
          * @example
-         * var bounds1 = new SuperMap.Bounds(-50-504040);
+         * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
          * //bounds改变
-         * bounds.extend(new SuperMap.LonLat(5060));
+         * bounds.extend(new SuperMap.LonLat(50,60));
          * @param object - {SuperMap.Geometry.Point|SuperMap.LonLat | SuperMap.Bounds} 可以是point，lanlat和bounds。
          */
 
@@ -7839,28 +7839,28 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.containsLonLat
          * @description 判断传入的坐标是否在范围内。
          * @example
-         * var bounds1 = new SuperMap.Bounds(-50-504040);
+         * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
          * //isContains1 = true
          * //这里的第二个参数可以直接为 boolean 类型，也就是inclusive
-         * var isContains1 = bounds.containsLonLat(new SuperMap.LonLat(4040)true);
+         * var isContains1 = bounds.containsLonLat(new SuperMap.LonLat(40,40),true);
          *
          * //(40,40)在范围内，同样(40+360,40)也在范围内
-         * var bounds2 = new SuperMap.Bounds(-50-504040);
+         * var bounds2 = new SuperMap.Bounds(-50,-50,40,40);
          * //isContains2 = true;
          * var isContains2 = bounds2.containsLonLat(
-         *      new SuperMap.LonLat(40040)
+         *      new SuperMap.LonLat(400,40),
          *      {
-         *           inclusive:true
+         *           inclusive:true,
          *           //全球的范围
-         *           worldBounds: new SuperMap.Bounds(-180-9018090)
+         *           worldBounds: new SuperMap.Bounds(-180,-90,180,90)
          *      }
          *      );
          * @param ll - {SuperMap.LonLat|Object}  <SuperMap.LonLat> 对象或者是一个
          *     包含 'lon' 与 'lat' 属性的对象。
          * @param options - {Object} 可选参数<br>
          *         inclusive - {boolean} 是否包含边界，默认为 true 。<br>
-         *         worldBounds - {@link SuperMap.Bounds} 如果提供 worldBounds 参数 如果 ll 参数提供的坐标超出了世界边界（worldBounds）
-         *         但是通过日界线的转化可以被包含 它将被认为是包含在该范围内的。
+         *         worldBounds - {@link SuperMap.Bounds} 如果提供 worldBounds 参数, 如果 ll 参数提供的坐标超出了世界边界（worldBounds）,
+         *         但是通过日界线的转化可以被包含, 它将被认为是包含在该范围内的。
          * @returns {boolean} 传入坐标是否包含在范围内.
          */
 
@@ -7891,9 +7891,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.containsPixel
          * @description 判断传入的像素是否在范围内。直接匹配大小，不涉及像素和地理转换。
          * @example
-         * var bounds = new SuperMap.Bounds(-50-504040);
+         * var bounds = new SuperMap.Bounds(-50,-50,40,40);
          * //isContains = true
-         * var isContains = bounds.containsPixel(new SuperMap.Pixel(4040)true);
+         * var isContains = bounds.containsPixel(new SuperMap.Pixel(40,40),true);
          * @param px - {SuperMap.Pixel} 提供的像素参数。
          * @param inclusive - {boolean} 是否包含边界，默认为true。
          * @returns {boolean} 传入的pixel在当前边界范围之内。
@@ -7909,13 +7909,13 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.contains
          * @description 判断传入的x，y坐标值是否在范围内。
          * @example
-         * var bounds = new SuperMap.Bounds(-50-504040);
+         * var bounds = new SuperMap.Bounds(-50,-50,40,40);
          * //isContains = true
-         * var isContains = bounds.contains(4040true);
+         * var isContains = bounds.contains(40,40,true);
          * @param x - {float} 传入的x坐标值。
          * @param y - {float} 传入的y坐标值。
          * @param inclusive - {boolean} 是否包含边界，默认为true。
-         * @returns {boolean} 传入的xy坐标在当前范围内。
+         * @returns {boolean} 传入的x,y坐标在当前范围内。
          */
 
     }, {
@@ -7947,17 +7947,17 @@ var Bounds = exports.Bounds = function () {
          * @description 判断目标边界范围是否与当前边界范围相交。如果两个边界范围中的任意
          *                边缘相交或者一个边界包含了另外一个就认为这两个边界相交。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * var isIntersects = bounds.intersectsBounds(
-         *      new SuperMap.Bounds(-170-9012080)
+         *      new SuperMap.Bounds(-170,-90,120,80)
          *  );
          * @param bounds - {SuperMap.Bounds} 目标边界。
          * @param options - {Object} 可选参数。<br>
          *         inclusive - {boolean} 边缘重合也看成相交，默认为true。如果是false，
          *                               两个边界范围没有重叠部分仅仅是在边缘相接（重合），
          *                               这种情况被认为没有相交。<br>
-         *         worldBounds - {@link SuperMap.Bounds} 提供了 worldBounds 参数 如果他们相交时
-         *                               是在全球范围内 两个边界将被视为相交。这仅适用于交叉
+         *         worldBounds - {@link SuperMap.Bounds} 提供了 worldBounds 参数, 如果他们相交时
+         *                               是在全球范围内, 两个边界将被视为相交。这仅适用于交叉
          *                               或完全不在世界范围的边界。
          * @returns {boolean} 传入的bounds对象与当前bounds相交。
          */
@@ -8013,9 +8013,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.containsBounds
          * @description 判断目标边界是否被当前边界包含在内。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * var isContains = bounds.containsBounds(
-         *      new SuperMap.Bounds(-170-9010080)truetrue
+         *      new SuperMap.Bounds(-170,-90,100,80),true,true
          *  );
          * @param bounds - {SuperMap.Bounds} 目标边界。
          * @param partial - {boolean} 目标边界的任意部分都包含在当前边界中则被认为是包含关系。默认为false，
@@ -8045,10 +8045,10 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.determineQuadrant
          * @description 判断传入坐标在bounds范围内的象限。以bounds中心点为坐标原点。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * //str = "tr";
          * var str = bounds.determineQuadrant(
-         *      new SuperMap.LonLat(2020)
+         *      new SuperMap.LonLat(20,20)
          *  );
          * @param lonlat - {SuperMap.LonLat} 传入的坐标对象。
          * @returns {string} 传入坐标所在的象限("br" "tr" "tl" "bl" 分别对应"右下"，"右上"，"左上" "左下")。
@@ -8071,8 +8071,8 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.wrapDateLine
          * @description 将当前bounds移动到最大边界范围内部（所谓的内部是相交或者内部）。
          * @example
-         * var bounds = new SuperMap.Bounds(380-40400-20);
-         * var maxExtent = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(380,-40,400,-20);
+         * var maxExtent = new SuperMap.Bounds(-180,-90,100,80);
          * //新的bounds
          * var newBounds = bounds.wrapDateLine(maxExtent);
          * @param maxExtent - {SuperMap.Bounds} 最大的边界范围（一般是全球范围）。
@@ -8121,7 +8121,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * var obj = bounds.toServerJSONObject();
          * @returns {Object} 返回json 格式的Object对象。
          */
@@ -8146,7 +8146,7 @@ var Bounds = exports.Bounds = function () {
          * @description 销毁此对象。
          * 销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var bounds = new SuperMap.Bounds(-180-9010080);
+         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
          * bounds.destroy();
          */
 
@@ -8164,10 +8164,10 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.fromString
          * @description 通过字符串参数创建新的bounds的构造函数。
          * @example
-         * var bounds = SuperMap.Bounds.fromString("-180-9010080");
-         * @param str - {string} 边界字符串，用逗号隔开 (e.g. <i>"5421045"</i>)
+         * var bounds = SuperMap.Bounds.fromString("-180,-90,100,80");
+         * @param str - {string} 边界字符串，用逗号隔开 (e.g. <i>"5,42,10,45"</i>)
          * @param reverseAxisOrder - {boolean} 是否反转轴顺序.
-         * 如果设为true，则倒转顺序（bottomlefttopright）否则按正常轴顺序（leftbottomrighttop）。
+         * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
          * @returns {SuperMap.Bounds} 返回给定的字符串创建的新的边界对象
          */
 
@@ -8182,9 +8182,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.fromArray
          * @description 通过边界框数组创建Bounds。
          * @example
-         * var bounds = SuperMap.Bounds.fromArray([-180-9010080]);
-         * @param bbox - {Array(float)} 边界值数组。 (e.g. <i>[5421045]</i>)
-         * @param reverseAxisOrder - {boolean} 是否是反转轴顺序。如果设为true，则倒转顺序（bottomlefttopright）否则按正常轴顺序（leftbottomrighttop）。
+         * var bounds = SuperMap.Bounds.fromArray([-180,-90,100,80]);
+         * @param bbox - {Array(float)} 边界值数组。 (e.g. <i>[5,42,10,45]</i>)
+         * @param reverseAxisOrder - {boolean} 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
          * @returns {SuperMap.Bounds} 返回根据传入的数组创建的新的边界对象。
          */
 
@@ -8198,7 +8198,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.fromSize
          * @description 通过传入的边界大小来创建新的边界。
          * @example
-         * var bounds = SuperMap.Bounds.fromSize(new SuperMap.Size(2010));
+         * var bounds = SuperMap.Bounds.fromSize(new SuperMap.Size(20,10));
          * @param size - {SuperMap.Size} 传入的边界大小。
          * @returns {SuperMap.Bounds} 返回根据传入的边界大小的创建新的边界。
          */
@@ -8211,7 +8211,7 @@ var Bounds = exports.Bounds = function () {
 
         /**
          * @function SuperMap.Bounds.oppositeQuadrant
-         * @description 反转象限。"t"和"b" 交换，"r"和"l"交换 如："tl"变为"br"。
+         * @description 反转象限。"t"和"b" 交换，"r"和"l"交换, 如："tl"变为"br"。
          * @param quadrant - {string} 代表象限的字符串，如："tl"。
          * @returns {string} 反转后的象限。
          */
@@ -8772,15 +8772,15 @@ var ShapeFactory = exports.ShapeFactory = function () {
          *
          * Parameters:
          * shapeFactory - {<SuperMap.Feature.ShapeFactory>} 图形工厂对象，必设参数。
-         * box - {Array{Number}} 框区域，长度为 4 的一维数组，像素坐标，[left bottom right top]，必设参数。
+         * box - {Array{Number}} 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
          * setting - {Object} 图表配置参数，必设参数。
          *
          * 本函数中图形配置对象 setting 可设属性：
          *
          * Symbolizer properties:
          * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。
-         * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 
-         * 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0 0 0 0]。
+         * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
+         * 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。
          *
          * Returns:
          * {Object} 背景框图形，一个可视化图形（矩形）对象。
@@ -8822,7 +8822,7 @@ var ShapeFactory = exports.ShapeFactory = function () {
          *
          * Parameters:
          * shapeFactory - {<SuperMap.Feature.ShapeFactory>} 图形工厂对象，必设参数。
-         * dataViewBox - {Array{Number}} 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left bottom right top]，必设参数。
+         * dataViewBox - {Array{Number}} 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
          * setting - {Object} 图表配置参数，必设参数。
          * xShapeInfo - {Object} X 方向上的图形信息对象，包含两个属性，
          * 属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
@@ -8840,12 +8840,12 @@ var ShapeFactory = exports.ShapeFactory = function () {
          * axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。
          * axisUseArrow - {Boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。
          * axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。
-         * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000" "750" "500" "250" "0"]。
+         * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
          * axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。
          * axisYLabelsOffset - {Array{Number}} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
          * 数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。
-         * axisXLabels - {Array{String}} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年" "95年" "99年"]。
-         * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xPositions 数量相同（即标签个数与数据个数相等时） 按照 xPositions 提供的位置在水平方向上排布标签，
+         * axisXLabels - {Array{String}} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
+         * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xPositions 数量相同（即标签个数与数据个数相等时）, 按照 xPositions 提供的位置在水平方向上排布标签，
          * 否则沿数据视图框下面条边等距排布标签。
          * axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。
          * axisXLabelsOffset - {Array{Number}} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
@@ -9192,29 +9192,29 @@ var ShapeFactory = exports.ShapeFactory = function () {
          * // dataStyleByCodomain 数组形如：
          * [
          *   {
-        *     start:0
-        *     end:250
+        *     start:0,
+        *     end:250,
         *     style:{
         *          fillColor:"#00CD00"
         *      }
-        *  }
+        *  },
          *   {
-        *     start:250
-        *     end:500
+        *     start:250,
+        *     end:500,
         *     style:{
         *          fillColor:"#00EE00"
         *      }
-        *  }
+        *  },
          *   {
-        *     start:500
-        *     end:750
+        *     start:500,
+        *     end:750,
         *     style:{
         *          fillColor:"#00FF7F"
         *      }
-        *  }
+        *  },
          *   {
-        *     start:750
-        *     end:1500
+        *     start:750,
+        *     end:1500,
         *     style:{
         *          fillColor:"#00FF00"
         *      }
@@ -9524,7 +9524,7 @@ var Geometry = exports.Geometry = function () {
         /**
          * @function SuperMap.Geometry.prototype.extendBounds
          * @description Extend the existing bounds to include the new bounds.
-         * If geometry's bounds is not yet set then set a new Bounds.
+         * If geometry's bounds is not yet set, then set a new Bounds.
          *
          * @param newBounds - {SuperMap.Bounds}
          */
@@ -9765,7 +9765,7 @@ var Collection = exports.Collection = function (_Geometry) {
          * @param components -{Array<SuperMap.Geometry>} 几何对象组件。
          * @example
          * var collection = new SuperMap.Geometry.Collection();
-         * collection.addComponents(new SuerpMap.Geometry.Point(1010));
+         * collection.addComponents(new SuerpMap.Geometry.Point(10,10));
          */
 
     }, {
@@ -10181,7 +10181,7 @@ var Graph = exports.Graph = function (_Theme) {
          *              YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
          *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox。<br>
          *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
-         *              decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+         *              decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
          * @return {Boolean} 初始化参数是否成功。
          */
 
@@ -10375,10 +10375,10 @@ var Graph = exports.Graph = function (_Theme) {
          *    // 默认数据视图框，这里展示在使用坐标轴和不使用坐标轴情况下对数据视图框参数赋予不同的默认值
          *    if(!sets.dataViewBoxParameter){
          *          if(typeof(sets.useAxis) === "undefined" || sets.useAxis){
-         *              sets.dataViewBoxParameter = [45 15 15 15];
+         *              sets.dataViewBoxParameter = [45, 15, 15, 15];
          *          }
          *          else{
-         *                  sets.dataViewBoxParameter = [5 5 5 5];
+         *                  sets.dataViewBoxParameter = [5, 5, 5, 5];
          *          }
          *    }
          *
@@ -10403,7 +10403,7 @@ var Graph = exports.Graph = function (_Theme) {
          *
          *    // 第四步：调用 shapesConvertToRelativeCoordinate() 方法，将图形库（his.shapes）中的图形转为由相对坐标表示的图形，客户端统计专题图模块从结构上要求可视化图形使用相对坐标，assembleShapes() 函数必须在图形装配完成后调用 shapesConvertToRelativeCoordinate() 函数。此步骤是必须过程。
          *    this.shapesConvertToRelativeCoordinate();
-         * }
+         * },
          */
 
     }, {
@@ -11584,7 +11584,7 @@ var SecurityManager = exports.SecurityManager = function () {
         }
 
         /**
-         * @description 注册keyids为数组(存在一个key对应多个服务)
+         * @description 注册key,ids为数组(存在一个key对应多个服务)
          * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
          * @param key -{string} key
          */
@@ -11680,7 +11680,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iServer登出
-         * @param url -{string} iServer首页地址如：http://localhost:8090/iserver
+         * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
          * @returns {Promise} 是否登出成功
          */
 
@@ -11698,7 +11698,7 @@ var SecurityManager = exports.SecurityManager = function () {
             };
             return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
                 return true;
-            })["catch"](function () {
+            }).catch(function () {
                 return false;
             });
         }
@@ -11766,7 +11766,7 @@ var SecurityManager = exports.SecurityManager = function () {
             };
             return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
                 return true;
-            })["catch"](function () {
+            }).catch(function () {
                 return false;
             });
         }
@@ -11928,7 +11928,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11951,10 +11951,10 @@ var CommontypesConversion = exports.CommontypesConversion = function () {
          * @return {SuperMap.Bounds} SuperMap的bounds对象
          */
         value: function toSuperMapBounds(bounds) {
-            if (bounds instanceof _leaflet2["default"].LatLngBounds) {
+            if (bounds instanceof _leaflet2.default.LatLngBounds) {
                 return new _iclientCommon.Bounds(bounds.getSouthWest().lng, bounds.getSouthWest().lat, bounds.getNorthEast().lng, bounds.getNorthEast().lat);
             }
-            if (bounds instanceof _leaflet2["default"].Bounds) {
+            if (bounds instanceof _leaflet2.default.Bounds) {
                 return new _iclientCommon.Bounds(bounds.min.x, bounds.min.y, bounds.max.x, bounds.max.y);
             }
             if (this.isArray(bounds)) {
@@ -12007,7 +12007,7 @@ var CommontypesConversion = exports.CommontypesConversion = function () {
     return CommontypesConversion;
 }();
 
-_leaflet2["default"].supermap.CommontypesConversion = CommontypesConversion;
+_leaflet2.default.supermap.CommontypesConversion = CommontypesConversion;
 
 /***/ }),
 /* 37 */
@@ -12078,9 +12078,9 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.prototype.toShortString
          * @description 将经度纬度转换成简单字符串。
          * @example
-         * var lonLat = new SuperMap.LonLat(10050);
+         * var lonLat = new SuperMap.LonLat(100,50);
          * var str = lonLat.toShortString();
-         * @returns {string} 返回处理后的经纬度字符串。例如："10050"
+         * @returns {string} 返回处理后的经纬度字符串。例如："100,50"
          */
 
     }, {
@@ -12093,7 +12093,7 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.prototype.clone
          * @description 复制坐标对象，并返回复制后的新对象。
          * @example
-         * var lonLat1 = new SuperMap.LonLat(10050);
+         * var lonLat1 = new SuperMap.LonLat(100,50);
          * var lonLat2 = lonLat1.clone();
          * @returns {SuperMap.LonLat}  返回相同坐标值的新的坐标对象。
          */
@@ -12108,9 +12108,9 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.prototype.add
          * @description 在已有坐标对象的经纬度基础上加上新的坐标经纬度，并返回新的坐标对象。
          * @example
-         * var lonLat1 = new SuperMap.LonLat(10050);
+         * var lonLat1 = new SuperMap.LonLat(100,50);
          * //lonLat2 是新的对象
-         * var lonLat2 = lonLat1.add(10050);
+         * var lonLat2 = lonLat1.add(100,50);
          *
          * @param lon - {float} 传入的精度参数。
          * @param lat - {float} 传入的纬度参数。
@@ -12131,12 +12131,12 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.prototype.equals
          * @description 判断两个坐标对象是否相等。
          * @example
-         * var lonLat1 = new SuperMap.LonLat(10050);
-         * var lonLat2 = new SuperMap.LonLat(10050);
+         * var lonLat1 = new SuperMap.LonLat(100,50);
+         * var lonLat2 = new SuperMap.LonLat(100,50);
          * var isEquals = lonLat1.equals(lonLat2);
          *
          * @param ll - {SuperMap.LonLat} 需要进行比较的坐标对象。
-         * @returns {boolean} 如果LonLat对象的经纬度和传入的经纬度一致则返回true不一
+         * @returns {boolean} 如果LonLat对象的经纬度和传入的经纬度一致则返回true,不一
          *      致或传入的ll参数为NULL则返回false。
          */
 
@@ -12158,9 +12158,9 @@ var LonLat = exports.LonLat = function () {
          * 换句话说就是将不在经度范围内的坐标转换到范围以内。
          *  （只会转换lon，不会转换lat，主要用于转移到日界线以内）
          * @example
-         * var lonLat1 = new SuperMap.LonLat(42050);
+         * var lonLat1 = new SuperMap.LonLat(420,50);
          * var lonLat2 = lonLat1.wrapDateLine(
-         *      new SuperMap.Bounds(-180-9018090)
+         *      new SuperMap.Bounds(-180,-90,180,90)
          *  );
          *
          * @param maxExtent - {SuperMap.Bounds} 最大边界的范围。
@@ -12194,7 +12194,7 @@ var LonLat = exports.LonLat = function () {
          * @description 销毁此对象。
          * 销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var lonLat = new SuperMap.LonLat(10050);
+         * var lonLat = new SuperMap.LonLat(100,50);
          * lonLat.destroy();
          */
 
@@ -12209,10 +12209,10 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.fromString
          * @description 通过字符串生成一个<SuperMap.LonLat>对象
          * @example
-         * var str = "10050";
+         * var str = "100,50";
          * var lonLat = SuperMap.LonLat.fromString(str);
          *
-         * @param str - {string} 字符串的格式：Lon+""+Lat。如："10050"
+         * @param str - {string} 字符串的格式：Lon+","+Lat。如："100,50"
          * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
          */
 
@@ -12226,7 +12226,7 @@ var LonLat = exports.LonLat = function () {
         /**
          * @function SuperMap.LonLat.fromArray
          * @description 通过数组生成一个<SuperMap.LonLat>对象
-         * @param arr - {Array<float>} 数组的格式，长度只能为2：[LonLat]。如： [5-42]
+         * @param arr - {Array<float>} 数组的格式，长度只能为2,：[Lon,Lat]。如： [5,-42]
          * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
          */
 
@@ -12312,7 +12312,7 @@ var MultiPoint = exports.MultiPoint = function (_Collection) {
 
         /**
          * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
-         * @description 移除点封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
+         * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
          * @param point - {SuperMap.Geometry.Point} 移除的点对象。
          */
 
@@ -12938,10 +12938,10 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var supermap_callbacks = exports.supermap_callbacks = {};
-_leaflet2["default"].Util.supermap_callbacks = supermap_callbacks;
+_leaflet2.default.Util.supermap_callbacks = supermap_callbacks;
 var toGeoJSON = exports.toGeoJSON = function toGeoJSON(feature) {
     if (!feature) {
         return feature;
@@ -12962,7 +12962,7 @@ var toSuperMapGeometry = exports.toSuperMapGeometry = function toSuperMapGeometr
     }
 
     var serverResult = result;
-    if (_leaflet2["default"].Util.isArray(result)) {
+    if (_leaflet2.default.Util.isArray(result)) {
         if (result.length === 1) {
             serverResult = result[0];
         } else if (result.length > 1) {
@@ -13020,7 +13020,7 @@ var GetResolutionFromScaleDpi = exports.GetResolutionFromScaleDpi = function Get
     datumAxis = datumAxis || 6378137;
     coordUnit = coordUnit || "";
     if (scale > 0 && dpi > 0) {
-        scale = _leaflet2["default"].Util.NormalizeScale(scale);
+        scale = _leaflet2.default.Util.NormalizeScale(scale);
         if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
             //scale = SuperMap.Util.normalizeScale(scale);
             resolution = 0.0254 * ratio / dpi / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
@@ -13036,13 +13036,13 @@ var NormalizeScale = exports.NormalizeScale = function NormalizeScale(scale) {
     return scale > 1.0 ? 1.0 / scale : scale;
 };
 
-_leaflet2["default"].Util.toGeoJSON = toGeoJSON;
-_leaflet2["default"].Util.toSuperMapGeometry = toSuperMapGeometry;
-_leaflet2["default"].Util.resolutionToScale = resolutionToScale;
-_leaflet2["default"].Util.scaleToResolution = scaleToResolution;
-_leaflet2["default"].Util.getMeterPerMapUnit = getMeterPerMapUnit;
-_leaflet2["default"].Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
-_leaflet2["default"].Util.NormalizeScale = NormalizeScale;
+_leaflet2.default.Util.toGeoJSON = toGeoJSON;
+_leaflet2.default.Util.toSuperMapGeometry = toSuperMapGeometry;
+_leaflet2.default.Util.resolutionToScale = resolutionToScale;
+_leaflet2.default.Util.scaleToResolution = scaleToResolution;
+_leaflet2.default.Util.getMeterPerMapUnit = getMeterPerMapUnit;
+_leaflet2.default.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
+_leaflet2.default.Util.NormalizeScale = NormalizeScale;
 
 /***/ }),
 /* 44 */
@@ -14427,7 +14427,7 @@ var Eventful = exports.Eventful = function () {
 
         /**
          * APIMethod: dispatchWithContext
-         * 带有context的事件分发 最后一个参数是事件回调的 context。
+         * 带有context的事件分发, 最后一个参数是事件回调的 context。
          *
          * Parameters:
          * type - {String} 事件类型。
@@ -14823,18 +14823,18 @@ var Events = exports.Events = function () {
          * events.on({"loadstart": loadStartListener});
          *
          * // 同样注册一个"loadstart"监听事件
-         * events.register("loadstart" undefined loadStartListener);
+         * events.register("loadstart", undefined, loadStartListener);
          *
          * // 同时为对象注册多个监听事件
          * events.on({
-         *     "loadstart": loadStartListener
-         *     "loadend": loadEndListener
+         *     "loadstart": loadStartListener,
+         *     "loadend": loadEndListener,
          *     scope: object
          * });
          *
          * // 同时为对象注册多个监听事件，多次调用register方法
-         * events.register("loadstart" object loadStartListener);
-         * events.register("loadend" object loadEndListener);
+         * events.register("loadstart", object, loadStartListener);
+         * events.register("loadend", object, loadEndListener);
          *
          *
          * @param  object - {Object} 添加监听的对象。
@@ -14853,7 +14853,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.register
          * @description 在事件对象上注册一个事件。当事件被触发时，'func'函数被调用，假设我们触发一个事件，
-         *                指定SuperMap.Bounds作为‘obj’当事件被触发时，回调函数的上下文作为Bounds对象。
+         *                指定SuperMap.Bounds作为‘obj’,当事件被触发时，回调函数的上下文作为Bounds对象。
          * @param type - {string} 事件注册者的名字。
          * @param obj - {Object} 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性。
          * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
@@ -14911,18 +14911,18 @@ var Events = exports.Events = function () {
          * events.un({"loadstart": loadStartListener});
          *
          * // 使用unregister方法移除"loadstart" 事件监听
-         * events.unregister("loadstart" undefined loadStartListener);
+         * events.unregister("loadstart", undefined, loadStartListener);
          *
          * // 取消对象多个事件监听
          * events.un({
-         *     "loadstart": loadStartListener
-         *     "loadend": loadEndListener
+         *     "loadstart": loadStartListener,
+         *     "loadend": loadEndListener,
          *     scope: object
          * });
          *
          * // 取消对象多个事件监听，多次调用unregister方法。
-         * events.unregister("loadstart" object loadStartListener);
-         * events.unregister("loadend" object loadEndListener);
+         * events.unregister("loadstart", object, loadStartListener);
+         * events.unregister("loadend", object, loadEndListener);
          *
          * @param object - {Object} 移除监听的对象。
          */
@@ -15223,7 +15223,7 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.clone
          * @description 克隆当前的 pixel 对象。
          * @example
-         * var pixcel = new SuperMap.Pixel(10050);
+         * var pixcel = new SuperMap.Pixel(100,50);
          * var pixcel2 = pixcel.clone();
          * @returns {SuperMap.Pixel} 返回一个新的与当前 pixel 对象有相同x、y坐标的 pixel 对象。
          */
@@ -15238,12 +15238,12 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.equals
          * @description 比较两 pixel 是否相等
          * @example
-         * var pixcel = new SuperMap.Pixel(10050);
-         * var pixcel2 = new SuperMap.Pixel(10050);
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = new SuperMap.Pixel(100,50);
          * var isEquals = pixcel.equals(pixcel2);
          *
          * @param px - {SuperMap.Pixel} 用于比较相等的 pixel 对象。
-         * @returns {Boolean} 如果传入的像素点和当前像素点相同返回true如果不同或传入参数为NULL则返回false
+         * @returns {Boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
          */
 
     }, {
@@ -15260,8 +15260,8 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.distanceTo
          * @description 返回两个 pixel 的距离。
          * @example
-         * var pixcel = new SuperMap.Pixel(10050);
-         * var pixcel2 = new SuperMap.Pixel(11030);
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = new SuperMap.Pixel(110,30);
          * var distance = pixcel.distanceTo(pixcel2);
          *
          * @param px - {SuperMap.Pixel} 用于计算的一个 pixel
@@ -15278,14 +15278,14 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.add
          * @description 在原来像素坐标基础上，x值加上传入的x参数，y值加上传入的y参数。
          * @example
-         * var pixcel = new SuperMap.Pixel(10050);
+         * var pixcel = new SuperMap.Pixel(100,50);
          * //pixcel2是新的对象
-         * var pixcel2 = pixcel.add(2030);
+         * var pixcel2 = pixcel.add(20,30);
          *
          * @param x - {number} 传入的x值。
          * @param y - {number} 传入的y值。
          * @returns {SuperMap.Pixel} 返回一个新的pixel对象，该pixel是由当前的pixel与传
-         *      入的xy相加得到。
+         *      入的x,y相加得到。
          */
 
     }, {
@@ -15301,8 +15301,8 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.offset
          * @description 通过传入的 {@link SuperMap.Pixel} 参数对原屏幕坐标进行偏移。
          * @example
-         * var pixcel = new SuperMap.Pixel(10050);
-         * var pixcel2 = new SuperMap.Pixel(13020);
+         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel2 = new SuperMap.Pixel(130,20);
          * //pixcel3 是新的对象
          * var pixcel3 = pixcel.offset(pixcel2);
          *
@@ -15327,7 +15327,7 @@ var Pixel = exports.Pixel = function () {
          * @description 销毁此对象。
          * 销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var pixcel = new SuperMap.Pixel(10050);
+         * var pixcel = new SuperMap.Pixel(100,50);
          * pixcel.destroy();
          */
 
@@ -18863,7 +18863,7 @@ var Transformable = exports.Transformable = function () {
         /**
          * APIMethod: updateTransform
          * 判断是否需要有坐标变换，更新 needTransform 属性。
-         * 如果有坐标变换 则从 position rotation scale 以及父节点的 transform 计算出自身的 transform 矩阵
+         * 如果有坐标变换, 则从 position, rotation, scale 以及父节点的 transform 计算出自身的 transform 矩阵
          *
          */
 
@@ -18966,7 +18966,7 @@ var Transformable = exports.Transformable = function () {
 
         /**
          * APIMethod: decomposeTransform
-         * 分解`transform`矩阵到`position` `rotation` `scale` 。
+         * 分解`transform`矩阵到`position`, `rotation`, `scale` 。
          *
          */
 
@@ -19546,7 +19546,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.Symbolizer
@@ -19555,7 +19555,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param feature — {L.feature} 要素
  */
-var Symbolizer = exports.Symbolizer = _leaflet2["default"].Class.extend({
+var Symbolizer = exports.Symbolizer = _leaflet2.default.Class.extend({
 
     initialize: function initialize(feature) {
         this.properties = feature.properties;
@@ -19576,7 +19576,7 @@ var Symbolizer = exports.Symbolizer = _leaflet2["default"].Class.extend({
         renderer._updateStyle(this);
         var elem = this.getElement();
         if (elem && this.layerName) {
-            _leaflet2["default"].DomUtil.addClass(elem, this.layerName);
+            _leaflet2.default.DomUtil.addClass(elem, this.layerName);
         }
     },
 
@@ -19601,7 +19601,7 @@ var Symbolizer = exports.Symbolizer = _leaflet2["default"].Class.extend({
 
     _getPixelBounds: function _getPixelBounds() {
         var parts = this._parts;
-        var bounds = _leaflet2["default"].bounds([]);
+        var bounds = _leaflet2.default.bounds([]);
         for (var i = 0; i < parts.length; i++) {
             var part = parts[i];
             for (var j = 0; j < part.length; j++) {
@@ -19610,14 +19610,14 @@ var Symbolizer = exports.Symbolizer = _leaflet2["default"].Class.extend({
         }
 
         var w = this._clickTolerance(),
-            p = new _leaflet2["default"].Point(w, w);
+            p = new _leaflet2.default.Point(w, w);
 
         bounds.min._subtract(p);
         bounds.max._add(p);
 
         return bounds;
     },
-    _clickTolerance: _leaflet2["default"].Path.prototype._clickTolerance
+    _clickTolerance: _leaflet2.default.Path.prototype._clickTolerance
 });
 
 /***/ }),
@@ -19729,7 +19729,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.wmtsLayer
@@ -19750,7 +19750,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。
  */
-var WMTSLayer = exports.WMTSLayer = _leaflet2["default"].TileLayer.extend({
+var WMTSLayer = exports.WMTSLayer = _leaflet2.default.TileLayer.extend({
 
     options: {
         version: '1.0.0',
@@ -19767,7 +19767,7 @@ var WMTSLayer = exports.WMTSLayer = _leaflet2["default"].TileLayer.extend({
     initialize: function initialize(url, options) {
         // (String, Object)
         this._url = url;
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
     },
 
     /**
@@ -19780,7 +19780,7 @@ var WMTSLayer = exports.WMTSLayer = _leaflet2["default"].TileLayer.extend({
         // (Point, Number) -> String
         var zoom = this._getZoomForUrl();
         var ident = this.options.matrixIds ? this.options.matrixIds[zoom].identifier : zoom;
-        var url = _leaflet2["default"].Util.template(this._url, { s: this._getSubdomain(coords) });
+        var url = _leaflet2.default.Util.template(this._url, { s: this._getSubdomain(coords) });
         var obj = {
             service: 'WMTS',
             request: 'GetTile',
@@ -19795,7 +19795,7 @@ var WMTSLayer = exports.WMTSLayer = _leaflet2["default"].TileLayer.extend({
             tilerow: coords.y,
             tilecol: coords.x
         };
-        return url + _leaflet2["default"].Util.getParamString(obj, url);
+        return url + _leaflet2.default.Util.getParamString(obj, url);
     }
 });
 
@@ -19803,7 +19803,7 @@ var wmtsLayer = exports.wmtsLayer = function wmtsLayer(url, options) {
     return new WMTSLayer(url, options);
 };
 
-_leaflet2["default"].supermap.wmtsLayer = wmtsLayer;
+_leaflet2.default.supermap.wmtsLayer = wmtsLayer;
 
 /***/ }),
 /* 89 */
@@ -19874,7 +19874,7 @@ var Credential = exports.Credential = function () {
          * @function SuperMap.Bounds.prototype.getValue
          * @description 获取value
          * @example
-         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..""token");
+         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
          * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
          * var str = credential.getValue();
          * @returns {string} 返回value字符串，在iServer服务下该value值即为token值。
@@ -19891,7 +19891,7 @@ var Credential = exports.Credential = function () {
          * @function SuperMap.Credential.prototype.destroy
          * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var credential = new SuperMap.Credential("valueString""token");
+         * var credential = new SuperMap.Credential("valueString","token");
          * credential.destroy();
          */
 
@@ -23095,7 +23095,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} rgba颜色，rgba(rgba)。
+         * {String} rgba颜色，rgba(r,g,b,a)。
          */
 
     }, {
@@ -23112,7 +23112,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} rgb颜色，rgb(000)格式
+         * {String} rgb颜色，rgb(0,0,0)格式
          */
 
     }, {
@@ -23146,7 +23146,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSVA颜色，hsva(hsva)
+         * {String} HSVA颜色，hsva(h,s,v,a)
          */
 
     }, {
@@ -23163,7 +23163,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSV颜色，hsv(hsv)
+         * {String} HSV颜色，hsv(h,s,v)
          */
 
     }, {
@@ -23180,7 +23180,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSBA颜色，hsba(hsba)
+         * {String} HSBA颜色，hsba(h,s,b,a)
          */
 
     }, {
@@ -23197,7 +23197,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSB颜色，hsb(hsb)
+         * {String} HSB颜色，hsb(h,s,b)
          */
 
     }, {
@@ -23214,7 +23214,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSLA颜色，hsla(hsla)
+         * {String} HSLA颜色，hsla(h,s,l,a)
          */
 
     }, {
@@ -23231,7 +23231,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSL颜色，hsl(hsl)
+         * {String} HSL颜色，hsl(h,s,l)
          */
 
     }, {
@@ -23321,7 +23321,7 @@ var Color = exports.Color = function () {
          *
          * Parameters:
          * color - {String} 颜色。
-         * level - {Number} 升降程度取值区间[-11]。
+         * level - {Number} 升降程度,取值区间[-1,1]。
          *
          * Returns:
          * {String} 加深或减淡后颜色值
@@ -23352,7 +23352,7 @@ var Color = exports.Color = function () {
 
         /**
          * APIMethod: reverse
-         * 颜色翻转[255-r255-g255-b1-a]
+         * 颜色翻转,[255-r,255-g,255-b,1-a]
          *
          * Parameters:
          * color - {String} 颜色。
@@ -23384,7 +23384,7 @@ var Color = exports.Color = function () {
          * weight - {Number} 混合权重[0-1]。
          *
          * Returns:
-         * {String} 结果色rgb(rgb)或rgba(rgba)
+         * {String} 结果色,rgb(r,g,b)或rgba(r,g,b,a)
          */
 
     }, {
@@ -23441,7 +23441,7 @@ var Color = exports.Color = function () {
 
         /**
          * APIMethod: getData
-         * 获取颜色值数组返回值范围:
+         * 获取颜色值数组,返回值范围:
          *
          * RGB 范围[0-255]
          *
@@ -23455,23 +23455,23 @@ var Color = exports.Color = function () {
          *
          * #rrggbb
          *
-         * rgb(rgb)
+         * rgb(r,g,b)
          *
-         * rgb(r%g%b%)
+         * rgb(r%,g%,b%)
          *
-         * rgba(rgba)
+         * rgba(r,g,b,a)
          *
-         * hsb(hsb) // hsv与hsb等价
+         * hsb(h,s,b) // hsv与hsb等价
          *
-         * hsb(h%s%b%)
+         * hsb(h%,s%,b%)
          *
-         * hsba(hsba)
+         * hsba(h,s,b,a)
          *
-         * hsl(hsl)
+         * hsl(h,s,l)
          *
-         * hsl(h%s%l%)
+         * hsl(h%,s%,l%)
          *
-         * hsla(hsla)
+         * hsla(h,s,l,a)
          *
          * Parameters:
          * color - {String} 颜色。
@@ -23537,7 +23537,7 @@ var Color = exports.Color = function () {
          *
          * Parameters:
          * color - {String} 颜色。
-         * a - {Number} 透明度区间[01]。
+         * a - {Number} 透明度,区间[0,1]。
          *
          * Returns:
          * {String} rgba颜色值
@@ -25525,7 +25525,7 @@ var _CommontypesConversion = __webpack_require__(36);
 
 var _ThemeFeature = __webpack_require__(112);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @function L.supermap.GeoFeatureThemeLayer
@@ -25567,7 +25567,7 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
 
     initialize: function initialize(name, options) {
         _ThemeLayer.ThemeLayer.prototype.initialize.call(this, name, options);
-        _leaflet2["default"].Util.setOptions(this, options);
+        _leaflet2.default.Util.setOptions(this, options);
         var me = this;
         me.cache = {};
         me.cacheFields = [];
@@ -25582,7 +25582,7 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
      */
     addFeatures: function addFeatures(features) {
         //数组
-        if (!_leaflet2["default"].Util.isArray(features)) {
+        if (!_leaflet2.default.Util.isArray(features)) {
             features = [features];
         }
         var me = this;
@@ -25644,9 +25644,9 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
         if (hoverone && hoverone.refDataID) {
             hoverFid = hoverone.refDataID;
         }
-        if (bounds && bounds instanceof _leaflet2["default"].LatLngBounds) {
+        if (bounds && bounds instanceof _leaflet2.default.LatLngBounds) {
             var crs = this._map.options.crs;
-            bounds = _leaflet2["default"].bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
+            bounds = _leaflet2.default.bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
         }
         bounds = _CommontypesConversion.CommontypesConversion.toSuperMapBounds(bounds);
         //清除当前所有可视元素
@@ -25846,7 +25846,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.themeFeature
@@ -25856,7 +25856,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param geometry - {L.Path|L.Point|L.LatLng} 要素图形
  * @param attributes - {Object} 要素属性
  */
-var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
+var ThemeFeature = exports.ThemeFeature = _leaflet2.default.Class.extend({
 
     initialize: function initialize(geometry, attributes) {
         this.geometry = geometry;
@@ -25871,18 +25871,18 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
     toFeature: function toFeature() {
         var geometry = this.geometry;
         var points = [];
-        if (geometry instanceof _leaflet2["default"].Polyline) {
+        if (geometry instanceof _leaflet2.default.Polyline) {
             points = this.reverseLatLngs(geometry.getLatLngs());
             geometry = new _iclientCommon.LineString(points);
-        } else if (geometry instanceof _leaflet2["default"].Polygon) {
+        } else if (geometry instanceof _leaflet2.default.Polygon) {
             points = this.reverseLatLngs(geometry.getLatLngs());
             geometry = new _iclientCommon.Polygon(points);
         } else if (geometry.length === 3) {
             geometry = new _iclientCommon.GeoText(geometry[1], geometry[0], geometry[2]);
         } else {
-            if (geometry instanceof _leaflet2["default"].LatLng) {
+            if (geometry instanceof _leaflet2.default.LatLng) {
                 points = [geometry.lng, geometry.lat];
-            } else if (geometry instanceof _leaflet2["default"].Point) {
+            } else if (geometry instanceof _leaflet2.default.Point) {
                 points = [geometry.x, geometry.y];
             } else {
                 points = geometry;
@@ -25900,7 +25900,7 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
      * @param latlngs - {L.latlng} 坐标值
      */
     reverseLatLngs: function reverseLatLngs(latlngs) {
-        if (!_leaflet2["default"].Util.isArray(latlngs)) {
+        if (!_leaflet2.default.Util.isArray(latlngs)) {
             latlngs = [latlngs];
         }
         for (var i = 0; i < latlngs.length; i++) {
@@ -25913,7 +25913,7 @@ var themeFeature = exports.themeFeature = function themeFeature(geometry, attrib
     return new ThemeFeature(geometry, attributes);
 };
 
-_leaflet2["default"].supermap.themeFeature = themeFeature;
+_leaflet2.default.supermap.themeFeature = themeFeature;
 
 /***/ }),
 /* 113 */
@@ -25958,10 +25958,10 @@ module.exports = isObjectLike;
 /* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parseCode = __webpack_require__(518);
+var parseCode = __webpack_require__(519);
 var extend = __webpack_require__(118);
-var projections = __webpack_require__(519);
-var deriveConstants = __webpack_require__(515);
+var projections = __webpack_require__(520);
+var deriveConstants = __webpack_require__(516);
 
 function Projection(srsCode,callback) {
   if (!(this instanceof Projection)) {
@@ -26653,7 +26653,7 @@ var Online = exports.Online = function () {
 
         /**
          * @function SuperMap.Online.prototype.queryDatas
-         * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取)并返回可操作的服务对象
+         * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
          * @param parameter -{SuperMap.OnlineQueryDatasParameter} myDatas服务资源查询参数
          * @returns {Promise} 返回包含所有数据服务信息的Promise对象
          */
@@ -26712,7 +26712,7 @@ var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
 var _Util = __webpack_require__(1);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26741,7 +26741,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
          *  @member SuperMap.ElasticSearch.prototype.client -{Object}
          *  @description client ES客户端
          */
-        this.client = new _elasticsearch2["default"].Client({
+        this.client = new _elasticsearch2.default.Client({
             host: this.url
         });
         /**
@@ -26881,7 +26881,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
     }, {
         key: 'delete',
         value: function _delete(params, callback) {
-            return this.client["delete"](params, callback);
+            return this.client.delete(params, callback);
         }
 
         /**
@@ -27456,7 +27456,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.baiduTileLayer
@@ -27470,7 +27470,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        retina - {[L.Browser]{@linkdoc-leaflet/#browser}} 浏览器显示分辨率 <br>
  *        attribution - {string} 版权信息 <br>
  */
-var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2["default"].TileLayer.extend({
+var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2.default.TileLayer.extend({
 
     /**
      * @member L.supermap.baiduTileLayer.prototype.url -{string}
@@ -27481,8 +27481,8 @@ var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2["default"].TileLayer.ext
     options: {
         minZoom: 3,
         maxZoom: 19,
-        bounds: _leaflet2["default"].latLngBounds(_leaflet2["default"].latLng(-85.0511287798, -180), _leaflet2["default"].latLng(85.0511287798, 180)),
-        retina: _leaflet2["default"].Browser.retina,
+        bounds: _leaflet2.default.latLngBounds(_leaflet2.default.latLng(-85.0511287798, -180), _leaflet2.default.latLng(85.0511287798, 180)),
+        retina: _leaflet2.default.Browser.retina,
         attribution: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
@@ -27490,11 +27490,11 @@ var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2["default"].TileLayer.ext
         if (url) {
             this.url = url;
         }
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         if (this.options.retina) {
             this.options.maxZoom = 18;
         }
-        _leaflet2["default"].stamp(this);
+        _leaflet2.default.stamp(this);
     },
 
     /**
@@ -27504,7 +27504,7 @@ var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2["default"].TileLayer.ext
      * @return {string} 切片地址
      */
     getTileUrl: function getTileUrl(coords) {
-        return _leaflet2["default"].Util.template(this.url, {
+        return _leaflet2.default.Util.template(this.url, {
             num: Math.abs((coords.x + coords.y) % 8) + 1,
             x: coords.x,
             y: -coords.y - 1,
@@ -27517,7 +27517,7 @@ var baiduTileLayer = exports.baiduTileLayer = function baiduTileLayer(url, optio
     return new BaiduTileLayer(url, options);
 };
 
-_leaflet2["default"].supermap.baiduTileLayer = baiduTileLayer;
+_leaflet2.default.supermap.baiduTileLayer = baiduTileLayer;
 
 /***/ }),
 /* 125 */
@@ -27537,7 +27537,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.cloudTileLayer
@@ -27561,7 +27561,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        maxZoom - {number} 最大缩放级别。<br>
  *        mapName - {string} 地图名称。
  */
-var CloudTileLayer = exports.CloudTileLayer = _leaflet2["default"].TileLayer.extend({
+var CloudTileLayer = exports.CloudTileLayer = _leaflet2.default.TileLayer.extend({
 
     defaultURL: 'http://t2.supermapcloud.com/FileService/image',
 
@@ -27583,17 +27583,17 @@ var CloudTileLayer = exports.CloudTileLayer = _leaflet2["default"].TileLayer.ext
     },
 
     initialize: function initialize(url, options) {
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         var cloudURL = url || this.defaultURL;
         this._url = cloudURL + "?map=" + this.options.mapName + "&type=" + this.options.type + "&x={x}&y={y}&z={z}";
-        _leaflet2["default"].stamp(this);
+        _leaflet2.default.stamp(this);
     }
 });
 var cloudTileLayer = exports.cloudTileLayer = function cloudTileLayer(url, options) {
     return new CloudTileLayer(url, options);
 };
 
-_leaflet2["default"].supermap.cloudTileLayer = cloudTileLayer;
+_leaflet2.default.supermap.cloudTileLayer = cloudTileLayer;
 
 /***/ }),
 /* 126 */
@@ -27615,7 +27615,7 @@ __webpack_require__(4);
 
 var _TileLayer = __webpack_require__(88);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.tiandituTileLayer
@@ -27656,11 +27656,11 @@ var TiandituTileLayer = exports.TiandituTileLayer = _TileLayer.WMTSLayer.extend(
 
     initialize: function initialize(options) {
         options = options || {};
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         this.options.layer = this.options.isLabel ? this.layerLabelMap[this.options.layerType] : this.options.layerType;
         this.options.maxZoom = this.layerZoomMap[this.options.layerType];
         _TileLayer.WMTSLayer.prototype.initialize.call(this, this.options.url, this.options);
-        _leaflet2["default"].stamp(this);
+        _leaflet2.default.stamp(this);
     },
     onAdd: function onAdd(map) {
         this.options.tilematrixSet = map.options.crs.code === "EPSG:4326" ? "c" : "w";
@@ -27672,7 +27672,7 @@ var tiandituTileLayer = exports.tiandituTileLayer = function tiandituTileLayer(o
     return new TiandituTileLayer(options);
 };
 
-_leaflet2["default"].supermap.tiandituTileLayer = tiandituTileLayer;
+_leaflet2.default.supermap.tiandituTileLayer = tiandituTileLayer;
 
 /***/ }),
 /* 127 */
@@ -27698,9 +27698,9 @@ var _Util = __webpack_require__(43);
 
 var Util = _interopRequireWildcard(_Util);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.tiledMapLayer
@@ -27723,7 +27723,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
  */
-var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.extend({
+var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
@@ -27750,9 +27750,9 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
 
     initialize: function initialize(url, options) {
         this._url = url;
-        _leaflet2["default"].TileLayer.prototype.initialize.apply(this, arguments);
-        _leaflet2["default"].setOptions(this, options);
-        _leaflet2["default"].stamp(this);
+        _leaflet2.default.TileLayer.prototype.initialize.apply(this, arguments);
+        _leaflet2.default.setOptions(this, options);
+        _leaflet2.default.stamp(this);
 
         //当前切片在切片集中的index
         this.tileSetsIndex = -1;
@@ -27767,7 +27767,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
      */
     onAdd: function onAdd(map) {
         this._crs = this.options.crs || map.options.crs;
-        _leaflet2["default"].TileLayer.prototype.onAdd.call(this, map);
+        _leaflet2.default.TileLayer.prototype.onAdd.call(this, map);
     },
 
     /**
@@ -27860,7 +27860,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
      */
     setTileSetsInfo: function setTileSetsInfo(tileSets) {
         this.tileSets = tileSets;
-        if (_leaflet2["default"].Util.isArray(this.tileSets)) {
+        if (_leaflet2.default.Util.isArray(this.tileSets)) {
             this.tileSets = this.tileSets[0];
         }
         if (!this.tileSets) {
@@ -27972,8 +27972,8 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
             params = {};
 
         var tileSize = this.options.tileSize;
-        if (!(tileSize instanceof _leaflet2["default"].Point)) {
-            tileSize = _leaflet2["default"].point(tileSize, tileSize);
+        if (!(tileSize instanceof _leaflet2.default.Point)) {
+            tileSize = _leaflet2.default.point(tileSize, tileSize);
         }
         params["width"] = tileSize.x;
         params["height"] = tileSize.y;
@@ -27990,7 +27990,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
             params["layersID"] = options.layersID.toString();
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof _leaflet2["default"].Path) {
+        if (options.clipRegionEnabled && options.clipRegion instanceof _leaflet2.default.Path) {
             options.clipRegion = Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
             options.clipRegion = _iclientCommon.CommonUtil.toJSON(_iclientCommon.ServerGeometry.fromGeometry(options.clipRegion));
             params["clipRegionEnabled"] = options.clipRegionEnabled;
@@ -28003,7 +28003,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.exten
             params["origin"] = JSON.stringify({ x: crs.options.origin[0], y: crs.options.origin[1] });
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
-            var tileOrigin = _leaflet2["default"].point(bounds.min.x, bounds.max.y);
+            var tileOrigin = _leaflet2.default.point(bounds.min.x, bounds.max.y);
             params["origin"] = JSON.stringify({ x: tileOrigin.x, y: tileOrigin.y });
         }
 
@@ -28058,7 +28058,7 @@ var tiledMapLayer = exports.tiledMapLayer = function tiledMapLayer(url, options)
     return new TiledMapLayer(url, options);
 };
 
-_leaflet2["default"].supermap.tiledMapLayer = tiledMapLayer;
+_leaflet2.default.supermap.tiledMapLayer = tiledMapLayer;
 
 /***/ }),
 /* 128 */
@@ -28086,7 +28086,7 @@ var _ThemeLayer = __webpack_require__(284);
 
 var _CommontypesConversion = __webpack_require__(36);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.GraphThemeLayer
@@ -28148,7 +28148,7 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
      */
     addFeatures: function addFeatures(features) {
         //数组
-        if (!_leaflet2["default"].Util.isArray(features)) {
+        if (!_leaflet2.default.Util.isArray(features)) {
             features = [features];
         }
 
@@ -28182,9 +28182,9 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
-        if (bounds && bounds instanceof _leaflet2["default"].LatLngBounds) {
+        if (bounds && bounds instanceof _leaflet2.default.LatLngBounds) {
             var crs = this._map.options.crs;
-            bounds = _leaflet2["default"].bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
+            bounds = _leaflet2.default.bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
         }
         bounds = _CommontypesConversion.CommontypesConversion.toSuperMapBounds(bounds);
         for (var i = 0, len = features.length; i < len; i++) {
@@ -28492,7 +28492,7 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         // 压盖判断所需 chartsBounds 集合
         var mapBounds = me._map.getBounds();
         var crs = this._map.options.crs;
-        mapBounds = _leaflet2["default"].bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
+        mapBounds = _leaflet2.default.bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
         mapBounds = _CommontypesConversion.CommontypesConversion.toSuperMapBounds(mapBounds);
         var charts = me.charts;
         var chartsBounds = [];
@@ -28561,7 +28561,7 @@ var graphThemeLayer = exports.graphThemeLayer = function graphThemeLayer(name, c
     return new GraphThemeLayer(name, chartsType, options);
 };
 
-_leaflet2["default"].supermap.graphThemeLayer = graphThemeLayer;
+_leaflet2.default.supermap.graphThemeLayer = graphThemeLayer;
 
 /***/ }),
 /* 129 */
@@ -28585,7 +28585,7 @@ var _GeoFeatureThemeLayer = __webpack_require__(111);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.LabelThemeLayer
@@ -28607,7 +28607,7 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
 
     initialize: function initialize(name, options) {
         _GeoFeatureThemeLayer.GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
-        _leaflet2["default"].Util.setOptions(this, options);
+        _leaflet2.default.Util.setOptions(this, options);
         //图层中专题要素的样式
         this.style = [];
         //用于指定专题要素样式的属性字段名称。
@@ -28993,17 +28993,17 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
 
         //将标签的地理位置转为像素位置
         var locationTmp = geoText.getCentroid();
-        var locTmp = this._map.latLngToContainerPoint(this._map.options.crs.unproject(_leaflet2["default"].point(locationTmp.x, locationTmp.y)));
-        var loc = _leaflet2["default"].point(locTmp.x, locTmp.y);
+        var locTmp = this._map.latLngToContainerPoint(this._map.options.crs.unproject(_leaflet2.default.point(locationTmp.x, locationTmp.y)));
+        var loc = _leaflet2.default.point(locTmp.x, locTmp.y);
 
         //偏移处理
         if (styleTmp.labelXOffset || styleTmp.labelYOffset) {
             var xOffset = isNaN(styleTmp.labelXOffset) ? 0 : styleTmp.labelXOffset;
             var yOffset = isNaN(styleTmp.labelYOffset) ? 0 : styleTmp.labelYOffset;
-            var point = loc.add(_leaflet2["default"].point(xOffset, -yOffset));
-            return _leaflet2["default"].point(point.x, point.y);
+            var point = loc.add(_leaflet2.default.point(xOffset, -yOffset));
+            return _leaflet2.default.point(point.x, point.y);
         } else {
-            return _leaflet2["default"].point(loc.x, loc.y);
+            return _leaflet2.default.point(loc.x, loc.y);
         }
     },
 
@@ -29224,10 +29224,10 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
      * @return {Array<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
      */
     rotationBounds: function rotationBounds(bounds, rotationCenterPoi, angle) {
-        var ltPoi = _leaflet2["default"].point(bounds.left, bounds.top);
-        var rtPoi = _leaflet2["default"].point(bounds.right, bounds.top);
-        var rbPoi = _leaflet2["default"].point(bounds.right, bounds.bottom);
-        var lbPoi = _leaflet2["default"].point(bounds.left, bounds.bottom);
+        var ltPoi = _leaflet2.default.point(bounds.left, bounds.top);
+        var rtPoi = _leaflet2.default.point(bounds.right, bounds.top);
+        var rbPoi = _leaflet2.default.point(bounds.right, bounds.bottom);
+        var lbPoi = _leaflet2.default.point(bounds.left, bounds.bottom);
 
         var ver = [];
         ver.push(this.getRotatedLocation(ltPoi.x, ltPoi.y, rotationCenterPoi.x, rotationCenterPoi.y, angle));
@@ -29435,7 +29435,7 @@ var labelThemeLayer = exports.labelThemeLayer = function labelThemeLayer(name, o
     return new LabelThemeLayer(name, options);
 };
 
-_leaflet2["default"].supermap.labelThemeLayer = labelThemeLayer;
+_leaflet2.default.supermap.labelThemeLayer = labelThemeLayer;
 
 /***/ }),
 /* 130 */
@@ -29459,7 +29459,7 @@ var _GeoFeatureThemeLayer = __webpack_require__(111);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.rangeThemeLayer
@@ -29547,7 +29547,7 @@ var rangeThemeLayer = exports.rangeThemeLayer = function rangeThemeLayer(name, o
     return new RangeThemeLayer(name, options);
 };
 
-_leaflet2["default"].supermap.rangeThemeLayer = rangeThemeLayer;
+_leaflet2.default.supermap.rangeThemeLayer = rangeThemeLayer;
 
 /***/ }),
 /* 131 */
@@ -29567,7 +29567,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.unicodeMarker
@@ -29585,7 +29585,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        textAlign - {string} 符号内容的对齐方式 <br>
  *        textBaseline - {string} 绘制符号时使用的基线 <br>
  */
-var UnicodeMarker = exports.UnicodeMarker = _leaflet2["default"].Path.extend({
+var UnicodeMarker = exports.UnicodeMarker = _leaflet2.default.Path.extend({
     // @section
     // @aka CircleMarker options
     options: {
@@ -29602,7 +29602,7 @@ var UnicodeMarker = exports.UnicodeMarker = _leaflet2["default"].Path.extend({
     },
 
     initialize: function initialize(latlng, options) {
-        _leaflet2["default"].Util.setOptions(this, options);
+        _leaflet2.default.Util.setOptions(this, options);
         this._latlng = latlng;
     },
 
@@ -29628,7 +29628,7 @@ var UnicodeMarker = exports.UnicodeMarker = _leaflet2["default"].Path.extend({
     _updateBounds: function _updateBounds() {
         var w = this._clickTolerance(),
             p = [w, w];
-        this._pxBounds = new _leaflet2["default"].Bounds(this._point.subtract(p), this._point.add(p));
+        this._pxBounds = new _leaflet2.default.Bounds(this._point.subtract(p), this._point.add(p));
     },
     _update: function _update() {
         if (this._map) {
@@ -29648,7 +29648,7 @@ var unicodeMarker = exports.unicodeMarker = function unicodeMarker(latlng, optio
     return new UnicodeMarker(latlng, options);
 };
 
-_leaflet2["default"].Canvas.include({
+_leaflet2.default.Canvas.include({
     _updateUnicode: function _updateUnicode(layer) {
         if (!this._drawing) {
             return;
@@ -29710,7 +29710,7 @@ _leaflet2["default"].Canvas.include({
     }
 });
 
-_leaflet2["default"].supermap.unicodeMarker = unicodeMarker;
+_leaflet2.default.supermap.unicodeMarker = unicodeMarker;
 
 /***/ }),
 /* 132 */
@@ -29734,7 +29734,7 @@ var _GeoFeatureThemeLayer = __webpack_require__(111);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.uniqueThemeLayer
@@ -29821,7 +29821,7 @@ var uniqueThemeLayer = exports.uniqueThemeLayer = function uniqueThemeLayer(name
     return new UniqueThemeLayer(name, options);
 };
 
-_leaflet2["default"].supermap.uniqueThemeLayer = uniqueThemeLayer;
+_leaflet2.default.supermap.uniqueThemeLayer = uniqueThemeLayer;
 
 /***/ }),
 /* 133 */
@@ -29841,7 +29841,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.graphic
@@ -29850,11 +29850,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {Object} 图形参数
  */
-var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
+var Graphic = exports.Graphic = _leaflet2.default.Class.extend({
 
     initialize: function initialize(options) {
         options = options || {};
-        this._latlng = _leaflet2["default"].latLng(options._latlng.lat, options._latlng.lng);
+        this._latlng = _leaflet2.default.latLng(options._latlng.lat, options._latlng.lng);
         this._canvas = options._canvas;
     },
 
@@ -29897,7 +29897,7 @@ var graphic = exports.graphic = function graphic(options) {
     return new Graphic(options);
 };
 
-_leaflet2["default"].supermap.graphic = graphic;
+_leaflet2.default.supermap.graphic = graphic;
 
 /***/ }),
 /* 134 */
@@ -29921,7 +29921,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.dataFlowService
@@ -29945,7 +29945,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
 
     initialize: function initialize(url, options) {
         options = options || {};
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         if (options.projection) {
             this.options.prjCoordSys = options.projection;
         }
@@ -30038,7 +30038,7 @@ var dataFlowService = exports.dataFlowService = function dataFlowService(url, op
     return new DataFlowService(url, options);
 };
 
-_leaflet2["default"].supermap.dataFlowService = dataFlowService;
+_leaflet2.default.supermap.dataFlowService = dataFlowService;
 
 /***/ }),
 /* 135 */
@@ -30068,9 +30068,9 @@ var _CommontypesConversion = __webpack_require__(36);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.featureService
@@ -30241,7 +30241,7 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
         var me = this;
         if (params.features) {
             var features = [];
-            if (_leaflet2["default"].Util.isArray(params.features)) {
+            if (_leaflet2.default.Util.isArray(params.features)) {
                 params.features.map(function (feature) {
                     features.push(me._createServerFeature(feature));
                     return feature;
@@ -30284,7 +30284,7 @@ var featureService = exports.featureService = function featureService(url, optio
     return new FeatureService(url, options);
 };
 
-_leaflet2["default"].supermap.featureService = featureService;
+_leaflet2.default.supermap.featureService = featureService;
 
 /***/ }),
 /* 136 */
@@ -30308,7 +30308,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class  L.supermap.mapService
@@ -30331,7 +30331,7 @@ var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
 
     initialize: function initialize(url, options) {
         options = options || {};
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         if (options.projection) {
             this.options.projection = options.projection;
         }
@@ -30380,7 +30380,7 @@ var mapService = exports.mapService = function mapService(url, options) {
     return new MapService(url, options);
 };
 
-_leaflet2["default"].supermap.mapService = mapService;
+_leaflet2.default.supermap.mapService = mapService;
 
 /***/ }),
 /* 137 */
@@ -31154,7 +31154,7 @@ var Size = exports.Size = function () {
          * @function SuperMap.Size.prototype.clone
          * @description 克隆当前size对象.
          * @example
-         * var size = new SuperMap.Size(3146);
+         * var size = new SuperMap.Size(31,46);
          * var size2 = size.clone();
          *
          * @returns {SuperMap.Size}  返回一个新的与当前size对象有相同宽、高的Size对象。
@@ -31171,8 +31171,8 @@ var Size = exports.Size = function () {
          * @function SuperMap.Size.prototype.equals
          * @description 比较两个size对象是否相等。
          * @example
-         * var size = new SuperMap.Size(3146);
-         * var size2 = new SuperMap.Size(3146);
+         * var size = new SuperMap.Size(31,46);
+         * var size2 = new SuperMap.Size(31,46);
          * var isEquals = size.equals(size2);
          *
          * @param sz -{SuperMap.Size} 用于比较相等的Size对象。
@@ -31195,7 +31195,7 @@ var Size = exports.Size = function () {
          * @function SuperMap.Size.prototype.destroy
          * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var size = new SuperMap.Size(3146);
+         * var size = new SuperMap.Size(31,46);
          * size.destroy();
          */
 
@@ -40120,9 +40120,9 @@ var PointWithMeasure = exports.PointWithMeasure = function (_Point) {
          toJson() {
             var result = "{";
             if (this.measure != null && this.measure != undefined) {
-                result += "\"measure\":" + this.measure + "";
+                result += "\"measure\":" + this.measure + ",";
             }
-            result += "\"x\":" + this.x + "";
+            result += "\"x\":" + this.x + ",";
             result += "\"y\":" + this.y;
             result += "}";
             return result;
@@ -45746,7 +45746,7 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
                  * XOffset - {number} 专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
                  * YOffset - {number} 专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
                  * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-                 * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+                 * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
                  * @returns {boolean} 初始化参数是否成功。
                  */
 
@@ -47343,7 +47343,7 @@ var Area = exports.Area = function () {
          * y - {Number} 纵坐标。
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形中。
+         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形中。
          */
 
     }, {
@@ -47367,7 +47367,7 @@ var Area = exports.Area = function () {
          * y - {Number} 纵坐标。
          *
          * Returns:
-         * {Boolean} 图形是否不包含鼠标位置 true表示坐标处在图形外。
+         * {Boolean} 图形是否不包含鼠标位置, true表示坐标处在图形外。
          */
 
     }, {
@@ -47390,7 +47390,7 @@ var Area = exports.Area = function () {
          * y - {Number}
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形内。
+         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -47436,7 +47436,7 @@ var Area = exports.Area = function () {
          * y - {Number}
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形内。
+         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -47470,7 +47470,7 @@ var Area = exports.Area = function () {
          * y - {Number}
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形内。
+         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -47504,7 +47504,7 @@ var Area = exports.Area = function () {
          * y - {Number}
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形内。
+         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -47548,7 +47548,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsideBrokenLine
-         * 图形 BrokenLine 是否包含鼠标位置 true表示坐标处在图形内。
+         * 图形 BrokenLine 是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -47571,7 +47571,7 @@ var Area = exports.Area = function () {
 
         /**
          * Method: isInsideRing
-         * 图形 Ring 是否包含鼠标位置 true表示坐标处在图形内。
+         * 图形 Ring 是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -47583,7 +47583,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsideRect
-         * 图形 Rect 是否包含鼠标位置 true表示坐标处在图形内。
+         * 图形 Rect 是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -47594,7 +47594,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsideCircle
-         * 图形 Circle 是否包含鼠标位置 true表示坐标处在图形内。
+         * 图形 Circle 是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -47605,7 +47605,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsideSector
-         * 图形 Sector 是否包含鼠标位置 true表示坐标处在图形内。
+         * 图形 Sector 是否包含鼠标位置, true表示坐标处在图形内。
          */
 
     }, {
@@ -47616,7 +47616,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsidePolygon
-         * 图形 Polygon 是否包含鼠标位置 true表示坐标处在图形内。与 canvas 一样采用 non-zero winding rule
+         * 图形 Polygon 是否包含鼠标位置, true表示坐标处在图形内。与 canvas 一样采用 non-zero winding rule
          */
 
     }, {
@@ -48295,7 +48295,7 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
 
         /**
          * APIMethod: cubeBezier
-         * 从三阶贝塞尔曲线(p0 p1 p2 p3)中计算出最小包围盒，写入`min`和`max`中。
+         * 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒，写入`min`和`max`中。
          *
          * 原：computeCubeBezierBoundingBox
          *
@@ -48341,7 +48341,7 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
 
         /**
          * APIMethod: quadraticBezier
-         * 从二阶贝塞尔曲线(p0 p1 p2)中计算出最小包围盒，写入`min`和`max`中
+         * 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入`min`和`max`中
          *
          * 原：computeQuadraticBezierBoundingBox
          *
@@ -52635,14 +52635,14 @@ var Render = exports.Render = function () {
          *
          * (code)
          * //添加组到根节点例子
-         * var render = new SuperMap.LevelRenderer.Render("Render"document.getElementById('lRendertest'));
+         * var render = new SuperMap.LevelRenderer.Render("Render",document.getElementById('lRendertest'));
          * render.clear();
          * var g = new SuperMap.LevelRenderer.Group();
          * g.addChild(new SuperMap.LevelRenderer.Shape.Circle({
          *     style: {
-         *         x: 100
-         *         y: 100
-         *         r: 20
+         *         x: 100,
+         *         y: 100,
+         *         r: 20,
          *         brushType: 'fill'
          *     }
          * }));
@@ -52895,15 +52895,15 @@ var Render = exports.Render = function () {
          * 动画。
          *
          * (code)
-         *     zr.animate(circle.id 'style' false)
-         *         .when(1000 {x: 10} )
+         *     zr.animate(circle.id, 'style', false)
+         *         .when(1000, {x: 10} )
          *         .done(function(){ // Animation done })
          *         .start()
          * (end)
          *
          * Parameters:
          * el - {Array{<SuperMap.LevelRenderer.Shape>/<SuperMap.LevelRenderer.Group>}} 动画对象。
-         * path - {String} 需要添加动画的属性获取路径，可以通过 a.b.c 来获取深层的属性。若传入对象为<SuperMap.LevelRenderer.Group>path需为空字符串。
+         * path - {String} 需要添加动画的属性获取路径，可以通过 a.b.c 来获取深层的属性。若传入对象为<SuperMap.LevelRenderer.Group>,path需为空字符串。
          * loop - {Function} 动画是否循环。
          *
          * Returns:
@@ -54268,9 +54268,9 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_leaflet2["default"].Projection = {};
+_leaflet2.default.Projection = {};
 
 /**
  * @private
@@ -54279,18 +54279,18 @@ _leaflet2["default"].Projection = {};
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param bounds - {L.bounds} 坐标范围
  */
-var NonProjection = exports.NonProjection = _leaflet2["default"].Class.extend({
+var NonProjection = exports.NonProjection = _leaflet2.default.Class.extend({
 
     initialize: function initialize(bounds) {
         this.bounds = bounds;
     },
 
     project: function project(latlng) {
-        return new _leaflet2["default"].Point(latlng.lng, latlng.lat);
+        return new _leaflet2.default.Point(latlng.lng, latlng.lat);
     },
 
     unproject: function unproject(point) {
-        return new _leaflet2["default"].LatLng(point.y, point.x);
+        return new _leaflet2.default.LatLng(point.y, point.x);
     }
 });
 
@@ -54307,19 +54307,19 @@ var nonProjection = exports.nonProjection = function nonProjection(bounds) {
  *        bounds - {[L.bounds]{@linkdoc-leaflet/#bounds}|Array<number>} 范围<br>
  *        resolutions - {Array<number>} 分辨率
  */
-var NonEarthCRS = exports.NonEarthCRS = _leaflet2["default"].Class.extend({
+var NonEarthCRS = exports.NonEarthCRS = _leaflet2.default.Class.extend({
 
     /*
      * @member L.CRS.NonEarthCRS.prototype.includes -{Object}
      * @description 包含的坐标对象，默认为：L.CRS。
      */
-    includes: _leaflet2["default"].CRS,
+    includes: _leaflet2.default.CRS,
 
     initialize: function initialize(options) {
         if (options.origin) {
-            this.transformation = new _leaflet2["default"].Transformation(1, -options.origin.x, -1, options.origin.y);
+            this.transformation = new _leaflet2.default.Transformation(1, -options.origin.x, -1, options.origin.y);
         }
-        this.projection = _leaflet2["default"].Projection.NonProjection(options.bounds);
+        this.projection = _leaflet2.default.Projection.NonProjection(options.bounds);
         this.bounds = options.bounds;
         this.origin = options.origin;
         this.resolutions = options.resolutions;
@@ -54379,9 +54379,9 @@ var NonEarthCRS = exports.NonEarthCRS = _leaflet2["default"].Class.extend({
 var nonEarthCRS = exports.nonEarthCRS = function nonEarthCRS(options) {
     return new NonEarthCRS(options);
 };
-_leaflet2["default"].Projection.NonProjection = nonProjection;
+_leaflet2.default.Projection.NonProjection = nonProjection;
 
-_leaflet2["default"].CRS.NonEarthCRS = nonEarthCRS;
+_leaflet2.default.CRS.NonEarthCRS = nonEarthCRS;
 
 /***/ }),
 /* 282 */
@@ -54401,7 +54401,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @constant L.supermap.VectorTileFormat
@@ -54413,7 +54413,7 @@ var VectorTileFormat = exports.VectorTileFormat = {
   PBF: "PBF"
 };
 
-_leaflet2["default"].supermap.VectorTileFormat = VectorTileFormat;
+_leaflet2.default.supermap.VectorTileFormat = VectorTileFormat;
 
 /***/ }),
 /* 283 */
@@ -54441,7 +54441,7 @@ var _CartoDefaultStyle = __webpack_require__(446);
 
 var _CartoStyleMap = __webpack_require__(447);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -54573,11 +54573,11 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = function () {
             if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
                 icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
             }
-            return _leaflet2["default"].icon({
+            return _leaflet2.default.icon({
                 iconUrl: icon,
-                iconSize: _leaflet2["default"].point(48, 43),
-                iconAnchor: _leaflet2["default"].point(24, 43),
-                popupAnchor: _leaflet2["default"].point(0, -43)
+                iconSize: _leaflet2.default.point(48, 43),
+                iconAnchor: _leaflet2.default.point(24, 43),
+                popupAnchor: _leaflet2.default.point(0, -43)
             });
         }
 
@@ -54604,11 +54604,11 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = function () {
                     if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
                         pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
                     }
-                    return _leaflet2["default"].icon({
+                    return _leaflet2.default.icon({
                         iconUrl: pointStyle.externalGraphic,
-                        iconSize: _leaflet2["default"].point(pointStyle.graphicWidth, pointStyle.graphicHeight),
-                        iconAnchor: _leaflet2["default"].point(-pointStyle.graphicXOffset, -pointStyle.graphicYOffset),
-                        popupAnchor: _leaflet2["default"].point(0, -pointStyle.graphicHeight)
+                        iconSize: _leaflet2.default.point(pointStyle.graphicWidth, pointStyle.graphicHeight),
+                        iconAnchor: _leaflet2.default.point(-pointStyle.graphicXOffset, -pointStyle.graphicYOffset),
+                        popupAnchor: _leaflet2.default.point(0, -pointStyle.graphicHeight)
                     });
                 }
                 style.radius = pointStyle.pointRadius;
@@ -54885,7 +54885,7 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = function () {
     return CartoCSSToLeaflet;
 }();
 
-_leaflet2["default"].supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;
+_leaflet2.default.supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;
 
 /***/ }),
 /* 284 */
@@ -54905,7 +54905,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.ThemeLayer
@@ -54915,7 +54915,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param name - {string} 专题图层名称
  * @param options -{Object} 待设置得参数。
  */
-var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
+var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
 
     options: {
         name: null,
@@ -54927,7 +54927,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
     },
 
     initialize: function initialize(name, options) {
-        _leaflet2["default"].Util.setOptions(this, options);
+        _leaflet2.default.Util.setOptions(this, options);
         this.options.name = name;
         this.features = [];
         this.TFEvents = options && options.TFEvents ? options.TFEvents : [];
@@ -54960,7 +54960,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
      */
     onRemove: function onRemove(map) {
         var me = this;
-        _leaflet2["default"].DomUtil.remove(me.container);
+        _leaflet2.default.DomUtil.remove(me.container);
         map.off("mousemove", me.mouseMoveHandler);
     },
 
@@ -54994,7 +54994,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         me.addTFEvents();
         me.mouseMoveHandler = function (e) {
             var xy = e.layerPoint;
-            me.currentMousePosition = _leaflet2["default"].point(xy.x + me.movingOffset[0], xy.y + me.movingOffset[1]);
+            me.currentMousePosition = _leaflet2.default.point(xy.x + me.movingOffset[0], xy.y + me.movingOffset[1]);
         };
         map.on("mousemove", me.mouseMoveHandler);
 
@@ -55050,7 +55050,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         if (features === me.features) {
             return me.removeAllFeatures();
         }
-        if (!_leaflet2["default"].Util.isArray(features)) {
+        if (!_leaflet2.default.Util.isArray(features)) {
             features = [features];
         }
 
@@ -55061,7 +55061,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
 
             //如果我们传入的feature在features数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = _leaflet2["default"].Util.indexOf(me.features, feature);
+            var findex = _leaflet2.default.Util.indexOf(me.features, feature);
 
             if (findex === -1) {
                 featuresFailRemoved.push(feature);
@@ -55172,13 +55172,19 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
      * @param bounds - {L.bounds} 图层范围
      */
     update: function update(bounds) {
+        var mapOffset = this._map.containerPointToLayerPoint([0, 0]);
+        _leaflet2.default.DomUtil.setPosition(this.container, mapOffset);
+
         var me = this;
-        var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
-        offsetLeft = -Math.round(offsetLeft);
-        var offsetTop = parseInt(me._map.getContainer().style.top, 10);
-        offsetTop = -Math.round(offsetTop);
-        me.container.style.left = offsetLeft + 'px';
-        me.container.style.top = offsetTop + 'px';
+        //  var bounds = me._map.getBounds();
+        //  var topLeft = me._map.latLngToLayerPoint(bounds.getNorthWest());
+        //  var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0]
+        // // var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
+        // // offsetLeft = -Math.round(offsetLeft);
+        //  //var offsetTop = parseInt(me._map.getContainer().style.top, 10);
+        //  //offsetTop = -Math.round(offsetTop);
+        //  me.container.style.left = mapOffset[0] + 'px';
+        //  me.container.style.top = mapOffset[1] + 'px';
 
         //绘制专题要素
         if (me.renderer) {
@@ -55186,7 +55192,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         }
 
         if (me.currentMousePosition) {
-            me.currentMousePosition = _leaflet2["default"].point(me.currentMousePosition.x - me.movingOffset[0], me.currentMousePosition.y - me.movingOffset[1]);
+            me.currentMousePosition = _leaflet2.default.point(me.currentMousePosition.x - me.movingOffset[0], me.currentMousePosition.y - me.movingOffset[1]);
         }
         me.movingOffset = [0, 0];
         me._zoom = me._map.getZoom();
@@ -55239,7 +55245,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         if (this.renderer) {
             this.renderer.on(event, callback);
         } else {
-            _leaflet2["default"].Layer.prototype.on.call(this, event, callback);
+            _leaflet2.default.Layer.prototype.on.call(this, event, callback);
         }
         return this;
     },
@@ -55257,7 +55263,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         if (me.renderer) {
             me.renderer.un(event, callback);
         } else {
-            _leaflet2["default"].Layer.prototype.off.call(this, event, callback);
+            _leaflet2.default.Layer.prototype.off.call(this, event, callback);
         }
         return this;
     },
@@ -55286,13 +55292,13 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
             return coordinate;
         }
         var coor = coordinate;
-        if (_leaflet2["default"].Util.isArray(coordinate)) {
-            coor = _leaflet2["default"].point(coordinate[0], coordinate[1]);
-        } else if (!(coordinate instanceof _leaflet2["default"].Point)) {
+        if (_leaflet2.default.Util.isArray(coordinate)) {
+            coor = _leaflet2.default.point(coordinate[0], coordinate[1]);
+        } else if (!(coordinate instanceof _leaflet2.default.Point)) {
             if (coordinate instanceof _iclientCommon.GeometryPoint || coordinate instanceof _iclientCommon.GeoText) {
-                coor = _leaflet2["default"].point(coordinate.x, coordinate.y);
+                coor = _leaflet2.default.point(coordinate.x, coordinate.y);
             } else {
-                coor = _leaflet2["default"].point(coordinate.lon, coordinate.lat);
+                coor = _leaflet2.default.point(coordinate.lon, coordinate.lat);
             }
         }
         var point = this._map.latLngToContainerPoint(this._map.options.crs.unproject(coor));
@@ -55301,28 +55307,26 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
 
     _initContainer: function _initContainer() {
         var parentContainer = this.getPane();
-        var animated = this._map.options.zoomAnimation && _leaflet2["default"].Browser.any3d;
+        var animated = this._map.options.zoomAnimation && _leaflet2.default.Browser.any3d;
         var className = this.options.name || "themeLayer";
         className += ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide');
-        this.container = _leaflet2["default"].DomUtil.create("div", className, parentContainer);
+        this.container = _leaflet2.default.DomUtil.create("div", className, parentContainer);
 
-        var originProp = _leaflet2["default"].DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
+        var originProp = _leaflet2.default.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
         this.container.style[originProp] = '50% 50%';
 
         this.container.style.position = "absolute";
         this.container.style.zIndex = 200;
     },
 
-    _zoomAnim: function _zoomAnim(evt) {
-        var zoom = evt.zoom,
-            center = evt.center;
-        var scale = this._map.getZoomScale(zoom),
-            offset = this._map._getCenterOffset(center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
+    _zoomAnim: function _zoomAnim(e) {
+        var scale = this._map.getZoomScale(e.zoom),
+            offset = this._map._getCenterOffset(e.center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
 
-        if (_leaflet2["default"].DomUtil.setTransform) {
-            _leaflet2["default"].DomUtil.setTransform(this.container, offset, scale);
+        if (_leaflet2.default.DomUtil.setTransform) {
+            _leaflet2.default.DomUtil.setTransform(this.container, offset, scale);
         } else {
-            this.container.style[_leaflet2["default"].DomUtil.TRANSFORM] = _leaflet2["default"].DomUtil.getTranslateString(offset) + ' scale(' + scale + ')';
+            this.container.style[_leaflet2.default.DomUtil.TRANSFORM] = _leaflet2.default.DomUtil.getTranslateString(offset) + ' scale(' + scale + ')';
         }
     },
 
@@ -55339,10 +55343,19 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
         var me = this;
         var latLngBounds = me._map.getBounds();
         me.update(latLngBounds);
-
-        var topLeft = me._map.containerPointToLayerPoint([0, 0]);
-        _leaflet2["default"].DomUtil.setPosition(me.container, topLeft);
         var size = me._map.getSize();
+        // var bounds = me._map.getBounds();
+        // var topLeft = me._map.latLngToLayerPoint(bounds.getNorthWest());
+        // var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0]
+        // var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
+        // offsetLeft = -Math.round(offsetLeft);
+        //var offsetTop = parseInt(me._map.getContainer().style.top, 10);
+        //offsetTop = -Math.round(offsetTop);
+        //me.container.style.left = mapOffset[0] + 'px';
+        //me.container.style.top = mapOffset[1] + 'px';
+        var mapOffset = this._map.containerPointToLayerPoint([0, 0]);
+        _leaflet2.default.DomUtil.setPosition(this.container, mapOffset);
+
         if (parseFloat(me.container.width) !== parseFloat(size.x)) {
             me.container.width = size.x + 'px';
         }
@@ -55378,7 +55391,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.CanvasRenderer
@@ -55389,10 +55402,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param tileSize - {number}切片大小
  * @param options - {Object} 渲染器参数
  */
-var CanvasRenderer = exports.CanvasRenderer = _leaflet2["default"].Canvas.extend({
+var CanvasRenderer = exports.CanvasRenderer = _leaflet2.default.Canvas.extend({
 
     initialize: function initialize(tileCoord, tileSize, options) {
-        _leaflet2["default"].Canvas.prototype.initialize.call(this, options);
+        _leaflet2.default.Canvas.prototype.initialize.call(this, options);
         this._tileCoord = tileCoord;
         this._size = tileSize;
 
@@ -55432,7 +55445,7 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2["default"].Canvas.extend
         return this._tileCoord.scaleBy(this._size).subtract(this._map.getPixelOrigin());
     },
 
-    onAdd: _leaflet2["default"].Util.falseFn,
+    onAdd: _leaflet2.default.Util.falseFn,
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.addTo
@@ -55480,7 +55493,7 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2["default"].Canvas.extend
             }
         }
         if (clickedLayer) {
-            _leaflet2["default"].DomEvent.stop(e);
+            _leaflet2.default.DomEvent.stop(e);
             this._fireEvent([clickedLayer], e);
         }
     },
@@ -55503,13 +55516,13 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2["default"].Canvas.extend
             ctx = this._ctx,
             img = layer._getImage();
         if (options.iconSize && img.complete) {
-            var size = _leaflet2["default"].point(options.iconSize),
+            var size = _leaflet2.default.point(options.iconSize),
                 anchor = size && size.divideBy(2, true),
                 p = layer._point.subtract(anchor);
             ctx.drawImage(img, p.x, p.y, size.x, size.y);
         } else {
-            _leaflet2["default"].DomEvent.on(img, 'load', function () {
-                var size = _leaflet2["default"].point([img.width, img.height]),
+            _leaflet2.default.DomEvent.on(img, 'load', function () {
+                var size = _leaflet2.default.point([img.width, img.height]),
                     anchor = size && size.divideBy(2, true),
                     p = layer._point.subtract(anchor);
                 ctx.drawImage(img, p.x, p.y, size.x, size.y);
@@ -55536,7 +55549,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.SVGRenderer
@@ -55547,10 +55560,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param tileSize - {number}切片大小
  * @param options - {Object} 渲染参数
  */
-var SVGRenderer = exports.SVGRenderer = _leaflet2["default"].SVG.extend({
+var SVGRenderer = exports.SVGRenderer = _leaflet2.default.SVG.extend({
 
     initialize: function initialize(tileCoord, tileSize, options) {
-        _leaflet2["default"].SVG.prototype.initialize.call(this, options);
+        _leaflet2.default.SVG.prototype.initialize.call(this, options);
         this._tileCoord = tileCoord;
         this._size = tileSize;
 
@@ -55578,7 +55591,7 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2["default"].SVG.extend({
         return this._container;
     },
 
-    onAdd: _leaflet2["default"].Util.falseFn,
+    onAdd: _leaflet2.default.Util.falseFn,
 
     /**
      * @function L.supermap.SVGRenderer.prototype.addTo
@@ -55591,7 +55604,7 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2["default"].SVG.extend({
             for (var i in this._layers) {
                 var layer = this._layers[i];
                 layer._path.style.pointerEvents = 'auto';
-                this._map._targets[_leaflet2["default"].stamp(layer._path)] = layer;
+                this._map._targets[_leaflet2.default.stamp(layer._path)] = layer;
             }
         }
     },
@@ -55606,28 +55619,28 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2["default"].SVG.extend({
         if (this.options.interactive) {
             for (var i in this._layers) {
                 var layer = this._layers[i];
-                delete _map._targets[_leaflet2["default"].stamp(layer._path)];
+                delete _map._targets[_leaflet2.default.stamp(layer._path)];
             }
         }
         delete this._map;
     },
 
     _initContainer: function _initContainer() {
-        _leaflet2["default"].SVG.prototype._initContainer.call(this);
+        _leaflet2.default.SVG.prototype._initContainer.call(this);
         // var rect = L.SVG.create('rect');
     },
 
     _addPath: function _addPath(layer) {
         this._rootGroup.appendChild(layer._path);
-        this._layers[_leaflet2["default"].stamp(layer)] = layer;
+        this._layers[_leaflet2.default.stamp(layer)] = layer;
     },
 
     _updateIcon: function _updateIcon(layer) {
-        var path = layer._path = _leaflet2["default"].SVG.create('image'),
+        var path = layer._path = _leaflet2.default.SVG.create('image'),
             options = layer.options,
             iconUrl = options.iconUrl;
         if (options.iconSize) {
-            var size = _leaflet2["default"].point(options.iconSize),
+            var size = _leaflet2.default.point(options.iconSize),
                 anchor = size && size.divideBy(2, true),
                 p = layer._point.subtract(anchor);
             path.setAttribute('x', p.x);
@@ -55637,8 +55650,8 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2["default"].SVG.extend({
         } else {
             var img = new Image();
             img.src = iconUrl;
-            _leaflet2["default"].DomEvent.on(img, 'load', function () {
-                var size = _leaflet2["default"].point([img.width, img.height]),
+            _leaflet2.default.DomEvent.on(img, 'load', function () {
+                var size = _leaflet2.default.point([img.width, img.height]),
                     anchor = size && size.divideBy(2, true),
                     p = layer._point.subtract(anchor);
                 path.setAttribute('x', p.x);
@@ -55667,7 +55680,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.PolyBase
@@ -55687,7 +55700,7 @@ var PolyBase = exports.PolyBase = {
             var part = [];
             for (var j = 0; j < ring.length; j++) {
                 coord = ring[j];
-                part.push(_leaflet2["default"].point(coord).scaleBy(pxPerExtent));
+                part.push(_leaflet2.default.point(coord).scaleBy(pxPerExtent));
             }
             this._parts.push(part);
         }
@@ -55726,7 +55739,7 @@ var _CanvasRenderer = __webpack_require__(285);
 
 var _SVGRenderer = __webpack_require__(286);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.TextSymbolizer
@@ -55736,7 +55749,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param feature - {L.feature} 要素
  * @param pxPerExtent - {number}文本符号大小
  */
-var TextSymbolizer = exports.TextSymbolizer = _leaflet2["default"].Path.extend({
+var TextSymbolizer = exports.TextSymbolizer = _leaflet2.default.Path.extend({
 
     /**
      * @member L.supermap.TextSymbolizer.prototype.includes
@@ -55785,9 +55798,9 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2["default"].Path.extend({
             this._text = attributes && this.properties.textField ? attributes[this.properties.textField] || "" : "";
         }
         var options = this.options;
-        this._pxBounds = _leaflet2["default"].bounds(this._point, this._point);
+        this._pxBounds = _leaflet2.default.bounds(this._point, this._point);
         _Symbolizer.Symbolizer.prototype.render.apply(this, [renderer, style]);
-        this.options = _leaflet2["default"].Util.extend(options, style);
+        this.options = _leaflet2.default.Util.extend(options, style);
         this._updatePath();
     },
 
@@ -55795,11 +55808,11 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2["default"].Path.extend({
         pxPerExtent = pxPerExtent || { x: 1, y: 1 };
         var coord = feat.geometry[0];
         if (_typeof(coord[0]) === 'object' && 'x' in coord[0]) {
-            this._point = _leaflet2["default"].point(coord[0]).scaleBy(pxPerExtent);
-            this._empty = _leaflet2["default"].Util.falseFn;
+            this._point = _leaflet2.default.point(coord[0]).scaleBy(pxPerExtent);
+            this._empty = _leaflet2.default.Util.falseFn;
         } else {
-            this._point = _leaflet2["default"].point(coord).scaleBy(pxPerExtent);
-            this._empty = _leaflet2["default"].Util.falseFn;
+            this._point = _leaflet2.default.point(coord).scaleBy(pxPerExtent);
+            this._empty = _leaflet2.default.Util.falseFn;
         }
     },
 
@@ -55825,7 +55838,7 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2["default"].Path.extend({
     _updateBounds: function _updateBounds() {
         var w = this._renderer._getTextWidth(this);
         var p = [w / 2, w / 2];
-        this._pxBounds = _leaflet2["default"].bounds(this._point.subtract(p), this._point.add(p));
+        this._pxBounds = _leaflet2.default.bounds(this._point.subtract(p), this._point.add(p));
     },
 
     _updatePath: function _updatePath() {
@@ -55855,7 +55868,7 @@ _CanvasRenderer.CanvasRenderer.include({
             options = layer.options,
             offsetX = options.offsetX || 1,
             offsetY = options.offsetY || 1,
-            p = layer._point.subtract(_leaflet2["default"].point(offsetX, offsetY));
+            p = layer._point.subtract(_leaflet2.default.point(offsetX, offsetY));
         if (!options.fill) {
             return;
         }
@@ -55883,22 +55896,22 @@ _SVGRenderer.SVGRenderer.include({
         var path;
 
         if (TextSymbolizer && layer instanceof TextSymbolizer) {
-            path = layer._path = _leaflet2["default"].SVG.create("text");
+            path = layer._path = _leaflet2.default.SVG.create("text");
             path.textContent = layer._text;
         } else {
-            path = layer._path = _leaflet2["default"].SVG.create("path");
+            path = layer._path = _leaflet2.default.SVG.create("path");
         }
 
         if (layer.options.className) {
-            _leaflet2["default"].DomUtil.addClass(path, layer.options.className);
+            _leaflet2.default.DomUtil.addClass(path, layer.options.className);
         }
 
         if (layer.options.interactive) {
-            _leaflet2["default"].DomUtil.addClass(path, 'leaflet-interactive');
+            _leaflet2.default.DomUtil.addClass(path, 'leaflet-interactive');
         }
 
         this._updateStyle(layer);
-        this._layers[_leaflet2["default"].stamp(layer)] = layer;
+        this._layers[_leaflet2.default.stamp(layer)] = layer;
     },
 
     _updateText: function _updateText(layer) {
@@ -55906,7 +55919,7 @@ _SVGRenderer.SVGRenderer.include({
             options = layer.options,
             offsetX = options.offsetX || 1,
             offsetY = options.offsetY || 1,
-            p = layer._point.subtract(_leaflet2["default"].point(offsetX, offsetY));
+            p = layer._point.subtract(_leaflet2.default.point(offsetX, offsetY));
         path.setAttribute('x', p.x);
         path.setAttribute('y', p.y);
         options.rotation = options.rotation || 0;
@@ -56912,6 +56925,12 @@ module.exports = function (module) {
 /* 298 */
 /***/ (function(module, exports) {
 
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 299 */
+/***/ (function(module, exports) {
+
 module.exports = function(phi, sphi, cphi, en) {
   cphi *= sphi;
   sphi *= sphi;
@@ -56919,7 +56938,7 @@ module.exports = function(phi, sphi, cphi, en) {
 };
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, exports) {
 
 module.exports = function (array){
@@ -56937,12 +56956,12 @@ module.exports = function (array){
 };
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var globals = __webpack_require__(516);
-var parseProj = __webpack_require__(302);
-var wkt = __webpack_require__(305);
+var globals = __webpack_require__(517);
+var parseProj = __webpack_require__(303);
+var wkt = __webpack_require__(306);
 
 function defs(name) {
   /*global console*/
@@ -56998,29 +57017,29 @@ module.exports = defs;
 
 
 /***/ }),
-/* 301 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var proj4 = __webpack_require__(512);
-proj4.defaultDatum = 'WGS84'; //default datum
-proj4.Proj = __webpack_require__(114);
-proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(502);
-proj4.toPoint = __webpack_require__(299);
-proj4.defs = __webpack_require__(300);
-proj4.transform = __webpack_require__(304);
-proj4.mgrs = __webpack_require__(295);
-proj4.version = __webpack_require__(545).version;
-__webpack_require__(517)(proj4);
-module.exports = proj4;
-
-/***/ }),
 /* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var proj4 = __webpack_require__(513);
+proj4.defaultDatum = 'WGS84'; //default datum
+proj4.Proj = __webpack_require__(114);
+proj4.WGS84 = new proj4.Proj('WGS84');
+proj4.Point = __webpack_require__(503);
+proj4.toPoint = __webpack_require__(300);
+proj4.defs = __webpack_require__(301);
+proj4.transform = __webpack_require__(305);
+proj4.mgrs = __webpack_require__(295);
+proj4.version = __webpack_require__(545).version;
+__webpack_require__(518)(proj4);
+module.exports = proj4;
+
+/***/ }),
+/* 303 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(510);
-var units = __webpack_require__(511);
+var PrimeMeridian = __webpack_require__(511);
+var units = __webpack_require__(512);
 
 module.exports = function(defData) {
   var self = {};
@@ -57153,7 +57172,7 @@ module.exports = function(defData) {
 
 
 /***/ }),
-/* 303 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(56);
@@ -57294,17 +57313,17 @@ exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 
 /***/ }),
-/* 304 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(514);
-var adjust_axis = __webpack_require__(503);
+var datum_transform = __webpack_require__(515);
+var adjust_axis = __webpack_require__(504);
 var proj = __webpack_require__(114);
-var toPoint = __webpack_require__(299);
+var toPoint = __webpack_require__(300);
 module.exports = function transform(source, dest, point) {
   var wgs84;
   if (Array.isArray(point)) {
@@ -57371,7 +57390,7 @@ module.exports = function transform(source, dest, point) {
 };
 
 /***/ }),
-/* 305 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
@@ -57600,12 +57619,6 @@ module.exports = function(wkt, self) {
 
 
 /***/ }),
-/* 306 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 307 */
 /***/ (function(module, exports) {
 
@@ -57629,11 +57642,11 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-__webpack_require__(544);
+__webpack_require__(502);
 
 var _MapService = __webpack_require__(136);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.control.changeTileVersion
@@ -57657,7 +57670,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        orientation - {string} 方向horizontal|vertical</br>
  *        switch - {boolean} 是否显示上/下一个版本切换控件
  */
-var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control.extend({
+var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.extend({
 
     options: {
         //绑定的底图图层
@@ -57679,7 +57692,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
         //方向horizontal|vertical
         orientation: 'horizontal',
         //是否显示上/下一个版本切换控件
-        "switch": true
+        switch: true
     },
 
     /**
@@ -57704,7 +57717,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
      * @param version - {Object} 版本信息
      */
     setContent: function setContent(version) {
-        var content = _leaflet2["default"].Util.extend({}, version);
+        var content = _leaflet2.default.Util.extend({}, version);
         this.setVersionName(content.desc).setToolTip(content.desc);
     },
 
@@ -57862,34 +57875,34 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
 
     _initLayout: function _initLayout() {
         var className = 'leaflet-control-ctv';
-        this._container = _leaflet2["default"].DomUtil.create('div', className + ' ' + className + '-' + this.options.orientation);
+        this._container = _leaflet2.default.DomUtil.create('div', className + ' ' + className + '-' + this.options.orientation);
         //正常情况下显示btn
-        this._sliderBtn = _leaflet2["default"].DomUtil.create('a', className + '-toggle', this._container);
+        this._sliderBtn = _leaflet2.default.DomUtil.create('a', className + '-toggle', this._container);
         this._sliderBtn.setAttribute("title", this.options.title);
         this._sliderBtn.innerHTML = this.options.ico;
 
         //滑块拖动时值显示区域
-        this._sliderValue = _leaflet2["default"].DomUtil.create('p', className + '-value', this._container);
+        this._sliderValue = _leaflet2.default.DomUtil.create('p', className + '-value', this._container);
         this._sliderValue.innerHTML = this.options.ico;
 
         var sliderClassName = "leaflet-ctv-slider";
-        this._sliderContent = _leaflet2["default"].DomUtil.create('div', sliderClassName + "-main" + "  tooltip", this._container);
+        this._sliderContent = _leaflet2.default.DomUtil.create('div', sliderClassName + "-main" + "  tooltip", this._container);
 
         //tooltip提示框
-        this.tooltip = _leaflet2["default"].DomUtil.create("span", "tooltip-text" + "  " + "tooltip-" + this.options.tooltip, this._sliderContent);
+        this.tooltip = _leaflet2.default.DomUtil.create("span", "tooltip-text" + "  " + "tooltip-" + this.options.tooltip, this._sliderContent);
         this.tooltip.innerHTML = this.options.ico;
 
         //加控件
-        if (this.options["switch"]) {
-            this._next = _leaflet2["default"].DomUtil.create('a', sliderClassName + "-incdec" + " " + sliderClassName + '-next', this._sliderContent);
+        if (this.options.switch) {
+            this._next = _leaflet2.default.DomUtil.create('a', sliderClassName + "-incdec" + " " + sliderClassName + '-next', this._sliderContent);
             this._next.innerHTML = this.options.nextText;
-            _leaflet2["default"].DomEvent.on(this._next, 'click', this.nextTilesVersion, this);
-            _leaflet2["default"].DomUtil.addClass(this._container, className + '-incdec');
+            _leaflet2.default.DomEvent.on(this._next, 'click', this.nextTilesVersion, this);
+            _leaflet2.default.DomUtil.addClass(this._container, className + '-incdec');
         }
 
         //滑块
-        this._sliderContainer = _leaflet2["default"].DomUtil.create('div', sliderClassName + '-container', this._sliderContent);
-        this.slider = _leaflet2["default"].DomUtil.create('input', sliderClassName, this._sliderContainer);
+        this._sliderContainer = _leaflet2.default.DomUtil.create('div', sliderClassName + '-container', this._sliderContent);
+        this.slider = _leaflet2.default.DomUtil.create('input', sliderClassName, this._sliderContainer);
 
         this.slider.setAttribute("title", this.options.title);
         this.slider.setAttribute("id", "slider");
@@ -57905,16 +57918,16 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
         }
         this.firstLoad = true;
         if ('oninput' in this.slider || 'onchange' in this.slider) {
-            _leaflet2["default"].DomEvent.on(this.slider, "change", this._tilesVersion, this);
+            _leaflet2.default.DomEvent.on(this.slider, "change", this._tilesVersion, this);
         } else {
             this.slider.onpropertychange = this._tilesVersion;
         }
 
         //减控件
-        if (this.options["switch"]) {
-            this._last = _leaflet2["default"].DomUtil.create('a', sliderClassName + "-incdec" + " " + sliderClassName + '-last', this._sliderContent);
+        if (this.options.switch) {
+            this._last = _leaflet2.default.DomUtil.create('a', sliderClassName + "-incdec" + " " + sliderClassName + '-last', this._sliderContent);
             this._last.innerHTML = this.options.lastText;
-            _leaflet2["default"].DomEvent.on(this._last, 'click', this.lastTilesVersion, this);
+            _leaflet2.default.DomEvent.on(this._last, 'click', this.lastTilesVersion, this);
         }
 
         if (window.matchMedia("screen and (-webkit-min-device-pixel-ratio:0)").matches && this.options.orientation == 'vertical') {
@@ -57926,17 +57939,17 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
             this._sliderContainer.style.width = 150 + 'px';
         }
 
-        _leaflet2["default"].DomEvent.disableClickPropagation(this._container);
+        _leaflet2.default.DomEvent.disableClickPropagation(this._container);
 
         if (this.options.collapsed) {
-            if (!_leaflet2["default"].Browser.android) {
-                _leaflet2["default"].DomEvent.on(this._container, 'mouseenter', this._expand, this).on(this._container, 'mouseleave', this._collapse, this);
+            if (!_leaflet2.default.Browser.android) {
+                _leaflet2.default.DomEvent.on(this._container, 'mouseenter', this._expand, this).on(this._container, 'mouseleave', this._collapse, this);
             }
 
-            if (_leaflet2["default"].Browser.touch) {
-                _leaflet2["default"].DomEvent.on(this._sliderBtn, 'click', _leaflet2["default"].DomEvent.stop).on(this._sliderBtn, 'click', this._expand, this);
+            if (_leaflet2.default.Browser.touch) {
+                _leaflet2.default.DomEvent.on(this._sliderBtn, 'click', _leaflet2.default.DomEvent.stop).on(this._sliderBtn, 'click', this._expand, this);
             } else {
-                _leaflet2["default"].DomEvent.on(this._sliderBtn, 'focus', this._expand, this);
+                _leaflet2.default.DomEvent.on(this._sliderBtn, 'focus', this._expand, this);
             }
         } else {
             this._expand();
@@ -57945,11 +57958,11 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
     },
 
     _expand: function _expand() {
-        _leaflet2["default"].DomUtil.addClass(this._container, 'leaflet-control-ctv-expanded');
+        _leaflet2.default.DomUtil.addClass(this._container, 'leaflet-control-ctv-expanded');
     },
 
     _collapse: function _collapse() {
-        _leaflet2["default"].DomUtil.removeClass(this._container, 'leaflet-control-ctv-expanded');
+        _leaflet2.default.DomUtil.removeClass(this._container, 'leaflet-control-ctv-expanded');
     },
 
     _tilesVersion: function _tilesVersion() {
@@ -57959,11 +57972,11 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
 
 });
 
-_leaflet2["default"].Map.mergeOptions({
+_leaflet2.default.Map.mergeOptions({
     changeTileVersionControl: false
 });
 
-_leaflet2["default"].Map.addInitHook(function () {
+_leaflet2.default.Map.addInitHook(function () {
     if (this.options.changeTileVersionControl) {
         this.changeTileVersionControl = new ChangeTileVersion();
         this.addControl(this.changeTileVersionControl);
@@ -57974,7 +57987,7 @@ var changeTileVersion = exports.changeTileVersion = function changeTileVersion(o
     return new ChangeTileVersion(options);
 };
 
-_leaflet2["default"].supermap.control.changeTileVersion = changeTileVersion;
+_leaflet2.default.supermap.control.changeTileVersion = changeTileVersion;
 
 /***/ }),
 /* 309 */
@@ -57998,7 +58011,7 @@ var _iClient = __webpack_require__(307);
 
 var _iClient2 = _interopRequireDefault(_iClient);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.control.logo
@@ -58016,7 +58029,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        link - {string} 跳转链接</br>
  *        alt - {string} logo图片失效时显示文本
  */
-var Logo = exports.Logo = _leaflet2["default"].Control.extend({
+var Logo = exports.Logo = _leaflet2.default.Control.extend({
 
     options: {
         position: 'bottomright',
@@ -58040,13 +58053,13 @@ var Logo = exports.Logo = _leaflet2["default"].Control.extend({
      * @return {div} 返回创建logo的div
      */
     onAdd: function onAdd() {
-        var div = _leaflet2["default"].DomUtil.create('div', 'iclient-leaflet-logo');
+        var div = _leaflet2.default.DomUtil.create('div', 'iclient-leaflet-logo');
         div.style.marginTop = 0;
         div.style.marginBottom = 0;
         div.style.marginLeft = 0;
         div.style.marginRight = 0;
 
-        var imgSrc = _iClient2["default"];
+        var imgSrc = _iClient2.default;
         if (this.options.imageUrl) {
             imgSrc = this.options.imageUrl;
         }
@@ -58069,15 +58082,15 @@ var Logo = exports.Logo = _leaflet2["default"].Control.extend({
     }
 });
 //map默认开启logoControl
-_leaflet2["default"].Map.mergeOptions({
+_leaflet2.default.Map.mergeOptions({
     logoControl: true
 });
 //map默认开启logoControl
-_leaflet2["default"].Map.addInitHook(function () {
+_leaflet2.default.Map.addInitHook(function () {
     if (!this._logoAdded && this.options.logoControl) {
         if (this.options.logoControl === true) {
             this.logoControl = new Logo();
-        } else if (this.options.logoControl instanceof _leaflet2["default"].Control) {
+        } else if (this.options.logoControl instanceof _leaflet2.default.Control) {
             this.logoControl = this.options.logoControl;
         }
         if (this.logoControl) {
@@ -58090,7 +58103,7 @@ var logo = exports.logo = function logo(options) {
     return new Logo(options);
 };
 
-_leaflet2["default"].supermap.control.logo = logo;
+_leaflet2.default.supermap.control.logo = logo;
 
 /***/ }),
 /* 310 */
@@ -58112,7 +58125,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.imageMapLayer
@@ -58135,7 +58148,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。
  */
-var ImageMapLayer = exports.ImageMapLayer = _leaflet2["default"].TileLayer.extend({
+var ImageMapLayer = exports.ImageMapLayer = _leaflet2.default.TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
@@ -58162,9 +58175,9 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2["default"].TileLayer.exten
 
     initialize: function initialize(url, options) {
         this.url = this._url = url;
-        _leaflet2["default"].TileLayer.prototype.initialize.apply(this, arguments);
-        _leaflet2["default"].setOptions(this, options);
-        _leaflet2["default"].stamp(this);
+        _leaflet2.default.TileLayer.prototype.initialize.apply(this, arguments);
+        _leaflet2.default.setOptions(this, options);
+        _leaflet2.default.stamp(this);
     },
 
     /**
@@ -58176,7 +58189,7 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2["default"].TileLayer.exten
     onAdd: function onAdd(map) {
         this._crs = this.options.crs || map.options.crs;
         this._initLayerUrl();
-        _leaflet2["default"].TileLayer.prototype.onAdd.call(this, map);
+        _leaflet2.default.TileLayer.prototype.onAdd.call(this, map);
     },
 
     /**
@@ -58208,8 +58221,8 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2["default"].TileLayer.exten
             params = [];
 
         var tileSize = this.options.tileSize;
-        if (!(tileSize instanceof _leaflet2["default"].Point)) {
-            tileSize = _leaflet2["default"].point(tileSize, tileSize);
+        if (!(tileSize instanceof _leaflet2.default.Point)) {
+            tileSize = _leaflet2.default.point(tileSize, tileSize);
         }
         params.push("width=" + tileSize.x);
         params.push("height=" + tileSize.y);
@@ -58231,8 +58244,8 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2["default"].TileLayer.exten
             params.push("layersID=" + options.layersID);
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof _leaflet2["default"].Path) {
-            options.clipRegion = _leaflet2["default"].Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
+        if (options.clipRegionEnabled && options.clipRegion instanceof _leaflet2.default.Path) {
+            options.clipRegion = _leaflet2.default.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
             options.clipRegion = _iclientCommon.CommonUtil.toJSON(_iclientCommon.ServerGeometry.fromGeometry(options.clipRegion));
             params.push("clipRegionEnabled=" + options.clipRegionEnabled);
             params.push("clipRegion=" + JSON.stringify(options.clipRegion));
@@ -58289,7 +58302,7 @@ var imageMapLayer = exports.imageMapLayer = function imageMapLayer(url, options)
     return new ImageMapLayer(url, options);
 };
 
-_leaflet2["default"].supermap.imageMapLayer = imageMapLayer;
+_leaflet2.default.supermap.imageMapLayer = imageMapLayer;
 
 /***/ }),
 /* 311 */
@@ -58311,7 +58324,7 @@ var _jsonsql = __webpack_require__(458);
 
 var _jsonsql2 = _interopRequireDefault(_jsonsql);
 
-var _proj = __webpack_require__(301);
+var _proj = __webpack_require__(302);
 
 var _proj2 = _interopRequireDefault(_proj);
 
@@ -58347,9 +58360,9 @@ var _UnicodeMarker = __webpack_require__(131);
 
 var _TiandituTileLayer = __webpack_require__(126);
 
-__webpack_require__(306);
+__webpack_require__(298);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.webmap
@@ -58365,7 +58378,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        credentialKey - {string} 证书密钥。<br>
  *        attribution - {string} 版权信息。
  */
-var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
+var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
 
     options: {
         map: 'map',
@@ -58390,7 +58403,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
 
     initialize: function initialize(id, options) {
         this._layers = {};
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         this.id = id;
         this.load();
         this.cartoCSSToLeaflet = new _CartoCSSToLeaflet.CartoCSSToLeaflet();
@@ -58449,7 +58462,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
      * @param layersJson - {JSON} 图层的json信息
      */
     createLayersByJson: function createLayersByJson(layersJson) {
-        if (!_leaflet2["default"].Util.isArray(layersJson)) {
+        if (!_leaflet2.default.Util.isArray(layersJson)) {
             return;
         }
         if (layersJson.length === 0) {
@@ -58503,7 +58516,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         }
 
         if (epsgCode === 910112 || epsgCode === 910102) {
-            return _leaflet2["default"].CRS.BaiduCRS;
+            return _leaflet2.default.CRS.BaiduCRS;
         }
         if (epsgCode === 910111) {
             epsgCode = 3857;
@@ -58513,7 +58526,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             epsgCode = 4326;
             //todo 火星
         }
-        return _leaflet2["default"].Proj.CRS("EPSG:" + epsgCode, {
+        return _leaflet2.default.Proj.CRS("EPSG:" + epsgCode, {
             origin: origin,
             resolutions: resolutions,
             bounds: bounds
@@ -58527,15 +58540,15 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
      * @param options - {Object} 创建地图所需参数
      */
     createMap: function createMap(options) {
-        var crs = options.crs || _leaflet2["default"].CRS.EPSG3857;
-        var bounds = _leaflet2["default"].latLngBounds(crs.unproject(options.bounds.min), crs.unproject(options.bounds.max));
-        this._map = _leaflet2["default"].map(this.options.map, {
+        var crs = options.crs || _leaflet2.default.CRS.EPSG3857;
+        var bounds = _leaflet2.default.latLngBounds(crs.unproject(options.bounds.min), crs.unproject(options.bounds.max));
+        this._map = _leaflet2.default.map(this.options.map, {
             center: bounds.getCenter(),
             maxZoom: options.maxZoom || 22,
             minZoom: options.minZoom || 0,
             zoom: options.zoom || 0,
             crs: crs,
-            renderer: _leaflet2["default"].canvas()
+            renderer: _leaflet2.default.canvas()
         });
         if (crs instanceof _NonEarthCRS.NonEarthCRS) {
             this._map.setZoom(options.zoom ? options.zoom + 2 : 2, { maxZoom: options.maxZoom || 22 });
@@ -58557,7 +58570,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
     getResolutionsFromScales: function getResolutionsFromScales(scales, dpi, units, datum) {
         var resolutions = [];
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(_leaflet2["default"].Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum));
+            resolutions.push(_leaflet2.default.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum));
         }
         return resolutions;
     },
@@ -58578,14 +58591,14 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             scales = layerInfo.scales,
             isBaseLayer = layerInfo.isBaseLayer,
             opacity = layerInfo.opacity;
-        var mapBounds = _leaflet2["default"].bounds([bounds.leftBottom.x, bounds.leftBottom.y], [bounds.rightTop.x, bounds.rightTop.y]);
-        var layerBounds = layerInfo.bounds ? _leaflet2["default"].bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : null;
-        var origin = layerBounds ? _leaflet2["default"].point(layerBounds.min.x, layerBounds.max.y) : _leaflet2["default"].point(mapBounds.min.x, mapBounds.max.y);
+        var mapBounds = _leaflet2.default.bounds([bounds.leftBottom.x, bounds.leftBottom.y], [bounds.rightTop.x, bounds.rightTop.y]);
+        var layerBounds = layerInfo.bounds ? _leaflet2.default.bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : null;
+        var origin = layerBounds ? _leaflet2.default.point(layerBounds.min.x, layerBounds.max.y) : _leaflet2.default.point(mapBounds.min.x, mapBounds.max.y);
         var resolutions = !scales ? null : this.getResolutionsFromScales(scales, 96, layerInfo.units);
         var crs = this.createCRS(epsgCode, prjCoordSys ? prjCoordSys.type : '', resolutions, origin, layerBounds || mapBounds);
         var mapOptions = {
             bounds: mapBounds,
-            center: _leaflet2["default"].point(center.x, center.y),
+            center: _leaflet2.default.point(center.x, center.y),
             crs: crs,
             zoom: level
         };
@@ -58603,13 +58616,13 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             case "TIANDITU_VEC":
             case "TIANDITU_IMG":
             case "TIANDITU_TER":
-                mapOptions.crs = epsgCode === 4326 ? _leaflet2["default"].CRS.TianDiTu_WGS84 : _leaflet2["default"].CRS.TianDiTu_Mercator;
+                mapOptions.crs = epsgCode === 4326 ? _leaflet2.default.CRS.TianDiTu_WGS84 : _leaflet2.default.CRS.TianDiTu_Mercator;
                 mapOptions.minZoom = 1;
                 mapOptions.zoom = 1 + mapOptions.zoom;
                 layer = this.createTiandituLayer(layerInfo);
                 break;
             case "BAIDU":
-                mapOptions.crs = _leaflet2["default"].CRS.BaiduCRS;
+                mapOptions.crs = _leaflet2.default.CRS.BaiduCRS;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
                 layer = (0, _BaiduTileLayer.baiduTileLayer)();
@@ -58632,7 +58645,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 });
                 break;
             case "CLOUD":
-                mapOptions.crs = _leaflet2["default"].CRS.EPSG3857;
+                mapOptions.crs = _leaflet2.default.CRS.EPSG3857;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
                 layer = (0, _CloudTileLayer.cloudTileLayer)(layerInfo.url, { opacity: opacity });
@@ -58690,13 +58703,13 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         //marker, point, size, offset, icon, that = this;
         //todo offset
         var coordsToLatLng = function coordsToLatLng(coords) {
-            var ll = crs.unproject(_leaflet2["default"].point(coords[0], coords[1]));
-            return new _leaflet2["default"].LatLng(ll.lat, ll.lng, coords[2]);
+            var ll = crs.unproject(_leaflet2.default.point(coords[0], coords[1]));
+            return new _leaflet2.default.LatLng(ll.lat, ll.lng, coords[2]);
         };
 
-        var layer = _leaflet2["default"].geoJSON(_leaflet2["default"].Util.toGeoJSON(markers), {
+        var layer = _leaflet2.default.geoJSON(_leaflet2.default.Util.toGeoJSON(markers), {
             pointToLayer: function pointToLayer(geojson, latlng) {
-                var m = new _leaflet2["default"].Marker(latlng);
+                var m = new _leaflet2.default.Marker(latlng);
                 m.setStyle = function (style) {
                     if (style) {
                         m.setIcon(style);
@@ -58727,7 +58740,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         if (!subLayers || subLayers === "undefined" || subLayers === "null") {
             subLayers = "0";
         }
-        return _leaflet2["default"].tileLayer.wms(url, {
+        return _leaflet2.default.tileLayer.wms(url, {
             layers: subLayers,
             format: 'image/png',
             transparent: true,
@@ -58751,13 +58764,13 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             me = this;
         //todo readonly = layerInfo.readonly;
         var coordsToLatLng = function coordsToLatLng(coords) {
-            var ll = crs.unproject(_leaflet2["default"].point(coords[0], coords[1]));
-            return new _leaflet2["default"].LatLng(ll.lat, ll.lng, coords[2]);
+            var ll = crs.unproject(_leaflet2.default.point(coords[0], coords[1]));
+            return new _leaflet2.default.LatLng(ll.lat, ll.lng, coords[2]);
         };
         if (!layerInfo.url) {
-            var layer = _leaflet2["default"].geoJSON(_leaflet2["default"].Util.toGeoJSON(layerInfo.features), {
+            var layer = _leaflet2.default.geoJSON(_leaflet2.default.Util.toGeoJSON(layerInfo.features), {
                 pointToLayer: function pointToLayer(geojson, latlng) {
-                    var m = new _leaflet2["default"].Marker(latlng);
+                    var m = new _leaflet2.default.Marker(latlng);
                     m.setStyle = function (style) {
                         if (style) {
                             m.setIcon(style);
@@ -58786,9 +58799,9 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                 var dataset = datasets[setNameIndex];
                 if (dataset.visible) {
                     this.getFeaturesBySQL(url, datasourceName, dataset.name, "", _iclientCommon.DataFormat.GEOJSON, function (serviceResult) {
-                        var layer = _leaflet2["default"].geoJSON(serviceResult.result, {
+                        var layer = _leaflet2.default.geoJSON(serviceResult.result, {
                             pointToLayer: function pointToLayer(geojson, latlng) {
-                                var m = new _leaflet2["default"].Marker(latlng);
+                                var m = new _leaflet2.default.Marker(latlng);
                                 m.setStyle = function (style) {
                                     if (style) {
                                         m.setIcon(style);
@@ -58874,8 +58887,8 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             featureStyle.fill = true;
         }
         var coordsToLatLng = function coordsToLatLng(coords) {
-            var ll = _this3._map.options.crs.unproject(_leaflet2["default"].point(coords[0], coords[1]));
-            return new _leaflet2["default"].LatLng(ll.lat, ll.lng, coords[2]);
+            var ll = _this3._map.options.crs.unproject(_leaflet2.default.point(coords[0], coords[1]));
+            return new _leaflet2.default.LatLng(ll.lat, ll.lng, coords[2]);
         };
         var pointStyle = {};
         pointStyle.radius = featureStyle.pointRadius;
@@ -58886,14 +58899,14 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         pointStyle.fillColor = featureStyle.fillColor;
         pointStyle.fillOpacity = featureStyle.fillOpacity;
         var pointToLayer = function pointToLayer(geojson, latlng) {
-            return _leaflet2["default"].circleMarker(latlng, pointStyle);
+            return _leaflet2.default.circleMarker(latlng, pointStyle);
         };
         if (featureStyle.unicode) {
             pointToLayer = function pointToLayer(geojson, latlng) {
                 return new _UnicodeMarker.UnicodeMarker(latlng, featureStyle);
             };
         }
-        return _leaflet2["default"].geoJSON({ type: "GeometryCollection", geometries: [] }, {
+        return _leaflet2.default.geoJSON({ type: "GeometryCollection", geometries: [] }, {
             pointToLayer: pointToLayer,
             coordsToLatLng: coordsToLatLng,
             opacity: opacity
@@ -58984,7 +58997,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         } else {
             style = settings[0].style;
         }
-        var layerStyle = _leaflet2["default"].Util.extend(new _iclientCommon.ThemeStyle(), style);
+        var layerStyle = _leaflet2.default.Util.extend(new _iclientCommon.ThemeStyle(), style);
         layerStyle.fontWeight = "bold";
         layerStyle.fontSize = "14px";
         //默认显示标签边框背景
@@ -59024,7 +59037,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
         if (themeSettings.settings[0] && themeSettings.settings[0].featureWeight) {
             featureWeight = themeSettings.settings[0].featureWeight;
         }
-        return _leaflet2["default"].heatLayer([], {
+        return _leaflet2.default.heatLayer([], {
             radius: radius / 2,
             minOpacity: layerInfo.opacity,
             gradient: gradient,
@@ -59065,7 +59078,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     if (data.type === 'EXCEL' || data.type === 'CSV') {
                         features = me.parseFeatureFromEXCEL.apply(me, [data.content.rows, data.content.colTitles, false, position]);
                         for (var x = 0, len = features.length; x < len; x++) {
-                            result = (0, _jsonsql2["default"])({ attr: features[x].attributes }, sql);
+                            result = (0, _jsonsql2.default)({ attr: features[x].attributes }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[x]);
                             }
@@ -59073,7 +59086,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     } else {
                         features = me.parseFeatureFromJson(data.content);
                         for (var i = 0, length = features.length; i < length; i++) {
-                            result = (0, _jsonsql2["default"])({ attr: features[i].attributes }, sql);
+                            result = (0, _jsonsql2.default)({ attr: features[i].attributes }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[i]);
                             }
@@ -59094,7 +59107,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
                     features = layerInfo.features;
                 for (var i = 0, len = features.length; i < len; i++) {
                     var feature = features[i];
-                    var sqlResult = (0, _jsonsql2["default"])({ attr: feature.attributes }, sql);
+                    var sqlResult = (0, _jsonsql2.default)({ attr: feature.attributes }, sql);
                     if (sqlResult.length > 0) {
                         var lon = feature.geometry.points[0].x,
                             lat = feature.geometry.points[0].y;
@@ -59162,17 +59175,17 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             if (layer && layer.labelLayer instanceof _LabelThemeLayer.LabelThemeLayer) {
                 me.addFeature2LabelLayer(layer.labelLayer, features, layerInfo);
             }
-            if (_leaflet2["default"].HeatLayer && layer instanceof _leaflet2["default"].HeatLayer) {
+            if (_leaflet2.default.HeatLayer && layer instanceof _leaflet2.default.HeatLayer) {
                 var heatPoints = [];
                 for (var _i = 0, _len = features.length; _i < _len; _i++) {
                     var geometry = features[_i].geometry;
-                    heatPoints[_i] = me._map.options.crs.unproject(_leaflet2["default"].point(geometry.x, geometry.y));
+                    heatPoints[_i] = me._map.options.crs.unproject(_leaflet2.default.point(geometry.x, geometry.y));
                     if (layer.options.featureWeight) {
                         heatPoints[_i] = [heatPoints[_i].lat, heatPoints[_i].lng, parseFloat(features[_i].attributes[layer.options.featureWeight])];
                     }
                 }
                 layer.setLatLngs(heatPoints);
-            } else if (layer instanceof _leaflet2["default"].GeoJSON) {
+            } else if (layer instanceof _leaflet2.default.GeoJSON) {
                 layer.addData(JSON.parse(new _iclientCommon.GeoJSON().write(features)));
             } else {
                 layer.addFeatures(features);
@@ -59336,17 +59349,17 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
     projTransform: function projTransform(fromEpsg, toEpsg, point, success) {
         var newCoor,
             me = this;
-        if (!_proj2["default"]) {
+        if (!_proj2.default) {
             return;
         }
         if (point && point.length !== undefined) {
             newCoor = [];
             for (var i = 0, len = point.length; i < len; i++) {
-                var coor = (0, _proj2["default"])(fromEpsg, toEpsg, [point[i].x, point[i].y]);
+                var coor = (0, _proj2.default)(fromEpsg, toEpsg, [point[i].x, point[i].y]);
                 newCoor.push({ x: coor[0], y: coor[1] });
             }
         } else {
-            newCoor = (0, _proj2["default"])(fromEpsg, toEpsg, [point.x, point.y]);
+            newCoor = (0, _proj2.default)(fromEpsg, toEpsg, [point.x, point.y]);
             newCoor = { x: newCoor[0], y: newCoor[1] };
         }
         if (success) {
@@ -59474,7 +59487,7 @@ var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
             return response.json();
         }).then(function (data) {
             success && success(data);
-        })["catch"](function (err) {
+        }).catch(function (err) {
             return failed && failed(err);
         });
     },
@@ -59549,7 +59562,7 @@ var webMap = exports.webMap = function webMap(id, options) {
     return new WebMap(id, options);
 };
 
-_leaflet2["default"].supermap.webmap = webMap;
+_leaflet2.default.supermap.webmap = webMap;
 
 /***/ }),
 /* 312 */
@@ -59571,7 +59584,7 @@ __webpack_require__(4);
 
 var _DataFlowService = __webpack_require__(134);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.dataFlowLayer
@@ -59584,7 +59597,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        excludeField - {string} 排除字段。<br>
  *        idField - {string} id字段。
  */
-var DataFlowLayer = exports.DataFlowLayer = _leaflet2["default"].GeoJSON.extend({
+var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
 
     options: {
         geometry: null,
@@ -59598,12 +59611,12 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2["default"].GeoJSON.extend(
         var me = this;
         if (options.style && !options.pointToLayer) {
             options.pointToLayer = function (geojson, latlng) {
-                return _leaflet2["default"].circleMarker(latlng, options.style());
+                return _leaflet2.default.circleMarker(latlng, options.style());
             };
         }
-        _leaflet2["default"].Util.setOptions(me, options);
+        _leaflet2.default.Util.setOptions(me, options);
         me._layers = {};
-        _leaflet2["default"].stamp(me);
+        _leaflet2.default.stamp(me);
         me.url = url;
         this.idCache = {};
     },
@@ -59674,8 +59687,8 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2["default"].GeoJSON.extend(
             layer = this.getLayer(this.idCache[geoID]);
             this._updateLayerData(layer, geojson);
         } else {
-            layer = _leaflet2["default"].GeoJSON.geometryToLayer(geojson, this.options);
-            layer.feature = _leaflet2["default"].GeoJSON.asFeature(geojson);
+            layer = _leaflet2.default.GeoJSON.geometryToLayer(geojson, this.options);
+            layer.feature = _leaflet2.default.GeoJSON.asFeature(geojson);
             this.addLayer(layer);
             if (geoID !== undefined) {
                 this.idCache[geoID] = this.getLayerId(layer);
@@ -59693,20 +59706,20 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2["default"].GeoJSON.extend(
         var latlngs = [];
         switch (geojson.geometry.type) {
             case 'Point':
-                latlngs = _leaflet2["default"].GeoJSON.coordsToLatLng(geojson.geometry.coordinates);
+                latlngs = _leaflet2.default.GeoJSON.coordsToLatLng(geojson.geometry.coordinates);
                 layer.setLatLng(latlngs);
                 break;
             case 'LineString':
-                latlngs = _leaflet2["default"].GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 0);
+                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 0);
                 layer.setLatLngs(latlngs);
                 break;
             case 'MultiLineString':
             case 'Polygon':
-                latlngs = _leaflet2["default"].GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
+                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
                 layer.setLatLngs(latlngs);
                 break;
             case 'MultiPolygon':
-                latlngs = _leaflet2["default"].GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 2);
+                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 2);
                 layer.setLatLngs(latlngs);
                 break;
         }
@@ -59716,7 +59729,7 @@ var dataFlowLayer = exports.dataFlowLayer = function dataFlowLayer(url, options)
     return new DataFlowLayer(url, options);
 };
 
-_leaflet2["default"].supermap.dataFlowLayer = dataFlowLayer;
+_leaflet2.default.supermap.dataFlowLayer = dataFlowLayer;
 
 /***/ }),
 /* 313 */
@@ -59741,7 +59754,7 @@ var _echarts = __webpack_require__(546);
 
 var _echarts2 = _interopRequireDefault(_echarts);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.echartsLayer
@@ -59752,7 +59765,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        attribution - {string} 版权信息。<br>
  *        loadWhileAnimating - {boolean} 是否在启动时加载。
  */
-var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
+var EchartsLayer = exports.EchartsLayer = _leaflet2.default.Layer.extend({
 
     includes: [],
     _echartsContainer: null,
@@ -59772,7 +59785,7 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
             };
         }
         this._echartsOptions = echartsOptions;
-        _leaflet2["default"].Util.setOptions(this, options);
+        _leaflet2.default.Util.setOptions(this, options);
     },
 
     /**
@@ -59808,21 +59821,21 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
     onAdd: function onAdd(map) {
         this._map = map;
         this._initEchartsContainer();
-        this._ec = _echarts2["default"].init(this._echartsContainer);
-        _echarts2["default"].leafletMap = map;
+        this._ec = _echarts2.default.init(this._echartsContainer);
+        _echarts2.default.leafletMap = map;
         var me = this;
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
-        _echarts2["default"].registerAction({
+        _echarts2.default.registerAction({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
             update: 'updateLayout'
         }, function (payload, ecModel) {// eslint-disable-line no-unused-vars
 
         });
-        _echarts2["default"].registerCoordinateSystem('leaflet', LeafletMapCoordSys);
-        _echarts2["default"].extendComponentModel({
+        _echarts2.default.registerCoordinateSystem('leaflet', LeafletMapCoordSys);
+        _echarts2.default.extendComponentModel({
             type: 'LeafletMap',
             getBMap: function getBMap() {
                 return this.__LeafletMap;
@@ -59831,11 +59844,11 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
                 roam: false
             }
         });
-        _echarts2["default"].extendComponentView({
+        _echarts2.default.extendComponentView({
             type: 'LeafletMap',
             render: function render(LeafletMapModel, ecModel, api) {
                 var rendering = true;
-                var leafletMap = _echarts2["default"].leafletMap;
+                var leafletMap = _echarts2.default.leafletMap;
                 var viewportRoot = api.getZr().painter.getViewportRoot();
                 var coordSys = LeafletMapModel.coordinateSystem;
                 var moveHandler = function moveHandler() {
@@ -59935,7 +59948,7 @@ LeafletMapCoordSys.prototype.getBMap = function () {
 };
 
 LeafletMapCoordSys.prototype.prepareCustoms = function () {
-    var zrUtil = _echarts2["default"].util;
+    var zrUtil = _echarts2.default.util;
 
     var rect = this.getViewRect();
     return {
@@ -59976,7 +59989,7 @@ LeafletMapCoordSys.prototype.dataToPoint = function (data) {
 
     data[1] = this.fixLat(data[1]);
 
-    var point = new _leaflet2["default"].latLng(data[1], data[0]);
+    var point = new _leaflet2.default.latLng(data[1], data[0]);
     var px = this._LeafletMap.latLngToLayerPoint(point);
     var mapOffset = this._mapOffset;
     return [px.x - mapOffset[0], px.y - mapOffset[1]];
@@ -60000,11 +60013,11 @@ LeafletMapCoordSys.prototype.pointToData = function (pt) {
 
 LeafletMapCoordSys.prototype.getViewRect = function () {
     var api = this._api;
-    return new _echarts2["default"].graphic.BoundingRect(0, 0, api.getWidth(), api.getHeight());
+    return new _echarts2.default.graphic.BoundingRect(0, 0, api.getWidth(), api.getHeight());
 };
 
 LeafletMapCoordSys.prototype.getRoamTransform = function () {
-    return _echarts2["default"].matrix.create();
+    return _echarts2.default.matrix.create();
 };
 LeafletMapCoordSys.dimensions = LeafletMapCoordSys.prototype.dimensions;
 
@@ -60012,7 +60025,7 @@ LeafletMapCoordSys.create = function (ecModel, api) {
     var coordSys;
 
     ecModel.eachComponent('LeafletMap', function (LeafletMapModel) {
-        var leafletMap = _echarts2["default"].leafletMap;
+        var leafletMap = _echarts2.default.leafletMap;
         coordSys = new LeafletMapCoordSys(leafletMap, api);
         coordSys.setMapOffset(LeafletMapModel.__mapOffset || [0, 0]);
         LeafletMapModel.coordinateSystem = coordSys;
@@ -60028,7 +60041,7 @@ var echartsLayer = exports.echartsLayer = function echartsLayer(echartsOptions, 
     return new EchartsLayer(echartsOptions, options);
 };
 
-_leaflet2["default"].supermap.echartsLayer = echartsLayer;
+_leaflet2.default.supermap.echartsLayer = echartsLayer;
 
 /***/ }),
 /* 314 */
@@ -60048,7 +60061,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.graphicLayer
@@ -60068,11 +60081,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        fillRule - {string} 填充规则<br>
  *        radius - {number}半径
  */
-var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
+var GraphicLayer = exports.GraphicLayer = _leaflet2.default.Path.extend({
 
     initialize: function initialize(graphics, options) {
         options = options || {};
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         this.graphics = graphics;
     },
 
@@ -60101,7 +60114,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
         this._canvas.width = width;
         this._canvas.height = height;
         this._ctx = this._canvas.getContext('2d');
-        _leaflet2["default"].Path.prototype.onAdd.call(this);
+        _leaflet2.default.Path.prototype.onAdd.call(this);
     },
 
     _update: function _update() {
@@ -60120,10 +60133,10 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
             var point = me._map.latLngToLayerPoint(graphic.getLatLng());
             var w = me._clickTolerance();
             var p = [graphic._anchor + w, graphic._anchor + w];
-            graphic._pxBounds = new _leaflet2["default"].Bounds(point.subtract(p), point.add(p));
+            graphic._pxBounds = new _leaflet2.default.Bounds(point.subtract(p), point.add(p));
             return graphic;
         });
-        me._pxBounds = _leaflet2["default"].bounds(_leaflet2["default"].point(0, 0), _leaflet2["default"].point(this._canvas.width, this._canvas.height));
+        me._pxBounds = _leaflet2.default.bounds(_leaflet2.default.point(0, 0), _leaflet2.default.point(this._canvas.width, this._canvas.height));
     },
 
     _getGraphicsInBounds: function _getGraphicsInBounds() {
@@ -60149,9 +60162,9 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
         for (var i = 0; i < graphics.length; i++) {
             var center = me._map.latLngToLayerPoint(graphics[i].getLatLng());
             var canvas = graphics[i].getCanvas();
-            var p1 = _leaflet2["default"].point(center.x - canvas.width / 2, center.y - canvas.height / 2),
-                p2 = _leaflet2["default"].point(center.x + canvas.width / 2, center.y + canvas.height / 2),
-                bounds = _leaflet2["default"].bounds(p1, p2);
+            var p1 = _leaflet2.default.point(center.x - canvas.width / 2, center.y - canvas.height / 2),
+                p2 = _leaflet2.default.point(center.x + canvas.width / 2, center.y + canvas.height / 2),
+                bounds = _leaflet2.default.bounds(p1, p2);
             if (bounds.contains(me._map.latLngToLayerPoint(evt.latlng))) {
                 return me.options.handleClick.call(me, graphics[i]);
             }
@@ -60159,7 +60172,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
     }
 });
 
-_leaflet2["default"].Canvas.include({
+_leaflet2.default.Canvas.include({
     _drawGraphics: function _drawGraphics(graphics) {
         var me = this;
         me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
@@ -60178,7 +60191,7 @@ var graphicLayer = exports.graphicLayer = function graphicLayer(graphics, option
     return new GraphicLayer(graphics, options);
 };
 
-_leaflet2["default"].supermap.graphicLayer = graphicLayer;
+_leaflet2.default.supermap.graphicLayer = graphicLayer;
 
 /***/ }),
 /* 315 */
@@ -60200,7 +60213,7 @@ __webpack_require__(4);
 
 var _MapVRenderer = __webpack_require__(448);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.mapVLayer
@@ -60212,7 +60225,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        attributionPrefix - {string} 版权信息前缀。<br>
  *        attribution - {string} 版权信息。
  */
-var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
+var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
 
     options: {
         attributionPrefix: null,
@@ -60224,13 +60237,13 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
         this.dataSet = dataSet || {};
         this.mapVOptions = mapVOptions || {};
         this.render = this.render.bind(this);
-        _leaflet2["default"].Util.setOptions(this, options);
+        _leaflet2.default.Util.setOptions(this, options);
         if (this.options.attributionPrefix) {
             this.options.attribution = this.options.attributionPrefix + this.options.attribution;
         }
 
         this.canvas = this._createCanvas();
-        _leaflet2["default"].stamp(this);
+        _leaflet2.default.stamp(this);
     },
 
     /**
@@ -60242,7 +60255,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
     onAdd: function onAdd(map) {
         this._map = map;
         var overlayPane = this.getPane();
-        var container = this.container = _leaflet2["default"].DomUtil.create("div", "leaflet-layer leaflet-zoom-animated", overlayPane);
+        var container = this.container = _leaflet2.default.DomUtil.create("div", "leaflet-layer leaflet-zoom-animated", overlayPane);
         container.appendChild(this.canvas);
         var size = map.getSize();
         container.style.width = size.x + "px";
@@ -60266,7 +60279,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
      * @description 删除地图图层
      */
     onRemove: function onRemove() {
-        _leaflet2["default"].DomUtil.remove(this.container);
+        _leaflet2.default.DomUtil.remove(this.container);
         this.renderer.unbindEvent();
     },
 
@@ -60414,7 +60427,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
         canvas.style.height = size.y + 'px';
         var bounds = map.getBounds();
         var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
-        _leaflet2["default"].DomUtil.setPosition(canvas, topLeft);
+        _leaflet2.default.DomUtil.setPosition(canvas, topLeft);
     },
 
     _reset: function _reset() {
@@ -60435,20 +60448,20 @@ var mapVLayer = exports.mapVLayer = function mapVLayer(dataSet, mapVOptions, opt
     return new MapVLayer(dataSet, mapVOptions, options);
 };
 
-_leaflet2["default"].Map.include({
+_leaflet2.default.Map.include({
     /*
      * 获取精确的像素坐标.
      * 当需要绘制比较平滑的曲线的时候可调用此方法代替latLngToContainerPoint
      * @param latlng
      */
     latLngToAccurateContainerPoint: function latLngToAccurateContainerPoint(latlng) {
-        var projectedPoint = this.project(_leaflet2["default"].latLng(latlng));
+        var projectedPoint = this.project(_leaflet2.default.latLng(latlng));
         var layerPoint = projectedPoint._subtract(this.getPixelOrigin());
-        return _leaflet2["default"].point(layerPoint).add(this._getMapPanePos());
+        return _leaflet2.default.point(layerPoint).add(this._getMapPanePos());
     }
 });
 
-_leaflet2["default"].supermap.mapVLayer = mapVLayer;
+_leaflet2.default.supermap.mapVLayer = mapVLayer;
 
 /***/ }),
 /* 316 */
@@ -60472,7 +60485,7 @@ var _iclientCommon = __webpack_require__(5);
 
 var _GraphThemeLayer = __webpack_require__(128);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.rankSymbolThemeLayer
@@ -60545,7 +60558,7 @@ var rankSymbolThemeLayer = exports.rankSymbolThemeLayer = function rankSymbolThe
     return new RankSymbolThemeLayer(name, symbolType, options);
 };
 
-_leaflet2["default"].supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;
+_leaflet2.default.supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;
 
 /***/ }),
 /* 317 */
@@ -60571,7 +60584,7 @@ var _CartoCSSToLeaflet = __webpack_require__(283);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.tiledVectorLayer
@@ -60616,9 +60629,9 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
     initialize: function initialize(url, options) {
         options = options || {};
         options.noWrap = options.noWrap == null ? true : options.noWrap;
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         _VectorGrid.VectorGrid.prototype.initialize.call(this, options);
-        _leaflet2["default"].stamp(this);
+        _leaflet2.default.stamp(this);
         var me = this;
 
         if (!url || url === "" || url.indexOf("http") < 0) {
@@ -60683,7 +60696,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
             if (me.options.serverCartoCSSStyle) {
                 me.getVectorStylesFromServer();
             }
-        })["catch"](function (ex) {
+        }).catch(function (ex) {
             console.error('error', ex);
         });
     },
@@ -60757,7 +60770,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
                 me.setClientCartoCSS(me.options.cartoCSS);
             }
             me._initGrid();
-        })["catch"](function (ex) {
+        }).catch(function (ex) {
             console.error('error', ex);
         });
     },
@@ -60898,7 +60911,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         if (crs.code && crs.code.indexOf("4326") > -1) {
             mapUnit = _iclientCommon.Unit.DEGREE;
         }
-        return _leaflet2["default"].Util.resolutionToScale(resolution, 96, mapUnit);
+        return _leaflet2.default.Util.resolutionToScale(resolution, 96, mapUnit);
     },
 
     _mergeFeatureTextField: function _mergeFeatureTextField(feature, style) {
@@ -60908,7 +60921,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         }
 
         var tempStyle = style;
-        if (!_leaflet2["default"].Util.isArray(style)) {
+        if (!_leaflet2.default.Util.isArray(style)) {
             tempStyle = [style];
         }
         for (var i = 0; i < tempStyle.length; i++) {
@@ -60947,7 +60960,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
             data['-y'] = invertedY;
         }
 
-        var tileUrl = _leaflet2["default"].Util.template(tileTemplate, _leaflet2["default"].extend(data, me.options));
+        var tileUrl = _leaflet2.default.Util.template(tileTemplate, _leaflet2.default.extend(data, me.options));
         return tileUrl;
     },
 
@@ -60955,7 +60968,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         _VectorGrid.VectorGrid.prototype.onAdd.call(this, this._map);
     },
 
-    _getSubdomain: _leaflet2["default"].TileLayer.prototype._getSubdomain,
+    _getSubdomain: _leaflet2.default.TileLayer.prototype._getSubdomain,
     _getDefaultTileUrl: function _getDefaultTileUrl(coords) {
         var x = coords.x,
             y = coords.y;
@@ -60987,7 +61000,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
             params.push("layersID=" + options.layersID);
         }
         if (options.layerNames) {
-            if (!_leaflet2["default"].Util.isArray(options.layerNames)) {
+            if (!_leaflet2.default.Util.isArray(options.layerNames)) {
                 options.layerNames = [options.layerNames];
             }
             var layerNamesString = '[' + options.layerNames.join(',') + ']';
@@ -60999,7 +61012,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
             params.push("origin=" + JSON.stringify({ x: crs.options.origin[0], y: crs.options.origin[1] }));
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
-            var tileOrigin = _leaflet2["default"].point(bounds.min.x, bounds.max.y);
+            var tileOrigin = _leaflet2.default.point(bounds.min.x, bounds.max.y);
             params.push("origin=" + JSON.stringify({ x: tileOrigin.x, y: tileOrigin.y }));
         }
         if (options.expands) {
@@ -61049,7 +61062,7 @@ var tiledVectorLayer = exports.tiledVectorLayer = function tiledVectorLayer(url,
     return new TileVectorLayer(url, options);
 };
 
-_leaflet2["default"].supermap.tiledVectorLayer = tiledVectorLayer;
+_leaflet2.default.supermap.tiledVectorLayer = tiledVectorLayer;
 
 /***/ }),
 /* 318 */
@@ -61073,7 +61086,7 @@ var _turf = __webpack_require__(549);
 
 var _turf2 = _interopRequireDefault(_turf);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.turfLayer
@@ -61082,7 +61095,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param options - {Object} 可选参数。如：<br>
  *        attribution - {string} 版权信息。
  */
-var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
+var TurfLayer = exports.TurfLayer = _leaflet2.default.GeoJSON.extend({
 
     turfMap: {
         "Measurement.along": ["line", "distance", "units"],
@@ -61219,8 +61232,8 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
 
     initialize: function initialize(options) {
         options = options || {};
-        _leaflet2["default"].Util.setOptions(this, options);
-        _leaflet2["default"].stamp(this);
+        _leaflet2.default.Util.setOptions(this, options);
+        _leaflet2.default.stamp(this);
         this._layers = {};
     },
 
@@ -61233,7 +61246,7 @@ var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
      * @param addFeaturesToMap -{boolean} 是否添加到map
      */
     process: function process(type, args, callback, addFeaturesToMap) {
-        var result = _turf2["default"][type.split('.')[1]].apply(this, this.parse(type, args));
+        var result = _turf2.default[type.split('.')[1]].apply(this, this.parse(type, args));
         addFeaturesToMap = addFeaturesToMap == null ? true : addFeaturesToMap;
         if (addFeaturesToMap) {
             this.addData([result]);
@@ -61263,7 +61276,7 @@ var turfLayer = exports.turfLayer = function turfLayer(options) {
     return new TurfLayer(options);
 };
 
-_leaflet2["default"].supermap.turfLayer = turfLayer;
+_leaflet2.default.supermap.turfLayer = turfLayer;
 
 /***/ }),
 /* 319 */
@@ -61283,7 +61296,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.circleStyle
@@ -61303,7 +61316,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        fillRule - {string} 填充形状
  *        radius - {number}半径
  */
-var CircleStyle = exports.CircleStyle = _leaflet2["default"].Class.extend({
+var CircleStyle = exports.CircleStyle = _leaflet2.default.Class.extend({
 
     options: {
         stroke: true,
@@ -61321,7 +61334,7 @@ var CircleStyle = exports.CircleStyle = _leaflet2["default"].Class.extend({
 
     initialize: function initialize(options) {
         options = options || {};
-        _leaflet2["default"].Util.setOptions(this, options);
+        _leaflet2.default.Util.setOptions(this, options);
         this._canvas = document.createElement('canvas');
         this._canvas.width = 2 * (this.options.radius + this.options.weight);
         this._canvas.height = 2 * (this.options.radius + this.options.weight);
@@ -61366,7 +61379,7 @@ var circleStyle = exports.circleStyle = function circleStyle(options) {
     return new CircleStyle(options);
 };
 
-_leaflet2["default"].supermap.circleStyle = circleStyle;
+_leaflet2.default.supermap.circleStyle = circleStyle;
 
 /***/ }),
 /* 320 */
@@ -61390,7 +61403,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.addressMatchService
@@ -61456,7 +61469,7 @@ var addressMatchService = exports.addressMatchService = function addressMatchSer
     return new AddressMatchService(url, options);
 };
 
-_leaflet2["default"].supermap.addressMatchService = addressMatchService;
+_leaflet2.default.supermap.addressMatchService = addressMatchService;
 
 /***/ }),
 /* 321 */
@@ -61482,7 +61495,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _CommontypesConversion = __webpack_require__(36);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.chartService
@@ -61552,7 +61565,7 @@ var ChartService = exports.ChartService = _ServiceBase.ServiceBase.extend({
             return {};
         }
         params.returnContent = params.returnContent == null ? true : params.returnContent;
-        if (params.chartQueryFilterParameters && !_leaflet2["default"].Util.isArray(params.chartQueryFilterParameters)) {
+        if (params.chartQueryFilterParameters && !_leaflet2.default.Util.isArray(params.chartQueryFilterParameters)) {
             params.chartQueryFilterParameters = [params.chartQueryFilterParameters];
         }
 
@@ -61569,7 +61582,7 @@ var chartService = exports.chartService = function chartService(url, options) {
     return new ChartService(url, options);
 };
 
-_leaflet2["default"].supermap.chartService = chartService;
+_leaflet2.default.supermap.chartService = chartService;
 
 /***/ }),
 /* 322 */
@@ -61593,7 +61606,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class  L.supermap.fieldService
@@ -61649,7 +61662,7 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
         var me = this,
             fieldName = params.fieldName,
             modes = params.statisticMode;
-        if (modes && !_leaflet2["default"].Util.isArray(modes)) {
+        if (modes && !_leaflet2.default.Util.isArray(modes)) {
             modes = [modes];
         }
         me.currentStatisticResult = { fieldName: fieldName };
@@ -61701,7 +61714,7 @@ var fieldService = exports.fieldService = function fieldService(url, options) {
     return new FieldService(url, options);
 };
 
-_leaflet2["default"].supermap.fieldService = fieldService;
+_leaflet2.default.supermap.fieldService = fieldService;
 
 /***/ }),
 /* 323 */
@@ -61725,7 +61738,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.gridCellInfosService
@@ -61771,7 +61784,7 @@ var gridCellInfosService = exports.gridCellInfosService = function gridCellInfos
     return new GridCellInfosService(url, options);
 };
 
-_leaflet2["default"].supermap.gridCellInfosService = gridCellInfosService;
+_leaflet2.default.supermap.gridCellInfosService = gridCellInfosService;
 
 /***/ }),
 /* 324 */
@@ -61795,7 +61808,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.layerInfoService
@@ -61921,7 +61934,7 @@ var layerInfoService = exports.layerInfoService = function layerInfoService(url,
     return new LayerInfoService(url, options);
 };
 
-_leaflet2["default"].supermap.layerInfoService = layerInfoService;
+_leaflet2.default.supermap.layerInfoService = layerInfoService;
 
 /***/ }),
 /* 325 */
@@ -61949,9 +61962,9 @@ var Util = _interopRequireWildcard(_Util);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.measureService
@@ -62028,7 +62041,7 @@ var measureService = exports.measureService = function measureService(url, optio
     return new MeasureService(url, options);
 };
 
-_leaflet2["default"].supermap.measureService = measureService;
+_leaflet2.default.supermap.measureService = measureService;
 
 /***/ }),
 /* 326 */
@@ -62052,7 +62065,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.networkAnalyst3DService
@@ -62175,7 +62188,7 @@ var networkAnalyst3DService = exports.networkAnalyst3DService = function network
     return new NetworkAnalyst3DService(url, options);
 };
 
-_leaflet2["default"].supermap.networkAnalyst3DService = networkAnalyst3DService;
+_leaflet2.default.supermap.networkAnalyst3DService = networkAnalyst3DService;
 
 /***/ }),
 /* 327 */
@@ -62199,7 +62212,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.networkAnalystService
@@ -62450,43 +62463,43 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             return {};
         }
 
-        if (params.centers && _leaflet2["default"].Util.isArray(params.centers)) {
+        if (params.centers && _leaflet2.default.Util.isArray(params.centers)) {
             params.centers.map(function (point, key) {
-                params.centers[key] = point instanceof _leaflet2["default"].LatLng ? { x: point.lng, y: point.lat } : point;
+                params.centers[key] = point instanceof _leaflet2.default.LatLng ? { x: point.lng, y: point.lat } : point;
                 return params.centers[key];
             });
         }
 
-        if (params.nodes && _leaflet2["default"].Util.isArray(params.nodes)) {
+        if (params.nodes && _leaflet2.default.Util.isArray(params.nodes)) {
             params.nodes.map(function (point, key) {
-                params.nodes[key] = point instanceof _leaflet2["default"].LatLng ? { x: point.lng, y: point.lat } : point;
+                params.nodes[key] = point instanceof _leaflet2.default.LatLng ? { x: point.lng, y: point.lat } : point;
                 return params.nodes[key];
             });
         }
 
-        if (params.event && params.event instanceof _leaflet2["default"].LatLng) {
+        if (params.event && params.event instanceof _leaflet2.default.LatLng) {
             params.event = { x: params.event.lng, y: params.event.lat };
         }
 
-        if (params.facilities && _leaflet2["default"].Util.isArray(params.facilities)) {
+        if (params.facilities && _leaflet2.default.Util.isArray(params.facilities)) {
             params.facilities.map(function (point, key) {
-                params.facilities[key] = point instanceof _leaflet2["default"].LatLng ? { x: point.lng, y: point.lat } : point;
+                params.facilities[key] = point instanceof _leaflet2.default.LatLng ? { x: point.lng, y: point.lat } : point;
                 return params.facilities[key];
             });
         }
 
         if (params.parameter && params.parameter.barrierPoints) {
             var barrierPoints = params.parameter.barrierPoints;
-            if (_leaflet2["default"].Util.isArray(barrierPoints)) {
+            if (_leaflet2.default.Util.isArray(barrierPoints)) {
                 barrierPoints.map(function (point, key) {
-                    params.parameter.barrierPoints[key] = point instanceof _leaflet2["default"].LatLng ? {
+                    params.parameter.barrierPoints[key] = point instanceof _leaflet2.default.LatLng ? {
                         x: point.lng,
                         y: point.lat
                     } : point;
                     return params.parameter.barrierPoints[key];
                 });
             } else {
-                params.parameter.barrierPoints = [barrierPoints instanceof _leaflet2["default"].LatLng ? {
+                params.parameter.barrierPoints = [barrierPoints instanceof _leaflet2.default.LatLng ? {
                     x: barrierPoints.lng,
                     y: barrierPoints.lat
                 } : barrierPoints];
@@ -62505,7 +62518,7 @@ var networkAnalystService = exports.networkAnalystService = function networkAnal
     return new NetworkAnalystService(url, options);
 };
 
-_leaflet2["default"].supermap.networkAnalystService = networkAnalystService;
+_leaflet2.default.supermap.networkAnalystService = networkAnalystService;
 
 /***/ }),
 /* 328 */
@@ -62531,7 +62544,7 @@ var _CommontypesConversion = __webpack_require__(36);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.processingService
@@ -62550,7 +62563,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
 
     initialize: function initialize(url, options) {
         options = options || {};
-        _leaflet2["default"].setOptions(this, options);
+        _leaflet2.default.setOptions(this, options);
         _ServiceBase.ServiceBase.prototype.initialize.call(this, url, options);
         this.kernelDensityJobs = {};
         this.summaryMeshJobs = {};
@@ -63310,7 +63323,7 @@ var processingService = exports.processingService = function processingService(u
     return new ProcessingService(url, options);
 };
 
-_leaflet2["default"].supermap.processingService = processingService;
+_leaflet2.default.supermap.processingService = processingService;
 
 /***/ }),
 /* 329 */
@@ -63340,9 +63353,9 @@ var _CommontypesConversion = __webpack_require__(36);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class  L.supermap.queryService
@@ -63455,7 +63468,7 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
             return {};
         }
         params.returnContent = params.returnContent == null ? true : params.returnContent;
-        if (params.queryParams && !_leaflet2["default"].Util.isArray(params.queryParams)) {
+        if (params.queryParams && !_leaflet2.default.Util.isArray(params.queryParams)) {
             params.queryParams = [params.queryParams];
         }
 
@@ -63464,7 +63477,7 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
         }
 
         if (params.geometry) {
-            if (params.geometry instanceof _leaflet2["default"].Point) {
+            if (params.geometry instanceof _leaflet2.default.Point) {
                 params.geometry = new _iclientCommon.GeometryPoint(params.geometry.x, params.geometry.y);
             } else {
                 params.geometry = Util.toSuperMapGeometry(params.geometry);
@@ -63483,7 +63496,7 @@ var queryService = exports.queryService = function queryService(url, options) {
     return new QueryService(url, options);
 };
 
-_leaflet2["default"].supermap.queryService = queryService;
+_leaflet2.default.supermap.queryService = queryService;
 
 /***/ }),
 /* 330 */
@@ -63513,9 +63526,9 @@ var _CommontypesConversion = __webpack_require__(36);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.spatialAnalystService
@@ -63819,7 +63832,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
         if (params.inputPoints) {
             for (var i = 0; i < params.inputPoints.length; i++) {
                 var inputPoint = params.inputPoints[i];
-                if (_leaflet2["default"].Util.isArray(inputPoint)) {
+                if (_leaflet2.default.Util.isArray(inputPoint)) {
                     params.inputPoints[i] = { x: inputPoint[0], y: inputPoint[1], tag: inputPoint[2] };
                 }
             }
@@ -63828,9 +63841,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
         if (params.points) {
             for (var _i = 0; _i < params.points.length; _i++) {
                 var point = params.points[_i];
-                if (_leaflet2["default"].Util.isArray(point)) {
+                if (_leaflet2.default.Util.isArray(point)) {
                     params.points[_i] = { x: point[0], y: point[1] };
-                } else if (point instanceof _leaflet2["default"].LatLng) {
+                } else if (point instanceof _leaflet2.default.LatLng) {
                     params.points[_i] = { x: point.lng, y: point.lat };
                 } else {
                     params.points[_i] = { x: point.x, y: point.y };
@@ -63838,9 +63851,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             }
         }
         if (params.point) {
-            if (_leaflet2["default"].Util.isArray(params.point)) {
+            if (_leaflet2.default.Util.isArray(params.point)) {
                 params.point = { x: params.point[0], y: params.point[1] };
-            } else if (params.point instanceof _leaflet2["default"].LatLng) {
+            } else if (params.point instanceof _leaflet2.default.LatLng) {
                 params.point = { x: params.point.lng, y: params.point.lat };
             } else {
                 params.point = { x: params.point.x, y: params.point.y };
@@ -63856,7 +63869,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             params.sourceGeometry = Util.toSuperMapGeometry(params.sourceGeometry);
         }
         if (params.sourceRoute) {
-            if (params.sourceRoute instanceof _leaflet2["default"].Polyline) {
+            if (params.sourceRoute instanceof _leaflet2.default.Polyline) {
                 var target = {};
                 target.type = "LINEM";
                 target.parts = [params.sourceRoute.getLatLngs().length];
@@ -63868,7 +63881,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
                 params.sourceRoute = target;
             }
         }
-        if (params.operateRegions && _leaflet2["default"].Util.isArray(params.operateRegions)) {
+        if (params.operateRegions && _leaflet2.default.Util.isArray(params.operateRegions)) {
             params.operateRegions.map(function (geometry, key) {
                 params.operateRegions[key] = Util.toSuperMapGeometry(geometry);
                 return params.operateRegions[key];
@@ -63891,7 +63904,7 @@ var spatialAnalystService = exports.spatialAnalystService = function spatialAnal
     return new SpatialAnalystService(url, options);
 };
 
-_leaflet2["default"].supermap.spatialAnalystService = spatialAnalystService;
+_leaflet2.default.supermap.spatialAnalystService = spatialAnalystService;
 
 /***/ }),
 /* 331 */
@@ -63915,7 +63928,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.themeService
@@ -63961,7 +63974,7 @@ var themeService = exports.themeService = function themeService(url, options) {
     return new ThemeService(url, options);
 };
 
-_leaflet2["default"].supermap.themeService = themeService;
+_leaflet2.default.supermap.themeService = themeService;
 
 /***/ }),
 /* 332 */
@@ -63985,7 +63998,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.trafficTransferAnalystService
@@ -64065,9 +64078,9 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
             return {};
         }
 
-        if (params.points && _leaflet2["default"].Util.isArray(params.points)) {
+        if (params.points && _leaflet2.default.Util.isArray(params.points)) {
             params.points.map(function (point, key) {
-                params.points[key] = point instanceof _leaflet2["default"].LatLng ? { x: point.lng, y: point.lat } : point;
+                params.points[key] = point instanceof _leaflet2.default.LatLng ? { x: point.lng, y: point.lat } : point;
                 return params.points[key];
             });
         }
@@ -64079,7 +64092,7 @@ var trafficTransferAnalystService = exports.trafficTransferAnalystService = func
     return new TrafficTransferAnalystService(url, options);
 };
 
-_leaflet2["default"].supermap.trafficTransferAnalystService = trafficTransferAnalystService;
+_leaflet2.default.supermap.trafficTransferAnalystService = trafficTransferAnalystService;
 
 /***/ }),
 /* 333 */
@@ -64841,6 +64854,7 @@ Object.defineProperty(exports, 'GeometryVector', {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.TimeFlowControl = exports.TimeControlBase = undefined;
 
 var _TimeControlBase = __webpack_require__(143);
 
@@ -64860,17 +64874,7 @@ Object.defineProperty(exports, 'TimeFlowControl', {
   }
 });
 
-var _iClient = __webpack_require__(307);
-
-Object.keys(_iClient).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _iClient[key];
-    }
-  });
-});
+__webpack_require__(307);
 
 /***/ }),
 /* 340 */
@@ -65514,7 +65518,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
                 } else {
                     me.serviceProcessFailed(result);
                 }
-            })["catch"](function (e) {
+            }).catch(function (e) {
                 me.eventListeners.processFailed({ error: e });
             });
         }
@@ -69273,7 +69277,7 @@ var GetFeaturesByBoundsService = exports.GetFeaturesByBoundsService = function (
 
         /**
          * @function SuperMap.GetFeaturesByBoundsService.prototype.getJsonParameters
-         * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（ID SQL Buffer GeometryBounds等）。
+         * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry,Bounds等）。
          * @param params {SuperMap.GetFeaturesByBoundsParameters}
          * @return {string} 转化后的 JSON 字符串。
          *
@@ -69367,7 +69371,7 @@ var GetFeaturesByBufferService = exports.GetFeaturesByBufferService = function (
 
         /**
          * @function SuperMap.GetFeaturesByBufferService.prototype.getJsonParameters
-         * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（IDs SQL Buffer Geometry等）。
+         * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（IDs, SQL, Buffer, Geometry等）。
          * @param params {SuperMap.GetFeaturesByBufferParameters}
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -69464,7 +69468,7 @@ var GetFeaturesByGeometryService = exports.GetFeaturesByGeometryService = functi
          * @function SuperMap.GetFeaturesByGeometryService.prototype.getJsonParameters
          * @param params - {SuperMap.GetFeaturesByGeometryParameters}
          * @description 将查询参数转化为 JSON 字符串。
-         * 在本类中重写此方法，可以实现不同种类的查询（ID SQL Buffer Geometry等）。
+         * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
          * @return {Object} 转化后的 JSON 字符串。
          */
 
@@ -69556,7 +69560,7 @@ var GetFeaturesByIDsService = exports.GetFeaturesByIDsService = function (_GetFe
         /**
          * @function SuperMap.GetFeaturesByIDsService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         * 在本类中重写此方法，可以实现不同种类的查询（ID SQL Buffer Geometry等）。
+         * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
          * @param  params - {SuperMap.GetFeaturesByIDsParameters}
          * @return {string} 转化后的 JSON 字符串。
          */
@@ -69653,7 +69657,7 @@ var GetFeaturesBySQLService = exports.GetFeaturesBySQLService = function (_GetFe
         /*
          * @function SuperMap.GetFeaturesBySQLService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         * 在本类中重写此方法，可以实现不同种类的查询（ID SQL Buffer Geometry等）。
+         * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
          * @param params - {SuperMap.GetFeaturesBySQLParameters}
          * @return {string} 转化后的 JSON 字符串。
          */
@@ -71261,7 +71265,7 @@ var QueryByBoundsService = exports.QueryByBoundsService = function (_QueryServic
         /**
          * @function SuperMap.QueryByBoundsService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         *              在本类中重写此方法，可以实现不同种类的查询（sql geometry distance bounds 等）。
+         *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds 等）。
          * @param params - {SuperMap.QueryByBoundsParameters} Bounds 查询参数。
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -71367,7 +71371,7 @@ var QueryByDistanceService = exports.QueryByDistanceService = function (_QuerySe
         /**
          * @function SuperMap.QueryByDistanceService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         *              在本类中重写此方法，可以实现不同种类的查询（sql geometry distance bounds等）。
+         *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
          * @param params - {SuperMap.QueryByDistanceParameters}
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -71480,7 +71484,7 @@ var QueryByGeometryService = exports.QueryByGeometryService = function (_QuerySe
         /**
          * @function SuperMap.QueryByGeometryService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         *              在本类中重写此方法，可以实现不同种类的查询（sql geometry distance bounds等）。
+         *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
          * @param params - {SuperMap.QueryByGeometryParameters}
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -71598,7 +71602,7 @@ var QueryBySQLService = exports.QueryBySQLService = function (_QueryService) {
         /**
          * @function SuperMap.QueryBySQLService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         *              在本类中重写此方法，可以实现不同种类的查询（sql geometry distance bounds等）。
+         *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
          * @param params - {SuperMap.QueryBySQLParameters}
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -74412,10 +74416,10 @@ var UpdateEdgeWeightService = exports.UpdateEdgeWeightService = function (_Netwo
          * @example
          * (code)
          *  var updateEdgeWeightParam=new SuperMapUpdateEdgeWeightParameters({
-         *          edgeId:"20"
-         *          fromNodeId:"26"
-         *          toNodeId:"109"
-         *          weightField:"time"
+         *          edgeId:"20",
+         *          fromNodeId:"26",
+         *          toNodeId:"109",
+         *          weightField:"time",
          *          edgeWeight:"25"
          *      });
          *  updateEdgeWeightService.processAsync(updateEdgeWeightParam);
@@ -74562,10 +74566,10 @@ var UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightService = function
          * @example
          * (code)
          *  var updateTurnNodeWeightParam=new SuperMap.UpdateTurnNodeWeightParameters({
-         *           nodeId:"106"
-         *           fromEdgeId:"6508"
-         *           toEdgeId:"6504"
-         *           weightField:"TurnCost"
+         *           nodeId:"106",
+         *           fromEdgeId:"6508",
+         *           toEdgeId:"6504",
+         *           weightField:"TurnCost",
          *           turnNodeWeight:"50"
          *       });
          *  updateTurnNodeWeightService.processAsync(updateTurnNodeWeightParam);
@@ -76826,7 +76830,7 @@ var _OnlineResources = __webpack_require__(257);
 
 var OnlineResources = _interopRequireWildcard(_OnlineResources);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 exports.OnlineResources = OnlineResources;
 
@@ -81664,7 +81668,7 @@ var _toPairs = __webpack_require__(495);
 
 var _toPairs2 = _interopRequireDefault(_toPairs);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -82756,20 +82760,20 @@ var CartoCSS = exports.CartoCSS = function () {
          *   //shaders的结构大概如下：
          *   var shaders=[
          *   {
-         *       attachment:"one"
-         *       elements:[]
-         *       zoom:23
-         *       length:2
-         *       0:{property:"line-color"value:function(attributezoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}}
-         *       1:{preoperty:"line-width"value:function(attributezoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
-         *   }
+         *       attachment:"one",
+         *       elements:[],
+         *       zoom:23,
+         *       length:2,
+         *       0:{property:"line-color",value:function(attribute,zoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}},
+         *       1:{preoperty:"line-width",value:function(attribute,zoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
+         *   },
          *   {
-         *       attachment:"two"
-         *       elements:[]
-         *       zoom:23
-         *       length:2
-         *       0:{property:"polygon-color"value:function(attributezoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}}
-         *       1:{property:"line-width"value:function(attributezoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
+         *       attachment:"two",
+         *       elements:[],
+         *       zoom:23,
+         *       length:2,
+         *       0:{property:"polygon-color",value:function(attribute,zoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}},
+         *       1:{property:"line-width",value:function(attribute,zoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
          *   }
          *   ];
          */
@@ -84370,7 +84374,7 @@ _SuperMap.SuperMap.CartoCSS.Tree.Call = function () {
             } else {
                 var fn = _SuperMap.SuperMap.CartoCSS.Tree.Reference.mapnikFunctions[this.name];
                 if (fn === undefined) {
-                    var functions = (0, _toPairs2["default"])(_SuperMap.SuperMap.CartoCSS.Tree.Reference.mapnikFunctions);
+                    var functions = (0, _toPairs2.default)(_SuperMap.SuperMap.CartoCSS.Tree.Reference.mapnikFunctions);
                     // cheap closest, needs improvement.
                     var name = this.name;
                     var mean = functions.map(function (f) {
@@ -86353,6 +86357,7 @@ _SuperMap.SuperMap.ThemeStyle = ThemeStyle;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.ThemeStyle = exports.CartoCSS = undefined;
 
 var _CartoCSS = __webpack_require__(437);
 
@@ -86372,17 +86377,7 @@ Object.defineProperty(exports, 'ThemeStyle', {
   }
 });
 
-var _supermapolIcons = __webpack_require__(306);
-
-Object.keys(_supermapolIcons).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _supermapolIcons[key];
-    }
-  });
-});
+__webpack_require__(298);
 
 /***/ }),
 /* 440 */
@@ -86438,9 +86433,9 @@ var _promisePolyfill = __webpack_require__(499);
 
 var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-window.Promise = _promisePolyfill2["default"];
+window.Promise = _promisePolyfill2.default;
 
 /***/ }),
 /* 443 */
@@ -86490,13 +86485,13 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @constant L.CRS.BaiduCRS
  * @description 百度的坐标对象
  */
-var BaiduCRS = exports.BaiduCRS = _leaflet2["default"].CRS.Baidu = _leaflet2["default"].extend({}, _leaflet2["default"].CRS.EPSG3857, {
+var BaiduCRS = exports.BaiduCRS = _leaflet2.default.CRS.Baidu = _leaflet2.default.extend({}, _leaflet2.default.CRS.EPSG3857, {
     code: 'Baidu',
     scale: function scale(zoom) {
         return 6378137 * Math.PI * 2 / Math.pow(2, 18 - zoom);
@@ -86504,7 +86499,7 @@ var BaiduCRS = exports.BaiduCRS = _leaflet2["default"].CRS.Baidu = _leaflet2["de
 
     transformation: function () {
         var scale = 0.5 / (Math.PI * 6378137);
-        return new _leaflet2["default"].Transformation(scale, 0, -scale, 0);
+        return new _leaflet2.default.Transformation(scale, 0, -scale, 0);
     }()
 });
 
@@ -86518,10 +86513,10 @@ for (var i = 1; i < 19; i++) {
  * @constant L.CRS.TianDiTu_WGS84CRS
  * @description 天地图WGS84坐标对象
  */
-var TianDiTu_WGS84CRS = exports.TianDiTu_WGS84CRS = _leaflet2["default"].CRS.TianDiTu_WGS84 = _leaflet2["default"].Proj.CRS("EPSG:4326", {
+var TianDiTu_WGS84CRS = exports.TianDiTu_WGS84CRS = _leaflet2.default.CRS.TianDiTu_WGS84 = _leaflet2.default.Proj.CRS("EPSG:4326", {
     origin: [-180, 90],
     resolutions: tdt_WGS84_resolutions,
-    bounds: _leaflet2["default"].bounds([-180, -90], [180, 90])
+    bounds: _leaflet2.default.bounds([-180, -90], [180, 90])
 });
 
 var tdt_Mercator_resolutions = [];
@@ -86533,14 +86528,14 @@ for (var _i = 1; _i < 19; _i++) {
  * @constant L.CRS.TianDiTu_MercatorCRS
  * @description 天地图墨卡托坐标对象
  */
-var TianDiTu_MercatorCRS = exports.TianDiTu_MercatorCRS = _leaflet2["default"].CRS.TianDiTu_Mercator = _leaflet2["default"].Proj.CRS("EPSG:3857", {
+var TianDiTu_MercatorCRS = exports.TianDiTu_MercatorCRS = _leaflet2.default.CRS.TianDiTu_Mercator = _leaflet2.default.Proj.CRS("EPSG:3857", {
     origin: [-20037508.3427892, 20037508.3427892],
     resolutions: tdt_Mercator_resolutions,
-    bounds: _leaflet2["default"].bounds([-20037508.3427892, -20037508.3427892], [20037508.3427892, 20037508.3427892])
+    bounds: _leaflet2.default.bounds([-20037508.3427892, -20037508.3427892], [20037508.3427892, 20037508.3427892])
 });
-_leaflet2["default"].CRS.BaiduCRS = BaiduCRS;
-_leaflet2["default"].CRS.TianDiTu_WGS84CRS = TianDiTu_WGS84CRS;
-_leaflet2["default"].CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
+_leaflet2.default.CRS.BaiduCRS = BaiduCRS;
+_leaflet2.default.CRS.TianDiTu_WGS84CRS = TianDiTu_WGS84CRS;
+_leaflet2.default.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
 
 /***/ }),
 /* 445 */
@@ -86558,20 +86553,20 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _proj = __webpack_require__(301);
+var _proj = __webpack_require__(302);
 
 var _proj2 = _interopRequireDefault(_proj);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Inspired by https://github.com/kartena/Proj4Leaflet
  */
-window.proj4 = _proj2["default"];
-window.Proj4js = _proj2["default"];
-_leaflet2["default"].Proj = {};
+window.proj4 = _proj2.default;
+window.Proj4js = _proj2.default;
+_leaflet2.default.Proj = {};
 
-_leaflet2["default"].Proj._isProj4Obj = function (a) {
+_leaflet2.default.Proj._isProj4Obj = function (a) {
     return typeof a.inverse !== 'undefined' && typeof a.forward !== 'undefined';
 };
 
@@ -86584,14 +86579,14 @@ _leaflet2["default"].Proj._isProj4Obj = function (a) {
  * @param def - {string} 定位
  * @param bounds - {L.bounds} 投影范围参数
  */
-_leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
+_leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
 
     initialize: function initialize(code, def, bounds) {
-        var isP4 = _leaflet2["default"].Proj._isProj4Obj(code);
+        var isP4 = _leaflet2.default.Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
         var boundsOption = bounds;
-        if (_leaflet2["default"].Util.isArray(bounds)) {
-            boundsOption = _leaflet2["default"].bounds(bounds);
+        if (_leaflet2.default.Util.isArray(bounds)) {
+            boundsOption = _leaflet2.default.bounds(bounds);
         }
         this.bounds = isP4 ? def : boundsOption;
     },
@@ -86604,7 +86599,7 @@ _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
      */
     project: function project(latlng) {
         var point = this._proj.forward([latlng.lng, latlng.lat]);
-        return new _leaflet2["default"].Point(point[0], point[1]);
+        return new _leaflet2.default.Point(point[0], point[1]);
     },
 
     /**
@@ -86620,23 +86615,23 @@ _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
             point.y = point.y < this.bounds.min.y ? this.bounds.min.y : point.y > this.bounds.max.y ? this.bounds.max.y : point.y;
         }
         var point2 = this._proj.inverse([point.x, point.y]);
-        return new _leaflet2["default"].LatLng(point2[1], point2[0], unbounded);
+        return new _leaflet2.default.LatLng(point2[1], point2[0], unbounded);
     },
 
     _projFromCodeDef: function _projFromCodeDef(code, def) {
         if (def) {
-            _proj2["default"].defs(code, def);
-        } else if (_proj2["default"].defs[code] === undefined) {
+            _proj2.default.defs(code, def);
+        } else if (_proj2.default.defs[code] === undefined) {
             var urn = code.split(':');
             if (urn.length > 3) {
                 code = urn[urn.length - 3] + ':' + urn[urn.length - 1];
             }
-            if (_proj2["default"].defs[code] === undefined) {
+            if (_proj2.default.defs[code] === undefined) {
                 throw 'No projection definition for code ' + code;
             }
         }
 
-        return (0, _proj2["default"])(code);
+        return (0, _proj2.default)(code);
     },
     getUnits: function getUnits() {
         return this._proj.oProj.units;
@@ -86666,44 +86661,44 @@ _leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
  *      ...
  *    })
  */
-var CRS = exports.CRS = _leaflet2["default"].Class.extend({
-    includes: _leaflet2["default"].CRS,
+var CRS = exports.CRS = _leaflet2.default.Class.extend({
+    includes: _leaflet2.default.CRS,
 
     options: {
-        transformation: new _leaflet2["default"].Transformation(1, 0, -1, 0)
+        transformation: new _leaflet2.default.Transformation(1, 0, -1, 0)
     },
 
     initialize: function initialize(srsCode, options) {
         var code, proj, def;
 
-        if (_leaflet2["default"].Proj._isProj4Obj(srsCode)) {
+        if (_leaflet2.default.Proj._isProj4Obj(srsCode)) {
             proj = srsCode;
             code = proj.srsCode;
             options = options || {};
 
-            this.projection = new _leaflet2["default"].Proj.Projection(proj, options.bounds);
+            this.projection = new _leaflet2.default.Proj.Projection(proj, options.bounds);
         } else {
             code = srsCode;
             options = options || {};
             def = options.def || '';
-            this.projection = new _leaflet2["default"].Proj.Projection(code, def, options.bounds);
+            this.projection = new _leaflet2.default.Proj.Projection(code, def, options.bounds);
         }
 
-        _leaflet2["default"].Util.setOptions(this, options);
+        _leaflet2.default.Util.setOptions(this, options);
         this.code = code;
         this.transformation = this.options.transformation;
 
         if (this.options.bounds) {
-            this.options.bounds = _leaflet2["default"].bounds(this.options.bounds);
+            this.options.bounds = _leaflet2.default.bounds(this.options.bounds);
         }
         if (!this.options.origin && this.options.bounds) {
             this.options.origin = [this.options.bounds.min.x, this.options.bounds.max.y];
         }
         if (this.options.origin) {
-            if (this.options.origin instanceof _leaflet2["default"].Point) {
+            if (this.options.origin instanceof _leaflet2.default.Point) {
                 this.options.origin = [this.options.origin.x, this.options.origin.y];
             }
-            this.transformation = new _leaflet2["default"].Transformation(1, -this.options.origin[0], -1, this.options.origin[1]);
+            this.transformation = new _leaflet2.default.Transformation(1, -this.options.origin[0], -1, this.options.origin[1]);
         }
 
         if (this.options.scales && this.options.scales.length > 0) {
@@ -86779,9 +86774,9 @@ var CRS = exports.CRS = _leaflet2["default"].Class.extend({
         return (scale - downScale) / scaleDiff + downZoom;
     },
 
-    distance: _leaflet2["default"].CRS.Earth.distance,
+    distance: _leaflet2.default.CRS.Earth.distance,
 
-    R: _leaflet2["default"].CRS.Earth.R,
+    R: _leaflet2.default.CRS.Earth.R,
 
     /* Get the closest lowest element in an array */
     _closestElement: function _closestElement(array, element) {
@@ -86840,7 +86835,7 @@ var CRS = exports.CRS = _leaflet2["default"].Class.extend({
 var crs = exports.crs = function crs(srsCode, options) {
     return new CRS(srsCode, options);
 };
-_leaflet2["default"].Proj.CRS = crs;
+_leaflet2.default.Proj.CRS = crs;
 
 /***/ }),
 /* 446 */
@@ -86860,7 +86855,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @constant L.supermap.DefaultStyle
@@ -86927,7 +86922,7 @@ var DefaultStyle = exports.DefaultStyle = {
     }
 };
 
-_leaflet2["default"].supermap.DefaultStyle = DefaultStyle;
+_leaflet2.default.supermap.DefaultStyle = DefaultStyle;
 
 /***/ }),
 /* 447 */
@@ -86947,7 +86942,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @constant L.supermap.CartoStyleMap
@@ -87118,9 +87113,9 @@ var CompOpMap = exports.CompOpMap = {
     "value": ""
 };
 
-_leaflet2["default"].supermap.CartoStyleMap = CartoStyleMap;
-_leaflet2["default"].supermap.ServerStyleMap = ServerStyleMap;
-_leaflet2["default"].supermap.CompOpMap = CompOpMap;
+_leaflet2.default.supermap.CartoStyleMap = CartoStyleMap;
+_leaflet2.default.supermap.ServerStyleMap = ServerStyleMap;
+_leaflet2.default.supermap.CompOpMap = CompOpMap;
 
 /***/ }),
 /* 448 */
@@ -87144,7 +87139,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _mapv = __webpack_require__(548);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -87332,7 +87327,7 @@ var MapVRenderer = exports.MapVRenderer = function (_BaseLayer) {
         /**
          * @function L.supermap.MapVRenderer.prototype.removeData
          * @description 删除符合过滤条件的数据
-         * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true表示删除该元素；否则表示不删除
+         * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
          */
 
     }, {
@@ -87405,7 +87400,7 @@ var MapVRenderer = exports.MapVRenderer = function (_BaseLayer) {
             var offset = map.latLngToAccurateContainerPoint(this.canvasLayer.getTopLeft());
             var dataGetOptions = {
                 transferCoordinate: function transferCoordinate(coordinate) {
-                    var worldPoint = map.latLngToAccurateContainerPoint(_leaflet2["default"].latLng(coordinate[1], coordinate[0]));
+                    var worldPoint = map.latLngToAccurateContainerPoint(_leaflet2.default.latLng(coordinate[1], coordinate[0]));
                     var pixel = {
                         x: worldPoint.x - offset.x,
                         y: worldPoint.y - offset.y
@@ -87427,7 +87422,7 @@ var MapVRenderer = exports.MapVRenderer = function (_BaseLayer) {
 
             self.options._size = self.options.size;
 
-            var worldPoint = map.latLngToContainerPoint(_leaflet2["default"].latLng(0, 0));
+            var worldPoint = map.latLngToContainerPoint(_leaflet2.default.latLng(0, 0));
             var pixel = {
                 x: worldPoint.x - offset.x,
                 y: worldPoint.y - offset.y
@@ -87553,7 +87548,7 @@ var _Symbolizer = __webpack_require__(83);
 
 var _SymbolizerPolyBase = __webpack_require__(287);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.LineSymbolizer
@@ -87563,7 +87558,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param feature - {L.feature} 线要素
  * @param pxPerExtent - {number}线长
  */
-var LineSymbolizer = exports.LineSymbolizer = _leaflet2["default"].Polyline.extend({
+var LineSymbolizer = exports.LineSymbolizer = _leaflet2.default.Polyline.extend({
 
     /**
      * @member L.supermap.LineSymbolizer.prototype.includes
@@ -87620,7 +87615,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.PointSymbolizer
@@ -87630,7 +87625,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param feature - {L.feature} 点要素
  * @param pxPerExtent - {number}点符号大小
  */
-var PointSymbolizer = exports.PointSymbolizer = _leaflet2["default"].CircleMarker.extend({
+var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.extend({
 
     /**
      * @member L.supermap.PointSymbolizer.prototype.includes
@@ -87655,7 +87650,7 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2["default"].CircleMarke
      */
     render: function render(renderer, style) {
         _Symbolizer.Symbolizer.prototype.render.call(this, renderer, style);
-        this._radius = style.radius || _leaflet2["default"].CircleMarker.prototype.options.radius;
+        this._radius = style.radius || _leaflet2.default.CircleMarker.prototype.options.radius;
         this._updatePath();
     },
 
@@ -87663,11 +87658,11 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2["default"].CircleMarke
         pxPerExtent = pxPerExtent || { x: 1, y: 1 };
         var coord = feat.geometry[0];
         if (_typeof(coord[0]) === 'object' && 'x' in coord[0]) {
-            this._point = _leaflet2["default"].point(coord[0]).scaleBy(pxPerExtent);
-            this._empty = _leaflet2["default"].Util.falseFn;
+            this._point = _leaflet2.default.point(coord[0]).scaleBy(pxPerExtent);
+            this._empty = _leaflet2.default.Util.falseFn;
         } else {
-            this._point = _leaflet2["default"].point(coord).scaleBy(pxPerExtent);
-            this._empty = _leaflet2["default"].Util.falseFn;
+            this._point = _leaflet2.default.point(coord).scaleBy(pxPerExtent);
+            this._empty = _leaflet2.default.Util.falseFn;
         }
     },
 
@@ -87694,12 +87689,12 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2["default"].CircleMarke
     _updateBounds: function _updateBounds() {
         var icon = this.options.iconUrl;
         if (icon && this.options.iconSize) {
-            var size = _leaflet2["default"].point(this.options.iconSize),
+            var size = _leaflet2.default.point(this.options.iconSize),
                 anchor = size && size.divideBy(2, true),
                 p = this._point.subtract(anchor);
-            this._pxBounds = new _leaflet2["default"].Bounds(p, p.add(size));
+            this._pxBounds = new _leaflet2.default.Bounds(p, p.add(size));
         } else {
-            _leaflet2["default"].CircleMarker.prototype._updateBounds.call(this);
+            _leaflet2.default.CircleMarker.prototype._updateBounds.call(this);
         }
     },
 
@@ -87707,7 +87702,7 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2["default"].CircleMarke
         if (this.options.iconUrl) {
             this._renderer._updateIcon(this);
         } else {
-            _leaflet2["default"].CircleMarker.prototype._updatePath.call(this);
+            _leaflet2.default.CircleMarker.prototype._updatePath.call(this);
         }
     },
 
@@ -87743,8 +87738,8 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2["default"].CircleMarke
             sizeOption = [sizeOption, sizeOption];
         }
         if (sizeOption) {
-            var size = _leaflet2["default"].point(sizeOption),
-                anchor = _leaflet2["default"].point(size && size.divideBy(2, true));
+            var size = _leaflet2.default.point(sizeOption),
+                anchor = _leaflet2.default.point(size && size.divideBy(2, true));
 
             if (size) {
                 img.style.width = size.x + 'px';
@@ -87771,7 +87766,7 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2["default"].CircleMarke
         if (icon) {
             return this._pxBounds.contains(p);
         } else {
-            return _leaflet2["default"].CircleMarker.prototype._containsPoint.call(this, p);
+            return _leaflet2.default.CircleMarker.prototype._containsPoint.call(this, p);
         }
     }
 });
@@ -87796,7 +87791,7 @@ var _Symbolizer = __webpack_require__(83);
 
 var _SymbolizerPolyBase = __webpack_require__(287);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.RegionSymbolizer
@@ -87806,7 +87801,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @param feature - {L.feature} 面要素
  * @param pxPerExtent - {number}面积像素大小
  */
-var RegionSymbolizer = exports.RegionSymbolizer = _leaflet2["default"].Polygon.extend({
+var RegionSymbolizer = exports.RegionSymbolizer = _leaflet2.default.Polygon.extend({
 
     /**
      * @member L.supermap.RegionSymbolizer.prototype.includes
@@ -87859,7 +87854,7 @@ var _VectorTileFormat = __webpack_require__(282);
 
 var _VectorFeatureType = __webpack_require__(84);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.VectorGrid
@@ -87872,7 +87867,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        format - {L.supermap.VectorTileFormat} 矢量瓦片格式。<br>
  *        interactive - {boolean} 是否可交互 。
  */
-var VectorGrid = exports.VectorGrid = _leaflet2["default"].GridLayer.extend({
+var VectorGrid = exports.VectorGrid = _leaflet2.default.GridLayer.extend({
 
     options: {
         vectorTileLayerStyles: null,
@@ -87884,8 +87879,8 @@ var VectorGrid = exports.VectorGrid = _leaflet2["default"].GridLayer.extend({
 
     initialize: function initialize(options) {
         var me = this;
-        _leaflet2["default"].setOptions(me, options);
-        _leaflet2["default"].GridLayer.prototype.initialize.call(me, options);
+        _leaflet2.default.setOptions(me, options);
+        _leaflet2.default.GridLayer.prototype.initialize.call(me, options);
         me._vectorTiles = {};
         //交互事件使用,键值为id_layerName
         me._overriddenStyles = {};
@@ -88012,7 +88007,7 @@ var VectorGrid = exports.VectorGrid = _leaflet2["default"].GridLayer.extend({
     },
 
     _removeAllTiles: function _removeAllTiles() {
-        _leaflet2["default"].GridLayer.prototype._removeAllTiles.call(this);
+        _leaflet2.default.GridLayer.prototype._removeAllTiles.call(this);
         this._textVectorTiles = {};
     },
 
@@ -88061,13 +88056,13 @@ var VectorGrid = exports.VectorGrid = _leaflet2["default"].GridLayer.extend({
     _extendStyle: function _extendStyle(style, type) {
         switch (type) {
             case _VectorFeatureType.VectorFeatureType.POINT:
-                return _leaflet2["default"].extend({}, _leaflet2["default"].CircleMarker.prototype.options, style);
+                return _leaflet2.default.extend({}, _leaflet2.default.CircleMarker.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.LINE:
-                return _leaflet2["default"].extend({}, _leaflet2["default"].Polyline.prototype.options, style);
+                return _leaflet2.default.extend({}, _leaflet2.default.Polyline.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.REGION:
-                return _leaflet2["default"].extend({}, _leaflet2["default"].Polygon.prototype.options, style);
+                return _leaflet2.default.extend({}, _leaflet2.default.Polygon.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.TEXT:
-                return _leaflet2["default"].extend({}, _TextSymbolizer.TextSymbolizer.prototype.options, style);
+                return _leaflet2.default.extend({}, _TextSymbolizer.TextSymbolizer.prototype.options, style);
             default:
                 break;
         }
@@ -88109,7 +88104,7 @@ var _VectorTileJSON = __webpack_require__(454);
 
 var _VectorTileFormat = __webpack_require__(282);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.VectorTile
@@ -88124,7 +88119,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        renderer - {Object} 渲染器对象。
  * @param done - {function} 回调函数。
  */
-var VectorTile = exports.VectorTile = _leaflet2["default"].Class.extend({
+var VectorTile = exports.VectorTile = _leaflet2.default.Class.extend({
 
     initialize: function initialize(options, done) {
         this.layer = options.layer;
@@ -88231,7 +88226,7 @@ var VectorTile = exports.VectorTile = _leaflet2["default"].Class.extend({
             renderer.addTo(tileLayer._map);
         }
 
-        _leaflet2["default"].Util.requestAnimFrame(me.done.bind(coords, null, me.layer._vectorTiles[me.layer._tileCoordsToKey(coords)]));
+        _leaflet2.default.Util.requestAnimFrame(me.done.bind(coords, null, me.layer._vectorTiles[me.layer._tileCoordsToKey(coords)]));
     },
 
     // 保存文本图层单独绘制，避免被压盖
@@ -88314,17 +88309,17 @@ var VectorTile = exports.VectorTile = _leaflet2["default"].Class.extend({
     //矫正一些参数
     _validateStyle: function _validateStyle(style, type) {
         //默认leaflet path的边宽为3，矩形颜色填充透明度为0.2，跟iClient不一样，故作调整
-        _leaflet2["default"].Path.prototype.options.weight = 1;
-        _leaflet2["default"].Path.prototype.options.fillOpacity = 1;
+        _leaflet2.default.Path.prototype.options.weight = 1;
+        _leaflet2.default.Path.prototype.options.fillOpacity = 1;
         switch (type) {
             case _VectorFeatureType.VectorFeatureType.POINT:
-                return _leaflet2["default"].extend({}, _leaflet2["default"].CircleMarker.prototype.options, style);
+                return _leaflet2.default.extend({}, _leaflet2.default.CircleMarker.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.LINE:
-                return _leaflet2["default"].extend({}, _leaflet2["default"].Polyline.prototype.options, style);
+                return _leaflet2.default.extend({}, _leaflet2.default.Polyline.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.REGION:
-                return _leaflet2["default"].extend({}, _leaflet2["default"].Polygon.prototype.options, style);
+                return _leaflet2.default.extend({}, _leaflet2.default.Polygon.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.TEXT:
-                return _leaflet2["default"].extend({}, _TextSymbolizer.TextSymbolizer.prototype.options, style);
+                return _leaflet2.default.extend({}, _TextSymbolizer.TextSymbolizer.prototype.options, style);
             default:
                 break;
         }
@@ -88332,19 +88327,19 @@ var VectorTile = exports.VectorTile = _leaflet2["default"].Class.extend({
 
     //如果cartoCSS和layerInfo都没有得到样式，则使用该默认样式
     _defaultStyle: function _defaultStyle(type) {
-        var defaultOptions = _leaflet2["default"].Path.prototype.options;
+        var defaultOptions = _leaflet2.default.Path.prototype.options;
         defaultOptions.weight = 1;
         defaultOptions.fillOpacity = 1;
         defaultOptions.radius = 3;
         switch (type) {
             case _VectorFeatureType.VectorFeatureType.POINT:
-                return _leaflet2["default"].extend({}, defaultOptions, _leaflet2["default"].CircleMarker.prototype.options);
+                return _leaflet2.default.extend({}, defaultOptions, _leaflet2.default.CircleMarker.prototype.options);
             case _VectorFeatureType.VectorFeatureType.LINE:
-                return _leaflet2["default"].extend({}, defaultOptions, _leaflet2["default"].Polyline.prototype.options);
+                return _leaflet2.default.extend({}, defaultOptions, _leaflet2.default.Polyline.prototype.options);
             case _VectorFeatureType.VectorFeatureType.REGION:
-                return _leaflet2["default"].extend({}, defaultOptions, _leaflet2["default"].Polygon.prototype.options);
+                return _leaflet2.default.extend({}, defaultOptions, _leaflet2.default.Polygon.prototype.options);
             case _VectorFeatureType.VectorFeatureType.TEXT:
-                return _leaflet2["default"].extend({}, defaultOptions, _TextSymbolizer.TextSymbolizer.prototype.options);
+                return _leaflet2.default.extend({}, defaultOptions, _TextSymbolizer.TextSymbolizer.prototype.options);
             default:
                 break;
         }
@@ -88376,9 +88371,9 @@ var Util = _interopRequireWildcard(_Util);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.VectorTileJSON
@@ -88387,7 +88382,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param url - {string} 矢量瓦片json表述服务地址
  */
-var VectorTileJSON = exports.VectorTileJSON = _leaflet2["default"].Class.extend({
+var VectorTileJSON = exports.VectorTileJSON = _leaflet2.default.Class.extend({
 
     initialize: function initialize(url) {
         this.url = url;
@@ -88548,7 +88543,7 @@ var _VectorFeatureType = __webpack_require__(84);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @class L.supermap.VectorTilePBF
@@ -88557,7 +88552,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param url - {string} 矢量瓦片PBF(MVT)表述出图服务地址
  */
-var VectorTilePBF = exports.VectorTilePBF = _leaflet2["default"].Class.extend({
+var VectorTilePBF = exports.VectorTilePBF = _leaflet2.default.Class.extend({
 
     initialize: function initialize(url) {
         this.url = url;
@@ -88580,8 +88575,8 @@ var VectorTilePBF = exports.VectorTilePBF = _leaflet2["default"].Class.extend({
                 var reader = new FileReader();
                 return new Promise(function (resolve) {
                     reader.addEventListener("loadend", function () {
-                        var pbf = new _pbf2["default"](reader.result);
-                        return resolve(new _vectorTile2["default"](pbf));
+                        var pbf = new _pbf2.default(reader.result);
+                        return resolve(new _vectorTile2.default(pbf));
                     });
                     reader.readAsArrayBuffer(blob);
                 });
@@ -88599,7 +88594,7 @@ var VectorTilePBF = exports.VectorTilePBF = _leaflet2["default"].Class.extend({
                 var feat = vectorTile.layers[layerName].feature(i);
                 feat.geometry = feat.loadGeometry();
                 feat.layerName = layerName;
-                feat.properties = { attributes: _leaflet2["default"].Util.extend({}, feat.properties), id: feat.id };
+                feat.properties = { attributes: _leaflet2.default.Util.extend({}, feat.properties), id: feat.id };
                 switch (feat.type) {
                     case 1:
                         feat.type = _VectorFeatureType.VectorFeatureType.POINT;
@@ -92102,6 +92097,12 @@ module.exports = whatwgFetch;
 
 /***/ }),
 /* 502 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 503 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mgrs = __webpack_require__(295);
@@ -92141,7 +92142,7 @@ module.exports = Point;
 
 
 /***/ }),
-/* 503 */
+/* 504 */
 /***/ (function(module, exports) {
 
 module.exports = function(crs, denorm, point) {
@@ -92198,7 +92199,7 @@ module.exports = function(crs, denorm, point) {
 
 
 /***/ }),
-/* 504 */
+/* 505 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -92235,7 +92236,7 @@ module.exports = function(eccent, q) {
 };
 
 /***/ }),
-/* 505 */
+/* 506 */
 /***/ (function(module, exports) {
 
 var C00 = 1;
@@ -92264,10 +92265,10 @@ module.exports = function(es) {
 };
 
 /***/ }),
-/* 506 */
+/* 507 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var pj_mlfn = __webpack_require__(298);
+var pj_mlfn = __webpack_require__(299);
 var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
 module.exports = function(arg, es, en) {
@@ -92289,7 +92290,7 @@ module.exports = function(arg, es, en) {
 };
 
 /***/ }),
-/* 507 */
+/* 508 */
 /***/ (function(module, exports) {
 
 module.exports = function(esinp, exp) {
@@ -92297,7 +92298,7 @@ module.exports = function(esinp, exp) {
 };
 
 /***/ }),
-/* 508 */
+/* 509 */
 /***/ (function(module, exports) {
 
 exports.wgs84 = {
@@ -92382,7 +92383,7 @@ exports.rnb72 = {
 };
 
 /***/ }),
-/* 509 */
+/* 510 */
 /***/ (function(module, exports) {
 
 exports.MERIT = {
@@ -92602,7 +92603,7 @@ exports.sphere = {
 };
 
 /***/ }),
-/* 510 */
+/* 511 */
 /***/ (function(module, exports) {
 
 exports.greenwich = 0.0; //"0dE",
@@ -92620,7 +92621,7 @@ exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 /***/ }),
-/* 511 */
+/* 512 */
 /***/ (function(module, exports) {
 
 exports.ft = {to_meter: 0.3048};
@@ -92628,11 +92629,11 @@ exports['us-ft'] = {to_meter: 1200 / 3937};
 
 
 /***/ }),
-/* 512 */
+/* 513 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var proj = __webpack_require__(114);
-var transform = __webpack_require__(304);
+var transform = __webpack_require__(305);
 var wgs84 = proj('WGS84');
 
 function transformer(from, to, coords) {
@@ -92697,7 +92698,7 @@ function proj4(fromProj, toProj, coord) {
 module.exports = proj4;
 
 /***/ }),
-/* 513 */
+/* 514 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -93106,7 +93107,7 @@ module.exports = datum;
 
 
 /***/ }),
-/* 514 */
+/* 515 */
 /***/ (function(module, exports) {
 
 var PJD_3PARAM = 1;
@@ -93211,13 +93212,13 @@ module.exports = function(source, dest, point) {
 
 
 /***/ }),
-/* 515 */
+/* 516 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Datum = __webpack_require__(508);
-var Ellipsoid = __webpack_require__(509);
+var Datum = __webpack_require__(509);
+var Ellipsoid = __webpack_require__(510);
 var extend = __webpack_require__(118);
-var datum = __webpack_require__(513);
+var datum = __webpack_require__(514);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
 var SIXTH = 0.1666666666666666667;
@@ -93273,7 +93274,7 @@ module.exports = function(json) {
 
 
 /***/ }),
-/* 516 */
+/* 517 */
 /***/ (function(module, exports) {
 
 module.exports = function(defs) {
@@ -93290,32 +93291,32 @@ module.exports = function(defs) {
 
 
 /***/ }),
-/* 517 */
+/* 518 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(303),
+  __webpack_require__(304),
+  __webpack_require__(543),
   __webpack_require__(542),
   __webpack_require__(541),
   __webpack_require__(540),
-  __webpack_require__(539),
-  __webpack_require__(536),
-  __webpack_require__(530),
-  __webpack_require__(528),
-  __webpack_require__(522),
-  __webpack_require__(529),
-  __webpack_require__(520),
-  __webpack_require__(527),
-  __webpack_require__(523),
-  __webpack_require__(524),
   __webpack_require__(537),
-  __webpack_require__(535),
-  __webpack_require__(533),
-  __webpack_require__(538),
-  __webpack_require__(534),
+  __webpack_require__(531),
+  __webpack_require__(529),
+  __webpack_require__(523),
+  __webpack_require__(530),
+  __webpack_require__(521),
+  __webpack_require__(528),
+  __webpack_require__(524),
   __webpack_require__(525),
-  __webpack_require__(543),
-  __webpack_require__(521)
+  __webpack_require__(538),
+  __webpack_require__(536),
+  __webpack_require__(534),
+  __webpack_require__(539),
+  __webpack_require__(535),
+  __webpack_require__(526),
+  __webpack_require__(544),
+  __webpack_require__(522)
 ];
 module.exports = function(proj4){
   projs.forEach(function(proj){
@@ -93324,12 +93325,12 @@ module.exports = function(proj4){
 };
 
 /***/ }),
-/* 518 */
+/* 519 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defs = __webpack_require__(300);
-var wkt = __webpack_require__(305);
-var projStr = __webpack_require__(302);
+var defs = __webpack_require__(301);
+var wkt = __webpack_require__(306);
+var projStr = __webpack_require__(303);
 function testObj(code){
   return typeof code === 'string';
 }
@@ -93365,12 +93366,12 @@ function parse(code){
 module.exports = parse;
 
 /***/ }),
-/* 519 */
+/* 520 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(532),
-  __webpack_require__(531)
+  __webpack_require__(533),
+  __webpack_require__(532)
 ];
 var names = {};
 var projStore = [];
@@ -93405,7 +93406,7 @@ exports.start = function() {
 
 
 /***/ }),
-/* 520 */
+/* 521 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -93532,7 +93533,7 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 521 */
+/* 522 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -93735,7 +93736,7 @@ exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 522 */
+/* 523 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mlfn = __webpack_require__(60);
@@ -93843,13 +93844,13 @@ exports.inverse = function(p) {
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 523 */
+/* 524 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
 var qsfnz = __webpack_require__(117);
 var msfnz = __webpack_require__(45);
-var iqsfnz = __webpack_require__(504);
+var iqsfnz = __webpack_require__(505);
 /*
   reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
@@ -93912,7 +93913,7 @@ exports.names = ["cea"];
 
 
 /***/ }),
-/* 524 */
+/* 525 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -93959,7 +93960,7 @@ exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 525 */
+/* 526 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(56);
@@ -94075,11 +94076,11 @@ exports.names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 526 */
+/* 527 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var FORTPI = Math.PI/4;
-var srat = __webpack_require__(507);
+var srat = __webpack_require__(508);
 var HALF_PI = Math.PI/2;
 var MAX_ITER = 20;
 exports.init = function() {
@@ -94126,7 +94127,7 @@ exports.names = ["gauss"];
 
 
 /***/ }),
-/* 527 */
+/* 528 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -94231,7 +94232,7 @@ exports.names = ["gnom"];
 
 
 /***/ }),
-/* 528 */
+/* 529 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -94335,7 +94336,7 @@ exports.names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 529 */
+/* 530 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -94629,7 +94630,7 @@ exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area",
 
 
 /***/ }),
-/* 530 */
+/* 531 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
@@ -94770,7 +94771,7 @@ exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Confo
 
 
 /***/ }),
-/* 531 */
+/* 532 */
 /***/ (function(module, exports) {
 
 exports.init = function() {
@@ -94786,7 +94787,7 @@ exports.names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 532 */
+/* 533 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var msfnz = __webpack_require__(45);
@@ -94889,7 +94890,7 @@ exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_
 
 
 /***/ }),
-/* 533 */
+/* 534 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -94940,7 +94941,7 @@ exports.names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 534 */
+/* 535 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -95023,7 +95024,7 @@ exports.names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 535 */
+/* 536 */
 /***/ (function(module, exports) {
 
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
@@ -95247,7 +95248,7 @@ exports.inverse = function(p) {
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 536 */
+/* 537 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var tsfnz = __webpack_require__(87);
@@ -95420,7 +95421,7 @@ exports.inverse = function(p) {
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 537 */
+/* 538 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(56);
@@ -95553,15 +95554,15 @@ exports.inverse = function(p) {
 exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 538 */
+/* 539 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
 var adjust_lat = __webpack_require__(55);
-var pj_enfn = __webpack_require__(505);
+var pj_enfn = __webpack_require__(506);
 var MAX_ITER = 20;
-var pj_mlfn = __webpack_require__(298);
-var pj_inv_mlfn = __webpack_require__(506);
+var pj_mlfn = __webpack_require__(299);
+var pj_inv_mlfn = __webpack_require__(507);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var asinz = __webpack_require__(44);
@@ -95664,7 +95665,7 @@ exports.inverse = function(p) {
 exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 539 */
+/* 540 */
 /***/ (function(module, exports) {
 
 /*
@@ -95750,7 +95751,7 @@ exports.names = ["somerc"];
 
 
 /***/ }),
-/* 540 */
+/* 541 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -95922,10 +95923,10 @@ exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (vari
 
 
 /***/ }),
-/* 541 */
+/* 542 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var gauss = __webpack_require__(526);
+var gauss = __webpack_require__(527);
 var adjust_lon = __webpack_require__(7);
 exports.init = function() {
   gauss.init.apply(this);
@@ -95985,11 +95986,11 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 /***/ }),
-/* 542 */
+/* 543 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var tmerc = __webpack_require__(303);
+var tmerc = __webpack_require__(304);
 exports.dependsOn = 'tmerc';
 exports.init = function() {
   if (!this.zone) {
@@ -96009,7 +96010,7 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 543 */
+/* 544 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -96134,16 +96135,10 @@ exports.inverse = function(p) {
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 544 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 545 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 546 */

@@ -267,13 +267,19 @@ export var ThemeLayer = L.Layer.extend({
      * @param bounds - {L.bounds} 图层范围
      */
     update: function (bounds) {
+        var mapOffset = this._map.containerPointToLayerPoint([0, 0]);
+        L.DomUtil.setPosition(this.container, mapOffset);
+
         var me = this;
-        var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
-        offsetLeft = -Math.round(offsetLeft);
-        var offsetTop = parseInt(me._map.getContainer().style.top, 10);
-        offsetTop = -Math.round(offsetTop);
-        me.container.style.left = offsetLeft + 'px';
-        me.container.style.top = offsetTop + 'px';
+       //  var bounds = me._map.getBounds();
+       //  var topLeft = me._map.latLngToLayerPoint(bounds.getNorthWest());
+       //  var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0]
+       // // var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
+       // // offsetLeft = -Math.round(offsetLeft);
+       //  //var offsetTop = parseInt(me._map.getContainer().style.top, 10);
+       //  //offsetTop = -Math.round(offsetTop);
+       //  me.container.style.left = mapOffset[0] + 'px';
+       //  me.container.style.top = mapOffset[1] + 'px';
 
         //绘制专题要素
         if (me.renderer) {
@@ -410,13 +416,13 @@ export var ThemeLayer = L.Layer.extend({
     },
 
 
-    _zoomAnim: function (evt) {
-        var zoom = evt.zoom, center = evt.center;
-        var scale = this._map.getZoomScale(zoom),
-            offset = this._map._getCenterOffset(center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
+    _zoomAnim: function (e) {
+        var scale = this._map.getZoomScale(e.zoom),
+            offset = this._map._getCenterOffset(e.center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
 
         if (L.DomUtil.setTransform) {
             L.DomUtil.setTransform(this.container, offset, scale);
+
         } else {
             this.container.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(offset) + ' scale(' + scale + ')';
         }
@@ -435,10 +441,20 @@ export var ThemeLayer = L.Layer.extend({
         var me = this;
         var latLngBounds = me._map.getBounds();
         me.update(latLngBounds);
-
-        var topLeft = me._map.containerPointToLayerPoint([0, 0]);
-        L.DomUtil.setPosition(me.container, topLeft);
         var size = me._map.getSize();
+         // var bounds = me._map.getBounds();
+         // var topLeft = me._map.latLngToLayerPoint(bounds.getNorthWest());
+         // var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0]
+        // var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
+        // offsetLeft = -Math.round(offsetLeft);
+         //var offsetTop = parseInt(me._map.getContainer().style.top, 10);
+         //offsetTop = -Math.round(offsetTop);
+         //me.container.style.left = mapOffset[0] + 'px';
+         //me.container.style.top = mapOffset[1] + 'px';
+        var mapOffset = this._map.containerPointToLayerPoint([0, 0]);
+        L.DomUtil.setPosition(this.container, mapOffset);
+
+
         if (parseFloat(me.container.width) !== parseFloat(size.x)) {
             me.container.width = size.x + 'px';
         }
