@@ -1,5 +1,5 @@
 ﻿var utils = {
-    //设置语言。参数："zh_CN"，"en"
+    //设置语言。参数："zh_CN"，"en-US"
     setLanguage: null,
     //获取当前语言。默认从cookie读取，没有则读取浏览器默认语言
     getLanguage: null,
@@ -14,9 +14,9 @@
     loadTemplate: null
 };
 (function (utils) {
-    var cKey = "userLanguage";
+    var cKey = "language";
 
-    //设置语言。参数："zh_CN"，"en"
+    //设置语言。参数："zh_CN"，"en-US"
     function setLanguage(language) {
         //默认设置过期时间为1个小时
         setCookie(cKey, language, 60 * 60 * 1000);
@@ -67,8 +67,8 @@
     function getLocalKey(key) {
         var lang = getLanguage();
         var localKey = key;
-        if (lang === "en") {
-            localKey = key + "_" + lang;
+        if (lang === "en-US") {
+            localKey = key + "_" + "en";
         }
         return localKey;
     }
