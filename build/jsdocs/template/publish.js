@@ -107,7 +107,26 @@ function getPathFromDoclet(doclet) {
 
     return filepath;
 }
+function generateNav(nav) {
 
+    // var docData = {
+    //     filename: "",
+    //     title: title,
+    //     docs: docs,
+    //     packageInfo: ( find({kind: 'package'}) || [] ) [0]
+    // };
+    var docData = {
+        filename: "nav.html",
+        title: "",
+        nav: nav,
+    };
+    var outpath = path.join(outdir, "nav.html"),
+        html = view.partial('navigation.tmpl', docData);
+
+        html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+
+    fs.writeFileSync(outpath, html, 'utf8');
+}
 function generate(title, docs, filename, resolveLinks) {
     resolveLinks = resolveLinks === false ? false : true;
 
@@ -428,6 +447,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     // once for all
     view.nav = buildNav(members);
+    generateNav(view.nav);
     attachModuleSymbols( find({ kind: ['class', 'function'], longname: {left: 'module:'} }),
         members.modules );
 
