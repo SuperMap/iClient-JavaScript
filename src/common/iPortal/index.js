@@ -1,6 +1,13 @@
-export {IPortal} from './iPortal';
-export {IPortalMap} from './iPortalMap'
-export {IPortalMapsQueryParam} from './iPortalMapsQueryParam';
-export {IPortalService} from './iPortalService';
-export {IPortalServiceBase} from './iPortalServiceBase';
-export {IPortalServicesQueryParam} from './iPortalServicesQueryParam';
+import {IPortal} from './iPortal';
+import {IPortalMap} from './iPortalMap'
+import {IPortalMapsQueryParam} from './iPortalMapsQueryParam';
+import {IPortalService} from './iPortalService';
+import {IPortalServiceBase} from './iPortalServiceBase';
+import {IPortalServicesQueryParam} from './iPortalServicesQueryParam';
+
+export {IPortal} ;
+export {IPortalMap};
+export {IPortalMapsQueryParam} ;
+export {IPortalService} ;
+export {IPortalServiceBase};
+export {IPortalServicesQueryParam} ;

@@ -50,9 +50,9 @@ module.exports = {
             }
         }, {
             test: [/\.js$/],
-            exclude: /node_modules[\/\\]proj4|classic/,
+            exclude: /node_modules[\/\\]proj4|setImmediate/,
             loader: 'babel-loader',
-            query: {
+            options: {
                 presets: ['es2015']
             }
         }, {

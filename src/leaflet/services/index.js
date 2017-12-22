@@ -1,32 +1,36 @@
-export {AddressMatchService, addressMatchService} from './AddressMatchService';
-export {ChartService, chartService} from './ChartService';
-export {DataFlowService, dataFlowService} from './DataFlowService';
-export {FeatureService, featureService} from './FeatureService';
-export {FieldService, fieldService} from './FieldService';
-export {GridCellInfosService, gridCellInfosService} from './GridCellInfosService';
-export {LayerInfoService, layerInfoService} from './LayerInfoService';
-export {MapService, mapService} from './MapService';
-export {MeasureService, measureService} from './MeasureService';
-export {NetworkAnalyst3DService, networkAnalyst3DService} from './NetworkAnalyst3DService';
-export {NetworkAnalystService, networkAnalystService} from './NetworkAnalystService';
-export {ProcessingService, processingService} from './ProcessingService';
-export {QueryService, queryService} from './QueryService';
-export {ServiceBase} from './ServiceBase';
-export {SpatialAnalystService, spatialAnalystService} from './SpatialAnalystService';
-export {ThemeService, themeService} from './ThemeService';
-export {TrafficTransferAnalystService, trafficTransferAnalystService} from './TrafficTransferAnalystService';
+import {AddressMatchService, addressMatchService} from './AddressMatchService';
+import {ChartService, chartService} from './ChartService';
+import {DataFlowService, dataFlowService} from './DataFlowService';
+import {FeatureService, featureService} from './FeatureService';
+import {FieldService, fieldService} from './FieldService';
+import {GridCellInfosService, gridCellInfosService} from './GridCellInfosService';
+import {LayerInfoService, layerInfoService} from './LayerInfoService';
+import {MapService, mapService} from './MapService';
+import {MeasureService, measureService} from './MeasureService';
+import {NetworkAnalyst3DService, networkAnalyst3DService} from './NetworkAnalyst3DService';
+import {NetworkAnalystService, networkAnalystService} from './NetworkAnalystService';
+import {ProcessingService, processingService} from './ProcessingService';
+import {QueryService, queryService} from './QueryService';
+import {ServiceBase} from './ServiceBase';
+import {SpatialAnalystService, spatialAnalystService} from './SpatialAnalystService';
+import {ThemeService, themeService} from './ThemeService';
+import {TrafficTransferAnalystService, trafficTransferAnalystService} from './TrafficTransferAnalystService';
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+export {AddressMatchService, addressMatchService};
+export {ChartService, chartService};
+export {DataFlowService, dataFlowService};
+export {FeatureService, featureService};
+export {FieldService, fieldService};
+export {GridCellInfosService, gridCellInfosService};
+export {LayerInfoService, layerInfoService};
+export {MapService, mapService};
+export {MeasureService, measureService};
+export {NetworkAnalyst3DService, networkAnalyst3DService};
+export {NetworkAnalystService, networkAnalystService};
+export {ProcessingService, processingService};
+export {QueryService, queryService};
+export {ServiceBase};
+export {SpatialAnalystService, spatialAnalystService};
+export {ThemeService, themeService};
+export {TrafficTransferAnalystService, trafficTransferAnalystService};

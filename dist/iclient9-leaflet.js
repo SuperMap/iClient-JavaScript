@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 550);
+/******/ 	return __webpack_require__(__webpack_require__.s = 504);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -102,7 +102,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _SuperMap = __webpack_require__(0);
 
-__webpack_require__(46);
+__webpack_require__(45);
 
 var Util = exports.Util = _SuperMap.SuperMap.Util = _SuperMap.SuperMap.Util || {};
 /**
@@ -2241,21 +2241,21 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-__webpack_require__(281);
+__webpack_require__(277);
 
-__webpack_require__(445);
+__webpack_require__(434);
 
-__webpack_require__(444);
+__webpack_require__(433);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  *SuperMap Leaflet基类
  * 定义命名空间
  * 提供公共模块
  */
-_leaflet2.default.supermap = _leaflet2.default.supermap || {};
-_leaflet2.default.supermap.control = _leaflet2.default.supermap.control || {};
+_leaflet2["default"].supermap = _leaflet2["default"].supermap || {};
+_leaflet2["default"].supermap.control = _leaflet2["default"].supermap.control || {};
 
 /***/ }),
 /* 5 */
@@ -2265,180 +2265,424 @@ _leaflet2.default.supermap.control = _leaflet2.default.supermap.control || {};
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
-exports.SuperMap = exports.REST = undefined;
+exports.ElasticSearch = exports.ThemeStyle = exports.CartoCSS = exports.TokenServiceParameter = exports.ServerInfo = exports.SecurityManager = exports.KeyServiceParameter = exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = exports.ThemeVector = exports.Ring = exports.RankSymbol = exports.OverlayPoint = exports.Pie = exports.Line = exports.Graph = exports.Circle = exports.Bar3D = exports.Bar = exports.OnlineServiceBase = exports.OnlineResources = exports.OnlineQueryDatasParameter = exports.OnlineData = exports.Online = exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector = exports.UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightParameters = exports.UpdateEdgeWeightService = exports.UpdateEdgeWeightParameters = exports.UGCSubLayer = exports.UGCMapLayer = exports.UGCLayer = undefined;
+exports.TransferSolutionParameters = exports.TransportationAnalystResultSetting = exports.TransportationAnalystParameter = exports.TransferSolutionService = exports.TransferPathService = exports.TransferPathParameters = exports.TransferLine = exports.TopologyValidatorJobsService = exports.TopologyValidatorJobsParameter = exports.TilesetsService = exports.ThiessenAnalystService = exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OverlapDisplayedOptions = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = undefined;
+exports.LabelSymbolCell = exports.LabelMixedTextStyle = exports.LabelMatrixCell = exports.LabelImageCell = exports.KernelDensityJobsService = exports.KernelDensityJobParameter = exports.JoinItem = exports.InterpolationRBFAnalystParameters = exports.InterpolationKrigingAnalystParameters = exports.InterpolationIDWAnalystParameters = exports.InterpolationAnalystService = exports.InterpolationAnalystParameters = exports.UGCImage = exports.Grid = exports.GetLayersInfoService = exports.GetGridCellInfosService = exports.GetGridCellInfosParameters = exports.GetFieldsService = exports.GetFeaturesServiceBase = exports.GetFeaturesParametersBase = exports.GetFeaturesBySQLService = exports.GetFeaturesBySQLParameters = exports.GetFeaturesByIDsService = exports.GetFeaturesByIDsParameters = exports.GetFeaturesByGeometryService = exports.GetFeaturesByGeometryParameters = exports.GetFeaturesByBufferService = exports.GetFeaturesByBufferParameters = exports.GetFeaturesByBoundsService = exports.GetFeaturesByBoundsParameters = exports.GeoRelationAnalystService = exports.GeoRelationAnalystParameters = exports.GeometryThiessenAnalystParameters = exports.GeometrySurfaceAnalystParameters = exports.GeometryOverlayAnalystParameters = exports.GeometryBufferAnalystParameters = exports.GeoDecodingParameter = exports.GeoCodingParameter = exports.GenerateSpatialDataService = exports.GenerateSpatialDataParameters = exports.FindTSPPathsService = exports.FindTSPPathsParameters = exports.FindServiceAreasService = exports.FindServiceAreasParameters = exports.FindPathService = exports.FindPathParameters = exports.FindMTSPPathsService = exports.FindMTSPPathsParameters = exports.FindLocationService = exports.FindLocationParameters = exports.FindClosestFacilitiesService = exports.FindClosestFacilitiesParameters = exports.FilterParameter = exports.FieldStatisticsParameters = exports.FieldStatisticService = exports.FieldParameters = exports.FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DParameters = exports.FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DParameters = exports.FacilityAnalystStreamService = exports.FacilityAnalystStreamParameters = exports.FacilityAnalystSources3DService = exports.FacilityAnalystSources3DParameters = exports.FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DParameters = exports.FacilityAnalyst3DParameters = exports.EditFeaturesService = exports.EditFeaturesParameters = exports.DensityKernelAnalystParameters = exports.DensityAnalystService = exports.DatasourceConnectionInfo = exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParameters = exports.DatasetOverlayAnalystParameters = exports.DatasetInfo = exports.DatasetBufferAnalystParameters = exports.DataReturnOption = exports.DataFlowService = exports.ComputeWeightMatrixService = exports.ComputeWeightMatrixParameters = exports.CommonServiceBase = exports.ColorDictionary = exports.ClipParameter = exports.ChartQueryService = exports.ChartQueryParameters = exports.ChartQueryFilterParameter = exports.ChartFeatureInfoSpecsService = exports.BurstPipelineAnalystService = exports.BurstPipelineAnalystParameters = exports.BuffersAnalystJobsService = exports.BuffersAnalystJobsParameter = exports.BufferSetting = exports.BufferDistance = exports.BufferAnalystService = exports.BufferAnalystParameters = exports.AreaSolarRadiationService = exports.AreaSolarRadiationParameters = undefined;
+exports.AddressMatchService = exports.IPortalServicesQueryParam = exports.IPortalServiceBase = exports.IPortalService = exports.IPortalMapsQueryParam = exports.IPortalMap = exports.IPortal = exports.IManagerServiceBase = exports.IManagerCreateNodeParam = exports.IManager = exports.FetchRequest = exports.RequestTimeout = exports.CORS = exports.WKT = exports.JSONFormat = exports.GeoJSON = exports.Format = exports.TimeFlowControl = exports.TimeControlBase = exports.GeometryVector = exports.CommonUtil = exports.Size = exports.Pixel = exports.LonLat = exports.Geometry = exports.Feature = exports.Events = exports.Event = exports.DateExt = exports.Credential = exports.Bounds = exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = exports.TopologyValidatorRule = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SummaryType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ClientType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.ChartType = exports.ColorSpaceType = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.OverlayOperationType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.SideType = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.SpatialQueryMode = exports.BufferRadiusUnit = exports.Unit = exports.DataReturnMode = exports.SpatialRelationType = exports.MeasureMode = exports.EngineType = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = exports.SuperMap = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
-Object.defineProperty(exports, 'SuperMap', {
-  enumerable: true,
-  get: function get() {
-    return _SuperMap.SuperMap;
-  }
-});
-
 var _REST = __webpack_require__(3);
 
-Object.keys(_REST).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _REST[key];
-    }
-  });
-});
+var _commontypes = __webpack_require__(327);
 
-var _commontypes = __webpack_require__(338);
+var _format = __webpack_require__(330);
 
-Object.keys(_commontypes).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _commontypes[key];
-    }
-  });
-});
+var _control = __webpack_require__(328);
 
-var _control = __webpack_require__(339);
+var _iManager = __webpack_require__(331);
 
-Object.keys(_control).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _control[key];
-    }
-  });
-});
+var _iPortal = __webpack_require__(332);
 
-var _format = __webpack_require__(341);
+var _iServer = __webpack_require__(403);
 
-Object.keys(_format).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _format[key];
-    }
-  });
-});
+var _online = __webpack_require__(405);
 
-var _iManager = __webpack_require__(342);
+var _security = __webpack_require__(425);
 
-Object.keys(_iManager).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _iManager[key];
-    }
-  });
-});
+var _thirdparty = __webpack_require__(430);
 
-var _iPortal = __webpack_require__(343);
+var _util = __webpack_require__(432);
 
-Object.keys(_iPortal).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _iPortal[key];
-    }
-  });
-});
+var _style = __webpack_require__(428);
 
-var _iServer = __webpack_require__(414);
+var _overlay = __webpack_require__(415);
 
-Object.keys(_iServer).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _iServer[key];
-    }
-  });
-});
-
-var _online = __webpack_require__(416);
-
-Object.keys(_online).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _online[key];
-    }
-  });
-});
-
-var _overlay = __webpack_require__(426);
-
-Object.keys(_overlay).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _overlay[key];
-    }
-  });
-});
-
-var _security = __webpack_require__(436);
-
-Object.keys(_security).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _security[key];
-    }
-  });
-});
-
-var _style = __webpack_require__(439);
-
-Object.keys(_style).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _style[key];
-    }
-  });
-});
-
-var _thirdparty = __webpack_require__(441);
-
-Object.keys(_thirdparty).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _thirdparty[key];
-    }
-  });
-});
-
-var _util = __webpack_require__(443);
-
-Object.keys(_util).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _util[key];
-    }
-  });
-});
-
-var REST = _interopRequireWildcard(_REST);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-exports.REST = REST;
+exports.SuperMap = _SuperMap.SuperMap;
+exports.DataFormat = _REST.DataFormat;
+exports.ServerType = _REST.ServerType;
+exports.GeometryType = _REST.GeometryType;
+exports.QueryOption = _REST.QueryOption;
+exports.JoinType = _REST.JoinType;
+exports.EngineType = _REST.EngineType;
+exports.MeasureMode = _REST.MeasureMode;
+exports.SpatialRelationType = _REST.SpatialRelationType;
+exports.DataReturnMode = _REST.DataReturnMode;
+exports.Unit = _REST.Unit;
+exports.BufferRadiusUnit = _REST.BufferRadiusUnit;
+exports.SpatialQueryMode = _REST.SpatialQueryMode;
+exports.ThemeGraphTextFormat = _REST.ThemeGraphTextFormat;
+exports.ThemeGraphType = _REST.ThemeGraphType;
+exports.GraphAxesTextDisplayMode = _REST.GraphAxesTextDisplayMode;
+exports.GraduatedMode = _REST.GraduatedMode;
+exports.RangeMode = _REST.RangeMode;
+exports.ThemeType = _REST.ThemeType;
+exports.ColorGradientType = _REST.ColorGradientType;
+exports.TextAlignment = _REST.TextAlignment;
+exports.FillGradientMode = _REST.FillGradientMode;
+exports.SideType = _REST.SideType;
+exports.AlongLineDirection = _REST.AlongLineDirection;
+exports.LabelBackShape = _REST.LabelBackShape;
+exports.LabelOverLengthMode = _REST.LabelOverLengthMode;
+exports.DirectionType = _REST.DirectionType;
+exports.OverlayOperationType = _REST.OverlayOperationType;
+exports.SupplyCenterType = _REST.SupplyCenterType;
+exports.TurnType = _REST.TurnType;
+exports.BufferEndType = _REST.BufferEndType;
+exports.SmoothMethod = _REST.SmoothMethod;
+exports.SurfaceAnalystMethod = _REST.SurfaceAnalystMethod;
+exports.ColorSpaceType = _REST.ColorSpaceType;
+exports.ChartType = _REST.ChartType;
+exports.EditType = _REST.EditType;
+exports.TransferTactic = _REST.TransferTactic;
+exports.TransferPreference = _REST.TransferPreference;
+exports.GridType = _REST.GridType;
+exports.ClientType = _REST.ClientType;
+exports.LayerType = _REST.LayerType;
+exports.UGCLayerType = _REST.UGCLayerType;
+exports.StatisticMode = _REST.StatisticMode;
+exports.PixelFormat = _REST.PixelFormat;
+exports.SearchMode = _REST.SearchMode;
+exports.SummaryType = _REST.SummaryType;
+exports.InterpolationAlgorithmType = _REST.InterpolationAlgorithmType;
+exports.VariogramMode = _REST.VariogramMode;
+exports.Exponent = _REST.Exponent;
+exports.ClipAnalystMode = _REST.ClipAnalystMode;
+exports.AnalystAreaUnit = _REST.AnalystAreaUnit;
+exports.AnalystSizeUnit = _REST.AnalystSizeUnit;
+exports.StatisticAnalystMode = _REST.StatisticAnalystMode;
+exports.TopologyValidatorRule = _REST.TopologyValidatorRule;
+exports.Collection = _commontypes.Collection;
+exports.Curve = _commontypes.Curve;
+exports.GeoText = _commontypes.GeoText;
+exports.LinearRing = _commontypes.LinearRing;
+exports.LineString = _commontypes.LineString;
+exports.MultiLineString = _commontypes.MultiLineString;
+exports.MultiPoint = _commontypes.MultiPoint;
+exports.MultiPolygon = _commontypes.MultiPolygon;
+exports.GeometryPoint = _commontypes.GeometryPoint;
+exports.Polygon = _commontypes.Polygon;
+exports.Rectangle = _commontypes.Rectangle;
+exports.StringExt = _commontypes.StringExt;
+exports.NumberExt = _commontypes.NumberExt;
+exports.FunctionExt = _commontypes.FunctionExt;
+exports.ArrayExt = _commontypes.ArrayExt;
+exports.Bounds = _commontypes.Bounds;
+exports.Credential = _commontypes.Credential;
+exports.DateExt = _commontypes.DateExt;
+exports.Event = _commontypes.Event;
+exports.Events = _commontypes.Events;
+exports.Feature = _commontypes.Feature;
+exports.Geometry = _commontypes.Geometry;
+exports.LonLat = _commontypes.LonLat;
+exports.Pixel = _commontypes.Pixel;
+exports.Size = _commontypes.Size;
+exports.CommonUtil = _commontypes.CommonUtil;
+exports.GeometryVector = _commontypes.GeometryVector;
+exports.TimeControlBase = _control.TimeControlBase;
+exports.TimeFlowControl = _control.TimeFlowControl;
+exports.Format = _format.Format;
+exports.GeoJSON = _format.GeoJSON;
+exports.JSONFormat = _format.JSONFormat;
+exports.WKT = _format.WKT;
+exports.CORS = _util.CORS;
+exports.RequestTimeout = _util.RequestTimeout;
+exports.FetchRequest = _util.FetchRequest;
+exports.IManager = _iManager.IManager;
+exports.IManagerCreateNodeParam = _iManager.IManagerCreateNodeParam;
+exports.IManagerServiceBase = _iManager.IManagerServiceBase;
+exports.IPortal = _iPortal.IPortal;
+exports.IPortalMap = _iPortal.IPortalMap;
+exports.IPortalMapsQueryParam = _iPortal.IPortalMapsQueryParam;
+exports.IPortalService = _iPortal.IPortalService;
+exports.IPortalServiceBase = _iPortal.IPortalServiceBase;
+exports.IPortalServicesQueryParam = _iPortal.IPortalServicesQueryParam;
+exports.AddressMatchService = _iServer.AddressMatchService;
+exports.AreaSolarRadiationParameters = _iServer.AreaSolarRadiationParameters;
+exports.AreaSolarRadiationService = _iServer.AreaSolarRadiationService;
+exports.BufferAnalystParameters = _iServer.BufferAnalystParameters;
+exports.BufferAnalystService = _iServer.BufferAnalystService;
+exports.BufferDistance = _iServer.BufferDistance;
+exports.BufferSetting = _iServer.BufferSetting;
+exports.BuffersAnalystJobsParameter = _iServer.BuffersAnalystJobsParameter;
+exports.BuffersAnalystJobsService = _iServer.BuffersAnalystJobsService;
+exports.BurstPipelineAnalystParameters = _iServer.BurstPipelineAnalystParameters;
+exports.BurstPipelineAnalystService = _iServer.BurstPipelineAnalystService;
+exports.ChartFeatureInfoSpecsService = _iServer.ChartFeatureInfoSpecsService;
+exports.ChartQueryFilterParameter = _iServer.ChartQueryFilterParameter;
+exports.ChartQueryParameters = _iServer.ChartQueryParameters;
+exports.ChartQueryService = _iServer.ChartQueryService;
+exports.ClipParameter = _iServer.ClipParameter;
+exports.ColorDictionary = _iServer.ColorDictionary;
+exports.CommonServiceBase = _iServer.CommonServiceBase;
+exports.ComputeWeightMatrixParameters = _iServer.ComputeWeightMatrixParameters;
+exports.ComputeWeightMatrixService = _iServer.ComputeWeightMatrixService;
+exports.DataFlowService = _iServer.DataFlowService;
+exports.DataReturnOption = _iServer.DataReturnOption;
+exports.DatasetBufferAnalystParameters = _iServer.DatasetBufferAnalystParameters;
+exports.DatasetInfo = _iServer.DatasetInfo;
+exports.DatasetOverlayAnalystParameters = _iServer.DatasetOverlayAnalystParameters;
+exports.DatasetSurfaceAnalystParameters = _iServer.DatasetSurfaceAnalystParameters;
+exports.DatasetThiessenAnalystParameters = _iServer.DatasetThiessenAnalystParameters;
+exports.DatasourceConnectionInfo = _iServer.DatasourceConnectionInfo;
+exports.DensityAnalystService = _iServer.DensityAnalystService;
+exports.DensityKernelAnalystParameters = _iServer.DensityKernelAnalystParameters;
+exports.EditFeaturesParameters = _iServer.EditFeaturesParameters;
+exports.EditFeaturesService = _iServer.EditFeaturesService;
+exports.FacilityAnalyst3DParameters = _iServer.FacilityAnalyst3DParameters;
+exports.FacilityAnalystSinks3DParameters = _iServer.FacilityAnalystSinks3DParameters;
+exports.FacilityAnalystSinks3DService = _iServer.FacilityAnalystSinks3DService;
+exports.FacilityAnalystSources3DParameters = _iServer.FacilityAnalystSources3DParameters;
+exports.FacilityAnalystSources3DService = _iServer.FacilityAnalystSources3DService;
+exports.FacilityAnalystStreamParameters = _iServer.FacilityAnalystStreamParameters;
+exports.FacilityAnalystStreamService = _iServer.FacilityAnalystStreamService;
+exports.FacilityAnalystTracedown3DParameters = _iServer.FacilityAnalystTracedown3DParameters;
+exports.FacilityAnalystTracedown3DService = _iServer.FacilityAnalystTracedown3DService;
+exports.FacilityAnalystTraceup3DParameters = _iServer.FacilityAnalystTraceup3DParameters;
+exports.FacilityAnalystTraceup3DService = _iServer.FacilityAnalystTraceup3DService;
+exports.FacilityAnalystUpstream3DParameters = _iServer.FacilityAnalystUpstream3DParameters;
+exports.FacilityAnalystUpstream3DService = _iServer.FacilityAnalystUpstream3DService;
+exports.FieldParameters = _iServer.FieldParameters;
+exports.FieldStatisticService = _iServer.FieldStatisticService;
+exports.FieldStatisticsParameters = _iServer.FieldStatisticsParameters;
+exports.FilterParameter = _iServer.FilterParameter;
+exports.FindClosestFacilitiesParameters = _iServer.FindClosestFacilitiesParameters;
+exports.FindClosestFacilitiesService = _iServer.FindClosestFacilitiesService;
+exports.FindLocationParameters = _iServer.FindLocationParameters;
+exports.FindLocationService = _iServer.FindLocationService;
+exports.FindMTSPPathsParameters = _iServer.FindMTSPPathsParameters;
+exports.FindMTSPPathsService = _iServer.FindMTSPPathsService;
+exports.FindPathParameters = _iServer.FindPathParameters;
+exports.FindPathService = _iServer.FindPathService;
+exports.FindServiceAreasParameters = _iServer.FindServiceAreasParameters;
+exports.FindServiceAreasService = _iServer.FindServiceAreasService;
+exports.FindTSPPathsParameters = _iServer.FindTSPPathsParameters;
+exports.FindTSPPathsService = _iServer.FindTSPPathsService;
+exports.GenerateSpatialDataParameters = _iServer.GenerateSpatialDataParameters;
+exports.GenerateSpatialDataService = _iServer.GenerateSpatialDataService;
+exports.GeoCodingParameter = _iServer.GeoCodingParameter;
+exports.GeoDecodingParameter = _iServer.GeoDecodingParameter;
+exports.GeometryBufferAnalystParameters = _iServer.GeometryBufferAnalystParameters;
+exports.GeometryOverlayAnalystParameters = _iServer.GeometryOverlayAnalystParameters;
+exports.GeometrySurfaceAnalystParameters = _iServer.GeometrySurfaceAnalystParameters;
+exports.GeometryThiessenAnalystParameters = _iServer.GeometryThiessenAnalystParameters;
+exports.GeoRelationAnalystParameters = _iServer.GeoRelationAnalystParameters;
+exports.GeoRelationAnalystService = _iServer.GeoRelationAnalystService;
+exports.GetFeaturesByBoundsParameters = _iServer.GetFeaturesByBoundsParameters;
+exports.GetFeaturesByBoundsService = _iServer.GetFeaturesByBoundsService;
+exports.GetFeaturesByBufferParameters = _iServer.GetFeaturesByBufferParameters;
+exports.GetFeaturesByBufferService = _iServer.GetFeaturesByBufferService;
+exports.GetFeaturesByGeometryParameters = _iServer.GetFeaturesByGeometryParameters;
+exports.GetFeaturesByGeometryService = _iServer.GetFeaturesByGeometryService;
+exports.GetFeaturesByIDsParameters = _iServer.GetFeaturesByIDsParameters;
+exports.GetFeaturesByIDsService = _iServer.GetFeaturesByIDsService;
+exports.GetFeaturesBySQLParameters = _iServer.GetFeaturesBySQLParameters;
+exports.GetFeaturesBySQLService = _iServer.GetFeaturesBySQLService;
+exports.GetFeaturesParametersBase = _iServer.GetFeaturesParametersBase;
+exports.GetFeaturesServiceBase = _iServer.GetFeaturesServiceBase;
+exports.GetFieldsService = _iServer.GetFieldsService;
+exports.GetGridCellInfosParameters = _iServer.GetGridCellInfosParameters;
+exports.GetGridCellInfosService = _iServer.GetGridCellInfosService;
+exports.GetLayersInfoService = _iServer.GetLayersInfoService;
+exports.Grid = _iServer.Grid;
+exports.UGCImage = _iServer.UGCImage;
+exports.InterpolationAnalystParameters = _iServer.InterpolationAnalystParameters;
+exports.InterpolationAnalystService = _iServer.InterpolationAnalystService;
+exports.InterpolationIDWAnalystParameters = _iServer.InterpolationIDWAnalystParameters;
+exports.InterpolationKrigingAnalystParameters = _iServer.InterpolationKrigingAnalystParameters;
+exports.InterpolationRBFAnalystParameters = _iServer.InterpolationRBFAnalystParameters;
+exports.JoinItem = _iServer.JoinItem;
+exports.KernelDensityJobParameter = _iServer.KernelDensityJobParameter;
+exports.KernelDensityJobsService = _iServer.KernelDensityJobsService;
+exports.LabelImageCell = _iServer.LabelImageCell;
+exports.LabelMatrixCell = _iServer.LabelMatrixCell;
+exports.LabelMixedTextStyle = _iServer.LabelMixedTextStyle;
+exports.LabelSymbolCell = _iServer.LabelSymbolCell;
+exports.LabelThemeCell = _iServer.LabelThemeCell;
+exports.LayerStatus = _iServer.LayerStatus;
+exports.LinkItem = _iServer.LinkItem;
+exports.MapService = _iServer.MapService;
+exports.MathExpressionAnalysisParameters = _iServer.MathExpressionAnalysisParameters;
+exports.MathExpressionAnalysisService = _iServer.MathExpressionAnalysisService;
+exports.MeasureParameters = _iServer.MeasureParameters;
+exports.MeasureService = _iServer.MeasureService;
+exports.NetworkAnalystServiceBase = _iServer.NetworkAnalystServiceBase;
+exports.OverlapDisplayedOptions = _iServer.OverlapDisplayedOptions;
+exports.OverlayAnalystParameters = _iServer.OverlayAnalystParameters;
+exports.OverlayAnalystService = _iServer.OverlayAnalystService;
+exports.OverlayGeoJobParameter = _iServer.OverlayGeoJobParameter;
+exports.OverlayGeoJobsService = _iServer.OverlayGeoJobsService;
+exports.PointWithMeasure = _iServer.PointWithMeasure;
+exports.ProcessingServiceBase = _iServer.ProcessingServiceBase;
+exports.QueryByBoundsParameters = _iServer.QueryByBoundsParameters;
+exports.QueryByBoundsService = _iServer.QueryByBoundsService;
+exports.QueryByDistanceParameters = _iServer.QueryByDistanceParameters;
+exports.QueryByDistanceService = _iServer.QueryByDistanceService;
+exports.QueryByGeometryParameters = _iServer.QueryByGeometryParameters;
+exports.QueryByGeometryService = _iServer.QueryByGeometryService;
+exports.QueryBySQLParameters = _iServer.QueryBySQLParameters;
+exports.QueryBySQLService = _iServer.QueryBySQLService;
+exports.QueryParameters = _iServer.QueryParameters;
+exports.QueryService = _iServer.QueryService;
+exports.Route = _iServer.Route;
+exports.RouteCalculateMeasureParameters = _iServer.RouteCalculateMeasureParameters;
+exports.RouteCalculateMeasureService = _iServer.RouteCalculateMeasureService;
+exports.RouteLocatorParameters = _iServer.RouteLocatorParameters;
+exports.RouteLocatorService = _iServer.RouteLocatorService;
+exports.ServerColor = _iServer.ServerColor;
+exports.ServerFeature = _iServer.ServerFeature;
+exports.ServerGeometry = _iServer.ServerGeometry;
+exports.ServerStyle = _iServer.ServerStyle;
+exports.ServerTextStyle = _iServer.ServerTextStyle;
+exports.ServerTheme = _iServer.ServerTheme;
+exports.SetLayerInfoParameters = _iServer.SetLayerInfoParameters;
+exports.SetLayerInfoService = _iServer.SetLayerInfoService;
+exports.SetLayersInfoParameters = _iServer.SetLayersInfoParameters;
+exports.SetLayersInfoService = _iServer.SetLayersInfoService;
+exports.SetLayerStatusParameters = _iServer.SetLayerStatusParameters;
+exports.SetLayerStatusService = _iServer.SetLayerStatusService;
+exports.SingleObjectQueryJobsParameter = _iServer.SingleObjectQueryJobsParameter;
+exports.SingleObjectQueryJobsService = _iServer.SingleObjectQueryJobsService;
+exports.SpatialAnalystBase = _iServer.SpatialAnalystBase;
+exports.StopQueryParameters = _iServer.StopQueryParameters;
+exports.StopQueryService = _iServer.StopQueryService;
+exports.SummaryAttributesJobsParameter = _iServer.SummaryAttributesJobsParameter;
+exports.SummaryAttributesJobsService = _iServer.SummaryAttributesJobsService;
+exports.SummaryMeshJobParameter = _iServer.SummaryMeshJobParameter;
+exports.SummaryMeshJobsService = _iServer.SummaryMeshJobsService;
+exports.SummaryRegionJobParameter = _iServer.SummaryRegionJobParameter;
+exports.SummaryRegionJobsService = _iServer.SummaryRegionJobsService;
+exports.SupplyCenter = _iServer.SupplyCenter;
+exports.SurfaceAnalystParameters = _iServer.SurfaceAnalystParameters;
+exports.SurfaceAnalystParametersSetting = _iServer.SurfaceAnalystParametersSetting;
+exports.SurfaceAnalystService = _iServer.SurfaceAnalystService;
+exports.TerrainCurvatureCalculationParameters = _iServer.TerrainCurvatureCalculationParameters;
+exports.TerrainCurvatureCalculationService = _iServer.TerrainCurvatureCalculationService;
+exports.Theme = _iServer.Theme;
+exports.ThemeDotDensity = _iServer.ThemeDotDensity;
+exports.ThemeFlow = _iServer.ThemeFlow;
+exports.ThemeGraduatedSymbol = _iServer.ThemeGraduatedSymbol;
+exports.ThemeGraduatedSymbolStyle = _iServer.ThemeGraduatedSymbolStyle;
+exports.ThemeGraph = _iServer.ThemeGraph;
+exports.ThemeGraphAxes = _iServer.ThemeGraphAxes;
+exports.ThemeGraphItem = _iServer.ThemeGraphItem;
+exports.ThemeGraphSize = _iServer.ThemeGraphSize;
+exports.ThemeGraphText = _iServer.ThemeGraphText;
+exports.ThemeGridRange = _iServer.ThemeGridRange;
+exports.ThemeGridRangeItem = _iServer.ThemeGridRangeItem;
+exports.ThemeGridUnique = _iServer.ThemeGridUnique;
+exports.ThemeGridUniqueItem = _iServer.ThemeGridUniqueItem;
+exports.ThemeLabel = _iServer.ThemeLabel;
+exports.ThemeLabelAlongLine = _iServer.ThemeLabelAlongLine;
+exports.ThemeLabelBackground = _iServer.ThemeLabelBackground;
+exports.ThemeLabelItem = _iServer.ThemeLabelItem;
+exports.ThemeLabelText = _iServer.ThemeLabelText;
+exports.ThemeLabelUniqueItem = _iServer.ThemeLabelUniqueItem;
+exports.ThemeMemoryData = _iServer.ThemeMemoryData;
+exports.ThemeOffset = _iServer.ThemeOffset;
+exports.ThemeParameters = _iServer.ThemeParameters;
+exports.ThemeRange = _iServer.ThemeRange;
+exports.ThemeRangeItem = _iServer.ThemeRangeItem;
+exports.ThemeService = _iServer.ThemeService;
+exports.ThemeUnique = _iServer.ThemeUnique;
+exports.ThemeUniqueItem = _iServer.ThemeUniqueItem;
+exports.ThiessenAnalystParameters = _iServer.ThiessenAnalystParameters;
+exports.ThiessenAnalystService = _iServer.ThiessenAnalystService;
+exports.TilesetsService = _iServer.TilesetsService;
+exports.TopologyValidatorJobsParameter = _iServer.TopologyValidatorJobsParameter;
+exports.TopologyValidatorJobsService = _iServer.TopologyValidatorJobsService;
+exports.TransferLine = _iServer.TransferLine;
+exports.TransferPathParameters = _iServer.TransferPathParameters;
+exports.TransferPathService = _iServer.TransferPathService;
+exports.TransferSolutionService = _iServer.TransferSolutionService;
+exports.TransportationAnalystParameter = _iServer.TransportationAnalystParameter;
+exports.TransportationAnalystResultSetting = _iServer.TransportationAnalystResultSetting;
+exports.TransferSolutionParameters = _iServer.TransferSolutionParameters;
+exports.UGCLayer = _iServer.UGCLayer;
+exports.UGCMapLayer = _iServer.UGCMapLayer;
+exports.UGCSubLayer = _iServer.UGCSubLayer;
+exports.UpdateEdgeWeightParameters = _iServer.UpdateEdgeWeightParameters;
+exports.UpdateEdgeWeightService = _iServer.UpdateEdgeWeightService;
+exports.UpdateTurnNodeWeightParameters = _iServer.UpdateTurnNodeWeightParameters;
+exports.UpdateTurnNodeWeightService = _iServer.UpdateTurnNodeWeightService;
+exports.Vector = _iServer.Vector;
+exports.VectorClipJobsParameter = _iServer.VectorClipJobsParameter;
+exports.VectorClipJobsService = _iServer.VectorClipJobsService;
+exports.Online = _online.Online;
+exports.OnlineData = _online.OnlineData;
+exports.OnlineQueryDatasParameter = _online.OnlineQueryDatasParameter;
+exports.OnlineResources = _online.OnlineResources;
+exports.OnlineServiceBase = _online.OnlineServiceBase;
+exports.Bar = _overlay.Bar;
+exports.Bar3D = _overlay.Bar3D;
+exports.Circle = _overlay.Circle;
+exports.Graph = _overlay.Graph;
+exports.Line = _overlay.Line;
+exports.Pie = _overlay.Pie;
+exports.OverlayPoint = _overlay.OverlayPoint;
+exports.RankSymbol = _overlay.RankSymbol;
+exports.Ring = _overlay.Ring;
+exports.ThemeVector = _overlay.ThemeVector;
+exports.ShapeFactory = _overlay.ShapeFactory;
+exports.ShapeParameters = _overlay.ShapeParameters;
+exports.FeatureCircle = _overlay.FeatureCircle;
+exports.Image = _overlay.Image;
+exports.Label = _overlay.Label;
+exports.FeatureLine = _overlay.FeatureLine;
+exports.Point = _overlay.Point;
+exports.FeaturePolygon = _overlay.FeaturePolygon;
+exports.FeatureRectangle = _overlay.FeatureRectangle;
+exports.Sector = _overlay.Sector;
+exports.FeatureTheme = _overlay.FeatureTheme;
+exports.LevelRenderer = _overlay.LevelRenderer;
+exports.Render = _overlay.Render;
+exports.Animation = _overlay.Animation;
+exports.Animator = _overlay.Animator;
+exports.Area = _overlay.Area;
+exports.Clip = _overlay.Clip;
+exports.Color = _overlay.Color;
+exports.ComputeBoundingBox = _overlay.ComputeBoundingBox;
+exports.Config = _overlay.Config;
+exports.LevelRendererCurve = _overlay.LevelRendererCurve;
+exports.Easing = _overlay.Easing;
+exports.Env = _overlay.Env;
+exports.LevelRendererEvent = _overlay.LevelRendererEvent;
+exports.Eventful = _overlay.Eventful;
+exports.Group = _overlay.Group;
+exports.Handler = _overlay.Handler;
+exports.Http = _overlay.Http;
+exports.Log = _overlay.Log;
+exports.Math = _overlay.Math;
+exports.Matrix = _overlay.Matrix;
+exports.Painter = _overlay.Painter;
+exports.PaintLayer = _overlay.PaintLayer;
+exports.Shape = _overlay.Shape;
+exports.SmicBrokenLine = _overlay.SmicBrokenLine;
+exports.SmicCircle = _overlay.SmicCircle;
+exports.SmicEllipse = _overlay.SmicEllipse;
+exports.SmicImage = _overlay.SmicImage;
+exports.SmicIsogon = _overlay.SmicIsogon;
+exports.SmicPoint = _overlay.SmicPoint;
+exports.SmicPolygon = _overlay.SmicPolygon;
+exports.SmicRectangle = _overlay.SmicRectangle;
+exports.SmicRing = _overlay.SmicRing;
+exports.SmicSector = _overlay.SmicSector;
+exports.SmicStar = _overlay.SmicStar;
+exports.SmicText = _overlay.SmicText;
+exports.Storage = _overlay.Storage;
+exports.Transformable = _overlay.Transformable;
+exports.Util = _overlay.Util;
+exports.LevelRendererVector = _overlay.LevelRendererVector;
+exports.SUtil = _overlay.SUtil;
+exports.KeyServiceParameter = _security.KeyServiceParameter;
+exports.SecurityManager = _security.SecurityManager;
+exports.ServerInfo = _security.ServerInfo;
+exports.TokenServiceParameter = _security.TokenServiceParameter;
+exports.CartoCSS = _style.CartoCSS;
+exports.ThemeStyle = _style.ThemeStyle;
+exports.ElasticSearch = _thirdparty.ElasticSearch;
 
 /***/ }),
 /* 6 */
@@ -2458,19 +2702,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _FetchRequest = __webpack_require__(21);
 
-var _Events = __webpack_require__(62);
+var _Events = __webpack_require__(60);
 
-var _Credential = __webpack_require__(89);
+var _Credential = __webpack_require__(86);
 
-var _SecurityManager = __webpack_require__(35);
+var _SecurityManager = __webpack_require__(34);
 
 var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(3);
 
-var _JSON = __webpack_require__(93);
+var _JSON = __webpack_require__(90);
 
-var _BaseTypes = __webpack_require__(46);
+var _BaseTypes = __webpack_require__(45);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2843,7 +3087,7 @@ var TWO_PI = Math.PI * 2;
 // have drifted from their original location along the 180th meridian (due to
 // floating point error) from changing their sign.
 var SPI = 3.14159265359;
-var sign = __webpack_require__(61);
+var sign = __webpack_require__(59);
 
 module.exports = function(x) {
   return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
@@ -2865,7 +3109,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.ServiceBase
@@ -2875,7 +3119,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param options - {Object} 可选参数。如：<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online
  */
-var ServiceBase = exports.ServiceBase = _leaflet2.default.Evented.extend({
+var ServiceBase = exports.ServiceBase = _leaflet2["default"].Evented.extend({
 
     options: {
         url: null,
@@ -2888,7 +3132,7 @@ var ServiceBase = exports.ServiceBase = _leaflet2.default.Evented.extend({
             url = url.indexOf("/") !== url.length - 1 ? url : url.substr(0, url.length - 1);
         }
         this.url = url;
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         this.fire("initialized", this);
     },
 
@@ -2920,21 +3164,21 @@ var _SuperMap = __webpack_require__(0);
 
 var _Point = __webpack_require__(18);
 
-var _MultiPoint = __webpack_require__(38);
+var _MultiPoint = __webpack_require__(37);
 
-var _LinearRing = __webpack_require__(31);
+var _LinearRing = __webpack_require__(30);
 
 var _LineString = __webpack_require__(17);
 
-var _MultiLineString = __webpack_require__(47);
+var _MultiLineString = __webpack_require__(46);
 
-var _Polygon = __webpack_require__(49);
+var _Polygon = __webpack_require__(48);
 
-var _MultiPolygon = __webpack_require__(48);
+var _MultiPolygon = __webpack_require__(47);
 
 var _ServerStyle = __webpack_require__(11);
 
-var _Route = __webpack_require__(68);
+var _Route = __webpack_require__(66);
 
 var _Util = __webpack_require__(1);
 
@@ -3553,7 +3797,7 @@ var ServerGeometry = exports.ServerGeometry = function () {
         /*
          * Function: SuperMap.Geometry.IsClockWise
          * 判断linearRing中的点的顺序，顺时针？逆时针
-         * 返回值大于0, 逆时针; 小于0, 顺时针
+         * 返回值大于0 逆时针; 小于0 顺时针
          *
          * Parameters:
          * geometry - {<SuperMap.Geometry>} 要转换的客户端Geometry对象。
@@ -3984,29 +4228,29 @@ exports.SUtil = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Area = __webpack_require__(264);
+var _Area = __webpack_require__(260);
 
-var _Color = __webpack_require__(105);
+var _Color = __webpack_require__(102);
 
-var _ComputeBoundingBox = __webpack_require__(266);
+var _ComputeBoundingBox = __webpack_require__(262);
 
-var _Curve = __webpack_require__(79);
+var _Curve = __webpack_require__(77);
 
-var _Env = __webpack_require__(268);
+var _Env = __webpack_require__(264);
 
-var _Event = __webpack_require__(269);
+var _Event = __webpack_require__(265);
 
-var _Http = __webpack_require__(272);
+var _Http = __webpack_require__(268);
 
-var _Log = __webpack_require__(273);
+var _Log = __webpack_require__(269);
 
-var _Math = __webpack_require__(274);
+var _Math = __webpack_require__(270);
 
-var _Matrix = __webpack_require__(275);
+var _Matrix = __webpack_require__(271);
 
 var _Util = __webpack_require__(29);
 
-var _Vector = __webpack_require__(82);
+var _Vector = __webpack_require__(80);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4119,8 +4363,8 @@ var SUtil = exports.SUtil = function () {
          * Parameters:
          * points - {Array} 线段顶点数组。
          * isLoop - {Boolean} isLoop。
-         * constraint - {Array} 将计算出来的控制点约束在一个包围盒内，比如 [[0, 0], [100, 100]], 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
-         * originalPosition - {Array} 参考原点。默认值：[0, 0]。
+         * constraint - {Array} 将计算出来的控制点约束在一个包围盒内，比如 [[0 0] [100 100]] 这个包围盒会与整个折线的包围盒做一个并集用来约束控制点。
+         * originalPosition - {Array} 参考原点。默认值：[0 0]。
          *
          * Returns:
          * {Array} 生成的平滑节点数组。
@@ -4265,9 +4509,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Eventful = __webpack_require__(53);
+var _Eventful = __webpack_require__(52);
 
-var _Transformable = __webpack_require__(81);
+var _Transformable = __webpack_require__(79);
 
 var _Util = __webpack_require__(1);
 
@@ -4550,7 +4794,7 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
          * Parameters:
          * ctx - {CanvasRenderingContext2D} Context2D 上下文。
          * isHighlight - {Boolean} 是否使用高亮属性。
-         * updateCallback - {Function} 需要异步加载资源的 shape 可以通过这个 callback(e),
+         * updateCallback - {Function} 需要异步加载资源的 shape 可以通过这个 callback(e)
          * 让painter更新视图，base.brush 没用，需要的话重载 brush。
          *
          */
@@ -4652,7 +4896,7 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
 
         /**
          * APIMethod: setContext
-         * 设置 fillStyle, strokeStyle, shadow 等通用绘制样式。
+         * 设置 fillStyle strokeStyle shadow 等通用绘制样式。
          *
          * Parameters:
          * ctx - {CanvasRenderingContext2D} Context2D 上下文。
@@ -5100,7 +5344,7 @@ var Shape = exports.Shape = function (_SuperMap$mixin) {
          *
          * Parameters:
          * _ctx - {Object} Cavans 上下文
-         * type - {String} one of 'stroke', 'fill', or 'reset'
+         * type - {String} one of 'stroke' 'fill' or 'reset'
          * style - {Object} Symbolizer hash
          */
 
@@ -5226,7 +5470,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Vector = __webpack_require__(64);
+var _Vector = __webpack_require__(62);
 
 var _Util = __webpack_require__(1);
 
@@ -5234,21 +5478,21 @@ var _Bounds = __webpack_require__(22);
 
 var _Collection = __webpack_require__(27);
 
-var _JSON = __webpack_require__(93);
+var _JSON = __webpack_require__(90);
 
 var _Point = __webpack_require__(18);
 
-var _MultiPoint = __webpack_require__(38);
+var _MultiPoint = __webpack_require__(37);
 
 var _LineString = __webpack_require__(17);
 
-var _MultiLineString = __webpack_require__(47);
+var _MultiLineString = __webpack_require__(46);
 
-var _LinearRing = __webpack_require__(31);
+var _LinearRing = __webpack_require__(30);
 
-var _Polygon = __webpack_require__(49);
+var _Polygon = __webpack_require__(48);
 
-var _MultiPolygon = __webpack_require__(48);
+var _MultiPolygon = __webpack_require__(47);
 
 var _REST = __webpack_require__(3);
 
@@ -6221,9 +6465,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(66);
+__webpack_require__(64);
 
-__webpack_require__(207);
+__webpack_require__(203);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6381,7 +6625,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Point = __webpack_require__(18);
 
-var _Curve2 = __webpack_require__(90);
+var _Curve2 = __webpack_require__(87);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6437,7 +6681,7 @@ var LineString = exports.LineString = function (_Curve) {
         /**
          * @function SuperMap.Geometry.LineString.prototype.getSortedSegments
          * @returns {Array} An array of segment objects.  Segment objects have properties
-         *     x1, y1, x2, and y2.  The start point is represented by x1 and y1.
+         *     x1 y1 x2 and y2.  The start point is represented by x1 and y1.
          *     The end point is represented by x2 and y2.  Start and end are
          *     ordered so that x1 < x2.
          */
@@ -6506,9 +6750,9 @@ var LineString = exports.LineString = function (_Curve) {
          * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的圆弧控制点。
          * @example
          * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-50,30));
-         * points.push(new SuperMap.Geometry.Point(-30,50));
-         * points.push(new SuperMap.Geometry.Point(2,60));
+         * points.push(new SuperMap.Geometry.Point(-5030));
+         * points.push(new SuperMap.Geometry.Point(-3050));
+         * points.push(new SuperMap.Geometry.Point(260));
          *
          * var circle = SuperMap.Geometry.LineString.calculateCircle(points);
          */
@@ -6650,15 +6894,15 @@ var LineString = exports.LineString = function (_Curve) {
         /**
          * @function SuperMap.Geometry.LineString.createLineEPS
          * @description 根据点的类型画出不同类型的曲线
-         * 点的类型有三种, LTypeArc, LTypeCurve, NONE
+         * 点的类型有三种 LTypeArc LTypeCurve NONE
          * @param points -{Array<SuperMap.Geometry.Point>} 传入的待计算的初始点串。
          * @returns {Array<SuperMap.Geometry.Point>} 计算出相应的lineEPS控制点。
          * @example
          * var points = [];
-         * points.push(new SuperMap.Geometry.Point(-50,30));
-         * points.push(new SuperMap.Geometry.Point(-30,50,"LTypeArc"));
-         * points.push(new SuperMap.Geometry.Point(2,60));
-         * points.push(new SuperMap.Geometry.Point(8,20));
+         * points.push(new SuperMap.Geometry.Point(-5030));
+         * points.push(new SuperMap.Geometry.Point(-3050"LTypeArc"));
+         * points.push(new SuperMap.Geometry.Point(260));
+         * points.push(new SuperMap.Geometry.Point(820));
          *
          * var lineEPS = SuperMap.Geometry.LineString.createLineEPS(points);
          */
@@ -6842,8 +7086,8 @@ var Point = exports.Point = function (_Geometry) {
          * @function SuperMap.Geometry.Point.prototype.equals
          * @description 判断两个点对象是否相等。如果两个点对象具有相同的坐标，则认为是相等的。
          * @example
-         * var point= new SuperMap.Geometry.Point(0,0);
-         * var point1={x:0,y:0};
+         * var point= new SuperMap.Geometry.Point(00);
+         * var point1={x:0y:0};
          * var result= point.equals(point1);
          * @param geom - {SuperMap.Geometry.Point} 需要判断的点对象。
          *
@@ -6877,7 +7121,7 @@ var Point = exports.Point = function (_Geometry) {
 
         /**
          * @function SuperMap.Geometry.Point.prototype.toShortString
-         * @returns {string} 字符串代表点对象。(ex. <i>"5, 42"</i>)
+         * @returns {string} 字符串代表点对象。(ex. <i>"5 42"</i>)
          */
 
     }, {
@@ -6945,7 +7189,7 @@ var _FetchRequest = __webpack_require__(21);
 
 var _Util = __webpack_require__(1);
 
-var _SecurityManager = __webpack_require__(35);
+var _SecurityManager = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7014,7 +7258,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                 return response.json();
             }).then(function (result) {
                 me.events.triggerEvent("processCompleted", { result: result });
-            }).catch(function (e) {
+            })["catch"](function (e) {
                 me.eventListeners.processFailed({ error: e });
             });
         }
@@ -7048,7 +7292,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                 } else {
                     me.serviceProcessFailed(result);
                 }
-            }).catch(function (e) {
+            })["catch"](function (e) {
                 me.serviceProcessFailed({ error: e });
             });
         }
@@ -7072,7 +7316,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
                             clearInterval(id);
                             me.events.triggerEvent("processCompleted", { result: job });
                         }
-                    }).catch(function (e) {
+                    })["catch"](function (e) {
                         clearInterval(id);
                         me.events.triggerEvent("processFailed", { error: e });
                     });
@@ -7228,13 +7472,11 @@ exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(442);
+__webpack_require__(431);
 
-var _whatwgFetchImportable = __webpack_require__(501);
+__webpack_require__(445);
 
-var _whatwgFetchImportable2 = _interopRequireDefault(_whatwgFetchImportable);
-
-var _fetchJsonp2 = __webpack_require__(456);
+var _fetchJsonp2 = __webpack_require__(446);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
@@ -7242,7 +7484,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var fetch = window.fetch;
 
 /**
  * @member SuperMap.CORS
@@ -7267,7 +7511,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
             case 'PUT':
                 return this.put(url, params, options);
             case 'DELETE':
-                return this.delete(url, params, options);
+                return this["delete"](url, params, options);
             default:
                 return this.get(url, params, options);
         }
@@ -7290,7 +7534,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
         return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
     },
 
-    delete: function _delete(url, params, options) {
+    "delete": function _delete(url, params, options) {
         options = options || {};
         var type = 'DELETE';
         url = this._processUrl(url, options);
@@ -7369,7 +7613,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
         }
         if (options.timeout) {
-            return this._timeout(options.timeout, (0, _whatwgFetchImportable2.default)(url, {
+            return this._timeout(options.timeout, fetch(url, {
                 method: type,
                 headers: options.headers,
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
@@ -7380,7 +7624,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
                 return response;
             }));
         }
-        return (0, _whatwgFetchImportable2.default)(url, {
+        return fetch(url, {
             method: type,
             body: type === 'PUT' || type === 'POST' ? params : undefined,
             headers: options.headers,
@@ -7394,7 +7638,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
 
     _fetchJsonp: function _fetchJsonp(url, options) {
         options = options || {};
-        return (0, _fetchJsonp3.default)(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
+        return (0, _fetchJsonp3["default"])(url, { method: 'GET', timeout: options.timeout }).then(function (response) {
             return response;
         });
     },
@@ -7452,11 +7696,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Size = __webpack_require__(141);
+var _Size = __webpack_require__(137);
 
-var _Pixel = __webpack_require__(63);
+var _Pixel = __webpack_require__(61);
 
-var _LonLat = __webpack_require__(37);
+var _LonLat = __webpack_require__(36);
 
 var _Util = __webpack_require__(1);
 
@@ -7538,11 +7782,11 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.equals
          * @description 判断两个 bounds 对象是否相等。
          * @example
-         * var bounds1 = new SuperMap.Bounds(-180,-90,180,90);
-         * var bounds2 = new SuperMap.Bounds(-180,-90,180,90);
+         * var bounds1 = new SuperMap.Bounds(-180-9018090);
+         * var bounds2 = new SuperMap.Bounds(-180-9018090);
          * var isEquals = bounds1.equals(bounds2);
          * @param bounds - {SuperMap.Bounds} 需要进行计较的 bounds。
-         * @returns {boolean} 如果 bounds 对象的边和传入的 bounds 一致则返回true,不一致或传入的 bounds 参数为NULL则返回false。
+         * @returns {boolean} 如果 bounds 对象的边和传入的 bounds 一致则返回true不一致或传入的 bounds 参数为NULL则返回false。
          */
 
     }, {
@@ -7559,9 +7803,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toString
          * @description 返回此对象的字符串形式
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,180,90);
+         * var bounds = new SuperMap.Bounds(-180-9018090);
          * var str = bounds.toString();
-         * @returns {string} 边界对象的字符串表示形式（left,bottom,right,top），例如: "-180,-90,180,90"
+         * @returns {string} 边界对象的字符串表示形式（leftbottomrighttop），例如: "-180-9018090"
          */
 
     }, {
@@ -7574,14 +7818,14 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toArray
          * @description 边界对象的数组表示形式 。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * //array1 = [-180,-90,100,80];
          * var array1 = bounds.toArray();
          * //array1 = [-90,-180,80,100];
          * var array2 = bounds.toArray(true);
          * @param reverseAxisOrder - {boolean} 是否反转轴顺序，
-         * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
-         * @returns {Array} left, bottom, right, top数组。
+         * 如果设为true，则倒转顺序（bottomlefttopright）否则按正常轴顺序（leftbottomrighttop）。
+         * @returns {Array} left bottom right top数组。
          */
 
     }, {
@@ -7598,17 +7842,17 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toBBOX
          * @description 取小数点后decimal位数字进行四舍五入再转换为BBOX字符串。
          * @example
-         * var bounds = new SuperMap.Bounds(-1.1234567,-1.7654321,1.4444444,1.5555555);
+         * var bounds = new SuperMap.Bounds(-1.1234567-1.76543211.44444441.5555555);
          * //str1 = "-1.123457,-1.765432,1.444444,1.555556";
          * var str1 = bounds.toBBOX();
          * //str2 = "-1.1,-1.8,1.4,1.6";
          * var str2 = bounds.toBBOX(1);
          * //str2 = "-1.8,-1.1,1.6,1.4";
-         * var str2 = bounds.toBBOX(1,true);
+         * var str2 = bounds.toBBOX(1true);
          * @param decimal - {integer} 边界方位坐标的有效数字个数，默认为6。
          * @param  reverseAxisOrder - {boolean} 是否是反转轴顺序。
-         * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
-         * @returns {string} 边界对象的字符串表示形式，如："5,42,10,45"。
+         * 如果设为true，则倒转顺序（bottomlefttopright）否则按正常轴顺序（leftbottomrighttop）。
+         * @returns {string} 边界对象的字符串表示形式，如："5421045"。
          */
 
     }, {
@@ -7633,7 +7877,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toGeometry
          * @description 基于当前边界范围创建一个新的多边形对象。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * //SuperMap.Geometry.Polygon对象
          * var geo = bounds.toGeometry();
          * @returns {SuperMap.Geometry.Polygon} 基于当前bounds坐标创建的新的多边形。
@@ -7653,7 +7897,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getWidth
          * @description 获取bounds的宽度。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * //width = 280;
          * var width = bounds.getWidth();
          * @returns {float} 获取当前bounds的宽度（right减去left）。
@@ -7669,7 +7913,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getHeight
          * @description 获取bounds的高度。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * //height = 170;
          * var height = bounds.getHeight();
          * @returns {float} 返回边界高度（top减去bottom）。
@@ -7685,7 +7929,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getSize
          * @description 获取边框大小。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * var size = bounds.getSize();
          * @returns {SuperMap.Size} 返回边框大小。
          */
@@ -7700,7 +7944,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getCenterPixel
          * @description 获取像素格式的范围中心点。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * var pixel = bounds.getCenterPixel();
          * @returns {SuperMap.Pixel} 返回像素格式的当前范围的中心点。
          */
@@ -7715,7 +7959,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.getCenterLonLat
          * @description 获取地理格式的范围中心点。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * var lonlat = bounds.getCenterLonLat();
          * @returns {SuperMap.LonLat} 返回当前地理范围的中心点。
          */
@@ -7733,7 +7977,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.scale
          * @description 按照比例扩大/缩小出一个新的bounds。
          * @example
-         * var bounds = new SuperMap.Bounds(-50,-50,40,40);
+         * var bounds = new SuperMap.Bounds(-50-504040);
          * var bounds2 = bounds.scale(2);
          * @param ratio - {float} 需要扩大的比例，默认为1。
          * @param origin - {SuperMap.Pixel|SuperMap.LonLat} 扩大时的基准点，默认为当前bounds的中心点。
@@ -7771,9 +8015,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.add
          * @description 在当前的dounds上按照传入的坐标点进行平移，返回新的范围。
          * @example
-         * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
+         * var bounds1 = new SuperMap.Bounds(-50-504040);
          * //bounds2 是新的 bounds
-         * var bounds2 = bounds.add(20,10);
+         * var bounds2 = bounds.add(2010);
          * @param x - {float} 传入坐标点的x坐标。
          * @param y - {float} 传入坐标点的y坐标。
          * @returns {SuperMap.Bounds} 返回一个新的bounds，此bounds的坐标是由传入的x，y参数与当前bounds坐标计算所得。
@@ -7792,9 +8036,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.extend
          * @description 在当前bounds上扩展bounds，支持point，lanlat和bounds。扩展后的bounds的范围是两者的结合。
          * @example
-         * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
+         * var bounds1 = new SuperMap.Bounds(-50-504040);
          * //bounds改变
-         * bounds.extend(new SuperMap.LonLat(50,60));
+         * bounds.extend(new SuperMap.LonLat(5060));
          * @param object - {SuperMap.Geometry.Point|SuperMap.LonLat | SuperMap.Bounds} 可以是point，lanlat和bounds。
          */
 
@@ -7839,28 +8083,28 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.containsLonLat
          * @description 判断传入的坐标是否在范围内。
          * @example
-         * var bounds1 = new SuperMap.Bounds(-50,-50,40,40);
+         * var bounds1 = new SuperMap.Bounds(-50-504040);
          * //isContains1 = true
          * //这里的第二个参数可以直接为 boolean 类型，也就是inclusive
-         * var isContains1 = bounds.containsLonLat(new SuperMap.LonLat(40,40),true);
+         * var isContains1 = bounds.containsLonLat(new SuperMap.LonLat(4040)true);
          *
          * //(40,40)在范围内，同样(40+360,40)也在范围内
-         * var bounds2 = new SuperMap.Bounds(-50,-50,40,40);
+         * var bounds2 = new SuperMap.Bounds(-50-504040);
          * //isContains2 = true;
          * var isContains2 = bounds2.containsLonLat(
-         *      new SuperMap.LonLat(400,40),
+         *      new SuperMap.LonLat(40040)
          *      {
-         *           inclusive:true,
+         *           inclusive:true
          *           //全球的范围
-         *           worldBounds: new SuperMap.Bounds(-180,-90,180,90)
+         *           worldBounds: new SuperMap.Bounds(-180-9018090)
          *      }
          *      );
          * @param ll - {SuperMap.LonLat|Object}  <SuperMap.LonLat> 对象或者是一个
          *     包含 'lon' 与 'lat' 属性的对象。
          * @param options - {Object} 可选参数<br>
          *         inclusive - {boolean} 是否包含边界，默认为 true 。<br>
-         *         worldBounds - {@link SuperMap.Bounds} 如果提供 worldBounds 参数, 如果 ll 参数提供的坐标超出了世界边界（worldBounds）,
-         *         但是通过日界线的转化可以被包含, 它将被认为是包含在该范围内的。
+         *         worldBounds - {@link SuperMap.Bounds} 如果提供 worldBounds 参数 如果 ll 参数提供的坐标超出了世界边界（worldBounds）
+         *         但是通过日界线的转化可以被包含 它将被认为是包含在该范围内的。
          * @returns {boolean} 传入坐标是否包含在范围内.
          */
 
@@ -7891,9 +8135,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.containsPixel
          * @description 判断传入的像素是否在范围内。直接匹配大小，不涉及像素和地理转换。
          * @example
-         * var bounds = new SuperMap.Bounds(-50,-50,40,40);
+         * var bounds = new SuperMap.Bounds(-50-504040);
          * //isContains = true
-         * var isContains = bounds.containsPixel(new SuperMap.Pixel(40,40),true);
+         * var isContains = bounds.containsPixel(new SuperMap.Pixel(4040)true);
          * @param px - {SuperMap.Pixel} 提供的像素参数。
          * @param inclusive - {boolean} 是否包含边界，默认为true。
          * @returns {boolean} 传入的pixel在当前边界范围之内。
@@ -7909,13 +8153,13 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.contains
          * @description 判断传入的x，y坐标值是否在范围内。
          * @example
-         * var bounds = new SuperMap.Bounds(-50,-50,40,40);
+         * var bounds = new SuperMap.Bounds(-50-504040);
          * //isContains = true
-         * var isContains = bounds.contains(40,40,true);
+         * var isContains = bounds.contains(4040true);
          * @param x - {float} 传入的x坐标值。
          * @param y - {float} 传入的y坐标值。
          * @param inclusive - {boolean} 是否包含边界，默认为true。
-         * @returns {boolean} 传入的x,y坐标在当前范围内。
+         * @returns {boolean} 传入的xy坐标在当前范围内。
          */
 
     }, {
@@ -7947,17 +8191,17 @@ var Bounds = exports.Bounds = function () {
          * @description 判断目标边界范围是否与当前边界范围相交。如果两个边界范围中的任意
          *                边缘相交或者一个边界包含了另外一个就认为这两个边界相交。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * var isIntersects = bounds.intersectsBounds(
-         *      new SuperMap.Bounds(-170,-90,120,80)
+         *      new SuperMap.Bounds(-170-9012080)
          *  );
          * @param bounds - {SuperMap.Bounds} 目标边界。
          * @param options - {Object} 可选参数。<br>
          *         inclusive - {boolean} 边缘重合也看成相交，默认为true。如果是false，
          *                               两个边界范围没有重叠部分仅仅是在边缘相接（重合），
          *                               这种情况被认为没有相交。<br>
-         *         worldBounds - {@link SuperMap.Bounds} 提供了 worldBounds 参数, 如果他们相交时
-         *                               是在全球范围内, 两个边界将被视为相交。这仅适用于交叉
+         *         worldBounds - {@link SuperMap.Bounds} 提供了 worldBounds 参数 如果他们相交时
+         *                               是在全球范围内 两个边界将被视为相交。这仅适用于交叉
          *                               或完全不在世界范围的边界。
          * @returns {boolean} 传入的bounds对象与当前bounds相交。
          */
@@ -8013,9 +8257,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.containsBounds
          * @description 判断目标边界是否被当前边界包含在内。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * var isContains = bounds.containsBounds(
-         *      new SuperMap.Bounds(-170,-90,100,80),true,true
+         *      new SuperMap.Bounds(-170-9010080)truetrue
          *  );
          * @param bounds - {SuperMap.Bounds} 目标边界。
          * @param partial - {boolean} 目标边界的任意部分都包含在当前边界中则被认为是包含关系。默认为false，
@@ -8045,10 +8289,10 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.determineQuadrant
          * @description 判断传入坐标在bounds范围内的象限。以bounds中心点为坐标原点。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * //str = "tr";
          * var str = bounds.determineQuadrant(
-         *      new SuperMap.LonLat(20,20)
+         *      new SuperMap.LonLat(2020)
          *  );
          * @param lonlat - {SuperMap.LonLat} 传入的坐标对象。
          * @returns {string} 传入坐标所在的象限("br" "tr" "tl" "bl" 分别对应"右下"，"右上"，"左上" "左下")。
@@ -8071,8 +8315,8 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.wrapDateLine
          * @description 将当前bounds移动到最大边界范围内部（所谓的内部是相交或者内部）。
          * @example
-         * var bounds = new SuperMap.Bounds(380,-40,400,-20);
-         * var maxExtent = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(380-40400-20);
+         * var maxExtent = new SuperMap.Bounds(-180-9010080);
          * //新的bounds
          * var newBounds = bounds.wrapDateLine(maxExtent);
          * @param maxExtent - {SuperMap.Bounds} 最大的边界范围（一般是全球范围）。
@@ -8121,7 +8365,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.prototype.toServerJSONObject
          * @description 转换成对应的 JSON 格式对象。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * var obj = bounds.toServerJSONObject();
          * @returns {Object} 返回json 格式的Object对象。
          */
@@ -8146,7 +8390,7 @@ var Bounds = exports.Bounds = function () {
          * @description 销毁此对象。
          * 销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var bounds = new SuperMap.Bounds(-180,-90,100,80);
+         * var bounds = new SuperMap.Bounds(-180-9010080);
          * bounds.destroy();
          */
 
@@ -8164,10 +8408,10 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.fromString
          * @description 通过字符串参数创建新的bounds的构造函数。
          * @example
-         * var bounds = SuperMap.Bounds.fromString("-180,-90,100,80");
-         * @param str - {string} 边界字符串，用逗号隔开 (e.g. <i>"5,42,10,45"</i>)
+         * var bounds = SuperMap.Bounds.fromString("-180-9010080");
+         * @param str - {string} 边界字符串，用逗号隔开 (e.g. <i>"5421045"</i>)
          * @param reverseAxisOrder - {boolean} 是否反转轴顺序.
-         * 如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
+         * 如果设为true，则倒转顺序（bottomlefttopright）否则按正常轴顺序（leftbottomrighttop）。
          * @returns {SuperMap.Bounds} 返回给定的字符串创建的新的边界对象
          */
 
@@ -8182,9 +8426,9 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.fromArray
          * @description 通过边界框数组创建Bounds。
          * @example
-         * var bounds = SuperMap.Bounds.fromArray([-180,-90,100,80]);
-         * @param bbox - {Array(float)} 边界值数组。 (e.g. <i>[5,42,10,45]</i>)
-         * @param reverseAxisOrder - {boolean} 是否是反转轴顺序。如果设为true，则倒转顺序（bottom,left,top,right）,否则按正常轴顺序（left,bottom,right,top）。
+         * var bounds = SuperMap.Bounds.fromArray([-180-9010080]);
+         * @param bbox - {Array(float)} 边界值数组。 (e.g. <i>[5421045]</i>)
+         * @param reverseAxisOrder - {boolean} 是否是反转轴顺序。如果设为true，则倒转顺序（bottomlefttopright）否则按正常轴顺序（leftbottomrighttop）。
          * @returns {SuperMap.Bounds} 返回根据传入的数组创建的新的边界对象。
          */
 
@@ -8198,7 +8442,7 @@ var Bounds = exports.Bounds = function () {
          * @function SuperMap.Bounds.fromSize
          * @description 通过传入的边界大小来创建新的边界。
          * @example
-         * var bounds = SuperMap.Bounds.fromSize(new SuperMap.Size(20,10));
+         * var bounds = SuperMap.Bounds.fromSize(new SuperMap.Size(2010));
          * @param size - {SuperMap.Size} 传入的边界大小。
          * @returns {SuperMap.Bounds} 返回根据传入的边界大小的创建新的边界。
          */
@@ -8211,7 +8455,7 @@ var Bounds = exports.Bounds = function () {
 
         /**
          * @function SuperMap.Bounds.oppositeQuadrant
-         * @description 反转象限。"t"和"b" 交换，"r"和"l"交换, 如："tl"变为"br"。
+         * @description 反转象限。"t"和"b" 交换，"r"和"l"交换 如："tl"变为"br"。
          * @param quadrant - {string} 代表象限的字符串，如："tl"。
          * @returns {string} 反转后的象限。
          */
@@ -8251,7 +8495,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(243);
+__webpack_require__(239);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8342,37 +8586,37 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Point = __webpack_require__(74);
+var _Point = __webpack_require__(72);
 
-var _Line = __webpack_require__(104);
+var _Line = __webpack_require__(101);
 
-var _Polygon = __webpack_require__(75);
+var _Polygon = __webpack_require__(73);
 
-var _Rectangle = __webpack_require__(262);
+var _Rectangle = __webpack_require__(258);
 
-var _Sector = __webpack_require__(76);
+var _Sector = __webpack_require__(74);
 
-var _Label = __webpack_require__(261);
+var _Label = __webpack_require__(257);
 
-var _Image = __webpack_require__(260);
+var _Image = __webpack_require__(256);
 
-var _Circle = __webpack_require__(103);
+var _Circle = __webpack_require__(100);
 
-var _SmicPoint = __webpack_require__(108);
+var _SmicPoint = __webpack_require__(105);
 
-var _SmicText = __webpack_require__(110);
+var _SmicText = __webpack_require__(107);
 
-var _SmicCircle = __webpack_require__(278);
+var _SmicCircle = __webpack_require__(274);
 
-var _SmicBrokenLine = __webpack_require__(106);
+var _SmicBrokenLine = __webpack_require__(103);
 
-var _SmicImage = __webpack_require__(107);
+var _SmicImage = __webpack_require__(104);
 
-var _SmicPolygon = __webpack_require__(80);
+var _SmicPolygon = __webpack_require__(78);
 
-var _SmicRectangle = __webpack_require__(109);
+var _SmicRectangle = __webpack_require__(106);
 
-var _SmicSector = __webpack_require__(279);
+var _SmicSector = __webpack_require__(275);
 
 var _Util = __webpack_require__(1);
 
@@ -8772,15 +9016,15 @@ var ShapeFactory = exports.ShapeFactory = function () {
          *
          * Parameters:
          * shapeFactory - {<SuperMap.Feature.ShapeFactory>} 图形工厂对象，必设参数。
-         * box - {Array{Number}} 框区域，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
+         * box - {Array{Number}} 框区域，长度为 4 的一维数组，像素坐标，[left bottom right top]，必设参数。
          * setting - {Object} 图表配置参数，必设参数。
          *
          * 本函数中图形配置对象 setting 可设属性：
          *
          * Symbolizer properties:
          * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。
-         * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
-         * 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。
+         * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 
+         * 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0 0 0 0]。
          *
          * Returns:
          * {Object} 背景框图形，一个可视化图形（矩形）对象。
@@ -8822,7 +9066,7 @@ var ShapeFactory = exports.ShapeFactory = function () {
          *
          * Parameters:
          * shapeFactory - {<SuperMap.Feature.ShapeFactory>} 图形工厂对象，必设参数。
-         * dataViewBox - {Array{Number}} 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left, bottom, right, top]，必设参数。
+         * dataViewBox - {Array{Number}} 统计图表模型的数据视图框，长度为 4 的一维数组，像素坐标，[left bottom right top]，必设参数。
          * setting - {Object} 图表配置参数，必设参数。
          * xShapeInfo - {Object} X 方向上的图形信息对象，包含两个属性，
          * 属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
@@ -8840,12 +9084,12 @@ var ShapeFactory = exports.ShapeFactory = function () {
          * axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。
          * axisUseArrow - {Boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。
          * axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。
-         * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
+         * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000" "750" "500" "250" "0"]。
          * axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。
          * axisYLabelsOffset - {Array{Number}} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
          * 数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。
-         * axisXLabels - {Array{String}} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
-         * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xPositions 数量相同（即标签个数与数据个数相等时）, 按照 xPositions 提供的位置在水平方向上排布标签，
+         * axisXLabels - {Array{String}} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年" "95年" "99年"]。
+         * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xPositions 数量相同（即标签个数与数据个数相等时） 按照 xPositions 提供的位置在水平方向上排布标签，
          * 否则沿数据视图框下面条边等距排布标签。
          * axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。
          * axisXLabelsOffset - {Array{Number}} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
@@ -9192,29 +9436,29 @@ var ShapeFactory = exports.ShapeFactory = function () {
          * // dataStyleByCodomain 数组形如：
          * [
          *   {
-        *     start:0,
-        *     end:250,
+        *     start:0
+        *     end:250
         *     style:{
         *          fillColor:"#00CD00"
         *      }
-        *  },
+        *  }
          *   {
-        *     start:250,
-        *     end:500,
+        *     start:250
+        *     end:500
         *     style:{
         *          fillColor:"#00EE00"
         *      }
-        *  },
+        *  }
          *   {
-        *     start:500,
-        *     end:750,
+        *     start:500
+        *     end:750
         *     style:{
         *          fillColor:"#00FF7F"
         *      }
-        *  },
+        *  }
          *   {
-        *     start:750,
-        *     end:1500,
+        *     start:750
+        *     end:1500
         *     style:{
         *          fillColor:"#00FF00"
         *      }
@@ -9524,7 +9768,7 @@ var Geometry = exports.Geometry = function () {
         /**
          * @function SuperMap.Geometry.prototype.extendBounds
          * @description Extend the existing bounds to include the new bounds.
-         * If geometry's bounds is not yet set, then set a new Bounds.
+         * If geometry's bounds is not yet set then set a new Bounds.
          *
          * @param newBounds - {SuperMap.Bounds}
          */
@@ -9765,7 +10009,7 @@ var Collection = exports.Collection = function (_Geometry) {
          * @param components -{Array<SuperMap.Geometry>} 几何对象组件。
          * @example
          * var collection = new SuperMap.Geometry.Collection();
-         * collection.addComponents(new SuerpMap.Geometry.Point(10,10));
+         * collection.addComponents(new SuerpMap.Geometry.Point(1010));
          */
 
     }, {
@@ -9937,7 +10181,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Bounds = __webpack_require__(22);
 
-var _Theme2 = __webpack_require__(77);
+var _Theme2 = __webpack_require__(75);
 
 var _ShapeFactory = __webpack_require__(24);
 
@@ -10181,7 +10425,7 @@ var Graph = exports.Graph = function (_Theme) {
          *              YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
          *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox。<br>
          *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
-         *              decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+         *              decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
          * @return {Boolean} 初始化参数是否成功。
          */
 
@@ -10375,10 +10619,10 @@ var Graph = exports.Graph = function (_Theme) {
          *    // 默认数据视图框，这里展示在使用坐标轴和不使用坐标轴情况下对数据视图框参数赋予不同的默认值
          *    if(!sets.dataViewBoxParameter){
          *          if(typeof(sets.useAxis) === "undefined" || sets.useAxis){
-         *              sets.dataViewBoxParameter = [45, 15, 15, 15];
+         *              sets.dataViewBoxParameter = [45 15 15 15];
          *          }
          *          else{
-         *                  sets.dataViewBoxParameter = [5, 5, 5, 5];
+         *                  sets.dataViewBoxParameter = [5 5 5 5];
          *          }
          *    }
          *
@@ -10403,7 +10647,7 @@ var Graph = exports.Graph = function (_Theme) {
          *
          *    // 第四步：调用 shapesConvertToRelativeCoordinate() 方法，将图形库（his.shapes）中的图形转为由相对坐标表示的图形，客户端统计专题图模块从结构上要求可视化图形使用相对坐标，assembleShapes() 函数必须在图形装配完成后调用 shapesConvertToRelativeCoordinate() 函数。此步骤是必须过程。
          *    this.shapesConvertToRelativeCoordinate();
-         * },
+         * }
          */
 
     }, {
@@ -10826,25 +11070,6 @@ var Util = exports.Util = function () {
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var freeGlobal = __webpack_require__(290);
-
-/** Detect free variable `self`. */
-var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-module.exports = root;
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -10997,7 +11222,7 @@ var LinearRing = exports.LinearRing = function (_LineString) {
 _SuperMap.SuperMap.Geometry.LinearRing = LinearRing;
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11144,7 +11369,7 @@ var QueryParameters = exports.QueryParameters = function () {
 _SuperMap.SuperMap.QueryParameters = QueryParameters;
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11372,7 +11597,7 @@ var ServerTextStyle = exports.ServerTextStyle = function () {
 _SuperMap.SuperMap.ServerTextStyle = ServerTextStyle;
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11389,7 +11614,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystResultSetting = __webpack_require__(250);
+var _TransportationAnalystResultSetting = __webpack_require__(246);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11491,7 +11716,7 @@ var TransportationAnalystParameter = exports.TransportationAnalystParameter = fu
 _SuperMap.SuperMap.TransportationAnalystParameter = TransportationAnalystParameter;
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11584,7 +11809,7 @@ var SecurityManager = exports.SecurityManager = function () {
         }
 
         /**
-         * @description 注册key,ids为数组(存在一个key对应多个服务)
+         * @description 注册keyids为数组(存在一个key对应多个服务)
          * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
          * @param key -{string} key
          */
@@ -11680,7 +11905,7 @@ var SecurityManager = exports.SecurityManager = function () {
 
         /**
          * @description iServer登出
-         * @param url -{string} iServer首页地址,如：http://localhost:8090/iserver
+         * @param url -{string} iServer首页地址如：http://localhost:8090/iserver
          * @returns {Promise} 是否登出成功
          */
 
@@ -11698,7 +11923,7 @@ var SecurityManager = exports.SecurityManager = function () {
             };
             return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
                 return true;
-            }).catch(function () {
+            })["catch"](function () {
                 return false;
             });
         }
@@ -11766,7 +11991,7 @@ var SecurityManager = exports.SecurityManager = function () {
             };
             return _FetchRequest.FetchRequest.get(url, "", requestOptions).then(function () {
                 return true;
-            }).catch(function () {
+            })["catch"](function () {
                 return false;
             });
         }
@@ -11907,7 +12132,7 @@ SecurityManager.ONLINE = "http://www.supermapol.com";
 _SuperMap.SuperMap.SecurityManager = SecurityManager;
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11928,7 +12153,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11951,10 +12176,10 @@ var CommontypesConversion = exports.CommontypesConversion = function () {
          * @return {SuperMap.Bounds} SuperMap的bounds对象
          */
         value: function toSuperMapBounds(bounds) {
-            if (bounds instanceof _leaflet2.default.LatLngBounds) {
+            if (bounds instanceof _leaflet2["default"].LatLngBounds) {
                 return new _iclientCommon.Bounds(bounds.getSouthWest().lng, bounds.getSouthWest().lat, bounds.getNorthEast().lng, bounds.getNorthEast().lat);
             }
-            if (bounds instanceof _leaflet2.default.Bounds) {
+            if (bounds instanceof _leaflet2["default"].Bounds) {
                 return new _iclientCommon.Bounds(bounds.min.x, bounds.min.y, bounds.max.x, bounds.max.y);
             }
             if (this.isArray(bounds)) {
@@ -12007,10 +12232,10 @@ var CommontypesConversion = exports.CommontypesConversion = function () {
     return CommontypesConversion;
 }();
 
-_leaflet2.default.supermap.CommontypesConversion = CommontypesConversion;
+_leaflet2["default"].supermap.CommontypesConversion = CommontypesConversion;
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12078,9 +12303,9 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.prototype.toShortString
          * @description 将经度纬度转换成简单字符串。
          * @example
-         * var lonLat = new SuperMap.LonLat(100,50);
+         * var lonLat = new SuperMap.LonLat(10050);
          * var str = lonLat.toShortString();
-         * @returns {string} 返回处理后的经纬度字符串。例如："100,50"
+         * @returns {string} 返回处理后的经纬度字符串。例如："10050"
          */
 
     }, {
@@ -12093,7 +12318,7 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.prototype.clone
          * @description 复制坐标对象，并返回复制后的新对象。
          * @example
-         * var lonLat1 = new SuperMap.LonLat(100,50);
+         * var lonLat1 = new SuperMap.LonLat(10050);
          * var lonLat2 = lonLat1.clone();
          * @returns {SuperMap.LonLat}  返回相同坐标值的新的坐标对象。
          */
@@ -12108,9 +12333,9 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.prototype.add
          * @description 在已有坐标对象的经纬度基础上加上新的坐标经纬度，并返回新的坐标对象。
          * @example
-         * var lonLat1 = new SuperMap.LonLat(100,50);
+         * var lonLat1 = new SuperMap.LonLat(10050);
          * //lonLat2 是新的对象
-         * var lonLat2 = lonLat1.add(100,50);
+         * var lonLat2 = lonLat1.add(10050);
          *
          * @param lon - {float} 传入的精度参数。
          * @param lat - {float} 传入的纬度参数。
@@ -12131,12 +12356,12 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.prototype.equals
          * @description 判断两个坐标对象是否相等。
          * @example
-         * var lonLat1 = new SuperMap.LonLat(100,50);
-         * var lonLat2 = new SuperMap.LonLat(100,50);
+         * var lonLat1 = new SuperMap.LonLat(10050);
+         * var lonLat2 = new SuperMap.LonLat(10050);
          * var isEquals = lonLat1.equals(lonLat2);
          *
          * @param ll - {SuperMap.LonLat} 需要进行比较的坐标对象。
-         * @returns {boolean} 如果LonLat对象的经纬度和传入的经纬度一致则返回true,不一
+         * @returns {boolean} 如果LonLat对象的经纬度和传入的经纬度一致则返回true不一
          *      致或传入的ll参数为NULL则返回false。
          */
 
@@ -12158,9 +12383,9 @@ var LonLat = exports.LonLat = function () {
          * 换句话说就是将不在经度范围内的坐标转换到范围以内。
          *  （只会转换lon，不会转换lat，主要用于转移到日界线以内）
          * @example
-         * var lonLat1 = new SuperMap.LonLat(420,50);
+         * var lonLat1 = new SuperMap.LonLat(42050);
          * var lonLat2 = lonLat1.wrapDateLine(
-         *      new SuperMap.Bounds(-180,-90,180,90)
+         *      new SuperMap.Bounds(-180-9018090)
          *  );
          *
          * @param maxExtent - {SuperMap.Bounds} 最大边界的范围。
@@ -12194,7 +12419,7 @@ var LonLat = exports.LonLat = function () {
          * @description 销毁此对象。
          * 销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var lonLat = new SuperMap.LonLat(100,50);
+         * var lonLat = new SuperMap.LonLat(10050);
          * lonLat.destroy();
          */
 
@@ -12209,10 +12434,10 @@ var LonLat = exports.LonLat = function () {
          * @function SuperMap.LonLat.fromString
          * @description 通过字符串生成一个<SuperMap.LonLat>对象
          * @example
-         * var str = "100,50";
+         * var str = "10050";
          * var lonLat = SuperMap.LonLat.fromString(str);
          *
-         * @param str - {string} 字符串的格式：Lon+","+Lat。如："100,50"
+         * @param str - {string} 字符串的格式：Lon+""+Lat。如："10050"
          * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
          */
 
@@ -12226,7 +12451,7 @@ var LonLat = exports.LonLat = function () {
         /**
          * @function SuperMap.LonLat.fromArray
          * @description 通过数组生成一个<SuperMap.LonLat>对象
-         * @param arr - {Array<float>} 数组的格式，长度只能为2,：[Lon,Lat]。如： [5,-42]
+         * @param arr - {Array<float>} 数组的格式，长度只能为2：[LonLat]。如： [5-42]
          * @returns {SuperMap.LonLat} 返回一个 <SuperMap.LonLat> 对象
          */
 
@@ -12244,7 +12469,7 @@ var LonLat = exports.LonLat = function () {
 }();
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12312,7 +12537,7 @@ var MultiPoint = exports.MultiPoint = function (_Collection) {
 
         /**
          * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
-         * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
+         * @description 移除点封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
          * @param point - {SuperMap.Geometry.Point} 移除的点对象。
          */
 
@@ -12329,7 +12554,7 @@ var MultiPoint = exports.MultiPoint = function (_Collection) {
 _SuperMap.SuperMap.Geometry.MultiPoint = MultiPoint;
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12416,7 +12641,7 @@ var FacilityAnalyst3DParameters = exports.FacilityAnalyst3DParameters = function
 _SuperMap.SuperMap.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12515,7 +12740,7 @@ var GetFeaturesParametersBase = exports.GetFeaturesParametersBase = function () 
 _SuperMap.SuperMap.GetFeaturesParametersBase = GetFeaturesParametersBase;
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12717,7 +12942,7 @@ var GetFeaturesServiceBase = exports.GetFeaturesServiceBase = function (_CommonS
 _SuperMap.SuperMap.GetFeaturesServiceBase = GetFeaturesServiceBase;
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12734,7 +12959,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(157);
+__webpack_require__(153);
 
 var _REST = __webpack_require__(3);
 
@@ -12921,7 +13146,7 @@ var InterpolationAnalystParameters = exports.InterpolationAnalystParameters = fu
 _SuperMap.SuperMap.InterpolationAnalystParameters = InterpolationAnalystParameters;
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12938,10 +13163,10 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var supermap_callbacks = exports.supermap_callbacks = {};
-_leaflet2.default.Util.supermap_callbacks = supermap_callbacks;
+_leaflet2["default"].Util.supermap_callbacks = supermap_callbacks;
 var toGeoJSON = exports.toGeoJSON = function toGeoJSON(feature) {
     if (!feature) {
         return feature;
@@ -12962,7 +13187,7 @@ var toSuperMapGeometry = exports.toSuperMapGeometry = function toSuperMapGeometr
     }
 
     var serverResult = result;
-    if (_leaflet2.default.Util.isArray(result)) {
+    if (_leaflet2["default"].Util.isArray(result)) {
         if (result.length === 1) {
             serverResult = result[0];
         } else if (result.length > 1) {
@@ -13020,7 +13245,7 @@ var GetResolutionFromScaleDpi = exports.GetResolutionFromScaleDpi = function Get
     datumAxis = datumAxis || 6378137;
     coordUnit = coordUnit || "";
     if (scale > 0 && dpi > 0) {
-        scale = _leaflet2.default.Util.NormalizeScale(scale);
+        scale = _leaflet2["default"].Util.NormalizeScale(scale);
         if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
             //scale = SuperMap.Util.normalizeScale(scale);
             resolution = 0.0254 * ratio / dpi / scale / (Math.PI * 2 * datumAxis / 360) / ratio;
@@ -13036,16 +13261,16 @@ var NormalizeScale = exports.NormalizeScale = function NormalizeScale(scale) {
     return scale > 1.0 ? 1.0 / scale : scale;
 };
 
-_leaflet2.default.Util.toGeoJSON = toGeoJSON;
-_leaflet2.default.Util.toSuperMapGeometry = toSuperMapGeometry;
-_leaflet2.default.Util.resolutionToScale = resolutionToScale;
-_leaflet2.default.Util.scaleToResolution = scaleToResolution;
-_leaflet2.default.Util.getMeterPerMapUnit = getMeterPerMapUnit;
-_leaflet2.default.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
-_leaflet2.default.Util.NormalizeScale = NormalizeScale;
+_leaflet2["default"].Util.toGeoJSON = toGeoJSON;
+_leaflet2["default"].Util.toSuperMapGeometry = toSuperMapGeometry;
+_leaflet2["default"].Util.resolutionToScale = resolutionToScale;
+_leaflet2["default"].Util.scaleToResolution = scaleToResolution;
+_leaflet2["default"].Util.getMeterPerMapUnit = getMeterPerMapUnit;
+_leaflet2["default"].Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
+_leaflet2["default"].Util.NormalizeScale = NormalizeScale;
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
@@ -13056,7 +13281,7 @@ module.exports = function(x) {
 };
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = function(eccent, sinphi, cosphi) {
@@ -13065,7 +13290,7 @@ module.exports = function(eccent, sinphi, cosphi) {
 };
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13518,7 +13743,7 @@ var ArrayExt = exports.ArrayExt = _SuperMap.SuperMap.Array = {
 };
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13579,7 +13804,7 @@ var MultiLineString = exports.MultiLineString = function (_Collection) {
 _SuperMap.SuperMap.Geometry.MultiLineString = MultiLineString;
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13642,7 +13867,7 @@ var MultiPolygon = exports.MultiPolygon = function (_Collection) {
 _SuperMap.SuperMap.Geometry.MultiPolygon = MultiPolygon;
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13663,7 +13888,7 @@ __webpack_require__(18);
 
 __webpack_require__(17);
 
-__webpack_require__(31);
+__webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13731,7 +13956,7 @@ var Polygon = exports.Polygon = function (_Collection) {
 _SuperMap.SuperMap.Geometry.Polygon = Polygon;
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13819,7 +14044,7 @@ var DataReturnOption = exports.DataReturnOption = function () {
 _SuperMap.SuperMap.DataReturnOption = DataReturnOption;
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13840,7 +14065,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _QueryParameters = __webpack_require__(32);
+var _QueryParameters = __webpack_require__(31);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -14026,7 +14251,7 @@ var QueryService = exports.QueryService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.QueryService = QueryService;
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14045,11 +14270,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCMapLayer2 = __webpack_require__(251);
+var _UGCMapLayer2 = __webpack_require__(247);
 
-var _JoinItem = __webpack_require__(66);
+var _JoinItem = __webpack_require__(64);
 
-var _DatasetInfo = __webpack_require__(161);
+var _DatasetInfo = __webpack_require__(157);
 
 __webpack_require__(3);
 
@@ -14188,7 +14413,7 @@ var UGCSubLayer = exports.UGCSubLayer = function (_UGCMapLayer) {
 _SuperMap.SuperMap.UGCSubLayer = UGCSubLayer;
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14427,7 +14652,7 @@ var Eventful = exports.Eventful = function () {
 
         /**
          * APIMethod: dispatchWithContext
-         * 带有context的事件分发, 最后一个参数是事件回调的 context。
+         * 带有context的事件分发 最后一个参数是事件回调的 context。
          *
          * Parameters:
          * type - {String} 事件类型。
@@ -14485,43 +14710,18 @@ var Eventful = exports.Eventful = function () {
 }();
 
 /***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var baseIsNative = __webpack_require__(468),
-    getValue = __webpack_require__(478);
-
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative(object, key) {
-  var value = getValue(object, key);
-  return baseIsNative(value) ? value : undefined;
-}
-
-module.exports = getNative;
-
-/***/ }),
-/* 55 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
-var sign = __webpack_require__(61);
+var sign = __webpack_require__(59);
 
 module.exports = function(x) {
   return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
 };
 
 /***/ }),
-/* 56 */
+/* 54 */
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
@@ -14529,7 +14729,7 @@ module.exports = function(x) {
 };
 
 /***/ }),
-/* 57 */
+/* 55 */
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
@@ -14537,7 +14737,7 @@ module.exports = function(x) {
 };
 
 /***/ }),
-/* 58 */
+/* 56 */
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
@@ -14545,7 +14745,7 @@ module.exports = function(x) {
 };
 
 /***/ }),
-/* 59 */
+/* 57 */
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
@@ -14553,7 +14753,7 @@ module.exports = function(x) {
 };
 
 /***/ }),
-/* 60 */
+/* 58 */
 /***/ (function(module, exports) {
 
 module.exports = function(e0, e1, e2, e3, phi) {
@@ -14561,7 +14761,7 @@ module.exports = function(e0, e1, e2, e3, phi) {
 };
 
 /***/ }),
-/* 61 */
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports = function(x) {
@@ -14569,7 +14769,7 @@ module.exports = function(x) {
 };
 
 /***/ }),
-/* 62 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14586,11 +14786,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Pixel = __webpack_require__(63);
+var _Pixel = __webpack_require__(61);
 
-var _Event = __webpack_require__(139);
+var _Event = __webpack_require__(135);
 
-var _BaseTypes = __webpack_require__(46);
+var _BaseTypes = __webpack_require__(45);
 
 var _Util = __webpack_require__(1);
 
@@ -14823,18 +15023,18 @@ var Events = exports.Events = function () {
          * events.on({"loadstart": loadStartListener});
          *
          * // 同样注册一个"loadstart"监听事件
-         * events.register("loadstart", undefined, loadStartListener);
+         * events.register("loadstart" undefined loadStartListener);
          *
          * // 同时为对象注册多个监听事件
          * events.on({
-         *     "loadstart": loadStartListener,
-         *     "loadend": loadEndListener,
+         *     "loadstart": loadStartListener
+         *     "loadend": loadEndListener
          *     scope: object
          * });
          *
          * // 同时为对象注册多个监听事件，多次调用register方法
-         * events.register("loadstart", object, loadStartListener);
-         * events.register("loadend", object, loadEndListener);
+         * events.register("loadstart" object loadStartListener);
+         * events.register("loadend" object loadEndListener);
          *
          *
          * @param  object - {Object} 添加监听的对象。
@@ -14853,7 +15053,7 @@ var Events = exports.Events = function () {
         /**
          * @function SuperMap.Events.prototype.register
          * @description 在事件对象上注册一个事件。当事件被触发时，'func'函数被调用，假设我们触发一个事件，
-         *                指定SuperMap.Bounds作为‘obj’,当事件被触发时，回调函数的上下文作为Bounds对象。
+         *                指定SuperMap.Bounds作为‘obj’当事件被触发时，回调函数的上下文作为Bounds对象。
          * @param type - {string} 事件注册者的名字。
          * @param obj - {Object} 对象绑定的回调。如果没有特定的对象，则默认是事件的object属性。
          * @param func - {function} 回调函数，如果没有特定的回调，则这个函数不做任何事情。
@@ -14911,18 +15111,18 @@ var Events = exports.Events = function () {
          * events.un({"loadstart": loadStartListener});
          *
          * // 使用unregister方法移除"loadstart" 事件监听
-         * events.unregister("loadstart", undefined, loadStartListener);
+         * events.unregister("loadstart" undefined loadStartListener);
          *
          * // 取消对象多个事件监听
          * events.un({
-         *     "loadstart": loadStartListener,
-         *     "loadend": loadEndListener,
+         *     "loadstart": loadStartListener
+         *     "loadend": loadEndListener
          *     scope: object
          * });
          *
          * // 取消对象多个事件监听，多次调用unregister方法。
-         * events.unregister("loadstart", object, loadStartListener);
-         * events.unregister("loadend", object, loadEndListener);
+         * events.unregister("loadstart" object loadStartListener);
+         * events.unregister("loadend" object loadEndListener);
          *
          * @param object - {Object} 移除监听的对象。
          */
@@ -15118,7 +15318,7 @@ _SuperMap.SuperMap.Events = Events;
 _SuperMap.SuperMap.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
 
 /***/ }),
-/* 63 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15223,7 +15423,7 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.clone
          * @description 克隆当前的 pixel 对象。
          * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel = new SuperMap.Pixel(10050);
          * var pixcel2 = pixcel.clone();
          * @returns {SuperMap.Pixel} 返回一个新的与当前 pixel 对象有相同x、y坐标的 pixel 对象。
          */
@@ -15238,12 +15438,12 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.equals
          * @description 比较两 pixel 是否相等
          * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
-         * var pixcel2 = new SuperMap.Pixel(100,50);
+         * var pixcel = new SuperMap.Pixel(10050);
+         * var pixcel2 = new SuperMap.Pixel(10050);
          * var isEquals = pixcel.equals(pixcel2);
          *
          * @param px - {SuperMap.Pixel} 用于比较相等的 pixel 对象。
-         * @returns {Boolean} 如果传入的像素点和当前像素点相同返回true,如果不同或传入参数为NULL则返回false
+         * @returns {Boolean} 如果传入的像素点和当前像素点相同返回true如果不同或传入参数为NULL则返回false
          */
 
     }, {
@@ -15260,8 +15460,8 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.distanceTo
          * @description 返回两个 pixel 的距离。
          * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
-         * var pixcel2 = new SuperMap.Pixel(110,30);
+         * var pixcel = new SuperMap.Pixel(10050);
+         * var pixcel2 = new SuperMap.Pixel(11030);
          * var distance = pixcel.distanceTo(pixcel2);
          *
          * @param px - {SuperMap.Pixel} 用于计算的一个 pixel
@@ -15278,14 +15478,14 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.add
          * @description 在原来像素坐标基础上，x值加上传入的x参数，y值加上传入的y参数。
          * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel = new SuperMap.Pixel(10050);
          * //pixcel2是新的对象
-         * var pixcel2 = pixcel.add(20,30);
+         * var pixcel2 = pixcel.add(2030);
          *
          * @param x - {number} 传入的x值。
          * @param y - {number} 传入的y值。
          * @returns {SuperMap.Pixel} 返回一个新的pixel对象，该pixel是由当前的pixel与传
-         *      入的x,y相加得到。
+         *      入的xy相加得到。
          */
 
     }, {
@@ -15301,8 +15501,8 @@ var Pixel = exports.Pixel = function () {
          * @function SuperMap.Pixel.prototype.offset
          * @description 通过传入的 {@link SuperMap.Pixel} 参数对原屏幕坐标进行偏移。
          * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
-         * var pixcel2 = new SuperMap.Pixel(130,20);
+         * var pixcel = new SuperMap.Pixel(10050);
+         * var pixcel2 = new SuperMap.Pixel(13020);
          * //pixcel3 是新的对象
          * var pixcel3 = pixcel.offset(pixcel2);
          *
@@ -15327,7 +15527,7 @@ var Pixel = exports.Pixel = function () {
          * @description 销毁此对象。
          * 销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var pixcel = new SuperMap.Pixel(100,50);
+         * var pixcel = new SuperMap.Pixel(10050);
          * pixcel.destroy();
          */
 
@@ -15346,7 +15546,7 @@ var Pixel = exports.Pixel = function () {
 _SuperMap.SuperMap.Pixel = Pixel;
 
 /***/ }),
-/* 64 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15363,7 +15563,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Feature2 = __webpack_require__(140);
+var _Feature2 = __webpack_require__(136);
 
 var _Util = __webpack_require__(1);
 
@@ -15702,7 +15902,7 @@ var Vector = exports.Vector = function (_Feature) {
 _SuperMap.SuperMap.Feature.Vector = Vector;
 
 /***/ }),
-/* 65 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15719,9 +15919,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _REST = __webpack_require__(3);
 
-var _SecurityManager = __webpack_require__(35);
+var _SecurityManager = __webpack_require__(34);
 
-var _Credential = __webpack_require__(89);
+var _Credential = __webpack_require__(86);
 
 var _FetchRequest = __webpack_require__(21);
 
@@ -15827,7 +16027,7 @@ var IPortalServiceBase = exports.IPortalServiceBase = function () {
 _SuperMap.SuperMap.iPortalServiceBase = IPortalServiceBase;
 
 /***/ }),
-/* 66 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15952,7 +16152,7 @@ var JoinItem = exports.JoinItem = function () {
 _SuperMap.SuperMap.JoinItem = JoinItem;
 
 /***/ }),
-/* 67 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15982,7 +16182,7 @@ var LabelMatrixCell = exports.LabelMatrixCell = function LabelMatrixCell() {
 _SuperMap.SuperMap.LabelMatrixCell = LabelMatrixCell;
 
 /***/ }),
-/* 68 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15999,11 +16199,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _LinearRing = __webpack_require__(31);
+var _LinearRing = __webpack_require__(30);
 
 var _LineString = __webpack_require__(17);
 
-var _PointWithMeasure = __webpack_require__(212);
+var _PointWithMeasure = __webpack_require__(208);
 
 var _Collection2 = __webpack_require__(27);
 
@@ -16251,7 +16451,7 @@ var Route = exports.Route = function (_Collection) {
 _SuperMap.SuperMap.Route = Route;
 
 /***/ }),
-/* 69 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16268,11 +16468,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DataReturnOption = __webpack_require__(50);
+var _DataReturnOption = __webpack_require__(49);
 
 var _REST = __webpack_require__(3);
 
-var _SurfaceAnalystParametersSetting = __webpack_require__(228);
+var _SurfaceAnalystParametersSetting = __webpack_require__(224);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16352,7 +16552,7 @@ var SurfaceAnalystParameters = exports.SurfaceAnalystParameters = function () {
 _SuperMap.SuperMap.SurfaceAnalystParameters = SurfaceAnalystParameters;
 
 /***/ }),
-/* 70 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16460,7 +16660,7 @@ var ThemeFlow = exports.ThemeFlow = function () {
 _SuperMap.SuperMap.ThemeFlow = ThemeFlow;
 
 /***/ }),
-/* 71 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16481,19 +16681,19 @@ var _Util = __webpack_require__(1);
 
 var _Theme2 = __webpack_require__(23);
 
-var _ThemeLabelItem = __webpack_require__(241);
+var _ThemeLabelItem = __webpack_require__(237);
 
-var _ThemeUniqueItem = __webpack_require__(101);
+var _ThemeUniqueItem = __webpack_require__(98);
 
-var _ThemeFlow = __webpack_require__(70);
+var _ThemeFlow = __webpack_require__(68);
 
-var _ThemeOffset = __webpack_require__(72);
+var _ThemeOffset = __webpack_require__(70);
 
-var _ThemeLabelText = __webpack_require__(242);
+var _ThemeLabelText = __webpack_require__(238);
 
-var _ThemeLabelAlongLine = __webpack_require__(239);
+var _ThemeLabelAlongLine = __webpack_require__(235);
 
-var _ThemeLabelBackground = __webpack_require__(240);
+var _ThemeLabelBackground = __webpack_require__(236);
 
 var _REST = __webpack_require__(3);
 
@@ -16832,7 +17032,7 @@ var ThemeLabel = exports.ThemeLabel = function (_Theme) {
 _SuperMap.SuperMap.ThemeLabel = ThemeLabel;
 
 /***/ }),
-/* 72 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16930,7 +17130,7 @@ var ThemeOffset = exports.ThemeOffset = function () {
 _SuperMap.SuperMap.ThemeOffset = ThemeOffset;
 
 /***/ }),
-/* 73 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17030,7 +17230,7 @@ var ThiessenAnalystParameters = exports.ThiessenAnalystParameters = function () 
 _SuperMap.SuperMap.ThiessenAnalystParameters = ThiessenAnalystParameters;
 
 /***/ }),
-/* 74 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17128,7 +17328,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Point = Point;
 
 /***/ }),
-/* 75 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17226,7 +17426,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Polygon = Polygon;
 
 /***/ }),
-/* 76 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17356,7 +17556,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Sector = Sector;
 
 /***/ }),
-/* 77 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17373,9 +17573,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Point = __webpack_require__(18);
 
-var _GeoText = __webpack_require__(91);
+var _GeoText = __webpack_require__(88);
 
-var _LonLat = __webpack_require__(37);
+var _LonLat = __webpack_require__(36);
 
 var _Util = __webpack_require__(1);
 
@@ -17504,7 +17704,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.Theme = Theme;
 
 /***/ }),
-/* 78 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17598,7 +17798,7 @@ Config.catchBrushException = false;
 Config.debugMode = 0;
 
 /***/ }),
-/* 79 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17611,7 +17811,7 @@ exports.Curve = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Vector = __webpack_require__(82);
+var _Vector = __webpack_require__(80);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18238,7 +18438,7 @@ var Curve = exports.Curve = function () {
 }();
 
 /***/ }),
-/* 80 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18723,7 +18923,7 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 81 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18863,7 +19063,7 @@ var Transformable = exports.Transformable = function () {
         /**
          * APIMethod: updateTransform
          * 判断是否需要有坐标变换，更新 needTransform 属性。
-         * 如果有坐标变换, 则从 position, rotation, scale 以及父节点的 transform 计算出自身的 transform 矩阵
+         * 如果有坐标变换 则从 position rotation scale 以及父节点的 transform 计算出自身的 transform 矩阵
          *
          */
 
@@ -18966,7 +19166,7 @@ var Transformable = exports.Transformable = function () {
 
         /**
          * APIMethod: decomposeTransform
-         * 分解`transform`矩阵到`position`, `rotation`, `scale` 。
+         * 分解`transform`矩阵到`position` `rotation` `scale` 。
          *
          */
 
@@ -19007,7 +19207,7 @@ var Transformable = exports.Transformable = function () {
 }();
 
 /***/ }),
-/* 82 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19531,7 +19731,7 @@ var Vector = exports.Vector = function () {
 }();
 
 /***/ }),
-/* 83 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19546,7 +19746,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.Symbolizer
@@ -19555,7 +19755,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param feature — {L.feature} 要素
  */
-var Symbolizer = exports.Symbolizer = _leaflet2.default.Class.extend({
+var Symbolizer = exports.Symbolizer = _leaflet2["default"].Class.extend({
 
     initialize: function initialize(feature) {
         this.properties = feature.properties;
@@ -19576,7 +19776,7 @@ var Symbolizer = exports.Symbolizer = _leaflet2.default.Class.extend({
         renderer._updateStyle(this);
         var elem = this.getElement();
         if (elem && this.layerName) {
-            _leaflet2.default.DomUtil.addClass(elem, this.layerName);
+            _leaflet2["default"].DomUtil.addClass(elem, this.layerName);
         }
     },
 
@@ -19601,7 +19801,7 @@ var Symbolizer = exports.Symbolizer = _leaflet2.default.Class.extend({
 
     _getPixelBounds: function _getPixelBounds() {
         var parts = this._parts;
-        var bounds = _leaflet2.default.bounds([]);
+        var bounds = _leaflet2["default"].bounds([]);
         for (var i = 0; i < parts.length; i++) {
             var part = parts[i];
             for (var j = 0; j < part.length; j++) {
@@ -19610,18 +19810,18 @@ var Symbolizer = exports.Symbolizer = _leaflet2.default.Class.extend({
         }
 
         var w = this._clickTolerance(),
-            p = new _leaflet2.default.Point(w, w);
+            p = new _leaflet2["default"].Point(w, w);
 
         bounds.min._subtract(p);
         bounds.max._add(p);
 
         return bounds;
     },
-    _clickTolerance: _leaflet2.default.Path.prototype._clickTolerance
+    _clickTolerance: _leaflet2["default"].Path.prototype._clickTolerance
 });
 
 /***/ }),
-/* 84 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19644,41 +19844,7 @@ var VectorFeatureType = exports.VectorFeatureType = {
 };
 
 /***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Symbol = __webpack_require__(289),
-    getRawTag = __webpack_require__(476),
-    objectToString = __webpack_require__(485);
-
-/** `Object#toString` result references. */
-var nullTag = '[object Null]',
-    undefinedTag = '[object Undefined]';
-
-/** Built-in value references. */
-var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
-
-/**
- * The base implementation of `getTag` without fallbacks for buggy environments.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-function baseGetTag(value) {
-    if (value == null) {
-        return value === undefined ? undefinedTag : nullTag;
-    }
-    return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
-}
-
-module.exports = baseGetTag;
-
-/***/ }),
-/* 86 */
+/* 83 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -19699,7 +19865,7 @@ module.exports = function(eccent, ts) {
 };
 
 /***/ }),
-/* 87 */
+/* 84 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -19712,7 +19878,7 @@ module.exports = function(eccent, phi, sinphi) {
 };
 
 /***/ }),
-/* 88 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19729,7 +19895,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.wmtsLayer
@@ -19750,7 +19916,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。
  */
-var WMTSLayer = exports.WMTSLayer = _leaflet2.default.TileLayer.extend({
+var WMTSLayer = exports.WMTSLayer = _leaflet2["default"].TileLayer.extend({
 
     options: {
         version: '1.0.0',
@@ -19767,7 +19933,7 @@ var WMTSLayer = exports.WMTSLayer = _leaflet2.default.TileLayer.extend({
     initialize: function initialize(url, options) {
         // (String, Object)
         this._url = url;
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
     },
 
     /**
@@ -19780,7 +19946,7 @@ var WMTSLayer = exports.WMTSLayer = _leaflet2.default.TileLayer.extend({
         // (Point, Number) -> String
         var zoom = this._getZoomForUrl();
         var ident = this.options.matrixIds ? this.options.matrixIds[zoom].identifier : zoom;
-        var url = _leaflet2.default.Util.template(this._url, { s: this._getSubdomain(coords) });
+        var url = _leaflet2["default"].Util.template(this._url, { s: this._getSubdomain(coords) });
         var obj = {
             service: 'WMTS',
             request: 'GetTile',
@@ -19795,7 +19961,7 @@ var WMTSLayer = exports.WMTSLayer = _leaflet2.default.TileLayer.extend({
             tilerow: coords.y,
             tilecol: coords.x
         };
-        return url + _leaflet2.default.Util.getParamString(obj, url);
+        return url + _leaflet2["default"].Util.getParamString(obj, url);
     }
 });
 
@@ -19803,10 +19969,10 @@ var wmtsLayer = exports.wmtsLayer = function wmtsLayer(url, options) {
     return new WMTSLayer(url, options);
 };
 
-_leaflet2.default.supermap.wmtsLayer = wmtsLayer;
+_leaflet2["default"].supermap.wmtsLayer = wmtsLayer;
 
 /***/ }),
-/* 89 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19874,7 +20040,7 @@ var Credential = exports.Credential = function () {
          * @function SuperMap.Bounds.prototype.getValue
          * @description 获取value
          * @example
-         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
+         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..""token");
          * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
          * var str = credential.getValue();
          * @returns {string} 返回value字符串，在iServer服务下该value值即为token值。
@@ -19891,7 +20057,7 @@ var Credential = exports.Credential = function () {
          * @function SuperMap.Credential.prototype.destroy
          * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var credential = new SuperMap.Credential("valueString","token");
+         * var credential = new SuperMap.Credential("valueString""token");
          * credential.destroy();
          */
 
@@ -19924,7 +20090,7 @@ Credential.CREDENTIAL = null;
 _SuperMap.SuperMap.Credential = Credential;
 
 /***/ }),
-/* 90 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19937,7 +20103,7 @@ exports.Curve = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
-var _MultiPoint2 = __webpack_require__(38);
+var _MultiPoint2 = __webpack_require__(37);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -19980,7 +20146,7 @@ var Curve = exports.Curve = function (_MultiPoint) {
 _SuperMap.SuperMap.Geometry.Curve = Curve;
 
 /***/ }),
-/* 91 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20007,9 +20173,9 @@ var _Point = __webpack_require__(18);
 
 __webpack_require__(17);
 
-__webpack_require__(63);
+__webpack_require__(61);
 
-__webpack_require__(37);
+__webpack_require__(36);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20363,7 +20529,7 @@ var GeoText = exports.GeoText = function (_Geometry) {
 _SuperMap.SuperMap.Geometry.GeoText = GeoText;
 
 /***/ }),
-/* 92 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20459,7 +20625,7 @@ var Format = exports.Format = function () {
 _SuperMap.SuperMap.Format = Format;
 
 /***/ }),
-/* 93 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20476,7 +20642,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Format2 = __webpack_require__(92);
+var _Format2 = __webpack_require__(89);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20784,7 +20950,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
 _SuperMap.SuperMap.Format.JSON = JSONFormat;
 
 /***/ }),
-/* 94 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20801,7 +20967,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _BufferSetting = __webpack_require__(152);
+var _BufferSetting = __webpack_require__(148);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20848,7 +21014,7 @@ var BufferAnalystParameters = exports.BufferAnalystParameters = function () {
 _SuperMap.SuperMap.BufferAnalystParameters = BufferAnalystParameters;
 
 /***/ }),
-/* 95 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20910,7 +21076,7 @@ var OverlayAnalystParameters = exports.OverlayAnalystParameters = function () {
 _SuperMap.SuperMap.OverlayAnalystParameters = OverlayAnalystParameters;
 
 /***/ }),
-/* 96 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21054,7 +21220,7 @@ var ThemeDotDensity = exports.ThemeDotDensity = function (_Theme) {
 _SuperMap.SuperMap.ThemeDotDensity = ThemeDotDensity;
 
 /***/ }),
-/* 97 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21075,11 +21241,11 @@ var _Util = __webpack_require__(1);
 
 var _Theme2 = __webpack_require__(23);
 
-var _ThemeFlow = __webpack_require__(70);
+var _ThemeFlow = __webpack_require__(68);
 
-var _ThemeOffset = __webpack_require__(72);
+var _ThemeOffset = __webpack_require__(70);
 
-var _ThemeGraduatedSymbolStyle = __webpack_require__(230);
+var _ThemeGraduatedSymbolStyle = __webpack_require__(226);
 
 var _REST = __webpack_require__(3);
 
@@ -21266,7 +21432,7 @@ var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
 _SuperMap.SuperMap.ThemeGraduatedSymbol = ThemeGraduatedSymbol;
 
 /***/ }),
-/* 98 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21287,17 +21453,17 @@ var _Util = __webpack_require__(1);
 
 var _Theme2 = __webpack_require__(23);
 
-var _ThemeFlow = __webpack_require__(70);
+var _ThemeFlow = __webpack_require__(68);
 
-var _ThemeOffset = __webpack_require__(72);
+var _ThemeOffset = __webpack_require__(70);
 
-var _ThemeGraphAxes = __webpack_require__(231);
+var _ThemeGraphAxes = __webpack_require__(227);
 
-var _ThemeGraphSize = __webpack_require__(233);
+var _ThemeGraphSize = __webpack_require__(229);
 
-var _ThemeGraphText = __webpack_require__(234);
+var _ThemeGraphText = __webpack_require__(230);
 
-var _ThemeGraphItem = __webpack_require__(232);
+var _ThemeGraphItem = __webpack_require__(228);
 
 var _REST = __webpack_require__(3);
 
@@ -21672,7 +21838,7 @@ var ThemeGraph = exports.ThemeGraph = function (_Theme) {
 _SuperMap.SuperMap.ThemeGraph = ThemeGraph;
 
 /***/ }),
-/* 99 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21693,7 +21859,7 @@ var _Util = __webpack_require__(1);
 
 var _Theme2 = __webpack_require__(23);
 
-var _ThemeRangeItem = __webpack_require__(245);
+var _ThemeRangeItem = __webpack_require__(241);
 
 var _REST = __webpack_require__(3);
 
@@ -21841,7 +22007,7 @@ var ThemeRange = exports.ThemeRange = function (_Theme) {
 _SuperMap.SuperMap.ThemeRange = ThemeRange;
 
 /***/ }),
-/* 100 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21864,7 +22030,7 @@ var _Theme2 = __webpack_require__(23);
 
 var _ServerStyle = __webpack_require__(11);
 
-var _ThemeUniqueItem = __webpack_require__(101);
+var _ThemeUniqueItem = __webpack_require__(98);
 
 var _REST = __webpack_require__(3);
 
@@ -22020,7 +22186,7 @@ var ThemeUnique = exports.ThemeUnique = function (_Theme) {
 _SuperMap.SuperMap.ThemeUnique = ThemeUnique;
 
 /***/ }),
-/* 101 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22149,7 +22315,7 @@ var ThemeUniqueItem = exports.ThemeUniqueItem = function () {
 _SuperMap.SuperMap.ThemeUniqueItem = ThemeUniqueItem;
 
 /***/ }),
-/* 102 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22299,7 +22465,7 @@ var UGCLayer = exports.UGCLayer = function () {
 _SuperMap.SuperMap.UGCLayer = UGCLayer;
 
 /***/ }),
-/* 103 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22415,7 +22581,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Circle = Circle;
 
 /***/ }),
-/* 104 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22507,7 +22673,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Line = Line;
 
 /***/ }),
-/* 105 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23095,7 +23261,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} rgba颜色，rgba(r,g,b,a)。
+         * {String} rgba颜色，rgba(rgba)。
          */
 
     }, {
@@ -23112,7 +23278,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} rgb颜色，rgb(0,0,0)格式
+         * {String} rgb颜色，rgb(000)格式
          */
 
     }, {
@@ -23146,7 +23312,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSVA颜色，hsva(h,s,v,a)
+         * {String} HSVA颜色，hsva(hsva)
          */
 
     }, {
@@ -23163,7 +23329,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSV颜色，hsv(h,s,v)
+         * {String} HSV颜色，hsv(hsv)
          */
 
     }, {
@@ -23180,7 +23346,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSBA颜色，hsba(h,s,b,a)
+         * {String} HSBA颜色，hsba(hsba)
          */
 
     }, {
@@ -23197,7 +23363,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSB颜色，hsb(h,s,b)
+         * {String} HSB颜色，hsb(hsb)
          */
 
     }, {
@@ -23214,7 +23380,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSLA颜色，hsla(h,s,l,a)
+         * {String} HSLA颜色，hsla(hsla)
          */
 
     }, {
@@ -23231,7 +23397,7 @@ var Color = exports.Color = function () {
          * color - {String} 颜色。
          *
          * Returns:
-         * {String} HSL颜色，hsl(h,s,l)
+         * {String} HSL颜色，hsl(hsl)
          */
 
     }, {
@@ -23321,7 +23487,7 @@ var Color = exports.Color = function () {
          *
          * Parameters:
          * color - {String} 颜色。
-         * level - {Number} 升降程度,取值区间[-1,1]。
+         * level - {Number} 升降程度取值区间[-11]。
          *
          * Returns:
          * {String} 加深或减淡后颜色值
@@ -23352,7 +23518,7 @@ var Color = exports.Color = function () {
 
         /**
          * APIMethod: reverse
-         * 颜色翻转,[255-r,255-g,255-b,1-a]
+         * 颜色翻转[255-r255-g255-b1-a]
          *
          * Parameters:
          * color - {String} 颜色。
@@ -23384,7 +23550,7 @@ var Color = exports.Color = function () {
          * weight - {Number} 混合权重[0-1]。
          *
          * Returns:
-         * {String} 结果色,rgb(r,g,b)或rgba(r,g,b,a)
+         * {String} 结果色rgb(rgb)或rgba(rgba)
          */
 
     }, {
@@ -23441,7 +23607,7 @@ var Color = exports.Color = function () {
 
         /**
          * APIMethod: getData
-         * 获取颜色值数组,返回值范围:
+         * 获取颜色值数组返回值范围:
          *
          * RGB 范围[0-255]
          *
@@ -23455,23 +23621,23 @@ var Color = exports.Color = function () {
          *
          * #rrggbb
          *
-         * rgb(r,g,b)
+         * rgb(rgb)
          *
-         * rgb(r%,g%,b%)
+         * rgb(r%g%b%)
          *
-         * rgba(r,g,b,a)
+         * rgba(rgba)
          *
-         * hsb(h,s,b) // hsv与hsb等价
+         * hsb(hsb) // hsv与hsb等价
          *
-         * hsb(h%,s%,b%)
+         * hsb(h%s%b%)
          *
-         * hsba(h,s,b,a)
+         * hsba(hsba)
          *
-         * hsl(h,s,l)
+         * hsl(hsl)
          *
-         * hsl(h%,s%,l%)
+         * hsl(h%s%l%)
          *
-         * hsla(h,s,l,a)
+         * hsla(hsla)
          *
          * Parameters:
          * color - {String} 颜色。
@@ -23537,7 +23703,7 @@ var Color = exports.Color = function () {
          *
          * Parameters:
          * color - {String} 颜色。
-         * a - {Number} 透明度,区间[0,1]。
+         * a - {Number} 透明度区间[01]。
          *
          * Returns:
          * {String} rgba颜色值
@@ -23870,7 +24036,7 @@ var Color = exports.Color = function () {
 }();
 
 /***/ }),
-/* 106 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23887,7 +24053,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _Shape2 = __webpack_require__(13);
 
-var _SmicPolygon = __webpack_require__(80);
+var _SmicPolygon = __webpack_require__(78);
 
 var _SUtil = __webpack_require__(12);
 
@@ -24184,7 +24350,7 @@ var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 107 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24471,7 +24637,7 @@ SmicImage._needsRefresh = [];
 SmicImage._refreshTimeout = null;
 
 /***/ }),
-/* 108 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24656,7 +24822,7 @@ var SmicPoint = exports.SmicPoint = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 109 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24934,7 +25100,7 @@ var SmicRectangle = exports.SmicRectangle = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 110 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25502,7 +25668,7 @@ var SmicText = exports.SmicText = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 111 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25519,13 +25685,13 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _iclientCommon = __webpack_require__(5);
 
-var _ThemeLayer = __webpack_require__(284);
+var _ThemeLayer = __webpack_require__(280);
 
-var _CommontypesConversion = __webpack_require__(36);
+var _CommontypesConversion = __webpack_require__(35);
 
-var _ThemeFeature = __webpack_require__(112);
+var _ThemeFeature = __webpack_require__(109);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @function L.supermap.GeoFeatureThemeLayer
@@ -25567,7 +25733,7 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
 
     initialize: function initialize(name, options) {
         _ThemeLayer.ThemeLayer.prototype.initialize.call(this, name, options);
-        _leaflet2.default.Util.setOptions(this, options);
+        _leaflet2["default"].Util.setOptions(this, options);
         var me = this;
         me.cache = {};
         me.cacheFields = [];
@@ -25582,7 +25748,7 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
      */
     addFeatures: function addFeatures(features) {
         //数组
-        if (!_leaflet2.default.Util.isArray(features)) {
+        if (!_leaflet2["default"].Util.isArray(features)) {
             features = [features];
         }
         var me = this;
@@ -25644,9 +25810,9 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
         if (hoverone && hoverone.refDataID) {
             hoverFid = hoverone.refDataID;
         }
-        if (bounds && bounds instanceof _leaflet2.default.LatLngBounds) {
+        if (bounds && bounds instanceof _leaflet2["default"].LatLngBounds) {
             var crs = this._map.options.crs;
-            bounds = _leaflet2.default.bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
+            bounds = _leaflet2["default"].bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
         }
         bounds = _CommontypesConversion.CommontypesConversion.toSuperMapBounds(bounds);
         //清除当前所有可视元素
@@ -25827,7 +25993,7 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
 });
 
 /***/ }),
-/* 112 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25846,7 +26012,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.themeFeature
@@ -25856,7 +26022,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param geometry - {L.Path|L.Point|L.LatLng} 要素图形
  * @param attributes - {Object} 要素属性
  */
-var ThemeFeature = exports.ThemeFeature = _leaflet2.default.Class.extend({
+var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
 
     initialize: function initialize(geometry, attributes) {
         this.geometry = geometry;
@@ -25871,18 +26037,18 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2.default.Class.extend({
     toFeature: function toFeature() {
         var geometry = this.geometry;
         var points = [];
-        if (geometry instanceof _leaflet2.default.Polyline) {
+        if (geometry instanceof _leaflet2["default"].Polyline) {
             points = this.reverseLatLngs(geometry.getLatLngs());
             geometry = new _iclientCommon.LineString(points);
-        } else if (geometry instanceof _leaflet2.default.Polygon) {
+        } else if (geometry instanceof _leaflet2["default"].Polygon) {
             points = this.reverseLatLngs(geometry.getLatLngs());
             geometry = new _iclientCommon.Polygon(points);
         } else if (geometry.length === 3) {
             geometry = new _iclientCommon.GeoText(geometry[1], geometry[0], geometry[2]);
         } else {
-            if (geometry instanceof _leaflet2.default.LatLng) {
+            if (geometry instanceof _leaflet2["default"].LatLng) {
                 points = [geometry.lng, geometry.lat];
-            } else if (geometry instanceof _leaflet2.default.Point) {
+            } else if (geometry instanceof _leaflet2["default"].Point) {
                 points = [geometry.x, geometry.y];
             } else {
                 points = geometry;
@@ -25900,7 +26066,7 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2.default.Class.extend({
      * @param latlngs - {L.latlng} 坐标值
      */
     reverseLatLngs: function reverseLatLngs(latlngs) {
-        if (!_leaflet2.default.Util.isArray(latlngs)) {
+        if (!_leaflet2["default"].Util.isArray(latlngs)) {
             latlngs = [latlngs];
         }
         for (var i = 0; i < latlngs.length; i++) {
@@ -25913,55 +26079,16 @@ var themeFeature = exports.themeFeature = function themeFeature(geometry, attrib
     return new ThemeFeature(geometry, attributes);
 };
 
-_leaflet2.default.supermap.themeFeature = themeFeature;
+_leaflet2["default"].supermap.themeFeature = themeFeature;
 
 /***/ }),
-/* 113 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return value != null && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object';
-}
-
-module.exports = isObjectLike;
-
-/***/ }),
-/* 114 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var parseCode = __webpack_require__(519);
-var extend = __webpack_require__(118);
-var projections = __webpack_require__(520);
-var deriveConstants = __webpack_require__(516);
+var parseCode = __webpack_require__(471);
+var extend = __webpack_require__(114);
+var projections = __webpack_require__(472);
+var deriveConstants = __webpack_require__(468);
 
 function Projection(srsCode,callback) {
   if (!(this instanceof Projection)) {
@@ -25994,7 +26121,7 @@ module.exports = Projection;
 
 
 /***/ }),
-/* 115 */
+/* 111 */
 /***/ (function(module, exports) {
 
 module.exports = function(a, e, sinphi) {
@@ -26003,7 +26130,7 @@ module.exports = function(a, e, sinphi) {
 };
 
 /***/ }),
-/* 116 */
+/* 112 */
 /***/ (function(module, exports) {
 
 module.exports = function(ml, e0, e1, e2, e3) {
@@ -26024,7 +26151,7 @@ module.exports = function(ml, e0, e1, e2, e3) {
 };
 
 /***/ }),
-/* 117 */
+/* 113 */
 /***/ (function(module, exports) {
 
 module.exports = function(eccent, sinphi) {
@@ -26039,7 +26166,7 @@ module.exports = function(eccent, sinphi) {
 };
 
 /***/ }),
-/* 118 */
+/* 114 */
 /***/ (function(module, exports) {
 
 module.exports = function(destination, source) {
@@ -26059,7 +26186,7 @@ module.exports = function(destination, source) {
 
 
 /***/ }),
-/* 119 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26076,7 +26203,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _TimeControlBase2 = __webpack_require__(143);
+var _TimeControlBase2 = __webpack_require__(139);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26299,7 +26426,7 @@ var TimeFlowControl = exports.TimeFlowControl = function (_TimeControlBase) {
 _SuperMap.SuperMap.TimeFlowControl = TimeFlowControl;
 
 /***/ }),
-/* 120 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26314,9 +26441,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _iManagerServiceBase = __webpack_require__(145);
+var _iManagerServiceBase = __webpack_require__(141);
 
-var _iManagerCreateNodeParam = __webpack_require__(144);
+var _iManagerCreateNodeParam = __webpack_require__(140);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26435,7 +26562,7 @@ var IManager = exports.IManager = function (_IManagerServiceBase) {
 _SuperMap.SuperMap.iManager = IManager;
 
 /***/ }),
-/* 121 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26450,17 +26577,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _iPortalServicesQueryParam = __webpack_require__(149);
+var _iPortalServicesQueryParam = __webpack_require__(145);
 
-var _iPortalMapsQueryParam = __webpack_require__(147);
+var _iPortalMapsQueryParam = __webpack_require__(143);
 
 var _FetchRequest = __webpack_require__(21);
 
-var _iPortalService = __webpack_require__(148);
+var _iPortalService = __webpack_require__(144);
 
-var _iPortalMap = __webpack_require__(146);
+var _iPortalMap = __webpack_require__(142);
 
-var _iPortalServiceBase = __webpack_require__(65);
+var _iPortalServiceBase = __webpack_require__(63);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26575,7 +26702,7 @@ var IPortal = exports.IPortal = function (_IPortalServiceBase) {
 _SuperMap.SuperMap.iPortal = IPortal;
 
 /***/ }),
-/* 122 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26590,9 +26717,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _SecurityManager = __webpack_require__(35);
+var _SecurityManager = __webpack_require__(34);
 
-var _OnlineData = __webpack_require__(256);
+var _OnlineData = __webpack_require__(252);
 
 var _FetchRequest = __webpack_require__(21);
 
@@ -26653,7 +26780,7 @@ var Online = exports.Online = function () {
 
         /**
          * @function SuperMap.Online.prototype.queryDatas
-         * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
+         * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取)并返回可操作的服务对象
          * @param parameter -{SuperMap.OnlineQueryDatasParameter} myDatas服务资源查询参数
          * @returns {Promise} 返回包含所有数据服务信息的Promise对象
          */
@@ -26689,7 +26816,7 @@ var Online = exports.Online = function () {
 _SuperMap.SuperMap.Online = Online;
 
 /***/ }),
-/* 123 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26704,15 +26831,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Events = __webpack_require__(62);
+var _Events = __webpack_require__(60);
 
-var _elasticsearch = __webpack_require__(547);
+var _elasticsearch = __webpack_require__(501);
 
 var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
 var _Util = __webpack_require__(1);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26741,7 +26868,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
          *  @member SuperMap.ElasticSearch.prototype.client -{Object}
          *  @description client ES客户端
          */
-        this.client = new _elasticsearch2.default.Client({
+        this.client = new _elasticsearch2["default"].Client({
             host: this.url
         });
         /**
@@ -26881,7 +27008,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
     }, {
         key: 'delete',
         value: function _delete(params, callback) {
-            return this.client.delete(params, callback);
+            return this.client["delete"](params, callback);
         }
 
         /**
@@ -27439,7 +27566,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
 _SuperMap.SuperMap.ElasticSearch = ElasticSearch;
 
 /***/ }),
-/* 124 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27456,7 +27583,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.baiduTileLayer
@@ -27470,7 +27597,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        retina - {[L.Browser]{@linkdoc-leaflet/#browser}} 浏览器显示分辨率 <br>
  *        attribution - {string} 版权信息 <br>
  */
-var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2.default.TileLayer.extend({
+var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2["default"].TileLayer.extend({
 
     /**
      * @member L.supermap.baiduTileLayer.prototype.url -{string}
@@ -27481,8 +27608,8 @@ var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2.default.TileLayer.extend
     options: {
         minZoom: 3,
         maxZoom: 19,
-        bounds: _leaflet2.default.latLngBounds(_leaflet2.default.latLng(-85.0511287798, -180), _leaflet2.default.latLng(85.0511287798, 180)),
-        retina: _leaflet2.default.Browser.retina,
+        bounds: _leaflet2["default"].latLngBounds(_leaflet2["default"].latLng(-85.0511287798, -180), _leaflet2["default"].latLng(85.0511287798, 180)),
+        retina: _leaflet2["default"].Browser.retina,
         attribution: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>"
     },
 
@@ -27490,11 +27617,11 @@ var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2.default.TileLayer.extend
         if (url) {
             this.url = url;
         }
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         if (this.options.retina) {
             this.options.maxZoom = 18;
         }
-        _leaflet2.default.stamp(this);
+        _leaflet2["default"].stamp(this);
     },
 
     /**
@@ -27504,7 +27631,7 @@ var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2.default.TileLayer.extend
      * @return {string} 切片地址
      */
     getTileUrl: function getTileUrl(coords) {
-        return _leaflet2.default.Util.template(this.url, {
+        return _leaflet2["default"].Util.template(this.url, {
             num: Math.abs((coords.x + coords.y) % 8) + 1,
             x: coords.x,
             y: -coords.y - 1,
@@ -27517,10 +27644,10 @@ var baiduTileLayer = exports.baiduTileLayer = function baiduTileLayer(url, optio
     return new BaiduTileLayer(url, options);
 };
 
-_leaflet2.default.supermap.baiduTileLayer = baiduTileLayer;
+_leaflet2["default"].supermap.baiduTileLayer = baiduTileLayer;
 
 /***/ }),
-/* 125 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27537,7 +27664,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.cloudTileLayer
@@ -27561,7 +27688,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        maxZoom - {number} 最大缩放级别。<br>
  *        mapName - {string} 地图名称。
  */
-var CloudTileLayer = exports.CloudTileLayer = _leaflet2.default.TileLayer.extend({
+var CloudTileLayer = exports.CloudTileLayer = _leaflet2["default"].TileLayer.extend({
 
     defaultURL: 'http://t2.supermapcloud.com/FileService/image',
 
@@ -27583,20 +27710,20 @@ var CloudTileLayer = exports.CloudTileLayer = _leaflet2.default.TileLayer.extend
     },
 
     initialize: function initialize(url, options) {
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         var cloudURL = url || this.defaultURL;
         this._url = cloudURL + "?map=" + this.options.mapName + "&type=" + this.options.type + "&x={x}&y={y}&z={z}";
-        _leaflet2.default.stamp(this);
+        _leaflet2["default"].stamp(this);
     }
 });
 var cloudTileLayer = exports.cloudTileLayer = function cloudTileLayer(url, options) {
     return new CloudTileLayer(url, options);
 };
 
-_leaflet2.default.supermap.cloudTileLayer = cloudTileLayer;
+_leaflet2["default"].supermap.cloudTileLayer = cloudTileLayer;
 
 /***/ }),
-/* 126 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27613,9 +27740,9 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _TileLayer = __webpack_require__(88);
+var _TileLayer = __webpack_require__(85);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.tiandituTileLayer
@@ -27656,11 +27783,11 @@ var TiandituTileLayer = exports.TiandituTileLayer = _TileLayer.WMTSLayer.extend(
 
     initialize: function initialize(options) {
         options = options || {};
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         this.options.layer = this.options.isLabel ? this.layerLabelMap[this.options.layerType] : this.options.layerType;
         this.options.maxZoom = this.layerZoomMap[this.options.layerType];
         _TileLayer.WMTSLayer.prototype.initialize.call(this, this.options.url, this.options);
-        _leaflet2.default.stamp(this);
+        _leaflet2["default"].stamp(this);
     },
     onAdd: function onAdd(map) {
         this.options.tilematrixSet = map.options.crs.code === "EPSG:4326" ? "c" : "w";
@@ -27672,10 +27799,10 @@ var tiandituTileLayer = exports.tiandituTileLayer = function tiandituTileLayer(o
     return new TiandituTileLayer(options);
 };
 
-_leaflet2.default.supermap.tiandituTileLayer = tiandituTileLayer;
+_leaflet2["default"].supermap.tiandituTileLayer = tiandituTileLayer;
 
 /***/ }),
-/* 127 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27694,13 +27821,13 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-var _Util = __webpack_require__(43);
+var _Util = __webpack_require__(42);
 
 var Util = _interopRequireWildcard(_Util);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.tiledMapLayer
@@ -27723,7 +27850,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。<br>
  */
-var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
+var TiledMapLayer = exports.TiledMapLayer = _leaflet2["default"].TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
@@ -27750,9 +27877,9 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
 
     initialize: function initialize(url, options) {
         this._url = url;
-        _leaflet2.default.TileLayer.prototype.initialize.apply(this, arguments);
-        _leaflet2.default.setOptions(this, options);
-        _leaflet2.default.stamp(this);
+        _leaflet2["default"].TileLayer.prototype.initialize.apply(this, arguments);
+        _leaflet2["default"].setOptions(this, options);
+        _leaflet2["default"].stamp(this);
 
         //当前切片在切片集中的index
         this.tileSetsIndex = -1;
@@ -27767,7 +27894,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
      */
     onAdd: function onAdd(map) {
         this._crs = this.options.crs || map.options.crs;
-        _leaflet2.default.TileLayer.prototype.onAdd.call(this, map);
+        _leaflet2["default"].TileLayer.prototype.onAdd.call(this, map);
     },
 
     /**
@@ -27860,7 +27987,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
      */
     setTileSetsInfo: function setTileSetsInfo(tileSets) {
         this.tileSets = tileSets;
-        if (_leaflet2.default.Util.isArray(this.tileSets)) {
+        if (_leaflet2["default"].Util.isArray(this.tileSets)) {
             this.tileSets = this.tileSets[0];
         }
         if (!this.tileSets) {
@@ -27972,8 +28099,8 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
             params = {};
 
         var tileSize = this.options.tileSize;
-        if (!(tileSize instanceof _leaflet2.default.Point)) {
-            tileSize = _leaflet2.default.point(tileSize, tileSize);
+        if (!(tileSize instanceof _leaflet2["default"].Point)) {
+            tileSize = _leaflet2["default"].point(tileSize, tileSize);
         }
         params["width"] = tileSize.x;
         params["height"] = tileSize.y;
@@ -27990,7 +28117,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
             params["layersID"] = options.layersID.toString();
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof _leaflet2.default.Path) {
+        if (options.clipRegionEnabled && options.clipRegion instanceof _leaflet2["default"].Path) {
             options.clipRegion = Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
             options.clipRegion = _iclientCommon.CommonUtil.toJSON(_iclientCommon.ServerGeometry.fromGeometry(options.clipRegion));
             params["clipRegionEnabled"] = options.clipRegionEnabled;
@@ -28003,7 +28130,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
             params["origin"] = JSON.stringify({ x: crs.options.origin[0], y: crs.options.origin[1] });
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
-            var tileOrigin = _leaflet2.default.point(bounds.min.x, bounds.max.y);
+            var tileOrigin = _leaflet2["default"].point(bounds.min.x, bounds.max.y);
             params["origin"] = JSON.stringify({ x: tileOrigin.x, y: tileOrigin.y });
         }
 
@@ -28058,10 +28185,10 @@ var tiledMapLayer = exports.tiledMapLayer = function tiledMapLayer(url, options)
     return new TiledMapLayer(url, options);
 };
 
-_leaflet2.default.supermap.tiledMapLayer = tiledMapLayer;
+_leaflet2["default"].supermap.tiledMapLayer = tiledMapLayer;
 
 /***/ }),
-/* 128 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28080,13 +28207,13 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-var _ThemeFeature = __webpack_require__(112);
+var _ThemeFeature = __webpack_require__(109);
 
-var _ThemeLayer = __webpack_require__(284);
+var _ThemeLayer = __webpack_require__(280);
 
-var _CommontypesConversion = __webpack_require__(36);
+var _CommontypesConversion = __webpack_require__(35);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.GraphThemeLayer
@@ -28148,7 +28275,7 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
      */
     addFeatures: function addFeatures(features) {
         //数组
-        if (!_leaflet2.default.Util.isArray(features)) {
+        if (!_leaflet2["default"].Util.isArray(features)) {
             features = [features];
         }
 
@@ -28182,9 +28309,9 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
-        if (bounds && bounds instanceof _leaflet2.default.LatLngBounds) {
+        if (bounds && bounds instanceof _leaflet2["default"].LatLngBounds) {
             var crs = this._map.options.crs;
-            bounds = _leaflet2.default.bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
+            bounds = _leaflet2["default"].bounds(crs.project(bounds.getSouthWest()), crs.project(bounds.getNorthEast()));
         }
         bounds = _CommontypesConversion.CommontypesConversion.toSuperMapBounds(bounds);
         for (var i = 0, len = features.length; i < len; i++) {
@@ -28492,7 +28619,7 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
         // 压盖判断所需 chartsBounds 集合
         var mapBounds = me._map.getBounds();
         var crs = this._map.options.crs;
-        mapBounds = _leaflet2.default.bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
+        mapBounds = _leaflet2["default"].bounds(crs.project(mapBounds.getSouthWest()), crs.project(mapBounds.getNorthEast()));
         mapBounds = _CommontypesConversion.CommontypesConversion.toSuperMapBounds(mapBounds);
         var charts = me.charts;
         var chartsBounds = [];
@@ -28561,10 +28688,10 @@ var graphThemeLayer = exports.graphThemeLayer = function graphThemeLayer(name, c
     return new GraphThemeLayer(name, chartsType, options);
 };
 
-_leaflet2.default.supermap.graphThemeLayer = graphThemeLayer;
+_leaflet2["default"].supermap.graphThemeLayer = graphThemeLayer;
 
 /***/ }),
-/* 129 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28581,11 +28708,11 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _GeoFeatureThemeLayer = __webpack_require__(111);
+var _GeoFeatureThemeLayer = __webpack_require__(108);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.LabelThemeLayer
@@ -28607,7 +28734,7 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
 
     initialize: function initialize(name, options) {
         _GeoFeatureThemeLayer.GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
-        _leaflet2.default.Util.setOptions(this, options);
+        _leaflet2["default"].Util.setOptions(this, options);
         //图层中专题要素的样式
         this.style = [];
         //用于指定专题要素样式的属性字段名称。
@@ -28993,17 +29120,17 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
 
         //将标签的地理位置转为像素位置
         var locationTmp = geoText.getCentroid();
-        var locTmp = this._map.latLngToContainerPoint(this._map.options.crs.unproject(_leaflet2.default.point(locationTmp.x, locationTmp.y)));
-        var loc = _leaflet2.default.point(locTmp.x, locTmp.y);
+        var locTmp = this._map.latLngToContainerPoint(this._map.options.crs.unproject(_leaflet2["default"].point(locationTmp.x, locationTmp.y)));
+        var loc = _leaflet2["default"].point(locTmp.x, locTmp.y);
 
         //偏移处理
         if (styleTmp.labelXOffset || styleTmp.labelYOffset) {
             var xOffset = isNaN(styleTmp.labelXOffset) ? 0 : styleTmp.labelXOffset;
             var yOffset = isNaN(styleTmp.labelYOffset) ? 0 : styleTmp.labelYOffset;
-            var point = loc.add(_leaflet2.default.point(xOffset, -yOffset));
-            return _leaflet2.default.point(point.x, point.y);
+            var point = loc.add(_leaflet2["default"].point(xOffset, -yOffset));
+            return _leaflet2["default"].point(point.x, point.y);
         } else {
-            return _leaflet2.default.point(loc.x, loc.y);
+            return _leaflet2["default"].point(loc.x, loc.y);
         }
     },
 
@@ -29224,10 +29351,10 @@ var LabelThemeLayer = exports.LabelThemeLayer = _GeoFeatureThemeLayer.GeoFeature
      * @return {Array<Object>}  bounds旋转后形成的多边形节点数组。是一个四边形，形如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
      */
     rotationBounds: function rotationBounds(bounds, rotationCenterPoi, angle) {
-        var ltPoi = _leaflet2.default.point(bounds.left, bounds.top);
-        var rtPoi = _leaflet2.default.point(bounds.right, bounds.top);
-        var rbPoi = _leaflet2.default.point(bounds.right, bounds.bottom);
-        var lbPoi = _leaflet2.default.point(bounds.left, bounds.bottom);
+        var ltPoi = _leaflet2["default"].point(bounds.left, bounds.top);
+        var rtPoi = _leaflet2["default"].point(bounds.right, bounds.top);
+        var rbPoi = _leaflet2["default"].point(bounds.right, bounds.bottom);
+        var lbPoi = _leaflet2["default"].point(bounds.left, bounds.bottom);
 
         var ver = [];
         ver.push(this.getRotatedLocation(ltPoi.x, ltPoi.y, rotationCenterPoi.x, rotationCenterPoi.y, angle));
@@ -29435,10 +29562,10 @@ var labelThemeLayer = exports.labelThemeLayer = function labelThemeLayer(name, o
     return new LabelThemeLayer(name, options);
 };
 
-_leaflet2.default.supermap.labelThemeLayer = labelThemeLayer;
+_leaflet2["default"].supermap.labelThemeLayer = labelThemeLayer;
 
 /***/ }),
-/* 130 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29455,11 +29582,11 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _GeoFeatureThemeLayer = __webpack_require__(111);
+var _GeoFeatureThemeLayer = __webpack_require__(108);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.rangeThemeLayer
@@ -29548,10 +29675,10 @@ var rangeThemeLayer = exports.rangeThemeLayer = function rangeThemeLayer(name, o
     return new RangeThemeLayer(name, options);
 };
 
-_leaflet2.default.supermap.rangeThemeLayer = rangeThemeLayer;
+_leaflet2["default"].supermap.rangeThemeLayer = rangeThemeLayer;
 
 /***/ }),
-/* 131 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29568,7 +29695,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.unicodeMarker
@@ -29586,7 +29713,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        textAlign - {string} 符号内容的对齐方式 <br>
  *        textBaseline - {string} 绘制符号时使用的基线 <br>
  */
-var UnicodeMarker = exports.UnicodeMarker = _leaflet2.default.Path.extend({
+var UnicodeMarker = exports.UnicodeMarker = _leaflet2["default"].Path.extend({
     // @section
     // @aka CircleMarker options
     options: {
@@ -29603,7 +29730,7 @@ var UnicodeMarker = exports.UnicodeMarker = _leaflet2.default.Path.extend({
     },
 
     initialize: function initialize(latlng, options) {
-        _leaflet2.default.Util.setOptions(this, options);
+        _leaflet2["default"].Util.setOptions(this, options);
         this._latlng = latlng;
     },
 
@@ -29629,7 +29756,7 @@ var UnicodeMarker = exports.UnicodeMarker = _leaflet2.default.Path.extend({
     _updateBounds: function _updateBounds() {
         var w = this._clickTolerance(),
             p = [w, w];
-        this._pxBounds = new _leaflet2.default.Bounds(this._point.subtract(p), this._point.add(p));
+        this._pxBounds = new _leaflet2["default"].Bounds(this._point.subtract(p), this._point.add(p));
     },
     _update: function _update() {
         if (this._map) {
@@ -29649,7 +29776,7 @@ var unicodeMarker = exports.unicodeMarker = function unicodeMarker(latlng, optio
     return new UnicodeMarker(latlng, options);
 };
 
-_leaflet2.default.Canvas.include({
+_leaflet2["default"].Canvas.include({
     _updateUnicode: function _updateUnicode(layer) {
         if (!this._drawing) {
             return;
@@ -29711,10 +29838,10 @@ _leaflet2.default.Canvas.include({
     }
 });
 
-_leaflet2.default.supermap.unicodeMarker = unicodeMarker;
+_leaflet2["default"].supermap.unicodeMarker = unicodeMarker;
 
 /***/ }),
-/* 132 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29731,11 +29858,11 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _GeoFeatureThemeLayer = __webpack_require__(111);
+var _GeoFeatureThemeLayer = __webpack_require__(108);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.uniqueThemeLayer
@@ -29822,10 +29949,10 @@ var uniqueThemeLayer = exports.uniqueThemeLayer = function uniqueThemeLayer(name
     return new UniqueThemeLayer(name, options);
 };
 
-_leaflet2.default.supermap.uniqueThemeLayer = uniqueThemeLayer;
+_leaflet2["default"].supermap.uniqueThemeLayer = uniqueThemeLayer;
 
 /***/ }),
-/* 133 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29842,7 +29969,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.graphic
@@ -29851,11 +29978,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {Object} 图形参数
  */
-var Graphic = exports.Graphic = _leaflet2.default.Class.extend({
+var Graphic = exports.Graphic = _leaflet2["default"].Class.extend({
 
     initialize: function initialize(options) {
         options = options || {};
-        this._latlng = _leaflet2.default.latLng(options._latlng.lat, options._latlng.lng);
+        this._latlng = _leaflet2["default"].latLng(options._latlng.lat, options._latlng.lng);
         this._canvas = options._canvas;
     },
 
@@ -29898,10 +30025,10 @@ var graphic = exports.graphic = function graphic(options) {
     return new Graphic(options);
 };
 
-_leaflet2.default.supermap.graphic = graphic;
+_leaflet2["default"].supermap.graphic = graphic;
 
 /***/ }),
-/* 134 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29922,7 +30049,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.dataFlowService
@@ -29946,7 +30073,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
 
     initialize: function initialize(url, options) {
         options = options || {};
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         if (options.projection) {
             this.options.prjCoordSys = options.projection;
         }
@@ -30039,10 +30166,10 @@ var dataFlowService = exports.dataFlowService = function dataFlowService(url, op
     return new DataFlowService(url, options);
 };
 
-_leaflet2.default.supermap.dataFlowService = dataFlowService;
+_leaflet2["default"].supermap.dataFlowService = dataFlowService;
 
 /***/ }),
-/* 135 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30061,17 +30188,17 @@ __webpack_require__(4);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _Util = __webpack_require__(43);
+var _Util = __webpack_require__(42);
 
 var Util = _interopRequireWildcard(_Util);
 
-var _CommontypesConversion = __webpack_require__(36);
+var _CommontypesConversion = __webpack_require__(35);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.featureService
@@ -30242,7 +30369,7 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
         var me = this;
         if (params.features) {
             var features = [];
-            if (_leaflet2.default.Util.isArray(params.features)) {
+            if (_leaflet2["default"].Util.isArray(params.features)) {
                 params.features.map(function (feature) {
                     features.push(me._createServerFeature(feature));
                     return feature;
@@ -30285,10 +30412,10 @@ var featureService = exports.featureService = function featureService(url, optio
     return new FeatureService(url, options);
 };
 
-_leaflet2.default.supermap.featureService = featureService;
+_leaflet2["default"].supermap.featureService = featureService;
 
 /***/ }),
-/* 136 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30309,7 +30436,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class  L.supermap.mapService
@@ -30332,7 +30459,7 @@ var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
 
     initialize: function initialize(url, options) {
         options = options || {};
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         if (options.projection) {
             this.options.projection = options.projection;
         }
@@ -30381,16 +30508,16 @@ var mapService = exports.mapService = function mapService(url, options) {
     return new MapService(url, options);
 };
 
-_leaflet2.default.supermap.mapService = mapService;
+_leaflet2["default"].supermap.mapService = mapService;
 
 /***/ }),
-/* 137 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Point = __webpack_require__(333);
+var Point = __webpack_require__(322);
 
 module.exports = VectorTileFeature;
 
@@ -30616,13 +30743,13 @@ function signedArea(ring) {
 }
 
 /***/ }),
-/* 138 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileFeature = __webpack_require__(137);
+var VectorTileFeature = __webpack_require__(133);
 
 module.exports = VectorTileLayer;
 
@@ -30672,7 +30799,7 @@ VectorTileLayer.prototype.feature = function (i) {
 };
 
 /***/ }),
-/* 139 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31012,7 +31139,7 @@ _SuperMap.SuperMap.Event = Event;
 _SuperMap.SuperMap.Event.observe(window, 'unload', _SuperMap.SuperMap.Event.unloadCache, false);
 
 /***/ }),
-/* 140 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31091,7 +31218,7 @@ var Feature = exports.Feature = function () {
 _SuperMap.SuperMap.Feature = Feature;
 
 /***/ }),
-/* 141 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31155,7 +31282,7 @@ var Size = exports.Size = function () {
          * @function SuperMap.Size.prototype.clone
          * @description 克隆当前size对象.
          * @example
-         * var size = new SuperMap.Size(31,46);
+         * var size = new SuperMap.Size(3146);
          * var size2 = size.clone();
          *
          * @returns {SuperMap.Size}  返回一个新的与当前size对象有相同宽、高的Size对象。
@@ -31172,8 +31299,8 @@ var Size = exports.Size = function () {
          * @function SuperMap.Size.prototype.equals
          * @description 比较两个size对象是否相等。
          * @example
-         * var size = new SuperMap.Size(31,46);
-         * var size2 = new SuperMap.Size(31,46);
+         * var size = new SuperMap.Size(3146);
+         * var size2 = new SuperMap.Size(3146);
          * var isEquals = size.equals(size2);
          *
          * @param sz -{SuperMap.Size} 用于比较相等的Size对象。
@@ -31196,7 +31323,7 @@ var Size = exports.Size = function () {
          * @function SuperMap.Size.prototype.destroy
          * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
          * @example
-         * var size = new SuperMap.Size(31,46);
+         * var size = new SuperMap.Size(3146);
          * size.destroy();
          */
 
@@ -31214,7 +31341,7 @@ var Size = exports.Size = function () {
 _SuperMap.SuperMap.Size = Size;
 
 /***/ }),
-/* 142 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31324,7 +31451,7 @@ var Rectangle = exports.Rectangle = function (_Geometry) {
 _SuperMap.SuperMap.Geometry.Rectangle = Rectangle;
 
 /***/ }),
-/* 143 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31339,7 +31466,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Events = __webpack_require__(62);
+var _Events = __webpack_require__(60);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31811,7 +31938,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
 _SuperMap.SuperMap.TimeControlBase = TimeControlBase;
 
 /***/ }),
-/* 144 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31852,7 +31979,7 @@ var IManagerCreateNodeParam = exports.IManagerCreateNodeParam = function IManage
 _SuperMap.SuperMap.iManagerCreateNodeParam = IManagerCreateNodeParam;
 
 /***/ }),
-/* 145 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31867,7 +31994,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _SecurityManager = __webpack_require__(35);
+var _SecurityManager = __webpack_require__(34);
 
 var _FetchRequest = __webpack_require__(21);
 
@@ -31935,7 +32062,7 @@ var IManagerServiceBase = exports.IManagerServiceBase = function () {
 _SuperMap.SuperMap.iManagerServiceBase = IManagerServiceBase;
 
 /***/ }),
-/* 146 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31952,7 +32079,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _iPortalServiceBase = __webpack_require__(65);
+var _iPortalServiceBase = __webpack_require__(63);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32066,7 +32193,7 @@ var IPortalMap = exports.IPortalMap = function (_IPortalServiceBase) {
 _SuperMap.SuperMap.iPortalMap = IPortalMap;
 
 /***/ }),
-/* 147 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32115,7 +32242,7 @@ var IPortalMapsQueryParam = exports.IPortalMapsQueryParam = function IPortalMaps
 _SuperMap.SuperMap.iPortalMapsQueryParam = IPortalMapsQueryParam;
 
 /***/ }),
-/* 148 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32132,7 +32259,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _iPortalServiceBase = __webpack_require__(65);
+var _iPortalServiceBase = __webpack_require__(63);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32240,7 +32367,7 @@ var IPortalService = exports.IPortalService = function (_IPortalServiceBase) {
 _SuperMap.SuperMap.iPortalService = IPortalService;
 
 /***/ }),
-/* 149 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32288,7 +32415,7 @@ var IPortalServicesQueryParam = exports.IPortalServicesQueryParam = function IPo
 _SuperMap.SuperMap.iPortalServicesQueryParam = IPortalServicesQueryParam;
 
 /***/ }),
-/* 150 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32485,7 +32612,7 @@ var AreaSolarRadiationParameters = exports.AreaSolarRadiationParameters = functi
 _SuperMap.SuperMap.AreaSolarRadiationParameters = AreaSolarRadiationParameters;
 
 /***/ }),
-/* 151 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32552,7 +32679,7 @@ var BufferDistance = exports.BufferDistance = function () {
 _SuperMap.SuperMap.BufferDistance = BufferDistance;
 
 /***/ }),
-/* 152 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32571,7 +32698,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(3);
 
-var _BufferDistance = __webpack_require__(151);
+var _BufferDistance = __webpack_require__(147);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32659,7 +32786,7 @@ var BufferSetting = exports.BufferSetting = function () {
 _SuperMap.SuperMap.BufferSetting = BufferSetting;
 
 /***/ }),
-/* 153 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32787,7 +32914,7 @@ var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function
 _SuperMap.SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
 
 /***/ }),
-/* 154 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32874,7 +33001,7 @@ var BurstPipelineAnalystParameters = exports.BurstPipelineAnalystParameters = fu
 _SuperMap.SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters;
 
 /***/ }),
-/* 155 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32986,7 +33113,7 @@ var ChartQueryFilterParameter = exports.ChartQueryFilterParameter = function () 
 _SuperMap.SuperMap.ChartQueryFilterParameter = ChartQueryFilterParameter;
 
 /***/ }),
-/* 156 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33003,7 +33130,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ChartQueryFilterParameter = __webpack_require__(155);
+var _ChartQueryFilterParameter = __webpack_require__(151);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -33144,7 +33271,7 @@ var ChartQueryParameters = exports.ChartQueryParameters = function () {
 _SuperMap.SuperMap.ChartQueryParameters = ChartQueryParameters;
 
 /***/ }),
-/* 157 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33284,7 +33411,7 @@ var ClipParameter = exports.ClipParameter = function () {
 _SuperMap.SuperMap.ClipParameter = ClipParameter;
 
 /***/ }),
-/* 158 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33378,7 +33505,7 @@ var ColorDictionary = exports.ColorDictionary = function () {
 _SuperMap.SuperMap.ColorDictionary = ColorDictionary;
 
 /***/ }),
-/* 159 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33395,7 +33522,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(34);
+var _TransportationAnalystParameter = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -33462,7 +33589,7 @@ var ComputeWeightMatrixParameters = exports.ComputeWeightMatrixParameters = func
 _SuperMap.SuperMap.ComputeWeightMatrixParameters = ComputeWeightMatrixParameters;
 
 /***/ }),
-/* 160 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33481,9 +33608,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _BufferAnalystParameters = __webpack_require__(94);
+var _BufferAnalystParameters = __webpack_require__(91);
 
-var _DataReturnOption = __webpack_require__(50);
+var _DataReturnOption = __webpack_require__(49);
 
 var _FilterParameter = __webpack_require__(16);
 
@@ -33606,7 +33733,7 @@ var DatasetBufferAnalystParameters = exports.DatasetBufferAnalystParameters = fu
 _SuperMap.SuperMap.DatasetBufferAnalystParameters = DatasetBufferAnalystParameters;
 
 /***/ }),
-/* 161 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33757,7 +33884,7 @@ var DatasetInfo = exports.DatasetInfo = function () {
 _SuperMap.SuperMap.DatasetInfo = DatasetInfo;
 
 /***/ }),
-/* 162 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33776,11 +33903,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DataReturnOption = __webpack_require__(50);
+var _DataReturnOption = __webpack_require__(49);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _OverlayAnalystParameters = __webpack_require__(95);
+var _OverlayAnalystParameters = __webpack_require__(92);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -33951,7 +34078,7 @@ var DatasetOverlayAnalystParameters = exports.DatasetOverlayAnalystParameters = 
 _SuperMap.SuperMap.DatasetOverlayAnalystParameters = DatasetOverlayAnalystParameters;
 
 /***/ }),
-/* 163 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33972,7 +34099,7 @@ var _Util = __webpack_require__(1);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _SurfaceAnalystParameters = __webpack_require__(69);
+var _SurfaceAnalystParameters = __webpack_require__(67);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -34089,7 +34216,7 @@ var DatasetSurfaceAnalystParameters = exports.DatasetSurfaceAnalystParameters = 
 _SuperMap.SuperMap.DatasetSurfaceAnalystParameters = DatasetSurfaceAnalystParameters;
 
 /***/ }),
-/* 164 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34108,7 +34235,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ThiessenAnalystParameters = __webpack_require__(73);
+var _ThiessenAnalystParameters = __webpack_require__(71);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -34202,7 +34329,7 @@ var DatasetThiessenAnalystParameters = exports.DatasetThiessenAnalystParameters 
 _SuperMap.SuperMap.DatasetThiessenAnalystParameters = DatasetThiessenAnalystParameters;
 
 /***/ }),
-/* 165 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34364,7 +34491,7 @@ var DatasourceConnectionInfo = exports.DatasourceConnectionInfo = function () {
 _SuperMap.SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
 
 /***/ }),
-/* 166 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34502,7 +34629,7 @@ var DensityKernelAnalystParameters = exports.DensityKernelAnalystParameters = fu
 _SuperMap.SuperMap.DensityKernelAnalystParameters = DensityKernelAnalystParameters;
 
 /***/ }),
-/* 167 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34647,7 +34774,7 @@ var EditFeaturesParameters = exports.EditFeaturesParameters = function () {
 _SuperMap.SuperMap.EditFeaturesParameters = EditFeaturesParameters;
 
 /***/ }),
-/* 168 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34664,7 +34791,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(39);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34717,7 +34844,7 @@ var FacilityAnalystSinks3DParameters = exports.FacilityAnalystSinks3DParameters 
 _SuperMap.SuperMap.FacilityAnalystSinks3DParameters = FacilityAnalystSinks3DParameters;
 
 /***/ }),
-/* 169 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34734,7 +34861,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(39);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34787,7 +34914,7 @@ var FacilityAnalystSources3DParameters = exports.FacilityAnalystSources3DParamet
 _SuperMap.SuperMap.FacilityAnalystSources3DParameters = FacilityAnalystSources3DParameters;
 
 /***/ }),
-/* 170 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34878,7 +35005,7 @@ var FacilityAnalystStreamParameters = exports.FacilityAnalystStreamParameters = 
 _SuperMap.SuperMap.FacilityAnalystStreamParameters = FacilityAnalystStreamParameters;
 
 /***/ }),
-/* 171 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34895,7 +35022,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(39);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34946,7 +35073,7 @@ var FacilityAnalystTracedown3DParameters = exports.FacilityAnalystTracedown3DPar
 _SuperMap.SuperMap.FacilityAnalystTracedown3DParameters = FacilityAnalystTracedown3DParameters;
 
 /***/ }),
-/* 172 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34963,7 +35090,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(39);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35013,7 +35140,7 @@ var FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTraceup3DParamet
 _SuperMap.SuperMap.FacilityAnalystTraceup3DParameters = FacilityAnalystTraceup3DParameters;
 
 /***/ }),
-/* 173 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35032,7 +35159,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(39);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35091,7 +35218,7 @@ var FacilityAnalystUpstream3DParameters = exports.FacilityAnalystUpstream3DParam
 _SuperMap.SuperMap.FacilityAnalystUpstream3DParameters = FacilityAnalystUpstream3DParameters;
 
 /***/ }),
-/* 174 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35161,7 +35288,7 @@ var FieldParameters = exports.FieldParameters = function () {
 _SuperMap.SuperMap.FieldParameters = FieldParameters;
 
 /***/ }),
-/* 175 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35178,7 +35305,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _FieldParameters2 = __webpack_require__(174);
+var _FieldParameters2 = __webpack_require__(170);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35245,7 +35372,7 @@ var FieldStatisticsParameters = exports.FieldStatisticsParameters = function (_F
 _SuperMap.SuperMap.FieldStatisticsParameters = FieldStatisticsParameters;
 
 /***/ }),
-/* 176 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35262,7 +35389,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(34);
+var _TransportationAnalystParameter = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35368,7 +35495,7 @@ var FindClosestFacilitiesParameters = exports.FindClosestFacilitiesParameters = 
 _SuperMap.SuperMap.FindClosestFacilitiesParameters = FindClosestFacilitiesParameters;
 
 /***/ }),
-/* 177 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35468,7 +35595,7 @@ var FindLocationParameters = exports.FindLocationParameters = function () {
 _SuperMap.SuperMap.FindLocationParameters = FindLocationParameters;
 
 /***/ }),
-/* 178 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35485,7 +35612,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(34);
+var _TransportationAnalystParameter = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35575,7 +35702,7 @@ var FindMTSPPathsParameters = exports.FindMTSPPathsParameters = function () {
 _SuperMap.SuperMap.FindMTSPPathsParameters = FindMTSPPathsParameters;
 
 /***/ }),
-/* 179 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35592,7 +35719,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(34);
+var _TransportationAnalystParameter = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35679,7 +35806,7 @@ var FindPathParameters = exports.FindPathParameters = function () {
 _SuperMap.SuperMap.FindPathParameters = FindPathParameters;
 
 /***/ }),
-/* 180 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35696,7 +35823,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(34);
+var _TransportationAnalystParameter = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35796,7 +35923,7 @@ var FindServiceAreasParameters = exports.FindServiceAreasParameters = function (
 _SuperMap.SuperMap.FindServiceAreasParameters = FindServiceAreasParameters;
 
 /***/ }),
-/* 181 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35813,7 +35940,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(34);
+var _TransportationAnalystParameter = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35894,7 +36021,7 @@ var FindTSPPathsParameters = exports.FindTSPPathsParameters = function () {
 _SuperMap.SuperMap.FindTSPPathsParameters = FindTSPPathsParameters;
 
 /***/ }),
-/* 182 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35911,7 +36038,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(50);
+__webpack_require__(49);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -36043,7 +36170,7 @@ var GenerateSpatialDataParameters = exports.GenerateSpatialDataParameters = func
 _SuperMap.SuperMap.GenerateSpatialDataParameters = GenerateSpatialDataParameters;
 
 /***/ }),
-/* 183 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36148,7 +36275,7 @@ var GeoCodingParameter = exports.GeoCodingParameter = function () {
 _SuperMap.SuperMap.GeoCodingParameter = GeoCodingParameter;
 
 /***/ }),
-/* 184 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36267,7 +36394,7 @@ var GeoDecodingParameter = exports.GeoDecodingParameter = function () {
 _SuperMap.SuperMap.GeoDecodingParameter = GeoDecodingParameter;
 
 /***/ }),
-/* 185 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36404,7 +36531,7 @@ var GeoRelationAnalystParameters = exports.GeoRelationAnalystParameters = functi
 _SuperMap.SuperMap.GeoRelationAnalystParameters = GeoRelationAnalystParameters;
 
 /***/ }),
-/* 186 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36423,7 +36550,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _BufferAnalystParameters = __webpack_require__(94);
+var _BufferAnalystParameters = __webpack_require__(91);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -36525,7 +36652,7 @@ var GeometryBufferAnalystParameters = exports.GeometryBufferAnalystParameters = 
 _SuperMap.SuperMap.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters;
 
 /***/ }),
-/* 187 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36544,7 +36671,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _OverlayAnalystParameters = __webpack_require__(95);
+var _OverlayAnalystParameters = __webpack_require__(92);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -36653,7 +36780,7 @@ var GeometryOverlayAnalystParameters = exports.GeometryOverlayAnalystParameters 
 _SuperMap.SuperMap.GeometryOverlayAnalystParameters = GeometryOverlayAnalystParameters;
 
 /***/ }),
-/* 188 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36672,7 +36799,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _SurfaceAnalystParameters = __webpack_require__(69);
+var _SurfaceAnalystParameters = __webpack_require__(67);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -36748,7 +36875,7 @@ var GeometrySurfaceAnalystParameters = exports.GeometrySurfaceAnalystParameters 
 _SuperMap.SuperMap.GeometrySurfaceAnalystParameters = GeometrySurfaceAnalystParameters;
 
 /***/ }),
-/* 189 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36767,7 +36894,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ThiessenAnalystParameters = __webpack_require__(73);
+var _ThiessenAnalystParameters = __webpack_require__(71);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -36852,7 +36979,7 @@ var GeometryThiessenAnalystParameters = exports.GeometryThiessenAnalystParameter
 _SuperMap.SuperMap.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters;
 
 /***/ }),
-/* 190 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36875,7 +37002,7 @@ var _REST = __webpack_require__(3);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _GetFeaturesParametersBase = __webpack_require__(40);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37020,7 +37147,7 @@ GetFeaturesByBoundsParameters.getFeatureMode = {
 _SuperMap.SuperMap.GetFeaturesByBoundsParameters = GetFeaturesByBoundsParameters;
 
 /***/ }),
-/* 191 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37039,7 +37166,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _GetFeaturesParametersBase = __webpack_require__(40);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 var _FilterParameter = __webpack_require__(16);
 
@@ -37173,7 +37300,7 @@ var GetFeaturesByBufferParameters = exports.GetFeaturesByBufferParameters = func
 _SuperMap.SuperMap.GetFeaturesByBufferParameters = GetFeaturesByBufferParameters;
 
 /***/ }),
-/* 192 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37196,7 +37323,7 @@ var _REST = __webpack_require__(3);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _GetFeaturesParametersBase = __webpack_require__(40);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -37339,7 +37466,7 @@ var GetFeaturesByGeometryParameters = exports.GetFeaturesByGeometryParameters = 
 _SuperMap.SuperMap.GetFeaturesByGeometryParameters = GetFeaturesByGeometryParameters;
 
 /***/ }),
-/* 193 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37360,7 +37487,7 @@ var _Util = __webpack_require__(1);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _GetFeaturesParametersBase = __webpack_require__(40);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37465,7 +37592,7 @@ var GetFeaturesByIDsParameters = exports.GetFeaturesByIDsParameters = function (
 _SuperMap.SuperMap.GetFeaturesByIDsParameters = GetFeaturesByIDsParameters;
 
 /***/ }),
-/* 194 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37484,7 +37611,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _GetFeaturesParametersBase = __webpack_require__(40);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 __webpack_require__(16);
 
@@ -37577,7 +37704,7 @@ var GetFeaturesBySQLParameters = exports.GetFeaturesBySQLParameters = function (
 _SuperMap.SuperMap.GetFeaturesBySQLParameters = GetFeaturesBySQLParameters;
 
 /***/ }),
-/* 195 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37660,7 +37787,7 @@ var GetGridCellInfosParameters = exports.GetGridCellInfosParameters = function (
 _SuperMap.SuperMap.GetGridCellInfosParameters = GetGridCellInfosParameters;
 
 /***/ }),
-/* 196 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37679,13 +37806,13 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCSubLayer2 = __webpack_require__(52);
+var _UGCSubLayer2 = __webpack_require__(51);
 
 var _ServerColor = __webpack_require__(20);
 
 var _ServerStyle = __webpack_require__(11);
 
-var _ColorDictionary = __webpack_require__(158);
+var _ColorDictionary = __webpack_require__(154);
 
 __webpack_require__(3);
 
@@ -37896,7 +38023,7 @@ var Grid = exports.Grid = function (_UGCSubLayer) {
 _SuperMap.SuperMap.Grid = Grid;
 
 /***/ }),
-/* 197 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37913,7 +38040,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _UGCSubLayer2 = __webpack_require__(52);
+var _UGCSubLayer2 = __webpack_require__(51);
 
 var _ServerColor = __webpack_require__(20);
 
@@ -38042,7 +38169,7 @@ var UGCImage = exports.UGCImage = function (_UGCSubLayer) {
 _SuperMap.SuperMap.Image = UGCImage;
 
 /***/ }),
-/* 198 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38061,7 +38188,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _InterpolationAnalystParameters = __webpack_require__(42);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38164,7 +38291,7 @@ var InterpolationIDWAnalystParameters = exports.InterpolationIDWAnalystParameter
 _SuperMap.SuperMap.InterpolationIDWAnalystParameters = InterpolationIDWAnalystParameters;
 
 /***/ }),
-/* 199 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38185,9 +38312,9 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(3);
 
-__webpack_require__(73);
+__webpack_require__(71);
 
-var _InterpolationAnalystParameters = __webpack_require__(42);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38421,7 +38548,7 @@ var InterpolationKrigingAnalystParameters = exports.InterpolationKrigingAnalystP
 _SuperMap.SuperMap.InterpolationKrigingAnalystParameters = InterpolationKrigingAnalystParameters;
 
 /***/ }),
-/* 200 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38440,7 +38567,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _InterpolationAnalystParameters = __webpack_require__(42);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38587,7 +38714,7 @@ var InterpolationRBFAnalystParameters = exports.InterpolationRBFAnalystParameter
 _SuperMap.SuperMap.InterpolationRBFAnalystParameters = InterpolationRBFAnalystParameters;
 
 /***/ }),
-/* 201 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38746,7 +38873,7 @@ var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () 
 _SuperMap.SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 
 /***/ }),
-/* 202 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38763,7 +38890,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _LabelMatrixCell2 = __webpack_require__(67);
+var _LabelMatrixCell2 = __webpack_require__(65);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38864,7 +38991,7 @@ var LabelImageCell = exports.LabelImageCell = function (_LabelMatrixCell) {
 _SuperMap.SuperMap.LabelImageCell = LabelImageCell;
 
 /***/ }),
-/* 203 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38881,7 +39008,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(33);
+var _ServerTextStyle = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39013,7 +39140,7 @@ var LabelMixedTextStyle = exports.LabelMixedTextStyle = function () {
 _SuperMap.SuperMap.LabelMixedTextStyle = LabelMixedTextStyle;
 
 /***/ }),
-/* 204 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39032,7 +39159,7 @@ var _Util = __webpack_require__(1);
 
 var _ServerStyle = __webpack_require__(11);
 
-var _LabelMatrixCell2 = __webpack_require__(67);
+var _LabelMatrixCell2 = __webpack_require__(65);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39113,7 +39240,7 @@ var LabelSymbolCell = exports.LabelSymbolCell = function (_LabelMatrixCell) {
 _SuperMap.SuperMap.LabelSymbolCell = LabelSymbolCell;
 
 /***/ }),
-/* 205 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39130,9 +39257,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ThemeLabel = __webpack_require__(71);
+var _ThemeLabel = __webpack_require__(69);
 
-var _LabelMatrixCell2 = __webpack_require__(67);
+var _LabelMatrixCell2 = __webpack_require__(65);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39203,7 +39330,7 @@ var LabelThemeCell = exports.LabelThemeCell = function (_LabelMatrixCell) {
 _SuperMap.SuperMap.LabelThemeCell = LabelThemeCell;
 
 /***/ }),
-/* 206 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39329,7 +39456,7 @@ var LayerStatus = exports.LayerStatus = function () {
 _SuperMap.SuperMap.LayerStatus = LayerStatus;
 
 /***/ }),
-/* 207 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39346,7 +39473,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DatasourceConnectionInfo = __webpack_require__(165);
+var _DatasourceConnectionInfo = __webpack_require__(161);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39501,7 +39628,7 @@ var LinkItem = exports.LinkItem = function () {
 _SuperMap.SuperMap.LinkItem = LinkItem;
 
 /***/ }),
-/* 208 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39665,7 +39792,7 @@ var MathExpressionAnalysisParameters = exports.MathExpressionAnalysisParameters 
 _SuperMap.SuperMap.MathExpressionAnalysisParameters = MathExpressionAnalysisParameters;
 
 /***/ }),
-/* 209 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39761,7 +39888,7 @@ var MeasureParameters = exports.MeasureParameters = function () {
 _SuperMap.SuperMap.MeasureParameters = MeasureParameters;
 
 /***/ }),
-/* 210 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39778,7 +39905,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCLayer = __webpack_require__(102);
+var _UGCLayer = __webpack_require__(99);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39927,7 +40054,7 @@ var OverlapDisplayedOptions = exports.OverlapDisplayedOptions = function () {
 _SuperMap.SuperMap.OverlapDisplayedOptions = OverlapDisplayedOptions;
 
 /***/ }),
-/* 211 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40038,7 +40165,7 @@ var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
 _SuperMap.SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter;
 
 /***/ }),
-/* 212 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40121,9 +40248,9 @@ var PointWithMeasure = exports.PointWithMeasure = function (_Point) {
          toJson() {
             var result = "{";
             if (this.measure != null && this.measure != undefined) {
-                result += "\"measure\":" + this.measure + ",";
+                result += "\"measure\":" + this.measure + "";
             }
-            result += "\"x\":" + this.x + ",";
+            result += "\"x\":" + this.x + "";
             result += "\"y\":" + this.y;
             result += "}";
             return result;
@@ -40169,7 +40296,7 @@ var PointWithMeasure = exports.PointWithMeasure = function (_Point) {
 _SuperMap.SuperMap.PointWithMeasure = PointWithMeasure;
 
 /***/ }),
-/* 213 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40188,7 +40315,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryParameters2 = __webpack_require__(32);
+var _QueryParameters2 = __webpack_require__(31);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40271,7 +40398,7 @@ var QueryByBoundsParameters = exports.QueryByBoundsParameters = function (_Query
 _SuperMap.SuperMap.QueryByBoundsParameters = QueryByBoundsParameters;
 
 /***/ }),
-/* 214 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40290,7 +40417,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryParameters2 = __webpack_require__(32);
+var _QueryParameters2 = __webpack_require__(31);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40403,7 +40530,7 @@ var QueryByDistanceParameters = exports.QueryByDistanceParameters = function (_Q
 _SuperMap.SuperMap.QueryByDistanceParameters = QueryByDistanceParameters;
 
 /***/ }),
-/* 215 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40422,7 +40549,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryParameters2 = __webpack_require__(32);
+var _QueryParameters2 = __webpack_require__(31);
 
 var _REST = __webpack_require__(3);
 
@@ -40520,7 +40647,7 @@ var QueryByGeometryParameters = exports.QueryByGeometryParameters = function (_Q
 _SuperMap.SuperMap.QueryByGeometryParameters = QueryByGeometryParameters;
 
 /***/ }),
-/* 216 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40539,7 +40666,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryParameters2 = __webpack_require__(32);
+var _QueryParameters2 = __webpack_require__(31);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40610,7 +40737,7 @@ var QueryBySQLParameters = exports.QueryBySQLParameters = function (_QueryParame
 _SuperMap.SuperMap.QueryBySQLParameters = QueryBySQLParameters;
 
 /***/ }),
-/* 217 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40627,7 +40754,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(68);
+__webpack_require__(66);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40707,7 +40834,7 @@ var RouteCalculateMeasureParameters = exports.RouteCalculateMeasureParameters = 
 _SuperMap.SuperMap.RouteCalculateMeasureParameters = RouteCalculateMeasureParameters;
 
 /***/ }),
-/* 218 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40726,7 +40853,7 @@ var _Util = __webpack_require__(1);
 
 var _Geometry = __webpack_require__(26);
 
-__webpack_require__(68);
+__webpack_require__(66);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40862,7 +40989,7 @@ var RouteLocatorParameters = exports.RouteLocatorParameters = function () {
 _SuperMap.SuperMap.RouteLocatorParameters = RouteLocatorParameters;
 
 /***/ }),
-/* 219 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40881,21 +41008,21 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _LonLat = __webpack_require__(37);
+var _LonLat = __webpack_require__(36);
 
-var _ThemeLabel = __webpack_require__(71);
+var _ThemeLabel = __webpack_require__(69);
 
-var _ThemeUnique = __webpack_require__(100);
+var _ThemeUnique = __webpack_require__(97);
 
-var _ThemeGraph = __webpack_require__(98);
+var _ThemeGraph = __webpack_require__(95);
 
-var _ThemeDotDensity = __webpack_require__(96);
+var _ThemeDotDensity = __webpack_require__(93);
 
-var _ThemeGraduatedSymbol = __webpack_require__(97);
+var _ThemeGraduatedSymbol = __webpack_require__(94);
 
-var _ThemeRange = __webpack_require__(99);
+var _ThemeRange = __webpack_require__(96);
 
-var _UGCSubLayer2 = __webpack_require__(52);
+var _UGCSubLayer2 = __webpack_require__(51);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41027,7 +41154,7 @@ var ServerTheme = exports.ServerTheme = function (_UGCSubLayer) {
 _SuperMap.SuperMap.ServerTheme = ServerTheme;
 
 /***/ }),
-/* 220 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41104,7 +41231,7 @@ var SetLayerInfoParameters = exports.SetLayerInfoParameters = function () {
 _SuperMap.SuperMap.SetLayerInfoParameters = SetLayerInfoParameters;
 
 /***/ }),
-/* 221 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41121,7 +41248,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(206);
+__webpack_require__(202);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41209,7 +41336,7 @@ var SetLayerStatusParameters = exports.SetLayerStatusParameters = function () {
 _SuperMap.SuperMap.SetLayerStatusParameters = SetLayerStatusParameters;
 
 /***/ }),
-/* 222 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41285,7 +41412,7 @@ var SetLayersInfoParameters = exports.SetLayersInfoParameters = function () {
 _SuperMap.SuperMap.SetLayersInfoParameters = SetLayersInfoParameters;
 
 /***/ }),
-/* 223 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41393,7 +41520,7 @@ var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = fu
 _SuperMap.SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
 /***/ }),
-/* 224 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41458,7 +41585,7 @@ var StopQueryParameters = exports.StopQueryParameters = function () {
 _SuperMap.SuperMap.StopQueryParameters = StopQueryParameters;
 
 /***/ }),
-/* 225 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41543,7 +41670,7 @@ var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = fu
 _SuperMap.SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
 
 /***/ }),
-/* 226 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41703,7 +41830,7 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
 _SuperMap.SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 /***/ }),
-/* 227 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41901,7 +42028,7 @@ var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () 
 _SuperMap.SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 /***/ }),
-/* 228 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42030,7 +42157,7 @@ var SurfaceAnalystParametersSetting = exports.SurfaceAnalystParametersSetting = 
 _SuperMap.SuperMap.SurfaceAnalystParametersSetting = SurfaceAnalystParametersSetting;
 
 /***/ }),
-/* 229 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42155,7 +42282,7 @@ var TerrainCurvatureCalculationParameters = exports.TerrainCurvatureCalculationP
 _SuperMap.SuperMap.TerrainCurvatureCalculationParameters = TerrainCurvatureCalculationParameters;
 
 /***/ }),
-/* 230 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42271,7 +42398,7 @@ var ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbolStyle = function () 
 _SuperMap.SuperMap.ThemeGraduatedSymbolStyle = ThemeGraduatedSymbolStyle;
 
 /***/ }),
-/* 231 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42290,7 +42417,7 @@ var _Util = __webpack_require__(1);
 
 var _ServerColor = __webpack_require__(20);
 
-var _ServerTextStyle = __webpack_require__(33);
+var _ServerTextStyle = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -42396,7 +42523,7 @@ var ThemeGraphAxes = exports.ThemeGraphAxes = function () {
 _SuperMap.SuperMap.ThemeGraphAxes = ThemeGraphAxes;
 
 /***/ }),
-/* 232 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42507,7 +42634,7 @@ var ThemeGraphItem = exports.ThemeGraphItem = function () {
 _SuperMap.SuperMap.ThemeGraphItem = ThemeGraphItem;
 
 /***/ }),
-/* 233 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42592,7 +42719,7 @@ var ThemeGraphSize = exports.ThemeGraphSize = function () {
 _SuperMap.SuperMap.ThemeGraphSize = ThemeGraphSize;
 
 /***/ }),
-/* 234 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42609,7 +42736,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(33);
+var _ServerTextStyle = __webpack_require__(32);
 
 var _REST = __webpack_require__(3);
 
@@ -42694,7 +42821,7 @@ var ThemeGraphText = exports.ThemeGraphText = function () {
 _SuperMap.SuperMap.ThemeGraphText = ThemeGraphText;
 
 /***/ }),
-/* 235 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42715,7 +42842,7 @@ var _Util = __webpack_require__(1);
 
 var _Theme2 = __webpack_require__(23);
 
-var _ThemeGridRangeItem = __webpack_require__(236);
+var _ThemeGridRangeItem = __webpack_require__(232);
 
 var _REST = __webpack_require__(3);
 
@@ -42851,7 +42978,7 @@ var ThemeGridRange = exports.ThemeGridRange = function (_Theme) {
 _SuperMap.SuperMap.ThemeGridRange = ThemeGridRange;
 
 /***/ }),
-/* 236 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42990,7 +43117,7 @@ var ThemeGridRangeItem = exports.ThemeGridRangeItem = function () {
 _SuperMap.SuperMap.ThemeGridRangeItem = ThemeGridRangeItem;
 
 /***/ }),
-/* 237 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43013,7 +43140,7 @@ var _Theme2 = __webpack_require__(23);
 
 var _ServerColor = __webpack_require__(20);
 
-var _ThemeGridUniqueItem = __webpack_require__(238);
+var _ThemeGridUniqueItem = __webpack_require__(234);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43144,7 +43271,7 @@ var ThemeGridUnique = exports.ThemeGridUnique = function (_Theme) {
 _SuperMap.SuperMap.ThemeGridUnique = ThemeGridUnique;
 
 /***/ }),
-/* 238 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43272,7 +43399,7 @@ var ThemeGridUniqueItem = exports.ThemeGridUniqueItem = function () {
 _SuperMap.SuperMap.ThemeGridUniqueItem = ThemeGridUniqueItem;
 
 /***/ }),
-/* 239 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43398,7 +43525,7 @@ var ThemeLabelAlongLine = exports.ThemeLabelAlongLine = function () {
 _SuperMap.SuperMap.ThemeLabelAlongLine = ThemeLabelAlongLine;
 
 /***/ }),
-/* 240 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43498,7 +43625,7 @@ var ThemeLabelBackground = exports.ThemeLabelBackground = function () {
 _SuperMap.SuperMap.ThemeLabelBackground = ThemeLabelBackground;
 
 /***/ }),
-/* 241 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43515,7 +43642,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(33);
+var _ServerTextStyle = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43622,7 +43749,7 @@ var ThemeLabelItem = exports.ThemeLabelItem = function () {
 _SuperMap.SuperMap.ThemeLabelItem = ThemeLabelItem;
 
 /***/ }),
-/* 242 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43639,9 +43766,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(33);
+var _ServerTextStyle = __webpack_require__(32);
 
-var _LabelMixedTextStyle = __webpack_require__(203);
+var _LabelMixedTextStyle = __webpack_require__(199);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43762,7 +43889,7 @@ var ThemeLabelText = exports.ThemeLabelText = function () {
 _SuperMap.SuperMap.ThemeLabelText = ThemeLabelText;
 
 /***/ }),
-/* 243 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43850,7 +43977,7 @@ var ThemeMemoryData = exports.ThemeMemoryData = function () {
 _SuperMap.SuperMap.ThemeMemoryData = ThemeMemoryData;
 
 /***/ }),
-/* 244 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43867,29 +43994,29 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(66);
+__webpack_require__(64);
+
+__webpack_require__(93);
+
+__webpack_require__(94);
+
+__webpack_require__(95);
+
+__webpack_require__(69);
 
 __webpack_require__(96);
 
 __webpack_require__(97);
 
-__webpack_require__(98);
+__webpack_require__(231);
 
-__webpack_require__(71);
+__webpack_require__(233);
 
-__webpack_require__(99);
+__webpack_require__(198);
 
-__webpack_require__(100);
+__webpack_require__(200);
 
-__webpack_require__(235);
-
-__webpack_require__(237);
-
-__webpack_require__(202);
-
-__webpack_require__(204);
-
-__webpack_require__(205);
+__webpack_require__(201);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43997,7 +44124,7 @@ var ThemeParameters = exports.ThemeParameters = function () {
 _SuperMap.SuperMap.ThemeParameters = ThemeParameters;
 
 /***/ }),
-/* 245 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44143,7 +44270,7 @@ var ThemeRangeItem = exports.ThemeRangeItem = function () {
 _SuperMap.SuperMap.ThemeRangeItem = ThemeRangeItem;
 
 /***/ }),
-/* 246 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44252,7 +44379,7 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
 _SuperMap.SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
 
 /***/ }),
-/* 247 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44394,7 +44521,7 @@ var TransferLine = exports.TransferLine = function () {
 _SuperMap.SuperMap.TransferLine = TransferLine;
 
 /***/ }),
-/* 248 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44411,7 +44538,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(247);
+__webpack_require__(243);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44483,7 +44610,7 @@ var TransferPathParameters = exports.TransferPathParameters = function () {
 _SuperMap.SuperMap.TransferPathParameters = TransferPathParameters;
 
 /***/ }),
-/* 249 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44639,7 +44766,7 @@ var TransferSolutionParameters = exports.TransferSolutionParameters = function (
 _SuperMap.SuperMap.TransferSolutionParameters = TransferSolutionParameters;
 
 /***/ }),
-/* 250 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44761,7 +44888,7 @@ var TransportationAnalystResultSetting = exports.TransportationAnalystResultSett
 _SuperMap.SuperMap.TransportationAnalystResultSetting = TransportationAnalystResultSetting;
 
 /***/ }),
-/* 251 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44780,9 +44907,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCLayer2 = __webpack_require__(102);
+var _UGCLayer2 = __webpack_require__(99);
 
-__webpack_require__(210);
+__webpack_require__(206);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44921,7 +45048,7 @@ var UGCMapLayer = exports.UGCMapLayer = function (_UGCLayer) {
 _SuperMap.SuperMap.UGCMapLayer = UGCMapLayer;
 
 /***/ }),
-/* 252 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45015,7 +45142,7 @@ var UpdateEdgeWeightParameters = exports.UpdateEdgeWeightParameters = function (
 _SuperMap.SuperMap.UpdateEdgeWeightParameters = UpdateEdgeWeightParameters;
 
 /***/ }),
-/* 253 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45107,7 +45234,7 @@ var UpdateTurnNodeWeightParameters = exports.UpdateTurnNodeWeightParameters = fu
 _SuperMap.SuperMap.UpdateTurnNodeWeightParameters = UpdateTurnNodeWeightParameters;
 
 /***/ }),
-/* 254 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45126,7 +45253,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCSubLayer2 = __webpack_require__(52);
+var _UGCSubLayer2 = __webpack_require__(51);
 
 var _ServerStyle = __webpack_require__(11);
 
@@ -45218,7 +45345,7 @@ var Vector = exports.Vector = function (_UGCSubLayer) {
 _SuperMap.SuperMap.Vector = Vector;
 
 /***/ }),
-/* 255 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45325,7 +45452,7 @@ var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
 _SuperMap.SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 
 /***/ }),
-/* 256 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45342,7 +45469,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _OnlineServiceBase2 = __webpack_require__(258);
+var _OnlineServiceBase2 = __webpack_require__(254);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -45467,7 +45594,7 @@ var OnlineData = exports.OnlineData = function (_OnlineServiceBase) {
 _SuperMap.SuperMap.OnlineData = OnlineData;
 
 /***/ }),
-/* 257 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45551,7 +45678,7 @@ var FilterField = exports.FilterField = _SuperMap.SuperMap.FilterField = {
 };
 
 /***/ }),
-/* 258 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45654,7 +45781,7 @@ var OnlineServiceBase = exports.OnlineServiceBase = function () {
 _SuperMap.SuperMap.OnlineServiceBase = OnlineServiceBase;
 
 /***/ }),
-/* 259 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45747,7 +45874,7 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
                  * XOffset - {number} 专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
                  * YOffset - {number} 专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
                  * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-                 * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+                 * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
                  * @returns {boolean} 初始化参数是否成功。
                  */
 
@@ -45837,7 +45964,7 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.RankSymbol = RankSymbol;
 
 /***/ }),
-/* 260 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45984,7 +46111,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Image = Image;
 
 /***/ }),
-/* 261 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46083,7 +46210,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Label = Label;
 
 /***/ }),
-/* 262 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46190,7 +46317,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Rectangle = Rectangle;
 
 /***/ }),
-/* 263 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46207,9 +46334,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Util = __webpack_require__(29);
 
-var _Eventful2 = __webpack_require__(53);
+var _Eventful2 = __webpack_require__(52);
 
-var _Clip = __webpack_require__(265);
+var _Clip = __webpack_require__(261);
 
 var _SUtil = __webpack_require__(12);
 
@@ -46946,7 +47073,7 @@ var Animator = exports.Animator = function () {
 }();
 
 /***/ }),
-/* 264 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46961,7 +47088,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Util = __webpack_require__(29);
 
-var _Curve = __webpack_require__(79);
+var _Curve = __webpack_require__(77);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -47344,7 +47471,7 @@ var Area = exports.Area = function () {
          * y - {Number} 纵坐标。
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形中。
+         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形中。
          */
 
     }, {
@@ -47368,7 +47495,7 @@ var Area = exports.Area = function () {
          * y - {Number} 纵坐标。
          *
          * Returns:
-         * {Boolean} 图形是否不包含鼠标位置, true表示坐标处在图形外。
+         * {Boolean} 图形是否不包含鼠标位置 true表示坐标处在图形外。
          */
 
     }, {
@@ -47391,7 +47518,7 @@ var Area = exports.Area = function () {
          * y - {Number}
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
+         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形内。
          */
 
     }, {
@@ -47437,7 +47564,7 @@ var Area = exports.Area = function () {
          * y - {Number}
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
+         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形内。
          */
 
     }, {
@@ -47471,7 +47598,7 @@ var Area = exports.Area = function () {
          * y - {Number}
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
+         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形内。
          */
 
     }, {
@@ -47505,7 +47632,7 @@ var Area = exports.Area = function () {
          * y - {Number}
          *
          * Returns:
-         * {Boolean} 图形是否包含鼠标位置, true表示坐标处在图形内。
+         * {Boolean} 图形是否包含鼠标位置 true表示坐标处在图形内。
          */
 
     }, {
@@ -47549,7 +47676,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsideBrokenLine
-         * 图形 BrokenLine 是否包含鼠标位置, true表示坐标处在图形内。
+         * 图形 BrokenLine 是否包含鼠标位置 true表示坐标处在图形内。
          */
 
     }, {
@@ -47572,7 +47699,7 @@ var Area = exports.Area = function () {
 
         /**
          * Method: isInsideRing
-         * 图形 Ring 是否包含鼠标位置, true表示坐标处在图形内。
+         * 图形 Ring 是否包含鼠标位置 true表示坐标处在图形内。
          */
 
     }, {
@@ -47584,7 +47711,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsideRect
-         * 图形 Rect 是否包含鼠标位置, true表示坐标处在图形内。
+         * 图形 Rect 是否包含鼠标位置 true表示坐标处在图形内。
          */
 
     }, {
@@ -47595,7 +47722,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsideCircle
-         * 图形 Circle 是否包含鼠标位置, true表示坐标处在图形内。
+         * 图形 Circle 是否包含鼠标位置 true表示坐标处在图形内。
          */
 
     }, {
@@ -47606,7 +47733,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsideSector
-         * 图形 Sector 是否包含鼠标位置, true表示坐标处在图形内。
+         * 图形 Sector 是否包含鼠标位置 true表示坐标处在图形内。
          */
 
     }, {
@@ -47617,7 +47744,7 @@ var Area = exports.Area = function () {
 
         /**
          * APIMethod: isInsidePolygon
-         * 图形 Polygon 是否包含鼠标位置, true表示坐标处在图形内。与 canvas 一样采用 non-zero winding rule
+         * 图形 Polygon 是否包含鼠标位置 true表示坐标处在图形内。与 canvas 一样采用 non-zero winding rule
          */
 
     }, {
@@ -48052,7 +48179,7 @@ var Area = exports.Area = function () {
 }();
 
 /***/ }),
-/* 265 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48065,7 +48192,7 @@ exports.Clip = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Easing = __webpack_require__(267);
+var _Easing = __webpack_require__(263);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -48207,7 +48334,7 @@ var Clip = exports.Clip = function () {
 }();
 
 /***/ }),
-/* 266 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48220,9 +48347,9 @@ exports.ComputeBoundingBox = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Curve = __webpack_require__(79);
+var _Curve = __webpack_require__(77);
 
-var _Vector = __webpack_require__(82);
+var _Vector = __webpack_require__(80);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -48296,7 +48423,7 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
 
         /**
          * APIMethod: cubeBezier
-         * 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒，写入`min`和`max`中。
+         * 从三阶贝塞尔曲线(p0 p1 p2 p3)中计算出最小包围盒，写入`min`和`max`中。
          *
          * 原：computeCubeBezierBoundingBox
          *
@@ -48342,7 +48469,7 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
 
         /**
          * APIMethod: quadraticBezier
-         * 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒，写入`min`和`max`中
+         * 从二阶贝塞尔曲线(p0 p1 p2)中计算出最小包围盒，写入`min`和`max`中
          *
          * 原：computeQuadraticBezierBoundingBox
          *
@@ -48455,7 +48582,7 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
 }();
 
 /***/ }),
-/* 267 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48945,7 +49072,7 @@ var Easing = exports.Easing = function () {
 }();
 
 /***/ }),
-/* 268 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49077,7 +49204,7 @@ var Env = exports.Env = function Env() {
 };
 
 /***/ }),
-/* 269 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49180,7 +49307,7 @@ var Event = exports.Event = function () {
 }();
 
 /***/ }),
-/* 270 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49199,9 +49326,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Eventful = __webpack_require__(53);
+var _Eventful = __webpack_require__(52);
 
-var _Transformable = __webpack_require__(81);
+var _Transformable = __webpack_require__(79);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -49530,7 +49657,7 @@ var Group = exports.Group = function (_SuperMap$mixin) {
 }(_SuperMap.SuperMap.mixin(_Eventful.Eventful, _Transformable.Transformable));
 
 /***/ }),
-/* 271 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49543,9 +49670,9 @@ exports.Handler = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Eventful2 = __webpack_require__(53);
+var _Eventful2 = __webpack_require__(52);
 
-var _Config = __webpack_require__(78);
+var _Config = __webpack_require__(76);
 
 var _SUtil = __webpack_require__(12);
 
@@ -50693,7 +50820,7 @@ var Handler = exports.Handler = function (_Eventful) {
 }(_Eventful2.Eventful);
 
 /***/ }),
-/* 272 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50774,7 +50901,7 @@ var Http = exports.Http = function () {
 }();
 
 /***/ }),
-/* 273 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50785,7 +50912,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Log = undefined;
 
-var _Config = __webpack_require__(78);
+var _Config = __webpack_require__(76);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -50831,7 +50958,7 @@ exports.Log = function Log() {
 };
 
 /***/ }),
-/* 274 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50946,7 +51073,7 @@ var Math = exports.Math = function () {
 }();
 
 /***/ }),
-/* 275 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51234,7 +51361,7 @@ var Matrix = exports.Matrix = function () {
 }();
 
 /***/ }),
-/* 276 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51247,15 +51374,15 @@ exports.PaintLayer = exports.Painter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Transformable2 = __webpack_require__(81);
+var _Transformable2 = __webpack_require__(79);
 
-var _SmicImage = __webpack_require__(107);
+var _SmicImage = __webpack_require__(104);
 
 var _Util = __webpack_require__(1);
 
 var _Util2 = __webpack_require__(29);
 
-var _Config = __webpack_require__(78);
+var _Config = __webpack_require__(76);
 
 var _SUtil = __webpack_require__(12);
 
@@ -52475,7 +52602,7 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
 }(_Transformable2.Transformable);
 
 /***/ }),
-/* 277 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52499,13 +52626,13 @@ var _Util = __webpack_require__(29);
 
 var _Util2 = __webpack_require__(1);
 
-var _Storage = __webpack_require__(280);
+var _Storage = __webpack_require__(276);
 
-var _Painter = __webpack_require__(276);
+var _Painter = __webpack_require__(272);
 
-var _Handler = __webpack_require__(271);
+var _Handler = __webpack_require__(267);
 
-var _Animation = __webpack_require__(263);
+var _Animation = __webpack_require__(259);
 
 var _SUtil = __webpack_require__(12);
 
@@ -52636,14 +52763,14 @@ var Render = exports.Render = function () {
          *
          * (code)
          * //添加组到根节点例子
-         * var render = new SuperMap.LevelRenderer.Render("Render",document.getElementById('lRendertest'));
+         * var render = new SuperMap.LevelRenderer.Render("Render"document.getElementById('lRendertest'));
          * render.clear();
          * var g = new SuperMap.LevelRenderer.Group();
          * g.addChild(new SuperMap.LevelRenderer.Shape.Circle({
          *     style: {
-         *         x: 100,
-         *         y: 100,
-         *         r: 20,
+         *         x: 100
+         *         y: 100
+         *         r: 20
          *         brushType: 'fill'
          *     }
          * }));
@@ -52896,15 +53023,15 @@ var Render = exports.Render = function () {
          * 动画。
          *
          * (code)
-         *     zr.animate(circle.id, 'style', false)
-         *         .when(1000, {x: 10} )
+         *     zr.animate(circle.id 'style' false)
+         *         .when(1000 {x: 10} )
          *         .done(function(){ // Animation done })
          *         .start()
          * (end)
          *
          * Parameters:
          * el - {Array{<SuperMap.LevelRenderer.Shape>/<SuperMap.LevelRenderer.Group>}} 动画对象。
-         * path - {String} 需要添加动画的属性获取路径，可以通过 a.b.c 来获取深层的属性。若传入对象为<SuperMap.LevelRenderer.Group>,path需为空字符串。
+         * path - {String} 需要添加动画的属性获取路径，可以通过 a.b.c 来获取深层的属性。若传入对象为<SuperMap.LevelRenderer.Group>path需为空字符串。
          * loop - {Function} 动画是否循环。
          *
          * Returns:
@@ -53231,7 +53358,7 @@ var Render = exports.Render = function () {
 }();
 
 /***/ }),
-/* 278 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53424,7 +53551,7 @@ var SmicCircle = exports.SmicCircle = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 279 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53665,7 +53792,7 @@ var SmicSector = exports.SmicSector = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 280 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53680,7 +53807,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Util = __webpack_require__(29);
 
-var _Group = __webpack_require__(270);
+var _Group = __webpack_require__(266);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -54254,7 +54381,7 @@ var Storage = exports.Storage = function () {
 }();
 
 /***/ }),
-/* 281 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54269,9 +54396,9 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-_leaflet2.default.Projection = {};
+_leaflet2["default"].Projection = {};
 
 /**
  * @private
@@ -54280,18 +54407,18 @@ _leaflet2.default.Projection = {};
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param bounds - {L.bounds} 坐标范围
  */
-var NonProjection = exports.NonProjection = _leaflet2.default.Class.extend({
+var NonProjection = exports.NonProjection = _leaflet2["default"].Class.extend({
 
     initialize: function initialize(bounds) {
         this.bounds = bounds;
     },
 
     project: function project(latlng) {
-        return new _leaflet2.default.Point(latlng.lng, latlng.lat);
+        return new _leaflet2["default"].Point(latlng.lng, latlng.lat);
     },
 
     unproject: function unproject(point) {
-        return new _leaflet2.default.LatLng(point.y, point.x);
+        return new _leaflet2["default"].LatLng(point.y, point.x);
     }
 });
 
@@ -54308,19 +54435,19 @@ var nonProjection = exports.nonProjection = function nonProjection(bounds) {
  *        bounds - {[L.bounds]{@linkdoc-leaflet/#bounds}|Array<number>} 范围<br>
  *        resolutions - {Array<number>} 分辨率
  */
-var NonEarthCRS = exports.NonEarthCRS = _leaflet2.default.Class.extend({
+var NonEarthCRS = exports.NonEarthCRS = _leaflet2["default"].Class.extend({
 
     /*
      * @member L.CRS.NonEarthCRS.prototype.includes -{Object}
      * @description 包含的坐标对象，默认为：L.CRS。
      */
-    includes: _leaflet2.default.CRS,
+    includes: _leaflet2["default"].CRS,
 
     initialize: function initialize(options) {
         if (options.origin) {
-            this.transformation = new _leaflet2.default.Transformation(1, -options.origin.x, -1, options.origin.y);
+            this.transformation = new _leaflet2["default"].Transformation(1, -options.origin.x, -1, options.origin.y);
         }
-        this.projection = _leaflet2.default.Projection.NonProjection(options.bounds);
+        this.projection = _leaflet2["default"].Projection.NonProjection(options.bounds);
         this.bounds = options.bounds;
         this.origin = options.origin;
         this.resolutions = options.resolutions;
@@ -54380,12 +54507,12 @@ var NonEarthCRS = exports.NonEarthCRS = _leaflet2.default.Class.extend({
 var nonEarthCRS = exports.nonEarthCRS = function nonEarthCRS(options) {
     return new NonEarthCRS(options);
 };
-_leaflet2.default.Projection.NonProjection = nonProjection;
+_leaflet2["default"].Projection.NonProjection = nonProjection;
 
-_leaflet2.default.CRS.NonEarthCRS = nonEarthCRS;
+_leaflet2["default"].CRS.NonEarthCRS = nonEarthCRS;
 
 /***/ }),
-/* 282 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54402,7 +54529,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @constant L.supermap.VectorTileFormat
@@ -54414,10 +54541,10 @@ var VectorTileFormat = exports.VectorTileFormat = {
   PBF: "PBF"
 };
 
-_leaflet2.default.supermap.VectorTileFormat = VectorTileFormat;
+_leaflet2["default"].supermap.VectorTileFormat = VectorTileFormat;
 
 /***/ }),
-/* 283 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54438,11 +54565,11 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-var _CartoDefaultStyle = __webpack_require__(446);
+var _CartoDefaultStyle = __webpack_require__(435);
 
-var _CartoStyleMap = __webpack_require__(447);
+var _CartoStyleMap = __webpack_require__(436);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -54574,11 +54701,11 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = function () {
             if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
                 icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
             }
-            return _leaflet2.default.icon({
+            return _leaflet2["default"].icon({
                 iconUrl: icon,
-                iconSize: _leaflet2.default.point(48, 43),
-                iconAnchor: _leaflet2.default.point(24, 43),
-                popupAnchor: _leaflet2.default.point(0, -43)
+                iconSize: _leaflet2["default"].point(48, 43),
+                iconAnchor: _leaflet2["default"].point(24, 43),
+                popupAnchor: _leaflet2["default"].point(0, -43)
             });
         }
 
@@ -54605,11 +54732,11 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = function () {
                     if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
                         pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
                     }
-                    return _leaflet2.default.icon({
+                    return _leaflet2["default"].icon({
                         iconUrl: pointStyle.externalGraphic,
-                        iconSize: _leaflet2.default.point(pointStyle.graphicWidth, pointStyle.graphicHeight),
-                        iconAnchor: _leaflet2.default.point(-pointStyle.graphicXOffset, -pointStyle.graphicYOffset),
-                        popupAnchor: _leaflet2.default.point(0, -pointStyle.graphicHeight)
+                        iconSize: _leaflet2["default"].point(pointStyle.graphicWidth, pointStyle.graphicHeight),
+                        iconAnchor: _leaflet2["default"].point(-pointStyle.graphicXOffset, -pointStyle.graphicYOffset),
+                        popupAnchor: _leaflet2["default"].point(0, -pointStyle.graphicHeight)
                     });
                 }
                 style.radius = pointStyle.pointRadius;
@@ -54886,10 +55013,10 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = function () {
     return CartoCSSToLeaflet;
 }();
 
-_leaflet2.default.supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;
+_leaflet2["default"].supermap.CartoCSSToLeaflet = CartoCSSToLeaflet;
 
 /***/ }),
-/* 284 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54906,7 +55033,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.ThemeLayer
@@ -54916,7 +55043,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param name - {string} 专题图层名称
  * @param options -{Object} 待设置得参数。
  */
-var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
+var ThemeLayer = exports.ThemeLayer = _leaflet2["default"].Layer.extend({
 
     options: {
         name: null,
@@ -54928,7 +55055,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
     },
 
     initialize: function initialize(name, options) {
-        _leaflet2.default.Util.setOptions(this, options);
+        _leaflet2["default"].Util.setOptions(this, options);
         this.options.name = name;
         this.features = [];
         this.TFEvents = options && options.TFEvents ? options.TFEvents : [];
@@ -54961,7 +55088,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
      */
     onRemove: function onRemove(map) {
         var me = this;
-        _leaflet2.default.DomUtil.remove(me.container);
+        _leaflet2["default"].DomUtil.remove(me.container);
         map.off("mousemove", me.mouseMoveHandler);
     },
 
@@ -54995,7 +55122,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
         me.addTFEvents();
         me.mouseMoveHandler = function (e) {
             var xy = e.layerPoint;
-            me.currentMousePosition = _leaflet2.default.point(xy.x + me.movingOffset[0], xy.y + me.movingOffset[1]);
+            me.currentMousePosition = _leaflet2["default"].point(xy.x + me.movingOffset[0], xy.y + me.movingOffset[1]);
         };
         map.on("mousemove", me.mouseMoveHandler);
 
@@ -55051,7 +55178,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
         if (features === me.features) {
             return me.removeAllFeatures();
         }
-        if (!_leaflet2.default.Util.isArray(features)) {
+        if (!_leaflet2["default"].Util.isArray(features)) {
             features = [features];
         }
 
@@ -55062,7 +55189,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
 
             //如果我们传入的feature在features数组中没有的话，则不进行删除，
             //并将其放入未删除的数组中。
-            var findex = _leaflet2.default.Util.indexOf(me.features, feature);
+            var findex = _leaflet2["default"].Util.indexOf(me.features, feature);
 
             if (findex === -1) {
                 featuresFailRemoved.push(feature);
@@ -55174,7 +55301,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
      */
     update: function update(bounds) {
         var mapOffset = this._map.containerPointToLayerPoint([0, 0]);
-        _leaflet2.default.DomUtil.setPosition(this.container, mapOffset);
+        _leaflet2["default"].DomUtil.setPosition(this.container, mapOffset);
 
         var me = this;
         //  var bounds = me._map.getBounds();
@@ -55193,7 +55320,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
         }
 
         if (me.currentMousePosition) {
-            me.currentMousePosition = _leaflet2.default.point(me.currentMousePosition.x - me.movingOffset[0], me.currentMousePosition.y - me.movingOffset[1]);
+            me.currentMousePosition = _leaflet2["default"].point(me.currentMousePosition.x - me.movingOffset[0], me.currentMousePosition.y - me.movingOffset[1]);
         }
         me.movingOffset = [0, 0];
         me._zoom = me._map.getZoom();
@@ -55246,7 +55373,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
         if (this.renderer) {
             this.renderer.on(event, callback);
         } else {
-            _leaflet2.default.Layer.prototype.on.call(this, event, callback);
+            _leaflet2["default"].Layer.prototype.on.call(this, event, callback);
         }
         return this;
     },
@@ -55264,7 +55391,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
         if (me.renderer) {
             me.renderer.un(event, callback);
         } else {
-            _leaflet2.default.Layer.prototype.off.call(this, event, callback);
+            _leaflet2["default"].Layer.prototype.off.call(this, event, callback);
         }
         return this;
     },
@@ -55293,13 +55420,13 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
             return coordinate;
         }
         var coor = coordinate;
-        if (_leaflet2.default.Util.isArray(coordinate)) {
-            coor = _leaflet2.default.point(coordinate[0], coordinate[1]);
-        } else if (!(coordinate instanceof _leaflet2.default.Point)) {
+        if (_leaflet2["default"].Util.isArray(coordinate)) {
+            coor = _leaflet2["default"].point(coordinate[0], coordinate[1]);
+        } else if (!(coordinate instanceof _leaflet2["default"].Point)) {
             if (coordinate instanceof _iclientCommon.GeometryPoint || coordinate instanceof _iclientCommon.GeoText) {
-                coor = _leaflet2.default.point(coordinate.x, coordinate.y);
+                coor = _leaflet2["default"].point(coordinate.x, coordinate.y);
             } else {
-                coor = _leaflet2.default.point(coordinate.lon, coordinate.lat);
+                coor = _leaflet2["default"].point(coordinate.lon, coordinate.lat);
             }
         }
         var point = this._map.latLngToContainerPoint(this._map.options.crs.unproject(coor));
@@ -55308,12 +55435,12 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
 
     _initContainer: function _initContainer() {
         var parentContainer = this.getPane();
-        var animated = this._map.options.zoomAnimation && _leaflet2.default.Browser.any3d;
+        var animated = this._map.options.zoomAnimation && _leaflet2["default"].Browser.any3d;
         var className = this.options.name || "themeLayer";
         className += ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide');
-        this.container = _leaflet2.default.DomUtil.create("div", className, parentContainer);
+        this.container = _leaflet2["default"].DomUtil.create("div", className, parentContainer);
 
-        var originProp = _leaflet2.default.DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
+        var originProp = _leaflet2["default"].DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
         this.container.style[originProp] = '50% 50%';
 
         this.container.style.position = "absolute";
@@ -55324,10 +55451,10 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
         var scale = this._map.getZoomScale(e.zoom),
             offset = this._map._getCenterOffset(e.center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
 
-        if (_leaflet2.default.DomUtil.setTransform) {
-            _leaflet2.default.DomUtil.setTransform(this.container, offset, scale);
+        if (_leaflet2["default"].DomUtil.setTransform) {
+            _leaflet2["default"].DomUtil.setTransform(this.container, offset, scale);
         } else {
-            this.container.style[_leaflet2.default.DomUtil.TRANSFORM] = _leaflet2.default.DomUtil.getTranslateString(offset) + ' scale(' + scale + ')';
+            this.container.style[_leaflet2["default"].DomUtil.TRANSFORM] = _leaflet2["default"].DomUtil.getTranslateString(offset) + ' scale(' + scale + ')';
         }
     },
 
@@ -55355,7 +55482,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
         //me.container.style.left = mapOffset[0] + 'px';
         //me.container.style.top = mapOffset[1] + 'px';
         var mapOffset = this._map.containerPointToLayerPoint([0, 0]);
-        _leaflet2.default.DomUtil.setPosition(this.container, mapOffset);
+        _leaflet2["default"].DomUtil.setPosition(this.container, mapOffset);
 
         if (parseFloat(me.container.width) !== parseFloat(size.x)) {
             me.container.width = size.x + 'px';
@@ -55377,7 +55504,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
 });
 
 /***/ }),
-/* 285 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55392,7 +55519,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.CanvasRenderer
@@ -55403,10 +55530,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param tileSize - {number}切片大小
  * @param options - {Object} 渲染器参数
  */
-var CanvasRenderer = exports.CanvasRenderer = _leaflet2.default.Canvas.extend({
+var CanvasRenderer = exports.CanvasRenderer = _leaflet2["default"].Canvas.extend({
 
     initialize: function initialize(tileCoord, tileSize, options) {
-        _leaflet2.default.Canvas.prototype.initialize.call(this, options);
+        _leaflet2["default"].Canvas.prototype.initialize.call(this, options);
         this._tileCoord = tileCoord;
         this._size = tileSize;
 
@@ -55446,7 +55573,7 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2.default.Canvas.extend({
         return this._tileCoord.scaleBy(this._size).subtract(this._map.getPixelOrigin());
     },
 
-    onAdd: _leaflet2.default.Util.falseFn,
+    onAdd: _leaflet2["default"].Util.falseFn,
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.addTo
@@ -55494,7 +55621,7 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2.default.Canvas.extend({
             }
         }
         if (clickedLayer) {
-            _leaflet2.default.DomEvent.stop(e);
+            _leaflet2["default"].DomEvent.stop(e);
             this._fireEvent([clickedLayer], e);
         }
     },
@@ -55517,13 +55644,13 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2.default.Canvas.extend({
             ctx = this._ctx,
             img = layer._getImage();
         if (options.iconSize && img.complete) {
-            var size = _leaflet2.default.point(options.iconSize),
+            var size = _leaflet2["default"].point(options.iconSize),
                 anchor = size && size.divideBy(2, true),
                 p = layer._point.subtract(anchor);
             ctx.drawImage(img, p.x, p.y, size.x, size.y);
         } else {
-            _leaflet2.default.DomEvent.on(img, 'load', function () {
-                var size = _leaflet2.default.point([img.width, img.height]),
+            _leaflet2["default"].DomEvent.on(img, 'load', function () {
+                var size = _leaflet2["default"].point([img.width, img.height]),
                     anchor = size && size.divideBy(2, true),
                     p = layer._point.subtract(anchor);
                 ctx.drawImage(img, p.x, p.y, size.x, size.y);
@@ -55535,7 +55662,7 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2.default.Canvas.extend({
 });
 
 /***/ }),
-/* 286 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55550,7 +55677,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.SVGRenderer
@@ -55561,10 +55688,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param tileSize - {number}切片大小
  * @param options - {Object} 渲染参数
  */
-var SVGRenderer = exports.SVGRenderer = _leaflet2.default.SVG.extend({
+var SVGRenderer = exports.SVGRenderer = _leaflet2["default"].SVG.extend({
 
     initialize: function initialize(tileCoord, tileSize, options) {
-        _leaflet2.default.SVG.prototype.initialize.call(this, options);
+        _leaflet2["default"].SVG.prototype.initialize.call(this, options);
         this._tileCoord = tileCoord;
         this._size = tileSize;
 
@@ -55592,7 +55719,7 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2.default.SVG.extend({
         return this._container;
     },
 
-    onAdd: _leaflet2.default.Util.falseFn,
+    onAdd: _leaflet2["default"].Util.falseFn,
 
     /**
      * @function L.supermap.SVGRenderer.prototype.addTo
@@ -55605,7 +55732,7 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2.default.SVG.extend({
             for (var i in this._layers) {
                 var layer = this._layers[i];
                 layer._path.style.pointerEvents = 'auto';
-                this._map._targets[_leaflet2.default.stamp(layer._path)] = layer;
+                this._map._targets[_leaflet2["default"].stamp(layer._path)] = layer;
             }
         }
     },
@@ -55620,28 +55747,28 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2.default.SVG.extend({
         if (this.options.interactive) {
             for (var i in this._layers) {
                 var layer = this._layers[i];
-                delete _map._targets[_leaflet2.default.stamp(layer._path)];
+                delete _map._targets[_leaflet2["default"].stamp(layer._path)];
             }
         }
         delete this._map;
     },
 
     _initContainer: function _initContainer() {
-        _leaflet2.default.SVG.prototype._initContainer.call(this);
+        _leaflet2["default"].SVG.prototype._initContainer.call(this);
         // var rect = L.SVG.create('rect');
     },
 
     _addPath: function _addPath(layer) {
         this._rootGroup.appendChild(layer._path);
-        this._layers[_leaflet2.default.stamp(layer)] = layer;
+        this._layers[_leaflet2["default"].stamp(layer)] = layer;
     },
 
     _updateIcon: function _updateIcon(layer) {
-        var path = layer._path = _leaflet2.default.SVG.create('image'),
+        var path = layer._path = _leaflet2["default"].SVG.create('image'),
             options = layer.options,
             iconUrl = options.iconUrl;
         if (options.iconSize) {
-            var size = _leaflet2.default.point(options.iconSize),
+            var size = _leaflet2["default"].point(options.iconSize),
                 anchor = size && size.divideBy(2, true),
                 p = layer._point.subtract(anchor);
             path.setAttribute('x', p.x);
@@ -55651,8 +55778,8 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2.default.SVG.extend({
         } else {
             var img = new Image();
             img.src = iconUrl;
-            _leaflet2.default.DomEvent.on(img, 'load', function () {
-                var size = _leaflet2.default.point([img.width, img.height]),
+            _leaflet2["default"].DomEvent.on(img, 'load', function () {
+                var size = _leaflet2["default"].point([img.width, img.height]),
                     anchor = size && size.divideBy(2, true),
                     p = layer._point.subtract(anchor);
                 path.setAttribute('x', p.x);
@@ -55666,7 +55793,7 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2.default.SVG.extend({
 });
 
 /***/ }),
-/* 287 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55681,7 +55808,7 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.PolyBase
@@ -55701,7 +55828,7 @@ var PolyBase = exports.PolyBase = {
             var part = [];
             for (var j = 0; j < ring.length; j++) {
                 coord = ring[j];
-                part.push(_leaflet2.default.point(coord).scaleBy(pxPerExtent));
+                part.push(_leaflet2["default"].point(coord).scaleBy(pxPerExtent));
             }
             this._parts.push(part);
         }
@@ -55717,7 +55844,7 @@ var PolyBase = exports.PolyBase = {
 };
 
 /***/ }),
-/* 288 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55734,13 +55861,13 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _Symbolizer = __webpack_require__(83);
+var _Symbolizer = __webpack_require__(81);
 
-var _CanvasRenderer = __webpack_require__(285);
+var _CanvasRenderer = __webpack_require__(281);
 
-var _SVGRenderer = __webpack_require__(286);
+var _SVGRenderer = __webpack_require__(282);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.TextSymbolizer
@@ -55750,7 +55877,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param feature - {L.feature} 要素
  * @param pxPerExtent - {number}文本符号大小
  */
-var TextSymbolizer = exports.TextSymbolizer = _leaflet2.default.Path.extend({
+var TextSymbolizer = exports.TextSymbolizer = _leaflet2["default"].Path.extend({
 
     /**
      * @member L.supermap.TextSymbolizer.prototype.includes
@@ -55799,9 +55926,9 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2.default.Path.extend({
             this._text = attributes && this.properties.textField ? attributes[this.properties.textField] || "" : "";
         }
         var options = this.options;
-        this._pxBounds = _leaflet2.default.bounds(this._point, this._point);
+        this._pxBounds = _leaflet2["default"].bounds(this._point, this._point);
         _Symbolizer.Symbolizer.prototype.render.apply(this, [renderer, style]);
-        this.options = _leaflet2.default.Util.extend(options, style);
+        this.options = _leaflet2["default"].Util.extend(options, style);
         this._updatePath();
     },
 
@@ -55809,11 +55936,11 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2.default.Path.extend({
         pxPerExtent = pxPerExtent || { x: 1, y: 1 };
         var coord = feat.geometry[0];
         if (_typeof(coord[0]) === 'object' && 'x' in coord[0]) {
-            this._point = _leaflet2.default.point(coord[0]).scaleBy(pxPerExtent);
-            this._empty = _leaflet2.default.Util.falseFn;
+            this._point = _leaflet2["default"].point(coord[0]).scaleBy(pxPerExtent);
+            this._empty = _leaflet2["default"].Util.falseFn;
         } else {
-            this._point = _leaflet2.default.point(coord).scaleBy(pxPerExtent);
-            this._empty = _leaflet2.default.Util.falseFn;
+            this._point = _leaflet2["default"].point(coord).scaleBy(pxPerExtent);
+            this._empty = _leaflet2["default"].Util.falseFn;
         }
     },
 
@@ -55839,7 +55966,7 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2.default.Path.extend({
     _updateBounds: function _updateBounds() {
         var w = this._renderer._getTextWidth(this);
         var p = [w / 2, w / 2];
-        this._pxBounds = _leaflet2.default.bounds(this._point.subtract(p), this._point.add(p));
+        this._pxBounds = _leaflet2["default"].bounds(this._point.subtract(p), this._point.add(p));
     },
 
     _updatePath: function _updatePath() {
@@ -55869,7 +55996,7 @@ _CanvasRenderer.CanvasRenderer.include({
             options = layer.options,
             offsetX = options.offsetX || 1,
             offsetY = options.offsetY || 1,
-            p = layer._point.subtract(_leaflet2.default.point(offsetX, offsetY));
+            p = layer._point.subtract(_leaflet2["default"].point(offsetX, offsetY));
         if (!options.fill) {
             return;
         }
@@ -55897,22 +56024,22 @@ _SVGRenderer.SVGRenderer.include({
         var path;
 
         if (TextSymbolizer && layer instanceof TextSymbolizer) {
-            path = layer._path = _leaflet2.default.SVG.create("text");
+            path = layer._path = _leaflet2["default"].SVG.create("text");
             path.textContent = layer._text;
         } else {
-            path = layer._path = _leaflet2.default.SVG.create("path");
+            path = layer._path = _leaflet2["default"].SVG.create("path");
         }
 
         if (layer.options.className) {
-            _leaflet2.default.DomUtil.addClass(path, layer.options.className);
+            _leaflet2["default"].DomUtil.addClass(path, layer.options.className);
         }
 
         if (layer.options.interactive) {
-            _leaflet2.default.DomUtil.addClass(path, 'leaflet-interactive');
+            _leaflet2["default"].DomUtil.addClass(path, 'leaflet-interactive');
         }
 
         this._updateStyle(layer);
-        this._layers[_leaflet2.default.stamp(layer)] = layer;
+        this._layers[_leaflet2["default"].stamp(layer)] = layer;
     },
 
     _updateText: function _updateText(layer) {
@@ -55920,7 +56047,7 @@ _SVGRenderer.SVGRenderer.include({
             options = layer.options,
             offsetX = options.offsetX || 1,
             offsetY = options.offsetY || 1,
-            p = layer._point.subtract(_leaflet2.default.point(offsetX, offsetY));
+            p = layer._point.subtract(_leaflet2["default"].point(offsetX, offsetY));
         path.setAttribute('x', p.x);
         path.setAttribute('y', p.y);
         options.rotation = options.rotation || 0;
@@ -55950,198 +56077,7 @@ _SVGRenderer.SVGRenderer.include({
 });
 
 /***/ }),
-/* 289 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var root = __webpack_require__(30);
-
-/** Built-in value references. */
-var _Symbol = root.Symbol;
-
-module.exports = _Symbol;
-
-/***/ }),
-/* 290 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = (typeof global === 'undefined' ? 'undefined' : _typeof(global)) == 'object' && global && global.Object === Object && global;
-
-module.exports = freeGlobal;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(296)))
-
-/***/ }),
-/* 291 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/** Used for built-in method references. */
-var funcProto = Function.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var funcToString = funcProto.toString;
-
-/**
- * Converts `func` to its source code.
- *
- * @private
- * @param {Function} func The function to convert.
- * @returns {string} Returns the source code.
- */
-function toSource(func) {
-  if (func != null) {
-    try {
-      return funcToString.call(func);
-    } catch (e) {}
-    try {
-      return func + '';
-    } catch (e) {}
-  }
-  return '';
-}
-
-module.exports = toSource;
-
-/***/ }),
-/* 292 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var baseGetTag = __webpack_require__(85),
-    isObject = __webpack_require__(294);
-
-/** `Object#toString` result references. */
-var asyncTag = '[object AsyncFunction]',
-    funcTag = '[object Function]',
-    genTag = '[object GeneratorFunction]',
-    proxyTag = '[object Proxy]';
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a function, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-    if (!isObject(value)) {
-        return false;
-    }
-    // The use of `Object#toString` avoids issues with the `typeof` operator
-    // in Safari 9 which returns 'object' for typed arrays and other constructors.
-    var tag = baseGetTag(value);
-    return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
-}
-
-module.exports = isFunction;
-
-/***/ }),
-/* 293 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/** Used as references for various `Number` constants. */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This method is loosely based on
- * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- * @example
- *
- * _.isLength(3);
- * // => true
- *
- * _.isLength(Number.MIN_VALUE);
- * // => false
- *
- * _.isLength(Infinity);
- * // => false
- *
- * _.isLength('3');
- * // => false
- */
-function isLength(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-module.exports = isLength;
-
-/***/ }),
-/* 294 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
-  return value != null && (type == 'object' || type == 'function');
-}
-
-module.exports = isObject;
-
-/***/ }),
-/* 295 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56863,7 +56799,7 @@ function getMinNorthing(zoneLetter) {
 }
 
 /***/ }),
-/* 296 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56893,43 +56829,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 297 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function () {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function get() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function get() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-/***/ }),
-/* 298 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 299 */
+/* 287 */
 /***/ (function(module, exports) {
 
 module.exports = function(phi, sphi, cphi, en) {
@@ -56939,7 +56839,7 @@ module.exports = function(phi, sphi, cphi, en) {
 };
 
 /***/ }),
-/* 300 */
+/* 288 */
 /***/ (function(module, exports) {
 
 module.exports = function (array){
@@ -56957,12 +56857,12 @@ module.exports = function (array){
 };
 
 /***/ }),
-/* 301 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var globals = __webpack_require__(517);
-var parseProj = __webpack_require__(303);
-var wkt = __webpack_require__(306);
+var globals = __webpack_require__(469);
+var parseProj = __webpack_require__(291);
+var wkt = __webpack_require__(294);
 
 function defs(name) {
   /*global console*/
@@ -57018,29 +56918,29 @@ module.exports = defs;
 
 
 /***/ }),
-/* 302 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var proj4 = __webpack_require__(513);
+var proj4 = __webpack_require__(465);
 proj4.defaultDatum = 'WGS84'; //default datum
-proj4.Proj = __webpack_require__(114);
+proj4.Proj = __webpack_require__(110);
 proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(503);
-proj4.toPoint = __webpack_require__(300);
-proj4.defs = __webpack_require__(301);
-proj4.transform = __webpack_require__(305);
-proj4.mgrs = __webpack_require__(295);
-proj4.version = __webpack_require__(545).version;
-__webpack_require__(518)(proj4);
+proj4.Point = __webpack_require__(455);
+proj4.toPoint = __webpack_require__(288);
+proj4.defs = __webpack_require__(289);
+proj4.transform = __webpack_require__(293);
+proj4.mgrs = __webpack_require__(285);
+proj4.version = __webpack_require__(499).version;
+__webpack_require__(470)(proj4);
 module.exports = proj4;
 
 /***/ }),
-/* 303 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(511);
-var units = __webpack_require__(512);
+var PrimeMeridian = __webpack_require__(463);
+var units = __webpack_require__(464);
 
 module.exports = function(defData) {
   var self = {};
@@ -57173,19 +57073,19 @@ module.exports = function(defData) {
 
 
 /***/ }),
-/* 304 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var e0fn = __webpack_require__(56);
-var e1fn = __webpack_require__(57);
-var e2fn = __webpack_require__(58);
-var e3fn = __webpack_require__(59);
-var mlfn = __webpack_require__(60);
+var e0fn = __webpack_require__(54);
+var e1fn = __webpack_require__(55);
+var e2fn = __webpack_require__(56);
+var e3fn = __webpack_require__(57);
+var mlfn = __webpack_require__(58);
 var adjust_lon = __webpack_require__(7);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var sign = __webpack_require__(61);
-var asinz = __webpack_require__(44);
+var sign = __webpack_require__(59);
+var asinz = __webpack_require__(43);
 
 exports.init = function() {
   this.e0 = e0fn(this.es);
@@ -57314,17 +57214,17 @@ exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 
 /***/ }),
-/* 305 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(515);
-var adjust_axis = __webpack_require__(504);
-var proj = __webpack_require__(114);
-var toPoint = __webpack_require__(300);
+var datum_transform = __webpack_require__(467);
+var adjust_axis = __webpack_require__(456);
+var proj = __webpack_require__(110);
+var toPoint = __webpack_require__(288);
 module.exports = function transform(source, dest, point) {
   var wgs84;
   if (Array.isArray(point)) {
@@ -57391,11 +57291,11 @@ module.exports = function transform(source, dest, point) {
 };
 
 /***/ }),
-/* 306 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var extend = __webpack_require__(118);
+var extend = __webpack_require__(114);
 
 function mapit(obj, key, v) {
   obj[key] = v.map(function(aa) {
@@ -57620,13 +57520,19 @@ module.exports = function(wkt, self) {
 
 
 /***/ }),
-/* 307 */
+/* 295 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 296 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0ZC1lM2I5MzJlMGE4Y2QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5q1HM0AAAF/ElEQVR42tSabYhUVRjHZ7W01C1uaCRW4F3oi9SXCUnwQ9gsGUFvOEtQH1bLu5VS9sbYh5KicjYt29qiGQwVg2xWWKgocob91AvC+CWsoJqB3qHMSdTMpZyeU/+Df07n3pk7997Z6cBv99z7nHvOvf/z/pxJNZvNVI/jCKXmv6EquAmVkxPSlvtp2GItr0/96fFQForChJAWDiVYTkMYMu4XBFcYjLOwWS3sNwmn8NGzZ0h4Flv/zwIdchAnh/slCGmmKUNIBzYPaXOUr0vPuEjD71JAPh7l61embzinhV3V8nnCGmGT8LwlzSL8/yUh4Tfjo9T/CgnCIYNKycA2Qq21AcHU/VHE80Idoo3Qs0W6p0UtUnkZvEMDeVcCyqxEafF7hL8Qf0oYsIj+lfC9cH1CwhchWAGCtZO+AooQOkdC1Km1VtCb63StW73uFSzgKFUkNwBbmZGGmqowhvg8ZNpH9oXChcIcYRdeNomgxLkaH+S1SGubAxyIpFv+Zp+0DYjrAS00j/dem2VGEl6FJ4Qa4quEu8j2hTCJ+GJhe4JjfQMf6JCYPPbysMPxBlp0BUKOogEF9Rg9/heNvNKYfM0KsZUZaYxX4STGrzJa+zbhPeFH2DcK10KItcI+pI0rVElwXl1ULaKnIJhDw0oRQpTQc1zcbwRU8ATy4DR6yMlTzwkqMziEWHvubJ4Nk4ZtHdnqwvwY17xq3Z4FjrG+z2Kdrdf2ZSGD+xlLPh6t1R0jP9fI22ZzKI92yvQl7EbmBxI4S7Y+vIAOL87QZqsc5uNnssxZIcfYjXT9snCR7jjobidp+FkxA2v+Cq1QervMDmp4P7Xs3YZtE9kOC3P/By6JGaETl8ElwueYTNTDq4UDsKnd7YfCNbT239LF1udS72xYJt1UWxNfN4IIP4bWuTpEja01JtMFZFsm/AHbtHBlDE6yasA4moYTrUbvdBTXHqUrAH4uSadbyzF+vbBM2IsNkS3MNa5305JxqfA02T4TnkX8XOH1mPw8ruVejpxbI9hZD2Cz1U7LdrrUvjP/WfZinNZhr6V27hP+FPZh9aLvLxVO4DllX0G2OcKnlO/DCblxaz6uXBtmi+8mBaP3/SP8IuEIiTRoPPQm2TaEmEyXo0JU+F0YiPFD0hhOsiE/vqeEVwyTgF8L51OilcIZ2I4Ll5NttvAJPfukUeB2sk0ZPSbKIUUJpCII7+DasWy08uhNNazT0wGHI7mAtB7KqMKm38HhDdAUibTVKGicbB8YAqrJ9DRsp43JdB4qUof1HQrPE6XTQWu3Ce/inVzjXhXpMiTwUYugNVQ+p80jrUsV5EH0POKeuXO9QjhFq5GryNYvfEMCDhsftYVsB9ETtG0V9ZjfhCURhbcJFpfwVZ9jvhxsLHwTYtp2svlWQw3vXL8UnqHVSIG8l8ex+tHhBXgjddgqHEZ8ufAA2aaEnYgrF/KrPXrEmMUqZ9THLW06xhoBaVueQpkug+ewOUphE3Qv2Q5gGamXYa+QbVq4O+DQ5FHyZqrjxNt7UHh9uuRa0F7HjCF8o9PCTOGnscM7g2u1Hl9C9oeEnxC/1ajZg8JLiM9Hj9GHJseMShwL2DO0G5yEWn3Zh1QUods5CPkIoqlwAZxhXMsb6HrcEPBxchhdJ6wj29vCW4hfLOzo8J3rltYX50nXQAATSf/K4DEaGlTLvplsk/QCpoD60EQ7gLYZc8H9wq+I3yncEOEcNhuz6HWf3XEiwU/4Y8YEqVp2P10rt+8REvBGw026i4aDcbL9jF8r8Blmf4fCOzhViiscskygXRdehf3CO4hfigmTBXyQrl8TFtD1IzQX3CbcQrY3hPcRv4z8OmHPXwchVNln2MmE7BX6VwIFi/he6uxvb6JM3m0fdqvx/ATidxg2JeC7VDErAw5NzGfvwRJVheEIQ8Mg/pdwIM+UOmi9Q8ivCsrIy0tF+wVbEcLrd3Pb2XisEb4Tdlhsi4WP4RBbaLGrHfC3PrvMIezy9rTpGm5lz9LOMG15xvFxD/j5gjzjjDbMOzk+9zzt3v5bgAEAibzFeFHVgYkAAAAASUVORK5CYII="
 
 /***/ }),
-/* 308 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57643,11 +57549,11 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-__webpack_require__(502);
+__webpack_require__(498);
 
-var _MapService = __webpack_require__(136);
+var _MapService = __webpack_require__(132);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.control.changeTileVersion
@@ -57671,7 +57577,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        orientation - {string} 方向horizontal|vertical</br>
  *        switch - {boolean} 是否显示上/下一个版本切换控件
  */
-var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.extend({
+var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control.extend({
 
     options: {
         //绑定的底图图层
@@ -57693,7 +57599,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
         //方向horizontal|vertical
         orientation: 'horizontal',
         //是否显示上/下一个版本切换控件
-        switch: true
+        "switch": true
     },
 
     /**
@@ -57718,7 +57624,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
      * @param version - {Object} 版本信息
      */
     setContent: function setContent(version) {
-        var content = _leaflet2.default.Util.extend({}, version);
+        var content = _leaflet2["default"].Util.extend({}, version);
         this.setVersionName(content.desc).setToolTip(content.desc);
     },
 
@@ -57876,34 +57782,34 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
 
     _initLayout: function _initLayout() {
         var className = 'leaflet-control-ctv';
-        this._container = _leaflet2.default.DomUtil.create('div', className + ' ' + className + '-' + this.options.orientation);
+        this._container = _leaflet2["default"].DomUtil.create('div', className + ' ' + className + '-' + this.options.orientation);
         //正常情况下显示btn
-        this._sliderBtn = _leaflet2.default.DomUtil.create('a', className + '-toggle', this._container);
+        this._sliderBtn = _leaflet2["default"].DomUtil.create('a', className + '-toggle', this._container);
         this._sliderBtn.setAttribute("title", this.options.title);
         this._sliderBtn.innerHTML = this.options.ico;
 
         //滑块拖动时值显示区域
-        this._sliderValue = _leaflet2.default.DomUtil.create('p', className + '-value', this._container);
+        this._sliderValue = _leaflet2["default"].DomUtil.create('p', className + '-value', this._container);
         this._sliderValue.innerHTML = this.options.ico;
 
         var sliderClassName = "leaflet-ctv-slider";
-        this._sliderContent = _leaflet2.default.DomUtil.create('div', sliderClassName + "-main" + "  tooltip", this._container);
+        this._sliderContent = _leaflet2["default"].DomUtil.create('div', sliderClassName + "-main" + "  tooltip", this._container);
 
         //tooltip提示框
-        this.tooltip = _leaflet2.default.DomUtil.create("span", "tooltip-text" + "  " + "tooltip-" + this.options.tooltip, this._sliderContent);
+        this.tooltip = _leaflet2["default"].DomUtil.create("span", "tooltip-text" + "  " + "tooltip-" + this.options.tooltip, this._sliderContent);
         this.tooltip.innerHTML = this.options.ico;
 
         //加控件
-        if (this.options.switch) {
-            this._next = _leaflet2.default.DomUtil.create('a', sliderClassName + "-incdec" + " " + sliderClassName + '-next', this._sliderContent);
+        if (this.options["switch"]) {
+            this._next = _leaflet2["default"].DomUtil.create('a', sliderClassName + "-incdec" + " " + sliderClassName + '-next', this._sliderContent);
             this._next.innerHTML = this.options.nextText;
-            _leaflet2.default.DomEvent.on(this._next, 'click', this.nextTilesVersion, this);
-            _leaflet2.default.DomUtil.addClass(this._container, className + '-incdec');
+            _leaflet2["default"].DomEvent.on(this._next, 'click', this.nextTilesVersion, this);
+            _leaflet2["default"].DomUtil.addClass(this._container, className + '-incdec');
         }
 
         //滑块
-        this._sliderContainer = _leaflet2.default.DomUtil.create('div', sliderClassName + '-container', this._sliderContent);
-        this.slider = _leaflet2.default.DomUtil.create('input', sliderClassName, this._sliderContainer);
+        this._sliderContainer = _leaflet2["default"].DomUtil.create('div', sliderClassName + '-container', this._sliderContent);
+        this.slider = _leaflet2["default"].DomUtil.create('input', sliderClassName, this._sliderContainer);
 
         this.slider.setAttribute("title", this.options.title);
         this.slider.setAttribute("id", "slider");
@@ -57919,16 +57825,16 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
         }
         this.firstLoad = true;
         if ('oninput' in this.slider || 'onchange' in this.slider) {
-            _leaflet2.default.DomEvent.on(this.slider, "change", this._tilesVersion, this);
+            _leaflet2["default"].DomEvent.on(this.slider, "change", this._tilesVersion, this);
         } else {
             this.slider.onpropertychange = this._tilesVersion;
         }
 
         //减控件
-        if (this.options.switch) {
-            this._last = _leaflet2.default.DomUtil.create('a', sliderClassName + "-incdec" + " " + sliderClassName + '-last', this._sliderContent);
+        if (this.options["switch"]) {
+            this._last = _leaflet2["default"].DomUtil.create('a', sliderClassName + "-incdec" + " " + sliderClassName + '-last', this._sliderContent);
             this._last.innerHTML = this.options.lastText;
-            _leaflet2.default.DomEvent.on(this._last, 'click', this.lastTilesVersion, this);
+            _leaflet2["default"].DomEvent.on(this._last, 'click', this.lastTilesVersion, this);
         }
 
         if (window.matchMedia("screen and (-webkit-min-device-pixel-ratio:0)").matches && this.options.orientation == 'vertical') {
@@ -57940,17 +57846,17 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
             this._sliderContainer.style.width = 150 + 'px';
         }
 
-        _leaflet2.default.DomEvent.disableClickPropagation(this._container);
+        _leaflet2["default"].DomEvent.disableClickPropagation(this._container);
 
         if (this.options.collapsed) {
-            if (!_leaflet2.default.Browser.android) {
-                _leaflet2.default.DomEvent.on(this._container, 'mouseenter', this._expand, this).on(this._container, 'mouseleave', this._collapse, this);
+            if (!_leaflet2["default"].Browser.android) {
+                _leaflet2["default"].DomEvent.on(this._container, 'mouseenter', this._expand, this).on(this._container, 'mouseleave', this._collapse, this);
             }
 
-            if (_leaflet2.default.Browser.touch) {
-                _leaflet2.default.DomEvent.on(this._sliderBtn, 'click', _leaflet2.default.DomEvent.stop).on(this._sliderBtn, 'click', this._expand, this);
+            if (_leaflet2["default"].Browser.touch) {
+                _leaflet2["default"].DomEvent.on(this._sliderBtn, 'click', _leaflet2["default"].DomEvent.stop).on(this._sliderBtn, 'click', this._expand, this);
             } else {
-                _leaflet2.default.DomEvent.on(this._sliderBtn, 'focus', this._expand, this);
+                _leaflet2["default"].DomEvent.on(this._sliderBtn, 'focus', this._expand, this);
             }
         } else {
             this._expand();
@@ -57959,11 +57865,11 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
     },
 
     _expand: function _expand() {
-        _leaflet2.default.DomUtil.addClass(this._container, 'leaflet-control-ctv-expanded');
+        _leaflet2["default"].DomUtil.addClass(this._container, 'leaflet-control-ctv-expanded');
     },
 
     _collapse: function _collapse() {
-        _leaflet2.default.DomUtil.removeClass(this._container, 'leaflet-control-ctv-expanded');
+        _leaflet2["default"].DomUtil.removeClass(this._container, 'leaflet-control-ctv-expanded');
     },
 
     _tilesVersion: function _tilesVersion() {
@@ -57973,11 +57879,11 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
 
 });
 
-_leaflet2.default.Map.mergeOptions({
+_leaflet2["default"].Map.mergeOptions({
     changeTileVersionControl: false
 });
 
-_leaflet2.default.Map.addInitHook(function () {
+_leaflet2["default"].Map.addInitHook(function () {
     if (this.options.changeTileVersionControl) {
         this.changeTileVersionControl = new ChangeTileVersion();
         this.addControl(this.changeTileVersionControl);
@@ -57988,10 +57894,10 @@ var changeTileVersion = exports.changeTileVersion = function changeTileVersion(o
     return new ChangeTileVersion(options);
 };
 
-_leaflet2.default.supermap.control.changeTileVersion = changeTileVersion;
+_leaflet2["default"].supermap.control.changeTileVersion = changeTileVersion;
 
 /***/ }),
-/* 309 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58008,11 +57914,11 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _iClient = __webpack_require__(307);
+var _iClient = __webpack_require__(296);
 
 var _iClient2 = _interopRequireDefault(_iClient);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.control.logo
@@ -58030,7 +57936,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        link - {string} 跳转链接</br>
  *        alt - {string} logo图片失效时显示文本
  */
-var Logo = exports.Logo = _leaflet2.default.Control.extend({
+var Logo = exports.Logo = _leaflet2["default"].Control.extend({
 
     options: {
         position: 'bottomright',
@@ -58054,13 +57960,13 @@ var Logo = exports.Logo = _leaflet2.default.Control.extend({
      * @return {div} 返回创建logo的div
      */
     onAdd: function onAdd() {
-        var div = _leaflet2.default.DomUtil.create('div', 'iclient-leaflet-logo');
+        var div = _leaflet2["default"].DomUtil.create('div', 'iclient-leaflet-logo');
         div.style.marginTop = 0;
         div.style.marginBottom = 0;
         div.style.marginLeft = 0;
         div.style.marginRight = 0;
 
-        var imgSrc = _iClient2.default;
+        var imgSrc = _iClient2["default"];
         if (this.options.imageUrl) {
             imgSrc = this.options.imageUrl;
         }
@@ -58083,15 +57989,15 @@ var Logo = exports.Logo = _leaflet2.default.Control.extend({
     }
 });
 //map默认开启logoControl
-_leaflet2.default.Map.mergeOptions({
+_leaflet2["default"].Map.mergeOptions({
     logoControl: true
 });
 //map默认开启logoControl
-_leaflet2.default.Map.addInitHook(function () {
+_leaflet2["default"].Map.addInitHook(function () {
     if (!this._logoAdded && this.options.logoControl) {
         if (this.options.logoControl === true) {
             this.logoControl = new Logo();
-        } else if (this.options.logoControl instanceof _leaflet2.default.Control) {
+        } else if (this.options.logoControl instanceof _leaflet2["default"].Control) {
             this.logoControl = this.options.logoControl;
         }
         if (this.logoControl) {
@@ -58104,10 +58010,10 @@ var logo = exports.logo = function logo(options) {
     return new Logo(options);
 };
 
-_leaflet2.default.supermap.control.logo = logo;
+_leaflet2["default"].supermap.control.logo = logo;
 
 /***/ }),
-/* 310 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58126,7 +58032,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.imageMapLayer
@@ -58149,7 +58055,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。
  */
-var ImageMapLayer = exports.ImageMapLayer = _leaflet2.default.TileLayer.extend({
+var ImageMapLayer = exports.ImageMapLayer = _leaflet2["default"].TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
@@ -58176,9 +58082,9 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2.default.TileLayer.extend({
 
     initialize: function initialize(url, options) {
         this.url = this._url = url;
-        _leaflet2.default.TileLayer.prototype.initialize.apply(this, arguments);
-        _leaflet2.default.setOptions(this, options);
-        _leaflet2.default.stamp(this);
+        _leaflet2["default"].TileLayer.prototype.initialize.apply(this, arguments);
+        _leaflet2["default"].setOptions(this, options);
+        _leaflet2["default"].stamp(this);
     },
 
     /**
@@ -58190,7 +58096,7 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2.default.TileLayer.extend({
     onAdd: function onAdd(map) {
         this._crs = this.options.crs || map.options.crs;
         this._initLayerUrl();
-        _leaflet2.default.TileLayer.prototype.onAdd.call(this, map);
+        _leaflet2["default"].TileLayer.prototype.onAdd.call(this, map);
     },
 
     /**
@@ -58222,8 +58128,8 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2.default.TileLayer.extend({
             params = [];
 
         var tileSize = this.options.tileSize;
-        if (!(tileSize instanceof _leaflet2.default.Point)) {
-            tileSize = _leaflet2.default.point(tileSize, tileSize);
+        if (!(tileSize instanceof _leaflet2["default"].Point)) {
+            tileSize = _leaflet2["default"].point(tileSize, tileSize);
         }
         params.push("width=" + tileSize.x);
         params.push("height=" + tileSize.y);
@@ -58245,8 +58151,8 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet2.default.TileLayer.extend({
             params.push("layersID=" + options.layersID);
         }
 
-        if (options.clipRegionEnabled && options.clipRegion instanceof _leaflet2.default.Path) {
-            options.clipRegion = _leaflet2.default.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
+        if (options.clipRegionEnabled && options.clipRegion instanceof _leaflet2["default"].Path) {
+            options.clipRegion = _leaflet2["default"].Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
             options.clipRegion = _iclientCommon.CommonUtil.toJSON(_iclientCommon.ServerGeometry.fromGeometry(options.clipRegion));
             params.push("clipRegionEnabled=" + options.clipRegionEnabled);
             params.push("clipRegion=" + JSON.stringify(options.clipRegion));
@@ -58303,10 +58209,10 @@ var imageMapLayer = exports.imageMapLayer = function imageMapLayer(url, options)
     return new ImageMapLayer(url, options);
 };
 
-_leaflet2.default.supermap.imageMapLayer = imageMapLayer;
+_leaflet2["default"].supermap.imageMapLayer = imageMapLayer;
 
 /***/ }),
-/* 311 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58321,11 +58227,11 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _jsonsql = __webpack_require__(458);
+var _jsonsql = __webpack_require__(448);
 
 var _jsonsql2 = _interopRequireDefault(_jsonsql);
 
-var _proj = __webpack_require__(302);
+var _proj = __webpack_require__(290);
 
 var _proj2 = _interopRequireDefault(_proj);
 
@@ -58333,37 +58239,37 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-var _CartoCSSToLeaflet = __webpack_require__(283);
+var _CartoCSSToLeaflet = __webpack_require__(279);
 
-var _NonEarthCRS = __webpack_require__(281);
+var _NonEarthCRS = __webpack_require__(277);
 
-var _Graphic = __webpack_require__(133);
+var _Graphic = __webpack_require__(129);
 
-var _BaiduTileLayer = __webpack_require__(124);
+var _BaiduTileLayer = __webpack_require__(120);
 
-var _TileLayer = __webpack_require__(88);
+var _TileLayer = __webpack_require__(85);
 
-var _CloudTileLayer = __webpack_require__(125);
+var _CloudTileLayer = __webpack_require__(121);
 
-var _TiledMapLayer = __webpack_require__(127);
+var _TiledMapLayer = __webpack_require__(123);
 
-var _UniqueThemeLayer = __webpack_require__(132);
+var _UniqueThemeLayer = __webpack_require__(128);
 
-var _RangeThemeLayer = __webpack_require__(130);
+var _RangeThemeLayer = __webpack_require__(126);
 
-var _LabelThemeLayer = __webpack_require__(129);
+var _LabelThemeLayer = __webpack_require__(125);
 
-var _FeatureService = __webpack_require__(135);
+var _FeatureService = __webpack_require__(131);
 
-var _ThemeFeature = __webpack_require__(112);
+var _ThemeFeature = __webpack_require__(109);
 
-var _UnicodeMarker = __webpack_require__(131);
+var _UnicodeMarker = __webpack_require__(127);
 
-var _TiandituTileLayer = __webpack_require__(126);
+var _TiandituTileLayer = __webpack_require__(122);
 
-__webpack_require__(298);
+__webpack_require__(295);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.webmap
@@ -58379,7 +58285,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        credentialKey - {string} 证书密钥。<br>
  *        attribution - {string} 版权信息。
  */
-var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
+var WebMap = exports.WebMap = _leaflet2["default"].LayerGroup.extend({
 
     options: {
         map: 'map',
@@ -58404,7 +58310,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
 
     initialize: function initialize(id, options) {
         this._layers = {};
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         this.id = id;
         this.load();
         this.cartoCSSToLeaflet = new _CartoCSSToLeaflet.CartoCSSToLeaflet();
@@ -58463,7 +58369,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
      * @param layersJson - {JSON} 图层的json信息
      */
     createLayersByJson: function createLayersByJson(layersJson) {
-        if (!_leaflet2.default.Util.isArray(layersJson)) {
+        if (!_leaflet2["default"].Util.isArray(layersJson)) {
             return;
         }
         if (layersJson.length === 0) {
@@ -58517,7 +58423,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
         }
 
         if (epsgCode === 910112 || epsgCode === 910102) {
-            return _leaflet2.default.CRS.BaiduCRS;
+            return _leaflet2["default"].CRS.BaiduCRS;
         }
         if (epsgCode === 910111) {
             epsgCode = 3857;
@@ -58527,7 +58433,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
             epsgCode = 4326;
             //todo 火星
         }
-        return _leaflet2.default.Proj.CRS("EPSG:" + epsgCode, {
+        return _leaflet2["default"].Proj.CRS("EPSG:" + epsgCode, {
             origin: origin,
             resolutions: resolutions,
             bounds: bounds
@@ -58541,15 +58447,15 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
      * @param options - {Object} 创建地图所需参数
      */
     createMap: function createMap(options) {
-        var crs = options.crs || _leaflet2.default.CRS.EPSG3857;
-        var bounds = _leaflet2.default.latLngBounds(crs.unproject(options.bounds.min), crs.unproject(options.bounds.max));
-        this._map = _leaflet2.default.map(this.options.map, {
+        var crs = options.crs || _leaflet2["default"].CRS.EPSG3857;
+        var bounds = _leaflet2["default"].latLngBounds(crs.unproject(options.bounds.min), crs.unproject(options.bounds.max));
+        this._map = _leaflet2["default"].map(this.options.map, {
             center: bounds.getCenter(),
             maxZoom: options.maxZoom || 22,
             minZoom: options.minZoom || 0,
             zoom: options.zoom || 0,
             crs: crs,
-            renderer: _leaflet2.default.canvas()
+            renderer: _leaflet2["default"].canvas()
         });
         if (crs instanceof _NonEarthCRS.NonEarthCRS) {
             this._map.setZoom(options.zoom ? options.zoom + 2 : 2, { maxZoom: options.maxZoom || 22 });
@@ -58571,7 +58477,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
     getResolutionsFromScales: function getResolutionsFromScales(scales, dpi, units, datum) {
         var resolutions = [];
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(_leaflet2.default.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum));
+            resolutions.push(_leaflet2["default"].Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum));
         }
         return resolutions;
     },
@@ -58592,14 +58498,14 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
             scales = layerInfo.scales,
             isBaseLayer = layerInfo.isBaseLayer,
             opacity = layerInfo.opacity;
-        var mapBounds = _leaflet2.default.bounds([bounds.leftBottom.x, bounds.leftBottom.y], [bounds.rightTop.x, bounds.rightTop.y]);
-        var layerBounds = layerInfo.bounds ? _leaflet2.default.bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : null;
-        var origin = layerBounds ? _leaflet2.default.point(layerBounds.min.x, layerBounds.max.y) : _leaflet2.default.point(mapBounds.min.x, mapBounds.max.y);
+        var mapBounds = _leaflet2["default"].bounds([bounds.leftBottom.x, bounds.leftBottom.y], [bounds.rightTop.x, bounds.rightTop.y]);
+        var layerBounds = layerInfo.bounds ? _leaflet2["default"].bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : null;
+        var origin = layerBounds ? _leaflet2["default"].point(layerBounds.min.x, layerBounds.max.y) : _leaflet2["default"].point(mapBounds.min.x, mapBounds.max.y);
         var resolutions = !scales ? null : this.getResolutionsFromScales(scales, 96, layerInfo.units);
         var crs = this.createCRS(epsgCode, prjCoordSys ? prjCoordSys.type : '', resolutions, origin, layerBounds || mapBounds);
         var mapOptions = {
             bounds: mapBounds,
-            center: _leaflet2.default.point(center.x, center.y),
+            center: _leaflet2["default"].point(center.x, center.y),
             crs: crs,
             zoom: level
         };
@@ -58617,13 +58523,13 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
             case "TIANDITU_VEC":
             case "TIANDITU_IMG":
             case "TIANDITU_TER":
-                mapOptions.crs = epsgCode === 4326 ? _leaflet2.default.CRS.TianDiTu_WGS84 : _leaflet2.default.CRS.TianDiTu_Mercator;
+                mapOptions.crs = epsgCode === 4326 ? _leaflet2["default"].CRS.TianDiTu_WGS84 : _leaflet2["default"].CRS.TianDiTu_Mercator;
                 mapOptions.minZoom = 1;
                 mapOptions.zoom = 1 + mapOptions.zoom;
                 layer = this.createTiandituLayer(layerInfo);
                 break;
             case "BAIDU":
-                mapOptions.crs = _leaflet2.default.CRS.BaiduCRS;
+                mapOptions.crs = _leaflet2["default"].CRS.BaiduCRS;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
                 layer = (0, _BaiduTileLayer.baiduTileLayer)();
@@ -58646,7 +58552,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
                 });
                 break;
             case "CLOUD":
-                mapOptions.crs = _leaflet2.default.CRS.EPSG3857;
+                mapOptions.crs = _leaflet2["default"].CRS.EPSG3857;
                 mapOptions.zoom = 3 + mapOptions.zoom;
                 mapOptions.minZoom = 3;
                 layer = (0, _CloudTileLayer.cloudTileLayer)(layerInfo.url, { opacity: opacity });
@@ -58704,13 +58610,13 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
         //marker, point, size, offset, icon, that = this;
         //todo offset
         var coordsToLatLng = function coordsToLatLng(coords) {
-            var ll = crs.unproject(_leaflet2.default.point(coords[0], coords[1]));
-            return new _leaflet2.default.LatLng(ll.lat, ll.lng, coords[2]);
+            var ll = crs.unproject(_leaflet2["default"].point(coords[0], coords[1]));
+            return new _leaflet2["default"].LatLng(ll.lat, ll.lng, coords[2]);
         };
 
-        var layer = _leaflet2.default.geoJSON(_leaflet2.default.Util.toGeoJSON(markers), {
+        var layer = _leaflet2["default"].geoJSON(_leaflet2["default"].Util.toGeoJSON(markers), {
             pointToLayer: function pointToLayer(geojson, latlng) {
-                var m = new _leaflet2.default.Marker(latlng);
+                var m = new _leaflet2["default"].Marker(latlng);
                 m.setStyle = function (style) {
                     if (style) {
                         m.setIcon(style);
@@ -58741,7 +58647,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
         if (!subLayers || subLayers === "undefined" || subLayers === "null") {
             subLayers = "0";
         }
-        return _leaflet2.default.tileLayer.wms(url, {
+        return _leaflet2["default"].tileLayer.wms(url, {
             layers: subLayers,
             format: 'image/png',
             transparent: true,
@@ -58765,13 +58671,13 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
             me = this;
         //todo readonly = layerInfo.readonly;
         var coordsToLatLng = function coordsToLatLng(coords) {
-            var ll = crs.unproject(_leaflet2.default.point(coords[0], coords[1]));
-            return new _leaflet2.default.LatLng(ll.lat, ll.lng, coords[2]);
+            var ll = crs.unproject(_leaflet2["default"].point(coords[0], coords[1]));
+            return new _leaflet2["default"].LatLng(ll.lat, ll.lng, coords[2]);
         };
         if (!layerInfo.url) {
-            var layer = _leaflet2.default.geoJSON(_leaflet2.default.Util.toGeoJSON(layerInfo.features), {
+            var layer = _leaflet2["default"].geoJSON(_leaflet2["default"].Util.toGeoJSON(layerInfo.features), {
                 pointToLayer: function pointToLayer(geojson, latlng) {
-                    var m = new _leaflet2.default.Marker(latlng);
+                    var m = new _leaflet2["default"].Marker(latlng);
                     m.setStyle = function (style) {
                         if (style) {
                             m.setIcon(style);
@@ -58800,9 +58706,9 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
                 var dataset = datasets[setNameIndex];
                 if (dataset.visible) {
                     this.getFeaturesBySQL(url, datasourceName, dataset.name, "", _iclientCommon.DataFormat.GEOJSON, function (serviceResult) {
-                        var layer = _leaflet2.default.geoJSON(serviceResult.result, {
+                        var layer = _leaflet2["default"].geoJSON(serviceResult.result, {
                             pointToLayer: function pointToLayer(geojson, latlng) {
-                                var m = new _leaflet2.default.Marker(latlng);
+                                var m = new _leaflet2["default"].Marker(latlng);
                                 m.setStyle = function (style) {
                                     if (style) {
                                         m.setIcon(style);
@@ -58888,8 +58794,8 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
             featureStyle.fill = true;
         }
         var coordsToLatLng = function coordsToLatLng(coords) {
-            var ll = _this3._map.options.crs.unproject(_leaflet2.default.point(coords[0], coords[1]));
-            return new _leaflet2.default.LatLng(ll.lat, ll.lng, coords[2]);
+            var ll = _this3._map.options.crs.unproject(_leaflet2["default"].point(coords[0], coords[1]));
+            return new _leaflet2["default"].LatLng(ll.lat, ll.lng, coords[2]);
         };
         var pointStyle = {};
         pointStyle.radius = featureStyle.pointRadius;
@@ -58900,14 +58806,14 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
         pointStyle.fillColor = featureStyle.fillColor;
         pointStyle.fillOpacity = featureStyle.fillOpacity;
         var pointToLayer = function pointToLayer(geojson, latlng) {
-            return _leaflet2.default.circleMarker(latlng, pointStyle);
+            return _leaflet2["default"].circleMarker(latlng, pointStyle);
         };
         if (featureStyle.unicode) {
             pointToLayer = function pointToLayer(geojson, latlng) {
                 return new _UnicodeMarker.UnicodeMarker(latlng, featureStyle);
             };
         }
-        return _leaflet2.default.geoJSON({ type: "GeometryCollection", geometries: [] }, {
+        return _leaflet2["default"].geoJSON({ type: "GeometryCollection", geometries: [] }, {
             pointToLayer: pointToLayer,
             coordsToLatLng: coordsToLatLng,
             opacity: opacity
@@ -58998,7 +58904,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
         } else {
             style = settings[0].style;
         }
-        var layerStyle = _leaflet2.default.Util.extend(new _iclientCommon.ThemeStyle(), style);
+        var layerStyle = _leaflet2["default"].Util.extend(new _iclientCommon.ThemeStyle(), style);
         layerStyle.fontWeight = "bold";
         layerStyle.fontSize = "14px";
         //默认显示标签边框背景
@@ -59038,7 +58944,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
         if (themeSettings.settings[0] && themeSettings.settings[0].featureWeight) {
             featureWeight = themeSettings.settings[0].featureWeight;
         }
-        return _leaflet2.default.heatLayer([], {
+        return _leaflet2["default"].heatLayer([], {
             radius: radius / 2,
             minOpacity: layerInfo.opacity,
             gradient: gradient,
@@ -59079,7 +58985,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
                     if (data.type === 'EXCEL' || data.type === 'CSV') {
                         features = me.parseFeatureFromEXCEL.apply(me, [data.content.rows, data.content.colTitles, false, position]);
                         for (var x = 0, len = features.length; x < len; x++) {
-                            result = (0, _jsonsql2.default)({ attr: features[x].attributes }, sql);
+                            result = (0, _jsonsql2["default"])({ attr: features[x].attributes }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[x]);
                             }
@@ -59087,7 +58993,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
                     } else {
                         features = me.parseFeatureFromJson(data.content);
                         for (var i = 0, length = features.length; i < length; i++) {
-                            result = (0, _jsonsql2.default)({ attr: features[i].attributes }, sql);
+                            result = (0, _jsonsql2["default"])({ attr: features[i].attributes }, sql);
                             if (result.length > 0) {
                                 sFeaturesArr.push(features[i]);
                             }
@@ -59108,7 +59014,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
                     features = layerInfo.features;
                 for (var i = 0, len = features.length; i < len; i++) {
                     var feature = features[i];
-                    var sqlResult = (0, _jsonsql2.default)({ attr: feature.attributes }, sql);
+                    var sqlResult = (0, _jsonsql2["default"])({ attr: feature.attributes }, sql);
                     if (sqlResult.length > 0) {
                         var lon = feature.geometry.points[0].x,
                             lat = feature.geometry.points[0].y;
@@ -59176,17 +59082,17 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
             if (layer && layer.labelLayer instanceof _LabelThemeLayer.LabelThemeLayer) {
                 me.addFeature2LabelLayer(layer.labelLayer, features, layerInfo);
             }
-            if (_leaflet2.default.HeatLayer && layer instanceof _leaflet2.default.HeatLayer) {
+            if (_leaflet2["default"].HeatLayer && layer instanceof _leaflet2["default"].HeatLayer) {
                 var heatPoints = [];
                 for (var _i = 0, _len = features.length; _i < _len; _i++) {
                     var geometry = features[_i].geometry;
-                    heatPoints[_i] = me._map.options.crs.unproject(_leaflet2.default.point(geometry.x, geometry.y));
+                    heatPoints[_i] = me._map.options.crs.unproject(_leaflet2["default"].point(geometry.x, geometry.y));
                     if (layer.options.featureWeight) {
                         heatPoints[_i] = [heatPoints[_i].lat, heatPoints[_i].lng, parseFloat(features[_i].attributes[layer.options.featureWeight])];
                     }
                 }
                 layer.setLatLngs(heatPoints);
-            } else if (layer instanceof _leaflet2.default.GeoJSON) {
+            } else if (layer instanceof _leaflet2["default"].GeoJSON) {
                 layer.addData(JSON.parse(new _iclientCommon.GeoJSON().write(features)));
             } else {
                 layer.addFeatures(features);
@@ -59350,17 +59256,17 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
     projTransform: function projTransform(fromEpsg, toEpsg, point, success) {
         var newCoor,
             me = this;
-        if (!_proj2.default) {
+        if (!_proj2["default"]) {
             return;
         }
         if (point && point.length !== undefined) {
             newCoor = [];
             for (var i = 0, len = point.length; i < len; i++) {
-                var coor = (0, _proj2.default)(fromEpsg, toEpsg, [point[i].x, point[i].y]);
+                var coor = (0, _proj2["default"])(fromEpsg, toEpsg, [point[i].x, point[i].y]);
                 newCoor.push({ x: coor[0], y: coor[1] });
             }
         } else {
-            newCoor = (0, _proj2.default)(fromEpsg, toEpsg, [point.x, point.y]);
+            newCoor = (0, _proj2["default"])(fromEpsg, toEpsg, [point.x, point.y]);
             newCoor = { x: newCoor[0], y: newCoor[1] };
         }
         if (success) {
@@ -59488,7 +59394,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
             return response.json();
         }).then(function (data) {
             success && success(data);
-        }).catch(function (err) {
+        })["catch"](function (err) {
             return failed && failed(err);
         });
     },
@@ -59563,10 +59469,10 @@ var webMap = exports.webMap = function webMap(id, options) {
     return new WebMap(id, options);
 };
 
-_leaflet2.default.supermap.webmap = webMap;
+_leaflet2["default"].supermap.webmap = webMap;
 
 /***/ }),
-/* 312 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59583,9 +59489,9 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _DataFlowService = __webpack_require__(134);
+var _DataFlowService = __webpack_require__(130);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.dataFlowLayer
@@ -59598,7 +59504,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        excludeField - {string} 排除字段。<br>
  *        idField - {string} id字段。
  */
-var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
+var DataFlowLayer = exports.DataFlowLayer = _leaflet2["default"].GeoJSON.extend({
 
     options: {
         geometry: null,
@@ -59612,12 +59518,12 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
         var me = this;
         if (options.style && !options.pointToLayer) {
             options.pointToLayer = function (geojson, latlng) {
-                return _leaflet2.default.circleMarker(latlng, options.style());
+                return _leaflet2["default"].circleMarker(latlng, options.style());
             };
         }
-        _leaflet2.default.Util.setOptions(me, options);
+        _leaflet2["default"].Util.setOptions(me, options);
         me._layers = {};
-        _leaflet2.default.stamp(me);
+        _leaflet2["default"].stamp(me);
         me.url = url;
         this.idCache = {};
     },
@@ -59688,8 +59594,8 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
             layer = this.getLayer(this.idCache[geoID]);
             this._updateLayerData(layer, geojson);
         } else {
-            layer = _leaflet2.default.GeoJSON.geometryToLayer(geojson, this.options);
-            layer.feature = _leaflet2.default.GeoJSON.asFeature(geojson);
+            layer = _leaflet2["default"].GeoJSON.geometryToLayer(geojson, this.options);
+            layer.feature = _leaflet2["default"].GeoJSON.asFeature(geojson);
             this.addLayer(layer);
             if (geoID !== undefined) {
                 this.idCache[geoID] = this.getLayerId(layer);
@@ -59707,20 +59613,20 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
         var latlngs = [];
         switch (geojson.geometry.type) {
             case 'Point':
-                latlngs = _leaflet2.default.GeoJSON.coordsToLatLng(geojson.geometry.coordinates);
+                latlngs = _leaflet2["default"].GeoJSON.coordsToLatLng(geojson.geometry.coordinates);
                 layer.setLatLng(latlngs);
                 break;
             case 'LineString':
-                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 0);
+                latlngs = _leaflet2["default"].GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 0);
                 layer.setLatLngs(latlngs);
                 break;
             case 'MultiLineString':
             case 'Polygon':
-                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
+                latlngs = _leaflet2["default"].GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
                 layer.setLatLngs(latlngs);
                 break;
             case 'MultiPolygon':
-                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 2);
+                latlngs = _leaflet2["default"].GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 2);
                 layer.setLatLngs(latlngs);
                 break;
         }
@@ -59730,10 +59636,10 @@ var dataFlowLayer = exports.dataFlowLayer = function dataFlowLayer(url, options)
     return new DataFlowLayer(url, options);
 };
 
-_leaflet2.default.supermap.dataFlowLayer = dataFlowLayer;
+_leaflet2["default"].supermap.dataFlowLayer = dataFlowLayer;
 
 /***/ }),
-/* 313 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59751,11 +59657,11 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _echarts = __webpack_require__(546);
+var _echarts = __webpack_require__(500);
 
 var _echarts2 = _interopRequireDefault(_echarts);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.echartsLayer
@@ -59766,7 +59672,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        attribution - {string} 版权信息。<br>
  *        loadWhileAnimating - {boolean} 是否在启动时加载。
  */
-var EchartsLayer = exports.EchartsLayer = _leaflet2.default.Layer.extend({
+var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
 
     includes: [],
     _echartsContainer: null,
@@ -59786,7 +59692,7 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2.default.Layer.extend({
             };
         }
         this._echartsOptions = echartsOptions;
-        _leaflet2.default.Util.setOptions(this, options);
+        _leaflet2["default"].Util.setOptions(this, options);
     },
 
     /**
@@ -59822,21 +59728,21 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2.default.Layer.extend({
     onAdd: function onAdd(map) {
         this._map = map;
         this._initEchartsContainer();
-        this._ec = _echarts2.default.init(this._echartsContainer);
-        _echarts2.default.leafletMap = map;
+        this._ec = _echarts2["default"].init(this._echartsContainer);
+        _echarts2["default"].leafletMap = map;
         var me = this;
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
-        _echarts2.default.registerAction({
+        _echarts2["default"].registerAction({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
             update: 'updateLayout'
         }, function (payload, ecModel) {// eslint-disable-line no-unused-vars
 
         });
-        _echarts2.default.registerCoordinateSystem('leaflet', LeafletMapCoordSys);
-        _echarts2.default.extendComponentModel({
+        _echarts2["default"].registerCoordinateSystem('leaflet', LeafletMapCoordSys);
+        _echarts2["default"].extendComponentModel({
             type: 'LeafletMap',
             getBMap: function getBMap() {
                 return this.__LeafletMap;
@@ -59845,11 +59751,11 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2.default.Layer.extend({
                 roam: false
             }
         });
-        _echarts2.default.extendComponentView({
+        _echarts2["default"].extendComponentView({
             type: 'LeafletMap',
             render: function render(LeafletMapModel, ecModel, api) {
                 var rendering = true;
-                var leafletMap = _echarts2.default.leafletMap;
+                var leafletMap = _echarts2["default"].leafletMap;
                 var viewportRoot = api.getZr().painter.getViewportRoot();
                 var coordSys = LeafletMapModel.coordinateSystem;
                 var moveHandler = function moveHandler() {
@@ -59949,7 +59855,7 @@ LeafletMapCoordSys.prototype.getBMap = function () {
 };
 
 LeafletMapCoordSys.prototype.prepareCustoms = function () {
-    var zrUtil = _echarts2.default.util;
+    var zrUtil = _echarts2["default"].util;
 
     var rect = this.getViewRect();
     return {
@@ -59990,7 +59896,7 @@ LeafletMapCoordSys.prototype.dataToPoint = function (data) {
 
     data[1] = this.fixLat(data[1]);
 
-    var point = new _leaflet2.default.latLng(data[1], data[0]);
+    var point = new _leaflet2["default"].latLng(data[1], data[0]);
     var px = this._LeafletMap.latLngToLayerPoint(point);
     var mapOffset = this._mapOffset;
     return [px.x - mapOffset[0], px.y - mapOffset[1]];
@@ -60014,11 +59920,11 @@ LeafletMapCoordSys.prototype.pointToData = function (pt) {
 
 LeafletMapCoordSys.prototype.getViewRect = function () {
     var api = this._api;
-    return new _echarts2.default.graphic.BoundingRect(0, 0, api.getWidth(), api.getHeight());
+    return new _echarts2["default"].graphic.BoundingRect(0, 0, api.getWidth(), api.getHeight());
 };
 
 LeafletMapCoordSys.prototype.getRoamTransform = function () {
-    return _echarts2.default.matrix.create();
+    return _echarts2["default"].matrix.create();
 };
 LeafletMapCoordSys.dimensions = LeafletMapCoordSys.prototype.dimensions;
 
@@ -60026,7 +59932,7 @@ LeafletMapCoordSys.create = function (ecModel, api) {
     var coordSys;
 
     ecModel.eachComponent('LeafletMap', function (LeafletMapModel) {
-        var leafletMap = _echarts2.default.leafletMap;
+        var leafletMap = _echarts2["default"].leafletMap;
         coordSys = new LeafletMapCoordSys(leafletMap, api);
         coordSys.setMapOffset(LeafletMapModel.__mapOffset || [0, 0]);
         LeafletMapModel.coordinateSystem = coordSys;
@@ -60042,10 +59948,10 @@ var echartsLayer = exports.echartsLayer = function echartsLayer(echartsOptions, 
     return new EchartsLayer(echartsOptions, options);
 };
 
-_leaflet2.default.supermap.echartsLayer = echartsLayer;
+_leaflet2["default"].supermap.echartsLayer = echartsLayer;
 
 /***/ }),
-/* 314 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60062,7 +59968,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.graphicLayer
@@ -60082,11 +59988,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        fillRule - {string} 填充规则<br>
  *        radius - {number}半径
  */
-var GraphicLayer = exports.GraphicLayer = _leaflet2.default.Path.extend({
+var GraphicLayer = exports.GraphicLayer = _leaflet2["default"].Path.extend({
 
     initialize: function initialize(graphics, options) {
         options = options || {};
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         this.graphics = graphics;
     },
 
@@ -60115,7 +60021,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2.default.Path.extend({
         this._canvas.width = width;
         this._canvas.height = height;
         this._ctx = this._canvas.getContext('2d');
-        _leaflet2.default.Path.prototype.onAdd.call(this);
+        _leaflet2["default"].Path.prototype.onAdd.call(this);
     },
 
     _update: function _update() {
@@ -60134,10 +60040,10 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2.default.Path.extend({
             var point = me._map.latLngToLayerPoint(graphic.getLatLng());
             var w = me._clickTolerance();
             var p = [graphic._anchor + w, graphic._anchor + w];
-            graphic._pxBounds = new _leaflet2.default.Bounds(point.subtract(p), point.add(p));
+            graphic._pxBounds = new _leaflet2["default"].Bounds(point.subtract(p), point.add(p));
             return graphic;
         });
-        me._pxBounds = _leaflet2.default.bounds(_leaflet2.default.point(0, 0), _leaflet2.default.point(this._canvas.width, this._canvas.height));
+        me._pxBounds = _leaflet2["default"].bounds(_leaflet2["default"].point(0, 0), _leaflet2["default"].point(this._canvas.width, this._canvas.height));
     },
 
     _getGraphicsInBounds: function _getGraphicsInBounds() {
@@ -60163,9 +60069,9 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2.default.Path.extend({
         for (var i = 0; i < graphics.length; i++) {
             var center = me._map.latLngToLayerPoint(graphics[i].getLatLng());
             var canvas = graphics[i].getCanvas();
-            var p1 = _leaflet2.default.point(center.x - canvas.width / 2, center.y - canvas.height / 2),
-                p2 = _leaflet2.default.point(center.x + canvas.width / 2, center.y + canvas.height / 2),
-                bounds = _leaflet2.default.bounds(p1, p2);
+            var p1 = _leaflet2["default"].point(center.x - canvas.width / 2, center.y - canvas.height / 2),
+                p2 = _leaflet2["default"].point(center.x + canvas.width / 2, center.y + canvas.height / 2),
+                bounds = _leaflet2["default"].bounds(p1, p2);
             if (bounds.contains(me._map.latLngToLayerPoint(evt.latlng))) {
                 return me.options.handleClick.call(me, graphics[i]);
             }
@@ -60173,7 +60079,7 @@ var GraphicLayer = exports.GraphicLayer = _leaflet2.default.Path.extend({
     }
 });
 
-_leaflet2.default.Canvas.include({
+_leaflet2["default"].Canvas.include({
     _drawGraphics: function _drawGraphics(graphics) {
         var me = this;
         me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
@@ -60192,10 +60098,10 @@ var graphicLayer = exports.graphicLayer = function graphicLayer(graphics, option
     return new GraphicLayer(graphics, options);
 };
 
-_leaflet2.default.supermap.graphicLayer = graphicLayer;
+_leaflet2["default"].supermap.graphicLayer = graphicLayer;
 
 /***/ }),
-/* 315 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60212,9 +60118,9 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _MapVRenderer = __webpack_require__(448);
+var _MapVRenderer = __webpack_require__(437);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.mapVLayer
@@ -60226,7 +60132,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        attributionPrefix - {string} 版权信息前缀。<br>
  *        attribution - {string} 版权信息。
  */
-var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
+var MapVLayer = exports.MapVLayer = _leaflet2["default"].Layer.extend({
 
     options: {
         attributionPrefix: null,
@@ -60238,13 +60144,13 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
         this.dataSet = dataSet || {};
         this.mapVOptions = mapVOptions || {};
         this.render = this.render.bind(this);
-        _leaflet2.default.Util.setOptions(this, options);
+        _leaflet2["default"].Util.setOptions(this, options);
         if (this.options.attributionPrefix) {
             this.options.attribution = this.options.attributionPrefix + this.options.attribution;
         }
 
         this.canvas = this._createCanvas();
-        _leaflet2.default.stamp(this);
+        _leaflet2["default"].stamp(this);
     },
 
     /**
@@ -60256,7 +60162,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     onAdd: function onAdd(map) {
         this._map = map;
         var overlayPane = this.getPane();
-        var container = this.container = _leaflet2.default.DomUtil.create("div", "leaflet-layer leaflet-zoom-animated", overlayPane);
+        var container = this.container = _leaflet2["default"].DomUtil.create("div", "leaflet-layer leaflet-zoom-animated", overlayPane);
         container.appendChild(this.canvas);
         var size = map.getSize();
         container.style.width = size.x + "px";
@@ -60280,7 +60186,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
      * @description 删除地图图层
      */
     onRemove: function onRemove() {
-        _leaflet2.default.DomUtil.remove(this.container);
+        _leaflet2["default"].DomUtil.remove(this.container);
         this.renderer.unbindEvent();
     },
 
@@ -60428,7 +60334,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
         canvas.style.height = size.y + 'px';
         var bounds = map.getBounds();
         var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
-        _leaflet2.default.DomUtil.setPosition(canvas, topLeft);
+        _leaflet2["default"].DomUtil.setPosition(canvas, topLeft);
     },
 
     _reset: function _reset() {
@@ -60449,23 +60355,23 @@ var mapVLayer = exports.mapVLayer = function mapVLayer(dataSet, mapVOptions, opt
     return new MapVLayer(dataSet, mapVOptions, options);
 };
 
-_leaflet2.default.Map.include({
+_leaflet2["default"].Map.include({
     /*
      * 获取精确的像素坐标.
      * 当需要绘制比较平滑的曲线的时候可调用此方法代替latLngToContainerPoint
      * @param latlng
      */
     latLngToAccurateContainerPoint: function latLngToAccurateContainerPoint(latlng) {
-        var projectedPoint = this.project(_leaflet2.default.latLng(latlng));
+        var projectedPoint = this.project(_leaflet2["default"].latLng(latlng));
         var layerPoint = projectedPoint._subtract(this.getPixelOrigin());
-        return _leaflet2.default.point(layerPoint).add(this._getMapPanePos());
+        return _leaflet2["default"].point(layerPoint).add(this._getMapPanePos());
     }
 });
 
-_leaflet2.default.supermap.mapVLayer = mapVLayer;
+_leaflet2["default"].supermap.mapVLayer = mapVLayer;
 
 /***/ }),
-/* 316 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60484,9 +60390,9 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-var _GraphThemeLayer = __webpack_require__(128);
+var _GraphThemeLayer = __webpack_require__(124);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.rankSymbolThemeLayer
@@ -60559,10 +60465,10 @@ var rankSymbolThemeLayer = exports.rankSymbolThemeLayer = function rankSymbolThe
     return new RankSymbolThemeLayer(name, symbolType, options);
 };
 
-_leaflet2.default.supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;
+_leaflet2["default"].supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;
 
 /***/ }),
-/* 317 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60579,13 +60485,13 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _VectorGrid = __webpack_require__(452);
+var _VectorGrid = __webpack_require__(441);
 
-var _CartoCSSToLeaflet = __webpack_require__(283);
+var _CartoCSSToLeaflet = __webpack_require__(279);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.tiledVectorLayer
@@ -60630,9 +60536,9 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
     initialize: function initialize(url, options) {
         options = options || {};
         options.noWrap = options.noWrap == null ? true : options.noWrap;
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         _VectorGrid.VectorGrid.prototype.initialize.call(this, options);
-        _leaflet2.default.stamp(this);
+        _leaflet2["default"].stamp(this);
         var me = this;
 
         if (!url || url === "" || url.indexOf("http") < 0) {
@@ -60697,7 +60603,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
             if (me.options.serverCartoCSSStyle) {
                 me.getVectorStylesFromServer();
             }
-        }).catch(function (ex) {
+        })["catch"](function (ex) {
             console.error('error', ex);
         });
     },
@@ -60771,7 +60677,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
                 me.setClientCartoCSS(me.options.cartoCSS);
             }
             me._initGrid();
-        }).catch(function (ex) {
+        })["catch"](function (ex) {
             console.error('error', ex);
         });
     },
@@ -60912,7 +60818,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         if (crs.code && crs.code.indexOf("4326") > -1) {
             mapUnit = _iclientCommon.Unit.DEGREE;
         }
-        return _leaflet2.default.Util.resolutionToScale(resolution, 96, mapUnit);
+        return _leaflet2["default"].Util.resolutionToScale(resolution, 96, mapUnit);
     },
 
     _mergeFeatureTextField: function _mergeFeatureTextField(feature, style) {
@@ -60922,7 +60828,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         }
 
         var tempStyle = style;
-        if (!_leaflet2.default.Util.isArray(style)) {
+        if (!_leaflet2["default"].Util.isArray(style)) {
             tempStyle = [style];
         }
         for (var i = 0; i < tempStyle.length; i++) {
@@ -60961,7 +60867,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
             data['-y'] = invertedY;
         }
 
-        var tileUrl = _leaflet2.default.Util.template(tileTemplate, _leaflet2.default.extend(data, me.options));
+        var tileUrl = _leaflet2["default"].Util.template(tileTemplate, _leaflet2["default"].extend(data, me.options));
         return tileUrl;
     },
 
@@ -60969,7 +60875,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         _VectorGrid.VectorGrid.prototype.onAdd.call(this, this._map);
     },
 
-    _getSubdomain: _leaflet2.default.TileLayer.prototype._getSubdomain,
+    _getSubdomain: _leaflet2["default"].TileLayer.prototype._getSubdomain,
     _getDefaultTileUrl: function _getDefaultTileUrl(coords) {
         var x = coords.x,
             y = coords.y;
@@ -61001,7 +60907,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
             params.push("layersID=" + options.layersID);
         }
         if (options.layerNames) {
-            if (!_leaflet2.default.Util.isArray(options.layerNames)) {
+            if (!_leaflet2["default"].Util.isArray(options.layerNames)) {
                 options.layerNames = [options.layerNames];
             }
             var layerNamesString = '[' + options.layerNames.join(',') + ']';
@@ -61013,7 +60919,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
             params.push("origin=" + JSON.stringify({ x: crs.options.origin[0], y: crs.options.origin[1] }));
         } else if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
-            var tileOrigin = _leaflet2.default.point(bounds.min.x, bounds.max.y);
+            var tileOrigin = _leaflet2["default"].point(bounds.min.x, bounds.max.y);
             params.push("origin=" + JSON.stringify({ x: tileOrigin.x, y: tileOrigin.y }));
         }
         if (options.expands) {
@@ -61063,10 +60969,10 @@ var tiledVectorLayer = exports.tiledVectorLayer = function tiledVectorLayer(url,
     return new TileVectorLayer(url, options);
 };
 
-_leaflet2.default.supermap.tiledVectorLayer = tiledVectorLayer;
+_leaflet2["default"].supermap.tiledVectorLayer = tiledVectorLayer;
 
 /***/ }),
-/* 318 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61083,11 +60989,11 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-var _turf = __webpack_require__(549);
+var _turf = __webpack_require__(503);
 
 var _turf2 = _interopRequireDefault(_turf);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.turfLayer
@@ -61096,7 +61002,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param options - {Object} 可选参数。如：<br>
  *        attribution - {string} 版权信息。
  */
-var TurfLayer = exports.TurfLayer = _leaflet2.default.GeoJSON.extend({
+var TurfLayer = exports.TurfLayer = _leaflet2["default"].GeoJSON.extend({
 
     turfMap: {
         "Measurement.along": ["line", "distance", "units"],
@@ -61233,8 +61139,8 @@ var TurfLayer = exports.TurfLayer = _leaflet2.default.GeoJSON.extend({
 
     initialize: function initialize(options) {
         options = options || {};
-        _leaflet2.default.Util.setOptions(this, options);
-        _leaflet2.default.stamp(this);
+        _leaflet2["default"].Util.setOptions(this, options);
+        _leaflet2["default"].stamp(this);
         this._layers = {};
     },
 
@@ -61247,7 +61153,7 @@ var TurfLayer = exports.TurfLayer = _leaflet2.default.GeoJSON.extend({
      * @param addFeaturesToMap -{boolean} 是否添加到map
      */
     process: function process(type, args, callback, addFeaturesToMap) {
-        var result = _turf2.default[type.split('.')[1]].apply(this, this.parse(type, args));
+        var result = _turf2["default"][type.split('.')[1]].apply(this, this.parse(type, args));
         addFeaturesToMap = addFeaturesToMap == null ? true : addFeaturesToMap;
         if (addFeaturesToMap) {
             this.addData([result]);
@@ -61277,10 +61183,10 @@ var turfLayer = exports.turfLayer = function turfLayer(options) {
     return new TurfLayer(options);
 };
 
-_leaflet2.default.supermap.turfLayer = turfLayer;
+_leaflet2["default"].supermap.turfLayer = turfLayer;
 
 /***/ }),
-/* 319 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61297,7 +61203,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.circleStyle
@@ -61317,7 +61223,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        fillRule - {string} 填充形状
  *        radius - {number}半径
  */
-var CircleStyle = exports.CircleStyle = _leaflet2.default.Class.extend({
+var CircleStyle = exports.CircleStyle = _leaflet2["default"].Class.extend({
 
     options: {
         stroke: true,
@@ -61335,7 +61241,7 @@ var CircleStyle = exports.CircleStyle = _leaflet2.default.Class.extend({
 
     initialize: function initialize(options) {
         options = options || {};
-        _leaflet2.default.Util.setOptions(this, options);
+        _leaflet2["default"].Util.setOptions(this, options);
         this._canvas = document.createElement('canvas');
         this._canvas.width = 2 * (this.options.radius + this.options.weight);
         this._canvas.height = 2 * (this.options.radius + this.options.weight);
@@ -61380,10 +61286,10 @@ var circleStyle = exports.circleStyle = function circleStyle(options) {
     return new CircleStyle(options);
 };
 
-_leaflet2.default.supermap.circleStyle = circleStyle;
+_leaflet2["default"].supermap.circleStyle = circleStyle;
 
 /***/ }),
-/* 320 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61404,7 +61310,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.addressMatchService
@@ -61470,10 +61376,10 @@ var addressMatchService = exports.addressMatchService = function addressMatchSer
     return new AddressMatchService(url, options);
 };
 
-_leaflet2.default.supermap.addressMatchService = addressMatchService;
+_leaflet2["default"].supermap.addressMatchService = addressMatchService;
 
 /***/ }),
-/* 321 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61494,9 +61400,9 @@ var _iclientCommon = __webpack_require__(5);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _CommontypesConversion = __webpack_require__(36);
+var _CommontypesConversion = __webpack_require__(35);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.chartService
@@ -61566,7 +61472,7 @@ var ChartService = exports.ChartService = _ServiceBase.ServiceBase.extend({
             return {};
         }
         params.returnContent = params.returnContent == null ? true : params.returnContent;
-        if (params.chartQueryFilterParameters && !_leaflet2.default.Util.isArray(params.chartQueryFilterParameters)) {
+        if (params.chartQueryFilterParameters && !_leaflet2["default"].Util.isArray(params.chartQueryFilterParameters)) {
             params.chartQueryFilterParameters = [params.chartQueryFilterParameters];
         }
 
@@ -61583,10 +61489,10 @@ var chartService = exports.chartService = function chartService(url, options) {
     return new ChartService(url, options);
 };
 
-_leaflet2.default.supermap.chartService = chartService;
+_leaflet2["default"].supermap.chartService = chartService;
 
 /***/ }),
-/* 322 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61607,7 +61513,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class  L.supermap.fieldService
@@ -61663,7 +61569,7 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
         var me = this,
             fieldName = params.fieldName,
             modes = params.statisticMode;
-        if (modes && !_leaflet2.default.Util.isArray(modes)) {
+        if (modes && !_leaflet2["default"].Util.isArray(modes)) {
             modes = [modes];
         }
         me.currentStatisticResult = { fieldName: fieldName };
@@ -61715,10 +61621,10 @@ var fieldService = exports.fieldService = function fieldService(url, options) {
     return new FieldService(url, options);
 };
 
-_leaflet2.default.supermap.fieldService = fieldService;
+_leaflet2["default"].supermap.fieldService = fieldService;
 
 /***/ }),
-/* 323 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61739,7 +61645,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.gridCellInfosService
@@ -61785,10 +61691,10 @@ var gridCellInfosService = exports.gridCellInfosService = function gridCellInfos
     return new GridCellInfosService(url, options);
 };
 
-_leaflet2.default.supermap.gridCellInfosService = gridCellInfosService;
+_leaflet2["default"].supermap.gridCellInfosService = gridCellInfosService;
 
 /***/ }),
-/* 324 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61809,7 +61715,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.layerInfoService
@@ -61935,10 +61841,10 @@ var layerInfoService = exports.layerInfoService = function layerInfoService(url,
     return new LayerInfoService(url, options);
 };
 
-_leaflet2.default.supermap.layerInfoService = layerInfoService;
+_leaflet2["default"].supermap.layerInfoService = layerInfoService;
 
 /***/ }),
-/* 325 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61957,15 +61863,15 @@ var _ServiceBase = __webpack_require__(8);
 
 __webpack_require__(4);
 
-var _Util = __webpack_require__(43);
+var _Util = __webpack_require__(42);
 
 var Util = _interopRequireWildcard(_Util);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.measureService
@@ -62042,10 +61948,10 @@ var measureService = exports.measureService = function measureService(url, optio
     return new MeasureService(url, options);
 };
 
-_leaflet2.default.supermap.measureService = measureService;
+_leaflet2["default"].supermap.measureService = measureService;
 
 /***/ }),
-/* 326 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62066,7 +61972,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.networkAnalyst3DService
@@ -62189,10 +62095,10 @@ var networkAnalyst3DService = exports.networkAnalyst3DService = function network
     return new NetworkAnalyst3DService(url, options);
 };
 
-_leaflet2.default.supermap.networkAnalyst3DService = networkAnalyst3DService;
+_leaflet2["default"].supermap.networkAnalyst3DService = networkAnalyst3DService;
 
 /***/ }),
-/* 327 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62213,7 +62119,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.networkAnalystService
@@ -62464,43 +62370,43 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
             return {};
         }
 
-        if (params.centers && _leaflet2.default.Util.isArray(params.centers)) {
+        if (params.centers && _leaflet2["default"].Util.isArray(params.centers)) {
             params.centers.map(function (point, key) {
-                params.centers[key] = point instanceof _leaflet2.default.LatLng ? { x: point.lng, y: point.lat } : point;
+                params.centers[key] = point instanceof _leaflet2["default"].LatLng ? { x: point.lng, y: point.lat } : point;
                 return params.centers[key];
             });
         }
 
-        if (params.nodes && _leaflet2.default.Util.isArray(params.nodes)) {
+        if (params.nodes && _leaflet2["default"].Util.isArray(params.nodes)) {
             params.nodes.map(function (point, key) {
-                params.nodes[key] = point instanceof _leaflet2.default.LatLng ? { x: point.lng, y: point.lat } : point;
+                params.nodes[key] = point instanceof _leaflet2["default"].LatLng ? { x: point.lng, y: point.lat } : point;
                 return params.nodes[key];
             });
         }
 
-        if (params.event && params.event instanceof _leaflet2.default.LatLng) {
+        if (params.event && params.event instanceof _leaflet2["default"].LatLng) {
             params.event = { x: params.event.lng, y: params.event.lat };
         }
 
-        if (params.facilities && _leaflet2.default.Util.isArray(params.facilities)) {
+        if (params.facilities && _leaflet2["default"].Util.isArray(params.facilities)) {
             params.facilities.map(function (point, key) {
-                params.facilities[key] = point instanceof _leaflet2.default.LatLng ? { x: point.lng, y: point.lat } : point;
+                params.facilities[key] = point instanceof _leaflet2["default"].LatLng ? { x: point.lng, y: point.lat } : point;
                 return params.facilities[key];
             });
         }
 
         if (params.parameter && params.parameter.barrierPoints) {
             var barrierPoints = params.parameter.barrierPoints;
-            if (_leaflet2.default.Util.isArray(barrierPoints)) {
+            if (_leaflet2["default"].Util.isArray(barrierPoints)) {
                 barrierPoints.map(function (point, key) {
-                    params.parameter.barrierPoints[key] = point instanceof _leaflet2.default.LatLng ? {
+                    params.parameter.barrierPoints[key] = point instanceof _leaflet2["default"].LatLng ? {
                         x: point.lng,
                         y: point.lat
                     } : point;
                     return params.parameter.barrierPoints[key];
                 });
             } else {
-                params.parameter.barrierPoints = [barrierPoints instanceof _leaflet2.default.LatLng ? {
+                params.parameter.barrierPoints = [barrierPoints instanceof _leaflet2["default"].LatLng ? {
                     x: barrierPoints.lng,
                     y: barrierPoints.lat
                 } : barrierPoints];
@@ -62519,10 +62425,10 @@ var networkAnalystService = exports.networkAnalystService = function networkAnal
     return new NetworkAnalystService(url, options);
 };
 
-_leaflet2.default.supermap.networkAnalystService = networkAnalystService;
+_leaflet2["default"].supermap.networkAnalystService = networkAnalystService;
 
 /***/ }),
-/* 328 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62541,11 +62447,11 @@ __webpack_require__(4);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _CommontypesConversion = __webpack_require__(36);
+var _CommontypesConversion = __webpack_require__(35);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.processingService
@@ -62564,7 +62470,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
 
     initialize: function initialize(url, options) {
         options = options || {};
-        _leaflet2.default.setOptions(this, options);
+        _leaflet2["default"].setOptions(this, options);
         _ServiceBase.ServiceBase.prototype.initialize.call(this, url, options);
         this.kernelDensityJobs = {};
         this.summaryMeshJobs = {};
@@ -63324,10 +63230,10 @@ var processingService = exports.processingService = function processingService(u
     return new ProcessingService(url, options);
 };
 
-_leaflet2.default.supermap.processingService = processingService;
+_leaflet2["default"].supermap.processingService = processingService;
 
 /***/ }),
-/* 329 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63346,17 +63252,17 @@ __webpack_require__(4);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _Util = __webpack_require__(43);
+var _Util = __webpack_require__(42);
 
 var Util = _interopRequireWildcard(_Util);
 
-var _CommontypesConversion = __webpack_require__(36);
+var _CommontypesConversion = __webpack_require__(35);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class  L.supermap.queryService
@@ -63469,7 +63375,7 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
             return {};
         }
         params.returnContent = params.returnContent == null ? true : params.returnContent;
-        if (params.queryParams && !_leaflet2.default.Util.isArray(params.queryParams)) {
+        if (params.queryParams && !_leaflet2["default"].Util.isArray(params.queryParams)) {
             params.queryParams = [params.queryParams];
         }
 
@@ -63478,7 +63384,7 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
         }
 
         if (params.geometry) {
-            if (params.geometry instanceof _leaflet2.default.Point) {
+            if (params.geometry instanceof _leaflet2["default"].Point) {
                 params.geometry = new _iclientCommon.GeometryPoint(params.geometry.x, params.geometry.y);
             } else {
                 params.geometry = Util.toSuperMapGeometry(params.geometry);
@@ -63497,10 +63403,10 @@ var queryService = exports.queryService = function queryService(url, options) {
     return new QueryService(url, options);
 };
 
-_leaflet2.default.supermap.queryService = queryService;
+_leaflet2["default"].supermap.queryService = queryService;
 
 /***/ }),
-/* 330 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63519,17 +63425,17 @@ __webpack_require__(4);
 
 var _ServiceBase = __webpack_require__(8);
 
-var _Util = __webpack_require__(43);
+var _Util = __webpack_require__(42);
 
 var Util = _interopRequireWildcard(_Util);
 
-var _CommontypesConversion = __webpack_require__(36);
+var _CommontypesConversion = __webpack_require__(35);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.spatialAnalystService
@@ -63833,7 +63739,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
         if (params.inputPoints) {
             for (var i = 0; i < params.inputPoints.length; i++) {
                 var inputPoint = params.inputPoints[i];
-                if (_leaflet2.default.Util.isArray(inputPoint)) {
+                if (_leaflet2["default"].Util.isArray(inputPoint)) {
                     params.inputPoints[i] = { x: inputPoint[0], y: inputPoint[1], tag: inputPoint[2] };
                 }
             }
@@ -63842,9 +63748,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
         if (params.points) {
             for (var _i = 0; _i < params.points.length; _i++) {
                 var point = params.points[_i];
-                if (_leaflet2.default.Util.isArray(point)) {
+                if (_leaflet2["default"].Util.isArray(point)) {
                     params.points[_i] = { x: point[0], y: point[1] };
-                } else if (point instanceof _leaflet2.default.LatLng) {
+                } else if (point instanceof _leaflet2["default"].LatLng) {
                     params.points[_i] = { x: point.lng, y: point.lat };
                 } else {
                     params.points[_i] = { x: point.x, y: point.y };
@@ -63852,9 +63758,9 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             }
         }
         if (params.point) {
-            if (_leaflet2.default.Util.isArray(params.point)) {
+            if (_leaflet2["default"].Util.isArray(params.point)) {
                 params.point = { x: params.point[0], y: params.point[1] };
-            } else if (params.point instanceof _leaflet2.default.LatLng) {
+            } else if (params.point instanceof _leaflet2["default"].LatLng) {
                 params.point = { x: params.point.lng, y: params.point.lat };
             } else {
                 params.point = { x: params.point.x, y: params.point.y };
@@ -63870,7 +63776,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
             params.sourceGeometry = Util.toSuperMapGeometry(params.sourceGeometry);
         }
         if (params.sourceRoute) {
-            if (params.sourceRoute instanceof _leaflet2.default.Polyline) {
+            if (params.sourceRoute instanceof _leaflet2["default"].Polyline) {
                 var target = {};
                 target.type = "LINEM";
                 target.parts = [params.sourceRoute.getLatLngs().length];
@@ -63882,7 +63788,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
                 params.sourceRoute = target;
             }
         }
-        if (params.operateRegions && _leaflet2.default.Util.isArray(params.operateRegions)) {
+        if (params.operateRegions && _leaflet2["default"].Util.isArray(params.operateRegions)) {
             params.operateRegions.map(function (geometry, key) {
                 params.operateRegions[key] = Util.toSuperMapGeometry(geometry);
                 return params.operateRegions[key];
@@ -63905,10 +63811,10 @@ var spatialAnalystService = exports.spatialAnalystService = function spatialAnal
     return new SpatialAnalystService(url, options);
 };
 
-_leaflet2.default.supermap.spatialAnalystService = spatialAnalystService;
+_leaflet2["default"].supermap.spatialAnalystService = spatialAnalystService;
 
 /***/ }),
-/* 331 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63929,7 +63835,7 @@ __webpack_require__(4);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.themeService
@@ -63975,10 +63881,10 @@ var themeService = exports.themeService = function themeService(url, options) {
     return new ThemeService(url, options);
 };
 
-_leaflet2.default.supermap.themeService = themeService;
+_leaflet2["default"].supermap.themeService = themeService;
 
 /***/ }),
-/* 332 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63999,7 +63905,7 @@ var _ServiceBase = __webpack_require__(8);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.trafficTransferAnalystService
@@ -64079,9 +63985,9 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
             return {};
         }
 
-        if (params.points && _leaflet2.default.Util.isArray(params.points)) {
+        if (params.points && _leaflet2["default"].Util.isArray(params.points)) {
             params.points.map(function (point, key) {
-                params.points[key] = point instanceof _leaflet2.default.LatLng ? { x: point.lng, y: point.lat } : point;
+                params.points[key] = point instanceof _leaflet2["default"].LatLng ? { x: point.lng, y: point.lat } : point;
                 return params.points[key];
             });
         }
@@ -64093,10 +63999,10 @@ var trafficTransferAnalystService = exports.trafficTransferAnalystService = func
     return new TrafficTransferAnalystService(url, options);
 };
 
-_leaflet2.default.supermap.trafficTransferAnalystService = trafficTransferAnalystService;
+_leaflet2["default"].supermap.trafficTransferAnalystService = trafficTransferAnalystService;
 
 /***/ }),
-/* 333 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64437,24 +64343,24 @@ Point.convert = function (a) {
 };
 
 /***/ }),
-/* 334 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports.VectorTile = __webpack_require__(335);
-module.exports.VectorTileFeature = __webpack_require__(137);
-module.exports.VectorTileLayer = __webpack_require__(138);
+module.exports.VectorTile = __webpack_require__(324);
+module.exports.VectorTileFeature = __webpack_require__(133);
+module.exports.VectorTileLayer = __webpack_require__(134);
 
 /***/ }),
-/* 335 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileLayer = __webpack_require__(138);
+var VectorTileLayer = __webpack_require__(134);
 
 module.exports = VectorTile;
 
@@ -64470,7 +64376,7 @@ function readTile(tag, layers, pbf) {
 }
 
 /***/ }),
-/* 336 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64569,7 +64475,7 @@ var DateExt = exports.DateExt = _SuperMap.SuperMap.Date = {
 };
 
 /***/ }),
-/* 337 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64578,275 +64484,112 @@ var DateExt = exports.DateExt = _SuperMap.SuperMap.Date = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = undefined;
 
 var _Collection = __webpack_require__(27);
 
-Object.defineProperty(exports, 'Collection', {
-  enumerable: true,
-  get: function get() {
-    return _Collection.Collection;
-  }
-});
+var _Curve = __webpack_require__(87);
 
-var _Curve = __webpack_require__(90);
+var _GeoText = __webpack_require__(88);
 
-Object.defineProperty(exports, 'Curve', {
-  enumerable: true,
-  get: function get() {
-    return _Curve.Curve;
-  }
-});
-
-var _GeoText = __webpack_require__(91);
-
-Object.defineProperty(exports, 'GeoText', {
-  enumerable: true,
-  get: function get() {
-    return _GeoText.GeoText;
-  }
-});
-
-var _LinearRing = __webpack_require__(31);
-
-Object.defineProperty(exports, 'LinearRing', {
-  enumerable: true,
-  get: function get() {
-    return _LinearRing.LinearRing;
-  }
-});
+var _LinearRing = __webpack_require__(30);
 
 var _LineString = __webpack_require__(17);
 
-Object.defineProperty(exports, 'LineString', {
-  enumerable: true,
-  get: function get() {
-    return _LineString.LineString;
-  }
-});
+var _MultiLineString = __webpack_require__(46);
 
-var _MultiLineString = __webpack_require__(47);
+var _MultiPoint = __webpack_require__(37);
 
-Object.defineProperty(exports, 'MultiLineString', {
-  enumerable: true,
-  get: function get() {
-    return _MultiLineString.MultiLineString;
-  }
-});
-
-var _MultiPoint = __webpack_require__(38);
-
-Object.defineProperty(exports, 'MultiPoint', {
-  enumerable: true,
-  get: function get() {
-    return _MultiPoint.MultiPoint;
-  }
-});
-
-var _MultiPolygon = __webpack_require__(48);
-
-Object.defineProperty(exports, 'MultiPolygon', {
-  enumerable: true,
-  get: function get() {
-    return _MultiPolygon.MultiPolygon;
-  }
-});
+var _MultiPolygon = __webpack_require__(47);
 
 var _Point = __webpack_require__(18);
 
-Object.defineProperty(exports, 'GeometryPoint', {
-  enumerable: true,
-  get: function get() {
-    return _Point.Point;
-  }
-});
+var _Polygon = __webpack_require__(48);
 
-var _Polygon = __webpack_require__(49);
+var _Rectangle = __webpack_require__(138);
 
-Object.defineProperty(exports, 'Polygon', {
-  enumerable: true,
-  get: function get() {
-    return _Polygon.Polygon;
-  }
-});
-
-var _Rectangle = __webpack_require__(142);
-
-Object.defineProperty(exports, 'Rectangle', {
-  enumerable: true,
-  get: function get() {
-    return _Rectangle.Rectangle;
-  }
-});
+exports.Collection = _Collection.Collection;
+exports.Curve = _Curve.Curve;
+exports.GeoText = _GeoText.GeoText;
+exports.LinearRing = _LinearRing.LinearRing;
+exports.LineString = _LineString.LineString;
+exports.MultiLineString = _MultiLineString.MultiLineString;
+exports.MultiPoint = _MultiPoint.MultiPoint;
+exports.MultiPolygon = _MultiPolygon.MultiPolygon;
+exports.GeometryPoint = _Point.Point;
+exports.Polygon = _Polygon.Polygon;
+exports.Rectangle = _Rectangle.Rectangle;
 
 /***/ }),
-/* 338 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
+exports.GeometryVector = exports.CommonUtil = exports.Size = exports.Pixel = exports.LonLat = exports.Geometry = exports.Feature = exports.Events = exports.Event = exports.DateExt = exports.Credential = exports.Bounds = exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = undefined;
 
-var _index = __webpack_require__(337);
+var _index = __webpack_require__(326);
 
-Object.keys(_index).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _index[key];
-    }
-  });
-});
-
-var _BaseTypes = __webpack_require__(46);
-
-Object.defineProperty(exports, 'StringExt', {
-  enumerable: true,
-  get: function get() {
-    return _BaseTypes.StringExt;
-  }
-});
-Object.defineProperty(exports, 'NumberExt', {
-  enumerable: true,
-  get: function get() {
-    return _BaseTypes.NumberExt;
-  }
-});
-Object.defineProperty(exports, 'FunctionExt', {
-  enumerable: true,
-  get: function get() {
-    return _BaseTypes.FunctionExt;
-  }
-});
-Object.defineProperty(exports, 'ArrayExt', {
-  enumerable: true,
-  get: function get() {
-    return _BaseTypes.ArrayExt;
-  }
-});
+var _BaseTypes = __webpack_require__(45);
 
 var _Bounds = __webpack_require__(22);
 
-Object.defineProperty(exports, 'Bounds', {
-  enumerable: true,
-  get: function get() {
-    return _Bounds.Bounds;
-  }
-});
+var _Credential = __webpack_require__(86);
 
-var _Credential = __webpack_require__(89);
+var _Date = __webpack_require__(325);
 
-Object.defineProperty(exports, 'Credential', {
-  enumerable: true,
-  get: function get() {
-    return _Credential.Credential;
-  }
-});
+var _Event = __webpack_require__(135);
 
-var _Date = __webpack_require__(336);
+var _Events = __webpack_require__(60);
 
-Object.keys(_Date).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Date[key];
-    }
-  });
-});
-
-var _Event = __webpack_require__(139);
-
-Object.keys(_Event).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Event[key];
-    }
-  });
-});
-
-var _Events = __webpack_require__(62);
-
-Object.defineProperty(exports, 'Events', {
-  enumerable: true,
-  get: function get() {
-    return _Events.Events;
-  }
-});
-
-var _Feature = __webpack_require__(140);
-
-Object.defineProperty(exports, 'Feature', {
-  enumerable: true,
-  get: function get() {
-    return _Feature.Feature;
-  }
-});
+var _Feature = __webpack_require__(136);
 
 var _Geometry = __webpack_require__(26);
 
-Object.defineProperty(exports, 'Geometry', {
-  enumerable: true,
-  get: function get() {
-    return _Geometry.Geometry;
-  }
-});
+var _LonLat = __webpack_require__(36);
 
-var _LonLat = __webpack_require__(37);
+var _Pixel = __webpack_require__(61);
 
-Object.defineProperty(exports, 'LonLat', {
-  enumerable: true,
-  get: function get() {
-    return _LonLat.LonLat;
-  }
-});
-
-var _Pixel = __webpack_require__(63);
-
-Object.keys(_Pixel).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Pixel[key];
-    }
-  });
-});
-
-var _Size = __webpack_require__(141);
-
-Object.defineProperty(exports, 'Size', {
-  enumerable: true,
-  get: function get() {
-    return _Size.Size;
-  }
-});
+var _Size = __webpack_require__(137);
 
 var _Util = __webpack_require__(1);
 
-Object.defineProperty(exports, 'CommonUtil', {
-  enumerable: true,
-  get: function get() {
-    return _Util.Util;
-  }
-});
+var _Vector = __webpack_require__(62);
 
-var _Vector = __webpack_require__(64);
-
-Object.defineProperty(exports, 'GeometryVector', {
-  enumerable: true,
-  get: function get() {
-    return _Vector.Vector;
-  }
-});
+exports.Collection = _index.Collection;
+exports.Curve = _index.Curve;
+exports.GeoText = _index.GeoText;
+exports.LinearRing = _index.LinearRing;
+exports.LineString = _index.LineString;
+exports.MultiLineString = _index.MultiLineString;
+exports.MultiPoint = _index.MultiPoint;
+exports.MultiPolygon = _index.MultiPolygon;
+exports.GeometryPoint = _index.GeometryPoint;
+exports.Polygon = _index.Polygon;
+exports.Rectangle = _index.Rectangle;
+exports.StringExt = _BaseTypes.StringExt;
+exports.NumberExt = _BaseTypes.NumberExt;
+exports.FunctionExt = _BaseTypes.FunctionExt;
+exports.ArrayExt = _BaseTypes.ArrayExt;
+exports.Bounds = _Bounds.Bounds;
+exports.Credential = _Credential.Credential;
+exports.DateExt = _Date.DateExt;
+exports.Event = _Event.Event;
+exports.Events = _Events.Events;
+exports.Feature = _Feature.Feature;
+exports.Geometry = _Geometry.Geometry;
+exports.LonLat = _LonLat.LonLat;
+exports.Pixel = _Pixel.Pixel;
+exports.Size = _Size.Size;
+exports.CommonUtil = _Util.Util;
+exports.GeometryVector = _Vector.Vector;
 
 /***/ }),
-/* 339 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64857,28 +64600,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TimeFlowControl = exports.TimeControlBase = undefined;
 
-var _TimeControlBase = __webpack_require__(143);
+__webpack_require__(296);
 
-Object.defineProperty(exports, 'TimeControlBase', {
-  enumerable: true,
-  get: function get() {
-    return _TimeControlBase.TimeControlBase;
-  }
-});
+var _TimeControlBase = __webpack_require__(139);
 
-var _TimeFlowControl = __webpack_require__(119);
+var _TimeFlowControl = __webpack_require__(115);
 
-Object.defineProperty(exports, 'TimeFlowControl', {
-  enumerable: true,
-  get: function get() {
-    return _TimeFlowControl.TimeFlowControl;
-  }
-});
-
-__webpack_require__(307);
+exports.TimeControlBase = _TimeControlBase.TimeControlBase;
+exports.TimeFlowControl = _TimeFlowControl.TimeFlowControl;
 
 /***/ }),
-/* 340 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64893,25 +64625,25 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Format2 = __webpack_require__(92);
+var _Format2 = __webpack_require__(89);
 
-var _BaseTypes = __webpack_require__(46);
+var _BaseTypes = __webpack_require__(45);
 
-var _Vector = __webpack_require__(64);
+var _Vector = __webpack_require__(62);
 
 var _Point = __webpack_require__(18);
 
-var _MultiPoint = __webpack_require__(38);
+var _MultiPoint = __webpack_require__(37);
 
 var _LineString = __webpack_require__(17);
 
-var _MultiLineString = __webpack_require__(47);
+var _MultiLineString = __webpack_require__(46);
 
-var _LinearRing = __webpack_require__(31);
+var _LinearRing = __webpack_require__(30);
 
-var _Polygon = __webpack_require__(49);
+var _Polygon = __webpack_require__(48);
 
-var _MultiPolygon = __webpack_require__(48);
+var _MultiPolygon = __webpack_require__(47);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65259,7 +64991,7 @@ var WKT = exports.WKT = function (_Format) {
 _SuperMap.SuperMap.Format.WKT = WKT;
 
 /***/ }),
-/* 341 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65268,45 +65000,23 @@ _SuperMap.SuperMap.Format.WKT = WKT;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.WKT = exports.GeoJSON = exports.JSONFormat = exports.Format = undefined;
 
-var _Format = __webpack_require__(92);
-
-Object.defineProperty(exports, 'Format', {
-  enumerable: true,
-  get: function get() {
-    return _Format.Format;
-  }
-});
+var _Format = __webpack_require__(89);
 
 var _GeoJSON = __webpack_require__(14);
 
-Object.defineProperty(exports, 'GeoJSON', {
-  enumerable: true,
-  get: function get() {
-    return _GeoJSON.GeoJSON;
-  }
-});
+var _JSON = __webpack_require__(90);
 
-var _JSON = __webpack_require__(93);
+var _WKT = __webpack_require__(329);
 
-Object.defineProperty(exports, 'JSONFormat', {
-  enumerable: true,
-  get: function get() {
-    return _JSON.JSONFormat;
-  }
-});
-
-var _WKT = __webpack_require__(340);
-
-Object.defineProperty(exports, 'WKT', {
-  enumerable: true,
-  get: function get() {
-    return _WKT.WKT;
-  }
-});
+exports.Format = _Format.Format;
+exports.JSONFormat = _JSON.JSONFormat;
+exports.GeoJSON = _GeoJSON.GeoJSON;
+exports.WKT = _WKT.WKT;
 
 /***/ }),
-/* 342 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65315,36 +65025,20 @@ Object.defineProperty(exports, 'WKT', {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.IManagerServiceBase = exports.IManagerCreateNodeParam = exports.IManager = undefined;
 
-var _iManager = __webpack_require__(120);
+var _iManager = __webpack_require__(116);
 
-Object.defineProperty(exports, 'IManager', {
-  enumerable: true,
-  get: function get() {
-    return _iManager.IManager;
-  }
-});
+var _iManagerCreateNodeParam = __webpack_require__(140);
 
-var _iManagerCreateNodeParam = __webpack_require__(144);
+var _iManagerServiceBase = __webpack_require__(141);
 
-Object.defineProperty(exports, 'IManagerCreateNodeParam', {
-  enumerable: true,
-  get: function get() {
-    return _iManagerCreateNodeParam.IManagerCreateNodeParam;
-  }
-});
-
-var _iManagerServiceBase = __webpack_require__(145);
-
-Object.defineProperty(exports, 'IManagerServiceBase', {
-  enumerable: true,
-  get: function get() {
-    return _iManagerServiceBase.IManagerServiceBase;
-  }
-});
+exports.IManager = _iManager.IManager;
+exports.IManagerCreateNodeParam = _iManagerCreateNodeParam.IManagerCreateNodeParam;
+exports.IManagerServiceBase = _iManagerServiceBase.IManagerServiceBase;
 
 /***/ }),
-/* 343 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65353,63 +65047,29 @@ Object.defineProperty(exports, 'IManagerServiceBase', {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.IPortalServicesQueryParam = exports.IPortalServiceBase = exports.IPortalService = exports.IPortalMapsQueryParam = exports.IPortalMap = exports.IPortal = undefined;
 
-var _iPortal = __webpack_require__(121);
+var _iPortal = __webpack_require__(117);
 
-Object.defineProperty(exports, 'IPortal', {
-  enumerable: true,
-  get: function get() {
-    return _iPortal.IPortal;
-  }
-});
+var _iPortalMap = __webpack_require__(142);
 
-var _iPortalMap = __webpack_require__(146);
+var _iPortalMapsQueryParam = __webpack_require__(143);
 
-Object.defineProperty(exports, 'IPortalMap', {
-  enumerable: true,
-  get: function get() {
-    return _iPortalMap.IPortalMap;
-  }
-});
+var _iPortalService = __webpack_require__(144);
 
-var _iPortalMapsQueryParam = __webpack_require__(147);
+var _iPortalServiceBase = __webpack_require__(63);
 
-Object.defineProperty(exports, 'IPortalMapsQueryParam', {
-  enumerable: true,
-  get: function get() {
-    return _iPortalMapsQueryParam.IPortalMapsQueryParam;
-  }
-});
+var _iPortalServicesQueryParam = __webpack_require__(145);
 
-var _iPortalService = __webpack_require__(148);
-
-Object.defineProperty(exports, 'IPortalService', {
-  enumerable: true,
-  get: function get() {
-    return _iPortalService.IPortalService;
-  }
-});
-
-var _iPortalServiceBase = __webpack_require__(65);
-
-Object.defineProperty(exports, 'IPortalServiceBase', {
-  enumerable: true,
-  get: function get() {
-    return _iPortalServiceBase.IPortalServiceBase;
-  }
-});
-
-var _iPortalServicesQueryParam = __webpack_require__(149);
-
-Object.defineProperty(exports, 'IPortalServicesQueryParam', {
-  enumerable: true,
-  get: function get() {
-    return _iPortalServicesQueryParam.IPortalServicesQueryParam;
-  }
-});
+exports.IPortal = _iPortal.IPortal;
+exports.IPortalMap = _iPortalMap.IPortalMap;
+exports.IPortalMapsQueryParam = _iPortalMapsQueryParam.IPortalMapsQueryParam;
+exports.IPortalService = _iPortalService.IPortalService;
+exports.IPortalServiceBase = _iPortalServiceBase.IPortalServiceBase;
+exports.IPortalServicesQueryParam = _iPortalServicesQueryParam.IPortalServicesQueryParam;
 
 /***/ }),
-/* 344 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65430,9 +65090,9 @@ var _CommonServiceBase2 = __webpack_require__(6);
 
 var _FetchRequest = __webpack_require__(21);
 
-var _GeoCodingParameter = __webpack_require__(183);
+var _GeoCodingParameter = __webpack_require__(179);
 
-var _GeoDecodingParameter = __webpack_require__(184);
+var _GeoDecodingParameter = __webpack_require__(180);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65519,7 +65179,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
                 } else {
                     me.serviceProcessFailed(result);
                 }
-            }).catch(function (e) {
+            })["catch"](function (e) {
                 me.eventListeners.processFailed({ error: e });
             });
         }
@@ -65555,7 +65215,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 _SuperMap.SuperMap.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 345 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65574,7 +65234,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _AreaSolarRadiationParameters = __webpack_require__(150);
+var _AreaSolarRadiationParameters = __webpack_require__(146);
 
 var _Util = __webpack_require__(1);
 
@@ -65671,7 +65331,7 @@ var AreaSolarRadiationService = exports.AreaSolarRadiationService = function (_S
 _SuperMap.SuperMap.AreaSolarRadiationService = AreaSolarRadiationService;
 
 /***/ }),
-/* 346 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65692,9 +65352,9 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _DatasetBufferAnalystParameters = __webpack_require__(160);
+var _DatasetBufferAnalystParameters = __webpack_require__(156);
 
-var _GeometryBufferAnalystParameters = __webpack_require__(186);
+var _GeometryBufferAnalystParameters = __webpack_require__(182);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65821,7 +65481,7 @@ var BufferAnalystService = exports.BufferAnalystService = function (_SpatialAnal
 _SuperMap.SuperMap.BufferAnalystService = BufferAnalystService;
 
 /***/ }),
-/* 347 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65840,7 +65500,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-var _BuffersAnalystJobsParameter = __webpack_require__(153);
+var _BuffersAnalystJobsParameter = __webpack_require__(149);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65922,7 +65582,7 @@ var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_P
 _SuperMap.SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 
 /***/ }),
-/* 348 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65941,7 +65601,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _BurstPipelineAnalystParameters = __webpack_require__(154);
+var _BurstPipelineAnalystParameters = __webpack_require__(150);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66034,7 +65694,7 @@ var BurstPipelineAnalystService = exports.BurstPipelineAnalystService = function
 _SuperMap.SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService;
 
 /***/ }),
-/* 349 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66138,7 +65798,7 @@ var ChartFeatureInfoSpecsService = exports.ChartFeatureInfoSpecsService = functi
 _SuperMap.SuperMap.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService;
 
 /***/ }),
-/* 350 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66159,9 +65819,9 @@ var _REST = __webpack_require__(3);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _QueryParameters = __webpack_require__(32);
+var _QueryParameters = __webpack_require__(31);
 
-var _ChartQueryParameters = __webpack_require__(156);
+var _ChartQueryParameters = __webpack_require__(152);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -66350,7 +66010,7 @@ var ChartQueryService = exports.ChartQueryService = function (_CommonServiceBase
 _SuperMap.SuperMap.ChartQueryService = ChartQueryService;
 
 /***/ }),
-/* 351 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66369,7 +66029,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ComputeWeightMatrixParameters = __webpack_require__(159);
+var _ComputeWeightMatrixParameters = __webpack_require__(155);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
@@ -66492,7 +66152,7 @@ var ComputeWeightMatrixService = exports.ComputeWeightMatrixService = function (
 _SuperMap.SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService;
 
 /***/ }),
-/* 352 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66511,7 +66171,7 @@ var _CommonServiceBase2 = __webpack_require__(6);
 
 var _Util = __webpack_require__(1);
 
-var _SecurityManager = __webpack_require__(35);
+var _SecurityManager = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66783,7 +66443,7 @@ var DataFlowService = exports.DataFlowService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.DataFlowService = DataFlowService;
 
 /***/ }),
-/* 353 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66804,7 +66464,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _DensityKernelAnalystParameters = __webpack_require__(166);
+var _DensityKernelAnalystParameters = __webpack_require__(162);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66906,7 +66566,7 @@ var DensityAnalystService = exports.DensityAnalystService = function (_SpatialAn
 _SuperMap.SuperMap.DensityAnalystService = DensityAnalystService;
 
 /***/ }),
-/* 354 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66929,7 +66589,7 @@ var _REST = __webpack_require__(3);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _EditFeaturesParameters = __webpack_require__(167);
+var _EditFeaturesParameters = __webpack_require__(163);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67062,7 +66722,7 @@ var EditFeaturesService = exports.EditFeaturesService = function (_CommonService
 _SuperMap.SuperMap.EditFeaturesService = EditFeaturesService;
 
 /***/ }),
-/* 355 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67079,7 +66739,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _FacilityAnalystSinks3DParameters = __webpack_require__(168);
+var _FacilityAnalystSinks3DParameters = __webpack_require__(164);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67170,7 +66830,7 @@ var FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DService = func
 _SuperMap.SuperMap.FacilityAnalystSinks3DService = FacilityAnalystSinks3DService;
 
 /***/ }),
-/* 356 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67189,7 +66849,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _FacilityAnalystSources3DParameters = __webpack_require__(169);
+var _FacilityAnalystSources3DParameters = __webpack_require__(165);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67273,7 +66933,7 @@ var FacilityAnalystSources3DService = exports.FacilityAnalystSources3DService = 
 _SuperMap.SuperMap.FacilityAnalystSources3DService = FacilityAnalystSources3DService;
 
 /***/ }),
-/* 357 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67292,7 +66952,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FacilityAnalystStreamParameters = __webpack_require__(170);
+var _FacilityAnalystStreamParameters = __webpack_require__(166);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67392,7 +67052,7 @@ var FacilityAnalystStreamService = exports.FacilityAnalystStreamService = functi
 _SuperMap.SuperMap.FacilityAnalystStreamService = FacilityAnalystStreamService;
 
 /***/ }),
-/* 358 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67411,7 +67071,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _FacilityAnalystTracedown3DParameters = __webpack_require__(171);
+var _FacilityAnalystTracedown3DParameters = __webpack_require__(167);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67491,7 +67151,7 @@ var FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DServic
 _SuperMap.SuperMap.FacilityAnalystTracedown3DService = FacilityAnalystTracedown3DService;
 
 /***/ }),
-/* 359 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67510,7 +67170,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _FacilityAnalystTraceup3DParameters = __webpack_require__(172);
+var _FacilityAnalystTraceup3DParameters = __webpack_require__(168);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67599,7 +67259,7 @@ var FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DService = 
 _SuperMap.SuperMap.FacilityAnalystTraceup3DService = FacilityAnalystTraceup3DService;
 
 /***/ }),
-/* 360 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67618,7 +67278,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _FacilityAnalystUpstream3DParameters = __webpack_require__(173);
+var _FacilityAnalystUpstream3DParameters = __webpack_require__(169);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67698,7 +67358,7 @@ var FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DService 
 _SuperMap.SuperMap.FacilityAnalystUpstream3DService = FacilityAnalystUpstream3DService;
 
 /***/ }),
-/* 361 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67719,7 +67379,7 @@ var _CommonServiceBase2 = __webpack_require__(6);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(175);
+__webpack_require__(171);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67837,7 +67497,7 @@ var FieldStatisticService = exports.FieldStatisticService = function (_CommonSer
 _SuperMap.SuperMap.FieldStatisticService = FieldStatisticService;
 
 /***/ }),
-/* 362 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67860,7 +67520,7 @@ var _GeoJSON = __webpack_require__(14);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindClosestFacilitiesParameters = __webpack_require__(176);
+var _FindClosestFacilitiesParameters = __webpack_require__(172);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -68027,7 +67687,7 @@ var FindClosestFacilitiesService = exports.FindClosestFacilitiesService = functi
 _SuperMap.SuperMap.FindClosestFacilitiesService = FindClosestFacilitiesService;
 
 /***/ }),
-/* 363 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68048,7 +67708,7 @@ var _Util = __webpack_require__(1);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindLocationParameters = __webpack_require__(177);
+var _FindLocationParameters = __webpack_require__(173);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -68191,7 +67851,7 @@ var FindLocationService = exports.FindLocationService = function (_NetworkAnalys
 _SuperMap.SuperMap.FindLocationService = FindLocationService;
 
 /***/ }),
-/* 364 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68212,7 +67872,7 @@ var _Util = __webpack_require__(1);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindMTSPPathsParameters = __webpack_require__(178);
+var _FindMTSPPathsParameters = __webpack_require__(174);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -68373,7 +68033,7 @@ var FindMTSPPathsService = exports.FindMTSPPathsService = function (_NetworkAnal
 _SuperMap.SuperMap.FindMTSPPathsService = FindMTSPPathsService;
 
 /***/ }),
-/* 365 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68394,7 +68054,7 @@ var _Util = __webpack_require__(1);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindPathParameters = __webpack_require__(179);
+var _FindPathParameters = __webpack_require__(175);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -68549,7 +68209,7 @@ var FindPathService = exports.FindPathService = function (_NetworkAnalystServic)
 _SuperMap.SuperMap.FindPathService = FindPathService;
 
 /***/ }),
-/* 366 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68570,7 +68230,7 @@ var _Util = __webpack_require__(1);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindServiceAreasParameters = __webpack_require__(180);
+var _FindServiceAreasParameters = __webpack_require__(176);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -68729,7 +68389,7 @@ var FindServiceAreasService = exports.FindServiceAreasService = function (_Netwo
 _SuperMap.SuperMap.FindServiceAreasService = FindServiceAreasService;
 
 /***/ }),
-/* 367 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68748,7 +68408,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindTSPPathsParameters = __webpack_require__(181);
+var _FindTSPPathsParameters = __webpack_require__(177);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -68912,7 +68572,7 @@ var FindTSPPathsService = exports.FindTSPPathsService = function (_NetworkAnalys
 _SuperMap.SuperMap.FindTSPPathsService = FindTSPPathsService;
 
 /***/ }),
-/* 368 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68933,7 +68593,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _GenerateSpatialDataParameters = __webpack_require__(182);
+var _GenerateSpatialDataParameters = __webpack_require__(178);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69069,7 +68729,7 @@ var GenerateSpatialDataService = exports.GenerateSpatialDataService = function (
 _SuperMap.SuperMap.GenerateSpatialDataService = GenerateSpatialDataService;
 
 /***/ }),
-/* 369 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69088,7 +68748,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _GeoRelationAnalystParameters = __webpack_require__(185);
+var _GeoRelationAnalystParameters = __webpack_require__(181);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69203,7 +68863,7 @@ var GeoRelationAnalystService = exports.GeoRelationAnalystService = function (_S
 _SuperMap.SuperMap.GeoRelationAnalystService = GeoRelationAnalystService;
 
 /***/ }),
-/* 370 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69220,9 +68880,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(41);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesByBoundsParameters = __webpack_require__(190);
+var _GetFeaturesByBoundsParameters = __webpack_require__(186);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69278,7 +68938,7 @@ var GetFeaturesByBoundsService = exports.GetFeaturesByBoundsService = function (
 
         /**
          * @function SuperMap.GetFeaturesByBoundsService.prototype.getJsonParameters
-         * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry,Bounds等）。
+         * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（ID SQL Buffer GeometryBounds等）。
          * @param params {SuperMap.GetFeaturesByBoundsParameters}
          * @return {string} 转化后的 JSON 字符串。
          *
@@ -69297,7 +68957,7 @@ var GetFeaturesByBoundsService = exports.GetFeaturesByBoundsService = function (
 _SuperMap.SuperMap.GetFeaturesByBoundsService = GetFeaturesByBoundsService;
 
 /***/ }),
-/* 371 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69314,9 +68974,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(41);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesByBufferParameters = __webpack_require__(191);
+var _GetFeaturesByBufferParameters = __webpack_require__(187);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69372,7 +69032,7 @@ var GetFeaturesByBufferService = exports.GetFeaturesByBufferService = function (
 
         /**
          * @function SuperMap.GetFeaturesByBufferService.prototype.getJsonParameters
-         * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（IDs, SQL, Buffer, Geometry等）。
+         * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（IDs SQL Buffer Geometry等）。
          * @param params {SuperMap.GetFeaturesByBufferParameters}
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -69393,7 +69053,7 @@ var GetFeaturesByBufferService = exports.GetFeaturesByBufferService = function (
 _SuperMap.SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService;
 
 /***/ }),
-/* 372 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69410,9 +69070,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(41);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesByGeometryParameters = __webpack_require__(192);
+var _GetFeaturesByGeometryParameters = __webpack_require__(188);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69469,7 +69129,7 @@ var GetFeaturesByGeometryService = exports.GetFeaturesByGeometryService = functi
          * @function SuperMap.GetFeaturesByGeometryService.prototype.getJsonParameters
          * @param params - {SuperMap.GetFeaturesByGeometryParameters}
          * @description 将查询参数转化为 JSON 字符串。
-         * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
+         * 在本类中重写此方法，可以实现不同种类的查询（ID SQL Buffer Geometry等）。
          * @return {Object} 转化后的 JSON 字符串。
          */
 
@@ -69486,7 +69146,7 @@ var GetFeaturesByGeometryService = exports.GetFeaturesByGeometryService = functi
 _SuperMap.SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService;
 
 /***/ }),
-/* 373 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69503,9 +69163,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(41);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesByIDsParameters = __webpack_require__(193);
+var _GetFeaturesByIDsParameters = __webpack_require__(189);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69561,7 +69221,7 @@ var GetFeaturesByIDsService = exports.GetFeaturesByIDsService = function (_GetFe
         /**
          * @function SuperMap.GetFeaturesByIDsService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
+         * 在本类中重写此方法，可以实现不同种类的查询（ID SQL Buffer Geometry等）。
          * @param  params - {SuperMap.GetFeaturesByIDsParameters}
          * @return {string} 转化后的 JSON 字符串。
          */
@@ -69579,7 +69239,7 @@ var GetFeaturesByIDsService = exports.GetFeaturesByIDsService = function (_GetFe
 _SuperMap.SuperMap.GetFeaturesByIDsService = GetFeaturesByIDsService;
 
 /***/ }),
-/* 374 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69596,9 +69256,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(41);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesBySQLParameters = __webpack_require__(194);
+var _GetFeaturesBySQLParameters = __webpack_require__(190);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69658,7 +69318,7 @@ var GetFeaturesBySQLService = exports.GetFeaturesBySQLService = function (_GetFe
         /*
          * @function SuperMap.GetFeaturesBySQLService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
+         * 在本类中重写此方法，可以实现不同种类的查询（ID SQL Buffer Geometry等）。
          * @param params - {SuperMap.GetFeaturesBySQLParameters}
          * @return {string} 转化后的 JSON 字符串。
          */
@@ -69676,7 +69336,7 @@ var GetFeaturesBySQLService = exports.GetFeaturesBySQLService = function (_GetFe
 _SuperMap.SuperMap.GetFeaturesBySQLService = GetFeaturesBySQLService;
 
 /***/ }),
-/* 375 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69795,7 +69455,7 @@ var GetFieldsService = exports.GetFieldsService = function (_CommonServiceBase) 
 _SuperMap.SuperMap.GetFieldsService = GetFieldsService;
 
 /***/ }),
-/* 376 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69816,7 +69476,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _GetGridCellInfosParameters = __webpack_require__(195);
+var _GetGridCellInfosParameters = __webpack_require__(191);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70003,7 +69663,7 @@ var GetGridCellInfosService = exports.GetGridCellInfosService = function (_Commo
 _SuperMap.SuperMap.GetGridCellInfosService = GetGridCellInfosService;
 
 /***/ }),
-/* 377 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70024,13 +69684,13 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _ServerTheme = __webpack_require__(219);
+var _ServerTheme = __webpack_require__(215);
 
-var _Grid = __webpack_require__(196);
+var _Grid = __webpack_require__(192);
 
-var _Image = __webpack_require__(197);
+var _Image = __webpack_require__(193);
 
-var _Vector = __webpack_require__(254);
+var _Vector = __webpack_require__(250);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70189,7 +69849,7 @@ var GetLayersInfoService = exports.GetLayersInfoService = function (_CommonServi
 _SuperMap.SuperMap.GetLayersInfoService = GetLayersInfoService;
 
 /***/ }),
-/* 378 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70210,15 +69870,15 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _InterpolationRBFAnalystParameters = __webpack_require__(200);
+var _InterpolationRBFAnalystParameters = __webpack_require__(196);
 
-var _InterpolationDensityAnalystParameters = __webpack_require__(379);
+var _InterpolationDensityAnalystParameters = __webpack_require__(368);
 
-var _InterpolationIDWAnalystParameters = __webpack_require__(198);
+var _InterpolationIDWAnalystParameters = __webpack_require__(194);
 
-var _InterpolationKrigingAnalystParameters = __webpack_require__(199);
+var _InterpolationKrigingAnalystParameters = __webpack_require__(195);
 
-var _InterpolationAnalystParameters = __webpack_require__(42);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70347,7 +70007,7 @@ var InterpolationAnalystService = exports.InterpolationAnalystService = function
 _SuperMap.SuperMap.InterpolationAnalystService = InterpolationAnalystService;
 
 /***/ }),
-/* 379 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70366,7 +70026,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _InterpolationAnalystParameters = __webpack_require__(42);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70438,7 +70098,7 @@ var InterpolationDensityAnalystParameters = exports.InterpolationDensityAnalystP
 _SuperMap.SuperMap.InterpolationDensityAnalystParameters = InterpolationDensityAnalystParameters;
 
 /***/ }),
-/* 380 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70457,7 +70117,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-var _KernelDensityJobParameter = __webpack_require__(201);
+var _KernelDensityJobParameter = __webpack_require__(197);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70540,7 +70200,7 @@ var KernelDensityJobsService = exports.KernelDensityJobsService = function (_Pro
 _SuperMap.SuperMap.KernelDensityJobsService = KernelDensityJobsService;
 
 /***/ }),
-/* 381 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70688,7 +70348,7 @@ var MapService = exports.MapService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.MapService = MapService;
 
 /***/ }),
-/* 382 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70709,7 +70369,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _MathExpressionAnalysisParameters = __webpack_require__(208);
+var _MathExpressionAnalysisParameters = __webpack_require__(204);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70799,7 +70459,7 @@ var MathExpressionAnalysisService = exports.MathExpressionAnalysisService = func
 _SuperMap.SuperMap.MathExpressionAnalysisService = MathExpressionAnalysisService;
 
 /***/ }),
-/* 383 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70822,7 +70482,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _MeasureParameters = __webpack_require__(209);
+var _MeasureParameters = __webpack_require__(205);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -70954,7 +70614,7 @@ var MeasureService = exports.MeasureService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.MeasureService = MeasureService;
 
 /***/ }),
-/* 384 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70975,9 +70635,9 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _DatasetOverlayAnalystParameters = __webpack_require__(162);
+var _DatasetOverlayAnalystParameters = __webpack_require__(158);
 
-var _GeometryOverlayAnalystParameters = __webpack_require__(187);
+var _GeometryOverlayAnalystParameters = __webpack_require__(183);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71085,7 +70745,7 @@ var OverlayAnalystService = exports.OverlayAnalystService = function (_SpatialAn
 _SuperMap.SuperMap.OverlayAnalystService = OverlayAnalystService;
 
 /***/ }),
-/* 385 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71104,7 +70764,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-var _OverlayGeoJobParameter = __webpack_require__(211);
+var _OverlayGeoJobParameter = __webpack_require__(207);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71190,7 +70850,7 @@ var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_Processin
 _SuperMap.SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 
 /***/ }),
-/* 386 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71209,9 +70869,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryService2 = __webpack_require__(51);
+var _QueryService2 = __webpack_require__(50);
 
-var _QueryByBoundsParameters = __webpack_require__(213);
+var _QueryByBoundsParameters = __webpack_require__(209);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71266,7 +70926,7 @@ var QueryByBoundsService = exports.QueryByBoundsService = function (_QueryServic
         /**
          * @function SuperMap.QueryByBoundsService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds 等）。
+         *              在本类中重写此方法，可以实现不同种类的查询（sql geometry distance bounds 等）。
          * @param params - {SuperMap.QueryByBoundsParameters} Bounds 查询参数。
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -71296,7 +70956,7 @@ var QueryByBoundsService = exports.QueryByBoundsService = function (_QueryServic
 _SuperMap.SuperMap.QueryByBoundsService = QueryByBoundsService;
 
 /***/ }),
-/* 387 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71315,9 +70975,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryService2 = __webpack_require__(51);
+var _QueryService2 = __webpack_require__(50);
 
-var _QueryByDistanceParameters = __webpack_require__(214);
+var _QueryByDistanceParameters = __webpack_require__(210);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -71372,7 +71032,7 @@ var QueryByDistanceService = exports.QueryByDistanceService = function (_QuerySe
         /**
          * @function SuperMap.QueryByDistanceService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
+         *              在本类中重写此方法，可以实现不同种类的查询（sql geometry distance bounds等）。
          * @param params - {SuperMap.QueryByDistanceParameters}
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -71402,7 +71062,7 @@ var QueryByDistanceService = exports.QueryByDistanceService = function (_QuerySe
 _SuperMap.SuperMap.QueryByDistanceService = QueryByDistanceService;
 
 /***/ }),
-/* 388 */
+/* 377 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71421,9 +71081,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryService2 = __webpack_require__(51);
+var _QueryService2 = __webpack_require__(50);
 
-var _QueryByGeometryParameters = __webpack_require__(215);
+var _QueryByGeometryParameters = __webpack_require__(211);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -71485,7 +71145,7 @@ var QueryByGeometryService = exports.QueryByGeometryService = function (_QuerySe
         /**
          * @function SuperMap.QueryByGeometryService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
+         *              在本类中重写此方法，可以实现不同种类的查询（sql geometry distance bounds等）。
          * @param params - {SuperMap.QueryByGeometryParameters}
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -71515,7 +71175,7 @@ var QueryByGeometryService = exports.QueryByGeometryService = function (_QuerySe
 _SuperMap.SuperMap.QueryByGeometryService = QueryByGeometryService;
 
 /***/ }),
-/* 389 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71534,9 +71194,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryService2 = __webpack_require__(51);
+var _QueryService2 = __webpack_require__(50);
 
-var _QueryBySQLParameters = __webpack_require__(216);
+var _QueryBySQLParameters = __webpack_require__(212);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71603,7 +71263,7 @@ var QueryBySQLService = exports.QueryBySQLService = function (_QueryService) {
         /**
          * @function SuperMap.QueryBySQLService.prototype.getJsonParameters
          * @description 将查询参数转化为 JSON 字符串。
-         *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
+         *              在本类中重写此方法，可以实现不同种类的查询（sql geometry distance bounds等）。
          * @param params - {SuperMap.QueryBySQLParameters}
          * @return {Object} 转化后的 JSON 字符串。
          */
@@ -71631,7 +71291,7 @@ var QueryBySQLService = exports.QueryBySQLService = function (_QueryService) {
 _SuperMap.SuperMap.QueryBySQLService = QueryBySQLService;
 
 /***/ }),
-/* 390 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71652,7 +71312,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _RouteCalculateMeasureParameters = __webpack_require__(217);
+var _RouteCalculateMeasureParameters = __webpack_require__(213);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71797,7 +71457,7 @@ var RouteCalculateMeasureService = exports.RouteCalculateMeasureService = functi
 _SuperMap.SuperMap.RouteCalculateMeasureService = RouteCalculateMeasureService;
 
 /***/ }),
-/* 391 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71818,7 +71478,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _RouteLocatorParameters = __webpack_require__(218);
+var _RouteLocatorParameters = __webpack_require__(214);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71963,7 +71623,7 @@ var RouteLocatorService = exports.RouteLocatorService = function (_SpatialAnalys
 _SuperMap.SuperMap.RouteLocatorService = RouteLocatorService;
 
 /***/ }),
-/* 392 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71978,7 +71638,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Vector = __webpack_require__(64);
+var _Vector = __webpack_require__(62);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -72121,7 +71781,7 @@ var ServerFeature = exports.ServerFeature = function () {
 _SuperMap.SuperMap.ServerFeature = ServerFeature;
 
 /***/ }),
-/* 393 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72142,7 +71802,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-__webpack_require__(220);
+__webpack_require__(216);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72221,7 +71881,7 @@ var SetLayerInfoService = exports.SetLayerInfoService = function (_CommonService
 _SuperMap.SuperMap.SetLayerInfoService = SetLayerInfoService;
 
 /***/ }),
-/* 394 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72242,7 +71902,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _SetLayerStatusParameters = __webpack_require__(221);
+var _SetLayerStatusParameters = __webpack_require__(217);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72409,7 +72069,7 @@ var SetLayerStatusService = exports.SetLayerStatusService = function (_CommonSer
 _SuperMap.SuperMap.SetLayerStatusService = SetLayerStatusService;
 
 /***/ }),
-/* 395 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72430,7 +72090,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-__webpack_require__(222);
+__webpack_require__(218);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72571,7 +72231,7 @@ var SetLayersInfoService = exports.SetLayersInfoService = function (_CommonServi
 _SuperMap.SuperMap.SetLayersInfoService = SetLayersInfoService;
 
 /***/ }),
-/* 396 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72590,7 +72250,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-var _SingleObjectQueryJobsParameter = __webpack_require__(223);
+var _SingleObjectQueryJobsParameter = __webpack_require__(219);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72672,7 +72332,7 @@ var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = functi
 _SuperMap.SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
-/* 397 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72693,7 +72353,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _StopQueryParameters = __webpack_require__(224);
+var _StopQueryParameters = __webpack_require__(220);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72786,7 +72446,7 @@ var StopQueryService = exports.StopQueryService = function (_CommonServiceBase) 
 _SuperMap.SuperMap.StopQueryService = StopQueryService;
 
 /***/ }),
-/* 398 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72805,7 +72465,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-var _SummaryAttributesJobsParameter = __webpack_require__(225);
+var _SummaryAttributesJobsParameter = __webpack_require__(221);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72887,7 +72547,7 @@ var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = functi
 _SuperMap.SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;
 
 /***/ }),
-/* 399 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72906,7 +72566,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-var _SummaryMeshJobParameter = __webpack_require__(226);
+var _SummaryMeshJobParameter = __webpack_require__(222);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72992,7 +72652,7 @@ var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_Process
 _SuperMap.SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 400 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73011,7 +72671,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-var _SummaryRegionJobParameter = __webpack_require__(227);
+var _SummaryRegionJobParameter = __webpack_require__(223);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73093,7 +72753,7 @@ var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_Pro
 _SuperMap.SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 401 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73203,7 +72863,7 @@ var SupplyCenter = exports.SupplyCenter = function () {
 _SuperMap.SuperMap.SupplyCenter = SupplyCenter;
 
 /***/ }),
-/* 402 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73224,11 +72884,11 @@ var _SpatialAnalystBase2 = __webpack_require__(10);
 
 var _Util = __webpack_require__(1);
 
-var _DatasetSurfaceAnalystParameters = __webpack_require__(163);
+var _DatasetSurfaceAnalystParameters = __webpack_require__(159);
 
-var _GeometrySurfaceAnalystParameters = __webpack_require__(188);
+var _GeometrySurfaceAnalystParameters = __webpack_require__(184);
 
-var _SurfaceAnalystParameters = __webpack_require__(69);
+var _SurfaceAnalystParameters = __webpack_require__(67);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73341,7 +73001,7 @@ var SurfaceAnalystService = exports.SurfaceAnalystService = function (_SpatialAn
 _SuperMap.SuperMap.SurfaceAnalystService = SurfaceAnalystService;
 
 /***/ }),
-/* 403 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73360,7 +73020,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _TerrainCurvatureCalculationParameters = __webpack_require__(229);
+var _TerrainCurvatureCalculationParameters = __webpack_require__(225);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73450,7 +73110,7 @@ var TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationServ
 _SuperMap.SuperMap.TerrainCurvatureCalculationService = TerrainCurvatureCalculationService;
 
 /***/ }),
-/* 404 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73467,7 +73127,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(33);
+var _ServerTextStyle = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73578,7 +73238,7 @@ var ThemeLabelUniqueItem = exports.ThemeLabelUniqueItem = function () {
 _SuperMap.SuperMap.ThemeLabelUniqueItem = ThemeLabelUniqueItem;
 
 /***/ }),
-/* 405 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73599,7 +73259,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _ThemeParameters = __webpack_require__(244);
+var _ThemeParameters = __webpack_require__(240);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73751,7 +73411,7 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.ThemeService = ThemeService;
 
 /***/ }),
-/* 406 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73772,9 +73432,9 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _DatasetThiessenAnalystParameters = __webpack_require__(164);
+var _DatasetThiessenAnalystParameters = __webpack_require__(160);
 
-var _GeometryThiessenAnalystParameters = __webpack_require__(189);
+var _GeometryThiessenAnalystParameters = __webpack_require__(185);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -73908,7 +73568,7 @@ var ThiessenAnalystService = exports.ThiessenAnalystService = function (_Spatial
 _SuperMap.SuperMap.ThiessenAnalystService = ThiessenAnalystService;
 
 /***/ }),
-/* 407 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73999,7 +73659,7 @@ var TilesetsService = exports.TilesetsService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.TilesetsService = TilesetsService;
 
 /***/ }),
-/* 408 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74018,7 +73678,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-var _TopologyValidatorJobsParameter = __webpack_require__(246);
+var _TopologyValidatorJobsParameter = __webpack_require__(242);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74100,7 +73760,7 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
 _SuperMap.SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
 
 /***/ }),
-/* 409 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74121,7 +73781,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _TransferPathParameters = __webpack_require__(248);
+var _TransferPathParameters = __webpack_require__(244);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74210,7 +73870,7 @@ var TransferPathService = exports.TransferPathService = function (_CommonService
 _SuperMap.SuperMap.TransferPathService = TransferPathService;
 
 /***/ }),
-/* 410 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74231,7 +73891,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(6);
 
-var _TransferSolutionParameters = __webpack_require__(249);
+var _TransferSolutionParameters = __webpack_require__(245);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74342,7 +74002,7 @@ var TransferSolutionService = exports.TransferSolutionService = function (_Commo
 _SuperMap.SuperMap.TransferSolutionService = TransferSolutionService;
 
 /***/ }),
-/* 411 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74361,7 +74021,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _UpdateEdgeWeightParameters = __webpack_require__(252);
+var _UpdateEdgeWeightParameters = __webpack_require__(248);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74417,10 +74077,10 @@ var UpdateEdgeWeightService = exports.UpdateEdgeWeightService = function (_Netwo
          * @example
          * (code)
          *  var updateEdgeWeightParam=new SuperMapUpdateEdgeWeightParameters({
-         *          edgeId:"20",
-         *          fromNodeId:"26",
-         *          toNodeId:"109",
-         *          weightField:"time",
+         *          edgeId:"20"
+         *          fromNodeId:"26"
+         *          toNodeId:"109"
+         *          weightField:"time"
          *          edgeWeight:"25"
          *      });
          *  updateEdgeWeightService.processAsync(updateEdgeWeightParam);
@@ -74494,7 +74154,7 @@ var UpdateEdgeWeightService = exports.UpdateEdgeWeightService = function (_Netwo
 _SuperMap.SuperMap.UpdateEdgeWeightService = UpdateEdgeWeightService;
 
 /***/ }),
-/* 412 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74513,7 +74173,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _UpdateTurnNodeWeightParameters = __webpack_require__(253);
+var _UpdateTurnNodeWeightParameters = __webpack_require__(249);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74567,10 +74227,10 @@ var UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightService = function
          * @example
          * (code)
          *  var updateTurnNodeWeightParam=new SuperMap.UpdateTurnNodeWeightParameters({
-         *           nodeId:"106",
-         *           fromEdgeId:"6508",
-         *           toEdgeId:"6504",
-         *           weightField:"TurnCost",
+         *           nodeId:"106"
+         *           fromEdgeId:"6508"
+         *           toEdgeId:"6504"
+         *           weightField:"TurnCost"
          *           turnNodeWeight:"50"
          *       });
          *  updateTurnNodeWeightService.processAsync(updateTurnNodeWeightParam);
@@ -74644,7 +74304,7 @@ var UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightService = function
 _SuperMap.SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService;
 
 /***/ }),
-/* 413 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74663,7 +74323,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-var _VectorClipJobsParameter = __webpack_require__(255);
+var _VectorClipJobsParameter = __webpack_require__(251);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74745,7 +74405,7 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
 _SuperMap.SuperMap.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 414 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74754,1908 +74414,646 @@ _SuperMap.SuperMap.VectorClipJobsService = VectorClipJobsService;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector = exports.UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightParameters = exports.UpdateEdgeWeightService = exports.UpdateEdgeWeightParameters = exports.UGCSubLayer = exports.UGCMapLayer = exports.UGCLayer = exports.TransferSolutionParameters = undefined;
+exports.TransportationAnalystResultSetting = exports.TransportationAnalystParameter = exports.TransferSolutionService = exports.TransferPathService = exports.TransferPathParameters = exports.TransferLine = exports.TopologyValidatorJobsService = exports.TopologyValidatorJobsParameter = exports.TilesetsService = exports.ThiessenAnalystService = exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OverlapDisplayedOptions = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = exports.LabelSymbolCell = undefined;
+exports.LabelMixedTextStyle = exports.LabelMatrixCell = exports.LabelImageCell = exports.KernelDensityJobsService = exports.KernelDensityJobParameter = exports.JoinItem = exports.InterpolationRBFAnalystParameters = exports.InterpolationKrigingAnalystParameters = exports.InterpolationIDWAnalystParameters = exports.InterpolationAnalystService = exports.InterpolationAnalystParameters = exports.UGCImage = exports.Grid = exports.GetLayersInfoService = exports.GetGridCellInfosService = exports.GetGridCellInfosParameters = exports.GetFieldsService = exports.GetFeaturesServiceBase = exports.GetFeaturesParametersBase = exports.GetFeaturesBySQLService = exports.GetFeaturesBySQLParameters = exports.GetFeaturesByIDsService = exports.GetFeaturesByIDsParameters = exports.GetFeaturesByGeometryService = exports.GetFeaturesByGeometryParameters = exports.GetFeaturesByBufferService = exports.GetFeaturesByBufferParameters = exports.GetFeaturesByBoundsService = exports.GetFeaturesByBoundsParameters = exports.GeoRelationAnalystService = exports.GeoRelationAnalystParameters = exports.GeometryThiessenAnalystParameters = exports.GeometrySurfaceAnalystParameters = exports.GeometryOverlayAnalystParameters = exports.GeometryBufferAnalystParameters = exports.GeoDecodingParameter = exports.GeoCodingParameter = exports.GenerateSpatialDataService = exports.GenerateSpatialDataParameters = exports.FindTSPPathsService = exports.FindTSPPathsParameters = exports.FindServiceAreasService = exports.FindServiceAreasParameters = exports.FindPathService = exports.FindPathParameters = exports.FindMTSPPathsService = exports.FindMTSPPathsParameters = exports.FindLocationService = exports.FindLocationParameters = exports.FindClosestFacilitiesService = exports.FindClosestFacilitiesParameters = exports.FilterParameter = exports.FieldStatisticsParameters = exports.FieldStatisticService = exports.FieldParameters = exports.FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DParameters = exports.FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DParameters = exports.FacilityAnalystStreamService = exports.FacilityAnalystStreamParameters = exports.FacilityAnalystSources3DService = exports.FacilityAnalystSources3DParameters = exports.FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DParameters = exports.FacilityAnalyst3DParameters = exports.EditFeaturesService = exports.EditFeaturesParameters = exports.DensityKernelAnalystParameters = exports.DensityAnalystService = exports.DatasourceConnectionInfo = exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParameters = exports.DatasetOverlayAnalystParameters = exports.DatasetInfo = exports.DatasetBufferAnalystParameters = exports.DataReturnOption = exports.DataFlowService = exports.ComputeWeightMatrixService = exports.ComputeWeightMatrixParameters = exports.CommonServiceBase = exports.ColorDictionary = exports.ClipParameter = exports.ChartQueryService = exports.ChartQueryParameters = exports.ChartQueryFilterParameter = exports.ChartFeatureInfoSpecsService = exports.BurstPipelineAnalystService = exports.BurstPipelineAnalystParameters = exports.BufferSetting = exports.BuffersAnalystJobsService = exports.BuffersAnalystJobsParameter = exports.BufferDistance = exports.BufferAnalystService = exports.BufferAnalystParameters = exports.AreaSolarRadiationService = exports.AreaSolarRadiationParameters = exports.AddressMatchService = undefined;
 
-var _AddressMatchService = __webpack_require__(344);
+var _AddressMatchService = __webpack_require__(333);
 
-Object.defineProperty(exports, 'AddressMatchService', {
-  enumerable: true,
-  get: function get() {
-    return _AddressMatchService.AddressMatchService;
-  }
-});
+var _AreaSolarRadiationParameters = __webpack_require__(146);
 
-var _AreaSolarRadiationParameters = __webpack_require__(150);
+var _AreaSolarRadiationService = __webpack_require__(334);
 
-Object.defineProperty(exports, 'AreaSolarRadiationParameters', {
-  enumerable: true,
-  get: function get() {
-    return _AreaSolarRadiationParameters.AreaSolarRadiationParameters;
-  }
-});
+var _BufferAnalystParameters = __webpack_require__(91);
 
-var _AreaSolarRadiationService = __webpack_require__(345);
+var _BufferAnalystService = __webpack_require__(335);
 
-Object.defineProperty(exports, 'AreaSolarRadiationService', {
-  enumerable: true,
-  get: function get() {
-    return _AreaSolarRadiationService.AreaSolarRadiationService;
-  }
-});
+var _BufferDistance = __webpack_require__(147);
 
-var _BufferAnalystParameters = __webpack_require__(94);
+var _BuffersAnalystJobsParameter = __webpack_require__(149);
 
-Object.defineProperty(exports, 'BufferAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _BufferAnalystParameters.BufferAnalystParameters;
-  }
-});
+var _BuffersAnalystJobsService = __webpack_require__(336);
 
-var _BufferAnalystService = __webpack_require__(346);
+var _BufferSetting = __webpack_require__(148);
 
-Object.defineProperty(exports, 'BufferAnalystService', {
-  enumerable: true,
-  get: function get() {
-    return _BufferAnalystService.BufferAnalystService;
-  }
-});
+var _BurstPipelineAnalystParameters = __webpack_require__(150);
 
-var _BufferDistance = __webpack_require__(151);
+var _BurstPipelineAnalystService = __webpack_require__(337);
 
-Object.defineProperty(exports, 'BufferDistance', {
-  enumerable: true,
-  get: function get() {
-    return _BufferDistance.BufferDistance;
-  }
-});
+var _ChartFeatureInfoSpecsService = __webpack_require__(338);
 
-var _BuffersAnalystJobsParameter = __webpack_require__(153);
+var _ChartQueryFilterParameter = __webpack_require__(151);
 
-Object.defineProperty(exports, 'BuffersAnalystJobsParameter', {
-  enumerable: true,
-  get: function get() {
-    return _BuffersAnalystJobsParameter.BuffersAnalystJobsParameter;
-  }
-});
+var _ChartQueryParameters = __webpack_require__(152);
 
-var _BuffersAnalystJobsService = __webpack_require__(347);
+var _ChartQueryService = __webpack_require__(339);
 
-Object.defineProperty(exports, 'BuffersAnalystJobsService', {
-  enumerable: true,
-  get: function get() {
-    return _BuffersAnalystJobsService.BuffersAnalystJobsService;
-  }
-});
+var _ClipParameter = __webpack_require__(153);
 
-var _BufferSetting = __webpack_require__(152);
-
-Object.defineProperty(exports, 'BufferSetting', {
-  enumerable: true,
-  get: function get() {
-    return _BufferSetting.BufferSetting;
-  }
-});
-
-var _BurstPipelineAnalystParameters = __webpack_require__(154);
-
-Object.defineProperty(exports, 'BurstPipelineAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _BurstPipelineAnalystParameters.BurstPipelineAnalystParameters;
-  }
-});
-
-var _BurstPipelineAnalystService = __webpack_require__(348);
-
-Object.defineProperty(exports, 'BurstPipelineAnalystService', {
-  enumerable: true,
-  get: function get() {
-    return _BurstPipelineAnalystService.BurstPipelineAnalystService;
-  }
-});
-
-var _ChartFeatureInfoSpecsService = __webpack_require__(349);
-
-Object.defineProperty(exports, 'ChartFeatureInfoSpecsService', {
-  enumerable: true,
-  get: function get() {
-    return _ChartFeatureInfoSpecsService.ChartFeatureInfoSpecsService;
-  }
-});
-
-var _ChartQueryFilterParameter = __webpack_require__(155);
-
-Object.defineProperty(exports, 'ChartQueryFilterParameter', {
-  enumerable: true,
-  get: function get() {
-    return _ChartQueryFilterParameter.ChartQueryFilterParameter;
-  }
-});
-
-var _ChartQueryParameters = __webpack_require__(156);
-
-Object.defineProperty(exports, 'ChartQueryParameters', {
-  enumerable: true,
-  get: function get() {
-    return _ChartQueryParameters.ChartQueryParameters;
-  }
-});
-
-var _ChartQueryService = __webpack_require__(350);
-
-Object.defineProperty(exports, 'ChartQueryService', {
-  enumerable: true,
-  get: function get() {
-    return _ChartQueryService.ChartQueryService;
-  }
-});
-
-var _ClipParameter = __webpack_require__(157);
-
-Object.defineProperty(exports, 'ClipParameter', {
-  enumerable: true,
-  get: function get() {
-    return _ClipParameter.ClipParameter;
-  }
-});
-
-var _ColorDictionary = __webpack_require__(158);
-
-Object.defineProperty(exports, 'ColorDictionary', {
-  enumerable: true,
-  get: function get() {
-    return _ColorDictionary.ColorDictionary;
-  }
-});
+var _ColorDictionary = __webpack_require__(154);
 
 var _CommonServiceBase = __webpack_require__(6);
 
-Object.defineProperty(exports, 'CommonServiceBase', {
-  enumerable: true,
-  get: function get() {
-    return _CommonServiceBase.CommonServiceBase;
-  }
-});
+var _ComputeWeightMatrixParameters = __webpack_require__(155);
 
-var _ComputeWeightMatrixParameters = __webpack_require__(159);
+var _ComputeWeightMatrixService = __webpack_require__(340);
 
-Object.defineProperty(exports, 'ComputeWeightMatrixParameters', {
-  enumerable: true,
-  get: function get() {
-    return _ComputeWeightMatrixParameters.ComputeWeightMatrixParameters;
-  }
-});
+var _DataFlowService = __webpack_require__(341);
 
-var _ComputeWeightMatrixService = __webpack_require__(351);
+var _DataReturnOption = __webpack_require__(49);
 
-Object.defineProperty(exports, 'ComputeWeightMatrixService', {
-  enumerable: true,
-  get: function get() {
-    return _ComputeWeightMatrixService.ComputeWeightMatrixService;
-  }
-});
+var _DatasetBufferAnalystParameters = __webpack_require__(156);
 
-var _DataFlowService = __webpack_require__(352);
+var _DatasetInfo = __webpack_require__(157);
 
-Object.defineProperty(exports, 'DataFlowService', {
-  enumerable: true,
-  get: function get() {
-    return _DataFlowService.DataFlowService;
-  }
-});
+var _DatasetOverlayAnalystParameters = __webpack_require__(158);
 
-var _DataReturnOption = __webpack_require__(50);
+var _DatasetSurfaceAnalystParameters = __webpack_require__(159);
 
-Object.defineProperty(exports, 'DataReturnOption', {
-  enumerable: true,
-  get: function get() {
-    return _DataReturnOption.DataReturnOption;
-  }
-});
+var _DatasetThiessenAnalystParameters = __webpack_require__(160);
 
-var _DatasetBufferAnalystParameters = __webpack_require__(160);
+var _DatasourceConnectionInfo = __webpack_require__(161);
 
-Object.defineProperty(exports, 'DatasetBufferAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _DatasetBufferAnalystParameters.DatasetBufferAnalystParameters;
-  }
-});
+var _DensityAnalystService = __webpack_require__(342);
 
-var _DatasetInfo = __webpack_require__(161);
+var _DensityKernelAnalystParameters = __webpack_require__(162);
 
-Object.defineProperty(exports, 'DatasetInfo', {
-  enumerable: true,
-  get: function get() {
-    return _DatasetInfo.DatasetInfo;
-  }
-});
+var _EditFeaturesParameters = __webpack_require__(163);
 
-var _DatasetOverlayAnalystParameters = __webpack_require__(162);
+var _EditFeaturesService = __webpack_require__(343);
 
-Object.defineProperty(exports, 'DatasetOverlayAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _DatasetOverlayAnalystParameters.DatasetOverlayAnalystParameters;
-  }
-});
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
-var _DatasetSurfaceAnalystParameters = __webpack_require__(163);
+var _FacilityAnalystSinks3DParameters = __webpack_require__(164);
 
-Object.defineProperty(exports, 'DatasetSurfaceAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _DatasetSurfaceAnalystParameters.DatasetSurfaceAnalystParameters;
-  }
-});
+var _FacilityAnalystSinks3DService = __webpack_require__(344);
 
-var _DatasetThiessenAnalystParameters = __webpack_require__(164);
+var _FacilityAnalystSources3DParameters = __webpack_require__(165);
 
-Object.defineProperty(exports, 'DatasetThiessenAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _DatasetThiessenAnalystParameters.DatasetThiessenAnalystParameters;
-  }
-});
+var _FacilityAnalystSources3DService = __webpack_require__(345);
 
-var _DatasourceConnectionInfo = __webpack_require__(165);
+var _FacilityAnalystStreamParameters = __webpack_require__(166);
 
-Object.defineProperty(exports, 'DatasourceConnectionInfo', {
-  enumerable: true,
-  get: function get() {
-    return _DatasourceConnectionInfo.DatasourceConnectionInfo;
-  }
-});
+var _FacilityAnalystStreamService = __webpack_require__(346);
 
-var _DensityAnalystService = __webpack_require__(353);
+var _FacilityAnalystTracedown3DParameters = __webpack_require__(167);
 
-Object.defineProperty(exports, 'DensityAnalystService', {
-  enumerable: true,
-  get: function get() {
-    return _DensityAnalystService.DensityAnalystService;
-  }
-});
+var _FacilityAnalystTracedown3DService = __webpack_require__(347);
 
-var _DensityKernelAnalystParameters = __webpack_require__(166);
+var _FacilityAnalystTraceup3DParameters = __webpack_require__(168);
 
-Object.defineProperty(exports, 'DensityKernelAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _DensityKernelAnalystParameters.DensityKernelAnalystParameters;
-  }
-});
+var _FacilityAnalystTraceup3DService = __webpack_require__(348);
 
-var _EditFeaturesParameters = __webpack_require__(167);
+var _FacilityAnalystUpstream3DParameters = __webpack_require__(169);
 
-Object.defineProperty(exports, 'EditFeaturesParameters', {
-  enumerable: true,
-  get: function get() {
-    return _EditFeaturesParameters.EditFeaturesParameters;
-  }
-});
+var _FacilityAnalystUpstream3DService = __webpack_require__(349);
 
-var _EditFeaturesService = __webpack_require__(354);
+var _FieldParameters = __webpack_require__(170);
 
-Object.defineProperty(exports, 'EditFeaturesService', {
-  enumerable: true,
-  get: function get() {
-    return _EditFeaturesService.EditFeaturesService;
-  }
-});
+var _FieldStatisticService = __webpack_require__(350);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(39);
-
-Object.defineProperty(exports, 'FacilityAnalyst3DParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalyst3DParameters.FacilityAnalyst3DParameters;
-  }
-});
-
-var _FacilityAnalystSinks3DParameters = __webpack_require__(168);
-
-Object.defineProperty(exports, 'FacilityAnalystSinks3DParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystSinks3DParameters.FacilityAnalystSinks3DParameters;
-  }
-});
-
-var _FacilityAnalystSinks3DService = __webpack_require__(355);
-
-Object.defineProperty(exports, 'FacilityAnalystSinks3DService', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystSinks3DService.FacilityAnalystSinks3DService;
-  }
-});
-
-var _FacilityAnalystSources3DParameters = __webpack_require__(169);
-
-Object.defineProperty(exports, 'FacilityAnalystSources3DParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystSources3DParameters.FacilityAnalystSources3DParameters;
-  }
-});
-
-var _FacilityAnalystSources3DService = __webpack_require__(356);
-
-Object.defineProperty(exports, 'FacilityAnalystSources3DService', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystSources3DService.FacilityAnalystSources3DService;
-  }
-});
-
-var _FacilityAnalystStreamParameters = __webpack_require__(170);
-
-Object.defineProperty(exports, 'FacilityAnalystStreamParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystStreamParameters.FacilityAnalystStreamParameters;
-  }
-});
-
-var _FacilityAnalystStreamService = __webpack_require__(357);
-
-Object.defineProperty(exports, 'FacilityAnalystStreamService', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystStreamService.FacilityAnalystStreamService;
-  }
-});
-
-var _FacilityAnalystTracedown3DParameters = __webpack_require__(171);
-
-Object.defineProperty(exports, 'FacilityAnalystTracedown3DParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystTracedown3DParameters.FacilityAnalystTracedown3DParameters;
-  }
-});
-
-var _FacilityAnalystTracedown3DService = __webpack_require__(358);
-
-Object.defineProperty(exports, 'FacilityAnalystTracedown3DService', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystTracedown3DService.FacilityAnalystTracedown3DService;
-  }
-});
-
-var _FacilityAnalystTraceup3DParameters = __webpack_require__(172);
-
-Object.defineProperty(exports, 'FacilityAnalystTraceup3DParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystTraceup3DParameters.FacilityAnalystTraceup3DParameters;
-  }
-});
-
-var _FacilityAnalystTraceup3DService = __webpack_require__(359);
-
-Object.defineProperty(exports, 'FacilityAnalystTraceup3DService', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystTraceup3DService.FacilityAnalystTraceup3DService;
-  }
-});
-
-var _FacilityAnalystUpstream3DParameters = __webpack_require__(173);
-
-Object.defineProperty(exports, 'FacilityAnalystUpstream3DParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystUpstream3DParameters.FacilityAnalystUpstream3DParameters;
-  }
-});
-
-var _FacilityAnalystUpstream3DService = __webpack_require__(360);
-
-Object.defineProperty(exports, 'FacilityAnalystUpstream3DService', {
-  enumerable: true,
-  get: function get() {
-    return _FacilityAnalystUpstream3DService.FacilityAnalystUpstream3DService;
-  }
-});
-
-var _FieldParameters = __webpack_require__(174);
-
-Object.defineProperty(exports, 'FieldParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FieldParameters.FieldParameters;
-  }
-});
-
-var _FieldStatisticService = __webpack_require__(361);
-
-Object.defineProperty(exports, 'FieldStatisticService', {
-  enumerable: true,
-  get: function get() {
-    return _FieldStatisticService.FieldStatisticService;
-  }
-});
-
-var _FieldStatisticsParameters = __webpack_require__(175);
-
-Object.defineProperty(exports, 'FieldStatisticsParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FieldStatisticsParameters.FieldStatisticsParameters;
-  }
-});
+var _FieldStatisticsParameters = __webpack_require__(171);
 
 var _FilterParameter = __webpack_require__(16);
 
-Object.defineProperty(exports, 'FilterParameter', {
-  enumerable: true,
-  get: function get() {
-    return _FilterParameter.FilterParameter;
-  }
-});
-
-var _FindClosestFacilitiesParameters = __webpack_require__(176);
-
-Object.defineProperty(exports, 'FindClosestFacilitiesParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FindClosestFacilitiesParameters.FindClosestFacilitiesParameters;
-  }
-});
-
-var _FindClosestFacilitiesService = __webpack_require__(362);
-
-Object.defineProperty(exports, 'FindClosestFacilitiesService', {
-  enumerable: true,
-  get: function get() {
-    return _FindClosestFacilitiesService.FindClosestFacilitiesService;
-  }
-});
-
-var _FindLocationParameters = __webpack_require__(177);
-
-Object.defineProperty(exports, 'FindLocationParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FindLocationParameters.FindLocationParameters;
-  }
-});
-
-var _FindLocationService = __webpack_require__(363);
-
-Object.defineProperty(exports, 'FindLocationService', {
-  enumerable: true,
-  get: function get() {
-    return _FindLocationService.FindLocationService;
-  }
-});
-
-var _FindMTSPPathsParameters = __webpack_require__(178);
-
-Object.defineProperty(exports, 'FindMTSPPathsParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FindMTSPPathsParameters.FindMTSPPathsParameters;
-  }
-});
-
-var _FindMTSPPathsService = __webpack_require__(364);
-
-Object.defineProperty(exports, 'FindMTSPPathsService', {
-  enumerable: true,
-  get: function get() {
-    return _FindMTSPPathsService.FindMTSPPathsService;
-  }
-});
-
-var _FindPathParameters = __webpack_require__(179);
-
-Object.defineProperty(exports, 'FindPathParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FindPathParameters.FindPathParameters;
-  }
-});
-
-var _FindPathService = __webpack_require__(365);
-
-Object.defineProperty(exports, 'FindPathService', {
-  enumerable: true,
-  get: function get() {
-    return _FindPathService.FindPathService;
-  }
-});
-
-var _FindServiceAreasParameters = __webpack_require__(180);
-
-Object.defineProperty(exports, 'FindServiceAreasParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FindServiceAreasParameters.FindServiceAreasParameters;
-  }
-});
-
-var _FindServiceAreasService = __webpack_require__(366);
-
-Object.defineProperty(exports, 'FindServiceAreasService', {
-  enumerable: true,
-  get: function get() {
-    return _FindServiceAreasService.FindServiceAreasService;
-  }
-});
-
-var _FindTSPPathsParameters = __webpack_require__(181);
-
-Object.defineProperty(exports, 'FindTSPPathsParameters', {
-  enumerable: true,
-  get: function get() {
-    return _FindTSPPathsParameters.FindTSPPathsParameters;
-  }
-});
-
-var _FindTSPPathsService = __webpack_require__(367);
-
-Object.defineProperty(exports, 'FindTSPPathsService', {
-  enumerable: true,
-  get: function get() {
-    return _FindTSPPathsService.FindTSPPathsService;
-  }
-});
-
-var _GenerateSpatialDataParameters = __webpack_require__(182);
-
-Object.defineProperty(exports, 'GenerateSpatialDataParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GenerateSpatialDataParameters.GenerateSpatialDataParameters;
-  }
-});
-
-var _GenerateSpatialDataService = __webpack_require__(368);
-
-Object.defineProperty(exports, 'GenerateSpatialDataService', {
-  enumerable: true,
-  get: function get() {
-    return _GenerateSpatialDataService.GenerateSpatialDataService;
-  }
-});
-
-var _GeoCodingParameter = __webpack_require__(183);
-
-Object.defineProperty(exports, 'GeoCodingParameter', {
-  enumerable: true,
-  get: function get() {
-    return _GeoCodingParameter.GeoCodingParameter;
-  }
-});
-
-var _GeoDecodingParameter = __webpack_require__(184);
-
-Object.defineProperty(exports, 'GeoDecodingParameter', {
-  enumerable: true,
-  get: function get() {
-    return _GeoDecodingParameter.GeoDecodingParameter;
-  }
-});
-
-var _GeometryBufferAnalystParameters = __webpack_require__(186);
-
-Object.defineProperty(exports, 'GeometryBufferAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GeometryBufferAnalystParameters.GeometryBufferAnalystParameters;
-  }
-});
-
-var _GeometryOverlayAnalystParameters = __webpack_require__(187);
-
-Object.defineProperty(exports, 'GeometryOverlayAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GeometryOverlayAnalystParameters.GeometryOverlayAnalystParameters;
-  }
-});
-
-var _GeometrySurfaceAnalystParameters = __webpack_require__(188);
-
-Object.defineProperty(exports, 'GeometrySurfaceAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GeometrySurfaceAnalystParameters.GeometrySurfaceAnalystParameters;
-  }
-});
-
-var _GeometryThiessenAnalystParameters = __webpack_require__(189);
-
-Object.defineProperty(exports, 'GeometryThiessenAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GeometryThiessenAnalystParameters.GeometryThiessenAnalystParameters;
-  }
-});
-
-var _GeoRelationAnalystParameters = __webpack_require__(185);
-
-Object.defineProperty(exports, 'GeoRelationAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GeoRelationAnalystParameters.GeoRelationAnalystParameters;
-  }
-});
-
-var _GeoRelationAnalystService = __webpack_require__(369);
-
-Object.defineProperty(exports, 'GeoRelationAnalystService', {
-  enumerable: true,
-  get: function get() {
-    return _GeoRelationAnalystService.GeoRelationAnalystService;
-  }
-});
-
-var _GetFeaturesByBoundsParameters = __webpack_require__(190);
-
-Object.defineProperty(exports, 'GetFeaturesByBoundsParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesByBoundsParameters.GetFeaturesByBoundsParameters;
-  }
-});
-
-var _GetFeaturesByBoundsService = __webpack_require__(370);
-
-Object.defineProperty(exports, 'GetFeaturesByBoundsService', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesByBoundsService.GetFeaturesByBoundsService;
-  }
-});
-
-var _GetFeaturesByBufferParameters = __webpack_require__(191);
-
-Object.defineProperty(exports, 'GetFeaturesByBufferParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesByBufferParameters.GetFeaturesByBufferParameters;
-  }
-});
-
-var _GetFeaturesByBufferService = __webpack_require__(371);
-
-Object.defineProperty(exports, 'GetFeaturesByBufferService', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesByBufferService.GetFeaturesByBufferService;
-  }
-});
-
-var _GetFeaturesByGeometryParameters = __webpack_require__(192);
-
-Object.defineProperty(exports, 'GetFeaturesByGeometryParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesByGeometryParameters.GetFeaturesByGeometryParameters;
-  }
-});
-
-var _GetFeaturesByGeometryService = __webpack_require__(372);
-
-Object.defineProperty(exports, 'GetFeaturesByGeometryService', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesByGeometryService.GetFeaturesByGeometryService;
-  }
-});
-
-var _GetFeaturesByIDsParameters = __webpack_require__(193);
-
-Object.defineProperty(exports, 'GetFeaturesByIDsParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesByIDsParameters.GetFeaturesByIDsParameters;
-  }
-});
-
-var _GetFeaturesByIDsService = __webpack_require__(373);
-
-Object.defineProperty(exports, 'GetFeaturesByIDsService', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesByIDsService.GetFeaturesByIDsService;
-  }
-});
-
-var _GetFeaturesBySQLParameters = __webpack_require__(194);
-
-Object.defineProperty(exports, 'GetFeaturesBySQLParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesBySQLParameters.GetFeaturesBySQLParameters;
-  }
-});
-
-var _GetFeaturesBySQLService = __webpack_require__(374);
-
-Object.defineProperty(exports, 'GetFeaturesBySQLService', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesBySQLService.GetFeaturesBySQLService;
-  }
-});
-
-var _GetFeaturesParametersBase = __webpack_require__(40);
-
-Object.defineProperty(exports, 'GetFeaturesParametersBase', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesParametersBase.GetFeaturesParametersBase;
-  }
-});
-
-var _GetFeaturesServiceBase = __webpack_require__(41);
-
-Object.defineProperty(exports, 'GetFeaturesServiceBase', {
-  enumerable: true,
-  get: function get() {
-    return _GetFeaturesServiceBase.GetFeaturesServiceBase;
-  }
-});
-
-var _GetFieldsService = __webpack_require__(375);
-
-Object.defineProperty(exports, 'GetFieldsService', {
-  enumerable: true,
-  get: function get() {
-    return _GetFieldsService.GetFieldsService;
-  }
-});
-
-var _GetGridCellInfosParameters = __webpack_require__(195);
-
-Object.defineProperty(exports, 'GetGridCellInfosParameters', {
-  enumerable: true,
-  get: function get() {
-    return _GetGridCellInfosParameters.GetGridCellInfosParameters;
-  }
-});
-
-var _GetGridCellInfosService = __webpack_require__(376);
-
-Object.defineProperty(exports, 'GetGridCellInfosService', {
-  enumerable: true,
-  get: function get() {
-    return _GetGridCellInfosService.GetGridCellInfosService;
-  }
-});
-
-var _GetLayersInfoService = __webpack_require__(377);
-
-Object.defineProperty(exports, 'GetLayersInfoService', {
-  enumerable: true,
-  get: function get() {
-    return _GetLayersInfoService.GetLayersInfoService;
-  }
-});
-
-var _Grid = __webpack_require__(196);
-
-Object.defineProperty(exports, 'Grid', {
-  enumerable: true,
-  get: function get() {
-    return _Grid.Grid;
-  }
-});
-
-var _Image = __webpack_require__(197);
-
-Object.defineProperty(exports, 'UGCImage', {
-  enumerable: true,
-  get: function get() {
-    return _Image.UGCImage;
-  }
-});
-
-var _InterpolationAnalystParameters = __webpack_require__(42);
-
-Object.defineProperty(exports, 'InterpolationAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _InterpolationAnalystParameters.InterpolationAnalystParameters;
-  }
-});
-
-var _InterpolationAnalystService = __webpack_require__(378);
-
-Object.defineProperty(exports, 'InterpolationAnalystService', {
-  enumerable: true,
-  get: function get() {
-    return _InterpolationAnalystService.InterpolationAnalystService;
-  }
-});
-
-var _InterpolationIDWAnalystParameters = __webpack_require__(198);
-
-Object.defineProperty(exports, 'InterpolationIDWAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _InterpolationIDWAnalystParameters.InterpolationIDWAnalystParameters;
-  }
-});
-
-var _InterpolationKrigingAnalystParameters = __webpack_require__(199);
-
-Object.defineProperty(exports, 'InterpolationKrigingAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _InterpolationKrigingAnalystParameters.InterpolationKrigingAnalystParameters;
-  }
-});
-
-var _InterpolationRBFAnalystParameters = __webpack_require__(200);
-
-Object.defineProperty(exports, 'InterpolationRBFAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _InterpolationRBFAnalystParameters.InterpolationRBFAnalystParameters;
-  }
-});
-
-var _JoinItem = __webpack_require__(66);
-
-Object.defineProperty(exports, 'JoinItem', {
-  enumerable: true,
-  get: function get() {
-    return _JoinItem.JoinItem;
-  }
-});
-
-var _KernelDensityJobParameter = __webpack_require__(201);
-
-Object.defineProperty(exports, 'KernelDensityJobParameter', {
-  enumerable: true,
-  get: function get() {
-    return _KernelDensityJobParameter.KernelDensityJobParameter;
-  }
-});
-
-var _KernelDensityJobsService = __webpack_require__(380);
-
-Object.defineProperty(exports, 'KernelDensityJobsService', {
-  enumerable: true,
-  get: function get() {
-    return _KernelDensityJobsService.KernelDensityJobsService;
-  }
-});
-
-var _LabelImageCell = __webpack_require__(202);
-
-Object.defineProperty(exports, 'LabelImageCell', {
-  enumerable: true,
-  get: function get() {
-    return _LabelImageCell.LabelImageCell;
-  }
-});
-
-var _LabelMatrixCell = __webpack_require__(67);
-
-Object.defineProperty(exports, 'LabelMatrixCell', {
-  enumerable: true,
-  get: function get() {
-    return _LabelMatrixCell.LabelMatrixCell;
-  }
-});
-
-var _LabelMixedTextStyle = __webpack_require__(203);
-
-Object.defineProperty(exports, 'LabelMixedTextStyle', {
-  enumerable: true,
-  get: function get() {
-    return _LabelMixedTextStyle.LabelMixedTextStyle;
-  }
-});
-
-var _LabelSymbolCell = __webpack_require__(204);
-
-Object.defineProperty(exports, 'LabelSymbolCell', {
-  enumerable: true,
-  get: function get() {
-    return _LabelSymbolCell.LabelSymbolCell;
-  }
-});
-
-var _LabelThemeCell = __webpack_require__(205);
-
-Object.defineProperty(exports, 'LabelThemeCell', {
-  enumerable: true,
-  get: function get() {
-    return _LabelThemeCell.LabelThemeCell;
-  }
-});
-
-var _LayerStatus = __webpack_require__(206);
-
-Object.defineProperty(exports, 'LayerStatus', {
-  enumerable: true,
-  get: function get() {
-    return _LayerStatus.LayerStatus;
-  }
-});
-
-var _LinkItem = __webpack_require__(207);
-
-Object.defineProperty(exports, 'LinkItem', {
-  enumerable: true,
-  get: function get() {
-    return _LinkItem.LinkItem;
-  }
-});
-
-var _MapService = __webpack_require__(381);
-
-Object.defineProperty(exports, 'MapService', {
-  enumerable: true,
-  get: function get() {
-    return _MapService.MapService;
-  }
-});
-
-var _MathExpressionAnalysisParameters = __webpack_require__(208);
-
-Object.defineProperty(exports, 'MathExpressionAnalysisParameters', {
-  enumerable: true,
-  get: function get() {
-    return _MathExpressionAnalysisParameters.MathExpressionAnalysisParameters;
-  }
-});
-
-var _MathExpressionAnalysisService = __webpack_require__(382);
-
-Object.defineProperty(exports, 'MathExpressionAnalysisService', {
-  enumerable: true,
-  get: function get() {
-    return _MathExpressionAnalysisService.MathExpressionAnalysisService;
-  }
-});
-
-var _MeasureParameters = __webpack_require__(209);
-
-Object.defineProperty(exports, 'MeasureParameters', {
-  enumerable: true,
-  get: function get() {
-    return _MeasureParameters.MeasureParameters;
-  }
-});
-
-var _MeasureService = __webpack_require__(383);
-
-Object.defineProperty(exports, 'MeasureService', {
-  enumerable: true,
-  get: function get() {
-    return _MeasureService.MeasureService;
-  }
-});
+var _FindClosestFacilitiesParameters = __webpack_require__(172);
+
+var _FindClosestFacilitiesService = __webpack_require__(351);
+
+var _FindLocationParameters = __webpack_require__(173);
+
+var _FindLocationService = __webpack_require__(352);
+
+var _FindMTSPPathsParameters = __webpack_require__(174);
+
+var _FindMTSPPathsService = __webpack_require__(353);
+
+var _FindPathParameters = __webpack_require__(175);
+
+var _FindPathService = __webpack_require__(354);
+
+var _FindServiceAreasParameters = __webpack_require__(176);
+
+var _FindServiceAreasService = __webpack_require__(355);
+
+var _FindTSPPathsParameters = __webpack_require__(177);
+
+var _FindTSPPathsService = __webpack_require__(356);
+
+var _GenerateSpatialDataParameters = __webpack_require__(178);
+
+var _GenerateSpatialDataService = __webpack_require__(357);
+
+var _GeoCodingParameter = __webpack_require__(179);
+
+var _GeoDecodingParameter = __webpack_require__(180);
+
+var _GeometryBufferAnalystParameters = __webpack_require__(182);
+
+var _GeometryOverlayAnalystParameters = __webpack_require__(183);
+
+var _GeometrySurfaceAnalystParameters = __webpack_require__(184);
+
+var _GeometryThiessenAnalystParameters = __webpack_require__(185);
+
+var _GeoRelationAnalystParameters = __webpack_require__(181);
+
+var _GeoRelationAnalystService = __webpack_require__(358);
+
+var _GetFeaturesByBoundsParameters = __webpack_require__(186);
+
+var _GetFeaturesByBoundsService = __webpack_require__(359);
+
+var _GetFeaturesByBufferParameters = __webpack_require__(187);
+
+var _GetFeaturesByBufferService = __webpack_require__(360);
+
+var _GetFeaturesByGeometryParameters = __webpack_require__(188);
+
+var _GetFeaturesByGeometryService = __webpack_require__(361);
+
+var _GetFeaturesByIDsParameters = __webpack_require__(189);
+
+var _GetFeaturesByIDsService = __webpack_require__(362);
+
+var _GetFeaturesBySQLParameters = __webpack_require__(190);
+
+var _GetFeaturesBySQLService = __webpack_require__(363);
+
+var _GetFeaturesParametersBase = __webpack_require__(39);
+
+var _GetFeaturesServiceBase = __webpack_require__(40);
+
+var _GetFieldsService = __webpack_require__(364);
+
+var _GetGridCellInfosParameters = __webpack_require__(191);
+
+var _GetGridCellInfosService = __webpack_require__(365);
+
+var _GetLayersInfoService = __webpack_require__(366);
+
+var _Grid = __webpack_require__(192);
+
+var _Image = __webpack_require__(193);
+
+var _InterpolationAnalystParameters = __webpack_require__(41);
+
+var _InterpolationAnalystService = __webpack_require__(367);
+
+var _InterpolationIDWAnalystParameters = __webpack_require__(194);
+
+var _InterpolationKrigingAnalystParameters = __webpack_require__(195);
+
+var _InterpolationRBFAnalystParameters = __webpack_require__(196);
+
+var _JoinItem = __webpack_require__(64);
+
+var _KernelDensityJobParameter = __webpack_require__(197);
+
+var _KernelDensityJobsService = __webpack_require__(369);
+
+var _LabelImageCell = __webpack_require__(198);
+
+var _LabelMatrixCell = __webpack_require__(65);
+
+var _LabelMixedTextStyle = __webpack_require__(199);
+
+var _LabelSymbolCell = __webpack_require__(200);
+
+var _LabelThemeCell = __webpack_require__(201);
+
+var _LayerStatus = __webpack_require__(202);
+
+var _LinkItem = __webpack_require__(203);
+
+var _MapService = __webpack_require__(370);
+
+var _MathExpressionAnalysisParameters = __webpack_require__(204);
+
+var _MathExpressionAnalysisService = __webpack_require__(371);
+
+var _MeasureParameters = __webpack_require__(205);
+
+var _MeasureService = __webpack_require__(372);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-Object.defineProperty(exports, 'NetworkAnalystServiceBase', {
-  enumerable: true,
-  get: function get() {
-    return _NetworkAnalystServiceBase.NetworkAnalystServiceBase;
-  }
-});
+var _OverlapDisplayedOptions = __webpack_require__(206);
 
-var _OverlapDisplayedOptions = __webpack_require__(210);
+var _OverlayAnalystParameters = __webpack_require__(92);
 
-Object.defineProperty(exports, 'OverlapDisplayedOptions', {
-  enumerable: true,
-  get: function get() {
-    return _OverlapDisplayedOptions.OverlapDisplayedOptions;
-  }
-});
+var _OverlayAnalystService = __webpack_require__(373);
 
-var _OverlayAnalystParameters = __webpack_require__(95);
+var _OverlayGeoJobParameter = __webpack_require__(207);
 
-Object.defineProperty(exports, 'OverlayAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _OverlayAnalystParameters.OverlayAnalystParameters;
-  }
-});
+var _OverlayGeoJobsService = __webpack_require__(374);
 
-var _OverlayAnalystService = __webpack_require__(384);
-
-Object.defineProperty(exports, 'OverlayAnalystService', {
-  enumerable: true,
-  get: function get() {
-    return _OverlayAnalystService.OverlayAnalystService;
-  }
-});
-
-var _OverlayGeoJobParameter = __webpack_require__(211);
-
-Object.defineProperty(exports, 'OverlayGeoJobParameter', {
-  enumerable: true,
-  get: function get() {
-    return _OverlayGeoJobParameter.OverlayGeoJobParameter;
-  }
-});
-
-var _OverlayGeoJobsService = __webpack_require__(385);
-
-Object.defineProperty(exports, 'OverlayGeoJobsService', {
-  enumerable: true,
-  get: function get() {
-    return _OverlayGeoJobsService.OverlayGeoJobsService;
-  }
-});
-
-var _PointWithMeasure = __webpack_require__(212);
-
-Object.defineProperty(exports, 'PointWithMeasure', {
-  enumerable: true,
-  get: function get() {
-    return _PointWithMeasure.PointWithMeasure;
-  }
-});
+var _PointWithMeasure = __webpack_require__(208);
 
 var _ProcessingServiceBase = __webpack_require__(19);
 
-Object.defineProperty(exports, 'ProcessingServiceBase', {
-  enumerable: true,
-  get: function get() {
-    return _ProcessingServiceBase.ProcessingServiceBase;
-  }
-});
+var _QueryByBoundsParameters = __webpack_require__(209);
 
-var _QueryByBoundsParameters = __webpack_require__(213);
+var _QueryByBoundsService = __webpack_require__(375);
 
-Object.defineProperty(exports, 'QueryByBoundsParameters', {
-  enumerable: true,
-  get: function get() {
-    return _QueryByBoundsParameters.QueryByBoundsParameters;
-  }
-});
+var _QueryByDistanceParameters = __webpack_require__(210);
 
-var _QueryByBoundsService = __webpack_require__(386);
+var _QueryByDistanceService = __webpack_require__(376);
 
-Object.defineProperty(exports, 'QueryByBoundsService', {
-  enumerable: true,
-  get: function get() {
-    return _QueryByBoundsService.QueryByBoundsService;
-  }
-});
+var _QueryByGeometryParameters = __webpack_require__(211);
 
-var _QueryByDistanceParameters = __webpack_require__(214);
+var _QueryByGeometryService = __webpack_require__(377);
 
-Object.defineProperty(exports, 'QueryByDistanceParameters', {
-  enumerable: true,
-  get: function get() {
-    return _QueryByDistanceParameters.QueryByDistanceParameters;
-  }
-});
+var _QueryBySQLParameters = __webpack_require__(212);
 
-var _QueryByDistanceService = __webpack_require__(387);
+var _QueryBySQLService = __webpack_require__(378);
 
-Object.defineProperty(exports, 'QueryByDistanceService', {
-  enumerable: true,
-  get: function get() {
-    return _QueryByDistanceService.QueryByDistanceService;
-  }
-});
+var _QueryParameters = __webpack_require__(31);
 
-var _QueryByGeometryParameters = __webpack_require__(215);
+var _QueryService = __webpack_require__(50);
 
-Object.defineProperty(exports, 'QueryByGeometryParameters', {
-  enumerable: true,
-  get: function get() {
-    return _QueryByGeometryParameters.QueryByGeometryParameters;
-  }
-});
+var _Route = __webpack_require__(66);
 
-var _QueryByGeometryService = __webpack_require__(388);
+var _RouteCalculateMeasureParameters = __webpack_require__(213);
 
-Object.defineProperty(exports, 'QueryByGeometryService', {
-  enumerable: true,
-  get: function get() {
-    return _QueryByGeometryService.QueryByGeometryService;
-  }
-});
+var _RouteCalculateMeasureService = __webpack_require__(379);
 
-var _QueryBySQLParameters = __webpack_require__(216);
+var _RouteLocatorParameters = __webpack_require__(214);
 
-Object.defineProperty(exports, 'QueryBySQLParameters', {
-  enumerable: true,
-  get: function get() {
-    return _QueryBySQLParameters.QueryBySQLParameters;
-  }
-});
-
-var _QueryBySQLService = __webpack_require__(389);
-
-Object.defineProperty(exports, 'QueryBySQLService', {
-  enumerable: true,
-  get: function get() {
-    return _QueryBySQLService.QueryBySQLService;
-  }
-});
-
-var _QueryParameters = __webpack_require__(32);
-
-Object.defineProperty(exports, 'QueryParameters', {
-  enumerable: true,
-  get: function get() {
-    return _QueryParameters.QueryParameters;
-  }
-});
-
-var _QueryService = __webpack_require__(51);
-
-Object.defineProperty(exports, 'QueryService', {
-  enumerable: true,
-  get: function get() {
-    return _QueryService.QueryService;
-  }
-});
-
-var _Route = __webpack_require__(68);
-
-Object.defineProperty(exports, 'Route', {
-  enumerable: true,
-  get: function get() {
-    return _Route.Route;
-  }
-});
-
-var _RouteCalculateMeasureParameters = __webpack_require__(217);
-
-Object.defineProperty(exports, 'RouteCalculateMeasureParameters', {
-  enumerable: true,
-  get: function get() {
-    return _RouteCalculateMeasureParameters.RouteCalculateMeasureParameters;
-  }
-});
-
-var _RouteCalculateMeasureService = __webpack_require__(390);
-
-Object.defineProperty(exports, 'RouteCalculateMeasureService', {
-  enumerable: true,
-  get: function get() {
-    return _RouteCalculateMeasureService.RouteCalculateMeasureService;
-  }
-});
-
-var _RouteLocatorParameters = __webpack_require__(218);
-
-Object.defineProperty(exports, 'RouteLocatorParameters', {
-  enumerable: true,
-  get: function get() {
-    return _RouteLocatorParameters.RouteLocatorParameters;
-  }
-});
-
-var _RouteLocatorService = __webpack_require__(391);
-
-Object.defineProperty(exports, 'RouteLocatorService', {
-  enumerable: true,
-  get: function get() {
-    return _RouteLocatorService.RouteLocatorService;
-  }
-});
+var _RouteLocatorService = __webpack_require__(380);
 
 var _ServerColor = __webpack_require__(20);
 
-Object.defineProperty(exports, 'ServerColor', {
-  enumerable: true,
-  get: function get() {
-    return _ServerColor.ServerColor;
-  }
-});
-
-var _ServerFeature = __webpack_require__(392);
-
-Object.defineProperty(exports, 'ServerFeature', {
-  enumerable: true,
-  get: function get() {
-    return _ServerFeature.ServerFeature;
-  }
-});
+var _ServerFeature = __webpack_require__(381);
 
 var _ServerGeometry = __webpack_require__(9);
 
-Object.defineProperty(exports, 'ServerGeometry', {
-  enumerable: true,
-  get: function get() {
-    return _ServerGeometry.ServerGeometry;
-  }
-});
-
 var _ServerStyle = __webpack_require__(11);
 
-Object.defineProperty(exports, 'ServerStyle', {
-  enumerable: true,
-  get: function get() {
-    return _ServerStyle.ServerStyle;
-  }
-});
+var _ServerTextStyle = __webpack_require__(32);
 
-var _ServerTextStyle = __webpack_require__(33);
+var _ServerTheme = __webpack_require__(215);
 
-Object.defineProperty(exports, 'ServerTextStyle', {
-  enumerable: true,
-  get: function get() {
-    return _ServerTextStyle.ServerTextStyle;
-  }
-});
+var _SetLayerInfoParameters = __webpack_require__(216);
 
-var _ServerTheme = __webpack_require__(219);
+var _SetLayerInfoService = __webpack_require__(382);
 
-Object.defineProperty(exports, 'ServerTheme', {
-  enumerable: true,
-  get: function get() {
-    return _ServerTheme.ServerTheme;
-  }
-});
+var _SetLayersInfoParameters = __webpack_require__(218);
 
-var _SetLayerInfoParameters = __webpack_require__(220);
+var _SetLayersInfoService = __webpack_require__(384);
 
-Object.defineProperty(exports, 'SetLayerInfoParameters', {
-  enumerable: true,
-  get: function get() {
-    return _SetLayerInfoParameters.SetLayerInfoParameters;
-  }
-});
+var _SetLayerStatusParameters = __webpack_require__(217);
 
-var _SetLayerInfoService = __webpack_require__(393);
+var _SetLayerStatusService = __webpack_require__(383);
 
-Object.defineProperty(exports, 'SetLayerInfoService', {
-  enumerable: true,
-  get: function get() {
-    return _SetLayerInfoService.SetLayerInfoService;
-  }
-});
+var _SingleObjectQueryJobsParameter = __webpack_require__(219);
 
-var _SetLayersInfoParameters = __webpack_require__(222);
-
-Object.defineProperty(exports, 'SetLayersInfoParameters', {
-  enumerable: true,
-  get: function get() {
-    return _SetLayersInfoParameters.SetLayersInfoParameters;
-  }
-});
-
-var _SetLayersInfoService = __webpack_require__(395);
-
-Object.defineProperty(exports, 'SetLayersInfoService', {
-  enumerable: true,
-  get: function get() {
-    return _SetLayersInfoService.SetLayersInfoService;
-  }
-});
-
-var _SetLayerStatusParameters = __webpack_require__(221);
-
-Object.defineProperty(exports, 'SetLayerStatusParameters', {
-  enumerable: true,
-  get: function get() {
-    return _SetLayerStatusParameters.SetLayerStatusParameters;
-  }
-});
-
-var _SetLayerStatusService = __webpack_require__(394);
-
-Object.defineProperty(exports, 'SetLayerStatusService', {
-  enumerable: true,
-  get: function get() {
-    return _SetLayerStatusService.SetLayerStatusService;
-  }
-});
-
-var _SingleObjectQueryJobsParameter = __webpack_require__(223);
-
-Object.defineProperty(exports, 'SingleObjectQueryJobsParameter', {
-  enumerable: true,
-  get: function get() {
-    return _SingleObjectQueryJobsParameter.SingleObjectQueryJobsParameter;
-  }
-});
-
-var _SingleObjectQueryJobsService = __webpack_require__(396);
-
-Object.defineProperty(exports, 'SingleObjectQueryJobsService', {
-  enumerable: true,
-  get: function get() {
-    return _SingleObjectQueryJobsService.SingleObjectQueryJobsService;
-  }
-});
+var _SingleObjectQueryJobsService = __webpack_require__(385);
 
 var _SpatialAnalystBase = __webpack_require__(10);
 
-Object.defineProperty(exports, 'SpatialAnalystBase', {
-  enumerable: true,
-  get: function get() {
-    return _SpatialAnalystBase.SpatialAnalystBase;
-  }
-});
+var _StopQueryParameters = __webpack_require__(220);
 
-var _StopQueryParameters = __webpack_require__(224);
+var _StopQueryService = __webpack_require__(386);
 
-Object.defineProperty(exports, 'StopQueryParameters', {
-  enumerable: true,
-  get: function get() {
-    return _StopQueryParameters.StopQueryParameters;
-  }
-});
+var _SummaryAttributesJobsParameter = __webpack_require__(221);
 
-var _StopQueryService = __webpack_require__(397);
+var _SummaryAttributesJobsService = __webpack_require__(387);
 
-Object.defineProperty(exports, 'StopQueryService', {
-  enumerable: true,
-  get: function get() {
-    return _StopQueryService.StopQueryService;
-  }
-});
+var _SummaryMeshJobParameter = __webpack_require__(222);
 
-var _SummaryAttributesJobsParameter = __webpack_require__(225);
+var _SummaryMeshJobsService = __webpack_require__(388);
 
-Object.defineProperty(exports, 'SummaryAttributesJobsParameter', {
-  enumerable: true,
-  get: function get() {
-    return _SummaryAttributesJobsParameter.SummaryAttributesJobsParameter;
-  }
-});
+var _SummaryRegionJobParameter = __webpack_require__(223);
 
-var _SummaryAttributesJobsService = __webpack_require__(398);
+var _SummaryRegionJobsService = __webpack_require__(389);
 
-Object.defineProperty(exports, 'SummaryAttributesJobsService', {
-  enumerable: true,
-  get: function get() {
-    return _SummaryAttributesJobsService.SummaryAttributesJobsService;
-  }
-});
+var _SupplyCenter = __webpack_require__(390);
 
-var _SummaryMeshJobParameter = __webpack_require__(226);
+var _SurfaceAnalystParameters = __webpack_require__(67);
 
-Object.defineProperty(exports, 'SummaryMeshJobParameter', {
-  enumerable: true,
-  get: function get() {
-    return _SummaryMeshJobParameter.SummaryMeshJobParameter;
-  }
-});
+var _SurfaceAnalystParametersSetting = __webpack_require__(224);
 
-var _SummaryMeshJobsService = __webpack_require__(399);
+var _SurfaceAnalystService = __webpack_require__(391);
 
-Object.defineProperty(exports, 'SummaryMeshJobsService', {
-  enumerable: true,
-  get: function get() {
-    return _SummaryMeshJobsService.SummaryMeshJobsService;
-  }
-});
+var _TerrainCurvatureCalculationParameters = __webpack_require__(225);
 
-var _SummaryRegionJobParameter = __webpack_require__(227);
-
-Object.defineProperty(exports, 'SummaryRegionJobParameter', {
-  enumerable: true,
-  get: function get() {
-    return _SummaryRegionJobParameter.SummaryRegionJobParameter;
-  }
-});
-
-var _SummaryRegionJobsService = __webpack_require__(400);
-
-Object.defineProperty(exports, 'SummaryRegionJobsService', {
-  enumerable: true,
-  get: function get() {
-    return _SummaryRegionJobsService.SummaryRegionJobsService;
-  }
-});
-
-var _SupplyCenter = __webpack_require__(401);
-
-Object.defineProperty(exports, 'SupplyCenter', {
-  enumerable: true,
-  get: function get() {
-    return _SupplyCenter.SupplyCenter;
-  }
-});
-
-var _SurfaceAnalystParameters = __webpack_require__(69);
-
-Object.defineProperty(exports, 'SurfaceAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _SurfaceAnalystParameters.SurfaceAnalystParameters;
-  }
-});
-
-var _SurfaceAnalystParametersSetting = __webpack_require__(228);
-
-Object.defineProperty(exports, 'SurfaceAnalystParametersSetting', {
-  enumerable: true,
-  get: function get() {
-    return _SurfaceAnalystParametersSetting.SurfaceAnalystParametersSetting;
-  }
-});
-
-var _SurfaceAnalystService = __webpack_require__(402);
-
-Object.defineProperty(exports, 'SurfaceAnalystService', {
-  enumerable: true,
-  get: function get() {
-    return _SurfaceAnalystService.SurfaceAnalystService;
-  }
-});
-
-var _TerrainCurvatureCalculationParameters = __webpack_require__(229);
-
-Object.defineProperty(exports, 'TerrainCurvatureCalculationParameters', {
-  enumerable: true,
-  get: function get() {
-    return _TerrainCurvatureCalculationParameters.TerrainCurvatureCalculationParameters;
-  }
-});
-
-var _TerrainCurvatureCalculationService = __webpack_require__(403);
-
-Object.defineProperty(exports, 'TerrainCurvatureCalculationService', {
-  enumerable: true,
-  get: function get() {
-    return _TerrainCurvatureCalculationService.TerrainCurvatureCalculationService;
-  }
-});
+var _TerrainCurvatureCalculationService = __webpack_require__(392);
 
 var _Theme = __webpack_require__(23);
 
-Object.defineProperty(exports, 'Theme', {
-  enumerable: true,
-  get: function get() {
-    return _Theme.Theme;
-  }
-});
-
-var _ThemeDotDensity = __webpack_require__(96);
-
-Object.defineProperty(exports, 'ThemeDotDensity', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeDotDensity.ThemeDotDensity;
-  }
-});
-
-var _ThemeFlow = __webpack_require__(70);
-
-Object.defineProperty(exports, 'ThemeFlow', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeFlow.ThemeFlow;
-  }
-});
-
-var _ThemeGraduatedSymbol = __webpack_require__(97);
-
-Object.defineProperty(exports, 'ThemeGraduatedSymbol', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGraduatedSymbol.ThemeGraduatedSymbol;
-  }
-});
-
-var _ThemeGraduatedSymbolStyle = __webpack_require__(230);
-
-Object.defineProperty(exports, 'ThemeGraduatedSymbolStyle', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGraduatedSymbolStyle.ThemeGraduatedSymbolStyle;
-  }
-});
-
-var _ThemeGraph = __webpack_require__(98);
-
-Object.defineProperty(exports, 'ThemeGraph', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGraph.ThemeGraph;
-  }
-});
-
-var _ThemeGraphAxes = __webpack_require__(231);
-
-Object.defineProperty(exports, 'ThemeGraphAxes', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGraphAxes.ThemeGraphAxes;
-  }
-});
-
-var _ThemeGraphItem = __webpack_require__(232);
-
-Object.defineProperty(exports, 'ThemeGraphItem', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGraphItem.ThemeGraphItem;
-  }
-});
-
-var _ThemeGraphSize = __webpack_require__(233);
-
-Object.defineProperty(exports, 'ThemeGraphSize', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGraphSize.ThemeGraphSize;
-  }
-});
-
-var _ThemeGraphText = __webpack_require__(234);
-
-Object.defineProperty(exports, 'ThemeGraphText', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGraphText.ThemeGraphText;
-  }
-});
-
-var _ThemeGridRange = __webpack_require__(235);
-
-Object.defineProperty(exports, 'ThemeGridRange', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGridRange.ThemeGridRange;
-  }
-});
-
-var _ThemeGridRangeItem = __webpack_require__(236);
-
-Object.defineProperty(exports, 'ThemeGridRangeItem', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGridRangeItem.ThemeGridRangeItem;
-  }
-});
-
-var _ThemeGridUnique = __webpack_require__(237);
-
-Object.defineProperty(exports, 'ThemeGridUnique', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGridUnique.ThemeGridUnique;
-  }
-});
-
-var _ThemeGridUniqueItem = __webpack_require__(238);
-
-Object.defineProperty(exports, 'ThemeGridUniqueItem', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeGridUniqueItem.ThemeGridUniqueItem;
-  }
-});
-
-var _ThemeLabel = __webpack_require__(71);
-
-Object.defineProperty(exports, 'ThemeLabel', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeLabel.ThemeLabel;
-  }
-});
-
-var _ThemeLabelAlongLine = __webpack_require__(239);
-
-Object.defineProperty(exports, 'ThemeLabelAlongLine', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeLabelAlongLine.ThemeLabelAlongLine;
-  }
-});
-
-var _ThemeLabelBackground = __webpack_require__(240);
-
-Object.defineProperty(exports, 'ThemeLabelBackground', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeLabelBackground.ThemeLabelBackground;
-  }
-});
-
-var _ThemeLabelItem = __webpack_require__(241);
-
-Object.defineProperty(exports, 'ThemeLabelItem', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeLabelItem.ThemeLabelItem;
-  }
-});
-
-var _ThemeLabelText = __webpack_require__(242);
-
-Object.defineProperty(exports, 'ThemeLabelText', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeLabelText.ThemeLabelText;
-  }
-});
-
-var _ThemeLabelUniqueItem = __webpack_require__(404);
-
-Object.defineProperty(exports, 'ThemeLabelUniqueItem', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeLabelUniqueItem.ThemeLabelUniqueItem;
-  }
-});
-
-var _ThemeMemoryData = __webpack_require__(243);
-
-Object.defineProperty(exports, 'ThemeMemoryData', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeMemoryData.ThemeMemoryData;
-  }
-});
-
-var _ThemeOffset = __webpack_require__(72);
-
-Object.defineProperty(exports, 'ThemeOffset', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeOffset.ThemeOffset;
-  }
-});
-
-var _ThemeParameters = __webpack_require__(244);
-
-Object.defineProperty(exports, 'ThemeParameters', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeParameters.ThemeParameters;
-  }
-});
-
-var _ThemeRange = __webpack_require__(99);
-
-Object.defineProperty(exports, 'ThemeRange', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeRange.ThemeRange;
-  }
-});
-
-var _ThemeRangeItem = __webpack_require__(245);
-
-Object.defineProperty(exports, 'ThemeRangeItem', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeRangeItem.ThemeRangeItem;
-  }
-});
-
-var _ThemeService = __webpack_require__(405);
-
-Object.defineProperty(exports, 'ThemeService', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeService.ThemeService;
-  }
-});
-
-var _ThemeUnique = __webpack_require__(100);
-
-Object.defineProperty(exports, 'ThemeUnique', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeUnique.ThemeUnique;
-  }
-});
-
-var _ThemeUniqueItem = __webpack_require__(101);
-
-Object.defineProperty(exports, 'ThemeUniqueItem', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeUniqueItem.ThemeUniqueItem;
-  }
-});
-
-var _ThiessenAnalystParameters = __webpack_require__(73);
-
-Object.defineProperty(exports, 'ThiessenAnalystParameters', {
-  enumerable: true,
-  get: function get() {
-    return _ThiessenAnalystParameters.ThiessenAnalystParameters;
-  }
-});
-
-var _ThiessenAnalystService = __webpack_require__(406);
-
-Object.defineProperty(exports, 'ThiessenAnalystService', {
-  enumerable: true,
-  get: function get() {
-    return _ThiessenAnalystService.ThiessenAnalystService;
-  }
-});
-
-var _TilesetsService = __webpack_require__(407);
-
-Object.defineProperty(exports, 'TilesetsService', {
-  enumerable: true,
-  get: function get() {
-    return _TilesetsService.TilesetsService;
-  }
-});
-
-var _TopologyValidatorJobsParameter = __webpack_require__(246);
-
-Object.defineProperty(exports, 'TopologyValidatorJobsParameter', {
-  enumerable: true,
-  get: function get() {
-    return _TopologyValidatorJobsParameter.TopologyValidatorJobsParameter;
-  }
-});
-
-var _TopologyValidatorJobsService = __webpack_require__(408);
-
-Object.defineProperty(exports, 'TopologyValidatorJobsService', {
-  enumerable: true,
-  get: function get() {
-    return _TopologyValidatorJobsService.TopologyValidatorJobsService;
-  }
-});
-
-var _TransferLine = __webpack_require__(247);
-
-Object.defineProperty(exports, 'TransferLine', {
-  enumerable: true,
-  get: function get() {
-    return _TransferLine.TransferLine;
-  }
-});
-
-var _TransferPathParameters = __webpack_require__(248);
-
-Object.defineProperty(exports, 'TransferPathParameters', {
-  enumerable: true,
-  get: function get() {
-    return _TransferPathParameters.TransferPathParameters;
-  }
-});
-
-var _TransferPathService = __webpack_require__(409);
-
-Object.defineProperty(exports, 'TransferPathService', {
-  enumerable: true,
-  get: function get() {
-    return _TransferPathService.TransferPathService;
-  }
-});
-
-var _TransferSolutionService = __webpack_require__(410);
-
-Object.defineProperty(exports, 'TransferSolutionService', {
-  enumerable: true,
-  get: function get() {
-    return _TransferSolutionService.TransferSolutionService;
-  }
-});
-
-var _TransportationAnalystParameter = __webpack_require__(34);
-
-Object.defineProperty(exports, 'TransportationAnalystParameter', {
-  enumerable: true,
-  get: function get() {
-    return _TransportationAnalystParameter.TransportationAnalystParameter;
-  }
-});
-
-var _TransportationAnalystResultSetting = __webpack_require__(250);
-
-Object.defineProperty(exports, 'TransportationAnalystResultSetting', {
-  enumerable: true,
-  get: function get() {
-    return _TransportationAnalystResultSetting.TransportationAnalystResultSetting;
-  }
-});
-
-var _TransferSolutionParameters = __webpack_require__(249);
-
-Object.defineProperty(exports, 'TransferSolutionParameters', {
-  enumerable: true,
-  get: function get() {
-    return _TransferSolutionParameters.TransferSolutionParameters;
-  }
-});
-
-var _UGCLayer = __webpack_require__(102);
-
-Object.defineProperty(exports, 'UGCLayer', {
-  enumerable: true,
-  get: function get() {
-    return _UGCLayer.UGCLayer;
-  }
-});
-
-var _UGCMapLayer = __webpack_require__(251);
-
-Object.defineProperty(exports, 'UGCMapLayer', {
-  enumerable: true,
-  get: function get() {
-    return _UGCMapLayer.UGCMapLayer;
-  }
-});
-
-var _UGCSubLayer = __webpack_require__(52);
-
-Object.defineProperty(exports, 'UGCSubLayer', {
-  enumerable: true,
-  get: function get() {
-    return _UGCSubLayer.UGCSubLayer;
-  }
-});
-
-var _UpdateEdgeWeightParameters = __webpack_require__(252);
-
-Object.defineProperty(exports, 'UpdateEdgeWeightParameters', {
-  enumerable: true,
-  get: function get() {
-    return _UpdateEdgeWeightParameters.UpdateEdgeWeightParameters;
-  }
-});
-
-var _UpdateEdgeWeightService = __webpack_require__(411);
-
-Object.defineProperty(exports, 'UpdateEdgeWeightService', {
-  enumerable: true,
-  get: function get() {
-    return _UpdateEdgeWeightService.UpdateEdgeWeightService;
-  }
-});
-
-var _UpdateTurnNodeWeightParameters = __webpack_require__(253);
-
-Object.defineProperty(exports, 'UpdateTurnNodeWeightParameters', {
-  enumerable: true,
-  get: function get() {
-    return _UpdateTurnNodeWeightParameters.UpdateTurnNodeWeightParameters;
-  }
-});
-
-var _UpdateTurnNodeWeightService = __webpack_require__(412);
-
-Object.defineProperty(exports, 'UpdateTurnNodeWeightService', {
-  enumerable: true,
-  get: function get() {
-    return _UpdateTurnNodeWeightService.UpdateTurnNodeWeightService;
-  }
-});
-
-var _Vector = __webpack_require__(254);
-
-Object.defineProperty(exports, 'Vector', {
-  enumerable: true,
-  get: function get() {
-    return _Vector.Vector;
-  }
-});
-
-var _VectorClipJobsParameter = __webpack_require__(255);
-
-Object.defineProperty(exports, 'VectorClipJobsParameter', {
-  enumerable: true,
-  get: function get() {
-    return _VectorClipJobsParameter.VectorClipJobsParameter;
-  }
-});
-
-var _VectorClipJobsService = __webpack_require__(413);
-
-Object.defineProperty(exports, 'VectorClipJobsService', {
-  enumerable: true,
-  get: function get() {
-    return _VectorClipJobsService.VectorClipJobsService;
-  }
-});
+var _ThemeDotDensity = __webpack_require__(93);
+
+var _ThemeFlow = __webpack_require__(68);
+
+var _ThemeGraduatedSymbol = __webpack_require__(94);
+
+var _ThemeGraduatedSymbolStyle = __webpack_require__(226);
+
+var _ThemeGraph = __webpack_require__(95);
+
+var _ThemeGraphAxes = __webpack_require__(227);
+
+var _ThemeGraphItem = __webpack_require__(228);
+
+var _ThemeGraphSize = __webpack_require__(229);
+
+var _ThemeGraphText = __webpack_require__(230);
+
+var _ThemeGridRange = __webpack_require__(231);
+
+var _ThemeGridRangeItem = __webpack_require__(232);
+
+var _ThemeGridUnique = __webpack_require__(233);
+
+var _ThemeGridUniqueItem = __webpack_require__(234);
+
+var _ThemeLabel = __webpack_require__(69);
+
+var _ThemeLabelAlongLine = __webpack_require__(235);
+
+var _ThemeLabelBackground = __webpack_require__(236);
+
+var _ThemeLabelItem = __webpack_require__(237);
+
+var _ThemeLabelText = __webpack_require__(238);
+
+var _ThemeLabelUniqueItem = __webpack_require__(393);
+
+var _ThemeMemoryData = __webpack_require__(239);
+
+var _ThemeOffset = __webpack_require__(70);
+
+var _ThemeParameters = __webpack_require__(240);
+
+var _ThemeRange = __webpack_require__(96);
+
+var _ThemeRangeItem = __webpack_require__(241);
+
+var _ThemeService = __webpack_require__(394);
+
+var _ThemeUnique = __webpack_require__(97);
+
+var _ThemeUniqueItem = __webpack_require__(98);
+
+var _ThiessenAnalystParameters = __webpack_require__(71);
+
+var _ThiessenAnalystService = __webpack_require__(395);
+
+var _TilesetsService = __webpack_require__(396);
+
+var _TopologyValidatorJobsParameter = __webpack_require__(242);
+
+var _TopologyValidatorJobsService = __webpack_require__(397);
+
+var _TransferLine = __webpack_require__(243);
+
+var _TransferPathParameters = __webpack_require__(244);
+
+var _TransferPathService = __webpack_require__(398);
+
+var _TransferSolutionService = __webpack_require__(399);
+
+var _TransportationAnalystParameter = __webpack_require__(33);
+
+var _TransportationAnalystResultSetting = __webpack_require__(246);
+
+var _TransferSolutionParameters = __webpack_require__(245);
+
+var _UGCLayer = __webpack_require__(99);
+
+var _UGCMapLayer = __webpack_require__(247);
+
+var _UGCSubLayer = __webpack_require__(51);
+
+var _UpdateEdgeWeightParameters = __webpack_require__(248);
+
+var _UpdateEdgeWeightService = __webpack_require__(400);
+
+var _UpdateTurnNodeWeightParameters = __webpack_require__(249);
+
+var _UpdateTurnNodeWeightService = __webpack_require__(401);
+
+var _Vector = __webpack_require__(250);
+
+var _VectorClipJobsParameter = __webpack_require__(251);
+
+var _VectorClipJobsService = __webpack_require__(402);
+
+exports.AddressMatchService = _AddressMatchService.AddressMatchService;
+exports.AreaSolarRadiationParameters = _AreaSolarRadiationParameters.AreaSolarRadiationParameters;
+exports.AreaSolarRadiationService = _AreaSolarRadiationService.AreaSolarRadiationService;
+exports.BufferAnalystParameters = _BufferAnalystParameters.BufferAnalystParameters;
+exports.BufferAnalystService = _BufferAnalystService.BufferAnalystService;
+exports.BufferDistance = _BufferDistance.BufferDistance;
+exports.BuffersAnalystJobsParameter = _BuffersAnalystJobsParameter.BuffersAnalystJobsParameter;
+exports.BuffersAnalystJobsService = _BuffersAnalystJobsService.BuffersAnalystJobsService;
+exports.BufferSetting = _BufferSetting.BufferSetting;
+exports.BurstPipelineAnalystParameters = _BurstPipelineAnalystParameters.BurstPipelineAnalystParameters;
+exports.BurstPipelineAnalystService = _BurstPipelineAnalystService.BurstPipelineAnalystService;
+exports.ChartFeatureInfoSpecsService = _ChartFeatureInfoSpecsService.ChartFeatureInfoSpecsService;
+exports.ChartQueryFilterParameter = _ChartQueryFilterParameter.ChartQueryFilterParameter;
+exports.ChartQueryParameters = _ChartQueryParameters.ChartQueryParameters;
+exports.ChartQueryService = _ChartQueryService.ChartQueryService;
+exports.ClipParameter = _ClipParameter.ClipParameter;
+exports.ColorDictionary = _ColorDictionary.ColorDictionary;
+exports.CommonServiceBase = _CommonServiceBase.CommonServiceBase;
+exports.ComputeWeightMatrixParameters = _ComputeWeightMatrixParameters.ComputeWeightMatrixParameters;
+exports.ComputeWeightMatrixService = _ComputeWeightMatrixService.ComputeWeightMatrixService;
+exports.DataFlowService = _DataFlowService.DataFlowService;
+exports.DataReturnOption = _DataReturnOption.DataReturnOption;
+exports.DatasetBufferAnalystParameters = _DatasetBufferAnalystParameters.DatasetBufferAnalystParameters;
+exports.DatasetInfo = _DatasetInfo.DatasetInfo;
+exports.DatasetOverlayAnalystParameters = _DatasetOverlayAnalystParameters.DatasetOverlayAnalystParameters;
+exports.DatasetSurfaceAnalystParameters = _DatasetSurfaceAnalystParameters.DatasetSurfaceAnalystParameters;
+exports.DatasetThiessenAnalystParameters = _DatasetThiessenAnalystParameters.DatasetThiessenAnalystParameters;
+exports.DatasourceConnectionInfo = _DatasourceConnectionInfo.DatasourceConnectionInfo;
+exports.DensityAnalystService = _DensityAnalystService.DensityAnalystService;
+exports.DensityKernelAnalystParameters = _DensityKernelAnalystParameters.DensityKernelAnalystParameters;
+exports.EditFeaturesParameters = _EditFeaturesParameters.EditFeaturesParameters;
+exports.EditFeaturesService = _EditFeaturesService.EditFeaturesService;
+exports.FacilityAnalyst3DParameters = _FacilityAnalyst3DParameters.FacilityAnalyst3DParameters;
+exports.FacilityAnalystSinks3DParameters = _FacilityAnalystSinks3DParameters.FacilityAnalystSinks3DParameters;
+exports.FacilityAnalystSinks3DService = _FacilityAnalystSinks3DService.FacilityAnalystSinks3DService;
+exports.FacilityAnalystSources3DParameters = _FacilityAnalystSources3DParameters.FacilityAnalystSources3DParameters;
+exports.FacilityAnalystSources3DService = _FacilityAnalystSources3DService.FacilityAnalystSources3DService;
+exports.FacilityAnalystStreamParameters = _FacilityAnalystStreamParameters.FacilityAnalystStreamParameters;
+exports.FacilityAnalystStreamService = _FacilityAnalystStreamService.FacilityAnalystStreamService;
+exports.FacilityAnalystTracedown3DParameters = _FacilityAnalystTracedown3DParameters.FacilityAnalystTracedown3DParameters;
+exports.FacilityAnalystTracedown3DService = _FacilityAnalystTracedown3DService.FacilityAnalystTracedown3DService;
+exports.FacilityAnalystTraceup3DParameters = _FacilityAnalystTraceup3DParameters.FacilityAnalystTraceup3DParameters;
+exports.FacilityAnalystTraceup3DService = _FacilityAnalystTraceup3DService.FacilityAnalystTraceup3DService;
+exports.FacilityAnalystUpstream3DParameters = _FacilityAnalystUpstream3DParameters.FacilityAnalystUpstream3DParameters;
+exports.FacilityAnalystUpstream3DService = _FacilityAnalystUpstream3DService.FacilityAnalystUpstream3DService;
+exports.FieldParameters = _FieldParameters.FieldParameters;
+exports.FieldStatisticService = _FieldStatisticService.FieldStatisticService;
+exports.FieldStatisticsParameters = _FieldStatisticsParameters.FieldStatisticsParameters;
+exports.FilterParameter = _FilterParameter.FilterParameter;
+exports.FindClosestFacilitiesParameters = _FindClosestFacilitiesParameters.FindClosestFacilitiesParameters;
+exports.FindClosestFacilitiesService = _FindClosestFacilitiesService.FindClosestFacilitiesService;
+exports.FindLocationParameters = _FindLocationParameters.FindLocationParameters;
+exports.FindLocationService = _FindLocationService.FindLocationService;
+exports.FindMTSPPathsParameters = _FindMTSPPathsParameters.FindMTSPPathsParameters;
+exports.FindMTSPPathsService = _FindMTSPPathsService.FindMTSPPathsService;
+exports.FindPathParameters = _FindPathParameters.FindPathParameters;
+exports.FindPathService = _FindPathService.FindPathService;
+exports.FindServiceAreasParameters = _FindServiceAreasParameters.FindServiceAreasParameters;
+exports.FindServiceAreasService = _FindServiceAreasService.FindServiceAreasService;
+exports.FindTSPPathsParameters = _FindTSPPathsParameters.FindTSPPathsParameters;
+exports.FindTSPPathsService = _FindTSPPathsService.FindTSPPathsService;
+exports.GenerateSpatialDataParameters = _GenerateSpatialDataParameters.GenerateSpatialDataParameters;
+exports.GenerateSpatialDataService = _GenerateSpatialDataService.GenerateSpatialDataService;
+exports.GeoCodingParameter = _GeoCodingParameter.GeoCodingParameter;
+exports.GeoDecodingParameter = _GeoDecodingParameter.GeoDecodingParameter;
+exports.GeometryBufferAnalystParameters = _GeometryBufferAnalystParameters.GeometryBufferAnalystParameters;
+exports.GeometryOverlayAnalystParameters = _GeometryOverlayAnalystParameters.GeometryOverlayAnalystParameters;
+exports.GeometrySurfaceAnalystParameters = _GeometrySurfaceAnalystParameters.GeometrySurfaceAnalystParameters;
+exports.GeometryThiessenAnalystParameters = _GeometryThiessenAnalystParameters.GeometryThiessenAnalystParameters;
+exports.GeoRelationAnalystParameters = _GeoRelationAnalystParameters.GeoRelationAnalystParameters;
+exports.GeoRelationAnalystService = _GeoRelationAnalystService.GeoRelationAnalystService;
+exports.GetFeaturesByBoundsParameters = _GetFeaturesByBoundsParameters.GetFeaturesByBoundsParameters;
+exports.GetFeaturesByBoundsService = _GetFeaturesByBoundsService.GetFeaturesByBoundsService;
+exports.GetFeaturesByBufferParameters = _GetFeaturesByBufferParameters.GetFeaturesByBufferParameters;
+exports.GetFeaturesByBufferService = _GetFeaturesByBufferService.GetFeaturesByBufferService;
+exports.GetFeaturesByGeometryParameters = _GetFeaturesByGeometryParameters.GetFeaturesByGeometryParameters;
+exports.GetFeaturesByGeometryService = _GetFeaturesByGeometryService.GetFeaturesByGeometryService;
+exports.GetFeaturesByIDsParameters = _GetFeaturesByIDsParameters.GetFeaturesByIDsParameters;
+exports.GetFeaturesByIDsService = _GetFeaturesByIDsService.GetFeaturesByIDsService;
+exports.GetFeaturesBySQLParameters = _GetFeaturesBySQLParameters.GetFeaturesBySQLParameters;
+exports.GetFeaturesBySQLService = _GetFeaturesBySQLService.GetFeaturesBySQLService;
+exports.GetFeaturesParametersBase = _GetFeaturesParametersBase.GetFeaturesParametersBase;
+exports.GetFeaturesServiceBase = _GetFeaturesServiceBase.GetFeaturesServiceBase;
+exports.GetFieldsService = _GetFieldsService.GetFieldsService;
+exports.GetGridCellInfosParameters = _GetGridCellInfosParameters.GetGridCellInfosParameters;
+exports.GetGridCellInfosService = _GetGridCellInfosService.GetGridCellInfosService;
+exports.GetLayersInfoService = _GetLayersInfoService.GetLayersInfoService;
+exports.Grid = _Grid.Grid;
+exports.UGCImage = _Image.UGCImage;
+exports.InterpolationAnalystParameters = _InterpolationAnalystParameters.InterpolationAnalystParameters;
+exports.InterpolationAnalystService = _InterpolationAnalystService.InterpolationAnalystService;
+exports.InterpolationIDWAnalystParameters = _InterpolationIDWAnalystParameters.InterpolationIDWAnalystParameters;
+exports.InterpolationKrigingAnalystParameters = _InterpolationKrigingAnalystParameters.InterpolationKrigingAnalystParameters;
+exports.InterpolationRBFAnalystParameters = _InterpolationRBFAnalystParameters.InterpolationRBFAnalystParameters;
+exports.JoinItem = _JoinItem.JoinItem;
+exports.KernelDensityJobParameter = _KernelDensityJobParameter.KernelDensityJobParameter;
+exports.KernelDensityJobsService = _KernelDensityJobsService.KernelDensityJobsService;
+exports.LabelImageCell = _LabelImageCell.LabelImageCell;
+exports.LabelMatrixCell = _LabelMatrixCell.LabelMatrixCell;
+exports.LabelMixedTextStyle = _LabelMixedTextStyle.LabelMixedTextStyle;
+exports.LabelSymbolCell = _LabelSymbolCell.LabelSymbolCell;
+exports.LabelThemeCell = _LabelThemeCell.LabelThemeCell;
+exports.LayerStatus = _LayerStatus.LayerStatus;
+exports.LinkItem = _LinkItem.LinkItem;
+exports.MapService = _MapService.MapService;
+exports.MathExpressionAnalysisParameters = _MathExpressionAnalysisParameters.MathExpressionAnalysisParameters;
+exports.MathExpressionAnalysisService = _MathExpressionAnalysisService.MathExpressionAnalysisService;
+exports.MeasureParameters = _MeasureParameters.MeasureParameters;
+exports.MeasureService = _MeasureService.MeasureService;
+exports.NetworkAnalystServiceBase = _NetworkAnalystServiceBase.NetworkAnalystServiceBase;
+exports.OverlapDisplayedOptions = _OverlapDisplayedOptions.OverlapDisplayedOptions;
+exports.OverlayAnalystParameters = _OverlayAnalystParameters.OverlayAnalystParameters;
+exports.OverlayAnalystService = _OverlayAnalystService.OverlayAnalystService;
+exports.OverlayGeoJobParameter = _OverlayGeoJobParameter.OverlayGeoJobParameter;
+exports.OverlayGeoJobsService = _OverlayGeoJobsService.OverlayGeoJobsService;
+exports.PointWithMeasure = _PointWithMeasure.PointWithMeasure;
+exports.ProcessingServiceBase = _ProcessingServiceBase.ProcessingServiceBase;
+exports.QueryByBoundsParameters = _QueryByBoundsParameters.QueryByBoundsParameters;
+exports.QueryByBoundsService = _QueryByBoundsService.QueryByBoundsService;
+exports.QueryByDistanceParameters = _QueryByDistanceParameters.QueryByDistanceParameters;
+exports.QueryByDistanceService = _QueryByDistanceService.QueryByDistanceService;
+exports.QueryByGeometryParameters = _QueryByGeometryParameters.QueryByGeometryParameters;
+exports.QueryByGeometryService = _QueryByGeometryService.QueryByGeometryService;
+exports.QueryBySQLParameters = _QueryBySQLParameters.QueryBySQLParameters;
+exports.QueryBySQLService = _QueryBySQLService.QueryBySQLService;
+exports.QueryParameters = _QueryParameters.QueryParameters;
+exports.QueryService = _QueryService.QueryService;
+exports.Route = _Route.Route;
+exports.RouteCalculateMeasureParameters = _RouteCalculateMeasureParameters.RouteCalculateMeasureParameters;
+exports.RouteCalculateMeasureService = _RouteCalculateMeasureService.RouteCalculateMeasureService;
+exports.RouteLocatorParameters = _RouteLocatorParameters.RouteLocatorParameters;
+exports.RouteLocatorService = _RouteLocatorService.RouteLocatorService;
+exports.ServerColor = _ServerColor.ServerColor;
+exports.ServerFeature = _ServerFeature.ServerFeature;
+exports.ServerGeometry = _ServerGeometry.ServerGeometry;
+exports.ServerStyle = _ServerStyle.ServerStyle;
+exports.ServerTextStyle = _ServerTextStyle.ServerTextStyle;
+exports.ServerTheme = _ServerTheme.ServerTheme;
+exports.SetLayerInfoParameters = _SetLayerInfoParameters.SetLayerInfoParameters;
+exports.SetLayerInfoService = _SetLayerInfoService.SetLayerInfoService;
+exports.SetLayersInfoParameters = _SetLayersInfoParameters.SetLayersInfoParameters;
+exports.SetLayersInfoService = _SetLayersInfoService.SetLayersInfoService;
+exports.SetLayerStatusParameters = _SetLayerStatusParameters.SetLayerStatusParameters;
+exports.SetLayerStatusService = _SetLayerStatusService.SetLayerStatusService;
+exports.SingleObjectQueryJobsParameter = _SingleObjectQueryJobsParameter.SingleObjectQueryJobsParameter;
+exports.SingleObjectQueryJobsService = _SingleObjectQueryJobsService.SingleObjectQueryJobsService;
+exports.SpatialAnalystBase = _SpatialAnalystBase.SpatialAnalystBase;
+exports.StopQueryParameters = _StopQueryParameters.StopQueryParameters;
+exports.StopQueryService = _StopQueryService.StopQueryService;
+exports.SummaryAttributesJobsParameter = _SummaryAttributesJobsParameter.SummaryAttributesJobsParameter;
+exports.SummaryAttributesJobsService = _SummaryAttributesJobsService.SummaryAttributesJobsService;
+exports.SummaryMeshJobParameter = _SummaryMeshJobParameter.SummaryMeshJobParameter;
+exports.SummaryMeshJobsService = _SummaryMeshJobsService.SummaryMeshJobsService;
+exports.SummaryRegionJobParameter = _SummaryRegionJobParameter.SummaryRegionJobParameter;
+exports.SummaryRegionJobsService = _SummaryRegionJobsService.SummaryRegionJobsService;
+exports.SupplyCenter = _SupplyCenter.SupplyCenter;
+exports.SurfaceAnalystParameters = _SurfaceAnalystParameters.SurfaceAnalystParameters;
+exports.SurfaceAnalystParametersSetting = _SurfaceAnalystParametersSetting.SurfaceAnalystParametersSetting;
+exports.SurfaceAnalystService = _SurfaceAnalystService.SurfaceAnalystService;
+exports.TerrainCurvatureCalculationParameters = _TerrainCurvatureCalculationParameters.TerrainCurvatureCalculationParameters;
+exports.TerrainCurvatureCalculationService = _TerrainCurvatureCalculationService.TerrainCurvatureCalculationService;
+exports.Theme = _Theme.Theme;
+exports.ThemeDotDensity = _ThemeDotDensity.ThemeDotDensity;
+exports.ThemeFlow = _ThemeFlow.ThemeFlow;
+exports.ThemeGraduatedSymbol = _ThemeGraduatedSymbol.ThemeGraduatedSymbol;
+exports.ThemeGraduatedSymbolStyle = _ThemeGraduatedSymbolStyle.ThemeGraduatedSymbolStyle;
+exports.ThemeGraph = _ThemeGraph.ThemeGraph;
+exports.ThemeGraphAxes = _ThemeGraphAxes.ThemeGraphAxes;
+exports.ThemeGraphItem = _ThemeGraphItem.ThemeGraphItem;
+exports.ThemeGraphSize = _ThemeGraphSize.ThemeGraphSize;
+exports.ThemeGraphText = _ThemeGraphText.ThemeGraphText;
+exports.ThemeGridRange = _ThemeGridRange.ThemeGridRange;
+exports.ThemeGridRangeItem = _ThemeGridRangeItem.ThemeGridRangeItem;
+exports.ThemeGridUnique = _ThemeGridUnique.ThemeGridUnique;
+exports.ThemeGridUniqueItem = _ThemeGridUniqueItem.ThemeGridUniqueItem;
+exports.ThemeLabel = _ThemeLabel.ThemeLabel;
+exports.ThemeLabelAlongLine = _ThemeLabelAlongLine.ThemeLabelAlongLine;
+exports.ThemeLabelBackground = _ThemeLabelBackground.ThemeLabelBackground;
+exports.ThemeLabelItem = _ThemeLabelItem.ThemeLabelItem;
+exports.ThemeLabelText = _ThemeLabelText.ThemeLabelText;
+exports.ThemeLabelUniqueItem = _ThemeLabelUniqueItem.ThemeLabelUniqueItem;
+exports.ThemeMemoryData = _ThemeMemoryData.ThemeMemoryData;
+exports.ThemeOffset = _ThemeOffset.ThemeOffset;
+exports.ThemeParameters = _ThemeParameters.ThemeParameters;
+exports.ThemeRange = _ThemeRange.ThemeRange;
+exports.ThemeRangeItem = _ThemeRangeItem.ThemeRangeItem;
+exports.ThemeService = _ThemeService.ThemeService;
+exports.ThemeUnique = _ThemeUnique.ThemeUnique;
+exports.ThemeUniqueItem = _ThemeUniqueItem.ThemeUniqueItem;
+exports.ThiessenAnalystParameters = _ThiessenAnalystParameters.ThiessenAnalystParameters;
+exports.ThiessenAnalystService = _ThiessenAnalystService.ThiessenAnalystService;
+exports.TilesetsService = _TilesetsService.TilesetsService;
+exports.TopologyValidatorJobsParameter = _TopologyValidatorJobsParameter.TopologyValidatorJobsParameter;
+exports.TopologyValidatorJobsService = _TopologyValidatorJobsService.TopologyValidatorJobsService;
+exports.TransferLine = _TransferLine.TransferLine;
+exports.TransferPathParameters = _TransferPathParameters.TransferPathParameters;
+exports.TransferPathService = _TransferPathService.TransferPathService;
+exports.TransferSolutionService = _TransferSolutionService.TransferSolutionService;
+exports.TransportationAnalystParameter = _TransportationAnalystParameter.TransportationAnalystParameter;
+exports.TransportationAnalystResultSetting = _TransportationAnalystResultSetting.TransportationAnalystResultSetting;
+exports.TransferSolutionParameters = _TransferSolutionParameters.TransferSolutionParameters;
+exports.UGCLayer = _UGCLayer.UGCLayer;
+exports.UGCMapLayer = _UGCMapLayer.UGCMapLayer;
+exports.UGCSubLayer = _UGCSubLayer.UGCSubLayer;
+exports.UpdateEdgeWeightParameters = _UpdateEdgeWeightParameters.UpdateEdgeWeightParameters;
+exports.UpdateEdgeWeightService = _UpdateEdgeWeightService.UpdateEdgeWeightService;
+exports.UpdateTurnNodeWeightParameters = _UpdateTurnNodeWeightParameters.UpdateTurnNodeWeightParameters;
+exports.UpdateTurnNodeWeightService = _UpdateTurnNodeWeightService.UpdateTurnNodeWeightService;
+exports.Vector = _Vector.Vector;
+exports.VectorClipJobsParameter = _VectorClipJobsParameter.VectorClipJobsParameter;
+exports.VectorClipJobsService = _VectorClipJobsService.VectorClipJobsService;
 
 /***/ }),
-/* 415 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76672,7 +75070,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(257);
+__webpack_require__(253);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -76780,7 +75178,7 @@ var OnlineQueryDatasParameter = exports.OnlineQueryDatasParameter = function () 
 _SuperMap.SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter;
 
 /***/ }),
-/* 416 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76791,52 +75189,28 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.OnlineServiceBase = exports.OnlineResources = exports.OnlineQueryDatasParameter = exports.OnlineData = exports.Online = undefined;
 
-var _Online = __webpack_require__(122);
-
-Object.defineProperty(exports, 'Online', {
-  enumerable: true,
-  get: function get() {
-    return _Online.Online;
-  }
-});
-
-var _OnlineData = __webpack_require__(256);
-
-Object.defineProperty(exports, 'OnlineData', {
-  enumerable: true,
-  get: function get() {
-    return _OnlineData.OnlineData;
-  }
-});
-
-var _OnlineQueryDatasParameter = __webpack_require__(415);
-
-Object.defineProperty(exports, 'OnlineQueryDatasParameter', {
-  enumerable: true,
-  get: function get() {
-    return _OnlineQueryDatasParameter.OnlineQueryDatasParameter;
-  }
-});
-
-var _OnlineServiceBase = __webpack_require__(258);
-
-Object.defineProperty(exports, 'OnlineServiceBase', {
-  enumerable: true,
-  get: function get() {
-    return _OnlineServiceBase.OnlineServiceBase;
-  }
-});
-
-var _OnlineResources = __webpack_require__(257);
+var _OnlineResources = __webpack_require__(253);
 
 var OnlineResources = _interopRequireWildcard(_OnlineResources);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _Online = __webpack_require__(118);
 
+var _OnlineData = __webpack_require__(252);
+
+var _OnlineQueryDatasParameter = __webpack_require__(404);
+
+var _OnlineServiceBase = __webpack_require__(254);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+exports.Online = _Online.Online;
+exports.OnlineData = _OnlineData.OnlineData;
+exports.OnlineQueryDatasParameter = _OnlineQueryDatasParameter.OnlineQueryDatasParameter;
 exports.OnlineResources = OnlineResources;
+exports.OnlineServiceBase = _OnlineServiceBase.OnlineServiceBase;
 
 /***/ }),
-/* 417 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76855,9 +75229,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _Polygon = __webpack_require__(75);
+var _Polygon = __webpack_require__(73);
 
-var _Color = __webpack_require__(105);
+var _Color = __webpack_require__(102);
 
 var _Util = __webpack_require__(1);
 
@@ -77227,7 +75601,7 @@ var Bar = exports.Bar = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Bar = Bar;
 
 /***/ }),
-/* 418 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77248,7 +75622,7 @@ var _Util = __webpack_require__(1);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _Polygon = __webpack_require__(75);
+var _Polygon = __webpack_require__(73);
 
 var _Graph2 = __webpack_require__(28);
 
@@ -77680,7 +76054,7 @@ var Bar3D = exports.Bar3D = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Bar3D = Bar3D;
 
 /***/ }),
-/* 419 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77697,13 +76071,13 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Theme = __webpack_require__(77);
+var _Theme = __webpack_require__(75);
 
-var _Circle = __webpack_require__(103);
+var _Circle = __webpack_require__(100);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _RankSymbol2 = __webpack_require__(259);
+var _RankSymbol2 = __webpack_require__(255);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77873,7 +76247,7 @@ var Circle = exports.Circle = function (_RankSymbol) {
 _SuperMap.SuperMap.Feature.Theme.Circle = Circle;
 
 /***/ }),
-/* 420 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77892,9 +76266,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _Point = __webpack_require__(74);
+var _Point = __webpack_require__(72);
 
-var _Line = __webpack_require__(104);
+var _Line = __webpack_require__(101);
 
 var _Graph2 = __webpack_require__(28);
 
@@ -78222,7 +76596,7 @@ var Line = exports.Line = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Line = Line;
 
 /***/ }),
-/* 421 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78241,7 +76615,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _Sector = __webpack_require__(76);
+var _Sector = __webpack_require__(74);
 
 var _Graph2 = __webpack_require__(28);
 
@@ -78460,7 +76834,7 @@ var Pie = exports.Pie = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Pie = Pie;
 
 /***/ }),
-/* 422 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78479,7 +76853,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _Point = __webpack_require__(74);
+var _Point = __webpack_require__(72);
 
 var _Graph2 = __webpack_require__(28);
 
@@ -78772,7 +77146,7 @@ var Point = exports.Point = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Point = Point;
 
 /***/ }),
-/* 423 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78791,7 +77165,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _ShapeFactory = __webpack_require__(24);
 
-var _Sector = __webpack_require__(76);
+var _Sector = __webpack_require__(74);
 
 var _Graph2 = __webpack_require__(28);
 
@@ -79013,7 +77387,7 @@ var Ring = exports.Ring = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Ring = Ring;
 
 /***/ }),
-/* 424 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79034,41 +77408,41 @@ var _Geometry = __webpack_require__(26);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(77);
+var _Theme2 = __webpack_require__(75);
 
-var _Rectangle = __webpack_require__(142);
+var _Rectangle = __webpack_require__(138);
 
 var _Point = __webpack_require__(18);
 
 var _Collection = __webpack_require__(27);
 
-var _MultiPoint = __webpack_require__(38);
+var _MultiPoint = __webpack_require__(37);
 
 var _LineString = __webpack_require__(17);
 
-var _MultiLineString = __webpack_require__(47);
+var _MultiLineString = __webpack_require__(46);
 
-var _LinearRing = __webpack_require__(31);
+var _LinearRing = __webpack_require__(30);
 
-var _Polygon = __webpack_require__(49);
+var _Polygon = __webpack_require__(48);
 
-var _MultiPolygon = __webpack_require__(48);
+var _MultiPolygon = __webpack_require__(47);
 
-var _Curve = __webpack_require__(90);
+var _Curve = __webpack_require__(87);
 
-var _GeoText = __webpack_require__(91);
+var _GeoText = __webpack_require__(88);
 
-var _SmicPoint = __webpack_require__(108);
+var _SmicPoint = __webpack_require__(105);
 
-var _SmicBrokenLine = __webpack_require__(106);
+var _SmicBrokenLine = __webpack_require__(103);
 
-var _SmicText = __webpack_require__(110);
+var _SmicText = __webpack_require__(107);
 
-var _SmicRectangle = __webpack_require__(109);
+var _SmicRectangle = __webpack_require__(106);
 
-var _SmicPolygon = __webpack_require__(80);
+var _SmicPolygon = __webpack_require__(78);
 
-var _LonLat = __webpack_require__(37);
+var _LonLat = __webpack_require__(36);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -79748,7 +78122,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
 _SuperMap.SuperMap.Feature.Theme.ThemeVector = ThemeVector;
 
 /***/ }),
-/* 425 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79757,233 +78131,142 @@ _SuperMap.SuperMap.Feature.Theme.ThemeVector = ThemeVector;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = undefined;
 
 var _ShapeFactory = __webpack_require__(24);
 
-Object.defineProperty(exports, 'ShapeFactory', {
-  enumerable: true,
-  get: function get() {
-    return _ShapeFactory.ShapeFactory;
-  }
-});
-
 var _ShapeParameters = __webpack_require__(25);
 
-Object.defineProperty(exports, 'ShapeParameters', {
-  enumerable: true,
-  get: function get() {
-    return _ShapeParameters.ShapeParameters;
-  }
-});
+var _Circle = __webpack_require__(100);
 
-var _Circle = __webpack_require__(103);
+var _Image = __webpack_require__(256);
 
-Object.defineProperty(exports, 'FeatureCircle', {
-  enumerable: true,
-  get: function get() {
-    return _Circle.Circle;
-  }
-});
+var _Label = __webpack_require__(257);
 
-var _Image = __webpack_require__(260);
+var _Line = __webpack_require__(101);
 
-Object.defineProperty(exports, 'Image', {
-  enumerable: true,
-  get: function get() {
-    return _Image.Image;
-  }
-});
+var _Point = __webpack_require__(72);
 
-var _Label = __webpack_require__(261);
+var _Polygon = __webpack_require__(73);
 
-Object.defineProperty(exports, 'Label', {
-  enumerable: true,
-  get: function get() {
-    return _Label.Label;
-  }
-});
+var _Rectangle = __webpack_require__(258);
 
-var _Line = __webpack_require__(104);
+var _Sector = __webpack_require__(74);
 
-Object.defineProperty(exports, 'FeatureLine', {
-  enumerable: true,
-  get: function get() {
-    return _Line.Line;
-  }
-});
+var _Theme = __webpack_require__(75);
 
-var _Point = __webpack_require__(74);
-
-Object.defineProperty(exports, 'Point', {
-  enumerable: true,
-  get: function get() {
-    return _Point.Point;
-  }
-});
-
-var _Polygon = __webpack_require__(75);
-
-Object.defineProperty(exports, 'FeaturePolygon', {
-  enumerable: true,
-  get: function get() {
-    return _Polygon.Polygon;
-  }
-});
-
-var _Rectangle = __webpack_require__(262);
-
-Object.defineProperty(exports, 'FeatureRectangle', {
-  enumerable: true,
-  get: function get() {
-    return _Rectangle.Rectangle;
-  }
-});
-
-var _Sector = __webpack_require__(76);
-
-Object.defineProperty(exports, 'Sector', {
-  enumerable: true,
-  get: function get() {
-    return _Sector.Sector;
-  }
-});
-
-var _Theme = __webpack_require__(77);
-
-Object.defineProperty(exports, 'FeatureTheme', {
-  enumerable: true,
-  get: function get() {
-    return _Theme.Theme;
-  }
-});
+exports.ShapeFactory = _ShapeFactory.ShapeFactory;
+exports.ShapeParameters = _ShapeParameters.ShapeParameters;
+exports.FeatureCircle = _Circle.Circle;
+exports.Image = _Image.Image;
+exports.Label = _Label.Label;
+exports.FeatureLine = _Line.Line;
+exports.Point = _Point.Point;
+exports.FeaturePolygon = _Polygon.Polygon;
+exports.FeatureRectangle = _Rectangle.Rectangle;
+exports.Sector = _Sector.Sector;
+exports.FeatureTheme = _Theme.Theme;
 
 /***/ }),
-/* 426 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
+exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = exports.ThemeVector = exports.Ring = exports.RankSymbol = exports.OverlayPoint = exports.Pie = exports.Line = exports.Graph = exports.Circle = exports.Bar3D = exports.Bar = undefined;
 
-var _Bar = __webpack_require__(417);
+var _Bar = __webpack_require__(406);
 
-Object.defineProperty(exports, "Bar", {
-  enumerable: true,
-  get: function get() {
-    return _Bar.Bar;
-  }
-});
+var _Bar3D = __webpack_require__(407);
 
-var _Bar3D = __webpack_require__(418);
-
-Object.defineProperty(exports, "Bar3D", {
-  enumerable: true,
-  get: function get() {
-    return _Bar3D.Bar3D;
-  }
-});
-
-var _Circle = __webpack_require__(419);
-
-Object.defineProperty(exports, "Circle", {
-  enumerable: true,
-  get: function get() {
-    return _Circle.Circle;
-  }
-});
+var _Circle = __webpack_require__(408);
 
 var _Graph = __webpack_require__(28);
 
-Object.defineProperty(exports, "Graph", {
-  enumerable: true,
-  get: function get() {
-    return _Graph.Graph;
-  }
-});
+var _Line = __webpack_require__(409);
 
-var _Line = __webpack_require__(420);
+var _Pie = __webpack_require__(410);
 
-Object.defineProperty(exports, "Line", {
-  enumerable: true,
-  get: function get() {
-    return _Line.Line;
-  }
-});
+var _Point = __webpack_require__(411);
 
-var _Pie = __webpack_require__(421);
+var _RankSymbol = __webpack_require__(255);
 
-Object.defineProperty(exports, "Pie", {
-  enumerable: true,
-  get: function get() {
-    return _Pie.Pie;
-  }
-});
+var _Ring = __webpack_require__(412);
 
-var _Point = __webpack_require__(422);
+var _ThemeVector = __webpack_require__(413);
 
-Object.defineProperty(exports, "OverlayPoint", {
-  enumerable: true,
-  get: function get() {
-    return _Point.Point;
-  }
-});
+var _feature = __webpack_require__(414);
 
-var _RankSymbol = __webpack_require__(259);
+var _levelRenderer = __webpack_require__(421);
 
-Object.defineProperty(exports, "RankSymbol", {
-  enumerable: true,
-  get: function get() {
-    return _RankSymbol.RankSymbol;
-  }
-});
-
-var _Ring = __webpack_require__(423);
-
-Object.defineProperty(exports, "Ring", {
-  enumerable: true,
-  get: function get() {
-    return _Ring.Ring;
-  }
-});
-
-var _ThemeVector = __webpack_require__(424);
-
-Object.defineProperty(exports, "ThemeVector", {
-  enumerable: true,
-  get: function get() {
-    return _ThemeVector.ThemeVector;
-  }
-});
-
-var _feature = __webpack_require__(425);
-
-Object.keys(_feature).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _feature[key];
-    }
-  });
-});
-
-var _levelRenderer = __webpack_require__(432);
-
-Object.keys(_levelRenderer).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _levelRenderer[key];
-    }
-  });
-});
+exports.Bar = _Bar.Bar;
+exports.Bar3D = _Bar3D.Bar3D;
+exports.Circle = _Circle.Circle;
+exports.Graph = _Graph.Graph;
+exports.Line = _Line.Line;
+exports.Pie = _Pie.Pie;
+exports.OverlayPoint = _Point.Point;
+exports.RankSymbol = _RankSymbol.RankSymbol;
+exports.Ring = _Ring.Ring;
+exports.ThemeVector = _ThemeVector.ThemeVector;
+exports.ShapeFactory = _feature.ShapeFactory;
+exports.ShapeParameters = _feature.ShapeParameters;
+exports.FeatureCircle = _feature.FeatureCircle;
+exports.Image = _feature.Image;
+exports.Label = _feature.Label;
+exports.FeatureLine = _feature.FeatureLine;
+exports.Point = _feature.Point;
+exports.FeaturePolygon = _feature.FeaturePolygon;
+exports.FeatureRectangle = _feature.FeatureRectangle;
+exports.Sector = _feature.Sector;
+exports.FeatureTheme = _feature.FeatureTheme;
+exports.LevelRenderer = _levelRenderer.LevelRenderer;
+exports.Render = _levelRenderer.Render;
+exports.Animation = _levelRenderer.Animation;
+exports.Animator = _levelRenderer.Animator;
+exports.Area = _levelRenderer.Area;
+exports.Clip = _levelRenderer.Clip;
+exports.Color = _levelRenderer.Color;
+exports.ComputeBoundingBox = _levelRenderer.ComputeBoundingBox;
+exports.Config = _levelRenderer.Config;
+exports.LevelRendererCurve = _levelRenderer.LevelRendererCurve;
+exports.Easing = _levelRenderer.Easing;
+exports.Env = _levelRenderer.Env;
+exports.LevelRendererEvent = _levelRenderer.LevelRendererEvent;
+exports.Eventful = _levelRenderer.Eventful;
+exports.Group = _levelRenderer.Group;
+exports.Handler = _levelRenderer.Handler;
+exports.Http = _levelRenderer.Http;
+exports.Log = _levelRenderer.Log;
+exports.Math = _levelRenderer.Math;
+exports.Matrix = _levelRenderer.Matrix;
+exports.Painter = _levelRenderer.Painter;
+exports.PaintLayer = _levelRenderer.PaintLayer;
+exports.Shape = _levelRenderer.Shape;
+exports.SmicBrokenLine = _levelRenderer.SmicBrokenLine;
+exports.SmicCircle = _levelRenderer.SmicCircle;
+exports.SmicEllipse = _levelRenderer.SmicEllipse;
+exports.SmicImage = _levelRenderer.SmicImage;
+exports.SmicIsogon = _levelRenderer.SmicIsogon;
+exports.SmicPoint = _levelRenderer.SmicPoint;
+exports.SmicPolygon = _levelRenderer.SmicPolygon;
+exports.SmicRectangle = _levelRenderer.SmicRectangle;
+exports.SmicRing = _levelRenderer.SmicRing;
+exports.SmicSector = _levelRenderer.SmicSector;
+exports.SmicStar = _levelRenderer.SmicStar;
+exports.SmicText = _levelRenderer.SmicText;
+exports.Storage = _levelRenderer.Storage;
+exports.Transformable = _levelRenderer.Transformable;
+exports.Util = _levelRenderer.Util;
+exports.LevelRendererVector = _levelRenderer.LevelRendererVector;
+exports.SUtil = _levelRenderer.SUtil;
 
 /***/ }),
-/* 427 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80000,7 +78283,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Render = __webpack_require__(277);
+var _Render = __webpack_require__(273);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -80169,7 +78452,7 @@ var LevelRenderer = exports.LevelRenderer = function () {
 _SuperMap.SuperMap.LevelRenderer = LevelRenderer;
 
 /***/ }),
-/* 428 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80366,7 +78649,7 @@ var SmicEllipse = exports.SmicEllipse = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 429 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80570,7 +78853,7 @@ var SmicIsogon = exports.SmicIsogon = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 430 */
+/* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80752,7 +79035,7 @@ var SmicRing = exports.SmicRing = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 431 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80985,7 +79268,7 @@ var SmicStar = exports.SmicStar = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 432 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80994,363 +79277,127 @@ var SmicStar = exports.SmicStar = function (_Shape) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = undefined;
 
-var _LevelRenderer = __webpack_require__(427);
+var _LevelRenderer = __webpack_require__(416);
 
-Object.defineProperty(exports, 'LevelRenderer', {
-  enumerable: true,
-  get: function get() {
-    return _LevelRenderer.LevelRenderer;
-  }
-});
+var _Render = __webpack_require__(273);
 
-var _Render = __webpack_require__(277);
+var _Animation = __webpack_require__(259);
 
-Object.defineProperty(exports, 'Render', {
-  enumerable: true,
-  get: function get() {
-    return _Render.Render;
-  }
-});
+var _Area = __webpack_require__(260);
 
-var _Animation = __webpack_require__(263);
+var _Clip = __webpack_require__(261);
 
-Object.defineProperty(exports, 'Animation', {
-  enumerable: true,
-  get: function get() {
-    return _Animation.Animation;
-  }
-});
-Object.defineProperty(exports, 'Animator', {
-  enumerable: true,
-  get: function get() {
-    return _Animation.Animator;
-  }
-});
+var _Color = __webpack_require__(102);
 
-var _Area = __webpack_require__(264);
+var _ComputeBoundingBox = __webpack_require__(262);
 
-Object.defineProperty(exports, 'Area', {
-  enumerable: true,
-  get: function get() {
-    return _Area.Area;
-  }
-});
+var _Config = __webpack_require__(76);
 
-var _Clip = __webpack_require__(265);
+var _Curve = __webpack_require__(77);
 
-Object.defineProperty(exports, 'Clip', {
-  enumerable: true,
-  get: function get() {
-    return _Clip.Clip;
-  }
-});
+var _Easing = __webpack_require__(263);
 
-var _Color = __webpack_require__(105);
+var _Env = __webpack_require__(264);
 
-Object.defineProperty(exports, 'Color', {
-  enumerable: true,
-  get: function get() {
-    return _Color.Color;
-  }
-});
+var _Event = __webpack_require__(265);
 
-var _ComputeBoundingBox = __webpack_require__(266);
+var _Eventful = __webpack_require__(52);
 
-Object.defineProperty(exports, 'ComputeBoundingBox', {
-  enumerable: true,
-  get: function get() {
-    return _ComputeBoundingBox.ComputeBoundingBox;
-  }
-});
+var _Group = __webpack_require__(266);
 
-var _Config = __webpack_require__(78);
+var _Handler = __webpack_require__(267);
 
-Object.defineProperty(exports, 'Config', {
-  enumerable: true,
-  get: function get() {
-    return _Config.Config;
-  }
-});
+var _Http = __webpack_require__(268);
 
-var _Curve = __webpack_require__(79);
+var _Log = __webpack_require__(269);
 
-Object.defineProperty(exports, 'LevelRendererCurve', {
-  enumerable: true,
-  get: function get() {
-    return _Curve.Curve;
-  }
-});
+var _Math = __webpack_require__(270);
 
-var _Easing = __webpack_require__(267);
+var _Matrix = __webpack_require__(271);
 
-Object.defineProperty(exports, 'Easing', {
-  enumerable: true,
-  get: function get() {
-    return _Easing.Easing;
-  }
-});
-
-var _Env = __webpack_require__(268);
-
-Object.defineProperty(exports, 'Env', {
-  enumerable: true,
-  get: function get() {
-    return _Env.Env;
-  }
-});
-
-var _Event = __webpack_require__(269);
-
-Object.defineProperty(exports, 'LevelRendererEvent', {
-  enumerable: true,
-  get: function get() {
-    return _Event.Event;
-  }
-});
-
-var _Eventful = __webpack_require__(53);
-
-Object.defineProperty(exports, 'Eventful', {
-  enumerable: true,
-  get: function get() {
-    return _Eventful.Eventful;
-  }
-});
-
-var _Group = __webpack_require__(270);
-
-Object.defineProperty(exports, 'Group', {
-  enumerable: true,
-  get: function get() {
-    return _Group.Group;
-  }
-});
-
-var _Handler = __webpack_require__(271);
-
-Object.defineProperty(exports, 'Handler', {
-  enumerable: true,
-  get: function get() {
-    return _Handler.Handler;
-  }
-});
-
-var _Http = __webpack_require__(272);
-
-Object.defineProperty(exports, 'Http', {
-  enumerable: true,
-  get: function get() {
-    return _Http.Http;
-  }
-});
-
-var _Log = __webpack_require__(273);
-
-Object.defineProperty(exports, 'Log', {
-  enumerable: true,
-  get: function get() {
-    return _Log.Log;
-  }
-});
-
-var _Math = __webpack_require__(274);
-
-Object.defineProperty(exports, 'Math', {
-  enumerable: true,
-  get: function get() {
-    return _Math.Math;
-  }
-});
-
-var _Matrix = __webpack_require__(275);
-
-Object.defineProperty(exports, 'Matrix', {
-  enumerable: true,
-  get: function get() {
-    return _Matrix.Matrix;
-  }
-});
-
-var _Painter = __webpack_require__(276);
-
-Object.defineProperty(exports, 'Painter', {
-  enumerable: true,
-  get: function get() {
-    return _Painter.Painter;
-  }
-});
-Object.defineProperty(exports, 'PaintLayer', {
-  enumerable: true,
-  get: function get() {
-    return _Painter.PaintLayer;
-  }
-});
+var _Painter = __webpack_require__(272);
 
 var _Shape = __webpack_require__(13);
 
-Object.defineProperty(exports, 'Shape', {
-  enumerable: true,
-  get: function get() {
-    return _Shape.Shape;
-  }
-});
+var _SmicBrokenLine = __webpack_require__(103);
 
-var _SmicBrokenLine = __webpack_require__(106);
+var _SmicCircle = __webpack_require__(274);
 
-Object.defineProperty(exports, 'SmicBrokenLine', {
-  enumerable: true,
-  get: function get() {
-    return _SmicBrokenLine.SmicBrokenLine;
-  }
-});
+var _SmicEllipse = __webpack_require__(417);
 
-var _SmicCircle = __webpack_require__(278);
+var _SmicImage = __webpack_require__(104);
 
-Object.defineProperty(exports, 'SmicCircle', {
-  enumerable: true,
-  get: function get() {
-    return _SmicCircle.SmicCircle;
-  }
-});
+var _SmicIsogon = __webpack_require__(418);
 
-var _SmicEllipse = __webpack_require__(428);
+var _SmicPoint = __webpack_require__(105);
 
-Object.defineProperty(exports, 'SmicEllipse', {
-  enumerable: true,
-  get: function get() {
-    return _SmicEllipse.SmicEllipse;
-  }
-});
+var _SmicPolygon = __webpack_require__(78);
 
-var _SmicImage = __webpack_require__(107);
+var _SmicRectangle = __webpack_require__(106);
 
-Object.defineProperty(exports, 'SmicImage', {
-  enumerable: true,
-  get: function get() {
-    return _SmicImage.SmicImage;
-  }
-});
+var _SmicRing = __webpack_require__(419);
 
-var _SmicIsogon = __webpack_require__(429);
+var _SmicSector = __webpack_require__(275);
 
-Object.defineProperty(exports, 'SmicIsogon', {
-  enumerable: true,
-  get: function get() {
-    return _SmicIsogon.SmicIsogon;
-  }
-});
+var _SmicStar = __webpack_require__(420);
 
-var _SmicPoint = __webpack_require__(108);
+var _SmicText = __webpack_require__(107);
 
-Object.defineProperty(exports, 'SmicPoint', {
-  enumerable: true,
-  get: function get() {
-    return _SmicPoint.SmicPoint;
-  }
-});
+var _Storage = __webpack_require__(276);
 
-var _SmicPolygon = __webpack_require__(80);
-
-Object.defineProperty(exports, 'SmicPolygon', {
-  enumerable: true,
-  get: function get() {
-    return _SmicPolygon.SmicPolygon;
-  }
-});
-
-var _SmicRectangle = __webpack_require__(109);
-
-Object.defineProperty(exports, 'SmicRectangle', {
-  enumerable: true,
-  get: function get() {
-    return _SmicRectangle.SmicRectangle;
-  }
-});
-
-var _SmicRing = __webpack_require__(430);
-
-Object.defineProperty(exports, 'SmicRing', {
-  enumerable: true,
-  get: function get() {
-    return _SmicRing.SmicRing;
-  }
-});
-
-var _SmicSector = __webpack_require__(279);
-
-Object.defineProperty(exports, 'SmicSector', {
-  enumerable: true,
-  get: function get() {
-    return _SmicSector.SmicSector;
-  }
-});
-
-var _SmicStar = __webpack_require__(431);
-
-Object.defineProperty(exports, 'SmicStar', {
-  enumerable: true,
-  get: function get() {
-    return _SmicStar.SmicStar;
-  }
-});
-
-var _SmicText = __webpack_require__(110);
-
-Object.defineProperty(exports, 'SmicText', {
-  enumerable: true,
-  get: function get() {
-    return _SmicText.SmicText;
-  }
-});
-
-var _Storage = __webpack_require__(280);
-
-Object.defineProperty(exports, 'Storage', {
-  enumerable: true,
-  get: function get() {
-    return _Storage.Storage;
-  }
-});
-
-var _Transformable = __webpack_require__(81);
-
-Object.defineProperty(exports, 'Transformable', {
-  enumerable: true,
-  get: function get() {
-    return _Transformable.Transformable;
-  }
-});
+var _Transformable = __webpack_require__(79);
 
 var _Util = __webpack_require__(29);
 
-Object.defineProperty(exports, 'Util', {
-  enumerable: true,
-  get: function get() {
-    return _Util.Util;
-  }
-});
-
-var _Vector = __webpack_require__(82);
-
-Object.defineProperty(exports, 'LevelRendererVector', {
-  enumerable: true,
-  get: function get() {
-    return _Vector.Vector;
-  }
-});
+var _Vector = __webpack_require__(80);
 
 var _SUtil = __webpack_require__(12);
 
-Object.defineProperty(exports, 'SUtil', {
-  enumerable: true,
-  get: function get() {
-    return _SUtil.SUtil;
-  }
-});
+exports.LevelRenderer = _LevelRenderer.LevelRenderer;
+exports.Render = _Render.Render;
+exports.Animation = _Animation.Animation;
+exports.Animator = _Animation.Animator;
+exports.Area = _Area.Area;
+exports.Clip = _Clip.Clip;
+exports.Color = _Color.Color;
+exports.ComputeBoundingBox = _ComputeBoundingBox.ComputeBoundingBox;
+exports.Config = _Config.Config;
+exports.LevelRendererCurve = _Curve.Curve;
+exports.Easing = _Easing.Easing;
+exports.Env = _Env.Env;
+exports.LevelRendererEvent = _Event.Event;
+exports.Eventful = _Eventful.Eventful;
+exports.Group = _Group.Group;
+exports.Handler = _Handler.Handler;
+exports.Http = _Http.Http;
+exports.Log = _Log.Log;
+exports.Math = _Math.Math;
+exports.Matrix = _Matrix.Matrix;
+exports.Painter = _Painter.Painter;
+exports.PaintLayer = _Painter.PaintLayer;
+exports.Shape = _Shape.Shape;
+exports.SmicBrokenLine = _SmicBrokenLine.SmicBrokenLine;
+exports.SmicCircle = _SmicCircle.SmicCircle;
+exports.SmicEllipse = _SmicEllipse.SmicEllipse;
+exports.SmicImage = _SmicImage.SmicImage;
+exports.SmicIsogon = _SmicIsogon.SmicIsogon;
+exports.SmicPoint = _SmicPoint.SmicPoint;
+exports.SmicPolygon = _SmicPolygon.SmicPolygon;
+exports.SmicRectangle = _SmicRectangle.SmicRectangle;
+exports.SmicRing = _SmicRing.SmicRing;
+exports.SmicSector = _SmicSector.SmicSector;
+exports.SmicStar = _SmicStar.SmicStar;
+exports.SmicText = _SmicText.SmicText;
+exports.Storage = _Storage.Storage;
+exports.Transformable = _Transformable.Transformable;
+exports.Util = _Util.Util;
+exports.LevelRendererVector = _Vector.Vector;
+exports.SUtil = _SUtil.SUtil;
 
 /***/ }),
-/* 433 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81417,7 +79464,7 @@ var KeyServiceParameter = exports.KeyServiceParameter = function () {
 _SuperMap.SuperMap.KeyServiceParameter = KeyServiceParameter;
 
 /***/ }),
-/* 434 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81503,7 +79550,7 @@ var ServerInfo = exports.ServerInfo = function ServerInfo(type, options) {
 _SuperMap.SuperMap.ServerInfo = ServerInfo;
 
 /***/ }),
-/* 435 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81601,7 +79648,7 @@ var TokenServiceParameter = exports.TokenServiceParameter = function () {
 _SuperMap.SuperMap.TokenServiceParameter = TokenServiceParameter;
 
 /***/ }),
-/* 436 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81610,45 +79657,23 @@ _SuperMap.SuperMap.TokenServiceParameter = TokenServiceParameter;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.TokenServiceParameter = exports.ServerInfo = exports.SecurityManager = exports.KeyServiceParameter = undefined;
 
-var _KeyServiceParameter = __webpack_require__(433);
+var _KeyServiceParameter = __webpack_require__(422);
 
-Object.defineProperty(exports, 'KeyServiceParameter', {
-  enumerable: true,
-  get: function get() {
-    return _KeyServiceParameter.KeyServiceParameter;
-  }
-});
+var _SecurityManager = __webpack_require__(34);
 
-var _SecurityManager = __webpack_require__(35);
+var _ServerInfo = __webpack_require__(423);
 
-Object.defineProperty(exports, 'SecurityManager', {
-  enumerable: true,
-  get: function get() {
-    return _SecurityManager.SecurityManager;
-  }
-});
+var _TokenServiceParameter = __webpack_require__(424);
 
-var _ServerInfo = __webpack_require__(434);
-
-Object.defineProperty(exports, 'ServerInfo', {
-  enumerable: true,
-  get: function get() {
-    return _ServerInfo.ServerInfo;
-  }
-});
-
-var _TokenServiceParameter = __webpack_require__(435);
-
-Object.defineProperty(exports, 'TokenServiceParameter', {
-  enumerable: true,
-  get: function get() {
-    return _TokenServiceParameter.TokenServiceParameter;
-  }
-});
+exports.KeyServiceParameter = _KeyServiceParameter.KeyServiceParameter;
+exports.SecurityManager = _SecurityManager.SecurityManager;
+exports.ServerInfo = _ServerInfo.ServerInfo;
+exports.TokenServiceParameter = _TokenServiceParameter.TokenServiceParameter;
 
 /***/ }),
-/* 437 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81665,11 +79690,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _toPairs = __webpack_require__(495);
+var _lodash = __webpack_require__(450);
 
-var _toPairs2 = _interopRequireDefault(_toPairs);
+var _lodash2 = _interopRequireDefault(_lodash);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -82761,20 +80786,20 @@ var CartoCSS = exports.CartoCSS = function () {
          *   //shaders的结构大概如下：
          *   var shaders=[
          *   {
-         *       attachment:"one",
-         *       elements:[],
-         *       zoom:23,
-         *       length:2,
-         *       0:{property:"line-color",value:function(attribute,zoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}},
-         *       1:{preoperty:"line-width",value:function(attribute,zoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
-         *   },
+         *       attachment:"one"
+         *       elements:[]
+         *       zoom:23
+         *       length:2
+         *       0:{property:"line-color"value:function(attributezoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}}
+         *       1:{preoperty:"line-width"value:function(attributezoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
+         *   }
          *   {
-         *       attachment:"two",
-         *       elements:[],
-         *       zoom:23,
-         *       length:2,
-         *       0:{property:"polygon-color",value:function(attribute,zoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}},
-         *       1:{property:"line-width",value:function(attribute,zoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
+         *       attachment:"two"
+         *       elements:[]
+         *       zoom:23
+         *       length:2
+         *       0:{property:"polygon-color"value:function(attributezoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}}
+         *       1:{property:"line-width"value:function(attributezoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
          *   }
          *   ];
          */
@@ -84375,7 +82400,7 @@ _SuperMap.SuperMap.CartoCSS.Tree.Call = function () {
             } else {
                 var fn = _SuperMap.SuperMap.CartoCSS.Tree.Reference.mapnikFunctions[this.name];
                 if (fn === undefined) {
-                    var functions = (0, _toPairs2.default)(_SuperMap.SuperMap.CartoCSS.Tree.Reference.mapnikFunctions);
+                    var functions = (0, _lodash2["default"])(_SuperMap.SuperMap.CartoCSS.Tree.Reference.mapnikFunctions);
                     // cheap closest, needs improvement.
                     var name = this.name;
                     var mean = functions.map(function (f) {
@@ -86144,7 +84169,7 @@ _SuperMap.SuperMap.CartoCSS.Tree.Zoom.ranges = {
 };
 
 /***/ }),
-/* 438 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86349,7 +84374,7 @@ var ThemeStyle = exports.ThemeStyle = function ThemeStyle(options) {
 _SuperMap.SuperMap.ThemeStyle = ThemeStyle;
 
 /***/ }),
-/* 439 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86360,28 +84385,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ThemeStyle = exports.CartoCSS = undefined;
 
-var _CartoCSS = __webpack_require__(437);
+__webpack_require__(295);
 
-Object.defineProperty(exports, 'CartoCSS', {
-  enumerable: true,
-  get: function get() {
-    return _CartoCSS.CartoCSS;
-  }
-});
+var _CartoCSS = __webpack_require__(426);
 
-var _ThemeStyle = __webpack_require__(438);
+var _ThemeStyle = __webpack_require__(427);
 
-Object.defineProperty(exports, 'ThemeStyle', {
-  enumerable: true,
-  get: function get() {
-    return _ThemeStyle.ThemeStyle;
-  }
-});
-
-__webpack_require__(298);
+exports.CartoCSS = _CartoCSS.CartoCSS;
+exports.ThemeStyle = _ThemeStyle.ThemeStyle;
 
 /***/ }),
-/* 440 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86390,18 +84404,14 @@ __webpack_require__(298);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.ElasticSearch = undefined;
 
-var _ElasticSearch = __webpack_require__(123);
+var _ElasticSearch = __webpack_require__(119);
 
-Object.defineProperty(exports, 'ElasticSearch', {
-  enumerable: true,
-  get: function get() {
-    return _ElasticSearch.ElasticSearch;
-  }
-});
+exports.ElasticSearch = _ElasticSearch.ElasticSearch;
 
 /***/ }),
-/* 441 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86410,68 +84420,47 @@ Object.defineProperty(exports, 'ElasticSearch', {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.ElasticSearch = undefined;
 
-var _elasticsearch = __webpack_require__(440);
+var _elasticsearch = __webpack_require__(429);
 
-Object.keys(_elasticsearch).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _elasticsearch[key];
-    }
-  });
-});
+exports.ElasticSearch = _elasticsearch.ElasticSearch;
 
 /***/ }),
-/* 442 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _promisePolyfill = __webpack_require__(499);
+var _promisePolyfill = __webpack_require__(454);
 
 var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-window.Promise = _promisePolyfill2.default;
+window.Promise = _promisePolyfill2["default"];
 
 /***/ }),
-/* 443 */
+/* 432 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
+exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
 
 var _FetchRequest = __webpack_require__(21);
 
-Object.defineProperty(exports, 'CORS', {
-  enumerable: true,
-  get: function get() {
-    return _FetchRequest.CORS;
-  }
-});
-Object.defineProperty(exports, 'RequestTimeout', {
-  enumerable: true,
-  get: function get() {
-    return _FetchRequest.RequestTimeout;
-  }
-});
-Object.defineProperty(exports, 'FetchRequest', {
-  enumerable: true,
-  get: function get() {
-    return _FetchRequest.FetchRequest;
-  }
-});
+exports.CORS = _FetchRequest.CORS;
+exports.RequestTimeout = _FetchRequest.RequestTimeout;
+exports.FetchRequest = _FetchRequest.FetchRequest;
 
 /***/ }),
-/* 444 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86486,13 +84475,13 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @constant L.CRS.BaiduCRS
  * @description 百度的坐标对象
  */
-var BaiduCRS = exports.BaiduCRS = _leaflet2.default.CRS.Baidu = _leaflet2.default.extend({}, _leaflet2.default.CRS.EPSG3857, {
+var BaiduCRS = exports.BaiduCRS = _leaflet2["default"].CRS.Baidu = _leaflet2["default"].extend({}, _leaflet2["default"].CRS.EPSG3857, {
     code: 'Baidu',
     scale: function scale(zoom) {
         return 6378137 * Math.PI * 2 / Math.pow(2, 18 - zoom);
@@ -86500,7 +84489,7 @@ var BaiduCRS = exports.BaiduCRS = _leaflet2.default.CRS.Baidu = _leaflet2.defaul
 
     transformation: function () {
         var scale = 0.5 / (Math.PI * 6378137);
-        return new _leaflet2.default.Transformation(scale, 0, -scale, 0);
+        return new _leaflet2["default"].Transformation(scale, 0, -scale, 0);
     }()
 });
 
@@ -86514,10 +84503,10 @@ for (var i = 1; i < 19; i++) {
  * @constant L.CRS.TianDiTu_WGS84CRS
  * @description 天地图WGS84坐标对象
  */
-var TianDiTu_WGS84CRS = exports.TianDiTu_WGS84CRS = _leaflet2.default.CRS.TianDiTu_WGS84 = _leaflet2.default.Proj.CRS("EPSG:4326", {
+var TianDiTu_WGS84CRS = exports.TianDiTu_WGS84CRS = _leaflet2["default"].CRS.TianDiTu_WGS84 = _leaflet2["default"].Proj.CRS("EPSG:4326", {
     origin: [-180, 90],
     resolutions: tdt_WGS84_resolutions,
-    bounds: _leaflet2.default.bounds([-180, -90], [180, 90])
+    bounds: _leaflet2["default"].bounds([-180, -90], [180, 90])
 });
 
 var tdt_Mercator_resolutions = [];
@@ -86529,17 +84518,17 @@ for (var _i = 1; _i < 19; _i++) {
  * @constant L.CRS.TianDiTu_MercatorCRS
  * @description 天地图墨卡托坐标对象
  */
-var TianDiTu_MercatorCRS = exports.TianDiTu_MercatorCRS = _leaflet2.default.CRS.TianDiTu_Mercator = _leaflet2.default.Proj.CRS("EPSG:3857", {
+var TianDiTu_MercatorCRS = exports.TianDiTu_MercatorCRS = _leaflet2["default"].CRS.TianDiTu_Mercator = _leaflet2["default"].Proj.CRS("EPSG:3857", {
     origin: [-20037508.3427892, 20037508.3427892],
     resolutions: tdt_Mercator_resolutions,
-    bounds: _leaflet2.default.bounds([-20037508.3427892, -20037508.3427892], [20037508.3427892, 20037508.3427892])
+    bounds: _leaflet2["default"].bounds([-20037508.3427892, -20037508.3427892], [20037508.3427892, 20037508.3427892])
 });
-_leaflet2.default.CRS.BaiduCRS = BaiduCRS;
-_leaflet2.default.CRS.TianDiTu_WGS84CRS = TianDiTu_WGS84CRS;
-_leaflet2.default.CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
+_leaflet2["default"].CRS.BaiduCRS = BaiduCRS;
+_leaflet2["default"].CRS.TianDiTu_WGS84CRS = TianDiTu_WGS84CRS;
+_leaflet2["default"].CRS.TianDiTu_MercatorCRS = TianDiTu_MercatorCRS;
 
 /***/ }),
-/* 445 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86554,20 +84543,20 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _proj = __webpack_require__(302);
+var _proj = __webpack_require__(290);
 
 var _proj2 = _interopRequireDefault(_proj);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * Inspired by https://github.com/kartena/Proj4Leaflet
  */
-window.proj4 = _proj2.default;
-window.Proj4js = _proj2.default;
-_leaflet2.default.Proj = {};
+window.proj4 = _proj2["default"];
+window.Proj4js = _proj2["default"];
+_leaflet2["default"].Proj = {};
 
-_leaflet2.default.Proj._isProj4Obj = function (a) {
+_leaflet2["default"].Proj._isProj4Obj = function (a) {
     return typeof a.inverse !== 'undefined' && typeof a.forward !== 'undefined';
 };
 
@@ -86580,14 +84569,14 @@ _leaflet2.default.Proj._isProj4Obj = function (a) {
  * @param def - {string} 定位
  * @param bounds - {L.bounds} 投影范围参数
  */
-_leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
+_leaflet2["default"].Proj.Projection = _leaflet2["default"].Class.extend({
 
     initialize: function initialize(code, def, bounds) {
-        var isP4 = _leaflet2.default.Proj._isProj4Obj(code);
+        var isP4 = _leaflet2["default"].Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
         var boundsOption = bounds;
-        if (_leaflet2.default.Util.isArray(bounds)) {
-            boundsOption = _leaflet2.default.bounds(bounds);
+        if (_leaflet2["default"].Util.isArray(bounds)) {
+            boundsOption = _leaflet2["default"].bounds(bounds);
         }
         this.bounds = isP4 ? def : boundsOption;
     },
@@ -86600,7 +84589,7 @@ _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
      */
     project: function project(latlng) {
         var point = this._proj.forward([latlng.lng, latlng.lat]);
-        return new _leaflet2.default.Point(point[0], point[1]);
+        return new _leaflet2["default"].Point(point[0], point[1]);
     },
 
     /**
@@ -86616,23 +84605,23 @@ _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
             point.y = point.y < this.bounds.min.y ? this.bounds.min.y : point.y > this.bounds.max.y ? this.bounds.max.y : point.y;
         }
         var point2 = this._proj.inverse([point.x, point.y]);
-        return new _leaflet2.default.LatLng(point2[1], point2[0], unbounded);
+        return new _leaflet2["default"].LatLng(point2[1], point2[0], unbounded);
     },
 
     _projFromCodeDef: function _projFromCodeDef(code, def) {
         if (def) {
-            _proj2.default.defs(code, def);
-        } else if (_proj2.default.defs[code] === undefined) {
+            _proj2["default"].defs(code, def);
+        } else if (_proj2["default"].defs[code] === undefined) {
             var urn = code.split(':');
             if (urn.length > 3) {
                 code = urn[urn.length - 3] + ':' + urn[urn.length - 1];
             }
-            if (_proj2.default.defs[code] === undefined) {
+            if (_proj2["default"].defs[code] === undefined) {
                 throw 'No projection definition for code ' + code;
             }
         }
 
-        return (0, _proj2.default)(code);
+        return (0, _proj2["default"])(code);
     },
     getUnits: function getUnits() {
         return this._proj.oProj.units;
@@ -86662,44 +84651,44 @@ _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
  *      ...
  *    })
  */
-var CRS = exports.CRS = _leaflet2.default.Class.extend({
-    includes: _leaflet2.default.CRS,
+var CRS = exports.CRS = _leaflet2["default"].Class.extend({
+    includes: _leaflet2["default"].CRS,
 
     options: {
-        transformation: new _leaflet2.default.Transformation(1, 0, -1, 0)
+        transformation: new _leaflet2["default"].Transformation(1, 0, -1, 0)
     },
 
     initialize: function initialize(srsCode, options) {
         var code, proj, def;
 
-        if (_leaflet2.default.Proj._isProj4Obj(srsCode)) {
+        if (_leaflet2["default"].Proj._isProj4Obj(srsCode)) {
             proj = srsCode;
             code = proj.srsCode;
             options = options || {};
 
-            this.projection = new _leaflet2.default.Proj.Projection(proj, options.bounds);
+            this.projection = new _leaflet2["default"].Proj.Projection(proj, options.bounds);
         } else {
             code = srsCode;
             options = options || {};
             def = options.def || '';
-            this.projection = new _leaflet2.default.Proj.Projection(code, def, options.bounds);
+            this.projection = new _leaflet2["default"].Proj.Projection(code, def, options.bounds);
         }
 
-        _leaflet2.default.Util.setOptions(this, options);
+        _leaflet2["default"].Util.setOptions(this, options);
         this.code = code;
         this.transformation = this.options.transformation;
 
         if (this.options.bounds) {
-            this.options.bounds = _leaflet2.default.bounds(this.options.bounds);
+            this.options.bounds = _leaflet2["default"].bounds(this.options.bounds);
         }
         if (!this.options.origin && this.options.bounds) {
             this.options.origin = [this.options.bounds.min.x, this.options.bounds.max.y];
         }
         if (this.options.origin) {
-            if (this.options.origin instanceof _leaflet2.default.Point) {
+            if (this.options.origin instanceof _leaflet2["default"].Point) {
                 this.options.origin = [this.options.origin.x, this.options.origin.y];
             }
-            this.transformation = new _leaflet2.default.Transformation(1, -this.options.origin[0], -1, this.options.origin[1]);
+            this.transformation = new _leaflet2["default"].Transformation(1, -this.options.origin[0], -1, this.options.origin[1]);
         }
 
         if (this.options.scales && this.options.scales.length > 0) {
@@ -86775,9 +84764,9 @@ var CRS = exports.CRS = _leaflet2.default.Class.extend({
         return (scale - downScale) / scaleDiff + downZoom;
     },
 
-    distance: _leaflet2.default.CRS.Earth.distance,
+    distance: _leaflet2["default"].CRS.Earth.distance,
 
-    R: _leaflet2.default.CRS.Earth.R,
+    R: _leaflet2["default"].CRS.Earth.R,
 
     /* Get the closest lowest element in an array */
     _closestElement: function _closestElement(array, element) {
@@ -86836,10 +84825,10 @@ var CRS = exports.CRS = _leaflet2.default.Class.extend({
 var crs = exports.crs = function crs(srsCode, options) {
     return new CRS(srsCode, options);
 };
-_leaflet2.default.Proj.CRS = crs;
+_leaflet2["default"].Proj.CRS = crs;
 
 /***/ }),
-/* 446 */
+/* 435 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86856,7 +84845,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @constant L.supermap.DefaultStyle
@@ -86923,10 +84912,10 @@ var DefaultStyle = exports.DefaultStyle = {
     }
 };
 
-_leaflet2.default.supermap.DefaultStyle = DefaultStyle;
+_leaflet2["default"].supermap.DefaultStyle = DefaultStyle;
 
 /***/ }),
-/* 447 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86943,7 +84932,7 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 
 __webpack_require__(4);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @constant L.supermap.CartoStyleMap
@@ -87114,12 +85103,12 @@ var CompOpMap = exports.CompOpMap = {
     "value": ""
 };
 
-_leaflet2.default.supermap.CartoStyleMap = CartoStyleMap;
-_leaflet2.default.supermap.ServerStyleMap = ServerStyleMap;
-_leaflet2.default.supermap.CompOpMap = CompOpMap;
+_leaflet2["default"].supermap.CartoStyleMap = CartoStyleMap;
+_leaflet2["default"].supermap.ServerStyleMap = ServerStyleMap;
+_leaflet2["default"].supermap.CompOpMap = CompOpMap;
 
 /***/ }),
-/* 448 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87138,9 +85127,9 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _mapv = __webpack_require__(548);
+var _mapv = __webpack_require__(502);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -87328,7 +85317,7 @@ var MapVRenderer = exports.MapVRenderer = function (_BaseLayer) {
         /**
          * @function L.supermap.MapVRenderer.prototype.removeData
          * @description 删除符合过滤条件的数据
-         * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true,表示删除该元素；否则表示不删除
+         * @param filter - {function} 过滤条件。条件参数为数据项，返回值为true表示删除该元素；否则表示不删除
          */
 
     }, {
@@ -87401,7 +85390,7 @@ var MapVRenderer = exports.MapVRenderer = function (_BaseLayer) {
             var offset = map.latLngToAccurateContainerPoint(this.canvasLayer.getTopLeft());
             var dataGetOptions = {
                 transferCoordinate: function transferCoordinate(coordinate) {
-                    var worldPoint = map.latLngToAccurateContainerPoint(_leaflet2.default.latLng(coordinate[1], coordinate[0]));
+                    var worldPoint = map.latLngToAccurateContainerPoint(_leaflet2["default"].latLng(coordinate[1], coordinate[0]));
                     var pixel = {
                         x: worldPoint.x - offset.x,
                         y: worldPoint.y - offset.y
@@ -87423,7 +85412,7 @@ var MapVRenderer = exports.MapVRenderer = function (_BaseLayer) {
 
             self.options._size = self.options.size;
 
-            var worldPoint = map.latLngToContainerPoint(_leaflet2.default.latLng(0, 0));
+            var worldPoint = map.latLngToContainerPoint(_leaflet2["default"].latLng(0, 0));
             var pixel = {
                 x: worldPoint.x - offset.x,
                 y: worldPoint.y - offset.y
@@ -87530,7 +85519,7 @@ var MapVRenderer = exports.MapVRenderer = function (_BaseLayer) {
 }(BaseLayer);
 
 /***/ }),
-/* 449 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87545,11 +85534,11 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _Symbolizer = __webpack_require__(83);
+var _Symbolizer = __webpack_require__(81);
 
-var _SymbolizerPolyBase = __webpack_require__(287);
+var _SymbolizerPolyBase = __webpack_require__(283);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.LineSymbolizer
@@ -87559,7 +85548,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param feature - {L.feature} 线要素
  * @param pxPerExtent - {number}线长
  */
-var LineSymbolizer = exports.LineSymbolizer = _leaflet2.default.Polyline.extend({
+var LineSymbolizer = exports.LineSymbolizer = _leaflet2["default"].Polyline.extend({
 
     /**
      * @member L.supermap.LineSymbolizer.prototype.includes
@@ -87597,7 +85586,7 @@ var LineSymbolizer = exports.LineSymbolizer = _leaflet2.default.Polyline.extend(
 });
 
 /***/ }),
-/* 450 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87610,13 +85599,13 @@ exports.PointSymbolizer = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _Symbolizer = __webpack_require__(83);
+var _Symbolizer = __webpack_require__(81);
 
 var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.PointSymbolizer
@@ -87626,7 +85615,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param feature - {L.feature} 点要素
  * @param pxPerExtent - {number}点符号大小
  */
-var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.extend({
+var PointSymbolizer = exports.PointSymbolizer = _leaflet2["default"].CircleMarker.extend({
 
     /**
      * @member L.supermap.PointSymbolizer.prototype.includes
@@ -87651,7 +85640,7 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.e
      */
     render: function render(renderer, style) {
         _Symbolizer.Symbolizer.prototype.render.call(this, renderer, style);
-        this._radius = style.radius || _leaflet2.default.CircleMarker.prototype.options.radius;
+        this._radius = style.radius || _leaflet2["default"].CircleMarker.prototype.options.radius;
         this._updatePath();
     },
 
@@ -87659,11 +85648,11 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.e
         pxPerExtent = pxPerExtent || { x: 1, y: 1 };
         var coord = feat.geometry[0];
         if (_typeof(coord[0]) === 'object' && 'x' in coord[0]) {
-            this._point = _leaflet2.default.point(coord[0]).scaleBy(pxPerExtent);
-            this._empty = _leaflet2.default.Util.falseFn;
+            this._point = _leaflet2["default"].point(coord[0]).scaleBy(pxPerExtent);
+            this._empty = _leaflet2["default"].Util.falseFn;
         } else {
-            this._point = _leaflet2.default.point(coord).scaleBy(pxPerExtent);
-            this._empty = _leaflet2.default.Util.falseFn;
+            this._point = _leaflet2["default"].point(coord).scaleBy(pxPerExtent);
+            this._empty = _leaflet2["default"].Util.falseFn;
         }
     },
 
@@ -87690,12 +85679,12 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.e
     _updateBounds: function _updateBounds() {
         var icon = this.options.iconUrl;
         if (icon && this.options.iconSize) {
-            var size = _leaflet2.default.point(this.options.iconSize),
+            var size = _leaflet2["default"].point(this.options.iconSize),
                 anchor = size && size.divideBy(2, true),
                 p = this._point.subtract(anchor);
-            this._pxBounds = new _leaflet2.default.Bounds(p, p.add(size));
+            this._pxBounds = new _leaflet2["default"].Bounds(p, p.add(size));
         } else {
-            _leaflet2.default.CircleMarker.prototype._updateBounds.call(this);
+            _leaflet2["default"].CircleMarker.prototype._updateBounds.call(this);
         }
     },
 
@@ -87703,7 +85692,7 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.e
         if (this.options.iconUrl) {
             this._renderer._updateIcon(this);
         } else {
-            _leaflet2.default.CircleMarker.prototype._updatePath.call(this);
+            _leaflet2["default"].CircleMarker.prototype._updatePath.call(this);
         }
     },
 
@@ -87739,8 +85728,8 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.e
             sizeOption = [sizeOption, sizeOption];
         }
         if (sizeOption) {
-            var size = _leaflet2.default.point(sizeOption),
-                anchor = _leaflet2.default.point(size && size.divideBy(2, true));
+            var size = _leaflet2["default"].point(sizeOption),
+                anchor = _leaflet2["default"].point(size && size.divideBy(2, true));
 
             if (size) {
                 img.style.width = size.x + 'px';
@@ -87767,13 +85756,13 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.e
         if (icon) {
             return this._pxBounds.contains(p);
         } else {
-            return _leaflet2.default.CircleMarker.prototype._containsPoint.call(this, p);
+            return _leaflet2["default"].CircleMarker.prototype._containsPoint.call(this, p);
         }
     }
 });
 
 /***/ }),
-/* 451 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87788,11 +85777,11 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _Symbolizer = __webpack_require__(83);
+var _Symbolizer = __webpack_require__(81);
 
-var _SymbolizerPolyBase = __webpack_require__(287);
+var _SymbolizerPolyBase = __webpack_require__(283);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.RegionSymbolizer
@@ -87802,7 +85791,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param feature - {L.feature} 面要素
  * @param pxPerExtent - {number}面积像素大小
  */
-var RegionSymbolizer = exports.RegionSymbolizer = _leaflet2.default.Polygon.extend({
+var RegionSymbolizer = exports.RegionSymbolizer = _leaflet2["default"].Polygon.extend({
 
     /**
      * @member L.supermap.RegionSymbolizer.prototype.includes
@@ -87828,7 +85817,7 @@ var RegionSymbolizer = exports.RegionSymbolizer = _leaflet2.default.Polygon.exte
 });
 
 /***/ }),
-/* 452 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87843,19 +85832,19 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _SVGRenderer = __webpack_require__(286);
+var _SVGRenderer = __webpack_require__(282);
 
-var _CanvasRenderer = __webpack_require__(285);
+var _CanvasRenderer = __webpack_require__(281);
 
-var _VectorTile = __webpack_require__(453);
+var _VectorTile = __webpack_require__(442);
 
-var _TextSymbolizer = __webpack_require__(288);
+var _TextSymbolizer = __webpack_require__(284);
 
-var _VectorTileFormat = __webpack_require__(282);
+var _VectorTileFormat = __webpack_require__(278);
 
-var _VectorFeatureType = __webpack_require__(84);
+var _VectorFeatureType = __webpack_require__(82);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.VectorGrid
@@ -87868,7 +85857,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        format - {L.supermap.VectorTileFormat} 矢量瓦片格式。<br>
  *        interactive - {boolean} 是否可交互 。
  */
-var VectorGrid = exports.VectorGrid = _leaflet2.default.GridLayer.extend({
+var VectorGrid = exports.VectorGrid = _leaflet2["default"].GridLayer.extend({
 
     options: {
         vectorTileLayerStyles: null,
@@ -87880,8 +85869,8 @@ var VectorGrid = exports.VectorGrid = _leaflet2.default.GridLayer.extend({
 
     initialize: function initialize(options) {
         var me = this;
-        _leaflet2.default.setOptions(me, options);
-        _leaflet2.default.GridLayer.prototype.initialize.call(me, options);
+        _leaflet2["default"].setOptions(me, options);
+        _leaflet2["default"].GridLayer.prototype.initialize.call(me, options);
         me._vectorTiles = {};
         //交互事件使用,键值为id_layerName
         me._overriddenStyles = {};
@@ -88008,7 +85997,7 @@ var VectorGrid = exports.VectorGrid = _leaflet2.default.GridLayer.extend({
     },
 
     _removeAllTiles: function _removeAllTiles() {
-        _leaflet2.default.GridLayer.prototype._removeAllTiles.call(this);
+        _leaflet2["default"].GridLayer.prototype._removeAllTiles.call(this);
         this._textVectorTiles = {};
     },
 
@@ -88057,13 +86046,13 @@ var VectorGrid = exports.VectorGrid = _leaflet2.default.GridLayer.extend({
     _extendStyle: function _extendStyle(style, type) {
         switch (type) {
             case _VectorFeatureType.VectorFeatureType.POINT:
-                return _leaflet2.default.extend({}, _leaflet2.default.CircleMarker.prototype.options, style);
+                return _leaflet2["default"].extend({}, _leaflet2["default"].CircleMarker.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.LINE:
-                return _leaflet2.default.extend({}, _leaflet2.default.Polyline.prototype.options, style);
+                return _leaflet2["default"].extend({}, _leaflet2["default"].Polyline.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.REGION:
-                return _leaflet2.default.extend({}, _leaflet2.default.Polygon.prototype.options, style);
+                return _leaflet2["default"].extend({}, _leaflet2["default"].Polygon.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.TEXT:
-                return _leaflet2.default.extend({}, _TextSymbolizer.TextSymbolizer.prototype.options, style);
+                return _leaflet2["default"].extend({}, _TextSymbolizer.TextSymbolizer.prototype.options, style);
             default:
                 break;
         }
@@ -88074,7 +86063,7 @@ var VectorGrid = exports.VectorGrid = _leaflet2.default.GridLayer.extend({
      */
 
 /***/ }),
-/* 453 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88089,23 +86078,23 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _VectorFeatureType = __webpack_require__(84);
+var _VectorFeatureType = __webpack_require__(82);
 
-var _TextSymbolizer = __webpack_require__(288);
+var _TextSymbolizer = __webpack_require__(284);
 
-var _PointSymbolizer = __webpack_require__(450);
+var _PointSymbolizer = __webpack_require__(439);
 
-var _LineSymbolizer = __webpack_require__(449);
+var _LineSymbolizer = __webpack_require__(438);
 
-var _RegionSymbolizer = __webpack_require__(451);
+var _RegionSymbolizer = __webpack_require__(440);
 
-var _VectorTilePBF = __webpack_require__(455);
+var _VectorTilePBF = __webpack_require__(444);
 
-var _VectorTileJSON = __webpack_require__(454);
+var _VectorTileJSON = __webpack_require__(443);
 
-var _VectorTileFormat = __webpack_require__(282);
+var _VectorTileFormat = __webpack_require__(278);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.VectorTile
@@ -88120,7 +86109,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *        renderer - {Object} 渲染器对象。
  * @param done - {function} 回调函数。
  */
-var VectorTile = exports.VectorTile = _leaflet2.default.Class.extend({
+var VectorTile = exports.VectorTile = _leaflet2["default"].Class.extend({
 
     initialize: function initialize(options, done) {
         this.layer = options.layer;
@@ -88227,7 +86216,7 @@ var VectorTile = exports.VectorTile = _leaflet2.default.Class.extend({
             renderer.addTo(tileLayer._map);
         }
 
-        _leaflet2.default.Util.requestAnimFrame(me.done.bind(coords, null, me.layer._vectorTiles[me.layer._tileCoordsToKey(coords)]));
+        _leaflet2["default"].Util.requestAnimFrame(me.done.bind(coords, null, me.layer._vectorTiles[me.layer._tileCoordsToKey(coords)]));
     },
 
     // 保存文本图层单独绘制，避免被压盖
@@ -88310,17 +86299,17 @@ var VectorTile = exports.VectorTile = _leaflet2.default.Class.extend({
     //矫正一些参数
     _validateStyle: function _validateStyle(style, type) {
         //默认leaflet path的边宽为3，矩形颜色填充透明度为0.2，跟iClient不一样，故作调整
-        _leaflet2.default.Path.prototype.options.weight = 1;
-        _leaflet2.default.Path.prototype.options.fillOpacity = 1;
+        _leaflet2["default"].Path.prototype.options.weight = 1;
+        _leaflet2["default"].Path.prototype.options.fillOpacity = 1;
         switch (type) {
             case _VectorFeatureType.VectorFeatureType.POINT:
-                return _leaflet2.default.extend({}, _leaflet2.default.CircleMarker.prototype.options, style);
+                return _leaflet2["default"].extend({}, _leaflet2["default"].CircleMarker.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.LINE:
-                return _leaflet2.default.extend({}, _leaflet2.default.Polyline.prototype.options, style);
+                return _leaflet2["default"].extend({}, _leaflet2["default"].Polyline.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.REGION:
-                return _leaflet2.default.extend({}, _leaflet2.default.Polygon.prototype.options, style);
+                return _leaflet2["default"].extend({}, _leaflet2["default"].Polygon.prototype.options, style);
             case _VectorFeatureType.VectorFeatureType.TEXT:
-                return _leaflet2.default.extend({}, _TextSymbolizer.TextSymbolizer.prototype.options, style);
+                return _leaflet2["default"].extend({}, _TextSymbolizer.TextSymbolizer.prototype.options, style);
             default:
                 break;
         }
@@ -88328,19 +86317,19 @@ var VectorTile = exports.VectorTile = _leaflet2.default.Class.extend({
 
     //如果cartoCSS和layerInfo都没有得到样式，则使用该默认样式
     _defaultStyle: function _defaultStyle(type) {
-        var defaultOptions = _leaflet2.default.Path.prototype.options;
+        var defaultOptions = _leaflet2["default"].Path.prototype.options;
         defaultOptions.weight = 1;
         defaultOptions.fillOpacity = 1;
         defaultOptions.radius = 3;
         switch (type) {
             case _VectorFeatureType.VectorFeatureType.POINT:
-                return _leaflet2.default.extend({}, defaultOptions, _leaflet2.default.CircleMarker.prototype.options);
+                return _leaflet2["default"].extend({}, defaultOptions, _leaflet2["default"].CircleMarker.prototype.options);
             case _VectorFeatureType.VectorFeatureType.LINE:
-                return _leaflet2.default.extend({}, defaultOptions, _leaflet2.default.Polyline.prototype.options);
+                return _leaflet2["default"].extend({}, defaultOptions, _leaflet2["default"].Polyline.prototype.options);
             case _VectorFeatureType.VectorFeatureType.REGION:
-                return _leaflet2.default.extend({}, defaultOptions, _leaflet2.default.Polygon.prototype.options);
+                return _leaflet2["default"].extend({}, defaultOptions, _leaflet2["default"].Polygon.prototype.options);
             case _VectorFeatureType.VectorFeatureType.TEXT:
-                return _leaflet2.default.extend({}, defaultOptions, _TextSymbolizer.TextSymbolizer.prototype.options);
+                return _leaflet2["default"].extend({}, defaultOptions, _TextSymbolizer.TextSymbolizer.prototype.options);
             default:
                 break;
         }
@@ -88349,7 +86338,7 @@ var VectorTile = exports.VectorTile = _leaflet2.default.Class.extend({
 });
 
 /***/ }),
-/* 454 */
+/* 443 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88364,17 +86353,17 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _VectorFeatureType = __webpack_require__(84);
+var _VectorFeatureType = __webpack_require__(82);
 
-var _Util = __webpack_require__(43);
+var _Util = __webpack_require__(42);
 
 var Util = _interopRequireWildcard(_Util);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.VectorTileJSON
@@ -88383,7 +86372,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param url - {string} 矢量瓦片json表述服务地址
  */
-var VectorTileJSON = exports.VectorTileJSON = _leaflet2.default.Class.extend({
+var VectorTileJSON = exports.VectorTileJSON = _leaflet2["default"].Class.extend({
 
     initialize: function initialize(url) {
         this.url = url;
@@ -88517,7 +86506,7 @@ var VectorTileJSON = exports.VectorTileJSON = _leaflet2.default.Class.extend({
 });
 
 /***/ }),
-/* 455 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88532,19 +86521,19 @@ var _leaflet = __webpack_require__(2);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
-var _pbf = __webpack_require__(497);
+var _pbf = __webpack_require__(452);
 
 var _pbf2 = _interopRequireDefault(_pbf);
 
-var _vectorTile = __webpack_require__(334);
+var _vectorTile = __webpack_require__(323);
 
 var _vectorTile2 = _interopRequireDefault(_vectorTile);
 
-var _VectorFeatureType = __webpack_require__(84);
+var _VectorFeatureType = __webpack_require__(82);
 
 var _iclientCommon = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @class L.supermap.VectorTilePBF
@@ -88553,7 +86542,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param url - {string} 矢量瓦片PBF(MVT)表述出图服务地址
  */
-var VectorTilePBF = exports.VectorTilePBF = _leaflet2.default.Class.extend({
+var VectorTilePBF = exports.VectorTilePBF = _leaflet2["default"].Class.extend({
 
     initialize: function initialize(url) {
         this.url = url;
@@ -88576,8 +86565,8 @@ var VectorTilePBF = exports.VectorTilePBF = _leaflet2.default.Class.extend({
                 var reader = new FileReader();
                 return new Promise(function (resolve) {
                     reader.addEventListener("loadend", function () {
-                        var pbf = new _pbf2.default(reader.result);
-                        return resolve(new _vectorTile2.default(pbf));
+                        var pbf = new _pbf2["default"](reader.result);
+                        return resolve(new _vectorTile2["default"](pbf));
                     });
                     reader.readAsArrayBuffer(blob);
                 });
@@ -88595,7 +86584,7 @@ var VectorTilePBF = exports.VectorTilePBF = _leaflet2.default.Class.extend({
                 var feat = vectorTile.layers[layerName].feature(i);
                 feat.geometry = feat.loadGeometry();
                 feat.layerName = layerName;
-                feat.properties = { attributes: _leaflet2.default.Util.extend({}, feat.properties), id: feat.id };
+                feat.properties = { attributes: _leaflet2["default"].Util.extend({}, feat.properties), id: feat.id };
                 switch (feat.type) {
                     case 1:
                         feat.type = _VectorFeatureType.VectorFeatureType.POINT;
@@ -88623,7 +86612,444 @@ var VectorTilePBF = exports.VectorTilePBF = _leaflet2.default.Class.extend({
 });
 
 /***/ }),
-/* 456 */
+/* 445 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+(function (self) {
+  'use strict';
+
+  // if __disableNativeFetch is set to true, the it will always polyfill fetch
+  // with Ajax.
+
+  if (!self.__disableNativeFetch && self.fetch) {
+    return;
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name);
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name');
+    }
+    return name.toLowerCase();
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value);
+    }
+    return value;
+  }
+
+  function Headers(headers) {
+    this.map = {};
+
+    if (headers instanceof Headers) {
+      headers.forEach(function (value, name) {
+        this.append(name, value);
+      }, this);
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function (name) {
+        this.append(name, headers[name]);
+      }, this);
+    }
+  }
+
+  Headers.prototype.append = function (name, value) {
+    name = normalizeName(name);
+    value = normalizeValue(value);
+    var list = this.map[name];
+    if (!list) {
+      list = [];
+      this.map[name] = list;
+    }
+    list.push(value);
+  };
+
+  Headers.prototype['delete'] = function (name) {
+    delete this.map[normalizeName(name)];
+  };
+
+  Headers.prototype.get = function (name) {
+    var values = this.map[normalizeName(name)];
+    return values ? values[0] : null;
+  };
+
+  Headers.prototype.getAll = function (name) {
+    return this.map[normalizeName(name)] || [];
+  };
+
+  Headers.prototype.has = function (name) {
+    return this.map.hasOwnProperty(normalizeName(name));
+  };
+
+  Headers.prototype.set = function (name, value) {
+    this.map[normalizeName(name)] = [normalizeValue(value)];
+  };
+
+  Headers.prototype.forEach = function (callback, thisArg) {
+    Object.getOwnPropertyNames(this.map).forEach(function (name) {
+      this.map[name].forEach(function (value) {
+        callback.call(thisArg, value, name, this);
+      }, this);
+    }, this);
+  };
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'));
+    }
+    body.bodyUsed = true;
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function (resolve, reject) {
+      reader.onload = function () {
+        resolve(reader.result);
+      };
+      reader.onerror = function () {
+        reject(reader.error);
+      };
+    });
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader();
+    reader.readAsArrayBuffer(blob);
+    return fileReaderReady(reader);
+  }
+
+  function readBlobAsText(blob, options) {
+    var reader = new FileReader();
+    var contentType = options.headers.map['content-type'] ? options.headers.map['content-type'].toString() : '';
+    var regex = /charset\=[0-9a-zA-Z\-\_]*;?/;
+    var _charset = blob.type.match(regex) || contentType.match(regex);
+    var args = [blob];
+
+    if (_charset) {
+      args.push(_charset[0].replace(/^charset\=/, '').replace(/;$/, ''));
+    }
+
+    reader.readAsText.apply(reader, args);
+    return fileReaderReady(reader);
+  }
+
+  var support = {
+    blob: 'FileReader' in self && 'Blob' in self && function () {
+      try {
+        new Blob();
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  };
+
+  function Body() {
+    this.bodyUsed = false;
+
+    this._initBody = function (body, options) {
+      this._bodyInit = body;
+      if (typeof body === 'string') {
+        this._bodyText = body;
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body;
+        this._options = options;
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body;
+      } else if (!body) {
+        this._bodyText = '';
+      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+        // Only support ArrayBuffers for POST method.
+        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else {
+        throw new Error('unsupported BodyInit type');
+      }
+    };
+
+    if (support.blob) {
+      this.blob = function () {
+        var rejected = consumed(this);
+        if (rejected) {
+          return rejected;
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob);
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob');
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]));
+        }
+      };
+
+      this.arrayBuffer = function () {
+        return this.blob().then(readBlobAsArrayBuffer);
+      };
+
+      this.text = function () {
+        var rejected = consumed(this);
+        if (rejected) {
+          return rejected;
+        }
+
+        if (this._bodyBlob) {
+          return readBlobAsText(this._bodyBlob, this._options);
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as text');
+        } else {
+          return Promise.resolve(this._bodyText);
+        }
+      };
+    } else {
+      this.text = function () {
+        var rejected = consumed(this);
+        return rejected ? rejected : Promise.resolve(this._bodyText);
+      };
+    }
+
+    if (support.formData) {
+      this.formData = function () {
+        return this.text().then(decode);
+      };
+    }
+
+    this.json = function () {
+      return this.text().then(JSON.parse);
+    };
+
+    return this;
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT'];
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase();
+    return methods.indexOf(upcased) > -1 ? upcased : method;
+  }
+
+  function Request(input, options) {
+    options = options || {};
+    var body = options.body;
+    if (Request.prototype.isPrototypeOf(input)) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read');
+      }
+      this.url = input.url;
+      this.credentials = input.credentials;
+      if (!options.headers) {
+        this.headers = new Headers(input.headers);
+      }
+      this.method = input.method;
+      this.mode = input.mode;
+      if (!body) {
+        body = input._bodyInit;
+        input.bodyUsed = true;
+      }
+    } else {
+      this.url = input;
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit';
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers);
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET');
+    this.mode = options.mode || this.mode || null;
+    this.referrer = null;
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests');
+    }
+    this._initBody(body, options);
+  }
+
+  Request.prototype.clone = function () {
+    return new Request(this);
+  };
+
+  function decode(body) {
+    var form = new FormData();
+    body.trim().split('&').forEach(function (bytes) {
+      if (bytes) {
+        var split = bytes.split('=');
+        var name = split.shift().replace(/\+/g, ' ');
+        var value = split.join('=').replace(/\+/g, ' ');
+        form.append(decodeURIComponent(name), decodeURIComponent(value));
+      }
+    });
+    return form;
+  }
+
+  function headers(xhr) {
+    var head = new Headers();
+    var pairs = xhr.getAllResponseHeaders().trim().split('\n');
+    pairs.forEach(function (header) {
+      var split = header.trim().split(':');
+      var key = split.shift().trim();
+      var value = split.join(':').trim();
+      head.append(key, value);
+    });
+    return head;
+  }
+
+  Body.call(Request.prototype);
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {};
+    }
+
+    this._initBody(bodyInit, options);
+    this.type = 'default';
+    this.status = options.status;
+    this.ok = this.status >= 200 && this.status < 300;
+    this.statusText = options.statusText;
+    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers);
+    this.url = options.url || '';
+  }
+
+  Body.call(Response.prototype);
+
+  Response.prototype.clone = function () {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    });
+  };
+
+  Response.error = function () {
+    var response = new Response(null, { status: 0, statusText: '' });
+    response.type = 'error';
+    return response;
+  };
+
+  var redirectStatuses = [301, 302, 303, 307, 308];
+
+  Response.redirect = function (url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code');
+    }
+
+    return new Response(null, { status: status, headers: { location: url } });
+  };
+
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
+
+  self.fetch = function (input, init) {
+    return new Promise(function (resolve, reject) {
+      var request;
+      if (Request.prototype.isPrototypeOf(input) && !init) {
+        request = input;
+      } else {
+        request = new Request(input, init);
+      }
+
+      var xhr = new XMLHttpRequest();
+
+      function responseURL() {
+        if ('responseURL' in xhr) {
+          return xhr.responseURL;
+        }
+
+        // Avoid security warnings on getResponseHeader when not allowed by CORS
+        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+          return xhr.getResponseHeader('X-Request-URL');
+        }
+
+        return;
+      }
+
+      var __onLoadHandled = false;
+
+      function onload() {
+        if (xhr.readyState !== 4) {
+          return;
+        }
+        var status = xhr.status === 1223 ? 204 : xhr.status;
+        if (status < 100 || status > 599) {
+          if (__onLoadHandled) {
+            return;
+          } else {
+            __onLoadHandled = true;
+          }
+          reject(new TypeError('Network request failed'));
+          return;
+        }
+        var options = {
+          status: status,
+          statusText: xhr.statusText,
+          headers: headers(xhr),
+          url: responseURL()
+        };
+        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+
+        if (__onLoadHandled) {
+          return;
+        } else {
+          __onLoadHandled = true;
+        }
+        resolve(new Response(body, options));
+      }
+      xhr.onreadystatechange = onload;
+      xhr.onload = onload;
+      xhr.onerror = function () {
+        if (__onLoadHandled) {
+          return;
+        } else {
+          __onLoadHandled = true;
+        }
+        reject(new TypeError('Network request failed'));
+      };
+
+      xhr.open(request.method, request.url, true);
+
+      // `withCredentials` should be setted after calling `.open` in IE10
+      // http://stackoverflow.com/a/19667959/1219343
+      try {
+        if (request.credentials === 'include') {
+          if ('withCredentials' in xhr) {
+            xhr.withCredentials = true;
+          } else {
+            console && console.warn && console.warn('withCredentials is not supported, you can ignore this warning');
+          }
+        }
+      } catch (e) {
+        console && console.warn && console.warn('set withCredentials error:' + e);
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob';
+      }
+
+      request.headers.forEach(function (value, name) {
+        xhr.setRequestHeader(name, value);
+      });
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit);
+    });
+  };
+  self.fetch.polyfill = true;
+
+  // Support CommonJS
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = self.fetch;
+  }
+})(typeof self !== 'undefined' ? self : undefined);
+
+/***/ }),
+/* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88742,7 +87168,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 457 */
+/* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88834,7 +87260,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 };
 
 /***/ }),
-/* 458 */
+/* 448 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88842,7 +87268,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var utils = __webpack_require__(459);
+var utils = __webpack_require__(449);
 
 var AND = '&&',
     OR = '||',
@@ -89105,7 +87531,7 @@ if (typeof module != 'undefined' && typeof module.exports != 'undefined') module
 if (typeof window != 'undefined') window.Query = Query;
 
 /***/ }),
-/* 459 */
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89139,141 +87565,58 @@ module.exports = {
 };
 
 /***/ }),
-/* 460 */
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
 
-
-var getNative = __webpack_require__(54),
-    root = __webpack_require__(30);
-
-/* Built-in method references that are verified to be native. */
-var DataView = getNative(root, 'DataView');
-
-module.exports = DataView;
-
-/***/ }),
-/* 461 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var getNative = __webpack_require__(54),
-    root = __webpack_require__(30);
-
-/* Built-in method references that are verified to be native. */
-var Map = getNative(root, 'Map');
-
-module.exports = Map;
-
-/***/ }),
-/* 462 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var getNative = __webpack_require__(54),
-    root = __webpack_require__(30);
-
-/* Built-in method references that are verified to be native. */
-var Promise = getNative(root, 'Promise');
-
-module.exports = Promise;
-
-/***/ }),
-/* 463 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var getNative = __webpack_require__(54),
-    root = __webpack_require__(30);
-
-/* Built-in method references that are verified to be native. */
-var Set = getNative(root, 'Set');
-
-module.exports = Set;
-
-/***/ }),
-/* 464 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var getNative = __webpack_require__(54),
-    root = __webpack_require__(30);
-
-/* Built-in method references that are verified to be native. */
-var WeakMap = getNative(root, 'WeakMap');
-
-module.exports = WeakMap;
-
-/***/ }),
-/* 465 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var baseTimes = __webpack_require__(471),
-    isArguments = __webpack_require__(488),
-    isArray = __webpack_require__(489),
-    isBuffer = __webpack_require__(491),
-    isIndex = __webpack_require__(479),
-    isTypedArray = __webpack_require__(492);
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /**
- * Creates an array of the enumerable property names of the array-like `value`.
- *
- * @private
- * @param {*} value The value to query.
- * @param {boolean} inherited Specify returning inherited property names.
- * @returns {Array} Returns the array of property names.
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
-function arrayLikeKeys(value, inherited) {
-  var isArr = isArray(value),
-      isArg = !isArr && isArguments(value),
-      isBuff = !isArr && !isArg && isBuffer(value),
-      isType = !isArr && !isArg && !isBuff && isTypedArray(value),
-      skipIndexes = isArr || isArg || isBuff || isType,
-      result = skipIndexes ? baseTimes(value.length, String) : [],
-      length = result.length;
 
-  for (var key in value) {
-    if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && (
-    // Safari 9 has enumerable `arguments.length` in strict mode.
-    key == 'length' ||
-    // Node.js 0.10 has enumerable non-index properties on buffers.
-    isBuff && (key == 'offset' || key == 'parent') ||
-    // PhantomJS 2 has enumerable non-index properties on typed arrays.
-    isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset') ||
-    // Skip index properties.
-    isIndex(key, length)))) {
-      result.push(key);
-    }
-  }
-  return result;
-}
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
 
-module.exports = arrayLikeKeys;
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    mapTag = '[object Map]',
+    objectTag = '[object Object]',
+    promiseTag = '[object Promise]',
+    setTag = '[object Set]',
+    weakMapTag = '[object WeakMap]';
 
-/***/ }),
-/* 466 */
-/***/ (function(module, exports, __webpack_require__) {
+var dataViewTag = '[object DataView]';
 
-"use strict";
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = (typeof global === 'undefined' ? 'undefined' : _typeof(global)) == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
 
 /**
  * A specialized version of `_.map` for arrays without support for iteratee
@@ -89286,7 +87629,7 @@ module.exports = arrayLikeKeys;
  */
 function arrayMap(array, iteratee) {
   var index = -1,
-      length = array == null ? 0 : array.length,
+      length = array ? array.length : 0,
       result = Array(length);
 
   while (++index < length) {
@@ -89295,58 +87638,131 @@ function arrayMap(array, iteratee) {
   return result;
 }
 
-module.exports = arrayMap;
+/**
+ * The base implementation of `_.times` without support for iteratee shorthands
+ * or max array length checks.
+ *
+ * @private
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the array of results.
+ */
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
 
-/***/ }),
-/* 467 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var baseGetTag = __webpack_require__(85),
-    isObjectLike = __webpack_require__(113);
-
-/** `Object#toString` result references. */
-var argsTag = '[object Arguments]';
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
 
 /**
- * The base implementation of `_.isArguments`.
+ * The base implementation of `_.toPairs` and `_.toPairsIn` which creates an array
+ * of key-value pairs for `object` corresponding to the property names of `props`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {Array} props The property names to get values for.
+ * @returns {Object} Returns the key-value pairs.
+ */
+function baseToPairs(object, props) {
+  return arrayMap(props, function (key) {
+    return [key, object[key]];
+  });
+}
+
+/**
+ * Gets the value at `key` of `object`.
+ *
+ * @private
+ * @param {Object} [object] The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+function getValue(object, key) {
+  return object == null ? undefined : object[key];
+}
+
+/**
+ * Checks if `value` is a host object in IE < 9.
  *
  * @private
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
  */
-function baseIsArguments(value) {
-  return isObjectLike(value) && baseGetTag(value) == argsTag;
+function isHostObject(value) {
+  // Many host objects are `Object` objects that can coerce to strings
+  // despite having improperly defined `toString` methods.
+  var result = false;
+  if (value != null && typeof value.toString != 'function') {
+    try {
+      result = !!(value + '');
+    } catch (e) {}
+  }
+  return result;
 }
 
-module.exports = baseIsArguments;
+/**
+ * Converts `map` to its key-value pairs.
+ *
+ * @private
+ * @param {Object} map The map to convert.
+ * @returns {Array} Returns the key-value pairs.
+ */
+function mapToArray(map) {
+  var index = -1,
+      result = Array(map.size);
 
-/***/ }),
-/* 468 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isFunction = __webpack_require__(292),
-    isMasked = __webpack_require__(480),
-    isObject = __webpack_require__(294),
-    toSource = __webpack_require__(291);
+  map.forEach(function (value, key) {
+    result[++index] = [key, value];
+  });
+  return result;
+}
 
 /**
- * Used to match `RegExp`
- * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
  */
-var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+function overArg(func, transform) {
+  return function (arg) {
+    return func(transform(arg));
+  };
+}
 
-/** Used to detect host constructors (Safari). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
+/**
+ * Converts `set` to its value-value pairs.
+ *
+ * @private
+ * @param {Object} set The set to convert.
+ * @returns {Array} Returns the value-value pairs.
+ */
+function setToPairs(set) {
+  var index = -1,
+      result = Array(set.size);
+
+  set.forEach(function (value) {
+    result[++index] = [value, value];
+  });
+  return result;
+}
 
 /** Used for built-in method references. */
 var funcProto = Function.prototype,
     objectProto = Object.prototype;
+
+/** Used to detect overreaching core-js shims. */
+var coreJsData = root['__core-js_shared__'];
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = function () {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? 'Symbol(src)_1.' + uid : '';
+}();
 
 /** Used to resolve the decompiled source of functions. */
 var funcToString = funcProto.toString;
@@ -89354,8 +87770,70 @@ var funcToString = funcProto.toString;
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
 
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
 /** Used to detect if a method is native. */
 var reIsNative = RegExp('^' + funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&').replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeKeys = overArg(Object.keys, Object);
+
+/* Built-in method references that are verified to be native. */
+var DataView = getNative(root, 'DataView'),
+    Map = getNative(root, 'Map'),
+    Promise = getNative(root, 'Promise'),
+    Set = getNative(root, 'Set'),
+    WeakMap = getNative(root, 'WeakMap');
+
+/** Used to detect maps, sets, and weakmaps. */
+var dataViewCtorString = toSource(DataView),
+    mapCtorString = toSource(Map),
+    promiseCtorString = toSource(Promise),
+    setCtorString = toSource(Set),
+    weakMapCtorString = toSource(WeakMap);
+
+/**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys(value, inherited) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  // Safari 9 makes `arguments.length` enumerable in strict mode.
+  var result = isArray(value) || isArguments(value) ? baseTimes(value.length, String) : [];
+
+  var length = result.length,
+      skipIndexes = !!length;
+
+  for (var key in value) {
+    if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `getTag`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  return objectToString.call(value);
+}
 
 /**
  * The base implementation of `_.isNative` without bad shim checks.
@@ -89369,83 +87847,9 @@ function baseIsNative(value) {
   if (!isObject(value) || isMasked(value)) {
     return false;
   }
-  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+  var pattern = isFunction(value) || isHostObject(value) ? reIsNative : reIsHostCtor;
   return pattern.test(toSource(value));
 }
-
-module.exports = baseIsNative;
-
-/***/ }),
-/* 469 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var baseGetTag = __webpack_require__(85),
-    isLength = __webpack_require__(293),
-    isObjectLike = __webpack_require__(113);
-
-/** `Object#toString` result references. */
-var argsTag = '[object Arguments]',
-    arrayTag = '[object Array]',
-    boolTag = '[object Boolean]',
-    dateTag = '[object Date]',
-    errorTag = '[object Error]',
-    funcTag = '[object Function]',
-    mapTag = '[object Map]',
-    numberTag = '[object Number]',
-    objectTag = '[object Object]',
-    regexpTag = '[object RegExp]',
-    setTag = '[object Set]',
-    stringTag = '[object String]',
-    weakMapTag = '[object WeakMap]';
-
-var arrayBufferTag = '[object ArrayBuffer]',
-    dataViewTag = '[object DataView]',
-    float32Tag = '[object Float32Array]',
-    float64Tag = '[object Float64Array]',
-    int8Tag = '[object Int8Array]',
-    int16Tag = '[object Int16Array]',
-    int32Tag = '[object Int32Array]',
-    uint8Tag = '[object Uint8Array]',
-    uint8ClampedTag = '[object Uint8ClampedArray]',
-    uint16Tag = '[object Uint16Array]',
-    uint32Tag = '[object Uint32Array]';
-
-/** Used to identify `toStringTag` values of typed arrays. */
-var typedArrayTags = {};
-typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
-typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
-
-/**
- * The base implementation of `_.isTypedArray` without Node.js optimizations.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
- */
-function baseIsTypedArray(value) {
-    return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
-}
-
-module.exports = baseIsTypedArray;
-
-/***/ }),
-/* 470 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isPrototype = __webpack_require__(481),
-    nativeKeys = __webpack_require__(483);
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
 
 /**
  * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
@@ -89467,114 +87871,6 @@ function baseKeys(object) {
   return result;
 }
 
-module.exports = baseKeys;
-
-/***/ }),
-/* 471 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * The base implementation of `_.times` without support for iteratee shorthands
- * or max array length checks.
- *
- * @private
- * @param {number} n The number of times to invoke `iteratee`.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {Array} Returns the array of results.
- */
-function baseTimes(n, iteratee) {
-  var index = -1,
-      result = Array(n);
-
-  while (++index < n) {
-    result[index] = iteratee(index);
-  }
-  return result;
-}
-
-module.exports = baseTimes;
-
-/***/ }),
-/* 472 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var arrayMap = __webpack_require__(466);
-
-/**
- * The base implementation of `_.toPairs` and `_.toPairsIn` which creates an array
- * of key-value pairs for `object` corresponding to the property names of `props`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {Array} props The property names to get values for.
- * @returns {Object} Returns the key-value pairs.
- */
-function baseToPairs(object, props) {
-  return arrayMap(props, function (key) {
-    return [key, object[key]];
-  });
-}
-
-module.exports = baseToPairs;
-
-/***/ }),
-/* 473 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * The base implementation of `_.unary` without support for storing metadata.
- *
- * @private
- * @param {Function} func The function to cap arguments for.
- * @returns {Function} Returns the new capped function.
- */
-function baseUnary(func) {
-  return function (value) {
-    return func(value);
-  };
-}
-
-module.exports = baseUnary;
-
-/***/ }),
-/* 474 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var root = __webpack_require__(30);
-
-/** Used to detect overreaching core-js shims. */
-var coreJsData = root['__core-js_shared__'];
-
-module.exports = coreJsData;
-
-/***/ }),
-/* 475 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var baseToPairs = __webpack_require__(472),
-    getTag = __webpack_require__(477),
-    mapToArray = __webpack_require__(482),
-    setToPairs = __webpack_require__(487);
-
-/** `Object#toString` result references. */
-var mapTag = '[object Map]',
-    setTag = '[object Set]';
-
 /**
  * Creates a `_.toPairs` or `_.toPairsIn` function.
  *
@@ -89595,92 +87891,18 @@ function createToPairs(keysFunc) {
   };
 }
 
-module.exports = createToPairs;
-
-/***/ }),
-/* 476 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _Symbol = __webpack_require__(289);
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
 /**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString = objectProto.toString;
-
-/** Built-in value references. */
-var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
-
-/**
- * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ * Gets the native function at `key` of `object`.
  *
  * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the raw `toStringTag`.
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
  */
-function getRawTag(value) {
-  var isOwn = hasOwnProperty.call(value, symToStringTag),
-      tag = value[symToStringTag];
-
-  try {
-    value[symToStringTag] = undefined;
-    var unmasked = true;
-  } catch (e) {}
-
-  var result = nativeObjectToString.call(value);
-  if (unmasked) {
-    if (isOwn) {
-      value[symToStringTag] = tag;
-    } else {
-      delete value[symToStringTag];
-    }
-  }
-  return result;
+function getNative(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
 }
-
-module.exports = getRawTag;
-
-/***/ }),
-/* 477 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var DataView = __webpack_require__(460),
-    Map = __webpack_require__(461),
-    Promise = __webpack_require__(462),
-    Set = __webpack_require__(463),
-    WeakMap = __webpack_require__(464),
-    baseGetTag = __webpack_require__(85),
-    toSource = __webpack_require__(291);
-
-/** `Object#toString` result references. */
-var mapTag = '[object Map]',
-    objectTag = '[object Object]',
-    promiseTag = '[object Promise]',
-    setTag = '[object Set]',
-    weakMapTag = '[object WeakMap]';
-
-var dataViewTag = '[object DataView]';
-
-/** Used to detect maps, sets, and weakmaps. */
-var dataViewCtorString = toSource(DataView),
-    mapCtorString = toSource(Map),
-    promiseCtorString = toSource(Promise),
-    setCtorString = toSource(Set),
-    weakMapCtorString = toSource(WeakMap);
 
 /**
  * Gets the `toStringTag` of `value`.
@@ -89691,66 +87913,31 @@ var dataViewCtorString = toSource(DataView),
  */
 var getTag = baseGetTag;
 
-// Fallback for data views, maps, sets, and weak maps in IE 11 and promises in Node.js < 6.
+// Fallback for data views, maps, sets, and weak maps in IE 11,
+// for data views in Edge < 14, and promises in Node.js.
 if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map && getTag(new Map()) != mapTag || Promise && getTag(Promise.resolve()) != promiseTag || Set && getTag(new Set()) != setTag || WeakMap && getTag(new WeakMap()) != weakMapTag) {
-    getTag = function getTag(value) {
-        var result = baseGetTag(value),
-            Ctor = result == objectTag ? value.constructor : undefined,
-            ctorString = Ctor ? toSource(Ctor) : '';
+  getTag = function getTag(value) {
+    var result = objectToString.call(value),
+        Ctor = result == objectTag ? value.constructor : undefined,
+        ctorString = Ctor ? toSource(Ctor) : undefined;
 
-        if (ctorString) {
-            switch (ctorString) {
-                case dataViewCtorString:
-                    return dataViewTag;
-                case mapCtorString:
-                    return mapTag;
-                case promiseCtorString:
-                    return promiseTag;
-                case setCtorString:
-                    return setTag;
-                case weakMapCtorString:
-                    return weakMapTag;
-            }
-        }
-        return result;
-    };
+    if (ctorString) {
+      switch (ctorString) {
+        case dataViewCtorString:
+          return dataViewTag;
+        case mapCtorString:
+          return mapTag;
+        case promiseCtorString:
+          return promiseTag;
+        case setCtorString:
+          return setTag;
+        case weakMapCtorString:
+          return weakMapTag;
+      }
+    }
+    return result;
+  };
 }
-
-module.exports = getTag;
-
-/***/ }),
-/* 478 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Gets the value at `key` of `object`.
- *
- * @private
- * @param {Object} [object] The object to query.
- * @param {string} key The key of the property to get.
- * @returns {*} Returns the property value.
- */
-function getValue(object, key) {
-  return object == null ? undefined : object[key];
-}
-
-module.exports = getValue;
-
-/***/ }),
-/* 479 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/** Used as references for various `Number` constants. */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/** Used to detect unsigned integer values. */
-var reIsUint = /^(?:0|[1-9]\d*)$/;
 
 /**
  * Checks if `value` is a valid array-like index.
@@ -89765,23 +87952,6 @@ function isIndex(value, length) {
   return !!length && (typeof value == 'number' || reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
 }
 
-module.exports = isIndex;
-
-/***/ }),
-/* 480 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var coreJsData = __webpack_require__(474);
-
-/** Used to detect methods masquerading as native. */
-var maskSrcKey = function () {
-  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-  return uid ? 'Symbol(src)_1.' + uid : '';
-}();
-
 /**
  * Checks if `func` has its source masked.
  *
@@ -89792,18 +87962,6 @@ var maskSrcKey = function () {
 function isMasked(func) {
   return !!maskSrcKey && maskSrcKey in func;
 }
-
-module.exports = isMasked;
-
-/***/ }),
-/* 481 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
 
 /**
  * Checks if `value` is likely a prototype object.
@@ -89819,178 +87977,24 @@ function isPrototype(value) {
   return value === proto;
 }
 
-module.exports = isPrototype;
-
-/***/ }),
-/* 482 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 /**
- * Converts `map` to its key-value pairs.
+ * Converts `func` to its source code.
  *
  * @private
- * @param {Object} map The map to convert.
- * @returns {Array} Returns the key-value pairs.
+ * @param {Function} func The function to process.
+ * @returns {string} Returns the source code.
  */
-function mapToArray(map) {
-  var index = -1,
-      result = Array(map.size);
-
-  map.forEach(function (value, key) {
-    result[++index] = [key, value];
-  });
-  return result;
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString.call(func);
+    } catch (e) {}
+    try {
+      return func + '';
+    } catch (e) {}
+  }
+  return '';
 }
-
-module.exports = mapToArray;
-
-/***/ }),
-/* 483 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var overArg = __webpack_require__(486);
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeKeys = overArg(Object.keys, Object);
-
-module.exports = nativeKeys;
-
-/***/ }),
-/* 484 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(module) {
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var freeGlobal = __webpack_require__(290);
-
-/** Detect free variable `exports`. */
-var freeExports = ( false ? 'undefined' : _typeof(exports)) == 'object' && exports && !exports.nodeType && exports;
-
-/** Detect free variable `module`. */
-var freeModule = freeExports && ( false ? 'undefined' : _typeof(module)) == 'object' && module && !module.nodeType && module;
-
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
-
-/** Detect free variable `process` from Node.js. */
-var freeProcess = moduleExports && freeGlobal.process;
-
-/** Used to access faster Node.js helpers. */
-var nodeUtil = function () {
-  try {
-    return freeProcess && freeProcess.binding && freeProcess.binding('util');
-  } catch (e) {}
-}();
-
-module.exports = nodeUtil;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(297)(module)))
-
-/***/ }),
-/* 485 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString = objectProto.toString;
-
-/**
- * Converts `value` to a string using `Object.prototype.toString`.
- *
- * @private
- * @param {*} value The value to convert.
- * @returns {string} Returns the converted string.
- */
-function objectToString(value) {
-  return nativeObjectToString.call(value);
-}
-
-module.exports = objectToString;
-
-/***/ }),
-/* 486 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Creates a unary function that invokes `func` with its argument transformed.
- *
- * @private
- * @param {Function} func The function to wrap.
- * @param {Function} transform The argument transform.
- * @returns {Function} Returns the new function.
- */
-function overArg(func, transform) {
-  return function (arg) {
-    return func(transform(arg));
-  };
-}
-
-module.exports = overArg;
-
-/***/ }),
-/* 487 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Converts `set` to its value-value pairs.
- *
- * @private
- * @param {Object} set The set to convert.
- * @returns {Array} Returns the value-value pairs.
- */
-function setToPairs(set) {
-  var index = -1,
-      result = Array(set.size);
-
-  set.forEach(function (value) {
-    result[++index] = [value, value];
-  });
-  return result;
-}
-
-module.exports = setToPairs;
-
-/***/ }),
-/* 488 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var baseIsArguments = __webpack_require__(467),
-    isObjectLike = __webpack_require__(113);
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/** Built-in value references. */
-var propertyIsEnumerable = objectProto.propertyIsEnumerable;
 
 /**
  * Checks if `value` is likely an `arguments` object.
@@ -90010,20 +88014,10 @@ var propertyIsEnumerable = objectProto.propertyIsEnumerable;
  * _.isArguments([1, 2, 3]);
  * // => false
  */
-var isArguments = baseIsArguments(function () {
-    return arguments;
-}()) ? baseIsArguments : function (value) {
-    return isObjectLike(value) && hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
-};
-
-module.exports = isArguments;
-
-/***/ }),
-/* 489 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+function isArguments(value) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') && (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
 
 /**
  * Checks if `value` is classified as an `Array` object.
@@ -90049,18 +88043,6 @@ module.exports = isArguments;
  * // => false
  */
 var isArray = Array.isArray;
-
-module.exports = isArray;
-
-/***/ }),
-/* 490 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isFunction = __webpack_require__(292),
-    isLength = __webpack_require__(293);
 
 /**
  * Checks if `value` is array-like. A value is considered array-like if it's
@@ -90091,102 +88073,146 @@ function isArrayLike(value) {
   return value != null && isLength(value.length) && !isFunction(value);
 }
 
-module.exports = isArrayLike;
-
-/***/ }),
-/* 491 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(module) {
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var root = __webpack_require__(30),
-    stubFalse = __webpack_require__(494);
-
-/** Detect free variable `exports`. */
-var freeExports = ( false ? 'undefined' : _typeof(exports)) == 'object' && exports && !exports.nodeType && exports;
-
-/** Detect free variable `module`. */
-var freeModule = freeExports && ( false ? 'undefined' : _typeof(module)) == 'object' && module && !module.nodeType && module;
-
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
-
-/** Built-in value references. */
-var Buffer = moduleExports ? root.Buffer : undefined;
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
-
 /**
- * Checks if `value` is a buffer.
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
  *
  * @static
  * @memberOf _
- * @since 4.3.0
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
  * @example
  *
- * _.isBuffer(new Buffer(2));
+ * _.isArrayLikeObject([1, 2, 3]);
  * // => true
  *
- * _.isBuffer(new Uint8Array(2));
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
  * // => false
  */
-var isBuffer = nativeIsBuffer || stubFalse;
-
-module.exports = isBuffer;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(297)(module)))
-
-/***/ }),
-/* 492 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var baseIsTypedArray = __webpack_require__(469),
-    baseUnary = __webpack_require__(473),
-    nodeUtil = __webpack_require__(484);
-
-/* Node.js helper references. */
-var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
 
 /**
- * Checks if `value` is classified as a typed array.
+ * Checks if `value` is classified as a `Function` object.
  *
  * @static
  * @memberOf _
- * @since 3.0.0
+ * @since 0.1.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
  * @example
  *
- * _.isTypedArray(new Uint8Array);
+ * _.isFunction(_);
  * // => true
  *
- * _.isTypedArray([]);
+ * _.isFunction(/abc/);
  * // => false
  */
-var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
 
-module.exports = isTypedArray;
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
 
-/***/ }),
-/* 493 */
-/***/ (function(module, exports, __webpack_require__) {
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+  return !!value && (type == 'object' || type == 'function');
+}
 
-"use strict";
-
-
-var arrayLikeKeys = __webpack_require__(465),
-    baseKeys = __webpack_require__(470),
-    isArrayLike = __webpack_require__(490);
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object';
+}
 
 /**
  * Creates an array of the own enumerable property names of `object`.
@@ -90220,44 +88246,6 @@ function keys(object) {
   return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
 }
 
-module.exports = keys;
-
-/***/ }),
-/* 494 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * This method returns `false`.
- *
- * @static
- * @memberOf _
- * @since 4.13.0
- * @category Util
- * @returns {boolean} Returns `false`.
- * @example
- *
- * _.times(2, _.stubFalse);
- * // => [false, false]
- */
-function stubFalse() {
-  return false;
-}
-
-module.exports = stubFalse;
-
-/***/ }),
-/* 495 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var createToPairs = __webpack_require__(475),
-    keys = __webpack_require__(493);
-
 /**
  * Creates an array of own enumerable string keyed-value pairs for `object`
  * which can be consumed by `_.fromPairs`. If `object` is a map or set, its
@@ -90285,9 +88273,10 @@ var createToPairs = __webpack_require__(475),
 var toPairs = createToPairs(keys);
 
 module.exports = toPairs;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(286)))
 
 /***/ }),
-/* 496 */
+/* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90341,12 +88330,12 @@ exports._unrefActive = exports.active = function (item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(500);
+__webpack_require__(497);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 /***/ }),
-/* 497 */
+/* 452 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90354,7 +88343,7 @@ exports.clearImmediate = clearImmediate;
 
 module.exports = Pbf;
 
-var ieee754 = __webpack_require__(457);
+var ieee754 = __webpack_require__(447);
 
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
@@ -91022,7 +89011,7 @@ function writeUtf8(buf, str, pos) {
 }
 
 /***/ }),
-/* 498 */
+/* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91215,7 +89204,7 @@ process.umask = function () {
 };
 
 /***/ }),
-/* 499 */
+/* 454 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91456,657 +89445,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     root.Promise = Promise;
   }
 })(undefined);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(496).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(451).setImmediate))
 
 /***/ }),
-/* 500 */
+/* 455 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global, process) {
-
-(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-        // Callback can either be a function or a string
-        if (typeof callback !== "function") {
-            callback = new Function("" + callback);
-        }
-        // Copy function arguments
-        var args = new Array(arguments.length - 1);
-        for (var i = 0; i < args.length; i++) {
-            args[i] = arguments[i + 1];
-        }
-        // Store and register the task
-        var task = { callback: callback, args: args };
-        tasksByHandle[nextHandle] = task;
-        registerImmediate(nextHandle);
-        return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-            case 0:
-                callback();
-                break;
-            case 1:
-                callback(args[0]);
-                break;
-            case 2:
-                callback(args[0], args[1]);
-                break;
-            case 3:
-                callback(args[0], args[1], args[2]);
-                break;
-            default:
-                callback.apply(undefined, args);
-                break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function registerImmediate(handle) {
-            process.nextTick(function () {
-                runIfPresent(handle);
-            });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function () {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function onGlobalMessage(event) {
-            if (event.source === global && typeof event.data === "string" && event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function registerImmediate(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function (event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function registerImmediate(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function registerImmediate(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function registerImmediate(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-})(typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(296), __webpack_require__(498)))
-
-/***/ }),
-/* 501 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var whatwgFetch = function (self) {
-  'use strict';
-
-  var support = {
-    searchParams: 'URLSearchParams' in self,
-    iterable: 'Symbol' in self && 'iterator' in Symbol,
-    blob: 'FileReader' in self && 'Blob' in self && function () {
-      try {
-        new Blob();
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  };
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name);
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name');
-    }
-    return name.toLowerCase();
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value);
-    }
-    return value;
-  }
-
-  // Build a destructive iterator for the value list
-  function iteratorFor(items) {
-    var iterator = {
-      next: function next() {
-        var value = items.shift();
-        return { done: value === undefined, value: value };
-      }
-    };
-
-    if (support.iterable) {
-      iterator[Symbol.iterator] = function () {
-        return iterator;
-      };
-    }
-
-    return iterator;
-  }
-
-  function Headers(headers) {
-    this.map = {};
-
-    if (headers instanceof Headers) {
-      headers.forEach(function (value, name) {
-        this.append(name, value);
-      }, this);
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function (name) {
-        this.append(name, headers[name]);
-      }, this);
-    }
-  }
-
-  Headers.prototype.append = function (name, value) {
-    name = normalizeName(name);
-    value = normalizeValue(value);
-    var list = this.map[name];
-    if (!list) {
-      list = [];
-      this.map[name] = list;
-    }
-    list.push(value);
-  };
-
-  Headers.prototype['delete'] = function (name) {
-    delete this.map[normalizeName(name)];
-  };
-
-  Headers.prototype.get = function (name) {
-    var values = this.map[normalizeName(name)];
-    return values ? values[0] : null;
-  };
-
-  Headers.prototype.getAll = function (name) {
-    return this.map[normalizeName(name)] || [];
-  };
-
-  Headers.prototype.has = function (name) {
-    return this.map.hasOwnProperty(normalizeName(name));
-  };
-
-  Headers.prototype.set = function (name, value) {
-    this.map[normalizeName(name)] = [normalizeValue(value)];
-  };
-
-  Headers.prototype.forEach = function (callback, thisArg) {
-    Object.getOwnPropertyNames(this.map).forEach(function (name) {
-      this.map[name].forEach(function (value) {
-        callback.call(thisArg, value, name, this);
-      }, this);
-    }, this);
-  };
-
-  Headers.prototype.keys = function () {
-    var items = [];
-    this.forEach(function (value, name) {
-      items.push(name);
-    });
-    return iteratorFor(items);
-  };
-
-  Headers.prototype.values = function () {
-    var items = [];
-    this.forEach(function (value) {
-      items.push(value);
-    });
-    return iteratorFor(items);
-  };
-
-  Headers.prototype.entries = function () {
-    var items = [];
-    this.forEach(function (value, name) {
-      items.push([name, value]);
-    });
-    return iteratorFor(items);
-  };
-
-  if (support.iterable) {
-    Headers.prototype[Symbol.iterator] = Headers.prototype.entries;
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'));
-    }
-    body.bodyUsed = true;
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function (resolve, reject) {
-      reader.onload = function () {
-        resolve(reader.result);
-      };
-      reader.onerror = function () {
-        reject(reader.error);
-      };
-    });
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader();
-    reader.readAsArrayBuffer(blob);
-    return fileReaderReady(reader);
-  }
-
-  function readBlobAsText(blob) {
-    var reader = new FileReader();
-    reader.readAsText(blob);
-    return fileReaderReady(reader);
-  }
-
-  function Body() {
-    this.bodyUsed = false;
-
-    this._initBody = function (body) {
-      this._bodyInit = body;
-      if (typeof body === 'string') {
-        this._bodyText = body;
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body;
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body;
-      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-        this._bodyText = body.toString();
-      } else if (!body) {
-        this._bodyText = '';
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
-      } else {
-        throw new Error('unsupported BodyInit type');
-      }
-
-      if (!this.headers.get('content-type')) {
-        if (typeof body === 'string') {
-          this.headers.set('content-type', 'text/plain;charset=UTF-8');
-        } else if (this._bodyBlob && this._bodyBlob.type) {
-          this.headers.set('content-type', this._bodyBlob.type);
-        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        }
-      }
-    };
-
-    if (support.blob) {
-      this.blob = function () {
-        var rejected = consumed(this);
-        if (rejected) {
-          return rejected;
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob);
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob');
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]));
-        }
-      };
-
-      this.arrayBuffer = function () {
-        return this.blob().then(readBlobAsArrayBuffer);
-      };
-
-      this.text = function () {
-        var rejected = consumed(this);
-        if (rejected) {
-          return rejected;
-        }
-
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob);
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text');
-        } else {
-          return Promise.resolve(this._bodyText);
-        }
-      };
-    } else {
-      this.text = function () {
-        var rejected = consumed(this);
-        return rejected ? rejected : Promise.resolve(this._bodyText);
-      };
-    }
-
-    if (support.formData) {
-      this.formData = function () {
-        return this.text().then(decode);
-      };
-    }
-
-    this.json = function () {
-      return this.text().then(JSON.parse);
-    };
-
-    return this;
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT'];
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase();
-    return methods.indexOf(upcased) > -1 ? upcased : method;
-  }
-
-  function Request(input, options) {
-    options = options || {};
-    var body = options.body;
-    if (Request.prototype.isPrototypeOf(input)) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read');
-      }
-      this.url = input.url;
-      this.credentials = input.credentials;
-      if (!options.headers) {
-        this.headers = new Headers(input.headers);
-      }
-      this.method = input.method;
-      this.mode = input.mode;
-      if (!body) {
-        body = input._bodyInit;
-        input.bodyUsed = true;
-      }
-    } else {
-      this.url = input;
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit';
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers);
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET');
-    this.mode = options.mode || this.mode || null;
-    this.referrer = null;
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests');
-    }
-    this._initBody(body);
-  }
-
-  Request.prototype.clone = function () {
-    return new Request(this);
-  };
-
-  function decode(body) {
-    var form = new FormData();
-    body.trim().split('&').forEach(function (bytes) {
-      if (bytes) {
-        var split = bytes.split('=');
-        var name = split.shift().replace(/\+/g, ' ');
-        var value = split.join('=').replace(/\+/g, ' ');
-        form.append(decodeURIComponent(name), decodeURIComponent(value));
-      }
-    });
-    return form;
-  }
-
-  function headers(xhr) {
-    var head = new Headers();
-    var pairs = (xhr.getAllResponseHeaders() || '').trim().split('\n');
-    pairs.forEach(function (header) {
-      var split = header.trim().split(':');
-      var key = split.shift().trim();
-      var value = split.join(':').trim();
-      head.append(key, value);
-    });
-    return head;
-  }
-
-  Body.call(Request.prototype);
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {};
-    }
-
-    this.type = 'default';
-    this.status = options.status;
-    this.ok = this.status >= 200 && this.status < 300;
-    this.statusText = options.statusText;
-    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers);
-    this.url = options.url || '';
-    this._initBody(bodyInit);
-  }
-
-  Body.call(Response.prototype);
-
-  Response.prototype.clone = function () {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    });
-  };
-
-  Response.error = function () {
-    var response = new Response(null, { status: 0, statusText: '' });
-    response.type = 'error';
-    return response;
-  };
-
-  var redirectStatuses = [301, 302, 303, 307, 308];
-
-  Response.redirect = function (url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code');
-    }
-
-    return new Response(null, { status: status, headers: { location: url } });
-  };
-
-  // self.Headers = Headers
-  // self.Request = Request
-  // self.Response = Response
-
-  var fetch = function fetch(input, init) {
-    // console.log('whatwgFetchWidthTimeout--->'+input, init);
-    init = init || { timeout: 30000 };
-    return new Promise(function (resolve, reject) {
-      var request;
-      if (Request.prototype.isPrototypeOf(input) && !init) {
-        request = input;
-      } else {
-        request = new Request(input, init);
-      }
-
-      var xhr = new XMLHttpRequest();
-
-      function responseURL() {
-        if ('responseURL' in xhr) {
-          return xhr.responseURL;
-        }
-
-        // Avoid security warnings on getResponseHeader when not allowed by CORS
-        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-          return xhr.getResponseHeader('X-Request-URL');
-        }
-
-        return;
-      }
-
-      xhr.onload = function () {
-        var options = {
-          status: xhr.status,
-          statusText: xhr.statusText,
-          headers: headers(xhr),
-          url: responseURL()
-        };
-        var body = 'response' in xhr ? xhr.response : xhr.responseText;
-        resolve(new Response(body, options));
-      };
-
-      xhr.onerror = function () {
-        reject(new TypeError('Network request failed'));
-      };
-
-      xhr.ontimeout = function () {
-        reject(new TypeError('Network request failed due to timeout'));
-      };
-
-      xhr.open(request.method, request.url, true);
-      xhr.timeout = init.timeout || 30000;
-
-      if (request.credentials === 'include') {
-        xhr.withCredentials = true;
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob';
-      }
-
-      request.headers.forEach(function (value, name) {
-        xhr.setRequestHeader(name, value);
-      });
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit);
-    });
-  };
-  return fetch;
-}(typeof self !== 'undefined' ? self : undefined);
-
-module.exports = whatwgFetch;
-
-/***/ }),
-/* 502 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 503 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var mgrs = __webpack_require__(295);
+var mgrs = __webpack_require__(285);
 
 function Point(x, y, z) {
   if (!(this instanceof Point)) {
@@ -92143,7 +89488,7 @@ module.exports = Point;
 
 
 /***/ }),
-/* 504 */
+/* 456 */
 /***/ (function(module, exports) {
 
 module.exports = function(crs, denorm, point) {
@@ -92200,7 +89545,7 @@ module.exports = function(crs, denorm, point) {
 
 
 /***/ }),
-/* 505 */
+/* 457 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -92237,7 +89582,7 @@ module.exports = function(eccent, q) {
 };
 
 /***/ }),
-/* 506 */
+/* 458 */
 /***/ (function(module, exports) {
 
 var C00 = 1;
@@ -92266,10 +89611,10 @@ module.exports = function(es) {
 };
 
 /***/ }),
-/* 507 */
+/* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var pj_mlfn = __webpack_require__(299);
+var pj_mlfn = __webpack_require__(287);
 var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
 module.exports = function(arg, es, en) {
@@ -92291,7 +89636,7 @@ module.exports = function(arg, es, en) {
 };
 
 /***/ }),
-/* 508 */
+/* 460 */
 /***/ (function(module, exports) {
 
 module.exports = function(esinp, exp) {
@@ -92299,7 +89644,7 @@ module.exports = function(esinp, exp) {
 };
 
 /***/ }),
-/* 509 */
+/* 461 */
 /***/ (function(module, exports) {
 
 exports.wgs84 = {
@@ -92384,7 +89729,7 @@ exports.rnb72 = {
 };
 
 /***/ }),
-/* 510 */
+/* 462 */
 /***/ (function(module, exports) {
 
 exports.MERIT = {
@@ -92604,7 +89949,7 @@ exports.sphere = {
 };
 
 /***/ }),
-/* 511 */
+/* 463 */
 /***/ (function(module, exports) {
 
 exports.greenwich = 0.0; //"0dE",
@@ -92622,7 +89967,7 @@ exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 /***/ }),
-/* 512 */
+/* 464 */
 /***/ (function(module, exports) {
 
 exports.ft = {to_meter: 0.3048};
@@ -92630,11 +89975,11 @@ exports['us-ft'] = {to_meter: 1200 / 3937};
 
 
 /***/ }),
-/* 513 */
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var proj = __webpack_require__(114);
-var transform = __webpack_require__(305);
+var proj = __webpack_require__(110);
+var transform = __webpack_require__(293);
 var wgs84 = proj('WGS84');
 
 function transformer(from, to, coords) {
@@ -92699,7 +90044,7 @@ function proj4(fromProj, toProj, coord) {
 module.exports = proj4;
 
 /***/ }),
-/* 514 */
+/* 466 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -93108,7 +90453,7 @@ module.exports = datum;
 
 
 /***/ }),
-/* 515 */
+/* 467 */
 /***/ (function(module, exports) {
 
 var PJD_3PARAM = 1;
@@ -93213,13 +90558,13 @@ module.exports = function(source, dest, point) {
 
 
 /***/ }),
-/* 516 */
+/* 468 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Datum = __webpack_require__(509);
-var Ellipsoid = __webpack_require__(510);
-var extend = __webpack_require__(118);
-var datum = __webpack_require__(514);
+var Datum = __webpack_require__(461);
+var Ellipsoid = __webpack_require__(462);
+var extend = __webpack_require__(114);
+var datum = __webpack_require__(466);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
 var SIXTH = 0.1666666666666666667;
@@ -93275,7 +90620,7 @@ module.exports = function(json) {
 
 
 /***/ }),
-/* 517 */
+/* 469 */
 /***/ (function(module, exports) {
 
 module.exports = function(defs) {
@@ -93292,32 +90637,32 @@ module.exports = function(defs) {
 
 
 /***/ }),
-/* 518 */
+/* 470 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(304),
-  __webpack_require__(543),
-  __webpack_require__(542),
-  __webpack_require__(541),
-  __webpack_require__(540),
-  __webpack_require__(537),
-  __webpack_require__(531),
-  __webpack_require__(529),
-  __webpack_require__(523),
-  __webpack_require__(530),
-  __webpack_require__(521),
-  __webpack_require__(528),
-  __webpack_require__(524),
-  __webpack_require__(525),
-  __webpack_require__(538),
-  __webpack_require__(536),
-  __webpack_require__(534),
-  __webpack_require__(539),
-  __webpack_require__(535),
-  __webpack_require__(526),
-  __webpack_require__(544),
-  __webpack_require__(522)
+  __webpack_require__(292),
+  __webpack_require__(495),
+  __webpack_require__(494),
+  __webpack_require__(493),
+  __webpack_require__(492),
+  __webpack_require__(489),
+  __webpack_require__(483),
+  __webpack_require__(481),
+  __webpack_require__(475),
+  __webpack_require__(482),
+  __webpack_require__(473),
+  __webpack_require__(480),
+  __webpack_require__(476),
+  __webpack_require__(477),
+  __webpack_require__(490),
+  __webpack_require__(488),
+  __webpack_require__(486),
+  __webpack_require__(491),
+  __webpack_require__(487),
+  __webpack_require__(478),
+  __webpack_require__(496),
+  __webpack_require__(474)
 ];
 module.exports = function(proj4){
   projs.forEach(function(proj){
@@ -93326,12 +90671,12 @@ module.exports = function(proj4){
 };
 
 /***/ }),
-/* 519 */
+/* 471 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defs = __webpack_require__(301);
-var wkt = __webpack_require__(306);
-var projStr = __webpack_require__(303);
+var defs = __webpack_require__(289);
+var wkt = __webpack_require__(294);
+var projStr = __webpack_require__(291);
 function testObj(code){
   return typeof code === 'string';
 }
@@ -93367,12 +90712,12 @@ function parse(code){
 module.exports = parse;
 
 /***/ }),
-/* 520 */
+/* 472 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(533),
-  __webpack_require__(532)
+  __webpack_require__(485),
+  __webpack_require__(484)
 ];
 var names = {};
 var projStore = [];
@@ -93407,14 +90752,14 @@ exports.start = function() {
 
 
 /***/ }),
-/* 521 */
+/* 473 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
-var msfnz = __webpack_require__(45);
-var qsfnz = __webpack_require__(117);
+var msfnz = __webpack_require__(44);
+var qsfnz = __webpack_require__(113);
 var adjust_lon = __webpack_require__(7);
-var asinz = __webpack_require__(44);
+var asinz = __webpack_require__(43);
 exports.init = function() {
 
   if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
@@ -93534,20 +90879,20 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 522 */
+/* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var mlfn = __webpack_require__(60);
-var e0fn = __webpack_require__(56);
-var e1fn = __webpack_require__(57);
-var e2fn = __webpack_require__(58);
-var e3fn = __webpack_require__(59);
-var gN = __webpack_require__(115);
-var asinz = __webpack_require__(44);
-var imlfn = __webpack_require__(116);
+var mlfn = __webpack_require__(58);
+var e0fn = __webpack_require__(54);
+var e1fn = __webpack_require__(55);
+var e2fn = __webpack_require__(56);
+var e3fn = __webpack_require__(57);
+var gN = __webpack_require__(111);
+var asinz = __webpack_require__(43);
+var imlfn = __webpack_require__(112);
 exports.init = function() {
   this.sin_p12 = Math.sin(this.lat0);
   this.cos_p12 = Math.cos(this.lat0);
@@ -93737,18 +91082,18 @@ exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 523 */
+/* 475 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var mlfn = __webpack_require__(60);
-var e0fn = __webpack_require__(56);
-var e1fn = __webpack_require__(57);
-var e2fn = __webpack_require__(58);
-var e3fn = __webpack_require__(59);
-var gN = __webpack_require__(115);
+var mlfn = __webpack_require__(58);
+var e0fn = __webpack_require__(54);
+var e1fn = __webpack_require__(55);
+var e2fn = __webpack_require__(56);
+var e3fn = __webpack_require__(57);
+var gN = __webpack_require__(111);
 var adjust_lon = __webpack_require__(7);
-var adjust_lat = __webpack_require__(55);
-var imlfn = __webpack_require__(116);
+var adjust_lat = __webpack_require__(53);
+var imlfn = __webpack_require__(112);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 exports.init = function() {
@@ -93845,13 +91190,13 @@ exports.inverse = function(p) {
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 524 */
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
-var qsfnz = __webpack_require__(117);
-var msfnz = __webpack_require__(45);
-var iqsfnz = __webpack_require__(505);
+var qsfnz = __webpack_require__(113);
+var msfnz = __webpack_require__(44);
+var iqsfnz = __webpack_require__(457);
 /*
   reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
@@ -93914,11 +91259,11 @@ exports.names = ["cea"];
 
 
 /***/ }),
-/* 525 */
+/* 477 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
-var adjust_lat = __webpack_require__(55);
+var adjust_lat = __webpack_require__(53);
 exports.init = function() {
 
   this.x0 = this.x0 || 0;
@@ -93961,18 +91306,18 @@ exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 526 */
+/* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var e0fn = __webpack_require__(56);
-var e1fn = __webpack_require__(57);
-var e2fn = __webpack_require__(58);
-var e3fn = __webpack_require__(59);
-var msfnz = __webpack_require__(45);
-var mlfn = __webpack_require__(60);
+var e0fn = __webpack_require__(54);
+var e1fn = __webpack_require__(55);
+var e2fn = __webpack_require__(56);
+var e3fn = __webpack_require__(57);
+var msfnz = __webpack_require__(44);
+var mlfn = __webpack_require__(58);
 var adjust_lon = __webpack_require__(7);
-var adjust_lat = __webpack_require__(55);
-var imlfn = __webpack_require__(116);
+var adjust_lat = __webpack_require__(53);
+var imlfn = __webpack_require__(112);
 var EPSLN = 1.0e-10;
 exports.init = function() {
 
@@ -94077,11 +91422,11 @@ exports.names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 527 */
+/* 479 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var FORTPI = Math.PI/4;
-var srat = __webpack_require__(508);
+var srat = __webpack_require__(460);
 var HALF_PI = Math.PI/2;
 var MAX_ITER = 20;
 exports.init = function() {
@@ -94128,12 +91473,12 @@ exports.names = ["gauss"];
 
 
 /***/ }),
-/* 528 */
+/* 480 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(44);
+var asinz = __webpack_require__(43);
 
 /*
   reference:
@@ -94233,7 +91578,7 @@ exports.names = ["gnom"];
 
 
 /***/ }),
-/* 529 */
+/* 481 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -94337,13 +91682,13 @@ exports.names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 530 */
+/* 482 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
 var FORTPI = Math.PI/4;
 var EPSLN = 1.0e-10;
-var qsfnz = __webpack_require__(117);
+var qsfnz = __webpack_require__(113);
 var adjust_lon = __webpack_require__(7);
 /*
   reference
@@ -94631,16 +91976,16 @@ exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area",
 
 
 /***/ }),
-/* 531 */
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
-var msfnz = __webpack_require__(45);
-var tsfnz = __webpack_require__(87);
+var msfnz = __webpack_require__(44);
+var tsfnz = __webpack_require__(84);
 var HALF_PI = Math.PI/2;
-var sign = __webpack_require__(61);
+var sign = __webpack_require__(59);
 var adjust_lon = __webpack_require__(7);
-var phi2z = __webpack_require__(86);
+var phi2z = __webpack_require__(83);
 exports.init = function() {
 
   // array of:  r_maj,r_min,lat1,lat2,c_lon,c_lat,false_east,false_north
@@ -94772,7 +92117,7 @@ exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Confo
 
 
 /***/ }),
-/* 532 */
+/* 484 */
 /***/ (function(module, exports) {
 
 exports.init = function() {
@@ -94788,17 +92133,17 @@ exports.names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 533 */
+/* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var msfnz = __webpack_require__(45);
+var msfnz = __webpack_require__(44);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
 var R2D = 57.29577951308232088;
 var adjust_lon = __webpack_require__(7);
 var FORTPI = Math.PI/4;
-var tsfnz = __webpack_require__(87);
-var phi2z = __webpack_require__(86);
+var tsfnz = __webpack_require__(84);
+var phi2z = __webpack_require__(83);
 exports.init = function() {
   var con = this.b / this.a;
   this.es = 1 - con * con;
@@ -94891,7 +92236,7 @@ exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_
 
 
 /***/ }),
-/* 534 */
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -94942,7 +92287,7 @@ exports.names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 535 */
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
@@ -95025,7 +92370,7 @@ exports.names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 536 */
+/* 488 */
 /***/ (function(module, exports) {
 
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
@@ -95249,12 +92594,12 @@ exports.inverse = function(p) {
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 537 */
+/* 489 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var tsfnz = __webpack_require__(87);
+var tsfnz = __webpack_require__(84);
 var adjust_lon = __webpack_require__(7);
-var phi2z = __webpack_require__(86);
+var phi2z = __webpack_require__(83);
 var HALF_PI = Math.PI/2;
 var FORTPI = Math.PI/4;
 var EPSLN = 1.0e-10;
@@ -95422,18 +92767,18 @@ exports.inverse = function(p) {
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 538 */
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var e0fn = __webpack_require__(56);
-var e1fn = __webpack_require__(57);
-var e2fn = __webpack_require__(58);
-var e3fn = __webpack_require__(59);
+var e0fn = __webpack_require__(54);
+var e1fn = __webpack_require__(55);
+var e2fn = __webpack_require__(56);
+var e3fn = __webpack_require__(57);
 var adjust_lon = __webpack_require__(7);
-var adjust_lat = __webpack_require__(55);
-var mlfn = __webpack_require__(60);
+var adjust_lat = __webpack_require__(53);
+var mlfn = __webpack_require__(58);
 var EPSLN = 1.0e-10;
-var gN = __webpack_require__(115);
+var gN = __webpack_require__(111);
 var MAX_ITER = 20;
 exports.init = function() {
   /* Place parameters in static storage for common use
@@ -95555,18 +92900,18 @@ exports.inverse = function(p) {
 exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 539 */
+/* 491 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
-var adjust_lat = __webpack_require__(55);
-var pj_enfn = __webpack_require__(506);
+var adjust_lat = __webpack_require__(53);
+var pj_enfn = __webpack_require__(458);
 var MAX_ITER = 20;
-var pj_mlfn = __webpack_require__(299);
-var pj_inv_mlfn = __webpack_require__(507);
+var pj_mlfn = __webpack_require__(287);
+var pj_inv_mlfn = __webpack_require__(459);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(44);
+var asinz = __webpack_require__(43);
 exports.init = function() {
   /* Place parameters in static storage for common use
     -------------------------------------------------*/
@@ -95666,7 +93011,7 @@ exports.inverse = function(p) {
 exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 540 */
+/* 492 */
 /***/ (function(module, exports) {
 
 /*
@@ -95752,15 +93097,15 @@ exports.names = ["somerc"];
 
 
 /***/ }),
-/* 541 */
+/* 493 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var sign = __webpack_require__(61);
-var msfnz = __webpack_require__(45);
-var tsfnz = __webpack_require__(87);
-var phi2z = __webpack_require__(86);
+var sign = __webpack_require__(59);
+var msfnz = __webpack_require__(44);
+var tsfnz = __webpack_require__(84);
+var phi2z = __webpack_require__(83);
 var adjust_lon = __webpack_require__(7);
 exports.ssfn_ = function(phit, sinphi, eccen) {
   sinphi *= eccen;
@@ -95924,10 +93269,10 @@ exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (vari
 
 
 /***/ }),
-/* 542 */
+/* 494 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var gauss = __webpack_require__(527);
+var gauss = __webpack_require__(479);
 var adjust_lon = __webpack_require__(7);
 exports.init = function() {
   gauss.init.apply(this);
@@ -95987,11 +93332,11 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 /***/ }),
-/* 543 */
+/* 495 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var tmerc = __webpack_require__(304);
+var tmerc = __webpack_require__(292);
 exports.dependsOn = 'tmerc';
 exports.init = function() {
   if (!this.zone) {
@@ -96011,13 +93356,13 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 544 */
+/* 496 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(7);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(44);
+var asinz = __webpack_require__(43);
 /* Initialize the Van Der Grinten projection
   ----------------------------------------*/
 exports.init = function() {
@@ -96136,83 +93481,282 @@ exports.inverse = function(p) {
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 545 */
-/***/ (function(module, exports) {
+/* 497 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
+
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(286), __webpack_require__(453)))
 
 /***/ }),
-/* 546 */
+/* 498 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 499 */
+/***/ (function(module, exports) {
+
+module.exports = {"_args":[["proj4@2.3.15","F:\\dev\\iClient"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"F:\\dev\\iClient","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+
+/***/ }),
+/* 500 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return echarts}catch(e){return {}}}();
 
 /***/ }),
-/* 547 */
+/* 501 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
-/* 548 */
+/* 502 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
-/* 549 */
+/* 503 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return turf}catch(e){return {}}}();
 
 /***/ }),
-/* 550 */
+/* 504 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(127);
-__webpack_require__(310);
-__webpack_require__(124);
-__webpack_require__(125);
-__webpack_require__(88);
-__webpack_require__(126);
-__webpack_require__(311);
-__webpack_require__(136);
-__webpack_require__(329);
-__webpack_require__(324);
-__webpack_require__(325);
-__webpack_require__(321);
-__webpack_require__(135);
-__webpack_require__(322);
-__webpack_require__(323);
-__webpack_require__(331);
-__webpack_require__(327);
-__webpack_require__(326);
-__webpack_require__(330);
-__webpack_require__(332);
-__webpack_require__(328);
-__webpack_require__(121);
-__webpack_require__(122);
-__webpack_require__(120);
-__webpack_require__(320);
-__webpack_require__(119);
 __webpack_require__(123);
-__webpack_require__(134);
-__webpack_require__(312);
+__webpack_require__(299);
+__webpack_require__(120);
+__webpack_require__(121);
+__webpack_require__(85);
+__webpack_require__(122);
+__webpack_require__(300);
+__webpack_require__(132);
+__webpack_require__(318);
 __webpack_require__(313);
 __webpack_require__(314);
-__webpack_require__(319);
-__webpack_require__(133);
-__webpack_require__(317);
-__webpack_require__(132);
-__webpack_require__(130);
-__webpack_require__(316);
-__webpack_require__(128);
-__webpack_require__(129);
-__webpack_require__(315);
-__webpack_require__(318);
+__webpack_require__(310);
 __webpack_require__(131);
+__webpack_require__(311);
+__webpack_require__(312);
+__webpack_require__(320);
+__webpack_require__(316);
+__webpack_require__(315);
+__webpack_require__(319);
+__webpack_require__(321);
+__webpack_require__(317);
+__webpack_require__(117);
+__webpack_require__(118);
+__webpack_require__(116);
+__webpack_require__(309);
+__webpack_require__(115);
+__webpack_require__(119);
+__webpack_require__(130);
+__webpack_require__(301);
+__webpack_require__(302);
+__webpack_require__(303);
 __webpack_require__(308);
-module.exports = __webpack_require__(309);
+__webpack_require__(129);
+__webpack_require__(306);
+__webpack_require__(128);
+__webpack_require__(126);
+__webpack_require__(305);
+__webpack_require__(124);
+__webpack_require__(125);
+__webpack_require__(304);
+__webpack_require__(307);
+__webpack_require__(127);
+__webpack_require__(297);
+module.exports = __webpack_require__(298);
 
 
 /***/ })

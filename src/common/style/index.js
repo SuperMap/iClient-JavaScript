@@ -1,4 +1,6 @@
 import './supermapol-icons.css';
+import {CartoCSS} from './CartoCSS';
+import {ThemeStyle} from './ThemeStyle';
 
-export {CartoCSS} from './CartoCSS';
-export {ThemeStyle} from './ThemeStyle';
+export {CartoCSS} ;
+export {ThemeStyle} ;

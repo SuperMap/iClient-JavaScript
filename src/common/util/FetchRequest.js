@@ -1,8 +1,10 @@
 import "./PromisePolyfill"
-import fetch from 'whatwg-fetch-importable'
+import 'fetch-ie8'
 import fetchJsonp from 'fetch-jsonp';
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
+
+const fetch = window.fetch;
 
 /**
  * @member SuperMap.CORS
@@ -135,7 +137,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
                 body: type === 'PUT' || type === 'POST' ? params : undefined,
                 credentials: options.withCredentials ? 'include' : 'omit',
                 mode: 'cors',
-                timeout:RequestTimeout
+                timeout: RequestTimeout
             }).then(function (response) {
                 return response;
             }));
@@ -146,7 +148,7 @@ export var FetchRequest = SuperMap.FetchRequest = {
             headers: options.headers,
             credentials: options.withCredentials ? 'include' : 'omit',
             mode: 'cors',
-            timeout:RequestTimeout
+            timeout: RequestTimeout
         }).then(function (response) {
             return response;
         });

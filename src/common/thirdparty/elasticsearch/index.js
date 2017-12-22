@@ -1,1 +1,3 @@
-export {ElasticSearch} from './ElasticSearch';
+import {ElasticSearch} from './ElasticSearch';
+
+export {ElasticSearch};

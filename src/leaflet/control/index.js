@@ -1,2 +1,17 @@
-export {ChangeTileVersion, changeTileVersion} from './ChangeTileVersion';
-export {Logo, logo} from './Logo';
+import {
+    ChangeTileVersion,
+    changeTileVersion
+} from './ChangeTileVersion';
+import {
+    Logo,
+    logo
+} from './Logo';
+
+export {
+    ChangeTileVersion,
+    changeTileVersion
+} ;
+export {
+    Logo,
+    logo
+} ;

@@ -1,5 +1,5 @@
 import {SuperMap} from '../SuperMap';
-import toPairs from 'lodash/toPairs';
+import toPairs from 'lodash.topairs';
 
 /**
  * @class SuperMap.CartoCSS

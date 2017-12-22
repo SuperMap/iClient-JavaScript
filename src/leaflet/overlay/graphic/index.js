@@ -1,2 +1,5 @@
-export {CircleStyle, circleStyle} from './CircleStyle';
-export {Graphic, graphic} from './Graphic';
+import {CircleStyle, circleStyle} from './CircleStyle';
+import {Graphic, graphic} from './Graphic';
+
+export {CircleStyle, circleStyle} ;
+export {Graphic, graphic} ;

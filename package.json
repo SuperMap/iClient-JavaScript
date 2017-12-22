@@ -106,10 +106,10 @@
     "@supermap/iclient-common": "file:src/common",
     "fetch-jsonp": "1.0.6",
     "jsonsql": "^0.2.5",
+    "lodash.topairs": "^4.3.0",
     "pbf": "3.0.2",
     "proj4": "2.3.15",
     "promise-polyfill": "^6.0.2",
-    "lodash": "^4.17.4",
-    "whatwg-fetch-importable": "^1.0.3"
+    "fetch-ie8": "^1.5.0"
   }
 }

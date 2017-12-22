@@ -1,14 +1,63 @@
-export * from './geometry/index'
-export {StringExt, NumberExt, FunctionExt, ArrayExt} from './BaseTypes';
-export {Bounds} from './Bounds';
-export {Credential} from './Credential';
-export * from './Date';
-export * from './Event';
-export {Events} from './Events';
-export {Feature} from './Feature';
-export {Geometry} from './Geometry';
-export {LonLat} from './LonLat';
-export * from './Pixel';
-export {Size} from './Size';
-export {Util as CommonUtil} from './Util';
-export {Vector as GeometryVector} from './Vector';
+import {
+    Collection,
+    Curve,
+    GeoText,
+    LinearRing,
+    LineString,
+    MultiLineString,
+    MultiPoint,
+    MultiPolygon,
+    GeometryPoint,
+    Polygon,
+    Rectangle
+} from './geometry/index' ;
+import {
+    StringExt,
+    NumberExt,
+    FunctionExt,
+    ArrayExt
+} from './BaseTypes' ;
+import {Bounds} from './Bounds' ;
+import {Credential} from './Credential' ;
+import {DateExt} from './Date' ;
+import {Event} from './Event' ;
+import {Events} from './Events' ;
+import {Feature} from './Feature' ;
+import {Geometry} from './Geometry' ;
+import {LonLat} from './LonLat' ;
+import {Pixel} from './Pixel' ;
+import {Size} from './Size' ;
+import {Util as CommonUtil} from './Util' ;
+import {Vector as GeometryVector} from './Vector' ;
+
+export {
+    Collection,
+    Curve,
+    GeoText,
+    LinearRing,
+    LineString,
+    MultiLineString,
+    MultiPoint,
+    MultiPolygon,
+    GeometryPoint,
+    Polygon,
+    Rectangle
+};
+export {
+    StringExt,
+    NumberExt,
+    FunctionExt,
+    ArrayExt
+}
+export {Bounds};
+export {Credential};
+export {DateExt}
+export {Event}
+export {Events};
+export {Feature};
+export {Geometry} ;
+export {LonLat};
+export {Pixel} ;
+export {Size};
+export {CommonUtil} ;
+export {GeometryVector};

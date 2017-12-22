@@ -1,1 +1,2 @@
-export {MapVRenderer} from './MapVRenderer';
+import {MapVRenderer} from './MapVRenderer';
+export {MapVRenderer};
