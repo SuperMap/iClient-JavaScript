@@ -39,7 +39,7 @@ export class TopologyValidatorJobsParameter {
          * @member SuperMap.TopologyValidatorJobsParameter.prototype.rule -{SuperMap.TopologyValidatorRule}
          * @description 拓扑检查模式 。
          */
-        this.rule = TopologyValidatorRule.RegionNoOverlap;
+        this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
         Util.extend(this, options);
 
