@@ -7,7 +7,7 @@
         .editPane {
             position: absolute;
             right: 50px;
-            top: 10px;
+            top: 50px;
             text-align: center;
             background: #FFF;
             display: inline-block;
@@ -61,7 +61,7 @@
         layerDay.isBaseLayer = true;
         layerNight.isBaseLayer = true;
         map.addLayers([layerDay, layerNight]);
-        map.setCenter(new SuperMap.LonLat(130, 100), 2);
+        map.setCenter(new SuperMap.LonLat(0, 0), 2);
     }
     function changeMap() {
         if (bt == false) {

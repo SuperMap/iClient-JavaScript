@@ -23,7 +23,7 @@
 
         .toolbar {
             position: absolute;
-            top: 10px;
+            top: 50px;
             right: 10px;
             text-align: center;
             z-index: 100;
@@ -49,8 +49,8 @@
             <textarea id="cartocssStr"></textarea>
         </div>
     </div>
-    <input type="button" class="btn btn-default" value="refresh" onclick="refresh()"
-           style="margin-bottom: 10px"/>
+   <!-- <input type="button" class="btn btn-default" value="refresh" onclick="refresh()"
+           style="margin-bottom: 10px"/>-->
 </div>
 <div id="map"></div>
 <script>
@@ -103,12 +103,12 @@
         map.setCenter(center, 6);
     }
 
-    function refresh() {
+ /*   function refresh() {
         editor.position = {"x": 150, "y": 536};
         editor.autoHide = true;
         editor.editorName = "我的矢量地图编辑器";
         editor.refresh();
-    }
+    }*/
 
     function toggle(event) {
         event = event || window.event;

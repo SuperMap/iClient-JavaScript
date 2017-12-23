@@ -27,11 +27,11 @@
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
     //加载进度
     map.on('styledata', function (evt) {
-       widgets.loader.showLoader();
+        showLoader();
     });
     //关闭进度
     map.on('render', function (evt) {
-        evt.target.areTilesLoaded() &&widgets.loader.removeLoader();
+        evt.target.areTilesLoaded() && removeLoader();
     });
 
     map.on('load', function () {

@@ -84,9 +84,9 @@
         //将形成路由的点提出来，为了构造下面点定里程服务sourceRoute
         var routeLine = LineGeometryData;
 
-        //点定里程服务
+        //里程定线服务
         routeLocatorService = new mapboxgl.supermap.SpatialAnalystService(serviceUrl);
-        routeLocatorParameters_line = new SuperMap.RouteCalculateMeasureParameters({
+        routeLocatorParameters_line = new SuperMap.RouteLocatorParameters({
             "sourceRoute": routeLine,
             "type": "LINE",
             "startMeasure": 1123,

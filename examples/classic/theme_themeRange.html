@@ -7,7 +7,7 @@
         .editPane {
             position: absolute;
             right: 60px;
-            top: 10px;
+            top: 50px;
             text-align: center;
             background: #FFF;
             z-index: 1000;
@@ -128,6 +128,11 @@
     function themeFailed(serviceFailedEventArgs) {
         //doMapAlert("",serviceFailedEventArgs.error.errorMsg,true);
         widgets.alert.showAlert(serviceFailedEventArgs.error.errorMsg,false);
+    }
+    function removeTheme() {
+        if (map.layers.length > 1) {
+            map.removeLayer(themeLayer, true);
+        }
     }
 
 </script>

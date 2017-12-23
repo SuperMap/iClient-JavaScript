@@ -118,8 +118,11 @@
         });
 
         //获取mapbox对象
-        var mapbox = myChart.getModel().getComponent('mapbox').getMapbox();
-        mapbox.addControl(new mapboxgl.NavigationControl(), 'top-left');
+        if( myChart.getModel()){
+            var mapbox = myChart.getModel().getComponent('mapbox').getMapbox();
+            mapbox.addControl(new mapboxgl.NavigationControl(), 'top-left');
+        }
+
     });
 
 
