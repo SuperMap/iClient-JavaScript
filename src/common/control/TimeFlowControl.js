@@ -132,6 +132,7 @@ export class TimeFlowControl extends TimeControlBase {
         var me = this;
         me.intervalId && window.clearInterval(me.intervalId);
         me.intervalId = null;
+        me.update();
         me.intervalId = window.setInterval(me.update, me.frequency);
     }
 

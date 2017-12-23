@@ -91,7 +91,7 @@
     function initForm() {
         $("#mode").change(function () {
             var mode = $(this).val();
-            if (mode =="update" ||mode =="clip"||mode =="erase"){
+            if (mode == "update" || mode == "clip" || mode == "erase") {
                 $("#overlayField").hide();
             } else {
                 $("#overlayField").show();
@@ -120,14 +120,14 @@
     }
 
     function overlayGeoJobs() {
-        var overlayGeoJobParameter = new  SuperMap.OverlayGeoJobParameter({
+        var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
             datasetName: $('#datasetName').val(),
             datasetOverlay: $('#datasetOverlay').val(),
             mode: $('#mode option:selected').attr('value'),
             srcFields: $('#srcFields').val(),
             overlayFields: $('#overlayFields').val()
         });
-        processingService.addOverlayGeoJob(overlayGeoJobParameter,function (serviceResult) {
+        processingService.addOverlayGeoJob(overlayGeoJobParameter, function (serviceResult) {
             if (serviceResult.error) {
                 widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
@@ -140,13 +140,11 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                            layer = new ol.layer.Tile({
-                                source: new ol.source.ImageSuperMapRest(ol.source.ImageSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
-                            });
-                            map.addLayer(layer);
-                            widgets.loader.removeLoader();
+                        layer = new ol.layer.Image({
+                            source: new ol.source.ImageSuperMapRest({url: mapUrl})
                         });
+                        map.addLayer(layer);
+                        widgets.loader.removeLoader();
                     });
                 }
             });

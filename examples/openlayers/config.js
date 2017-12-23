@@ -75,6 +75,11 @@ var exampleConfig = {
                     name_en: "SQL query",
                     thumbnail: "ol_mapQueryBySQL.png",
                     fileName: "01_mapQueryBySQL"
+                }, {
+                    name: "SuperMap REST Image地图",
+                    name_en: "SuperMap REST Image Map",
+                    thumbnail: "ol_imageMapLayer.png",
+                    fileName: "01_imageMapLayer"
                 }]
             },
             "data": {

@@ -85,7 +85,7 @@
     function initForm() {
         $("#rule").change(function () {
             var rule = $(this).val();
-            if (rule =="PointNoIdentical" ||rule =="LineNoOverlap"||rule =="RegionNoOverlap"){
+            if (rule == "PointNoIdentical" || rule == "LineNoOverlap" || rule == "RegionNoOverlap") {
                 $("#datasetTopologyDiv").hide();
             } else {
                 $("#datasetTopologyDiv").show();
@@ -101,7 +101,7 @@
             if ($('#msg_container')[0]) {
                 $('#msg_container').remove();
             }
-           widgets.loader.showLoader();
+            widgets.loader.showLoader();
             if (map && layer) {
                 map.removeLayer(layer);
             }
@@ -114,17 +114,17 @@
     }
 
     function TopologyValidatorJobs() {
-        var topologyValidatorJobsParameter = new  SuperMap.TopologyValidatorJobsParameter({
+        var topologyValidatorJobsParameter = new SuperMap.TopologyValidatorJobsParameter({
             datasetName: $('#datasetName').val(),
             datasetTopology: $('#datasetTopology').val(),
             rule: $('#rule option:selected').attr('value'),
             tolerance: $('#tolerance').val()
         });
-        processingService.addTopologyValidatorJob(topologyValidatorJobsParameter,function (serviceResult) {
+        processingService.addTopologyValidatorJob(topologyValidatorJobsParameter, function (serviceResult) {
             if (serviceResult.error) {
-               widgets.loader.removeLoader();
+                widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-               widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
+                widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -133,19 +133,16 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                            layer = new ol.layer.Tile({
-                                source: new ol.source.ImageSuperMapRest(ol.source.ImageSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
-                            });
-                            map.addLayer(layer);
-                           widgets.loader.removeLoader();
+                        layer = new ol.layer.Image({
+                            source: new ol.source.ImageSuperMapRest({url: mapUrl})
                         });
+                        map.addLayer(layer);
+                        widgets.loader.removeLoader();
                     });
                 }
             });
         });
     }
-
 
 
 </script>

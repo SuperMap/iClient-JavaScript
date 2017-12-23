@@ -130,19 +130,19 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     var layer,
-            processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
-            mapURL = host + "/iserver/services/map-world/rest/maps/World",
-            token = '15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..',
-            map = new ol.Map({
-                target: 'map',
-                controls: ol.control.defaults({attributionOptions: {collapsed: false}})
-                        .extend([new ol.supermap.control.Logo()]),
-                view: new ol.View({
-                    center: [-73.95, 40.75],
-                    zoom: 12,
-                    projection: 'EPSG:4326'
-                })
-            });
+        processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
+        mapURL = host + "/iserver/services/map-world/rest/maps/World",
+        token = '15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..',
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [-73.95, 40.75],
+                zoom: 12,
+                projection: 'EPSG:4326'
+            })
+        });
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: mapURL,
@@ -231,13 +231,11 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                            layer = new ol.layer.Tile({
-                                source: new ol.source.ImageSuperMapRest(ol.source.ImageSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
-                            });
-                            map.addLayer(layer);
-                            widgets.loader.removeLoader();
+                        layer = new ol.layer.Image({
+                            source: new ol.source.ImageSuperMapRest({url: mapUrl})
                         });
+                        map.addLayer(layer);
+                        widgets.loader.removeLoader();
                     });
                 }
             });

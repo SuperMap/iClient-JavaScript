@@ -11,6 +11,7 @@
             top: 10px;
             right: 10px;
         }
+
         .ol-draw {
             position: absolute;
             top: 70px;
@@ -68,13 +69,14 @@
 </div>
 <div id="draw" class="ol-draw">
     <div class="btn-group" role="group" aria-label="...">
-        <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default">绘面</button><br>
+        <button id="drawPolygon" value='Polygon' type="button" class="btn btn-default">绘面</button>
+        <br>
         <button id="clear" value='Clear' type="button" class="btn btn-default">清除</button>
     </div>
 </div>
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
-    var layer,draw,
+    var layer, draw,
         processingsUrl = host + "/iserver/services/distributedanalyst/rest/v1/jobs",
         mapURL = host + "/iserver/services/map-world/rest/maps/World",
         token = '15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..',
@@ -105,11 +107,11 @@
 
     $("#queryMode").change(function () {
         var queryMode = $(this).val();
-        if (queryMode === "DATASET"){
+        if (queryMode === "DATASET") {
             $('#draw').hide();
             $('#datasetDiv').show();
         }
-        if (queryMode === "GEOJSON"){
+        if (queryMode === "GEOJSON") {
             $('#draw').show();
             $('#datasetDiv').hide();
         }
@@ -134,7 +136,7 @@
                 type: buttons[key].value,
                 snapTolerance: 20
             });
-            draw.on('drawend',function () {
+            draw.on('drawend', function () {
                 map.removeInteraction(draw);
             });
             map.addInteraction(draw);
@@ -174,19 +176,19 @@
     }
 
     function queryJobs() {
-        var points,queryParam;
+        var points, queryParam;
         if ($("#queryMode").val() === "DATASET") {
             queryParam = $('#datasetQuery').val();
             points = [];
         }
         if ($("#queryMode").val() === "GEOJSON") {
-            if (!draw){
+            if (!draw) {
                 widgets.loader.removeLoader();
                 widgets.alert.showAlert("创建失败!<br>" + "请绘制查询范围!", false);
                 return;
             } else {
                 points = draw.a[0];
-                queryParam ="";
+                queryParam = "";
             }
         }
         var singleObjectQueryJobsParameter = new SuperMap.SingleObjectQueryJobsParameter({
@@ -208,13 +210,11 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                            layer = new ol.layer.Tile({
-                                source: new ol.source.ImageSuperMapRest(ol.source.ImageSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
-                            });
-                            map.addLayer(layer);
-                            widgets.loader.removeLoader();
+                        layer = new ol.layer.Image({
+                            source: new ol.source.ImageSuperMapRest({url: mapUrl})
                         });
+                        map.addLayer(layer);
+                        widgets.loader.removeLoader();
                     });
                 }
             });

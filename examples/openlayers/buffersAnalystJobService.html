@@ -35,11 +35,13 @@
             <div class='input-group'>
                 <span class='input-group-addon'>缓冲距离</span>
                 <input id='distace' type='text' class='form-control' value='15'/>
-            </div><p></p>
+            </div>
+            <p></p>
             <div class='input-group'>
                 <span class='input-group-addon'>缓冲距离字段</span>
                 <input id='distanceField' type='text' class='form-control' value='pickup_latitude'/>
-            </div><p></p>
+            </div>
+            <p></p>
             <div class='input-group'>
                 <span class='input-group-addon'>缓冲距离单位</span>
                 <select class='form-control' id='distanceUnit' name='distanceUnit'>
@@ -47,11 +49,14 @@
                     <option value='Kilometer'>Kilometer</option>
                     <option value='Yard'>Yard</option>
                     <option value='Foot'>Foot</option>
-                    <option value='Mile'>Mile</option></select></div><p></p>
+                    <option value='Mile'>Mile</option>
+                </select></div>
+            <p></p>
             <div class='input-group'>
                 <span class='input-group-addon'>融合字段</span>
                 <input id='dissoveField' type='text' class='form-control' value='pickup_longitude'/>
-            </div><p></p>
+            </div>
+            <p></p>
             <div align="right">
                 <input type="button" id='btn' class="btn btn-primary" value="分析"/>
             </div>
@@ -104,7 +109,7 @@
         if ($('#msg_container')[0]) {
             $('#msg_container').remove();
         }
-       widgets.loader.showLoader();
+        widgets.loader.showLoader();
         if (map && layer) {
             map.removeLayer(layer);
         }
@@ -118,9 +123,9 @@
         });
         processingService.addBuffersJob(buffersAnalystJobsParameter, function (serviceResult) {
             if (serviceResult.error) {
-               widgets.loader.removeLoader();
+                widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-               widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
+                widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -129,20 +134,16 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                            layer = new ol.layer.Tile({
-                                source: new ol.source.ImageSuperMapRest(ol.source.ImageSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
-                            });
-                            map.addLayer(layer);
-                           widgets.loader.removeLoader();
+                        layer = new ol.layer.Image({
+                            source: new ol.source.ImageSuperMapRest({url: mapUrl})
                         });
+                        map.addLayer(layer);
+                        widgets.loader.removeLoader();
                     });
                 }
             });
         });
     });
-
-
 
 </script>
 </body>
