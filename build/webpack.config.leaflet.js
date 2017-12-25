@@ -50,7 +50,7 @@ module.exports = {
             }
         }, {
             test: [/\.js$/],
-            exclude: /node_modules[\/\\]proj4|setImmediate/,
+            exclude: /setImmediate/,
             loader: 'babel-loader',
             options: {
                 presets: ['es2015']

@@ -19,7 +19,6 @@
     "fetch-jsonp": "1.0.6",
     "jsonsql": "^0.2.5",
     "promise-polyfill": "^6.0.2",
-    "whatwg-fetch-importable": "^1.0.3",
     "lodash": "^4.17.4"
   }
 }

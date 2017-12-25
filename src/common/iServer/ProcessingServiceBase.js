@@ -94,7 +94,7 @@ export class ProcessingServiceBase extends CommonServiceBase {
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                FetchRequest.get(result.newResourceLocation)
+                FetchRequest.get(result.newResourceLocation,{_t:new Date().getTime()})
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {

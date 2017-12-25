@@ -27,7 +27,8 @@ export var VectorGrid = L.GridLayer.extend({
         //SVG or Canvas
         renderer: "SVG",
         format: VectorTileFormat.JSON,
-        interactive: true
+        interactive: true,
+        maxZoom:23
     },
 
     initialize: function (options) {

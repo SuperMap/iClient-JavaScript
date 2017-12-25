@@ -400,7 +400,7 @@ export var TileVectorLayer = VectorGrid.extend({
         }
         var format = options.format.toString().toLowerCase();
         this._tileUrl = this.url + "/tileFeature." + format + "?";
-        this._tileUrl += this._createURLParam(options);
+        this._tileUrl += encodeURI(this._createURLParam(options));
     },
 
     _createURLParam: function (options) {

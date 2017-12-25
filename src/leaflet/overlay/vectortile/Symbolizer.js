@@ -23,6 +23,8 @@ export var Symbolizer = L.Class.extend({
      */
     render: function (renderer, style) {
         this._renderer = renderer;
+        this._container = renderer._container;
+
         this.options = style;
         renderer._initPath(this);
         renderer._updateStyle(this);

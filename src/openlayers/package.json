@@ -19,6 +19,7 @@
     "mapv": "2.0.14",
     "openlayers": "4.6.4",
     "@supermap/iclient-common": "9.0.0",
-    "jsonsql": "^0.2.5"
+    "jsonsql": "^0.2.5",
+    "proj4": "2.3.15"
   }
 }

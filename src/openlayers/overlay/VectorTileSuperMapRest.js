@@ -71,28 +71,30 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
         if (options.returnAttributes !== undefined) {
             returnAttributes = options.returnAttributes
         }
-        layerUrl += "&returnAttributes=" + returnAttributes;
+        var params = "";
+        params += "&returnAttributes=" + returnAttributes;
         if (options._cache !== undefined) {
-            layerUrl += "&_cache=" + options._cache;
+            params += "&_cache=" + options._cache;
         }
         if (options.layersID !== undefined) {
-            layerUrl += "&layersID=" + options.layersID;
+            params += "&layersID=" + options.layersID;
         }
         if (options.layerNames !== undefined) {
-            layerUrl += "&layerNames=" + options.layerNames;
+            params += "&layerNames=" + options.layerNames;
         }
         if (options.expands !== undefined) {
-            layerUrl += "&expands=" + options.expands;
+            params += "&expands=" + options.expands;
         }
         if (options.compressTolerance !== undefined) {
-            layerUrl += "&compressTolerance=" + options.compressTolerance;
+            params += "&compressTolerance=" + options.compressTolerance;
         }
         if (options.coordinateType !== undefined) {
-            layerUrl += "&coordinateType=" + options.coordinateType;
+            params += "&coordinateType=" + options.coordinateType;
         }
         if (options.returnCutEdges !== undefined) {
-            layerUrl += "&returnCutEdges=" + options.returnCutEdges;
+            params += "&returnCutEdges=" + options.returnCutEdges;
         }
+        layerUrl += encodeURI(params);
         super({
             attributions: options.attributions,
             cacheSize: options.cacheSize,
@@ -131,7 +133,8 @@ export class VectorTileSuperMapRest extends ol.source.VectorTile {
             }
             var scale = Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
-            return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
+            var params = "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
+            return layerUrl + encodeURI(params);
         }
 
         /**

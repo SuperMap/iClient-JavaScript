@@ -60,7 +60,11 @@ SuperMap.mixin = function (...mixins) {
                 && key !== "prototype"
                 && key !== "name" && key !== "length") {
                 let desc = Object.getOwnPropertyDescriptor(source, key);
-                Object.defineProperty(target, key, desc);
+                if (window["ActiveXObject"]) {
+                    Object.defineProperty(target, key, desc || {});
+                } else {
+                    Object.defineProperty(target, key, desc);
+                }
             }
         }
     }

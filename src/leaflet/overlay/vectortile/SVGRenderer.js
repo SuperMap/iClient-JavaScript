@@ -74,12 +74,13 @@ export var SVGRenderer = L.SVG.extend({
         delete this._map;
     },
 
-    _initContainer: function () {
-        L.SVG.prototype._initContainer.call(this);
-        // var rect = L.SVG.create('rect');
-    },
-
     _addPath: function (layer) {
+        if (!this._rootGroup) {
+            this._initContainer();
+        }
+        if (!this._rootGroup) {
+            this._rootGroup = this._container;
+        }
         this._rootGroup.appendChild(layer._path);
         this._layers[L.stamp(layer)] = layer;
     },

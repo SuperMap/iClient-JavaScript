@@ -7586,7 +7586,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
             var me = this;
             if (result) {
                 var id = setInterval(function () {
-                    _FetchRequest.FetchRequest.get(result.newResourceLocation).then(function (response) {
+                    _FetchRequest.FetchRequest.get(result.newResourceLocation, { _t: new Date().getTime() }).then(function (response) {
                         return response.json();
                     }).then(function (job) {
                         me.events.triggerEvent("processRunning", { id: job.id, state: job.state });
@@ -13426,7 +13426,11 @@ _SuperMap.SuperMap.mixin = function () {
             var key = ownKeys[index];
             if (key !== "constructor" && key !== "prototype" && key !== "name" && key !== "length") {
                 var desc = Object.getOwnPropertyDescriptor(source, key);
-                Object.defineProperty(target, key, desc);
+                if (window["ActiveXObject"]) {
+                    Object.defineProperty(target, key, desc || {});
+                } else {
+                    Object.defineProperty(target, key, desc);
+                }
             }
         }
     }
@@ -56372,18 +56376,19 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
             this._sliderContainer = createElement('div', sliderClassName + '-container', this._sliderContent);
             this.slider = createElement('input', sliderClassName, this._sliderContainer);
 
+            this.min = this.min == null || isNaN(this.min) ? 0 : parseInt(this.min);
             this.slider.setAttribute("title", options.title);
             this.slider.setAttribute("id", "slider");
             this.slider.setAttribute("type", "range");
-            this.slider.setAttribute("min", 0);
+            this.slider.setAttribute("min", this.min);
             this.slider.setAttribute("max", 0);
             this.slider.setAttribute("step", 1);
             this.slider.setAttribute("value", 0);
 
-            //判断浏览器是否支持Range滑动条
-            if (this.slider.type == "text") {
-                console.error("抱歉，您的浏览器不支持HTML5 range滑动条，请使用高版本浏览器");
-            }
+            // //判断浏览器是否支持Range滑动条
+            // if (this.slider.type == "text") {
+            //     console.error("抱歉，您的浏览器不支持HTML5 range滑动条，请使用高版本浏览器");
+            // }
             this.firstLoad = true;
             if ('oninput' in this.slider || 'onchange' in this.slider) {
                 addDomEvent(this.slider, "change", tilesVersion, this);
@@ -56398,7 +56403,8 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
                 addDomEvent(this._last, 'click', this.lastTilesVersion, this);
             }
 
-            if (window.matchMedia("screen and (-webkit-min-device-pixel-ratio:0)").matches && options.orientation == 'vertical') {
+            // if (window.matchMedia("screen and (-webkit-min-device-pixel-ratio:0)").matches && options.orientation == 'vertical') {
+            if (options.orientation == 'vertical') {
                 this.slider.style.width = 170 + 'px';
                 this._sliderContainer.style.height = 170 + 'px';
             } else if (options.orientation == 'vertical') {
@@ -56571,7 +56577,8 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         value: function updateLength(length) {
             if (length > 0) {
                 this.length = length;
-                this.slider.setAttribute("max", this.length - 1);
+                this.max = this.length - 1;
+                this.slider.setAttribute("max", this.max);
             }
         }
 
@@ -56650,13 +56657,14 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
         key: 'nextTilesVersion',
         value: function nextTilesVersion() {
             if (this.firstLoad) {
-
                 this.options.layer.nextTilesVersion();
-
                 this.firstLoad = !!0;
                 return this;
             }
-            this.slider.value = this.slider.value + 1;
+            if (parseInt(this.slider.value) > this.max - 1) {
+                return this;
+            }
+            this.slider.value = parseInt(this.slider.value) + 1;
             this.options.layer.nextTilesVersion();
             return this;
         }
@@ -56670,7 +56678,10 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
     }, {
         key: 'lastTilesVersion',
         value: function lastTilesVersion() {
-            this.slider.value = this.slider.value - 1;
+            if (parseInt(this.slider.value) < this.min + 1) {
+                return this;
+            }
+            this.slider.value = parseInt(this.slider.value) - 1;
             this.options.layer.lastTilesVersion();
             return this;
         }
@@ -57371,7 +57382,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
          * @description 获取新建图层地址
          */
         function createLayerUrl() {
-            this._layerUrl = layerUrl + getRequestParamString.call(this);
+            this._layerUrl = layerUrl + encodeURI(getRequestParamString.call(this));
             //为url添加安全认证信息片段
             this._layerUrl = appendCredential(this._layerUrl, options.serverType);
             return this._layerUrl;
@@ -59943,28 +59954,30 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
         if (options.returnAttributes !== undefined) {
             returnAttributes = options.returnAttributes;
         }
-        layerUrl += "&returnAttributes=" + returnAttributes;
+        var params = "";
+        params += "&returnAttributes=" + returnAttributes;
         if (options._cache !== undefined) {
-            layerUrl += "&_cache=" + options._cache;
+            params += "&_cache=" + options._cache;
         }
         if (options.layersID !== undefined) {
-            layerUrl += "&layersID=" + options.layersID;
+            params += "&layersID=" + options.layersID;
         }
         if (options.layerNames !== undefined) {
-            layerUrl += "&layerNames=" + options.layerNames;
+            params += "&layerNames=" + options.layerNames;
         }
         if (options.expands !== undefined) {
-            layerUrl += "&expands=" + options.expands;
+            params += "&expands=" + options.expands;
         }
         if (options.compressTolerance !== undefined) {
-            layerUrl += "&compressTolerance=" + options.compressTolerance;
+            params += "&compressTolerance=" + options.compressTolerance;
         }
         if (options.coordinateType !== undefined) {
-            layerUrl += "&coordinateType=" + options.coordinateType;
+            params += "&coordinateType=" + options.coordinateType;
         }
         if (options.returnCutEdges !== undefined) {
-            layerUrl += "&returnCutEdges=" + options.returnCutEdges;
+            params += "&returnCutEdges=" + options.returnCutEdges;
         }
+        layerUrl += encodeURI(params);
 
         var _this = _possibleConstructorReturn(this, (VectorTileSuperMapRest.__proto__ || Object.getPrototypeOf(VectorTileSuperMapRest)).call(this, {
             attributions: options.attributions,
@@ -60005,7 +60018,8 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
             }
             var scale = _Util.Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = _openlayers2.default.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
-            return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
+            var params = "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
+            return layerUrl + encodeURI(params);
         }
 
         /**
@@ -72244,7 +72258,7 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
         /**
          * @function SuperMap.ThemeService.prototype.getJsonParameters
          * @description 将专题图参数参数转化为 JSON 字符串。
-         * @param params - {SuperMap.ThemeParameters} 专题图参数类。
+         * @param parameter - {SuperMap.ThemeParameters} 专题图参数类。
          * @return {Object} 转化后的JSON字符串。
          */
 
@@ -72257,8 +72271,9 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
                 orderBys = null,
                 fieldValuesDisplayFilter;
             jsonParameters += "[{'type': 'UGC','subLayers': {'layers': [";
-            for (var themeID in parameter.themes) {
-                themeObj = parameter.themes[themeID];
+
+            for (var i = 0; i < parameter.themes.length; i++) {
+                themeObj = parameter.themes[i];
                 var jsonTheme = _Util.Util.toJSON(themeObj);
                 jsonTheme = jsonTheme.slice(0, -1);
 
@@ -72268,7 +72283,7 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
                     if (filters.length === 1) {
                         jsonParameters += "'displayFilter':\"" + filters[0] + "\",";
                     } else {
-                        jsonParameters += "'displayFilter':\"" + filters[themeID] + "\",";
+                        jsonParameters += "'displayFilter':\"" + filters[i] + "\",";
                     }
                 }
                 orderBys = parameter.displayOrderBy;
@@ -72276,7 +72291,7 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
                     if (orderBys.length === 1) {
                         jsonParameters += "'displayOrderBy':'" + orderBys[0] + "',";
                     } else {
-                        jsonParameters += "'displayOrderBy':'" + orderBys[themeID] + "',";
+                        jsonParameters += "'displayOrderBy':'" + orderBys[i] + "',";
                     }
                 }
 
@@ -72285,12 +72300,12 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
                     jsonParameters += "'fieldValuesDisplayFilter':" + _Util.Util.toJSON(fieldValuesDisplayFilter) + ",";
                 }
 
-                if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[themeID]) {
-                    jsonParameters += "'joinItems':[" + _Util.Util.toJSON(parameter.joinItems[themeID]) + "],";
+                if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[i]) {
+                    jsonParameters += "'joinItems':[" + _Util.Util.toJSON(parameter.joinItems[i]) + "],";
                 }
                 if (parameter.datasetNames && parameter.dataSourceNames) {
-                    var datasetID = parameter.datasetNames[themeID] ? themeID : parameter.datasetNames.length - 1;
-                    var dataSourceID = parameter.dataSourceNames[themeID] ? themeID : parameter.dataSourceNames.length - 1;
+                    var datasetID = parameter.datasetNames[i] ? i : parameter.datasetNames.length - 1;
+                    var dataSourceID = parameter.dataSourceNames[i] ? i : parameter.dataSourceNames.length - 1;
                     jsonParameters += "'datasetInfo': {'name': '" + parameter.datasetNames[datasetID] + "','dataSourceName': '" + parameter.dataSourceNames[dataSourceID] + "'}},";
                 } else {
                     jsonParameters += "},";
@@ -91405,7 +91420,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 471 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 472 */

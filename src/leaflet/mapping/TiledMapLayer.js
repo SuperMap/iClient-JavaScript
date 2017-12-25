@@ -81,7 +81,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         var scale = this.getScaleFromCoords(coords);
         var layerUrl = this._getLayerUrl();
         var tileUrl = layerUrl + "&scale=" + scale + "&x=" + coords.x + "&y=" + coords.y;
-        return encodeURI(tileUrl);
+        return tileUrl;
     },
 
     /**
@@ -253,7 +253,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     _createLayerUrl: function () {
         var me = this;
         var layerUrl = me._url + "/tileImage.png?";
-        layerUrl += me._getRequestParamString();
+        layerUrl += encodeURI(me._getRequestParamString());
         layerUrl = this._appendCredential(layerUrl);
         this._layerUrl = layerUrl;
         return layerUrl;

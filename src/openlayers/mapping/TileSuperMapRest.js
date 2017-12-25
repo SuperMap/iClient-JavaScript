@@ -158,7 +158,7 @@ export class TileSuperMapRest extends ol.source.TileImage {
          * @description 获取新建图层地址
          */
         function createLayerUrl() {
-            this._layerUrl = layerUrl + getRequestParamString.call(this);
+            this._layerUrl = layerUrl + encodeURI(getRequestParamString.call(this));
             //为url添加安全认证信息片段
             this._layerUrl = appendCredential(this._layerUrl, options.serverType);
             return this._layerUrl;

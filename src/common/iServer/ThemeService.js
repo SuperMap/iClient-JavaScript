@@ -64,7 +64,7 @@ export class ThemeService extends CommonServiceBase {
     /**
      * @function SuperMap.ThemeService.prototype.getJsonParameters
      * @description 将专题图参数参数转化为 JSON 字符串。
-     * @param params - {SuperMap.ThemeParameters} 专题图参数类。
+     * @param parameter - {SuperMap.ThemeParameters} 专题图参数类。
      * @return {Object} 转化后的JSON字符串。
      */
     getJsonParameters(parameter) {
@@ -74,8 +74,9 @@ export class ThemeService extends CommonServiceBase {
             orderBys = null,
             fieldValuesDisplayFilter;
         jsonParameters += "[{'type': 'UGC','subLayers': {'layers': [";
-        for (var themeID in parameter.themes) {
-            themeObj = parameter.themes[themeID];
+
+        for (var i = 0; i < parameter.themes.length; i++) {
+            themeObj = parameter.themes[i];
             var jsonTheme = Util.toJSON(themeObj);
             jsonTheme = jsonTheme.slice(0, -1);
 
@@ -85,7 +86,7 @@ export class ThemeService extends CommonServiceBase {
                 if (filters.length === 1) {
                     jsonParameters += "'displayFilter':\"" + filters[0] + "\",";
                 } else {
-                    jsonParameters += "'displayFilter':\"" + filters[themeID] + "\",";
+                    jsonParameters += "'displayFilter':\"" + filters[i] + "\",";
                 }
             }
             orderBys = parameter.displayOrderBy;
@@ -93,7 +94,7 @@ export class ThemeService extends CommonServiceBase {
                 if (orderBys.length === 1) {
                     jsonParameters += "'displayOrderBy':'" + orderBys[0] + "',";
                 } else {
-                    jsonParameters += "'displayOrderBy':'" + orderBys[themeID] + "',";
+                    jsonParameters += "'displayOrderBy':'" + orderBys[i] + "',";
                 }
             }
 
@@ -102,12 +103,12 @@ export class ThemeService extends CommonServiceBase {
                 jsonParameters += "'fieldValuesDisplayFilter':" + Util.toJSON(fieldValuesDisplayFilter) + ",";
             }
 
-            if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[themeID]) {
-                jsonParameters += "'joinItems':[" + Util.toJSON(parameter.joinItems[themeID]) + "],";
+            if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[i]) {
+                jsonParameters += "'joinItems':[" + Util.toJSON(parameter.joinItems[i]) + "],";
             }
             if (parameter.datasetNames && parameter.dataSourceNames) {
-                var datasetID = parameter.datasetNames[themeID] ? themeID : (parameter.datasetNames.length - 1);
-                var dataSourceID = parameter.dataSourceNames[themeID] ? themeID : (parameter.dataSourceNames.length - 1);
+                var datasetID = parameter.datasetNames[i] ? i : (parameter.datasetNames.length - 1);
+                var dataSourceID = parameter.dataSourceNames[i] ? i : (parameter.dataSourceNames.length - 1);
                 jsonParameters += "'datasetInfo': {'name': '" + parameter.datasetNames[datasetID] +
                     "','dataSourceName': '" + parameter.dataSourceNames[dataSourceID] + "'}},";
             } else {

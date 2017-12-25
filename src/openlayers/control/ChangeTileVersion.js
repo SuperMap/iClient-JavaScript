@@ -108,18 +108,19 @@ export class ChangeTileVersion extends ol.control.Control {
             this._sliderContainer = createElement('div', sliderClassName + '-container', this._sliderContent);
             this.slider = createElement('input', sliderClassName, this._sliderContainer);
 
+            this.min = this.min == null || isNaN(this.min) ? 0 : parseInt(this.min);
             this.slider.setAttribute("title", options.title);
             this.slider.setAttribute("id", "slider");
             this.slider.setAttribute("type", "range");
-            this.slider.setAttribute("min", 0);
+            this.slider.setAttribute("min", this.min);
             this.slider.setAttribute("max", 0);
             this.slider.setAttribute("step", 1);
             this.slider.setAttribute("value", 0);
 
-            //判断浏览器是否支持Range滑动条
-            if (this.slider.type == "text") {
-                console.error("抱歉，您的浏览器不支持HTML5 range滑动条，请使用高版本浏览器");
-            }
+            // //判断浏览器是否支持Range滑动条
+            // if (this.slider.type == "text") {
+            //     console.error("抱歉，您的浏览器不支持HTML5 range滑动条，请使用高版本浏览器");
+            // }
             this.firstLoad = true;
             if ('oninput' in this.slider || 'onchange' in this.slider) {
                 addDomEvent(this.slider, "change", tilesVersion, this);
@@ -134,7 +135,8 @@ export class ChangeTileVersion extends ol.control.Control {
                 addDomEvent(this._last, 'click', this.lastTilesVersion, this);
             }
 
-            if (window.matchMedia("screen and (-webkit-min-device-pixel-ratio:0)").matches && options.orientation == 'vertical') {
+            // if (window.matchMedia("screen and (-webkit-min-device-pixel-ratio:0)").matches && options.orientation == 'vertical') {
+            if (options.orientation == 'vertical') {
                 this.slider.style.width = 170 + 'px';
                 this._sliderContainer.style.height = 170 + 'px';
             } else if (options.orientation == 'vertical') {
@@ -297,7 +299,8 @@ export class ChangeTileVersion extends ol.control.Control {
     updateLength(length) {
         if (length > 0) {
             this.length = length;
-            this.slider.setAttribute("max", this.length - 1);
+            this.max = this.length - 1;
+            this.slider.setAttribute("max", this.max);
         }
     }
 
@@ -361,13 +364,14 @@ export class ChangeTileVersion extends ol.control.Control {
      */
     nextTilesVersion() {
         if (this.firstLoad) {
-
             this.options.layer.nextTilesVersion();
-
             this.firstLoad = !!0;
             return this;
         }
-        this.slider.value = this.slider.value + 1;
+        if (parseInt(this.slider.value) > this.max - 1) {
+            return this;
+        }
+        this.slider.value = parseInt(this.slider.value) + 1;
         this.options.layer.nextTilesVersion();
         return this;
     }
@@ -378,7 +382,10 @@ export class ChangeTileVersion extends ol.control.Control {
      * @return {this} this
      */
     lastTilesVersion() {
-        this.slider.value = this.slider.value - 1;
+        if (parseInt(this.slider.value) < this.min + 1) {
+            return this;
+        }
+        this.slider.value = parseInt(this.slider.value) - 1;
         this.options.layer.lastTilesVersion();
         return this;
     }
@@ -418,4 +425,5 @@ export class ChangeTileVersion extends ol.control.Control {
         return version && version.name;
     }
 }
+
 ol.supermap.control.ChangeTileVersion = ChangeTileVersion;

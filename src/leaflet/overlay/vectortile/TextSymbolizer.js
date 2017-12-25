@@ -196,7 +196,7 @@ SVGRenderer.include({
         path.style.fontSize = options.fontSize;
         path.style.fontFamily = options.fontFamily;
         path.style.fontWeight = options.fontWeight || "bold";
-        path.style.glyphOrientationVertical = options.rotation;
+        path.style.glyphOrientationVertical = options.rotation||'';
         if (options.stroke) {
             path.setAttribute('stroke', options.color);
             path.setAttribute('stroke-linecap', 'round');

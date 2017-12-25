@@ -78,14 +78,14 @@ export var ImageMapLayer = L.TileLayer.extend({
         var tileBounds = this._tileCoordsToBounds(coords),
             nw = this._crs.project(tileBounds.getNorthWest()),
             se = this._crs.project(tileBounds.getSouthEast());
-        var tileUrl = this._layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + nw.x + ",\"y\":" + se.y + "},\"rightTop\" : {\"x\":" + se.x + ",\"y\":" + nw.y + "}}";
-        return encodeURI(tileUrl);
+        var params = "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + nw.x + ",\"y\":" + se.y + "},\"rightTop\" : {\"x\":" + se.x + ",\"y\":" + nw.y + "}}";
+        return this._layerUrl + encodeURI(params);
     },
 
     _initLayerUrl: function () {
         var me = this;
         var layerUrl = me.url + "/image.png?";
-        layerUrl += me._initAllRequestParams().join('&');
+        layerUrl += encodeURI(me._initAllRequestParams().join('&'));
         layerUrl = this._appendCredential(layerUrl);
         this._layerUrl = layerUrl;
     },
