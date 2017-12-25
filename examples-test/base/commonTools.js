@@ -139,11 +139,11 @@ var commonTools = ({
                 //判断两张图是否相等
                 if (isEqual) {
                     n = 0;
-                    browser.assert.ok(isEqual, '第' + n + '次比较,similarity of two pictures >=0.9');
+                    browser.assert.ok(isEqual, '第' + n + '次比较,similarity of two pictures >=0.8');
                 }
                 else if (n > 4) {
                     n = 0;
-                    browser.assert.ok(isEqual, '4次比较后,similarity of two pictures <0.9');
+                    browser.assert.ok(isEqual, '4次比较后,similarity of two pictures <0.8');
                 }
                 else {
                     console.log('第' + n + '次比较,地图不相等,继续比较...');
@@ -172,11 +172,11 @@ var commonTools = ({
         var unEqualCount = commonTools.difPixelsCount(RgbaArraysOfTile1, RgbaArraysOfTile2);
         console.log('different pixels count : ' + unEqualCount);
         var similarity = ((totalCount - unEqualCount) / totalCount).toFixed(5);
-        if (similarity < 0.9) {
-            browser.assert.ok(similarity < 0.9, 'similarity : ' + similarity + ' < 0.9');
+        if (similarity < 0.8) {
+            browser.assert.ok(similarity < 0.8, 'similarity : ' + similarity + ' < 0.8');
             return false;
         }
-        browser.assert.ok(similarity >= 0.9, 'similarity : ' + similarity + ' >= 0.9');
+        browser.assert.ok(similarity >= 0.8, 'similarity : ' + similarity + ' >= 0.8');
         return true;
     },
 
