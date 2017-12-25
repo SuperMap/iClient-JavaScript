@@ -162,7 +162,7 @@ export class DataFlowService extends CommonServiceBase {
      * @description 结束加载广播
      */
     unBroadcast() {
-        if (this.broadcastWebSocket) {
+        if (!this.broadcastWebSocket) {
             return;
         }
         this.broadcastWebSocket.close();

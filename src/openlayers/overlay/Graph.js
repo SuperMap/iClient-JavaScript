@@ -68,7 +68,7 @@ export class Graph extends Theme {
         }
         //绘制专题要素
         if (this.renderer) {
-            this.redrawThematicFeatures(this.map.getView().calculateExtent());
+            this.changed();
         }
     }
 

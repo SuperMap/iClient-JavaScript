@@ -25651,10 +25651,10 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
             if (!this.isCustomSetMaxCacheCount) {
                 this.maxCacheCount = this.features.length * 5;
             }
-            // //绘制专题要素
-            // if (this.renderer) {
-            //     this.redrawThematicFeatures(this.map.getView().calculateExtent());
-            // }
+            //绘制专题要素
+            if (this.renderer) {
+                this.changed();
+            }
         }
 
         /**
@@ -27781,7 +27781,7 @@ var Graph = exports.Graph = function (_Theme) {
             }
             //绘制专题要素
             if (this.renderer) {
-                this.redrawThematicFeatures(this.map.getView().calculateExtent());
+                this.changed();
             }
         }
 
@@ -65266,7 +65266,7 @@ var DataFlowService = exports.DataFlowService = function (_CommonServiceBase) {
     }, {
         key: 'unBroadcast',
         value: function unBroadcast() {
-            if (this.broadcastWebSocket) {
+            if (!this.broadcastWebSocket) {
                 return;
             }
             this.broadcastWebSocket.close();
