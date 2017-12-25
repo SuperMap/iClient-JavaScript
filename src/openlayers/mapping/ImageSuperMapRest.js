@@ -110,7 +110,7 @@ export class ImageSuperMapRest extends ol.source.Image {
     /**
      * @inheritDoc
      */
-    getImageInternal(extent, resolution, pixelRatio, projection) {
+    getImageInternal(extent, resolution, pixelRatio, projection) { // eslint-disable-line no-unused-vars
         if (this.url_ === undefined) {
             return null;
         }

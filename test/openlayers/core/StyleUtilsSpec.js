@@ -3,8 +3,8 @@ require('../../../src/openlayers/core/StyleUtils.js');
 require('../../resources/china_cartoCSS.js');
 require('../../resources/china_layers.js');
 require('../../resources/iPortal_maps.js');
-var fetch = require('whatwg-fetch-importable');
-
+require('fetch-ie8');
+var fetch = window.fetch;
 var StyleUtils = ol.supermap.StyleUtils;
 var layersInfo, cartoCSSShaders, iPortalLayersInfo;
 var mapUrl = GlobeParameter.ChinaURL;
@@ -436,7 +436,7 @@ function getLayerInfo(layerName) {
         return null;
     }
     var layerInfo = layersInfo[layerName];
-    if (!layerInfo)return null;
+    if (!layerInfo) return null;
     var layerInfo_simple = {layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType};
 
     switch (layerInfo.ugcLayerType) {

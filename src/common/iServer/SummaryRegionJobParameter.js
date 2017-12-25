@@ -1,6 +1,6 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
-import {StatisticAnalystMode, SummaryType, AnalystSizeUnit} from '../REST'
+import {SummaryType, AnalystSizeUnit} from '../REST'
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
@@ -61,7 +61,7 @@ export class SummaryRegionJobParameter {
          * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
          * @description 以标准属字段统计的字段名称。
          */
-        this.standardFields = StatisticAnalystMode.AVERAGE;
+        this.standardFields = "";
 
         /**
          * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
@@ -123,6 +123,7 @@ export class SummaryRegionJobParameter {
     destroy() {
         this.datasetName = null;
         this.sumShape = null;
+        this.regionDataset = null;
         this.query = null;
         this.standardSummaryFields = null;
         this.standardFields = null;
@@ -147,6 +148,10 @@ export class SummaryRegionJobParameter {
             if (name === "datasetName") {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = summaryRegionJobParameter[name];
+                continue;
+            }
+            if (name === "type") {
+                tempObj['type'] = summaryRegionJobParameter[name];
                 continue;
             }
             if (name === "type") {

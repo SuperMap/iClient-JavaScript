@@ -47,10 +47,10 @@ export class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
 
         //必传参数不正确，就终止
         if (params.edgeID !== null && params.nodeID !== null) {
-            return;
+            throw new Error('edgeID and nodeID cannot be null at the same time.');
         }
         if (params.edgeID === null && params.nodeID === null) {
-            return;
+            throw new Error('edgeID and nodeID cannot be null at the same time.');
         }
         if (params.edgeID !== null) {
             jsonObject.edgeID = params.edgeID;

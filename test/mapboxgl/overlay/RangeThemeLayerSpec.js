@@ -424,8 +424,8 @@ describe('mapboxgl_RangeThemeLayer', function () {
                 //resizeEvent方法
                 themeLayer.resizeEvent();
                 //destroyFeatures方法
-                themeLayer.destroyFeatures(result.features[0]);     //有问题，没删掉，待开发修改
-                //expect(themeLayer.features.length).toEqual(resultFeatures.length - 1);
+                themeLayer.destroyFeatures(resultFeatures[0]);
+                expect(themeLayer.features.length).toEqual(resultFeatures.length - 1);
                 themeLayer.destroyFeatures();
                 expect(themeLayer.features.length).toEqual(0);
                 expect(1).not.toBeNull();
