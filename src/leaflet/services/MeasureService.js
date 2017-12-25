@@ -51,6 +51,7 @@ export var MeasureService = ServiceBase.extend({
 
     /**
      * @function L.supermap.measureService.measure
+     * @param type -{SuperMap.MeasureMode} 量算模式
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
      */

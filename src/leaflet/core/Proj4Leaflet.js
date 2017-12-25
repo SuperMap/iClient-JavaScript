@@ -83,7 +83,7 @@ L.Proj.Projection = L.Class.extend({
 
 /**
  * @class L.Proj.CRS
- * @classdesc Proj坐标系统定义类
+ * @classdesc 基于Proj4坐标系统扩展类
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param srsCode -{string} proj srsCode。
  * @param options -{Object} options。可选参数：<br>

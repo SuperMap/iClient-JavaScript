@@ -168,8 +168,8 @@ export var WebMap = L.LayerGroup.extend({
      * @param epsgCode - {mnumber} epsg编码
      * @param type - {string} 坐标类型
      * @param resolutions - {number}分辨率
-     * @param origin - {SuperMap.Point} 起始点
-     * @param bounds -{SuperMap.Bounds} 指定坐标范围
+     * @param origin - {[L.Point]{@linkdoc-leaflet/#point}} 切片原点
+     * @param bounds -[L.Bounds]{@linkdoc-leaflet/#bounds}} 地图范围
      */
     createCRS: function (epsgCode, type, resolutions, origin, bounds) {
         if (epsgCode < 0) {

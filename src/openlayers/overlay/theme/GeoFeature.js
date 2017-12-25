@@ -63,10 +63,10 @@ export class GeoFeature extends Theme {
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;
         }
-        //绘制专题要素
-        if (this.renderer) {
-            this.redrawThematicFeatures(this.map.getView().calculateExtent());
-        }
+        // //绘制专题要素
+        // if (this.renderer) {
+        //     this.redrawThematicFeatures(this.map.getView().calculateExtent());
+        // }
     }
 
     /**

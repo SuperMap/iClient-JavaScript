@@ -331,7 +331,7 @@ export var ProcessingService = ServiceBase.extend({
     /**
      * @function L.supermap.processingService.prototype.addSummaryRegionJob
      * @description 新建一个区域汇总分析。
-     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个区域汇总分析的请求参数。
+     * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个区域汇总分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。

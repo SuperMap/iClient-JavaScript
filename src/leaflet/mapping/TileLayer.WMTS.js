@@ -10,7 +10,7 @@ import "../core/Base";
  *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
  *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
  *        transparent - {number}设置透明度。<br>
- *        cacheEnabled - {string} 启用缓存。<br>
+ *        cacheEnabled - {boolean} 启用缓存。<br>
  *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
  *        prjCoordSys - {Object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
