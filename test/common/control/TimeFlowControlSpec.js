@@ -64,7 +64,7 @@ describe('TimeFlowControl', function () {
         expect(timeflowcontrol.intervalId).toBeGreaterThan(1);
     });
 
-    xit("start_isEnd", function () {
+    it("start_isEnd", function () {
         var option = {
             speed: 1,
             frequency: 2000,
@@ -76,7 +76,7 @@ describe('TimeFlowControl', function () {
         var timeflowcontrol = new SuperMap.TimeFlowControl(callback, option);
         timeflowcontrol.oldTime = timeflowcontrol.endTime;
         timeflowcontrol.start();
-        expect(timeflowcontrol.getRunning()).toBeTruthy();
+        expect(timeflowcontrol.getRunning()).toBeFalsy();
         expect(timeflowcontrol.intervalId).toBeGreaterThan(1);
     });
 
