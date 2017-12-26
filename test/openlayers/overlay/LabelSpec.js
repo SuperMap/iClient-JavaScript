@@ -142,8 +142,8 @@ describe('openlayers_Label', function () {
 
     //创建专题要素
     it('createThematicFeature', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var feature = themeSource.labelFeatures[0];
             var thematicFeature = themeSource.createThematicFeature(feature);
             expect(themeSource.features.length).toBeGreaterThan(0);
@@ -158,8 +158,8 @@ describe('openlayers_Label', function () {
 
     //重绘所有专题要素
     it('redrawThematicFeatures', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var bounds = [-180, -90, 90, 180];
             themeSource.redrawThematicFeatures(bounds);
             expect(themeSource).not.toBeNull();
@@ -174,31 +174,31 @@ describe('openlayers_Label', function () {
 
     //获取经（压盖）处理后将要绘制在图层上的标签要素
     it('getDrawnLabels', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
-            var labelFeatures = themeSource.labelFeatures;
-            labelFeatures[0].style.minZoomLevel = 4;
-            var feas = themeSource.getDrawnLabels(labelFeatures);
-            expect(feas).not.toBeNull();
-            expect(feas.length).toBeGreaterThan(0);
-            for (var i = 0; i < feas.length; i++) {
-                expect(feas[i].CLASS_NAME).toEqual("SuperMap.Feature.Vector");
-                expect(feas[i].attributes).not.toBeNull();
-                expect(feas[i].geometry).not.toBeNull();
-                expect(feas[i].geometry.CLASS_NAME).toEqual("SuperMap.Geometry.GeoText");
-                expect(feas[i].geometry.bounds).not.toBeNull();
-                expect(feas[i].geometry.id).not.toBeNull();
-                expect(feas[i].style).not.toBeNull();
-                expect(feas[i].id).toContain("SuperMap.Feature_");
-                done();
-            }
-        }, 1500)
+                var labelFeatures = themeSource.labelFeatures;
+                labelFeatures[0].style.minZoomLevel = 4;
+                var feas = themeSource.getDrawnLabels(labelFeatures);
+                expect(feas).not.toBeNull();
+                expect(feas.length).toBeGreaterThan(0);
+                for (var i = 0; i < feas.length; i++) {
+                    expect(feas[i].CLASS_NAME).toEqual("SuperMap.Feature.Vector");
+                    expect(feas[i].attributes).not.toBeNull();
+                    expect(feas[i].geometry).not.toBeNull();
+                    expect(feas[i].geometry.CLASS_NAME).toEqual("SuperMap.Geometry.GeoText");
+                    expect(feas[i].geometry.bounds).not.toBeNull();
+                    expect(feas[i].geometry.id).not.toBeNull();
+                    expect(feas[i].style).not.toBeNull();
+                    expect(feas[i].id).toContain("SuperMap.Feature_");
+                    done();
+                }
+        }, 2000)
     });
 
     //根据用户数据（feature）设置专题要素的 Style
     it('getStyleByData', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var feat = themeSource.labelFeatures[0];
             var featStyle = themeSource.getStyleByData(feat);
             expect(featStyle).not.toBeNull();
@@ -212,8 +212,8 @@ describe('openlayers_Label', function () {
 
     //设置标签要素的Style
     it('setLabelsStyle', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var labelFeatures = themeSource.labelFeatures;
             var labelFeas = themeSource.setLabelsStyle(labelFeatures);
             expect(labelFeas).not.toBeNull();
@@ -233,8 +233,8 @@ describe('openlayers_Label', function () {
 
     //设置标签要素的Style
     it('setStyle', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var feat = themeSource.labelFeatures[0];
             var feature = themeSource.setStyle(feat);
             expect(feature).not.toBeNull();
@@ -251,8 +251,8 @@ describe('openlayers_Label', function () {
 
     //获取标签要素的像素坐标
     it('getLabelPxLocation', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var feature = themeSource.labelFeatures[0];
             feature.style.labelXOffset = 1;
             feature.style.labelYOffset = 1;
@@ -266,8 +266,8 @@ describe('openlayers_Label', function () {
 
     //获得标签要素的最终范围 默认getPxBoundsMode = 0
     it('calculateLabelBounds_getPxBoundsMode = 0', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var feature = themeSource.labelFeatures[0];
             var location = themeSource.getLabelPxLocation(feature);
             var boundsQuad = themeSource.calculateLabelBounds(feature, location);
@@ -284,8 +284,8 @@ describe('openlayers_Label', function () {
 
     //获得标签要素的最终范围   getPxBoundsMode = 1
     it('calculateLabelBounds_getPxBoundsMode = 1', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             themeSource.getPxBoundsMode = 1;
             var feature = themeSource.labelFeatures[0];
             feature.style.labelXOffset = 1;
@@ -304,8 +304,8 @@ describe('openlayers_Label', function () {
 
     //获得标签要素的最终范围的另一种算法
     it('calculateLabelBounds2', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var feature = themeSource.labelFeatures[0];
             var location = themeSource.getLabelPxLocation(feature);
             feature.style.fontStyle = "italic";
@@ -379,8 +379,8 @@ describe('openlayers_Label', function () {
 
     //根据当前位置获取绘制后的标签信息，包括标签的宽，高和行数等
     it('getLabelInfo', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var feature = themeSource.labelFeatures[0];
             var location = feature.geometry.getCentroid();
             var style = feature.style;
@@ -396,8 +396,8 @@ describe('openlayers_Label', function () {
 
     //旋转bounds
     it('rotationBounds', function (done) {
+        addFeatures();
         setTimeout(function () {
-            addFeatures();
             var feature = themeSource.labelFeatures[0];
             var bounds = new SuperMap.Bounds(50, 30, 30, 50);
             var rotationCenterPoi = themeSource.getLabelPxLocation(feature);

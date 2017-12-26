@@ -57086,7 +57086,7 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$Image) 
             //为url添加请求参数
             url = _openlayers2.default.uri.appendParams(url, params);
             //为url添加请求图片大小以及显示范围参数
-            return encodeURI(url + "&width=" + size[0] + "&height=" + size[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + extent[0] + ",\"y\":" + extent[1] + "},\"rightTop\" : {\"x\":" + extent[2] + ",\"y\":" + extent[3] + "}}");
+            return url + encodeURI("&width=" + size[0] + "&height=" + size[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + extent[0] + ",\"y\":" + extent[1] + "},\"rightTop\" : {\"x\":" + extent[2] + ",\"y\":" + extent[3] + "}}");
         }
 
         /**
@@ -57443,7 +57443,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
             var scale = _Util.Util.resolutionToScale(resolution, dpi, unit);
             var tileSize = _openlayers2.default.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             var layerUrl = getFullRequestUrl.call(me);
-            return encodeURI(layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
+            return layerUrl + encodeURI("&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale);
         }
 
         return _this;
@@ -65199,7 +65199,7 @@ var DataFlowService = exports.DataFlowService = function (_CommonServiceBase) {
     }, {
         key: 'broadcast',
         value: function broadcast(geoJSONFeature) {
-            if (!this.broadcastWebSocket.isOpen) {
+            if (!this.broadcastWebSocket || !this.broadcastWebSocket.isOpen) {
                 this.events.triggerEvent('broadcastFailed');
                 return;
             }
