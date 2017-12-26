@@ -1,7 +1,7 @@
 {
   "name": "@supermap/iclient-openlayers",
   "description": "",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "keywords": [
     "SuperMap",
     "OpenLayers"
@@ -18,7 +18,7 @@
     "echarts": "3.6.2",
     "mapv": "2.0.14",
     "openlayers": "4.6.4",
-    "@supermap/iclient-common": "9.0.0",
+    "@supermap/iclient-common": "9.0.1",
     "jsonsql": "^0.2.5",
     "proj4": "2.3.15"
   }
