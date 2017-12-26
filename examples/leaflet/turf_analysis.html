@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <title>turf.js客户端空间分析</title>
     <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <!--<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--<script type="text/javascript" src="../js/widgets.js"></script>-->
+    <!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>-->
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
     <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
+    <!--<link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.2.0/leaflet.css"/>-->
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.2.0/leaflet-src.js"></script>-->
+    <!--<script type="text/javascript" src="https://cdn.bootcss.com/Turf.js/4.6.1/turf.min.js"></script>-->
+    <!--<link rel="stylesheet" href="http://cdn.bootcss.com/leaflet.draw/0.4.12/leaflet.draw.css"/>-->
+    <!--<script type="text/javascript" src="http://cdn.bootcss.com/leaflet.draw/0.4.12/leaflet.draw.js"></script>-->
+    <!--<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>-->
     <style>
         .leaflet-tooltip, .leaflet-tooltip:before {
             color: white;
@@ -69,74 +80,99 @@
             var me = this;
             me._div = L.DomUtil.create('div');
             me._div.style.width = '420px';
-            me._div.innerHTML = "<div class='panel panel-primary editPane' id='editPane'>" +
-                "<div class='panel-heading'>" +
-                "<h5 class='panel-title text-center'>创建不规则三角形</h5></div>" +
-                "<div class='panel panel-body'>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>客户端空间分析</span>" +
-                "<select class='form-control' id='turfAnalyzeType' name='turfAnalyzeType'>" +
-                "<option value='Classification_nearest' >邻近分析</option>" +
-                "<option value='Grids'>创建格网</option>" +
-                "<option value='Interpolation_tin' selected>创建不规则三角形</option>" +
-                "</select>" +
-                "</div>" +
-                "</div>" +
-                "<div class='panel-body content' id='tinBody'>" +
-                "<div class='input-group'>" +
-                "<input type='button' class='btn btn-primary' id='creatTinBtn' value='创建不规则三角形'/>&nbsp;" +
-                "<input type='button' class='btn btn-primary' id='clearTinBtn' value='清除结果'/>&nbsp;" +
-                "</div>" +
-                "</div>" +
-                "<div class='panel-body' id='gridsBody' style='display: none'>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>格网分析类型<span title='必填字段' style='color: red;'> * </span></span>" +
-                "<select class='form-control' id='gridAnalyzeType' name='gridAnalyzeType'>" +
-                "<option value='hexGrid' selected>蜂巢格网</option>" +
-                "<option value='pointGrid'>点格网</option>" +
-                "<option value='squareGrid'>方形格网</option>" +
-                "<option value='triangleGrid'>三角格网</option>" +
-                "</select>" +
-                "</div>" +
-                "<p></p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>单元格网大小<span title='必填字段' style='color: red;'> * </span></span>" +
-                "<input id='cellSize' type='text' class='form-control' value='50'/>" +
-                "</div>" +
-                "<p></p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>格网单元大小单位<span title='必填字段' style='color: red;'> * </span></span>" +
-                "<select class='form-control' id='units' name='mode'>" +
-                "<option value='degrees'>度</option>" +
-                "<option value='radians'>弧度</option>" +
-                "<option value='miles' selected>英里</option>" +
-                "<option value='kilometers'>千米</option>" +
-                "</select>" +
-                "</div>" +
-                "<p></p>" +
-                "<div id='squareGridChoic' class='input-group'  style='display: none'>" +
-                "<span class='input-group-addon'>是否调整宽度和高度以适应bbox的尺寸</span>" +
-                "<span class='form-control'>" +
-                "<input id='completelyWithin' type='checkbox'>" +
-                "</span>" +
-                "</div>" +
-                "<p></p>" +
-                "<div id='pointGridChoic' class='input-group' style='display: none'>" +
-                "<span class='input-group-addon'>调整点到格网中心位置</span>" +
-                "<span class='form-control'><input id='iscentered' type='checkbox'></span>" +
-                "<span class='input-group-addon'>创建范围为多边形</span>" +
-                "<span class='form-control'><input id='isbboxIsMask' type='checkbox'></span>" +
-                "</div>" +
-                "<p></p>" +
-                "<div id='hexGridChoic' class='input-group'>" +
-                "<span class='input-group-addon'>是否以三角形的形式返回</span>" +
-                "<span class='form-control'><input id='triangles' type='checkbox'></span>" +
-                "</div>" +
-                "<p></p>" +
-                "<div align='right' class='input-group'>" +
-                "<input type='button' id='createGridBtn' class='btn btn-primary' value='对当前绘制范围创建格网'/>&nbsp;" +
-                "<input type='button' id='clearGridBtn' class='btn btn-primary' value='清除'/>" +
-                "</div></div></div>";
+            me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>插值分析</h5></div>
+    <div class='panel panel-body'>
+        <div class='input-group'>
+            <span class='input-group-addon'>客户端空间分析</span>
+            <select class='form-control' id='turfAnalyzeType' name='turfAnalyzeType'>
+                <option value='Classification_nearest'>分类分析</option>
+                <option value='Grids'>创建格网</option>
+                <option value='Interpolation_tin' selected>插值分析</option>
+            </select>
+        </div>
+    </div>
+    <div class='panel-body content' id='classificationBody' style='display: none'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>插值分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <select class='form-control' id='classificationAnalyzeType' name='interpolationAnalyzeType'>
+                    <option value='nearestOption' selected>nearestAnalyze</option>
+                </select>
+            </div>
+        </div>
+        <div class='input-group' id="nearestBody"></div>
+    </div>
+    <div class='panel-body content' id='interpolationBody'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>插值分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <select class='form-control' id='interpolationAnalyzeType' name='interpolationAnalyzeType'>
+                    <option value='tinOption' selected>tin</option>
+                </select>
+            </div>
+        </div>
+        <div class='input-group' id="tinBody">
+            <input type='button' class='btn btn-primary' id='createTinBtn' value='创建Tin'/>&nbsp;
+            <input type='button' class='btn btn-primary' id='clearTinBtn' value='清除结果'/>&nbsp;
+        </div>
+    </div>
+    <div class='panel-body' id='gridsBody' style='display: none'>
+        <div class='input-group'>
+            <span class='input-group-addon'>格网分析类型<span title='必填字段' style='color: red;'> * </span></span>
+            <select class='form-control' id='gridAnalyzeType' name='gridAnalyzeType'>
+                <option value='hexGrid' selected>蜂巢格网</option>
+                <option value='pointGrid'>点格网</option>
+                <option value='squareGrid'>方形格网</option>
+                <option value='triangleGrid'>三角格网</option>
+            </select>
+        </div>
+        <p></p>
+        <div class='input-group'>
+            <span class='input-group-addon'>单元格网大小<span title='必填字段' style='color: red;'> * </span></span>
+            <input id='cellSize' type='text' class='form-control' value='50'/>
+        </div>
+        <p></p>
+        <div class='input-group'>
+            <span class='input-group-addon'>格网单元大小单位<span title='必填字段' style='color: red;'> * </span></span>
+            <select class='form-control' id='units' name='mode'>
+                <option value='degrees'>度</option>
+                <option value='radians'>弧度</option>
+                <option value='miles' selected>英里</option>
+                <option value='kilometers'>千米</option>
+            </select>
+        </div>
+        <p></p>
+        <div id='squareGridChoic' class='input-group' style='display: none'>
+            <span class='input-group-addon'>是否调整宽度和高度以适应bbox的尺寸</span>
+            <span class='form-control'>
+                <input id='completelyWithin' type='checkbox'>
+                </span>
+        </div>
+        <p></p>
+        <div id='pointGridChoic' class='input-group' style='display: none'>
+            <span class='input-group-addon'>调整点到格网中心位置</span>
+            <span class='form-control'>
+                <input id='iscentered' type='checkbox'>
+                </span><span class='input-group-addon'>创建范围为多边形</span>
+            <span class='form-control'><input id='isbboxIsMask' type='checkbox'>
+                </span>
+        </div>
+        <p></p>
+        <div id='hexGridChoic' class='input-group'>
+            <span class='input-group-addon'>是否以三角形的形式返回</span>
+            <span class='form-control'>
+                <input id='triangles' type='checkbox'>
+                </span>
+        </div>
+        <p></p>
+        <div align='right' class='input-group'>
+            <input type='button' id='createGridBtn' class='btn btn-primary' value='对当前绘制范围创建格网'/>&nbsp
+            <input type='button' id='clearGridBtn' class='btn btn-primary' value='清除'/>
+        </div>
+    </div>
+</div>`;
             handleMapEvent(me._div, me._map);
             return me._div;
         };
@@ -148,6 +184,7 @@
 
     function bindEvent() {
         $("#turfAnalyzeType").change(function () {
+            bbox = null;
             //切换其他分析之前，关闭监听事件：
             map.off(L.Draw.Event.CREATED, mapDrawListener);
             map.off('click', mapOnClickListener);
@@ -159,20 +196,23 @@
             turfAnalyzeType = $("#turfAnalyzeType option:selected").val();
             switch (turfAnalyzeType) {
                 case 'Classification_nearest':
-                    $(".panel-heading h5").text("邻近分析");
-                    $("#tinBody").hide();
+                    $(".panel-heading h5").text("分类分析");
+                    $("#classificationBody").show();
+                    $("#interpolationBody").hide();
                     $("#gridsBody").hide();
                     classificationAnalyst.loadAnalystLayer();
                     return;
                 case 'Grids':
                     $(".panel-heading h5").text("创建格网");
-                    $("#tinBody").hide();
+                    $("#classificationBody").hide();
+                    $("#interpolationBody").hide();
                     $("#gridsBody").show();
                     gridAnalyst.loadAnalystLayer();
                     return;
                 case 'Interpolation_tin':
-                    $(".panel-heading h5").text("创建不规则三角网");
-                    $("#tinBody").show();
+                    $(".panel-heading h5").text("插值分析");
+                    $("#classificationBody").hide();
+                    $("#interpolationBody").show();
                     $("#gridsBody").hide();
                     interpolationAnalyst.loadAnalystLayer();
                     return;
@@ -183,8 +223,7 @@
         // 切换格网分析
         $("#gridAnalyzeType").change(function () {
             //是否有需要删除的提示框
-           widgets.alert.clearAlert();
-            bbox = null;
+            widgets.alert.clearAlert();
             clearLayer(false);
             gridAnalyzeType = $("#gridAnalyzeType option:selected").val();
             switch (gridAnalyzeType) {
@@ -213,7 +252,7 @@
 
         $("#createGridBtn").click(function () {
             //是否有需要删除的提示框
-           widgets.alert.clearAlert();
+            widgets.alert.clearAlert();
             turfLayer.clearLayers();
             if (bbox) {
                 switch (gridAnalyzeType) {
@@ -231,7 +270,7 @@
                         break;
                 }
             } else {
-                widgets.alert.showAlert("请先使用左上角绘图工具在地图上绘出分析范围。",false);
+                widgets.alert.showAlert("请先使用左上角绘图工具在地图上绘出分析范围。", false);
             }
         });
 
@@ -239,7 +278,7 @@
             //是否有需要删除的提示框
             widgets.alert.clearAlert();
             if (gridAnalyst.editableLayers.getLayers().length === 0 && turfLayer.getLayers().length == 0) {
-                widgets.alert.showAlert("没有数据可删除",false);
+                widgets.alert.showAlert("没有数据可删除", false);
                 return;
             }
             bbox = null;
@@ -247,13 +286,13 @@
         });
         //格网分析事件绑定 --end
 
-        $("#creatTinBtn").click(function () {
+        $("#createTinBtn").click(function () {
             //是否有需要删除的提示框
             widgets.alert.clearAlert();
             if (interpolationAnalyst.sourcePoints) {
                 interpolationAnalyst.creatTin();
             } else {
-                widgets.alert.showAlert("分析数据加载中，请耐心等待。",true);
+                widgets.alert.showAlert("分析数据加载中，请耐心等待。", true);
                 return;
             }
         });
@@ -290,7 +329,7 @@
 
     function mapOnClickListener(e) {
         if (!classificationAnalyst.sourcePoints || classificationAnalyst.sourcePoints.features.length === 0) {
-            widgets.alert.showAlert("数据加载中，请耐心等待。",true);
+            widgets.alert.showAlert("数据加载中，请耐心等待。", true);
             return;
         }
         clearLayer(false);
@@ -299,8 +338,9 @@
     }
 
     function mapDrawListener(e) {
+        map.fire("viewreset");
         if (gridAnalyst.editableLayers.getLayers().length > 0) {
-            widgets.alert.showAlert("已有分析范围，请勿重复绘制。",false);
+            widgets.alert.showAlert("已有分析范围，请勿重复绘制。", false);
             return;
         }
         tooltip.removeFrom(map);
@@ -394,6 +434,7 @@
                     dashArray: '5',
                     weight: 1
                 }).addTo(map);
+                map.fire("viewreset");
             });
         },
     };
@@ -435,18 +476,27 @@
                         tinQueryResultLayer = L.geoJSON(interpolationAnalyst.sourcePoints, {
                             pointToLayer: function (feature, latlng) {
                                 feature.properties.z = ~~(Math.random() * 9);
-                                return L.circleMarker(latlng, {opacity: 0, fillColor: 'red', radius: 6});
+                                return L.circleMarker(latlng, {
+                                    opacity: 0,
+                                    fillColor: 'red',
+                                    radius: 6
+                                });
                             }
                         }).addTo(map);
+
+                        //map.remove()时，canvas渲染的场景下render会先移除canvas的ctx，而path的移除会有重绘操作。
+                        //从而引起刷新延迟会报错，故在此移除重绘
+                        tinQueryResultLayer.on('remove', tinQueryResultLayerRemoveListener);
                     });
             } else {
                 tinQueryResultLayer.addTo(map);
+//                tinQueryResultLayer.bringToFront();
             }
         },
 
         creatTin: function () {
             if (turfLayer.getLayers().length > 0) {
-                widgets.alert.showAlert("图层已创建，请勿重复创建。",false);
+                widgets.alert.showAlert("图层已创建，请勿重复创建。", false);
                 return;
             }
             turfLayer.process("Interpolation.tin", {
@@ -456,6 +506,13 @@
         }
 
     };
+    var requestAnimId;
+
+    function tinQueryResultLayerRemoveListener() {
+        requestAnimId = map.getRenderer(tinQueryResultLayer)._redrawRequest;
+        (requestAnimId != null) && L.Util.cancelAnimFrame(requestAnimId);
+    }
+
     //页面默认首先加载“创建不规则三角网”：
     interpolationAnalyst.loadAnalystLayer();
 
@@ -499,6 +556,7 @@
                     polyline: false,
                     polygon: false,
                     circle: false,
+                    circlemarker: false,
                     rectangle: {},
                     marker: false,
                     remove: {},
@@ -514,7 +572,7 @@
                 tooltip: {
                     start: '点击并拖动鼠标绘制矩形分析范围。'
                 }
-            })
+            });
             map.addControl(gridAnalyst.drawControl);
             handleMapEvent(gridAnalyst.drawControl.getContainer(), map);
 
@@ -585,7 +643,10 @@
             map.eachLayer(function (layer) {
                 if (layer === baseLayer) {
                     return;
-                } else {
+                } /*else if (layer === tinQueryResultLayer) {
+                    layer.bringToBack();
+                    return;
+                }*/ else {
                     layer.removeFrom(map);
                 }
             });

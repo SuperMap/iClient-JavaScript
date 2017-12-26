@@ -87,20 +87,39 @@
 </div>
 <div class='panel panel-primary editPane' id='editPane'>
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>创建不规则三角形</h5></div>
+        <h5 class='panel-title text-center'>插值分析</h5></div>
     <div class='panel panel-body'>
         <div class='input-group'>
             <span class='input-group-addon'>客户端空间分析</span>
             <select class='form-control' id='turfAnalyzeType' name='turfAnalyzeType'>
-                <option value='Classification_nearest'>邻近分析</option>
+                <option value='Classification_nearest'>分类分析</option>
                 <option value='Grids'>创建格网</option>
-                <option value='Interpolation_tin' selected>创建不规则三角形</option>
+                <option value='Interpolation_tin' selected>插值分析</option>
             </select>
         </div>
     </div>
-    <div class='panel-body content' id='tinBody'>
-        <div class='input-group'>
-            <input type='button' class='btn btn-primary' id='createTinBtn' value='创建不规则三角形'/>&nbsp;
+    <div class='panel-body content' id='classificationBody' style='display: none'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>插值分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <select class='form-control' id='classificationAnalyzeType' name='interpolationAnalyzeType'>
+                    <option value='nearestOption' selected>nearestAnalyze</option>
+                </select>
+            </div>
+        </div>
+        <div class='input-group' id="nearestBody"></div>
+    </div>
+    <div class='panel-body content' id='interpolationBody'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>插值分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <select class='form-control' id='interpolationAnalyzeType' name='interpolationAnalyzeType'>
+                    <option value='tinOption' selected>tin</option>
+                </select>
+            </div>
+        </div>
+        <div class='input-group' id="tinBody">
+            <input type='button' class='btn btn-primary' id='createTinBtn' value='创建Tin'/>&nbsp;
             <input type='button' class='btn btn-primary' id='clearTinBtn' value='清除结果'/>&nbsp;
         </div>
     </div>
@@ -201,6 +220,7 @@
 
     function bindEvent() {
         $("#turfAnalyzeType").change(function (e) {
+            bbox = null;
             clearLayer(true);
             clearInteraction();
             clearOverlay();
@@ -210,20 +230,23 @@
             turfAnalyzeType = $("#turfAnalyzeType option:selected").val();
             switch (turfAnalyzeType) {
                 case 'Classification_nearest':
-                    $(".panel-heading h5").text("邻近分析");
-                    $("#tinBody").hide();
+                    $(".panel-heading h5").text("分类分析");
+                    $("#classificationBody").show();
+                    $("#interpolationBody").hide();
                     $("#gridsBody").hide();
                     classificationAnalyst.loadAnalystLayer();
                     return;
                 case 'Grids':
                     $(".panel-heading h5").text("创建格网");
-                    $("#tinBody").hide();
+                    $("#classificationBody").hide();
+                    $("#interpolationBody").hide();
                     $("#gridsBody").show();
                     gridAnalyst.loadAnalystLayer();
                     return;
                 case 'Interpolation_tin':
-                    $(".panel-heading h5").text("创建不规则三角网");
-                    $("#tinBody").show();
+                    $(".panel-heading h5").text("插值分析");
+                    $("#classificationBody").hide();
+                    $("#interpolationBody").show();
                     $("#gridsBody").hide();
                     interpolationAnalyst.loadAnalystLayer();
                     return;
@@ -239,7 +262,6 @@
 
         //格网分析事件绑定 --start
         $("#gridAnalyzeType").change(function (e) {
-            bbox = null;
             clearLayer(false);
             //是否有需要删除的提示框
             widgets.alert.clearAlert();
@@ -288,7 +310,7 @@
                         return;
                 }
             } else {
-                widgets.alert.showAlert("请先点击“绘制分析范围”按钮，并按住ctrl + 鼠标左键，在地图上绘出需要分析范围。",true);
+                widgets.alert.showAlert("并按住ctrl + 鼠标左键，在地图上绘出需要分析范围。",true);
             }
         });
 

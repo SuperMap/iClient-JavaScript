@@ -165,11 +165,13 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        layer = new ol.layer.Image({
-                            source: new ol.source.ImageSuperMapRest({url: mapUrl})
+                        new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
+                            layer = new ol.layer.Tile({
+                                source: new ol.source.ImageSuperMapRest(ol.source.ImageSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
+                            });
+                            map.addLayer(layer);
+                            widgets.loader.removeLoader();
                         });
-                        map.addLayer(layer);
-                        widgets.loader.removeLoader();
                     });
                 }
             });

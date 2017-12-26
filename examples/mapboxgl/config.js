@@ -331,6 +331,12 @@ var exampleConfig = {
                         name_en: "style switch",
                         thumbnail: "mvt_changeStyle.png",
                         fileName: "mvtVectorTile_changeStyle"
+                    },
+                    {
+                        name: "UGCV5(MVT)",
+                        name_en: "UGCV5(MVT)",
+                        thumbnail: "mvt_UGCV5.png",
+                        fileName: "mvtVectorTile_UGCV5"
                     }
                 ]
             },
