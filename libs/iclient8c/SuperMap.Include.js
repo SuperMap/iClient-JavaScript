@@ -22,8 +22,8 @@
     }
     //加载类库资源文件
     function loadSMLibs() {
-        inputScript(baseurl+'SuperMap-8.1.1-15521.js');
-        inputScript(baseurl+'SuperMap_Plot-8.1.1-15521.js');
+        inputScript(baseurl+'SuperMap-8.1.1-15626.js');
+        inputScript(baseurl+'SuperMap_Plot-8.1.1-15626.js');
         loadLocalization();
         inputCSS('style.css');
         inputCSS('google.css');

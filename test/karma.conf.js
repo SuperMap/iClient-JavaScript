@@ -34,7 +34,7 @@ module.exports = function (config) {
             './resources/**.js',
             /***classic的源码***/
             /*由于除了classic其他都不依赖于8c,所以classic 的引入放在最后，以免被common覆盖*/
-            {pattern: '../libs/iclient8c/SuperMap_Basic-8.1.1-15521.js', include: false},
+            {pattern: '../libs/iclient8c/SuperMap_Basic-8.1.1-15626.js', include: false},
             {pattern: '../libs/iclient8c/Lang/*.js', include: false},
             {pattern: '../src/classic/theme/default/*.css', include: false},
             /**测试文件**/
@@ -80,7 +80,7 @@ module.exports = function (config) {
         preprocessors: {
             '../node_modules/whatwg-fetch-importable/whatwgFetch.js': ['browserify'],
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
-            '../libs/iclient8c/SuperMap_Basic-8.1.1-15521.js': ['browserify'],
+            '../libs/iclient8c/SuperMap_Basic-8.1.1-15626.js': ['browserify'],
             '../libs/iclient8c/Lang/*.js': ['browserify'],
             '../src/classic/**/*.js': ['browserify'],
             './classic/**/*Spec.js': ['browserify'],

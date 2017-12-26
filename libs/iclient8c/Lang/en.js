@@ -250,5 +250,6 @@ SuperMap.Lang.en = {
 	'noContent':'None',
 	'lableTitle': '_Lable Layer'
 
+
 };
 
