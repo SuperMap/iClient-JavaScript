@@ -2,7 +2,7 @@ import L from "leaflet";
 import '../core/Base';
 
 /**
- * @constant L.supermap.VectorTileFormat
+ * @constant L.supermap.vectorTileFormat
  * @classdesc 矢量瓦片格式
  */
 export var VectorTileFormat = {
@@ -11,4 +11,4 @@ export var VectorTileFormat = {
     PBF: "PBF"
 };
 
-L.supermap.VectorTileFormat = VectorTileFormat;
+L.supermap.vectorTileFormat = VectorTileFormat;

@@ -4,7 +4,7 @@ import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
 import {GeometryVector, Bounds, GeoText, CommonUtil as Util} from '@supermap/iclient-common';
 
 /**
- * @class L.supermap.LabelThemeLayer
+ * @class L.supermap.labelThemeLayer
  * @classdesc 标签专题图。
  * @extends L.supermap.GeoFeatureThemeLayer
  * @param name - {string} 图层名

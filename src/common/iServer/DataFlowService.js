@@ -88,7 +88,7 @@ export class DataFlowService extends CommonServiceBase {
      * @param geoJSONFeature {JSON} json格式的要素数据
      */
     broadcast(geoJSONFeature) {
-        if (!this.broadcastWebSocket.isOpen) {
+        if (!this.broadcastWebSocket||!this.broadcastWebSocket.isOpen) {
             this.events.triggerEvent('broadcastFailed');
             return;
         }

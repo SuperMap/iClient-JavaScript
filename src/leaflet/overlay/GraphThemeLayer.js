@@ -6,7 +6,7 @@ import {ThemeLayer} from './theme/ThemeLayer';
 import {CommontypesConversion} from '../core/CommontypesConversion';
 
 /**
- * @class L.supermap.GraphThemeLayer
+ * @class L.supermap.graphThemeLayer
  * @classdesc 统计专题图图层。
  * @extends L.supermap.ThemeLayer
  * @description 统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。<br>
@@ -212,8 +212,8 @@ export var GraphThemeLayer = ThemeLayer.extend({
      * @description 判断两个四边形是否有压盖。
      * @param quadrilateral - {Array<Object>} 四边形节点数组。
      * @example
-     * [{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
-     * quadrilateral2 - {Array<Object>}  第二个四边形节点数组。
+     * [{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}];
+     * @param quadrilateral2 - {Array<Object>}  第二个四边形节点数组。
      */
     isQuadrilateralOverLap: function (quadrilateral, quadrilateral2) {
         var me = this;

@@ -59,39 +59,54 @@ describe('leaflet_DataFlowLayer', function () {
             dataFlowService.broadcast(feature);
         }
 
-        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow, {
-            style: function () {
-                return {
-                    fillColor: "red",
-                    fillOpacity: 1,
-                    radius: 6,
-                    weight: 0
-                };
-            }
-        });
-        dataFlowLayer.addTo(map);
-        var dataFlowService = L.supermap.dataFlowService(urlDataFlow);
-        dataFlowService.initBroadcast();
+        var dataFlowLayer;
+        var dataFlowService;
         var timer;
-        dataFlowService.on('broadcastSocketConnected', function (e) {
-            var dataFlow = dataFlowService.dataFlow;
-            expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
-            expect(dataFlow.EVENT_TYPES.length).toEqual(8);
-            expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
-            expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast?token=" + token);
-            timer = window.setInterval(broadcast_Point, 1000);
-        });
-        setTimeout(function () {
-            expect(dataFlowLayer.idCache).not.toBeNull();
-            expect(dataFlowLayer.url).toBe(urlDataFlow);
-            expect(dataFlowLayer.options).not.toBeNull();
-            expect(dataFlowService).not.toBeNull();
-            expect(dataFlowService._events.broadcastSocketConnected.length).toEqual(1);
-            dataFlowService.unSubscribe();
-            dataFlowService.unBroadcast();
-            dataFlowService.destroy();    //destroy()时未走入分支，有bug吗？
-            done();
-        }, 4000)
+        try {
+            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow, {
+                style: function () {
+                    return {
+                        fillColor: "red",
+                        fillOpacity: 1,
+                        radius: 6,
+                        weight: 0
+                    };
+                }
+            });
+            dataFlowLayer.addTo(map);
+            dataFlowService = L.supermap.dataFlowService(urlDataFlow);
+            dataFlowService.initBroadcast();
+            dataFlowService.on('broadcastSocketConnected', function (e) {
+                var dataFlow = dataFlowService.dataFlow;
+                expect(dataFlow.CLASS_NAME).toBe("SuperMap.DataFlowService");
+                expect(dataFlow.EVENT_TYPES.length).toEqual(8);
+                expect(dataFlow.broadcastWebSocket.binaryType).toBe("blob");
+                expect(dataFlow.broadcastWebSocket.url).toBe(urlDataFlow + "/broadcast?token=" + token);
+                timer = window.setInterval(broadcast_Point, 1000);
+            });
+
+            setTimeout(function () {
+                expect(dataFlowLayer.idCache).not.toBeNull();
+                expect(dataFlowLayer.url).toBe(urlDataFlow);
+                expect(dataFlowLayer.options).not.toBeNull();
+                expect(dataFlowService).not.toBeNull();
+                expect(dataFlowService._events.broadcastSocketConnected.length).toEqual(1);
+                done();
+            }, 4000)
+        }
+        finally {
+            if (timer) {
+                window.clearInterval(timer);
+            }
+            if (dataFlowService) {
+                dataFlowService.unSubscribe();
+                dataFlowService.unBroadcast();
+                dataFlowService.destroy();
+            }
+            if (dataFlowLayer) {
+                dataFlowLayer.remove();
+            }
+        }
     });
 
     it('broadcast_LineString', function (done) {
@@ -108,21 +123,35 @@ describe('leaflet_DataFlowLayer', function () {
             dataFlowService.broadcast(feature);
         }
 
-        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-        dataFlowLayer.addTo(map);
+        var dataFlowLayer;
+        var dataFlowService;
         var timer;
-        var dataFlowService = L.supermap.dataFlowService(urlDataFlow);
-        dataFlowService.initBroadcast();
-        dataFlowService.on('broadcastSocketConnected', function (e) {
-            timer = window.setInterval(broadcast_LineString, 1000);
-        });
-        setTimeout(function () {
-            expect(dataFlowService).not.toBeNull();
-            dataFlowService.unSubscribe();
-            dataFlowService.unBroadcast();
-            dataFlowService.destroy();
-            done();
-        }, 4000)
+        try {
+            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
+            dataFlowLayer.addTo(map);
+            dataFlowService = L.supermap.dataFlowService(urlDataFlow);
+            dataFlowService.initBroadcast();
+            dataFlowService.on('broadcastSocketConnected', function (e) {
+                timer = window.setInterval(broadcast_LineString, 1000);
+            });
+            setTimeout(function () {
+                expect(dataFlowService).not.toBeNull();
+                done();
+            }, 4000)
+        } finally {
+            if (timer) {
+                window.clearInterval(timer);
+            }
+            if (dataFlowService) {
+                dataFlowService.unSubscribe();
+                dataFlowService.unBroadcast();
+                dataFlowService.destroy();
+            }
+            if (dataFlowLayer) {
+                dataFlowLayer.remove();
+            }
+
+        }
     });
 
     it('broadcast_Polygon', function (done) {
@@ -139,21 +168,38 @@ describe('leaflet_DataFlowLayer', function () {
             dataFlowService.broadcast(feature);
         }
 
-        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-        dataFlowLayer.addTo(map);
-        var dataFlowService = L.supermap.dataFlowService(urlDataFlow);
-        dataFlowService.initBroadcast();
+        var dataFlowLayer;
+        var dataFlowService;
         var timer;
-        dataFlowService.on('broadcastSocketConnected', function (e) {
-            timer = window.setInterval(broadcast_Polygon, 1000);
-        });
-        setTimeout(function () {
-            expect(dataFlowService).not.toBeNull();
-            dataFlowService.unSubscribe();
-            dataFlowService.unBroadcast();
-            dataFlowService.destroy();
-            done();
-        }, 4000)
+        try {
+            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
+            dataFlowLayer.addTo(map);
+            dataFlowService = L.supermap.dataFlowService(urlDataFlow);
+            dataFlowService.initBroadcast();
+            dataFlowService.on('broadcastSocketConnected', function (e) {
+                timer = window.setInterval(broadcast_Polygon, 1000);
+            });
+            setTimeout(function () {
+                expect(dataFlowService).not.toBeNull();
+                dataFlowService.unSubscribe();
+                dataFlowService.unBroadcast();
+                dataFlowService.destroy();
+                done();
+            }, 4000)
+        } finally {
+            if (timer) {
+                window.clearInterval(timer);
+            }
+            if (dataFlowService) {
+                dataFlowService.unSubscribe();
+                dataFlowService.unBroadcast();
+                dataFlowService.destroy();
+            }
+            if (dataFlowLayer) {
+                dataFlowLayer.remove();
+            }
+
+        }
     });
 
     it('broadcast_MultiPolygon', function (done) {
@@ -170,61 +216,115 @@ describe('leaflet_DataFlowLayer', function () {
             dataFlowService.broadcast(feature);
         }
 
-        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-        dataFlowLayer.addTo(map);
-        var dataFlowService = L.supermap.dataFlowService(urlDataFlow);
-        dataFlowService.initBroadcast();
+        var dataFlowLayer;
+        var dataFlowService;
         var timer;
-        dataFlowService.on('broadcastSocketConnected', function (e) {
-            timer = window.setInterval(broadcast_MultiPolygon, 1000);
-        });
-        setTimeout(function () {
-            expect(dataFlowService).not.toBeNull();
-            dataFlowService.unSubscribe();
-            dataFlowService.unBroadcast();
-            dataFlowService.destroy();
-            done();
-        }, 4000)
+        try {
+            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
+            dataFlowLayer.addTo(map);
+            dataFlowService = L.supermap.dataFlowService(urlDataFlow);
+            dataFlowService.initBroadcast();
+            dataFlowService.on('broadcastSocketConnected', function (e) {
+                timer = window.setInterval(broadcast_MultiPolygon, 1000);
+            });
+            setTimeout(function () {
+                expect(dataFlowService).not.toBeNull();
+                dataFlowService.unSubscribe();
+                dataFlowService.unBroadcast();
+                dataFlowService.destroy();
+                done();
+            }, 4000)
+        } finally {
+            if (timer) {
+                window.clearInterval(timer);
+            }
+            if (dataFlowService) {
+                dataFlowService.unSubscribe();
+                dataFlowService.unBroadcast();
+                dataFlowService.destroy();
+            }
+            if (dataFlowLayer) {
+                dataFlowLayer.remove();
+            }
+
+        }
     });
 
     it('onRemove', function (done) {
-        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-        dataFlowLayer.addTo(map);
-        dataFlowLayer.onRemove(map);
-        setTimeout(function () {
-            expect(dataFlowLayer).not.toBeNull();
-            done();
-        }, 4000)
+        var dataFlowLayer;
+        try {
+            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
+            dataFlowLayer.addTo(map);
+            dataFlowLayer.onRemove(map);
+            setTimeout(function () {
+                expect(dataFlowLayer).not.toBeNull();
+                done();
+            }, 4000)
+        } finally {
+
+            if (dataFlowLayer) {
+                dataFlowLayer.remove();
+            }
+
+        }
     });
 
     xit('setExcludeField', function (done) {
-        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-        dataFlowLayer.addTo(map);
-        dataFlowLayer.setExcludeField("id");
-        setTimeout(function () {
-            expect(dataFlowLayer).not.toBeNull();
-            done();
-        }, 4000)
+        var dataFlowLayer;
+        try {
+            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
+            dataFlowLayer.addTo(map);
+            dataFlowLayer.setExcludeField("id");
+            setTimeout(function () {
+                expect(dataFlowLayer).not.toBeNull();
+                done();
+            }, 4000)
+        } finally {
+            if (dataFlowLayer) {
+                dataFlowLayer.remove();
+            }
+
+        }
     });
 
     xit('setGeometry', function (done) {
-        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-        dataFlowLayer.addTo(map);
-        var geometry = {
-            coordinates: [[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8415115329708], [116.381741960923, 39.8765100055449]]],
-            type: "Polygon"
-        };
-        dataFlowLayer.setGeometry(geometry);
-        setTimeout(function () {
-            expect(dataFlowLayer).not.toBeNull();
-            done();
-        }, 4000)
+        var dataFlowLayer;
+        try {
+            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
+            dataFlowLayer.addTo(map);
+            var geometry = {
+                coordinates: [[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8415115329708], [116.381741960923, 39.8765100055449]]],
+                type: "Polygon"
+            };
+            dataFlowLayer.setGeometry(geometry);
+            setTimeout(function () {
+                expect(dataFlowLayer).not.toBeNull();
+                done();
+            }, 4000)
+        } finally {
+
+            if (dataFlowLayer) {
+                dataFlowLayer.remove();
+            }
+
+        }
     });
 
     xit('destroy', function () {
-        var dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
-        dataFlowLayer.addTo(map);
-        dataFlowLayer.destroy();
+        var dataFlowLayer;
+        try {
+            dataFlowLayer = L.supermap.dataFlowLayer(urlDataFlow);
+            dataFlowLayer.addTo(map);
+            dataFlowLayer.destroy();
+        } finally {
+            if (timer) {
+                window.clearInterval(timer);
+            }
+            if (dataFlowLayer) {
+                dataFlowLayer.remove();
+            }
+
+        }
     })
 });
 
