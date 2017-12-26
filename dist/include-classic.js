@@ -42,7 +42,7 @@
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
+            inputScript("http://cdn.bootcss.com/echarts/3.8.5/echarts.min.js");
         }
         if (inArray(includes, 'nanoscroller')) {
             inputCSS("http://iclient.supermap.io/libs/iclient8c/examples/css/nanoscroller.css");

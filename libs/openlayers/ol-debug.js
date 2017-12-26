@@ -81913,7 +81913,7 @@ ol.ext.vectortile.VectorTile = function() {};
 (function() {(function (exports) {
 'use strict';
 
-var index$2 = Point;
+var pointGeometry = Point;
 function Point(x, y) {
     this.x = x;
     this.y = y;
@@ -82092,7 +82092,7 @@ VectorTileFeature$1.prototype.loadGeometry = function() {
                 if (line) lines.push(line);
                 line = [];
             }
-            line.push(new index$2(x, y));
+            line.push(new pointGeometry(x, y));
         } else if (cmd === 7) {
             if (line) {
                 line.push(line[0].clone());
@@ -82280,13 +82280,13 @@ function readTile(tag, layers, pbf) {
 var VectorTile = vectortile;
 var VectorTileFeature = vectortilefeature;
 var VectorTileLayer = vectortilelayer;
-var index = {
+var vectorTile = {
 	VectorTile: VectorTile,
 	VectorTileFeature: VectorTileFeature,
 	VectorTileLayer: VectorTileLayer
 };
 
-exports['default'] = index;
+exports['default'] = vectorTile;
 exports.VectorTile = VectorTile;
 exports.VectorTileFeature = VectorTileFeature;
 exports.VectorTileLayer = VectorTileLayer;

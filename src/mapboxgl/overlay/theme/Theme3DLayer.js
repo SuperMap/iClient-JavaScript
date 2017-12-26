@@ -23,7 +23,6 @@ import '../../core/Base';
 export class Theme3DLayer {
 
 
-
     constructor(id, layerOptions) {
         /**
          * @member  mapboxgl.supermap.Theme3DLayer.prototype.id -{string}
@@ -332,7 +331,7 @@ export class Theme3DLayer {
             'type': 'fill-extrusion',
             'source': sourceId,
             'paint': paintOptions
-        }, id);
+        });
         this.map.moveLayer(id);
     }
 

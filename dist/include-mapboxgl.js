@@ -36,8 +36,8 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'mapbox-gl')) {
-            inputCSS("https://cdn.bootcss.com/mapbox-gl/0.39.1/mapbox-gl.css");
-            inputScript("https://cdn.bootcss.com/mapbox-gl/0.39.1/mapbox-gl.js");
+            inputCSS("https://cdn.bootcss.com/mapbox-gl/0.43.0/mapbox-gl.css");
+            inputScript("https://cdn.bootcss.com/mapbox-gl/0.43.0/mapbox-gl.js");
         }
         if (inArray(includes, 'draw')) {
             inputCSS("http://iclient.supermap.io/libs/mapbox-gl-js/plugins/mapbox-gl-draw/mapbox-gl-draw.css");

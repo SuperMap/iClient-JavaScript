@@ -36,8 +36,8 @@
         var includes = (targetScript.getAttribute('include') || "").split(",");
         var excludes = (targetScript.getAttribute('exclude') || "").split(",");
         if (!inArray(excludes, 'ol')) {
-            inputCSS("http://openlayers.org/en/latest/css/ol.css");
-            inputScript("http://openlayers.org/en/latest/build/ol.js");
+            inputCSS("https://cdn.bootcss.com/openlayers/4.6.4/ol.css");
+            inputScript("https://cdn.bootcss.com/openlayers/4.6.4/ol.js");
         }
         if (inArray(includes, 'mapv')) {
             inputScript("http://mapv.baidu.com/build/mapv.min.js");
@@ -52,7 +52,7 @@
             inputCSS("../../dist/iclient9-openlayers.min.css");
         }
         if (inArray(includes, 'echarts')) {
-            inputScript("http://cdn.bootcss.com/echarts/3.6.2/echarts.min.js");
+            inputScript("http://cdn.bootcss.com/echarts/3.8.5/echarts.min.js");
         }
         if (inArray(includes, 'osmbuildings')) {
             inputScript("http://iclient.supermap.io/libs/osmbuildings/OSMBuildings-OL3.js");
