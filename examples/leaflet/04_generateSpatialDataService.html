@@ -22,9 +22,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map).on("load", function () {
-        generateSpatialDataAnalystProcess();
-    });
+    generateSpatialDataAnalystProcess();
 
     function generateSpatialDataAnalystProcess() {
         generateSpatialDataService = L.supermap.spatialAnalystService(serviceUrl);

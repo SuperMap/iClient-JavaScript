@@ -21,11 +21,8 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
-        .addTo(map)
-        .on("load", function () {
-            thiessenAnalystProcess();
-        });
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map)
+    thiessenAnalystProcess();
 
     function thiessenAnalystProcess() {
         thiessenAnalystService = L.supermap.spatialAnalystService(serviceUrl);
