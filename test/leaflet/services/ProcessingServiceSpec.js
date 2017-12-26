@@ -1128,7 +1128,7 @@ describe('leaflet_ProcessingService', function () {
     });
 
     /*测试outputsetting为MONGODB*/
-    it('addOverlayGeoJob, getOverlayGeoJobsState', function (done) {
+    xit('addOverlayGeoJob, getOverlayGeoJobsState', function (done) {
         var id = id_overlayGeoJob;
         spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
             if (testUrl === url + "/spatialanalyst/overlay.json?token=" + token) {

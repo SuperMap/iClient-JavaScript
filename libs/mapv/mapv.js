@@ -4,7 +4,7 @@
 	(factory((global.mapv = global.mapv || {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "2.0.13";
+var version = "2.0.14";
 
 /**
  * @author kyle / http://nikai.us/
@@ -21,7 +21,7 @@ var clear = function (context) {
  */
 
 var resolutionScale$1 = function (context) {
-    var devicePixelRatio = window.devicePixelRatio;
+    var devicePixelRatio = window.devicePixelRatio || 1;
     context.canvas.width = context.canvas.width * devicePixelRatio;
     context.canvas.height = context.canvas.height * devicePixelRatio;
     context.canvas.style.width = context.canvas.width / devicePixelRatio + 'px';
@@ -651,8 +651,9 @@ function Canvas(width, height) {
 
     if (typeof document === 'undefined') {
 
-        var Canvas = require('canvas');
-        canvas = new Canvas(width, height);
+        // var Canvas = require('canvas');
+        // canvas = new Canvas(width, height);
+
     } else {
 
         var canvas = document.createElement('canvas');
@@ -810,7 +811,7 @@ Intensity.prototype.getLegend = function (options) {
 
 var global$1 = typeof window === 'undefined' ? {} : window;
 
-var devicePixelRatio = global$1.devicePixelRatio;
+var devicePixelRatio = global$1.devicePixelRatio || 1;
 
 /**
  * @author kyle / http://nikai.us/
@@ -2112,6 +2113,12 @@ var cityCenter = {
             }
         }
 
+        for (var i = 0; i < citycenter.other.length; i++) {
+            if (citycenter.other[i].n == name) {
+                return getCenter(citycenter.other[i].g);
+            }
+        }
+
         var provinces = citycenter.provinces;
         for (var i = 0; i < provinces.length; i++) {
             if (provinces[i].n == name) {
@@ -2887,7 +2894,7 @@ if (global$3.BMap) {
         var size = this._map.getSize();
         var canvas = this.canvas;
 
-        var devicePixelRatio = this.devicePixelRatio = global$3.devicePixelRatio;
+        var devicePixelRatio = this.devicePixelRatio = global$3.devicePixelRatio || 1;
 
         canvas.width = size.width * devicePixelRatio;
         canvas.height = size.height * devicePixelRatio;
@@ -4224,6 +4231,7 @@ var AnimationLayer = function (_BaseLayer) {
             map: map,
             update: _this._canvasUpdate.bind(_this)
         });
+        _this.canvasLayer = canvasLayer;
         _this.transferToMercator();
         var self = _this;
         dataSet.on('change', function () {
@@ -4418,6 +4426,20 @@ var AnimationLayer = function (_BaseLayer) {
         key: "stop",
         value: function stop() {
             clearTimeout(this.timeout);
+        }
+    }, {
+        key: "unbindEvent",
+        value: function unbindEvent() {}
+    }, {
+        key: "hide",
+        value: function hide() {
+            this.canvasLayer.hide();
+            this.stop();
+        }
+    }, {
+        key: "show",
+        value: function show() {
+            this.start();
         }
     }]);
     return AnimationLayer;

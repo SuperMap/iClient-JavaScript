@@ -37,7 +37,7 @@ describe('leaflet_ChangeTileVersion', function () {
         map.remove();
     });
 
-    it('initialize', function () {
+    xit('initialize', function () {
         expect(changeTileVersion).not.toBeNull();
         expect(changeTileVersion.options.layer).not.toBeNull();
         expect(changeTileVersion.slider).not.toBeNull();

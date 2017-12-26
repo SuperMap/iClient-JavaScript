@@ -87,7 +87,7 @@
     "karma-teamcity-reporter": "^1.0.0",
     "leaflet": "^1.2.0",
     "mapbox-gl": "0.43.0",
-    "mapv": "2.0.13",
+    "mapv": "2.0.14",
     "nightwatch": "^0.9.5",
     "openlayers": "^4.6.4",
     "pngjs": "^3.3.0",
