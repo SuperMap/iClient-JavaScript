@@ -1127,6 +1127,97 @@ describe('leaflet_ProcessingService', function () {
         });
     });
 
+    /*测试outputsetting为MONGODB*/
+    it('addOverlayGeoJob, getOverlayGeoJobsState', function (done) {
+        var id = id_overlayGeoJob;
+        spyOn(FetchRequest, 'post').and.callFake(function (testUrl) {
+            if (testUrl === url + "/spatialanalyst/overlay.json?token=" + token) {
+                var escapedJson = overlayGeoJob_post;
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        spyOn(FetchRequest, 'get').and.callFake(function (newResourceLocationURL) {
+            if (newResourceLocationURL === url + "/spatialanalyst/overlay/" + id) {
+                var escapedJson = overlayGeoJob_get;
+                return Promise.resolve(new Response(escapedJson));
+            }
+            return Promise.resolve();
+        });
+        var output = new SuperMap.OutputSetting({
+            type: "MONGODB",
+            datasetName: "analystResult",
+            datasourceInfo: new SuperMap.DatasourceConnectionInfo({
+                server: "mongodb://127.0.0.1:27010/",
+                dataBase: "Overlaybase",
+                engineType: "MONGODB",
+                alias: "OverlayTest"
+            })
+        });
+        var overlayGeoJobParameter = new SuperMap.OverlayGeoJobParameter({
+            datasetName: "samples_processing_newyorkZone_R",      //必填参数, 源数据集
+            datasetOverlay: "samples_processing_singleRegion_R",  //必填参数, 叠加对象所在的数据集名称
+            mode: "clip",                                         //必填参数, 叠加分析模式
+            srcFields: "LocationID",                               //选填参数, 输入数据需要保留的字段
+            overlayFields: "type" ,         //叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效
+            output: output
+        });
+        processingService.addOverlayGeoJob(overlayGeoJobParameter, function (result) {
+            expect(result.type).toBe("processCompleted");
+            expect(result.object.CLASS_NAME).toBe("SuperMap.OverlayGeoJobsService");
+            expect(result.object.format).toBe("GEOJSON");
+            expect(result.object.url).toBe(url + "/spatialanalyst/overlay");
+            expect(result.result.id).toBe(id);
+            var state = result.result.state;
+            expect(state.elapsedTime).toEqual(19078);
+            expect(state.endState).toBeTruthy();
+            expect(state.startTime).toEqual(1511325446907);
+            expect(state.endTime).toEqual(1511325475735);
+            expect(state.errorMsg).toBeNull();
+            expect(state.errorStackTrace).toBeNull();
+            expect(state.publisherelapsedTime).toEqual(9281);
+            expect(state.runState).toBe("FINISHED");
+            var setting = result.result.setting;
+            expect(setting.analyst.mode).toBe("clip");
+            expect(setting.analyst.datasetOverlay).toBe("samples_processing_newyorkResidential_R");
+            expect(setting.analyst.overlayFields).toBe("type");
+            expect(setting.analyst.srcFields).toBe("LocationID");
+            expect(setting.analyst.inputOverlay).toBe("{\"type\":\"udb\",\"info\":[{\"server\":\"D:\\\\processing.udb\",\"datasetNames\":[\"newyorkResidential_R\"]}]}");
+            expect(setting.appName).toBe("overlayAnalyst");
+            expect(setting.input.datasetInfo.name).toBe("samples_processing_newyorkZone_R");
+            expect(setting.input.datasetInfo.datasetName).toBe("newyorkZone_R");
+            expect(setting.input.datasetInfo.type).toBe("UDB");
+            expect(setting.input.datasetInfo.url).toBe("D:\\processing.udb");
+            expect(setting.input.datasetInfo.datasetType).toBe("REGION");
+            expect(setting.input.datasetInfo.bounds).toBe("Left=-74.25551784310493,Bottom=40.496084221255856,Right=-73.70014827248451,Top=40.91538866049913");
+            expect(setting.input.datasetInfo.epsgCode).toEqual(4326);
+            expect(setting.input.datasetName).toBe("samples_processing_newyorkZone_R");
+            expect(setting.output.datasetName).toBe("analystResult");
+            expect(setting.output.datasourceInfo.server).toBe("mongodb://127.0.0.1:27010/");
+            expect(setting.output.datasourceInfo.dataBase).toBe("Overlaybase");
+            expect(setting.output.datasourceInfo.engineType).toBe("MONGODB");
+            expect(setting.output.datasourceInfo.alias).toBe("OverlayTest");
+            expect(setting.output.outputPath).toBe("D:\\overlayAnalystGeo.smwu");
+            expect(setting.output.type).toBe("MONGODB");
+            expect(setting.serviceInfo.targetDataPath).toBe("D:\\overlayAnalystGeo.smwu");
+            expect(setting.serviceInfo.targetServiceInfos.length).toEqual(2);
+            expect(setting.serviceRoot).toBe("http://supermapiserver:8090/iserver/services/");
+            // getOverlayGeoJobsState
+            var overlayGeoJobState = processingService.getoverlayGeoJobState(id);
+            expect(overlayGeoJobState.elapsedTime).toEqual(19078);
+            expect(overlayGeoJobState.endState).toBeTruthy();
+            expect(overlayGeoJobState.startTime).toEqual(1511325446907);
+            expect(overlayGeoJobState.endTime).toEqual(1511325475735);
+            expect(overlayGeoJobState.errorMsg).toBeNull();
+            expect(overlayGeoJobState.errorStackTrace).toBeNull();
+            expect(overlayGeoJobState.publisherelapsedTime).toEqual(9281);
+            expect(overlayGeoJobState.runState).toBe("FINISHED");
+            overlayGeoJobParameter.destroy();
+            processingService.destroy();
+            done();
+        });
+    });
+
     /*BuffersAnalystJobsService*/
     it('getBuffersJobs_processCompleted', function (done) {
         var id = id_buffersAnalystJob;
@@ -1484,5 +1575,7 @@ describe('leaflet_ProcessingService', function () {
             done();
         });
     });
+
+
 });
 

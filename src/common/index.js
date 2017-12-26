@@ -52,7 +52,8 @@ import {
     AnalystAreaUnit,
     AnalystSizeUnit,
     StatisticAnalystMode,
-    TopologyValidatorRule
+    TopologyValidatorRule,
+    OutputType
 
 } from './REST';
 import {
@@ -219,6 +220,7 @@ import {
     MeasureParameters,
     MeasureService,
     NetworkAnalystServiceBase,
+    OutputSetting,
     OverlapDisplayedOptions,
     OverlayAnalystParameters,
     OverlayAnalystService,
@@ -463,7 +465,8 @@ export {
     AnalystAreaUnit,
     AnalystSizeUnit,
     StatisticAnalystMode,
-    TopologyValidatorRule
+    TopologyValidatorRule,
+    OutputType
 };
 export {
     Collection,
@@ -634,6 +637,7 @@ export {
     MeasureService,
     NetworkAnalystServiceBase,
     OverlapDisplayedOptions,
+    OutputSetting,
     OverlayAnalystParameters,
     OverlayAnalystService,
     OverlayGeoJobParameter,

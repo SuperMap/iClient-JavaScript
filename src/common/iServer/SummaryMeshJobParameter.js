@@ -1,6 +1,7 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
-import {StatisticAnalystMode, SummaryType} from '../REST'
+import {StatisticAnalystMode, SummaryType} from '../REST';
+import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.SummaryMeshJobParameter
@@ -13,6 +14,7 @@ import {StatisticAnalystMode, SummaryType} from '../REST'
  *        meshType -{number}分析类型。<br>
  *        fields -{number}权重索引。<br>
  *        type -{{@link SuperMap.SummaryType}} 聚合类型。
+ *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 export class SummaryMeshJobParameter {
 
@@ -68,6 +70,12 @@ export class SummaryMeshJobParameter {
          */
         this.type = SummaryType.SUMMARYMESH;
 
+        /**
+         * @member SuperMap.SummaryMeshJobParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryMeshJobParameter";
@@ -87,6 +95,10 @@ export class SummaryMeshJobParameter {
         this.fields = null;
         this.regionDataset = null;
         this.type = null;
+        if (this.output instanceof OutputSetting) {
+            this.output.destroy();
+            this.output = null;
+        }
     }
 
     /**
@@ -106,6 +118,11 @@ export class SummaryMeshJobParameter {
                 tempObj['type'] = summaryMeshJobParameter[name];
                 continue;
             }
+            if (name === "output"){
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'] = summaryMeshJobParameter[name];
+                continue;
+            }
             if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 if (name === 'query') {
@@ -114,6 +131,7 @@ export class SummaryMeshJobParameter {
                     tempObj['analyst'][name] = summaryMeshJobParameter[name];
                 }
             }
+
         }
 
         function contains(arr, obj) {

@@ -1,6 +1,7 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {AnalystSizeUnit} from '../REST';
+import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.BuffersAnalystJobsParameter
@@ -12,6 +13,7 @@ import {AnalystSizeUnit} from '../REST';
  *         distanceField -{string} 缓冲区分析距离字段。 <br>
  *         distanceUnit -{{@link SuperMap.AnalystSizeUnit}} 缓冲距离单位单位。 <br>
  *         distance -{string} 缓冲区半径。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 export class BuffersAnalystJobsParameter {
 
@@ -52,6 +54,13 @@ export class BuffersAnalystJobsParameter {
          * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
          */
         this.dissolveField = "";
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         if (!options) {
             return this;
         }
@@ -71,6 +80,10 @@ export class BuffersAnalystJobsParameter {
         this.distanceField = null;
         this.distanceUnit = null;
         this.dissolveField = null;
+        if (this.output instanceof OutputSetting) {
+            this.output.destroy();
+            this.output = null;
+        }
     }
 
     /**
@@ -84,6 +97,11 @@ export class BuffersAnalystJobsParameter {
             if (name === "datasetName") {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = BuffersAnalystJobsParameter[name];
+                continue;
+            }
+            if (name === "output"){
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'] = BuffersAnalystJobsParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};

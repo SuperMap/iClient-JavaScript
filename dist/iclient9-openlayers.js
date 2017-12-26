@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 475);
+/******/ 	return __webpack_require__(__webpack_require__.s = 476);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -102,7 +102,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _SuperMap = __webpack_require__(0);
 
-__webpack_require__(43);
+__webpack_require__(44);
 
 var Util = exports.Util = _SuperMap.SuperMap.Util = _SuperMap.SuperMap.Util || {};
 /**
@@ -1159,7 +1159,7 @@ _SuperMap.SuperMap.Util.getTextBounds = function (style, text, element) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TopologyValidatorRule = exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
+exports.TopologyValidatorRule = exports.SummaryType = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.ChartType = exports.ClientType = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ColorSpaceType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.DataReturnMode = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.OutputType = exports.OverlayOperationType = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.SideType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.EngineType = exports.BufferRadiusUnit = exports.Unit = exports.MeasureMode = exports.SpatialRelationType = exports.SpatialQueryMode = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
@@ -1799,6 +1799,23 @@ var OverlayOperationType = exports.OverlayOperationType = _SuperMap.SuperMap.Ove
 };
 
 /**
+ * @name OutputType
+ * @memberOf SuperMap
+ * @description  分布式分析输出类型枚举。
+ *
+ * @property {string} INDEXEDHDFS  INDEXEDHDFS
+ * @property {string} UDB  UDB
+ * @property {string} MONGODB  MONGODB
+ * @property {string} PG  PG
+ */
+var OutputType = exports.OutputType = _SuperMap.SuperMap.OutputType = {
+  INDEXEDHDFS: "INDEXEDHDFS",
+  UDB: "UDB",
+  MONGODB: "MONGODB",
+  PG: "PG"
+};
+
+/**
  * @name SmoothMethod
  * @memberOf SuperMap
  * @description  光滑方法枚举。
@@ -2240,38 +2257,38 @@ module.exports = ol;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ElasticSearch = exports.ThemeStyle = exports.CartoCSS = exports.TokenServiceParameter = exports.ServerInfo = exports.SecurityManager = exports.KeyServiceParameter = exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = exports.ThemeVector = exports.Ring = exports.RankSymbol = exports.OverlayPoint = exports.Pie = exports.Line = exports.Graph = exports.Circle = exports.Bar3D = exports.Bar = exports.OnlineServiceBase = exports.OnlineResources = exports.OnlineQueryDatasParameter = exports.OnlineData = exports.Online = exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector = exports.UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightParameters = exports.UpdateEdgeWeightService = exports.UpdateEdgeWeightParameters = exports.UGCSubLayer = exports.UGCMapLayer = exports.UGCLayer = undefined;
-exports.TransferSolutionParameters = exports.TransportationAnalystResultSetting = exports.TransportationAnalystParameter = exports.TransferSolutionService = exports.TransferPathService = exports.TransferPathParameters = exports.TransferLine = exports.TopologyValidatorJobsService = exports.TopologyValidatorJobsParameter = exports.TilesetsService = exports.ThiessenAnalystService = exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OverlapDisplayedOptions = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = undefined;
-exports.LabelSymbolCell = exports.LabelMixedTextStyle = exports.LabelMatrixCell = exports.LabelImageCell = exports.KernelDensityJobsService = exports.KernelDensityJobParameter = exports.JoinItem = exports.InterpolationRBFAnalystParameters = exports.InterpolationKrigingAnalystParameters = exports.InterpolationIDWAnalystParameters = exports.InterpolationAnalystService = exports.InterpolationAnalystParameters = exports.UGCImage = exports.Grid = exports.GetLayersInfoService = exports.GetGridCellInfosService = exports.GetGridCellInfosParameters = exports.GetFieldsService = exports.GetFeaturesServiceBase = exports.GetFeaturesParametersBase = exports.GetFeaturesBySQLService = exports.GetFeaturesBySQLParameters = exports.GetFeaturesByIDsService = exports.GetFeaturesByIDsParameters = exports.GetFeaturesByGeometryService = exports.GetFeaturesByGeometryParameters = exports.GetFeaturesByBufferService = exports.GetFeaturesByBufferParameters = exports.GetFeaturesByBoundsService = exports.GetFeaturesByBoundsParameters = exports.GeoRelationAnalystService = exports.GeoRelationAnalystParameters = exports.GeometryThiessenAnalystParameters = exports.GeometrySurfaceAnalystParameters = exports.GeometryOverlayAnalystParameters = exports.GeometryBufferAnalystParameters = exports.GeoDecodingParameter = exports.GeoCodingParameter = exports.GenerateSpatialDataService = exports.GenerateSpatialDataParameters = exports.FindTSPPathsService = exports.FindTSPPathsParameters = exports.FindServiceAreasService = exports.FindServiceAreasParameters = exports.FindPathService = exports.FindPathParameters = exports.FindMTSPPathsService = exports.FindMTSPPathsParameters = exports.FindLocationService = exports.FindLocationParameters = exports.FindClosestFacilitiesService = exports.FindClosestFacilitiesParameters = exports.FilterParameter = exports.FieldStatisticsParameters = exports.FieldStatisticService = exports.FieldParameters = exports.FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DParameters = exports.FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DParameters = exports.FacilityAnalystStreamService = exports.FacilityAnalystStreamParameters = exports.FacilityAnalystSources3DService = exports.FacilityAnalystSources3DParameters = exports.FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DParameters = exports.FacilityAnalyst3DParameters = exports.EditFeaturesService = exports.EditFeaturesParameters = exports.DensityKernelAnalystParameters = exports.DensityAnalystService = exports.DatasourceConnectionInfo = exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParameters = exports.DatasetOverlayAnalystParameters = exports.DatasetInfo = exports.DatasetBufferAnalystParameters = exports.DataReturnOption = exports.DataFlowService = exports.ComputeWeightMatrixService = exports.ComputeWeightMatrixParameters = exports.CommonServiceBase = exports.ColorDictionary = exports.ClipParameter = exports.ChartQueryService = exports.ChartQueryParameters = exports.ChartQueryFilterParameter = exports.ChartFeatureInfoSpecsService = exports.BurstPipelineAnalystService = exports.BurstPipelineAnalystParameters = exports.BuffersAnalystJobsService = exports.BuffersAnalystJobsParameter = exports.BufferSetting = exports.BufferDistance = exports.BufferAnalystService = exports.BufferAnalystParameters = exports.AreaSolarRadiationService = exports.AreaSolarRadiationParameters = undefined;
-exports.AddressMatchService = exports.IPortalServicesQueryParam = exports.IPortalServiceBase = exports.IPortalService = exports.IPortalMapsQueryParam = exports.IPortalMap = exports.IPortal = exports.IManagerServiceBase = exports.IManagerCreateNodeParam = exports.IManager = exports.FetchRequest = exports.RequestTimeout = exports.CORS = exports.WKT = exports.JSONFormat = exports.GeoJSON = exports.Format = exports.TimeFlowControl = exports.TimeControlBase = exports.GeometryVector = exports.CommonUtil = exports.Size = exports.Pixel = exports.LonLat = exports.Geometry = exports.Feature = exports.Events = exports.Event = exports.DateExt = exports.Credential = exports.Bounds = exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = exports.TopologyValidatorRule = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SummaryType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ClientType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.ChartType = exports.ColorSpaceType = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.OverlayOperationType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.SideType = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.SpatialQueryMode = exports.BufferRadiusUnit = exports.Unit = exports.DataReturnMode = exports.SpatialRelationType = exports.MeasureMode = exports.EngineType = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = exports.SuperMap = undefined;
+exports.ElasticSearch = exports.ThemeStyle = exports.CartoCSS = exports.TokenServiceParameter = exports.ServerInfo = exports.SecurityManager = exports.KeyServiceParameter = exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = exports.ThemeVector = exports.Ring = exports.RankSymbol = exports.OverlayPoint = exports.Pie = exports.Line = exports.Graph = exports.Circle = exports.Bar3D = exports.Bar = exports.OnlineServiceBase = exports.OnlineResources = exports.OnlineQueryDatasParameter = exports.OnlineData = exports.Online = exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector = exports.UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightParameters = exports.UpdateEdgeWeightService = exports.UpdateEdgeWeightParameters = exports.UGCSubLayer = exports.UGCMapLayer = exports.UGCLayer = exports.TransferSolutionParameters = exports.TransportationAnalystResultSetting = undefined;
+exports.TransportationAnalystParameter = exports.TransferSolutionService = exports.TransferPathService = exports.TransferPathParameters = exports.TransferLine = exports.TopologyValidatorJobsService = exports.TopologyValidatorJobsParameter = exports.TilesetsService = exports.ThiessenAnalystService = exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OutputSetting = exports.OverlapDisplayedOptions = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = exports.LabelSymbolCell = undefined;
+exports.LabelMixedTextStyle = exports.LabelMatrixCell = exports.LabelImageCell = exports.KernelDensityJobsService = exports.KernelDensityJobParameter = exports.JoinItem = exports.InterpolationRBFAnalystParameters = exports.InterpolationKrigingAnalystParameters = exports.InterpolationIDWAnalystParameters = exports.InterpolationAnalystService = exports.InterpolationAnalystParameters = exports.UGCImage = exports.Grid = exports.GetLayersInfoService = exports.GetGridCellInfosService = exports.GetGridCellInfosParameters = exports.GetFieldsService = exports.GetFeaturesServiceBase = exports.GetFeaturesParametersBase = exports.GetFeaturesBySQLService = exports.GetFeaturesBySQLParameters = exports.GetFeaturesByIDsService = exports.GetFeaturesByIDsParameters = exports.GetFeaturesByGeometryService = exports.GetFeaturesByGeometryParameters = exports.GetFeaturesByBufferService = exports.GetFeaturesByBufferParameters = exports.GetFeaturesByBoundsService = exports.GetFeaturesByBoundsParameters = exports.GeoRelationAnalystService = exports.GeoRelationAnalystParameters = exports.GeometryThiessenAnalystParameters = exports.GeometrySurfaceAnalystParameters = exports.GeometryOverlayAnalystParameters = exports.GeometryBufferAnalystParameters = exports.GeoDecodingParameter = exports.GeoCodingParameter = exports.GenerateSpatialDataService = exports.GenerateSpatialDataParameters = exports.FindTSPPathsService = exports.FindTSPPathsParameters = exports.FindServiceAreasService = exports.FindServiceAreasParameters = exports.FindPathService = exports.FindPathParameters = exports.FindMTSPPathsService = exports.FindMTSPPathsParameters = exports.FindLocationService = exports.FindLocationParameters = exports.FindClosestFacilitiesService = exports.FindClosestFacilitiesParameters = exports.FilterParameter = exports.FieldStatisticsParameters = exports.FieldStatisticService = exports.FieldParameters = exports.FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DParameters = exports.FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DParameters = exports.FacilityAnalystStreamService = exports.FacilityAnalystStreamParameters = exports.FacilityAnalystSources3DService = exports.FacilityAnalystSources3DParameters = exports.FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DParameters = exports.FacilityAnalyst3DParameters = exports.EditFeaturesService = exports.EditFeaturesParameters = exports.DensityKernelAnalystParameters = exports.DensityAnalystService = exports.DatasourceConnectionInfo = exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParameters = exports.DatasetOverlayAnalystParameters = exports.DatasetInfo = exports.DatasetBufferAnalystParameters = exports.DataReturnOption = exports.DataFlowService = exports.ComputeWeightMatrixService = exports.ComputeWeightMatrixParameters = exports.CommonServiceBase = exports.ColorDictionary = exports.ClipParameter = exports.ChartQueryService = exports.ChartQueryParameters = exports.ChartQueryFilterParameter = exports.ChartFeatureInfoSpecsService = exports.BurstPipelineAnalystService = exports.BurstPipelineAnalystParameters = exports.BuffersAnalystJobsService = exports.BuffersAnalystJobsParameter = exports.BufferSetting = exports.BufferDistance = exports.BufferAnalystService = exports.BufferAnalystParameters = exports.AreaSolarRadiationService = exports.AreaSolarRadiationParameters = exports.AddressMatchService = undefined;
+exports.IPortalServicesQueryParam = exports.IPortalServiceBase = exports.IPortalService = exports.IPortalMapsQueryParam = exports.IPortalMap = exports.IPortal = exports.IManagerServiceBase = exports.IManagerCreateNodeParam = exports.IManager = exports.FetchRequest = exports.RequestTimeout = exports.CORS = exports.WKT = exports.JSONFormat = exports.GeoJSON = exports.Format = exports.TimeFlowControl = exports.TimeControlBase = exports.GeometryVector = exports.CommonUtil = exports.Size = exports.Pixel = exports.LonLat = exports.Geometry = exports.Feature = exports.Events = exports.Event = exports.DateExt = exports.Credential = exports.Bounds = exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = exports.OutputType = exports.TopologyValidatorRule = exports.StatisticAnalystMode = exports.AnalystSizeUnit = exports.AnalystAreaUnit = exports.ClipAnalystMode = exports.Exponent = exports.VariogramMode = exports.InterpolationAlgorithmType = exports.SummaryType = exports.SearchMode = exports.PixelFormat = exports.StatisticMode = exports.UGCLayerType = exports.LayerType = exports.ClientType = exports.GridType = exports.TransferPreference = exports.TransferTactic = exports.EditType = exports.ChartType = exports.ColorSpaceType = exports.SurfaceAnalystMethod = exports.SmoothMethod = exports.BufferEndType = exports.TurnType = exports.SupplyCenterType = exports.OverlayOperationType = exports.DirectionType = exports.LabelOverLengthMode = exports.LabelBackShape = exports.AlongLineDirection = exports.SideType = exports.FillGradientMode = exports.TextAlignment = exports.ColorGradientType = exports.ThemeType = exports.RangeMode = exports.GraduatedMode = exports.GraphAxesTextDisplayMode = exports.ThemeGraphType = exports.ThemeGraphTextFormat = exports.SpatialQueryMode = exports.BufferRadiusUnit = exports.Unit = exports.DataReturnMode = exports.SpatialRelationType = exports.MeasureMode = exports.EngineType = exports.JoinType = exports.QueryOption = exports.GeometryType = exports.ServerType = exports.DataFormat = exports.SuperMap = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
 var _REST = __webpack_require__(2);
 
-var _commontypes = __webpack_require__(306);
+var _commontypes = __webpack_require__(307);
 
-var _format = __webpack_require__(309);
+var _format = __webpack_require__(310);
 
-var _control = __webpack_require__(307);
+var _control = __webpack_require__(308);
 
-var _iManager = __webpack_require__(310);
+var _iManager = __webpack_require__(311);
 
-var _iPortal = __webpack_require__(311);
+var _iPortal = __webpack_require__(312);
 
-var _iServer = __webpack_require__(382);
+var _iServer = __webpack_require__(383);
 
-var _online = __webpack_require__(384);
+var _online = __webpack_require__(385);
 
-var _security = __webpack_require__(404);
+var _security = __webpack_require__(405);
 
-var _thirdparty = __webpack_require__(409);
+var _thirdparty = __webpack_require__(410);
 
-var _util = __webpack_require__(411);
+var _util = __webpack_require__(412);
 
-var _style = __webpack_require__(407);
+var _style = __webpack_require__(408);
 
-var _overlay = __webpack_require__(394);
+var _overlay = __webpack_require__(395);
 
 exports.SuperMap = _SuperMap.SuperMap;
 exports.DataFormat = _REST.DataFormat;
@@ -2327,6 +2344,7 @@ exports.AnalystAreaUnit = _REST.AnalystAreaUnit;
 exports.AnalystSizeUnit = _REST.AnalystSizeUnit;
 exports.StatisticAnalystMode = _REST.StatisticAnalystMode;
 exports.TopologyValidatorRule = _REST.TopologyValidatorRule;
+exports.OutputType = _REST.OutputType;
 exports.Collection = _commontypes.Collection;
 exports.Curve = _commontypes.Curve;
 exports.GeoText = _commontypes.GeoText;
@@ -2483,6 +2501,7 @@ exports.MeasureParameters = _iServer.MeasureParameters;
 exports.MeasureService = _iServer.MeasureService;
 exports.NetworkAnalystServiceBase = _iServer.NetworkAnalystServiceBase;
 exports.OverlapDisplayedOptions = _iServer.OverlapDisplayedOptions;
+exports.OutputSetting = _iServer.OutputSetting;
 exports.OverlayAnalystParameters = _iServer.OverlayAnalystParameters;
 exports.OverlayAnalystService = _iServer.OverlayAnalystService;
 exports.OverlayGeoJobParameter = _iServer.OverlayGeoJobParameter;
@@ -2673,21 +2692,21 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
-var _Events = __webpack_require__(58);
+var _Events = __webpack_require__(59);
 
-var _Credential = __webpack_require__(81);
+var _Credential = __webpack_require__(82);
 
-var _SecurityManager = __webpack_require__(34);
+var _SecurityManager = __webpack_require__(35);
 
 var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _JSON = __webpack_require__(85);
+var _JSON = __webpack_require__(86);
 
-var _BaseTypes = __webpack_require__(43);
+var _BaseTypes = __webpack_require__(44);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3063,7 +3082,7 @@ var TWO_PI = Math.PI * 2;
 // have drifted from their original location along the 180th meridian (due to
 // floating point error) from changing their sign.
 var SPI = 3.14159265359;
-var sign = __webpack_require__(57);
+var sign = __webpack_require__(58);
 
 module.exports = function (x) {
   return Math.abs(x) <= SPI ? x : x - sign(x) * TWO_PI;
@@ -3446,21 +3465,21 @@ var _SuperMap = __webpack_require__(0);
 
 var _Point = __webpack_require__(18);
 
-var _MultiPoint = __webpack_require__(36);
+var _MultiPoint = __webpack_require__(37);
 
-var _LinearRing = __webpack_require__(30);
+var _LinearRing = __webpack_require__(31);
 
 var _LineString = __webpack_require__(17);
 
-var _MultiLineString = __webpack_require__(44);
+var _MultiLineString = __webpack_require__(45);
 
-var _Polygon = __webpack_require__(46);
+var _Polygon = __webpack_require__(47);
 
-var _MultiPolygon = __webpack_require__(45);
+var _MultiPolygon = __webpack_require__(46);
 
 var _ServerStyle = __webpack_require__(11);
 
-var _Route = __webpack_require__(64);
+var _Route = __webpack_require__(65);
 
 var _Util = __webpack_require__(1);
 
@@ -4274,7 +4293,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerColor = __webpack_require__(20);
+var _ServerColor = __webpack_require__(21);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4510,29 +4529,29 @@ exports.SUtil = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Area = __webpack_require__(248);
+var _Area = __webpack_require__(249);
 
-var _Color = __webpack_require__(97);
+var _Color = __webpack_require__(99);
 
-var _ComputeBoundingBox = __webpack_require__(250);
+var _ComputeBoundingBox = __webpack_require__(251);
 
-var _Curve = __webpack_require__(75);
+var _Curve = __webpack_require__(76);
 
-var _Env = __webpack_require__(252);
+var _Env = __webpack_require__(253);
 
-var _Event = __webpack_require__(253);
+var _Event = __webpack_require__(254);
 
-var _Http = __webpack_require__(256);
+var _Http = __webpack_require__(257);
 
-var _Log = __webpack_require__(257);
+var _Log = __webpack_require__(258);
 
-var _Math = __webpack_require__(258);
+var _Math = __webpack_require__(259);
 
-var _Matrix = __webpack_require__(259);
+var _Matrix = __webpack_require__(260);
 
-var _Util = __webpack_require__(29);
+var _Util = __webpack_require__(30);
 
-var _Vector = __webpack_require__(78);
+var _Vector = __webpack_require__(79);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4791,9 +4810,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Eventful = __webpack_require__(50);
+var _Eventful = __webpack_require__(51);
 
-var _Transformable = __webpack_require__(77);
+var _Transformable = __webpack_require__(78);
 
 var _Util = __webpack_require__(1);
 
@@ -5752,29 +5771,29 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Vector = __webpack_require__(60);
+var _Vector = __webpack_require__(61);
 
 var _Util = __webpack_require__(1);
 
-var _Bounds = __webpack_require__(22);
+var _Bounds = __webpack_require__(23);
 
-var _Collection = __webpack_require__(27);
+var _Collection = __webpack_require__(28);
 
-var _JSON = __webpack_require__(85);
+var _JSON = __webpack_require__(86);
 
 var _Point = __webpack_require__(18);
 
-var _MultiPoint = __webpack_require__(36);
+var _MultiPoint = __webpack_require__(37);
 
 var _LineString = __webpack_require__(17);
 
-var _MultiLineString = __webpack_require__(44);
+var _MultiLineString = __webpack_require__(45);
 
-var _LinearRing = __webpack_require__(30);
+var _LinearRing = __webpack_require__(31);
 
-var _Polygon = __webpack_require__(46);
+var _Polygon = __webpack_require__(47);
 
-var _MultiPolygon = __webpack_require__(45);
+var _MultiPolygon = __webpack_require__(46);
 
 var _REST = __webpack_require__(2);
 
@@ -6747,9 +6766,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(62);
+__webpack_require__(63);
 
-__webpack_require__(191);
+__webpack_require__(192);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6907,7 +6926,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Point = __webpack_require__(18);
 
-var _Curve2 = __webpack_require__(82);
+var _Curve2 = __webpack_require__(83);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7265,7 +7284,7 @@ _SuperMap.SuperMap.Geometry.LineString = LineString;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Point = undefined;
 
@@ -7275,9 +7294,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Geometry2 = __webpack_require__(26);
+var _Geometry2 = __webpack_require__(27);
 
-var _Bounds = __webpack_require__(22);
+var _Bounds = __webpack_require__(23);
 
 var _Util = __webpack_require__(1);
 
@@ -7299,156 +7318,246 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var point = new SuperMap.Geometry.Point(-111.04, 45.68);
  */
 var Point = exports.Point = function (_Geometry) {
-    _inherits(Point, _Geometry);
+  _inherits(Point, _Geometry);
 
-    function Point(x, y, type, tag) {
-        _classCallCheck(this, Point);
+  function Point(x, y, type, tag) {
+    _classCallCheck(this, Point);
 
-        /**
-         * @member SuperMap.Geometry.Point.prototype.x -{float}
-         * @description 横坐标。
-         */
-        var _this = _possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this, x, y, type, tag));
+    /**
+     * @member SuperMap.Geometry.Point.prototype.x -{float}
+     * @description 横坐标。
+     */
+    var _this = _possibleConstructorReturn(this, (Point.__proto__ || Object.getPrototypeOf(Point)).call(this, x, y, type, tag));
 
-        _this.x = parseFloat(x);
+    _this.x = parseFloat(x);
 
-        /**
-         * @member SuperMap.Geometry.Point.prototype.y -{float}
-         * @description 纵坐标。
-         */
-        _this.y = parseFloat(y);
+    /**
+     * @member SuperMap.Geometry.Point.prototype.y -{float}
+     * @description 纵坐标。
+     */
+    _this.y = parseFloat(y);
 
-        /**
-         * @member SuperMap.Geometry.Point.prototype.tag -{string}
-         * @description  用来存储额外的属性，比如差值分析中的Z值。
-         */
-        _this.tag = tag || tag == 0 ? parseFloat(tag) : null;
+    /**
+     * @member SuperMap.Geometry.Point.prototype.tag -{string}
+     * @description  用来存储额外的属性，比如差值分析中的Z值。
+     */
+    _this.tag = tag || tag == 0 ? parseFloat(tag) : null;
 
-        /**
-         * @member SuperMap.Geometry.Point.prototype.tag -{string}
-         * @description  用来存储点的类型
-         */
-        _this.type = type || "Point";
-        _this.CLASS_NAME = "SuperMap.Geometry.Point";
-        return _this;
+    /**
+     * @member SuperMap.Geometry.Point.prototype.tag -{string}
+     * @description  用来存储点的类型
+     */
+    _this.type = type || "Point";
+    _this.CLASS_NAME = "SuperMap.Geometry.Point";
+    return _this;
+  }
+
+  /**
+   * @function SuperMap.Geometry.Point.prototype.clone
+   * @description 克隆点对象。
+   * @returns {SuperMap.Geometry.Point} 克隆后的点对象。
+   */
+
+
+  _createClass(Point, [{
+    key: 'clone',
+    value: function clone(obj) {
+      if (obj == null) {
+        obj = new Point(this.x, this.y);
+      }
+
+      // catch any randomly tagged-on properties
+      _Util.Util.applyDefaults(obj, this);
+
+      return obj;
     }
 
     /**
-     * @function SuperMap.Geometry.Point.prototype.clone
-     * @description 克隆点对象。
-     * @returns {SuperMap.Geometry.Point} 克隆后的点对象。
+     * @function SuperMap.Geometry.Point.prototype.calculateBounds
+     * @description 计算点对象的范围。
      */
 
+  }, {
+    key: 'calculateBounds',
+    value: function calculateBounds() {
+      this.bounds = new _Bounds.Bounds(this.x, this.y, this.x, this.y);
+    }
 
-    _createClass(Point, [{
-        key: 'clone',
-        value: function clone(obj) {
-            if (obj == null) {
-                obj = new Point(this.x, this.y);
-            }
+    /**
+     * @function SuperMap.Geometry.Point.prototype.equals
+     * @description 判断两个点对象是否相等。如果两个点对象具有相同的坐标，则认为是相等的。
+     * @example
+     * var point= new SuperMap.Geometry.Point(0,0);
+     * var point1={x:0,y:0};
+     * var result= point.equals(point1);
+     * @param geom - {SuperMap.Geometry.Point} 需要判断的点对象。
+     *
+     * @returns {Boolean} 两个点对象是否相等（true为相等，false为不等）。
+     */
 
-            // catch any randomly tagged-on properties
-            _Util.Util.applyDefaults(obj, this);
+  }, {
+    key: 'equals',
+    value: function equals(geom) {
+      var equals = false;
+      if (geom != null) {
+        equals = this.x === geom.x && this.y === geom.y || isNaN(this.x) && isNaN(this.y) && isNaN(geom.x) && isNaN(geom.y);
+      }
+      return equals;
+    }
 
-            return obj;
-        }
+    /**
+     * @function SuperMap.Geometry.Point.prototype.move
+     * @description 沿着x、y轴的正方向上按照给定的位移移动点对象，move 不仅改变了几何对象的位置并且清理了边界缓存。
+     * @param x - {float} x轴正方向上的偏移量。
+     * @param y - {float} y轴正方向上偏移量。
+     */
 
-        /**
-         * @function SuperMap.Geometry.Point.prototype.calculateBounds
-         * @description 计算点对象的范围。
-         */
+  }, {
+    key: 'move',
+    value: function move(x, y) {
+      this.x = this.x + x;
+      this.y = this.y + y;
+      this.clearBounds();
+    }
 
-    }, {
-        key: 'calculateBounds',
-        value: function calculateBounds() {
-            this.bounds = new _Bounds.Bounds(this.x, this.y, this.x, this.y);
-        }
+    /**
+     * @function SuperMap.Geometry.Point.prototype.toShortString
+     * @returns {string} 字符串代表点对象。(ex. <i>"5, 42"</i>)
+     */
 
-        /**
-         * @function SuperMap.Geometry.Point.prototype.equals
-         * @description 判断两个点对象是否相等。如果两个点对象具有相同的坐标，则认为是相等的。
-         * @example
-         * var point= new SuperMap.Geometry.Point(0,0);
-         * var point1={x:0,y:0};
-         * var result= point.equals(point1);
-         * @param geom - {SuperMap.Geometry.Point} 需要判断的点对象。
-         *
-         * @returns {Boolean} 两个点对象是否相等（true为相等，false为不等）。
-         */
+  }, {
+    key: 'toShortString',
+    value: function toShortString() {
+      return this.x + ", " + this.y;
+    }
 
-    }, {
-        key: 'equals',
-        value: function equals(geom) {
-            var equals = false;
-            if (geom != null) {
-                equals = this.x === geom.x && this.y === geom.y || isNaN(this.x) && isNaN(this.y) && isNaN(geom.x) && isNaN(geom.y);
-            }
-            return equals;
-        }
+    /**
+     * @function SuperMap.Geometry.Point.prototype.destroy
+     * @description 释放点对象的资源
+     */
 
-        /**
-         * @function SuperMap.Geometry.Point.prototype.move
-         * @description 沿着x、y轴的正方向上按照给定的位移移动点对象，move 不仅改变了几何对象的位置并且清理了边界缓存。
-         * @param x - {float} x轴正方向上的偏移量。
-         * @param y - {float} y轴正方向上偏移量。
-         */
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      this.x = null;
+      this.y = null;
+      this.tag = null;
+      _get(Point.prototype.__proto__ || Object.getPrototypeOf(Point.prototype), 'destroy', this).call(this);
+    }
 
-    }, {
-        key: 'move',
-        value: function move(x, y) {
-            this.x = this.x + x;
-            this.y = this.y + y;
-            this.clearBounds();
-        }
+    /**
+     * @function SuperMap.Geometry.Point.prototype.getVertices
+     * @description 返回点对象的所有顶点的列表。
+     * @param nodes - {Boolean} 对于点对象此参数不起作用，直接返回点。
+     *
+     * @returns {Array} 几何图形的顶点列表。
+     */
 
-        /**
-         * @function SuperMap.Geometry.Point.prototype.toShortString
-         * @returns {string} 字符串代表点对象。(ex. <i>"5, 42"</i>)
-         */
+  }, {
+    key: 'getVertices',
+    value: function getVertices(nodes) {
+      // eslint-disable-line no-unused-vars
+      return [this];
+    }
+  }]);
 
-    }, {
-        key: 'toShortString',
-        value: function toShortString() {
-            return this.x + ", " + this.y;
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.destroy
-         * @description 释放点对象的资源
-         */
-
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-            this.x = null;
-            this.y = null;
-            this.tag = null;
-            _get(Point.prototype.__proto__ || Object.getPrototypeOf(Point.prototype), 'destroy', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.Geometry.Point.prototype.getVertices
-         * @description 返回点对象的所有顶点的列表。
-         * @param nodes - {Boolean} 对于点对象此参数不起作用，直接返回点。
-         *
-         * @returns {Array} 几何图形的顶点列表。
-         */
-
-    }, {
-        key: 'getVertices',
-        value: function getVertices(nodes) {
-            // eslint-disable-line no-unused-vars
-            return [this];
-        }
-    }]);
-
-    return Point;
+  return Point;
 }(_Geometry2.Geometry);
 
 _SuperMap.SuperMap.Geometry.Point = Point;
 
 /***/ }),
 /* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.OutputSetting = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _Util = __webpack_require__(1);
+
+var _DatasourceConnectionInfo = __webpack_require__(88);
+
+var _REST = __webpack_require__(2);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.OutputSetting
+ * @classdesc 分布式分析输出类型设置类
+ * @param options - {Object} 必填参数。<br>
+ *         type -{{@link SuperMap.OutputType}} 输出类型。 <br>
+ *         datasetName -{string} 结果数据集名称 <br>
+ *         datasourceInfo -{DatasourceConnectionInfo} 数据源连接信息 <br>
+ *         outputPath -{string} 分析结果输出路径 <br>
+ */
+var OutputSetting = exports.OutputSetting = function () {
+  function OutputSetting(options) {
+    _classCallCheck(this, OutputSetting);
+
+    /**
+     * @member SuperMap.OutputSetting.prototype.type -{SuperMap.OutputType}
+     * @description 分布式分析的输出类型，必设字段。
+     */
+    this.type = _REST.OutputType.UDB;
+
+    /**
+     * @member SuperMap.OutputSetting.prototype.datasetName -{string}
+     * @description 分布式分析的输出结果数据集名称，必设字段。
+     */
+    this.datasetName = "analystResult";
+
+    /**
+     * @member SuperMap.OutputSetting.prototype.datasourceInfo -{SuperMap.DatasourceConnectionInfo}
+     * @description 分布式分析的输出结果数据源连接信息。
+     */
+    this.datasourceInfo = null;
+
+    /**
+     * @member SuperMap.OutputSetting.prototype.outputPath -{string}
+     * @description 分布式分析的分析结果输出路径。
+     */
+    this.outputPath = "";
+
+    _Util.Util.extend(this, options);
+    this.CLASS_NAME = "SuperMap.OutputSetting";
+  }
+
+  /**
+   * @function SuperMap.OutputSetting.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(OutputSetting, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.type = null;
+      me.datasetName = null;
+      me.outputPath = null;
+      if (me.datasourceInfo instanceof _DatasourceConnectionInfo.DatasourceConnectionInfo) {
+        me.datasourceInfo.destroy();
+        me.datasourceInfo = null;
+      }
+    }
+  }]);
+
+  return OutputSetting;
+}();
+
+_SuperMap.SuperMap.OutputSetting = OutputSetting;
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7467,11 +7576,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
 var _Util = __webpack_require__(1);
 
-var _SecurityManager = __webpack_require__(34);
+var _SecurityManager = __webpack_require__(35);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7632,7 +7741,7 @@ var ProcessingServiceBase = exports.ProcessingServiceBase = function (_CommonSer
 _SuperMap.SuperMap.ProcessingServiceBase = ProcessingServiceBase;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7741,7 +7850,7 @@ var ServerColor = exports.ServerColor = function () {
 _SuperMap.SuperMap.ServerColor = ServerColor;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7754,11 +7863,11 @@ exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(410);
+__webpack_require__(411);
 
-__webpack_require__(418);
+__webpack_require__(419);
 
-var _fetchJsonp2 = __webpack_require__(419);
+var _fetchJsonp2 = __webpack_require__(420);
 
 var _fetchJsonp3 = _interopRequireDefault(_fetchJsonp2);
 
@@ -7963,7 +8072,7 @@ var FetchRequest = exports.FetchRequest = _SuperMap.SuperMap.FetchRequest = {
 };
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7978,11 +8087,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Size = __webpack_require__(125);
+var _Size = __webpack_require__(127);
 
-var _Pixel = __webpack_require__(59);
+var _Pixel = __webpack_require__(60);
 
-var _LonLat = __webpack_require__(35);
+var _LonLat = __webpack_require__(36);
 
 var _Util = __webpack_require__(1);
 
@@ -8760,7 +8869,7 @@ var Bounds = exports.Bounds = function () {
 _SuperMap.SuperMap.Bounds = Bounds;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8777,7 +8886,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(227);
+__webpack_require__(228);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8853,7 +8962,7 @@ var Theme = exports.Theme = function () {
 _SuperMap.SuperMap.Theme = Theme;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8868,37 +8977,37 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Point = __webpack_require__(70);
+var _Point = __webpack_require__(71);
 
-var _Line = __webpack_require__(96);
+var _Line = __webpack_require__(98);
 
-var _Polygon = __webpack_require__(71);
+var _Polygon = __webpack_require__(72);
 
-var _Rectangle = __webpack_require__(246);
+var _Rectangle = __webpack_require__(247);
 
-var _Sector = __webpack_require__(72);
+var _Sector = __webpack_require__(73);
 
-var _Label = __webpack_require__(245);
+var _Label = __webpack_require__(246);
 
-var _Image = __webpack_require__(244);
+var _Image = __webpack_require__(245);
 
-var _Circle = __webpack_require__(95);
+var _Circle = __webpack_require__(97);
 
-var _SmicPoint = __webpack_require__(100);
+var _SmicPoint = __webpack_require__(102);
 
-var _SmicText = __webpack_require__(102);
+var _SmicText = __webpack_require__(104);
 
-var _SmicCircle = __webpack_require__(262);
+var _SmicCircle = __webpack_require__(263);
 
-var _SmicBrokenLine = __webpack_require__(98);
+var _SmicBrokenLine = __webpack_require__(100);
 
-var _SmicImage = __webpack_require__(99);
+var _SmicImage = __webpack_require__(101);
 
-var _SmicPolygon = __webpack_require__(76);
+var _SmicPolygon = __webpack_require__(77);
 
-var _SmicRectangle = __webpack_require__(101);
+var _SmicRectangle = __webpack_require__(103);
 
-var _SmicSector = __webpack_require__(263);
+var _SmicSector = __webpack_require__(264);
 
 var _Util = __webpack_require__(1);
 
@@ -9796,7 +9905,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeFactory = ShapeFactory;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9929,7 +10038,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters = ShapeParameters;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10144,7 +10253,7 @@ var Geometry = exports.Geometry = function () {
 _SuperMap.SuperMap.Geometry = Geometry;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10161,9 +10270,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Bounds = __webpack_require__(22);
+var _Bounds = __webpack_require__(23);
 
-var _Geometry2 = __webpack_require__(26);
+var _Geometry2 = __webpack_require__(27);
 
 var _Util = __webpack_require__(1);
 
@@ -10444,7 +10553,7 @@ var Collection = exports.Collection = function (_Geometry) {
 _SuperMap.SuperMap.Geometry.Collection = Collection;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10461,11 +10570,11 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Bounds = __webpack_require__(22);
+var _Bounds = __webpack_require__(23);
 
-var _Theme2 = __webpack_require__(73);
+var _Theme2 = __webpack_require__(74);
 
-var _ShapeFactory = __webpack_require__(24);
+var _ShapeFactory = __webpack_require__(25);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11001,7 +11110,7 @@ _Theme2.Theme.getDataValues = function (data, fields, decimalNumber) {
 _SuperMap.SuperMap.Feature.Theme.Graph = Graph;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11346,7 +11455,7 @@ var Util = exports.Util = function () {
 }();
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11504,7 +11613,7 @@ var LinearRing = exports.LinearRing = function (_LineString) {
 _SuperMap.SuperMap.Geometry.LinearRing = LinearRing;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11651,7 +11760,7 @@ var QueryParameters = exports.QueryParameters = function () {
 _SuperMap.SuperMap.QueryParameters = QueryParameters;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11670,7 +11779,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _ServerColor = __webpack_require__(20);
+var _ServerColor = __webpack_require__(21);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11879,7 +11988,7 @@ var ServerTextStyle = exports.ServerTextStyle = function () {
 _SuperMap.SuperMap.ServerTextStyle = ServerTextStyle;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11896,7 +12005,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystResultSetting = __webpack_require__(234);
+var _TransportationAnalystResultSetting = __webpack_require__(235);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -11998,7 +12107,7 @@ var TransportationAnalystParameter = exports.TransportationAnalystParameter = fu
 _SuperMap.SuperMap.TransportationAnalystParameter = TransportationAnalystParameter;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12015,7 +12124,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12414,7 +12523,7 @@ SecurityManager.ONLINE = "http://www.supermapol.com";
 _SuperMap.SuperMap.SecurityManager = SecurityManager;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12648,14 +12757,14 @@ var LonLat = exports.LonLat = function () {
 }();
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.MultiPoint = undefined;
 
@@ -12663,7 +12772,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Collection2 = __webpack_require__(27);
+var _Collection2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12682,58 +12791,58 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * var multiPoint = new SuperMap.Geometry.MultiPoint([point1,point2]);
  */
 var MultiPoint = exports.MultiPoint = function (_Collection) {
-    _inherits(MultiPoint, _Collection);
+  _inherits(MultiPoint, _Collection);
 
-    function MultiPoint(components) {
-        _classCallCheck(this, MultiPoint);
+  function MultiPoint(components) {
+    _classCallCheck(this, MultiPoint);
 
-        /**
-         * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
-         * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
-         * @readonly
-         * @default ["{@link SuperMap.Geometry.Point}"]
-         */
-        var _this = _possibleConstructorReturn(this, (MultiPoint.__proto__ || Object.getPrototypeOf(MultiPoint)).call(this, components));
+    /**
+     * @member SuperMap.Geometry.MultiPoint.prototype.componentTypes -{Array<string>}
+     * @description components存储的的几何对象所支持的几何类型数组,为空表示类型不受限制。
+     * @readonly
+     * @default ["{@link SuperMap.Geometry.Point}"]
+     */
+    var _this = _possibleConstructorReturn(this, (MultiPoint.__proto__ || Object.getPrototypeOf(MultiPoint)).call(this, components));
 
-        _this.componentTypes = ["SuperMap.Geometry.Point"];
-        _this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
-        return _this;
+    _this.componentTypes = ["SuperMap.Geometry.Point"];
+    _this.CLASS_NAME = "SuperMap.Geometry.MultiPoint";
+    return _this;
+  }
+
+  /**
+   * @function SuperMap.Geometry.MultiPoint.prototype.addPoint
+   * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent}方法。
+   * @param point - {SuperMap.Geometry.Point} 添加的点。
+   * @param index - {integer} 可选的下标。
+   */
+
+
+  _createClass(MultiPoint, [{
+    key: 'addPoint',
+    value: function addPoint(point, index) {
+      this.addComponent(point, index);
     }
 
     /**
-     * @function SuperMap.Geometry.MultiPoint.prototype.addPoint
-     * @description 添加点，封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.addComponent}方法。
-     * @param point - {SuperMap.Geometry.Point} 添加的点。
-     * @param index - {integer} 可选的下标。
+     * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
+     * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
+     * @param point - {SuperMap.Geometry.Point} 移除的点对象。
      */
 
+  }, {
+    key: 'removePoint',
+    value: function removePoint(point) {
+      this.removeComponent(point);
+    }
+  }]);
 
-    _createClass(MultiPoint, [{
-        key: 'addPoint',
-        value: function addPoint(point, index) {
-            this.addComponent(point, index);
-        }
-
-        /**
-         * @function SuperMap.Geometry.MultiPoint.prototype.removePoint
-         * @description 移除点,封装了 {@link SuperMap.Geometry.Collection|SuperMap.Geometry.Collection.removeComponent} 方法。
-         * @param point - {SuperMap.Geometry.Point} 移除的点对象。
-         */
-
-    }, {
-        key: 'removePoint',
-        value: function removePoint(point) {
-            this.removeComponent(point);
-        }
-    }]);
-
-    return MultiPoint;
+  return MultiPoint;
 }(_Collection2.Collection);
 
 _SuperMap.SuperMap.Geometry.MultiPoint = MultiPoint;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12820,7 +12929,7 @@ var FacilityAnalyst3DParameters = exports.FacilityAnalyst3DParameters = function
 _SuperMap.SuperMap.FacilityAnalyst3DParameters = FacilityAnalyst3DParameters;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12919,7 +13028,7 @@ var GetFeaturesParametersBase = exports.GetFeaturesParametersBase = function () 
 _SuperMap.SuperMap.GetFeaturesParametersBase = GetFeaturesParametersBase;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13121,7 +13230,7 @@ var GetFeaturesServiceBase = exports.GetFeaturesServiceBase = function (_CommonS
 _SuperMap.SuperMap.GetFeaturesServiceBase = GetFeaturesServiceBase;
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13138,7 +13247,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(141);
+__webpack_require__(143);
 
 var _REST = __webpack_require__(2);
 
@@ -13325,7 +13434,7 @@ var InterpolationAnalystParameters = exports.InterpolationAnalystParameters = fu
 _SuperMap.SuperMap.InterpolationAnalystParameters = InterpolationAnalystParameters;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13339,7 +13448,7 @@ module.exports = function (x) {
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13351,7 +13460,7 @@ module.exports = function (eccent, sinphi, cosphi) {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13808,7 +13917,7 @@ var ArrayExt = exports.ArrayExt = _SuperMap.SuperMap.Array = {
 };
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13821,7 +13930,7 @@ exports.MultiLineString = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
-var _Collection2 = __webpack_require__(27);
+var _Collection2 = __webpack_require__(28);
 
 __webpack_require__(17);
 
@@ -13869,7 +13978,7 @@ var MultiLineString = exports.MultiLineString = function (_Collection) {
 _SuperMap.SuperMap.Geometry.MultiLineString = MultiLineString;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13882,7 +13991,7 @@ exports.MultiPolygon = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
-var _Collection2 = __webpack_require__(27);
+var _Collection2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13932,7 +14041,7 @@ var MultiPolygon = exports.MultiPolygon = function (_Collection) {
 _SuperMap.SuperMap.Geometry.MultiPolygon = MultiPolygon;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13947,13 +14056,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Collection2 = __webpack_require__(27);
+var _Collection2 = __webpack_require__(28);
 
 __webpack_require__(18);
 
 __webpack_require__(17);
 
-__webpack_require__(30);
+__webpack_require__(31);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -14021,7 +14130,7 @@ var Polygon = exports.Polygon = function (_Collection) {
 _SuperMap.SuperMap.Geometry.Polygon = Polygon;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14109,7 +14218,7 @@ var DataReturnOption = exports.DataReturnOption = function () {
 _SuperMap.SuperMap.DataReturnOption = DataReturnOption;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14130,7 +14239,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _QueryParameters = __webpack_require__(31);
+var _QueryParameters = __webpack_require__(32);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -14316,7 +14425,7 @@ var QueryService = exports.QueryService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.QueryService = QueryService;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14335,11 +14444,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCMapLayer2 = __webpack_require__(235);
+var _UGCMapLayer2 = __webpack_require__(236);
 
-var _JoinItem = __webpack_require__(62);
+var _JoinItem = __webpack_require__(63);
 
-var _DatasetInfo = __webpack_require__(145);
+var _DatasetInfo = __webpack_require__(147);
 
 __webpack_require__(2);
 
@@ -14478,7 +14587,7 @@ var UGCSubLayer = exports.UGCSubLayer = function (_UGCMapLayer) {
 _SuperMap.SuperMap.UGCSubLayer = UGCSubLayer;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14775,28 +14884,17 @@ var Eventful = exports.Eventful = function () {
 }();
 
 /***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var HALF_PI = Math.PI / 2;
-var sign = __webpack_require__(57);
-
-module.exports = function (x) {
-  return Math.abs(x) < HALF_PI ? x : x - sign(x) * Math.PI;
-};
-
-/***/ }),
 /* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+var HALF_PI = Math.PI / 2;
+var sign = __webpack_require__(58);
+
 module.exports = function (x) {
-  return 1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x));
+  return Math.abs(x) < HALF_PI ? x : x - sign(x) * Math.PI;
 };
 
 /***/ }),
@@ -14807,7 +14905,7 @@ module.exports = function (x) {
 
 
 module.exports = function (x) {
-  return 0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x));
+  return 1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x));
 };
 
 /***/ }),
@@ -14818,7 +14916,7 @@ module.exports = function (x) {
 
 
 module.exports = function (x) {
-  return 0.05859375 * x * x * (1 + 0.75 * x);
+  return 0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x));
 };
 
 /***/ }),
@@ -14829,11 +14927,22 @@ module.exports = function (x) {
 
 
 module.exports = function (x) {
-  return x * x * x * (35 / 3072);
+  return 0.05859375 * x * x * (1 + 0.75 * x);
 };
 
 /***/ }),
 /* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (x) {
+  return x * x * x * (35 / 3072);
+};
+
+/***/ }),
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14844,7 +14953,7 @@ module.exports = function (e0, e1, e2, e3, phi) {
 };
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14855,7 +14964,7 @@ module.exports = function (x) {
 };
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14872,11 +14981,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Pixel = __webpack_require__(59);
+var _Pixel = __webpack_require__(60);
 
-var _Event = __webpack_require__(123);
+var _Event = __webpack_require__(125);
 
-var _BaseTypes = __webpack_require__(43);
+var _BaseTypes = __webpack_require__(44);
 
 var _Util = __webpack_require__(1);
 
@@ -15404,7 +15513,7 @@ _SuperMap.SuperMap.Events = Events;
 _SuperMap.SuperMap.Events.prototype.BROWSER_EVENTS = ["mouseover", "mouseout", "mousedown", "mouseup", "mousemove", "click", "dblclick", "rightclick", "dblrightclick", "resize", "focus", "blur", "touchstart", "touchmove", "touchend", "keydown", "MSPointerDown", "MSPointerUp", "pointerdown", "pointerup", "MSGestureStart", "MSGestureChange", "MSGestureEnd", "contextmenu"];
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15632,7 +15741,7 @@ var Pixel = exports.Pixel = function () {
 _SuperMap.SuperMap.Pixel = Pixel;
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15649,7 +15758,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Feature2 = __webpack_require__(124);
+var _Feature2 = __webpack_require__(126);
 
 var _Util = __webpack_require__(1);
 
@@ -15988,7 +16097,7 @@ var Vector = exports.Vector = function (_Feature) {
 _SuperMap.SuperMap.Feature.Vector = Vector;
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16005,11 +16114,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _REST = __webpack_require__(2);
 
-var _SecurityManager = __webpack_require__(34);
+var _SecurityManager = __webpack_require__(35);
 
-var _Credential = __webpack_require__(81);
+var _Credential = __webpack_require__(82);
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16113,7 +16222,7 @@ var IPortalServiceBase = exports.IPortalServiceBase = function () {
 _SuperMap.SuperMap.iPortalServiceBase = IPortalServiceBase;
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16238,7 +16347,7 @@ var JoinItem = exports.JoinItem = function () {
 _SuperMap.SuperMap.JoinItem = JoinItem;
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16268,7 +16377,7 @@ var LabelMatrixCell = exports.LabelMatrixCell = function LabelMatrixCell() {
 _SuperMap.SuperMap.LabelMatrixCell = LabelMatrixCell;
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16285,13 +16394,13 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _LinearRing = __webpack_require__(30);
+var _LinearRing = __webpack_require__(31);
 
 var _LineString = __webpack_require__(17);
 
-var _PointWithMeasure = __webpack_require__(196);
+var _PointWithMeasure = __webpack_require__(197);
 
-var _Collection2 = __webpack_require__(27);
+var _Collection2 = __webpack_require__(28);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16537,14 +16646,14 @@ var Route = exports.Route = function (_Collection) {
 _SuperMap.SuperMap.Route = Route;
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.SurfaceAnalystParameters = undefined;
 
@@ -16554,11 +16663,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DataReturnOption = __webpack_require__(47);
+var _DataReturnOption = __webpack_require__(48);
 
 var _REST = __webpack_require__(2);
 
-var _SurfaceAnalystParametersSetting = __webpack_require__(212);
+var _SurfaceAnalystParametersSetting = __webpack_require__(213);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16574,71 +16683,71 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        surfaceAnalystMethod - {{@link SuperMap.SurfaceAnalystMethod}} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
  */
 var SurfaceAnalystParameters = exports.SurfaceAnalystParameters = function () {
-    function SurfaceAnalystParameters(options) {
-        _classCallCheck(this, SurfaceAnalystParameters);
-
-        /**
-         * @member SuperMap.SurfaceAnalystParameters.prototype.resolution -{number}
-         * @description 获取或设置指定中间结果（栅格数据集）的分辨率。
-         */
-        this.resolution = 0;
-
-        /**
-         * @member SuperMap.SurfaceAnalystParameters.prototype.extractParameter -{SuperMap.SurfaceAnalystParametersSetting}
-         * @description 获取或设置表面分析参数。
-         * 在进行点数据集进行提取等值面分析时，暂时不支持 SurfaceAnalystParametersSetting 类中的 expectedZValues 字段。
-         */
-        this.extractParameter = new _SurfaceAnalystParametersSetting.SurfaceAnalystParametersSetting();
-
-        /**
-         * @member SuperMap.SurfaceAnalystParameters.prototype.resultSetting -{SuperMap.DataReturnOption}
-         * @description 结果返回设置类。
-         */
-        this.resultSetting = new _DataReturnOption.DataReturnOption();
-
-        /**
-         * @member SuperMap.SurfaceAnalystParameters.prototype.surfaceAnalystMethod -{SuperMap.SurfaceAnalystMethod}
-         * @description 获取或设置表面分析的提取方法，提取等值线和提取等值面，默认为等值线分析。
-         */
-        this.surfaceAnalystMethod = _REST.SurfaceAnalystMethod.ISOLINE;
-
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
-
-        this.CLASS_NAME = "SuperMap.SurfaceAnalystParameters";
-    }
+  function SurfaceAnalystParameters(options) {
+    _classCallCheck(this, SurfaceAnalystParameters);
 
     /**
-     * @function SuperMap.SurfaceAnalystParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @member SuperMap.SurfaceAnalystParameters.prototype.resolution -{number}
+     * @description 获取或设置指定中间结果（栅格数据集）的分辨率。
      */
+    this.resolution = 0;
+
+    /**
+     * @member SuperMap.SurfaceAnalystParameters.prototype.extractParameter -{SuperMap.SurfaceAnalystParametersSetting}
+     * @description 获取或设置表面分析参数。
+     * 在进行点数据集进行提取等值面分析时，暂时不支持 SurfaceAnalystParametersSetting 类中的 expectedZValues 字段。
+     */
+    this.extractParameter = new _SurfaceAnalystParametersSetting.SurfaceAnalystParametersSetting();
+
+    /**
+     * @member SuperMap.SurfaceAnalystParameters.prototype.resultSetting -{SuperMap.DataReturnOption}
+     * @description 结果返回设置类。
+     */
+    this.resultSetting = new _DataReturnOption.DataReturnOption();
+
+    /**
+     * @member SuperMap.SurfaceAnalystParameters.prototype.surfaceAnalystMethod -{SuperMap.SurfaceAnalystMethod}
+     * @description 获取或设置表面分析的提取方法，提取等值线和提取等值面，默认为等值线分析。
+     */
+    this.surfaceAnalystMethod = _REST.SurfaceAnalystMethod.ISOLINE;
+
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
+
+    this.CLASS_NAME = "SuperMap.SurfaceAnalystParameters";
+  }
+
+  /**
+   * @function SuperMap.SurfaceAnalystParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
 
 
-    _createClass(SurfaceAnalystParameters, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.resolution = null;
-            if (me.extractParameter) {
-                me.extractParameter.destroy();
-                me.extractParameter = null;
-            }
-            if (me.resultSetting) {
-                me.resultSetting.destroy();
-                me.resultSetting = null;
-            }
-            me.surfaceAnalystMethod = null;
-        }
-    }]);
+  _createClass(SurfaceAnalystParameters, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.resolution = null;
+      if (me.extractParameter) {
+        me.extractParameter.destroy();
+        me.extractParameter = null;
+      }
+      if (me.resultSetting) {
+        me.resultSetting.destroy();
+        me.resultSetting = null;
+      }
+      me.surfaceAnalystMethod = null;
+    }
+  }]);
 
-    return SurfaceAnalystParameters;
+  return SurfaceAnalystParameters;
 }();
 
 _SuperMap.SuperMap.SurfaceAnalystParameters = SurfaceAnalystParameters;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16746,7 +16855,7 @@ var ThemeFlow = exports.ThemeFlow = function () {
 _SuperMap.SuperMap.ThemeFlow = ThemeFlow;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16765,21 +16874,21 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(23);
+var _Theme2 = __webpack_require__(24);
 
-var _ThemeLabelItem = __webpack_require__(225);
+var _ThemeLabelItem = __webpack_require__(226);
 
-var _ThemeUniqueItem = __webpack_require__(93);
+var _ThemeUniqueItem = __webpack_require__(95);
 
-var _ThemeFlow = __webpack_require__(66);
+var _ThemeFlow = __webpack_require__(67);
 
-var _ThemeOffset = __webpack_require__(68);
+var _ThemeOffset = __webpack_require__(69);
 
-var _ThemeLabelText = __webpack_require__(226);
+var _ThemeLabelText = __webpack_require__(227);
 
-var _ThemeLabelAlongLine = __webpack_require__(223);
+var _ThemeLabelAlongLine = __webpack_require__(224);
 
-var _ThemeLabelBackground = __webpack_require__(224);
+var _ThemeLabelBackground = __webpack_require__(225);
 
 var _REST = __webpack_require__(2);
 
@@ -17118,14 +17227,14 @@ var ThemeLabel = exports.ThemeLabel = function (_Theme) {
 _SuperMap.SuperMap.ThemeLabel = ThemeLabel;
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.ThemeOffset = undefined;
 
@@ -17147,76 +17256,76 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        offsetY - {string} 专题图中文本或符号相对于要素内点的垂直偏移量。
  */
 var ThemeOffset = exports.ThemeOffset = function () {
-    function ThemeOffset(options) {
-        _classCallCheck(this, ThemeOffset);
+  function ThemeOffset(options) {
+    _classCallCheck(this, ThemeOffset);
 
-        /**
-         * @member SuperMap.ThemeOffset.prototype.offsetFixed -{boolean}
-         * @description 当前专题图是否固定标记文本或符号的偏移量。所谓固定偏移量，则文本或符号的偏移量不随地图的缩放而变化。默认为 false，表示偏移量随地图的缩放而变化。
-         */
-        this.offsetFixed = false;
+    /**
+     * @member SuperMap.ThemeOffset.prototype.offsetFixed -{boolean}
+     * @description 当前专题图是否固定标记文本或符号的偏移量。所谓固定偏移量，则文本或符号的偏移量不随地图的缩放而变化。默认为 false，表示偏移量随地图的缩放而变化。
+     */
+    this.offsetFixed = false;
 
-        /**
-         * @member SuperMap.ThemeOffset.prototype.offsetX -{string}
-         * @description 专题图中文本或符号相对于要素内点的水平偏移量。偏移量的单位为地图单位。
-         *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么水平偏移量为2。
-         */
-        this.offsetX = "0.0";
+    /**
+     * @member SuperMap.ThemeOffset.prototype.offsetX -{string}
+     * @description 专题图中文本或符号相对于要素内点的水平偏移量。偏移量的单位为地图单位。
+     *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么水平偏移量为2。
+     */
+    this.offsetX = "0.0";
 
-        /**
-         * @member SuperMap.ThemeOffset.prototype.offsetY -{string}
-         * @description 专题图中文本或符号相对于要素内点的垂直偏移量。偏移量的单位为地图单位。
-         *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么垂直偏移量为2。
-         */
-        this.offsetY = "0.0";
+    /**
+     * @member SuperMap.ThemeOffset.prototype.offsetY -{string}
+     * @description 专题图中文本或符号相对于要素内点的垂直偏移量。偏移量的单位为地图单位。
+     *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么垂直偏移量为2。
+     */
+    this.offsetY = "0.0";
 
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
-        this.CLASS_NAME = "SuperMap.ThemeOffset";
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
+    this.CLASS_NAME = "SuperMap.ThemeOffset";
+  }
+
+  /**
+   * @function SuperMap.ThemeOffset.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(ThemeOffset, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.offsetFixed = null;
+      me.offsetX = null;
+      me.offsetY = null;
     }
 
     /**
-     * @function SuperMap.ThemeOffset.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.ThemeOffset.fromObj
+     * @description 从传入对象获取专题图中文本或符号相对于要素内点的偏移量设置类。
+     * @param obj - {Object} 传入对象
+     * @return {SuperMap.ThemeOffset} ThemeOffset对象
      */
 
+  }], [{
+    key: 'fromObj',
+    value: function fromObj(obj) {
+      if (!obj) {
+        return;
+      }
+      var res = new ThemeOffset();
+      _Util.Util.copy(res, obj);
+      return res;
+    }
+  }]);
 
-    _createClass(ThemeOffset, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.offsetFixed = null;
-            me.offsetX = null;
-            me.offsetY = null;
-        }
-
-        /**
-         * @function SuperMap.ThemeOffset.fromObj
-         * @description 从传入对象获取专题图中文本或符号相对于要素内点的偏移量设置类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeOffset} ThemeOffset对象
-         */
-
-    }], [{
-        key: 'fromObj',
-        value: function fromObj(obj) {
-            if (!obj) {
-                return;
-            }
-            var res = new ThemeOffset();
-            _Util.Util.copy(res, obj);
-            return res;
-        }
-    }]);
-
-    return ThemeOffset;
+  return ThemeOffset;
 }();
 
 _SuperMap.SuperMap.ThemeOffset = ThemeOffset;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17316,7 +17425,7 @@ var ThiessenAnalystParameters = exports.ThiessenAnalystParameters = function () 
 _SuperMap.SuperMap.ThiessenAnalystParameters = ThiessenAnalystParameters;
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17333,7 +17442,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeParameters2 = __webpack_require__(25);
+var _ShapeParameters2 = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -17414,7 +17523,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Point = Point;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17431,7 +17540,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeParameters2 = __webpack_require__(25);
+var _ShapeParameters2 = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -17512,7 +17621,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Polygon = Polygon;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17529,7 +17638,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeParameters2 = __webpack_require__(25);
+var _ShapeParameters2 = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -17642,14 +17751,14 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Sector = Sector;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Theme = undefined;
 
@@ -17659,9 +17768,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Point = __webpack_require__(18);
 
-var _GeoText = __webpack_require__(83);
+var _GeoText = __webpack_require__(84);
 
-var _LonLat = __webpack_require__(35);
+var _LonLat = __webpack_require__(36);
 
 var _Util = __webpack_require__(1);
 
@@ -17674,136 +17783,136 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var Theme = exports.Theme = function () {
 
-    /**
-     * Constructor: SuperMap.Feature.Theme
-     * 构造函数。
-     *
-     * Parameters:
-     * data - {Object}  用户数据，用于生成可视化 shape，必设参数。
-     * layer - {<SuperMap.Layer.Theme>} 此专题要素所在图层，必设参数。
-     *
-     * Returns:
-     * {<SuperMap.Feature.Theme>} 返回一个专题要素。
-     */
-    function Theme(data, layer) {
-        _classCallCheck(this, Theme);
+  /**
+   * Constructor: SuperMap.Feature.Theme
+   * 构造函数。
+   *
+   * Parameters:
+   * data - {Object}  用户数据，用于生成可视化 shape，必设参数。
+   * layer - {<SuperMap.Layer.Theme>} 此专题要素所在图层，必设参数。
+   *
+   * Returns:
+   * {<SuperMap.Feature.Theme>} 返回一个专题要素。
+   */
+  function Theme(data, layer) {
+    _classCallCheck(this, Theme);
 
-        if (!data) {
-            return;
-        }
-        // layer 必须已经添加到地图, 且已初始化渲染器
-        if (!layer || !layer.map || !layer.renderer) {
-            return;
-        }
-
-        /**
-         * Property: id
-         * {String} 专题要素唯一标识。
-         */
-        this.id = _Util.Util.createUniqueID(this.CLASS_NAME + "_");
-
-        /**
-         * APIProperty: lonlat
-         * {<SuperMap.LonLat>} 专题要素地理参考位置。子类中必须根据用户数据（或地理位置参数）对其赋值。
-         */
-        this.lonlat = null;
-
-        /**
-         * APIProperty: location
-         * {Array} 专题要素像素参考位置。通常由地理参考位置决定。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-         */
-        this.location = [];
-
-        /**
-         * APIProperty: data
-         * {Object} {ReadOnly} 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如： <SuperMap.Feature.Vector> 。
-         */
-        this.data = data;
-
-        /**
-         * APIProperty: shapes
-         * {Array} {ReadOnly} 构成此专题要素的可视化图形对象数组，数组顺序控制渲染。
-         */
-        this.shapes = [];
-
-        /**
-         * APIProperty: layer
-         * {<SuperMap.Layer.Theme>} {ReadOnly} 此专题要素所在专题图层。
-         */
-        this.layer = layer;
-
-        this.CLASS_NAME = "SuperMap.Feature.Theme";
+    if (!data) {
+      return;
+    }
+    // layer 必须已经添加到地图, 且已初始化渲染器
+    if (!layer || !layer.map || !layer.renderer) {
+      return;
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁专题要素。
+     * Property: id
+     * {String} 专题要素唯一标识。
+     */
+    this.id = _Util.Util.createUniqueID(this.CLASS_NAME + "_");
+
+    /**
+     * APIProperty: lonlat
+     * {<SuperMap.LonLat>} 专题要素地理参考位置。子类中必须根据用户数据（或地理位置参数）对其赋值。
+     */
+    this.lonlat = null;
+
+    /**
+     * APIProperty: location
+     * {Array} 专题要素像素参考位置。通常由地理参考位置决定。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     */
+    this.location = [];
+
+    /**
+     * APIProperty: data
+     * {Object} {ReadOnly} 用户数据，用于生成可视化 shape，可在子类中规定数据格式或类型，如： <SuperMap.Feature.Vector> 。
+     */
+    this.data = data;
+
+    /**
+     * APIProperty: shapes
+     * {Array} {ReadOnly} 构成此专题要素的可视化图形对象数组，数组顺序控制渲染。
+     */
+    this.shapes = [];
+
+    /**
+     * APIProperty: layer
+     * {<SuperMap.Layer.Theme>} {ReadOnly} 此专题要素所在专题图层。
+     */
+    this.layer = layer;
+
+    this.CLASS_NAME = "SuperMap.Feature.Theme";
+  }
+
+  /**
+   * APIMethod: destroy
+   * 销毁专题要素。
+   */
+
+
+  _createClass(Theme, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.data = null;
+      this.id = null;
+      this.lonlat = null;
+      this.location = null;
+      this.shapes = null;
+      this.layer = null;
+    }
+
+    /**
+     * Method: getLocalXY
+     * 地理坐标转为像素坐标。
+     *
+     * Parameters:
+     * coordinate - {<SuperMap.Geometry.Point>/<SuperMap.Geometry.GeoText>/<SuperMap.LonLat>} 地理坐标点。
+     *
+     * Returns:
+     * {Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
 
+  }, {
+    key: 'getLocalXY',
+    value: function getLocalXY(coordinate) {
+      var resolution = this.layer.map.getResolution();
+      var extent = this.layer.map.getExtent();
 
-    _createClass(Theme, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.data = null;
-            this.id = null;
-            this.lonlat = null;
-            this.location = null;
-            this.shapes = null;
-            this.layer = null;
-        }
+      if (coordinate instanceof _Point.Point || coordinate instanceof _GeoText.GeoText) {
+        var x = coordinate.x / resolution + -extent.left / resolution;
+        var y = extent.top / resolution - coordinate.y / resolution;
+        return [x, y];
+      } else if (coordinate instanceof _LonLat.LonLat) {
+        var _x = coordinate.lon / resolution + -extent.left / resolution;
+        var _y = extent.top / resolution - coordinate.lat / resolution;
+        return [_x, _y];
+      } else {
+        return null;
+      }
+    }
+  }]);
 
-        /**
-         * Method: getLocalXY
-         * 地理坐标转为像素坐标。
-         *
-         * Parameters:
-         * coordinate - {<SuperMap.Geometry.Point>/<SuperMap.Geometry.GeoText>/<SuperMap.LonLat>} 地理坐标点。
-         *
-         * Returns:
-         * {Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-         */
-
-    }, {
-        key: 'getLocalXY',
-        value: function getLocalXY(coordinate) {
-            var resolution = this.layer.map.getResolution();
-            var extent = this.layer.map.getExtent();
-
-            if (coordinate instanceof _Point.Point || coordinate instanceof _GeoText.GeoText) {
-                var x = coordinate.x / resolution + -extent.left / resolution;
-                var y = extent.top / resolution - coordinate.y / resolution;
-                return [x, y];
-            } else if (coordinate instanceof _LonLat.LonLat) {
-                var _x = coordinate.lon / resolution + -extent.left / resolution;
-                var _y = extent.top / resolution - coordinate.lat / resolution;
-                return [_x, _y];
-            } else {
-                return null;
-            }
-        }
-    }]);
-
-    return Theme;
+  return Theme;
 }();
 
 _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.Theme = Theme;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Config = exports.Config = function Config() {
-    _classCallCheck(this, Config);
+  _classCallCheck(this, Config);
 };
 /**
  * APIProperty: EVENT
@@ -17812,59 +17921,59 @@ var Config = exports.Config = function Config() {
 
 
 Config.EVENT = {
-    //窗口大小变化
-    RESIZE: 'resize',
+  //窗口大小变化
+  RESIZE: 'resize',
 
-    //鼠标按钮被（手指）按下，事件对象是：目标图形元素或空
-    CLICK: 'click',
+  //鼠标按钮被（手指）按下，事件对象是：目标图形元素或空
+  CLICK: 'click',
 
-    //双击事件
-    DBLCLICK: 'dblclick',
+  //双击事件
+  DBLCLICK: 'dblclick',
 
-    //鼠标滚轮变化，事件对象是：目标图形元素或空
-    MOUSEWHEEL: 'mousewheel',
+  //鼠标滚轮变化，事件对象是：目标图形元素或空
+  MOUSEWHEEL: 'mousewheel',
 
-    //鼠标（手指）被移动，事件对象是：目标图形元素或空
-    MOUSEMOVE: 'mousemove',
+  //鼠标（手指）被移动，事件对象是：目标图形元素或空
+  MOUSEMOVE: 'mousemove',
 
-    //鼠标移到某图形元素之上，事件对象是：目标图形元素
-    MOUSEOVER: 'mouseover',
+  //鼠标移到某图形元素之上，事件对象是：目标图形元素
+  MOUSEOVER: 'mouseover',
 
-    //鼠标从某图形元素移开，事件对象是：目标图形元素
-    MOUSEOUT: 'mouseout',
+  //鼠标从某图形元素移开，事件对象是：目标图形元素
+  MOUSEOUT: 'mouseout',
 
-    //鼠标按钮（手指）被按下，事件对象是：目标图形元素或空
-    MOUSEDOWN: 'mousedown',
+  //鼠标按钮（手指）被按下，事件对象是：目标图形元素或空
+  MOUSEDOWN: 'mousedown',
 
-    //鼠标按键（手指）被松开，事件对象是：目标图形元素或空
-    MOUSEUP: 'mouseup',
+  //鼠标按键（手指）被松开，事件对象是：目标图形元素或空
+  MOUSEUP: 'mouseup',
 
-    //全局离开，MOUSEOUT触发比较频繁，一次离开优化绑定
-    GLOBALOUT: 'globalout',
+  //全局离开，MOUSEOUT触发比较频繁，一次离开优化绑定
+  GLOBALOUT: 'globalout',
 
-    // 一次成功元素拖拽的行为事件过程是：
-    // dragstart > dragenter > dragover [> dragleave] > drop > dragend
+  // 一次成功元素拖拽的行为事件过程是：
+  // dragstart > dragenter > dragover [> dragleave] > drop > dragend
 
-    //开始拖拽时触发，事件对象是：被拖拽图形元素
-    DRAGSTART: 'dragstart',
+  //开始拖拽时触发，事件对象是：被拖拽图形元素
+  DRAGSTART: 'dragstart',
 
-    //拖拽完毕时触发（在drop之后触发），事件对象是：被拖拽图形元素
-    DRAGEND: 'dragend',
+  //拖拽完毕时触发（在drop之后触发），事件对象是：被拖拽图形元素
+  DRAGEND: 'dragend',
 
-    //拖拽图形元素进入目标图形元素时触发，事件对象是：目标图形元素
-    DRAGENTER: 'dragenter',
+  //拖拽图形元素进入目标图形元素时触发，事件对象是：目标图形元素
+  DRAGENTER: 'dragenter',
 
-    //拖拽图形元素在目标图形元素上移动时触发，事件对象是：目标图形元素
-    DRAGOVER: 'dragover',
+  //拖拽图形元素在目标图形元素上移动时触发，事件对象是：目标图形元素
+  DRAGOVER: 'dragover',
 
-    //拖拽图形元素离开目标图形元素时触发，事件对象是：目标图形元素
-    DRAGLEAVE: 'dragleave',
+  //拖拽图形元素离开目标图形元素时触发，事件对象是：目标图形元素
+  DRAGLEAVE: 'dragleave',
 
-    //拖拽图形元素放在目标图形元素内时触发，事件对象是：目标图形元素
-    DROP: 'drop',
+  //拖拽图形元素放在目标图形元素内时触发，事件对象是：目标图形元素
+  DROP: 'drop',
 
-    //touch end - start < delay is click
-    touchClickDelay: 300
+  //touch end - start < delay is click
+  touchClickDelay: 300
 };
 
 /**
@@ -17884,7 +17993,7 @@ Config.catchBrushException = false;
 Config.debugMode = 0;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17897,7 +18006,7 @@ exports.Curve = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Vector = __webpack_require__(78);
+var _Vector = __webpack_require__(79);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18524,7 +18633,7 @@ var Curve = exports.Curve = function () {
 }();
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19009,7 +19118,7 @@ var SmicPolygon = exports.SmicPolygon = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19293,7 +19402,7 @@ var Transformable = exports.Transformable = function () {
 }();
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19817,7 +19926,7 @@ var Vector = exports.Vector = function () {
 }();
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19841,7 +19950,7 @@ module.exports = function (eccent, ts) {
 };
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19857,14 +19966,14 @@ module.exports = function (eccent, phi, sinphi) {
 };
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Credential = undefined;
 
@@ -19887,74 +19996,74 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * pixcel.destroy();
  */
 var Credential = exports.Credential = function () {
-    function Credential(value, name) {
-        _classCallCheck(this, Credential);
+  function Credential(value, name) {
+    _classCallCheck(this, Credential);
 
-        /**
-         * @member SuperMap.Bounds.prototype.value -{string}
-         * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
-         */
-        this.value = value ? value : "";
+    /**
+     * @member SuperMap.Bounds.prototype.value -{string}
+     * @description 访问受安全限制的服务时用于通过安全认证的验证信息。
+     */
+    this.value = value ? value : "";
 
-        /**
-         * @member SuperMap.Bounds.prototype.name -{string}
-         * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
-         */
-        this.name = name ? name : "token";
-        this.CLASS_NAME = "SuperMap.Credential";
+    /**
+     * @member SuperMap.Bounds.prototype.name -{string}
+     * @description 验证信息前缀，name=value部分的name部分，默认为“token”。
+     */
+    this.name = name ? name : "token";
+    this.CLASS_NAME = "SuperMap.Credential";
+  }
+
+  /**
+   * @function SuperMap.Credential.prototype.getUrlParameters
+   * @example
+   * var credential = new SuperMap.Credential("valueString","token");
+   * //这里 str = "token=valueString";
+   * var str = credential.getUrlParameters();
+   * @returns {string} 返回安全信息组成的url片段。
+   */
+
+
+  _createClass(Credential, [{
+    key: "getUrlParameters",
+    value: function getUrlParameters() {
+      //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
+      return this.name + "=" + this.value;
     }
 
     /**
-     * @function SuperMap.Credential.prototype.getUrlParameters
+     * @function SuperMap.Bounds.prototype.getValue
+     * @description 获取value
      * @example
-     * var credential = new SuperMap.Credential("valueString","token");
-     * //这里 str = "token=valueString";
-     * var str = credential.getUrlParameters();
-     * @returns {string} 返回安全信息组成的url片段。
+     * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
+     * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
+     * var str = credential.getValue();
+     * @returns {string} 返回value字符串，在iServer服务下该value值即为token值。
      */
 
+  }, {
+    key: "getValue",
+    value: function getValue() {
+      return this.value;
+    }
 
-    _createClass(Credential, [{
-        key: "getUrlParameters",
-        value: function getUrlParameters() {
-            //当需要其他安全信息的时候，则需要return this.name + "=" + this.value + "&" + "...";的形式添加。
-            return this.name + "=" + this.value;
-        }
+    /**
+     *
+     * @function SuperMap.Credential.prototype.destroy
+     * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
+     * @example
+     * var credential = new SuperMap.Credential("valueString","token");
+     * credential.destroy();
+     */
 
-        /**
-         * @function SuperMap.Bounds.prototype.getValue
-         * @description 获取value
-         * @example
-         * var credential = new SuperMap.Credential("2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..","token");
-         * //这里 str = "2OMwGmcNlrP2ixqv1Mk4BuQMybOGfLOrljruX6VcYMDQKc58Sl9nMHsqQaqeBx44jRvKSjkmpZKK1L596y7skQ..";
-         * var str = credential.getValue();
-         * @returns {string} 返回value字符串，在iServer服务下该value值即为token值。
-         */
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.value = null;
+      this.name = null;
+    }
+  }]);
 
-    }, {
-        key: "getValue",
-        value: function getValue() {
-            return this.value;
-        }
-
-        /**
-         *
-         * @function SuperMap.Credential.prototype.destroy
-         * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
-         * @example
-         * var credential = new SuperMap.Credential("valueString","token");
-         * credential.destroy();
-         */
-
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.value = null;
-            this.name = null;
-        }
-    }]);
-
-    return Credential;
+  return Credential;
 }();
 
 /**
@@ -19975,7 +20084,7 @@ Credential.CREDENTIAL = null;
 _SuperMap.SuperMap.Credential = Credential;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19988,7 +20097,7 @@ exports.Curve = undefined;
 
 var _SuperMap = __webpack_require__(0);
 
-var _MultiPoint2 = __webpack_require__(36);
+var _MultiPoint2 = __webpack_require__(37);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20031,7 +20140,7 @@ var Curve = exports.Curve = function (_MultiPoint) {
 _SuperMap.SuperMap.Geometry.Curve = Curve;
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20048,9 +20157,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Geometry2 = __webpack_require__(26);
+var _Geometry2 = __webpack_require__(27);
 
-var _Bounds = __webpack_require__(22);
+var _Bounds = __webpack_require__(23);
 
 var _Util = __webpack_require__(1);
 
@@ -20058,9 +20167,9 @@ var _Point = __webpack_require__(18);
 
 __webpack_require__(17);
 
-__webpack_require__(59);
+__webpack_require__(60);
 
-__webpack_require__(35);
+__webpack_require__(36);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20107,7 +20216,7 @@ var GeoText = exports.GeoText = function (_Geometry) {
          * @description 标签范围的基础信息，包含下面2个属性。
          *  * w: bounds 的宽；
          *  * h: bounds 的高度；
-           */
+          */
         _this.bsInfo = {
             "h": null,
             "w": null
@@ -20414,14 +20523,14 @@ var GeoText = exports.GeoText = function (_Geometry) {
 _SuperMap.SuperMap.Geometry.GeoText = GeoText;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Format = undefined;
 
@@ -20440,77 +20549,77 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        keepData - {boolean} 如果设置为true， data属性会指向被解析的对象（例如json或xml数据对象）。
  */
 var Format = exports.Format = function () {
-    function Format(options) {
-        _classCallCheck(this, Format);
-
-        /**
-         * @member SuperMap.Format.prototype.data - {Object}
-         * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
-         */
-        this.data = null;
-
-        /**
-         * APIProperty: keepData
-         * @member SuperMap.Format.prototype.keepData - {Object}
-         * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
-         */
-        this.keepData = false;
-
-        _Util.Util.extend(this, options);
-        /**
-         * @member SuperMap.Format.prototype.options - {Object}
-         * @description 可选参数。
-         */
-        this.options = options;
-
-        this.CLASS_NAME = "SuperMap.Format";
-    }
+  function Format(options) {
+    _classCallCheck(this, Format);
 
     /**
-     * @function SuperMap.Format.prototype.destroy
-     * @description 销毁该格式类，释放相关资源。
+     * @member SuperMap.Format.prototype.data - {Object}
+     * @description 当 <keepData> 属性设置为true，这是传递给<read>操作的要被解析的字符串。
+     */
+    this.data = null;
+
+    /**
+     * APIProperty: keepData
+     * @member SuperMap.Format.prototype.keepData - {Object}
+     * @description 保持最近读到的数据的引用（通过 <data> 属性）。默认值是false。
+     */
+    this.keepData = false;
+
+    _Util.Util.extend(this, options);
+    /**
+     * @member SuperMap.Format.prototype.options - {Object}
+     * @description 可选参数。
+     */
+    this.options = options;
+
+    this.CLASS_NAME = "SuperMap.Format";
+  }
+
+  /**
+   * @function SuperMap.Format.prototype.destroy
+   * @description 销毁该格式类，释放相关资源。
+   */
+
+
+  _createClass(Format, [{
+    key: 'destroy',
+    value: function destroy() {}
+    //用来销毁该格式类，释放相关资源
+
+
+    /**
+     * @function SuperMap.Format.prototype.read
+     * @description 来从字符串中读取数据。
+     * @param data - {string} 读取的数据。
      */
 
-
-    _createClass(Format, [{
-        key: 'destroy',
-        value: function destroy() {}
-        //用来销毁该格式类，释放相关资源
-
-
-        /**
-         * @function SuperMap.Format.prototype.read
-         * @description 来从字符串中读取数据。
-         * @param data - {string} 读取的数据。
-         */
-
-    }, {
-        key: 'read',
-        value: function read(data) {} // eslint-disable-line no-unused-vars
-        //用来从字符串中读取数据
+  }, {
+    key: 'read',
+    value: function read(data) {} // eslint-disable-line no-unused-vars
+    //用来从字符串中读取数据
 
 
-        /**
-         * @function SuperMap.Format.prototype.write
-         * @description 将对象写成字符串。
-         * @param object - {Object} 可序列化的对象。
-         * @return {string} 对象被写成字符串。
-         */
+    /**
+     * @function SuperMap.Format.prototype.write
+     * @description 将对象写成字符串。
+     * @param object - {Object} 可序列化的对象。
+     * @return {string} 对象被写成字符串。
+     */
 
-    }, {
-        key: 'write',
-        value: function write(object) {// eslint-disable-line no-unused-vars
-            //用来写字符串
-        }
-    }]);
+  }, {
+    key: 'write',
+    value: function write(object) {// eslint-disable-line no-unused-vars
+      //用来写字符串
+    }
+  }]);
 
-    return Format;
+  return Format;
 }();
 
 _SuperMap.SuperMap.Format = Format;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20527,7 +20636,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Format2 = __webpack_require__(84);
+var _Format2 = __webpack_require__(85);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20835,7 +20944,7 @@ var JSONFormat = exports.JSONFormat = function (_Format) {
 _SuperMap.SuperMap.Format.JSON = JSONFormat;
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20852,7 +20961,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _BufferSetting = __webpack_require__(136);
+var _BufferSetting = __webpack_require__(138);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20899,7 +21008,169 @@ var BufferAnalystParameters = exports.BufferAnalystParameters = function () {
 _SuperMap.SuperMap.BufferAnalystParameters = BufferAnalystParameters;
 
 /***/ }),
-/* 87 */
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DatasourceConnectionInfo = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _Util = __webpack_require__(1);
+
+var _REST = __webpack_require__(2);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// eslint-disable-line no-unused-vars
+
+/**
+ * @class SuperMap.DatasourceConnectionInfo
+ * @classdesc 数据源连接信息类。该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
+ *             当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
+ *             所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
+ *             其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
+ * @param options - {Object} 参数。如:</br>
+ *         alias - {string} 数据源别名。</br>
+ *         connect - {boolean} 数据源是否自动连接数据。</br>
+ *         dataBase - {string} 数据源连接的数据库名。</br>
+ *         driver - {string} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。</br>
+ *         engineType - {EngineType} 数据源连接的引擎类型。</br>
+ *         exclusive - {boolean} 是否以独占方式打开数据源。</br>
+ *         OpenLinkTable - {boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。</br>
+ *         password - {string} 登录数据源连接的数据库或文件的密码。</br>
+ *         readOnly - {boolean} 是否以只读方式打开数据源。</br>
+ *         server - {string} 数据库服务器名或 SDB 文件名。</br>
+ *         user - {string} 登录数据库的用户名。</br>
+ */
+var DatasourceConnectionInfo = exports.DatasourceConnectionInfo = function () {
+  function DatasourceConnectionInfo(options) {
+    _classCallCheck(this, DatasourceConnectionInfo);
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.alias -{string}
+     * @description 数据源别名。
+     */
+    this.alias = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.connect -{boolean}
+     * @description 数据源是否自动连接数据。
+     */
+    this.connect = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.dataBase -{string}
+     * @description 数据源连接的数据库名。
+     */
+    this.dataBase = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.driver -{string}
+     * @description 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
+     * 其中，对于SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
+     * 对于SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
+     * 对于 iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
+     */
+    this.driver = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.engineType -{EngineType}
+     * @description 数据源连接的引擎类型。
+     */
+    this.engineType = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive -{boolean}
+     * @description 是否以独占方式打开数据源。
+     */
+    this.exclusive = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable -{boolean}
+     * @description 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable打开。
+     */
+    this.OpenLinkTable = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.password -{string}
+     * @description 登录数据源连接的数据库或文件的密码。
+     */
+    this.password = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.readOnly -{boolean}
+     * @description 是否以只读方式打开数据源。
+     */
+    this.readOnly = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.server -{string}
+     * @description 数据库服务器名、文件名或服务地址。
+     * 1.对于SDB和UDB文件，为其文件的绝对路径。注意：当绝对路径的长度超过UTF-8编码格式的260字节长度，该数据源无法打开。
+     * 2.对于Oracle数据库，其服务器名为其TNS服务名称。
+     * 3.对于SQL Server数据库，其服务器名为其系统的DSN(Database Source Name)名称。
+     * 4.对于PostgreSQL数据库，其服务器名为“IP:端口号”，默认的端口号是 5432。
+     * 5.对于DB2数据库，已经进行了编目，所以不需要进行服务器的设置。
+     * 6.对于 Kingbase 数据库，其服务器名为其 IP 地址。
+     * 7.对于GoogleMaps数据源，其服务器地址，默认设置为“http://maps.google.com”，且不可更改。
+     * 8.对于SuperMapCould数据源，为其服务地址。
+     * 9.对于MAPWORLD数据源，为其服务地址，默认设置为“http://www.tianditu.cn”，且不可更改。
+     * 10.对于OGC和REST数据源，为其服务地址。
+     */
+    this.server = null;
+
+    /**
+     * @member SuperMap.DatasourceConnectionInfo.prototype.user -{string}
+     * @description 登录数据库的用户名。
+     */
+    this.user = null;
+
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
+
+    this.CLASS_NAME = "SuperMap.DatasourceConnectionInfo";
+  }
+
+  /**
+   * @function SuperMap.DatasourceConnectionInfo.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(DatasourceConnectionInfo, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.alias = null;
+      me.connect = null;
+      me.dataBase = null;
+      me.driver = null;
+      me.engineType = null;
+      me.exclusive = null;
+      me.OpenLinkTable = null;
+      me.password = null;
+      me.readOnly = null;
+      me.server = null;
+      me.user = null;
+    }
+  }]);
+
+  return DatasourceConnectionInfo;
+}();
+
+_SuperMap.SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
+
+/***/ }),
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20961,7 +21232,7 @@ var OverlayAnalystParameters = exports.OverlayAnalystParameters = function () {
 _SuperMap.SuperMap.OverlayAnalystParameters = OverlayAnalystParameters;
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20978,7 +21249,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(23);
+var _Theme2 = __webpack_require__(24);
 
 var _ServerStyle = __webpack_require__(11);
 
@@ -21105,7 +21376,7 @@ var ThemeDotDensity = exports.ThemeDotDensity = function (_Theme) {
 _SuperMap.SuperMap.ThemeDotDensity = ThemeDotDensity;
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21124,13 +21395,13 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(23);
+var _Theme2 = __webpack_require__(24);
 
-var _ThemeFlow = __webpack_require__(66);
+var _ThemeFlow = __webpack_require__(67);
 
-var _ThemeOffset = __webpack_require__(68);
+var _ThemeOffset = __webpack_require__(69);
 
-var _ThemeGraduatedSymbolStyle = __webpack_require__(214);
+var _ThemeGraduatedSymbolStyle = __webpack_require__(215);
 
 var _REST = __webpack_require__(2);
 
@@ -21317,14 +21588,14 @@ var ThemeGraduatedSymbol = exports.ThemeGraduatedSymbol = function (_Theme) {
 _SuperMap.SuperMap.ThemeGraduatedSymbol = ThemeGraduatedSymbol;
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.ThemeGraph = undefined;
 
@@ -21336,19 +21607,19 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(23);
+var _Theme2 = __webpack_require__(24);
 
-var _ThemeFlow = __webpack_require__(66);
+var _ThemeFlow = __webpack_require__(67);
 
-var _ThemeOffset = __webpack_require__(68);
+var _ThemeOffset = __webpack_require__(69);
 
-var _ThemeGraphAxes = __webpack_require__(215);
+var _ThemeGraphAxes = __webpack_require__(216);
 
-var _ThemeGraphSize = __webpack_require__(217);
+var _ThemeGraphSize = __webpack_require__(218);
 
-var _ThemeGraphText = __webpack_require__(218);
+var _ThemeGraphText = __webpack_require__(219);
 
-var _ThemeGraphItem = __webpack_require__(216);
+var _ThemeGraphItem = __webpack_require__(217);
 
 var _REST = __webpack_require__(2);
 
@@ -21381,349 +21652,349 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        startAngle - {number}饼状统计图扇形的起始角度。
  */
 var ThemeGraph = exports.ThemeGraph = function (_Theme) {
-    _inherits(ThemeGraph, _Theme);
+  _inherits(ThemeGraph, _Theme);
 
-    function ThemeGraph(options) {
-        _classCallCheck(this, ThemeGraph);
+  function ThemeGraph(options) {
+    _classCallCheck(this, ThemeGraph);
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.barWidth -{number}
-         * @description 柱状专题图中每一个柱的宽度。使用地图坐标单位，默认值为0。<br>
-         *              只有选择的统计图类型为柱状图（柱状图、三维柱状图、堆叠柱状图、三维堆叠柱状图）时，此项才可设置。
-         */
-        var _this = _possibleConstructorReturn(this, (ThemeGraph.__proto__ || Object.getPrototypeOf(ThemeGraph)).call(this, "GRAPH", options));
+    /**
+     * @member SuperMap.ThemeGraph.prototype.barWidth -{number}
+     * @description 柱状专题图中每一个柱的宽度。使用地图坐标单位，默认值为0。<br>
+     *              只有选择的统计图类型为柱状图（柱状图、三维柱状图、堆叠柱状图、三维堆叠柱状图）时，此项才可设置。
+     */
+    var _this = _possibleConstructorReturn(this, (ThemeGraph.__proto__ || Object.getPrototypeOf(ThemeGraph)).call(this, "GRAPH", options));
 
-        _this.barWidth = 0;
+    _this.barWidth = 0;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.flow -{SuperMap.ThemeFlow}
-         * @description 统计专题图流动显示与牵引线设置。
-         *              通过该字段可以设置统计符号是否流动显示和牵引线风格。
-         */
-        _this.flow = new _ThemeFlow.ThemeFlow();
+    /**
+     * @member SuperMap.ThemeGraph.prototype.flow -{SuperMap.ThemeFlow}
+     * @description 统计专题图流动显示与牵引线设置。
+     *              通过该字段可以设置统计符号是否流动显示和牵引线风格。
+     */
+    _this.flow = new _ThemeFlow.ThemeFlow();
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.graduatedMode -{SuperMap.GraduatedMode}
-         * @description 统计图中地理要素的值与图表尺寸间的映射关系（常数、对数、平方根），即分级方式。
-         *              默认值为 SuperMap.GraduatedMode.CONSTANT。
-         *              分级主要是为了减少制作统计专题图中数据大小之间的差异，使得统计图的视觉效果比较好，同时不同类别之间的比较也还是有意义的。
-         *              提供三种分级模式：常数、对数和平方根，对于有值为负数的字段，不可以采用对数和平方根的分级方式。不同的等级方式用于确定符号大小的数值是不相同的。
-         */
-        _this.graduatedMode = _REST.GraduatedMode.CONSTANT;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.graduatedMode -{SuperMap.GraduatedMode}
+     * @description 统计图中地理要素的值与图表尺寸间的映射关系（常数、对数、平方根），即分级方式。
+     *              默认值为 SuperMap.GraduatedMode.CONSTANT。
+     *              分级主要是为了减少制作统计专题图中数据大小之间的差异，使得统计图的视觉效果比较好，同时不同类别之间的比较也还是有意义的。
+     *              提供三种分级模式：常数、对数和平方根，对于有值为负数的字段，不可以采用对数和平方根的分级方式。不同的等级方式用于确定符号大小的数值是不相同的。
+     */
+    _this.graduatedMode = _REST.GraduatedMode.CONSTANT;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.graphAxes -{SuperMap.ThemeGraphAxes}
-         * @description 用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
-         */
-        _this.graphAxes = new _ThemeGraphAxes.ThemeGraphAxes();
+    /**
+     * @member SuperMap.ThemeGraph.prototype.graphAxes -{SuperMap.ThemeGraphAxes}
+     * @description 用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
+     */
+    _this.graphAxes = new _ThemeGraphAxes.ThemeGraphAxes();
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.graphSize -{SuperMap.ThemeGraphSize}
-         * @description 用于设置统计符号的最大最小尺寸。
-         */
-        _this.graphSize = new _ThemeGraphSize.ThemeGraphSize();
+    /**
+     * @member SuperMap.ThemeGraph.prototype.graphSize -{SuperMap.ThemeGraphSize}
+     * @description 用于设置统计符号的最大最小尺寸。
+     */
+    _this.graphSize = new _ThemeGraphSize.ThemeGraphSize();
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.graphSizeFixed -{boolean}
-         * @description 缩放地图时统计图符号是否固定大小。默认值为 false，即统计图符号将随地图缩放。
-         */
-        _this.graphSizeFixed = false;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.graphSizeFixed -{boolean}
+     * @description 缩放地图时统计图符号是否固定大小。默认值为 false，即统计图符号将随地图缩放。
+     */
+    _this.graphSizeFixed = false;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.graphText -{SuperMap.ThemeGraphText}
-         * @description 统计图上的文字是否可以见以及文字标注风格。
-         */
-        _this.graphText = new _ThemeGraphText.ThemeGraphText();
+    /**
+     * @member SuperMap.ThemeGraph.prototype.graphText -{SuperMap.ThemeGraphText}
+     * @description 统计图上的文字是否可以见以及文字标注风格。
+     */
+    _this.graphText = new _ThemeGraphText.ThemeGraphText();
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.graphType -{SuperMap.ThemeGraphType}
-         * @description 统计专题图类型。SuperMap 提供了多种类型的统计图，<br>
-         *              分别为面积图、阶梯图、折线图、点状图、柱状图、三维柱状图、饼图、三维饼图、玫瑰图、三维玫瑰图、堆叠柱状图、三维堆叠柱状图、环状图。默认为面积图。
-         */
-        _this.graphType = _REST.ThemeGraphType.AREA;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.graphType -{SuperMap.ThemeGraphType}
+     * @description 统计专题图类型。SuperMap 提供了多种类型的统计图，<br>
+     *              分别为面积图、阶梯图、折线图、点状图、柱状图、三维柱状图、饼图、三维饼图、玫瑰图、三维玫瑰图、堆叠柱状图、三维堆叠柱状图、环状图。默认为面积图。
+     */
+    _this.graphType = _REST.ThemeGraphType.AREA;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.graphAxesTextDisplayMode -{SuperMap.GraphAxesTextDisplayMode}
-         * @description 统计专题图坐标轴文本显示模式 。默认值 SuperMap.GraphAxesTextDisplayMode.NONE。
-         */
-        _this.graphAxesTextDisplayMode = _REST.GraphAxesTextDisplayMode.NONE;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.graphAxesTextDisplayMode -{SuperMap.GraphAxesTextDisplayMode}
+     * @description 统计专题图坐标轴文本显示模式 。默认值 SuperMap.GraphAxesTextDisplayMode.NONE。
+     */
+    _this.graphAxesTextDisplayMode = _REST.GraphAxesTextDisplayMode.NONE;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.items -{Array<SuperMap.ThemeGraphItem>}
-         * @description 统计专题图子项集合。必设字段。
-         *              统计专题图可以基于多个变量，反映多种属性，即可以将多个专题变量的值绘制在一个统计图上。每一个专题变量对应的统计图即为一个专题图子项。
-         *              对于每个专题图子项可以为其设置标题、风格，甚至可以将该子项再制作成范围分段专题图。
-         */
-        _this.items = null;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.items -{Array<SuperMap.ThemeGraphItem>}
+     * @description 统计专题图子项集合。必设字段。
+     *              统计专题图可以基于多个变量，反映多种属性，即可以将多个专题变量的值绘制在一个统计图上。每一个专题变量对应的统计图即为一个专题图子项。
+     *              对于每个专题图子项可以为其设置标题、风格，甚至可以将该子项再制作成范围分段专题图。
+     */
+    _this.items = null;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.memoryKeys -{Array<integer>}
-         * @description 以内存数组方式制作专题图时的键数组。<br>
-         *              键数组内的数值代表 SmID 值，它与 SuperMap.ThemeGraphItem 类中的值数组（SuperMap.ThemeGraphItem.memoryDoubleValues）要关联起来应用。<br>
-         *              键数组中数值的个数必须要与值数组的数值个数一致。值数组中的值将代替原来的专题值来制作统计专题图。<br>
-         *              目前所有的专题图都支持以内存数组的方式制作专题图，但统计专题图与其他专题图指定内存数组的方式不同，<br>
-         *              统计专题图使用 memoryKeys 指定内存数组，而其他专题图则使用 memoryData 来指定内存数组。
-         * @example
-         *  memoryKeys的使用方法如：
-         *   function addThemeGraph() {
-        *      removeTheme();
-        *        //创建统计专题图对象，SuperMap.ThemeGraph 必设 items。
-        *       //专题图参数 ThemeParameters 必设 theme（即以设置好的分段专题图对象）、dataSourceName 和 datasetName
-        *      var style1 = new SuperMap.ServerStyle({
-        *                   fillForeColor: new SuperMap.ServerColor(92,73,234),
-        *                   lineWidth: 0.1
-        *               }),
-        *               style2 = new SuperMap.ServerStyle({
-        *                   fillForeColor: new SuperMap.ServerColor(211,111,240),
-        *                   lineWidth: 0.1
-        *               }),
-        *               item1 = new SuperMap.ThemeGraphItem({
-        *                   memoryDoubleValues:[1.18,0.95,0.37,1.31,0.8,1.5],
-        *                  caption: "1992-1995人口增长率",
-        *                  graphExpression: "Pop_Rate95",
-        *                   uniformStyle: style1
-        *               }),
-        *               item2 = new SuperMap.ThemeGraphItem({
-        *               //以内存数组方式制作专题图时的值数组
-        *                   memoryDoubleValues:[2.71,0,0.74,3.1,2.2,3.5],
-        *                   caption: "1995-1999人口增长率",  //专题图子项的名称
-        *                   graphExpression: "Pop_Rate99",  //统计专题图的专题变量
-        *                   uniformStyle: style2      //统计专题图子项的显示风格
-        *               }),
-        *               themeGraph  = new SuperMap.ThemeGraph({
-        *               //以内存数组方式制作专题图时的键数组，键数组内的数值代表 SmID 值
-        *                    memoryKeys:[1,2,4,8,10,12],
-        *                   items: new Array(item1,item2),
-        *                   barWidth: 0.03,
-        *                    //统计图中地理要素的值与图表尺寸间的映射关系为平方根
-        *                   graduatedMode: SuperMap.GraduatedMode.SQUAREROOT,
-        *                   //graphAxes用于设置统计图中坐标轴样式相关信息
-        *                   graphAxes: new SuperMap.ThemeGraphAxes({
-        *                       axesDisplayed: true
-        *                   }),
-        *                   graphSize: new SuperMap.ThemeGraphSize({
-        *                       maxGraphSize: 1,
-        *                       minGraphSize: 0.35
-        *                   }),
-        *                   //统计图上的文字是否可以见以及文字标注风格
-        *                   graphText: new SuperMap.ThemeGraphText({
-        *                       graphTextDisplayed: true,
-        *                       graphTextFormat: SuperMap.ThemeGraphTextFormat.VALUE,
-        *                       graphTextStyle: new SuperMap.ServerTextStyle({
-        *                           sizeFixed: true,
-        *                           fontHeight: 9,
-        *                           fontWidth: 5
-        *                       })
-        *                   }),
-        *                   //统计专题图类型为三维柱状图
-        *                   graphType: SuperMap.ThemeGraphType.BAR3D
-        *               }),
-        * //专题图参数对象
-        *               themeParameters = new SuperMap.ThemeParameters({
-        *                   themes: [themeGraph],
-        *                   dataSourceNames: ["Jingjin"],
-        *                   datasetNames: ["BaseMap_R"]
-        *               }),
-        *    //与服务端交互
-        *               themeService=new SuperMap.ThemeService(url, {
-        *                   eventListeners: {
-        *                       "processCompleted": ThemeCompleted,
-        *                        "processFailed": themeFailed
-        *                  }
-        *              });
-        *       themeService.processAsync(themeParameters);
-        *   }
-         */
-        _this.memoryKeys = null;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.memoryKeys -{Array<integer>}
+     * @description 以内存数组方式制作专题图时的键数组。<br>
+     *              键数组内的数值代表 SmID 值，它与 SuperMap.ThemeGraphItem 类中的值数组（SuperMap.ThemeGraphItem.memoryDoubleValues）要关联起来应用。<br>
+     *              键数组中数值的个数必须要与值数组的数值个数一致。值数组中的值将代替原来的专题值来制作统计专题图。<br>
+     *              目前所有的专题图都支持以内存数组的方式制作专题图，但统计专题图与其他专题图指定内存数组的方式不同，<br>
+     *              统计专题图使用 memoryKeys 指定内存数组，而其他专题图则使用 memoryData 来指定内存数组。
+     * @example
+     *  memoryKeys的使用方法如：
+     *   function addThemeGraph() {
+    *      removeTheme();
+    *        //创建统计专题图对象，SuperMap.ThemeGraph 必设 items。
+    *       //专题图参数 ThemeParameters 必设 theme（即以设置好的分段专题图对象）、dataSourceName 和 datasetName
+    *      var style1 = new SuperMap.ServerStyle({
+    *                   fillForeColor: new SuperMap.ServerColor(92,73,234),
+    *                   lineWidth: 0.1
+    *               }),
+    *               style2 = new SuperMap.ServerStyle({
+    *                   fillForeColor: new SuperMap.ServerColor(211,111,240),
+    *                   lineWidth: 0.1
+    *               }),
+    *               item1 = new SuperMap.ThemeGraphItem({
+    *                   memoryDoubleValues:[1.18,0.95,0.37,1.31,0.8,1.5],
+    *                  caption: "1992-1995人口增长率",
+    *                  graphExpression: "Pop_Rate95",
+    *                   uniformStyle: style1
+    *               }),
+    *               item2 = new SuperMap.ThemeGraphItem({
+    *               //以内存数组方式制作专题图时的值数组
+    *                   memoryDoubleValues:[2.71,0,0.74,3.1,2.2,3.5],
+    *                   caption: "1995-1999人口增长率",  //专题图子项的名称
+    *                   graphExpression: "Pop_Rate99",  //统计专题图的专题变量
+    *                   uniformStyle: style2      //统计专题图子项的显示风格
+    *               }),
+    *               themeGraph  = new SuperMap.ThemeGraph({
+    *               //以内存数组方式制作专题图时的键数组，键数组内的数值代表 SmID 值
+    *                    memoryKeys:[1,2,4,8,10,12],
+    *                   items: new Array(item1,item2),
+    *                   barWidth: 0.03,
+    *                    //统计图中地理要素的值与图表尺寸间的映射关系为平方根
+    *                   graduatedMode: SuperMap.GraduatedMode.SQUAREROOT,
+    *                   //graphAxes用于设置统计图中坐标轴样式相关信息
+    *                   graphAxes: new SuperMap.ThemeGraphAxes({
+    *                       axesDisplayed: true
+    *                   }),
+    *                   graphSize: new SuperMap.ThemeGraphSize({
+    *                       maxGraphSize: 1,
+    *                       minGraphSize: 0.35
+    *                   }),
+    *                   //统计图上的文字是否可以见以及文字标注风格
+    *                   graphText: new SuperMap.ThemeGraphText({
+    *                       graphTextDisplayed: true,
+    *                       graphTextFormat: SuperMap.ThemeGraphTextFormat.VALUE,
+    *                       graphTextStyle: new SuperMap.ServerTextStyle({
+    *                           sizeFixed: true,
+    *                           fontHeight: 9,
+    *                           fontWidth: 5
+    *                       })
+    *                   }),
+    *                   //统计专题图类型为三维柱状图
+    *                   graphType: SuperMap.ThemeGraphType.BAR3D
+    *               }),
+    * //专题图参数对象
+    *               themeParameters = new SuperMap.ThemeParameters({
+    *                   themes: [themeGraph],
+    *                   dataSourceNames: ["Jingjin"],
+    *                   datasetNames: ["BaseMap_R"]
+    *               }),
+    *    //与服务端交互
+    *               themeService=new SuperMap.ThemeService(url, {
+    *                   eventListeners: {
+    *                       "processCompleted": ThemeCompleted,
+    *                        "processFailed": themeFailed
+    *                  }
+    *              });
+    *       themeService.processAsync(themeParameters);
+    *   }
+     */
+    _this.memoryKeys = null;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.negativeDisplayed -{boolean}
-         * @description 专题图中是否显示属性为负值的数据。true 表示显示；默认为 false 即不显示。
-         */
-        _this.negativeDisplayed = false;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.negativeDisplayed -{boolean}
+     * @description 专题图中是否显示属性为负值的数据。true 表示显示；默认为 false 即不显示。
+     */
+    _this.negativeDisplayed = false;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.offset -{SuperMap.ThemeOffset}
-         * @description 用于设置统计图相对于要素内点的偏移量。
-         */
-        _this.offset = new _ThemeOffset.ThemeOffset();
+    /**
+     * @member SuperMap.ThemeGraph.prototype.offset -{SuperMap.ThemeOffset}
+     * @description 用于设置统计图相对于要素内点的偏移量。
+     */
+    _this.offset = new _ThemeOffset.ThemeOffset();
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.overlapAvoided -{boolean}
-         * @description 统计图是否采用避让方式显示。<br>
-         *              1.对数据集制作统计专题图:当统计图采用避让方式显示时，如果 overlapAvoided 为 true，则在统计图重叠度很大的情况下，
-         *              会出现无法完全避免统计图重叠的现象；如果 overlapAvoided 为 false，会过滤掉一些统计图，从而保证所有的统计图均不重叠。<br>
-         *              2.对数据集同时制作统计专题图和标签专题图：当统计图不显示子项文本时，标签专题图的标签即使和统计图重叠，两者也都可正常显示；
-         *              当统计图显示子项文本时，如果统计图中的子项文本和标签专题图中的标签不重叠，则两者均正常显示；如果重叠，则会过滤掉统计图的子项文本，只显示标签。
-         */
-        _this.overlapAvoided = true;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.overlapAvoided -{boolean}
+     * @description 统计图是否采用避让方式显示。<br>
+     *              1.对数据集制作统计专题图:当统计图采用避让方式显示时，如果 overlapAvoided 为 true，则在统计图重叠度很大的情况下，
+     *              会出现无法完全避免统计图重叠的现象；如果 overlapAvoided 为 false，会过滤掉一些统计图，从而保证所有的统计图均不重叠。<br>
+     *              2.对数据集同时制作统计专题图和标签专题图：当统计图不显示子项文本时，标签专题图的标签即使和统计图重叠，两者也都可正常显示；
+     *              当统计图显示子项文本时，如果统计图中的子项文本和标签专题图中的标签不重叠，则两者均正常显示；如果重叠，则会过滤掉统计图的子项文本，只显示标签。
+     */
+    _this.overlapAvoided = true;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.roseAngle -{number}
-         * @description 统计图中玫瑰图或三维玫瑰图用于等分的角度，默认为0度，精确到0.1度。在角度为0或者大于360度的情况下均使用360度来等分制作统计图的字段数。
-         */
-        _this.roseAngle = 0;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.roseAngle -{number}
+     * @description 统计图中玫瑰图或三维玫瑰图用于等分的角度，默认为0度，精确到0.1度。在角度为0或者大于360度的情况下均使用360度来等分制作统计图的字段数。
+     */
+    _this.roseAngle = 0;
 
-        /**
-         * @member SuperMap.ThemeGraph.prototype.startAngle -{number}
-         * @description 饼状统计图扇形的起始角度。默认为0度，精确到0.1度，以水平方向为正向。只有选择的统计图类型为饼状图（饼图、三维饼图、玫瑰图、三维玫瑰图）时，此项才可设置。
-         */
-        _this.startAngle = 0;
+    /**
+     * @member SuperMap.ThemeGraph.prototype.startAngle -{number}
+     * @description 饼状统计图扇形的起始角度。默认为0度，精确到0.1度，以水平方向为正向。只有选择的统计图类型为饼状图（饼图、三维饼图、玫瑰图、三维玫瑰图）时，此项才可设置。
+     */
+    _this.startAngle = 0;
 
-        if (options) {
-            _Util.Util.extend(_this, options);
+    if (options) {
+      _Util.Util.extend(_this, options);
+    }
+
+    _this.CLASS_NAME = "SuperMap.ThemeGraph";
+    return _this;
+  }
+
+  /**
+   * @function SuperMap.ThemeGraph.prototype.destroy
+   * @override
+   */
+
+
+  _createClass(ThemeGraph, [{
+    key: 'destroy',
+    value: function destroy() {
+      _get(ThemeGraph.prototype.__proto__ || Object.getPrototypeOf(ThemeGraph.prototype), 'destroy', this).call(this);
+      var me = this;
+      me.barWidth = null;
+      if (me.flow) {
+        me.flow.destroy();
+        me.flow = null;
+      }
+      me.graduatedMode = null;
+      if (me.graphAxes) {
+        me.graphAxes.destroy();
+        me.graphAxes = null;
+      }
+      if (me.graphSize) {
+        me.graphSize.destroy();
+        me.graphSize = null;
+      }
+      me.graphSizeFixed = null;
+      if (me.graphText) {
+        me.graphText.destroy();
+        me.graphText = null;
+      }
+      me.graphType = null;
+      if (me.items) {
+        for (var i = 0, items = me.items, len = items.length; i < len; i++) {
+          items[i].destroy();
         }
-
-        _this.CLASS_NAME = "SuperMap.ThemeGraph";
-        return _this;
+        me.items = null;
+      }
+      me.memoryKeys = null;
+      me.negativeDisplayed = null;
+      if (me.offset) {
+        me.offset.destroy();
+        me.offset = null;
+      }
+      me.overlapAvoided = null;
+      me.roseAngle = null;
+      me.startAngle = null;
+      me.graphAxesTextDisplayMode = null;
     }
 
     /**
-     * @function SuperMap.ThemeGraph.prototype.destroy
-     * @override
+     * @function SuperMap.ThemeGraph.prototype.toJSON
+     * @description 将SuperMap.ThemeGraph对象转化为json字符串。
+     * @return {string} 返回转换后的 JSON 字符串。
      */
 
+  }, {
+    key: 'toJSON',
+    value: function toJSON() {
+      return _Util.Util.toJSON(this.toServerJSONObject());
+    }
 
-    _createClass(ThemeGraph, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(ThemeGraph.prototype.__proto__ || Object.getPrototypeOf(ThemeGraph.prototype), 'destroy', this).call(this);
-            var me = this;
-            me.barWidth = null;
-            if (me.flow) {
-                me.flow.destroy();
-                me.flow = null;
-            }
-            me.graduatedMode = null;
-            if (me.graphAxes) {
-                me.graphAxes.destroy();
-                me.graphAxes = null;
-            }
-            if (me.graphSize) {
-                me.graphSize.destroy();
-                me.graphSize = null;
-            }
-            me.graphSizeFixed = null;
-            if (me.graphText) {
-                me.graphText.destroy();
-                me.graphText = null;
-            }
-            me.graphType = null;
-            if (me.items) {
-                for (var i = 0, items = me.items, len = items.length; i < len; i++) {
-                    items[i].destroy();
-                }
-                me.items = null;
-            }
-            me.memoryKeys = null;
-            me.negativeDisplayed = null;
-            if (me.offset) {
-                me.offset.destroy();
-                me.offset = null;
-            }
-            me.overlapAvoided = null;
-            me.roseAngle = null;
-            me.startAngle = null;
-            me.graphAxesTextDisplayMode = null;
-        }
+    /**
+     * @function SuperMap.ThemeGraph.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
+     * @return {Object} 对应的 JSON 格式对象。
+     */
 
-        /**
-         * @function SuperMap.ThemeGraph.prototype.toJSON
-         * @description 将SuperMap.ThemeGraph对象转化为json字符串。
-         * @return {string} 返回转换后的 JSON 字符串。
-         */
+  }, {
+    key: 'toServerJSONObject',
+    value: function toServerJSONObject() {
+      var obj = {};
+      obj.type = this.type;
+      if (this.graphText) {
+        obj.graphTextDisplayed = this.graphText.graphTextDisplayed;
+        obj.graphTextFormat = this.graphText.graphTextFormat;
+        obj.graphTextStyle = this.graphText.graphTextStyle;
+      }
+      if (this.flow) {
+        obj.flowEnabled = this.flow.flowEnabled;
+        obj.leaderLineDisplayed = this.flow.leaderLineDisplayed;
+        obj.leaderLineStyle = this.flow.leaderLineStyle;
+      }
+      if (this.graphAxes) {
+        obj.axesColor = this.graphAxes.axesColor;
+        obj.axesDisplayed = this.graphAxes.axesDisplayed;
+        obj.axesGridDisplayed = this.graphAxes.axesGridDisplayed;
+        obj.axesTextDisplayed = this.graphAxes.axesTextDisplayed;
+        obj.axesTextStyle = this.graphAxes.axesTextStyle;
+      }
+      if (this.graphSize) {
+        obj.maxGraphSize = this.graphSize.maxGraphSize;
+        obj.minGraphSize = this.graphSize.minGraphSize;
+      }
+      if (this.offset) {
+        obj.offsetFixed = this.offset.offsetFixed;
+        obj.offsetX = this.offset.offsetX;
+        obj.offsetY = this.offset.offsetY;
+      }
+      obj.barWidth = this.barWidth;
+      obj.graduatedMode = this.graduatedMode;
+      obj.graphSizeFixed = this.graphSizeFixed;
+      obj.graphType = this.graphType;
+      obj.graphAxesTextDisplayMode = this.graphAxesTextDisplayMode;
+      obj.items = this.items;
+      obj.memoryKeys = this.memoryKeys;
+      obj.negativeDisplayed = this.negativeDisplayed;
+      obj.overlapAvoided = this.overlapAvoided;
+      obj.roseAngle = this.roseAngle;
+      obj.startAngle = this.startAngle;
+      return obj;
+    }
 
-    }, {
-        key: 'toJSON',
-        value: function toJSON() {
-            return _Util.Util.toJSON(this.toServerJSONObject());
-        }
+    /**
+     * @function SuperMap.ThemeGraph.fromObj
+     * @description 从传入对象获取统计专题图类。
+     * @param obj - {Object} 传入对象
+     * @return {SuperMap.ThemeGraph} ThemeGraph对象
+     */
 
-        /**
-         * @function SuperMap.ThemeGraph.prototype.toServerJSONObject
-         * @description 转换成对应的 JSON 格式对象。
-         * @return {Object} 对应的 JSON 格式对象。
-         */
+  }], [{
+    key: 'fromObj',
+    value: function fromObj(obj) {
+      var res = new ThemeGraph();
+      var itemsG = obj.items;
+      var len = itemsG ? itemsG.length : 0;
+      _Util.Util.copy(res, obj);
+      res.items = [];
+      res.flow = _ThemeFlow.ThemeFlow.fromObj(obj);
+      res.graphAxes = _ThemeGraphAxes.ThemeGraphAxes.fromObj(obj);
+      res.graphSize = _ThemeGraphSize.ThemeGraphSize.fromObj(obj);
+      res.graphText = _ThemeGraphText.ThemeGraphText.fromObj(obj);
+      res.offset = _ThemeOffset.ThemeOffset.fromObj(obj);
+      for (var i = 0; i < len; i++) {
+        res.items.push(_ThemeGraphItem.ThemeGraphItem.fromObj(itemsG[i]));
+      }
+      return res;
+    }
+  }]);
 
-    }, {
-        key: 'toServerJSONObject',
-        value: function toServerJSONObject() {
-            var obj = {};
-            obj.type = this.type;
-            if (this.graphText) {
-                obj.graphTextDisplayed = this.graphText.graphTextDisplayed;
-                obj.graphTextFormat = this.graphText.graphTextFormat;
-                obj.graphTextStyle = this.graphText.graphTextStyle;
-            }
-            if (this.flow) {
-                obj.flowEnabled = this.flow.flowEnabled;
-                obj.leaderLineDisplayed = this.flow.leaderLineDisplayed;
-                obj.leaderLineStyle = this.flow.leaderLineStyle;
-            }
-            if (this.graphAxes) {
-                obj.axesColor = this.graphAxes.axesColor;
-                obj.axesDisplayed = this.graphAxes.axesDisplayed;
-                obj.axesGridDisplayed = this.graphAxes.axesGridDisplayed;
-                obj.axesTextDisplayed = this.graphAxes.axesTextDisplayed;
-                obj.axesTextStyle = this.graphAxes.axesTextStyle;
-            }
-            if (this.graphSize) {
-                obj.maxGraphSize = this.graphSize.maxGraphSize;
-                obj.minGraphSize = this.graphSize.minGraphSize;
-            }
-            if (this.offset) {
-                obj.offsetFixed = this.offset.offsetFixed;
-                obj.offsetX = this.offset.offsetX;
-                obj.offsetY = this.offset.offsetY;
-            }
-            obj.barWidth = this.barWidth;
-            obj.graduatedMode = this.graduatedMode;
-            obj.graphSizeFixed = this.graphSizeFixed;
-            obj.graphType = this.graphType;
-            obj.graphAxesTextDisplayMode = this.graphAxesTextDisplayMode;
-            obj.items = this.items;
-            obj.memoryKeys = this.memoryKeys;
-            obj.negativeDisplayed = this.negativeDisplayed;
-            obj.overlapAvoided = this.overlapAvoided;
-            obj.roseAngle = this.roseAngle;
-            obj.startAngle = this.startAngle;
-            return obj;
-        }
-
-        /**
-         * @function SuperMap.ThemeGraph.fromObj
-         * @description 从传入对象获取统计专题图类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraph} ThemeGraph对象
-         */
-
-    }], [{
-        key: 'fromObj',
-        value: function fromObj(obj) {
-            var res = new ThemeGraph();
-            var itemsG = obj.items;
-            var len = itemsG ? itemsG.length : 0;
-            _Util.Util.copy(res, obj);
-            res.items = [];
-            res.flow = _ThemeFlow.ThemeFlow.fromObj(obj);
-            res.graphAxes = _ThemeGraphAxes.ThemeGraphAxes.fromObj(obj);
-            res.graphSize = _ThemeGraphSize.ThemeGraphSize.fromObj(obj);
-            res.graphText = _ThemeGraphText.ThemeGraphText.fromObj(obj);
-            res.offset = _ThemeOffset.ThemeOffset.fromObj(obj);
-            for (var i = 0; i < len; i++) {
-                res.items.push(_ThemeGraphItem.ThemeGraphItem.fromObj(itemsG[i]));
-            }
-            return res;
-        }
-    }]);
-
-    return ThemeGraph;
+  return ThemeGraph;
 }(_Theme2.Theme);
 
 _SuperMap.SuperMap.ThemeGraph = ThemeGraph;
 
 /***/ }),
-/* 91 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21742,9 +22013,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(23);
+var _Theme2 = __webpack_require__(24);
 
-var _ThemeRangeItem = __webpack_require__(229);
+var _ThemeRangeItem = __webpack_require__(230);
 
 var _REST = __webpack_require__(2);
 
@@ -21892,7 +22163,7 @@ var ThemeRange = exports.ThemeRange = function (_Theme) {
 _SuperMap.SuperMap.ThemeRange = ThemeRange;
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21911,11 +22182,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(23);
+var _Theme2 = __webpack_require__(24);
 
 var _ServerStyle = __webpack_require__(11);
 
-var _ThemeUniqueItem = __webpack_require__(93);
+var _ThemeUniqueItem = __webpack_require__(95);
 
 var _REST = __webpack_require__(2);
 
@@ -22071,7 +22342,7 @@ var ThemeUnique = exports.ThemeUnique = function (_Theme) {
 _SuperMap.SuperMap.ThemeUnique = ThemeUnique;
 
 /***/ }),
-/* 93 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22200,7 +22471,7 @@ var ThemeUniqueItem = exports.ThemeUniqueItem = function () {
 _SuperMap.SuperMap.ThemeUniqueItem = ThemeUniqueItem;
 
 /***/ }),
-/* 94 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22217,7 +22488,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Bounds = __webpack_require__(22);
+var _Bounds = __webpack_require__(23);
 
 __webpack_require__(2);
 
@@ -22350,7 +22621,7 @@ var UGCLayer = exports.UGCLayer = function () {
 _SuperMap.SuperMap.UGCLayer = UGCLayer;
 
 /***/ }),
-/* 95 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22367,7 +22638,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeParameters2 = __webpack_require__(25);
+var _ShapeParameters2 = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22466,7 +22737,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Circle = Circle;
 
 /***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22483,7 +22754,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeParameters2 = __webpack_require__(25);
+var _ShapeParameters2 = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22558,7 +22829,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Line = Line;
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22571,7 +22842,7 @@ exports.Color = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(29);
+var _Util = __webpack_require__(30);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -23921,7 +24192,7 @@ var Color = exports.Color = function () {
 }();
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23938,7 +24209,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _Shape2 = __webpack_require__(13);
 
-var _SmicPolygon = __webpack_require__(76);
+var _SmicPolygon = __webpack_require__(77);
 
 var _SUtil = __webpack_require__(12);
 
@@ -24235,7 +24506,7 @@ var SmicBrokenLine = exports.SmicBrokenLine = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24522,7 +24793,7 @@ SmicImage._needsRefresh = [];
 SmicImage._refreshTimeout = null;
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24707,7 +24978,7 @@ var SmicPoint = exports.SmicPoint = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24985,7 +25256,7 @@ var SmicRectangle = exports.SmicRectangle = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 102 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25553,7 +25824,7 @@ var SmicText = exports.SmicText = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 103 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25572,7 +25843,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _Theme2 = __webpack_require__(266);
+var _Theme2 = __webpack_require__(267);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25883,7 +26154,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
 _openlayers2.default.source.GeoFeature = GeoFeature;
 
 /***/ }),
-/* 104 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25891,10 +26162,10 @@ _openlayers2.default.source.GeoFeature = GeoFeature;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var parseCode = __webpack_require__(442);
-var extend = __webpack_require__(108);
-var projections = __webpack_require__(443);
-var deriveConstants = __webpack_require__(438);
+var parseCode = __webpack_require__(443);
+var extend = __webpack_require__(110);
+var projections = __webpack_require__(444);
+var deriveConstants = __webpack_require__(439);
 
 function Projection(srsCode, callback) {
   if (!(this instanceof Projection)) {
@@ -25926,7 +26197,7 @@ Projection.projections.start();
 module.exports = Projection;
 
 /***/ }),
-/* 105 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25938,7 +26209,7 @@ module.exports = function (a, e, sinphi) {
 };
 
 /***/ }),
-/* 106 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25962,7 +26233,7 @@ module.exports = function (ml, e0, e1, e2, e3) {
 };
 
 /***/ }),
-/* 107 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25979,7 +26250,7 @@ module.exports = function (eccent, sinphi) {
 };
 
 /***/ }),
-/* 108 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26001,7 +26272,7 @@ module.exports = function (destination, source) {
 };
 
 /***/ }),
-/* 109 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26018,7 +26289,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _TimeControlBase2 = __webpack_require__(127);
+var _TimeControlBase2 = __webpack_require__(129);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26242,7 +26513,7 @@ var TimeFlowControl = exports.TimeFlowControl = function (_TimeControlBase) {
 _SuperMap.SuperMap.TimeFlowControl = TimeFlowControl;
 
 /***/ }),
-/* 110 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26257,9 +26528,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _iManagerServiceBase = __webpack_require__(129);
+var _iManagerServiceBase = __webpack_require__(131);
 
-var _iManagerCreateNodeParam = __webpack_require__(128);
+var _iManagerCreateNodeParam = __webpack_require__(130);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26378,7 +26649,7 @@ var IManager = exports.IManager = function (_IManagerServiceBase) {
 _SuperMap.SuperMap.iManager = IManager;
 
 /***/ }),
-/* 111 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26393,17 +26664,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _iPortalServicesQueryParam = __webpack_require__(133);
+var _iPortalServicesQueryParam = __webpack_require__(135);
 
-var _iPortalMapsQueryParam = __webpack_require__(131);
+var _iPortalMapsQueryParam = __webpack_require__(133);
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
-var _iPortalService = __webpack_require__(132);
+var _iPortalService = __webpack_require__(134);
 
-var _iPortalMap = __webpack_require__(130);
+var _iPortalMap = __webpack_require__(132);
 
-var _iPortalServiceBase = __webpack_require__(61);
+var _iPortalServiceBase = __webpack_require__(62);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26518,7 +26789,7 @@ var IPortal = exports.IPortal = function (_IPortalServiceBase) {
 _SuperMap.SuperMap.iPortal = IPortal;
 
 /***/ }),
-/* 112 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26533,11 +26804,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _SecurityManager = __webpack_require__(34);
+var _SecurityManager = __webpack_require__(35);
 
-var _OnlineData = __webpack_require__(240);
+var _OnlineData = __webpack_require__(241);
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26632,7 +26903,7 @@ var Online = exports.Online = function () {
 _SuperMap.SuperMap.Online = Online;
 
 /***/ }),
-/* 113 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26647,9 +26918,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Events = __webpack_require__(58);
+var _Events = __webpack_require__(59);
 
-var _elasticsearch = __webpack_require__(472);
+var _elasticsearch = __webpack_require__(473);
 
 var _elasticsearch2 = _interopRequireDefault(_elasticsearch);
 
@@ -27382,7 +27653,7 @@ var ElasticSearch = exports.ElasticSearch = function () {
 _SuperMap.SuperMap.ElasticSearch = ElasticSearch;
 
 /***/ }),
-/* 114 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27397,7 +27668,7 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _iClient = __webpack_require__(278);
+var _iClient = __webpack_require__(279);
 
 var _iClient2 = _interopRequireDefault(_iClient);
 
@@ -27509,7 +27780,7 @@ var Logo = exports.Logo = function (_ol$control$Control) {
 _openlayers2.default.supermap.control.Logo = Logo;
 
 /***/ }),
-/* 115 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27673,7 +27944,7 @@ var Tianditu = exports.Tianditu = function (_ol$source$WMTS) {
 _openlayers2.default.source.Tianditu = Tianditu;
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27694,7 +27965,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _Theme2 = __webpack_require__(266);
+var _Theme2 = __webpack_require__(267);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28153,7 +28424,7 @@ var Graph = exports.Graph = function (_Theme) {
 _openlayers2.default.source.Graph = Graph;
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28174,7 +28445,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _GeoFeature2 = __webpack_require__(103);
+var _GeoFeature2 = __webpack_require__(105);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29094,7 +29365,7 @@ var Label = exports.Label = function (_GeoFeature) {
 _openlayers2.default.source.Label = Label;
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29113,7 +29384,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _GeoFeature2 = __webpack_require__(103);
+var _GeoFeature2 = __webpack_require__(105);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29249,7 +29520,7 @@ var Range = exports.Range = function (_GeoFeature) {
 _openlayers2.default.source.Range = Range;
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29268,7 +29539,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _GeoFeature2 = __webpack_require__(103);
+var _GeoFeature2 = __webpack_require__(105);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29399,7 +29670,7 @@ var Unique = exports.Unique = function (_GeoFeature) {
 _openlayers2.default.source.Unique = Unique;
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29572,7 +29843,7 @@ var DataFlowService = exports.DataFlowService = function (_ServiceBase) {
 _openlayers2.default.supermap.DataFlowService = DataFlowService;
 
 /***/ }),
-/* 121 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29838,7 +30109,7 @@ var FeatureService = exports.FeatureService = function (_ServiceBase) {
 _openlayers2.default.supermap.FeatureService = FeatureService;
 
 /***/ }),
-/* 122 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29941,7 +30212,7 @@ var MapService = exports.MapService = function (_ServiceBase) {
 _openlayers2.default.supermap.MapService = MapService;
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30281,7 +30552,7 @@ _SuperMap.SuperMap.Event = Event;
 _SuperMap.SuperMap.Event.observe(window, 'unload', _SuperMap.SuperMap.Event.unloadCache, false);
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30360,14 +30631,14 @@ var Feature = exports.Feature = function () {
 _SuperMap.SuperMap.Feature = Feature;
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.Size = undefined;
 
@@ -30387,103 +30658,103 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * var size = new SuperMap.Size(31,46);
  */
 var Size = exports.Size = function () {
-    function Size(w, h) {
-        _classCallCheck(this, Size);
+  function Size(w, h) {
+    _classCallCheck(this, Size);
 
-        /**
-         * @member SuperMap.Size.prototype.w -{number}
-         * @description  宽，默认值为0.0
-         */
-        this.w = w ? parseFloat(w) : 0.0;
+    /**
+     * @member SuperMap.Size.prototype.w -{number}
+     * @description  宽，默认值为0.0
+     */
+    this.w = w ? parseFloat(w) : 0.0;
 
-        /**
-         * @member SuperMap.Size.prototype.h -{number}
-         * @description 高，默认值为0.0
-         */
-        this.h = w ? parseFloat(h) : 0.0;
-        this.CLASS_NAME = "SuperMap.Size";
+    /**
+     * @member SuperMap.Size.prototype.h -{number}
+     * @description 高，默认值为0.0
+     */
+    this.h = w ? parseFloat(h) : 0.0;
+    this.CLASS_NAME = "SuperMap.Size";
+  }
+
+  /**
+   * @function SuperMap.Size.prototype.toString
+   * @description 返回此对象的字符串形式
+   * @example
+   * var size = new SuperMap.Size(10,5);
+   * var str = size.toString();
+   * @returns {string} 例如："w=10,h=5"
+   */
+
+
+  _createClass(Size, [{
+    key: "toString",
+    value: function toString() {
+      return "w=" + this.w + ",h=" + this.h;
     }
 
     /**
-     * @function SuperMap.Size.prototype.toString
-     * @description 返回此对象的字符串形式
+     * @function SuperMap.Size.prototype.clone
+     * @description 克隆当前size对象.
      * @example
-     * var size = new SuperMap.Size(10,5);
-     * var str = size.toString();
-     * @returns {string} 例如："w=10,h=5"
+     * var size = new SuperMap.Size(31,46);
+     * var size2 = size.clone();
+     *
+     * @returns {SuperMap.Size}  返回一个新的与当前size对象有相同宽、高的Size对象。
      */
 
+  }, {
+    key: "clone",
+    value: function clone() {
+      return new Size(this.w, this.h);
+    }
 
-    _createClass(Size, [{
-        key: "toString",
-        value: function toString() {
-            return "w=" + this.w + ",h=" + this.h;
-        }
+    /**
+     *
+     * @function SuperMap.Size.prototype.equals
+     * @description 比较两个size对象是否相等。
+     * @example
+     * var size = new SuperMap.Size(31,46);
+     * var size2 = new SuperMap.Size(31,46);
+     * var isEquals = size.equals(size2);
+     *
+     * @param sz -{SuperMap.Size} 用于比较相等的Size对象。
+     * @returns {Boolean} 传入的size和当前size高宽相等，注意：如果传入的size为空则返回false
+     *
+     */
 
-        /**
-         * @function SuperMap.Size.prototype.clone
-         * @description 克隆当前size对象.
-         * @example
-         * var size = new SuperMap.Size(31,46);
-         * var size2 = size.clone();
-         *
-         * @returns {SuperMap.Size}  返回一个新的与当前size对象有相同宽、高的Size对象。
-         */
+  }, {
+    key: "equals",
+    value: function equals(sz) {
+      var equals = false;
+      if (sz != null) {
+        equals = this.w === sz.w && this.h === sz.h || isNaN(this.w) && isNaN(this.h) && isNaN(sz.w) && isNaN(sz.h);
+      }
+      return equals;
+    }
 
-    }, {
-        key: "clone",
-        value: function clone() {
-            return new Size(this.w, this.h);
-        }
+    /**
+     *
+     * @function SuperMap.Size.prototype.destroy
+     * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
+     * @example
+     * var size = new SuperMap.Size(31,46);
+     * size.destroy();
+     */
 
-        /**
-         *
-         * @function SuperMap.Size.prototype.equals
-         * @description 比较两个size对象是否相等。
-         * @example
-         * var size = new SuperMap.Size(31,46);
-         * var size2 = new SuperMap.Size(31,46);
-         * var isEquals = size.equals(size2);
-         *
-         * @param sz -{SuperMap.Size} 用于比较相等的Size对象。
-         * @returns {Boolean} 传入的size和当前size高宽相等，注意：如果传入的size为空则返回false
-         *
-         */
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.w = null;
+      this.h = null;
+    }
+  }]);
 
-    }, {
-        key: "equals",
-        value: function equals(sz) {
-            var equals = false;
-            if (sz != null) {
-                equals = this.w === sz.w && this.h === sz.h || isNaN(this.w) && isNaN(this.h) && isNaN(sz.w) && isNaN(sz.h);
-            }
-            return equals;
-        }
-
-        /**
-         *
-         * @function SuperMap.Size.prototype.destroy
-         * @description 销毁此对象。销毁后此对象的所有属性为null，而不是初始值。
-         * @example
-         * var size = new SuperMap.Size(31,46);
-         * size.destroy();
-         */
-
-    }, {
-        key: "destroy",
-        value: function destroy() {
-            this.w = null;
-            this.h = null;
-        }
-    }]);
-
-    return Size;
+  return Size;
 }();
 
 _SuperMap.SuperMap.Size = Size;
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30498,9 +30769,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Geometry2 = __webpack_require__(26);
+var _Geometry2 = __webpack_require__(27);
 
-var _Bounds = __webpack_require__(22);
+var _Bounds = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -30593,7 +30864,7 @@ var Rectangle = exports.Rectangle = function (_Geometry) {
 _SuperMap.SuperMap.Geometry.Rectangle = Rectangle;
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30608,7 +30879,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Events = __webpack_require__(58);
+var _Events = __webpack_require__(59);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31080,7 +31351,7 @@ var TimeControlBase = exports.TimeControlBase = function () {
 _SuperMap.SuperMap.TimeControlBase = TimeControlBase;
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31121,7 +31392,7 @@ var IManagerCreateNodeParam = exports.IManagerCreateNodeParam = function IManage
 _SuperMap.SuperMap.iManagerCreateNodeParam = IManagerCreateNodeParam;
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31136,9 +31407,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _SecurityManager = __webpack_require__(34);
+var _SecurityManager = __webpack_require__(35);
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31204,7 +31475,7 @@ var IManagerServiceBase = exports.IManagerServiceBase = function () {
 _SuperMap.SuperMap.iManagerServiceBase = IManagerServiceBase;
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31221,7 +31492,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _iPortalServiceBase = __webpack_require__(61);
+var _iPortalServiceBase = __webpack_require__(62);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31335,7 +31606,7 @@ var IPortalMap = exports.IPortalMap = function (_IPortalServiceBase) {
 _SuperMap.SuperMap.iPortalMap = IPortalMap;
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31384,7 +31655,7 @@ var IPortalMapsQueryParam = exports.IPortalMapsQueryParam = function IPortalMaps
 _SuperMap.SuperMap.iPortalMapsQueryParam = IPortalMapsQueryParam;
 
 /***/ }),
-/* 132 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31401,7 +31672,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _iPortalServiceBase = __webpack_require__(61);
+var _iPortalServiceBase = __webpack_require__(62);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31509,7 +31780,7 @@ var IPortalService = exports.IPortalService = function (_IPortalServiceBase) {
 _SuperMap.SuperMap.iPortalService = IPortalService;
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31557,7 +31828,7 @@ var IPortalServicesQueryParam = exports.IPortalServicesQueryParam = function IPo
 _SuperMap.SuperMap.iPortalServicesQueryParam = IPortalServicesQueryParam;
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31754,7 +32025,7 @@ var AreaSolarRadiationParameters = exports.AreaSolarRadiationParameters = functi
 _SuperMap.SuperMap.AreaSolarRadiationParameters = AreaSolarRadiationParameters;
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31821,7 +32092,7 @@ var BufferDistance = exports.BufferDistance = function () {
 _SuperMap.SuperMap.BufferDistance = BufferDistance;
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31840,7 +32111,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _BufferDistance = __webpack_require__(135);
+var _BufferDistance = __webpack_require__(137);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31928,7 +32199,7 @@ var BufferSetting = exports.BufferSetting = function () {
 _SuperMap.SuperMap.BufferSetting = BufferSetting;
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31947,6 +32218,8 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
+var _OutputSetting = __webpack_require__(19);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -31959,6 +32232,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         distanceField -{string} 缓冲区分析距离字段。 <br>
  *         distanceUnit -{{@link SuperMap.AnalystSizeUnit}} 缓冲距离单位单位。 <br>
  *         distance -{string} 缓冲区半径。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function () {
     function BuffersAnalystJobsParameter(options) {
@@ -31999,6 +32273,13 @@ var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function
          * @description 融合字段，根据字段值对缓冲区结果面对象进行融合。
          */
         this.dissolveField = "";
+
+        /**
+         * @member SuperMap.BuffersAnalystJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         if (!options) {
             return this;
         }
@@ -32022,6 +32303,10 @@ var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function
             this.distanceField = null;
             this.distanceUnit = null;
             this.dissolveField = null;
+            if (this.output instanceof _OutputSetting.OutputSetting) {
+                this.output.destroy();
+                this.output = null;
+            }
         }
 
         /**
@@ -32040,6 +32325,11 @@ var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function
                     tempObj['input'][name] = BuffersAnalystJobsParameter[name];
                     continue;
                 }
+                if (name === "output") {
+                    tempObj['output'] = tempObj['output'] || {};
+                    tempObj['output'] = BuffersAnalystJobsParameter[name];
+                    continue;
+                }
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 if (name === 'bounds') {
                     tempObj['analyst'][name] = BuffersAnalystJobsParameter[name].toBBOX();
@@ -32056,7 +32346,7 @@ var BuffersAnalystJobsParameter = exports.BuffersAnalystJobsParameter = function
 _SuperMap.SuperMap.BuffersAnalystJobsParameter = BuffersAnalystJobsParameter;
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32143,7 +32433,7 @@ var BurstPipelineAnalystParameters = exports.BurstPipelineAnalystParameters = fu
 _SuperMap.SuperMap.BurstPipelineAnalystParameters = BurstPipelineAnalystParameters;
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32255,7 +32545,7 @@ var ChartQueryFilterParameter = exports.ChartQueryFilterParameter = function () 
 _SuperMap.SuperMap.ChartQueryFilterParameter = ChartQueryFilterParameter;
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32272,7 +32562,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ChartQueryFilterParameter = __webpack_require__(139);
+var _ChartQueryFilterParameter = __webpack_require__(141);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32413,7 +32703,7 @@ var ChartQueryParameters = exports.ChartQueryParameters = function () {
 _SuperMap.SuperMap.ChartQueryParameters = ChartQueryParameters;
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32553,7 +32843,7 @@ var ClipParameter = exports.ClipParameter = function () {
 _SuperMap.SuperMap.ClipParameter = ClipParameter;
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32570,7 +32860,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerColor = __webpack_require__(20);
+var _ServerColor = __webpack_require__(21);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32647,7 +32937,7 @@ var ColorDictionary = exports.ColorDictionary = function () {
 _SuperMap.SuperMap.ColorDictionary = ColorDictionary;
 
 /***/ }),
-/* 143 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32664,7 +32954,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(33);
+var _TransportationAnalystParameter = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32731,7 +33021,7 @@ var ComputeWeightMatrixParameters = exports.ComputeWeightMatrixParameters = func
 _SuperMap.SuperMap.ComputeWeightMatrixParameters = ComputeWeightMatrixParameters;
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32750,9 +33040,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _BufferAnalystParameters = __webpack_require__(86);
+var _BufferAnalystParameters = __webpack_require__(87);
 
-var _DataReturnOption = __webpack_require__(47);
+var _DataReturnOption = __webpack_require__(48);
 
 var _FilterParameter = __webpack_require__(16);
 
@@ -32875,7 +33165,7 @@ var DatasetBufferAnalystParameters = exports.DatasetBufferAnalystParameters = fu
 _SuperMap.SuperMap.DatasetBufferAnalystParameters = DatasetBufferAnalystParameters;
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32892,7 +33182,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Bounds = __webpack_require__(22);
+var _Bounds = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -33026,7 +33316,7 @@ var DatasetInfo = exports.DatasetInfo = function () {
 _SuperMap.SuperMap.DatasetInfo = DatasetInfo;
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33045,11 +33335,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DataReturnOption = __webpack_require__(47);
+var _DataReturnOption = __webpack_require__(48);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _OverlayAnalystParameters = __webpack_require__(87);
+var _OverlayAnalystParameters = __webpack_require__(89);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -33220,7 +33510,7 @@ var DatasetOverlayAnalystParameters = exports.DatasetOverlayAnalystParameters = 
 _SuperMap.SuperMap.DatasetOverlayAnalystParameters = DatasetOverlayAnalystParameters;
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33241,11 +33531,11 @@ var _Util = __webpack_require__(1);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _SurfaceAnalystParameters = __webpack_require__(65);
+var _SurfaceAnalystParameters = __webpack_require__(66);
 
 var _ServerGeometry = __webpack_require__(9);
 
-var _Geometry = __webpack_require__(26);
+var _Geometry = __webpack_require__(27);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -33358,7 +33648,7 @@ var DatasetSurfaceAnalystParameters = exports.DatasetSurfaceAnalystParameters = 
 _SuperMap.SuperMap.DatasetSurfaceAnalystParameters = DatasetSurfaceAnalystParameters;
 
 /***/ }),
-/* 148 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33377,7 +33667,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ThiessenAnalystParameters = __webpack_require__(69);
+var _ThiessenAnalystParameters = __webpack_require__(70);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -33471,169 +33761,7 @@ var DatasetThiessenAnalystParameters = exports.DatasetThiessenAnalystParameters 
 _SuperMap.SuperMap.DatasetThiessenAnalystParameters = DatasetThiessenAnalystParameters;
 
 /***/ }),
-/* 149 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.DatasourceConnectionInfo = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _Util = __webpack_require__(1);
-
-var _REST = __webpack_require__(2);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// eslint-disable-line no-unused-vars
-
-/**
- * @class SuperMap.DatasourceConnectionInfo
- * @classdesc 数据源连接信息类。该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
- *             当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的数据源，其连接信息有所区别。
- *             所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，
- *             其他内容是不可以被修改的。对于用户创建的数据源连接信息对象，其内容都可以修改。
- * @param options - {Object} 参数。如:</br>
- *         alias - {string} 数据源别名。</br>
- *         connect - {boolean} 数据源是否自动连接数据。</br>
- *         dataBase - {string} 数据源连接的数据库名。</br>
- *         driver - {string} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。</br>
- *         engineType - {EngineType} 数据源连接的引擎类型。</br>
- *         exclusive - {boolean} 是否以独占方式打开数据源。</br>
- *         OpenLinkTable - {boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。</br>
- *         password - {string} 登录数据源连接的数据库或文件的密码。</br>
- *         readOnly - {boolean} 是否以只读方式打开数据源。</br>
- *         server - {string} 数据库服务器名或 SDB 文件名。</br>
- *         user - {string} 登录数据库的用户名。</br>
- */
-var DatasourceConnectionInfo = exports.DatasourceConnectionInfo = function () {
-  function DatasourceConnectionInfo(options) {
-    _classCallCheck(this, DatasourceConnectionInfo);
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.alias -{string}
-     * @description 数据源别名。
-     */
-    this.alias = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.connect -{boolean}
-     * @description 数据源是否自动连接数据。
-     */
-    this.connect = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.dataBase -{string}
-     * @description 数据源连接的数据库名。
-     */
-    this.dataBase = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.driver -{string}
-     * @description 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
-     * 其中，对于SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
-     * 对于SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
-     * 对于 iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
-     */
-    this.driver = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.engineType -{EngineType}
-     * @description 数据源连接的引擎类型。
-     */
-    this.engineType = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive -{boolean}
-     * @description 是否以独占方式打开数据源。
-     */
-    this.exclusive = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable -{boolean}
-     * @description 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable打开。
-     */
-    this.OpenLinkTable = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.password -{string}
-     * @description 登录数据源连接的数据库或文件的密码。
-     */
-    this.password = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.readOnly -{boolean}
-     * @description 是否以只读方式打开数据源。
-     */
-    this.readOnly = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.server -{string}
-     * @description 数据库服务器名、文件名或服务地址。
-     * 1.对于SDB和UDB文件，为其文件的绝对路径。注意：当绝对路径的长度超过UTF-8编码格式的260字节长度，该数据源无法打开。
-     * 2.对于Oracle数据库，其服务器名为其TNS服务名称。
-     * 3.对于SQL Server数据库，其服务器名为其系统的DSN(Database Source Name)名称。
-     * 4.对于PostgreSQL数据库，其服务器名为“IP:端口号”，默认的端口号是 5432。
-     * 5.对于DB2数据库，已经进行了编目，所以不需要进行服务器的设置。
-     * 6.对于 Kingbase 数据库，其服务器名为其 IP 地址。
-     * 7.对于GoogleMaps数据源，其服务器地址，默认设置为“http://maps.google.com”，且不可更改。
-     * 8.对于SuperMapCould数据源，为其服务地址。
-     * 9.对于MAPWORLD数据源，为其服务地址，默认设置为“http://www.tianditu.cn”，且不可更改。
-     * 10.对于OGC和REST数据源，为其服务地址。
-     */
-    this.server = null;
-
-    /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.user -{string}
-     * @description 登录数据库的用户名。
-     */
-    this.user = null;
-
-    if (options) {
-      _Util.Util.extend(this, options);
-    }
-
-    this.CLASS_NAME = "SuperMap.DatasourceConnectionInfo";
-  }
-
-  /**
-   * @function SuperMap.DatasourceConnectionInfo.prototype.destroy
-   * @description 释放资源，将引用资源的属性置空。
-   */
-
-
-  _createClass(DatasourceConnectionInfo, [{
-    key: 'destroy',
-    value: function destroy() {
-      var me = this;
-      me.alias = null;
-      me.connect = null;
-      me.dataBase = null;
-      me.driver = null;
-      me.engineType = null;
-      me.exclusive = null;
-      me.OpenLinkTable = null;
-      me.password = null;
-      me.readOnly = null;
-      me.server = null;
-      me.user = null;
-    }
-  }]);
-
-  return DatasourceConnectionInfo;
-}();
-
-_SuperMap.SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;
-
-/***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33771,14 +33899,14 @@ var DensityKernelAnalystParameters = exports.DensityKernelAnalystParameters = fu
 _SuperMap.SuperMap.DensityKernelAnalystParameters = DensityKernelAnalystParameters;
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.EditFeaturesParameters = undefined;
 
@@ -33804,119 +33932,119 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        IDs - {Array<string|integer>} 删除要素时的要素的ID数组。</br>
  */
 var EditFeaturesParameters = exports.EditFeaturesParameters = function () {
-    function EditFeaturesParameters(options) {
-        _classCallCheck(this, EditFeaturesParameters);
+  function EditFeaturesParameters(options) {
+    _classCallCheck(this, EditFeaturesParameters);
 
-        /**
-         * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
-         * @description 当前需要创建或者是修改的要素的数据源
-         */
-        this.dataSourceName = null;
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.dataSourceName -{string}
+     * @description 当前需要创建或者是修改的要素的数据源
+     */
+    this.dataSourceName = null;
 
-        /**
-         * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{string}
-         * @description 当前需要创建或者是修改的要素的数据集。
-         */
-        this.dataSetName = null;
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{string}
+     * @description 当前需要创建或者是修改的要素的数据集。
+     */
+    this.dataSetName = null;
 
-        /**
-         * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
-         * @description 当前需要创建或者是修改的要素集。</br>
-         * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
-         */
-        this.features = null;
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.features -{Array<Object>}
+     * @description 当前需要创建或者是修改的要素集。</br>
+     * feature类型可以是：SuperMap.Feature.Vector|GeoJSON|ol.feature。
+     */
+    this.features = null;
 
-        /**
-         * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{EditType}
-         * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
-         */
-        this.editType = _REST.EditType.ADD;
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{EditType}
+     * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
+     */
+    this.editType = _REST.EditType.ADD;
 
-        /**
-         * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{Array<string>}|{Array<Integer>}
-         * @description 执行删除时要素集ID集合。
-         */
-        this.IDs = null;
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.dataSetName -{Array<string>}|{Array<Integer>}
+     * @description 执行删除时要素集ID集合。
+     */
+    this.IDs = null;
 
-        /**
-         * @member SuperMap.EditFeaturesParameters.prototype.returnContent -{boolean}
-         * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
-         *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
-         */
-        this.returnContent = false;
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.returnContent -{boolean}
+     * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
+     *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
+     */
+    this.returnContent = false;
 
-        /**
-         * @member SuperMap.EditFeaturesParameters.prototype.isUseBatch -{boolean}
-         * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
-         */
-        this.isUseBatch = false;
-        _Util.Util.extend(this, options);
+    /**
+     * @member SuperMap.EditFeaturesParameters.prototype.isUseBatch -{boolean}
+     * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
+     */
+    this.isUseBatch = false;
+    _Util.Util.extend(this, options);
 
-        this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
+    this.CLASS_NAME = "SuperMap.EditFeaturesParameters";
+  }
+
+  /**
+   * @function SuperMap.EditFeaturesParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(EditFeaturesParameters, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.dataSourceName = null;
+      me.dataSetName = null;
+      me.features = null;
+      me.editType = null;
+      me.IDs = null;
+      me.returnContent = null;
     }
 
     /**
-     * @function SuperMap.EditFeaturesParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
+     * @description 将 <EditFeaturesParameters> 对象参数转换为 JSON 字符串。
+     * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
+     * @return {string} JSON字符串。
      */
 
+  }], [{
+    key: 'toJsonParameters',
+    value: function toJsonParameters(params) {
+      var feature,
+          len,
+          features,
+          editType = params.editType;
 
-    _createClass(EditFeaturesParameters, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.dataSourceName = null;
-            me.dataSetName = null;
-            me.features = null;
-            me.editType = null;
-            me.IDs = null;
-            me.returnContent = null;
+      if (editType === _REST.EditType.DELETE) {
+        if (params.IDs === null) {
+          return;
         }
 
-        /**
-         * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
-         * @description 将 <EditFeaturesParameters> 对象参数转换为 JSON 字符串。
-         * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
-         * @return {string} JSON字符串。
-         */
-
-    }], [{
-        key: 'toJsonParameters',
-        value: function toJsonParameters(params) {
-            var feature,
-                len,
-                features,
-                editType = params.editType;
-
-            if (editType === _REST.EditType.DELETE) {
-                if (params.IDs === null) {
-                    return;
-                }
-
-                features = { ids: params.IDs };
-            } else {
-                features = [];
-                if (params.features) {
-                    len = params.features.length;
-                    for (var i = 0; i < len; i++) {
-                        feature = params.features[i];
-                        feature.geometry = _ServerGeometry.ServerGeometry.fromGeometry(feature.geometry);
-                        features.push(feature);
-                    }
-                }
-            }
-
-            return _Util.Util.toJSON(features);
+        features = { ids: params.IDs };
+      } else {
+        features = [];
+        if (params.features) {
+          len = params.features.length;
+          for (var i = 0; i < len; i++) {
+            feature = params.features[i];
+            feature.geometry = _ServerGeometry.ServerGeometry.fromGeometry(feature.geometry);
+            features.push(feature);
+          }
         }
-    }]);
+      }
 
-    return EditFeaturesParameters;
+      return _Util.Util.toJSON(features);
+    }
+  }]);
+
+  return EditFeaturesParameters;
 }();
 
 _SuperMap.SuperMap.EditFeaturesParameters = EditFeaturesParameters;
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33933,7 +34061,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(37);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -33986,7 +34114,7 @@ var FacilityAnalystSinks3DParameters = exports.FacilityAnalystSinks3DParameters 
 _SuperMap.SuperMap.FacilityAnalystSinks3DParameters = FacilityAnalystSinks3DParameters;
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34003,7 +34131,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(37);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34056,7 +34184,7 @@ var FacilityAnalystSources3DParameters = exports.FacilityAnalystSources3DParamet
 _SuperMap.SuperMap.FacilityAnalystSources3DParameters = FacilityAnalystSources3DParameters;
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34147,7 +34275,7 @@ var FacilityAnalystStreamParameters = exports.FacilityAnalystStreamParameters = 
 _SuperMap.SuperMap.FacilityAnalystStreamParameters = FacilityAnalystStreamParameters;
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34164,7 +34292,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(37);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34215,7 +34343,7 @@ var FacilityAnalystTracedown3DParameters = exports.FacilityAnalystTracedown3DPar
 _SuperMap.SuperMap.FacilityAnalystTracedown3DParameters = FacilityAnalystTracedown3DParameters;
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34232,7 +34360,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(37);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34282,7 +34410,7 @@ var FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTraceup3DParamet
 _SuperMap.SuperMap.FacilityAnalystTraceup3DParameters = FacilityAnalystTraceup3DParameters;
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34301,7 +34429,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(37);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34360,7 +34488,7 @@ var FacilityAnalystUpstream3DParameters = exports.FacilityAnalystUpstream3DParam
 _SuperMap.SuperMap.FacilityAnalystUpstream3DParameters = FacilityAnalystUpstream3DParameters;
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34430,7 +34558,7 @@ var FieldParameters = exports.FieldParameters = function () {
 _SuperMap.SuperMap.FieldParameters = FieldParameters;
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34447,7 +34575,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _FieldParameters2 = __webpack_require__(158);
+var _FieldParameters2 = __webpack_require__(159);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34514,7 +34642,7 @@ var FieldStatisticsParameters = exports.FieldStatisticsParameters = function (_F
 _SuperMap.SuperMap.FieldStatisticsParameters = FieldStatisticsParameters;
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34531,7 +34659,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(33);
+var _TransportationAnalystParameter = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34637,7 +34765,7 @@ var FindClosestFacilitiesParameters = exports.FindClosestFacilitiesParameters = 
 _SuperMap.SuperMap.FindClosestFacilitiesParameters = FindClosestFacilitiesParameters;
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34737,7 +34865,7 @@ var FindLocationParameters = exports.FindLocationParameters = function () {
 _SuperMap.SuperMap.FindLocationParameters = FindLocationParameters;
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34754,7 +34882,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(33);
+var _TransportationAnalystParameter = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34844,7 +34972,7 @@ var FindMTSPPathsParameters = exports.FindMTSPPathsParameters = function () {
 _SuperMap.SuperMap.FindMTSPPathsParameters = FindMTSPPathsParameters;
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34861,7 +34989,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(33);
+var _TransportationAnalystParameter = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34948,7 +35076,7 @@ var FindPathParameters = exports.FindPathParameters = function () {
 _SuperMap.SuperMap.FindPathParameters = FindPathParameters;
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34965,7 +35093,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(33);
+var _TransportationAnalystParameter = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35065,7 +35193,7 @@ var FindServiceAreasParameters = exports.FindServiceAreasParameters = function (
 _SuperMap.SuperMap.FindServiceAreasParameters = FindServiceAreasParameters;
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35082,7 +35210,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _TransportationAnalystParameter = __webpack_require__(33);
+var _TransportationAnalystParameter = __webpack_require__(34);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35163,7 +35291,7 @@ var FindTSPPathsParameters = exports.FindTSPPathsParameters = function () {
 _SuperMap.SuperMap.FindTSPPathsParameters = FindTSPPathsParameters;
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35180,7 +35308,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(47);
+__webpack_require__(48);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -35312,7 +35440,7 @@ var GenerateSpatialDataParameters = exports.GenerateSpatialDataParameters = func
 _SuperMap.SuperMap.GenerateSpatialDataParameters = GenerateSpatialDataParameters;
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35417,7 +35545,7 @@ var GeoCodingParameter = exports.GeoCodingParameter = function () {
 _SuperMap.SuperMap.GeoCodingParameter = GeoCodingParameter;
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35536,7 +35664,7 @@ var GeoDecodingParameter = exports.GeoDecodingParameter = function () {
 _SuperMap.SuperMap.GeoDecodingParameter = GeoDecodingParameter;
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35673,7 +35801,7 @@ var GeoRelationAnalystParameters = exports.GeoRelationAnalystParameters = functi
 _SuperMap.SuperMap.GeoRelationAnalystParameters = GeoRelationAnalystParameters;
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35692,7 +35820,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _BufferAnalystParameters = __webpack_require__(86);
+var _BufferAnalystParameters = __webpack_require__(87);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -35794,7 +35922,7 @@ var GeometryBufferAnalystParameters = exports.GeometryBufferAnalystParameters = 
 _SuperMap.SuperMap.GeometryBufferAnalystParameters = GeometryBufferAnalystParameters;
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35813,7 +35941,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _OverlayAnalystParameters = __webpack_require__(87);
+var _OverlayAnalystParameters = __webpack_require__(89);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -35922,7 +36050,7 @@ var GeometryOverlayAnalystParameters = exports.GeometryOverlayAnalystParameters 
 _SuperMap.SuperMap.GeometryOverlayAnalystParameters = GeometryOverlayAnalystParameters;
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35941,7 +36069,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _SurfaceAnalystParameters = __webpack_require__(65);
+var _SurfaceAnalystParameters = __webpack_require__(66);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -36017,7 +36145,7 @@ var GeometrySurfaceAnalystParameters = exports.GeometrySurfaceAnalystParameters 
 _SuperMap.SuperMap.GeometrySurfaceAnalystParameters = GeometrySurfaceAnalystParameters;
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36036,7 +36164,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ThiessenAnalystParameters = __webpack_require__(69);
+var _ThiessenAnalystParameters = __webpack_require__(70);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -36121,7 +36249,7 @@ var GeometryThiessenAnalystParameters = exports.GeometryThiessenAnalystParameter
 _SuperMap.SuperMap.GeometryThiessenAnalystParameters = GeometryThiessenAnalystParameters;
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36144,7 +36272,7 @@ var _REST = __webpack_require__(2);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _GetFeaturesParametersBase = __webpack_require__(38);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -36289,7 +36417,7 @@ GetFeaturesByBoundsParameters.getFeatureMode = {
 _SuperMap.SuperMap.GetFeaturesByBoundsParameters = GetFeaturesByBoundsParameters;
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36308,7 +36436,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _GetFeaturesParametersBase = __webpack_require__(38);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 var _FilterParameter = __webpack_require__(16);
 
@@ -36442,7 +36570,7 @@ var GetFeaturesByBufferParameters = exports.GetFeaturesByBufferParameters = func
 _SuperMap.SuperMap.GetFeaturesByBufferParameters = GetFeaturesByBufferParameters;
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36465,7 +36593,7 @@ var _REST = __webpack_require__(2);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _GetFeaturesParametersBase = __webpack_require__(38);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -36608,7 +36736,7 @@ var GetFeaturesByGeometryParameters = exports.GetFeaturesByGeometryParameters = 
 _SuperMap.SuperMap.GetFeaturesByGeometryParameters = GetFeaturesByGeometryParameters;
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36629,7 +36757,7 @@ var _Util = __webpack_require__(1);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _GetFeaturesParametersBase = __webpack_require__(38);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -36734,7 +36862,7 @@ var GetFeaturesByIDsParameters = exports.GetFeaturesByIDsParameters = function (
 _SuperMap.SuperMap.GetFeaturesByIDsParameters = GetFeaturesByIDsParameters;
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36753,7 +36881,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _GetFeaturesParametersBase = __webpack_require__(38);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
 __webpack_require__(16);
 
@@ -36846,7 +36974,7 @@ var GetFeaturesBySQLParameters = exports.GetFeaturesBySQLParameters = function (
 _SuperMap.SuperMap.GetFeaturesBySQLParameters = GetFeaturesBySQLParameters;
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36929,7 +37057,7 @@ var GetGridCellInfosParameters = exports.GetGridCellInfosParameters = function (
 _SuperMap.SuperMap.GetGridCellInfosParameters = GetGridCellInfosParameters;
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36948,13 +37076,13 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCSubLayer2 = __webpack_require__(49);
+var _UGCSubLayer2 = __webpack_require__(50);
 
-var _ServerColor = __webpack_require__(20);
+var _ServerColor = __webpack_require__(21);
 
 var _ServerStyle = __webpack_require__(11);
 
-var _ColorDictionary = __webpack_require__(142);
+var _ColorDictionary = __webpack_require__(144);
 
 __webpack_require__(2);
 
@@ -37165,7 +37293,7 @@ var Grid = exports.Grid = function (_UGCSubLayer) {
 _SuperMap.SuperMap.Grid = Grid;
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37182,9 +37310,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _UGCSubLayer2 = __webpack_require__(49);
+var _UGCSubLayer2 = __webpack_require__(50);
 
-var _ServerColor = __webpack_require__(20);
+var _ServerColor = __webpack_require__(21);
 
 var _Util = __webpack_require__(1);
 
@@ -37311,7 +37439,7 @@ var UGCImage = exports.UGCImage = function (_UGCSubLayer) {
 _SuperMap.SuperMap.Image = UGCImage;
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37330,7 +37458,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _InterpolationAnalystParameters = __webpack_require__(40);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37433,7 +37561,7 @@ var InterpolationIDWAnalystParameters = exports.InterpolationIDWAnalystParameter
 _SuperMap.SuperMap.InterpolationIDWAnalystParameters = InterpolationIDWAnalystParameters;
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37454,9 +37582,9 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-__webpack_require__(69);
+__webpack_require__(70);
 
-var _InterpolationAnalystParameters = __webpack_require__(40);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37690,7 +37818,7 @@ var InterpolationKrigingAnalystParameters = exports.InterpolationKrigingAnalystP
 _SuperMap.SuperMap.InterpolationKrigingAnalystParameters = InterpolationKrigingAnalystParameters;
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37709,7 +37837,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _InterpolationAnalystParameters = __webpack_require__(40);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37856,7 +37984,7 @@ var InterpolationRBFAnalystParameters = exports.InterpolationRBFAnalystParameter
 _SuperMap.SuperMap.InterpolationRBFAnalystParameters = InterpolationRBFAnalystParameters;
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37875,6 +38003,8 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
+var _OutputSetting = __webpack_require__(19);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -37888,6 +38018,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        meshType - {number} 分析类型。<br>
  *        fields - {string} 权重索引。<br>
  *        radius - {number} 分析的影响半径。
+ *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () {
   function KernelDensityJobParameter(options) {
@@ -37956,6 +38087,12 @@ var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () 
      */
     this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
 
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.output -{SuperMap.OutputSetting}
+     * @description 输出参数设置类
+     */
+    this.output = null;
+
     _Util.Util.extend(this, options);
 
     this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
@@ -37980,6 +38117,10 @@ var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () 
       this.meshSizeUnit = null;
       this.radiusUnit = null;
       this.areaUnit = null;
+      if (this.output instanceof _OutputSetting.OutputSetting) {
+        this.output.destroy();
+        this.output = null;
+      }
     }
 
     /**
@@ -37999,6 +38140,11 @@ var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () 
           tempObj['input'][name] = kernelDensityJobParameter[name];
           continue;
         }
+        if (name === "output") {
+          tempObj['output'] = tempObj['output'] || {};
+          tempObj['output'] = kernelDensityJobParameter[name];
+          continue;
+        }
         tempObj['analyst'] = tempObj['analyst'] || {};
         if (name === 'query') {
           tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
@@ -38015,7 +38161,7 @@ var KernelDensityJobParameter = exports.KernelDensityJobParameter = function () 
 _SuperMap.SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38032,7 +38178,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _LabelMatrixCell2 = __webpack_require__(63);
+var _LabelMatrixCell2 = __webpack_require__(64);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38133,7 +38279,7 @@ var LabelImageCell = exports.LabelImageCell = function (_LabelMatrixCell) {
 _SuperMap.SuperMap.LabelImageCell = LabelImageCell;
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38150,7 +38296,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(32);
+var _ServerTextStyle = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38282,14 +38428,14 @@ var LabelMixedTextStyle = exports.LabelMixedTextStyle = function () {
 _SuperMap.SuperMap.LabelMixedTextStyle = LabelMixedTextStyle;
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.LabelSymbolCell = undefined;
 
@@ -38301,7 +38447,7 @@ var _Util = __webpack_require__(1);
 
 var _ServerStyle = __webpack_require__(11);
 
-var _LabelMatrixCell2 = __webpack_require__(63);
+var _LabelMatrixCell2 = __webpack_require__(64);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38324,65 +38470,65 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        symbolIDField - {string} 符号 ID 或符号 ID 所对应的字段名称。
  */
 var LabelSymbolCell = exports.LabelSymbolCell = function (_LabelMatrixCell) {
-    _inherits(LabelSymbolCell, _LabelMatrixCell);
+  _inherits(LabelSymbolCell, _LabelMatrixCell);
 
-    function LabelSymbolCell(options) {
-        _classCallCheck(this, LabelSymbolCell);
-
-        /**
-         * @member SuperMap.LabelSymbolCell.prototype.style -{SuperMap.ServerStyle}
-         * @description 获取或设置符号样式—— {@link SuperMap.ServerStyle} 对象，包括符号大小（{@link SuperMap.ServerStyle.markerSize}）
-         *              和符号旋转（{@link SuperMap.ServerStyle.markerAngle}）角度，其中用于设置符号 ID 的属性（{@link SuperMap.ServerStyle.markerSymbolID}）在此处不起作用。
-         */
-        var _this = _possibleConstructorReturn(this, (LabelSymbolCell.__proto__ || Object.getPrototypeOf(LabelSymbolCell)).call(this, options));
-
-        _this.style = new _ServerStyle.ServerStyle();
-
-        /**
-         * @member SuperMap.LabelSymbolCell.prototype.symbolIDField -{string}
-         * @description 获取或设置符号 ID 或符号 ID 所对应的字段名称，必设属性。
-         */
-        _this.symbolIDField = null;
-
-        /**
-         * @member SuperMap.LabelSymbolCell.prototype.type -{string}
-         * @description 制作矩阵专题图时是必须的。
-         */
-        _this.type = "SYMBOL";
-
-        if (options) {
-            _Util.Util.extend(_this, options);
-        }
-
-        _this.CLASS_NAME = "SuperMap.LabelSymbolCell";
-        return _this;
-    }
+  function LabelSymbolCell(options) {
+    _classCallCheck(this, LabelSymbolCell);
 
     /**
-     * @function SuperMap.LabelSymbolCell.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @member SuperMap.LabelSymbolCell.prototype.style -{SuperMap.ServerStyle}
+     * @description 获取或设置符号样式—— {@link SuperMap.ServerStyle} 对象，包括符号大小（{@link SuperMap.ServerStyle.markerSize}）
+     *              和符号旋转（{@link SuperMap.ServerStyle.markerAngle}）角度，其中用于设置符号 ID 的属性（{@link SuperMap.ServerStyle.markerSymbolID}）在此处不起作用。
      */
+    var _this = _possibleConstructorReturn(this, (LabelSymbolCell.__proto__ || Object.getPrototypeOf(LabelSymbolCell)).call(this, options));
+
+    _this.style = new _ServerStyle.ServerStyle();
+
+    /**
+     * @member SuperMap.LabelSymbolCell.prototype.symbolIDField -{string}
+     * @description 获取或设置符号 ID 或符号 ID 所对应的字段名称，必设属性。
+     */
+    _this.symbolIDField = null;
+
+    /**
+     * @member SuperMap.LabelSymbolCell.prototype.type -{string}
+     * @description 制作矩阵专题图时是必须的。
+     */
+    _this.type = "SYMBOL";
+
+    if (options) {
+      _Util.Util.extend(_this, options);
+    }
+
+    _this.CLASS_NAME = "SuperMap.LabelSymbolCell";
+    return _this;
+  }
+
+  /**
+   * @function SuperMap.LabelSymbolCell.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
 
 
-    _createClass(LabelSymbolCell, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            if (me.style) {
-                me.style.destroy();
-                me.style = null;
-            }
-            me.symbolIDField = null;
-        }
-    }]);
+  _createClass(LabelSymbolCell, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      if (me.style) {
+        me.style.destroy();
+        me.style = null;
+      }
+      me.symbolIDField = null;
+    }
+  }]);
 
-    return LabelSymbolCell;
+  return LabelSymbolCell;
 }(_LabelMatrixCell2.LabelMatrixCell);
 
 _SuperMap.SuperMap.LabelSymbolCell = LabelSymbolCell;
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38399,9 +38545,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ThemeLabel = __webpack_require__(67);
+var _ThemeLabel = __webpack_require__(68);
 
-var _LabelMatrixCell2 = __webpack_require__(63);
+var _LabelMatrixCell2 = __webpack_require__(64);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38472,7 +38618,7 @@ var LabelThemeCell = exports.LabelThemeCell = function (_LabelMatrixCell) {
 _SuperMap.SuperMap.LabelThemeCell = LabelThemeCell;
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38598,7 +38744,7 @@ var LayerStatus = exports.LayerStatus = function () {
 _SuperMap.SuperMap.LayerStatus = LayerStatus;
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38615,7 +38761,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _DatasourceConnectionInfo = __webpack_require__(149);
+var _DatasourceConnectionInfo = __webpack_require__(88);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38770,14 +38916,14 @@ var LinkItem = exports.LinkItem = function () {
 _SuperMap.SuperMap.LinkItem = LinkItem;
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.MathExpressionAnalysisParameters = undefined;
 
@@ -38805,136 +38951,136 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
  */
 var MathExpressionAnalysisParameters = exports.MathExpressionAnalysisParameters = function () {
-    function MathExpressionAnalysisParameters(options) {
-        _classCallCheck(this, MathExpressionAnalysisParameters);
+  function MathExpressionAnalysisParameters(options) {
+    _classCallCheck(this, MathExpressionAnalysisParameters);
 
-        if (!options) {
-            return;
-        }
-        /**
-         * @member SuperMap.MathExpressionAnalysisParameters.prototype.dataset -{string}
-         * @description 要用来做栅格代数运算数据源中数据集的名称。
-         * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
-         *
-         */
-        this.dataset = null;
+    if (!options) {
+      return;
+    }
+    /**
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.dataset -{string}
+     * @description 要用来做栅格代数运算数据源中数据集的名称。
+     * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
+     *
+     */
+    this.dataset = null;
 
-        /**
-         * @member SuperMap.MathExpressionAnalysisParameters.prototype.extractRegion
-         * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
-         * > 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
-         * > 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
-         */
-        this.extractRegion = null;
+    /**
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.extractRegion
+     * @description 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
+     * > 面类型可以是：SuperMap.Geometry.Polygon|L.Polygon|ol.geom.Polygon。</br>
+     * > 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
+     */
+    this.extractRegion = null;
 
-        /**
-         * @member SuperMap.MathExpressionAnalysisParameters.prototype.expression -{string}
-         * @description 指定的栅格运算表达式。如："[DatasourceAlias1.Raster1]*2-10"；必设字段。
-         */
-        this.expression = null;
+    /**
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.expression -{string}
+     * @description 指定的栅格运算表达式。如："[DatasourceAlias1.Raster1]*2-10"；必设字段。
+     */
+    this.expression = null;
 
-        /**
-         * @member SuperMap.MathExpressionAnalysisParameters.prototype.isZip -{boolean}
-         * @description 是否对结果数据集进行压缩处理。默认为false，表示不压缩。
-         */
-        this.isZip = false;
+    /**
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.isZip -{boolean}
+     * @description 是否对结果数据集进行压缩处理。默认为false，表示不压缩。
+     */
+    this.isZip = false;
 
-        /**
-         * @member SuperMap.MathExpressionAnalysisParameters.prototype.ignoreNoValue -{boolean}
-         * @description 是否忽略无值栅格数据，默认为false。
-         */
-        this.ignoreNoValue = false;
+    /**
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.ignoreNoValue -{boolean}
+     * @description 是否忽略无值栅格数据，默认为false。
+     */
+    this.ignoreNoValue = false;
 
-        /**
-         * @member SuperMap.MathExpressionAnalysisParameters.prototype.targetDatasource -{string}
-         * @description 指定存储结果数据集的数据源，必设字段。
-         */
-        this.targetDatasource = null;
+    /**
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.targetDatasource -{string}
+     * @description 指定存储结果数据集的数据源，必设字段。
+     */
+    this.targetDatasource = null;
 
-        /**
-         * @member SuperMap.MathExpressionAnalysisParameters.prototype.resultGridName -{string}
-         * @description 指定结果数据集名称，必设字段。
-         */
-        this.resultGridName = null;
+    /**
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.resultGridName -{string}
+     * @description 指定结果数据集名称，必设字段。
+     */
+    this.resultGridName = null;
 
-        /**
-         * @member SuperMap.MathExpressionAnalysisParameters.prototype.deleteExistResultDataset -{boolean}
-         * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
-         */
-        this.deleteExistResultDataset = false;
+    /**
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.deleteExistResultDataset -{boolean}
+     * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
+     */
+    this.deleteExistResultDataset = false;
 
-        _Util.Util.extend(this, options);
+    _Util.Util.extend(this, options);
 
-        this.CLASS_NAME = "SuperMap.MathExpressionAnalysisParameters";
+    this.CLASS_NAME = "SuperMap.MathExpressionAnalysisParameters";
+  }
+
+  /**
+   * @function SuperMap.MathExpressionAnalysisParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(MathExpressionAnalysisParameters, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.dataset = null;
+      me.bounds = null;
+      me.expression = null;
+      me.isZip = true;
+      me.ignoreNoValue = true;
+      me.targetDatasource = null;
+      me.resultGridName = null;
+      me.deleteExistResultDataset = null;
     }
 
     /**
-     * @function SuperMap.MathExpressionAnalysisParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.MathExpressionAnalysisParameters.toObject
+     * @param mathExpressionAnalysisParameters -{Object} 栅格代数运算参数
+     * @param tempObj - {Object} 目标对象
+     * @description 生成栅格代数运算对象
      */
 
-
-    _createClass(MathExpressionAnalysisParameters, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.dataset = null;
-            me.bounds = null;
-            me.expression = null;
-            me.isZip = true;
-            me.ignoreNoValue = true;
-            me.targetDatasource = null;
-            me.resultGridName = null;
-            me.deleteExistResultDataset = null;
+  }], [{
+    key: 'toObject',
+    value: function toObject(mathExpressionAnalysisParameters, tempObj) {
+      for (var name in mathExpressionAnalysisParameters) {
+        if (name !== "dataset") {
+          tempObj[name] = mathExpressionAnalysisParameters[name];
         }
 
-        /**
-         * @function SuperMap.MathExpressionAnalysisParameters.toObject
-         * @param mathExpressionAnalysisParameters -{Object} 栅格代数运算参数
-         * @param tempObj - {Object} 目标对象
-         * @description 生成栅格代数运算对象
-         */
+        if (name === "extractRegion") {
+          if (mathExpressionAnalysisParameters[name]) {
+            var bs = mathExpressionAnalysisParameters[name].components[0].components;
+            var region = {},
+                points = [],
+                type = "REGION";
 
-    }], [{
-        key: 'toObject',
-        value: function toObject(mathExpressionAnalysisParameters, tempObj) {
-            for (var name in mathExpressionAnalysisParameters) {
-                if (name !== "dataset") {
-                    tempObj[name] = mathExpressionAnalysisParameters[name];
-                }
-
-                if (name === "extractRegion") {
-                    if (mathExpressionAnalysisParameters[name]) {
-                        var bs = mathExpressionAnalysisParameters[name].components[0].components;
-                        var region = {},
-                            points = [],
-                            type = "REGION";
-
-                        var len = bs.length;
-                        for (var i = 0; i < len - 1; i++) {
-                            var poi = {};
-                            poi["x"] = bs[i].x;
-                            poi["y"] = bs[i].y;
-                            points.push(poi);
-                        }
-
-                        region["points"] = points;
-                        region["type"] = type;
-
-                        tempObj[name] = region;
-                    }
-                }
+            var len = bs.length;
+            for (var i = 0; i < len - 1; i++) {
+              var poi = {};
+              poi["x"] = bs[i].x;
+              poi["y"] = bs[i].y;
+              points.push(poi);
             }
-        }
-    }]);
 
-    return MathExpressionAnalysisParameters;
+            region["points"] = points;
+            region["type"] = type;
+
+            tempObj[name] = region;
+          }
+        }
+      }
+    }
+  }]);
+
+  return MathExpressionAnalysisParameters;
 }();
 
 _SuperMap.SuperMap.MathExpressionAnalysisParameters = MathExpressionAnalysisParameters;
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39030,7 +39176,7 @@ var MeasureParameters = exports.MeasureParameters = function () {
 _SuperMap.SuperMap.MeasureParameters = MeasureParameters;
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39047,7 +39193,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCLayer = __webpack_require__(94);
+var _UGCLayer = __webpack_require__(96);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39196,7 +39342,7 @@ var OverlapDisplayedOptions = exports.OverlapDisplayedOptions = function () {
 _SuperMap.SuperMap.OverlapDisplayedOptions = OverlapDisplayedOptions;
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39213,6 +39359,8 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
+var _OutputSetting = __webpack_require__(19);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -39222,6 +39370,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         datasetName -{string} 数据集名。 <br>
  *         datasetOverlay -{string} 叠加对象所在的数据集名称。 <br>
  *         mode -{string} 叠加分析模式 。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
     function OverlayGeoJobParameter(options) {
@@ -39259,6 +39408,13 @@ var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
          * @description 叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效。
          */
         this.overlayFields = "";
+
+        /**
+         * @member SuperMap.OverlayGeoJobParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         _Util.Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
     }
@@ -39277,6 +39433,10 @@ var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
             this.mode = null;
             this.srcFields = null;
             this.overlayFields = null;
+            if (this.output instanceof _OutputSetting.OutputSetting) {
+                this.output.destroy();
+                this.output = null;
+            }
         }
 
         /**
@@ -39295,6 +39455,11 @@ var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
                     tempObj['input'][name] = OverlayGeoJobParameter[name];
                     continue;
                 }
+                if (name === "output") {
+                    tempObj['output'] = tempObj['output'] || {};
+                    tempObj['output'] = OverlayGeoJobParameter[name];
+                    continue;
+                }
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 tempObj['analyst'][name] = OverlayGeoJobParameter[name];
             }
@@ -39307,7 +39472,7 @@ var OverlayGeoJobParameter = exports.OverlayGeoJobParameter = function () {
 _SuperMap.SuperMap.OverlayGeoJobParameter = OverlayGeoJobParameter;
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39397,7 +39562,7 @@ var PointWithMeasure = exports.PointWithMeasure = function (_Point) {
             result += "}";
             return result;
         }
-             /**
+           /**
          * @function SuperMap.PointWithMeasure.prototype.destroy
          * @description 释放资源，将引用资源的属性置空。
          */
@@ -39438,7 +39603,7 @@ var PointWithMeasure = exports.PointWithMeasure = function (_Point) {
 _SuperMap.SuperMap.PointWithMeasure = PointWithMeasure;
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39457,7 +39622,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryParameters2 = __webpack_require__(31);
+var _QueryParameters2 = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39540,7 +39705,7 @@ var QueryByBoundsParameters = exports.QueryByBoundsParameters = function (_Query
 _SuperMap.SuperMap.QueryByBoundsParameters = QueryByBoundsParameters;
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39559,7 +39724,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryParameters2 = __webpack_require__(31);
+var _QueryParameters2 = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39672,7 +39837,7 @@ var QueryByDistanceParameters = exports.QueryByDistanceParameters = function (_Q
 _SuperMap.SuperMap.QueryByDistanceParameters = QueryByDistanceParameters;
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39691,7 +39856,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryParameters2 = __webpack_require__(31);
+var _QueryParameters2 = __webpack_require__(32);
 
 var _REST = __webpack_require__(2);
 
@@ -39789,7 +39954,7 @@ var QueryByGeometryParameters = exports.QueryByGeometryParameters = function (_Q
 _SuperMap.SuperMap.QueryByGeometryParameters = QueryByGeometryParameters;
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39808,7 +39973,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryParameters2 = __webpack_require__(31);
+var _QueryParameters2 = __webpack_require__(32);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39879,14 +40044,14 @@ var QueryBySQLParameters = exports.QueryBySQLParameters = function (_QueryParame
 _SuperMap.SuperMap.QueryBySQLParameters = QueryBySQLParameters;
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.RouteCalculateMeasureParameters = undefined;
 
@@ -39896,7 +40061,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(64);
+__webpack_require__(65);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -39911,72 +40076,72 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        isIgnoreGap - {float}  【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
  */
 var RouteCalculateMeasureParameters = exports.RouteCalculateMeasureParameters = function () {
-    function RouteCalculateMeasureParameters(options) {
-        _classCallCheck(this, RouteCalculateMeasureParameters);
+  function RouteCalculateMeasureParameters(options) {
+    _classCallCheck(this, RouteCalculateMeasureParameters);
 
-        if (!options) {
-            return this;
-        }
-        /**
-         * @member SuperMap.RouteCalculateMeasureParameters.prototype.sourceRoute -{Object}
-         * @description 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象；<br>
-         * 路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
-         */
-        this.sourceRoute = null;
-
-        /**
-         * @member SuperMap.RouteCalculateMeasureParameters.prototype.point -{Object}
-         * @description 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
-         * 点坐标对象可以是:SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
-         */
-        this.point = null;
-
-        /**
-         * @member SuperMap.RouteCalculateMeasureParameters.prototype.tolerance -{float}
-         * @description 【可选参数】容限值。
-         */
-        this.tolerance = null;
-
-        /**
-         * @member SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap -{boolean}
-         * @description 【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
-         * @default false
-         */
-        this.isIgnoreGap = false;
-
-        _Util.Util.extend(this, options);
-
-        this.CLASS_NAME = "SuperMap.RouteCalculateMeasureParameters";
+    if (!options) {
+      return this;
     }
+    /**
+     * @member SuperMap.RouteCalculateMeasureParameters.prototype.sourceRoute -{Object}
+     * @description 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象；<br>
+     * 路由对象可以是：SuperMap.Route|L.Polyline|ol.geom.LineString
+     */
+    this.sourceRoute = null;
 
     /**
-     * @function SuperMap.RouteCalculateMeasureParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @member SuperMap.RouteCalculateMeasureParameters.prototype.point -{Object}
+     * @description 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
+     * 点坐标对象可以是:SuperMap.Geometry.Point|L.LatLng|L.Point|ol.geom.Point。
      */
+    this.point = null;
+
+    /**
+     * @member SuperMap.RouteCalculateMeasureParameters.prototype.tolerance -{float}
+     * @description 【可选参数】容限值。
+     */
+    this.tolerance = null;
+
+    /**
+     * @member SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap -{boolean}
+     * @description 【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
+     * @default false
+     */
+    this.isIgnoreGap = false;
+
+    _Util.Util.extend(this, options);
+
+    this.CLASS_NAME = "SuperMap.RouteCalculateMeasureParameters";
+  }
+
+  /**
+   * @function SuperMap.RouteCalculateMeasureParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
 
 
-    _createClass(RouteCalculateMeasureParameters, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.sourceRoute = null;
-            me.point = null;
-            if (me.tolerance) {
-                me.tolerance = null;
-            }
-            if (me.isIgnoreGap) {
-                me.isIgnoreGap = false;
-            }
-        }
-    }]);
+  _createClass(RouteCalculateMeasureParameters, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.sourceRoute = null;
+      me.point = null;
+      if (me.tolerance) {
+        me.tolerance = null;
+      }
+      if (me.isIgnoreGap) {
+        me.isIgnoreGap = false;
+      }
+    }
+  }]);
 
-    return RouteCalculateMeasureParameters;
+  return RouteCalculateMeasureParameters;
 }();
 
 _SuperMap.SuperMap.RouteCalculateMeasureParameters = RouteCalculateMeasureParameters;
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39993,9 +40158,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Geometry = __webpack_require__(26);
+var _Geometry = __webpack_require__(27);
 
-__webpack_require__(64);
+__webpack_require__(65);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40131,7 +40296,7 @@ var RouteLocatorParameters = exports.RouteLocatorParameters = function () {
 _SuperMap.SuperMap.RouteLocatorParameters = RouteLocatorParameters;
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40150,21 +40315,21 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _LonLat = __webpack_require__(35);
+var _LonLat = __webpack_require__(36);
 
-var _ThemeLabel = __webpack_require__(67);
+var _ThemeLabel = __webpack_require__(68);
 
-var _ThemeUnique = __webpack_require__(92);
+var _ThemeUnique = __webpack_require__(94);
 
-var _ThemeGraph = __webpack_require__(90);
+var _ThemeGraph = __webpack_require__(92);
 
-var _ThemeDotDensity = __webpack_require__(88);
+var _ThemeDotDensity = __webpack_require__(90);
 
-var _ThemeGraduatedSymbol = __webpack_require__(89);
+var _ThemeGraduatedSymbol = __webpack_require__(91);
 
-var _ThemeRange = __webpack_require__(91);
+var _ThemeRange = __webpack_require__(93);
 
-var _UGCSubLayer2 = __webpack_require__(49);
+var _UGCSubLayer2 = __webpack_require__(50);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40296,7 +40461,7 @@ var ServerTheme = exports.ServerTheme = function (_UGCSubLayer) {
 _SuperMap.SuperMap.ServerTheme = ServerTheme;
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40373,14 +40538,14 @@ var SetLayerInfoParameters = exports.SetLayerInfoParameters = function () {
 _SuperMap.SuperMap.SetLayerInfoParameters = SetLayerInfoParameters;
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.SetLayerStatusParameters = undefined;
 
@@ -40390,7 +40555,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(190);
+__webpack_require__(191);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -40405,80 +40570,80 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        resourceID - {string} 获取或设置资源服务 ID。
  */
 var SetLayerStatusParameters = exports.SetLayerStatusParameters = function () {
-    function SetLayerStatusParameters(options) {
-        _classCallCheck(this, SetLayerStatusParameters);
+  function SetLayerStatusParameters(options) {
+    _classCallCheck(this, SetLayerStatusParameters);
 
-        /**
-         * @member SuperMap.SetLayerStatusParameters.prototype.layerStatusList -{Array<SuperMap.LayerStatus>}
-         * @description 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。<br>
-         *                集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。
-         */
-        this.layerStatusList = [];
+    /**
+     * @member SuperMap.SetLayerStatusParameters.prototype.layerStatusList -{Array<SuperMap.LayerStatus>}
+     * @description 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。<br>
+     *                集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。
+     */
+    this.layerStatusList = [];
 
-        /**
-         * @member SuperMap.SetLayerStatusParameters.prototype.holdTime -{number}
-         * @description 获取或设置资源在服务端保存的时间。 默认为 15 分钟。
-         */
-        this.holdTime = 15;
+    /**
+     * @member SuperMap.SetLayerStatusParameters.prototype.holdTime -{number}
+     * @description 获取或设置资源在服务端保存的时间。 默认为 15 分钟。
+     */
+    this.holdTime = 15;
 
-        /**
-         * @member SuperMap.SetLayerStatusParameters.prototype.resourceID -{string}
-         * @description 获取或设置资源服务 ID 。非必设参数，如果设置该参数则会在指定的 TempLayer 进行图层的显示控制；<br>
-         *                如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 进行图层的显示控制。
-         */
-        this.resourceID = null;
+    /**
+     * @member SuperMap.SetLayerStatusParameters.prototype.resourceID -{string}
+     * @description 获取或设置资源服务 ID 。非必设参数，如果设置该参数则会在指定的 TempLayer 进行图层的显示控制；<br>
+     *                如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 进行图层的显示控制。
+     */
+    this.resourceID = null;
 
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
+  }
+
+  /**
+   * @function SuperMap.SetLayerStatusParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(SetLayerStatusParameters, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.layerStatusList = null;
+      me.holdTime = null;
+      me.resourceID = null;
     }
 
     /**
-     * @function SuperMap.SetLayerStatusParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.SetLayerStatusParameters.prototype.toJSON
+     * @description 生成json。
+     * @return{Object} 对应的json对象
      */
 
+  }, {
+    key: 'toJSON',
+    value: function toJSON() {
+      var json = '{';
+      json += '"layers":[';
+      var v = [];
+      for (var i = 0, len = this.layerStatusList.length; i < len; i++) {
+        v.push(this.layerStatusList[i].toJSON());
+      }
 
-    _createClass(SetLayerStatusParameters, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.layerStatusList = null;
-            me.holdTime = null;
-            me.resourceID = null;
-        }
+      json += v;
+      json += ']';
+      json += '}';
 
-        /**
-         * @function SuperMap.SetLayerStatusParameters.prototype.toJSON
-         * @description 生成json。
-         * @return{Object} 对应的json对象
-         */
+      return json;
+    }
+  }]);
 
-    }, {
-        key: 'toJSON',
-        value: function toJSON() {
-            var json = '{';
-            json += '"layers":[';
-            var v = [];
-            for (var i = 0, len = this.layerStatusList.length; i < len; i++) {
-                v.push(this.layerStatusList[i].toJSON());
-            }
-
-            json += v;
-            json += ']';
-            json += '}';
-
-            return json;
-        }
-    }]);
-
-    return SetLayerStatusParameters;
+  return SetLayerStatusParameters;
 }();
 
 _SuperMap.SuperMap.SetLayerStatusParameters = SetLayerStatusParameters;
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40554,7 +40719,7 @@ var SetLayersInfoParameters = exports.SetLayersInfoParameters = function () {
 _SuperMap.SuperMap.SetLayersInfoParameters = SetLayersInfoParameters;
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40573,6 +40738,8 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
+var _OutputSetting = __webpack_require__(19);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -40582,6 +40749,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         datasetName -{string} 数据集名。 <br>
  *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
  *         mode -{{@link SuperMap.SpatialQueryMode}} 空间查询模式 。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = function () {
     function SingleObjectQueryJobsParameter(options) {
@@ -40614,6 +40782,12 @@ var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = fu
          */
         this.mode = _REST.SpatialQueryMode.CONTAIN;
 
+        /**
+         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         _Util.Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
@@ -40632,6 +40806,10 @@ var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = fu
             this.datasetQuery = null;
             this.geometryQuery = null;
             this.mode = null;
+            if (this.output instanceof _OutputSetting.OutputSetting) {
+                this.output.destroy();
+                this.output = null;
+            }
         }
 
         /**
@@ -40650,6 +40828,11 @@ var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = fu
                     tempObj['input'][name] = singleObjectQueryJobsParameter[name];
                     continue;
                 }
+                if (name === "output") {
+                    tempObj['output'] = tempObj['output'] || {};
+                    tempObj['output'] = singleObjectQueryJobsParameter[name];
+                    continue;
+                }
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
             }
@@ -40662,7 +40845,7 @@ var SingleObjectQueryJobsParameter = exports.SingleObjectQueryJobsParameter = fu
 _SuperMap.SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40727,7 +40910,7 @@ var StopQueryParameters = exports.StopQueryParameters = function () {
 _SuperMap.SuperMap.StopQueryParameters = StopQueryParameters;
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40744,6 +40927,8 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
+var _OutputSetting = __webpack_require__(19);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -40754,6 +40939,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        groupField -{string}分组字段。<br>
  *        attributeField -{string} 属性字段。<br>
  *        statisticModes -{string} 统计模式。<br>
+ *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = function () {
     function SummaryAttributesJobsParameter(options) {
@@ -40762,11 +40948,34 @@ var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = fu
         if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.datasetName -{string}
+         * @description 汇总数据集名称
+         */
         this.datasetName = "";
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.groupField -{string}
+         * @description 分组字段
+         */
         this.groupField = "";
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.attributeField -{string}
+         * @description 属性字段
+         */
         this.attributeField = "";
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.statisticModes -{string}
+         * @description 属性汇总统计模式
+         */
         this.statisticModes = "";
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         _Util.Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
     }
 
     /**
@@ -40782,6 +40991,10 @@ var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = fu
             this.groupField = null;
             this.attributeField = null;
             this.statisticModes = null;
+            if (this.output instanceof _OutputSetting.OutputSetting) {
+                this.output.destroy();
+                this.output = null;
+            }
         }
 
         /**
@@ -40800,6 +41013,11 @@ var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = fu
                     tempObj['input'][name] = SummaryAttributesJobsParameter[name];
                     continue;
                 }
+                if (name === "output") {
+                    tempObj['output'] = tempObj['output'] || {};
+                    tempObj['output'] = SummaryAttributesJobsParameter[name];
+                    continue;
+                }
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 tempObj['analyst'][name] = SummaryAttributesJobsParameter[name];
             }
@@ -40812,7 +41030,7 @@ var SummaryAttributesJobsParameter = exports.SummaryAttributesJobsParameter = fu
 _SuperMap.SuperMap.SummaryAttributesJobsParameter = SummaryAttributesJobsParameter;
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40831,6 +41049,8 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
+var _OutputSetting = __webpack_require__(19);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -40844,6 +41064,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        meshType -{number}分析类型。<br>
  *        fields -{number}权重索引。<br>
  *        type -{{@link SuperMap.SummaryType}} 聚合类型。
+ *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
     function SummaryMeshJobParameter(options) {
@@ -40900,6 +41121,12 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
          */
         this.type = _REST.SummaryType.SUMMARYMESH;
 
+        /**
+         * @member SuperMap.SummaryMeshJobParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         _Util.Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryMeshJobParameter";
@@ -40922,6 +41149,10 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
             this.fields = null;
             this.regionDataset = null;
             this.type = null;
+            if (this.output instanceof _OutputSetting.OutputSetting) {
+                this.output.destroy();
+                this.output = null;
+            }
         }
 
         /**
@@ -40942,6 +41173,11 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
                 }
                 if (name === "type") {
                     tempObj['type'] = summaryMeshJobParameter[name];
+                    continue;
+                }
+                if (name === "output") {
+                    tempObj['output'] = tempObj['output'] || {};
+                    tempObj['output'] = summaryMeshJobParameter[name];
                     continue;
                 }
                 if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
@@ -40972,7 +41208,7 @@ var SummaryMeshJobParameter = exports.SummaryMeshJobParameter = function () {
 _SuperMap.SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40990,6 +41226,8 @@ var _SuperMap = __webpack_require__(0);
 var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
+
+var _OutputSetting = __webpack_require__(19);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41010,6 +41248,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         meshType -{number}网格面汇总类型。 <br>
  *         meshSizeUnit -{{@link SuperMap.AnalystSizeUnit}} 网格大小单位。 <br>
  *         type -{{@link SuperMap.SummaryType}} 汇总类型。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () {
   function SummaryRegionJobParameter(options) {
@@ -41103,6 +41342,12 @@ var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () 
      */
     this.type = _REST.SummaryType.SUMMARYMESH;
 
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.output -{SuperMap.OutputSetting}
+     * @description 输出参数设置类
+     */
+    this.output = null;
+
     _Util.Util.extend(this, options);
 
     this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
@@ -41131,6 +41376,10 @@ var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () 
       this.resolution = null;
       this.meshSizeUnit = null;
       this.type = null;
+      if (this.output instanceof _OutputSetting.OutputSetting) {
+        this.output.destroy();
+        this.output = null;
+      }
     }
 
     /**
@@ -41157,6 +41406,11 @@ var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () 
           tempObj['type'] = summaryRegionJobParameter[name];
           continue;
         }
+        if (name === "output") {
+          tempObj['output'] = tempObj['output'] || {};
+          tempObj['output'] = summaryRegionJobParameter[name];
+          continue;
+        }
         if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
           tempObj['analyst'] = tempObj['analyst'] || {};
           if (name === 'query') {
@@ -41175,7 +41429,7 @@ var SummaryRegionJobParameter = exports.SummaryRegionJobParameter = function () 
 _SuperMap.SuperMap.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41304,7 +41558,7 @@ var SurfaceAnalystParametersSetting = exports.SurfaceAnalystParametersSetting = 
 _SuperMap.SuperMap.SurfaceAnalystParametersSetting = SurfaceAnalystParametersSetting;
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41429,7 +41683,7 @@ var TerrainCurvatureCalculationParameters = exports.TerrainCurvatureCalculationP
 _SuperMap.SuperMap.TerrainCurvatureCalculationParameters = TerrainCurvatureCalculationParameters;
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41545,14 +41799,14 @@ var ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbolStyle = function () 
 _SuperMap.SuperMap.ThemeGraduatedSymbolStyle = ThemeGraduatedSymbolStyle;
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.ThemeGraphAxes = undefined;
 
@@ -41562,9 +41816,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerColor = __webpack_require__(20);
+var _ServerColor = __webpack_require__(21);
 
-var _ServerTextStyle = __webpack_require__(32);
+var _ServerTextStyle = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41579,105 +41833,105 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         axesTextStyle - {{@link SuperMap.ServerTextStyle}} 统计符号的最大最小尺寸。
  */
 var ThemeGraphAxes = exports.ThemeGraphAxes = function () {
-    function ThemeGraphAxes(options) {
-        _classCallCheck(this, ThemeGraphAxes);
+  function ThemeGraphAxes(options) {
+    _classCallCheck(this, ThemeGraphAxes);
 
-        /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesColor -{SuperMap.ServerColor}
-         * @description 坐标轴颜色，默认为黑色。当 axesDisplayed = true 时有效。
-         */
-        this.axesColor = new _ServerColor.ServerColor(0, 0, 0);
+    /**
+     * @member SuperMap.ThemeGraphAxes.prototype.axesColor -{SuperMap.ServerColor}
+     * @description 坐标轴颜色，默认为黑色。当 axesDisplayed = true 时有效。
+     */
+    this.axesColor = new _ServerColor.ServerColor(0, 0, 0);
 
-        /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesDisplayed -{boolean}
-         * @description 是否显示坐标轴。默认为 false，即不显示。<br>
-         *              由于饼状图和环状图无坐标轴，故该属性以及所有与坐标轴设置相关的属性都不适用于它们。并且只有当该值为 true 时，其它设置坐标轴的属性才起作用。
-         */
-        this.axesDisplayed = false;
+    /**
+     * @member SuperMap.ThemeGraphAxes.prototype.axesDisplayed -{boolean}
+     * @description 是否显示坐标轴。默认为 false，即不显示。<br>
+     *              由于饼状图和环状图无坐标轴，故该属性以及所有与坐标轴设置相关的属性都不适用于它们。并且只有当该值为 true 时，其它设置坐标轴的属性才起作用。
+     */
+    this.axesDisplayed = false;
 
-        /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesGridDisplayed -{boolean}
-         * @description 是否在统计图坐标轴上显示网格。默认为 false，即不显示。
-         */
-        this.axesGridDisplayed = false;
+    /**
+     * @member SuperMap.ThemeGraphAxes.prototype.axesGridDisplayed -{boolean}
+     * @description 是否在统计图坐标轴上显示网格。默认为 false，即不显示。
+     */
+    this.axesGridDisplayed = false;
 
-        /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesTextDisplayed -{boolean}
-         * @description 是否显示坐标轴的文本标注。默认为 false，即不显示。
-         */
-        this.axesTextDisplayed = false;
+    /**
+     * @member SuperMap.ThemeGraphAxes.prototype.axesTextDisplayed -{boolean}
+     * @description 是否显示坐标轴的文本标注。默认为 false，即不显示。
+     */
+    this.axesTextDisplayed = false;
 
-        /**
-         * @member SuperMap.ThemeGraphAxes.prototype.axesTextStyle -{SuperMap.ServerTextStyle}
-         * @description 坐标轴文本风格。当 axesTextDisplayed = true 时有效。
-         */
-        this.axesTextStyle = new _ServerTextStyle.ServerTextStyle();
+    /**
+     * @member SuperMap.ThemeGraphAxes.prototype.axesTextStyle -{SuperMap.ServerTextStyle}
+     * @description 坐标轴文本风格。当 axesTextDisplayed = true 时有效。
+     */
+    this.axesTextStyle = new _ServerTextStyle.ServerTextStyle();
 
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
 
-        this.CLASS_NAME = "SuperMap.ThemeGraphAxes";
+    this.CLASS_NAME = "SuperMap.ThemeGraphAxes";
+  }
+
+  /**
+   * @function SuperMap.ThemeGraphAxes.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(ThemeGraphAxes, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      if (me.axesColor) {
+        me.axesColor.destroy();
+        me.axesColor = null;
+      }
+      me.axesDisplayed = null;
+      me.axesGridDisplayed = null;
+      me.axesTextDisplayed = null;
+      if (me.axesTextStyle) {
+        me.axesTextStyle.destroy();
+        me.axesTextStyle = null;
+      }
     }
 
     /**
-     * @function SuperMap.ThemeGraphAxes.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.ThemeGraphAxes.fromObj
+     * @description 从传入对象获取统计专题图坐标轴样式类。
+     * @param obj - {Object} 传入对象
+     * @return {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象
      */
 
+  }], [{
+    key: 'fromObj',
+    value: function fromObj(obj) {
+      if (!obj) {
+        return;
+      }
+      var res = new ThemeGraphAxes();
+      _Util.Util.copy(res, obj);
+      res.axesColor = _ServerColor.ServerColor.fromJson(obj.axesColor);
+      res.axesTextStyle = _ServerTextStyle.ServerTextStyle.fromObj(obj.axesTextStyle);
+      return res;
+    }
+  }]);
 
-    _createClass(ThemeGraphAxes, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            if (me.axesColor) {
-                me.axesColor.destroy();
-                me.axesColor = null;
-            }
-            me.axesDisplayed = null;
-            me.axesGridDisplayed = null;
-            me.axesTextDisplayed = null;
-            if (me.axesTextStyle) {
-                me.axesTextStyle.destroy();
-                me.axesTextStyle = null;
-            }
-        }
-
-        /**
-         * @function SuperMap.ThemeGraphAxes.fromObj
-         * @description 从传入对象获取统计专题图坐标轴样式类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraphAxes} ThemeGraphAxes对象
-         */
-
-    }], [{
-        key: 'fromObj',
-        value: function fromObj(obj) {
-            if (!obj) {
-                return;
-            }
-            var res = new ThemeGraphAxes();
-            _Util.Util.copy(res, obj);
-            res.axesColor = _ServerColor.ServerColor.fromJson(obj.axesColor);
-            res.axesTextStyle = _ServerTextStyle.ServerTextStyle.fromObj(obj.axesTextStyle);
-            return res;
-        }
-    }]);
-
-    return ThemeGraphAxes;
+  return ThemeGraphAxes;
 }();
 
 _SuperMap.SuperMap.ThemeGraphAxes = ThemeGraphAxes;
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.ThemeGraphItem = undefined;
 
@@ -41701,94 +41955,94 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        uniformStyle - {{@link SuperMap.ServerStyle}} 统计专题图子项的显示风格
  */
 var ThemeGraphItem = exports.ThemeGraphItem = function () {
-    function ThemeGraphItem(options) {
-        _classCallCheck(this, ThemeGraphItem);
+  function ThemeGraphItem(options) {
+    _classCallCheck(this, ThemeGraphItem);
 
-        /**
-         * @member SuperMap.ThemeGraphItem.prototype.caption -{string}
-         * @description 专题图子项的名称。
-         */
-        this.caption = null;
+    /**
+     * @member SuperMap.ThemeGraphItem.prototype.caption -{string}
+     * @description 专题图子项的名称。
+     */
+    this.caption = null;
 
-        /**
-         * @member SuperMap.ThemeGraphItem.prototype.graphExpression -{string}
-         * @description 统计专题图的专题变量。专题变量可以是一个字段或字段表达式。字段必须为数值型；表达式只能为数值型的字段间的运算。必设字段。
-         */
-        this.graphExpression = null;
+    /**
+     * @member SuperMap.ThemeGraphItem.prototype.graphExpression -{string}
+     * @description 统计专题图的专题变量。专题变量可以是一个字段或字段表达式。字段必须为数值型；表达式只能为数值型的字段间的运算。必设字段。
+     */
+    this.graphExpression = null;
 
-        /**
-         * @member SuperMap.ThemeGraphItem.prototype.memoryDoubleValues -{Array<number>}
-         * @description 内存数组方式制作专题图时的值数组。<br>
-         *              内存数组方式制作专题图时，只对 SmID 值在键数组（{@link SuperMap.ThemeGraph.memoryKeys}）中的记录制作专题图。<br>
-         *              值数组的数值个数必须与键数组中数值的个数一致。 值数组中的值将代替原来的专题值来制作统计专题图。<br>
-         *              比如：利用面积字段和周长字段（即有两个统计专题图子项 ）作为专题变量制作统计专题图。
-         */
-        this.memoryDoubleValues = null;
+    /**
+     * @member SuperMap.ThemeGraphItem.prototype.memoryDoubleValues -{Array<number>}
+     * @description 内存数组方式制作专题图时的值数组。<br>
+     *              内存数组方式制作专题图时，只对 SmID 值在键数组（{@link SuperMap.ThemeGraph.memoryKeys}）中的记录制作专题图。<br>
+     *              值数组的数值个数必须与键数组中数值的个数一致。 值数组中的值将代替原来的专题值来制作统计专题图。<br>
+     *              比如：利用面积字段和周长字段（即有两个统计专题图子项 ）作为专题变量制作统计专题图。
+     */
+    this.memoryDoubleValues = null;
 
-        /**
-         * @member SuperMap.ThemeGraphItem.prototype.uniformStyle -{SuperMap.ServerStyle}
-         * @description 统计专题图子项的显示风格。
-         *              每一个统计专题图子项都对应一种显示风格。
-         */
-        this.uniformStyle = new _ServerStyle.ServerStyle();
+    /**
+     * @member SuperMap.ThemeGraphItem.prototype.uniformStyle -{SuperMap.ServerStyle}
+     * @description 统计专题图子项的显示风格。
+     *              每一个统计专题图子项都对应一种显示风格。
+     */
+    this.uniformStyle = new _ServerStyle.ServerStyle();
 
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
 
-        this.CLASS_NAME = "SuperMap.ThemeGraphItem";
+    this.CLASS_NAME = "SuperMap.ThemeGraphItem";
+  }
+
+  /**
+   * @function SuperMap.ThemeGraphItem.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(ThemeGraphItem, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.caption = null;
+      me.graphExpression = null;
+      me.memoryDoubleValues = null;
+      me.uniformStyle = null;
     }
 
     /**
-     * @function SuperMap.ThemeGraphItem.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.ThemeGraphItem.fromObj
+     * @description 从传入对象获取统计专题图子项类。
+     * @param obj - {Object} 传入对象
+     * @return {SuperMap.ThemeGraphItem} ThemeGraphItem对象
      */
 
+  }], [{
+    key: 'fromObj',
+    value: function fromObj(obj) {
+      if (!obj) {
+        return;
+      }
+      var res = new ThemeGraphItem();
+      _Util.Util.copy(res, obj);
+      res.uniformStyle = _ServerStyle.ServerStyle.fromJson(obj.uniformStyle);
+      return res;
+    }
+  }]);
 
-    _createClass(ThemeGraphItem, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.caption = null;
-            me.graphExpression = null;
-            me.memoryDoubleValues = null;
-            me.uniformStyle = null;
-        }
-
-        /**
-         * @function SuperMap.ThemeGraphItem.fromObj
-         * @description 从传入对象获取统计专题图子项类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraphItem} ThemeGraphItem对象
-         */
-
-    }], [{
-        key: 'fromObj',
-        value: function fromObj(obj) {
-            if (!obj) {
-                return;
-            }
-            var res = new ThemeGraphItem();
-            _Util.Util.copy(res, obj);
-            res.uniformStyle = _ServerStyle.ServerStyle.fromJson(obj.uniformStyle);
-            return res;
-        }
-    }]);
-
-    return ThemeGraphItem;
+  return ThemeGraphItem;
 }();
 
 _SuperMap.SuperMap.ThemeGraphItem = ThemeGraphItem;
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.ThemeGraphSize = undefined;
 
@@ -41808,72 +42062,72 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         minGraphSize - {number}统计图中显示的最小图表尺寸基准值。
  */
 var ThemeGraphSize = exports.ThemeGraphSize = function () {
-    function ThemeGraphSize(options) {
-        _classCallCheck(this, ThemeGraphSize);
+  function ThemeGraphSize(options) {
+    _classCallCheck(this, ThemeGraphSize);
 
-        /**
-         * @member SuperMap.ThemeGraphSize.prototype.maxGraphSize -{number}
-         * @description 获取或设置统计图中显示的最大图表尺寸基准值，默认为0像素。
-         */
-        this.maxGraphSize = 0;
+    /**
+     * @member SuperMap.ThemeGraphSize.prototype.maxGraphSize -{number}
+     * @description 获取或设置统计图中显示的最大图表尺寸基准值，默认为0像素。
+     */
+    this.maxGraphSize = 0;
 
-        /**
-         * @member SuperMap.ThemeGraphSize.prototype.minGraphSize -{number}
-         * @description 获取或设置统计图中显示的最小图表尺寸基准值，默认为0像素。
-         */
-        this.minGraphSize = 0;
+    /**
+     * @member SuperMap.ThemeGraphSize.prototype.minGraphSize -{number}
+     * @description 获取或设置统计图中显示的最小图表尺寸基准值，默认为0像素。
+     */
+    this.minGraphSize = 0;
 
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
 
-        this.CLASS_NAME = "SuperMap.ThemeGraphSize";
+    this.CLASS_NAME = "SuperMap.ThemeGraphSize";
+  }
+
+  /**
+   * @function SuperMap.ThemeGraphSize.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(ThemeGraphSize, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.maxGraphSize = null;
+      me.minGraphSize = null;
     }
 
     /**
-     * @function SuperMap.ThemeGraphSize.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.ThemeGraphSize.fromObj
+     * @description 从传入对象获统计专题图符号尺寸类。
+     * @param obj - {Object} 传入对象
+     * @return {SuperMap.ThemeGraphSize}  ThemeGraphSize对象
      */
 
+  }], [{
+    key: 'fromObj',
+    value: function fromObj(obj) {
+      var res = new ThemeGraphSize();
+      _Util.Util.copy(res, obj);
+      return res;
+    }
+  }]);
 
-    _createClass(ThemeGraphSize, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.maxGraphSize = null;
-            me.minGraphSize = null;
-        }
-
-        /**
-         * @function SuperMap.ThemeGraphSize.fromObj
-         * @description 从传入对象获统计专题图符号尺寸类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraphSize}  ThemeGraphSize对象
-         */
-
-    }], [{
-        key: 'fromObj',
-        value: function fromObj(obj) {
-            var res = new ThemeGraphSize();
-            _Util.Util.copy(res, obj);
-            return res;
-        }
-    }]);
-
-    return ThemeGraphSize;
+  return ThemeGraphSize;
 }();
 
 _SuperMap.SuperMap.ThemeGraphSize = ThemeGraphSize;
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.ThemeGraphText = undefined;
 
@@ -41883,7 +42137,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(32);
+var _ServerTextStyle = __webpack_require__(33);
 
 var _REST = __webpack_require__(2);
 
@@ -41898,77 +42152,77 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        graphTextStyle - {{@link SuperMap.ServerTextStyle}} 统计图上的文字标注风格。
  */
 var ThemeGraphText = exports.ThemeGraphText = function () {
-    function ThemeGraphText(options) {
-        _classCallCheck(this, ThemeGraphText);
+  function ThemeGraphText(options) {
+    _classCallCheck(this, ThemeGraphText);
 
-        /**
-         * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{boolean}
-         * @description 是否显示统计图上的文字标注。默认为 false，即不显示。
-         */
-        this.graphTextDisplayed = false;
+    /**
+     * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{boolean}
+     * @description 是否显示统计图上的文字标注。默认为 false，即不显示。
+     */
+    this.graphTextDisplayed = false;
 
-        /**
-         * @member SuperMap.ThemeGraphText.prototype.graphTextFormat -{SuperMap.ThemeGraphTextFormat}
-         * @description 统计专题图文本显示格式。<br>
-         *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。默认为 SuperMap.ThemeGraphTextFormat.CAPTION。
-         */
-        this.graphTextFormat = _REST.ThemeGraphTextFormat.CAPTION;
+    /**
+     * @member SuperMap.ThemeGraphText.prototype.graphTextFormat -{SuperMap.ThemeGraphTextFormat}
+     * @description 统计专题图文本显示格式。<br>
+     *              文本显示格式包括百分数、真实数值、标题、标题+百分数、标题+真实数值。默认为 SuperMap.ThemeGraphTextFormat.CAPTION。
+     */
+    this.graphTextFormat = _REST.ThemeGraphTextFormat.CAPTION;
 
-        /**
-         * @member SuperMap.ThemeGraphText.prototype.graphTextStyle -{SuperMap.ServerTextStyle}
-         * @description 统计图上的文字标注风格。
-         */
-        this.graphTextStyle = new _ServerTextStyle.ServerTextStyle();
+    /**
+     * @member SuperMap.ThemeGraphText.prototype.graphTextStyle -{SuperMap.ServerTextStyle}
+     * @description 统计图上的文字标注风格。
+     */
+    this.graphTextStyle = new _ServerTextStyle.ServerTextStyle();
 
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
 
-        this.CLASS_NAME = "SuperMap.ThemeGraphText";
+    this.CLASS_NAME = "SuperMap.ThemeGraphText";
+  }
+
+  /**
+   * @function SuperMap.ThemeGraphText.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(ThemeGraphText, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.graphTextDisplayed = null;
+      me.graphTextFormat = null;
+      if (me.graphTextStyle) {
+        me.graphTextStyle.destroy();
+        me.graphTextStyle = null;
+      }
     }
 
     /**
-     * @function SuperMap.ThemeGraphText.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.ThemeGraphText.fromObj
+     * @description 从传入对象获取统计图文字标注风格类。
+     * @param obj - {Object} 传入对象
+     * @return {SuperMap.ThemeGraphText} ThemeGraphText对象
      */
 
+  }], [{
+    key: 'fromObj',
+    value: function fromObj(obj) {
+      var res = new ThemeGraphText();
+      _Util.Util.copy(res, obj);
+      res.graphTextStyle = _ServerTextStyle.ServerTextStyle.fromObj(obj.graphTextStyle);
+      return res;
+    }
+  }]);
 
-    _createClass(ThemeGraphText, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.graphTextDisplayed = null;
-            me.graphTextFormat = null;
-            if (me.graphTextStyle) {
-                me.graphTextStyle.destroy();
-                me.graphTextStyle = null;
-            }
-        }
-
-        /**
-         * @function SuperMap.ThemeGraphText.fromObj
-         * @description 从传入对象获取统计图文字标注风格类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeGraphText} ThemeGraphText对象
-         */
-
-    }], [{
-        key: 'fromObj',
-        value: function fromObj(obj) {
-            var res = new ThemeGraphText();
-            _Util.Util.copy(res, obj);
-            res.graphTextStyle = _ServerTextStyle.ServerTextStyle.fromObj(obj.graphTextStyle);
-            return res;
-        }
-    }]);
-
-    return ThemeGraphText;
+  return ThemeGraphText;
 }();
 
 _SuperMap.SuperMap.ThemeGraphText = ThemeGraphText;
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41987,9 +42241,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(23);
+var _Theme2 = __webpack_require__(24);
 
-var _ThemeGridRangeItem = __webpack_require__(220);
+var _ThemeGridRangeItem = __webpack_require__(221);
 
 var _REST = __webpack_require__(2);
 
@@ -42125,7 +42379,7 @@ var ThemeGridRange = exports.ThemeGridRange = function (_Theme) {
 _SuperMap.SuperMap.ThemeGridRange = ThemeGridRange;
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42142,7 +42396,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerColor = __webpack_require__(20);
+var _ServerColor = __webpack_require__(21);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -42264,7 +42518,7 @@ var ThemeGridRangeItem = exports.ThemeGridRangeItem = function () {
 _SuperMap.SuperMap.ThemeGridRangeItem = ThemeGridRangeItem;
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42283,11 +42537,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(23);
+var _Theme2 = __webpack_require__(24);
 
-var _ServerColor = __webpack_require__(20);
+var _ServerColor = __webpack_require__(21);
 
-var _ThemeGridUniqueItem = __webpack_require__(222);
+var _ThemeGridUniqueItem = __webpack_require__(223);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -42418,7 +42672,7 @@ var ThemeGridUnique = exports.ThemeGridUnique = function (_Theme) {
 _SuperMap.SuperMap.ThemeGridUnique = ThemeGridUnique;
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42435,7 +42689,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerColor = __webpack_require__(20);
+var _ServerColor = __webpack_require__(21);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -42546,7 +42800,7 @@ var ThemeGridUniqueItem = exports.ThemeGridUniqueItem = function () {
 _SuperMap.SuperMap.ThemeGridUniqueItem = ThemeGridUniqueItem;
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42672,7 +42926,7 @@ var ThemeLabelAlongLine = exports.ThemeLabelAlongLine = function () {
 _SuperMap.SuperMap.ThemeLabelAlongLine = ThemeLabelAlongLine;
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42772,14 +43026,14 @@ var ThemeLabelBackground = exports.ThemeLabelBackground = function () {
 _SuperMap.SuperMap.ThemeLabelBackground = ThemeLabelBackground;
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.ThemeLabelItem = undefined;
 
@@ -42789,7 +43043,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(32);
+var _ServerTextStyle = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -42809,101 +43063,101 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        style - {{@link SuperMap.ServerTextStyle}} 标签专题图子项文本的显示风格。
  */
 var ThemeLabelItem = exports.ThemeLabelItem = function () {
-    function ThemeLabelItem(options) {
-        _classCallCheck(this, ThemeLabelItem);
+  function ThemeLabelItem(options) {
+    _classCallCheck(this, ThemeLabelItem);
 
-        /**
-         * @member SuperMap.ThemeLabelItem.prototype.caption -{string}
-         * @description 标签专题子项的标题。
-         */
-        this.caption = null;
+    /**
+     * @member SuperMap.ThemeLabelItem.prototype.caption -{string}
+     * @description 标签专题子项的标题。
+     */
+    this.caption = null;
 
-        /**
-         * @member SuperMap.ThemeLabelItem.prototype.end -{number}
-         * @description 标签专题图子项的终止值。如果该子项是分段中最后一个子项，那么该终止值就是分段的最大值；
-         *              如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常。默认为0。
-         */
-        this.end = 0;
+    /**
+     * @member SuperMap.ThemeLabelItem.prototype.end -{number}
+     * @description 标签专题图子项的终止值。如果该子项是分段中最后一个子项，那么该终止值就是分段的最大值；
+     *              如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常。默认为0。
+     */
+    this.end = 0;
 
-        /**
-         * @member SuperMap.ThemeLabelItem.prototype.start -{number}
-         * @description 标签专题图子项的分段起始值。如果该子项是分段中第一项，那么该起始值就是分段的最小值；
-         *              如果该子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。默认为0。
-         */
-        this.start = 0;
+    /**
+     * @member SuperMap.ThemeLabelItem.prototype.start -{number}
+     * @description 标签专题图子项的分段起始值。如果该子项是分段中第一项，那么该起始值就是分段的最小值；
+     *              如果该子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。默认为0。
+     */
+    this.start = 0;
 
-        /**
-         * @member SuperMap.ThemeLabelItem.prototype.visible -{boolean}
-         * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
-         */
-        this.visible = true;
+    /**
+     * @member SuperMap.ThemeLabelItem.prototype.visible -{boolean}
+     * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
+     */
+    this.visible = true;
 
-        /**
-         * @member SuperMap.ThemeLabelItem.prototype.style -{SuperMap.ServerTextStyle}
-         * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：<br>
-         *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
-         */
-        this.style = new _ServerTextStyle.ServerTextStyle();
+    /**
+     * @member SuperMap.ThemeLabelItem.prototype.style -{SuperMap.ServerTextStyle}
+     * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：<br>
+     *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
+     */
+    this.style = new _ServerTextStyle.ServerTextStyle();
 
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
-        this.CLASS_NAME = "SuperMap.ThemeLabelItem";
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
+    this.CLASS_NAME = "SuperMap.ThemeLabelItem";
+  }
+
+  /**
+   * @function SuperMap.ThemeLabelItem.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(ThemeLabelItem, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.caption = null;
+      me.end = null;
+      me.start = null;
+      if (me.style) {
+        me.style.destroy();
+        me.style = null;
+      }
+      me.visible = null;
     }
 
     /**
-     * @function SuperMap.ThemeLabelItem.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.ThemeLabelItem.fromObj
+     * @description 从传入对象获取分段标签专题图的子项类。
+     * @param obj - {Object} 传入对象
+     * @return {SuperMap.ThemeLabelItem} ThemeLabelItem对象
      */
 
+  }], [{
+    key: 'fromObj',
+    value: function fromObj(obj) {
+      if (!obj) {
+        return;
+      }
+      var t = new ThemeLabelItem();
+      _Util.Util.copy(t, obj);
+      return t;
+    }
+  }]);
 
-    _createClass(ThemeLabelItem, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.caption = null;
-            me.end = null;
-            me.start = null;
-            if (me.style) {
-                me.style.destroy();
-                me.style = null;
-            }
-            me.visible = null;
-        }
-
-        /**
-         * @function SuperMap.ThemeLabelItem.fromObj
-         * @description 从传入对象获取分段标签专题图的子项类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeLabelItem} ThemeLabelItem对象
-         */
-
-    }], [{
-        key: 'fromObj',
-        value: function fromObj(obj) {
-            if (!obj) {
-                return;
-            }
-            var t = new ThemeLabelItem();
-            _Util.Util.copy(t, obj);
-            return t;
-        }
-    }]);
-
-    return ThemeLabelItem;
+  return ThemeLabelItem;
 }();
 
 _SuperMap.SuperMap.ThemeLabelItem = ThemeLabelItem;
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.ThemeLabelText = undefined;
 
@@ -42913,9 +43167,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(32);
+var _ServerTextStyle = __webpack_require__(33);
 
-var _LabelMixedTextStyle = __webpack_require__(187);
+var _LabelMixedTextStyle = __webpack_require__(188);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -42932,111 +43186,111 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        uniformMixedStyle - {{@link SuperMap.LabelMixedTextStyle}} 标签专题图统一的文本复合风格。
  */
 var ThemeLabelText = exports.ThemeLabelText = function () {
-    function ThemeLabelText(options) {
-        _classCallCheck(this, ThemeLabelText);
+  function ThemeLabelText(options) {
+    _classCallCheck(this, ThemeLabelText);
 
-        /**
-         * @member SuperMap.ThemeLabelText.prototype.maxTextHeight -{number}
-         * @description 标签中文本的最大高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。默认为 0 毫米。
-         */
-        this.maxTextHeight = 0;
+    /**
+     * @member SuperMap.ThemeLabelText.prototype.maxTextHeight -{number}
+     * @description 标签中文本的最大高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
+     *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。默认为 0 毫米。
+     */
+    this.maxTextHeight = 0;
 
-        /**
-         * @member SuperMap.ThemeLabelText.prototype.maxTextWidth -{number}
-         * @description 标签中文本的最大宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。默认为0毫米。
-         */
-        this.maxTextWidth = 0;
+    /**
+     * @member SuperMap.ThemeLabelText.prototype.maxTextWidth -{number}
+     * @description 标签中文本的最大宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
+     *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。默认为0毫米。
+     */
+    this.maxTextWidth = 0;
 
-        /**
-         * @member SuperMap.ThemeLabelText.prototype.minTextHeight -{number}
-         * @description 标签中文本的最小高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
-         */
-        this.minTextHeight = 0;
+    /**
+     * @member SuperMap.ThemeLabelText.prototype.minTextHeight -{number}
+     * @description 标签中文本的最小高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
+     *              当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
+     */
+    this.minTextHeight = 0;
 
-        /**
-         * @member SuperMap.ThemeLabelText.prototype.minTextWidth -{number}
-         * @description 标签中文本的最小宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-         *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
-         */
-        this.minTextWidth = 0;
+    /**
+     * @member SuperMap.ThemeLabelText.prototype.minTextWidth -{number}
+     * @description 标签中文本的最小宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
+     *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
+     */
+    this.minTextWidth = 0;
 
-        /**
-         * @member SuperMap.ThemeLabelText.prototype.uniformStyle -{SuperMap.ServerTextStyle}
-         * @description 统一文本风格。当标签专题图子项的个数大于等于1时，
-         *              uniformStyle 不起作用，各标签的风格使用子项中设置的风格。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
-         *              SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
-         */
-        this.uniformStyle = new _ServerTextStyle.ServerTextStyle();
+    /**
+     * @member SuperMap.ThemeLabelText.prototype.uniformStyle -{SuperMap.ServerTextStyle}
+     * @description 统一文本风格。当标签专题图子项的个数大于等于1时，
+     *              uniformStyle 不起作用，各标签的风格使用子项中设置的风格。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
+     *              SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
+     */
+    this.uniformStyle = new _ServerTextStyle.ServerTextStyle();
 
-        /**
-         *@member SuperMap.ThemeLabelText.prototype.uniformMixedStyle -{SuperMap.LabelMixedTextStyle}
-         *@description  标签专题图统一的文本复合风格。通过该类可以使同一个标
-         *              签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
-         *              SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
-         */
-        this.uniformMixedStyle = null;
+    /**
+     *@member SuperMap.ThemeLabelText.prototype.uniformMixedStyle -{SuperMap.LabelMixedTextStyle}
+     *@description  标签专题图统一的文本复合风格。通过该类可以使同一个标
+     *              签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
+     *              SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
+     */
+    this.uniformMixedStyle = null;
 
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
-        this.CLASS_NAME = "SuperMap.ThemeLabelText";
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
+    this.CLASS_NAME = "SuperMap.ThemeLabelText";
+  }
+
+  /**
+   * @function SuperMap.ThemeLabelText.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(ThemeLabelText, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.maxTextHeight = null;
+      me.maxTextWidth = null;
+      me.minTextHeight = null;
+      me.minTextWidth = null;
+      if (me.uniformStyle) {
+        me.uniformStyle.destroy();
+        me.uniformStyle = null;
+      }
+      if (me.uniformMixedStyle) {
+        me.uniformMixedStyle.destroy();
+        me.uniformMixedStyle = null;
+      }
     }
 
     /**
-     * @function SuperMap.ThemeLabelText.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.ThemeLabelText.fromObj
+     * @description 从传入对象获取标签中文本风格类。
+     * @param obj - {Object} 传入对象
+     * @return {SuperMap.ThemeLabelText} ThemeLabelText对象
      */
 
+  }], [{
+    key: 'fromObj',
+    value: function fromObj(obj) {
+      if (!obj) {
+        return;
+      }
+      var res = new ThemeLabelText();
+      _Util.Util.copy(res, obj);
+      res.uniformStyle = _ServerTextStyle.ServerTextStyle.fromObj(obj.uniformStyle);
+      res.uniformMixedStyle = _LabelMixedTextStyle.LabelMixedTextStyle.fromObj(obj.uniformMixedStyle);
+      return res;
+    }
+  }]);
 
-    _createClass(ThemeLabelText, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.maxTextHeight = null;
-            me.maxTextWidth = null;
-            me.minTextHeight = null;
-            me.minTextWidth = null;
-            if (me.uniformStyle) {
-                me.uniformStyle.destroy();
-                me.uniformStyle = null;
-            }
-            if (me.uniformMixedStyle) {
-                me.uniformMixedStyle.destroy();
-                me.uniformMixedStyle = null;
-            }
-        }
-
-        /**
-         * @function SuperMap.ThemeLabelText.fromObj
-         * @description 从传入对象获取标签中文本风格类。
-         * @param obj - {Object} 传入对象
-         * @return {SuperMap.ThemeLabelText} ThemeLabelText对象
-         */
-
-    }], [{
-        key: 'fromObj',
-        value: function fromObj(obj) {
-            if (!obj) {
-                return;
-            }
-            var res = new ThemeLabelText();
-            _Util.Util.copy(res, obj);
-            res.uniformStyle = _ServerTextStyle.ServerTextStyle.fromObj(obj.uniformStyle);
-            res.uniformMixedStyle = _LabelMixedTextStyle.LabelMixedTextStyle.fromObj(obj.uniformMixedStyle);
-            return res;
-        }
-    }]);
-
-    return ThemeLabelText;
+  return ThemeLabelText;
 }();
 
 _SuperMap.SuperMap.ThemeLabelText = ThemeLabelText;
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43124,7 +43378,7 @@ var ThemeMemoryData = exports.ThemeMemoryData = function () {
 _SuperMap.SuperMap.ThemeMemoryData = ThemeMemoryData;
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43141,29 +43395,29 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(62);
-
-__webpack_require__(88);
-
-__webpack_require__(89);
+__webpack_require__(63);
 
 __webpack_require__(90);
-
-__webpack_require__(67);
 
 __webpack_require__(91);
 
 __webpack_require__(92);
 
-__webpack_require__(219);
+__webpack_require__(68);
 
-__webpack_require__(221);
+__webpack_require__(93);
 
-__webpack_require__(186);
+__webpack_require__(94);
 
-__webpack_require__(188);
+__webpack_require__(220);
+
+__webpack_require__(222);
+
+__webpack_require__(187);
 
 __webpack_require__(189);
+
+__webpack_require__(190);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43271,7 +43525,7 @@ var ThemeParameters = exports.ThemeParameters = function () {
 _SuperMap.SuperMap.ThemeParameters = ThemeParameters;
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43417,7 +43671,7 @@ var ThemeRangeItem = exports.ThemeRangeItem = function () {
 _SuperMap.SuperMap.ThemeRangeItem = ThemeRangeItem;
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43436,6 +43690,8 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
+var _OutputSetting = __webpack_require__(19);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -43446,6 +43702,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         datasetTopology -{string} 检查对象所在的数据集名称。 <br>
  *         rule -{{@link SuperMap.TopologyValidatorRule}} 拓扑检查规则 。 <br>
  *         tolerance -{string} 容限 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = function () {
     function TopologyValidatorJobsParameter(options) {
@@ -43478,6 +43735,12 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
          */
         this.rule = _REST.TopologyValidatorRule.REGIONNOOVERLAP;
 
+        /**
+         * @member SuperMap.TopologyValidatorJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         _Util.Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TopologyValidatorJobsParameter";
@@ -43496,6 +43759,10 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
             this.datasetTopology = null;
             this.tolerance = null;
             this.rule = null;
+            if (this.output instanceof _OutputSetting.OutputSetting) {
+                this.output.destroy();
+                this.output = null;
+            }
         }
 
         /**
@@ -43514,6 +43781,11 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
                     tempObj['input'][name] = TopologyValidatorJobsParameter[name];
                     continue;
                 }
+                if (name === "output") {
+                    tempObj['output'] = tempObj['output'] || {};
+                    tempObj['output'] = TopologyValidatorJobsParameter[name];
+                    continue;
+                }
                 tempObj['analyst'] = tempObj['analyst'] || {};
                 tempObj['analyst'][name] = TopologyValidatorJobsParameter[name];
             }
@@ -43526,7 +43798,7 @@ var TopologyValidatorJobsParameter = exports.TopologyValidatorJobsParameter = fu
 _SuperMap.SuperMap.TopologyValidatorJobsParameter = TopologyValidatorJobsParameter;
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43668,14 +43940,14 @@ var TransferLine = exports.TransferLine = function () {
 _SuperMap.SuperMap.TransferLine = TransferLine;
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.TransferPathParameters = undefined;
 
@@ -43685,7 +43957,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(231);
+__webpack_require__(232);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43699,65 +43971,65 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  */
 var TransferPathParameters = exports.TransferPathParameters = function () {
-    function TransferPathParameters(options) {
-        _classCallCheck(this, TransferPathParameters);
+  function TransferPathParameters(options) {
+    _classCallCheck(this, TransferPathParameters);
 
-        options = options || {};
-        /**
-         * @member SuperMap.TransferPathParameters.prototype.transferLines -{Array<SuperMap.TransferLine>}
-         * @description 本换乘分段内可乘车的路线集合，通过交通换乘方案查询得到
-         */
-        this.transferLines = null;
+    options = options || {};
+    /**
+     * @member SuperMap.TransferPathParameters.prototype.transferLines -{Array<SuperMap.TransferLine>}
+     * @description 本换乘分段内可乘车的路线集合，通过交通换乘方案查询得到
+     */
+    this.transferLines = null;
 
-        /**
-         *  @member SuperMap.TransferPathParameters.prototype.points -{Array<string>|Array<Object>}
-         *  @description 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
-         *  两种查询方式：
-         *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；
-         *           2. 按照起止点的坐标进行查询，则points参数的类型为Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
-         */
-        this.points = false;
+    /**
+     *  @member SuperMap.TransferPathParameters.prototype.points -{Array<string>|Array<Object>}
+     *  @description 点类型可以是：SuperMap.Geometry.Point|L.Point|L.LatLng|ol.geom.Point。</br>
+     *  两种查询方式：
+     *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，公交站点的ID对应服务提供者配置中的站点ID字段；
+     *           2. 按照起止点的坐标进行查询，则points参数的类型为Point2D[]，形如：[{"x":44,"y":39},{"x":45,"y":40}]。
+     */
+    this.points = false;
 
-        _Util.Util.extend(this, options);
+    _Util.Util.extend(this, options);
 
-        this.CLASS_NAME = "SuperMap.TransferPathParameters";
+    this.CLASS_NAME = "SuperMap.TransferPathParameters";
+  }
+
+  /**
+   * @function SuperMap.TransferPathParameters.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(TransferPathParameters, [{
+    key: 'destroy',
+    value: function destroy() {
+      _Util.Util.reset(this);
     }
 
     /**
-     * @function SuperMap.TransferPathParameters.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.TransferPathParameters.toJson
+     * @description 将 <SuperMap.TransferPathParameters> 对象参数转换为 json 字符串。
+     * @param params - {SuperMap.TransferPathParameters} 交通换乘参数。
+     * @return{string} 转化后的 json字符串。
      */
 
+  }], [{
+    key: 'toJson',
+    value: function toJson(params) {
+      if (params) {
+        return _Util.Util.toJSON(params);
+      }
+    }
+  }]);
 
-    _createClass(TransferPathParameters, [{
-        key: 'destroy',
-        value: function destroy() {
-            _Util.Util.reset(this);
-        }
-
-        /**
-         * @function SuperMap.TransferPathParameters.toJson
-         * @description 将 <SuperMap.TransferPathParameters> 对象参数转换为 json 字符串。
-         * @param params - {SuperMap.TransferPathParameters} 交通换乘参数。
-         * @return{string} 转化后的 json字符串。
-         */
-
-    }], [{
-        key: 'toJson',
-        value: function toJson(params) {
-            if (params) {
-                return _Util.Util.toJSON(params);
-            }
-        }
-    }]);
-
-    return TransferPathParameters;
+  return TransferPathParameters;
 }();
 
 _SuperMap.SuperMap.TransferPathParameters = TransferPathParameters;
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43913,7 +44185,7 @@ var TransferSolutionParameters = exports.TransferSolutionParameters = function (
 _SuperMap.SuperMap.TransferSolutionParameters = TransferSolutionParameters;
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44035,7 +44307,7 @@ var TransportationAnalystResultSetting = exports.TransportationAnalystResultSett
 _SuperMap.SuperMap.TransportationAnalystResultSetting = TransportationAnalystResultSetting;
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44054,9 +44326,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCLayer2 = __webpack_require__(94);
+var _UGCLayer2 = __webpack_require__(96);
 
-__webpack_require__(194);
+__webpack_require__(195);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44195,7 +44467,7 @@ var UGCMapLayer = exports.UGCMapLayer = function (_UGCLayer) {
 _SuperMap.SuperMap.UGCMapLayer = UGCMapLayer;
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44289,7 +44561,7 @@ var UpdateEdgeWeightParameters = exports.UpdateEdgeWeightParameters = function (
 _SuperMap.SuperMap.UpdateEdgeWeightParameters = UpdateEdgeWeightParameters;
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44381,7 +44653,7 @@ var UpdateTurnNodeWeightParameters = exports.UpdateTurnNodeWeightParameters = fu
 _SuperMap.SuperMap.UpdateTurnNodeWeightParameters = UpdateTurnNodeWeightParameters;
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44400,7 +44672,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _UGCSubLayer2 = __webpack_require__(49);
+var _UGCSubLayer2 = __webpack_require__(50);
 
 var _ServerStyle = __webpack_require__(11);
 
@@ -44492,14 +44764,14 @@ var Vector = exports.Vector = function (_UGCSubLayer) {
 _SuperMap.SuperMap.Vector = Vector;
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.VectorClipJobsParameter = undefined;
 
@@ -44511,6 +44783,8 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
+var _OutputSetting = __webpack_require__(19);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -44520,86 +44794,102 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         datasetName -{string} 数据集名。 <br>
  *         datasetOverlay -{string} 裁剪对象数据集。 <br>
  *         mode -{{@link SuperMap.ClipAnalystMode}} 裁剪分析模式 。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 var VectorClipJobsParameter = exports.VectorClipJobsParameter = function () {
-    function VectorClipJobsParameter(options) {
-        _classCallCheck(this, VectorClipJobsParameter);
+  function VectorClipJobsParameter(options) {
+    _classCallCheck(this, VectorClipJobsParameter);
 
-        options = options || {};
+    options = options || {};
 
-        /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
-         * @description 数据集名。
-         */
-        this.datasetName = "";
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
+     * @description 数据集名。
+     */
+    this.datasetName = "";
 
-        /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
-         * @description 裁剪对象数据集。
-         */
-        this.datasetVectorClip = "";
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
+     * @description 裁剪对象数据集。
+     */
+    this.datasetVectorClip = "";
 
-        /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
-         * @description 裁剪几何对象。
-         */
-        this.geometryClip = "";
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.geometryClip -{string}
+     * @description 裁剪几何对象。
+     */
+    this.geometryClip = "";
 
-        /**
-         * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
-         * @description 裁剪分析模式 。
-         */
-        this.mode = _REST.ClipAnalystMode.CLIP;
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
+     * @description 裁剪分析模式 。
+     */
+    this.mode = _REST.ClipAnalystMode.CLIP;
 
-        _Util.Util.extend(this, options);
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.output -{SuperMap.OutputSetting}
+     * @description 输出参数设置类
+     */
+    this.output = null;
 
-        this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
+    _Util.Util.extend(this, options);
+
+    this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
+  }
+
+  /**
+   * @function SuperMap.VectorClipJobsParameter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(VectorClipJobsParameter, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.datasetName = null;
+      this.datasetVectorClip = null;
+      this.geometryClip = null;
+      this.mode = null;
+      if (this.output instanceof _OutputSetting.OutputSetting) {
+        this.output.destroy();
+        this.output = null;
+      }
     }
 
     /**
-     * @function SuperMap.VectorClipJobsParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.VectorClipJobsParameter.toObject
+     * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
+     * @param tempObj - {Object} 目标对象。
+     * @description 矢量裁剪分析任务对象
      */
 
-
-    _createClass(VectorClipJobsParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.datasetVectorClip = null;
-            this.geometryClip = null;
-            this.mode = null;
+  }], [{
+    key: 'toObject',
+    value: function toObject(vectorClipJobsParameter, tempObj) {
+      for (var name in vectorClipJobsParameter) {
+        if (name === "datasetName") {
+          tempObj['input'] = tempObj['input'] || {};
+          tempObj['input'][name] = vectorClipJobsParameter[name];
+          continue;
         }
-
-        /**
-         * @function SuperMap.VectorClipJobsParameter.toObject
-         * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
-         * @param tempObj - {Object} 目标对象。
-         * @description 矢量裁剪分析任务对象
-         */
-
-    }], [{
-        key: 'toObject',
-        value: function toObject(vectorClipJobsParameter, tempObj) {
-            for (var name in vectorClipJobsParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = vectorClipJobsParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = vectorClipJobsParameter[name];
-            }
+        if (name === "output") {
+          tempObj['output'] = tempObj['output'] || {};
+          tempObj['output'] = vectorClipJobsParameter[name];
+          continue;
         }
-    }]);
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        tempObj['analyst'][name] = vectorClipJobsParameter[name];
+      }
+    }
+  }]);
 
-    return VectorClipJobsParameter;
+  return VectorClipJobsParameter;
 }();
 
 _SuperMap.SuperMap.VectorClipJobsParameter = VectorClipJobsParameter;
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44616,7 +44906,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _OnlineServiceBase2 = __webpack_require__(242);
+var _OnlineServiceBase2 = __webpack_require__(243);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44741,7 +45031,7 @@ var OnlineData = exports.OnlineData = function (_OnlineServiceBase) {
 _SuperMap.SuperMap.OnlineData = OnlineData;
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44825,7 +45115,7 @@ var FilterField = exports.FilterField = _SuperMap.SuperMap.FilterField = {
 };
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44846,7 +45136,7 @@ var _Util = __webpack_require__(1);
 
 var _REST = __webpack_require__(2);
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44928,14 +45218,14 @@ var OnlineServiceBase = exports.OnlineServiceBase = function () {
 _SuperMap.SuperMap.OnlineServiceBase = OnlineServiceBase;
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+    value: true
 });
 exports.RankSymbol = undefined;
 
@@ -44945,7 +45235,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Graph2 = __webpack_require__(28);
+var _Graph2 = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44970,148 +45260,148 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  */
 var RankSymbol = exports.RankSymbol = function (_Graph) {
-        _inherits(RankSymbol, _Graph);
+    _inherits(RankSymbol, _Graph);
 
-        function RankSymbol(data, layer, fields, setting, lonlat, options) {
-                _classCallCheck(this, RankSymbol);
+    function RankSymbol(data, layer, fields, setting, lonlat, options) {
+        _classCallCheck(this, RankSymbol);
 
-                /**
-                 * @member SuperMap.Feature.Theme.RankSymbol.prototype.setting -{Object}
-                 * @description 符号配置对象，该对象控制着图表的可视化显示。
-                 * 下面是此配置对象的 5 个基础可设属性：</br>
-                 * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
-                 * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
-                 * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
-                 * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-                 * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
-                 * 除了以上 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
-                 * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
-                 */
-                var _this = _possibleConstructorReturn(this, (RankSymbol.__proto__ || Object.getPrototypeOf(RankSymbol)).call(this, data, layer, fields, setting, lonlat, options));
+        /**
+         * @member SuperMap.Feature.Theme.RankSymbol.prototype.setting -{Object}
+         * @description 符号配置对象，该对象控制着图表的可视化显示。
+         * 下面是此配置对象的 5 个基础可设属性：</br>
+         * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+         * XOffset - {number} 专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
+         * YOffset - {number} 专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
+         * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
+         * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+         * 除了以上 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
+         * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
+         */
+        var _this = _possibleConstructorReturn(this, (RankSymbol.__proto__ || Object.getPrototypeOf(RankSymbol)).call(this, data, layer, fields, setting, lonlat, options));
 
-                _this.setting = null;
-                // 配置项检测与赋值
-                if (setting && setting.codomain) {
-                        _this.setting = setting;
-                        _this.DVBCodomain = _this.setting.codomain;
-                }
-                _this.CLASS_NAME = "SuperMap.Feature.Theme.RankSymbol";
-                return _this;
+        _this.setting = null;
+        // 配置项检测与赋值
+        if (setting && setting.codomain) {
+            _this.setting = setting;
+            _this.DVBCodomain = _this.setting.codomain;
+        }
+        _this.CLASS_NAME = "SuperMap.Feature.Theme.RankSymbol";
+        return _this;
+    }
+
+    /**
+     * @function SuperMap.Feature.Theme.RankSymbol.prototype.destroy
+     * @description 销毁专题要素。
+     */
+
+
+    _createClass(RankSymbol, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.setting = null;
+            _get(RankSymbol.prototype.__proto__ || Object.getPrototypeOf(RankSymbol.prototype), 'destroy', this).call(this);
         }
 
         /**
-         * @function SuperMap.Feature.Theme.RankSymbol.prototype.destroy
-         * @description 销毁专题要素。
+         * @function SuperMap.Feature.Theme.RankSymbol.prototype.initBaseParameter
+         * @description 初始化专题要素（图形）基础参数。
+         * 在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。
+         * 调用此函数关系到 setting 对象的以下属性</br>
+         * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+         * XOffset - {number} 专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
+         * YOffset - {number} 专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
+         * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
+         * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+         * @returns {boolean} 初始化参数是否成功。
          */
 
+    }, {
+        key: 'initBaseParameter',
+        value: function initBaseParameter() {
+            // 参数初始化是否成功
+            var isSuccess = true;
 
-        _createClass(RankSymbol, [{
-                key: 'destroy',
-                value: function destroy() {
-                        this.setting = null;
-                        _get(RankSymbol.prototype.__proto__ || Object.getPrototypeOf(RankSymbol.prototype), 'destroy', this).call(this);
-                }
+            // setting 属性是否已成功赋值
+            if (!this.setting) {
+                return false;
+            }
+            var sets = this.setting;
 
-                /**
-                 * @function SuperMap.Feature.Theme.RankSymbol.prototype.initBaseParameter
-                 * @description 初始化专题要素（图形）基础参数。
-                 * 在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。
-                 * 调用此函数关系到 setting 对象的以下属性</br>
-                 * codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
-                 * XOffset - {number} 专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
-                 * YOffset - {number} 专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
-                 * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-                 * decimalNumber - {number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
-                 * @returns {boolean} 初始化参数是否成功。
-                 */
+            // 图表偏移
+            if (sets.XOffset) {
+                this.XOffset = sets.XOffset;
+            }
+            if (sets.YOffset) {
+                this.YOffset = sets.YOffset;
+            }
+            this.XOffset = sets.XOffset ? sets.XOffset : 0;
+            this.YOffset = sets.YOffset ? sets.YOffset : 0;
 
-        }, {
-                key: 'initBaseParameter',
-                value: function initBaseParameter() {
-                        // 参数初始化是否成功
-                        var isSuccess = true;
+            // 其他默认值
+            this.origonPoint = [];
+            this.chartBox = [];
+            this.dataViewBox = [];
 
-                        // setting 属性是否已成功赋值
-                        if (!this.setting) {
-                                return false;
-                        }
-                        var sets = this.setting;
+            this.DVBParameter = sets.dataViewBoxParameter ? sets.dataViewBoxParameter : [0, 0, 0, 0];
 
-                        // 图表偏移
-                        if (sets.XOffset) {
-                                this.XOffset = sets.XOffset;
-                        }
-                        if (sets.YOffset) {
-                                this.YOffset = sets.YOffset;
-                        }
-                        this.XOffset = sets.XOffset ? sets.XOffset : 0;
-                        this.YOffset = sets.YOffset ? sets.YOffset : 0;
+            this.DVBOrigonPoint = [];
+            this.DVBCenterPoint = [];
+            this.origonPointOffset = [];
 
-                        // 其他默认值
-                        this.origonPoint = [];
-                        this.chartBox = [];
-                        this.dataViewBox = [];
+            // 图表位置
+            this.resetLocation();
 
-                        this.DVBParameter = sets.dataViewBoxParameter ? sets.dataViewBoxParameter : [0, 0, 0, 0];
+            // 专题要素宽度 w
+            var w = this.width;
+            // 专题要素高度 h
+            var h = this.height;
+            // 专题要素像素位置 loc
+            var loc = this.location;
 
-                        this.DVBOrigonPoint = [];
-                        this.DVBCenterPoint = [];
-                        this.origonPointOffset = [];
+            // 专题要素像素位置 loc
+            this.origonPoint = [loc[0] - w / 2, loc[1] - h / 2];
+            // 专题要素原点（左上角）
+            var op = this.origonPoint;
 
-                        // 图表位置
-                        this.resetLocation();
+            // 图表框（[left, bottom, right, top]）
+            this.chartBox = [op[0], op[1] + h, op[0] + w, op[1]];
+            // 图表框
+            var cb = this.chartBox;
 
-                        // 专题要素宽度 w
-                        var w = this.width;
-                        // 专题要素高度 h
-                        var h = this.height;
-                        // 专题要素像素位置 loc
-                        var loc = this.location;
+            // 数据视图框参数，它是图表框各方向对应的内偏距
+            var dbbP = this.DVBParameter;
+            // 数据视图框 （[left, bottom, right, top]）
+            this.dataViewBox = [cb[0] + dbbP[0], cb[1] - dbbP[1], cb[2] - dbbP[2], cb[3] + dbbP[3]];
+            // 数据视图框
+            var dvb = this.dataViewBox;
+            //检查数据视图框是否合法
+            if (dvb[0] >= dvb[2] || dvb[1] <= dvb[3]) {
+                return false;
+            }
 
-                        // 专题要素像素位置 loc
-                        this.origonPoint = [loc[0] - w / 2, loc[1] - h / 2];
-                        // 专题要素原点（左上角）
-                        var op = this.origonPoint;
+            // 数据视图框原点
+            this.DVBOrigonPoint = [dvb[0], dvb[3]];
+            // 数据视图框宽度
+            this.DVBWidth = Math.abs(dvb[2] - dvb[0]);
+            // 数据视图框高度
+            this.DVBHeight = Math.abs(dvb[1] - dvb[3]);
+            // 数据视图框中心点
+            this.DVBCenterPoint = [this.DVBOrigonPoint[0] + this.DVBWidth / 2, this.DVBOrigonPoint[1] + this.DVBHeight / 2];
 
-                        // 图表框（[left, bottom, right, top]）
-                        this.chartBox = [op[0], op[1] + h, op[0] + w, op[1]];
-                        // 图表框
-                        var cb = this.chartBox;
+            // 数据视图框原点与图表框的原点偏移量
+            this.origonPointOffset = [this.DVBOrigonPoint[0] - op[0], this.DVBOrigonPoint[1] - op[1]];
 
-                        // 数据视图框参数，它是图表框各方向对应的内偏距
-                        var dbbP = this.DVBParameter;
-                        // 数据视图框 （[left, bottom, right, top]）
-                        this.dataViewBox = [cb[0] + dbbP[0], cb[1] - dbbP[1], cb[2] - dbbP[2], cb[3] + dbbP[3]];
-                        // 数据视图框
-                        var dvb = this.dataViewBox;
-                        //检查数据视图框是否合法
-                        if (dvb[0] >= dvb[2] || dvb[1] <= dvb[3]) {
-                                return false;
-                        }
+            return isSuccess;
+        }
+    }]);
 
-                        // 数据视图框原点
-                        this.DVBOrigonPoint = [dvb[0], dvb[3]];
-                        // 数据视图框宽度
-                        this.DVBWidth = Math.abs(dvb[2] - dvb[0]);
-                        // 数据视图框高度
-                        this.DVBHeight = Math.abs(dvb[1] - dvb[3]);
-                        // 数据视图框中心点
-                        this.DVBCenterPoint = [this.DVBOrigonPoint[0] + this.DVBWidth / 2, this.DVBOrigonPoint[1] + this.DVBHeight / 2];
-
-                        // 数据视图框原点与图表框的原点偏移量
-                        this.origonPointOffset = [this.DVBOrigonPoint[0] - op[0], this.DVBOrigonPoint[1] - op[1]];
-
-                        return isSuccess;
-                }
-        }]);
-
-        return RankSymbol;
+    return RankSymbol;
 }(_Graph2.Graph);
 
 _SuperMap.SuperMap.Feature.Theme.RankSymbol = RankSymbol;
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45128,7 +45418,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeParameters2 = __webpack_require__(25);
+var _ShapeParameters2 = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -45258,7 +45548,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Image = Image;
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45275,7 +45565,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeParameters2 = __webpack_require__(25);
+var _ShapeParameters2 = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -45357,7 +45647,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Label = Label;
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45374,7 +45664,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeParameters2 = __webpack_require__(25);
+var _ShapeParameters2 = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -45464,7 +45754,7 @@ _SuperMap.SuperMap.Feature = _SuperMap.SuperMap.Feature || {};
 _SuperMap.SuperMap.Feature.ShapeParameters.Rectangle = Rectangle;
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45479,11 +45769,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(29);
+var _Util = __webpack_require__(30);
 
-var _Eventful2 = __webpack_require__(50);
+var _Eventful2 = __webpack_require__(51);
 
-var _Clip = __webpack_require__(249);
+var _Clip = __webpack_require__(250);
 
 var _SUtil = __webpack_require__(12);
 
@@ -46220,7 +46510,7 @@ var Animator = exports.Animator = function () {
 }();
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46233,9 +46523,9 @@ exports.Area = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(29);
+var _Util = __webpack_require__(30);
 
-var _Curve = __webpack_require__(75);
+var _Curve = __webpack_require__(76);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -47326,7 +47616,7 @@ var Area = exports.Area = function () {
 }();
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47339,7 +47629,7 @@ exports.Clip = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Easing = __webpack_require__(251);
+var _Easing = __webpack_require__(252);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -47481,7 +47771,7 @@ var Clip = exports.Clip = function () {
 }();
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47494,9 +47784,9 @@ exports.ComputeBoundingBox = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Curve = __webpack_require__(75);
+var _Curve = __webpack_require__(76);
 
-var _Vector = __webpack_require__(78);
+var _Vector = __webpack_require__(79);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -47729,7 +48019,7 @@ var ComputeBoundingBox = exports.ComputeBoundingBox = function () {
 }();
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48219,7 +48509,7 @@ var Easing = exports.Easing = function () {
 }();
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48351,7 +48641,7 @@ var Env = exports.Env = function Env() {
 };
 
 /***/ }),
-/* 253 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48454,7 +48744,7 @@ var Event = exports.Event = function () {
 }();
 
 /***/ }),
-/* 254 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48473,9 +48763,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Eventful = __webpack_require__(50);
+var _Eventful = __webpack_require__(51);
 
-var _Transformable = __webpack_require__(77);
+var _Transformable = __webpack_require__(78);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -48804,7 +49094,7 @@ var Group = exports.Group = function (_SuperMap$mixin) {
 }(_SuperMap.SuperMap.mixin(_Eventful.Eventful, _Transformable.Transformable));
 
 /***/ }),
-/* 255 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48817,9 +49107,9 @@ exports.Handler = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Eventful2 = __webpack_require__(50);
+var _Eventful2 = __webpack_require__(51);
 
-var _Config = __webpack_require__(74);
+var _Config = __webpack_require__(75);
 
 var _SUtil = __webpack_require__(12);
 
@@ -49967,7 +50257,7 @@ var Handler = exports.Handler = function (_Eventful) {
 }(_Eventful2.Eventful);
 
 /***/ }),
-/* 256 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50048,7 +50338,7 @@ var Http = exports.Http = function () {
 }();
 
 /***/ }),
-/* 257 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50059,7 +50349,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Log = undefined;
 
-var _Config = __webpack_require__(74);
+var _Config = __webpack_require__(75);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -50105,14 +50395,14 @@ exports.Log = function Log() {
 };
 
 /***/ }),
-/* 258 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -50127,25 +50417,44 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var Math = exports.Math = function () {
 
+  /**
+   * Constructor: SuperMap.LevelRenderer.Tool.Math
+   * 构造函数。
+   *
+   */
+  function Math() {
+    _classCallCheck(this, Math);
+
     /**
-     * Constructor: SuperMap.LevelRenderer.Tool.Math
-     * 构造函数。
-     *
+     * Property: _radians
+     * {Number} 角度与弧度转化参数
      */
-    function Math() {
-        _classCallCheck(this, Math);
+    this._radians = window.Math.PI / 180;
 
-        /**
-         * Property: _radians
-         * {Number} 角度与弧度转化参数
-         */
-        this._radians = window.Math.PI / 180;
+    this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Math";
+  }
 
-        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Math";
+  /**
+   * APIMethod: sin
+   * 正弦函数。
+   *
+   * Parameters:
+   * angle - {Number} 弧度（角度）参数。
+   * isDegrees - {Boolean} angle参数是否为角度计算，默认为false，angle为以弧度计量的角度。
+   *
+   * Returns:
+   * {Number} sin 值。
+   */
+
+
+  _createClass(Math, [{
+    key: "sin",
+    value: function sin(angle, isDegrees) {
+      return window.Math.sin(isDegrees ? angle * this._radians : angle);
     }
 
     /**
-     * APIMethod: sin
+     * APIMethod: cos
      * 正弦函数。
      *
      * Parameters:
@@ -50153,74 +50462,55 @@ var Math = exports.Math = function () {
      * isDegrees - {Boolean} angle参数是否为角度计算，默认为false，angle为以弧度计量的角度。
      *
      * Returns:
-     * {Number} sin 值。
+     * {Number} cos 值。
      */
 
+  }, {
+    key: "cos",
+    value: function cos(angle, isDegrees) {
+      return window.Math.cos(isDegrees ? angle * this._radians : angle);
+    }
 
-    _createClass(Math, [{
-        key: "sin",
-        value: function sin(angle, isDegrees) {
-            return window.Math.sin(isDegrees ? angle * this._radians : angle);
-        }
+    /**
+     * APIMethod: degreeToRadian
+     * 角度转弧度。
+     *
+     * Parameters:
+     * angle - {Number} 角度参数。
+     *
+     * Returns:
+     * {Number} 弧度值。
+     */
 
-        /**
-         * APIMethod: cos
-         * 正弦函数。
-         *
-         * Parameters:
-         * angle - {Number} 弧度（角度）参数。
-         * isDegrees - {Boolean} angle参数是否为角度计算，默认为false，angle为以弧度计量的角度。
-         *
-         * Returns:
-         * {Number} cos 值。
-         */
+  }, {
+    key: "degreeToRadian",
+    value: function degreeToRadian(angle) {
+      return angle * this._radians;
+    }
 
-    }, {
-        key: "cos",
-        value: function cos(angle, isDegrees) {
-            return window.Math.cos(isDegrees ? angle * this._radians : angle);
-        }
+    /**
+     * APIMethod: radianToDegree
+     * 弧度转角度。
+     *
+     * Parameters:
+     * angle - {Number} 弧度参数。
+     *
+     * Returns:
+     * {Number} 角度。
+     */
 
-        /**
-         * APIMethod: degreeToRadian
-         * 角度转弧度。
-         *
-         * Parameters:
-         * angle - {Number} 角度参数。
-         *
-         * Returns:
-         * {Number} 弧度值。
-         */
+  }, {
+    key: "radianToDegree",
+    value: function radianToDegree(angle) {
+      return angle / this._radians;
+    }
+  }]);
 
-    }, {
-        key: "degreeToRadian",
-        value: function degreeToRadian(angle) {
-            return angle * this._radians;
-        }
-
-        /**
-         * APIMethod: radianToDegree
-         * 弧度转角度。
-         *
-         * Parameters:
-         * angle - {Number} 弧度参数。
-         *
-         * Returns:
-         * {Number} 角度。
-         */
-
-    }, {
-        key: "radianToDegree",
-        value: function radianToDegree(angle) {
-            return angle / this._radians;
-        }
-    }]);
-
-    return Math;
+  return Math;
 }();
 
 /***/ }),
-/* 259 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50508,7 +50798,7 @@ var Matrix = exports.Matrix = function () {
 }();
 
 /***/ }),
-/* 260 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50521,15 +50811,15 @@ exports.PaintLayer = exports.Painter = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Transformable2 = __webpack_require__(77);
+var _Transformable2 = __webpack_require__(78);
 
-var _SmicImage = __webpack_require__(99);
+var _SmicImage = __webpack_require__(101);
 
 var _Util = __webpack_require__(1);
 
-var _Util2 = __webpack_require__(29);
+var _Util2 = __webpack_require__(30);
 
-var _Config = __webpack_require__(74);
+var _Config = __webpack_require__(75);
 
 var _SUtil = __webpack_require__(12);
 
@@ -51749,7 +52039,7 @@ var PaintLayer = exports.PaintLayer = function (_Transformable) {
 }(_Transformable2.Transformable);
 
 /***/ }),
-/* 261 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51769,17 +52059,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _Util = __webpack_require__(29);
+var _Util = __webpack_require__(30);
 
 var _Util2 = __webpack_require__(1);
 
-var _Storage = __webpack_require__(264);
+var _Storage = __webpack_require__(265);
 
-var _Painter = __webpack_require__(260);
+var _Painter = __webpack_require__(261);
 
-var _Handler = __webpack_require__(255);
+var _Handler = __webpack_require__(256);
 
-var _Animation = __webpack_require__(247);
+var _Animation = __webpack_require__(248);
 
 var _SUtil = __webpack_require__(12);
 
@@ -52505,7 +52795,7 @@ var Render = exports.Render = function () {
 }();
 
 /***/ }),
-/* 262 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52698,7 +52988,7 @@ var SmicCircle = exports.SmicCircle = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 263 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52939,7 +53229,7 @@ var SmicSector = exports.SmicSector = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52952,9 +53242,9 @@ exports.Storage = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(29);
+var _Util = __webpack_require__(30);
 
-var _Group = __webpack_require__(254);
+var _Group = __webpack_require__(255);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -53528,7 +53818,7 @@ var Storage = exports.Storage = function () {
 }();
 
 /***/ }),
-/* 265 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53547,9 +53837,9 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _StyleMap = __webpack_require__(416);
+var _StyleMap = __webpack_require__(417);
 
-var _DeafultCanvasStyle = __webpack_require__(415);
+var _DeafultCanvasStyle = __webpack_require__(416);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53644,7 +53934,7 @@ var StyleUtils = exports.StyleUtils = function () {
                     /*//首先判定是否需要绘制阴影，如果需要绘制，阴影应该在最下面
                      if(shader.shadow)
                      {
-                       //桌面里面的阴影没有做模糊处理，这里统一设置为0,
+                      //桌面里面的阴影没有做模糊处理，这里统一设置为0,
                      style.shadowBlur=0;
                      //和桌面统一，往右下角偏移阴影，默认3像素
                      style.shadowOffsetX=3;
@@ -54155,7 +54445,7 @@ var StyleUtils = exports.StyleUtils = function () {
          * @function ol.supermap.StyleUtils.getDefaultStyle
          * @description 获取默认风格
          * @param type -{string} 类型参数
-           */
+          */
 
     }, {
         key: 'getDefaultStyle',
@@ -54176,7 +54466,7 @@ var StyleUtils = exports.StyleUtils = function () {
 _openlayers2.default.supermap.StyleUtils = StyleUtils;
 
 /***/ }),
-/* 266 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54197,7 +54487,7 @@ var _Util = __webpack_require__(7);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _ThemeFeature = __webpack_require__(267);
+var _ThemeFeature = __webpack_require__(268);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54754,7 +55044,7 @@ var Theme = exports.Theme = function (_ol$source$ImageCanva) {
 _openlayers2.default.source.Theme = Theme;
 
 /***/ }),
-/* 267 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54838,7 +55128,7 @@ var ThemeFeature = exports.ThemeFeature = function () {
 _openlayers2.default.supermap.ThemeFeature = ThemeFeature;
 
 /***/ }),
-/* 268 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55560,7 +55850,7 @@ function getMinNorthing(zoneLetter) {
 }
 
 /***/ }),
-/* 269 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55573,7 +55863,7 @@ module.exports = function (phi, sphi, cphi, en) {
 };
 
 /***/ }),
-/* 270 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55594,15 +55884,15 @@ module.exports = function (array) {
 };
 
 /***/ }),
-/* 271 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var globals = __webpack_require__(439);
-var parseProj = __webpack_require__(272);
-var wkt = __webpack_require__(275);
+var globals = __webpack_require__(440);
+var parseProj = __webpack_require__(273);
+var wkt = __webpack_require__(276);
 
 function defs(name) {
   /*global console*/
@@ -55647,15 +55937,15 @@ globals(defs);
 module.exports = defs;
 
 /***/ }),
-/* 272 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(433);
-var _units = __webpack_require__(434);
+var PrimeMeridian = __webpack_require__(434);
+var _units = __webpack_require__(435);
 
 module.exports = function (defData) {
   var self = {};
@@ -55784,22 +56074,22 @@ module.exports = function (defData) {
 };
 
 /***/ }),
-/* 273 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var e0fn = __webpack_require__(52);
-var e1fn = __webpack_require__(53);
-var e2fn = __webpack_require__(54);
-var e3fn = __webpack_require__(55);
-var mlfn = __webpack_require__(56);
+var e0fn = __webpack_require__(53);
+var e1fn = __webpack_require__(54);
+var e2fn = __webpack_require__(55);
+var e3fn = __webpack_require__(56);
+var mlfn = __webpack_require__(57);
 var adjust_lon = __webpack_require__(6);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
-var sign = __webpack_require__(57);
-var asinz = __webpack_require__(41);
+var sign = __webpack_require__(58);
+var asinz = __webpack_require__(42);
 
 exports.init = function () {
   this.e0 = e0fn(this.es);
@@ -55922,7 +56212,7 @@ exports.inverse = function (p) {
 exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 /***/ }),
-/* 274 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55932,10 +56222,10 @@ var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(437);
-var adjust_axis = __webpack_require__(426);
-var proj = __webpack_require__(104);
-var toPoint = __webpack_require__(270);
+var datum_transform = __webpack_require__(438);
+var adjust_axis = __webpack_require__(427);
+var proj = __webpack_require__(106);
+var toPoint = __webpack_require__(271);
 module.exports = function transform(source, dest, point) {
   var wgs84;
   if (Array.isArray(point)) {
@@ -56001,7 +56291,7 @@ module.exports = function transform(source, dest, point) {
 };
 
 /***/ }),
-/* 275 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56010,7 +56300,7 @@ module.exports = function transform(source, dest, point) {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var D2R = 0.01745329251994329577;
-var extend = __webpack_require__(108);
+var extend = __webpack_require__(110);
 
 function mapit(obj, key, v) {
   obj[key] = v.map(function (aa) {
@@ -56198,7 +56488,7 @@ module.exports = function (wkt, self) {
 };
 
 /***/ }),
-/* 276 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56228,19 +56518,19 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 277 */
+/* 278 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 278 */
+/* 279 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAAAdCAYAAAAjHtusAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozYWZlOGIwMi01MWE3LTRiZjYtYWVkYS05MGQ2ZTQ4YjZiMmUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODg0NkFBQUE3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODg0NkFBQTk3RjEzMTFFNzhFRjJFQkY4RjcxQjc1NjIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MWI3NzdhNC1lZmEyLTQ1MzUtOGQzNi03MmRjNDkyODMzN2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjYTYzODVjMi1jNDQ1LTExN2EtYTc0ZC1lM2I5MzJlMGE4Y2QiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5q1HM0AAAF/ElEQVR42tSabYhUVRjHZ7W01C1uaCRW4F3oi9SXCUnwQ9gsGUFvOEtQH1bLu5VS9sbYh5KicjYt29qiGQwVg2xWWKgocob91AvC+CWsoJqB3qHMSdTMpZyeU/+Df07n3pk7997Z6cBv99z7nHvOvf/z/pxJNZvNVI/jCKXmv6EquAmVkxPSlvtp2GItr0/96fFQForChJAWDiVYTkMYMu4XBFcYjLOwWS3sNwmn8NGzZ0h4Flv/zwIdchAnh/slCGmmKUNIBzYPaXOUr0vPuEjD71JAPh7l61embzinhV3V8nnCGmGT8LwlzSL8/yUh4Tfjo9T/CgnCIYNKycA2Qq21AcHU/VHE80Idoo3Qs0W6p0UtUnkZvEMDeVcCyqxEafF7hL8Qf0oYsIj+lfC9cH1CwhchWAGCtZO+AooQOkdC1Km1VtCb63StW73uFSzgKFUkNwBbmZGGmqowhvg8ZNpH9oXChcIcYRdeNomgxLkaH+S1SGubAxyIpFv+Zp+0DYjrAS00j/dem2VGEl6FJ4Qa4quEu8j2hTCJ+GJhe4JjfQMf6JCYPPbysMPxBlp0BUKOogEF9Rg9/heNvNKYfM0KsZUZaYxX4STGrzJa+zbhPeFH2DcK10KItcI+pI0rVElwXl1ULaKnIJhDw0oRQpTQc1zcbwRU8ATy4DR6yMlTzwkqMziEWHvubJ4Nk4ZtHdnqwvwY17xq3Z4FjrG+z2Kdrdf2ZSGD+xlLPh6t1R0jP9fI22ZzKI92yvQl7EbmBxI4S7Y+vIAOL87QZqsc5uNnssxZIcfYjXT9snCR7jjobidp+FkxA2v+Cq1QervMDmp4P7Xs3YZtE9kOC3P/By6JGaETl8ElwueYTNTDq4UDsKnd7YfCNbT239LF1udS72xYJt1UWxNfN4IIP4bWuTpEja01JtMFZFsm/AHbtHBlDE6yasA4moYTrUbvdBTXHqUrAH4uSadbyzF+vbBM2IsNkS3MNa5305JxqfA02T4TnkX8XOH1mPw8ruVejpxbI9hZD2Cz1U7LdrrUvjP/WfZinNZhr6V27hP+FPZh9aLvLxVO4DllX0G2OcKnlO/DCblxaz6uXBtmi+8mBaP3/SP8IuEIiTRoPPQm2TaEmEyXo0JU+F0YiPFD0hhOsiE/vqeEVwyTgF8L51OilcIZ2I4Ll5NttvAJPfukUeB2sk0ZPSbKIUUJpCII7+DasWy08uhNNazT0wGHI7mAtB7KqMKm38HhDdAUibTVKGicbB8YAqrJ9DRsp43JdB4qUof1HQrPE6XTQWu3Ce/inVzjXhXpMiTwUYugNVQ+p80jrUsV5EH0POKeuXO9QjhFq5GryNYvfEMCDhsftYVsB9ETtG0V9ZjfhCURhbcJFpfwVZ9jvhxsLHwTYtp2svlWQw3vXL8UnqHVSIG8l8ex+tHhBXgjddgqHEZ8ufAA2aaEnYgrF/KrPXrEmMUqZ9THLW06xhoBaVueQpkug+ewOUphE3Qv2Q5gGamXYa+QbVq4O+DQ5FHyZqrjxNt7UHh9uuRa0F7HjCF8o9PCTOGnscM7g2u1Hl9C9oeEnxC/1ajZg8JLiM9Hj9GHJseMShwL2DO0G5yEWn3Zh1QUods5CPkIoqlwAZxhXMsb6HrcEPBxchhdJ6wj29vCW4hfLOzo8J3rltYX50nXQAATSf/K4DEaGlTLvplsk/QCpoD60EQ7gLYZc8H9wq+I3yncEOEcNhuz6HWf3XEiwU/4Y8YEqVp2P10rt+8REvBGw026i4aDcbL9jF8r8Blmf4fCOzhViiscskygXRdehf3CO4hfigmTBXyQrl8TFtD1IzQX3CbcQrY3hPcRv4z8OmHPXwchVNln2MmE7BX6VwIFi/he6uxvb6JM3m0fdqvx/ATidxg2JeC7VDErAw5NzGfvwRJVheEIQ8Mg/pdwIM+UOmi9Q8ivCsrIy0tF+wVbEcLrd3Pb2XisEb4Tdlhsi4WP4RBbaLGrHfC3PrvMIezy9rTpGm5lz9LOMG15xvFxD/j5gjzjjDbMOzk+9zzt3v5bgAEAibzFeFHVgYkAAAAASUVORK5CYII="
 
 /***/ }),
-/* 279 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56253,13 +56543,13 @@ exports.ChangeTileVersion = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(470);
+__webpack_require__(471);
 
 var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _MapService = __webpack_require__(122);
+var _MapService = __webpack_require__(124);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56742,7 +57032,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = function (_ol$control$Contro
 _openlayers2.default.supermap.control.ChangeTileVersion = ChangeTileVersion;
 
 /***/ }),
-/* 280 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56850,7 +57140,7 @@ var BaiduMap = exports.BaiduMap = function (_ol$source$TileImage) {
 _openlayers2.default.source.BaiduMap = BaiduMap;
 
 /***/ }),
-/* 281 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57086,7 +57376,7 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$Image) 
             //为url添加请求参数
             url = _openlayers2.default.uri.appendParams(url, params);
             //为url添加请求图片大小以及显示范围参数
-            return url + encodeURI("&width=" + size[0] + "&height=" + size[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + extent[0] + ",\"y\":" + extent[1] + "},\"rightTop\" : {\"x\":" + extent[2] + ",\"y\":" + extent[3] + "}}");
+            return encodeURI(url + "&width=" + size[0] + "&height=" + size[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + extent[0] + ",\"y\":" + extent[1] + "},\"rightTop\" : {\"x\":" + extent[2] + ",\"y\":" + extent[3] + "}}");
         }
 
         /**
@@ -57136,7 +57426,7 @@ var ImageSuperMapRest = exports.ImageSuperMapRest = function (_ol$source$Image) 
 _openlayers2.default.source.ImageSuperMapRest = ImageSuperMapRest;
 
 /***/ }),
-/* 282 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57205,7 +57495,7 @@ var SuperMapCloud = exports.SuperMapCloud = function (_ol$source$XYZ) {
 _openlayers2.default.source.SuperMapCloud = SuperMapCloud;
 
 /***/ }),
-/* 283 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57645,7 +57935,7 @@ var TileSuperMapRest = exports.TileSuperMapRest = function (_ol$source$TileImage
 _openlayers2.default.source.TileSuperMapRest = TileSuperMapRest;
 
 /***/ }),
-/* 284 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57662,11 +57952,11 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _jsonsql = __webpack_require__(420);
+var _jsonsql = __webpack_require__(421);
 
 var _jsonsql2 = _interopRequireDefault(_jsonsql);
 
-var _proj = __webpack_require__(441);
+var _proj = __webpack_require__(442);
 
 var _proj2 = _interopRequireDefault(_proj);
 
@@ -57674,25 +57964,25 @@ var _iclientCommon = __webpack_require__(4);
 
 var _Util = __webpack_require__(7);
 
-var _StyleUtils = __webpack_require__(265);
+var _StyleUtils = __webpack_require__(266);
 
-var _Graphic = __webpack_require__(412);
+var _Graphic = __webpack_require__(413);
 
-var _ThemeFeature = __webpack_require__(267);
+var _ThemeFeature = __webpack_require__(268);
 
-var _FeatureService = __webpack_require__(121);
+var _FeatureService = __webpack_require__(123);
 
-var _Tianditu = __webpack_require__(115);
+var _Tianditu = __webpack_require__(117);
 
-var _Unique = __webpack_require__(119);
+var _Unique = __webpack_require__(121);
 
-var _Range = __webpack_require__(118);
+var _Range = __webpack_require__(120);
 
-var _Label = __webpack_require__(117);
+var _Label = __webpack_require__(119);
 
-var _Logo = __webpack_require__(114);
+var _Logo = __webpack_require__(116);
 
-__webpack_require__(277);
+__webpack_require__(278);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58989,7 +59279,7 @@ var WebMap = exports.WebMap = function (_ol$Observable) {
 _openlayers2.default.supermap.WebMap = WebMap;
 
 /***/ }),
-/* 285 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59006,7 +59296,7 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _DataFlowService = __webpack_require__(120);
+var _DataFlowService = __webpack_require__(122);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59120,7 +59410,7 @@ var DataFlow = exports.DataFlow = function (_ol$source$Vector) {
 _openlayers2.default.source.DataFlow = DataFlow;
 
 /***/ }),
-/* 286 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59326,7 +59616,7 @@ var Graphic = exports.Graphic = function (_ol$source$ImageCanva) {
 _openlayers2.default.source.Graphic = Graphic;
 
 /***/ }),
-/* 287 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59343,7 +59633,7 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _MapvLayer = __webpack_require__(414);
+var _MapvLayer = __webpack_require__(415);
 
 var _Util = __webpack_require__(7);
 
@@ -59509,7 +59799,7 @@ var Mapv = exports.Mapv = function (_ol$source$ImageCanva) {
 _openlayers2.default.source.Mapv = Mapv;
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59528,7 +59818,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _Graph2 = __webpack_require__(116);
+var _Graph2 = __webpack_require__(118);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59625,7 +59915,7 @@ var RankSymbol = exports.RankSymbol = function (_Graph) {
 _openlayers2.default.source.RankSymbol = RankSymbol;
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59642,7 +59932,7 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _turf = __webpack_require__(474);
+var _turf = __webpack_require__(475);
 
 var _turf2 = _interopRequireDefault(_turf);
 
@@ -59866,7 +60156,7 @@ var Turf = exports.Turf = function (_ol$source$Vector) {
 _openlayers2.default.source.Turf = Turf;
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59887,7 +60177,7 @@ var _Util = __webpack_require__(7);
 
 var _iclientCommon = __webpack_require__(4);
 
-__webpack_require__(417);
+__webpack_require__(418);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60190,7 +60480,7 @@ var VectorTileSuperMapRest = exports.VectorTileSuperMapRest = function (_ol$sour
 _openlayers2.default.source.VectorTileSuperMapRest = VectorTileSuperMapRest;
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60292,7 +60582,7 @@ var AddressMatchService = exports.AddressMatchService = function (_ServiceBase) 
 _openlayers2.default.supermap.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 292 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60422,7 +60712,7 @@ var ChartService = exports.ChartService = function (_ServiceBase) {
 _openlayers2.default.supermap.ChartService = ChartService;
 
 /***/ }),
-/* 293 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60568,7 +60858,7 @@ var FieldService = exports.FieldService = function (_ServiceBase) {
 _openlayers2.default.supermap.FieldService = FieldService;
 
 /***/ }),
-/* 294 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60654,7 +60944,7 @@ var GridCellInfosService = exports.GridCellInfosService = function (_ServiceBase
 _openlayers2.default.supermap.GridCellInfosService = GridCellInfosService;
 
 /***/ }),
-/* 295 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60822,7 +61112,7 @@ var LayerInfoService = exports.LayerInfoService = function (_ServiceBase) {
 _openlayers2.default.supermap.LayerInfoService = LayerInfoService;
 
 /***/ }),
-/* 296 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60938,7 +61228,7 @@ var MeasureService = exports.MeasureService = function (_ServiceBase) {
 _openlayers2.default.supermap.MeasureService = MeasureService;
 
 /***/ }),
-/* 297 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61114,7 +61404,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = function (_Servi
 _openlayers2.default.supermap.NetworkAnalyst3DService = NetworkAnalyst3DService;
 
 /***/ }),
-/* 298 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61496,7 +61786,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = function (_ServiceBa
 _openlayers2.default.supermap.NetworkAnalystService = NetworkAnalystService;
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62416,7 +62706,7 @@ var ProcessingService = exports.ProcessingService = function (_ServiceBase) {
 _openlayers2.default.supermap.ProcessingService = ProcessingService;
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62605,7 +62895,7 @@ var QueryService = exports.QueryService = function (_ServiceBase) {
 _openlayers2.default.supermap.QueryService = QueryService;
 
 /***/ }),
-/* 301 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63071,7 +63361,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = function (_ServiceBa
 _openlayers2.default.supermap.SpatialAnalystService = SpatialAnalystService;
 
 /***/ }),
-/* 302 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63153,7 +63443,7 @@ var ThemeService = exports.ThemeService = function (_ServiceBase) {
 _openlayers2.default.supermap.ThemeService = ThemeService;
 
 /***/ }),
-/* 303 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63300,7 +63590,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = func
 _openlayers2.default.supermap.TrafficTransferAnalystService = TrafficTransferAnalystService;
 
 /***/ }),
-/* 304 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63399,7 +63689,7 @@ var DateExt = exports.DateExt = _SuperMap.SuperMap.Date = {
 };
 
 /***/ }),
-/* 305 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63410,27 +63700,27 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = undefined;
 
-var _Collection = __webpack_require__(27);
+var _Collection = __webpack_require__(28);
 
-var _Curve = __webpack_require__(82);
+var _Curve = __webpack_require__(83);
 
-var _GeoText = __webpack_require__(83);
+var _GeoText = __webpack_require__(84);
 
-var _LinearRing = __webpack_require__(30);
+var _LinearRing = __webpack_require__(31);
 
 var _LineString = __webpack_require__(17);
 
-var _MultiLineString = __webpack_require__(44);
+var _MultiLineString = __webpack_require__(45);
 
-var _MultiPoint = __webpack_require__(36);
+var _MultiPoint = __webpack_require__(37);
 
-var _MultiPolygon = __webpack_require__(45);
+var _MultiPolygon = __webpack_require__(46);
 
 var _Point = __webpack_require__(18);
 
-var _Polygon = __webpack_require__(46);
+var _Polygon = __webpack_require__(47);
 
-var _Rectangle = __webpack_require__(126);
+var _Rectangle = __webpack_require__(128);
 
 exports.Collection = _Collection.Collection;
 exports.Curve = _Curve.Curve;
@@ -63445,7 +63735,7 @@ exports.Polygon = _Polygon.Polygon;
 exports.Rectangle = _Rectangle.Rectangle;
 
 /***/ }),
-/* 306 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63456,33 +63746,33 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GeometryVector = exports.CommonUtil = exports.Size = exports.Pixel = exports.LonLat = exports.Geometry = exports.Feature = exports.Events = exports.Event = exports.DateExt = exports.Credential = exports.Bounds = exports.ArrayExt = exports.FunctionExt = exports.NumberExt = exports.StringExt = exports.Rectangle = exports.Polygon = exports.GeometryPoint = exports.MultiPolygon = exports.MultiPoint = exports.MultiLineString = exports.LineString = exports.LinearRing = exports.GeoText = exports.Curve = exports.Collection = undefined;
 
-var _index = __webpack_require__(305);
+var _index = __webpack_require__(306);
 
-var _BaseTypes = __webpack_require__(43);
+var _BaseTypes = __webpack_require__(44);
 
-var _Bounds = __webpack_require__(22);
+var _Bounds = __webpack_require__(23);
 
-var _Credential = __webpack_require__(81);
+var _Credential = __webpack_require__(82);
 
-var _Date = __webpack_require__(304);
+var _Date = __webpack_require__(305);
 
-var _Event = __webpack_require__(123);
+var _Event = __webpack_require__(125);
 
-var _Events = __webpack_require__(58);
+var _Events = __webpack_require__(59);
 
-var _Feature = __webpack_require__(124);
+var _Feature = __webpack_require__(126);
 
-var _Geometry = __webpack_require__(26);
+var _Geometry = __webpack_require__(27);
 
-var _LonLat = __webpack_require__(35);
+var _LonLat = __webpack_require__(36);
 
-var _Pixel = __webpack_require__(59);
+var _Pixel = __webpack_require__(60);
 
-var _Size = __webpack_require__(125);
+var _Size = __webpack_require__(127);
 
 var _Util = __webpack_require__(1);
 
-var _Vector = __webpack_require__(60);
+var _Vector = __webpack_require__(61);
 
 exports.Collection = _index.Collection;
 exports.Curve = _index.Curve;
@@ -63513,7 +63803,7 @@ exports.CommonUtil = _Util.Util;
 exports.GeometryVector = _Vector.Vector;
 
 /***/ }),
-/* 307 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63524,17 +63814,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TimeFlowControl = exports.TimeControlBase = undefined;
 
-__webpack_require__(278);
+__webpack_require__(279);
 
-var _TimeControlBase = __webpack_require__(127);
+var _TimeControlBase = __webpack_require__(129);
 
-var _TimeFlowControl = __webpack_require__(109);
+var _TimeFlowControl = __webpack_require__(111);
 
 exports.TimeControlBase = _TimeControlBase.TimeControlBase;
 exports.TimeFlowControl = _TimeFlowControl.TimeFlowControl;
 
 /***/ }),
-/* 308 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63549,25 +63839,25 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Format2 = __webpack_require__(84);
+var _Format2 = __webpack_require__(85);
 
-var _BaseTypes = __webpack_require__(43);
+var _BaseTypes = __webpack_require__(44);
 
-var _Vector = __webpack_require__(60);
+var _Vector = __webpack_require__(61);
 
 var _Point = __webpack_require__(18);
 
-var _MultiPoint = __webpack_require__(36);
+var _MultiPoint = __webpack_require__(37);
 
 var _LineString = __webpack_require__(17);
 
-var _MultiLineString = __webpack_require__(44);
+var _MultiLineString = __webpack_require__(45);
 
-var _LinearRing = __webpack_require__(30);
+var _LinearRing = __webpack_require__(31);
 
-var _Polygon = __webpack_require__(46);
+var _Polygon = __webpack_require__(47);
 
-var _MultiPolygon = __webpack_require__(45);
+var _MultiPolygon = __webpack_require__(46);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63915,7 +64205,7 @@ var WKT = exports.WKT = function (_Format) {
 _SuperMap.SuperMap.Format.WKT = WKT;
 
 /***/ }),
-/* 309 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63926,40 +64216,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WKT = exports.GeoJSON = exports.JSONFormat = exports.Format = undefined;
 
-var _Format = __webpack_require__(84);
+var _Format = __webpack_require__(85);
 
 var _GeoJSON = __webpack_require__(14);
 
-var _JSON = __webpack_require__(85);
+var _JSON = __webpack_require__(86);
 
-var _WKT = __webpack_require__(308);
+var _WKT = __webpack_require__(309);
 
 exports.Format = _Format.Format;
 exports.JSONFormat = _JSON.JSONFormat;
 exports.GeoJSON = _GeoJSON.GeoJSON;
 exports.WKT = _WKT.WKT;
-
-/***/ }),
-/* 310 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.IManagerServiceBase = exports.IManagerCreateNodeParam = exports.IManager = undefined;
-
-var _iManager = __webpack_require__(110);
-
-var _iManagerCreateNodeParam = __webpack_require__(128);
-
-var _iManagerServiceBase = __webpack_require__(129);
-
-exports.IManager = _iManager.IManager;
-exports.IManagerCreateNodeParam = _iManagerCreateNodeParam.IManagerCreateNodeParam;
-exports.IManagerServiceBase = _iManagerServiceBase.IManagerServiceBase;
 
 /***/ }),
 /* 311 */
@@ -63971,19 +64239,41 @@ exports.IManagerServiceBase = _iManagerServiceBase.IManagerServiceBase;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.IManagerServiceBase = exports.IManagerCreateNodeParam = exports.IManager = undefined;
+
+var _iManager = __webpack_require__(112);
+
+var _iManagerCreateNodeParam = __webpack_require__(130);
+
+var _iManagerServiceBase = __webpack_require__(131);
+
+exports.IManager = _iManager.IManager;
+exports.IManagerCreateNodeParam = _iManagerCreateNodeParam.IManagerCreateNodeParam;
+exports.IManagerServiceBase = _iManagerServiceBase.IManagerServiceBase;
+
+/***/ }),
+/* 312 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.IPortalServicesQueryParam = exports.IPortalServiceBase = exports.IPortalService = exports.IPortalMapsQueryParam = exports.IPortalMap = exports.IPortal = undefined;
 
-var _iPortal = __webpack_require__(111);
+var _iPortal = __webpack_require__(113);
 
-var _iPortalMap = __webpack_require__(130);
+var _iPortalMap = __webpack_require__(132);
 
-var _iPortalMapsQueryParam = __webpack_require__(131);
+var _iPortalMapsQueryParam = __webpack_require__(133);
 
-var _iPortalService = __webpack_require__(132);
+var _iPortalService = __webpack_require__(134);
 
-var _iPortalServiceBase = __webpack_require__(61);
+var _iPortalServiceBase = __webpack_require__(62);
 
-var _iPortalServicesQueryParam = __webpack_require__(133);
+var _iPortalServicesQueryParam = __webpack_require__(135);
 
 exports.IPortal = _iPortal.IPortal;
 exports.IPortalMap = _iPortalMap.IPortalMap;
@@ -63993,7 +64283,7 @@ exports.IPortalServiceBase = _iPortalServiceBase.IPortalServiceBase;
 exports.IPortalServicesQueryParam = _iPortalServicesQueryParam.IPortalServicesQueryParam;
 
 /***/ }),
-/* 312 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64012,11 +64302,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
-var _GeoCodingParameter = __webpack_require__(167);
+var _GeoCodingParameter = __webpack_require__(168);
 
-var _GeoDecodingParameter = __webpack_require__(168);
+var _GeoDecodingParameter = __webpack_require__(169);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -64139,7 +64429,7 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
 _SuperMap.SuperMap.AddressMatchService = AddressMatchService;
 
 /***/ }),
-/* 313 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64158,7 +64448,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _AreaSolarRadiationParameters = __webpack_require__(134);
+var _AreaSolarRadiationParameters = __webpack_require__(136);
 
 var _Util = __webpack_require__(1);
 
@@ -64255,7 +64545,7 @@ var AreaSolarRadiationService = exports.AreaSolarRadiationService = function (_S
 _SuperMap.SuperMap.AreaSolarRadiationService = AreaSolarRadiationService;
 
 /***/ }),
-/* 314 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64276,9 +64566,9 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _DatasetBufferAnalystParameters = __webpack_require__(144);
+var _DatasetBufferAnalystParameters = __webpack_require__(146);
 
-var _GeometryBufferAnalystParameters = __webpack_require__(170);
+var _GeometryBufferAnalystParameters = __webpack_require__(171);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -64405,7 +64695,7 @@ var BufferAnalystService = exports.BufferAnalystService = function (_SpatialAnal
 _SuperMap.SuperMap.BufferAnalystService = BufferAnalystService;
 
 /***/ }),
-/* 315 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64422,9 +64712,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _BuffersAnalystJobsParameter = __webpack_require__(137);
+var _BuffersAnalystJobsParameter = __webpack_require__(139);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -64506,7 +64796,7 @@ var BuffersAnalystJobsService = exports.BuffersAnalystJobsService = function (_P
 _SuperMap.SuperMap.BuffersAnalystJobsService = BuffersAnalystJobsService;
 
 /***/ }),
-/* 316 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64525,7 +64815,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _BurstPipelineAnalystParameters = __webpack_require__(138);
+var _BurstPipelineAnalystParameters = __webpack_require__(140);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -64618,7 +64908,7 @@ var BurstPipelineAnalystService = exports.BurstPipelineAnalystService = function
 _SuperMap.SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService;
 
 /***/ }),
-/* 317 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64722,7 +65012,7 @@ var ChartFeatureInfoSpecsService = exports.ChartFeatureInfoSpecsService = functi
 _SuperMap.SuperMap.ChartFeatureInfoSpecsService = ChartFeatureInfoSpecsService;
 
 /***/ }),
-/* 318 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64743,9 +65033,9 @@ var _REST = __webpack_require__(2);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _QueryParameters = __webpack_require__(31);
+var _QueryParameters = __webpack_require__(32);
 
-var _ChartQueryParameters = __webpack_require__(140);
+var _ChartQueryParameters = __webpack_require__(142);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -64934,7 +65224,7 @@ var ChartQueryService = exports.ChartQueryService = function (_CommonServiceBase
 _SuperMap.SuperMap.ChartQueryService = ChartQueryService;
 
 /***/ }),
-/* 319 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64953,7 +65243,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ComputeWeightMatrixParameters = __webpack_require__(143);
+var _ComputeWeightMatrixParameters = __webpack_require__(145);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
@@ -65076,7 +65366,7 @@ var ComputeWeightMatrixService = exports.ComputeWeightMatrixService = function (
 _SuperMap.SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService;
 
 /***/ }),
-/* 320 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65095,7 +65385,7 @@ var _CommonServiceBase2 = __webpack_require__(5);
 
 var _Util = __webpack_require__(1);
 
-var _SecurityManager = __webpack_require__(34);
+var _SecurityManager = __webpack_require__(35);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65367,7 +65657,7 @@ var DataFlowService = exports.DataFlowService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.DataFlowService = DataFlowService;
 
 /***/ }),
-/* 321 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65388,7 +65678,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _DensityKernelAnalystParameters = __webpack_require__(150);
+var _DensityKernelAnalystParameters = __webpack_require__(151);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65490,7 +65780,7 @@ var DensityAnalystService = exports.DensityAnalystService = function (_SpatialAn
 _SuperMap.SuperMap.DensityAnalystService = DensityAnalystService;
 
 /***/ }),
-/* 322 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65513,7 +65803,7 @@ var _REST = __webpack_require__(2);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _EditFeaturesParameters = __webpack_require__(151);
+var _EditFeaturesParameters = __webpack_require__(152);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65646,7 +65936,7 @@ var EditFeaturesService = exports.EditFeaturesService = function (_CommonService
 _SuperMap.SuperMap.EditFeaturesService = EditFeaturesService;
 
 /***/ }),
-/* 323 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65663,7 +65953,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _FacilityAnalystSinks3DParameters = __webpack_require__(152);
+var _FacilityAnalystSinks3DParameters = __webpack_require__(153);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65754,7 +66044,7 @@ var FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DService = func
 _SuperMap.SuperMap.FacilityAnalystSinks3DService = FacilityAnalystSinks3DService;
 
 /***/ }),
-/* 324 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65773,7 +66063,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _FacilityAnalystSources3DParameters = __webpack_require__(153);
+var _FacilityAnalystSources3DParameters = __webpack_require__(154);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65857,7 +66147,7 @@ var FacilityAnalystSources3DService = exports.FacilityAnalystSources3DService = 
 _SuperMap.SuperMap.FacilityAnalystSources3DService = FacilityAnalystSources3DService;
 
 /***/ }),
-/* 325 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65876,7 +66166,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FacilityAnalystStreamParameters = __webpack_require__(154);
+var _FacilityAnalystStreamParameters = __webpack_require__(155);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -65976,7 +66266,7 @@ var FacilityAnalystStreamService = exports.FacilityAnalystStreamService = functi
 _SuperMap.SuperMap.FacilityAnalystStreamService = FacilityAnalystStreamService;
 
 /***/ }),
-/* 326 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65995,7 +66285,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _FacilityAnalystTracedown3DParameters = __webpack_require__(155);
+var _FacilityAnalystTracedown3DParameters = __webpack_require__(156);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66075,7 +66365,7 @@ var FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DServic
 _SuperMap.SuperMap.FacilityAnalystTracedown3DService = FacilityAnalystTracedown3DService;
 
 /***/ }),
-/* 327 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66094,7 +66384,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _FacilityAnalystTraceup3DParameters = __webpack_require__(156);
+var _FacilityAnalystTraceup3DParameters = __webpack_require__(157);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66183,7 +66473,7 @@ var FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DService = 
 _SuperMap.SuperMap.FacilityAnalystTraceup3DService = FacilityAnalystTraceup3DService;
 
 /***/ }),
-/* 328 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66202,7 +66492,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _FacilityAnalystUpstream3DParameters = __webpack_require__(157);
+var _FacilityAnalystUpstream3DParameters = __webpack_require__(158);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66282,14 +66572,14 @@ var FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DService 
 _SuperMap.SuperMap.FacilityAnalystUpstream3DService = FacilityAnalystUpstream3DService;
 
 /***/ }),
-/* 329 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.FieldStatisticService = undefined;
 
@@ -66303,7 +66593,7 @@ var _CommonServiceBase2 = __webpack_require__(5);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(159);
+__webpack_require__(160);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66337,91 +66627,91 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 
 var FieldStatisticService = exports.FieldStatisticService = function (_CommonServiceBase) {
-    _inherits(FieldStatisticService, _CommonServiceBase);
+  _inherits(FieldStatisticService, _CommonServiceBase);
 
-    function FieldStatisticService(url, options) {
-        _classCallCheck(this, FieldStatisticService);
+  function FieldStatisticService(url, options) {
+    _classCallCheck(this, FieldStatisticService);
 
-        /**
-         * @member SuperMap.FieldStatisticService.prototype.datasource -{string}
-         * @description 数据集所在的数据源名称。
-         */
-        var _this = _possibleConstructorReturn(this, (FieldStatisticService.__proto__ || Object.getPrototypeOf(FieldStatisticService)).call(this, url, options));
+    /**
+     * @member SuperMap.FieldStatisticService.prototype.datasource -{string}
+     * @description 数据集所在的数据源名称。
+     */
+    var _this = _possibleConstructorReturn(this, (FieldStatisticService.__proto__ || Object.getPrototypeOf(FieldStatisticService)).call(this, url, options));
 
-        _this.datasource = null;
+    _this.datasource = null;
 
-        /**
-         * @member SuperMap.FieldStatisticService.prototype.dataset -{string}
-         * @description 数据集名称。
-         */
-        _this.dataset = null;
+    /**
+     * @member SuperMap.FieldStatisticService.prototype.dataset -{string}
+     * @description 数据集名称。
+     */
+    _this.dataset = null;
 
-        /**
-         * @member SuperMap.FieldStatisticService.prototype.field -{string}
-         * @description 查询统计的目标字段名称。
-         */
-        _this.field = null;
+    /**
+     * @member SuperMap.FieldStatisticService.prototype.field -{string}
+     * @description 查询统计的目标字段名称。
+     */
+    _this.field = null;
 
-        /**
-         * @member SuperMap.FieldStatisticService.prototype.statisticMode -{string}
-         * @description 字段查询统计的方法类型。
-         */
-        _this.statisticMode = null;
-        if (options) {
-            _Util.Util.extend(_this, options);
-        }
+    /**
+     * @member SuperMap.FieldStatisticService.prototype.statisticMode -{string}
+     * @description 字段查询统计的方法类型。
+     */
+    _this.statisticMode = null;
+    if (options) {
+      _Util.Util.extend(_this, options);
+    }
 
-        _this.CLASS_NAME = "SuperMap.FieldStatisticService";
-        return _this;
+    _this.CLASS_NAME = "SuperMap.FieldStatisticService";
+    return _this;
+  }
+
+  /**
+   * @function SuperMap.FieldStatisticService.prototype.destroy
+   * @override
+   */
+
+
+  _createClass(FieldStatisticService, [{
+    key: 'destroy',
+    value: function destroy() {
+      _get(FieldStatisticService.prototype.__proto__ || Object.getPrototypeOf(FieldStatisticService.prototype), 'destroy', this).call(this);
+      var me = this;
+      me.datasource = null;
+      me.dataset = null;
+      me.field = null;
+      me.statisticMode = null;
     }
 
     /**
-     * @function SuperMap.FieldStatisticService.prototype.destroy
-     * @override
+     * @function SuperMap.FieldStatisticService.prototype.processAsync
+     * @description 执行服务，进行指定字段的查询统计。
      */
 
+  }, {
+    key: 'processAsync',
+    value: function processAsync() {
+      var me = this,
+          end = me.url.substr(me.url.length - 1, 1),
+          fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
+      me.url += end == "/" ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
 
-    _createClass(FieldStatisticService, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(FieldStatisticService.prototype.__proto__ || Object.getPrototypeOf(FieldStatisticService.prototype), 'destroy', this).call(this);
-            var me = this;
-            me.datasource = null;
-            me.dataset = null;
-            me.field = null;
-            me.statisticMode = null;
-        }
+      me.request({
+        method: "GET",
+        data: null,
+        scope: me,
+        success: me.serviceProcessCompleted,
+        failure: me.serviceProcessFailed
+      });
+    }
+  }]);
 
-        /**
-         * @function SuperMap.FieldStatisticService.prototype.processAsync
-         * @description 执行服务，进行指定字段的查询统计。
-         */
-
-    }, {
-        key: 'processAsync',
-        value: function processAsync() {
-            var me = this,
-                end = me.url.substr(me.url.length - 1, 1),
-                fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
-            me.url += end == "/" ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
-
-            me.request({
-                method: "GET",
-                data: null,
-                scope: me,
-                success: me.serviceProcessCompleted,
-                failure: me.serviceProcessFailed
-            });
-        }
-    }]);
-
-    return FieldStatisticService;
+  return FieldStatisticService;
 }(_CommonServiceBase2.CommonServiceBase);
 
 _SuperMap.SuperMap.FieldStatisticService = FieldStatisticService;
 
 /***/ }),
-/* 330 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66444,7 +66734,7 @@ var _GeoJSON = __webpack_require__(14);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindClosestFacilitiesParameters = __webpack_require__(160);
+var _FindClosestFacilitiesParameters = __webpack_require__(161);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -66611,7 +66901,7 @@ var FindClosestFacilitiesService = exports.FindClosestFacilitiesService = functi
 _SuperMap.SuperMap.FindClosestFacilitiesService = FindClosestFacilitiesService;
 
 /***/ }),
-/* 331 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66632,7 +66922,7 @@ var _Util = __webpack_require__(1);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindLocationParameters = __webpack_require__(161);
+var _FindLocationParameters = __webpack_require__(162);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -66775,7 +67065,7 @@ var FindLocationService = exports.FindLocationService = function (_NetworkAnalys
 _SuperMap.SuperMap.FindLocationService = FindLocationService;
 
 /***/ }),
-/* 332 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66796,7 +67086,7 @@ var _Util = __webpack_require__(1);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindMTSPPathsParameters = __webpack_require__(162);
+var _FindMTSPPathsParameters = __webpack_require__(163);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -66957,7 +67247,7 @@ var FindMTSPPathsService = exports.FindMTSPPathsService = function (_NetworkAnal
 _SuperMap.SuperMap.FindMTSPPathsService = FindMTSPPathsService;
 
 /***/ }),
-/* 333 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66978,7 +67268,7 @@ var _Util = __webpack_require__(1);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindPathParameters = __webpack_require__(163);
+var _FindPathParameters = __webpack_require__(164);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -67133,7 +67423,7 @@ var FindPathService = exports.FindPathService = function (_NetworkAnalystServic)
 _SuperMap.SuperMap.FindPathService = FindPathService;
 
 /***/ }),
-/* 334 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67154,7 +67444,7 @@ var _Util = __webpack_require__(1);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindServiceAreasParameters = __webpack_require__(164);
+var _FindServiceAreasParameters = __webpack_require__(165);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -67313,7 +67603,7 @@ var FindServiceAreasService = exports.FindServiceAreasService = function (_Netwo
 _SuperMap.SuperMap.FindServiceAreasService = FindServiceAreasService;
 
 /***/ }),
-/* 335 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67332,7 +67622,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _FindTSPPathsParameters = __webpack_require__(165);
+var _FindTSPPathsParameters = __webpack_require__(166);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -67496,7 +67786,7 @@ var FindTSPPathsService = exports.FindTSPPathsService = function (_NetworkAnalys
 _SuperMap.SuperMap.FindTSPPathsService = FindTSPPathsService;
 
 /***/ }),
-/* 336 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67517,7 +67807,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _GenerateSpatialDataParameters = __webpack_require__(166);
+var _GenerateSpatialDataParameters = __webpack_require__(167);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67653,7 +67943,7 @@ var GenerateSpatialDataService = exports.GenerateSpatialDataService = function (
 _SuperMap.SuperMap.GenerateSpatialDataService = GenerateSpatialDataService;
 
 /***/ }),
-/* 337 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67672,7 +67962,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _GeoRelationAnalystParameters = __webpack_require__(169);
+var _GeoRelationAnalystParameters = __webpack_require__(170);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67787,7 +68077,7 @@ var GeoRelationAnalystService = exports.GeoRelationAnalystService = function (_S
 _SuperMap.SuperMap.GeoRelationAnalystService = GeoRelationAnalystService;
 
 /***/ }),
-/* 338 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67804,9 +68094,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(39);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesByBoundsParameters = __webpack_require__(174);
+var _GetFeaturesByBoundsParameters = __webpack_require__(175);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67881,7 +68171,7 @@ var GetFeaturesByBoundsService = exports.GetFeaturesByBoundsService = function (
 _SuperMap.SuperMap.GetFeaturesByBoundsService = GetFeaturesByBoundsService;
 
 /***/ }),
-/* 339 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67898,9 +68188,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(39);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesByBufferParameters = __webpack_require__(175);
+var _GetFeaturesByBufferParameters = __webpack_require__(176);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67977,7 +68267,7 @@ var GetFeaturesByBufferService = exports.GetFeaturesByBufferService = function (
 _SuperMap.SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService;
 
 /***/ }),
-/* 340 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67994,9 +68284,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(39);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesByGeometryParameters = __webpack_require__(176);
+var _GetFeaturesByGeometryParameters = __webpack_require__(177);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -68070,7 +68360,7 @@ var GetFeaturesByGeometryService = exports.GetFeaturesByGeometryService = functi
 _SuperMap.SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService;
 
 /***/ }),
-/* 341 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68087,9 +68377,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(39);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesByIDsParameters = __webpack_require__(177);
+var _GetFeaturesByIDsParameters = __webpack_require__(178);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -68163,7 +68453,7 @@ var GetFeaturesByIDsService = exports.GetFeaturesByIDsService = function (_GetFe
 _SuperMap.SuperMap.GetFeaturesByIDsService = GetFeaturesByIDsService;
 
 /***/ }),
-/* 342 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68180,9 +68470,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _GetFeaturesServiceBase = __webpack_require__(39);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFeaturesBySQLParameters = __webpack_require__(178);
+var _GetFeaturesBySQLParameters = __webpack_require__(179);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -68260,7 +68550,7 @@ var GetFeaturesBySQLService = exports.GetFeaturesBySQLService = function (_GetFe
 _SuperMap.SuperMap.GetFeaturesBySQLService = GetFeaturesBySQLService;
 
 /***/ }),
-/* 343 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68379,7 +68669,7 @@ var GetFieldsService = exports.GetFieldsService = function (_CommonServiceBase) 
 _SuperMap.SuperMap.GetFieldsService = GetFieldsService;
 
 /***/ }),
-/* 344 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68400,7 +68690,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _GetGridCellInfosParameters = __webpack_require__(179);
+var _GetGridCellInfosParameters = __webpack_require__(180);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -68587,7 +68877,7 @@ var GetGridCellInfosService = exports.GetGridCellInfosService = function (_Commo
 _SuperMap.SuperMap.GetGridCellInfosService = GetGridCellInfosService;
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68608,13 +68898,13 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _ServerTheme = __webpack_require__(203);
+var _ServerTheme = __webpack_require__(204);
 
-var _Grid = __webpack_require__(180);
+var _Grid = __webpack_require__(181);
 
-var _Image = __webpack_require__(181);
+var _Image = __webpack_require__(182);
 
-var _Vector = __webpack_require__(238);
+var _Vector = __webpack_require__(239);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -68773,7 +69063,7 @@ var GetLayersInfoService = exports.GetLayersInfoService = function (_CommonServi
 _SuperMap.SuperMap.GetLayersInfoService = GetLayersInfoService;
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68794,15 +69084,15 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _InterpolationRBFAnalystParameters = __webpack_require__(184);
+var _InterpolationRBFAnalystParameters = __webpack_require__(185);
 
-var _InterpolationDensityAnalystParameters = __webpack_require__(347);
+var _InterpolationDensityAnalystParameters = __webpack_require__(348);
 
-var _InterpolationIDWAnalystParameters = __webpack_require__(182);
+var _InterpolationIDWAnalystParameters = __webpack_require__(183);
 
-var _InterpolationKrigingAnalystParameters = __webpack_require__(183);
+var _InterpolationKrigingAnalystParameters = __webpack_require__(184);
 
-var _InterpolationAnalystParameters = __webpack_require__(40);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -68931,7 +69221,7 @@ var InterpolationAnalystService = exports.InterpolationAnalystService = function
 _SuperMap.SuperMap.InterpolationAnalystService = InterpolationAnalystService;
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68950,7 +69240,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _InterpolationAnalystParameters = __webpack_require__(40);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69022,7 +69312,7 @@ var InterpolationDensityAnalystParameters = exports.InterpolationDensityAnalystP
 _SuperMap.SuperMap.InterpolationDensityAnalystParameters = InterpolationDensityAnalystParameters;
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69039,9 +69329,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _KernelDensityJobParameter = __webpack_require__(185);
+var _KernelDensityJobParameter = __webpack_require__(186);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69124,7 +69414,7 @@ var KernelDensityJobsService = exports.KernelDensityJobsService = function (_Pro
 _SuperMap.SuperMap.KernelDensityJobsService = KernelDensityJobsService;
 
 /***/ }),
-/* 349 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69272,7 +69562,7 @@ var MapService = exports.MapService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.MapService = MapService;
 
 /***/ }),
-/* 350 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69293,7 +69583,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _MathExpressionAnalysisParameters = __webpack_require__(192);
+var _MathExpressionAnalysisParameters = __webpack_require__(193);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69383,7 +69673,7 @@ var MathExpressionAnalysisService = exports.MathExpressionAnalysisService = func
 _SuperMap.SuperMap.MathExpressionAnalysisService = MathExpressionAnalysisService;
 
 /***/ }),
-/* 351 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69406,7 +69696,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _MeasureParameters = __webpack_require__(193);
+var _MeasureParameters = __webpack_require__(194);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -69538,7 +69828,7 @@ var MeasureService = exports.MeasureService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.MeasureService = MeasureService;
 
 /***/ }),
-/* 352 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69559,9 +69849,9 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _DatasetOverlayAnalystParameters = __webpack_require__(146);
+var _DatasetOverlayAnalystParameters = __webpack_require__(148);
 
-var _GeometryOverlayAnalystParameters = __webpack_require__(171);
+var _GeometryOverlayAnalystParameters = __webpack_require__(172);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69669,7 +69959,7 @@ var OverlayAnalystService = exports.OverlayAnalystService = function (_SpatialAn
 _SuperMap.SuperMap.OverlayAnalystService = OverlayAnalystService;
 
 /***/ }),
-/* 353 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69686,9 +69976,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _OverlayGeoJobParameter = __webpack_require__(195);
+var _OverlayGeoJobParameter = __webpack_require__(196);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69774,7 +70064,7 @@ var OverlayGeoJobsService = exports.OverlayGeoJobsService = function (_Processin
 _SuperMap.SuperMap.OverlayGeoJobsService = OverlayGeoJobsService;
 
 /***/ }),
-/* 354 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69793,9 +70083,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryService2 = __webpack_require__(48);
+var _QueryService2 = __webpack_require__(49);
 
-var _QueryByBoundsParameters = __webpack_require__(197);
+var _QueryByBoundsParameters = __webpack_require__(198);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -69880,7 +70170,7 @@ var QueryByBoundsService = exports.QueryByBoundsService = function (_QueryServic
 _SuperMap.SuperMap.QueryByBoundsService = QueryByBoundsService;
 
 /***/ }),
-/* 355 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69899,9 +70189,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryService2 = __webpack_require__(48);
+var _QueryService2 = __webpack_require__(49);
 
-var _QueryByDistanceParameters = __webpack_require__(198);
+var _QueryByDistanceParameters = __webpack_require__(199);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -69986,7 +70276,7 @@ var QueryByDistanceService = exports.QueryByDistanceService = function (_QuerySe
 _SuperMap.SuperMap.QueryByDistanceService = QueryByDistanceService;
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70005,9 +70295,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryService2 = __webpack_require__(48);
+var _QueryService2 = __webpack_require__(49);
 
-var _QueryByGeometryParameters = __webpack_require__(199);
+var _QueryByGeometryParameters = __webpack_require__(200);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -70099,7 +70389,7 @@ var QueryByGeometryService = exports.QueryByGeometryService = function (_QuerySe
 _SuperMap.SuperMap.QueryByGeometryService = QueryByGeometryService;
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70118,9 +70408,9 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _QueryService2 = __webpack_require__(48);
+var _QueryService2 = __webpack_require__(49);
 
-var _QueryBySQLParameters = __webpack_require__(200);
+var _QueryBySQLParameters = __webpack_require__(201);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70215,7 +70505,7 @@ var QueryBySQLService = exports.QueryBySQLService = function (_QueryService) {
 _SuperMap.SuperMap.QueryBySQLService = QueryBySQLService;
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70236,7 +70526,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _RouteCalculateMeasureParameters = __webpack_require__(201);
+var _RouteCalculateMeasureParameters = __webpack_require__(202);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70381,7 +70671,7 @@ var RouteCalculateMeasureService = exports.RouteCalculateMeasureService = functi
 _SuperMap.SuperMap.RouteCalculateMeasureService = RouteCalculateMeasureService;
 
 /***/ }),
-/* 359 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70402,7 +70692,7 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _RouteLocatorParameters = __webpack_require__(202);
+var _RouteLocatorParameters = __webpack_require__(203);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70547,7 +70837,7 @@ var RouteLocatorService = exports.RouteLocatorService = function (_SpatialAnalys
 _SuperMap.SuperMap.RouteLocatorService = RouteLocatorService;
 
 /***/ }),
-/* 360 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70562,7 +70852,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _Vector = __webpack_require__(60);
+var _Vector = __webpack_require__(61);
 
 var _ServerGeometry = __webpack_require__(9);
 
@@ -70705,7 +70995,7 @@ var ServerFeature = exports.ServerFeature = function () {
 _SuperMap.SuperMap.ServerFeature = ServerFeature;
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70726,7 +71016,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-__webpack_require__(204);
+__webpack_require__(205);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70805,7 +71095,7 @@ var SetLayerInfoService = exports.SetLayerInfoService = function (_CommonService
 _SuperMap.SuperMap.SetLayerInfoService = SetLayerInfoService;
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70826,7 +71116,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _SetLayerStatusParameters = __webpack_require__(205);
+var _SetLayerStatusParameters = __webpack_require__(206);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -70993,7 +71283,7 @@ var SetLayerStatusService = exports.SetLayerStatusService = function (_CommonSer
 _SuperMap.SuperMap.SetLayerStatusService = SetLayerStatusService;
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71014,7 +71304,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-__webpack_require__(206);
+__webpack_require__(207);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71155,7 +71445,7 @@ var SetLayersInfoService = exports.SetLayersInfoService = function (_CommonServi
 _SuperMap.SuperMap.SetLayersInfoService = SetLayersInfoService;
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71172,9 +71462,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _SingleObjectQueryJobsParameter = __webpack_require__(207);
+var _SingleObjectQueryJobsParameter = __webpack_require__(208);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71256,7 +71546,7 @@ var SingleObjectQueryJobsService = exports.SingleObjectQueryJobsService = functi
 _SuperMap.SuperMap.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71277,7 +71567,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _StopQueryParameters = __webpack_require__(208);
+var _StopQueryParameters = __webpack_require__(209);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71370,7 +71660,7 @@ var StopQueryService = exports.StopQueryService = function (_CommonServiceBase) 
 _SuperMap.SuperMap.StopQueryService = StopQueryService;
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71387,9 +71677,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _SummaryAttributesJobsParameter = __webpack_require__(209);
+var _SummaryAttributesJobsParameter = __webpack_require__(210);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71471,7 +71761,7 @@ var SummaryAttributesJobsService = exports.SummaryAttributesJobsService = functi
 _SuperMap.SuperMap.SummaryAttributesJobsService = SummaryAttributesJobsService;
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71488,9 +71778,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _SummaryMeshJobParameter = __webpack_require__(210);
+var _SummaryMeshJobParameter = __webpack_require__(211);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71576,7 +71866,7 @@ var SummaryMeshJobsService = exports.SummaryMeshJobsService = function (_Process
 _SuperMap.SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71593,9 +71883,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _SummaryRegionJobParameter = __webpack_require__(211);
+var _SummaryRegionJobParameter = __webpack_require__(212);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71677,14 +71967,14 @@ var SummaryRegionJobsService = exports.SummaryRegionJobsService = function (_Pro
 _SuperMap.SuperMap.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.SupplyCenter = undefined;
 
@@ -71706,88 +71996,88 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        type - {{@link SuperMap.SupplyCenterType}} 资源供给中心点的类型常量。
  */
 var SupplyCenter = exports.SupplyCenter = function () {
-    function SupplyCenter(options) {
-        _classCallCheck(this, SupplyCenter);
+  function SupplyCenter(options) {
+    _classCallCheck(this, SupplyCenter);
 
-        /**
-         * @member SuperMap.SupplyCenter.prototype.maxWeight -{number}
-         * @description 资源供给中心的最大耗费值，必设参数。中心点最大阻值设置越小，表示中心点所提供的资源可影响范围越大。
-         *              最大阻力值是用来限制需求点到中心点的花费。
-         *              如果需求点（弧段或结点）到此中心的花费大于最大阻力值，则该需求点不属于该资源供给中心提供资源的范围。
-         */
-        this.maxWeight = null;
+    /**
+     * @member SuperMap.SupplyCenter.prototype.maxWeight -{number}
+     * @description 资源供给中心的最大耗费值，必设参数。中心点最大阻值设置越小，表示中心点所提供的资源可影响范围越大。
+     *              最大阻力值是用来限制需求点到中心点的花费。
+     *              如果需求点（弧段或结点）到此中心的花费大于最大阻力值，则该需求点不属于该资源供给中心提供资源的范围。
+     */
+    this.maxWeight = null;
 
-        /**
-         * @member SuperMap.SupplyCenter.prototype.nodeID -{integer}
-         * @description 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。
-         */
-        this.nodeID = null;
+    /**
+     * @member SuperMap.SupplyCenter.prototype.nodeID -{integer}
+     * @description 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。
+     */
+    this.nodeID = null;
 
-        /**
-         * @member SuperMap.SupplyCenter.prototype.resourceValue -{number}
-         * @description 资源供给中心能提供的最大服务量或商品数量，必设参数。例如资源中心为学校，资源中心资源量表示该学校能够接纳多少学生。
-         */
-        this.resourceValue = null;
+    /**
+     * @member SuperMap.SupplyCenter.prototype.resourceValue -{number}
+     * @description 资源供给中心能提供的最大服务量或商品数量，必设参数。例如资源中心为学校，资源中心资源量表示该学校能够接纳多少学生。
+     */
+    this.resourceValue = null;
 
-        /**
-         * @member SuperMap.SupplyCenter.prototype.type -{SuperMap.SupplyCenterType}
-         * @description 资源供给中心点的类型常量。资源供给中心点的类型包括非中心，固定中心和可选中心。
-         *              固定中心用于资源分配分析；固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
-         */
-        this.type = null;
+    /**
+     * @member SuperMap.SupplyCenter.prototype.type -{SuperMap.SupplyCenterType}
+     * @description 资源供给中心点的类型常量。资源供给中心点的类型包括非中心，固定中心和可选中心。
+     *              固定中心用于资源分配分析；固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
+     */
+    this.type = null;
 
-        if (options) {
-            _Util.Util.extend(this, options);
-        }
+    if (options) {
+      _Util.Util.extend(this, options);
+    }
 
-        this.CLASS_NAME = "SuperMap.SupplyCenter";
+    this.CLASS_NAME = "SuperMap.SupplyCenter";
+  }
+
+  /**
+   * @function SuperMap.SupplyCenter.prototype.destroy
+   * @description 释放资源，将引用资源的属性置空。
+   */
+
+
+  _createClass(SupplyCenter, [{
+    key: 'destroy',
+    value: function destroy() {
+      var me = this;
+      me.maxWeight = null;
+      me.nodeID = null;
+      me.resourceValue = null;
+      me.type = null;
     }
 
     /**
-     * @function SuperMap.SupplyCenter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
+     * @function SuperMap.SupplyCenter.fromJson
+     * @description 将服务端JSON对象转换成当前客户端对象
+     * @param jsonObject - {Object} 要转换的 JSON 对象。
+     * @return{SuperMap.SupplyCenter} SupplyCenter对象
      */
 
+  }], [{
+    key: 'fromJson',
+    value: function fromJson(jsonObject) {
+      if (!jsonObject) {
+        return;
+      }
+      return new SupplyCenter({
+        maxWeight: jsonObject.maxWeight,
+        nodeID: jsonObject.nodeID,
+        resourceValue: jsonObject.resourceValue,
+        type: jsonObject.type
+      });
+    }
+  }]);
 
-    _createClass(SupplyCenter, [{
-        key: 'destroy',
-        value: function destroy() {
-            var me = this;
-            me.maxWeight = null;
-            me.nodeID = null;
-            me.resourceValue = null;
-            me.type = null;
-        }
-
-        /**
-         * @function SuperMap.SupplyCenter.fromJson
-         * @description 将服务端JSON对象转换成当前客户端对象
-         * @param jsonObject - {Object} 要转换的 JSON 对象。
-         * @return{SuperMap.SupplyCenter} SupplyCenter对象
-         */
-
-    }], [{
-        key: 'fromJson',
-        value: function fromJson(jsonObject) {
-            if (!jsonObject) {
-                return;
-            }
-            return new SupplyCenter({
-                maxWeight: jsonObject.maxWeight,
-                nodeID: jsonObject.nodeID,
-                resourceValue: jsonObject.resourceValue,
-                type: jsonObject.type
-            });
-        }
-    }]);
-
-    return SupplyCenter;
+  return SupplyCenter;
 }();
 
 _SuperMap.SuperMap.SupplyCenter = SupplyCenter;
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71808,11 +72098,11 @@ var _SpatialAnalystBase2 = __webpack_require__(10);
 
 var _Util = __webpack_require__(1);
 
-var _DatasetSurfaceAnalystParameters = __webpack_require__(147);
+var _DatasetSurfaceAnalystParameters = __webpack_require__(149);
 
-var _GeometrySurfaceAnalystParameters = __webpack_require__(172);
+var _GeometrySurfaceAnalystParameters = __webpack_require__(173);
 
-var _SurfaceAnalystParameters = __webpack_require__(65);
+var _SurfaceAnalystParameters = __webpack_require__(66);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71925,7 +72215,7 @@ var SurfaceAnalystService = exports.SurfaceAnalystService = function (_SpatialAn
 _SuperMap.SuperMap.SurfaceAnalystService = SurfaceAnalystService;
 
 /***/ }),
-/* 371 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71944,7 +72234,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _TerrainCurvatureCalculationParameters = __webpack_require__(213);
+var _TerrainCurvatureCalculationParameters = __webpack_require__(214);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72034,7 +72324,7 @@ var TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationServ
 _SuperMap.SuperMap.TerrainCurvatureCalculationService = TerrainCurvatureCalculationService;
 
 /***/ }),
-/* 372 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72051,7 +72341,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ServerTextStyle = __webpack_require__(32);
+var _ServerTextStyle = __webpack_require__(33);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72162,7 +72452,7 @@ var ThemeLabelUniqueItem = exports.ThemeLabelUniqueItem = function () {
 _SuperMap.SuperMap.ThemeLabelUniqueItem = ThemeLabelUniqueItem;
 
 /***/ }),
-/* 373 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72183,7 +72473,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _ThemeParameters = __webpack_require__(228);
+var _ThemeParameters = __webpack_require__(229);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72336,7 +72626,7 @@ var ThemeService = exports.ThemeService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.ThemeService = ThemeService;
 
 /***/ }),
-/* 374 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72357,9 +72647,9 @@ var _Util = __webpack_require__(1);
 
 var _SpatialAnalystBase2 = __webpack_require__(10);
 
-var _DatasetThiessenAnalystParameters = __webpack_require__(148);
+var _DatasetThiessenAnalystParameters = __webpack_require__(150);
 
-var _GeometryThiessenAnalystParameters = __webpack_require__(173);
+var _GeometryThiessenAnalystParameters = __webpack_require__(174);
 
 var _GeoJSON = __webpack_require__(14);
 
@@ -72493,7 +72783,7 @@ var ThiessenAnalystService = exports.ThiessenAnalystService = function (_Spatial
 _SuperMap.SuperMap.ThiessenAnalystService = ThiessenAnalystService;
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72584,7 +72874,7 @@ var TilesetsService = exports.TilesetsService = function (_CommonServiceBase) {
 _SuperMap.SuperMap.TilesetsService = TilesetsService;
 
 /***/ }),
-/* 376 */
+/* 377 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72601,9 +72891,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _TopologyValidatorJobsParameter = __webpack_require__(230);
+var _TopologyValidatorJobsParameter = __webpack_require__(231);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72685,7 +72975,7 @@ var TopologyValidatorJobsService = exports.TopologyValidatorJobsService = functi
 _SuperMap.SuperMap.TopologyValidatorJobsService = TopologyValidatorJobsService;
 
 /***/ }),
-/* 377 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72706,7 +72996,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _TransferPathParameters = __webpack_require__(232);
+var _TransferPathParameters = __webpack_require__(233);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72795,7 +73085,7 @@ var TransferPathService = exports.TransferPathService = function (_CommonService
 _SuperMap.SuperMap.TransferPathService = TransferPathService;
 
 /***/ }),
-/* 378 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72816,7 +73106,7 @@ var _Util = __webpack_require__(1);
 
 var _CommonServiceBase2 = __webpack_require__(5);
 
-var _TransferSolutionParameters = __webpack_require__(233);
+var _TransferSolutionParameters = __webpack_require__(234);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72927,7 +73217,7 @@ var TransferSolutionService = exports.TransferSolutionService = function (_Commo
 _SuperMap.SuperMap.TransferSolutionService = TransferSolutionService;
 
 /***/ }),
-/* 379 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72946,7 +73236,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _UpdateEdgeWeightParameters = __webpack_require__(236);
+var _UpdateEdgeWeightParameters = __webpack_require__(237);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73079,7 +73369,7 @@ var UpdateEdgeWeightService = exports.UpdateEdgeWeightService = function (_Netwo
 _SuperMap.SuperMap.UpdateEdgeWeightService = UpdateEdgeWeightService;
 
 /***/ }),
-/* 380 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73098,7 +73388,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _UpdateTurnNodeWeightParameters = __webpack_require__(237);
+var _UpdateTurnNodeWeightParameters = __webpack_require__(238);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73229,7 +73519,7 @@ var UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightService = function
 _SuperMap.SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService;
 
 /***/ }),
-/* 381 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73246,9 +73536,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _VectorClipJobsParameter = __webpack_require__(239);
+var _VectorClipJobsParameter = __webpack_require__(240);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73330,7 +73620,7 @@ var VectorClipJobsService = exports.VectorClipJobsService = function (_Processin
 _SuperMap.SuperMap.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 382 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73339,431 +73629,433 @@ _SuperMap.SuperMap.VectorClipJobsService = VectorClipJobsService;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector = exports.UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightParameters = exports.UpdateEdgeWeightService = exports.UpdateEdgeWeightParameters = exports.UGCSubLayer = exports.UGCMapLayer = exports.UGCLayer = exports.TransferSolutionParameters = undefined;
-exports.TransportationAnalystResultSetting = exports.TransportationAnalystParameter = exports.TransferSolutionService = exports.TransferPathService = exports.TransferPathParameters = exports.TransferLine = exports.TopologyValidatorJobsService = exports.TopologyValidatorJobsParameter = exports.TilesetsService = exports.ThiessenAnalystService = exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OverlapDisplayedOptions = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = exports.LabelSymbolCell = undefined;
+exports.VectorClipJobsService = exports.VectorClipJobsParameter = exports.Vector = exports.UpdateTurnNodeWeightService = exports.UpdateTurnNodeWeightParameters = exports.UpdateEdgeWeightService = exports.UpdateEdgeWeightParameters = exports.UGCSubLayer = exports.UGCMapLayer = exports.UGCLayer = exports.TransferSolutionParameters = exports.TransportationAnalystResultSetting = undefined;
+exports.TransportationAnalystParameter = exports.TransferSolutionService = exports.TransferPathService = exports.TransferPathParameters = exports.TransferLine = exports.TopologyValidatorJobsService = exports.TopologyValidatorJobsParameter = exports.TilesetsService = exports.ThiessenAnalystService = exports.ThiessenAnalystParameters = exports.ThemeUniqueItem = exports.ThemeUnique = exports.ThemeService = exports.ThemeRangeItem = exports.ThemeRange = exports.ThemeParameters = exports.ThemeOffset = exports.ThemeMemoryData = exports.ThemeLabelUniqueItem = exports.ThemeLabelText = exports.ThemeLabelItem = exports.ThemeLabelBackground = exports.ThemeLabelAlongLine = exports.ThemeLabel = exports.ThemeGridUniqueItem = exports.ThemeGridUnique = exports.ThemeGridRangeItem = exports.ThemeGridRange = exports.ThemeGraphText = exports.ThemeGraphSize = exports.ThemeGraphItem = exports.ThemeGraphAxes = exports.ThemeGraph = exports.ThemeGraduatedSymbolStyle = exports.ThemeGraduatedSymbol = exports.ThemeFlow = exports.ThemeDotDensity = exports.Theme = exports.TerrainCurvatureCalculationService = exports.TerrainCurvatureCalculationParameters = exports.SurfaceAnalystService = exports.SurfaceAnalystParametersSetting = exports.SurfaceAnalystParameters = exports.SupplyCenter = exports.SummaryRegionJobsService = exports.SummaryRegionJobParameter = exports.SummaryMeshJobsService = exports.SummaryMeshJobParameter = exports.SummaryAttributesJobsService = exports.SummaryAttributesJobsParameter = exports.StopQueryService = exports.StopQueryParameters = exports.SpatialAnalystBase = exports.SingleObjectQueryJobsService = exports.SingleObjectQueryJobsParameter = exports.SetLayerStatusService = exports.SetLayerStatusParameters = exports.SetLayersInfoService = exports.SetLayersInfoParameters = exports.SetLayerInfoService = exports.SetLayerInfoParameters = exports.ServerTheme = exports.ServerTextStyle = exports.ServerStyle = exports.ServerGeometry = exports.ServerFeature = exports.ServerColor = exports.RouteLocatorService = exports.RouteLocatorParameters = exports.RouteCalculateMeasureService = exports.RouteCalculateMeasureParameters = exports.Route = exports.QueryService = exports.QueryParameters = exports.QueryBySQLService = exports.QueryBySQLParameters = exports.QueryByGeometryService = exports.QueryByGeometryParameters = exports.QueryByDistanceService = exports.QueryByDistanceParameters = exports.QueryByBoundsService = exports.QueryByBoundsParameters = exports.ProcessingServiceBase = exports.PointWithMeasure = exports.OverlayGeoJobsService = exports.OverlayGeoJobParameter = exports.OverlayAnalystService = exports.OverlayAnalystParameters = exports.OutputSetting = exports.OverlapDisplayedOptions = exports.NetworkAnalystServiceBase = exports.MeasureService = exports.MeasureParameters = exports.MathExpressionAnalysisService = exports.MathExpressionAnalysisParameters = exports.MapService = exports.LinkItem = exports.LayerStatus = exports.LabelThemeCell = exports.LabelSymbolCell = undefined;
 exports.LabelMixedTextStyle = exports.LabelMatrixCell = exports.LabelImageCell = exports.KernelDensityJobsService = exports.KernelDensityJobParameter = exports.JoinItem = exports.InterpolationRBFAnalystParameters = exports.InterpolationKrigingAnalystParameters = exports.InterpolationIDWAnalystParameters = exports.InterpolationAnalystService = exports.InterpolationAnalystParameters = exports.UGCImage = exports.Grid = exports.GetLayersInfoService = exports.GetGridCellInfosService = exports.GetGridCellInfosParameters = exports.GetFieldsService = exports.GetFeaturesServiceBase = exports.GetFeaturesParametersBase = exports.GetFeaturesBySQLService = exports.GetFeaturesBySQLParameters = exports.GetFeaturesByIDsService = exports.GetFeaturesByIDsParameters = exports.GetFeaturesByGeometryService = exports.GetFeaturesByGeometryParameters = exports.GetFeaturesByBufferService = exports.GetFeaturesByBufferParameters = exports.GetFeaturesByBoundsService = exports.GetFeaturesByBoundsParameters = exports.GeoRelationAnalystService = exports.GeoRelationAnalystParameters = exports.GeometryThiessenAnalystParameters = exports.GeometrySurfaceAnalystParameters = exports.GeometryOverlayAnalystParameters = exports.GeometryBufferAnalystParameters = exports.GeoDecodingParameter = exports.GeoCodingParameter = exports.GenerateSpatialDataService = exports.GenerateSpatialDataParameters = exports.FindTSPPathsService = exports.FindTSPPathsParameters = exports.FindServiceAreasService = exports.FindServiceAreasParameters = exports.FindPathService = exports.FindPathParameters = exports.FindMTSPPathsService = exports.FindMTSPPathsParameters = exports.FindLocationService = exports.FindLocationParameters = exports.FindClosestFacilitiesService = exports.FindClosestFacilitiesParameters = exports.FilterParameter = exports.FieldStatisticsParameters = exports.FieldStatisticService = exports.FieldParameters = exports.FacilityAnalystUpstream3DService = exports.FacilityAnalystUpstream3DParameters = exports.FacilityAnalystTraceup3DService = exports.FacilityAnalystTraceup3DParameters = exports.FacilityAnalystTracedown3DService = exports.FacilityAnalystTracedown3DParameters = exports.FacilityAnalystStreamService = exports.FacilityAnalystStreamParameters = exports.FacilityAnalystSources3DService = exports.FacilityAnalystSources3DParameters = exports.FacilityAnalystSinks3DService = exports.FacilityAnalystSinks3DParameters = exports.FacilityAnalyst3DParameters = exports.EditFeaturesService = exports.EditFeaturesParameters = exports.DensityKernelAnalystParameters = exports.DensityAnalystService = exports.DatasourceConnectionInfo = exports.DatasetThiessenAnalystParameters = exports.DatasetSurfaceAnalystParameters = exports.DatasetOverlayAnalystParameters = exports.DatasetInfo = exports.DatasetBufferAnalystParameters = exports.DataReturnOption = exports.DataFlowService = exports.ComputeWeightMatrixService = exports.ComputeWeightMatrixParameters = exports.CommonServiceBase = exports.ColorDictionary = exports.ClipParameter = exports.ChartQueryService = exports.ChartQueryParameters = exports.ChartQueryFilterParameter = exports.ChartFeatureInfoSpecsService = exports.BurstPipelineAnalystService = exports.BurstPipelineAnalystParameters = exports.BufferSetting = exports.BuffersAnalystJobsService = exports.BuffersAnalystJobsParameter = exports.BufferDistance = exports.BufferAnalystService = exports.BufferAnalystParameters = exports.AreaSolarRadiationService = exports.AreaSolarRadiationParameters = exports.AddressMatchService = undefined;
 
-var _AddressMatchService = __webpack_require__(312);
+var _AddressMatchService = __webpack_require__(313);
 
-var _AreaSolarRadiationParameters = __webpack_require__(134);
+var _AreaSolarRadiationParameters = __webpack_require__(136);
 
-var _AreaSolarRadiationService = __webpack_require__(313);
+var _AreaSolarRadiationService = __webpack_require__(314);
 
-var _BufferAnalystParameters = __webpack_require__(86);
+var _BufferAnalystParameters = __webpack_require__(87);
 
-var _BufferAnalystService = __webpack_require__(314);
+var _BufferAnalystService = __webpack_require__(315);
 
-var _BufferDistance = __webpack_require__(135);
+var _BufferDistance = __webpack_require__(137);
 
-var _BuffersAnalystJobsParameter = __webpack_require__(137);
+var _BuffersAnalystJobsParameter = __webpack_require__(139);
 
-var _BuffersAnalystJobsService = __webpack_require__(315);
+var _BuffersAnalystJobsService = __webpack_require__(316);
 
-var _BufferSetting = __webpack_require__(136);
+var _BufferSetting = __webpack_require__(138);
 
-var _BurstPipelineAnalystParameters = __webpack_require__(138);
+var _BurstPipelineAnalystParameters = __webpack_require__(140);
 
-var _BurstPipelineAnalystService = __webpack_require__(316);
+var _BurstPipelineAnalystService = __webpack_require__(317);
 
-var _ChartFeatureInfoSpecsService = __webpack_require__(317);
+var _ChartFeatureInfoSpecsService = __webpack_require__(318);
 
-var _ChartQueryFilterParameter = __webpack_require__(139);
+var _ChartQueryFilterParameter = __webpack_require__(141);
 
-var _ChartQueryParameters = __webpack_require__(140);
+var _ChartQueryParameters = __webpack_require__(142);
 
-var _ChartQueryService = __webpack_require__(318);
+var _ChartQueryService = __webpack_require__(319);
 
-var _ClipParameter = __webpack_require__(141);
+var _ClipParameter = __webpack_require__(143);
 
-var _ColorDictionary = __webpack_require__(142);
+var _ColorDictionary = __webpack_require__(144);
 
 var _CommonServiceBase = __webpack_require__(5);
 
-var _ComputeWeightMatrixParameters = __webpack_require__(143);
+var _ComputeWeightMatrixParameters = __webpack_require__(145);
 
-var _ComputeWeightMatrixService = __webpack_require__(319);
+var _ComputeWeightMatrixService = __webpack_require__(320);
 
-var _DataFlowService = __webpack_require__(320);
+var _DataFlowService = __webpack_require__(321);
 
-var _DataReturnOption = __webpack_require__(47);
+var _DataReturnOption = __webpack_require__(48);
 
-var _DatasetBufferAnalystParameters = __webpack_require__(144);
+var _DatasetBufferAnalystParameters = __webpack_require__(146);
 
-var _DatasetInfo = __webpack_require__(145);
+var _DatasetInfo = __webpack_require__(147);
 
-var _DatasetOverlayAnalystParameters = __webpack_require__(146);
+var _DatasetOverlayAnalystParameters = __webpack_require__(148);
 
-var _DatasetSurfaceAnalystParameters = __webpack_require__(147);
+var _DatasetSurfaceAnalystParameters = __webpack_require__(149);
 
-var _DatasetThiessenAnalystParameters = __webpack_require__(148);
+var _DatasetThiessenAnalystParameters = __webpack_require__(150);
 
-var _DatasourceConnectionInfo = __webpack_require__(149);
+var _DatasourceConnectionInfo = __webpack_require__(88);
 
-var _DensityAnalystService = __webpack_require__(321);
+var _DensityAnalystService = __webpack_require__(322);
 
-var _DensityKernelAnalystParameters = __webpack_require__(150);
+var _DensityKernelAnalystParameters = __webpack_require__(151);
 
-var _EditFeaturesParameters = __webpack_require__(151);
+var _EditFeaturesParameters = __webpack_require__(152);
 
-var _EditFeaturesService = __webpack_require__(322);
+var _EditFeaturesService = __webpack_require__(323);
 
-var _FacilityAnalyst3DParameters = __webpack_require__(37);
+var _FacilityAnalyst3DParameters = __webpack_require__(38);
 
-var _FacilityAnalystSinks3DParameters = __webpack_require__(152);
+var _FacilityAnalystSinks3DParameters = __webpack_require__(153);
 
-var _FacilityAnalystSinks3DService = __webpack_require__(323);
+var _FacilityAnalystSinks3DService = __webpack_require__(324);
 
-var _FacilityAnalystSources3DParameters = __webpack_require__(153);
+var _FacilityAnalystSources3DParameters = __webpack_require__(154);
 
-var _FacilityAnalystSources3DService = __webpack_require__(324);
+var _FacilityAnalystSources3DService = __webpack_require__(325);
 
-var _FacilityAnalystStreamParameters = __webpack_require__(154);
+var _FacilityAnalystStreamParameters = __webpack_require__(155);
 
-var _FacilityAnalystStreamService = __webpack_require__(325);
+var _FacilityAnalystStreamService = __webpack_require__(326);
 
-var _FacilityAnalystTracedown3DParameters = __webpack_require__(155);
+var _FacilityAnalystTracedown3DParameters = __webpack_require__(156);
 
-var _FacilityAnalystTracedown3DService = __webpack_require__(326);
+var _FacilityAnalystTracedown3DService = __webpack_require__(327);
 
-var _FacilityAnalystTraceup3DParameters = __webpack_require__(156);
+var _FacilityAnalystTraceup3DParameters = __webpack_require__(157);
 
-var _FacilityAnalystTraceup3DService = __webpack_require__(327);
+var _FacilityAnalystTraceup3DService = __webpack_require__(328);
 
-var _FacilityAnalystUpstream3DParameters = __webpack_require__(157);
+var _FacilityAnalystUpstream3DParameters = __webpack_require__(158);
 
-var _FacilityAnalystUpstream3DService = __webpack_require__(328);
+var _FacilityAnalystUpstream3DService = __webpack_require__(329);
 
-var _FieldParameters = __webpack_require__(158);
+var _FieldParameters = __webpack_require__(159);
 
-var _FieldStatisticService = __webpack_require__(329);
+var _FieldStatisticService = __webpack_require__(330);
 
-var _FieldStatisticsParameters = __webpack_require__(159);
+var _FieldStatisticsParameters = __webpack_require__(160);
 
 var _FilterParameter = __webpack_require__(16);
 
-var _FindClosestFacilitiesParameters = __webpack_require__(160);
+var _FindClosestFacilitiesParameters = __webpack_require__(161);
 
-var _FindClosestFacilitiesService = __webpack_require__(330);
+var _FindClosestFacilitiesService = __webpack_require__(331);
 
-var _FindLocationParameters = __webpack_require__(161);
+var _FindLocationParameters = __webpack_require__(162);
 
-var _FindLocationService = __webpack_require__(331);
+var _FindLocationService = __webpack_require__(332);
 
-var _FindMTSPPathsParameters = __webpack_require__(162);
+var _FindMTSPPathsParameters = __webpack_require__(163);
 
-var _FindMTSPPathsService = __webpack_require__(332);
+var _FindMTSPPathsService = __webpack_require__(333);
 
-var _FindPathParameters = __webpack_require__(163);
+var _FindPathParameters = __webpack_require__(164);
 
-var _FindPathService = __webpack_require__(333);
+var _FindPathService = __webpack_require__(334);
 
-var _FindServiceAreasParameters = __webpack_require__(164);
+var _FindServiceAreasParameters = __webpack_require__(165);
 
-var _FindServiceAreasService = __webpack_require__(334);
+var _FindServiceAreasService = __webpack_require__(335);
 
-var _FindTSPPathsParameters = __webpack_require__(165);
+var _FindTSPPathsParameters = __webpack_require__(166);
 
-var _FindTSPPathsService = __webpack_require__(335);
+var _FindTSPPathsService = __webpack_require__(336);
 
-var _GenerateSpatialDataParameters = __webpack_require__(166);
+var _GenerateSpatialDataParameters = __webpack_require__(167);
 
-var _GenerateSpatialDataService = __webpack_require__(336);
+var _GenerateSpatialDataService = __webpack_require__(337);
 
-var _GeoCodingParameter = __webpack_require__(167);
+var _GeoCodingParameter = __webpack_require__(168);
 
-var _GeoDecodingParameter = __webpack_require__(168);
+var _GeoDecodingParameter = __webpack_require__(169);
 
-var _GeometryBufferAnalystParameters = __webpack_require__(170);
+var _GeometryBufferAnalystParameters = __webpack_require__(171);
 
-var _GeometryOverlayAnalystParameters = __webpack_require__(171);
+var _GeometryOverlayAnalystParameters = __webpack_require__(172);
 
-var _GeometrySurfaceAnalystParameters = __webpack_require__(172);
+var _GeometrySurfaceAnalystParameters = __webpack_require__(173);
 
-var _GeometryThiessenAnalystParameters = __webpack_require__(173);
+var _GeometryThiessenAnalystParameters = __webpack_require__(174);
 
-var _GeoRelationAnalystParameters = __webpack_require__(169);
+var _GeoRelationAnalystParameters = __webpack_require__(170);
 
-var _GeoRelationAnalystService = __webpack_require__(337);
+var _GeoRelationAnalystService = __webpack_require__(338);
 
-var _GetFeaturesByBoundsParameters = __webpack_require__(174);
+var _GetFeaturesByBoundsParameters = __webpack_require__(175);
 
-var _GetFeaturesByBoundsService = __webpack_require__(338);
+var _GetFeaturesByBoundsService = __webpack_require__(339);
 
-var _GetFeaturesByBufferParameters = __webpack_require__(175);
+var _GetFeaturesByBufferParameters = __webpack_require__(176);
 
-var _GetFeaturesByBufferService = __webpack_require__(339);
+var _GetFeaturesByBufferService = __webpack_require__(340);
 
-var _GetFeaturesByGeometryParameters = __webpack_require__(176);
+var _GetFeaturesByGeometryParameters = __webpack_require__(177);
 
-var _GetFeaturesByGeometryService = __webpack_require__(340);
+var _GetFeaturesByGeometryService = __webpack_require__(341);
 
-var _GetFeaturesByIDsParameters = __webpack_require__(177);
+var _GetFeaturesByIDsParameters = __webpack_require__(178);
 
-var _GetFeaturesByIDsService = __webpack_require__(341);
+var _GetFeaturesByIDsService = __webpack_require__(342);
 
-var _GetFeaturesBySQLParameters = __webpack_require__(178);
+var _GetFeaturesBySQLParameters = __webpack_require__(179);
 
-var _GetFeaturesBySQLService = __webpack_require__(342);
+var _GetFeaturesBySQLService = __webpack_require__(343);
 
-var _GetFeaturesParametersBase = __webpack_require__(38);
+var _GetFeaturesParametersBase = __webpack_require__(39);
 
-var _GetFeaturesServiceBase = __webpack_require__(39);
+var _GetFeaturesServiceBase = __webpack_require__(40);
 
-var _GetFieldsService = __webpack_require__(343);
+var _GetFieldsService = __webpack_require__(344);
 
-var _GetGridCellInfosParameters = __webpack_require__(179);
+var _GetGridCellInfosParameters = __webpack_require__(180);
 
-var _GetGridCellInfosService = __webpack_require__(344);
+var _GetGridCellInfosService = __webpack_require__(345);
 
-var _GetLayersInfoService = __webpack_require__(345);
+var _GetLayersInfoService = __webpack_require__(346);
 
-var _Grid = __webpack_require__(180);
+var _Grid = __webpack_require__(181);
 
-var _Image = __webpack_require__(181);
+var _Image = __webpack_require__(182);
 
-var _InterpolationAnalystParameters = __webpack_require__(40);
+var _InterpolationAnalystParameters = __webpack_require__(41);
 
-var _InterpolationAnalystService = __webpack_require__(346);
+var _InterpolationAnalystService = __webpack_require__(347);
 
-var _InterpolationIDWAnalystParameters = __webpack_require__(182);
+var _InterpolationIDWAnalystParameters = __webpack_require__(183);
 
-var _InterpolationKrigingAnalystParameters = __webpack_require__(183);
+var _InterpolationKrigingAnalystParameters = __webpack_require__(184);
 
-var _InterpolationRBFAnalystParameters = __webpack_require__(184);
+var _InterpolationRBFAnalystParameters = __webpack_require__(185);
 
-var _JoinItem = __webpack_require__(62);
+var _JoinItem = __webpack_require__(63);
 
-var _KernelDensityJobParameter = __webpack_require__(185);
+var _KernelDensityJobParameter = __webpack_require__(186);
 
-var _KernelDensityJobsService = __webpack_require__(348);
+var _KernelDensityJobsService = __webpack_require__(349);
 
-var _LabelImageCell = __webpack_require__(186);
+var _LabelImageCell = __webpack_require__(187);
 
-var _LabelMatrixCell = __webpack_require__(63);
+var _LabelMatrixCell = __webpack_require__(64);
 
-var _LabelMixedTextStyle = __webpack_require__(187);
+var _LabelMixedTextStyle = __webpack_require__(188);
 
-var _LabelSymbolCell = __webpack_require__(188);
+var _LabelSymbolCell = __webpack_require__(189);
 
-var _LabelThemeCell = __webpack_require__(189);
+var _LabelThemeCell = __webpack_require__(190);
 
-var _LayerStatus = __webpack_require__(190);
+var _LayerStatus = __webpack_require__(191);
 
-var _LinkItem = __webpack_require__(191);
+var _LinkItem = __webpack_require__(192);
 
-var _MapService = __webpack_require__(349);
+var _MapService = __webpack_require__(350);
 
-var _MathExpressionAnalysisParameters = __webpack_require__(192);
+var _MathExpressionAnalysisParameters = __webpack_require__(193);
 
-var _MathExpressionAnalysisService = __webpack_require__(350);
+var _MathExpressionAnalysisService = __webpack_require__(351);
 
-var _MeasureParameters = __webpack_require__(193);
+var _MeasureParameters = __webpack_require__(194);
 
-var _MeasureService = __webpack_require__(351);
+var _MeasureService = __webpack_require__(352);
 
 var _NetworkAnalystServiceBase = __webpack_require__(15);
 
-var _OverlapDisplayedOptions = __webpack_require__(194);
+var _OutputSetting = __webpack_require__(19);
 
-var _OverlayAnalystParameters = __webpack_require__(87);
+var _OverlapDisplayedOptions = __webpack_require__(195);
 
-var _OverlayAnalystService = __webpack_require__(352);
+var _OverlayAnalystParameters = __webpack_require__(89);
 
-var _OverlayGeoJobParameter = __webpack_require__(195);
+var _OverlayAnalystService = __webpack_require__(353);
 
-var _OverlayGeoJobsService = __webpack_require__(353);
+var _OverlayGeoJobParameter = __webpack_require__(196);
 
-var _PointWithMeasure = __webpack_require__(196);
+var _OverlayGeoJobsService = __webpack_require__(354);
 
-var _ProcessingServiceBase = __webpack_require__(19);
+var _PointWithMeasure = __webpack_require__(197);
 
-var _QueryByBoundsParameters = __webpack_require__(197);
+var _ProcessingServiceBase = __webpack_require__(20);
 
-var _QueryByBoundsService = __webpack_require__(354);
+var _QueryByBoundsParameters = __webpack_require__(198);
 
-var _QueryByDistanceParameters = __webpack_require__(198);
+var _QueryByBoundsService = __webpack_require__(355);
 
-var _QueryByDistanceService = __webpack_require__(355);
+var _QueryByDistanceParameters = __webpack_require__(199);
 
-var _QueryByGeometryParameters = __webpack_require__(199);
+var _QueryByDistanceService = __webpack_require__(356);
 
-var _QueryByGeometryService = __webpack_require__(356);
+var _QueryByGeometryParameters = __webpack_require__(200);
 
-var _QueryBySQLParameters = __webpack_require__(200);
+var _QueryByGeometryService = __webpack_require__(357);
 
-var _QueryBySQLService = __webpack_require__(357);
+var _QueryBySQLParameters = __webpack_require__(201);
 
-var _QueryParameters = __webpack_require__(31);
+var _QueryBySQLService = __webpack_require__(358);
 
-var _QueryService = __webpack_require__(48);
+var _QueryParameters = __webpack_require__(32);
 
-var _Route = __webpack_require__(64);
+var _QueryService = __webpack_require__(49);
 
-var _RouteCalculateMeasureParameters = __webpack_require__(201);
+var _Route = __webpack_require__(65);
 
-var _RouteCalculateMeasureService = __webpack_require__(358);
+var _RouteCalculateMeasureParameters = __webpack_require__(202);
 
-var _RouteLocatorParameters = __webpack_require__(202);
+var _RouteCalculateMeasureService = __webpack_require__(359);
 
-var _RouteLocatorService = __webpack_require__(359);
+var _RouteLocatorParameters = __webpack_require__(203);
 
-var _ServerColor = __webpack_require__(20);
+var _RouteLocatorService = __webpack_require__(360);
 
-var _ServerFeature = __webpack_require__(360);
+var _ServerColor = __webpack_require__(21);
+
+var _ServerFeature = __webpack_require__(361);
 
 var _ServerGeometry = __webpack_require__(9);
 
 var _ServerStyle = __webpack_require__(11);
 
-var _ServerTextStyle = __webpack_require__(32);
+var _ServerTextStyle = __webpack_require__(33);
 
-var _ServerTheme = __webpack_require__(203);
+var _ServerTheme = __webpack_require__(204);
 
-var _SetLayerInfoParameters = __webpack_require__(204);
+var _SetLayerInfoParameters = __webpack_require__(205);
 
-var _SetLayerInfoService = __webpack_require__(361);
+var _SetLayerInfoService = __webpack_require__(362);
 
-var _SetLayersInfoParameters = __webpack_require__(206);
+var _SetLayersInfoParameters = __webpack_require__(207);
 
-var _SetLayersInfoService = __webpack_require__(363);
+var _SetLayersInfoService = __webpack_require__(364);
 
-var _SetLayerStatusParameters = __webpack_require__(205);
+var _SetLayerStatusParameters = __webpack_require__(206);
 
-var _SetLayerStatusService = __webpack_require__(362);
+var _SetLayerStatusService = __webpack_require__(363);
 
-var _SingleObjectQueryJobsParameter = __webpack_require__(207);
+var _SingleObjectQueryJobsParameter = __webpack_require__(208);
 
-var _SingleObjectQueryJobsService = __webpack_require__(364);
+var _SingleObjectQueryJobsService = __webpack_require__(365);
 
 var _SpatialAnalystBase = __webpack_require__(10);
 
-var _StopQueryParameters = __webpack_require__(208);
+var _StopQueryParameters = __webpack_require__(209);
 
-var _StopQueryService = __webpack_require__(365);
+var _StopQueryService = __webpack_require__(366);
 
-var _SummaryAttributesJobsParameter = __webpack_require__(209);
+var _SummaryAttributesJobsParameter = __webpack_require__(210);
 
-var _SummaryAttributesJobsService = __webpack_require__(366);
+var _SummaryAttributesJobsService = __webpack_require__(367);
 
-var _SummaryMeshJobParameter = __webpack_require__(210);
+var _SummaryMeshJobParameter = __webpack_require__(211);
 
-var _SummaryMeshJobsService = __webpack_require__(367);
+var _SummaryMeshJobsService = __webpack_require__(368);
 
-var _SummaryRegionJobParameter = __webpack_require__(211);
+var _SummaryRegionJobParameter = __webpack_require__(212);
 
-var _SummaryRegionJobsService = __webpack_require__(368);
+var _SummaryRegionJobsService = __webpack_require__(369);
 
-var _SupplyCenter = __webpack_require__(369);
+var _SupplyCenter = __webpack_require__(370);
 
-var _SurfaceAnalystParameters = __webpack_require__(65);
+var _SurfaceAnalystParameters = __webpack_require__(66);
 
-var _SurfaceAnalystParametersSetting = __webpack_require__(212);
+var _SurfaceAnalystParametersSetting = __webpack_require__(213);
 
-var _SurfaceAnalystService = __webpack_require__(370);
+var _SurfaceAnalystService = __webpack_require__(371);
 
-var _TerrainCurvatureCalculationParameters = __webpack_require__(213);
+var _TerrainCurvatureCalculationParameters = __webpack_require__(214);
 
-var _TerrainCurvatureCalculationService = __webpack_require__(371);
+var _TerrainCurvatureCalculationService = __webpack_require__(372);
 
-var _Theme = __webpack_require__(23);
+var _Theme = __webpack_require__(24);
 
-var _ThemeDotDensity = __webpack_require__(88);
+var _ThemeDotDensity = __webpack_require__(90);
 
-var _ThemeFlow = __webpack_require__(66);
+var _ThemeFlow = __webpack_require__(67);
 
-var _ThemeGraduatedSymbol = __webpack_require__(89);
+var _ThemeGraduatedSymbol = __webpack_require__(91);
 
-var _ThemeGraduatedSymbolStyle = __webpack_require__(214);
+var _ThemeGraduatedSymbolStyle = __webpack_require__(215);
 
-var _ThemeGraph = __webpack_require__(90);
+var _ThemeGraph = __webpack_require__(92);
 
-var _ThemeGraphAxes = __webpack_require__(215);
+var _ThemeGraphAxes = __webpack_require__(216);
 
-var _ThemeGraphItem = __webpack_require__(216);
+var _ThemeGraphItem = __webpack_require__(217);
 
-var _ThemeGraphSize = __webpack_require__(217);
+var _ThemeGraphSize = __webpack_require__(218);
 
-var _ThemeGraphText = __webpack_require__(218);
+var _ThemeGraphText = __webpack_require__(219);
 
-var _ThemeGridRange = __webpack_require__(219);
+var _ThemeGridRange = __webpack_require__(220);
 
-var _ThemeGridRangeItem = __webpack_require__(220);
+var _ThemeGridRangeItem = __webpack_require__(221);
 
-var _ThemeGridUnique = __webpack_require__(221);
+var _ThemeGridUnique = __webpack_require__(222);
 
-var _ThemeGridUniqueItem = __webpack_require__(222);
+var _ThemeGridUniqueItem = __webpack_require__(223);
 
-var _ThemeLabel = __webpack_require__(67);
+var _ThemeLabel = __webpack_require__(68);
 
-var _ThemeLabelAlongLine = __webpack_require__(223);
+var _ThemeLabelAlongLine = __webpack_require__(224);
 
-var _ThemeLabelBackground = __webpack_require__(224);
+var _ThemeLabelBackground = __webpack_require__(225);
 
-var _ThemeLabelItem = __webpack_require__(225);
+var _ThemeLabelItem = __webpack_require__(226);
 
-var _ThemeLabelText = __webpack_require__(226);
+var _ThemeLabelText = __webpack_require__(227);
 
-var _ThemeLabelUniqueItem = __webpack_require__(372);
+var _ThemeLabelUniqueItem = __webpack_require__(373);
 
-var _ThemeMemoryData = __webpack_require__(227);
+var _ThemeMemoryData = __webpack_require__(228);
 
-var _ThemeOffset = __webpack_require__(68);
+var _ThemeOffset = __webpack_require__(69);
 
-var _ThemeParameters = __webpack_require__(228);
+var _ThemeParameters = __webpack_require__(229);
 
-var _ThemeRange = __webpack_require__(91);
+var _ThemeRange = __webpack_require__(93);
 
-var _ThemeRangeItem = __webpack_require__(229);
+var _ThemeRangeItem = __webpack_require__(230);
 
-var _ThemeService = __webpack_require__(373);
+var _ThemeService = __webpack_require__(374);
 
-var _ThemeUnique = __webpack_require__(92);
+var _ThemeUnique = __webpack_require__(94);
 
-var _ThemeUniqueItem = __webpack_require__(93);
+var _ThemeUniqueItem = __webpack_require__(95);
 
-var _ThiessenAnalystParameters = __webpack_require__(69);
+var _ThiessenAnalystParameters = __webpack_require__(70);
 
-var _ThiessenAnalystService = __webpack_require__(374);
+var _ThiessenAnalystService = __webpack_require__(375);
 
-var _TilesetsService = __webpack_require__(375);
+var _TilesetsService = __webpack_require__(376);
 
-var _TopologyValidatorJobsParameter = __webpack_require__(230);
+var _TopologyValidatorJobsParameter = __webpack_require__(231);
 
-var _TopologyValidatorJobsService = __webpack_require__(376);
+var _TopologyValidatorJobsService = __webpack_require__(377);
 
-var _TransferLine = __webpack_require__(231);
+var _TransferLine = __webpack_require__(232);
 
-var _TransferPathParameters = __webpack_require__(232);
+var _TransferPathParameters = __webpack_require__(233);
 
-var _TransferPathService = __webpack_require__(377);
+var _TransferPathService = __webpack_require__(378);
 
-var _TransferSolutionService = __webpack_require__(378);
+var _TransferSolutionService = __webpack_require__(379);
 
-var _TransportationAnalystParameter = __webpack_require__(33);
+var _TransportationAnalystParameter = __webpack_require__(34);
 
-var _TransportationAnalystResultSetting = __webpack_require__(234);
+var _TransportationAnalystResultSetting = __webpack_require__(235);
 
-var _TransferSolutionParameters = __webpack_require__(233);
+var _TransferSolutionParameters = __webpack_require__(234);
 
-var _UGCLayer = __webpack_require__(94);
+var _UGCLayer = __webpack_require__(96);
 
-var _UGCMapLayer = __webpack_require__(235);
+var _UGCMapLayer = __webpack_require__(236);
 
-var _UGCSubLayer = __webpack_require__(49);
+var _UGCSubLayer = __webpack_require__(50);
 
-var _UpdateEdgeWeightParameters = __webpack_require__(236);
+var _UpdateEdgeWeightParameters = __webpack_require__(237);
 
-var _UpdateEdgeWeightService = __webpack_require__(379);
+var _UpdateEdgeWeightService = __webpack_require__(380);
 
-var _UpdateTurnNodeWeightParameters = __webpack_require__(237);
+var _UpdateTurnNodeWeightParameters = __webpack_require__(238);
 
-var _UpdateTurnNodeWeightService = __webpack_require__(380);
+var _UpdateTurnNodeWeightService = __webpack_require__(381);
 
-var _Vector = __webpack_require__(238);
+var _Vector = __webpack_require__(239);
 
-var _VectorClipJobsParameter = __webpack_require__(239);
+var _VectorClipJobsParameter = __webpack_require__(240);
 
-var _VectorClipJobsService = __webpack_require__(381);
+var _VectorClipJobsService = __webpack_require__(382);
 
 exports.AddressMatchService = _AddressMatchService.AddressMatchService;
 exports.AreaSolarRadiationParameters = _AreaSolarRadiationParameters.AreaSolarRadiationParameters;
@@ -73876,6 +74168,7 @@ exports.MeasureParameters = _MeasureParameters.MeasureParameters;
 exports.MeasureService = _MeasureService.MeasureService;
 exports.NetworkAnalystServiceBase = _NetworkAnalystServiceBase.NetworkAnalystServiceBase;
 exports.OverlapDisplayedOptions = _OverlapDisplayedOptions.OverlapDisplayedOptions;
+exports.OutputSetting = _OutputSetting.OutputSetting;
 exports.OverlayAnalystParameters = _OverlayAnalystParameters.OverlayAnalystParameters;
 exports.OverlayAnalystService = _OverlayAnalystService.OverlayAnalystService;
 exports.OverlayGeoJobParameter = _OverlayGeoJobParameter.OverlayGeoJobParameter;
@@ -73978,7 +74271,7 @@ exports.VectorClipJobsParameter = _VectorClipJobsParameter.VectorClipJobsParamet
 exports.VectorClipJobsService = _VectorClipJobsService.VectorClipJobsService;
 
 /***/ }),
-/* 383 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73995,7 +74288,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-__webpack_require__(241);
+__webpack_require__(242);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74103,7 +74396,7 @@ var OnlineQueryDatasParameter = exports.OnlineQueryDatasParameter = function () 
 _SuperMap.SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter;
 
 /***/ }),
-/* 384 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74114,17 +74407,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.OnlineServiceBase = exports.OnlineResources = exports.OnlineQueryDatasParameter = exports.OnlineData = exports.Online = undefined;
 
-var _OnlineResources = __webpack_require__(241);
+var _OnlineResources = __webpack_require__(242);
 
 var OnlineResources = _interopRequireWildcard(_OnlineResources);
 
-var _Online = __webpack_require__(112);
+var _Online = __webpack_require__(114);
 
-var _OnlineData = __webpack_require__(240);
+var _OnlineData = __webpack_require__(241);
 
-var _OnlineQueryDatasParameter = __webpack_require__(383);
+var _OnlineQueryDatasParameter = __webpack_require__(384);
 
-var _OnlineServiceBase = __webpack_require__(242);
+var _OnlineServiceBase = __webpack_require__(243);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -74135,7 +74428,7 @@ exports.OnlineResources = OnlineResources;
 exports.OnlineServiceBase = _OnlineServiceBase.OnlineServiceBase;
 
 /***/ }),
-/* 385 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74152,15 +74445,15 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeFactory = __webpack_require__(24);
+var _ShapeFactory = __webpack_require__(25);
 
-var _Polygon = __webpack_require__(71);
+var _Polygon = __webpack_require__(72);
 
-var _Color = __webpack_require__(97);
+var _Color = __webpack_require__(99);
 
 var _Util = __webpack_require__(1);
 
-var _Graph2 = __webpack_require__(28);
+var _Graph2 = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74526,7 +74819,7 @@ var Bar = exports.Bar = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Bar = Bar;
 
 /***/ }),
-/* 386 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74545,11 +74838,11 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _ShapeFactory = __webpack_require__(24);
+var _ShapeFactory = __webpack_require__(25);
 
-var _Polygon = __webpack_require__(71);
+var _Polygon = __webpack_require__(72);
 
-var _Graph2 = __webpack_require__(28);
+var _Graph2 = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74979,7 +75272,7 @@ var Bar3D = exports.Bar3D = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Bar3D = Bar3D;
 
 /***/ }),
-/* 387 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74996,13 +75289,13 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Theme = __webpack_require__(73);
+var _Theme = __webpack_require__(74);
 
-var _Circle = __webpack_require__(95);
+var _Circle = __webpack_require__(97);
 
-var _ShapeFactory = __webpack_require__(24);
+var _ShapeFactory = __webpack_require__(25);
 
-var _RankSymbol2 = __webpack_require__(243);
+var _RankSymbol2 = __webpack_require__(244);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -75172,7 +75465,7 @@ var Circle = exports.Circle = function (_RankSymbol) {
 _SuperMap.SuperMap.Feature.Theme.Circle = Circle;
 
 /***/ }),
-/* 388 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75189,13 +75482,13 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeFactory = __webpack_require__(24);
+var _ShapeFactory = __webpack_require__(25);
 
-var _Point = __webpack_require__(70);
+var _Point = __webpack_require__(71);
 
-var _Line = __webpack_require__(96);
+var _Line = __webpack_require__(98);
 
-var _Graph2 = __webpack_require__(28);
+var _Graph2 = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -75521,7 +75814,7 @@ var Line = exports.Line = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Line = Line;
 
 /***/ }),
-/* 389 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75538,11 +75831,11 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeFactory = __webpack_require__(24);
+var _ShapeFactory = __webpack_require__(25);
 
-var _Sector = __webpack_require__(72);
+var _Sector = __webpack_require__(73);
 
-var _Graph2 = __webpack_require__(28);
+var _Graph2 = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -75759,7 +76052,7 @@ var Pie = exports.Pie = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Pie = Pie;
 
 /***/ }),
-/* 390 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75776,11 +76069,11 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeFactory = __webpack_require__(24);
+var _ShapeFactory = __webpack_require__(25);
 
-var _Point = __webpack_require__(70);
+var _Point = __webpack_require__(71);
 
-var _Graph2 = __webpack_require__(28);
+var _Graph2 = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -76071,7 +76364,7 @@ var Point = exports.Point = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Point = Point;
 
 /***/ }),
-/* 391 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76088,11 +76381,11 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _ShapeFactory = __webpack_require__(24);
+var _ShapeFactory = __webpack_require__(25);
 
-var _Sector = __webpack_require__(72);
+var _Sector = __webpack_require__(73);
 
-var _Graph2 = __webpack_require__(28);
+var _Graph2 = __webpack_require__(29);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -76312,7 +76605,7 @@ var Ring = exports.Ring = function (_Graph) {
 _SuperMap.SuperMap.Feature.Theme.Ring = Ring;
 
 /***/ }),
-/* 392 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76329,45 +76622,45 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _SuperMap = __webpack_require__(0);
 
-var _Geometry = __webpack_require__(26);
+var _Geometry = __webpack_require__(27);
 
 var _Util = __webpack_require__(1);
 
-var _Theme2 = __webpack_require__(73);
+var _Theme2 = __webpack_require__(74);
 
-var _Rectangle = __webpack_require__(126);
+var _Rectangle = __webpack_require__(128);
 
 var _Point = __webpack_require__(18);
 
-var _Collection = __webpack_require__(27);
+var _Collection = __webpack_require__(28);
 
-var _MultiPoint = __webpack_require__(36);
+var _MultiPoint = __webpack_require__(37);
 
 var _LineString = __webpack_require__(17);
 
-var _MultiLineString = __webpack_require__(44);
+var _MultiLineString = __webpack_require__(45);
 
-var _LinearRing = __webpack_require__(30);
+var _LinearRing = __webpack_require__(31);
 
-var _Polygon = __webpack_require__(46);
+var _Polygon = __webpack_require__(47);
 
-var _MultiPolygon = __webpack_require__(45);
+var _MultiPolygon = __webpack_require__(46);
 
-var _Curve = __webpack_require__(82);
+var _Curve = __webpack_require__(83);
 
-var _GeoText = __webpack_require__(83);
+var _GeoText = __webpack_require__(84);
 
-var _SmicPoint = __webpack_require__(100);
+var _SmicPoint = __webpack_require__(102);
 
-var _SmicBrokenLine = __webpack_require__(98);
+var _SmicBrokenLine = __webpack_require__(100);
 
-var _SmicText = __webpack_require__(102);
+var _SmicText = __webpack_require__(104);
 
-var _SmicRectangle = __webpack_require__(101);
+var _SmicRectangle = __webpack_require__(103);
 
-var _SmicPolygon = __webpack_require__(76);
+var _SmicPolygon = __webpack_require__(77);
 
-var _LonLat = __webpack_require__(35);
+var _LonLat = __webpack_require__(36);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -76606,7 +76899,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
         value: function multiPointToTF(geometry) {
             /*   //-- 不抽稀
              var components = geometry.components;
-               for(var i = 0; i < components.length; i++){
+              for(var i = 0; i < components.length; i++){
              var components_i = components[i];
              this.pointToTF(components_i);
              }
@@ -77047,7 +77340,7 @@ var ThemeVector = exports.ThemeVector = function (_Theme) {
 _SuperMap.SuperMap.Feature.Theme.ThemeVector = ThemeVector;
 
 /***/ }),
-/* 393 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77058,27 +77351,27 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = undefined;
 
-var _ShapeFactory = __webpack_require__(24);
+var _ShapeFactory = __webpack_require__(25);
 
-var _ShapeParameters = __webpack_require__(25);
+var _ShapeParameters = __webpack_require__(26);
 
-var _Circle = __webpack_require__(95);
+var _Circle = __webpack_require__(97);
 
-var _Image = __webpack_require__(244);
+var _Image = __webpack_require__(245);
 
-var _Label = __webpack_require__(245);
+var _Label = __webpack_require__(246);
 
-var _Line = __webpack_require__(96);
+var _Line = __webpack_require__(98);
 
-var _Point = __webpack_require__(70);
+var _Point = __webpack_require__(71);
 
-var _Polygon = __webpack_require__(71);
+var _Polygon = __webpack_require__(72);
 
-var _Rectangle = __webpack_require__(246);
+var _Rectangle = __webpack_require__(247);
 
-var _Sector = __webpack_require__(72);
+var _Sector = __webpack_require__(73);
 
-var _Theme = __webpack_require__(73);
+var _Theme = __webpack_require__(74);
 
 exports.ShapeFactory = _ShapeFactory.ShapeFactory;
 exports.ShapeParameters = _ShapeParameters.ShapeParameters;
@@ -77093,7 +77386,7 @@ exports.Sector = _Sector.Sector;
 exports.FeatureTheme = _Theme.Theme;
 
 /***/ }),
-/* 394 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77104,29 +77397,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = exports.FeatureTheme = exports.Sector = exports.FeatureRectangle = exports.FeaturePolygon = exports.Point = exports.FeatureLine = exports.Label = exports.Image = exports.FeatureCircle = exports.ShapeParameters = exports.ShapeFactory = exports.ThemeVector = exports.Ring = exports.RankSymbol = exports.OverlayPoint = exports.Pie = exports.Line = exports.Graph = exports.Circle = exports.Bar3D = exports.Bar = undefined;
 
-var _Bar = __webpack_require__(385);
+var _Bar = __webpack_require__(386);
 
-var _Bar3D = __webpack_require__(386);
+var _Bar3D = __webpack_require__(387);
 
-var _Circle = __webpack_require__(387);
+var _Circle = __webpack_require__(388);
 
-var _Graph = __webpack_require__(28);
+var _Graph = __webpack_require__(29);
 
-var _Line = __webpack_require__(388);
+var _Line = __webpack_require__(389);
 
-var _Pie = __webpack_require__(389);
+var _Pie = __webpack_require__(390);
 
-var _Point = __webpack_require__(390);
+var _Point = __webpack_require__(391);
 
-var _RankSymbol = __webpack_require__(243);
+var _RankSymbol = __webpack_require__(244);
 
-var _Ring = __webpack_require__(391);
+var _Ring = __webpack_require__(392);
 
-var _ThemeVector = __webpack_require__(392);
+var _ThemeVector = __webpack_require__(393);
 
-var _feature = __webpack_require__(393);
+var _feature = __webpack_require__(394);
 
-var _levelRenderer = __webpack_require__(400);
+var _levelRenderer = __webpack_require__(401);
 
 exports.Bar = _Bar.Bar;
 exports.Bar3D = _Bar3D.Bar3D;
@@ -77191,7 +77484,7 @@ exports.LevelRendererVector = _levelRenderer.LevelRendererVector;
 exports.SUtil = _levelRenderer.SUtil;
 
 /***/ }),
-/* 395 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77208,7 +77501,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _Util = __webpack_require__(1);
 
-var _Render = __webpack_require__(261);
+var _Render = __webpack_require__(262);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -77377,7 +77670,7 @@ var LevelRenderer = exports.LevelRenderer = function () {
 _SuperMap.SuperMap.LevelRenderer = LevelRenderer;
 
 /***/ }),
-/* 396 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77574,7 +77867,7 @@ var SmicEllipse = exports.SmicEllipse = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 397 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77778,7 +78071,7 @@ var SmicIsogon = exports.SmicIsogon = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 398 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77960,7 +78253,7 @@ var SmicRing = exports.SmicRing = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 399 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78193,7 +78486,7 @@ var SmicStar = exports.SmicStar = function (_Shape) {
 }(_Shape2.Shape);
 
 /***/ }),
-/* 400 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78204,79 +78497,79 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SUtil = exports.LevelRendererVector = exports.Util = exports.Transformable = exports.Storage = exports.SmicText = exports.SmicStar = exports.SmicSector = exports.SmicRing = exports.SmicRectangle = exports.SmicPolygon = exports.SmicPoint = exports.SmicIsogon = exports.SmicImage = exports.SmicEllipse = exports.SmicCircle = exports.SmicBrokenLine = exports.Shape = exports.PaintLayer = exports.Painter = exports.Matrix = exports.Math = exports.Log = exports.Http = exports.Handler = exports.Group = exports.Eventful = exports.LevelRendererEvent = exports.Env = exports.Easing = exports.LevelRendererCurve = exports.Config = exports.ComputeBoundingBox = exports.Color = exports.Clip = exports.Area = exports.Animator = exports.Animation = exports.Render = exports.LevelRenderer = undefined;
 
-var _LevelRenderer = __webpack_require__(395);
+var _LevelRenderer = __webpack_require__(396);
 
-var _Render = __webpack_require__(261);
+var _Render = __webpack_require__(262);
 
-var _Animation = __webpack_require__(247);
+var _Animation = __webpack_require__(248);
 
-var _Area = __webpack_require__(248);
+var _Area = __webpack_require__(249);
 
-var _Clip = __webpack_require__(249);
+var _Clip = __webpack_require__(250);
 
-var _Color = __webpack_require__(97);
+var _Color = __webpack_require__(99);
 
-var _ComputeBoundingBox = __webpack_require__(250);
+var _ComputeBoundingBox = __webpack_require__(251);
 
-var _Config = __webpack_require__(74);
+var _Config = __webpack_require__(75);
 
-var _Curve = __webpack_require__(75);
+var _Curve = __webpack_require__(76);
 
-var _Easing = __webpack_require__(251);
+var _Easing = __webpack_require__(252);
 
-var _Env = __webpack_require__(252);
+var _Env = __webpack_require__(253);
 
-var _Event = __webpack_require__(253);
+var _Event = __webpack_require__(254);
 
-var _Eventful = __webpack_require__(50);
+var _Eventful = __webpack_require__(51);
 
-var _Group = __webpack_require__(254);
+var _Group = __webpack_require__(255);
 
-var _Handler = __webpack_require__(255);
+var _Handler = __webpack_require__(256);
 
-var _Http = __webpack_require__(256);
+var _Http = __webpack_require__(257);
 
-var _Log = __webpack_require__(257);
+var _Log = __webpack_require__(258);
 
-var _Math = __webpack_require__(258);
+var _Math = __webpack_require__(259);
 
-var _Matrix = __webpack_require__(259);
+var _Matrix = __webpack_require__(260);
 
-var _Painter = __webpack_require__(260);
+var _Painter = __webpack_require__(261);
 
 var _Shape = __webpack_require__(13);
 
-var _SmicBrokenLine = __webpack_require__(98);
+var _SmicBrokenLine = __webpack_require__(100);
 
-var _SmicCircle = __webpack_require__(262);
+var _SmicCircle = __webpack_require__(263);
 
-var _SmicEllipse = __webpack_require__(396);
+var _SmicEllipse = __webpack_require__(397);
 
-var _SmicImage = __webpack_require__(99);
+var _SmicImage = __webpack_require__(101);
 
-var _SmicIsogon = __webpack_require__(397);
+var _SmicIsogon = __webpack_require__(398);
 
-var _SmicPoint = __webpack_require__(100);
+var _SmicPoint = __webpack_require__(102);
 
-var _SmicPolygon = __webpack_require__(76);
+var _SmicPolygon = __webpack_require__(77);
 
-var _SmicRectangle = __webpack_require__(101);
+var _SmicRectangle = __webpack_require__(103);
 
-var _SmicRing = __webpack_require__(398);
+var _SmicRing = __webpack_require__(399);
 
-var _SmicSector = __webpack_require__(263);
+var _SmicSector = __webpack_require__(264);
 
-var _SmicStar = __webpack_require__(399);
+var _SmicStar = __webpack_require__(400);
 
-var _SmicText = __webpack_require__(102);
+var _SmicText = __webpack_require__(104);
 
-var _Storage = __webpack_require__(264);
+var _Storage = __webpack_require__(265);
 
-var _Transformable = __webpack_require__(77);
+var _Transformable = __webpack_require__(78);
 
-var _Util = __webpack_require__(29);
+var _Util = __webpack_require__(30);
 
-var _Vector = __webpack_require__(78);
+var _Vector = __webpack_require__(79);
 
 var _SUtil = __webpack_require__(12);
 
@@ -78322,7 +78615,7 @@ exports.LevelRendererVector = _Vector.Vector;
 exports.SUtil = _SUtil.SUtil;
 
 /***/ }),
-/* 401 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78389,7 +78682,7 @@ var KeyServiceParameter = exports.KeyServiceParameter = function () {
 _SuperMap.SuperMap.KeyServiceParameter = KeyServiceParameter;
 
 /***/ }),
-/* 402 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78475,7 +78768,7 @@ var ServerInfo = exports.ServerInfo = function ServerInfo(type, options) {
 _SuperMap.SuperMap.ServerInfo = ServerInfo;
 
 /***/ }),
-/* 403 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78573,7 +78866,7 @@ var TokenServiceParameter = exports.TokenServiceParameter = function () {
 _SuperMap.SuperMap.TokenServiceParameter = TokenServiceParameter;
 
 /***/ }),
-/* 404 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78584,13 +78877,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TokenServiceParameter = exports.ServerInfo = exports.SecurityManager = exports.KeyServiceParameter = undefined;
 
-var _KeyServiceParameter = __webpack_require__(401);
+var _KeyServiceParameter = __webpack_require__(402);
 
-var _SecurityManager = __webpack_require__(34);
+var _SecurityManager = __webpack_require__(35);
 
-var _ServerInfo = __webpack_require__(402);
+var _ServerInfo = __webpack_require__(403);
 
-var _TokenServiceParameter = __webpack_require__(403);
+var _TokenServiceParameter = __webpack_require__(404);
 
 exports.KeyServiceParameter = _KeyServiceParameter.KeyServiceParameter;
 exports.SecurityManager = _SecurityManager.SecurityManager;
@@ -78598,7 +78891,7 @@ exports.ServerInfo = _ServerInfo.ServerInfo;
 exports.TokenServiceParameter = _TokenServiceParameter.TokenServiceParameter;
 
 /***/ }),
-/* 405 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78615,7 +78908,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _SuperMap = __webpack_require__(0);
 
-var _lodash = __webpack_require__(422);
+var _lodash = __webpack_require__(423);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -83094,7 +83387,7 @@ _SuperMap.SuperMap.CartoCSS.Tree.Zoom.ranges = {
 };
 
 /***/ }),
-/* 406 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83299,7 +83592,7 @@ var ThemeStyle = exports.ThemeStyle = function ThemeStyle(options) {
 _SuperMap.SuperMap.ThemeStyle = ThemeStyle;
 
 /***/ }),
-/* 407 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83310,30 +83603,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ThemeStyle = exports.CartoCSS = undefined;
 
-__webpack_require__(277);
+__webpack_require__(278);
 
-var _CartoCSS = __webpack_require__(405);
+var _CartoCSS = __webpack_require__(406);
 
-var _ThemeStyle = __webpack_require__(406);
+var _ThemeStyle = __webpack_require__(407);
 
 exports.CartoCSS = _CartoCSS.CartoCSS;
 exports.ThemeStyle = _ThemeStyle.ThemeStyle;
-
-/***/ }),
-/* 408 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ElasticSearch = undefined;
-
-var _ElasticSearch = __webpack_require__(113);
-
-exports.ElasticSearch = _ElasticSearch.ElasticSearch;
 
 /***/ }),
 /* 409 */
@@ -83347,9 +83624,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ElasticSearch = undefined;
 
-var _elasticsearch = __webpack_require__(408);
+var _ElasticSearch = __webpack_require__(115);
 
-exports.ElasticSearch = _elasticsearch.ElasticSearch;
+exports.ElasticSearch = _ElasticSearch.ElasticSearch;
 
 /***/ }),
 /* 410 */
@@ -83358,7 +83635,23 @@ exports.ElasticSearch = _elasticsearch.ElasticSearch;
 "use strict";
 
 
-var _promisePolyfill = __webpack_require__(468);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ElasticSearch = undefined;
+
+var _elasticsearch = __webpack_require__(409);
+
+exports.ElasticSearch = _elasticsearch.ElasticSearch;
+
+/***/ }),
+/* 411 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _promisePolyfill = __webpack_require__(469);
 
 var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
 
@@ -83367,7 +83660,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.Promise = _promisePolyfill2.default;
 
 /***/ }),
-/* 411 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83378,14 +83671,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FetchRequest = exports.RequestTimeout = exports.CORS = undefined;
 
-var _FetchRequest = __webpack_require__(21);
+var _FetchRequest = __webpack_require__(22);
 
 exports.CORS = _FetchRequest.CORS;
 exports.RequestTimeout = _FetchRequest.RequestTimeout;
 exports.FetchRequest = _FetchRequest.FetchRequest;
 
 /***/ }),
-/* 412 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83580,7 +83873,7 @@ var Graphic = exports.Graphic = function (_ol$Object) {
 _openlayers2.default.Graphic = Graphic;
 
 /***/ }),
-/* 413 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83709,7 +84002,7 @@ var MapvCanvasLayer = exports.MapvCanvasLayer = function () {
 }();
 
 /***/ }),
-/* 414 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83728,9 +84021,9 @@ var _openlayers = __webpack_require__(3);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _MapvCanvasLayer = __webpack_require__(413);
+var _MapvCanvasLayer = __webpack_require__(414);
 
-var _mapv = __webpack_require__(473);
+var _mapv = __webpack_require__(474);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -84141,7 +84434,7 @@ var MapvLayer = exports.MapvLayer = function (_BaiduMapLayer) {
 }(BaiduMapLayer);
 
 /***/ }),
-/* 415 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84274,7 +84567,7 @@ var DeafultCanvasStyle = exports.DeafultCanvasStyle = {
 };
 
 /***/ }),
-/* 416 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84529,7 +84822,7 @@ var StyleMap = exports.StyleMap = {
 };
 
 /***/ }),
-/* 417 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -84548,7 +84841,7 @@ var _openlayers2 = _interopRequireDefault(_openlayers);
 
 var _iclientCommon = __webpack_require__(4);
 
-var _StyleUtils = __webpack_require__(265);
+var _StyleUtils = __webpack_require__(266);
 
 var _Util = __webpack_require__(7);
 
@@ -85179,7 +85472,7 @@ var VectorTileStyles = exports.VectorTileStyles = function (_ol$Observable) {
 _openlayers2.default.supermap.VectorTileStyles = VectorTileStyles;
 
 /***/ }),
-/* 418 */
+/* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85616,7 +85909,7 @@ _openlayers2.default.supermap.VectorTileStyles = VectorTileStyles;
 })(typeof self !== 'undefined' ? self : undefined);
 
 /***/ }),
-/* 419 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85735,7 +86028,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 420 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -85743,7 +86036,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var utils = __webpack_require__(421);
+var utils = __webpack_require__(422);
 
 var AND = '&&',
     OR = '||',
@@ -86006,7 +86299,7 @@ if (typeof module != 'undefined' && typeof module.exports != 'undefined') module
 if (typeof window != 'undefined') window.Query = Query;
 
 /***/ }),
-/* 421 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86040,7 +86333,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 422 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86748,10 +87041,10 @@ function keys(object) {
 var toPairs = createToPairs(keys);
 
 module.exports = toPairs;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(276)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(277)))
 
 /***/ }),
-/* 423 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86805,12 +87098,12 @@ exports._unrefActive = exports.active = function (item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(469);
+__webpack_require__(470);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 /***/ }),
-/* 424 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87003,7 +87296,7 @@ process.umask = function () {
 };
 
 /***/ }),
-/* 425 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87011,7 +87304,7 @@ process.umask = function () {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var mgrs = __webpack_require__(268);
+var mgrs = __webpack_require__(269);
 
 function Point(x, y, z) {
   if (!(this instanceof Point)) {
@@ -87047,7 +87340,7 @@ Point.prototype.toMGRS = function (accuracy) {
 module.exports = Point;
 
 /***/ }),
-/* 426 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87104,7 +87397,7 @@ module.exports = function (crs, denorm, point) {
 };
 
 /***/ }),
-/* 427 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87143,7 +87436,7 @@ module.exports = function (eccent, q) {
 };
 
 /***/ }),
-/* 428 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87175,13 +87468,13 @@ module.exports = function (es) {
 };
 
 /***/ }),
-/* 429 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var pj_mlfn = __webpack_require__(269);
+var pj_mlfn = __webpack_require__(270);
 var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
 module.exports = function (arg, es, en) {
@@ -87204,7 +87497,7 @@ module.exports = function (arg, es, en) {
 };
 
 /***/ }),
-/* 430 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87215,7 +87508,7 @@ module.exports = function (esinp, exp) {
 };
 
 /***/ }),
-/* 431 */
+/* 432 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87303,7 +87596,7 @@ exports.rnb72 = {
 };
 
 /***/ }),
-/* 432 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87526,7 +87819,7 @@ exports.sphere = {
 };
 
 /***/ }),
-/* 433 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87547,7 +87840,7 @@ exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 /***/ }),
-/* 434 */
+/* 435 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87557,14 +87850,14 @@ exports.ft = { to_meter: 0.3048 };
 exports['us-ft'] = { to_meter: 1200 / 3937 };
 
 /***/ }),
-/* 435 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var proj = __webpack_require__(104);
-var transform = __webpack_require__(274);
+var proj = __webpack_require__(106);
+var transform = __webpack_require__(275);
 var wgs84 = proj('WGS84');
 
 function transformer(from, to, coords) {
@@ -87625,7 +87918,7 @@ function proj4(fromProj, toProj, coord) {
 module.exports = proj4;
 
 /***/ }),
-/* 436 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88018,7 +88311,7 @@ datum.prototype = {
 module.exports = datum;
 
 /***/ }),
-/* 437 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88122,16 +88415,16 @@ module.exports = function (source, dest, point) {
 };
 
 /***/ }),
-/* 438 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Datum = __webpack_require__(431);
-var Ellipsoid = __webpack_require__(432);
-var extend = __webpack_require__(108);
-var datum = __webpack_require__(436);
+var Datum = __webpack_require__(432);
+var Ellipsoid = __webpack_require__(433);
+var extend = __webpack_require__(110);
+var datum = __webpack_require__(437);
 var EPSLN = 1.0e-10;
 // ellipoid pj_set_ell.c
 var SIXTH = 0.1666666666666666667;
@@ -88187,7 +88480,7 @@ module.exports = function (json) {
 };
 
 /***/ }),
-/* 439 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88206,38 +88499,18 @@ module.exports = function (defs) {
 };
 
 /***/ }),
-/* 440 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var projs = [__webpack_require__(273), __webpack_require__(466), __webpack_require__(465), __webpack_require__(464), __webpack_require__(463), __webpack_require__(460), __webpack_require__(454), __webpack_require__(452), __webpack_require__(446), __webpack_require__(453), __webpack_require__(444), __webpack_require__(451), __webpack_require__(447), __webpack_require__(448), __webpack_require__(461), __webpack_require__(459), __webpack_require__(457), __webpack_require__(462), __webpack_require__(458), __webpack_require__(449), __webpack_require__(467), __webpack_require__(445)];
-module.exports = function (proj4) {
-  projs.forEach(function (proj) {
-    proj4.Proj.projections.add(proj);
-  });
-};
-
-/***/ }),
 /* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var proj4 = __webpack_require__(435);
-proj4.defaultDatum = 'WGS84'; //default datum
-proj4.Proj = __webpack_require__(104);
-proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(425);
-proj4.toPoint = __webpack_require__(270);
-proj4.defs = __webpack_require__(271);
-proj4.transform = __webpack_require__(274);
-proj4.mgrs = __webpack_require__(268);
-proj4.version = __webpack_require__(471).version;
-__webpack_require__(440)(proj4);
-module.exports = proj4;
+var projs = [__webpack_require__(274), __webpack_require__(467), __webpack_require__(466), __webpack_require__(465), __webpack_require__(464), __webpack_require__(461), __webpack_require__(455), __webpack_require__(453), __webpack_require__(447), __webpack_require__(454), __webpack_require__(445), __webpack_require__(452), __webpack_require__(448), __webpack_require__(449), __webpack_require__(462), __webpack_require__(460), __webpack_require__(458), __webpack_require__(463), __webpack_require__(459), __webpack_require__(450), __webpack_require__(468), __webpack_require__(446)];
+module.exports = function (proj4) {
+  projs.forEach(function (proj) {
+    proj4.Proj.projections.add(proj);
+  });
+};
 
 /***/ }),
 /* 442 */
@@ -88246,9 +88519,29 @@ module.exports = proj4;
 "use strict";
 
 
-var defs = __webpack_require__(271);
-var wkt = __webpack_require__(275);
-var projStr = __webpack_require__(272);
+var proj4 = __webpack_require__(436);
+proj4.defaultDatum = 'WGS84'; //default datum
+proj4.Proj = __webpack_require__(106);
+proj4.WGS84 = new proj4.Proj('WGS84');
+proj4.Point = __webpack_require__(426);
+proj4.toPoint = __webpack_require__(271);
+proj4.defs = __webpack_require__(272);
+proj4.transform = __webpack_require__(275);
+proj4.mgrs = __webpack_require__(269);
+proj4.version = __webpack_require__(472).version;
+__webpack_require__(441)(proj4);
+module.exports = proj4;
+
+/***/ }),
+/* 443 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var defs = __webpack_require__(272);
+var wkt = __webpack_require__(276);
+var projStr = __webpack_require__(273);
 function testObj(code) {
   return typeof code === 'string';
 }
@@ -88282,13 +88575,13 @@ function parse(code) {
 module.exports = parse;
 
 /***/ }),
-/* 443 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var projs = [__webpack_require__(456), __webpack_require__(455)];
+var projs = [__webpack_require__(457), __webpack_require__(456)];
 var names = {};
 var projStore = [];
 
@@ -88321,17 +88614,17 @@ exports.start = function () {
 };
 
 /***/ }),
-/* 444 */
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var EPSLN = 1.0e-10;
-var msfnz = __webpack_require__(42);
-var qsfnz = __webpack_require__(107);
+var msfnz = __webpack_require__(43);
+var qsfnz = __webpack_require__(109);
 var adjust_lon = __webpack_require__(6);
-var asinz = __webpack_require__(41);
+var asinz = __webpack_require__(42);
 exports.init = function () {
 
   if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
@@ -88446,7 +88739,7 @@ exports.phi1z = function (eccent, qs) {
 exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 /***/ }),
-/* 445 */
+/* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88455,14 +88748,14 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 var adjust_lon = __webpack_require__(6);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
-var mlfn = __webpack_require__(56);
-var e0fn = __webpack_require__(52);
-var e1fn = __webpack_require__(53);
-var e2fn = __webpack_require__(54);
-var e3fn = __webpack_require__(55);
-var gN = __webpack_require__(105);
-var asinz = __webpack_require__(41);
-var imlfn = __webpack_require__(106);
+var mlfn = __webpack_require__(57);
+var e0fn = __webpack_require__(53);
+var e1fn = __webpack_require__(54);
+var e2fn = __webpack_require__(55);
+var e3fn = __webpack_require__(56);
+var gN = __webpack_require__(107);
+var asinz = __webpack_require__(42);
+var imlfn = __webpack_require__(108);
 exports.init = function () {
   this.sin_p12 = Math.sin(this.lat0);
   this.cos_p12 = Math.cos(this.lat0);
@@ -88635,21 +88928,21 @@ exports.inverse = function (p) {
 exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 /***/ }),
-/* 446 */
+/* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var mlfn = __webpack_require__(56);
-var e0fn = __webpack_require__(52);
-var e1fn = __webpack_require__(53);
-var e2fn = __webpack_require__(54);
-var e3fn = __webpack_require__(55);
-var gN = __webpack_require__(105);
+var mlfn = __webpack_require__(57);
+var e0fn = __webpack_require__(53);
+var e1fn = __webpack_require__(54);
+var e2fn = __webpack_require__(55);
+var e3fn = __webpack_require__(56);
+var gN = __webpack_require__(107);
 var adjust_lon = __webpack_require__(6);
-var adjust_lat = __webpack_require__(51);
-var imlfn = __webpack_require__(106);
+var adjust_lat = __webpack_require__(52);
+var imlfn = __webpack_require__(108);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
 exports.init = function () {
@@ -88738,16 +89031,16 @@ exports.inverse = function (p) {
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 447 */
+/* 448 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var adjust_lon = __webpack_require__(6);
-var qsfnz = __webpack_require__(107);
-var msfnz = __webpack_require__(42);
-var iqsfnz = __webpack_require__(427);
+var qsfnz = __webpack_require__(109);
+var msfnz = __webpack_require__(43);
+var iqsfnz = __webpack_require__(428);
 /*
   reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
@@ -88806,14 +89099,14 @@ exports.inverse = function (p) {
 exports.names = ["cea"];
 
 /***/ }),
-/* 448 */
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var adjust_lon = __webpack_require__(6);
-var adjust_lat = __webpack_require__(51);
+var adjust_lat = __webpack_require__(52);
 exports.init = function () {
 
   this.x0 = this.x0 || 0;
@@ -88854,21 +89147,21 @@ exports.inverse = function (p) {
 exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 /***/ }),
-/* 449 */
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var e0fn = __webpack_require__(52);
-var e1fn = __webpack_require__(53);
-var e2fn = __webpack_require__(54);
-var e3fn = __webpack_require__(55);
-var msfnz = __webpack_require__(42);
-var mlfn = __webpack_require__(56);
+var e0fn = __webpack_require__(53);
+var e1fn = __webpack_require__(54);
+var e2fn = __webpack_require__(55);
+var e3fn = __webpack_require__(56);
+var msfnz = __webpack_require__(43);
+var mlfn = __webpack_require__(57);
 var adjust_lon = __webpack_require__(6);
-var adjust_lat = __webpack_require__(51);
-var imlfn = __webpack_require__(106);
+var adjust_lat = __webpack_require__(52);
+var imlfn = __webpack_require__(108);
 var EPSLN = 1.0e-10;
 exports.init = function () {
 
@@ -88966,14 +89259,14 @@ exports.inverse = function (p) {
 exports.names = ["Equidistant_Conic", "eqdc"];
 
 /***/ }),
-/* 450 */
+/* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var FORTPI = Math.PI / 4;
-var srat = __webpack_require__(430);
+var srat = __webpack_require__(431);
 var HALF_PI = Math.PI / 2;
 var MAX_ITER = 20;
 exports.init = function () {
@@ -89019,7 +89312,7 @@ exports.inverse = function (p) {
 exports.names = ["gauss"];
 
 /***/ }),
-/* 451 */
+/* 452 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89027,7 +89320,7 @@ exports.names = ["gauss"];
 
 var adjust_lon = __webpack_require__(6);
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(41);
+var asinz = __webpack_require__(42);
 
 /*
   reference:
@@ -89121,7 +89414,7 @@ exports.inverse = function (p) {
 exports.names = ["gnom"];
 
 /***/ }),
-/* 452 */
+/* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89227,7 +89520,7 @@ exports.inverse = function (p) {
 exports.names = ["Krovak", "krovak"];
 
 /***/ }),
-/* 453 */
+/* 454 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89236,7 +89529,7 @@ exports.names = ["Krovak", "krovak"];
 var HALF_PI = Math.PI / 2;
 var FORTPI = Math.PI / 4;
 var EPSLN = 1.0e-10;
-var qsfnz = __webpack_require__(107);
+var qsfnz = __webpack_require__(109);
 var adjust_lon = __webpack_require__(6);
 /*
   reference
@@ -89512,19 +89805,19 @@ exports.authlat = function (beta, APA) {
 exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
 
 /***/ }),
-/* 454 */
+/* 455 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var EPSLN = 1.0e-10;
-var msfnz = __webpack_require__(42);
-var tsfnz = __webpack_require__(80);
+var msfnz = __webpack_require__(43);
+var tsfnz = __webpack_require__(81);
 var HALF_PI = Math.PI / 2;
-var sign = __webpack_require__(57);
+var sign = __webpack_require__(58);
 var adjust_lon = __webpack_require__(6);
-var phi2z = __webpack_require__(79);
+var phi2z = __webpack_require__(80);
 exports.init = function () {
 
   // array of:  r_maj,r_min,lat1,lat2,c_lon,c_lat,false_east,false_north
@@ -89650,7 +89943,7 @@ exports.inverse = function (p) {
 exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal_Conic", "Lambert_Conformal_Conic_2SP", "lcc"];
 
 /***/ }),
-/* 455 */
+/* 456 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89668,20 +89961,20 @@ exports.inverse = identity;
 exports.names = ["longlat", "identity"];
 
 /***/ }),
-/* 456 */
+/* 457 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var msfnz = __webpack_require__(42);
+var msfnz = __webpack_require__(43);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
 var R2D = 57.29577951308232088;
 var adjust_lon = __webpack_require__(6);
 var FORTPI = Math.PI / 4;
-var tsfnz = __webpack_require__(80);
-var phi2z = __webpack_require__(79);
+var tsfnz = __webpack_require__(81);
+var phi2z = __webpack_require__(80);
 exports.init = function () {
   var con = this.b / this.a;
   this.es = 1 - con * con;
@@ -89766,7 +90059,7 @@ exports.inverse = function (p) {
 exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
 
 /***/ }),
-/* 457 */
+/* 458 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89817,7 +90110,7 @@ exports.inverse = function (p) {
 exports.names = ["Miller_Cylindrical", "mill"];
 
 /***/ }),
-/* 458 */
+/* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89902,7 +90195,7 @@ exports.inverse = function (p) {
 exports.names = ["Mollweide", "moll"];
 
 /***/ }),
-/* 459 */
+/* 460 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90128,15 +90421,15 @@ exports.inverse = function (p) {
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 460 */
+/* 461 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var tsfnz = __webpack_require__(80);
+var tsfnz = __webpack_require__(81);
 var adjust_lon = __webpack_require__(6);
-var phi2z = __webpack_require__(79);
+var phi2z = __webpack_require__(80);
 var HALF_PI = Math.PI / 2;
 var FORTPI = Math.PI / 4;
 var EPSLN = 1.0e-10;
@@ -90288,21 +90581,21 @@ exports.inverse = function (p) {
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 461 */
+/* 462 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var e0fn = __webpack_require__(52);
-var e1fn = __webpack_require__(53);
-var e2fn = __webpack_require__(54);
-var e3fn = __webpack_require__(55);
+var e0fn = __webpack_require__(53);
+var e1fn = __webpack_require__(54);
+var e2fn = __webpack_require__(55);
+var e3fn = __webpack_require__(56);
 var adjust_lon = __webpack_require__(6);
-var adjust_lat = __webpack_require__(51);
-var mlfn = __webpack_require__(56);
+var adjust_lat = __webpack_require__(52);
+var mlfn = __webpack_require__(57);
 var EPSLN = 1.0e-10;
-var gN = __webpack_require__(105);
+var gN = __webpack_require__(107);
 var MAX_ITER = 20;
 exports.init = function () {
   /* Place parameters in static storage for common use
@@ -90415,21 +90708,21 @@ exports.inverse = function (p) {
 exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 462 */
+/* 463 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var adjust_lon = __webpack_require__(6);
-var adjust_lat = __webpack_require__(51);
-var pj_enfn = __webpack_require__(428);
+var adjust_lat = __webpack_require__(52);
+var pj_enfn = __webpack_require__(429);
 var MAX_ITER = 20;
-var pj_mlfn = __webpack_require__(269);
-var pj_inv_mlfn = __webpack_require__(429);
+var pj_mlfn = __webpack_require__(270);
+var pj_inv_mlfn = __webpack_require__(430);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(41);
+var asinz = __webpack_require__(42);
 exports.init = function () {
   /* Place parameters in static storage for common use
     -------------------------------------------------*/
@@ -90520,7 +90813,7 @@ exports.inverse = function (p) {
 exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 463 */
+/* 464 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90607,7 +90900,7 @@ exports.inverse = function (p) {
 exports.names = ["somerc"];
 
 /***/ }),
-/* 464 */
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90615,10 +90908,10 @@ exports.names = ["somerc"];
 
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
-var sign = __webpack_require__(57);
-var msfnz = __webpack_require__(42);
-var tsfnz = __webpack_require__(80);
-var phi2z = __webpack_require__(79);
+var sign = __webpack_require__(58);
+var msfnz = __webpack_require__(43);
+var tsfnz = __webpack_require__(81);
+var phi2z = __webpack_require__(80);
 var adjust_lon = __webpack_require__(6);
 exports.ssfn_ = function (phit, sinphi, eccen) {
   sinphi *= eccen;
@@ -90769,13 +91062,13 @@ exports.inverse = function (p) {
 exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant B)"];
 
 /***/ }),
-/* 465 */
+/* 466 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var gauss = __webpack_require__(450);
+var gauss = __webpack_require__(451);
 var adjust_lon = __webpack_require__(6);
 exports.init = function () {
   gauss.init.apply(this);
@@ -90833,14 +91126,14 @@ exports.inverse = function (p) {
 exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea", "Oblique Stereographic Alternative"];
 
 /***/ }),
-/* 466 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var D2R = 0.01745329251994329577;
-var tmerc = __webpack_require__(273);
+var tmerc = __webpack_require__(274);
 exports.dependsOn = 'tmerc';
 exports.init = function () {
   if (!this.zone) {
@@ -90859,7 +91152,7 @@ exports.init = function () {
 exports.names = ["Universal Transverse Mercator System", "utm"];
 
 /***/ }),
-/* 467 */
+/* 468 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90868,7 +91161,7 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 var adjust_lon = __webpack_require__(6);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(41);
+var asinz = __webpack_require__(42);
 /* Initialize the Van Der Grinten projection
   ----------------------------------------*/
 exports.init = function () {
@@ -90982,7 +91275,7 @@ exports.inverse = function (p) {
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 468 */
+/* 469 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91006,7 +91299,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
+    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -91130,9 +91423,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
+    var args = Array.prototype.slice.call(arr);
+
     return new Promise(function (resolve, reject) {
-      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
-      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 
@@ -91223,10 +91516,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     root.Promise = Promise;
   }
 })(undefined);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(423).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(424).setImmediate))
 
 /***/ }),
-/* 469 */
+/* 470 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91414,81 +91707,81 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 })(typeof self === "undefined" ? typeof global === "undefined" ? undefined : global : self);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(276), __webpack_require__(424)))
-
-/***/ }),
-/* 470 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(277), __webpack_require__(425)))
 
 /***/ }),
 /* 471 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 472 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
+module.exports = {"_args":[[{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"E:\\JavaSourceCode\\iClientTrunk\\dev\\trunk"]],"_cnpm_publish_time":1471808264503,"_from":"proj4@2.3.15","_hasShrinkwrap":false,"_id":"proj4@2.3.15","_inCache":true,"_location":"/proj4","_nodeVersion":"6.1.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/proj4-2.3.15.tgz_1471808262546_0.6752060337457806"},"_npmUser":{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"proj4@2.3.15","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.3.15","spec":"2.3.15","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_shrinkwrap":null,"_spec":"proj4@2.3.15","_where":"E:\\JavaSourceCode\\iClientTrunk\\dev\\trunk","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","size":114708,"noattachment":false,"tarball":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz"},"gitHead":"9fa5249c1f4183d5ddee3c4793dfd7b9f29f1886","homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","maintainers":[{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},{"name":"cwmma","email":"calvin.metcalf@gmail.com"}],"name":"proj4","optionalDependencies":{},"publish_time":1471808264503,"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 473 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return mapv}catch(e){return {}}}();
+module.exports = function(){try{return elasticsearch}catch(e){return {}}}();
 
 /***/ }),
 /* 474 */
 /***/ (function(module, exports) {
 
-module.exports = function(){try{return turf}catch(e){return {}}}();
+module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
 /* 475 */
+/***/ (function(module, exports) {
+
+module.exports = function(){try{return turf}catch(e){return {}}}();
+
+/***/ }),
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(283);
-__webpack_require__(281);
-__webpack_require__(280);
-__webpack_require__(115);
-__webpack_require__(282);
 __webpack_require__(284);
-__webpack_require__(122);
-__webpack_require__(300);
-__webpack_require__(295);
-__webpack_require__(296);
-__webpack_require__(292);
-__webpack_require__(121);
-__webpack_require__(293);
-__webpack_require__(294);
-__webpack_require__(302);
-__webpack_require__(298);
-__webpack_require__(297);
-__webpack_require__(301);
-__webpack_require__(303);
-__webpack_require__(111);
-__webpack_require__(112);
-__webpack_require__(110);
-__webpack_require__(299);
-__webpack_require__(291);
-__webpack_require__(109);
-__webpack_require__(113);
-__webpack_require__(120);
-__webpack_require__(285);
-__webpack_require__(286);
-__webpack_require__(290);
-__webpack_require__(119);
-__webpack_require__(118);
-__webpack_require__(288);
-__webpack_require__(116);
+__webpack_require__(282);
+__webpack_require__(281);
 __webpack_require__(117);
+__webpack_require__(283);
+__webpack_require__(285);
+__webpack_require__(124);
+__webpack_require__(301);
+__webpack_require__(296);
+__webpack_require__(297);
+__webpack_require__(293);
+__webpack_require__(123);
+__webpack_require__(294);
+__webpack_require__(295);
+__webpack_require__(303);
+__webpack_require__(299);
+__webpack_require__(298);
+__webpack_require__(302);
+__webpack_require__(304);
+__webpack_require__(113);
+__webpack_require__(114);
+__webpack_require__(112);
+__webpack_require__(300);
+__webpack_require__(292);
+__webpack_require__(111);
+__webpack_require__(115);
+__webpack_require__(122);
+__webpack_require__(286);
 __webpack_require__(287);
+__webpack_require__(291);
+__webpack_require__(121);
+__webpack_require__(120);
 __webpack_require__(289);
-__webpack_require__(279);
-module.exports = __webpack_require__(114);
+__webpack_require__(118);
+__webpack_require__(119);
+__webpack_require__(288);
+__webpack_require__(290);
+__webpack_require__(280);
+module.exports = __webpack_require__(116);
 
 
 /***/ })

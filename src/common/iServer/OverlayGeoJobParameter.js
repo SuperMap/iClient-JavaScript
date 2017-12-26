@@ -1,5 +1,6 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
+import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.OverlayGeoJobParameter
@@ -8,6 +9,7 @@ import {Util} from '../commontypes/Util';
  *         datasetName -{string} 数据集名。 <br>
  *         datasetOverlay -{string} 叠加对象所在的数据集名称。 <br>
  *         mode -{string} 叠加分析模式 。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 export class OverlayGeoJobParameter {
 
@@ -44,6 +46,13 @@ export class OverlayGeoJobParameter {
          * @description 叠加数据需要保留的字段，对分析模式为clip、update、erase时，此参数无效。
          */
         this.overlayFields = "";
+
+        /**
+         * @member SuperMap.OverlayGeoJobParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         Util.extend(this, options);
         this.CLASS_NAME = "SuperMap.OverlayGeoJobParameter";
     }
@@ -58,6 +67,10 @@ export class OverlayGeoJobParameter {
         this.mode = null;
         this.srcFields = null;
         this.overlayFields = null;
+        if (this.output instanceof OutputSetting) {
+            this.output.destroy();
+            this.output = null;
+        }
     }
 
     /**
@@ -71,6 +84,11 @@ export class OverlayGeoJobParameter {
             if (name == "datasetName") {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = OverlayGeoJobParameter[name];
+                continue;
+            }
+            if (name === "output"){
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'] = OverlayGeoJobParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};

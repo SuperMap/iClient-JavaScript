@@ -1,6 +1,7 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {SpatialQueryMode} from '../REST';
+import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
@@ -9,6 +10,7 @@ import {SpatialQueryMode} from '../REST';
  *         datasetName -{string} 数据集名。 <br>
  *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
  *         mode -{{@link SuperMap.SpatialQueryMode}} 空间查询模式 。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 export class SingleObjectQueryJobsParameter {
 
@@ -40,6 +42,12 @@ export class SingleObjectQueryJobsParameter {
          */
         this.mode = SpatialQueryMode.CONTAIN;
 
+        /**
+         * @member SuperMap.SingleObjectQueryJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsParameter";
@@ -54,6 +62,10 @@ export class SingleObjectQueryJobsParameter {
         this.datasetQuery = null;
         this.geometryQuery = null;
         this.mode = null;
+        if (this.output instanceof OutputSetting) {
+            this.output.destroy();
+            this.output = null;
+        }
     }
 
     /**
@@ -67,6 +79,11 @@ export class SingleObjectQueryJobsParameter {
             if (name === "datasetName") {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = singleObjectQueryJobsParameter[name];
+                continue;
+            }
+            if (name === "output"){
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'] = singleObjectQueryJobsParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};

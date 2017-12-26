@@ -1,6 +1,7 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {ClipAnalystMode} from '../REST';
+import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.VectorClipJobsParameter
@@ -9,6 +10,7 @@ import {ClipAnalystMode} from '../REST';
  *         datasetName -{string} 数据集名。 <br>
  *         datasetOverlay -{string} 裁剪对象数据集。 <br>
  *         mode -{{@link SuperMap.ClipAnalystMode}} 裁剪分析模式 。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 export class VectorClipJobsParameter {
 
@@ -39,6 +41,12 @@ export class VectorClipJobsParameter {
          */
         this.mode = ClipAnalystMode.CLIP;
 
+        /**
+         * @member SuperMap.VectorClipJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
@@ -53,6 +61,10 @@ export class VectorClipJobsParameter {
         this.datasetVectorClip = null;
         this.geometryClip = null;
         this.mode = null;
+        if (this.output instanceof OutputSetting) {
+            this.output.destroy();
+            this.output = null;
+        }
     }
 
     /**
@@ -66,6 +78,11 @@ export class VectorClipJobsParameter {
             if (name === "datasetName") {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = vectorClipJobsParameter[name];
+                continue;
+            }
+            if (name === "output"){
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'] = vectorClipJobsParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};

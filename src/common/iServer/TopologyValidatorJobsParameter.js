@@ -1,6 +1,7 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {TopologyValidatorRule} from '../REST';
+import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.TopologyValidatorJobsParameter
@@ -10,6 +11,7 @@ import {TopologyValidatorRule} from '../REST';
  *         datasetTopology -{string} 检查对象所在的数据集名称。 <br>
  *         rule -{{@link SuperMap.TopologyValidatorRule}} 拓扑检查规则 。 <br>
  *         tolerance -{string} 容限 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 export class TopologyValidatorJobsParameter {
 
@@ -41,6 +43,12 @@ export class TopologyValidatorJobsParameter {
          */
         this.rule = TopologyValidatorRule.REGIONNOOVERLAP;
 
+        /**
+         * @member SuperMap.TopologyValidatorJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.TopologyValidatorJobsParameter";
@@ -55,6 +63,10 @@ export class TopologyValidatorJobsParameter {
         this.datasetTopology = null;
         this.tolerance = null;
         this.rule = null;
+        if (this.output instanceof OutputSetting) {
+            this.output.destroy();
+            this.output = null;
+        }
     }
 
     /**
@@ -68,6 +80,11 @@ export class TopologyValidatorJobsParameter {
             if (name === "datasetName") {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = TopologyValidatorJobsParameter[name];
+                continue;
+            }
+            if (name === "output"){
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'] = TopologyValidatorJobsParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};

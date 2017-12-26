@@ -1,6 +1,7 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
 import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
+import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.KernelDensityJobParameter
@@ -13,6 +14,7 @@ import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
  *        meshType - {number} 分析类型。<br>
  *        fields - {string} 权重索引。<br>
  *        radius - {number} 分析的影响半径。
+ *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 export class KernelDensityJobParameter {
 
@@ -80,6 +82,12 @@ export class KernelDensityJobParameter {
          */
         this.areaUnit = AnalystAreaUnit.SQUAREMILE;
 
+        /**
+         * @member SuperMap.KernelDensityJobParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.KernelDensityJobParameter";
@@ -100,6 +108,10 @@ export class KernelDensityJobParameter {
         this.meshSizeUnit = null;
         this.radiusUnit = null;
         this.areaUnit = null;
+        if (this.output instanceof OutputSetting) {
+            this.output.destroy();
+            this.output = null;
+        }
     }
 
     /**
@@ -114,6 +126,11 @@ export class KernelDensityJobParameter {
             if (name === "datasetName") {
                 tempObj['input'] = tempObj['input'] || {};
                 tempObj['input'][name] = kernelDensityJobParameter[name];
+                continue;
+            }
+            if (name === "output"){
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'] = kernelDensityJobParameter[name];
                 continue;
             }
             tempObj['analyst'] = tempObj['analyst'] || {};

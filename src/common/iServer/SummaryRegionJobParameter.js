@@ -1,6 +1,7 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
-import {SummaryType, AnalystSizeUnit} from '../REST'
+import {SummaryType, AnalystSizeUnit} from '../REST';
+import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
@@ -19,6 +20,7 @@ import {SummaryType, AnalystSizeUnit} from '../REST'
  *         meshType -{number}网格面汇总类型。 <br>
  *         meshSizeUnit -{{@link SuperMap.AnalystSizeUnit}} 网格大小单位。 <br>
  *         type -{{@link SuperMap.SummaryType}} 汇总类型。 <br>
+ *         output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 export class SummaryRegionJobParameter {
 
@@ -111,6 +113,12 @@ export class SummaryRegionJobParameter {
          */
         this.type = SummaryType.SUMMARYMESH;
 
+        /**
+         * @member SuperMap.SummaryRegionJobParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         Util.extend(this, options);
 
         this.CLASS_NAME = "SuperMap.SummaryRegionJobParameter";
@@ -135,6 +143,10 @@ export class SummaryRegionJobParameter {
         this.resolution = null;
         this.meshSizeUnit = null;
         this.type = null;
+        if (this.output instanceof OutputSetting) {
+            this.output.destroy();
+            this.output = null;
+        }
     }
 
     /**
@@ -156,6 +168,11 @@ export class SummaryRegionJobParameter {
             }
             if (name === "type") {
                 tempObj['type'] = summaryRegionJobParameter[name];
+                continue;
+            }
+            if (name === "output"){
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'] = summaryRegionJobParameter[name];
                 continue;
             }
             if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {

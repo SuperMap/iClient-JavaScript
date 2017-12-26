@@ -639,6 +639,23 @@ export var OverlayOperationType = SuperMap.OverlayOperationType = {
 };
 
 /**
+ * @name OutputType
+ * @memberOf SuperMap
+ * @description  分布式分析输出类型枚举。
+ *
+ * @property {string} INDEXEDHDFS  INDEXEDHDFS
+ * @property {string} UDB  UDB
+ * @property {string} MONGODB  MONGODB
+ * @property {string} PG  PG
+ */
+export var OutputType = SuperMap.OutputType = {
+    INDEXEDHDFS: "INDEXEDHDFS",
+    UDB: "UDB",
+    MONGODB: "MONGODB",
+    PG: "PG"
+};
+
+/**
  * @name SmoothMethod
  * @memberOf SuperMap
  * @description  光滑方法枚举。

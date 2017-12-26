@@ -97,6 +97,7 @@ export {
     LinkItem,
     MathExpressionAnalysisParameters,
     MeasureParameters,
+    OutputSetting,
     OverlapDisplayedOptions,
     OverlayAnalystParameters,
     OverlayGeoJobParameter,

@@ -1,5 +1,6 @@
 import {SuperMap} from '../SuperMap';
 import {Util} from '../commontypes/Util';
+import {OutputSetting} from './OutputSetting';
 
 /**
  * @class SuperMap.SummaryAttributesJobsParameter
@@ -9,6 +10,7 @@ import {Util} from '../commontypes/Util';
  *        groupField -{string}分组字段。<br>
  *        attributeField -{string} 属性字段。<br>
  *        statisticModes -{string} 统计模式。<br>
+ *        output -{SuperMap.OutputSetting} 输出参数设置  <br>
  */
 export class SummaryAttributesJobsParameter {
 
@@ -16,11 +18,34 @@ export class SummaryAttributesJobsParameter {
         if (!options) {
             return;
         }
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.datasetName -{string}
+         * @description 汇总数据集名称
+         */
         this.datasetName = "";
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.groupField -{string}
+         * @description 分组字段
+         */
         this.groupField = "";
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.attributeField -{string}
+         * @description 属性字段
+         */
         this.attributeField = "";
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.statisticModes -{string}
+         * @description 属性汇总统计模式
+         */
         this.statisticModes = "";
+        /**
+         * @member SuperMap.SummaryAttributesJobsParameter.prototype.output -{SuperMap.OutputSetting}
+         * @description 输出参数设置类
+         */
+        this.output = null;
+
         Util.extend(this, options);
+        this.CLASS_NAME = "SuperMap.SummaryAttributesJobsParameter";
     }
 
     /**
@@ -32,6 +57,10 @@ export class SummaryAttributesJobsParameter {
         this.groupField = null;
         this.attributeField = null;
         this.statisticModes = null;
+        if (this.output instanceof OutputSetting) {
+            this.output.destroy();
+            this.output = null;
+        }
     }
 
     /**
@@ -47,8 +76,13 @@ export class SummaryAttributesJobsParameter {
                 tempObj['input'][name] = SummaryAttributesJobsParameter[name];
                 continue;
             }
+            if (name === "output"){
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'] = SummaryAttributesJobsParameter[name];
+                continue;
+            }
             tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = SummaryAttributesJobsParameter[name];
+            tempObj['analyst'][name] = SummaryAttributesJobsParameter[name];
         }
     }
 
