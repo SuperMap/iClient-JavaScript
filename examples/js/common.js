@@ -34,7 +34,18 @@ $(document).ready(function () {
         var lang_text = $("[data-lang=" + lan + "]").html() || "中文";
         $('#lang').html(lang_text);
 
+        setCurrentVersion();
         resetCurrentVersionLink();
+    }
+
+    //设置头部版本号
+    function setCurrentVersion() {
+        if (window.isLocal) {
+            return;
+        }
+        var version = getVersion();
+        var versionText = version ? "" + version : "";
+        $('#version').html(versionText);
     }
 
 
