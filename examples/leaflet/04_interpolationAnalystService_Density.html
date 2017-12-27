@@ -22,9 +22,9 @@
         maxZoom: 18,
         zoom: 1
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true, layersID: "[0,1,2]"}).addTo(map);
-    interpolationAnalystProcess();
-
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true, layersID: "[0,1,2]"}).addTo(map).once("load ", function () {
+        interpolationAnalystProcess();
+    });
     function interpolationAnalystProcess() {
         //创建点密度插值分析参数实例
         interpolationAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
