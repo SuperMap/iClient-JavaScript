@@ -256,6 +256,12 @@
         widgets.alert.showAlert(serviceFailedEventArgs.error.errorMsg,false);
     }
 
+    function removeTheme() {
+        if (map.layers.length > 1) {
+            map.removeLayer(themeLayer, true);
+        }
+    }
+
 </script>
 </body>
 </html>
