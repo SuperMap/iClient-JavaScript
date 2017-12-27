@@ -184,7 +184,7 @@ export {
     SurfaceAnalystParameters,
     SurfaceAnalystParametersSetting,
     TerrainCurvatureCalculationParameters,
-    Theme,
+    Theme as CommonTheme,
     ThemeDotDensity,
     ThemeFlow,
     ThemeGraduatedSymbol,
