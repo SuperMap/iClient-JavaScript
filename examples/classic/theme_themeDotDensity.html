@@ -39,7 +39,6 @@
 
     map = new SuperMap.Map("map", {
         controls: [
-            new SuperMap.Control.LayerSwitcher(),
             new SuperMap.Control.ScaleLine(),
             new SuperMap.Control.Zoom(),
             new SuperMap.Control.Navigation({
@@ -48,6 +47,7 @@
                 }
             })]
     });
+    map.addControl(new SuperMap.Control.LayerSwitcher(), new SuperMap.Pixel(42, 80));
     baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {
         transparent: true,
         cacheEnabled: true
