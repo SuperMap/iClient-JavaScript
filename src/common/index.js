@@ -54,7 +54,6 @@ import {
     StatisticAnalystMode,
     TopologyValidatorRule,
     OutputType
-
 } from './REST';
 import {
     Collection,
@@ -327,7 +326,10 @@ import {
     Online,
     OnlineData,
     OnlineQueryDatasParameter,
-    OnlineResources,
+    ServiceStatus,
+    DataItemType,
+    DataItemOrderBy,
+    FilterField,
     OnlineServiceBase
 } from './online';
 import {
@@ -743,7 +745,10 @@ export {
     Online,
     OnlineData,
     OnlineQueryDatasParameter,
-    OnlineResources,
+    ServiceStatus,
+    DataItemType,
+    DataItemOrderBy,
+    FilterField,
     OnlineServiceBase
 };
 export {
