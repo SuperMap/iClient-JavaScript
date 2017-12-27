@@ -22,7 +22,7 @@
     <div class='panel-body' id='params'>
         <p></p>
         <div align='right' class='button-group'>
-            <input type='button' id='btn1' class='btn btn-primary' value='关闭捕捉' onclick="switch_snap()"/>
+            <input type='button' id='switchSnap' class='btn btn-primary' value='关闭捕捉' onclick="switch_snap()"/>
             <input type='button' id='btn2' class='btn btn-primary' value='加载数据' onclick="addData()"/>
             <input type='button' id='btn3' class='btn btn-primary' value='清除' onclick="clearFeatures()"/>
         </div>
@@ -37,42 +37,43 @@
         switchSnap,
         snap01,
         url = host + "/iserver/services/map-world/rest/maps/World";
-        //新建矢量图层
-        vector = new SuperMap.Layer.Vector("vectorLayer");
-        //创建捕捉对象，第一个参数指的是需要进行捕捉的要素图层，后面两个参数分别是点要素和线要素的捕捉容限，第四个参数是附加参数
+    //新建矢量图层
+    vector = new SuperMap.Layer.Vector("vectorLayer");
+    //创建捕捉对象，第一个参数指的是需要进行捕捉的要素图层，后面两个参数分别是点要素和线要素的捕捉容限，第四个参数是附加参数
 
-        snap01 = new SuperMap.Snap([vector], 10, 10, {actived: true});
-        //矢量要素编辑控件
-        modifyFeature = new SuperMap.Control.ModifyFeature(vector);
-        modifyFeature.snap = snap01;
+    snap01 = new SuperMap.Snap([vector], 10, 10, {actived: true});
+    //矢量要素编辑控件
+    modifyFeature = new SuperMap.Control.ModifyFeature(vector);
+    modifyFeature.snap = snap01;
 
-        //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
-        layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {
-            transparent: true,
-            cacheEnabled: true
-        }, {maxResolution: "auto"});
-        switchSnap = document.getElementById("switchSnap");
-        //为图层初始化完毕添加addLayer()事件
-        layer.events.on({"layerInitialized": addLayer});
-        map = new SuperMap.Map("map", {
-            controls: [
-                new SuperMap.Control.LayerSwitcher(),
-                new SuperMap.Control.ScaleLine(),
-                new SuperMap.Control.Zoom(),
-                new SuperMap.Control.Navigation({
-                    dragPanOptions: {
-                        enableKinetic: true
-                    }
-                }),
-                modifyFeature]
-        });
-        addData();
+    //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
+    layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {
+        transparent: true,
+        cacheEnabled: true
+    }, {maxResolution: "auto"});
+    switchSnap = document.getElementById("switchSnap");
+    //为图层初始化完毕添加addLayer()事件
+    layer.events.on({"layerInitialized": addLayer});
+    map = new SuperMap.Map("map", {
+        controls: [
+            new SuperMap.Control.LayerSwitcher(),
+            new SuperMap.Control.ScaleLine(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.Navigation({
+                dragPanOptions: {
+                    enableKinetic: true
+                }
+            }),
+            modifyFeature]
+    });
+    addData();
 
     function addLayer() {
         map.addLayers([layer, vector]);
         map.setCenter(new SuperMap.LonLat(0, 0), 1);
 
     }
+
     function edit_feature() {
         deactiveAll();
         modifyFeature.activate();
@@ -84,14 +85,17 @@
         snapState = false;
         snap01.off();
     }
+
     function activate_snap_all() {
         snapState = true;
         snap01.on();
     }
+
     function switch_snap() {
         snapState ? switchSnap.value = "开启捕捉" : switchSnap.value = "关闭捕捉";
         snapState ? deactivate_snap_all() : activate_snap_all();
     }
+
     function deactiveAll() {
         modifyFeature.deactivate();
         deactivate_snap_all();
@@ -140,7 +144,7 @@
 
             dataAdded = true;
         } else {
-            widgets.alert.showAlert("数据已加载。",true,220);
+            widgets.alert.showAlert("数据已加载。", true, 220);
         }
         edit_feature();
     }
