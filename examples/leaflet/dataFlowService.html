@@ -10,11 +10,11 @@
 <script type="text/javascript">
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090";
     var wsHost = "ws:\//" + (window.isLocal ? document.location.hostname + ":8800" : "117.122.248.69:8800");
-    var token = "15xQ_l77895DvXHYKWPesuU7x0tenRLuYXgjxX4x_s51Wqh9qrQiLuLKudwWWm6vQVTXej2cXEQKcIcFAxxzOw..";
+    var token = "DdC3068lKasFf_d8_EmvHoeK0T30BynU1_tpGO5AaNM2KMmqLsbZjah-1YGeOjFBjPBAJ7WpKC-yckURW2HsOQ..";
     var map,
         urlMap = host + "/iserver/services/map-china400/rest/maps/China",
         urlQuery = host + "/iserver/services/map-china400/rest/maps/China_4326",
-        urlDataFlow = wsHost + "/iserver/services/dataflow/dataflow";
+        urlDataFlow = wsHost + "/iserver/services/dataflowTest/dataflow";
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG3857,
