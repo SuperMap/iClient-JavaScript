@@ -50,8 +50,8 @@ $(document).ready(function () {
 
     function getVersion() {
         var pathname = window.location.pathname.replace("/en/", "/");
-        var match = pathname.match(/^\/(dev|example|(?:\d+\.)+\d)\/.*/);//匹配版本:dev|web|9.0.0
-        return match && match[1] !== "example" ? match[1] : null;
+        var match = pathname.match(/^\/(dev|(?:\d+\.)+\d)\/.*/);//匹配版本:dev|9.0.0
+        return match && match[1]  ? match[1] : null;
     }
 
 
