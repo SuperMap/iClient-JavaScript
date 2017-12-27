@@ -94,6 +94,8 @@ $(document).ready(function () {
                 if (versionReg) {
                     // href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '$1$2/en');
                     href = window.location.origin + pathname.replace(/([^\/]*\/){2}([^\/]*)/, '/$1$2/en');
+                }else if(window.isLocal) {
+                    href = window.location.origin + pathname.replace(/(([^\/]*\/){3})([^\/]*)/,'$1$3/en');
                 }
             } else if(window.isLocal) {
                 href = window.location.origin + pathname.replace(/(([^\/]*\/){3})([^\/]*)/,'$1$3/en')
