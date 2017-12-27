@@ -40,4 +40,7 @@ export class Log {
          */
     }
 
+    destory() {
+        return true;
+    }
 }

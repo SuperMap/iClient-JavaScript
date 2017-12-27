@@ -118,5 +118,7 @@ export class Env {
 
         return detect(navigator.userAgent);
     }
-
+    destory() {
+        return true;
+    }
 }

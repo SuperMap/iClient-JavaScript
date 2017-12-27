@@ -49437,6 +49437,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -49445,118 +49447,129 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * 环境识别
  *
  */
-var Env = exports.Env = function Env() {
-    _classCallCheck(this, Env);
+var Env = exports.Env = function () {
+    function Env() {
+        _classCallCheck(this, Env);
 
-    // Zepto.js
-    // (c) 2010-2013 Thomas Fuchs
-    // Zepto.js may be freely distributed under the MIT license.
-    this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Env";
-    var me = this;
-    function detect(ua) {
-        var os = me.os = {};
-        var browser = me.browser = {};
-        var webkit = ua.match(/Web[kK]it[\/]{0,1}([\d.]+)/);
-        var android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
-        var ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
-        var ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/);
-        var iphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/);
-        var webos = ua.match(/(webOS|hpwOS)[\s\/]([\d.]+)/);
-        var touchpad = webos && ua.match(/TouchPad/);
-        var kindle = ua.match(/Kindle\/([\d.]+)/);
-        var silk = ua.match(/Silk\/([\d._]+)/);
-        var blackberry = ua.match(/(BlackBerry).*Version\/([\d.]+)/);
-        var bb10 = ua.match(/(BB10).*Version\/([\d.]+)/);
-        var rimtabletos = ua.match(/(RIM\sTablet\sOS)\s([\d.]+)/);
-        var playbook = ua.match(/PlayBook/);
-        var chrome = ua.match(/Chrome\/([\d.]+)/) || ua.match(/CriOS\/([\d.]+)/);
-        var firefox = ua.match(/Firefox\/([\d.]+)/);
-        var ie = ua.match(/MSIE ([\d.]+)/);
-        var safari = webkit && ua.match(/Mobile\//) && !chrome;
-        var webview = ua.match(/(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/) && !chrome;
+        // Zepto.js
+        // (c) 2010-2013 Thomas Fuchs
+        // Zepto.js may be freely distributed under the MIT license.
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Env";
+        var me = this;
+        function detect(ua) {
+            var os = me.os = {};
+            var browser = me.browser = {};
+            var webkit = ua.match(/Web[kK]it[\/]{0,1}([\d.]+)/);
+            var android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
+            var ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
+            var ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/);
+            var iphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/);
+            var webos = ua.match(/(webOS|hpwOS)[\s\/]([\d.]+)/);
+            var touchpad = webos && ua.match(/TouchPad/);
+            var kindle = ua.match(/Kindle\/([\d.]+)/);
+            var silk = ua.match(/Silk\/([\d._]+)/);
+            var blackberry = ua.match(/(BlackBerry).*Version\/([\d.]+)/);
+            var bb10 = ua.match(/(BB10).*Version\/([\d.]+)/);
+            var rimtabletos = ua.match(/(RIM\sTablet\sOS)\s([\d.]+)/);
+            var playbook = ua.match(/PlayBook/);
+            var chrome = ua.match(/Chrome\/([\d.]+)/) || ua.match(/CriOS\/([\d.]+)/);
+            var firefox = ua.match(/Firefox\/([\d.]+)/);
+            var ie = ua.match(/MSIE ([\d.]+)/);
+            var safari = webkit && ua.match(/Mobile\//) && !chrome;
+            var webview = ua.match(/(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/) && !chrome;
 
-        // Todo: clean this up with a better OS/browser seperation:
-        // - discern (more) between multiple browsers on android
-        // - decide if kindle fire in silk mode is android or not
-        // - Firefox on Android doesn't specify the Android version
-        // - possibly devide in os, device and browser hashes
+            // Todo: clean this up with a better OS/browser seperation:
+            // - discern (more) between multiple browsers on android
+            // - decide if kindle fire in silk mode is android or not
+            // - Firefox on Android doesn't specify the Android version
+            // - possibly devide in os, device and browser hashes
 
-        /*eslint-disable*/
-        if (browser.webkit = !!webkit) {
-            browser.version = webkit[1];
+            /*eslint-disable*/
+            if (browser.webkit = !!webkit) {
+                browser.version = webkit[1];
+            }
+
+            if (android) {
+                os.android = true, os.version = android[2];
+            }
+            if (iphone && !ipod) {
+                os.ios = os.iphone = true, os.version = iphone[2].replace(/_/g, '.');
+            }
+            if (ipad) {
+                os.ios = os.ipad = true, os.version = ipad[2].replace(/_/g, '.');
+            }
+            if (ipod) {
+                os.ios = os.ipod = true, os.version = ipod[3] ? ipod[3].replace(/_/g, '.') : null;
+            }
+            if (webos) {
+                os.webos = true, os.version = webos[2];
+            }
+            if (touchpad) {
+                os.touchpad = true;
+            }
+            if (blackberry) {
+                os.blackberry = true, os.version = blackberry[2];
+            }
+            if (bb10) {
+                os.bb10 = true, os.version = bb10[2];
+            }
+            if (rimtabletos) {
+                os.rimtabletos = true, os.version = rimtabletos[2];
+            }
+            if (playbook) {
+                browser.playbook = true;
+            }
+            if (kindle) {
+                os.kindle = true, os.version = kindle[1];
+            }
+            if (silk) {
+                browser.silk = true, browser.version = silk[1];
+            }
+            if (!silk && os.android && ua.match(/Kindle Fire/)) {
+                browser.silk = true;
+            }
+            if (chrome) {
+                browser.chrome = true, browser.version = chrome[1];
+            }
+            if (firefox) {
+                browser.firefox = true, browser.version = firefox[1];
+            }
+            if (ie) {
+                browser.ie = true, browser.version = ie[1];
+            }
+            if (safari && (ua.match(/Safari/) || !!os.ios)) {
+                browser.safari = true;
+            }
+            if (webview) {
+                browser.webview = true;
+            }
+            if (ie) {
+                browser.ie = true, browser.version = ie[1];
+            }
+
+            os.tablet = !!(ipad || playbook || android && !ua.match(/Mobile/) || firefox && ua.match(/Tablet/) || ie && !ua.match(/Phone/) && ua.match(/Touch/));
+            os.phone = !!(!os.tablet && !os.ipod && (android || iphone || webos || blackberry || bb10 || chrome && ua.match(/Android/) || chrome && ua.match(/CriOS\/([\d.]+)/) || firefox && ua.match(/Mobile/) || ie && ua.match(/Touch/)));
+
+            return {
+                browser: browser,
+                os: os,
+                // 原生canvas支持
+                canvasSupported: document.createElement('canvas').getContext ? true : false
+            };
         }
 
-        if (android) {
-            os.android = true, os.version = android[2];
-        }
-        if (iphone && !ipod) {
-            os.ios = os.iphone = true, os.version = iphone[2].replace(/_/g, '.');
-        }
-        if (ipad) {
-            os.ios = os.ipad = true, os.version = ipad[2].replace(/_/g, '.');
-        }
-        if (ipod) {
-            os.ios = os.ipod = true, os.version = ipod[3] ? ipod[3].replace(/_/g, '.') : null;
-        }
-        if (webos) {
-            os.webos = true, os.version = webos[2];
-        }
-        if (touchpad) {
-            os.touchpad = true;
-        }
-        if (blackberry) {
-            os.blackberry = true, os.version = blackberry[2];
-        }
-        if (bb10) {
-            os.bb10 = true, os.version = bb10[2];
-        }
-        if (rimtabletos) {
-            os.rimtabletos = true, os.version = rimtabletos[2];
-        }
-        if (playbook) {
-            browser.playbook = true;
-        }
-        if (kindle) {
-            os.kindle = true, os.version = kindle[1];
-        }
-        if (silk) {
-            browser.silk = true, browser.version = silk[1];
-        }
-        if (!silk && os.android && ua.match(/Kindle Fire/)) {
-            browser.silk = true;
-        }
-        if (chrome) {
-            browser.chrome = true, browser.version = chrome[1];
-        }
-        if (firefox) {
-            browser.firefox = true, browser.version = firefox[1];
-        }
-        if (ie) {
-            browser.ie = true, browser.version = ie[1];
-        }
-        if (safari && (ua.match(/Safari/) || !!os.ios)) {
-            browser.safari = true;
-        }
-        if (webview) {
-            browser.webview = true;
-        }
-        if (ie) {
-            browser.ie = true, browser.version = ie[1];
-        }
-
-        os.tablet = !!(ipad || playbook || android && !ua.match(/Mobile/) || firefox && ua.match(/Tablet/) || ie && !ua.match(/Phone/) && ua.match(/Touch/));
-        os.phone = !!(!os.tablet && !os.ipod && (android || iphone || webos || blackberry || bb10 || chrome && ua.match(/Android/) || chrome && ua.match(/CriOS\/([\d.]+)/) || firefox && ua.match(/Mobile/) || ie && ua.match(/Touch/)));
-
-        return {
-            browser: browser,
-            os: os,
-            // 原生canvas支持
-            canvasSupported: document.createElement('canvas').getContext ? true : false
-        };
+        return detect(navigator.userAgent);
     }
 
-    return detect(navigator.userAgent);
-};
+    _createClass(Env, [{
+        key: 'destory',
+        value: function destory() {
+            return true;
+        }
+    }]);
+
+    return Env;
+}();
 
 /***/ }),
 /* 266 */
@@ -51267,6 +51280,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Log = undefined;
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _Config = __webpack_require__(77);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51277,40 +51292,50 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * LevelRenderer 工具-日志
  *
  */
-var Log =
+var Log = exports.Log = function () {
 
-/**
- * Constructor: SuperMap.LevelRenderer.Tool.Log
- * 构造函数。
- *
- */
-exports.Log = function Log() {
-    _classCallCheck(this, Log);
-
-    this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Log";
-    return function () {
-        if (_Config.Config.debugMode === 0) {
-            return;
-        } else if (_Config.Config.debugMode == 1) {
-            for (var k in arguments) {
-                throw new Error(arguments[k]);
-            }
-        } else if (_Config.Config.debugMode > 1) {
-            for (var _k in arguments) {
-                console.log(arguments[_k]);
-            }
-        }
-    };
-
-    /* for debug
-     return function(mes) {
-     document.getElementById('wrong-message').innerHTML =
-     mes + ' ' + (new Date() - 0)
-     + '<br/>'
-     + document.getElementById('wrong-message').innerHTML;
-     };
+    /**
+     * Constructor: SuperMap.LevelRenderer.Tool.Log
+     * 构造函数。
+     *
      */
-};
+    function Log() {
+        _classCallCheck(this, Log);
+
+        this.CLASS_NAME = "SuperMap.LevelRenderer.Tool.Log";
+        return function () {
+            if (_Config.Config.debugMode === 0) {
+                return;
+            } else if (_Config.Config.debugMode == 1) {
+                for (var k in arguments) {
+                    throw new Error(arguments[k]);
+                }
+            } else if (_Config.Config.debugMode > 1) {
+                for (var _k in arguments) {
+                    console.log(arguments[_k]);
+                }
+            }
+        };
+
+        /* for debug
+         return function(mes) {
+         document.getElementById('wrong-message').innerHTML =
+         mes + ' ' + (new Date() - 0)
+         + '<br/>'
+         + document.getElementById('wrong-message').innerHTML;
+         };
+         */
+    }
+
+    _createClass(Log, [{
+        key: "destory",
+        value: function destory() {
+            return true;
+        }
+    }]);
+
+    return Log;
+}();
 
 /***/ }),
 /* 271 */
@@ -93944,7 +93969,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 500 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\codes\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 501 */
