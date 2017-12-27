@@ -142,7 +142,7 @@
     }
 
     function addSymboltoArray(nCount, lib, code, features, totalLength, flag) {
-        SuperMap.Plot.PlottingUtil.getDataFromServer(serverUrl, lib, code, null, null, null, getCompleted, getFailed);
+        SuperMap.Plot.PlottingUtil.getDataFromServer(serverUrl, lib, code, null, {}, null, getCompleted, getFailed);
         var locationPointWCs = [];
         locationPointWCs.push(new SuperMap.Geometry.Point(122, 41));
 
