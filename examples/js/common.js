@@ -51,7 +51,7 @@ $(document).ready(function () {
     function getVersion() {
         var pathname = window.location.pathname.replace("/en/", "/");
         var match = pathname.match(/^\/(dev|(?:\d+\.)+\d)\/.*/);//匹配版本:dev|9.0.0
-        return match && match[1]  ? match[1] : null;
+        return match && match[1] ? match[1] : null;
     }
 
 
@@ -95,8 +95,8 @@ $(document).ready(function () {
         var href = window.location.origin + pathname;
         if (lang === "en-US") {
             if (getVersion()) {
-                // href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '$1$2/en');
-                href = window.location.origin + pathname.replace(/([^\/]*\/){2}([^\/]*)/, '/$1$2/en');
+                href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '$1$2/en');
+                //href = window.location.origin + pathname.replace(/([^\/]*\/){2}([^\/]*)/, '/$1$2/en');
             } else if (window.isLocal) {
                 href = window.location.origin + pathname.replace(/(([^\/]*\/){3})([^\/]*)/, '$1$3/en')
             } else {
