@@ -87,8 +87,8 @@ $(document).ready(function () {
             } else if(window.isLocal) {
                 href = window.location.origin + pathname.replace(/(([^\/]*\/){3})([^\/]*)/,'$1$3/en')
             }else {
-                //href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '/en/$2');
-                href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '/$2/en');
+                href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '/en/$2');
+                //href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '/$2/en');
             }
 
         }
