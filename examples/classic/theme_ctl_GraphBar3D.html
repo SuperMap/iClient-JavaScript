@@ -30,15 +30,12 @@
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" exclude="iclient-classic" include="Bar3D" src="../../dist/include-classic.js"></script>
 <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+
 <script src='../data/chinaConsumptionLevel.js'></script>
 <script type="text/javascript">
-    var map, layer, themeLayer;
+    var map, layer, themeLayer, infowin, infowinPosition;
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090",
         url = host + "/iserver/services/map-china400/rest/maps/China_4326";
-    // 信息框 div
-    var infoDom = document.createElement("div");
-    infoDom.style.position = "absolute";
-    infoDom.id = "infowin";
 
     // 统计图模块要求浏览器支持 Canvas 渲染
     if (!document.createElement('canvas').getContext) {
@@ -141,6 +138,16 @@
         closeInfoWin();
     }
 
+    // 注册地图 mousemove，用于获取当前鼠标在地图中的像素位置
+    map.events.on({
+        "mousemove": function (e) {
+            infowinPosition = e.xy.clone();
+            // 偏移
+            infowinPosition.x += 40;
+            infowinPosition.y -= 25;
+        }
+    });
+
     // 显示地图弹窗
     function showInfoWin(e) {
         // e.target 是图形对象，即数据的可视化对象，三维柱状图中是指三维柱条;
@@ -154,8 +161,8 @@
             var info = e.target.dataInfo;
 
             // 弹窗内容
-            var contentHTML = "<div style='padding: 2px; color: #000; background-color: #d1eeee';'>";
-            contentHTML += "<strong>" + fea.attributes.NAME + "</strong>";
+            var contentHTML = "<div style='color: #000; background-color: #fff'>";
+            contentHTML += "省级行政区名称:<br><strong>" + fea.attributes.NAME + "</strong>";
 
             contentHTML += "<hr style='margin: 3px'>";
             switch (info.field) {
@@ -179,29 +186,38 @@
             }
             contentHTML += "</div>";
 
-            infoDom.style.left = e.event.clientX + 40 + "px";
-            infoDom.style.top = e.event.clientY - 25 + "px";
-            infoDom.innerHTML = contentHTML;
-            document.body.appendChild(infoDom);
+            // 弹出框大小
+            var infowinSize = (SuperMap.Browser.name == "firefox") ? new SuperMap.Size(150, 105) : new SuperMap.Size(140, 90);
+
+            // 弹出窗地理位置
+            var lonLat = map.getLonLatFromPixel(infowinPosition);
+            infowin = new SuperMap.Popup(
+                "infowin",
+                lonLat,
+                infowinSize,
+                contentHTML,
+                false,
+                false,
+                null);
+            infowin.setBackgroundColor("#fff");
+            infowin.setOpacity(0.8);
+            if (infowin) map.removePopup(infowin);
+            map.addPopup(infowin);
         }
     }
 
-    // 移除信息窗 div
+    // 移除和销毁地图弹窗
     function closeInfoWin() {
-        // infoDom 是否是 body 的子节点
-        if (isFatcher(document.body, infoDom)) {
-            document.body.removeChild(infoDom);
+        if (infowin) {
+            try {
+                map.removePopup(infowin);
+            }
+            catch (e) {
+                widgets.alert.showAlert(e.message,false);
+            }
         }
     }
-    // 判断父节点
-    function isFatcher(p, c) {
-        while (c.parentNode) {
-            c = c.parentNode;
-            if (c == p)
-                return true;
-        }
-        return false;
-    }
+
 </script>
 </body>
 </html>
