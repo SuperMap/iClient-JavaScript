@@ -48,6 +48,12 @@ $(document).ready(function () {
         $('#version').html(versionText);
     }
 
+    function getVersion() {
+        var pathname = window.location.pathname.replace("/en/", "/");
+        var match = pathname.match(/^\/(dev|example|(?:\d+\.)+\d)\/.*/);//匹配版本:dev|web|9.0.0
+        return match && match[1] !== "example" ? match[1] : null;
+    }
+
 
     //重置当前版本链接,不带版本号
     function resetCurrentVersionLink() {
@@ -88,18 +94,12 @@ $(document).ready(function () {
         var pathname = window.location.pathname.replace("/en/", "/");
         var href = window.location.origin + pathname;
         if (lang === "en-US") {
-            var match = pathname.match(/([^\/]*\/){2}([^\/]*)/);
-            if (match && match[2]) {
-                var versionReg = match[2].match(/dev|^(.*)\.(.*)$/);//匹配版本:dev/9.0.0
-                if (versionReg) {
-                    // href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '$1$2/en');
-                    href = window.location.origin + pathname.replace(/([^\/]*\/){2}([^\/]*)/, '/$1$2/en');
-                }else if(window.isLocal) {
-                    href = window.location.origin + pathname.replace(/(([^\/]*\/){3})([^\/]*)/,'$1$3/en');
-                }
-            } else if(window.isLocal) {
-                href = window.location.origin + pathname.replace(/(([^\/]*\/){3})([^\/]*)/,'$1$3/en')
-            }else {
+            if (getVersion()) {
+                // href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '$1$2/en');
+                href = window.location.origin + pathname.replace(/([^\/]*\/){2}([^\/]*)/, '/$1$2/en');
+            } else if (window.isLocal) {
+                href = window.location.origin + pathname.replace(/(([^\/]*\/){3})([^\/]*)/, '$1$3/en')
+            } else {
                 href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '/en/$2');
                 //href = window.location.origin + pathname.replace(/([^\/]*\/){1}([^\/]*)/, '/$2/en');
             }
