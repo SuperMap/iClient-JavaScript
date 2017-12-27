@@ -11,4 +11,4 @@ export var VectorTileFormat = {
     PBF: "PBF"
 };
 
-L.supermap.vectorTileFormat = VectorTileFormat;
+L.supermap.VectorTileFormat = VectorTileFormat;
