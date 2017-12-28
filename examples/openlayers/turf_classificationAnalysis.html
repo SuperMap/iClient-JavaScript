@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turf 分类分析</title>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 300px;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+
+        .editPane {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 420px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+        }
+
+        .tooltip {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            color: white;
+            padding: 4px 8px;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body style='margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;'>
+<div id='map' style='margin:0 auto;width: 100%;height: 100%'></div>
+<div id='info' class='ol-popup'>
+    <a href='#' id='popup-closer' class='ol-popup-closer'></a>
+    <div id='info-content'></div>
+</div>
+<div class='panel panel-primary editPane' id='editPane'>
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>分类分析</h5></div>
+    <div class='panel-body content' id='classificationBody'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>分类分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <select class='form-control' id='classificationAnalyzeType' name='interpolationAnalyzeType'>
+                    <option value='nearestOption' selected>nearestAnalyze</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        nearestDataUrl = host + "/iserver/services/map-china400/rest/maps/China_4326",
+        mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        turfLayer, nearestQueryResultLayer,
+
+        map = new ol.Map({
+            target: 'map',
+            maxExtent: [-180.0, -90, 180.0, 90],
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [106, 36],
+                zoom: 5,
+                projection: 'EPSG:4326'
+            })
+        });
+
+    map.addLayer(new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: mapUrl,
+            prjCoordSys: {"epsgCode": 4326}
+        }),
+        projection: 'EPSG:4326'
+    }));
+
+    //添加turf 图层
+    var turfSource = new ol.source.Turf({
+        wrapX: false,
+        attributions: new ol.Attribution({
+            html: ""
+        }),
+    });
+
+    //添加pupop x按钮
+    document.getElementById('popup-closer').onclick = function () {
+        classificationAnalyst.overlay.setPosition(undefined);
+        this.blur();
+        return false;
+    };
+
+    //创建鼠标操作提示：
+    var helpTooltipElement, helpTooltip;
+
+    createHelpTooltip();
+
+    function createHelpTooltip() {
+        if (helpTooltipElement) {
+            helpTooltipElement.parentNode.removeChild(helpTooltipElement);
+        }
+        helpTooltipElement = document.createElement('div');
+        helpTooltipElement.className = 'tooltip hidden';
+        helpTooltip = new ol.Overlay({
+            element: helpTooltipElement,
+            offset: [15, 0],
+            positioning: 'center-left'
+        });
+        map.addOverlay(helpTooltip);
+    }
+
+    //鼠标移动监听事件
+    var pointerMoveHandler = function (evt) {
+        var helpMsg = '点击地图，查找离点击位置最近的飞机场';
+
+        helpTooltipElement.innerHTML = helpMsg;
+        helpTooltip.setPosition(evt.coordinate);
+        helpTooltipElement.classList.remove('hidden');
+    };
+
+    //绑定鼠标移动事件
+    map.on('pointermove', pointerMoveHandler);
+    map.getViewport().addEventListener('mouseout', function () {
+        helpTooltipElement.classList.add('hidden');
+    });
+
+    //创建map click 事件：
+    var extentPolygon = new ol.geom.Polygon([[[-180.0, 90], [-180.0, -90], [180.0, -90], [180.0, 90], [-180.0, 90]]]);
+
+    function mapOnClickListener(e) {
+        widgets.alert.clearAlert();
+        //判断是否分析超出地图范围
+        if (!extentPolygon.intersectsCoordinate(e.coordinate)) {
+            widgets.alert.showAlert("超出分析范围。", false);
+            return;
+        }
+        if (!classificationAnalyst.sourcePoints || classificationAnalyst.sourcePoints.features.length === 0) {
+            widgets.alert.showAlert("数据加载中，请耐心等待。", true);
+            return;
+        }
+        clearLayer();
+        classificationAnalyst.overlay.setPosition(undefined);
+        var selected = false;
+        map.forEachFeatureAtPixel(e.pixel, function (feature) {
+            if (!feature.getProperties().NAME) {
+                return;
+            }
+            classificationAnalyst.content.innerHTML = feature.getProperties().NAME;
+            classificationAnalyst.overlay.setPosition(feature.getGeometry().getCoordinates());
+            selected = true;
+        }, {
+            layerFilter: function (layer) {
+                if (layer === nearestQueryResultLayer) {
+                    return true;
+                }
+            }, hitTolerance: 10
+        });
+        if (selected) {
+            return;
+        }
+        var selectPointSource = new ol.source.Vector({
+            wrapX: false
+        });
+        var selectPointMarker = new ol.Feature({
+            geometry: new ol.geom.Point(e.coordinate)
+        });
+        selectPointMarker.setStyle(new ol.style.Style({
+            image: new ol.style.Icon(({
+                anchor: [0.2, 0.9],
+                crossOrigin: 'anonymous',
+                src: '../img/position.png',
+                scale: 0.7
+            }))
+        }));
+        selectPointSource.addFeature(selectPointMarker);
+        classificationAnalyst.selectPointLayer = new ol.layer.Vector({
+            source: selectPointSource,
+            extent: [-180.0, -90, 180.0, 90]
+        });
+        map.addLayer(classificationAnalyst.selectPointLayer);
+
+        classificationAnalyst.nearestAnalyze(classificationAnalyst.sourcePoints, e.coordinate);
+
+    }
+
+
+    //创建分析邻近分析对象
+    var classificationAnalyst = {
+        content: document.getElementById('info-content'),
+        overlay: new ol.Overlay(({
+            element: document.getElementById('info'),
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        })),
+        sourcePoints: null,
+        lineLayer: null,
+        selectPointLayer: null,
+
+        loadAnalystLayer: function () {
+            map.getView().animate({zoom: 5}, {center: [106, 36]});
+            turfLayer = new ol.layer.Vector({
+                source: turfSource,
+                style: new ol.style.Style({
+                    image: new ol.style.Icon(({
+                        crossOrigin: 'anonymous',
+                        src: '../img/airportRed.png',
+                        scale: 0.7
+                    })),
+                }),
+                zIndex: 1000
+            });
+
+            var airportsParam = new SuperMap.QueryBySQLParameters({
+                queryParams: {
+                    name: "Airport_pt@POI_Other",
+                }
+            });
+
+            //只请求一次数据
+            if (!nearestQueryResultLayer) {
+                new ol.supermap.QueryService(nearestDataUrl).queryBySQL(airportsParam, function (serviceResult) {
+                    classificationAnalyst.sourcePoints = serviceResult.result.recordsets[0].features;
+                    var features = (new ol.format.GeoJSON()).readFeatures(classificationAnalyst.sourcePoints);
+
+                    for (var i = 0; i < features.length; i++) {
+                        features[i].setStyle(new ol.style.Style({
+                            image: new ol.style.Icon(({
+                                crossOrigin: 'anonymous',
+                                src: '../img/airportBlue.png',
+                                scale: 0.7
+                            }))
+                        }));
+                    }
+                    var vectorSource = new ol.source.Vector({
+                        features: features,
+                        wrapX: false
+                    });
+                    nearestQueryResultLayer = new ol.layer.Vector({
+                        source: vectorSource,
+                        extent: [-180.0, -90, 180.0, 90]
+                    });
+                    map.addLayer(nearestQueryResultLayer);
+                });
+            } else {
+                map.addLayer(nearestQueryResultLayer);
+            }
+
+            //绑定机场popup
+            map.addOverlay(classificationAnalyst.overlay);
+
+            //点击地图进行最近飞机场分析
+            map.on('click', mapOnClickListener);
+
+        },
+
+        nearestAnalyze: function (sourcePoints, coordinate) {
+            turfSource.process("Classification.nearest", {
+                "targetPoint": [coordinate[0], coordinate[1]],
+                "points": sourcePoints
+            }, function (result) {
+                var latlng = [result.geometry.coordinates[0], result.geometry.coordinates[1]];
+
+                var innerHtml = "离该点最近的机场为" + result.properties.NAME;
+                classificationAnalyst.content.innerHTML = innerHtml;
+                classificationAnalyst.overlay.setPosition(result.geometry.coordinates);
+
+                //添加线段:
+                var lineString = new ol.geom.LineString([coordinate, latlng]);
+                var lineSource = new ol.source.Vector({
+                    features: [new ol.Feature(lineString)],
+                    wrapX: true
+                });
+                classificationAnalyst.lineLayer = new ol.layer.Vector({
+                    source: lineSource,
+                    extent: [-180.0, -90, 180.0, 90],
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'red',
+                            weight: 1,
+                            lineDash: [1, 2, 3, 4, 5, 6]
+                        })
+                    })
+                });
+                map.addLayer(classificationAnalyst.lineLayer);
+                map.addLayer(turfLayer);
+            });
+        },
+
+    };
+    classificationAnalyst.loadAnalystLayer();
+
+    function clearLayer() {
+
+        if (turfSource.getFeatures().length > 0) {
+            turfSource.clear();
+        }
+        map.removeLayer(turfLayer);
+        if (classificationAnalyst.lineLayer) {
+            map.removeLayer(classificationAnalyst.lineLayer);
+        }
+        if (classificationAnalyst.selectPointLayer) {
+            map.removeLayer(classificationAnalyst.selectPointLayer);
+        }
+    }
+
+</script>
+</html>

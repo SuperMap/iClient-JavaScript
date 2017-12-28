@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turf 分类分析</title>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
+    <style>
+        .leaflet-tooltip, .leaflet-tooltip:before {
+            color: white;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        nearestDataUrl = host + "/iserver/services/map-china400/rest/maps/China_4326",
+        mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        turfLayer, nearestQueryResultLayer,
+        turfAnalyzeType = 'Interpolation_tin',
+
+        map = L.map('map', {
+            crs: L.CRS.EPSG4326,
+            preferCanvas: true,
+            center: [36, 106],
+            maxZoom: 18,
+            mixZoom: 2,
+            zoom: 4
+        });
+    L.supermap.tiledMapLayer(mapUrl, {
+        noWrap: true,
+        prjCoordSys: {"epsgCode": "4326"},
+        minZoom: 3
+    }).addTo(map);
+
+    //创建dom
+    initEditView();
+
+    function initEditView() {
+        var infoView = L.control({position: 'topright'});
+        infoView.onAdd = function () {
+            var me = this;
+            me._div = L.DomUtil.create('div');
+            me._div.style.width = '420px';
+            me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>分类分析</h5></div>
+    <div class='panel-body content' id='classificationBody' '>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>分类分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <select class='form-control' id='classificationAnalyzeType' name='interpolationAnalyzeType'>
+                    <option value='nearestOption' selected>nearestAnalyze</option>
+                </select>
+            </div>
+        </div>
+        <div class='input-group' id="nearestBody"></div>
+    </div>`;
+            handleMapEvent(me._div, me._map);
+            return me._div;
+        };
+        infoView.addTo(map);
+    }
+
+    //设置图标
+    var airportIcon = L.Icon.extend({
+        options: {
+            iconSize: [25, 25],
+            iconAnchor: [10, 10],
+            popupAnchor: [2, -10]
+        }
+    });
+    var pointIcon = L.Icon.extend({
+        options: {
+            iconSize: [35, 35],
+            iconAnchor: [5, 35],
+            popupAnchor: [2, -25]
+        }
+    });
+    var airportBlueIcon = new airportIcon({iconUrl: '../img/airportBlue.png'});
+    var airportRedIcon = new airportIcon({iconUrl: '../img/airportRed.png'});
+    var selectPointIcon = new pointIcon({iconUrl: '../img/position.png'});
+    var pointIcon = L.icon({
+        iconUrl: '../img/marker-gold.png',
+        iconSize: [25, 25],
+    });
+
+
+    var bounds = L.latLngBounds(L.latLng(90, 180), L.latLng(-90, -180));
+
+    function mapOnClickListener(e) {
+        if (!bounds.contains(e.latlng)) {
+            widgets.alert.showAlert("超出分析范围。", false);
+            return;
+        }
+
+        if (!classificationAnalyst.sourcePoints || classificationAnalyst.sourcePoints.features.length === 0) {
+            widgets.alert.showAlert("数据加载中，请耐心等待。", true);
+            return;
+        }
+        clearLayer();
+        classificationAnalyst.selectPointMarker = L.marker(e.latlng, {icon: selectPointIcon}).bindPopup("查询点").addTo(map);
+        classificationAnalyst.nearestAnalyze(classificationAnalyst.sourcePoints, e.latlng);
+    }
+
+    //添加鼠标滑动事件
+    var tooltip = L.tooltip({
+        direction: 'right'
+    });
+    var pointerMoveHandler = function (evt) {
+        var helpMsg = '点击地图，查找离点击位置最近的飞机场';
+        if (helpMsg) {
+            tooltip.setContent(helpMsg);
+            tooltip.setLatLng(evt.latlng);
+        }
+        tooltip.addTo(map);
+    };
+
+    map.on('mousemove', pointerMoveHandler);
+
+    //创建邻近分析对象：
+    var classificationAnalyst = {
+        sourcePoints: null,
+        line: null,
+        selectPointMarker: null,
+
+        loadAnalystLayer: function () {
+            var center = L.latLng(36, 106);
+            map.flyTo(center, 4);
+            //初始化turfLayer
+            turfLayer = L.supermap.turfLayer({
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {
+                            icon: airportRedIcon, zIndexOffset: 1000
+                        }
+                    );
+                }
+            }).addTo(map);
+
+            var airportsParam = new SuperMap.QueryBySQLParameters({
+                queryParams: {
+                    name: "Airport_pt@POI_Other",
+                }
+            });
+
+            //只发送一次请求
+            if (!nearestQueryResultLayer) {
+                L.supermap
+                    .queryService(nearestDataUrl)
+                    .queryBySQL(airportsParam, function (serviceResult) {
+                        classificationAnalyst.sourcePoints = serviceResult.result.recordsets[0].features;
+                        nearestQueryResultLayer = L.geoJSON(classificationAnalyst.sourcePoints, {
+                            pointToLayer: function (feature, latlng) {
+                                return L.marker(latlng, {icon: airportBlueIcon}).bindPopup(feature.properties.NAME);
+                            }
+                        }).addTo(map);
+
+                    });
+            } else {
+                nearestQueryResultLayer.addTo(map);
+            }
+
+            //点击地图进行最近飞机场分析
+            map.on('click', mapOnClickListener);
+        },
+
+        nearestAnalyze: function (sourcePoints, pointLnglat) {
+            turfLayer.process("Classification.nearest", {
+                "targetPoint": [pointLnglat.lng, pointLnglat.lat],
+                "points": sourcePoints
+            }, function (result) {
+                var latlng = L.latLng(result.geometry.coordinates[1], result.geometry.coordinates[0]);
+                turfLayer.bindPopup("离该点最近的机场为" + result.properties.NAME).openPopup(latlng);
+                classificationAnalyst.line = L.polyline([pointLnglat, latlng], {
+                    color: "red",
+                    dashArray: '5',
+                    weight: 1
+                }).addTo(map);
+                map.fire("viewreset");
+            });
+        },
+    };
+    classificationAnalyst.loadAnalystLayer();
+
+
+    function clearLayer() {
+        if (turfLayer) {
+            turfLayer.clearLayers();
+        }
+        if (classificationAnalyst.line) {
+            classificationAnalyst.line.removeFrom(map);
+        }
+        if (classificationAnalyst.selectPointMarker) {
+            classificationAnalyst.selectPointMarker.removeFrom(map);
+        }
+    }
+
+    //避免画图事件与地图事件冲突
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+            map.off('mousemove', pointerMoveHandler);
+            tooltip.removeFrom(map);
+        });
+        div.addEventListener('click', function () {
+            map.off('click', mapOnClickListener);
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+            map.on('click', mapOnClickListener);
+        });
+    }
+
+
+</script>
+</body>
+</html>

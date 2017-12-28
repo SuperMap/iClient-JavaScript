@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turf 插值分析</title>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        tinDataUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        turfLayer, tinQueryResultLayer,
+
+        map = L.map('map', {
+            crs: L.CRS.EPSG4326,
+            preferCanvas: true,
+            center: [36, 106],
+            maxZoom: 18,
+            mixZoom: 2,
+            zoom: 4
+        });
+    L.supermap.tiledMapLayer(mapUrl, {
+        noWrap: true,
+        prjCoordSys: {"epsgCode": "4326"},
+        minZoom: 3
+    }).addTo(map);
+
+    //创建dom
+    initEditView();
+
+    function initEditView() {
+        var infoView = L.control({position: 'topright'});
+        infoView.onAdd = function () {
+            var me = this;
+            me._div = L.DomUtil.create('div');
+            me._div.style.width = '420px';
+            me._div.innerHTML = `<div class='panel panel-primary editPane' id='editPane'>
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>插值分析</h5></div>
+    <div class='panel-body content' id='interpolationBody'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>插值分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <select class='form-control' id='interpolationAnalyzeType' name='interpolationAnalyzeType'>
+                    <option value='tinOption' selected>tin</option>
+                </select>
+            </div>
+        </div>
+        <div class='input-group' id="tinBody">
+            <input type='button' class='btn btn-primary' id='createTinBtn' value='创建Tin'/>&nbsp;
+            <input type='button' class='btn btn-primary' id='clearTinBtn' value='清除结果'/>&nbsp;
+        </div>
+    </div>`;
+            handleMapEvent(me._div, me._map);
+            return me._div;
+        };
+        infoView.addTo(map);
+    }
+
+    //绑定dom事件
+    bindEvent();
+
+    function bindEvent() {
+        $("#createTinBtn").click(function () {
+            //是否有需要删除的提示框
+            widgets.alert.clearAlert();
+            if (interpolationAnalyst.sourcePoints) {
+                interpolationAnalyst.creatTin();
+            } else {
+                widgets.alert.showAlert("分析数据加载中，请耐心等待。", true);
+                return;
+            }
+        });
+        $("#clearTinBtn").click(function () {
+            //是否有需要删除的提示框
+            widgets.alert.clearAlert();
+            clearLayer();
+        });
+    }
+
+    //创建插值分析对象
+    var interpolationAnalyst = {
+        sourcePoints: [],
+        turfLayerOptions: null,
+
+        loadAnalystLayer: function () {
+            var center = L.latLng(39.8, 116.8);
+            map.flyTo(center, 8);
+
+            //初始化turfLayer
+            interpolationAnalyst.turfLayerOptions = {
+                style: function (feature) {
+                    return {
+                        color: '#33CCFF',
+                        weight: 0.8,
+                        opacity: 0.5,
+                        fillColor: '#' + feature.properties.a + feature.properties.b + feature.properties.c,
+                        fillOpacity: 0.5
+                    }
+                }
+            };
+            turfLayer = L.supermap.turfLayer(interpolationAnalyst.turfLayerOptions).addTo(map);
+
+            var param = new SuperMap.QueryBySQLParameters({
+                queryParams: {
+                    name: "Town_P@Jingjin.2",
+                }
+            });
+
+            if (!tinQueryResultLayer) {
+                L.supermap
+                    .queryService(tinDataUrl)
+                    .queryBySQL(param, function (serviceResult) {
+                        interpolationAnalyst.sourcePoints = serviceResult.result.recordsets[0].features;
+                        tinQueryResultLayer = L.geoJSON(interpolationAnalyst.sourcePoints, {
+                            pointToLayer: function (feature, latlng) {
+                                feature.properties.z = ~~(Math.random() * 9);
+                                return L.circleMarker(latlng, {
+                                    opacity: 0,
+                                    fillColor: 'red',
+                                    radius: 6
+                                });
+                            }
+                        }).addTo(map);
+
+                        //map.remove()时，canvas渲染的场景下render会先移除canvas的ctx，而path的移除会有重绘操作。
+                        //从而引起刷新延迟会报错，故在此移除重绘
+                        tinQueryResultLayer.on('remove', tinQueryResultLayerRemoveListener);
+                    });
+            } else {
+                tinQueryResultLayer.addTo(map);
+            }
+        },
+
+        creatTin: function () {
+            if (turfLayer.getLayers().length > 0) {
+                widgets.alert.showAlert("图层已创建，请勿重复创建。", false);
+                return;
+            }
+            turfLayer.process("Interpolation.tin", {
+                "points": interpolationAnalyst.sourcePoints,
+                "z": 'z'
+            });
+        }
+
+    };
+    var requestAnimId;
+
+    function tinQueryResultLayerRemoveListener() {
+        requestAnimId = map.getRenderer(tinQueryResultLayer)._redrawRequest;
+        (requestAnimId != null) && L.Util.cancelAnimFrame(requestAnimId);
+    }
+
+    interpolationAnalyst.loadAnalystLayer();
+
+
+    function clearLayer() {
+        if (turfLayer) {
+            turfLayer.clearLayers();
+        }
+    }
+
+    //避免画图事件与地图事件冲突
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
+
+
+
+</script>
+</body>
+</html>

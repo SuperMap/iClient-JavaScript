@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turf 格网分析</title>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
+    <style>
+        .editPane {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 420px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+        }
+
+        .dragBoxCss {
+            border: 1px solid #33CCFF;
+        }
+
+        .tooltip {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            color: white;
+            padding: 4px 8px;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body style='margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;'>
+<div id='map' style='margin:0 auto;width: 100%;height: 100%'></div>
+<div id='info' class='ol-popup'>
+    <a href='#' id='popup-closer' class='ol-popup-closer'></a>
+    <div id='info-content'></div>
+</div>
+<div class='panel panel-primary editPane' id='editPane'>
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>创建格网</h5></div>
+    <div class='panel-body' id='gridsBody'>
+        <div class='input-group'>
+            <span class='input-group-addon'>格网分析类型<span title='必填字段' style='color: red;'> * </span></span>
+            <select class='form-control' id='gridAnalyzeType' name='gridAnalyzeType'>
+                <option value='hexGrid' selected>蜂巢格网</option>
+                <option value='pointGrid'>点格网</option>
+                <option value='squareGrid'>方形格网</option>
+                <option value='triangleGrid'>三角格网</option>
+            </select>
+        </div>
+        <p></p>
+        <div class='input-group'>
+            <span class='input-group-addon'>单元格网大小<span title='必填字段' style='color: red;'> * </span></span>
+            <input id='cellSize' type='text' class='form-control' value='50'/>
+        </div>
+        <p></p>
+        <div class='input-group'>
+            <span class='input-group-addon'>格网单元大小单位<span title='必填字段' style='color: red;'> * </span></span>
+            <select class='form-control' id='units' name='mode'>
+                <option value='degrees'>度</option>
+                <option value='radians'>弧度</option>
+                <option value='miles' selected>英里</option>
+                <option value='kilometers'>千米</option>
+            </select>
+        </div>
+        <p></p>
+        <div id='squareGridChoic' class='input-group' style='display: none'>
+            <span class='input-group-addon'>是否调整宽度和高度以适应bbox的尺寸</span>
+            <span class='form-control'>
+                <input id='completelyWithin' type='checkbox'>
+                </span>
+        </div>
+        <p></p>
+        <div id='pointGridChoic' class='input-group' style='display: none'>
+            <span class='input-group-addon'>调整点到格网中心位置</span>
+            <span class='form-control'>
+                <input id='iscentered' type='checkbox'>
+                </span><span class='input-group-addon'>创建范围为多边形</span>
+            <span class='form-control'><input id='isbboxIsMask' type='checkbox'>
+                </span>
+        </div>
+        <p></p>
+        <div id='hexGridChoic' class='input-group'>
+            <span class='input-group-addon'>是否以三角形的形式返回</span>
+            <span class='form-control'>
+                <input id='triangles' type='checkbox'>
+                </span>
+        </div>
+        <p></p>
+        <div align='right' class='input-group'>
+            <input type='button' id='createGridBtn' class='btn btn-primary' value='对当前绘制范围创建格网'/>&nbsp
+            <input type='button' id='clearGridBtn' class='btn btn-primary' value='清除'/>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        turfLayer, bbox,
+
+        map = new ol.Map({
+            target: 'map',
+            maxExtent: [-180.0, -85.05, 180.0, 85.05],
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [106, 36],
+                zoom: 5,
+                projection: 'EPSG:4326'
+            })
+        });
+
+    map.addLayer(new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: mapUrl,
+            prjCoordSys: {"epsgCode": 4326}
+        }),
+        projection: 'EPSG:4326'
+    }));
+
+    //添加turf 图层
+    var turfSource = new ol.source.Turf({
+            wrapX: false,
+            attributions: new ol.Attribution({
+                html: ""
+            }),
+        }),
+        gridAnalyzeType = 'hexGrid';
+
+    bindEvent();
+
+    function bindEvent() {
+
+        //格网分析事件绑定 --start
+        $("#gridAnalyzeType").change(function (e) {
+            bbox = null;
+            clearLayer();
+            //是否有需要删除的提示框
+            widgets.alert.clearAlert();
+            gridAnalyzeType = $("#gridAnalyzeType option:selected").val();
+            switch (gridAnalyzeType) {
+                case 'hexGrid':
+                    $("#squareGridChoic").hide();
+                    $("#pointGridChoic").hide();
+                    $("#hexGridChoic").show();
+                    return;
+                case 'pointGrid':
+                    $("#squareGridChoic").hide();
+                    $("#pointGridChoic").show();
+                    $("#hexGridChoic").hide();
+                    return;
+                case 'squareGrid':
+                    $("#squareGridChoic").show();
+                    $("#pointGridChoic").hide();
+                    $("#hexGridChoic").hide();
+                    return;
+                case 'triangleGrid':
+                    $("#squareGridChoic").hide();
+                    $("#pointGridChoic").hide();
+                    $("#hexGridChoic").hide();
+                    return;
+            }
+        });
+
+        $("#createGridBtn").click(function () {
+            //是否有需要删除的提示框
+            widgets.alert.clearAlert();
+            turfSource.clear();
+            if (bbox) {
+                switch (gridAnalyzeType) {
+                    case 'hexGrid':
+                        gridAnalyst.createHexGrid();
+                        return;
+                    case 'pointGrid':
+                        gridAnalyst.createPointGrid();
+                        return;
+                    case 'squareGrid':
+                        gridAnalyst.createSquareGrid();
+                        return;
+                    case 'triangleGrid':
+                        gridAnalyst.createTriangleGrid();
+                        return;
+                }
+            } else {
+                widgets.alert.showAlert("并按住ctrl + 鼠标左键，在地图上绘出需要分析范围。", true);
+            }
+        });
+
+        $("#clearGridBtn").click(function () {
+            //是否有需要删除的提示框
+            widgets.alert.clearAlert();
+            if (vector.getSource().getFeatures().length === 0 && turfSource.getFeatures().length == 0) {
+                widgets.alert.showAlert("没有数据可删除", false);
+                return;
+            }
+            bbox = null;
+            clearLayer();
+        });
+    }
+
+    //创建鼠标操作提示：
+    var helpTooltipElement, helpTooltip;
+
+    createHelpTooltip();
+
+    function createHelpTooltip() {
+        if (helpTooltipElement) {
+            helpTooltipElement.parentNode.removeChild(helpTooltipElement);
+        }
+        helpTooltipElement = document.createElement('div');
+        helpTooltipElement.className = 'tooltip hidden';
+        helpTooltip = new ol.Overlay({
+            element: helpTooltipElement,
+            offset: [15, 0],
+            positioning: 'center-left'
+        });
+        map.addOverlay(helpTooltip);
+    }
+
+    //鼠标移动监听事件
+    var pointerMoveHandler = function (evt) {
+        var helpMsg = '按住ctrl + 点击鼠标左键，绘制创建格网区域';
+
+        helpTooltipElement.innerHTML = helpMsg;
+        helpTooltip.setPosition(evt.coordinate);
+        helpTooltipElement.classList.remove('hidden');
+    };
+
+    //绑定鼠标移动事件
+    map.on('pointermove', pointerMoveHandler);
+    map.getViewport().addEventListener('mouseout', function () {
+        helpTooltipElement.classList.add('hidden');
+    });
+
+    //创建格网的绘图工具
+    var dragBox = new ol.interaction.DragBox({
+        className: 'dragBoxCss',
+        condition: ol.events.condition.platformModifierKeyOnly
+    });
+    var source = new ol.source.Vector({
+        wrapX: false,
+    });
+    var vector = new ol.layer.Vector({
+        source: source,
+        extent: [-180.0, -90, 180.0, 90]
+    });
+
+    //创建格网分析对象
+    var gridAnalyst = {
+        loadAnalystLayer: function () {
+            map.getView().animate({zoom: 5}, {center: [106, 36]});
+            turfLayer = new ol.layer.Vector({
+                source: turfSource,
+                extent: [-180.0, -90, 180.0, 90],
+                style: function (feature) {
+                    if (feature.getGeometry() instanceof ol.geom.Polygon) {
+                        feature.setStyle(new ol.style.Style({
+                            stroke: new ol.style.Stroke(({
+                                color: 'red',
+                                weight: 0.8,
+                            })),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 255, 255, 0.1)',
+                            })
+                        }));
+                    } else {
+                        feature.setStyle(new ol.style.Style({
+                            image: new ol.style.Icon(({
+                                crossOrigin: 'anonymous',
+                                src: '../img/marker-gold.png',
+                                scale: 0.5
+                            }))
+                        }));
+                    }
+                }
+            });
+            map.addLayer(vector);
+            map.addLayer(turfLayer);
+
+            map.addInteraction(dragBox);
+            dragBox.on('boxstart', function () {
+                //是否有需要删除的提示框
+                widgets.alert.clearAlert();
+                clearLayer();
+            });
+            dragBox.on('boxend', function () {
+                bbox = dragBox.getGeometry().getExtent();
+                var rectangleFeature = new ol.Feature({
+                    geometry: dragBox.getGeometry()
+                });
+                var rectanglesource = new ol.source.Vector({
+                    features: [rectangleFeature],
+                    wrapX: false
+                });
+                vector.setSource(rectanglesource);
+            });
+
+        },
+        //格网分析
+        createHexGrid: function () {
+            var cellDiameter = $("#cellSize").val();
+            var units = $("#units option:selected").val();
+            var triangles = $("#triangles").get(0).checked;
+
+            turfSource.process("Grids.hexGrid", {
+                "bbox": bbox,
+                "cellDiameter": cellDiameter,
+                "units": units,
+                "triangles": triangles
+            });
+        },
+
+        createPointGrid: function () {
+            var cellSide = $("#cellSize").val();
+            var units = $("#units option:selected").val();
+            var iscentered = $('#iscentered').get(0).checked;
+            var isbboxIsMask = $('#isbboxIsMask').get(0).checked;
+
+            turfSource.process("Grids.pointGrid", {
+                "bbox": bbox,
+                "cellSide": cellSide,
+                "units": units,
+                "centered": iscentered,
+                "bboxIsMask": isbboxIsMask
+            });
+        },
+
+        createSquareGrid: function () {
+            var cellSize = $("#cellSize").val();
+            var units = $("#units option:selected").val();
+            var completelyWithin = $("#completelyWithin").get(0).checked;
+
+            turfSource.process("Grids.squareGrid", {
+                "bbox": bbox,
+                "cellSize": cellSize,
+                "units": units,
+                "completelyWithin": completelyWithin
+            });
+        },
+
+        createTriangleGrid: function () {
+            var cellSize = $("#cellSize").val();
+            var units = $("#units option:selected").val();
+            turfSource.process("Grids.triangleGrid", {
+                "bbox": bbox,
+                "cellSize": cellSize,
+                "units": units
+            });
+        },
+
+    };
+    gridAnalyst.loadAnalystLayer();
+
+    function clearLayer() {
+        if (turfSource.getFeatures().length > 0) {
+            turfSource.clear();
+        }
+        vector.getSource().clear();
+    }
+</script>
+</html>

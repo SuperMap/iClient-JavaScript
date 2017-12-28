@@ -576,7 +576,7 @@ var exampleConfig = {
         name_en: "control",
         content: {
             "BasicControl": {
-                name: "MapboxGL 基本控件",
+                name: "基础控件",
                 name_en: "Basic Control",
                 content: [{
                     name: "导航控件",

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turf 插值分析</title>
+    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <script type="text/javascript" include="turf" src="../../dist/include-openlayers.js"></script>
+    <style>
+        .editPane {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 420px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+        }
+
+        .dragBoxCss {
+            border: 1px solid #33CCFF;
+        }
+
+        .tooltip {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            color: white;
+            padding: 4px 8px;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body style='margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;'>
+<div id='map' style='margin:0 auto;width: 100%;height: 100%'></div>
+<div id='info' class='ol-popup'>
+    <a href='#' id='popup-closer' class='ol-popup-closer'></a>
+    <div id='info-content'></div>
+</div>
+<div class='panel panel-primary editPane' id='editPane'>
+    <div class='panel-heading'>
+        <h5 class='panel-title text-center'>插值分析</h5></div>
+    <div class='panel-body content' id='interpolationBody'>
+        <div class='panel'>
+            <div class='input-group'>
+                <span class='input-group-addon'>插值分析类型<span title='必填字段' style='color: red;'> * </span></span>
+                <select class='form-control' id='interpolationAnalyzeType' name='interpolationAnalyzeType'>
+                    <option value='tinOption' selected>tin</option>
+                </select>
+            </div>
+        </div>
+        <div class='input-group' id="tinBody">
+            <input type='button' class='btn btn-primary' id='createTinBtn' value='创建Tin'/>&nbsp;
+            <input type='button' class='btn btn-primary' id='clearTinBtn' value='清除结果'/>&nbsp;
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
+        tinDataUrl = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        mapUrl = host + "/iserver/services/map-china400/rest/maps/ChinaDark",
+        turfLayer,
+        tinQueryResultLayer,
+
+        map = new ol.Map({
+            target: 'map',
+            maxExtent: [-180.0, -85.05, 180.0, 85.05],
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [106, 36],
+                zoom: 5,
+                projection: 'EPSG:4326'
+            })
+        });
+
+    map.addLayer(new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: mapUrl,
+            prjCoordSys: {"epsgCode": 4326}
+        }),
+        projection: 'EPSG:4326'
+    }));
+
+    //添加turf 图层
+    var turfSource = new ol.source.Turf({
+        wrapX: false,
+        attributions: new ol.Attribution({
+            html: ""
+        }),
+    });
+
+    bindEvent();
+
+    function bindEvent() {
+        $("#createTinBtn").click(function () {
+            //是否有需要删除的提示框
+            widgets.alert.clearAlert();
+            if (interpolationAnalyst.resultFeatures) {
+                interpolationAnalyst.createTin();
+            } else {
+                widgets.alert.showAlert("分析数据加载中，请耐心等待。", true);
+                return;
+            }
+        });
+        $("#clearTinBtn").click(function () {
+            //是否有需要删除的提示框
+            widgets.alert.clearAlert();
+            clearLayer();
+        });
+    }
+
+    //创建插值分析对象
+    var interpolationAnalyst = {
+        resultFeatures: null,
+
+        loadAnalystLayer: function () {
+            map.getView().animate({zoom: 9}, {center: [116.8, 39.8]});
+            turfLayer = new ol.layer.Vector({
+                source: turfSource,
+                opacity: 0.5,
+                style: function (feature) {
+                    feature.setStyle(new ol.style.Style({
+                        stroke: new ol.style.Stroke(({
+                            color: 'rgba(51,204,255,0.8)',
+                            weight: 0.1,
+                        })),
+                        fill: new ol.style.Fill({
+                            color: '#' + feature.getProperties().a + feature.getProperties().b + feature.getProperties().c,
+                        })
+                    }));
+                }
+            });
+
+            var param = new SuperMap.QueryBySQLParameters({
+                queryParams: {
+                    name: "Town_P@Jingjin.2",
+                }
+            });
+
+            //只请求一次数据：
+            if (!tinQueryResultLayer) {
+                new ol.supermap.QueryService(tinDataUrl).queryBySQL(param, function (serviceResult) {
+                    interpolationAnalyst.resultFeatures = serviceResult.result.recordsets[0].features;
+                    for (var i = 0; i < interpolationAnalyst.resultFeatures.features.length; i++) {
+                        interpolationAnalyst.resultFeatures.features[i].properties.z = ~~(Math.random() * 9);
+                    }
+
+                    var features = (new ol.format.GeoJSON()).readFeatures(interpolationAnalyst.resultFeatures);
+
+                    var vectorSource = new ol.source.Vector({
+                        features: features,
+                        wrapX: false
+                    });
+                    tinQueryResultLayer = new ol.layer.Vector({
+                        source: vectorSource,
+                        style: new ol.style.Style({
+                            image: new ol.style.Circle({
+                                radius: 6,
+                                fill: new ol.style.Fill({color: 'rgba(255, 0, 0, 0.2)'}),
+                            })
+                        })
+                    });
+                    map.addLayer(tinQueryResultLayer);
+                    map.addLayer(turfLayer);
+                });
+            } else {
+                map.addLayer(tinQueryResultLayer);
+                map.addLayer(turfLayer);
+            }
+        },
+
+        createTin: function () {
+            if (turfSource.getFeatures().length > 0) {
+                widgets.alert.showAlert("图层已创建，请勿重复创建。", false);
+                return;
+            }
+            turfSource.process("Interpolation.tin", {
+                "points": interpolationAnalyst.resultFeatures,
+                "z": 'z'
+            });
+        },
+
+    };
+    //页面默认首先加载“创建不规则三角网”：
+    interpolationAnalyst.loadAnalystLayer();
+
+    function clearLayer() {
+
+        if (turfSource.getFeatures().length > 0) {
+            turfSource.clear();
+        }
+    }
+</script>
+</html>

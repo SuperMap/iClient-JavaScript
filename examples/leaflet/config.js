@@ -816,10 +816,20 @@ var exampleConfig = {
             "Turf": {
                 name: "Turf",
                 content: [{
-                    name: "插值、格网、分级",
-                    name_en: "interpolation, grid, classification",
-                    thumbnail: "l_turf_analysis.png",
-                    fileName: "turf_analysis"
+                    name: "插值分析",
+                    name_en: "interpolation analysis",
+                    thumbnail: "l_interpolationAnalysis.png",
+                    fileName: "turf_interpolationAnalysis"
+                }, {
+                    name: "分类分析",
+                    name_en: "classification analysis",
+                    thumbnail: "l_classificationAnalysis.png",
+                    fileName: "turf_classificationAnalysis"
+                }, {
+                    name: "格网分析",
+                    name_en: "grid analysis",
+                    thumbnail: "l_gridAnalysis.png",
+                    fileName: "turf_gridAnalysis"
                 }, {
                     name: "测量计算",
                     name_en: "measurement",
