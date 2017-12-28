@@ -173,7 +173,7 @@ function createSideBarMenuThirdTitle(id, title, collapse) {
     }
 
     var div = $(
-        "<a href='#' id='" + id + "'>" + icon +
+        "<a href='#" + id + "' id='" + id + "'>" + icon +
         "<span class='thirdMenuTitle'>" + title + "</span>" +
         "</a>");
     if (collapse) {

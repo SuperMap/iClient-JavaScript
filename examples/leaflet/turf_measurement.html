@@ -9,7 +9,6 @@
 <script type="text/javascript" include="turf,leaflet.draw" src="../../dist/include-leaflet.js"></script>
 <script type="text/javascript" include="bootstrap,bootstrap-select,widgets.alert" src="../js/include-web.js"></script>
 <script type="text/javascript">
-    var unit;
     var host = window.isLocal ? document.location.protocol + "//" + document.location.host : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         turfLayer, resultLayer, urlWorld,
@@ -34,6 +33,8 @@
 
     bindEvents();
 
+    $('#menuSelect').change();
+
     function initEditView() {
         var infoView = L.control({position: 'topright'});
         infoView.onAdd = function () {
@@ -44,10 +45,9 @@
     <div class='panel-heading'>
         <h5 class='panel-title text-center'>京深路卧龙岗隧道路段</h5>
     </div>
-    <div class='panel panel-body chooseItems'>
+    <div class='panel panel-body chooseItems' style="margin-bottom:0px;padding-bottom: 0px">
                 <select class='form-control' id='menuSelect' >
-                <option value= null selected='selected'>请选择方法</option>
-                <option value='along'>along</option>
+                <option value='along' selected='selected'>along</option>
                 <option value='area'>area</option>
                 <option value='bbox'>bbox</option>
                 <option value='center'>center</option>
@@ -60,13 +60,13 @@
                 <option value='buffer'>buffer</option>
                 <option value='circle'>circle</option>
                 </select>
-                </div>
-                <div class='panel-body' id='params'>
+    </div>
+    <hr/>
+                <div class='panel-body' id='params' style="padding-top: 0px">
                 <div class='input-group'>
-                <span class='input-group-addon'>请选择距离的单位</span>
+                <span class='input-group-addon'>距离单位</span>
                 <select class='form-control' id='unitSelect' name='unitSelect'>
-                <option value= null >请选择</option>
-                <option value='kilometers'>kilometers</option>
+                <option value='kilometers' selected = "selected">kilometers</option>
                 <option value='miles'>miles</option>
                 <option value='degrees'>degrees</option>
                 <option value='radians'>radians</option>
@@ -74,12 +74,12 @@
                 </div>
                 <p></p>
                 <div class='input-group'>
-                <span class='input-group-addon'>请输入距起点距离</span>
-                <input id='distance' type='text' class='form-control' placeholder="距离"  />
+                <span class='input-group-addon'>距起点距离</span>
+                <input id='distance' type='text' class='form-control' placeholder="距离"  val="0.5"/>
                 </div>
                 <p></p>
                 <div class='input-group'>
-                <span class='input-group-addon'>请输入方位</span>
+                <span class='input-group-addon'>方位</span>
                 <input id='bearing' type='text' class='form-control' placeholder="-180度到180度之间"/>
                 </div>
                 <p></p>
@@ -99,10 +99,10 @@
 
     //初始化事件
     function bindEvents() {
-        //获取单位
-        $('#unitSelect').change(function () {
-            unit = $('#unitSelect').children('option:selected').val();
-        });
+//        //获取单位
+//        $('#unitSelect').change(function () {
+//            unit = $('#unitSelect').children('option:selected').val();
+//        });
         //控件栏取消地图事件
         $("#editPane").mouseover(function (e) {
             map.dragging.disable();
@@ -123,12 +123,7 @@
             url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图";
             baseLayer = L.supermap.tiledMapLayer(url, {prjCoordSys: {"epsgCode": 4326}}).addTo(map);
             //第一个隐藏右侧菜单
-            if ($("#menuSelect").get(0).selectedIndex === 0) {
-                setDefaultCenter(39.91, 116.383572, 11);
-                hidePanel();
-                clearControl();
 
-            } else {
                 choose = $('#menuSelect').children('option:selected').val();
                 reset();
 
@@ -143,11 +138,12 @@
                     $('.input-group:eq(1)').show();
                     $('.input-group:eq(2)').hide();
                     $('.input-group:eq(3)').show();
-                    $('.input-group:eq(1)>span').text('请输入距起点距离');
-                    $('.input-group:eq(1)>input').attr('placeholder', '全长1.175千米约合0.73英里');
+                    $('.input-group:eq(1)>span').text('距起点距离');
+                    $('.input-group:eq(1)>input').val("0.5");
 
                     $('.input-group:eq(1)>input').focusout(function () {
                         val = $('.input-group:eq(1)>input').val();
+                        var unit = $('#unitSelect').children('option:selected').val();
                         if ((unit === 'kilometers' && val > 1.1753172567467551) || (unit === 'miles' && val > 0.7303085417726581) || (unit === 'degrees' && val > 0.010566564943528475) || (unit === 'radians' && val > 0.00018442134893248942)) {
                             widgets.alert.showAlert('超出全程距离范围,请重新填写', false, 260);
                             $('.input-group:eq(1)>input').val('');
@@ -160,7 +156,7 @@
                     $('#calc').val('点击生成对应的点');
                 }
                 else if (choose === 'area') {
-                    widgets.alert.showAlert('选择左侧控件,按下鼠标左键,画出自定义图层,再点右侧按钮进行面积计算', true, 260);
+                    widgets.alert.showAlert('使用左侧绘图控件绘制面,点击右侧按钮进行计算', true, 500);
                     $('.panel-heading>h5').text('面积测量');
                     clearControl();
                     setDefaultCenter(39.90455699411283, 116.407283, 11);
@@ -191,9 +187,9 @@
                     $('.input-group:eq(1)').show();
                     $('.input-group:eq(2)').show();
                     $('.input-group:eq(3)').show();
-                    $('.input-group:eq(1)>span').text('请输入距起点距离');
-                    $('.input-group:eq(1)>input').unbind('focusout').attr('placeholder', '请输入距起点距离');
-                    $('.input-group:eq(2)>span').text('请输入方位');
+                    $('.input-group:eq(1)>span').text('距起点距离');
+                    $('.input-group:eq(1)>input').unbind('focusout').val("0.5");
+                    $('.input-group:eq(2)>span').text('方位');
                     $('.input-group:eq(2)>input').attr('placeholder', '请输入[-180,180]范围内的值');
                     setDestinationIcon();
                     clearControl();
@@ -234,7 +230,7 @@
                     $('#calc').val('计算大圆航线');
                 }
                 else if (choose === 'square') {
-                    widgets.alert.showAlert('选择左侧控件,按下鼠标左键,画出自定义矩形，再点右侧按钮计算最小外切正方形', true, 260);
+                    widgets.alert.showAlert('使用左侧绘制控件绘制矩形，点击右侧按钮计算最小外切正方形', true, 500);
                     $('.panel-heading>h5').text('最小外切正方形');
                     setDefaultCenter(39.70914100034369, 116.11697300062501, 14);
                     clearControl();
@@ -272,7 +268,7 @@
                 }
                 else if (choose === 'buffer') {
                     $('.panel-heading>h5').text('buffer缓冲区');
-                    widgets.alert.showAlert('请先点击左侧控件标记一个点', true);
+                    widgets.alert.showAlert('使用左侧控件标记一个点', true);
                     clearControl();
                     setDefaultCenter(40, 116.83, 9);
                     drawController(false, false, false, false, false, false, true);
@@ -282,10 +278,10 @@
                     $('.input-group:eq(1)').show();//步长
                     $('.input-group:eq(2)').show();//半径
                     $('.input-group:eq(3)').show();
-                    $('.input-group:eq(1)>span').text('请输入步长');//步长
-                    $('.input-group:eq(1)>input').unbind('focusout').attr('placeholder', '步长');
-                    $('.input-group:eq(2)>span').text('请输入半径');//半径
-                    $('.input-group:eq(2)>input').attr('placeholder', '半径');
+                    $('.input-group:eq(1)>span').text('步长');//步长
+                    $('.input-group:eq(1)>input').unbind('focusout').val("1");
+                    $('.input-group:eq(2)>span').text('半径');//半径
+                    $('.input-group:eq(2)>input').val("10");
                     $('#calc').val('生成标记点缓冲区');
                 }
                 else if (choose === 'circle') {
@@ -302,17 +298,16 @@
                     $('.input-group:eq(1)').show();//步长
                     $('.input-group:eq(2)').show();//半径
                     $('.input-group:eq(3)').show();
-                    $('.input-group:eq(1)>span').text('请输入步长');//步长
-                    $('.input-group:eq(1)>input').unbind('focusout').attr('placeholder', '步长');
-                    $('.input-group:eq(2)>span').text('请输入半径');//半径
-                    $('.input-group:eq(2)>input').attr('placeholder', '半径');
+                    $('.input-group:eq(1)>span').text('步长');//步长
+                    $('.input-group:eq(1)>input').unbind('focusout').val("10");
+                    $('.input-group:eq(2)>span').text('半径');//半径
+                    $('.input-group:eq(2)>input').val("10");
                     $('#calc').val('生成圆多边形');
                 }
                 else {
                     widgets.alert.showAlert('方法不存在', false);
                 }
                 showPanel();
-            }
         });
 
 
@@ -538,7 +533,7 @@
     function reset() {
         $('.chooseItems').show();
         hidePanel();
-        $('.panel-heading>h5').text('turf测量');
+        $('.panel-heading>h5').text('测量');
         $('#unitSelect option:first').prop("selected", 'selected');
         $('#distance').val('');
         $('#bearing').val('');
@@ -625,6 +620,7 @@
 
     //turf along方法
     function along() {
+        var unit = $('#unitSelect').children('option:selected').val();
         if (unit != 'null' && unit != undefined) {
             if (checkIsNum(distance) && coordinate) {
                 turfLayer.process("Helper.lineString", {
@@ -682,6 +678,7 @@
 
     //turf destination方法
     function destination() {
+        var unit = $('#unitSelect').children('option:selected').val();
         if (unit != 'null' && unit != undefined) {
             widgets.alert.clearAlert();
             if (checkIsNum(distance) && isInRange(bearing)) {
@@ -714,6 +711,7 @@
             "角度": "degrees",
             "弧度": "radians",
         };
+        var unit = $('#unitSelect').children('option:selected').val();
         if (unit != 'null' && unit != undefined) {
             resultLayer.process("Measurement.distance", {
                 "from": turfLayer.toGeoJSON().features[0].geometry.coordinates[0],
@@ -814,6 +812,7 @@
     //turf buffer
     //先draw一个点 再在此点上进行缓冲区分析,默认单位killo
     function buffer() {
+        var unit = $('#unitSelect').children('option:selected').val();
         if (unit != 'null') {
             widgets.alert.clearAlert();
             greatThanZero(steps);
@@ -842,6 +841,7 @@
     //先draw一个点 再在此点上画圆多边形
     //有默认单位kilometer
     function circle() {
+        var unit = $('#unitSelect').children('option:selected').val();
         widgets.alert.clearAlert();
         greatThanZero(steps);
         if (coordinate && checkIsNum(distance) && checkIsNum(radius) && steps > 0) {

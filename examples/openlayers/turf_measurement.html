@@ -23,10 +23,9 @@
     <div class='panel-heading'>
         <h5 class='panel-title text-center'>京深路卧龙岗隧道路段</h5>
     </div>
-    <div class='panel panel-body chooseItems'>
+    <div class='panel panel-body chooseItems' style="margin-bottom:0px;padding-bottom: 0px">
         <select class='form-control' id='menuSelect'>
-            <option value='null' selected='selected'>请选择方法</option>
-            <option value='along'>along</option>
+            <option value='along' selected='selected'>along</option>
             <option value='area'>area</option>
             <option value='bbox'>bbox</option>
             <option value='center'>center</option>
@@ -40,8 +39,8 @@
             <option value='circle'>circle</option>
         </select>
     </div>
-
-    <div class='panel-body' id='params'>
+<hr/>
+    <div class='panel-body' id='params' style="padding-top: 0px">
 
         <div class='input-group' id="drawMethods">
             <div class="btn-group" role="group" aria-label="..." id="draw">
@@ -53,10 +52,9 @@
         </div>
         <p>
         <div class='input-group'>
-            <span class='input-group-addon'>请选择距离的单位</span>
+            <span class='input-group-addon'>距离的单位</span>
             <select class='form-control' id='unitSelect'>
-                <option value='null'>请选择</option>
-                <option value='kilometers'>kilometers</option>
+                <option value='kilometers' selected='selected'>kilometers</option>
                 <option value='miles'>miles</option>
                 <option value='degrees'>degrees</option>
                 <option value='radians'>radians</option>
@@ -64,12 +62,12 @@
         </div>
         <p></p>
         <div class='input-group'>
-            <span class='input-group-addon'>请输入距起点距离</span>
+            <span class='input-group-addon'>距起点距离</span>
             <input id='distance' type='text' class='form-control' placeholder="距离"/>
         </div>
         <p></p>
         <div class='input-group'>
-            <span class='input-group-addon'>请输入方位</span>
+            <span class='input-group-addon'>方位</span>
             <input id='bearing' type='text' class='form-control' placeholder="-180度到180度之间"/>
         </div>
         <p></p>
@@ -80,7 +78,6 @@
 </div>
 </body>
 <script>
-    var unit;
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
         urlWorld = host + "/iserver/services/map-world/rest/maps/World",
@@ -182,194 +179,190 @@
             clearSource();
             resetSelect();
 
-            //第一个隐藏右侧菜单
-            if ($("#menuSelect").get(0).selectedIndex === 0) {
-                hidePanel();
-            } else {
-                choose = $('#menuSelect').children('option:selected').val();
-                //对应菜单显示
-                if (choose === 'along') {
-                    widgets.alert.clearAlert();
-                    rodeCoordinate();
-                    drawALine();
-                    setAlongIcon();
-                    $('.panel-heading>h5').text('京深路卧龙岗隧道路段');
-                    map.getView().animate({zoom: 15}, {duration: 500, center: [116.12499999899998, 39.70771500024742]});
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').show();
-                    $('.input-group:eq(2)').show();
-                    $('.input-group:eq(2)>span').text('请输入距起点距离');
-                    $('.input-group:eq(2)>input').attr('placeholder', '全长1174.8米约合0.729英里');
-                    $('.input-group:eq(3)').hide();
-                    $('.input-group:eq(4)').show();
-                    $('#calc').val('点击生成对应的点');
-                }
-                else if (choose === 'area') {
-                    widgets.alert.clearAlert();
-                    widgets.alert.showAlert('请先选择绘面,画出自定义图层,再点右侧按钮进行面积计算', true);
-                    drawing();
-                    $('#drawPoint').hide();
-                    $('.panel-heading>h5').text('面积测量');
-                    map.getView().animate({zoom: 11}, {duration: 500, center: [116.407283, 39.90455699411283]});
-                    $('.input-group:eq(0)').show();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').hide();
-                    $('.input-group:eq(4)').show();
-                    $('#calc').val('点击计算当前图层面积');
-
-                } else if (choose === 'bbox') {
-                    widgets.alert.clearAlert();
-                    rodeCoordinate();
-                    drawALine();
-                    $('.panel-heading>h5').text('京深路卧龙岗隧道路段的bounds');
-                    map.getView().animate({zoom: 16}, {duration: 500, center: [116.12499999899998, 39.70171500024742]});
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').hide();
-                    $('.input-group:eq(4)').show();
-                    $('#calc').val('点击生成bounds');
-                }
-                else if (choose === 'destination') {
-                    //北京
-                    widgets.alert.clearAlert();
-                    setDestinationIcon();
-                    $('.panel-heading>h5').text('从北京计算出到目标点的位置');
-                    map.getView().animate({zoom: 10}, {duration: 500, center: [116.407283, 39.90455699411283]});
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').show();
-                    $('.input-group:eq(2)').show();
-                    $('.input-group:eq(3)').show();
-                    $('.input-group:eq(4)').show();
-                    $('.input-group:eq(2)>span').text('请输入距起点距离');
-                    $('.input-group:eq(2)>input').attr('placeholder', '请输入距起点距离');
-                    $('.input-group:eq(3)>span').text('请输入方位');
-                    $('.input-group:eq(3)>input').attr('placeholder', '请输入[-180,180]范围内的值');
-                    $('#calc').val('点击显示目标点');
-
-                }
-                else if (choose === 'center') {
-                    widgets.alert.clearAlert();
-                    setCenterIcon();
-                    $('.panel-heading>h5').text('北京周边景区中心');
-                    map.getView().animate({zoom: 12}, {duration: 500, center: [116.38035099999959, 39.93393099410061]});
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').hide();
-                    $('.input-group:eq(4)').show();
-                    $('#calc').val('获取景区中心');
-                }
-                else if (choose === 'distance') {
-                    widgets.alert.clearAlert();
-                    setDistanceIcon();
-                    $('.panel-heading>h5').text('京津两点之间的距离');
-                    map.getView().animate({zoom: 8}, {duration: 500, center: [116.12499999899998, 39.70771500024742]});
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').show();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').hide();
-                    $('.input-group:eq(4)').show();
-                    $('#calc').val('计算两点间的距离');
-                }
-                else if (choose === 'midpoint') {
-                    widgets.alert.clearAlert();
-                    setMidpointIcon();
-                    $('.panel-heading>h5').text('获取京津之间的中点');
-                    map.getView().animate({zoom: 8}, {duration: 500, center: [116.12499999899998, 39.70771500024742]});
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').hide();
-                    $('.input-group:eq(4)').show();
-                    $('#calc').val('获取京津之间的中点');
-                }
-                else if (choose === 'greatCircle') {
-                    widgets.alert.clearAlert();
-                    isUseWorldMap(1);
-                    setGreatCircleIcon();
-                    map.getView().animate({zoom: 4}, {duration: 500, center: [90.407283, 40.90455699411283]});
-                    $('.panel-heading>h5').text('北京到布拉格的大圆航线');
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();
-                    $('.input-group:eq(2)').hide();
-                    $('.input-group:eq(3)').hide();
-                    $('.input-group:eq(4)').show();
-                    $('#calc').val('计算大圆航线');
-                }
-                else if (choose === 'buffer') {
-                    widgets.alert.clearAlert();
-                    drawing();
-                    $('#drawPolygon').hide();
-                    $('#drawPoint').show();
-                    widgets.alert.showAlert('请先标记一个点',true);
-                    map.getView().animate({zoom: 12}, {duration: 500, center: [116.407283, 39.90455699411283]});
-                    $('.panel-heading>h5').text('buffer缓冲区');
-                    $('.input-group:eq(0)').show();
-                    $('.input-group:eq(1)').show();//单位
-                    $('.input-group:eq(2)').show();//步长
-                    $('.input-group:eq(3)').show(); //半径
-                    $('.input-group:eq(4)').show();
-                    $('.input-group:eq(3)>span').text('请输入半径');//半径
-                    $('.input-group:eq(3)>input').attr('placeholder', '半径');
-                    $('.input-group:eq(2)>span').text('请输入步长');//步长
-                    $('.input-group:eq(2)>input').attr('placeholder', '步长');
-                    $('#calc').val('生成标记点缓冲区');
-                }
-                else if (choose === 'circle') {
-                    widgets.alert.clearAlert();
-                    drawing();
-                    $('#drawPolygon').hide();
-                    $('#drawPoint').show();
-                    widgets.alert.showAlert('请先标记一个点',true);
-                    map.getView().animate({zoom: 12}, {duration: 500, center: [116.407283, 39.90455699411283]});
-                    $('.panel-heading>h5').text('圆多边形');
-                    $('.input-group:eq(0)').show();
-                    $('.input-group:eq(1)').show();//单位
-                    $('.input-group:eq(2)').show();//步长
-                    $('.input-group:eq(3)').show(); //半径
-                    $('.input-group:eq(4)').show();
-                    $('.input-group:eq(3)>span').text('请输入半径');//半径
-                    $('.input-group:eq(3)>input').attr('placeholder', '半径');
-                    $('.input-group:eq(2)>span').text('请输入步长');//步长
-                    $('.input-group:eq(2)>input').attr('placeholder', '步长');
-                    $('#calc').val('生成圆多边形');
-
-                }
-                else if (choose === 'bezier') {
-                    widgets.alert.clearAlert();
-                    $('.panel-heading>h5').text('白河的贝塞尔曲线');
-                    map.getView().animate({zoom: 12}, {
-                        duration: 500,
-                        center: [116.55439124389999, 40.676116230453765]
-                    });
-                    $('.input-group:eq(0)').hide();
-                    $('.input-group:eq(1)').hide();//单位
-                    $('.input-group:eq(2)').hide();//步长
-                    $('.input-group:eq(3)').hide(); //半径
-                    $('.input-group:eq(4)').show();
-                    whiteRiver();
-                    setBezierLine();
-                    $('#calc').val('生成bezier曲线');
-                }
-                else if (choose === 'square') {
-                    widgets.alert.clearAlert();
-                    setSquarePolygon();
-                    $('.panel-heading>h5').text('最小外切正方形');
-                    map.getView().animate({zoom: 12}, {duration: 500, center: [116.18865966796875, 39.88904724121094]});
-                    $('.input-group:eq(0)').hide();//draw控件
-                    $('.input-group:eq(1)').hide();//单位
-                    $('.input-group:eq(2)').hide();//距离
-                    $('.input-group:eq(3)').hide(); //步长
-                    $('.input-group:eq(4)').show();
-                    $('#calc').val('生成最小外切正方形');
-                }
-                else {
-                    widgets.alert.clearAlert('方法不存在', false);
-                }
-                showPanel();
+            choose = $('#menuSelect').children('option:selected').val();
+            //对应菜单显示
+            if (choose === 'along') {
+                widgets.alert.clearAlert();
+                rodeCoordinate();
+                drawALine();
+                setAlongIcon();
+                $('.panel-heading>h5').text('京深路卧龙岗隧道路段');
+                map.getView().animate({zoom: 15}, {duration: 500, center: [116.12499999899998, 39.70771500024742]});
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').show();
+                $('.input-group:eq(2)').show();
+                $('.input-group:eq(2)>span').text('距起点距离');
+                $('.input-group:eq(2)>input').attr('placeholder', '全长1174.8米约合0.729英里').val("0.5");
+                $('.input-group:eq(3)').hide();
+                $('.input-group:eq(4)').show();
+                $('#calc').val('点击生成对应的点');
             }
+            else if (choose === 'area') {
+                widgets.alert.clearAlert();
+                widgets.alert.showAlert('请先绘制面,再点击按钮进行面积计算', true);
+                drawing();
+                $('#drawPoint').hide();
+                $('#drawPolygon').show();
+                $('.panel-heading>h5').text('面积测量');
+                map.getView().animate({zoom: 11}, {duration: 500, center: [116.407283, 39.90455699411283]});
+                $('.input-group:eq(0)').show();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').hide();
+                $('.input-group:eq(4)').show();
+                $('#calc').val('点击计算当前图层面积');
+
+            } else if (choose === 'bbox') {
+                widgets.alert.clearAlert();
+                rodeCoordinate();
+                drawALine();
+                $('.panel-heading>h5').text('京深路卧龙岗隧道路段的bounds');
+                map.getView().animate({zoom: 16}, {duration: 500, center: [116.12499999899998, 39.70171500024742]});
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').hide();
+                $('.input-group:eq(4)').show();
+                $('#calc').val('点击生成bounds');
+            }
+            else if (choose === 'destination') {
+                //北京
+                widgets.alert.clearAlert();
+                setDestinationIcon();
+                $('.panel-heading>h5').text('从北京计算出到目标点的位置');
+                map.getView().animate({zoom: 10}, {duration: 500, center: [116.407283, 39.90455699411283]});
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').show();
+                $('.input-group:eq(2)').show();
+                $('.input-group:eq(3)').show();
+                $('.input-group:eq(4)').show();
+                $('.input-group:eq(2)>span').text('距起点距离');
+                $('.input-group:eq(2)>input').attr('placeholder', '距起点距离').val("0.5");
+                $('.input-group:eq(3)>span').text('方位');
+                $('.input-group:eq(3)>input').attr('placeholder', '[-180,180]范围内的值');
+                $('#calc').val('点击显示目标点');
+
+            }
+            else if (choose === 'center') {
+                widgets.alert.clearAlert();
+                setCenterIcon();
+                $('.panel-heading>h5').text('北京周边景区中心');
+                map.getView().animate({zoom: 12}, {duration: 500, center: [116.38035099999959, 39.93393099410061]});
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').hide();
+                $('.input-group:eq(4)').show();
+                $('#calc').val('获取景区中心');
+            }
+            else if (choose === 'distance') {
+                widgets.alert.clearAlert();
+                setDistanceIcon();
+                $('.panel-heading>h5').text('京津两点之间的距离');
+                map.getView().animate({zoom: 8}, {duration: 500, center: [116.12499999899998, 39.70771500024742]});
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').show();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').hide();
+                $('.input-group:eq(4)').show();
+                $('#calc').val('计算两点间的距离');
+            }
+            else if (choose === 'midpoint') {
+                widgets.alert.clearAlert();
+                setMidpointIcon();
+                $('.panel-heading>h5').text('获取京津之间的中点');
+                map.getView().animate({zoom: 8}, {duration: 500, center: [116.12499999899998, 39.70771500024742]});
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').hide();
+                $('.input-group:eq(4)').show();
+                $('#calc').val('获取京津之间的中点');
+            }
+            else if (choose === 'greatCircle') {
+                widgets.alert.clearAlert();
+                isUseWorldMap(1);
+                setGreatCircleIcon();
+                map.getView().animate({zoom: 4}, {duration: 500, center: [90.407283, 40.90455699411283]});
+                $('.panel-heading>h5').text('北京到布拉格的大圆航线');
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();
+                $('.input-group:eq(2)').hide();
+                $('.input-group:eq(3)').hide();
+                $('.input-group:eq(4)').show();
+                $('#calc').val('计算大圆航线');
+            }
+            else if (choose === 'buffer') {
+                widgets.alert.clearAlert();
+                drawing();
+                $('#drawPolygon').hide();
+                $('#drawPoint').show();
+                widgets.alert.showAlert('请先标记一个点', true);
+                map.getView().animate({zoom: 12}, {duration: 500, center: [116.407283, 39.90455699411283]});
+                $('.panel-heading>h5').text('buffer缓冲区');
+                $('.input-group:eq(0)').show();
+                $('.input-group:eq(1)').show();//单位
+                $('.input-group:eq(2)').show();//步长
+                $('.input-group:eq(3)').show(); //半径
+                $('.input-group:eq(4)').show();
+                $('.input-group:eq(3)>span').text('半径');//半径
+                $('.input-group:eq(3)>input').attr('placeholder', '半径').val("10");
+                $('.input-group:eq(2)>span').text('步长');//步长
+                $('.input-group:eq(2)>input').attr('placeholder', '步长').val("10");
+                $('#calc').val('生成标记点缓冲区');
+            }
+            else if (choose === 'circle') {
+                widgets.alert.clearAlert();
+                drawing();
+                $('#drawPolygon').hide();
+                $('#drawPoint').show();
+                widgets.alert.showAlert('请先标记一个点', true);
+                map.getView().animate({zoom: 12}, {duration: 500, center: [116.407283, 39.90455699411283]});
+                $('.panel-heading>h5').text('圆多边形');
+                $('.input-group:eq(0)').show();
+                $('.input-group:eq(1)').show();//单位
+                $('.input-group:eq(2)').show();//步长
+                $('.input-group:eq(3)').show(); //半径
+                $('.input-group:eq(4)').show();
+                $('.input-group:eq(3)>span').text('半径');//半径
+                $('.input-group:eq(3)>input').attr('placeholder', '半径').val("10");
+                $('.input-group:eq(2)>span').text('步长');//步长
+                $('.input-group:eq(2)>input').attr('placeholder', '步长').val("10");
+                $('#calc').val('生成圆多边形');
+
+            }
+            else if (choose === 'bezier') {
+                widgets.alert.clearAlert();
+                $('.panel-heading>h5').text('白河的贝塞尔曲线');
+                map.getView().animate({zoom: 12}, {
+                    duration: 500,
+                    center: [116.55439124389999, 40.676116230453765]
+                });
+                $('.input-group:eq(0)').hide();
+                $('.input-group:eq(1)').hide();//单位
+                $('.input-group:eq(2)').hide();//步长
+                $('.input-group:eq(3)').hide(); //半径
+                $('.input-group:eq(4)').show();
+                whiteRiver();
+                setBezierLine();
+                $('#calc').val('生成bezier曲线');
+            }
+            else if (choose === 'square') {
+                widgets.alert.clearAlert();
+                setSquarePolygon();
+                $('.panel-heading>h5').text('最小外切正方形');
+                map.getView().animate({zoom: 12}, {duration: 500, center: [116.18865966796875, 39.88904724121094]});
+                $('.input-group:eq(0)').hide();//draw控件
+                $('.input-group:eq(1)').hide();//单位
+                $('.input-group:eq(2)').hide();//距离
+                $('.input-group:eq(3)').hide(); //步长
+                $('.input-group:eq(4)').show();
+                $('#calc').val('生成最小外切正方形');
+            }
+            else {
+                widgets.alert.clearAlert('方法不存在', false);
+            }
+            showPanel();
         });
 
         //生成对应距离点点击事件
@@ -409,7 +402,9 @@
             unit = $('#unitSelect').children('option:selected').val();
         });
     }
+
     bindEvents();
+    $("#menuSelect").change();
 
     //白河
     function whiteRiver() {
@@ -666,6 +661,7 @@
 
     //turf along方法
     function along() {
+        var unit = $('#unitSelect').children('option:selected').val();
         if (unit != 'null' && unit != undefined) {
             widgets.alert.clearAlert();
             if (checkIsNum(distance) && coordinate) {
@@ -720,6 +716,7 @@
 
     //turf destination方法
     function destination() {
+        var unit = $('#unitSelect').children('option:selected').val();
         if (unit != 'null' && unit != undefined) {
             widgets.alert.clearAlert();
             if (checkIsNum(distance) && isInRange(bearing)) {
@@ -749,6 +746,7 @@
             "degrees": "角度",
             "radians": "弧度",
         };
+        var unit = $('#unitSelect').children('option:selected').val();
         if (unit != 'null' && unit != undefined) {
             widgets.alert.clearAlert();
             resultSource.process("Measurement.distance", {
@@ -830,6 +828,7 @@
     //turf buffer
     //先draw一个点 再在此点上进行缓冲区分析
     function buffer() {
+        var unit = $('#unitSelect').children('option:selected').val();
         if (unit != 'null') {
             widgets.alert.clearAlert();
             greatThanZero(steps);
@@ -856,6 +855,7 @@
     //turf circle
     //先draw一个点 再在此点上画圆多边形
     function circle() {
+        var unit = $('#unitSelect').children('option:selected').val();
         widgets.alert.clearAlert();
         greatThanZero(steps);
         if (coordinate && checkIsNum(distance) && checkIsNum(radius) && steps > 0) {
