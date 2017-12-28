@@ -80,7 +80,12 @@
         "_name": "历史版本"
       },
       "get": {
-        "_name": "获取"
+        "_name": "下载",
+        "stable": "稳定版",
+        "releases": "Releases",
+        "source": "源码",
+        "npm": "npm",
+        "oldVersions": "历史版本"
       },
       "language": {
         "_name": "语言"

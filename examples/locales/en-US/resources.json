@@ -80,7 +80,12 @@
         "_name": "Versions"
       },
       "get": {
-        "_name": "Code"
+        "_name": "Download",
+        "stable": "Stable",
+        "releases": "Releases",
+        "source": " Source Code",
+        "npm": " npm",
+        "oldVersions": "Older Versions"
       },
       "language": {
         "_name": "Language"
