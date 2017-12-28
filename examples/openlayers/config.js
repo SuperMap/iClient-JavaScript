@@ -698,6 +698,7 @@ var exampleConfig = {
         content: {
             "draw": {
                 name: "点线面绘制",
+                name_en: "draw",
                 content: [{
                     name: "绘制",
                     name_en: "draw",
@@ -733,6 +734,7 @@ var exampleConfig = {
         content: {
             "Turf": {
                 name: "Turf",
+                name_en: "Turf",
                 content: [{
                     name: "插值、格网、分级",
                     name_en: "interpolation, grid, classification",
