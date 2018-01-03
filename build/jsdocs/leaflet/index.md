@@ -1,9 +1,9 @@
 # SuperMap iClient for Leaflet API
 SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开发平台， 支持访问SuperMap iServer / iExpress / iPortal / iManager / Online的地图、服务和资源，为用户提供了完整专业的GIS能力， 同时提供了优秀的可视化功能。
 
-*   官网(website)：[http://iclient.supermap.io/introduction/leaflet.html#introduce](http://iclient.supermap.io/introduction/leaflet.html#introduce)
+*   官网(website)：<a href="http://iclient.supermap.io/web/introduction/leaflet.html#introduce" target="_parent">http://iclient.supermap.io/web/introduction/leaflet.html#introduce</a>
 
-*   源码(source code)：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet)
+*   源码(source code)：<a href="https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet" target="_blank">https://github.com/SuperMap/iClient-JavaScript/tree/master/src/leaflet</a>
 <table><tr>
     <th width="33.3%">四驾马车</th><th width="33.3%"></th><th width="33.3%"></th>
 </tr><tr>
@@ -49,6 +49,6 @@ SuperMap iClient for Leaflet 是一套基于Leaflet的云GIS网络客户端开�
 
 ## 参考API
 
-*   Leaflet API：[http://leafletjs.com/reference.html](http://leafletjs.com/reference.html)
-*   ECharts API：[http://echarts.baidu.com/api.html#echarts](http://echarts.baidu.com/api.html#echarts)
-*   MapV API：   [https://github.com/huiyan-fe/mapv/blob/master/API.md](https://github.com/huiyan-fe/mapv/blob/master/API.md)
+*   Leaflet API：<a href="http://leafletjs.com/reference.html" target="_blank">http://leafletjs.com/reference.html</a>
+*   ECharts API:<a href="http://echarts.baidu.com/api.html#echarts" target="_blank">http://echarts.baidu.com/api.html#echarts</a>
+*   MapV API:<a href="https://github.com/huiyan-fe/mapv/blob/master/API.md" target="_blank">https://github.com/huiyan-fe/mapv/blob/master/API.md</a>

@@ -1,9 +1,9 @@
 # SuperMap iClient for OpenLayers API
 SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户端开发平台， 支持访问SuperMap iServer / iExpress / iPortal / iManager / Online的地图、服务和资源，为用户提供了完整专业的GIS能力， 同时提供了优秀的可视化功能。
 
-*   官网(website)：[http://iclient.supermap.io/introduction/openlayers.html#introduce](http://iclient.supermap.io/introduction/openlayers.html#introduce)
+*   官网(website)：<a href="http://iclient.supermap.io/web/introduction/openlayers.html#introduce" target="_parent">http://iclient.supermap.io/web/introduction/openlayers.html#introduce</a>
 
-*   源码(source code)：[https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers](https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers)
+*   源码(source code)：<a href="https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers" target="_blank">https://github.com/SuperMap/iClient-JavaScript/tree/master/src/openlayers</a>
 <table><tr>
     <th width="33.3%">四驾马车</th><th width="33.3%"></th><th width="33.3%"></th>
 </tr><tr>
@@ -46,6 +46,6 @@ SuperMap iClient for OpenLayers 是一套基于OpenLayers的云GIS网络客户�
 
 ## 参考API
 
-*   OpenLayers API：[http://openlayers.org/en/latest/apidoc/](http://openlayers.org/en/latest/apidoc/)
-*   ECharts API：[http://echarts.baidu.com/api.html#echarts](http://echarts.baidu.com/api.html#echarts)
-*   MapV API：   [https://github.com/huiyan-fe/mapv/blob/master/API.md](https://github.com/huiyan-fe/mapv/blob/master/API.md)
+*   OpenLayers API:<a href="http://openlayers.org/en/latest/apidoc/" target="_blank">http://openlayers.org/en/latest/apidoc/</a>
+*   ECharts API:<a href="http://echarts.baidu.com/api.html#echarts" target="_blank">http://echarts.baidu.com/api.html#echarts</a>
+*   MapV API:<a href="https://github.com/huiyan-fe/mapv/blob/master/API.md" target="_blank">https://github.com/huiyan-fe/mapv/blob/master/API.md</a>
