@@ -1,11 +1,12 @@
-<nav class="navbar navbar-static-top">
+<nav class="navbar navbar-static-top lite">
     <div class="nav-header">
         <div class="navbar-header">
-
-            <a class="navbar-brand" target="_blank" href="../../web/index.html">
-                <span class="project-title vm" id="title">SuperMap iClient 9D</span>
-            </a>
-            <div id="suffix-title"></div>
+            <div class="navbar-title">
+                <a class="navbar-brand" target="_blank" href="../../web/index.html">
+                    <span class="project-title vm" id="title">SuperMap iClient 9D</span>
+                </a>
+                <div id="suffix-title"></div>
+            </div>
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"
                     aria-expanded="false">
                 <i class="fa fa-bars"></i>
@@ -61,7 +62,7 @@
     $(document).ready(function () {
         if (identification && identification.name) {
             var suffixHeader = document.getElementById("suffix-title");
-            suffixHeader.innerText = (notFor.indexOf(identification.name) < 0 ? "for " : "" ) + identification.name;
+            suffixHeader.innerText = (notFor.indexOf(identification.name) < 0 ? "for " : "") + identification.name;
         }
     });
 </script>

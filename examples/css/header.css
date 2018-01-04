@@ -61,6 +61,16 @@
     height: 60px;
 }
 
+.navbar.default .navbar-title {
+    height: 100%;
+    width: 420px;
+}
+
+.navbar.lite .navbar-title {
+    height: 100%;
+    width: auto;
+}
+
 /*头部选项下拉菜单框的样式*/
 .navbar ul {
     list-style: none outside none;
@@ -77,11 +87,12 @@
     vertical-align: middle;
 }
 
-.navbar .menu-sub-warp {
+.navbar-menu .menu-sub-warp {
     max-height: 0;
 }
 
-.navbar-menu:hover .menu-sub-warp {
+.navbar-menu:hover .menu-sub-warp,
+.navbar-menu.active .menu-sub-warp {
     max-height: 600px;
     transform-origin: 50% 0;
     -webkit-transform-origin: 50% 0;
@@ -261,7 +272,47 @@ ul.icl-nav-menu-sub:nth-child(1) {
     width: 120px;
 }
 
-@media screen and (max-width: 1284px) {
+@media screen and (max-width: 1180px) {
+    .navbar.default .navbar-toggle {
+        display: block;
+        float: right;
+    }
+
+    .navbar.default .navbar-collapse.collapse {
+        display: none !important;
+    }
+
+    .navbar.default .collapse.in {
+        display: block !important;
+    }
+
+    .navbar.default .navbar-header {
+        float: none;
+    }
+
+    .menu-box {
+        top: 120px;
+    }
+}
+
+@media screen and (max-width: 1030px) {
+    .navbar.lite .navbar-toggle {
+        display: block;
+        float: right;
+    }
+
+    .navbar.lite .navbar-collapse.collapse {
+        display: none !important;
+    }
+
+    .navbar.lite .collapse.in {
+        display: block !important;
+    }
+
+    .navbar.lite .navbar-header {
+        float: none;
+    }
+
     .menu-box {
         top: 120px;
     }
@@ -295,14 +346,6 @@ ul.icl-nav-menu-sub:nth-child(1) {
     .navbar-toggle {
         display: block;
         float: right;
-    }
-
-    .navbar-collapse.collapse {
-        display: none !important;
-    }
-
-    .navbar-nav > li {
-        float: none;
     }
 
     .collapse.in {
@@ -375,7 +418,7 @@ ul.icl-nav-menu-sub:nth-child(1) {
     }
 }
 
-@media screen and (max-width: 698px) {
+@media screen and (max-width: 659px) {
     .menu-box {
         top: 180px;
     }
