@@ -125,7 +125,7 @@ function resizeCharts() {
         charts.height(260 * 0.8);
     }
     window.onresize = function () {
-        charts.height(charts[0].offsetWidth * 0.8);
+        resizeCharts();
     }
 }
 

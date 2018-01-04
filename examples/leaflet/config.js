@@ -485,7 +485,7 @@ var exampleConfig = {
         name: "Elasticsearch",
         name_en: "Elasticsearch",
         content: {
-            "  ": {
+            "viz": {
                 name: "可视化",
                 name_en: "visualization",
                 content: [{

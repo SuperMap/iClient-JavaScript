@@ -18,7 +18,7 @@
 }
 
 h3.category-title {
-    margin-top: 10px;
+    margin-top: 0px;
     height: 40px;
     line-height: 40px;
     margin-bottom: 0;
@@ -111,5 +111,5 @@ h3.category-title {
 }
 
 .category {
-    padding-top: 40px;
+    padding-top: 60px;
 }
