@@ -272,7 +272,7 @@ ul.icl-nav-menu-sub:nth-child(1) {
     width: 120px;
 }
 
-@media screen and (max-width: 1180px) {
+@media screen and (max-width: 1220px) {
     .navbar.default .navbar-toggle {
         display: block;
         float: right;
