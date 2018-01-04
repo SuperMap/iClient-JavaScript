@@ -285,7 +285,7 @@ describe('openlayers_ThemeService', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 8000)
+        }, 20000)
     });
 
     //标签专题图
