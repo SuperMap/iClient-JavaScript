@@ -298,8 +298,6 @@ export var ChangeTileVersion = L.Control.extend({
         if (this.options.orientation === 'vertical') {
             this.slider.style.width = 170 + 'px';
             this._sliderContainer.style.height = 170 + 'px';
-        } else if (this.options.orientation === 'vertical') {
-            this._sliderContainer.style.height = 170 + 'px';
         } else {
             this._sliderContainer.style.width = 150 + 'px';
         }
