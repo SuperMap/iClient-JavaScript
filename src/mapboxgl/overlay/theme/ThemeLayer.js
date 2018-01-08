@@ -20,7 +20,6 @@ import {
 export class Theme {
 
 
-
     constructor(name, opt_options) {
         var options = opt_options ? opt_options : {};
         /**
@@ -245,7 +244,7 @@ export class Theme {
     }
 
     /**
-     * @function L.supermap.ThemeLayer.prototype.on
+     * @function mapboxgl.supermap.ThemeLayer.prototype.on
      * @description 添加专题要素事件监听。添加专题要素事件监听。
      * @param event - {Event} 监听事件
      * @param callback - {function} 回调函数
@@ -309,7 +308,7 @@ export class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.ThemeLayer.prototype.scale
+     * @function mapboxgl.supermap.ThemeLayer.prototype.toiClientFeature
      * @description 转为 iClient 要素
      * @param feature 待转要素
      */
@@ -329,7 +328,7 @@ export class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.prototype.resizeEvent
+     * @function mapboxgl.supermap.ThemeLayer.prototype.resizeEvent
      * @description 调整事件
      */
     resizeEvent() {
@@ -343,7 +342,7 @@ export class Theme {
     }
 
     /**
-     * @function mapboxgl.supermap.prototype.removeEvent
+     * @function mapboxgl.supermap.ThemeLayer.prototype.removeFromMap
      * @description 移除事件
      */
     removeFromMap() {
