@@ -76,6 +76,7 @@ describe('Area', function () {
                 color: 'blue'
             }
         });
+        shape.holePolygonPointLists = [[0, 0, 0], [100, 100, 0], [100, 0, 100], [0, 0, 100]];
         var area = {
             // 100x100 的正方形
             pointList: [[0, 0], [100, 0], [100, 100], [0, 100]],
@@ -152,6 +153,131 @@ describe('Area', function () {
         var init = new Area();
         var result = init.isInside(shape, area, x, y);
         expect(result).not.toBeNull();
+        expect(result).toBeFalsy();
+    });
+
+    it('isInside_shape_buildPath_null_ellipse', function () {
+        var shape = new SmicEllipse({
+            style: {
+                x: 100,
+                y: 100,
+                a: 40,
+                b: 20,
+                brushType: 'both',
+                color: 'blue',
+                strokeColor: 'red',
+                lineWidth: 3,
+                text: 'SmicEllipse'
+            }
+        });
+        shape.buildPath = null;
+        var area = {
+            x: 100,
+            y: 100,
+            a: 40,
+            b: 20,
+            brushType: 'both',
+            color: 'blue',
+            strokeColor: 'red',
+            lineWidth: 3,
+            text: 'SmicEllipse'
+        };
+        var x = 209;
+        var y = 110;
+        var init = new Area();
+        var result = init.isInside(shape, area, x, y);
+        expect(result).toBeTruthy();
+    });
+
+    it('isInside_shape_buildPath_null_trochoid', function () {
+        var shape = new Shape();
+        shape["type"] = "trochoid";
+        shape["style"] = {
+            "r1": 20,
+            "r2": 30,
+            "d": 50,
+            "location": "out"
+        };
+        shape["buildPath"] = null;
+        var area = {
+            x: 100,
+            y: 100,
+            a: 40,
+            b: 20,
+            brushType: 'both',
+            color: 'blue',
+            strokeColor: 'red',
+            lineWidth: 3,
+            text: 'SmicEllipse'
+        };
+        var x = 209;
+        var y = 110;
+        var init = new Area();
+        var result = init.isInside(shape, area, x, y);
+        expect(result).toBeFalsy();
+    });
+
+    it('isInside_shape_buildPath_null_rose', function () {
+        var shape = new Shape();
+        shape["type"] = "rose";
+        shape["style"] = {
+            "r1": 20,
+            "r2": 30,
+            "d": 50,
+            "location": "out"
+        };
+        shape["buildPath"] = null;
+        var area = {
+            x: 100,
+            y: 100,
+            a: 40,
+            b: 20,
+            brushType: 'both',
+            color: 'blue',
+            strokeColor: 'red',
+            lineWidth: 3,
+            text: 'SmicEllipse'
+        };
+        var x = 209;
+        var y = 110;
+        var init = new Area();
+        var result = init.isInside(shape, area, x, y);
+        expect(result).toBeFalsy();
+    });
+
+    it('isInside_shape_buildPath_null_text', function () {
+        var shape = new Shape();
+        shape["type"] = "test";
+        shape["style"] = {
+            "r1": 20,
+            "r2": 30,
+            "d": 50,
+            "location": "out"
+        };
+        shape["buildPath"] = null;
+        var area = {
+            x: 100,
+            y: 100,
+            a: 40,
+            b: 20,
+            brushType: 'both',
+            color: 'blue',
+            strokeColor: 'red',
+            lineWidth: 3,
+            text: 'SmicEllipse'
+        };
+        var x = 209;
+        var y = 110;
+        var init = new Area();
+        var result = init.isInside(shape, area, x, y);
+        expect(result).toBeFalsy();
+    });
+
+    it('isInside_shape_null', function () {
+        var shape = null;
+        var area = null;
+        var init = new Area();
+        var result = init.isInside(shape, area, 0, 0);
         expect(result).toBeFalsy();
     });
 
@@ -692,7 +818,6 @@ describe('Area', function () {
         expect(result).toBeFalsy();
     });
 
-
     it("windingQuadratic", function () {
         var x0 = 5, y0 = 6, x1 = 10, y1 = 5, x2 = 15, y2 = 10, x = 0, y = 6;
         var init = new Area();
@@ -701,10 +826,72 @@ describe('Area', function () {
         expect(result).toBe(0);
     });
 
-    it("windingArc", function () {
+    it("windingArc_x_8", function () {
         var cx = 10, cy = 10, r = 5, startAngle = 30, endAngle = 60, anticlockwise = 1, x = 8, y = 12;
         var init = new Area();
         var result = init.windingArc(cx, cy, r, startAngle, endAngle, anticlockwise, x, y);
         expect(result).not.toBeNull();
+    });
+
+    it("windingArc_x_5", function () {
+        var cx = 10, cy = 10, r = 5, startAngle = 30, endAngle = 60, anticlockwise = true, x = 5, y = 12;
+        var init = new Area();
+        var result = init.windingArc(cx, cy, r, startAngle, endAngle, anticlockwise, x, y);
+        expect(result).toEqual(0);
+    });
+
+    it("windingArc_endAngle_35", function () {
+        var cx = 10, cy = 10, r = 5, startAngle = 40, endAngle = 35, anticlockwise = true, x = 5, y = 12;
+        var init = new Area();
+        var result = init.windingArc(cx, cy, r, startAngle, endAngle, anticlockwise, x, y);
+        expect(result).not.toBeNull();
+    });
+
+    it('isOutside', function () {
+        var shape = new SmicEllipse();
+        var area = {};
+        var x = 100;
+        var y = 200;
+        var init = new Area();
+        var result = init.isOutside(shape, area, x, y);
+        expect(result).not.toBeNull();
+        expect(result).toBeTruthy();
+    });
+
+    it('swapExtrema', function () {
+        var init = new Area();
+        var a = init.extrema[0];
+        var b = init.extrema[1];
+        init.swapExtrema();
+        var a1 = init.extrema[0];
+        var b1 = init.extrema[1];
+        expect(a1).toEqual(b);
+        expect(b1).toEqual(a);
+    });
+
+    it('isInsideLine', function () {
+        var init = new Area();
+        var result1 = init.isInsideLine(10, 20, 10, 15, 4, 11, 20);
+        var result2 = init.isInsideLine(10, 20, 10, 15, 0, 20, 20);
+        expect(result1).toBeTruthy();
+        expect(result2).toBeFalsy();
+    });
+
+    it('isInsideCubicStroke', function () {
+        var init = new Area();
+        var result = init.isInsideCubicStroke(10, 20, 10, 15, 11, 20, 15, 20, 0, 11, 20);
+        expect(result).toBeFalsy();
+    });
+
+    it('isInsideQuadraticStroke', function () {
+        var init = new Area();
+        var result = init.isInsideQuadraticStroke(10, 15, 11, 20, 15, 20, 0, 11, 20);
+        expect(result).toBeFalsy();
+    });
+
+    it('windingCubic', function () {
+        var init = new Area();
+        var result1 = init.windingCubic(10, 5, 11, 5, 15, 8, 11, 9, 20, 10);
+        expect(result1).toEqual(0);
     });
 });

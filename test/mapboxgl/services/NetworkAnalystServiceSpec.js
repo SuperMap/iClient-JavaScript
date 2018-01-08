@@ -1,10 +1,12 @@
-var ol = require('openlayers');
-require('../../../src/openlayers/services/NetworkAnalystService');
+var mapboxgl = require('mapbox-gl');
+require('../../../src/mapboxgl/services/NetworkAnalystService');
+
 var url = GlobeParameter.networkAnalystURL;
 var options = {
     serverType: 'iServer'
 };
-describe('openlayers_NetworkAnalystService', function () {
+
+describe('mapboxgl_NetworkAnalystService', function () {
     var serviceResult;
     var originalTimeout;
     beforeEach(function () {
@@ -19,16 +21,12 @@ describe('openlayers_NetworkAnalystService', function () {
     //爆管分析服务
     it('burstPipelineAnalyst', function (done) {
         var burstPipelineAnalystParameters = new SuperMap.BurstPipelineAnalystParameters({
-            //指定的设施点ID数组
             sourceNodeIDs: [84, 85],
-            //指定的弧段ID
-            //edgeID:85,
-            //指定的结点ID
             nodeID: 85,
-            // 指定不确定流向是否有效
             isUncertainDirectionValid: false
         });
-        var service = new ol.supermap.NetworkAnalystService(url, options);
+        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
+        // spyOn(service,'burstPipelineAnalyst').and.callFake();
         service.burstPipelineAnalyst(burstPipelineAnalystParameters, function (result) {
             serviceResult = result;
         });
@@ -58,7 +56,7 @@ describe('openlayers_NetworkAnalystService', function () {
             isAnalyzeById: true,
             nodes: [84, 85],
         });
-        var service = new ol.supermap.NetworkAnalystService(url, options);
+        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
         service.computeWeightMatrix(computeWeightMatrixParameters, function (result) {
             serviceResult = result;
         });
@@ -80,132 +78,7 @@ describe('openlayers_NetworkAnalystService', function () {
             }
         }, 5000)
     });
-
-    //最近设施分析服务
-    it('findClosestFacilities', function (done) {
-        //创建最近设施分析参数实例
-        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
-            returnEdgeFeatures: true,
-            returnEdgeGeometry: true,
-            returnEdgeIDs: true,
-            returnNodeFeatures: true,
-            returnNodeGeometry: true,
-            returnNodeIDs: true,
-            returnPathGuides: true,
-            returnRoutes: true
-        });
-        var analystParameter = new SuperMap.TransportationAnalystParameter({
-            resultSetting: resultSetting,
-            turnWeightField: "TurnCost",
-            weightFieldName: "length"  //length,time
-        });
-        var findClosetFacilitiesParameter = new SuperMap.FindClosestFacilitiesParameters({
-            //事件点,必设参数
-            event: new ol.geom.Point([5000, -3700]),
-            //要查找的设施点数量。默认值为1
-            expectFacilityCount: 1,
-            //设施点集合,必设
-            facilities: [new ol.geom.Point([2500, -3500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([7000, -4000])],
-            isAnalyzeById: false,
-            parameter: analystParameter
-        });
-        var service = new ol.supermap.NetworkAnalystService(url, options);
-        service.findClosestFacilities(findClosetFacilitiesParameter, function (result) {
-            serviceResult = result;
-        });
-        setTimeout(function () {
-            try {
-                expect(service).not.toBeNull();
-                expect(serviceResult).not.toBeNull();
-                expect(serviceResult.type).toEqual("processCompleted");
-                expect(serviceResult.result.succeed).toBe(true);
-                var facilityPath = serviceResult.result.facilityPathList[0];
-                expect(facilityPath.edgeFeatures.type).toEqual("FeatureCollection");
-                var features = facilityPath.edgeFeatures.features;
-                expect(features.length).toEqual(facilityPath.edgeIDs.length);
-                for (var i = 0; i < features.length; i++) {
-                    expect(features[i].id).not.toBeNull();
-                    expect(features[i].type).toEqual("Feature");
-                    expect(features[i].geometry.type).toEqual("LineString");
-                    expect(features[i].geometry.coordinates.length).toBeGreaterThan(0);
-                    for (var j = 0; j < features[i].geometry.coordinates.length; j++) {
-                        expect(features[i].geometry.coordinates[j].length).toEqual(2);
-                    }
-                    expect(features[i].properties).not.toBeNull();
-                }
-                expect(facilityPath.edgeIDs.length).toBeGreaterThan(0);
-                expect(facilityPath.facility.x).not.toBeNull();
-                expect(facilityPath.facility.y).not.toBeNull();
-                expect(facilityPath.facilityIndex).toEqual(1);
-                expect(facilityPath.nodeFeatures.type).toEqual("FeatureCollection");
-                var node_features = facilityPath.nodeFeatures.features;
-                expect(node_features.length).toBeGreaterThan(0);
-                for (var i = 0; i < node_features.length; i++) {
-                    expect(node_features[i].id).not.toBeNull();
-                    expect(node_features[i].type).toEqual("Feature");
-                    expect(node_features[i].geometry.type).toEqual("Point");
-                    expect(node_features[i].geometry.coordinates.length).toEqual(2);
-                    expect(node_features[i].properties).not.toBeNull();
-                }
-                expect(facilityPath.nodeIDs.length).toEqual(node_features.length);
-                expect(facilityPath.pathGuideItems.type).toEqual("FeatureCollection");
-                for (var i = 0; i < facilityPath.pathGuideItems.features.length; i++) {
-                    expect(facilityPath.pathGuideItems.features[i].type).toEqual("Feature");
-                    expect(facilityPath.pathGuideItems.features[i].geometry.type).not.toBeNull();
-                    expect(facilityPath.pathGuideItems.features[i].geometry.coordinates.length).toBeGreaterThan(0);
-                    if (facilityPath.pathGuideItems.features[i].geometry.coordinates.length > 2) {
-                        for (var j = 0; j < facilityPath.pathGuideItems.features[i].geometry.coordinates.length; j++) {
-                            expect(facilityPath.pathGuideItems.features[i].geometry.coordinates[j].length).toEqual(2);
-                        }
-                    }
-                    expect(facilityPath.pathGuideItems.features[i].properties).not.toBeNull();
-                }
-                expect(facilityPath.route.type).toEqual("Feature");
-                expect(facilityPath.route.geometry.type).toEqual("MultiLineString");
-                expect(facilityPath.route.geometry.coordinates[0].length).toBeGreaterThan(0);
-                for (var i = 0; i < facilityPath.route.geometry.coordinates[0].length; i++) {
-                    expect(facilityPath.route.geometry.coordinates[0][i].length).toEqual(3);
-                }
-                expect(facilityPath.stopWeights).not.toBeNull();
-                expect(facilityPath.weight).not.toBeNull();
-                done();
-            } catch (e) {
-                console.log("'findClosestFacilities'案例失败" + e.name + ":" + e.message);
-                expect(false).toBeTruthy();
-                done();
-            }
-        }, 5000);
-
-    });
-
-    //上游/下游 关键设施查找资源服务//common里被注释掉了
-    /*it('streamFacilityAnalyst_test',function (done) {
-     var FacilityAnalystStreamParameters =new SuperMap.FacilityAnalystStreamParameters({
-     edgeID:84,
-     //nodeID:85,
-     isUncertainDirectionValid:true,
-     sourceNodeIDs:[],
-     // 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）
-     type:1
-     });
-     var service = new ol.supermap.NetworkAnalystService(url, options);
-     service.streamFacilityAnalyst(FacilityAnalystStreamParameters,function (result) {
-     serviceResult=result;
-     });
-     setTimeout(function () {
-     try{
-     expect(service).not.toBeNull();
-     expect(serviceResult).not.toBeNull();
-     done();
-     } catch(e) {
-     console.log("'streamFacilityAnalyst_test'案例失败" + e.name + ":" + e.message);
-     expect(false).toBeTruthy();
-     done();
-     }
-     },45000)
-
-     });*/
-
+    
     //选址分区分析服务
     it('findLocation', function (done) {
         var findLocationParameters = new SuperMap.FindLocationParameters({
@@ -230,7 +103,7 @@ describe('openlayers_NetworkAnalystService', function () {
             //阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
             weightName: "length"
         });
-        var service = new ol.supermap.NetworkAnalystService(url, options);
+        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
         service.findLocation(findLocationParameters, function (result) {
             serviceResult = result;
         });
@@ -283,11 +156,11 @@ describe('openlayers_NetworkAnalystService', function () {
         });
         var findPathParameters = new SuperMap.FindPathParameters({
             isAnalyzeById: false,
-            nodes: [new ol.geom.Point([4000, -3000]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([6900, -4000])],
+            nodes: [new mapboxgl.Point(4000, -3000), new mapboxgl.Point(5500, -2500), new mapboxgl.Point(6900, -4000)],
             hasLeastEdgeCount: false,
             parameter: analystParameter
         });
-        var service = new ol.supermap.NetworkAnalystService(url, options);
+        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
         service.findPath(findPathParameters, function (result) {
             serviceResult = result;
         });
@@ -370,10 +243,10 @@ describe('openlayers_NetworkAnalystService', function () {
             endNodeAssigned: false,
             isAnalyzeById: false,
             //旅行商分析途经点数组，必设字段
-            nodes: [new ol.geom.Point([3000, -1000]), new ol.geom.Point([3760, -4850]), new ol.geom.Point([8000, -2700])],
+            nodes: [new mapboxgl.Point(3000, -1000), new mapboxgl.Point(3760, -4850), new mapboxgl.Point(8000, -2700)],
             parameter: analystParameter
         });
-        var service = new ol.supermap.NetworkAnalystService(url, options);
+        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
         service.findTSPPaths(findTSPPathsParameters, function (result) {
             serviceResult = result;
         });
@@ -418,18 +291,17 @@ describe('openlayers_NetworkAnalystService', function () {
                 done();
             }
         }, 5000)
-
     });
 
     // 多旅行商分析服务
     it('findMTSPPaths', function (done) {
         var findMTSPPathsParameter = new SuperMap.FindMTSPPathsParameters({
-            centers: [new ol.geom.Point([6000, -5500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([2500, -3500])],
+            centers: [new mapboxgl.Point(6000, -5500), new mapboxgl.Point(5500, -2500), new mapboxgl.Point(2500, -3500)],
             isAnalyzeById: false,
-            nodes: [new ol.geom.Point([5000, -5000]), new ol.geom.Point([6500, -3200])],
+            nodes: [new mapboxgl.Point(5000, -5000), new mapboxgl.Point(6500, -3200)],
             hasLeastTotalCost: true,
         });
-        var service = new ol.supermap.NetworkAnalystService(url, options);
+        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
         service.findMTSPPaths(findMTSPPathsParameter, function (result) {
             serviceResult = result;
         });
@@ -456,7 +328,7 @@ describe('openlayers_NetworkAnalystService', function () {
 
     //服务区分析服务
     it('findServiceAreas', function (done) {
-        var point = new ol.geom.Point([5605, -3375]);
+        var point = new mapboxgl.Point(5605, -3375);
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
@@ -472,7 +344,7 @@ describe('openlayers_NetworkAnalystService', function () {
             parameter: analystParameter
         });
         parameter.weights = [400 + Math.random() * 100];
-        var service = new ol.supermap.NetworkAnalystService(url, options);
+        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
         service.findServiceAreas(parameter, function (result) {
             serviceResult = result;
         });
@@ -505,7 +377,6 @@ describe('openlayers_NetworkAnalystService', function () {
                 done();
             }
         }, 5000)
-
     });
 
     //更新边的耗费权重服务
@@ -517,7 +388,7 @@ describe('openlayers_NetworkAnalystService', function () {
             toNodeId: "109",
             weightField: "time"
         });
-        var service = new ol.supermap.NetworkAnalystService(url, options);
+        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
         service.updateEdgeWeight(updateEdgeWeightParameters, function (result) {
             serviceResult = result;
         });
@@ -550,7 +421,7 @@ describe('openlayers_NetworkAnalystService', function () {
             //转向结点的耗费字段
             weightField: "TurnCost"
         });
-        var service = new ol.supermap.NetworkAnalystService(url, options);
+        var service = new mapboxgl.supermap.NetworkAnalystService(url, options);
         service.updateTurnNodeWeight(parameters, function (result) {
             serviceResult = result;
         });
@@ -569,3 +440,5 @@ describe('openlayers_NetworkAnalystService', function () {
         }, 5000)
     });
 });
+
+
