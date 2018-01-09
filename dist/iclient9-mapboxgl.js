@@ -51483,6 +51483,12 @@ var Theme = exports.Theme = function () {
         this.opacity = 1;
 
         /**
+         * @member mapboxgl.supermap.ThemeLayer.prototype.loadWhileAnimating -{boolean}
+         * @description 是否实时重绘，默认为true。(当绘制大数据量要素的情况下会出现卡顿，建议把该参数设为false)
+         */
+        this.loadWhileAnimating = options.loadWhileAnimating === undefined ? true : options.loadWhileAnimating;
+
+        /**
          * @member mapboxgl.supermap.ThemeLayer.prototype.map -{mapboxgl.Map}
          * @description map对象
          */
@@ -51509,7 +51515,7 @@ var Theme = exports.Theme = function () {
         //处理用户预先（在图层添加到 map 前）监听的事件
         this.addTFEvents();
         this.map.on('move', this.moveEvent.bind(this));
-        this.map.on('zoom', this.zoomEvent.bind(this));
+        this.map.on('moveend', this.moveEndEvent.bind(this));
         this.map.on('remove', this.removeFromMap.bind(this));
         this.map.on('resize', this.resizeEvent.bind(this));
     }
@@ -51814,12 +51820,20 @@ var Theme = exports.Theme = function () {
     }, {
         key: 'moveEvent',
         value: function moveEvent() {
-            this.redrawThematicFeatures(this.map.getBounds());
+            if (this.loadWhileAnimating) {
+                this.redrawThematicFeatures(this.map.getBounds());
+                return;
+            }
+            this._hide();
         }
     }, {
-        key: 'zoomEvent',
-        value: function zoomEvent() {
+        key: 'moveEndEvent',
+        value: function moveEndEvent() {
+            if (this.loadWhileAnimating) {
+                return;
+            }
             this.redrawThematicFeatures(this.map.getBounds());
+            this._show();
         }
 
         /**
@@ -51848,6 +51862,17 @@ var Theme = exports.Theme = function () {
         key: 'removeFromMap',
         value: function removeFromMap() {
             this.map.getCanvasContainer().removeChild(this.div);
+            this.removeAllFeatures();
+        }
+    }, {
+        key: '_hide',
+        value: function _hide() {
+            this.renderer.painter.root.style.display = 'none';
+        }
+    }, {
+        key: '_show',
+        value: function _show() {
+            this.renderer.painter.root.style.display = 'block';
         }
     }]);
 
