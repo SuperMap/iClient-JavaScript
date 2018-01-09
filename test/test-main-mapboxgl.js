@@ -1,3 +1,6 @@
+/*mapboxgl -- control*/
+require('./mapboxgl/control/LogoSpec.js');
+
 /*mapboxgl -- overlay*/
 require('./mapboxgl/overlay/GraphThemeLayerSpec.js');
 require('./mapboxgl/overlay/LabelThemeLayerSpec.js');

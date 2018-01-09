@@ -96,6 +96,7 @@ require('./common/commonTypes/BoundsSpec.js');
 require('./common/commonTypes/DateSpec.js');
 require('./common/commonTypes/LonLatSpec.js');
 require('./common/commonTypes/VectorSpec.js');
+require('./common/commonTypes/geometry/CollectionSpec.js');
 require('./common/commonTypes/geometry/GeoTextSpec.js');
 require('./common/commonTypes/geometry/LineStringSpec.js');
 require('./common/commonTypes/geometry/LinearRingSpec.js');
@@ -133,5 +134,10 @@ require('./common/overlay/levelRenderer/VectorSpec.js');
 require('./common/overlay/GraphSpec');
 
 /**common -- online**/
+require('./common/online/OnlineDataSpec.js');
 require('./common/online/OnlineSpec.js');
 require('./common/online/OnlineQueryDatasParameterSpec');
+
+/**common -- iPortal**/
+require('./common/iPortal/iPortalMapSpec.js');
+require('./common/iPortal/iPortalServiceSpec.js');
