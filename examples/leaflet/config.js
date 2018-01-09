@@ -618,6 +618,18 @@ var exampleConfig = {
                         name_en: "Airplane route map",
                         thumbnail: "l_echartsLinesAirline.png",
                         fileName: "echartsLinesAirline"
+                    },
+                    {
+                        name: "微博签到图",
+                        name_en: "weibo scatter",
+                        thumbnail: "l_echartsScatterWeibo.png",
+                        fileName: "echartsScatterWeibo"
+                    },
+                    {
+                        name: "方形图",
+                        name_en: "binning on Map",
+                        thumbnail: "l_echartsCellMap.png",
+                        fileName: "echartsCellMap"
                     }
                 ]
 

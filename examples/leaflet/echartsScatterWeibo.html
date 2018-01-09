@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>微博签到图</title>
+    <script type="text/javascript" include="jquery" src="../js/include-web.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" include="echarts" src="../../dist/include-leaflet.js"></script>
+<script type="text/javascript">
+    var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
+    var map, url = host + "/iserver/services/map-china400/rest/maps/ChinaDark";
+    map = L.map('map', {
+        center: [37.94, 112],
+        maxZoom: 18,
+        zoom: 4
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+
+    var layer;
+    $.get('../data/weibo.json', function (weiboData) {
+        weiboData = weiboData.map(function (serieData, idx) {
+            var px = serieData[0] / 1000;
+            var py = serieData[1] / 1000;
+            var res = [
+                [px, py]
+            ];
+
+            for (var i = 2; i < serieData.length; i += 2) {
+                var dx = serieData[i] / 1000;
+                var dy = serieData[i + 1] / 1000;
+                var x = px + dx;
+                var y = py + dy;
+                res.push([x.toFixed(2), y.toFixed(2), 1]);
+
+                px = x;
+                py = y;
+            }
+            return res;
+        });
+
+        option = {
+            coordinateSystem: 'leaflet',
+            title: {
+                text: '微博签到数据点亮中国',
+                subtext: 'From ThinkGIS',
+                sublink: 'http://www.thinkgis.cn/public/sina',
+                left: 'center',
+                top: 'top',
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+            tooltip: {},
+            legend: {
+                left: 'left',
+                top: 'bottom',
+                data: ['强', '中', '弱'],
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+            series: [{
+                name: '弱',
+                type: 'scatter',
+                coordinateSystem: 'leaflet',
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(37, 140, 249, 0.8)',
+                        color: 'rgba(37, 140, 249, 0.8)'
+                    }
+                },
+                data: weiboData[0]
+            }, {
+                name: '中',
+                type: 'scatter',
+                coordinateSystem: 'leaflet',
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(14, 241, 242, 0.8)',
+                        color: 'rgba(14, 241, 242, 0.8)'
+                    }
+                },
+                data: weiboData[1]
+            }, {
+                name: '强',
+                type: 'scatter',
+                coordinateSystem: 'leaflet',
+                symbolSize: 1,
+                large: true,
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 2,
+                        shadowColor: 'rgba(255, 255, 255, 0.8)',
+                        color: 'rgba(255, 255, 255, 0.8)'
+                    }
+                },
+                data: weiboData[2]
+            }]
+        };
+       layer= L.supermap.echartsLayer(option,{loadWhileAnimating:false}).addTo(map);
+    });
+</script>
+</body>
+</html>

@@ -58197,8 +58197,6 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
         if (this.options.orientation === 'vertical') {
             this.slider.style.width = 170 + 'px';
             this._sliderContainer.style.height = 170 + 'px';
-        } else if (this.options.orientation === 'vertical') {
-            this._sliderContainer.style.height = 170 + 'px';
         } else {
             this._sliderContainer.style.width = 150 + 'px';
         }
@@ -60091,6 +60089,9 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
         map.on("zoomstart", function () {
             me._disableEchartsContainer();
         });
+        !me.options.loadWhileAnimating && map.on("movestart", function () {
+            me._disableEchartsContainer();
+        });
         _echarts2["default"].registerAction({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
@@ -60114,22 +60115,50 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
                 var rendering = true;
                 var leafletMap = _echarts2["default"].leafletMap;
                 var viewportRoot = api.getZr().painter.getViewportRoot();
+
+                var animated = leafletMap.options.zoomAnimation && _leaflet2["default"].Browser.any3d;
+                viewportRoot.className = ' leaflet-layer leaflet-zoom-' + (animated ? 'animated' : 'hide') + ' echarts-layer';
+
+                var originProp = _leaflet2["default"].DomUtil.testProp(['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']);
+                viewportRoot.style[originProp] = '50% 50%';
+
                 var coordSys = LeafletMapModel.coordinateSystem;
+
+                var ecLayers = api.getZr().painter.getLayers();
+
                 var moveHandler = function moveHandler() {
                     if (rendering) {
                         return;
                     }
+
                     var bounds = map.getBounds();
                     var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
                     var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0];
+
                     viewportRoot.style.left = mapOffset[0] + 'px';
                     viewportRoot.style.top = mapOffset[1] + 'px';
+
+                    if (!me.options.loadWhileAnimating) {
+                        for (var item in ecLayers) {
+                            if (!ecLayers.hasOwnProperty(item)) {
+                                continue;
+                            }
+                            ecLayers[item] && clearContext(ecLayers[item].ctx);
+                        }
+                        me._enableEchartsContainer();
+                    }
+
                     coordSys.setMapOffset(mapOffset);
                     LeafletMapModel.__mapOffset = mapOffset;
+
                     api.dispatchAction({
                         type: 'LeafletMapLayout'
                     });
                 };
+
+                function clearContext(context) {
+                    context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+                }
 
                 function zoomEndHandler() {
                     if (rendering) {
@@ -60142,17 +60171,9 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
                     me._enableEchartsContainer();
                 }
 
-                if (me.options.loadWhileAnimating) {
-                    leafletMap.off('move', this._oldMoveHandler);
-                } else {
-                    leafletMap.off('moveend', this._oldMoveHandler);
-                }
+                leafletMap.off(me.options.loadWhileAnimating ? 'move' : 'moveend', this._oldMoveHandler);
                 leafletMap.off('zoomend', this._oldZoomEndHandler);
-                if (me.options.loadWhileAnimating) {
-                    leafletMap.on('move', moveHandler);
-                } else {
-                    leafletMap.on('moveend', moveHandler);
-                }
+                leafletMap.on(me.options.loadWhileAnimating ? 'move' : 'moveend', moveHandler);
                 leafletMap.on('zoomend', zoomEndHandler);
                 this._oldMoveHandler = moveHandler;
                 this._oldZoomEndHandler = zoomEndHandler;
@@ -60169,12 +60190,14 @@ var EchartsLayer = exports.EchartsLayer = _leaflet2["default"].Layer.extend({
 
     _initEchartsContainer: function _initEchartsContainer() {
         var size = this._map.getSize();
+
         var _div = document.createElement('div');
         _div.style.position = 'absolute';
         _div.style.height = size.y + 'px';
         _div.style.width = size.x + 'px';
         _div.style.zIndex = 10;
         this._echartsContainer = _div;
+
         this._map.getPanes().overlayPane.appendChild(this._echartsContainer);
         var me = this;
         this._map.on('resize', function (e) {
@@ -60250,11 +60273,9 @@ LeafletMapCoordSys.prototype.dataToPoint = function (data) {
     if (data[1] === null) {
         data[1] = 85.4;
     }
-
     data[1] = this.fixLat(data[1]);
 
-    var point = new _leaflet2["default"].latLng(data[1], data[0]);
-    var px = this._LeafletMap.latLngToLayerPoint(point);
+    var px = this._LeafletMap.latLngToLayerPoint([data[1], data[0]]);
     var mapOffset = this._mapOffset;
     return [px.x - mapOffset[0], px.y - mapOffset[1]];
 };
@@ -93969,7 +93990,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 500 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.3.15.tgz","_shasum":"5ad06e8bca30be0ffa389a49e4565f51f06d089e","_spec":"proj4@2.3.15","_where":"F:\\dev\\iClient","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 501 */
