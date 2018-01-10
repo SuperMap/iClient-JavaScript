@@ -35,6 +35,7 @@ require('./common/iServer/ImageSpec.js');
 require('./common/iServer/InterpolationAnalystServiceSpec.js');
 require('./common/iServer/LabelImageCellSpec.js');
 require('./common/iServer/LabelMixedStyleSpec.js');
+require('./common/iServer/LinkItemSpec.js');
 require('./common/iServer/MapServiceSpec.js');
 require('./common/iServer/MathExpressionAnalysisServiceSpec.js');
 require('./common/iServer/MeasureServiceSpec.js');
@@ -141,6 +142,12 @@ require('./common/online/OnlineDataSpec.js');
 require('./common/online/OnlineSpec.js');
 require('./common/online/OnlineQueryDatasParameterSpec');
 
+/**common -- iManager**/
+require('./common/iManager/iManagerCreateNodeParamSpec.js');
+
 /**common -- iPortal**/
 require('./common/iPortal/iPortalMapSpec.js');
 require('./common/iPortal/iPortalServiceSpec.js');
+
+/**common -- thirdparty**/
+require('./common/thirdparty/elasticsearch/ElasticSearchSpec.js');
