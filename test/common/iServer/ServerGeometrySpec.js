@@ -221,6 +221,97 @@ describe('ServerGeometry', function () {
         serverGeometry.destroy();
     });
 
+    it('toGeoLineEPS_LinearRing', function () {
+        var options = {
+            id: 1,
+            parts: [4],
+            points: [{"y": -4377.027184298267, "x": 4020.0045221720466},
+                {"y": -4381.569363260499, "x": 4057.0600591960642},
+                {"y": -4382.60877717323, "x": 4064.595810063362},
+                {"y": -4377.027184298267, "x": 4020.0045221720466}],
+            type: SuperMap.GeometryType.LINE
+        };
+        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var toGeoLineEPS_LinearRing = serverGeometry.toGeoLineEPS();
+        expect(toGeoLineEPS_LinearRing).not.toBeNull();
+        expect(toGeoLineEPS_LinearRing.CLASS_NAME).toEqual("SuperMap.Geometry.LinearRing");
+        expect(toGeoLineEPS_LinearRing.id).toContain("SuperMap.Geometry_");
+        expect(toGeoLineEPS_LinearRing.componentTypes[0]).toEqual("SuperMap.Geometry.Point");
+        var components = toGeoLineEPS_LinearRing.components;
+        expect(components.length).toEqual(4);
+        for (var i = 0; i < components.length; i++) {
+            expect(components[i].CLASS_NAME).toEqual("SuperMap.Geometry.Point");
+            expect(components[i].id).toContain("SuperMap.Geometry_");
+            expect(components[i].type).toEqual("Point");
+            expect(components[i].parent.CLASS_NAME).toEqual("SuperMap.Geometry.LinearRing");
+            expect(components[i].x).not.toBeNaN();
+            expect(components[i].y).not.toBeNaN();
+        }
+        serverGeometry.destroy();
+    });
+
+    it('toGeoLineEPS_LineString', function () {
+        var options = {
+            id: 1,
+            parts: [4],
+            points: [{"y": -4377.027184298267, "x": 4020.0045221720466},
+                {"y": -4381.569363260499, "x": 4057.0600591960642},
+                {"y": -4382.60877717323, "x": 4064.595810063362},
+                {"y": -4382.939424428795, "x": 4076.2655245045335}],
+            type: SuperMap.GeometryType.LINE
+        };
+        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var geoLine_LineString = serverGeometry.toGeoLineEPS();
+        expect(geoLine_LineString).not.toBeNull();
+        expect(geoLine_LineString.CLASS_NAME).toEqual("SuperMap.Geometry.LineString");
+        expect(geoLine_LineString.id).toContain("SuperMap.Geometry_");
+        expect(geoLine_LineString.componentTypes[0]).toEqual("SuperMap.Geometry.Point");
+        expect(geoLine_LineString.componentTypes[1]).toEqual("SuperMap.PointWithMeasure");
+        var components = geoLine_LineString.components;
+        expect(components.length).toEqual(4);
+        for (var i = 0; i < components.length; i++) {
+            expect(components[i].CLASS_NAME).toEqual("SuperMap.Geometry.Point");
+            expect(components[i].id).toContain("SuperMap.Geometry_");
+            expect(components[i].type).toEqual("Point");
+            expect(components[i].parent.CLASS_NAME).toEqual("SuperMap.Geometry.LineString");
+            expect(components[i].x).not.toBeNaN();
+            expect(components[i].y).not.toBeNaN();
+        }
+        serverGeometry.destroy();
+    });
+
+    it('toGeoLineEPS_MultiLineString', function () {
+        var options = {
+            id: 1,
+            parts: [4, 4],
+            points: [{"y": -4377.027184298267, "x": 4020.0045221720466},
+                {"y": -4381.569363260499, "x": 4057.0600591960642},
+                {"y": -4382.60877717323, "x": 4064.595810063362},
+                {"y": -4382.939424428795, "x": 4076.2655245045335},
+                {"y": -4382.333381109672, "x": 4215.049444583775},
+                {"y": -4382.389670274902, "x": 4247.756955878764},
+                {"y": -4382.285032149534, "x": 4428.153084011883},
+                {"y": -4383.017499027105, "x": 4647.579232906979}],
+            type: SuperMap.GeometryType.LINE
+        };
+        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var geoLine_MultiLineString = serverGeometry.toGeoLineEPS();
+        expect(geoLine_MultiLineString).not.toBeNull();
+        expect(geoLine_MultiLineString.CLASS_NAME).toEqual("SuperMap.Geometry.MultiLineString");
+        expect(geoLine_MultiLineString.id).toContain("SuperMap.Geometry_");
+        expect(geoLine_MultiLineString.componentTypes[0]).toEqual("SuperMap.Geometry.LineString");
+        var components = geoLine_MultiLineString.components;
+        expect(components.length).toEqual(2);
+        for (var i = 0; i < components.length; i++) {
+            expect(components[i].CLASS_NAME).toEqual("SuperMap.Geometry.LineString");
+            expect(components[i].id).toContain("SuperMap.Geometry_");
+            expect(components[i].componentTypes[0]).toEqual("SuperMap.Geometry.Point");
+            expect(components[i].componentTypes[1]).toEqual("SuperMap.PointWithMeasure");
+            expect(components[i].components.length).toEqual(4);
+        }
+        serverGeometry.destroy();
+    });
+
     it('toGeoLinem', function () {
         var options = {
             id: 1,
@@ -240,5 +331,124 @@ describe('ServerGeometry', function () {
         expect(geoLinem.components[0].CLASS_NAME).toBe("SuperMap.Geometry.LineString");
         expect(geoLinem.components[0].components.length).toEqual(3);
         serverGeometry.destroy();
+    });
+
+    //将服务端的面几何对象转换为客户端几何对象。
+    it('toGeoRegion', function () {
+        var options = {
+            id: 'test',
+            parts: [4, 4],
+            points: [{"y": -4377.027184298267, "x": 4020.0045221720466},
+                {"y": -4381.569363260499, "x": 4057.0600591960642},
+                {"y": -4382.60877717323, "x": 4064.595810063362},
+                {"y": -4382.939424428795, "x": 4076.2655245045335},
+                {"y": -4382.333381109672, "x": 4215.049444583775},
+                {"y": -4382.389670274902, "x": 4247.756955878764},
+                {"y": -4382.285032149534, "x": 4428.153084011883},
+                {"y": -4383.017499027105, "x": 4647.579232906979}],
+            type: SuperMap.GeometryType.LINE
+        };
+        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var geoRegion = serverGeometry.toGeoRegion();
+        expect(geoRegion).not.toBeNull();
+        expect(geoRegion.CLASS_NAME).toEqual("SuperMap.Geometry.MultiPolygon");
+        expect(geoRegion.componentTypes[0]).toEqual("SuperMap.Geometry.Polygon");
+        expect(geoRegion.components.length).toEqual(2);
+        for (var i = 0; i < geoRegion.components.length; i++) {
+            expect(geoRegion.components[i].CLASS_NAME).toEqual("SuperMap.Geometry.Polygon");
+            var components = geoRegion.components[i].components[0].components;
+            expect(components.length).toEqual(5);
+            for(var j = 0;j<components.length;j++){
+                expect(components[j].type).toEqual("Point");
+                expect(components[j].x).not.toBeNaN();
+                expect(components[j].y).not.toBeNaN();
+            }
+        }
+        serverGeometry.destroy();
+    });
+
+    //将服务端的面几何对象转换为客户端几何对象
+    it('toGeoRegionEPS_Null', function () {
+        var serverGeometry = new SuperMap.ServerGeometry({parts: []});
+        var geoRegionEPS_Null = serverGeometry.toGeoRegionEPS();
+        expect(geoRegionEPS_Null).toBeNull();
+        serverGeometry.destroy();
+    });
+
+    it('toGeoRegionEPS_parts =[1]', function () {
+        var options = {
+            id: 'test',
+            parts: [1],
+            points: [{"y": -4377.027184298267, "x": 4020.0045221720466},
+                {"y": -4381.569363260499, "x": 4057.0600591960642},
+                {"y": -4382.60877717323, "x": 4064.595810063362}],
+        };
+        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var geoRegionEPS = serverGeometry.toGeoRegionEPS();
+        expect(geoRegionEPS).not.toBeNull();
+        expect(geoRegionEPS.CLASS_NAME).toEqual("SuperMap.Geometry.MultiPolygon");
+        expect(geoRegionEPS.componentTypes[0]).toEqual("SuperMap.Geometry.Polygon");
+        expect(geoRegionEPS.components.length).toEqual(1);
+        var component = geoRegionEPS.components[0].components[0];
+        expect(component.CLASS_NAME).toEqual("SuperMap.Geometry.LinearRing");
+        expect(component.componentTypes[0]).toEqual("SuperMap.Geometry.Point");
+        var components = component.components;
+        expect(components.length).toEqual(4);
+        for (var i = 0; i < components.length; i++) {
+            expect(components[i].type).toEqual("Point");
+            expect(components[i].x).not.toBeNaN();
+            expect(components[i].y).not.toBeNaN();
+            expect(components[0]).toEqual(components[3]);
+        }
+        serverGeometry.destroy();
+    });
+
+    it('toGeoRegionEPS_parts = [4, 4]', function () {
+        var options = {
+            id: 'test',
+            parts: [4, 4],
+            points: [{"y": -4377.027184298267, "x": 4020.0045221720466},
+                {"y": -4381.569363260499, "x": 4057.0600591960642},
+                {"y": -4382.60877717323, "x": 4064.595810063362},
+                {"y": -4382.939424428795, "x": 4076.2655245045335},
+                {"y": -4382.333381109672, "x": 4215.049444583775},
+                {"y": -4382.389670274902, "x": 4247.756955878764},
+                {"y": -4382.285032149534, "x": 4428.153084011883},
+                {"y": -4383.017499027105, "x": 4647.579232906979}],
+            type: SuperMap.GeometryType.LINE
+        };
+        var serverGeometry = new SuperMap.ServerGeometry(options);
+        var geoRegionEPS = serverGeometry.toGeoRegionEPS();
+        expect(geoRegionEPS).not.toBeNull();
+        expect(geoRegionEPS.CLASS_NAME).toEqual("SuperMap.Geometry.MultiPolygon");
+        expect(geoRegionEPS.componentTypes[0]).toEqual("SuperMap.Geometry.Polygon");
+        expect(geoRegionEPS.components.length).toEqual(2);
+        for (var i = 0; i < geoRegionEPS.components.length; i++) {
+            expect(geoRegionEPS.components[i].CLASS_NAME).toEqual("SuperMap.Geometry.Polygon");
+            expect(geoRegionEPS.components[i].bounds).not.toBeNull();
+            expect(geoRegionEPS.components[i].components[0].CLASS_NAME).toEqual("SuperMap.Geometry.LinearRing");
+            var components = geoRegionEPS.components[i].components[0].components;
+            expect(components.length).toEqual(5);
+            for (var j = 0; j < components.length; j++) {
+                expect(components[j].type).toEqual("Point");
+                expect(components[j].x).not.toBeNaN();
+                expect(components[j].y).not.toBeNaN();
+            }
+        }
+        serverGeometry.destroy();
+    });
+
+    it('IsClockWise', function () {
+        var points1= [{"y": -4377.027184298267, "x": 4020.0045221720466},
+            {"y": -4381.569363260499, "x": 4057.0600591960642},
+            {"y": -4382.60877717323, "x": 4064.595810063362},
+            {"y": -4382.939424428795, "x": 4076.2655245045335},
+            {"y": -4377.027184298267, "x": 4020.0045221720466}];
+        var result1 = SuperMap.ServerGeometry.IsClockWise(points1);
+        expect(result1).toEqual(23.052148170943838);
+        var points2 = [{"y": -4377.027184298267, "x": 4020.0045221720466},
+            {"y": -4381.569363260499, "x": 4057.0600591960642}];
+        var result2 = SuperMap.ServerGeometry.IsClockWise(points2);
+        expect(result2).toEqual(0);
     });
 });
