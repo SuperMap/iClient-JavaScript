@@ -23,7 +23,7 @@
     });
     L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
         .addTo(map)
-        .on("load", function () {
+        .once("load", function () {
             findMTSPPathsProcess();
         });
 

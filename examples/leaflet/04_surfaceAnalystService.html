@@ -21,7 +21,7 @@
         maxZoom: 18,
         zoom: 2
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map).on("load", function () {
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map).once("load", function () {
         surfaceAnalystProcess();
     });
 
