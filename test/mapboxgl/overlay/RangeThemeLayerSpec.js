@@ -353,7 +353,7 @@ describe('mapboxgl_RangeThemeLayer', function () {
     //});
 
     // 测试父类mapbox/overlay/theme/ThemeLayer类中的方法
-    it('getFeatures, getFeatureBy, getFeatureById, getFeaturesByAttribute, moveEvent, zoomEvent, resizeEvent, destroyFeatures', function (done) {
+    it('getFeatures, getFeatureBy, getFeatureById, getFeaturesByAttribute, moveEvent, moveEndEvent, resizeEvent, destroyFeatures', function (done) {
         var themeLayer, result;
         var getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
             queryParameter: new SuperMap.FilterParameter({
@@ -419,8 +419,8 @@ describe('mapboxgl_RangeThemeLayer', function () {
                 });
                 //moveEvent方法
                 themeLayer.moveEvent();
-                //zoomEvent方法
-                themeLayer.zoomEvent();
+                //moveEndEvent
+                themeLayer.moveEndEvent();
                 //resizeEvent方法
                 themeLayer.resizeEvent();
                 //destroyFeatures方法
