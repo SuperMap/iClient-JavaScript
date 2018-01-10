@@ -65,6 +65,7 @@ require('./common/iServer/ThemeRangeSpec.js');
 require('./common/iServer/ThemeServiceSpec.js');
 require('./common/iServer/ThiessenAnalystServiceSpec.js');
 require('./common/iServer/TilesetsServiceSpec.js');
+require('./common/iServer/TransferLineSpec.js');
 require('./common/iServer/TransferPathServiceSpec.js');
 require('./common/iServer/TransferSolutionServiceSpec.js');
 require('./common/iServer/UpdateEdgeWeightServiceSpec.js');
@@ -147,7 +148,9 @@ require('./common/iManager/iManagerCreateNodeParamSpec.js');
 
 /**common -- iPortal**/
 require('./common/iPortal/iPortalMapSpec.js');
+require('./common/iPortal/iPortalMapsQueryParamSpec.js');
 require('./common/iPortal/iPortalServiceSpec.js');
+require('./common/iPortal/iPortalServicesQueryParamSpec.js');
 
 /**common -- thirdparty**/
 require('./common/thirdparty/elasticsearch/ElasticSearchSpec.js');

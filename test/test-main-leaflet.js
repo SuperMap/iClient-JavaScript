@@ -35,6 +35,7 @@ require('./leaflet/services/ThiessenAnalysisSpec.js');
 require('./leaflet/services/TrafficTransferAnalystServiceSpec.js');
 
 /*leaflet -- overlay*/
+require('./leaflet/overlay/vectortile/PointSymbolizerSpec.js');
 require('./leaflet/overlay/vectortile/TextSymbolizerSpec.js');
 require('./leaflet/overlay/EchartsLayerSpec.js');
 require('./leaflet/overlay/GraphicLayerSpec.js');

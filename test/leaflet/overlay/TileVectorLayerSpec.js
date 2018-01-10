@@ -70,7 +70,8 @@ describe('leaflet_TileVectorLayer', function () {
     it('initialize_serverCartoCSSStyle:true', function (done) {
         var tileVectorLayer = new L.supermap.tiledVectorLayer(ChinaURL, {
             cacheEnabled: false,
-            serverCartoCSSStyle: true
+            serverCartoCSSStyle: true,
+            renderer: "Canvas"
         }).addTo(map);
         setTimeout(function () {
             expect(tileVectorLayer).not.toBeNull();
@@ -149,6 +150,82 @@ describe('leaflet_TileVectorLayer', function () {
             done();
         }, 5000);
     });
+
+    //测试其父类
+    it('getStyles', function (done) {
+        var tileVectorLayer = L.supermap.tiledVectorLayer(ChinaURL, {
+            cacheEnabled: false,
+            serverCartoCSSStyle: false
+        }).addTo(map);
+        setTimeout(function () {
+            expect(tileVectorLayer).not.toBeNull();
+            var styles = tileVectorLayer.getStyles();
+            expect(styles).not.toBeNull();
+            map.removeLayer(tileVectorLayer);
+            done();
+        }, 5000);
+    });
+
+    it('setFeatureStyle, resetFeatureStyle', function (done) {
+        var tileVectorLayer = L.supermap.tiledVectorLayer(ChinaURL, {
+            cacheEnabled: false,
+            serverCartoCSSStyle: false
+        }).addTo(map);
+        setTimeout(function () {
+            expect(tileVectorLayer).not.toBeNull();
+            spyOn(tileVectorLayer, 'setFeatureStyle').and.callThrough();
+            spyOn(tileVectorLayer, 'resetFeatureStyle').and.callThrough();
+            spyOn(tileVectorLayer, '_getFeatureKey').and.callThrough();
+            spyOn(tileVectorLayer, '_updateStyles').and.callThrough();
+            var newTileVectorLayer = tileVectorLayer.setFeatureStyle(1, "World_Continent_pl@China");
+            var newTileVectorLayer1 = tileVectorLayer.resetFeatureStyle(1, "World_Continent_pl@China");
+            expect(newTileVectorLayer).not.toBeNull();
+            expect(newTileVectorLayer1).not.toBeNull();
+            expect(tileVectorLayer.setFeatureStyle).toHaveBeenCalled();
+            expect(tileVectorLayer.resetFeatureStyle).toHaveBeenCalled();
+            expect(tileVectorLayer._getFeatureKey).toHaveBeenCalled();
+            expect(tileVectorLayer._updateStyles).toHaveBeenCalled();
+            map.removeLayer(tileVectorLayer);
+            done();
+        }, 5000);
+    });
+
+    it('getDataLayerNames', function (done) {
+        var tileVectorLayer = L.supermap.tiledVectorLayer(ChinaURL, {
+            cacheEnabled: false,
+            serverCartoCSSStyle: false
+        }).addTo(map);
+        setTimeout(function () {
+            expect(tileVectorLayer).not.toBeNull();
+            var nameArray = tileVectorLayer.getDataLayerNames();
+            expect(nameArray).not.toBeNull();
+            expect(nameArray.length).toEqual(19);
+            map.removeLayer(tileVectorLayer);
+            done();
+        }, 5000);
+    });
+
+    it('_extendStyle', function (done) {
+        var tileVectorLayer = L.supermap.tiledVectorLayer(ChinaURL, {
+            cacheEnabled: false,
+            serverCartoCSSStyle: false
+        }).addTo(map);
+        setTimeout(function () {
+            expect(tileVectorLayer).not.toBeNull();
+            var style = tileVectorLayer.vectorTileLayerStyles['China_Capital_pt@China'];
+            var result1 = tileVectorLayer._extendStyle(style, "POINT");
+            expect(result1).not.toBeNull();
+            var result2 = tileVectorLayer._extendStyle(style, "LINE");
+            expect(result2).not.toBeNull();
+            var result3 = tileVectorLayer._extendStyle(style, "TEXT");
+            expect(result3).not.toBeNull();
+            var result4 = tileVectorLayer._extendStyle(style, "TEXT1");
+            expect(result4).not.toBeNull();
+            map.removeLayer(tileVectorLayer);
+            done();
+        }, 5000);
+    });
+
 
     function initClientCssStr() {
         var cartoCss = "@waterColor:rgb(109,183,255);" +
