@@ -340,8 +340,8 @@ var exampleConfig = {
                     }
                 ]
             },
-            "Echarts": {
-                name: "Echarts",
+            "ECharts": {
+                name: "ECharts",
                 name_en: "ECharts",
                 content: [
                     {
@@ -419,8 +419,8 @@ var exampleConfig = {
                     }
                 ]
             },
-            "EchartsGL": {
-                name: "EchartsGL",
+            "EChartsGL": {
+                name: "EChartsGL",
                 name_en: "EChartsGL",
                 content: [
                     {
