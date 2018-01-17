@@ -55,3 +55,6 @@ require('./leaflet/mapping/WebMapSpec.js');
 
 /*leaflet -- control*/
 require('./leaflet/control/ChangeTileVersionSpec.js');
+
+/*leaflet -- core*/
+require('./leaflet/core/NonEarthCRSSpec.js');
