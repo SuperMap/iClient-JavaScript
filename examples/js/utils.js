@@ -30,8 +30,7 @@
         }
         if (navigator.appName === 'Netscape') {
             return navigator.language;
-        }
-        else {
+        } else {
             return navigator.browserLanguage;
         }
     }

@@ -34,7 +34,22 @@
     //加载类库资源文件
     function load() {
         var includes = (targetScript.getAttribute('include') || "").split(",");
-        if (inArray(includes, 'jquery')) {
+        var excludes = (targetScript.getAttribute('exclude') || "").split(",");
+
+        var jQueryInclude = false;
+        if (!inArray(excludes, 'example-i18n')) {
+            inputScript("https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js");
+
+            inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.js");
+            inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.js");
+
+            inputScript("../js/utils.js");
+            inputScript("../js/localization.js");
+            document.writeln("<script> Localization.initializeI18N('../', function () {Localization.localize();Localization.initGlobal();});</script>");
+            jQueryInclude = true;
+        }
+
+        if (inArray(includes, 'jquery') && !jQueryInclude) {
             inputScript("https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js");
         }
         if (inArray(includes, 'bootstrap')) {
@@ -91,6 +106,7 @@
         if (inArray(includes, 'ace')) {
             inputScript("http://cdn.bootcss.com/ace/1.2.6/ace.js");
         }
+
         if (inArray(includes, 'widgets.alert')) {
             inputScript("../js/widgets.js");
         }
@@ -126,9 +142,8 @@
             inputScript("https://cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js");
         }
         if (inArray(includes, 'i18n')) {
-            inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.js");
-            inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.js");
-            inputScript("https://cdn.bootcss.com/i18next-xhr-backend/1.5.0/i18nextXHRBackend.min.js");
+            inputScript("https://cdn.bootcss.com/i18next/10.0.7/i18next.min.js");
+            inputScript("https://cdn.bootcss.com/jquery-i18next/1.2.1/jquery-i18next.min.js");
         }
     }
 
