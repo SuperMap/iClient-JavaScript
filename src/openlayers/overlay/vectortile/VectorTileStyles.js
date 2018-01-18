@@ -170,7 +170,7 @@ export class VectorTileStyles extends ol.Observable {
         function getDefaultSelectedTextStyle() {
             return new ol.style.Style({
                 text: new ol.style.Text({
-                    font: '15px 微软雅黑',
+                    font: '15px Microsoft YaHei',
                     fill: new ol.style.Fill({
                         color: 'blue'
                     }),

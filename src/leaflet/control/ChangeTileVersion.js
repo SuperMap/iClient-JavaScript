@@ -33,7 +33,7 @@ export var ChangeTileVersion = L.Control.extend({
         //控件位置 继承自leaflet control
         position: 'topleft',
         //鼠标滑过时提示
-        title: '切换缓存版本',
+        title: 'switch tile version',
         //tooltip提示显示位置 top | right | bottom | left
         tooltip: "top",
         //是否折叠

@@ -31,7 +31,7 @@ export class ChangeTileVersion extends ol.control.Control {
         options = options || {};
         //鼠标滑过时提示
         if (!options.title) {
-            options.title = "切换缓存版本";
+            options.title = "switch tile version";
         }
         //tooltip提示显示位置 top | right | bottom | left
         if (!options.tooltip) {

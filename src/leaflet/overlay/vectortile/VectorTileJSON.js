@@ -102,7 +102,7 @@ export var VectorTileJSON = L.Class.extend({
             }
             newFeature = scope._createFeature(id, VectorFeatureType.REGION, rings, tags);
         } else {
-            throw new Error('不合法的GeoJSON对象');
+            throw new Error('Illegal GeoJSON object');
         }
         return newFeature;
     },

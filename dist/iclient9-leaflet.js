@@ -57933,7 +57933,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2["default"].Control
         //控件位置 继承自leaflet control
         position: 'topleft',
         //鼠标滑过时提示
-        title: '切换缓存版本',
+        title: 'switch tile version',
         //tooltip提示显示位置 top | right | bottom | left
         tooltip: "top",
         //是否折叠
@@ -86845,7 +86845,7 @@ var VectorTileJSON = exports.VectorTileJSON = _leaflet2["default"].Class.extend(
             }
             newFeature = scope._createFeature(id, _VectorFeatureType.VectorFeatureType.REGION, rings, tags);
         } else {
-            throw new Error('不合法的GeoJSON对象');
+            throw new Error('Illegal GeoJSON object');
         }
         return newFeature;
     },
