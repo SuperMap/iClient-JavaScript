@@ -82,7 +82,7 @@ describe('openlayers_ChangeTileVersion', function () {
         expect(result.options.collapsed).toBeTruthy();
         expect(result.options.switch).toBeTruthy();
         expect(result.options.orientation).toBe("horizontal");
-        expect(result.options.title).toBe("切换缓存版本");
+        expect(result.options.title).toBe("switch tile version");
         expect(result.options.tooltip).toBe("top");
     });
 
@@ -97,7 +97,7 @@ describe('openlayers_ChangeTileVersion', function () {
         expect(changeTileVersion.options.collapsed).toBeTruthy();
         expect(changeTileVersion.options.switch).toBeTruthy();
         expect(changeTileVersion.options.orientation).toBe("horizontal");
-        expect(changeTileVersion.options.title).toBe("切换缓存版本");
+        expect(changeTileVersion.options.title).toBe("switch tile version");
         expect(changeTileVersion.options.tooltip).toBe("top");
     });
 
