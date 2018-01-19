@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>公交换乘服务</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_trafficTransfer">公交换乘服务</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,7 +32,8 @@
 </head>
 <body>
 <div id="toolbar" class="panel panel-primary toolbar">
-    <div class='panel-heading'><h5 class='panel-title text-center'>公交换乘服务</h5></div>
+    <div class='panel-heading'><h5 class='panel-title text-center' data-i18n="resources.text_trafficTransfer">
+        公交换乘服务</h5></div>
     <div class='panel'>
         <div class='input-group'>
             <div id='result' style="width: 360px" class='container'></div>
@@ -43,6 +42,8 @@
     <div id="func" style="margin: 10px 0 10px 0;"></div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 
 <script>
     var map, layer, start, end, vectorLayer, markerLayer, startLayer, endLayer, tempRedLayer,
@@ -69,7 +70,7 @@
     //起点搜索文本提示信息框
     function addStartSugText() {
         var inputDiv = $("<div class='start_end_input'></div>")
-        $("<span>起点：</span>").appendTo(inputDiv);
+        $("<span>" + resources.text_startPoint + "</span>").appendTo(inputDiv);
         var input = $("<input type='search' width='60px' id='startInput' value='省汽修' text='26,3111.42533851,-5527.73795456'></input>");
         var p = new SuperMap.Geometry.Point(3111.42533851, -5527.73795456);
         startLayer.addMarker(new SuperMap.Marker(new SuperMap.LonLat(p.x, p.y), iconstart));
@@ -122,7 +123,7 @@
             function stopQuerySucceed(stopQueryEvent) {
                 popup.addClass("show").css("display", "block");
                 if (!stopQueryEvent.result.transferStopInfos.length) {
-                    $("<li>未找到匹配的起点</li>").appendTo(list);
+                    $("<li>" + resources.text_notFindSPoint + "</li>").appendTo(list);
                     noStart = true;
                 } else {
                     noStart = false;
@@ -153,7 +154,7 @@
             }
 
             function stopQueryFailed(result) {
-                widgets.alert.showAlert(result,false);
+                widgets.alert.showAlert(result, false);
             }
         }
 
@@ -215,7 +216,7 @@
     //终点搜索文本提示信息框
     function addEndSugText() {
         var inputDiv = $("<div class='start_end_input'></div>")
-        $("<span>终点：</span>").appendTo(inputDiv);
+        $("<span>" + resources.text_endPoint + "</span>").appendTo(inputDiv);
         var input = $("<input type='search' width='60px' id='endInput' value='中安大厦' text='180,6055.3431955,-4270.0725196'></input>");
         var p = new SuperMap.Geometry.Point(6055.3431955, -4270.0725196);
         startLayer.addMarker(new SuperMap.Marker(new SuperMap.LonLat(p.x, p.y), iconend));
@@ -266,7 +267,7 @@
             function stopQuerySucceed(stopQueryEvent) {
                 popup.addClass("show").css("display", "block");
                 if (!stopQueryEvent.result.transferStopInfos.length) {
-                    $("<li>未找到匹配的终点</li>").appendTo(list);
+                    $("<li>" + resources.text_notFindEPoint + "</li>").appendTo(list);
                     noEnd = true;
                 } else {
                     noEnd = false;
@@ -297,7 +298,7 @@
             }
 
             function stopQueryFailed(result) {
-                widgets.alert.showAlert(result,false);
+                widgets.alert.showAlert(result, false);
             }
         }
 
@@ -391,26 +392,26 @@
             map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 0);
             addStartSugText();
             addEndSugText();
-            addDropDownMenu("换乘策略");
-            addDropDownMenuItem("最少时间", lessTime);
-            addDropDownMenuItem("最短距离", minDistance);
-            addDropDownMenuItem("少步行", lessWalk);
-            addDropDownMenuItem("少换乘", lessTransfer);
+            addDropDownMenu(resources.text_transferScheme);
+            addDropDownMenuItem(resources.text_minTime, lessTime);
+            addDropDownMenuItem(resources.text_minDistance, minDistance);
+            addDropDownMenuItem(resources.text_lessWalk, lessWalk);
+            addDropDownMenuItem(resources.text_lessTransfer, lessTransfer);
         }
 
         function getStartEndStopID() {
             if (!$("#startInput").attr("value")) {
-                widgets.alert.showAlert("查询提示:" + "请选择查询的起点",true);
+                widgets.alert.showAlert(resources.msg_query + resources.msg_selectSPoint, true);
                 return;
             }
             if (!$("#endInput").attr("value")) {
-                widgets.alert.showAlert("查询提示:" + "请选择查询的终点",true);
+                widgets.alert.showAlert(resources.msg_query + resources.msg_selectEPoint, true);
                 return;
             }
 
             var start = $("#startInput").attr("text");
             var startList = $("#startSugList li");
-            if (startList.length === 1 && startList.html() !== "未找到匹配的起点") {
+            if (startList.length === 1 && startList.html() !== resources.text_notFindSPoint) {
                 $("#startInput").attr("text", startList.attr("id"));
                 $("#startInput").attr("value", startList.html());
                 start = startList.attr("id").split(",")[0];
@@ -422,7 +423,7 @@
                     var startStopID = startStop.getAttribute("id");
                     var startStopName = startStop.innerHTML;
                     if (!startStopID) {
-                        widgets.alert.showAlert("查询提示:" + "无匹配的起点信息",false);
+                        widgets.alert.showAlert(resources.msg_query + resources.msg_noSInfo, false);
                         return;
                     }
                     $("#startInput").attr("text", startStopID);
@@ -432,7 +433,7 @@
             }
             var end = $("#endInput").attr("text");
             var endList = $("#endSugList li");
-            if (endList.length === 1 && endList.html() !== "未找到匹配的终点") {
+            if (endList.length === 1 && endList.html() !== resources.text_notFindEPoint) {
                 $("#endInput").attr("text", endList.attr("id"));
                 $("#endInput").attr("value", endList.html());
                 end = endList.attr("id").split(",")[0];
@@ -444,7 +445,7 @@
                     var endStopID = endStop.getAttribute("id");
                     var endStopName = endStop.innerHTML;
                     if (!endStopID) {
-                        widgets.alert.showAlert("查询提示:" + "无匹配的终点信息",false);
+                        widgets.alert.showAlert(resources.msg_query + resources.msg_noEInfo, false);
                         return;
                     }
                     $("#endInput").attr("text", endStopID);
@@ -505,11 +506,11 @@
         //包括时间最短、距离最短、最少换乘、最少步行四种选择
         function executeTrafficTransfer(points, transferTactic) {
             if (noStart) {
-                widgets.alert.showAlert("查询提示:" + "无匹配的起点",false);
+                widgets.alert.showAlert(resources.msg_query + resources.text_notFindSPoint, false);
                 return;
             }
             if (noEnd) {
-                widgets.alert.showAlert("查询提示:" + "无匹配的终点",false);
+                widgets.alert.showAlert(resources.msg_query + resources.text_notFindEPoint, false);
                 return;
             }
             window.paths = {};
@@ -548,13 +549,13 @@
             var tr2 = $("<tr></tr>");
             if (item.isWalking) {
                 $("<td class='step_transfer' ></td>").appendTo(tr2);
-                $("<td>步行至:<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
-                $("<td>" + parseInt(item.distance) + "米</td>").appendTo(tr2);
+                $("<td>" + resources.text_walkTO + "<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
+                $("<td>" + parseInt(item.distance) + resources.msg_m + "</td>").appendTo(tr2);
             } else {
                 var otherLines = transSolutions[indexX].linesItems[indexY],
                     links = "";
                 if (otherLines && otherLines.lineItems.length > 1) {
-                    links = "</br>还可乘坐:"
+                    links = "</br>"+resources.text_alsoRide;
                     for (var oti = 0, otLen = otherLines.lineItems.length; oti < otLen; oti++) {
                         var line = otherLines.lineItems[oti];
                         if (item.lineName !== line.lineName) {
@@ -571,8 +572,8 @@
                         pointStr += ",";
                     }
                 }
-                $("<td>乘坐<a class='busLink'>" + item.lineName + "<span style='display:none'>" + pointStr + "</span></a>, 在<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a>下车" + links + "</td>").appendTo(tr2);
-                $("<td>" + item.passStopCount + "站</td>").appendTo(tr2);
+                $("<td>" + resources.text_ride + "<a class='busLink'>" + item.lineName + "<span style='display:none'>" + pointStr + "</span></a>" + resources.text_debus1 + "<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a>" + resources.text_debus2 + links + "</td>").appendTo(tr2);
+                $("<td>" + item.passStopCount + resources.text_stops + "</td>").appendTo(tr2);
                 indexY++;
             }
             tr2.appendTo(table);
@@ -665,7 +666,7 @@
                 var index = "solutions_" + i;
                 window.paths[index] = path;
 
-                $("<div class='transferSolution' id='transferSolution-" + i + "'><span class='transferIndex'>方案" + (i + 1) + "：</span>" + title + "</div>").appendTo(transRes);
+                $("<div class='transferSolution' id='transferSolution-" + i + "'><span class='transferIndex'>" + resources.text_scheme + (i + 1) + "：</span>" + title + "</div>").appendTo(transRes);
 
                 if (i !== 0) {
                     dispStatus = "none";
@@ -719,7 +720,7 @@
 
         //执行公交换乘失败返回结果
         function transferSolutionsFailed(event) {
-            widgets.alert.showAlert("错误提示:" + event.error.errorMsg,false);
+            widgets.alert.showAlert("错误提示:" + event.error.errorMsg, false);
         }
     }
 
@@ -825,8 +826,8 @@
             chked = "unchecked";
         }
         var str = "";
-        str += '<div class="winTitle" onMouseDown="startMove(this,event)" onMouseUp="stopMove(this,event)"><span class="title_left">交通换乘方案</span><span class="title_right"><a href="javascript:closeWindow()" title="关闭窗口">关闭</a></span><br style="clear:right"/></div>';  //标题栏
-        str += '<div class="transferPreference"><span class="floatLeft">乘车偏好：</span><input type="checkbox" class="floatLeft" id="preferenceCheck" ' + chked + '/><span class="floatLeft">不乘地铁</span></div>';
+        str += '<div class="winTitle" onMouseDown="startMove(this,event)" onMouseUp="stopMove(this,event)"><span class="title_left">' + resources.text_trafficTransferScheme + '</span><span class="title_right"><a href="javascript:closeWindow()" title="关闭窗口">' + resources.text_close + '</a></span><br style="clear:right"/></div>';  //标题栏
+        str += '<div class="transferPreference"><span class="floatLeft">' + resources.text_ridePreference + '</span><input type="checkbox" class="floatLeft" id="preferenceCheck" ' + chked + '/><span class="floatLeft">' + resources.text_noSubway + '</span></div>';
         str += '<div class="winContent" style="overflow-y: auto;">';
         str += winMessage;
         str += '</div>';

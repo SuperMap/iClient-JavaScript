@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>栅格代数运算</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_mathExpression">栅格代数运算</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -25,7 +23,6 @@
             position: absolute;
             top: 50px;
             right: 10px;
-            width: 300px;
             text-align: center;
             z-index: 100;
             border-radius: 4px;
@@ -35,18 +32,22 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>栅格代数运算</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_mathExpression">栅格代数运算</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <span>代数表达式：</span><span>[Jingjin.JingjinTerrain] + 600</span>
+                <span data-i18n="resources.text_expression">代数表达式：</span><span>[Jingjin.JingjinTerrain] + 600</span>
             </div>
         </div>
-        <input type="button" class="btn btn-default" value="栅格代数运算" onclick="addResultLayer()"/>
-        <input type="button" class="btn btn-default" value="移除结果图层" onclick="removeTheme()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_mathExpression"
+               onclick="addResultLayer()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clearLayer"
+               onclick="removeTheme()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var map, baseLayer, resultLayer,
         host = window.isLocal ? window.server : "http://117.122.248.69:8090",
@@ -198,11 +199,11 @@
     }
 
     function themeFailed(serviceFailedEventArgs) {
-        widgets.alert.showAlert(serviceFailedEventArgs.error.errorMsg,false);
+        widgets.alert.showAlert(serviceFailedEventArgs.error.errorMsg, false);
     }
 
     function mathExpressionAnalysisFailed(serviceFailedEventArgs) {
-        widgets.alert.showAlert(serviceFailedEventArgs.error.errorMsg,false);
+        widgets.alert.showAlert(serviceFailedEventArgs.error.errorMsg, false);
     }
 
     //移除专题图

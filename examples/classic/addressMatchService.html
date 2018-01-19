@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>地址匹配服务</title>
+    <title data-i18n="resources.title_addressMatchService">地址匹配服务</title>
     <script type="text/javascript" include="bootstrap-css,jquery" src="../js/include-web.js"></script>
     <style>
         .control {
@@ -22,102 +22,102 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <ul class="nav nav-tabs nav-justified">
-                <li id="geocode" role="presentation" class="active"><a href="#">正向匹配</a></li>
-                <li id="geodecode" role="presentation"><a href="#">反向匹配</a></li>
+                <li id="geocode" role="presentation" class="active"><a href="#" data-i18n="resources.text_code">正向匹配</a></li>
+                <li id="geodecode" role="presentation"><a href="#" data-i18n="resources.text_decode">反向匹配</a></li>
             </ul>
             <p></p>
             <div class="tab-content">
                 <div id="geocodeParam" role="tabpanel" class="tab-pane deplistContent active">
                     <div class="input-group">
-                        <span class="input-group-addon">地址　　　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_address">地址　　　</span>
                         <input id="address" type="text" class="form-control" placeholder="公司"/>
                     </div>
 
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">过滤字段　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_filterField">过滤字段　</span>
                         <input id="filters" type="text" class="form-control"
                                placeholder="北京"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">最小索引　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_minIndex">最小索引　</span>
                         <input id="fromIndex" type="text" class="form-control"
                                placeholder="0"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">最大索引　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_maxIndex">最大索引　</span>
                         <input id="toIndex" type="text" class="form-control"
                                placeholder="10"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">最大结果数</span>
+                        <span class="input-group-addon" data-i18n="resources.text_maxCount">最大结果数</span>
                         <input id="maxReturn" type="text" class="form-control"
                                placeholder="-1"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">坐标系　　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_coorSystem">坐标系　　</span>
                         <input id="prjCoordSys" type="text" class="form-control"
                                placeholder="{epsgcode:4326}"/>
                     </div>
                     <p></p>
                     <div align="right">
-                        <input type="button" id='codeBtn' class="btn btn-primary" value="匹配"/>
+                        <input type="button" id='codeBtn' class="btn btn-primary" data-i18n="[value]resources.text_input_value_match"/>
                     </div>
                 </div>
                 <div id="geodecodeParam" role="tabpanel" class="tab-pane deplistContent">
                     <div class="input-group">
-                        <span class="input-group-addon">横坐标　　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_abscissa">横坐标　　</span>
                         <input id="xCoord" type="text" class="form-control" placeholder="116.3518541194752"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">纵坐标　　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_ordinate">纵坐标　　</span>
                         <input id="yCoord" type="text" class="form-control"
                                placeholder="40.00097839595237"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">过滤字段　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_filterField">过滤字段　</span>
                         <input id="filters2" type="text" class="form-control"
                                placeholder=""/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">最小索引　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_minIndex">最小索引　</span>
                         <input id="fromIndex2" type="text" class="form-control"
                                placeholder="0"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">最大索引　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_maxIndex">最大索引　</span>
                         <input id="toIndex2" type="text" class="form-control"
                                placeholder="10"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">最大结果数</span>
+                        <span class="input-group-addon" data-i18n="resources.text_maxCount">最大结果数</span>
                         <input id="maxReturn2" type="text" class="form-control"
                                placeholder="-1"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">查询半径　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_queryRadius">查询半径　</span>
                         <input id="geoDecodingRadius" type="text" class="form-control"
                                placeholder="-1"/>
                     </div>
                     <p></p>
                     <div class="input-group">
-                        <span class="input-group-addon">坐标系　　</span>
+                        <span class="input-group-addon" data-i18n="resources.text_ordinate">坐标系　　</span>
                         <input id="prjCoordSys2" type="text" class="form-control"
                                placeholder="{epsgcode:4326}"/>
                     </div>
                     <p></p>
                     <div align="right">
-                        <input type="button" id='decodeBtn' class="btn btn-primary" value="匹配"/>
+                        <input type="button" id='decodeBtn' class="btn btn-primary" data-i18n="[value]resources.text_input_value_match"/>
                     </div>
                 </div>
             </div>
@@ -218,14 +218,14 @@
                 var offset = new SuperMap.Pixel(11, -30);
                 var icon = new SuperMap.Icon(imgUrl, size, offset);
                 var innerHTML = "";
-                innerHTML += "地址:" + item.address + "<br>";
+                innerHTML += resources.text_address + ":" + item.address + "<br>";
                 var x = Number(item.location.x.toString().match(/^\d+(?:\.\d{0,2})?/));
                 var y = Number(item.location.y.toString().match(/^\d+(?:\.\d{0,2})?/));
-                innerHTML += "坐标:[" + x + "," + y + "]<br>";
+                innerHTML += resources.text_coordinate +":[" + x + "," + y + "]<br>";
                 if (item.score > 0) {
-                    innerHTML += "匹配度:" + item.score + "<br>";
+                    innerHTML += resources.text_coordinate +":" + item.score + "<br>";
                 }
-                innerHTML += "过滤字段:" + item.filters + "<br>";
+                innerHTML += resources.text_matchDegree + ":" + item.filters + "<br>";
                 var popup = new SuperMap.Popup.FramedCloud("popwin",
                     new SuperMap.LonLat(lonlat.lon, lonlat.lat),
                     null,

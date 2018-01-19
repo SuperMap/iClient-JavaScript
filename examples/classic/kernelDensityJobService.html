@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>密度分析</title>
+    <title data-i18n="resources.title_kernelDensityJobService">密度分析</title>
     <script type="text/javascript" include="jquery,bootstrap,widgets" src="../js/include-web.js"></script>
     <style>
         .control {
@@ -21,50 +21,55 @@
 <div id="control" class="control" style='width:300px'>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">密度分析</h3>
+            <h3 class="panel-title" data-i18n="resources.text_kernelDensityJobService">密度分析</h3>
         </div>
         <div class="panel-body">
             <div class="input-group">
-                <span class="input-group-addon">输入数据<span title='必填字段' style='color: red;'> * </span>　</span>
+                <span class="input-group-addon" data-i18n="resources.text_inputData">输入数据<span
+                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span>　</span>
                 <input id="datasetName" type="text" class="form-control"
                        value="samples_newyork_taxi_2013-01_14k"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">分析方法<span title='必填字段' style='color: red;'> * </span>　</span>
+                <span class="input-group-addon" data-i18n="resources.text_analysisMethod">分析方法<span
+                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span>　</span>
                 <div>
                     <select class="form-control" id="method" name="clientType">
-                        <option value="0" selected="selected">简单点密度分析</option>
-                        <option value="1">核密度分析</option>
+                        <option value="0" selected="selected" data-i18n="resources.text_simpleDenAnalyst">简单点密度分析
+                        </option>
+                        <option value="1" data-i18n="resources.title_densityAnalystService">核密度分析</option>
                     </select>
                 </div>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">网格面类型<span title='必填字段' style='color: red;'> * </span></span>
+                <span class="input-group-addon" data-i18n="resources.text_meshSurfaceType">网格面类型<span
+                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
                 <select class="form-control" id="meshType" name="clientType">
-                    <option value="0" selected="selected">四边形网格</option>
-                    <option value="1">六边形网格</option>
+                    <option value="0" selected="selected" data-i18n="resources.text_4grid">四边形网格</option>
+                    <option value="1" data-i18n="resources.text_6grid">六边形网格</option>
                 </select>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">权重值字段　</span>
+                <span class="input-group-addon" data-i18n="resources.text_weightField">权重值字段　</span>
                 <input id="fields" type="text" class="form-control" value="col7,col8"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">分析范围　　</span>
+                <span class="input-group-addon" data-i18n="resources.text_analysisRange">分析范围　　</span>
                 <input id="query" type="text" class="form-control" value="-74.150, 40.550, -73.750, 40.950"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">网格大小<span title='必填字段' style='color: red;'> * </span>　</span>
+                <span class="input-group-addon" data-i18n="resources.text_gridSize">网格大小<span
+                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span>　</span>
                 <input id="resolution" type="text" class="form-control" value="80"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">网格大小单位</span>
+                <span class="input-group-addon" data-i18n="resources.text_gridSizeUnit">网格大小单位</span>
                 <select class="form-control" id="meshSizeUnit" name="clientType">
                     <option value="Meter" selected="selected">Meter</option>
                     <option value="Kilometer">Kilometer</option>
@@ -75,12 +80,13 @@
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">搜索半径<span title='必填字段' style='color: red;'> * </span>　</span>
+                <span class="input-group-addon" data-i18n="resources.text_searchRadius">搜索半径<span
+                        data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span>　</span>
                 <input id="radius" type="text" class="form-control" value="300"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">搜索半径单位</span>
+                <span class="input-group-addon" data-i18n="resources.text_searchRadiusUnit">搜索半径单位</span>
                 <select class="form-control" id="radiusUnit" name="clientType">
                     <option value="Meter" selected="selected">Meter</option>
                     <option value="Kilometer">Kilometer</option>
@@ -91,7 +97,7 @@
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">面积单位　　</span>
+                <span class="input-group-addon" data-i18n="resources.text_areaUnit">面积单位　　</span>
                 <select class="form-control" id="areaUnit" name="clientType">
                     <option value="SquareMile" selected="selected">SquareMile</option>
                     <option value="Hectare">Hectare</option>
@@ -104,7 +110,7 @@
             </div>
             <p>
             <div align="right">
-                <input type="button" id='btn' class="btn btn-primary" value="分析"/>
+                <input type="button" id='btn' class="btn btn-primary" data-i18n="[value]resources.text_analyst"/>
             </div>
         </div>
     </div>
@@ -158,7 +164,7 @@
         if ($('#msg_container')[0]) {
             $('#msg_container').remove();
         }
-       widgets.loader.showLoader();
+        widgets.loader.showLoader();
         if (map && resultLayer) {
             map.removeLayer(resultLayer);
         }
@@ -176,9 +182,9 @@
         });
         processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
             if (serviceResult.error) {
-               widgets.loader.removeLoader();
+                widgets.loader.removeLoader();
                 var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
-               widgets.alert.showAlert("创建失败!<br>" + errorMsg, false);
+                widgets.alert.showAlert(resources.msg_createFailed + "<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
@@ -192,14 +198,13 @@
 
                         function addLayer() {
                             map.addLayer(resultLayer);
-                           widgets.loader.removeLoader();
+                            widgets.loader.removeLoader();
                         }
                     });
                 }
             });
         });
     });
-
 
 
 </script>

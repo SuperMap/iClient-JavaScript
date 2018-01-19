@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>泰森多边形</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_thiessenAnalyst">泰森多边形</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,14 +32,19 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>泰森多边形</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_thiessenAnalyst">泰森多边形</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="数据集泰森多边形" onclick="bufferAnalystProcess()"/>
-        <input type="button" class="btn btn-default" value="几何泰森多边形" onclick="geometryAnalystProcess()"/>
-        <input type="button" class="btn btn-default" value="移除结果" onclick="removeResult()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_datasetThiessen"
+               onclick="bufferAnalystProcess()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_geoThiessen"
+               onclick="geometryAnalystProcess()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_removeResult"
+               onclick="removeResult()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, local, baseLayer, resultLayer, spatialAnalystURL,
@@ -135,7 +138,7 @@
 
     //请求失败
     function thiessenAnalystFailed(serviceEventArgs) {
-        widgets.alert.showAlert(serviceEventArgs.error.errorMsg,false);
+        widgets.alert.showAlert(serviceEventArgs.error.errorMsg, false);
     }
 
     function removeResult() {

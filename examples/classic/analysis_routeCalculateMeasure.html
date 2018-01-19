@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>点定里程</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_routeCalculateMeasure">点定里程</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -25,7 +23,7 @@
             position: absolute;
             top: 50px;
             right: 10px;
-            width: 300px;
+            width: 400px;
             text-align: center;
             z-index: 100;
             border-radius: 4px;
@@ -35,14 +33,19 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>点定里程</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_routeCalculateMeasure">点定里程</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="查询路由对象" onclick="CreateRouteObj()"/>
-        <input type="button" class="btn btn-default" value="指定查询点" onclick="RouteCalculateMeasure()"/>
-        <input type="button" class="btn btn-default" value="清除" onclick="Remove()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_queryRoute"
+               onclick="CreateRouteObj()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_queryPoint"
+               onclick="RouteCalculateMeasure()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear"
+               onclick="Remove()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, layer, routeObj, vectorLayer, drawPoint, pointLayer, snap01, modifyFeature,
@@ -128,19 +131,19 @@
         feature.geometry = geo;
         feature.style = lineStyle;
         vectorLayer.addFeatures(feature);
-        widgets.alert.showAlert("查询成功",true);
+        widgets.alert.showAlert(resources.msg_querySuccess, true);
     }
 
     //路由对象查询失败，显示提示信息
     function processFailed() {
-        widgets.alert.showAlert("查询失败",false);
+        widgets.alert.showAlert(resources.msg_queryFailure, false);
     }
 
     //激活画点控件，判断routeObj是否为空，如果为空则禁止下一步操作
     function RouteCalculateMeasure() {
         widgets.alert.clearAlert();
         if (!routeObj) {
-            widgets.alert.showAlert("请通过查询获取路由对象！",false);
+            widgets.alert.showAlert(resources.msg_getRoute, false);
             return;
         }
         drawPoint.activate();
@@ -177,12 +180,12 @@
 
     //“点定里程”查询完成，提示返回信息
     function routeCalculateMeasureCompleted(e) {
-        widgets.alert.showAlert("查询获取的M值为：" + e.result.measure,true);
+        widgets.alert.showAlert(resources.msg_MByQuery + e.result.measure, true);
     }
 
     //“点定里程”查询失败，提示服务端返回的信息
     function routeCalculateMeasureFailed(e) {
-        widgets.alert.showAlert(e.error.errorMsg,false);
+        widgets.alert.showAlert(e.error.errorMsg, false);
     }
 
     //移除图面要素，并使画点控件失效，同时将路由对象置空，去掉提示信息

@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>离散点插值分析</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_interpolationAnalystByGeo">离散点插值分析</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -35,25 +33,27 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>离散点插值分析</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_interpolationAnalystByGeo">离散点插值分析</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'> Z值范围 最小值:</span>
+                <span class='input-group-addon' data-i18n="resources.text_min"> Z值范围 最小值:</span>
                 <input type='number' class='form-control' id='zMin' value='-5'/>
             </div>
         </div>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>最大值：</span>
+                <span class='input-group-addon' data-i18n="resources.text_max">最大值：</span>
                 <input type='number' class='form-control' id='zMax' value='28'/>
             </div>
         </div>
-        <input type="button" class="btn btn-default" value="离散点插值分析" onclick="cretePointsAnalyst()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="删除" onclick="removeInterpolation()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_byGeo" onclick="cretePointsAnalyst()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_delete" onclick="removeInterpolation()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://117.122.248.69:8090",
         url = host + "/iserver/services/map-temperature/rest/maps/全国温度变化图",

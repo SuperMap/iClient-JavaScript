@@ -23,7 +23,7 @@
     <div class='panel-body' id='params'>
         <p></p>
         <div align='center' class='button-group'>
-            <input type='button' id='btn' class='btn btn-primary' value='定位' onclick="geoLocation()"/>
+            <input type='button' id='btn' class='btn btn-primary' data-i18n="[value]resources.text_input_value_location" onclick="geoLocation()"/>
         </div>
     </div>
 </div>
@@ -93,7 +93,7 @@
         map.setCenter(lonLat);
     }
     function getGeolocationFailed(event) {
-        widgets.alert.showAlert("您当前使用的浏览器不支持地图定位服务",false,350);
+        widgets.alert.showAlert(resources.msg_geoLocate,false,350);
     }
 
 
