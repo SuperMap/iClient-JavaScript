@@ -1082,7 +1082,7 @@ export class WebMap extends ol.Observable {
         //兼容insights数据格式
         if (features == null) {
             var content = JSON.parse(feature.replace(/'/, '"'));
-            if (content.isAnalyseResult) {
+            if (content.isAnalyseResult || content.type === 'MapEditor' || content.type === 'DataInsights' || content.type === 'ISERVER') {
                 content = content.data.recordsets[0].features;
             }
             format = new GeoJSONFormat();
