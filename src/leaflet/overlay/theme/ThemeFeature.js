@@ -25,12 +25,12 @@ export var ThemeFeature = L.Class.extend({
     toFeature: function () {
         var geometry = this.geometry;
         var points = [];
-        if (geometry instanceof L.Polyline) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new LineString(points);
-        } else if (geometry instanceof L.Polygon) {
+        if (geometry instanceof L.Polygon) {
             points = this.reverseLatLngs(geometry.getLatLngs());
             geometry = new Polygon(points);
+        } else if (geometry instanceof L.Polyline) {
+            points = this.reverseLatLngs(geometry.getLatLngs());
+            geometry = new LineString(points);
         } else if (geometry.length === 3) {
             geometry = new GeoText(geometry[1], geometry[0], geometry[2]);
         } else {
@@ -38,6 +38,9 @@ export var ThemeFeature = L.Class.extend({
                 points = [geometry.lng, geometry.lat];
             } else if (geometry instanceof L.Point) {
                 points = [geometry.x, geometry.y];
+            } else if (geometry instanceof L.CircleMarker) {
+                var latLng = geometry.getLatLng();
+                points = [latLng.lng, latLng.lat];
             } else {
                 points = geometry;
             }
@@ -59,7 +62,7 @@ export var ThemeFeature = L.Class.extend({
             latlngs = [latlngs];
         }
         for (var i = 0; i < latlngs.length; i++) {
-            latlngs[i] = [latlngs[i][1], latlngs[i][0]];
+            latlngs[i] = [latlngs[i].lng, latlngs[i].lat];
         }
         return latlngs;
     }

@@ -3927,7 +3927,16 @@ var SpatialAnalystBase = exports.SpatialAnalystBase = function (_CommonServiceBa
                 analystResult;
             result = _Util.Util.transformResult(result);
             if (result && me.format === _REST.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
-                analystResult = me.toGeoJSONResult(result);
+                //批量分析时会返回多个结果
+                if (_Util.Util.isArray(result)) {
+                    analystResult = [];
+                    result.map(function (item) {
+                        analystResult.push(me.toGeoJSONResult(item));
+                        return item;
+                    });
+                } else {
+                    analystResult = me.toGeoJSONResult(result);
+                }
             }
             if (!analystResult) {
                 analystResult = result;
@@ -25613,7 +25622,7 @@ var GeoFeature = exports.GeoFeature = function (_Theme) {
     /**
      * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加要素
-     * @param features - {Object} 要素对象
+     * @param features - {mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature} 要素对象
      */
 
 
@@ -51500,8 +51509,10 @@ var Theme = exports.Theme = function () {
         this.div = document.createElement('div');
         var container = this.map.getCanvasContainer();
         var canvas = this.map.getCanvas();
+        this.div.id = this.name;
         this.div.style.width = canvas.style.width;
         this.div.style.height = canvas.style.height;
+        this.div.style.position = "absolute";
         this.div.className = options.name != null ? opt_options.name : "themeLayer";
         this.div.width = parseInt(canvas.width);
         this.div.height = parseInt(canvas.height);
@@ -64425,11 +64436,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @example 例如：
  * (start code)
  * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
-     *     eventListeners: {
-     *	       "processCompleted": OverlayCompleted,
-     *		   "processFailed": OverlayFailed
-     *		   }
-     * });
+ *     eventListeners: {
+ *	       "processCompleted": OverlayCompleted,
+ *		   "processFailed": OverlayFailed
+ *		   }
+ * });
  * (end)
  */
 
@@ -80401,7 +80412,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
 
   function Promise(fn) {
-    if (_typeof(this) !== 'object') throw new TypeError('Promises must be constructed via new');
+    if (!(this instanceof Promise)) throw new TypeError('Promises must be constructed via new');
     if (typeof fn !== 'function') throw new TypeError('not a function');
     this._state = 0;
     this._handled = false;
@@ -80525,9 +80536,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   };
 
   Promise.all = function (arr) {
-    var args = Array.prototype.slice.call(arr);
-
     return new Promise(function (resolve, reject) {
+      if (!arr || typeof arr.length === 'undefined') throw new TypeError('Promise.all accepts an array');
+      var args = Array.prototype.slice.call(arr);
       if (args.length === 0) return resolve([]);
       var remaining = args.length;
 

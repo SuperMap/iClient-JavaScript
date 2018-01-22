@@ -3955,7 +3955,16 @@ var SpatialAnalystBase = exports.SpatialAnalystBase = function (_CommonServiceBa
                 analystResult;
             result = _Util.Util.transformResult(result);
             if (result && me.format === _REST.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
-                analystResult = me.toGeoJSONResult(result);
+                //批量分析时会返回多个结果
+                if (_Util.Util.isArray(result)) {
+                    analystResult = [];
+                    result.map(function (item) {
+                        analystResult.push(me.toGeoJSONResult(item));
+                        return item;
+                    });
+                } else {
+                    analystResult = me.toGeoJSONResult(result);
+                }
             }
             if (!analystResult) {
                 analystResult = result;
@@ -20069,6 +20078,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。
+ *        tileProxy - {string} 启用托管地址
  */
 var WMTSLayer = exports.WMTSLayer = _leaflet2["default"].TileLayer.extend({
 
@@ -20115,7 +20125,13 @@ var WMTSLayer = exports.WMTSLayer = _leaflet2["default"].TileLayer.extend({
             tilerow: coords.y,
             tilecol: coords.x
         };
-        return url + _leaflet2["default"].Util.getParamString(obj, url);
+
+        if (this.options.tileProxy) {
+            url = this.options.tileProxy + encodeURIComponent(url + _leaflet2["default"].Util.getParamString(obj, url));
+        } else {
+            url += _leaflet2["default"].Util.getParamString(obj, url);
+        }
+        return url;
     }
 });
 
@@ -26060,7 +26076,7 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.addFeatures
      * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
-     * @param features - {JSONObject|L.supermap.themeFeature} 待填加的要素
+     * @param features - {SuperMap.ServerFeature|L.supermap.themeFeature} 待填加的要素
      */
     addFeatures: function addFeatures(features) {
         //数组
@@ -26353,12 +26369,12 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
     toFeature: function toFeature() {
         var geometry = this.geometry;
         var points = [];
-        if (geometry instanceof _leaflet2["default"].Polyline) {
-            points = this.reverseLatLngs(geometry.getLatLngs());
-            geometry = new _iclientCommon.LineString(points);
-        } else if (geometry instanceof _leaflet2["default"].Polygon) {
+        if (geometry instanceof _leaflet2["default"].Polygon) {
             points = this.reverseLatLngs(geometry.getLatLngs());
             geometry = new _iclientCommon.Polygon(points);
+        } else if (geometry instanceof _leaflet2["default"].Polyline) {
+            points = this.reverseLatLngs(geometry.getLatLngs());
+            geometry = new _iclientCommon.LineString(points);
         } else if (geometry.length === 3) {
             geometry = new _iclientCommon.GeoText(geometry[1], geometry[0], geometry[2]);
         } else {
@@ -26366,6 +26382,9 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
                 points = [geometry.lng, geometry.lat];
             } else if (geometry instanceof _leaflet2["default"].Point) {
                 points = [geometry.x, geometry.y];
+            } else if (geometry instanceof _leaflet2["default"].CircleMarker) {
+                var latLng = geometry.getLatLng();
+                points = [latLng.lng, latLng.lat];
             } else {
                 points = geometry;
             }
@@ -26386,7 +26405,7 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2["default"].Class.extend({
             latlngs = [latlngs];
         }
         for (var i = 0; i < latlngs.length; i++) {
-            latlngs[i] = [latlngs[i][1], latlngs[i][0]];
+            latlngs[i] = [latlngs[i].lng, latlngs[i].lat];
         }
         return latlngs;
     }
@@ -71038,11 +71057,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @example 例如：
  * (start code)
  * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
-     *     eventListeners: {
-     *	       "processCompleted": OverlayCompleted,
-     *		   "processFailed": OverlayFailed
-     *		   }
-     * });
+ *     eventListeners: {
+ *	       "processCompleted": OverlayCompleted,
+ *		   "processFailed": OverlayFailed
+ *		   }
+ * });
  * (end)
  */
 
@@ -93991,7 +94010,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 500 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["proj4@2.3.15","E:\\git\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
+module.exports = {"_args":[["proj4@2.3.15","G:\\iClient9"]],"_from":"proj4@2.3.15","_id":"proj4@2.3.15","_inBundle":false,"_integrity":"sha1-WtBui8owvg/6OJpJ5FZfUfBtCJ4=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.3.15","name":"proj4","escapedName":"proj4","rawSpec":"2.3.15","saveSpec":null,"fetchSpec":"2.3.15"},"_requiredBy":["/"],"_resolved":"http://registry.npm.taobao.org/proj4/download/proj4-2.3.15.tgz","_spec":"2.3.15","_where":"G:\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"~0.0.2"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"browserify":"~12.0.1","chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-browserify":"~4.0.1","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~0.8.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","istanbul":"~0.2.4","mocha":"~1.17.1","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","jam":{"main":"dist/proj4.js","include":["dist/proj4.js","README.md","AUTHORS","LICENSE.md"]},"license":"MIT","main":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"test":"./node_modules/istanbul/lib/cli.js test ./node_modules/mocha/bin/_mocha test/test.js"},"version":"2.3.15"}
 
 /***/ }),
 /* 501 */

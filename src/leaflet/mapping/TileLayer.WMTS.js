@@ -19,6 +19,7 @@ import "../core/Base";
  *        crs - {{@link L.Proj.CRS}} 坐标系统类。<br>
  *        serverType - {{@link SuperMap.ServerType}} 服务来源 iServer|iPortal|online。<br>
  *        attribution - {string} 版权信息。
+ *        tileProxy - {string} 启用托管地址
  */
 export var WMTSLayer = L.TileLayer.extend({
 
@@ -63,7 +64,13 @@ export var WMTSLayer = L.TileLayer.extend({
             tilerow: coords.y,
             tilecol: coords.x
         };
-        return url + L.Util.getParamString(obj, url);
+
+        if (this.options.tileProxy) {
+            url = this.options.tileProxy + encodeURIComponent(url + L.Util.getParamString(obj, url));
+        } else {
+            url += L.Util.getParamString(obj, url);
+        }
+        return url;
     }
 });
 

@@ -73,7 +73,7 @@ export class GeoFeature extends Theme {
     /**
      * @function mapboxgl.supermap.GeoFeatureThemeLayer.prototype.addFeatures
      * @description 添加要素
-     * @param features - {Object} 要素对象
+     * @param features - {mapboxgl.supermap.ThemeFeature|SuperMap.ServerFeature} 要素对象
      */
     addFeatures(features) {
         //数组

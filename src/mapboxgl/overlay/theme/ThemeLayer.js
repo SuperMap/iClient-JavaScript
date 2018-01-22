@@ -52,8 +52,10 @@ export class Theme {
         this.div = document.createElement('div');
         var container = this.map.getCanvasContainer();
         var canvas = this.map.getCanvas();
+        this.div.id = this.name;
         this.div.style.width = canvas.style.width;
         this.div.style.height = canvas.style.height;
+        this.div.style.position = "absolute";
         this.div.className = (options.name != null) ? opt_options.name : "themeLayer";
         this.div.width = parseInt(canvas.width);
         this.div.height = parseInt(canvas.height);

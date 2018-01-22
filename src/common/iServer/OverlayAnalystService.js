@@ -17,11 +17,11 @@ import {GeometryOverlayAnalystParameters} from './GeometryOverlayAnalystParamete
  * @example 例如：
  * (start code)
  * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
-     *     eventListeners: {
-     *	       "processCompleted": OverlayCompleted,
-     *		   "processFailed": OverlayFailed
-     *		   }
-     * });
+ *     eventListeners: {
+ *	       "processCompleted": OverlayCompleted,
+ *		   "processFailed": OverlayFailed
+ *		   }
+ * });
  * (end)
  */
 
