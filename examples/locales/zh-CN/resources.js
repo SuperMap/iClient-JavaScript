@@ -30,6 +30,7 @@ window.resources = {
         "product": {
             "_name": "产品",
             "introduce": "产品介绍",
+            "download": "下载",
             "guide": "开发指南",
             "modules": "模块说明",
             "dependence": "相关依赖",
@@ -39,6 +40,7 @@ window.resources = {
         "guide": {
             "_name": "开发指南",
             "beginning": "开发入门",
+            "npm": "npm",
             "quickStart": "快速入门",
             "projection": "投影",
             "ie8": "兼容IE8",
@@ -102,6 +104,9 @@ window.resources = {
             "_name": "Gallery"
         },
         "soon": "敬请期待"
+    },
+    "footer":{
+        "copyright":"版权所有 © 2000-2017 北京超图软件股份有限公司 京ICP备11032883号-8 京公网安备11010502008721 甲测资字11002074"
     },
     "resources": {
         "title_tiledMapLayer4326": "SuperMap REST 地图服务底图",

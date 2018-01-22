@@ -30,6 +30,7 @@ window.resources = {
         "product": {
             "_name": "Product",
             "introduce": "Introduction",
+            "download": "Download",
             "guide": "Guide",
             "modules": "Modules",
             "dependence": "Dependencies",
@@ -39,6 +40,7 @@ window.resources = {
         "guide": {
             "_name": "Guide",
             "beginning": "Getting Started",
+            "npm": "npm",
             "quickStart": "Quick Start",
             "projection": "Projection",
             "ie8": "Compatible with IE8",
@@ -102,6 +104,9 @@ window.resources = {
             "_name": "Gallery"
         },
         "soon": "Coming Soon"
+    },
+    "footer": {
+        "copyright": "Copyright © 2000-2017 SuperMap Software Co., Ltd. All rights reserved"
     },
     "resources": {
         "title_tiledMapLayer4326": "base map of SuperMap REST map",
