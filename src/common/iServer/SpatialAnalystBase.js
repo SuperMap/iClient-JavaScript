@@ -44,14 +44,13 @@ export class SpatialAnalystBase extends CommonServiceBase {
         result = Util.transformResult(result);
         if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             //批量分析时会返回多个结果
-            if(Util.isArray(result)){
-                analystResult = [];
-                result.map(function (item) {
-                    analystResult.push(me.toGeoJSONResult(item));
-                    return item;
-                });
+            if (Util.isArray(result)) {
+                for (var i = 0; i < result.length; i++) {
+                    result[i] =  me.toGeoJSONResult(result[i])
+                }
+                analystResult = result;
 
-            }else {
+            } else {
                 analystResult = me.toGeoJSONResult(result);
             }
         }
