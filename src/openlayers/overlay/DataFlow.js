@@ -11,12 +11,7 @@ export class DataFlow extends ol.source.Vector {
 
     constructor(opt_options) {
         var options = opt_options ? opt_options : {};
-        super({
-            ws: options.ws,
-            geometry: options.geometry,
-            prjCoordSys: options.prjCoordSys,
-            excludeField: options.excludeField
-        });
+        super(options);
         this.idField = options.idField || 'id';
         this.dataService = new DataFlowService(options.ws, {
             geometry: options.geometry,
@@ -78,7 +73,7 @@ export class DataFlow extends ol.source.Vector {
         }
         this.addFeature(feature);
         this.featureCache[geoID] = feature;
-        this.dispatchEvent({type: "dataUpdated", value: {source: this, data: msg.featureResult}})
+        this.dispatchEvent({type: "dataUpdated", value: {source: this, data: msg.value.featureResult}})
     }
 }
 ol.source.DataFlow = DataFlow;
