@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>航班监控</title>
     <script type="text/javascript"
-            include="jquery,bootstrap,moment,bootstrap-datetimepicker,bootstrap-select,geohash,randomcolor"
+            include="jquery,bootstrap,moment,bootstrap-datetimepicker,bootstrap-select,geohash,randomcolor,widgets.alert"
             src="../js/include-web.js"></script>
     <style>
         .bootstrap-select {
@@ -26,17 +26,15 @@
 <script type="text/javascript">
     var map;
     var timeControl,
-            liveESService,//实时点查询的ESService
-            trackESService,//历史轨迹查询的ESService
-            liveRenderer,//实时点层
-            trackRenderer,//历史轨迹层
-            liveDataSet,//渲染用实时点数据集
-            trackDataSet,//渲染用历史轨迹线数据集
-            planeStyles,
-            planeLabels,//航班信息提示框集合
-            geoFenceLabels,//地理围栏信息提示框集合
-            geoFenceLayer,
-            dataUrl = "http://117.122.248.69:9200";
+        liveESService,//实时点查询的ESService
+        trackESService,//历史轨迹查询的ESService
+        liveRenderer,//实时点层
+        trackLineLayers,//历史轨迹层
+        trackLineMap,//轨迹线数据
+        liveDataSet,//渲染用实时点数据集
+        planeStyles,
+        planeLabels,//航班信息提示框集合
+        dataUrl = "http://117.122.248.69:9200";
 
     var flightIdens = [
         'CCA4189', 'CCA4187', 'CBJ5531', 'CSC8747', 'TBA9879',
@@ -49,15 +47,8 @@
 
     function init() {
         initMap();
-        liveESService = new SuperMap.ElasticSearch(dataUrl, {
-            change: renderLive,
-            outOfGeoFence: renderOutOfGeoFenceLabel,
-            openGeoFence: true
-        });
-        trackESService = new SuperMap.ElasticSearch(dataUrl, {
-            change: renderTrack,
-            openGeoFence: true
-        });
+        liveESService = new SuperMap.ElasticSearch(dataUrl);
+        trackESService = new SuperMap.ElasticSearch(dataUrl);
         planeStyles = initPlaneStyles();
     }
 
@@ -65,7 +56,6 @@
     //开始播放
     function start() {
         var options = getControlOptions();
-        setGeoFence();
         if (!timeControl) {
             timeControl = new SuperMap.TimeFlowControl(loadLiveData, options);
         } else {
@@ -87,10 +77,6 @@
 
     //时间控制器回调参数，即每次刷新时执行的操作，此处为向服务器请求数据并绘制。实时刷新执行。
     function loadLiveData(currentTime) {
-        //第一次请求之前先查询轨迹
-        if (currentTime === timeControl.getStartTime()) {
-            loadTrackData();
-        }
 
         var datetime = moment(currentTime).format("YYYY-MM-DDTHH:mm:ss") + "Z";
         var options = getServiceParamOptions();
@@ -113,129 +99,70 @@
                 "size": 20
             });
         }
-        liveESService.msearch({body: liveParameters});
+        liveESService.msearch({body: liveParameters}, function (error, result) {
+            if (error) {
+                widgets.alert.showAlert(JSON.stringify(error), false);
+                timeControl.stop();
+                return;
+            }
+            result.responses && renderData.call(window, result.responses);
+        });
         updateProgress(datetime);
     }
 
-    //第一次请求先查询历史轨迹数据，只调用一次
-    function loadTrackData() {
-        var start = timeControl.getStartTime();
-        var end = timeControl.getEndTime();
-        var options = getServiceParamOptions();
-        var trackParameters = [];
-        for (var i = 0; i < options.flightIds.length; i++) {
-            var code = options.flightIds[i];
-            if (code === 'ZUUU') {
-                continue;
-            }
-            trackParameters.push({index: "flights", type: "flight_utc"});
-            trackParameters.push({
-                "query": {
-                    "bool": {
-                        "must": {"match": {"ident": code}},
-                        "filter": {
-                            "range": {
-                                "time-ms": {
-                                    "gte": start,
-                                    "lte": end
-                                }
-                            }
-                        },
-                    }
-                },
-                "sort": {"time-ms": {"order": "ASC"}},
-                "from": 0,
-                "size": 10000
-            });
-
-        }
-        trackESService.msearch({body: trackParameters});
-    }
-
-
-    //渲染轨迹图层
-    function renderTrack(result) {
-        result = result || {};
-        var data = createTrackRendererData(result);
-        if (data.length < 1) {
-            return;
-        }
-        trackDataSet = new mapv.DataSet(data);
-        var options = {
-            zIndex: 1,
-            strokeStyle: 'rgba(255, 250, 50, 0.8)',
-            shadowColor: 'rgba(255, 250, 50, 1)',
-            shadowBlur: 1.5,
-            lineWidth: 1,
-            draw: 'simple'
-        };
-        trackRenderer = L.supermap.mapVLayer(trackDataSet, options).addTo(map);
-    }
-
-    //解析轨迹查询结果数据为mapv数据
-    function createTrackRendererData(results) {
-        var data = [];
-        results.map(function (result) {
-            var coordinates = [];
-            var ident;
-            result.hits.hits.map(function (source) {
-                content = source._source;
-                if (!ident) {
-                    ident = content.ident;
-                }
-                coordinates.push([content.x, content.y]);
-            });
-            data.push({
-                geometry: {
-                    type: 'LineString',
-                    coordinates: coordinates
-                }
-            });
-        });
-        return data;
-    }
-
-    //渲染实时点数据
-    function renderLive(result) {
+    //渲染实时点数据和轨迹图层
+    function renderData(result) {
         if (timeControl && !timeControl.getRunning()) {
             return;
         }
-        result = result || {};
         var data = createLiveRendererData(result);
+
         if (data.length < 1) {
             return;
         }
         updateDataSet(data);
 
-
         if (!liveRenderer) {
             liveRenderer = L.supermap.mapVLayer(liveDataSet, {
                 zIndex: 800,
-                draw: 'icon'
+                globalCompositeOperation: "lighter",
+                shadowColor: "white",
+                shadowBlur: 2,
+                draw: 'icon',
+                methods: {
+                    click: function (evt) {
+                        renderLiveLabel.call(window, evt)
+                    }
+                }
             }).addTo(map);
         } else {
             liveRenderer.update({data: liveDataSet});
         }
-        renderLiveLabel(data);
+
+        renderTrackLineLayers();
     }
 
     //解析点查询结果数据为mapv数据
     function createLiveRendererData(results) {
         var data = [];
-        results.map(function (result) {
+        results && results.map(function (result) {
             result.hits.hits.map(function (source) {
                 var content = source._source;
                 data.push({
                     geometry: {
                         type: 'Point',
                         coordinates: [content.x, content.y],
-
                     },
                     deg: content.direction,
                     icon: planeStyles[content.ident].img,
                     ident: content.ident,
                     content: content
                 });
+                trackLineMap = trackLineMap || {};
+                if (!trackLineMap[content.ident]) {
+                    trackLineMap[content.ident] = [];
+                }
+                trackLineMap[content.ident].push([content.x, content.y]);
             });
         });
         return data;
@@ -247,70 +174,87 @@
             liveDataSet = new mapv.DataSet(data);
             return;
         }
+        var dat = data.slice();
         var innerData = liveDataSet.get();
-        var dataLen = data.length;
-        for (var i = 0; i < innerData.length; i++) {
-            if (i < dataLen && data[i].ident === innerData[i].ident) {
-                innerData[i] = data[i];
+
+        for (var i = 0; i < dat.length; i++) {
+            for (var j = 0; j < innerData.length; j++) {
+                if (dat[i].ident === innerData[j].ident) {
+                    innerData[j] = dat[i];
+                    break;
+                }
             }
+            //如果是新的飞机Id则追加到飞机数组里
+            if (j === innerData.length) {
+                innerData.push(dat[i]);
+            }
+
         }
         liveDataSet.set(innerData);
     }
 
-    //更新实时点的提示框
+    //渲染轨迹图层
+    function renderTrackLineLayers() {
+        if (!trackLineLayers) {
+            trackLineLayers = {};
+        }
+        for (var id in trackLineMap) {
+            renderTrackLayerData(id, trackLineMap[id]);
+        }
+
+    }
+
+    //渲染飞机id所对应的轨迹
+    function renderTrackLayerData(id, coordinates) {
+        var trackLayer = trackLineLayers[id];
+
+        var trackDataSet = new mapv.DataSet({
+            geometry: {
+                type: 'LineString',
+                coordinates: coordinates
+            }
+        });
+        if (!trackLayer) {
+            var options = {
+                zIndex: 1,
+                strokeStyle: planeStyles[id].color,
+                shadowColor: "white",
+                shadowBlur: 1,
+                lineCap: 'butt',
+                lineJoin: "round",
+                lineWidth: 3,
+                draw: 'simple'
+            };
+            trackLayer = L.supermap.mapVLayer(trackDataSet, options).addTo(map);
+            trackLineLayers[id] = trackLayer;
+        } else {
+            trackLayer.update({data: trackDataSet});
+        }
+    }
+
+    //实时点的提示框
     function renderLiveLabel(data) {
         planeLabels = planeLabels || {};
-        for (var i = 0; i < data.length; i++) {
-            var content = data[i].content;
-            var latlng = L.latLng(content.y, content.x);
-            var labelContent = "航班： " + content.ident + "<br>" +
-                    "始发地： " + content.origin + "/" + content.originLabel + "<br>" +
-                    "目的地： " + content.destination + "/" + content.destinationLabel + "<br>" +
-                    "时间： " + content.datetime;
-            if (!planeLabels[content.ident]) {
-                planeLabels[content.ident] = L.popup({
-                    closeOnClick: false,
-                    autoPan: false,
-                    maxWidth: 180,
-                    offset: L.point(0, -1)
-                }).setContent(labelContent).setLatLng(latlng).addTo(map);
-            } else {
-                planeLabels[content.ident].setLatLng(latlng).setContent(labelContent);
-            }
-        }
-    }
+        var content = data && data.content;
 
-    //更新地理围栏提示框
-    function renderOutOfGeoFenceLabel(data) {
-        geoFenceLabels = geoFenceLabels || {};
-        var content = data.hits.hits[0]._source;
+        if (!content) return;
         var latlng = L.latLng(content.y, content.x);
-        var labelContent = "<div style='color:red'>航班" + content.ident + "超出地理围栏</div>";
-        if (!geoFenceLabels[content.ident]) {
-            geoFenceLabels[content.ident] = L.popup({
-                closeOnClick: false,
-                autoPan: false,
-                maxWidth: 180,
-                className: "tips",
-                offset: L.point(0, -1)
-            }).setContent(labelContent).setLatLng(latlng).addTo(map);
-        } else {
-            geoFenceLabels[content.ident].setLatLng(latlng).setContent(labelContent).openOn(map);
+        var labelContent = "航班： " + content.ident + "<br>" +
+            "始发地： " + content.origin + "/" + content.originLabel + "<br>" +
+            "目的地： " + content.destination + "/" + content.destinationLabel + "<br>" +
+            "时间： " + content.datetime;
+        if (planeLabels[content.ident]) {
+            planeLabels[content.ident].remove();
         }
+
+        planeLabels[content.ident] = L.popup({
+            autoPan: false,
+            maxWidth: 180,
+            offset: L.point(0, -1)
+        }).setContent(labelContent).setLatLng(latlng).addTo(map);
+
     }
 
-
-    //点击开始之后配置地理围栏
-    function setGeoFence() {
-        var geoFence = getGeoFence();
-        liveESService.setGeoFence(geoFence);
-        if (!geoFenceLayer) {
-            geoFenceLayer = L.circle(L.latLng(geoFence.center[1], geoFence.center[0]), {
-                radius: geoFence.radius,
-                weight: 1
-            }).addTo(map);
-        }
-    }
 
     //初始化飞机的样式，颜色随机
     function initPlaneStyles() {
@@ -320,6 +264,9 @@
             hue: 'random',
             alpha: 1,
             count: flightIdens.length
+        });
+        $.ajaxSetup({
+            async: false
         });
         flightIdens.map(function (ident, key) {
             var svgUrl = "data:image/svg+xml;utf8,";
@@ -333,7 +280,6 @@
         });
         return planes;
     }
-
 
     //获取时间控件设置的参数
     function getControlOptions() {
@@ -363,25 +309,12 @@
         }
     }
 
-    //获取地理围栏参数
-    function getGeoFence() {
-        var geoFence = $("#geoFence").val();
-        return JSON.parse(geoFence);
-    }
 
     //更新当前时间界面
     function updateProgress(currentTime) {
         $("#progress").html(currentTime);
     }
 
-    //获取默认地理围栏参数
-    function getDefaultGeoFence() {
-        return {
-            center: [103.9, 30.58],
-            radius: 200000,
-            unit: "degree"
-        }
-    }
 
     //默认设置参数
     function getDefaultControlOptions() {
@@ -400,11 +333,11 @@
     function initMap() {
         if (!map) {
             map = L.map('map', {
-                center: [34, 110],
+                crs: L.CRS.EPSG3857,
+                center: [31.3677, 108.116],
                 maxZoom: 20,
                 minZoom: 3,
-                zoom: 5,
-                crs: L.CRS.EPSG3857
+                zoom: 7
             });
             var attr = 'Data © <a href="https://www.elastic.co/products/elasticsearch" target="_blank">Elasticsearch</a> Map Data <span>© <a href="http://support.supermap.com.cn/product/iServer.aspx" target="_blank">SuperMap iServer</a></span> with <span>© <a href="http://iclient.supermap.io" target="_blank">SuperMap iClient</a></span>';
             var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
@@ -424,63 +357,59 @@
             me._div = L.DomUtil.create('div', 'panel panel-primary controlPane');
             me._div.style.width = "300px";
             var titleDiv = $("<div class='panel-heading text-center' id='toggle' style='cursor: pointer'>" +
-                    "<span class='panel-title text-center'>控制台</span>&nbsp;" +
-                    "<span class='glyphicon glyphicon-triangle-top' id='toggleIcon' ></span></div>").appendTo(me._div);
+                "<span class='panel-title text-center'>控制台</span>&nbsp;" +
+                "<span class='glyphicon glyphicon-triangle-top' id='toggleIcon' ></span></div>").appendTo(me._div);
 
             var contentDiv = $("<div class='panel-body content center-block' style='font-size: 14px'></div>").appendTo(me._div);
 
             var optionsDiv = $("<div class='' id='options'></div>").appendTo(contentDiv);
 
             $("<div class='form-group'><label class='text-right' for='flightIds'  >" +
-                    "航班号<span style='color:red'>*</span></label>" +
-                    "<select class='selectpicker ' id='flightIds' multiple data-actions-box='true' title='请选择'>" +
-                    initSelectOpitons() +
-                    "</select></div><hr/>").appendTo(optionsDiv);
+                "航班号<span style='color:red'>*</span></label>" +
+                "<select class='selectpicker ' id='flightIds' multiple " +
+                "data-actions-box='true' " +
+                "data-select-all-Text='全选' " +
+                "data-deselect-all-Text='反选' " +
+                "title='请选择'>" +
+                initSelectOpitons() +
+                "</select></div><hr/>").appendTo(optionsDiv);
 
             function initSelectOpitons() {
                 var str = '';
                 flightIdens.map(function (ident, key) {
-                    if (key !== 0) {
-                        str += "<option value=" + ident + ">" + ident + "</option> "
-                    } else {
-                        str += "<option value=" + ident + " selected>" + ident + "</option> "
-                    }
+                    str += "<option value=" + ident + " selected>" + ident + "</option> "
 
                 });
                 return str;
             }
 
             var defaultOption = getDefaultControlOptions();
-            var defaultGeoFence = getDefaultGeoFence();
-            $("<div class='form-group form-inline'><label class='text-right' for='geoFence' >地理围栏</label>" +
-                    "<input id='geoFence' type='text' class='form-control input-sm' placeholder='" + JSON.stringify(defaultGeoFence) +
-                    "' value='" + JSON.stringify(defaultGeoFence) + "'/></div></div><hr/>").appendTo(optionsDiv);
 
             $("<div class='form-group form-inline'><label class='text-right' for='startTime' >起始时间<span style='color:red'>*</span></label>" +
-                    "<input id='startTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.startTime +
-                    "' value='" + defaultOption.startTime + "'/></div></div>").appendTo(optionsDiv);
+                "<input id='startTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.startTime +
+                "' value='" + defaultOption.startTime + "'/></div></div>").appendTo(optionsDiv);
 
             $("<div class='form-group form-inline'><label class='text-right' for='endTime' >终止时间<span style='color:red'>*</span></label>" +
-                    "<input id='endTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.endTime +
-                    "' value='" + defaultOption.endTime + "'/></div></div>").appendTo(optionsDiv);
+                "<input id='endTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.endTime +
+                "' value='" + defaultOption.endTime + "'/></div></div>").appendTo(optionsDiv);
 
             $("<div class='form-group form-inline'><label class='text-right' for='speed' >刷新步长(ms)</label>" +
-                    "<input id='speed' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.speed +
-                    "' value='" + defaultOption.speed + "'/></div></div>").appendTo(optionsDiv);
+                "<input id='speed' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.speed +
+                "' value='" + defaultOption.speed + "'/></div></div>").appendTo(optionsDiv);
 
             $("<div class='form-group form-inline'><label class='text-right' for='frequency' >刷新频率(ms)</label>" +
-                    "<input id='frequency' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.frequency +
-                    "' value='" + defaultOption.frequency + "'/></div></div>").appendTo(optionsDiv);
+                "<input id='frequency' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.frequency +
+                "' value='" + defaultOption.frequency + "'/></div></div>").appendTo(optionsDiv);
 
             var progressDiv = $("<div class='form-group'><div class='form-horizontal text-center'><div class='form-group'>" +
-                    "<label  for='progress'>当前时间：</label><span class='form-control-static' id='progress'>未开始</span>" +
-                    "</div></div></div>").appendTo(contentDiv);
+                "<label  for='progress'>当前时间：</label><span class='form-control-static' id='progress'>未开始</span>" +
+                "</div></div></div>").appendTo(contentDiv);
 
             var controlDiv = $("<section><div class='form-inline text-center'>" +
-                    "<input id='start' type='button'  class='btn btn-default text-center' value='开始'/>&nbsp;" +
-                    "<input id='pause' type='button'  class='btn btn-default text-center' value='暂停'/>&nbsp;" +
-                    "<input id='stop' type='button'  class='btn btn-default text-center' value='停止'/>" +
-                    "</div></section>").appendTo(contentDiv);
+                "<input id='start' type='button'  class='btn btn-default text-center' value='开始'/>&nbsp;" +
+                "<input id='pause' type='button'  class='btn btn-default text-center' value='暂停'/>&nbsp;" +
+                "<input id='stop' type='button'  class='btn btn-default text-center' value='停止'/>" +
+                "</div></section>").appendTo(contentDiv);
 
 
             me._div.addEventListener('mouseover', function () {
@@ -535,9 +464,14 @@
             timeControl.destroy();
             timeControl = null;
         }
-        if (trackRenderer) {
-            map.removeLayer(trackRenderer);
-            trackRenderer = null;
+        if (trackLineLayers) {
+            for (var id in trackLineLayers) {
+                map.removeLayer(trackLineLayers[id]);
+            }
+            trackLineLayers = null;
+        }
+        if (trackLineMap) {
+            trackLineMap = null;
         }
         if (liveRenderer) {
             map.removeLayer(liveRenderer);
@@ -551,10 +485,6 @@
                 planeLabels[item].remove();
             }
             planeLabels = {};
-        }
-        if (geoFenceLayer) {
-            geoFenceLayer.remove();
-            geoFenceLayer = null;
         }
     }
 
