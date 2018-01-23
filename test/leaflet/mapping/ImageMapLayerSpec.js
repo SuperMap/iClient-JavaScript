@@ -1,9 +1,9 @@
 require('../../../src/leaflet/mapping/ImageMapLayer');
 
-var url = GlobeParameter.imageURL;
+var url = GlobeParameter.WorldURL;
 describe('leaflet_ImageMapLayer', function () {
     var originalTimeout;
-    var testDiv, map, imageLayerObject;
+    var testDiv, map, imageLayer;
     beforeAll(function () {
         testDiv = document.createElement("div");
         testDiv.setAttribute("id", "map");
@@ -18,12 +18,12 @@ describe('leaflet_ImageMapLayer', function () {
             maxZoom: 18,
             zoom: 1
         });
-        imageLayerObject = L.supermap.imageMapLayer(url).addTo(map);
+        imageLayer = L.supermap.imageMapLayer(url).addTo(map);
     });
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-        imageLayerObject = null;
+        imageLayer = null;
     });
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
@@ -35,26 +35,108 @@ describe('leaflet_ImageMapLayer', function () {
 
     it('initialize', function () {
         var tempOptions = {
-            redirect: true,
-            prjCoordSys: {"epsgCode": 3857}
+            layersID: null,
+            redirect: false,
+            transparent: null,
+            cacheEnabled: null,
+            clipRegionEnabled: true,
+            prjCoordSys: null,
+            overlapDisplayed: false,
+            overlapDisplayedOptions: null,
+            opacity: 0.5,
+            alt: '',
+            pane: 'titlePane',
+            interactive: true,
+            crossOrigin: false,
+            errorOverlayUrl: false,
+            zIndex: 1,
+            className: '',
+            attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermap.io' target='_blank'>SuperMap iClient</a></span>",
+            updateInterval: 150
         };
-        imageLayerObject = L.supermap.imageMapLayer(url, tempOptions);
-        expect(imageLayerObject).not.toBeNull();
-        expect(imageLayerObject.options.redirect).toBe(true);
-        expect(imageLayerObject.options.prjCoordSys.epsgCode).toBe(3857);
+        imageLayer = L.supermap.imageMapLayer(url, tempOptions);
+        expect(imageLayer).not.toBeNull();
+        expect(imageLayer.options.layersID).toBeNull();
+        expect(imageLayer.options.redirect).toBeFalsy();
+        expect(imageLayer.options.transparent).toBeNull();
+        expect(imageLayer.options.cacheEnabled).toBeNull();
+        expect(imageLayer.options.clipRegionEnabled).toBeTruthy();
+        expect(imageLayer.options.prjCoordSys).toBeNull();
+        expect(imageLayer.options.overlapDisplayed).toBeFalsy();
+        expect(imageLayer.options.overlapDisplayedOptions).toBeNull();
+        expect(imageLayer.options.opacity).toBe(tempOptions.opacity);
+        expect(imageLayer.options.alt).toBe('');
+        expect(imageLayer.options.pane).toBe(tempOptions.pane);
+        expect(imageLayer.options.attribution).toBe(tempOptions.attribution);
+        expect(imageLayer.options.className).toBe('');
+        expect(imageLayer.options.crossOrigin).toBeFalsy();
+        expect(imageLayer.options.errorOverlayUrl).toBeFalsy();
+        expect(imageLayer.options.interactive).toBeTruthy();
+        expect(imageLayer.options.zIndex).toBe(tempOptions.zIndex);
+        expect(imageLayer.options.updateInterval).toBe(tempOptions.updateInterval);
+
     });
 
-    it('getTileUrl', function () {
+    it('getOpacity', function () {
         var tempOptions = {
-            redirect: true,
-            prjCoordSys: {"epsgCode": 4326}
+            opacity: 0.5,
+            zIndex: 1
         };
-        imageLayerObject = L.supermap.imageMapLayer(url, tempOptions).addTo(map);
-        expect(imageLayerObject).not.toBeNull();
-        expect(imageLayerObject.options.redirect).toBe(true);
-        expect(imageLayerObject.options.prjCoordSys.epsgCode).toBe(4326);
-        var coords = L.point(120.14, 30.24);
-        var tileUrl = imageLayerObject.getTileUrl(coords);
-        expect(tileUrl).toBe(GlobeParameter.mapServiceURL + "世界地图_Day/image.png?width=256&height=256&redirect=true&transparent=false&cacheEnabled=true&prjCoordSys=%7B%22epsgCode%22:4326%7D&overlapDisplayed=true&viewBounds=%7B%22leftBottom%22%20:%20%7B%22x%22:2387268743.959911,%22y%22:-20037508.34278071%7D,%22rightTop%22%20:%20%7B%22x%22:2407306252.3027,%22y%22:-20037508.34278071%7D%7D");
+        imageLayer = L.supermap.imageMapLayer(url, tempOptions);
+        var opacity = imageLayer.getOpacity();
+        expect(opacity).not.toBeNull();
+        expect(opacity).toBe(tempOptions.opacity);
     });
+
+    it('setOpacity', function () {
+        var opacity = 0.9;
+        imageLayer = L.supermap.imageMapLayer(url);
+        expect(imageLayer.setOpacity(opacity)).not.toBeNull();
+        expect(imageLayer.getOpacity()).toBe(opacity);
+    });
+
+
+    it('bringToFront', function (done) {
+        imageLayer1 = L.supermap.imageMapLayer(url).addTo(map);
+        imageLayer1.on('load', function () {
+            expect(imageLayer1.bringToFront()).not.toBeNull();
+            expect(imageLayer1.options.position).toBe("front");
+            done();
+        });
+    });
+
+
+    it('bringToBack', function (done) {
+        imageLayer1 = L.supermap.imageMapLayer(url).addTo(map);
+        imageLayer1.on('load', function () {
+            expect(imageLayer1.bringToBack()).not.toBeNull();
+            expect(imageLayer1.options.position).toBe("back");
+            done();
+        });
+    });
+
+    it('getImageUrl', function () {
+        imageLayer = L.supermap.imageMapLayer(url).addTo(map);
+        expect(imageLayer.getImageUrl()).not.toBeNull();
+        expect(imageLayer.getImageUrl()).toBe("http://localhost:8090/iserver/services/map-world/rest/maps/World/image.png?&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false");
+    });
+
+
+    it('update_zoomIn', function (done) {
+        imageLayer = L.supermap.imageMapLayer(url).addTo(map);
+        var oldUrl, newUrl;
+        imageLayer.on('load', function () {
+            oldUrl = imageLayer._currentImage._url;
+            expect(oldUrl).toBe('http://localhost:8090/iserver/services/map-world/rest/maps/World/image.png?viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-19567879.241005123%2C%22y%22%3A-19567879.24100514%7D%2C%22rightTop%22%3A%7B%22x%22%3A19567879.241005123%2C%22y%22%3A19567879.241005138%7D%7D&width=500&height=500&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false');
+            map.zoomIn();
+            imageLayer.off('load');
+            imageLayer.on('load', function () {
+                newUrl = imageLayer._currentImage._url;
+                expect(newUrl).toBe('http://localhost:8090/iserver/services/map-world/rest/maps/World/image.png?viewBounds=%7B%22leftBottom%22%3A%7B%22x%22%3A-9783939.620502561%2C%22y%22%3A-9783939.620502561%7D%2C%22rightTop%22%3A%7B%22x%22%3A9783939.620502561%2C%22y%22%3A9783939.620502565%7D%7D&width=500&height=500&redirect=false&transparent=false&cacheEnabled=true&overlapDisplayed=false');
+                expect(oldUrl).not.toEqual(newUrl);
+                done();
+            });
+        });
+    });
+
 });

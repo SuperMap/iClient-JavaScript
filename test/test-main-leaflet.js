@@ -49,7 +49,7 @@ require('./leaflet/overlay/UniqueThemeLayerSpec.js');
 require('./leaflet/overlay/DataFlowlayerSpec.js');
 
 /*leaflet -- mapping*/
-require('./leaflet/mapping/ImageMapLayerSpec.js');
+require('./leaflet/mapping/TiledMapLayerSpec.js');
 require('./leaflet/mapping/ImageMapLayerSpec.js');
 require('./leaflet/mapping/WebMapSpec.js');
 

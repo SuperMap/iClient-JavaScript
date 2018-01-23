@@ -23,6 +23,16 @@ var exampleConfig = {
                     thumbnail: "l_tiledMapLayer3857.png",
                     fileName: "01_tiledMapLayer3857"
                 }, {
+                    name: "4326底图(image)",
+                    name_en: "4326 coordinate system(image)",
+                    thumbnail: "l_imageMapLayer4326.png",
+                    fileName: "01_imageMapLayer4326"
+                }, {
+                    name: "3857底图(image)",
+                    name_en: "3857 coordinate system(image)",
+                    thumbnail: "l_imageMapLayer3857.png",
+                    fileName: "01_imageMapLayer3857"
+                }, {
                     name: "地图叠加",
                     name_en: "overlay tile layer",
                     thumbnail: "l_overlayTiledMapLayer.png",
