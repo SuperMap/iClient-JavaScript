@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>SuperMap iClient for Javascript Android App</title>
+        <link href='./css/style.css' rel='stylesheet' />
+    </head>
+    <body data-spy="scroll" data-target=".subnav" data-offset="50">
+        <!--导航条-->
+        <!--<div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="../index.html">JavaScript API</a>
+                    <div class="nav-collapse">
+                        <ul class="nav" id='titleContent'>
+                            <li class="">
+                            <a href="../index.html">首页</a>
+                            </li>
+                            <li class="">
+                            <a href="./intro.html">产品介绍</a>
+                            </li>
+                            <li class="">
+                            <a href="./developGuide.html">开发指南</a>
+                            </li>
+                            <li class="">
+                            <a href="./examples.html">示范程序</a>
+                            </li>
+                            <li class="">
+                            <a href="../apidoc/index.html">类参考</a>
+                            </li>
+                            <li class="dropdown active">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">技术专题 <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="dyncSegmentationTopic.html">动态分段专题</a></li>
+                                <li><a href="rendererTopic.html">矢量渲染专题</a></li>
+                                <li><a href="mobileTopic.html">离线缓存与 APP 专题</a></li>
+                            </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <div id='container' class='container'>
+            <div class='page-header'>
+                <h1>SuperMap iClient for JavaScript Android App</h1>
+                <hr/>
+                <h2>一、SuperMap iClient for JavaScript Android App 简介</h2>
+                <div class="pageImage"> <img src="./images/android.PNG" /></div>
+                <p>
+                SuperMap iClient for JavaScript 是一款在服务式 GIS 架构体系中，面向 HTML5 的应用开发，支持多终端，跨浏览器的客户端开发平台。
+                通过 SuperMap iClient for JavaScript，无需任何插件，便可以在浏览器上实现美观的地图展现，内容丰富的地图应用。
+                </p>
+                <p>
+                 近些年来随着智能终端的迅速发展，LBS 应用的大众化普及，手机地图已经在日常生活中扮演着不可或缺的作用。
+                 相比传统的 PC 端地图应用，手机地图的应用具有便于携带、
+                 便于操作、不受空间约束等优势，移动终端这些全新的用户体验是也是传统 PC 所无法媲美。正是在这种背景下，
+                 SuperMap iClient for JavaScript 提供了对手机平台的扩展支持。
+                </p>
+                <p>
+                 SuperMap iClient for JavaScript 提供的 APP 应用插件，
+                 在技术上采用 PhoneGap 开源开发框架，针对 PhoneGap 进行了代码兼容和优化，
+                 并实现了地图离线缓存的插件化支持。通过 SuperMap iClient for JavaScript 开发平台，
+                 你可以通过 HTML，CSS 和 JavaScript 技术构建出基于浏览器的地图应用；通过 PhoneGap 开发框架，你可以将已有的地图应用直接打包生成支持 Android 的应用程序，
+                 并且可以调用系统级别的功能来丰富应用；通过 SuperMap iClient for JavaScript 提供的 APP 应用插件，地图应用具备离线缓存的功能，满足用户在离线状态下的地图应用。 这样，
+                 Web 开发人员利用已有的技术储备，不需要太多的额外学习成本就可以快速的开发出自己的地图 APP 应用。
+                 该开发模式具有如下一些特点：
+                </p>
+                <p>
+                <ul style="list-style-type:disc;">   
+                    <li>APP应用摆脱浏览器的束缚，提供定制化的地图应用，具有较好的用户体验</li>
+                    <li>利用已有的Web技术，不需要考虑繁杂的底层技术</li>    
+                    <li>支持多种手机平台</li>
+                    <li>支持通过 js 调用系统级接口，比如摄像头，GPS 等</li>
+					<!--<li>支持地图离线缓存</li>--> 
+                </ul>
+                </p>
+                <h2>二、SuperMap JavaScript for Android APP 支持功能概述</h2>
+                <p>
+                SuperMap JavaScript for Android APP采用PhoneGap开源框架进行开发，所以使用该app，用户能同时使用phonegap提供的接口（详情请见<a target="_blank" href="http://docs.phonegap.com/">phonegap帮助文档</a>）。除此之外，我们还封装了以下一些功能：
+                </p>
+                <ol> 
+                    <li>支持地图离线缓存：在漫游地图的过程中，客户端会使用离线缓存策略缓存地图数据，即使重新启动客户端或断网的情况下，该缓存仍然有效。
+                    </li>
+                    <li>截屏功能：客户端中封装了截屏功能，并提供了javascript的接口，可以直接用javascript实现截屏。
+                    </li>
+					<li>定位功能：客户端中封装专门升级了定位功能，能实现wifi,gps等几种方式的综合定位功能。
+                    </li>
+					<!--<li>一键打包：产品包中提供了一个打包工具，只需要将您的web程序所在路径设置好，即可一键打包成apk文件。
+                    </li>-->
+                </ol>
+				<h2>三、各目录及文件介绍</h2>
+				<p>
+                解压下载下来的压缩包后，在resource\Android下您将看到如下目录：
+                </p>
+				<div class="pageImage"> <img src="./images/direct.jpg" /></div>
+				<ol> 
+                    <!--<li>
+					ApkBuilder:这个目录中放的是一键打包工具，具体使用方法见<a href="apkbuilder.html" target="_blank">第八章</a>。
+                    </li>-->
+					<li>
+					data:这个目录中放的是离线地图数据。
+                    </li>
+					<li>
+					help:这个目录中放的是帮助文档。
+                    </li>
+					<li>
+					html:这个目录中放的是范例的html文件。
+                    </li>
+					<li>
+					img:这个目录中放的是相关图片文件。
+                    </li>
+					<li>
+					js:这个目录中放的是相关js文件(插件以及jquery)。
+                    </li>
+					<li>
+					libs:这个目录中放的是构建工程所需要的jar包。
+                    </li>
+					<li>
+					phonegap:这个目录中放的是phonegap相关文件。
+                    </li>
+					<li>
+					xml:这个目录中放的是phonegap的配置文件。
+                    </li>
+					<li>
+					ProjectBuilder.bat:工程文件生成工具,具体使用方法见<a href="projectbuilder.html" target="_blank">第五章</a>。
+                    </li>
+                </ol>
+				<div><h2 style="display:inline"><a class="title_a" href="environment.html">四、系统环境搭建</a></h2></div>
+				<div><h2 style="display:inline"><a class="title_a" href="projectbuilder.html">五、使用ProjectBuilder生成工程</a></h2></div>
+				<div><h2 style="display:inline"><a class="title_a" href="projectdirectory.html">六、安卓工程目录介绍</a></h2></div>
+				<div><h2 style="display:inline"><a class="title_a" href="examples.html">七、范例介绍</a></h2></div>
+            </div>
+            <div class='footer'>
+                <p>版权所有&nbsp;&copy; 1997-2015. &nbsp;北京超图软件股份有限公司</p>
+            </div>
+        </div>
+        <script src='./js/jquery.js'></script>
+        <script src='./js/bootstrap.js'></script>        
+    </body>
+</html>

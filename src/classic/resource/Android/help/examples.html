@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>SuperMap iClient for Javascript Android App</title>
+        <link href='./css/style.css' rel='stylesheet' />
+    </head>
+    <body data-spy="scroll" data-target=".subnav" data-offset="50">
+        <div id='container' class='container'>
+            <div class='page-header'>
+                <h1>范例讲解</h1>
+                <hr/>
+				<p>
+                本章主要讲解代码包中提供的几个范例，以及如何修改范例。在<a href="projectdirectory.html" target="new">工程文件目录</a>中的assets\www\...下有几个html文件，这便是范例代码。
+                </p>
+				<h3>一、Hello Word</h3>
+                <p>
+                假设我们现在有一个简单的浏览器端地图范例（如下），只需要修改几行代码，便可以让该范例在安卓移动设备上运行起来。
+                </p>
+				<pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+&lt;head&gt;  
+    &lt;meta charset="utf-8" /&gt; 
+    &lt;title&gt;SuperMap iClient for JavaScript&lt;/title&gt;
+    &lt;style&gt;
+        #map{
+            border:0px solid;
+        }
+    &lt;/style&gt;
+    &lt;script src="libs/SuperMap.Include.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+    var map, layer;
+    function init() {
+        map = new SuperMap.Map("map",{controls: [                      
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({dragPanOptions: {enableKinetic: true}})
+            ]
+        });   
+        layer = new SuperMap.Layer.CloudLayer();
+        map.addLayer(layer);      
+        map.setCenter(new SuperMap.LonLat(11615044.272732, 4422334.5114479), 4);     
+    }
+    &lt;/script&gt;
+&lt;/head&gt;
+<span style="color:#23adda">&lt;body onload="init()"&gt;</span>
+    &lt;div id="map" style="position:absolute;left:0px;right:0px;width:100%;height:100%;"&gt;&lt;/div&gt;    
+&lt;/body&gt;
+&lt;/html&gt;
+				</pre>
+				<p>1.引入phonegap相关代码：<span style="color:#23adda">&lt;script type="text/javascript" src="js/cordova-2.7.0.js"&gt;&lt;/script&gt;</span></p>
+				<p>2.修改初始化方式：删除<span style="color:#23adda">onload="init()"</span>，加上<span style="color:#23adda">document.addEventListener("deviceready",init,false);</span></p>
+				<p>3.设置运行方式为app应用：<span style="color:#23adda">SuperMap.Util.setApp(true);</span></p>
+				<p>修改后的代码如下：</p>
+			    <pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+&lt;head&gt;  
+    &lt;meta charset="utf-8" /&gt; 
+    &lt;title&gt;SuperMap iClient for JavaScript&lt;/title&gt;
+    &lt;style&gt;
+        #map{
+            border:0px solid;
+        }
+    &lt;/style&gt;
+    <span style="color:#23adda">&lt;script type="text/javascript" src="js/cordova-2.7.0.js"&gt;&lt;/script&gt;&lt;!--引入phonegap相关代码--&gt;</span>
+    &lt;script src="libs/SuperMap.Include.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+    var map, layer;
+    function init() {
+        <span style="color:#23adda">SuperMap.Util.setApp(true);//设置为app应用</span>
+        map = new SuperMap.Map("map",{controls: [                      
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({dragPanOptions: {enableKinetic: true}})
+            ]
+        });   
+        layer = new SuperMap.Layer.CloudLayer();
+        map.addLayer(layer);      
+        map.setCenter(new SuperMap.LonLat(11615044.272732, 4422334.5114479), 4);     
+    }
+    <span style="color:#23adda">document.addEventListener("deviceready",init,false);//绑定初始化事件</span>
+    &lt;/script&gt;
+&lt;/head&gt;
+<span style="color:#23adda">&lt;body&gt;</span>
+    &lt;div id="map" style="position:absolute;left:0px;right:0px;width:100%;height:100%;"&gt;&lt;/div&gt;    
+&lt;/body&gt;
+&lt;/html&gt;
+				</pre>
+			<p>在生成的<a href="projectdirectory.html" target="new">工程目录</a>中，默认运行的便是该范例，见assets\www\helloword.html</p>
+			</br>
+			<h3>二、mbtiles离线缓存范例</h3>
+			<p>JavaScript移动端产品支持iServer生成的mbtiles格式的离线缓存，关于mbtiles离线缓存，请见iserver帮助文档</p>
+			<p>下面我来讲解如何使用离线缓存：</p>
+			<p>1.代码包中有一个已经生成好的mbtiles文件（resource\Android\data\China.mbtiles），将该文件拷贝到移动设备sdcard的SuperMap文件夹中（部分设备的SuperMap文件夹可能会出现在内部存储中）。</p>
+			<p>2.创建一个TiledDynamicRESTLayer，第一个参数为mbtiles文件的文件名（去掉后缀，这里我们用China），第四个参数中，需要设置storageType为db：</p>
+			<p><span style="color:#23adda">layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", "", {}, {"storageType":"db"});</span></p>
+			<p>注意：这里不需要再绑定TiledDynamicRESTLayer的layerInitialized事件了。</p>
+			<p>代码如下：</p>
+		    <pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+&lt;head&gt;  
+    &lt;meta charset="utf-8" /&gt; 
+    &lt;title&gt;SuperMap iClient for JavaScript&lt;/title&gt;
+    &lt;style&gt;
+        #map{
+            border:0px solid;
+        }
+    &lt;/style&gt;
+    &lt;script type="text/javascript" src="js/cordova-2.7.0.js"&gt;&lt;/script&gt;
+    &lt;script src="libs/SuperMap.Include.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+    var map, layer;
+    function init() {
+        SuperMap.Util.setApp(true);
+        map = new SuperMap.Map("map",{controls: [                      
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({dragPanOptions: {enableKinetic: true}})
+            ]
+        });   
+        <span style="color:#23adda">layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", "", {}, {"storageType":"db"});  //使用mbtiles</span>  
+        map.addLayer(layer);
+        map.setCenter(new SuperMap.LonLat(0, 0), 1); 
+    }
+    document.addEventListener("deviceready",init,false);
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="map" style="position:absolute;left:0px;right:0px;width:100%;height:100%;"&gt;&lt;/div&gt;    
+&lt;/body&gt;
+&lt;/html&gt;
+			</pre>
+			<p>该范例的示例代码见assets\www\mbtiles.html</p>
+			<p>你可以修改<a href="projectdirectory.html" target="new">工程文件目录</a>中的res\xml\config.xml文件，将工程运行的页面改为mbtiles.html：</p>
+			<p>打开config.xml文件，将其中的<span style="color:#23adda">&lt;content src="helloword.html" /&gt;</span>改为<span style="color:#23adda">&lt;content src="mbtiles.html" /&gt;</span>，然后运行。</p>
+			</br>
+			<h3>三、定位范例</h3>
+			<p>想利用iClient JavaScript产品实现定位也非常简单，产品中已经提供了定位控件，您只需要调用该控件即可实现定位。</p>
+		    <p>以SuperMap云服务为例，步骤如下：</p>
+			<p>1.引入定位控件：</p>
+			<pre>&lt;script src="js/LocationControl.js"&gt;&lt;/script&gt;</pre>
+			<p>3.创建定位定位成功回调方法：</p>
+			<pre>
+// 获取位置信息成功时调用的回调函数
+function onSuccess(position) {
+    transCoordinate(position.lon,position.lat,
+        function(position){
+            var lat = position.lat;  
+            var lon = position.lon; 
+            markerLayer.clearMarkers();
+            
+            var size = new SuperMap.Size(44, 33);
+            var offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+            var icon = new SuperMap.Icon("./img/mark.png", size, offset);
+                      
+            markerLayer.addMarker(new SuperMap.Marker(new SuperMap.LonLat(lon, lat), icon));
+            map.setCenter(new SuperMap.LonLat(lon, lat));
+        },
+        function(){
+            alert("坐标转换失败!");
+        }
+    );
+}
+			</pre>
+			<p>4.创建坐标转换方法：</p>
+			<pre>
+//云服务转换坐标	
+function transCoordinate(lon,lat,onSuccess,onError){   
+    var urlCoordinate="http://services.supermapcloud.com/iserver/cloudhandler";
+    
+    var lon_Cloud = lon;
+    var lat_Cloud = lat;
+    
+    var param = "{\"x\":" + lon_Cloud + ",\"y\":" + lat_Cloud + "}";
+    var data = {"servicename":"coordinateService","methodname":"convertGPS2SM","parameter":param};
+    
+    jQuery.ajax({
+        "dataType":"jsonp",
+        "jsonp":"jsonp",
+        "type":"GET",
+        "url":urlCoordinate,
+        "data":data,
+        "success":function(onSuccess){
+            return function(cb){
+                var position = {
+                    "lon":cb.result[0].x,
+                    "lat":cb.result[0].y
+                };
+                onSuccess(position);
+            }
+        }(onSuccess),
+        "error":onError
+    });
+}
+			</pre>
+			<p>5.创建定位失败回调方法：</p>
+			<pre>
+function onError(msg) {
+    alert(msg);
+}
+			</pre>
+			<p>6.创建定位控件实例，并调用其定位方法：</p>
+			<pre>
+var locationCtrl = new SuperMap.LocationControl();
+locationCtrl.local(onSuccess,onError,5000);
+			</pre>
+			<p>完整示例代码如下：</p>
+			<pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+&lt;head&gt;  
+    &lt;meta charset="utf-8" /&gt; 
+    &lt;title&gt;SuperMap iClient for JavaScript&lt;/title&gt;
+    &lt;style&gt;
+        #map{
+            border:0px solid;
+        }
+    &lt;/style&gt;
+    &lt;script type="text/javascript" src="js/cordova-2.7.0.js"&gt;&lt;/script&gt;
+    &lt;script src="js/jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="libs/SuperMap.Include.js"&gt;&lt;/script&gt;
+<span style="color:#23adda">    &lt;script src="js/LocationControl.js"&gt;&lt;/script&gt;</span>
+    &lt;script type="text/javascript"&gt;
+    var map, layer,markerLayer,locationCtrl;
+    function init() {
+        SuperMap.Util.setApp(true);
+        map = new SuperMap.Map("map",{controls: [                      
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({dragPanOptions: {enableKinetic: true}})
+            ]
+        });   
+        layer = new SuperMap.Layer.CloudLayer();
+        markerLayer = new SuperMap.Layer.Markers("Markers");
+        map.addLayers([layer,markerLayer]);      
+        map.setCenter(new SuperMap.LonLat(11615044.272732, 4422334.5114479), 4);     
+    }
+<span style="color:#23adda">    function locating(){
+        if(!locationCtrl){
+            locationCtrl = new SuperMap.LocationControl();
+        }
+        locationCtrl.local(onSuccess,onError,5000);
+    }
+    // 获取位置信息成功时调用的回调函数
+    function onSuccess(position) {
+        transCoordinate(position.lon,position.lat,
+            function(position){
+                var lat = position.lat;  
+                var lon = position.lon; 
+                markerLayer.clearMarkers();
+                
+                var size = new SuperMap.Size(44, 33);
+                var offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+                var icon = new SuperMap.Icon("./img/mark.png", size, offset);
+                          
+                markerLayer.addMarker(new SuperMap.Marker(new SuperMap.LonLat(lon, lat), icon));
+                map.setCenter(new SuperMap.LonLat(lon, lat));
+            },
+            function(){
+                alert("坐标转换失败!");
+            }
+        );
+    }
+    // onError回调函数
+    function onError(msg) {
+      alert(msg);
+    }
+    //云服务转换坐标    
+    function transCoordinate(lon,lat,onSuccess,onError){   
+        var urlCoordinate="http://services.supermapcloud.com/iserver/cloudhandler";
+        
+        var lon_Cloud = lon;
+        var lat_Cloud = lat;
+        
+        var param = "{\"x\":" + lon_Cloud + ",\"y\":" + lat_Cloud + "}";
+        var data = {"servicename":"coordinateService","methodname":"convertGPS2SM","parameter":param};
+        
+        jQuery.ajax({
+            "dataType":"jsonp",
+            "jsonp":"jsonp",
+            "type":"GET",
+            "url":urlCoordinate,
+            "data":data,
+            "success":function(onSuccess){
+                return function(cb){
+                    var position = {
+                        "lon":cb.result[0].x,
+                        "lat":cb.result[0].y
+                    };
+                    onSuccess(position);
+                }
+            }(onSuccess),
+            "error":onError
+        });
+    }</span>
+    document.addEventListener("deviceready",init,false);
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="map" style="position:absolute;left:0px;right:0px;width:100%;height:100%;"&gt;&lt;/div&gt; 
+    &lt;input id="button" style="position:absolute;right:5px;top:5px;z-index:999" value="定位" type="button" ontouchend="locating()"&gt;&lt;/input&gt;    
+&lt;/body&gt;
+&lt;/html&gt;
+			</pre>
+			<p>该范例的示例代码见assets\www\location.html</p>
+			<p>你可以修改<a href="projectdirectory.html" target="new">工程文件目录</a>中的res\xml\config.xml文件，将工程运行的页面改为location.html：</p>
+			<p>打开config.xml文件，将其中的<span style="color:#23adda">&lt;content src="helloword.html" /&gt;</span>改为<span style="color:#23adda">&lt;content src="location.html" /&gt;</span>，然后运行。</p>
+			</br>
+			<h3>四、截屏范例</h3>
+			<p>你可以使用iClient JavaScript产品轻松实现截屏功能，产品中提供了截屏控件</p>
+			<p>具体步骤如下：</p>
+			<p>1.引入截屏控件代码：</p>
+			<pre>
+&lt;script src="js/ShotScreenControl.js"&gt;&lt;/script&gt;
+			</pre>
+			<p>2.创建截屏控件实例，并调用其截屏方法：</p>
+			<pre>
+var shotScreenCtl = new SuperMap.ShotScreenControl();
+shotScreenCtl.shot();
+			</pre>
+			<p>完整范例代码如下：</p>
+			<pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+&lt;head&gt;  
+    &lt;meta charset="utf-8" /&gt; 
+    &lt;title&gt;SuperMap iClient for JavaScript&lt;/title&gt;
+    &lt;style&gt;
+        #map{
+            border:0px solid;
+        }
+    &lt;/style&gt;
+    &lt;script type="text/javascript" src="js/cordova-2.7.0.js"&gt;&lt;/script&gt;
+    &lt;script src="libs/SuperMap.Include.js"&gt;&lt;/script&gt;
+<span style="color:#23adda">    &lt;script src="js/ShotScreenControl.js"&gt;&lt;/script&gt;</span>
+    &lt;script type="text/javascript"&gt;
+    var map, layer,markerLayer,shotScreenCtl;
+    function init() {
+        SuperMap.Util.setApp(true);
+        map = new SuperMap.Map("map",{controls: [                      
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({dragPanOptions: {enableKinetic: true}})
+            ]
+        });   
+        layer = new SuperMap.Layer.CloudLayer();
+        map.addLayers([layer]);      
+        map.setCenter(new SuperMap.LonLat(11615044.272732, 4422334.5114479), 4);     
+    }
+<span style="color:#23adda">    function shot(){
+        if(!shotScreenCtl){
+            shotScreenCtl = new SuperMap.ShotScreenControl();
+        }
+        shotScreenCtl.shot();
+    }</span>
+    document.addEventListener("deviceready",init,false);
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="map" style="position:absolute;left:0px;right:0px;width:100%;height:100%;"&gt;&lt;/div&gt; 
+    &lt;input id="button" style="position:absolute;right:5px;top:5px;z-index:999" value="截屏" type="button" ontouchend="shot()"&gt;&lt;/input&gt;    
+&lt;/body&gt;
+&lt;/html&gt;
+			</pre>
+			<p>该范例的示例代码见assets\www\shotscreen.html</p>
+			<p>你可以修改<a href="projectdirectory.html" target="new">工程文件目录</a>中的res\xml\config.xml文件，将工程运行的页面改为shotscreen.html：</p>
+			<p>打开config.xml文件，将其中的<span style="color:#23adda">&lt;content src="helloword.html" /&gt;</span>改为<span style="color:#23adda">&lt;content src="shotscreen.html" /&gt;</span>，然后运行。</p>
+            </div>
+            <div class='footer'>
+                <p>版权所有&nbsp;&copy; 1997-2015. &nbsp;北京超图软件股份有限公司</p>
+            </div>
+        </div>
+        <script src='./js/jquery.js'></script>
+        <script src='./js/bootstrap.js'></script>        
+    </body>
+</html>

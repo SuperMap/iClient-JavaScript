@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>homePage</title>
+
+    <!-- WinJS 引用 -->
+    <link href="//Microsoft.WinJS.1.0/css/ui-light.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+
+    <script src="/libs/SuperMap.Include.js"></script>
+
+
+    <link href="/css/default.css" rel="stylesheet" />
+    <link href="/pages/home/home.css" rel="stylesheet" />
+    <script src="/pages/home/home.js"></script>
+</head>
+<body>
+    <header>
+        <img class="logo" src="/images/images/iClient_logo.png" />
+        <span>WinRTApp</span>
+        <div id="dropMenu" class="dropMenuDefault">
+            <div><img id="measureLength" src="/images/images/measure_len.png" /></div>
+            <div><img id="measureArea" src="/images/images/measure_area.png" /></div>
+        </div>
+        <img id="measure" src="/images/images/measure.png" />
+        <img id="clear" src="/images/images/clear.png" />
+
+    </header>
+    <nav class="navzoom">
+        <div class="zoom">
+            <img id="zoomin" src="/images/images/zoomin.png" title="放大" />
+        </div>
+        <div class="zoom">
+            <img id="zoomout" src="/images/images/zoomout.png" title="缩小" />
+        </div>
+    </nav>
+    <nav class="navposition">
+        <div class="position">
+            <img id="myPosition" src="/images/images/position.png" title="我的位置" />
+        </div>
+    </nav>
+    <div class="statusMessage" id="statusMessage">
+        <!--<div class="left">
+            <div class="innerleft"></div>
+            <div class="innerright" id="statusMessage"></div>
+        </div>
+        <div class="right"></div>-->
+    </div>
+    <div id="map"></div>
+</body>
+</html>

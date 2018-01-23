@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="54ab6582-b0cf-4209-9a2b-6311a10124fc" Version="1.0.0.0" Publisher="CN=焕亮" />
+  <Properties>
+    <DisplayName>超图软件</DisplayName>
+    <PublisherDisplayName>SuperMap</PublisherDisplayName>
+    <Logo>images\storelogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.1</OSMinVersion>
+    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="default.html">
+      <VisualElements DisplayName="超图软件" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="WinRTApp" ForegroundText="light" BackgroundColor="#33ade8">
+        <DefaultTile ShowName="allLogos" WideLogo="images\widthlogo.png" />
+        <SplashScreen Image="images\splashscreen.png" BackgroundColor="#209be2" />
+      </VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <DeviceCapability Name="location" />
+  </Capabilities>
+</Package>

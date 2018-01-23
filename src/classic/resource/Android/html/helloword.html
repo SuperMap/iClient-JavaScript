@@ -1,0 +1,33 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>  
+    <meta charset="utf-8" /> 
+    <title>SuperMap iClient for JavaScript</title>
+	<style>
+		#map{
+			border:0px solid;
+		}
+	</style>
+	<script type="text/javascript" src="js/cordova-2.7.0.js"></script><!--引入phonegap相关代码-->
+    <script src="libs/SuperMap.Include.js"></script>
+    <script type="text/javascript">
+    var map, layer;
+    function init() {
+	    SuperMap.Util.setApp(true);//设置为app应用
+        map = new SuperMap.Map("map",{controls: [                      
+				new SuperMap.Control.ScaleLine(),
+				new SuperMap.Control.Zoom(),
+				new SuperMap.Control.Navigation({dragPanOptions: {enableKinetic: true}})
+			]
+        });   
+		layer = new SuperMap.Layer.CloudLayer();
+        map.addLayer(layer);      
+		map.setCenter(new SuperMap.LonLat(11615044.272732, 4422334.5114479), 4); 	
+    }
+	document.addEventListener("deviceready",init,false);//绑定初始化事件
+	</script>
+</head>
+<body>
+    <div id="map" style="position:absolute;left:0px;right:0px;width:100%;height:100%;"></div>    
+</body>
+</html>

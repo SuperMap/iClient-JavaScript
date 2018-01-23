@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>SuperMap iClient for Javascript Android App</title>
+        <link href='./css/style.css' rel='stylesheet' />
+    </head>
+    <body data-spy="scroll" data-target=".subnav" data-offset="50">
+        <div id='container' class='container'>
+            <div class='page-header'>
+                <h1>系统环境搭建</h1>
+                <hr/>
+				<p>
+                工具要求系统搭建了Java、Android和Ant环境，需要配置环境变量.
+                </p><!--这里需要注意的就是不要使
+                用JDK1.7的版本，因为由于不兼容打成的apk文件可能无法使用。-->
+				<!--<p>
+                环境变量中的Path下最终应该包含以下路径：
+                </p>
+				<pre>
+				C:\Program Files (x86)\Java\jdk1.6.0_10\bin;d:\android-sdk-windows\platform-tools;d:\android-sdk-windows\tools;D:\apache-ant-1.8.4\bin
+				</pre>-->
+				
+				<p><strong>1.搭建Java环境</strong>
+                </p>
+				<p>
+                首先，下载Java开发工具 <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="new">JDK</a>，
+				选择与个人系统相符合的版本，下载完成后双击安装。
+                </p>
+				<p>
+                新建环境变量JAVA_HMOE,并指向你的jdk安装路径，如图：
+                </p>
+				<div class="pageImage"><img src="images/environmental1.png"></div>
+				<p>
+                然后，设置"%JAVA_HMOE%\bin"到系统环境变量的Path下，如图：
+                </p>
+				<div class="pageImage"><img src="images/8.png"></div>
+				<p>
+                至此，Java环境搭建完毕。
+                </p>
+				
+				<p><strong>2.搭建Android环境</strong>
+                </p> 
+				<p>
+				首先，下载Android开发工具 <a href="http://developer.android.com/sdk/index.html" target="new">Android SDK For Windows</a>，
+				下载完成后双击安装。
+				</p>
+				<p>
+                然后，找到android-sdk-windows目录复制<span style="color:#23adda">d:\android-sdk-windows\platform-tools;d:\android-sdk-windows\tools;</span>到系统环境变量的Path下，如图：
+                </p>
+				<div class="pageImage"><img src="images/9.png"></div>
+				<p>
+                至此，Android环境搭建完毕。
+                </p>
+				
+				<p><strong>3.搭建Ant环境</strong>
+                </p>
+				<p>
+				首先，下载Apache Ant辅助打包工具 <a href="http://ant.apache.org/bindownload.cgi" target="new">Apache Ant</a>，
+				下载完成，解压即可。
+				</p>
+				<p>
+                然后，找到Apache Ant目录下的bin文件夹"D:\apache-ant-1.8.4\bin",复制该目录配置到系统环境变量的Path下，如图：
+                </p>
+				<div class="pageImage"><img src="images/10.png"></div>
+				<p>
+                至此，Ant环境搭建完毕，需要注意的是Ant环境依赖于Java环境，所以在此之前一定要把Java环境搭建好。
+                </p>
+            </div>
+            <div class='footer'>
+                <p>版权所有&nbsp;&copy; 1997-2015. &nbsp;北京超图软件股份有限公司</p>
+            </div>
+        </div>
+        <script src='./js/jquery.js'></script>
+        <script src='./js/bootstrap.js'></script>        
+    </body>
+</html>
