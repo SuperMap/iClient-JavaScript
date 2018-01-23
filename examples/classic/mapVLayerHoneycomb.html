@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>MapV 蜂巢图</title>
+    <title data-i18n="resources.title_mapVLayerHoneycomb">MapV 蜂巢图</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -17,7 +17,7 @@
 
     function init() {
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
 
@@ -32,7 +32,10 @@
                     }
                 })]
         });
-        baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {transparent: true, cacheEnabled: true}, {maxResolution: "auto"});
+        baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {
+            transparent: true,
+            cacheEnabled: true
+        }, {maxResolution: "auto"});
         baseLayer.events.on({"layerInitialized": addLayer});
     }
 
@@ -85,7 +88,7 @@
         map.addLayer(mapvLayer);
 
         setTimeout(function () {
-            openToolTip("示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理", map.getCenter());
+            openToolTip(resources.text_iClient9, map.getCenter());
         }, 1000);
 
     }

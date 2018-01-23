@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>鼠标样式</title>
+    <title data-i18n="resources.title_mousestyle">鼠标样式</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -16,7 +16,7 @@
 
     var broz = SuperMap.Util.getBrowser();
     if (broz.device === 'android' || broz.device === 'apple') {
-        widgets.alert.showAlert('您的设备不支持，请使用pc或其他设备',false);
+        widgets.alert.showAlert(resources.msg_supportEquipment,false);
     }
     map = new SuperMap.Map("map", {
         controls: [
@@ -70,7 +70,7 @@
         var popup = new SuperMap.Popup.FramedCloud("popwin",
             new SuperMap.LonLat(0, 0),
             null,
-            "手势鼠标样式 ",
+            resources.text_handMouse,
             null,
             false);
         infowin = popup;
@@ -78,7 +78,7 @@
         var popup1 = new SuperMap.Popup.FramedCloud("popwin",
             new SuperMap.LonLat(-100, -39.3),
             null,
-            "十字型鼠标样式 ",
+            resources.text_crossMouse,
             null,
             false);
         infowin1 = popup1;
@@ -86,7 +86,7 @@
         var popup2 = new SuperMap.Popup.FramedCloud("popwin",
             new SuperMap.LonLat(100, 39.3),
             null,
-            "默认的鼠标样式 ",
+            resources.text_defaultMouse,
             null,
             false);
         infowin2 = popup2;

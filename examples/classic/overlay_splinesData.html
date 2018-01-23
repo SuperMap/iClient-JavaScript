@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>B样条曲线</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_splinesData">B样条曲线</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,14 +32,16 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>B样条曲线</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_splinesData">B样条曲线</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="绘制点集" onclick="createPoint()"/>
-        <input type="button" class="btn btn-default" value="根据点集生成B样条曲线" onclick="createBLine()"/>
-        <input type="button" class="btn btn-default" value="清除" onclick="clearAllFeatures()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createPoint" onclick="createPoint()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createBLine" onclick="createBLine()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearAllFeatures()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var featuresOrigin = [];
     var map, local, layer, pointLayer, drawPoint, lineLayer, markerLayer, vector, select;
@@ -159,7 +159,7 @@
     function createBLine() {
         widgets.alert.clearAlert();
         if (pointArray.length < 2) {
-            widgets.alert.showAlert("请绘制至少两个点！",false,240);
+            widgets.alert.showAlert(resources.msg_drawTwoPoint, false, 240);
             return;
         }
         drawPoint.deactivate()

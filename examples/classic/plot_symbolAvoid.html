@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>避让区域</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_symbolAvoid">避让区域</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,15 +32,20 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>避让区域</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_symbolAvoid">避让区域</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="避让编辑" onclick="drawAvoidRegion()"/>
-        <input type="button" class="btn btn-default" value="退出避让编辑" onclick="doneAvoidEdit()"/>
-        <input type="button" class="btn btn-default" value="删除避让" onclick="deleteAvoidEdit()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_avoidEdit"
+               onclick="drawAvoidRegion()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancelAvoidEdit"
+               onclick="doneAvoidEdit()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteAvoid"
+               onclick="deleteAvoidEdit()"/>
         <span id="txt" style="color: red; margin-left: 20px; font-size:1em;"></span>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var plottingLayer, plottingEdit, layer;
     var drawGraphicObject, map, plotting, symbolLibManager;
@@ -149,7 +152,7 @@
     function drawAvoidRegion() {
         if (plottingLayer.selectedFeatures.length === 0) {
             var txt = document.getElementById('txt');
-            txt.innerHTML = "避让编辑之前请先选择标号";
+            txt.innerHTML = resources.msg_selectSymbol;
             return;
         }
         plottingEdit.avoidEdit(true);
@@ -164,7 +167,7 @@
     function deleteAvoidEdit() {
         if (plottingEdit.avoidEditing === false) {
             var txt = document.getElementById('txt');
-            txt.innerHTML = "删除避让编辑之前请先进入避让编辑";
+            txt.innerHTML = resources.msg_enterAvoidEdit;
         }
         plottingEdit.removeAllAvoidRegion();
     }

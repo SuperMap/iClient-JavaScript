@@ -2,9 +2,10 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>第三方信息框</title>
+    <title data-i18n="resources.title_infoWindow">第三方信息框</title>
     <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" include="nanoscroller,infoWindow" src="../../dist/include-classic.js"></script>
+    <script type="text/javascript" exclude="iclient-classic" include="nanoscroller,infoWindow"
+            src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -150,15 +151,12 @@
         markerPop.setLonLat(this.getLonLat(), {x: 0, y: 0});
         //设置弹窗的内容
         markerPop.setContentHTML(null, '<div id="pop-content">' + 'SmID  :  31' + "<br>" +
-            '区县  :  房山区' + "<br>" +
-            '机构名称  :  北京市房山区福海亿利残疾人职康站' + "<br>" +
-            '服务分类  :  职康类' + "<br>" +
-            '区县  :  房山区' + "<br>" +
-            '机构名称  :  北京市房山区福海亿利残疾人职康站' + "<br>" +
-            '服务分类  :  职康类' + "<br>" +
-            '<p>注：此弹窗的滚动条为浏览器默认样式，' +
-            'feature弹窗为jquery-nanoscroller 样式，' +
-            '如需修改请看feature弹窗示例</p></div>');
+            resources.text_district + "<br>" +
+            resources.text_organization + "<br>" +
+            resources.text_serviceType + "<br>" +
+            '<p>'+resources.text_note +
+            resources.text_featureStyle +
+            resources.text_needModify+'</p></div>');
         //添加弹窗到map图层
         map.addPopup(markerPop);
     }
@@ -167,7 +165,7 @@
     function onFeatureSelect(feature) {
         featurePop = new SuperMap.InfoWindow(
             "feature",
-            '要素信息'
+            resources.text_featureInfo
         );
         featurePop.hide();
         featurePop.titleBox = true;

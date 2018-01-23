@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>动态标绘高性能图层</title>
+    <title data-i18n="resources.title_plotSymbolPerformance">动态标绘高性能图层</title>
     <script type="text/javascript" exclude="iclient-classic"
             include="bevInclude,PlottingPanel" src="../../dist/include-classic.js"></script>
     <script type="text/javascript" include="bootstrap,responsive,sticklr" src="../js/include-web.js"></script>
@@ -40,21 +40,21 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>动态标绘高性能图层</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_plotSymbolPerformance">动态标绘高性能图层</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
-            <span><h4>高性能标绘图层：</h4></span>
+            <span><h4 data-i18n="resources.text_performanceLayer">高性能标绘图层：</h4></span>
             <div class='input-group'>
-                <input type="button" class="btn btn-default" value="添加不同点标号" onclick="addSymbol(0,true)"/></input>&nbsp;&nbsp;
-                <input type="button" class="btn btn-default" value="添加相同点标号" onclick="addSymbol(1,true)"/></input>&nbsp;&nbsp;
+                <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addDifferentPlot" onclick="addSymbol(0,true)"/></input>&nbsp;&nbsp;
+                <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addSamePlot" onclick="addSymbol(1,true)"/></input>&nbsp;&nbsp;
             </div>
-            <span><h4>标绘图层：</h4></span>
+            <span><h4 data-i18n="resources.text_performancePlottingLayer">标绘图层：</h4></span>
             <div class='input-group'>
-                <input type="button" class="btn btn-default" value="添加不同点标号"
+                <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addDifferentPlot"
                        onclick="addSymboltoPlottingLayer(0,false)"/></input>&nbsp;&nbsp;
-                <input type="button" class="btn btn-default" value="添加相同点标号"
+                <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addSamePlot"
                        onclick="addSymboltoPlottingLayer(1,false)"/></input>&nbsp;&nbsp;
-                <input type="button" class="btn btn-default" value="清除" onclick="clearSymbol()"/></input>
+                <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear" onclick="clearSymbol()"/></input>
             </div>
             <div class='input-group'>
                 <span id="txt" style="color: #ff0000; margin-left: 20px; font-size:20px;"></span>
@@ -135,7 +135,7 @@
             totalLength += symbolCount[i];
         }
         showText = document.getElementById("txt");
-        showText.innerHTML = "正在加载数据请稍等。。。。。。";
+        showText.innerHTML = resources.text_loadingData;
         for (var i = 0; i < symbolCount.length; i++) {
             addSymboltoArray(symbolCount[i], lib, codeArray[i], features, totalLength, flag);
         }
@@ -201,7 +201,7 @@
             totalLength += symbolCount[i];
         }
         showText = document.getElementById("txt");
-        showText.innerHTML = "正在加载数据请稍等。。。。。。";
+        showText.innerHTML = resources.text_loadingData;
         for (var i = 0; i < symbolCount.length; i++) {
             addSymbolArrayToPlottingLayer(symbolCount[i], libID, codeArray[i], features, totalLength, flag);
         }

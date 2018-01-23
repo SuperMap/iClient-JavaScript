@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>D3拾取器</title>
+    <title data-i18n="resources.title_zoomablePacking">D3拾取器</title>
     <style>
 
         #box {
@@ -123,11 +123,11 @@
          * android 设备也不能运行该范例*/
         var broz = SuperMap.Util.getBrowser();
         if (!hasSVG()) {
-            widgets.alert.showAlert('您的浏览器不支持 SVG，请升级！', false);
+            widgets.alert.showAlert(resources.msg_supportSVG, false);
             return;
         }
         else if (broz.device === 'android' || broz.device === 'apple') {
-            widgets.alert.showAlert('您的设备不支持，请使用pc或其他设备', false);
+            widgets.alert.showAlert(resources.msg_supportEquipment, false);
             return;
         }
         map = new SuperMap.Map("map", {
@@ -149,9 +149,11 @@
         }, {maxResolution: "auto"});
         baseLayer.events.on({"layerInitialized": addLayer});
     }
+
     window.onload = function () {
         init();
     };
+
     function hasSVG() {
         var doc = document;
         var SVG_NS = 'http://www.w3.org/2000/svg';
@@ -168,7 +170,7 @@
         var layerDiv = d3Layer.getDiv();
 
         var contentHTML = "<div id = 'box'>";
-        contentHTML += "<div>北京奥运会金牌分布拾取器</div>";
+        contentHTML += "<div>" + resources.text_picker + "</div>";
         contentHTML += "<div id= 'vis'></div>";
         contentHTML += "</div>";
         layerDiv.innerHTML = contentHTML;

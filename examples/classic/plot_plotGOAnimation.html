@@ -2,10 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>态势推演</title>
-    <script type="text/javascript" include="bootstrap,responsive,sticklr,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic"
-            include="bevInclude,PlottingPanel" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_plotGOAnimation">态势推演</title>
+
     <style type="text/css">
         body {
             margin: 0;
@@ -31,6 +29,11 @@
             text-align: center;
             z-index: 100;
             border-radius: 4px;
+        }
+
+        #toolbar .panel-title {
+            font-size: 16px;
+            color: white;
         }
 
         #menu {
@@ -60,59 +63,71 @@
         }
 
     </style>
+
 </head>
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>态势推演</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_plotGOAnimation">态势推演</h5></div>
     <div class='panel-body content'>
         <div class='input-group' style="margin-top:15px;margin-left: 10px;">
             <select class="search-query form-control" id="SLT" style="width: 120px;height: 30px; margin-bottom: 0;
             border-bottom-right-radius: 4px; border-top-right-radius: 4px;"></select>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="创建动画" onclick="createAnimation()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="播放" onclick="play()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="暂停" onclick="pause()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="停止" onclick="stop()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="复位" onclick="reset()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="删除动画" onclick="deleteSelectedFeaturesAnimation()"/>&nbsp;&nbsp;
-            <input type="button" class="btn btn-default" value="删除全部动画" onclick="deleteAllAnimation()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createAnimation"
+                   onclick="createAnimation()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_play" onclick="play()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_pause" onclick="pause()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_stop" onclick="stop()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_reset" onclick="reset()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteAnimation"
+                   onclick="deleteSelectedFeaturesAnimation()"/>&nbsp;&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteAllAnimation"
+                   onclick="deleteAllAnimation()"/>&nbsp;&nbsp;
         </div>
     </div>
 </div>
 <div id="menu">
     <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
         <div class="easyui-tabs" style="width: 100%;height: 100%">
-            <div id="plotPanel" title="标绘面板" style="overflow: hidden"></div>
-            <div id="stylePanel" title="属性面板"></div>
+            <div id="plotPanel" data-i18n="[title]resources.text_drawPanel" style="overflow: hidden"></div>
+            <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
         </div>
     </div>
 </div>
 <div id="map">
     <div id="menuPlotting" class="sticklr" style="left: 1%;color:rgb(0,0,0);background-color: #fff;">
         <li>
-            <a class="glyphicon plotting-glyphicon-draw-deactivate notArrow" title="取消绘制"
+            <a class="glyphicon plotting-glyphicon-draw-deactivate notArrow"
+               data-i18n="[title]resources.text_cancelDraw"
                onclick="PlottingDrawCancel()"></a>
         </li>
         <li>
-            <a class="glyphicon plotting-glyphicon-draw-removeAll notArrow" title="清除"></a>
+            <a class="glyphicon plotting-glyphicon-draw-removeAll notArrow"
+               data-i18n="[title]resources.text_input_value_clear"></a>
             <ul>
-                <li><input type="button" value="删除标号" onclick="deleteSymbol()"
+                <li><input type="button" data-i18n="[value]resources.btn_deleteMarker" onclick="deleteSymbol()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="清空图层" onclick="PlottingClear()"
+                <li><input type="button" data-i18n="[value]resources.btn_clearLayers" onclick="PlottingClear()"
                            style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
             </ul>
         </li>
         <li>
-            <a class="glyphicon plotting-lyphicon-save-simulationMap" title="态势图操作"></a>
+            <a class="glyphicon plotting-lyphicon-save-simulationMap"
+               data-i18n="[title]resources.text_situationMapOperation"></a>
             <ul>
-                <li><input type="button" value="保存态势图" onclick="saveSimulationMap()"
+                <li><input type="button" data-i18n="[value]resources.btn_saveSimulationMap"
+                           onclick="saveSimulationMap()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="加载态势图" onclick="loadSimulationMap()"
+                <li><input type="button" data-i18n="[value]resources.btn_loadSimulationMap"
+                           onclick="loadSimulationMap()"
                            style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
             </ul>
         </li>
     </div>
 </div>
+<script type="text/javascript" include="bootstrap,responsive,sticklr,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" include="bevInclude,PlottingPanel"
+        src="../../dist/include-classic.js"></script>
 <script>
     var map, plottingLayer, layer;
     var plotPanel, stylePanel;
@@ -130,7 +145,7 @@
 
     function init() {
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级',false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
         Bev.Theme.set("bev-base");

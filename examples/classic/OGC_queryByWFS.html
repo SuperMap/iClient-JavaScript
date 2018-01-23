@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>WFS 查询</title>
+    <title data-i18n="resources.title_queryByWFS">WFS 查询</title>
     <style type="text/css">
         .editPane {
             position: absolute;
@@ -18,13 +18,15 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>WFS 查询</h5>
+        <h5 class='panel-title text-center' data-i18n="resources.text_queryByWFS">WFS 查询</h5>
     </div>
     <div class='panel-body' id='params'>
         <p></p>
         <div align='center' class='button-group'>
-            <input type='button' id='btn1' class='btn btn-primary' value='多边形' onclick="drawGeometry()"/>
-            <input type='button' id='btn2' class='btn btn-primary' value='清除' onclick="clearFeatures()"/>
+            <input type='button' id='btn1' class='btn btn-primary' data-i18n="[value]resources.btn_polygon"
+                   onclick="drawGeometry()"/>
+            <input type='button' id='btn2' class='btn btn-primary' data-i18n="[value]resources.text_input_value_clear"
+                   onclick="clearFeatures()"/>
         </div>
     </div>
 </div>
@@ -46,7 +48,7 @@
                     enableKinetic: true
                 }
             })]
-    },notice());
+    }, notice());
 
     layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {
         transparent: true,
@@ -157,7 +159,7 @@
     }
 
     function notice() {
-        widgets.alert.showAlert("点击右侧按钮,绘制多边形",true);
+        widgets.alert.showAlert(resources.msg_drawPolygon, true);
     }
 
 </script>

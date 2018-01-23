@@ -2,10 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>动态标绘</title>
-    <script type="text/javascript" include="bootstrap,responsive,sticklr" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" include="bevInclude,PlottingPanel"
-            src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_dynamicPlot">动态标绘</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -47,125 +44,130 @@
 <div id="menu">
     <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
         <div class="easyui-tabs" style="width: 100%;height: 100%">
-            <div id="plotPanel" title="标绘面板" style="overflow: hidden"></div>
-            <div id="stylePanel" title="属性面板"></div>
+            <div id="plotPanel" data-i18n="[title]resources.text_drawPanel" style="overflow: hidden"></div>
+            <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
         </div>
     </div>
 </div>
 <div id="map">
     <div id="menuPlotting" class="sticklr" style="left: 1%;color:rgb(0,0,0);background-color: #fff;">
         <li>
-            <a class="glyphicon plotting-glyphicon-draw-deactivate notArrow" title="取消绘制"
+            <a class="glyphicon plotting-glyphicon-draw-deactivate notArrow"
+               data-i18n="[title]resources.text_cancelDraw"
                onclick="PlottingDrawCancel()"></a>
         </li>
         <li>
-            <a class="glyphicon plotting-glyphicon-draw-removeAll notArrow" title="清除"></a>
+            <a class="glyphicon plotting-glyphicon-draw-removeAll notArrow"
+               data-i18n="[title]resources.text_input_value_clear"></a>
             <ul>
-                <li><input type="button" value="删除标号" onclick="deleteSymbol()"
+                <li><input type="button" data-i18n="[value]resources.btn_deleteMarker" onclick="deleteSymbol()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="清空图层" onclick="PlottingClear()"
+                <li><input type="button" data-i18n="[value]resources.btn_clearLayers" onclick="PlottingClear()"
                            style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
             </ul>
         </li>
         <li>
-            <a class="glyphicon glyphicon-pencil notArrow" title="编辑器"></a>
+            <a class="glyphicon glyphicon-pencil notArrow" data-i18n="[title]resources.text_editor"></a>
             <ul>
-                <li><input type="button" value="复制" onclick="copySymbol()"
+                <li><input type="button" data-i18n="[value]resources.btn_copy" onclick="copySymbol()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="剪切" onclick="cutSymbol()"
+                <li><input type="button" data-i18n="[value]resources.btn_cut" onclick="cutSymbol()"
                            style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
-                <li><input type="button" value="粘贴" onclick="pasteSymbol()"
+                <li><input type="button" data-i18n="[value]resources.btn_paste" onclick="pasteSymbol()"
                            style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
             </ul>
         </li>
         <li>
-            <a class="glyphicon glyphicon-plus notArrow" title="添加图层" onclick="addPlottingLayer()"></a>
+            <a class="glyphicon glyphicon-plus notArrow" data-i18n="[title]resources.text_addLayer" onclick="addPlottingLayer()"></a>
         </li>
         <li>
-            <a class="glyphicon plotting-lyphicon-save-simulationMap" title="态势图操作"></a>
+            <a class="glyphicon plotting-lyphicon-save-simulationMap" data-i18n="[title]resources.text_situationMapOperation"></a>
             <ul>
-                <li><input type="button" value="保存态势图" onclick="saveSimulationMap()"
+                <li><input type="button" data-i18n="[value]resources.btn_saveSimulationMap" onclick="saveSimulationMap()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="加载态势图" onclick="loadSimulationMap()"
+                <li><input type="button" data-i18n="[value]resources.btn_loadSimulationMap" onclick="loadSimulationMap()"
                            style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
             </ul>
         </li>
         <li>
-            <a class="glyphicon glyphicon-edit notArrow" title="编辑标号"></a>
+            <a class="glyphicon glyphicon-edit notArrow" data-i18n="[title]resources.text_editMarker"></a>
             <ul>
-                <li><input type="button" value="外接矩形编辑" onclick="editCircusRetangle()"
+                <li><input type="button" data-i18n="[value]resources.btn_editRectangle" onclick="editCircusRetangle()"
                            style="width:85px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="节点编辑" onclick="editContorPoints()"
+                <li><input type="button" data-i18n="[value]resources.btn_editNode" onclick="editContorPoints()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="增加节点" onclick="addControlPoints()"
+                <li><input type="button" data-i18n="[value]resources.btn_addNode" onclick="addControlPoints()"
                            style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
             </ul>
         </li>
         <li>
-            <a class="glyphicon glyphicon-lock notArrow" title="切换图层锁定/编辑/选择模式"></a>
+            <a class="glyphicon glyphicon-lock notArrow" data-i18n="[title]resources.text_aboutMode"></a>
             <ul>
-                <li><input type="button" value="图层锁定切换" onclick="setPlottingLayerIsLocked()"
+                <li><input type="button" data-i18n="[value]resources.btn_lockSwitch" onclick="setPlottingLayerIsLocked()"
                            style="width:85px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="图层编辑切换" onclick="setPlottingLayerIsEdit()"
+                <li><input type="button" data-i18n="[value]resources.btn_editSwitch" onclick="setPlottingLayerIsEdit()"
                            style="width:85px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="图层选择切换" onclick="setPlottingLayerIsSelected()"
+                <li><input type="button" data-i18n="[value]resources.btn_selectSwitch" onclick="setPlottingLayerIsSelected()"
                            style="width:85px;height: 25px ;margin:0 auto;"> </input> </li>
             </ul>
         </li>
         <li>
-            <a class="glyphicon glyphicon-check notArrow" title="切换多选模式" onclick="multiSelectModel()"></a>
+            <a class="glyphicon glyphicon-check notArrow" data-i18n="[title]resources.text_multiselect" onclick="multiSelectModel()"></a>
 
         </li>
         <li>
-            <a class="glyphicon glyphicon-align-justify notArrow" title="多选对齐"></a>
+            <a class="glyphicon glyphicon-align-justify notArrow" data-i18n="[title]resources.text_multiselectAlign"></a>
             <ul>
-                <li><input type="button" value="左对齐" onclick="setSymbolAlighLeft()"
+                <li><input type="button" data-i18n="[value]resources.btn_leftAlignment" onclick="setSymbolAlighLeft()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="右对齐" onclick="setSymbolAlighRight()"
+                <li><input type="button" data-i18n="[value]resources.btn_rightAlignment" onclick="setSymbolAlighRight()"
                            style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
 
-                <li><input type="button" value="上对齐" onclick="setSymbolAlighUp()"
+                <li><input type="button" data-i18n="[value]resources.btn_topAlignment" onclick="setSymbolAlighUp()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
 
-                <li><input type="button" value="下对齐" onclick="setSymbolAlighDown()"
+                <li><input type="button" data-i18n="[value]resources.btn_bottomAlignment" onclick="setSymbolAlighDown()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="竖直居中" onclick="setSymbolAlighVerticalcenter()"
+                <li><input type="button" data-i18n="[value]resources.btn_verticalCenter" onclick="setSymbolAlighVerticalcenter()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="水平居中" onclick="setSymbolAlighHorizontalcenter()"
+                <li><input type="button" data-i18n="[value]resources.btn_horizontalCenter" onclick="setSymbolAlighHorizontalcenter()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
             </ul>
         </li>
 
         <li>
-            <a class="glyphicon glyphicon-retweet notArrow" title="截屏" onclick="mapToImg1()"></a>
+            <a class="glyphicon glyphicon-retweet notArrow" data-i18n="[title]resources.text_screenshot" onclick="mapToImg1()"></a>
         </li>
 
         <li>
-            <a class="glyphicon glyphicon-adjust notArrow" title="避让"></a>
+            <a class="glyphicon glyphicon-adjust notArrow" data-i18n="[title]resources.text_avoid"></a>
             <ul>
-                <li><input type="button" value="避让编辑" onclick="drawAvoidRegion()"
+                <li><input type="button" data-i18n="[value]resources.btn_avoidEdit" onclick="drawAvoidRegion()"
                            style="width:80px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="退出避让编辑" onclick="doneAvoidEdit()"
+                <li><input type="button" data-i18n="[value]resources.btn_cancelAvoidEdit" onclick="doneAvoidEdit()"
                            style="width:80px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="删除避让" onclick="deleteAvoidEdit()"
+                <li><input type="button" data-i18n="[value]resources.btn_deleteAvoid" onclick="deleteAvoidEdit()"
                            style="width:80px;height: 25px ;margin:0 auto;"> </input> </li>
             </ul>
         </li>
 
 
         <li>
-            <a class="glyphicon glyphicon-gift notArrow" title="创建组合"></a>
+            <a class="glyphicon glyphicon-gift notArrow" data-i18n="[title]resources.text_createGroup"></a>
             <ul>
-                <li><input type="button" value="组合" onclick="createGroupObjects()"
+                <li><input type="button" data-i18n="[value]resources.btn_group" onclick="createGroupObjects()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="多旗" onclick="createDrawFlags()"
+                <li><input type="button" data-i18n="[value]resources.btn_flags" onclick="createDrawFlags()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
-                <li><input type="button" value="解绑" onclick="testUnGroupObject()"
+                <li><input type="button" data-i18n="[value]resources.btn_unbundling" onclick="testUnGroupObject()"
                            style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
             </ul>
         </li>
     </div>
 </div>
+<script type="text/javascript" include="bootstrap,responsive,sticklr" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" include="bevInclude,PlottingPanel"
+        src="../../dist/include-classic.js"></script>
 <script>
     var map, plottingLayer, layer;
     var plotPanel, stylePanel;

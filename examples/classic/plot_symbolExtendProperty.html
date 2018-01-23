@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>自定义属性</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_symbolExtendProperty">自定义属性</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -61,28 +59,30 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>自定义属性</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_symbolExtendProperty">自定义属性</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>属性名：</span>
+                <span class='input-group-addon' data-i18n="resources.text_propertyName">属性名：</span>
                 <input class='form-control' id='propertyName' value=''/>
             </div>
             <div class='input-group'>
-                <span class='input-group-addon'>属性值：</span>
+                <span class='input-group-addon' data-i18n="resources.text_propertyValue">属性值：</span>
                 <input class='form-control' id='propertyValue' value=''/>
             </div>
         </div>
-        <input id="btn" type="button" class="btn  btn-default" value="添加属性" onclick="addExtendProperty()"/>
+        <input id="btn" type="button" class="btn  btn-default" data-i18n="[value]resources.btn_addProperty" onclick="addExtendProperty()"/>
     </div>
 </div>
 <div id="popupWin" class="panel panel-primary popupWindow">
     <div class="winTitle">
-        <span class="title_left">自定义属性</span>
+        <span class="title_left" data-i18n="resources.title_symbolExtendProperty">自定义属性</span>
     </div>
     <div id="extendProperty" class="winContent"></div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var plottingLayer, plottingEdit, layer, map;
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
@@ -168,7 +168,7 @@
 
         var features = plottingLayer.selectedFeatures;
         if (0 === features.length) {
-            widgets.alert.showAlert("请选择您要编辑的标号",true);
+            widgets.alert.showAlert(resources.msg_selectFeature, true);
             return;
         }
 
@@ -207,13 +207,13 @@
 
         //添加属性名
         var td_Name = document.createElement("th");
-        var text_Name = document.createTextNode("属性名");
+        var text_Name = document.createTextNode(resources.text_propertyName);
         td_Name.appendChild(text_Name);
         tr.appendChild(td_Name);
 
         //添加属性值
         var td_Value = document.createElement("th");
-        var text_Value = document.createTextNode("属性值");
+        var text_Value = document.createTextNode(resources.text_propertyValue);
         td_Value.appendChild(text_Value);
         tr.appendChild(td_Value);
         body.appendChild(tr);

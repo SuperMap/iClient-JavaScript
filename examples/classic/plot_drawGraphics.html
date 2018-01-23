@@ -2,10 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>复杂对象</title>
-    <script type="text/javascript" include="bootstrap,responsive,sticklr" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic"
-            include="DefaultStyleConfiguration,PlottingPanel" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_drawGraphics">复杂对象</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -32,6 +29,11 @@
             text-align: center;
             z-index: 100;
             border-radius: 4px;
+        }
+        
+        #toolbar .panel-title {
+            font-size: 16px;
+            color: white;
         }
 
         #menu {
@@ -124,14 +126,17 @@
         #myMenu3 ul li:hover {
             background-color: #CAE1FF;
         }
-        .panel-title{
+
+        .panel-title {
             font-size: 16px;
             color: #ffffff;
         }
+
         .panel {
             border-bottom: none;
         }
-        .input-group{
+
+        .input-group {
             margin: 10px auto;
         }
     </style>
@@ -139,44 +144,61 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>复杂对象</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_drawGraphics">复杂对象</h5></div>
     <div class='panel-body content' style="padding: 10px;">
         <div class='input-group'>
-            <input type="button" class="btn btn-default" value="航线1" onclick="drawKJRoute()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="航线2" onclick="drawHJRoute()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="航线3" onclick="drawDDRoute()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_route1"
+                   onclick="drawKJRoute()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_route2"
+                   onclick="drawHJRoute()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_route3"
+                   onclick="drawDDRoute()"/>
         </div>
         <div class='input-group'>
-            <input type="button" class="btn btn-default" value="扇形区域" onclick="drawArcRegion()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="干扰波束" onclick="drawInterferenceBeam()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_sectorArea"
+                   onclick="drawArcRegion()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_interfereBeam"
+                   onclick="drawInterferenceBeam()"/>
         </div>
         <div class='input-group'>
-            <input type="button" class="btn btn-default" value="对象标注" onclick="drawSymbolText()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="对象标注1" onclick="drawSymbolText1()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_objectMarker"
+                   onclick="drawSymbolText()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_objectMarker1"
+                   onclick="drawSymbolText1()"/>
         </div>
         <div class='input-group'>
-            <input type="button" class="btn btn-default" value="兵力部署1" onclick="drawHJBLdeploy()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="兵力部署2" onclick="drawKJBLdeploy()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_troopDeploy1"
+                   onclick="drawHJBLdeploy()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_troopDeploy2"
+                   onclick="drawKJBLdeploy()"/>
         </div>
         <div class='input-group'>
-            <input type="button" class="btn btn-default" value="卫星" onclick="drawSatellite()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="卫星可见时间窗口1" onclick="drawSatelliteTimeWindows1()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="卫星可见时间窗口2" onclick="drawSatelliteTimeWindows2()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_satellite"
+                   onclick="drawSatellite()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_satelliteWindow1"
+                   onclick="drawSatelliteTimeWindows1()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_satelliteWindow2"
+                   onclick="drawSatelliteTimeWindows2()"/>
         </div>
         <div class='input-group'>
-            <input type="button" class="btn btn-default" value="外接矩形编辑" onclick="editCircumRetangle()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="节点编辑" onclick="editControlPoints()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_editRectangle"
+                   onclick="editCircumRetangle()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_editNode"
+                   onclick="editControlPoints()"/>
         </div>
     </div>
 </div>
 <div id="menu">
     <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
         <div class="easyui-tabs" style="width: 100%;height: 100%">
-            <div id="stylePanel" title="属性面板"></div>
+            <div id="stylePanel" data-i18n="[title]resources.text_attributePanel"></div>
         </div>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,responsive,sticklr" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" include="DefaultStyleConfiguration,PlottingPanel"
+        src="../../dist/include-classic.js"></script>
 <script>
     var map, plottingLayer, layer, menu1, menu2, menu3;
     var stylePanel;
@@ -271,11 +293,11 @@
         var uuid = "iArcRegion";
         var locationPointWCs = new SuperMap.Geometry.Point(104, 31);
         var options = {
-            radiusText: ["半径", "1000公里"],
+            radiusText: [resources.text_radius, 1000 + resources.text_kilometre],
             radiusPosAngle: 30,
             radiusLineType: SuperMap.Plot.RadiusLineType.ARROW
         };
-        plottingLayer.createArcRegion(locationPointWCs, 1000, 0, 100, "扇形区域", 50, uuid, {}, options, {text: "扇形区域"});
+        plottingLayer.createArcRegion(locationPointWCs, 1000, 0, 100, resources.btn_sectorArea, 50, uuid, {}, options, {text: resources.btn_sectorArea});
         plottingEdit.activate();
 
     }
@@ -288,7 +310,7 @@
         //创建点标号
         var locationPointWCs1 = [new SuperMap.Geometry.Point(109, 34)];
         var uuid = "subInterferenceBeam";
-        plottingLayer.createSymbolWC(421, 80400, locationPointWCs1, uuid, {}, {}, {text: "用户自定义属性"});
+        plottingLayer.createSymbolWC(421, 80400, locationPointWCs1, uuid, {}, {}, {text: resources.text_customAttr});
 
         function symbolCreated(evt) {
             plottingLayer.events.un({"symbolcreated": symbolCreated});
@@ -301,7 +323,7 @@
             //创建干扰波束
             var associatedUuid = evt.feature.geometry.uuid;
             var uuid = "iInterferenceBeam";
-            plottingLayer.createInterferenceBeam(associatedUuid, locationPointWCs, uuid, {}, null, {text: "干扰波束"});
+            plottingLayer.createInterferenceBeam(associatedUuid, locationPointWCs, uuid, {}, null, {text: resources.btn_interfereBeam});
             plottingEdit.activate();
         }
     }
@@ -314,17 +336,17 @@
         //创建点标号
         var locationPointWCs1 = [new SuperMap.Geometry.Point(109, 34)];
         var symbolSize = new SuperMap.Size(30, 30);
-        plottingLayer.createSymbolWC(421, 80102, locationPointWCs1, "uuid-sub-Symbol-1", {}, {symbolSize: symbolSize}, {textContent: "指挥所"});
+        plottingLayer.createSymbolWC(421, 80102, locationPointWCs1, "uuid-sub-Symbol-1", {}, {symbolSize: symbolSize}, {textContent: resources.text_commandPost});
 
         function symbolCreated(evt) {
             plottingLayer.events.un({"symbolcreated": symbolCreated});
             //创建对象标注
             var symbolTexts = [];
-            symbolTexts.push(new SuperMap.Plot.SymbolText("陕西省西安市", 0, null));
-            symbolTexts.push(new SuperMap.Plot.SymbolText("天气：晴", 2, null));
+            symbolTexts.push(new SuperMap.Plot.SymbolText(resources.text_shanxiXian, 0, null));
+            symbolTexts.push(new SuperMap.Plot.SymbolText(resources.text_weather, 2, null));
 
             var associatedUuid = evt.feature.geometry.uuid;
-            plottingLayer.createSymbolText(associatedUuid, symbolTexts, "uuid-SymbolText", {}, {addFrame: false}, {text: "对象标注"});
+            plottingLayer.createSymbolText(associatedUuid, symbolTexts, "uuid-SymbolText", {}, {addFrame: false}, {text: resources.btn_objectMarker});
             plottingEdit.activate();
         }
     }
@@ -336,13 +358,13 @@
         plottingLayer.events.on({"symbolcreated": symbolCreated});
         //创建点标号
         var locationPointWCs1 = [new SuperMap.Geometry.Point(119, 38)];
-        plottingLayer.createSymbolWC(421, 80500, locationPointWCs1, "uuid-sub-Symbol-2", {}, {}, {textContent: "指挥所"});
+        plottingLayer.createSymbolWC(421, 80500, locationPointWCs1, "uuid-sub-Symbol-2", {}, {}, {textContent: resources.text_commandPost});
 
         function symbolCreated(evt) {
             plottingLayer.events.un({"symbolcreated": symbolCreated});
             //创建对象标注
             var associatedUuid = evt.feature.geometry.uuid;
-            plottingLayer.createSymbolText1(associatedUuid, ["方向：78°", "速度：123海里/小时", "排水量：2000吨"], "uuid-SymbolText", {}, {}, {text: "对象标注"});
+            plottingLayer.createSymbolText1(associatedUuid, [resources.text_direction, resources.text_speed, resources.text_drainageAmount], "uuid-SymbolText", {}, {}, {text: resources.btn_objectMarker});
             plottingEdit.activate();
 
         }
@@ -358,7 +380,7 @@
 
         var locationPointWCs = [new SuperMap.Geometry.Point(117, 39)];
         var uuid = "subHJBLdeploy";
-        plottingLayer.createSymbolWC(421, 9, locationPointWCs, uuid, {}, {}, {text: "用户自定义属性"});
+        plottingLayer.createSymbolWC(421, 9, locationPointWCs, uuid, {}, {}, {text: resources.text_customAttr});
 
         function symbolCreated(evt) {
             plottingLayer.events.un({"symbolcreated": symbolCreated});
@@ -373,19 +395,19 @@
             subSymbol1.libID = 421;
             subSymbol1.code = 9;
             subSymbol1.totalNum = 3;
-            subSymbol1.textContent = "刑警";
+            subSymbol1.textContent = resources.text_police;
 
             var subSymbol2 = new SuperMap.Plot.SubSymbol();
             subSymbol2.libID = 421;
             subSymbol2.code = 80701;
             subSymbol2.totalNum = 3;
-            subSymbol2.textContent = "枪支";
+            subSymbol2.textContent = resources.text_firearms;
 
             var subObjects = [subSymbol, subSymbol1, subSymbol2];
             var associatedUuid = evt.feature.geometry.uuid;
             var uuid = "iNavyDeployment";
             var options = {colNum: 3, space: 5, textContent: "BLState"};
-            plottingLayer.createNavyDeployment(associatedUuid, subObjects, uuid, {}, options, {text: "海军兵力部署"});
+            plottingLayer.createNavyDeployment(associatedUuid, subObjects, uuid, {}, options, {text: resources.text_navy});
 
             plottingEdit.activate();
         }
@@ -399,7 +421,7 @@
         plottingLayer.events.on({"symbolcreated": symbolCreated});
 
         var locationPointWCs = [new SuperMap.Geometry.Point(117, 39)];
-        plottingLayer.createSymbolWC(421, 80101, locationPointWCs, "uuid-sub-KJBLdeploy", null, {}, {text: "机场"});
+        plottingLayer.createSymbolWC(421, 80101, locationPointWCs, "uuid-sub-KJBLdeploy", null, {}, {text: resources.text_airport});
 
         function symbolCreated(evt) {
             plottingLayer.events.un({"symbolcreated": symbolCreated});
@@ -408,25 +430,25 @@
             subSymbol.libID = 421;
             subSymbol.code = 80103;
             subSymbol.totalNum = 5;
-            subSymbol.textContent = "交警";
+            subSymbol.textContent = resources.text_trafficPolice;
 
             var subSymbol1 = new SuperMap.Plot.SubSymbol();
             subSymbol1.libID = 421;
             subSymbol1.code = 80105;
             subSymbol1.totalNum = 5;
-            subSymbol1.textContent = "治安警";
+            subSymbol1.textContent = resources.text_orderPolice;
 
             var subSymbol2 = new SuperMap.Plot.SubSymbol();
             subSymbol2.libID = 421;
             subSymbol2.code = 80201;
             subSymbol2.totalNum = 5;
-            subSymbol2.textContent = "指挥车";
+            subSymbol2.textContent = resources.text_commandCar;
 
             var subObjects = [subSymbol, subSymbol1, subSymbol2];
 
             var associatedUuid = evt.feature.geometry.uuid;
             var options = {colNum: 5, space: 5, isShowTooltip: true};
-            plottingLayer.createAirDeployment(associatedUuid, subObjects, "uuid-AirDeployment", {}, options, {text: "机场兵力部署"});
+            plottingLayer.createAirDeployment(associatedUuid, subObjects, "uuid-AirDeployment", {}, options, {text: resources.text_airportForceDeployment});
 
             plottingEdit.activate();
         }
@@ -445,7 +467,7 @@
             orbitPointWCs.push(new SuperMap.Plot.OrbitPoint(x, y, 0, i, time + i));
         }
         var uuid = "iSatellite";
-        plottingLayer.createSatellite(421, 80400, orbitPointWCs, "卫星", uuid, {}, {visible: true}, {text: "卫星自定义属性"});
+        plottingLayer.createSatellite(421, 80400, orbitPointWCs, resources.btn_satellite, uuid, {}, {visible: true}, {text: resources.text_satelliteCustomAttr});
         plottingEdit.activate();
     }
 
@@ -465,7 +487,7 @@
             orbitPointWCs.push(new SuperMap.Plot.OrbitPoint(x, y, 0, i, time + i));
         }
         var uuid = "uSatellite";
-        plottingLayer.createSatellite(421, 80400, orbitPointWCs, "卫星", uuid, {}, {visible: true}, {text: "卫星"});
+        plottingLayer.createSatellite(421, 80400, orbitPointWCs, resources.btn_satellite, uuid, {}, {visible: true}, {text: resources.btn_satellite});
 
         function symbolCreated(evt) {
             plottingLayer.events.un({"symbolcreated": symbolCreated});
@@ -473,7 +495,7 @@
             var timeWindows1 = new SuperMap.Plot.TimeWindowParameter(40, 50);
             var timeWindows = [timeWindows1];
             var uuid = "iSatelliteTimeWindows1";
-            plottingLayer.createSatelliteTimeWindows1(associatedUuid, timeWindows, uuid, {}, {text: "用户自定义属性"});
+            plottingLayer.createSatelliteTimeWindows1(associatedUuid, timeWindows, uuid, {}, {text: resources.text_customAttr});
 
             plottingEdit.activate();
         }
@@ -494,7 +516,7 @@
             orbitPointWCs.push(new SuperMap.Plot.OrbitPoint(x, y, 0, i, 1000 + i));
         }
         var uuid = "uSatellite1";
-        plottingLayer.createSatellite(421, 80400, orbitPointWCs, "卫星", uuid, {}, {visible: true}, {text: "卫星"});
+        plottingLayer.createSatellite(421, 80400, orbitPointWCs, resources.btn_satellite, uuid, {}, {visible: true}, {text: resources.btn_satellite});
 
         function symbolCreated(evt) {
             plottingLayer.events.un({"symbolcreated": symbolCreated});
@@ -503,7 +525,7 @@
             var timeWindows2 = new SuperMap.Plot.TimeWindowParameter(1045, 1050);
             var timeWindows = [timeWindows1, timeWindows2];
             var uuid = "iSatelliteTimeWindows2";
-            plottingLayer.createSatelliteTimeWindows2(associatedUuid, timeWindows, uuid, {}, {text: "卫星时间窗口2"});
+            plottingLayer.createSatelliteTimeWindows2(associatedUuid, timeWindows, uuid, {}, {text: resources.btn_satelliteWindow2});
 
             plottingEdit.activate();
         }
@@ -527,32 +549,32 @@
         var routeNode1 = new SuperMap.Plot.RouteNode();
         routeNode1.positionPoint = new SuperMap.Geometry.Point(106, 29);
         routeNode1.type = SuperMap.Plot.RouteNodeType.STANDBY;
-        routeNode1.name = "重庆";
+        routeNode1.name = resources.text_Chongqing;
 
         //起飞点
         var routeNode2 = new SuperMap.Plot.RouteNode();
         routeNode2.positionPoint = new SuperMap.Geometry.Point(116, 29);
         routeNode2.type = SuperMap.Plot.RouteNodeType.TAKEOFF;
-        routeNode2.name = "南昌";
+        routeNode2.name = resources.text_Nanchang;
 
         //展开点
         var routeNode3 = new SuperMap.Plot.RouteNode();
         routeNode3.positionPoint = new SuperMap.Geometry.Point(116.5, 40);
         routeNode3.type = SuperMap.Plot.RouteNodeType.EXPANDING;
-        routeNode3.name = "北京";
+        routeNode3.name = resources.text_Beijing;
 
         //可视化初始点
         var routeNode4 = new SuperMap.Plot.RouteNode();
         routeNode4.positionPoint = new SuperMap.Geometry.Point(106, 39);
         routeNode4.type = SuperMap.Plot.RouteNodeType.VISUALINITAL;
-        routeNode4.name = "银川";
+        routeNode4.name = resources.text_Yinchuan;
 
         //创建指向节点
         var textContents = [];
-        textContents.push("方向");
-        textContents.push("速度");
-        textContents.push("高度");
-        textContents.push("时间");
+        textContents.push(resources.text_orientation);
+        textContents.push(resources.text_seep1);
+        textContents.push(resources.text_height);
+        textContents.push(resources.text_time);
         var towardNode1 = new SuperMap.Plot.TowardNode({
             routeNodeId: routeNode2.id,
             textContent: textContents,
@@ -588,7 +610,7 @@
         routeNodes.push(routeNode4);
         var uuid = "iKJRoute";//实体的唯一标识
 
-        plottingLayer.createAirRoute(arrRoutePts, routeNodes, uuid, null, null, {text: "用户自定义属性"});
+        plottingLayer.createAirRoute(arrRoutePts, routeNodes, uuid, null, null, {text: resources.text_customAttr});
         plottingEdit.activate();
     }
 
@@ -811,7 +833,7 @@
         routeNodes.push(routeNode11);
         routeNodes.push(routeNode12);
         var uuid = "iNavyRoute";//实体的唯一标识
-        plottingLayer.createNavyRoute(arrRoutPts, routeNodes, uuid, null, null, {text: "用户自定义属性"});
+        plottingLayer.createNavyRoute(arrRoutPts, routeNodes, uuid, null, null, {text: resources.text_customAttr});
         plottingEdit.activate();
     }
 
@@ -1020,7 +1042,7 @@
         routeNodes.push(routeNode9);
         routeNodes.push(routeNode10);
         routeNodes.push(routeNode11);
-        plottingLayer.createMissileRoute(arrRoutPts, routeNodes, uuid, null, null, {text: "用户自定义属性"});
+        plottingLayer.createMissileRoute(arrRoutPts, routeNodes, uuid, null, null, {text: resources.text_customAttr});
         plottingEdit.activate();
 
     }

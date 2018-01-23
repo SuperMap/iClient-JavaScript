@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Graphic图层符号绘制</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_graphicSymbolData">Graphic图层符号绘制</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -25,7 +23,7 @@
             position: absolute;
             top: 50px;
             right: 10px;
-            width: 400px;
+            width: 450px;
             text-align: center;
             z-index: 100;
             border-radius: 4px;
@@ -35,24 +33,26 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>Graphic图层符号绘制</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_graphicSymbolData">Graphic图层符号绘制</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>绘制个数<span title='必填字段' style='color: red;'> * </span></span>
+                <span class='input-group-addon'><span data-i18n="resources.text_countsDraw">绘制个数</span><span data-i18n="[title]resources.text_requiredField" style='color: red;'> * </span></span>
                 <input id='total' type='text' class='form-control' value='100000'/>
             </div>
         </div>
         <div class='input-group'>
-            <input type="button" class="btn btn-default" value="开始绘制" onclick="addClover()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="切换图标并重绘" onclick="redraw()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_startDraw" onclick="addClover()"/>&nbsp;
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_switchIcon"  onclick="redraw()"/>&nbsp;
             <input type="button" class="btn btn-default" value="+" onclick="plus()"/>&nbsp;
             <input type="button" class="btn btn-default" value="-" onclick="minus()"/>&nbsp;
-            <input type="button" class="btn btn-default" value="移除" onclick="removeData()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.text_remove" onclick="removeData()"/>
         </div>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var map, layer, graphicLayer, symbolinfo, selectGraphic, popup = null, img, imageWidth = 32,
         imagePaths = ['./images/marker_blue.png', './images/marker_red.png'], imageIdx = 0,
@@ -64,7 +64,7 @@
     function init() {
 
         if (!document.createElement("canvas").getContext) {
-            widgets.alert.showAlert("您的浏览器不支持Canvas，请先升级",false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
         map = new SuperMap.Map("map", {
@@ -109,9 +109,9 @@
         selectedFeature = feature;
         var lonlat = new SuperMap.LonLat(feature.geometry.x, feature.geometry.y);
         var contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>" +
-            "<span style='font-weight: bold; font-size: 12px;'>要素ID： " + feature.id + "</span><br>";
+            "<span style='font-weight: bold; font-size: 12px;'>"+resources.text_featureID + feature.id + "</span><br>";
         if (symbolinfo instanceof SuperMap.Style.Clover) {
-            contentHTML += "<span style='font-weight: bold; font-size: 12px;'>叶数索引： " + index + "</span><br>";
+            contentHTML += "<span style='font-weight: bold; font-size: 12px;'>"+resources.text_indexLeaf + index + "</span><br>";
             lonlat = map.getLonLatFromPixel(evt.xy);
         } else {
             lonlat = new SuperMap.LonLat(feature.geometry.x, feature.geometry.y);

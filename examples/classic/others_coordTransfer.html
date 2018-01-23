@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>获取经纬度坐标</title>
+    <title data-i18n="resources.title_coordTransfer">获取经纬度坐标</title>
     <style type="text/css">
         .loading {
             width: 48px;
@@ -34,14 +34,18 @@
 
 <div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>点击地图可获取经纬度坐标</h5>
+        <h5 class='panel-title text-center' data-i18n="resources.text_clickGetCoord">点击地图可获取经纬度坐标</h5>
     </div>
 
     <div class="loading info-body" style="display:none;"><img src="./images/loading.gif"/></div>
     <div class="content info-body" style="display:none;">
-        <h4>坐标：</h4>
-        <div>经度：<span class="lon"></span></div>
-        <div>纬度：<span class="lat"></span></div>
+        <h4 data-i18n="resources.text_coordinate">坐标：</h4>
+        <div>
+            <div style="float: left;" data-i18n="resources.text_longitude">经度：</div> <span class="lon"></span>
+        </div>
+        <div>
+            <div style="float: left;" data-i18n="resources.text_latitude">纬度：</div>  <span class="lat"></span>
+        </div>
     </div>
 </div>
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>

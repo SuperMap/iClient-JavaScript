@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>自定义信息框</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_anchored">自定义信息框</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -25,7 +23,7 @@
             position: absolute;
             top: 50px;
             right: 10px;
-            width: 300px;
+            width: 325px;
             text-align: center;
             z-index: 100;
             border-radius: 4px;
@@ -35,25 +33,27 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>自定义信息框</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_anchored">自定义信息框</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>颜色：</span>
+                <span class='input-group-addon' data-i18n="resources.text_color">颜色：</span>
                 <input id='popupColor' class='form-control' value='#66CDAA'/>
             </div>
         </div>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>透明度：</span>
+                <span class='input-group-addon' data-i18n="resources.text_opacity">透明度：</span>
                 <input id='popupOpacity' class='form-control' value='0.5'/>
             </div>
         </div>
-        <input type="button" class="btn btn-default" value="设置背景色" onclick="changecolor()"/>&nbsp; &nbsp;
-        <input type="button" class="btn btn-default" value="修改透明度" onclick="changeopacity()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_setBackgroundColor" onclick="changecolor()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_changeOpacity" onclick="changeopacity()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, layerWorld, marker, markers, popup;
@@ -150,7 +150,7 @@
     function changecolor() {
         widgets.alert.clearAlert();
         if (!popup) {
-            widgets.alert.showAlert("请先点击事件点，创建popup。", false, 220);
+            widgets.alert.showAlert(resources.msg_createPopup, false, 220);
             return;
         }
         var colorStr = document.getElementById('popupColor').value;
@@ -163,7 +163,7 @@
     function changeopacity() {
         widgets.alert.clearAlert();
         if (!popup) {
-            widgets.alert.showAlert("请先点击事件点，创建popup。", false, 220);
+            widgets.alert.showAlert(resources.msg_createPopup, false, 220);
             return;
         }
         var opacityStr = document.getElementById('popupOpacity').value;

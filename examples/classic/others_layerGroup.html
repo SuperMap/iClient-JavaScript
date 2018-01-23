@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>图层组控制</title>
+    <title data-i18n="resources.title_layerGroup">图层组控制</title>
     <style type="text/css">
         .winTitle {
             background: #4192c9;
@@ -42,7 +42,7 @@
 
         .popupWindow {
             right: 20px;
-            top: 140px;
+            top: 170px;
             position: absolute;
             border: 2px solid #D6E3F1;
             background: #FFF;
@@ -64,12 +64,13 @@
 
 <div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>图层组控制</h5>
+        <h5 class='panel-title text-center' data-i18n="resources.text_layerGroup">图层组控制</h5>
     </div>
     <div class='panel-body' id='params'>
         <p></p>
         <div align='center' class='button-group'>
-            <input type='button' id='btn1' class='btn btn-primary' value='图层组控制' onclick="show()"/>
+            <input type='button' id='btn1' class='btn btn-primary' data-i18n="[value]resources.btn_layerGroup"
+                   onclick="show()"/>
         </div>
     </div>
 </div>
@@ -82,12 +83,14 @@
     var tempLayerID = null,
         host = window.isLocal ? window.server : "http://117.122.248.69:8090",
         url = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图";
+
     // 获取子图层状态信息
     function getLayersInfo() {
         var getLayersInfoService = new SuperMap.REST.GetLayersInfoService(url);
         getLayersInfoService.events.on({"processCompleted": getLayersInfoCompleted});
         getLayersInfoService.processAsync();
     }
+
     getLayersInfo();
 
     //与服务器交互成功，得到子图层信息
@@ -101,6 +104,7 @@
         }
         createTempLayer();
     }
+
     //图层组控制菜单的配置
     var setting = {
         view: {
@@ -134,6 +138,7 @@
 
     var treeNodes = [];
     var layerID = 0;
+
     //处理layers中的子图层信息为 ztree所需的数据格式
     function handleTreeData(layers) {
         var length = layers.length;
@@ -269,7 +274,7 @@
         }
         $("#popupWin").css("display", "none");
         var str = "";
-        str += '<div class="winTitle" onMouseDown="startMove(this,event)" onMouseUp="stopMove(this,event)"><span class="title_left">京津地区地图</span><span class="title_right"><a href="javascript:closeWindow()" title="关闭窗口">关闭</a></span><br style="clear:right"/></div>';  //标题栏
+        str += '<div class="winTitle" onMouseDown="startMove(this,event)" onMouseUp="stopMove(this,event)"><span class="title_left">' + resources.text_JingjinMap + '</span><span class="title_right"><a href="javascript:closeWindow()" data-i18n="[title]resources.text_closeWindow">' + resources.text_close + '</a></span><br style="clear:right"/></div>';  //标题栏
 
         str += '<div class="winContent" style="overflow-y:auto;height:440px;">';
         str += '<ul id="tree" class="ztree"></ul>';
@@ -278,6 +283,7 @@
         document.getElementById("popupWin").style.width = "260px";
         document.getElementById("popupWin").style.height = "472px";
     }
+
     window.closeWindow = function () {
         $("#popupWin").css("display", "none");
     };
@@ -300,6 +306,7 @@
     window.stopMove = function (o, e) {
         document.documentElement.onmousemove = null;
     };
+
     function show() {
         $("#popupWin").css("display", "block");
     }

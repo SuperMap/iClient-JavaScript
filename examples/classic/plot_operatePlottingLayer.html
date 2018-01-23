@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>图层操作</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_operatePlottingLayer">图层操作</title>
     <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
@@ -34,15 +33,16 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>图层操作</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_operatePlottingLayer">图层操作</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="创建图层" onclick="createLayer()"/>
-        <input type="button" class="btn btn-default" value="删除图层" onclick="removeLayer()"/>
-        <input type="button" class="btn btn-default" value="绘制标号" onclick="plotSymbol()"/>
-        <input type="button" class="btn btn-default" value="取消绘制" onclick="PlottingDrawCancel()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createLayer" onclick="createLayer()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteLayer" onclick="removeLayer()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_drawMarker" onclick="plotSymbol()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancelMarker" onclick="PlottingDrawCancel()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
 <script>
     var map, baseLayer, drawGraphicObject, plottingEdit, symbolLibManager, plotting, plottingLayers = [],
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
@@ -94,8 +94,8 @@
 
     function layerAdded(addedEvt) {
         plottingLayers.push(addedEvt.layer);
-        var successMessage = "图层 " + addedEvt.layer.name + " 创建成功";
-        widgets.alert.showAlert(successMessage,true);
+        var successMessage = resources.text_layer + addedEvt.layer.name + resources.text_createSuccess;
+        widgets.alert.showAlert(successMessage, true);
 
         // 绘制标号;
         drawGraphicObject = new SuperMap.Control.DrawFeature(addedEvt.layer, SuperMap.Handler.GraphicObject);
@@ -113,7 +113,7 @@
             map.removeLayer(plottingLayer);
             map.removeControl(plottingLayer.drawGraphicObject);
         } else {
-            widgets.alert.showAlert("当前地图无标绘图层",false);
+            widgets.alert.showAlert(resources.msg_NoPlottingLayer, false);
         }
 
         if (plottingLayers.length !== 0) {
@@ -125,8 +125,8 @@
 
     function layerRemoved(removedEvt) {
         plottingLayers.pop();
-        var successMessage = "图层 " + removedEvt.layer.name + " 删除成功";
-        widgets.alert.showAlert(successMessage,true);
+        var successMessage = resources.text_layer + removedEvt.layer.name + resources.text_deleteSuccess;
+        widgets.alert.showAlert(successMessage, true);
     }
 
     function plotSymbol() {

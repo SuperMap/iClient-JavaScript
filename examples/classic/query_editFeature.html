@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>地物编辑</title>
-    <script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
-    <script type="text/javascript" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_editFeature">地物编辑</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,15 +32,17 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>地物编辑</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_editFeature">地物编辑</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="新增地物" onclick="activateAddFeature()" />
-        <input type="button" class="btn btn-default" value="选择地物" onclick="activateSelectedFeature()" />
-        <input type="button" class="btn btn-default" value="编辑地物" onclick="editselectedFeature()" />
-        <input type="button" class="btn btn-default" value="删除地物" onclick="deleteSelectedFeature()" />
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_addFeature" onclick="activateAddFeature()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_selectFeature" onclick="activateSelectedFeature()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_editFeature" onclick="editselectedFeature()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_deleteFeature" onclick="deleteSelectedFeature()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,widgets.alert" src="../js/include-web.js"></script>
+<script type="text/javascript" src="../../dist/include-classic.js"></script>
 <script>
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
     var map, local, layer, vectorLayer, drawPoint, drawPolygon, dataUrl, ids, modifyFeature,
@@ -142,17 +142,17 @@
         if (addResultIds === null && resourceInfo === null) return;
 
         if ((addResultIds && addResultIds.length > 0) || (resourceInfo && resourceInfo.succeed)) {
-            widgets.alert.showAlert("新增地物成功",true,240);
+            widgets.alert.showAlert(resources.msg_addFeatureSuccess, true, 240);
             vectorLayer.removeAllFeatures();
             //重新加载图层
             layer.redraw();
         } else {
-            widgets.alert.showAlert("新增地物失败",false,240);
+            widgets.alert.showAlert(resources.msg_addFeatureFailed, false, 240);
         }
     }
 
     function processFailed(e) {
-        widgets.alert.showAlert(e.error.errorMsg,false);
+        widgets.alert.showAlert(e.error.errorMsg, false);
     }
 
     //激活选择地物
@@ -192,7 +192,7 @@
             result = getFeaturesEventArgs.result;
         vectorLayer.removeAllFeatures();
         if (originFeatures === null || originFeatures.length === 0) {
-            widgets.alert.showAlert("查询地物为空",false,240);
+            widgets.alert.showAlert(resources.msg_queryFeatureEmpty, false, 240);
             return;
         }
         ids = new Array();
@@ -215,7 +215,7 @@
         widgets.alert.clearAlert();
         clearAllDeactivate();
         if (ids == null) {
-            widgets.alert.showAlert("请先选择地物",false,260);
+            widgets.alert.showAlert(resources.msg_selectFeatureFirstly, false, 260);
         }
         else {
             modifyFeature.activate();
@@ -261,7 +261,7 @@
     //更新地物完成
     function updateFeaturesProcessCompleted(editFeaturesEventArgs) {
         if (editFeaturesEventArgs.result.resourceInfo.succeed) {
-            widgets.alert.showAlert("更新地物成功",true,240);
+            widgets.alert.showAlert(resources.msg_updateFeatureSuccess, true, 240);
             //重新加载图层
             vectorLayer.removeAllFeatures();
             layer.redraw();
@@ -269,7 +269,7 @@
             ids = null;
         }
         else {
-            widgets.alert.showAlert("更新地物失败",false,240);
+            widgets.alert.showAlert(resources.msg_updateFeatureFailed, false, 240);
         }
     }
 
@@ -278,7 +278,7 @@
         widgets.alert.clearAlert();
         clearAllDeactivate();
         if (ids == null) {
-            widgets.alert.showAlert("请先选择地物",false,240);
+            widgets.alert.showAlert(resources.msg_selectFeatureFirstly, false, 240);
         }
         else {
             var editFeatureParameter,
@@ -301,13 +301,13 @@
     //删除地物完成
     function deleteFeaturesProcessCompleted(editFeaturesEventArgs) {
         if (editFeaturesEventArgs.result.resourceInfo.succeed) {
-            widgets.alert.showAlert("删除地物成功",true,240);
+            widgets.alert.showAlert(resources.msg_deleteFeatureSuccess, true, 240);
             //重新加载图层
             vectorLayer.removeAllFeatures();
             layer.redraw();
         }
         else {
-            widgets.alert.showAlert("删除地物失败",false,240);
+            widgets.alert.showAlert(resources.msg_deleteFeatureFailed, false, 240);
         }
     }
 

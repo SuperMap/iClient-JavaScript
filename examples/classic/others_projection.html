@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>投影转换</title>
+    <title data-i18n="resources.title_projection">投影转换</title>
     <style type="text/css">
         #mousePositionDiv {
             position: absolute;
@@ -62,7 +62,7 @@
         //坐标转换
         lonLat.transform("EPSG:3857", "EPSG:4326");
 
-        var newHtml = "客户端地图坐标投影转换：<br> 地图投影：EPSG:3857 <br> 鼠标位置坐标投影：EPSG:4326 <br> 鼠标位置坐标:  " +
+        var newHtml = resources.text_clientProjection + "<br>" + resources.text_mapProjection + "EPSG:3857 <br>" + resources.text_mousePosition + "EPSG:4326 <br>" + resources.text_mouseCoord +
             lonLat.lon.toFixed(5) + " " +
             lonLat.lat.toFixed(5);
         document.getElementById("mousePositionDiv").innerHTML = newHtml;

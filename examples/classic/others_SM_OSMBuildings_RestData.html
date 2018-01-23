@@ -17,7 +17,7 @@
 
     //检测浏览器是啥支持canves Buildings 需要Canvas绘制
     if (!document.createElement('canvas').getContext) {
-        widgets.alert.showAlert("您的浏览器不支持Canvas,请先升级！", false);
+        widgets.alert.showAlert(resources.msg_supportCanvas, false);
     }
     //初始化地图
     map = new SuperMap.Map("map", {

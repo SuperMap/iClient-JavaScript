@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>地图事件</title>
+    <title data-i18n="resources.title_mapevent">地图事件</title>
     <script type="text/javascript" src="../js/include-web.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
@@ -30,7 +30,7 @@
         map.setCenter(new SuperMap.LonLat(0, 0), 1);
     }
     function callbackFunction(e) {
-        widgets.alert.showAlert("鼠标" + e.type + "事件",true);
+        widgets.alert.showAlert(resources.text_mouse + e.type + resources.text_event,true);
     }
 
 </script>

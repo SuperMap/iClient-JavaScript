@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>坐标转换</title>
+    <title data-i18n="resources.title_coordinateTransformation">坐标转换</title>
     <style type="text/css">
         #mousePositionDiv {
             position: absolute;
@@ -45,14 +45,16 @@
         //显示地图范围
         map.setCenter(new SuperMap.LonLat(0, 0), 1);
     }
+
     function getMousePositionPx(e) {
         var lonlat = map.getLonLatFromPixel(new SuperMap.Pixel(e.xy.x, e.xy.y));
 
-        var newHtml = "地图坐标转换：像素坐标与地理位置坐标转换<br>  鼠标像素坐标：" + "x=" + Math.floor(e.clientX) + "，" + "y=" + Math.floor(e.clientY) +
-            "<br>位置坐标：" + "lon=" + lonlat.lon.toFixed(5) + "，" + "lat=" +
+        var newHtml = resources.text_coordinateTransformation + "<br>" + resources.text_mousePixelCoordinate + "x=" + Math.floor(e.clientX) + "，" + "y=" + Math.floor(e.clientY) +
+            "<br>" + resources.text_positionCoordinate + "lon=" + lonlat.lon.toFixed(5) + "，" + "lat=" +
             lonlat.lat.toFixed(5);
         document.getElementById("mousePositionDiv").innerHTML = newHtml;
     }
+
     function addHandler(element, type, handler) {
         if (element.addEventListener) {
             element.addEventListener(type, handler, false);

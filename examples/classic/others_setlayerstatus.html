@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>子图层控制</title>
+    <title data-i18n="resources.title_setlayerstatus">子图层控制</title>
     <style type="text/css">
         .winTitle {
             background: #4192c9;
@@ -42,7 +42,7 @@
 
         .popupWindow {
             right: 20px;
-            top: 130px;
+            top: 170px;
             position: absolute;
             width: 400px;
             height: 600px;
@@ -50,6 +50,7 @@
             background: #FFF;
             z-index: 9999;
         }
+
         .editPane {
             position: absolute;
             right: 60px;
@@ -65,12 +66,13 @@
 
 <div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>子图层控制</h5>
+        <h5 class='panel-title text-center' data-i18n="resources.text_setlayerstatus">子图层控制</h5>
     </div>
     <div class='panel-body' id='params'>
         <p></p>
         <div align='center' class='button-group'>
-            <input type='button' id='btn1' class='btn btn-primary' value='子图层控制' onclick="show()"/>
+            <input type='button' id='btn1' class='btn btn-primary' data-i18n="[value]resources.btn_setlayerstatus"
+                   onclick="show()"/>
         </div>
     </div>
 </div>
@@ -89,6 +91,7 @@
     function show() {
         $("#popupWin").css("display", "block");
     }
+
     function getLayersInfo() {
         //获取地图状态参数必设：url
         var getLayersInfoService = new SuperMap.REST.GetLayersInfoService(url);
@@ -98,6 +101,7 @@
 
     //与服务器交互成功，得到子图层信息
     var subLayers = new Array();
+
     function getLayersInfoCompleted(getLayersInfoEventArgs) {
         if (getLayersInfoEventArgs.result) {
             {
@@ -116,10 +120,10 @@
         var layersList = "";
         for (var i = 0; i < subLayers.length; i++) {
             if (eval(subLayers[i].visible) == true) {
-                layersList += '<label class="checkbox" style="line-height: 28px; display: block"><input type="checkbox"  class = "checkboxSel" id="layersList' + i + '" name="layersList" value="' + subLayers[i].name + '" checked=true title="是否可见" />' + subLayers[i].name + '</label>';
+                layersList += '<label class="checkbox" style="line-height: 28px; display: block"><input type="checkbox"  class = "checkboxSel" id="layersList' + i + '" name="layersList" value="' + subLayers[i].name + '" checked=true title=' + resources.text_visibility + '/>' + subLayers[i].name + '</label>';
             }
             else {
-                layersList += '<label class="checkbox" style="line-height: 28px; display: block"><input type="checkbox" class = "checkboxSel" id="layersList' + i + '" name="layersList" value="' + subLayers[i].name + '" title="是否可见"  />' + subLayers[i].name + '</label>';
+                layersList += '<label class="checkbox" style="line-height: 28px; display: block"><input type="checkbox" class = "checkboxSel" id="layersList' + i + '" name="layersList" value="' + subLayers[i].name + '" title=' + resources.text_visibility + '/>' + subLayers[i].name + '</label>';
             }
         }
         showWindow(layersList);
@@ -241,7 +245,7 @@
         }
         $("#popupWin").css("display", "none");
         var str = "";
-        str += '<div class="winTitle" onMouseDown="startMove(this,event)" onMouseUp="stopMove(this,event)"><span class="title_left">World地图子图层</span><span class="title_right"><a href="javascript:closeWindow()" title="关闭窗口">关闭</a></span><br style="clear:right"/></div>';  //标题栏
+        str += '<div class="winTitle" onMouseDown="startMove(this,event)" onMouseUp="stopMove(this,event)"><span class="title_left">' + resources.text_mapSublayer + '</span><span class="title_right"><a href="javascript:closeWindow()" title=' + resources.text_closeWindow + '>' + resources.text_close + '</a></span><br style="clear:right"/></div>';  //标题栏
 
         str += '<div class="winContent" style="overflow-y:auto;height:400px;">';
         str += winMessage;
@@ -250,6 +254,7 @@
         document.getElementById("popupWin").style.width = "250px";
         document.getElementById("popupWin").style.height = "432px";
     }
+
     window.closeWindow = function () {
         $("#popupWin").css("display", "none");
     }

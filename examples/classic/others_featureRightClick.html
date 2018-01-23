@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>要素右键菜单</title>
+    <title data-i18n="resources.title_featureRightClick">要素右键菜单</title>
     <style type="text/css">
         .editPane {
             position: absolute;
@@ -49,12 +49,13 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0; ">
 <div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>要素右键菜单</h5>
+        <h5 class='panel-title text-center' data-i18n="resources.text_featureRightClick">要素右键菜单</h5>
     </div>
     <div class='panel-body' id='params'>
         <p></p>
         <div align='center' class='button-group'>
-            <input type='button' id='btn1' class='btn btn-primary' value='加载数据' onclick="addData()"/>
+            <input type='button' id='btn1' class='btn btn-primary' data-i18n="[value]resources.text_input_value_addData"
+                   onclick="addData()"/>
         </div>
     </div>
 </div>
@@ -64,11 +65,15 @@
     <ul style="margin-top: 0px; margin-bottom: 0px;margin-left: 0px">
         <li onclick="setCenter()">
             <div style="float:left;padding-right: 5px;width:30px;height:30px"><img src="./images/center.png"/></div>
-            <div style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">居中</div>
+            <div data-i18n="resources.text_mediacy"
+                 style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">居中
+            </div>
         </li>
         <li onclick="deleteSelect()">
             <div style="float:left;padding-right: 5px;width:30px;height:30px"><img src="./images/delete.png"/></div>
-            <div style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">删除</div>
+            <div data-i18n="resources.text_input_value_delete"
+                 style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">删除
+            </div>
         </li>
         </li>
     </ul>
@@ -80,10 +85,11 @@
     var map, layer, vectorLayer, gFeature, pointVector,
         host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-world/rest/maps/World";
+
     function init() {
         var broz = SuperMap.Util.getBrowser();
         if (broz.device === 'android' || broz.device === 'apple') {
-            widgets.alert.showAlert('您的设备不支持，请使用pc或其他设备',false);
+            widgets.alert.showAlert(resopurces.msg_supportEquipment, false);
             return;
         }
         map = new SuperMap.Map("map", {
@@ -121,6 +127,7 @@
         map.addLayers([layer, vectorLayer]);
         map.setCenter(new SuperMap.LonLat(0, 0), 0);
     }
+
     //创建EventUtil对象
     var EventUtil = {
         addHandler: function (element, type, handler) {
@@ -154,6 +161,7 @@
             menu.style.visibility = "hidden";
         });
     });
+
     function creatMenu(currentFeature) {
         var centerPoint = currentFeature.geometry.getCentroid();
         var pos = new SuperMap.LonLat(centerPoint.x, centerPoint.y);
@@ -164,6 +172,7 @@
         gFeature = currentFeature;
 
     }
+
     function addData() {
         vectorLayer.removeFeatures(pointVector);
         //点
@@ -175,13 +184,15 @@
             pointRadius: 10
         };
         vectorLayer.addFeatures([pointVector]);
-        widgets.alert.showAlert("可右键点击标记点",true);
+        widgets.alert.showAlert(resources.msg_rightClick, true);
     }
+
     function setCenter() {
         var centerP = gFeature.geometry.getCentroid();
         menu.style.visibility = "hidden";
         map.setCenter(new SuperMap.LonLat(centerP.x, centerP.y), 0);
     }
+
     function deleteSelect() {
         menu.style.visibility = "hidden";
         vectorLayer.removeFeatures(gFeature);

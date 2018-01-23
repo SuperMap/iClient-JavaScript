@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>编辑器</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.text_editor">编辑器</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,15 +32,17 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>编辑器</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.text_editor">编辑器</h5></div>
     <div class='panel-body content'>
-        <input id="btn_Copy" type="button" class="btn btn-default" value="复制" onclick="copySymbol()" />
-        <input id="btn_Cut" type="button" class="btn btn-default" value="剪切" onclick="cutSymbol()" />
-        <input id="btn_Paste" type="button" class="btn btn-default" value="粘贴" onclick="pasteSymbol()" />
-        <input id="btn_Reset" type="button" class="btn btn-default" value="复位" onclick="resetSymbol()" />
+        <input id="btn_Copy" type="button" class="btn btn-default" data-i18n="[value]resources.btn_copy" onclick="copySymbol()"/>
+        <input id="btn_Cut" type="button" class="btn btn-default" data-i18n="[value]resources.btn_cut" onclick="cutSymbol()"/>
+        <input id="btn_Paste" type="button" class="btn btn-default" data-i18n="[value]resources.btn_paste" onclick="pasteSymbol()"/>
+        <input id="btn_Reset" type="button" class="btn btn-default" data-i18n="[value]resources.btn_reset" onclick="resetSymbol()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var plottingLayer, plottingEdit, layer;
     var drawGraphicObject, map, plotting, editor;

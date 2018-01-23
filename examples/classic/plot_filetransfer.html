@@ -2,10 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>态势图上传下载</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" include="fileupLoad,PlottingPanel"
-            src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_filetransfer">态势图上传下载</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -28,10 +25,15 @@
             position: absolute;
             top: 50px;
             right: 10px;
-            width: 320px;
+            width: 401px;
             text-align: center;
             z-index: 100;
             border-radius: 4px;
+        }
+        
+        #toolbar .panel-title {
+            font-size: 16px;
+            color: white;
         }
 
         #filetree {
@@ -57,29 +59,34 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>态势图上传下载</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_filetransfer">态势图上传下载</h5></div>
     <div class='panel-body content' style="border-bottom-left-radius: 4px;border-bottom-right-radius: 4px">
         <div class='input-group' style="margin-top: 15px;margin-left: 10px">
             <input type="file" style='width:200px;float: left;' id="smlFile"
                    name="smlFile"> </input>
-            <input type="button" class="btn btn-default" value="上传" onclick="uploadSmlFile()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_upload"
+                   onclick="uploadSmlFile()"/>
         </div>
         <div class='input-group' style="margin-left: 10px;">
-            <span class='input-group-addon'>态势图文件URL：</span>
+            <span class='input-group-addon' data-i18n="resources.text_failUrl">态势图文件URL：</span>
             <input class='form-control' type="text" style='width:100px;' id="downloadUrl" name="downloadUrl"
                    value=""> </input>
-            <input type="button" class="btn btn-default" value="下载" onclick="downloadSmlFileOnServer()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_download"
+                   onclick="downloadSmlFileOnServer()"/>
         </div>
         <div class='input-group' style="margin-left: 10px;margin-bottom: 15px">
-            <span class='input-group-addon'>文件名称：</span>
+            <span class='input-group-addon' data-i18n="resources.text_failName">文件名称：</span>
             <input class='form-control' type="text" style='width:100px;' id="smlFileName" name="smlFileName"
                    value=""> </input>
-            <input type="button" class="btn btn-default" value="删除" onclick="deleteSmlFileOnServer()"/>
+            <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_delete" onclick="deleteSmlFileOnServer()"/>
         </div>
     </div>
 </div>
-<div id="filetree" title="态势图文件列表"></div>
+<div id="filetree" data-i18n="[title]resources.text_failList"></div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" include="fileupLoad,PlottingPanel"
+        src="../../dist/include-classic.js"></script>
 <script>
     var map, layer, drawFeature, treePanel, plottingLayer, plottingEdit, sitManager, plotting;
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";

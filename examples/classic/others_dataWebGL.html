@@ -22,7 +22,7 @@
     <div class='panel-body' id='params'>
         <p></p>
         <div align='center' class='button-group'>
-            <input type='button' id='btn1' class='btn btn-primary' value='加载数据' onclick="loadData()"/>
+            <input type='button' id='btn1' class='btn btn-primary' data-i18n="[value]resources.text_input_value_addData" onclick="loadData()"/>
         </div>
     </div>
 </div>
@@ -41,7 +41,7 @@
     var globe = null, url = host + "/iserver/services/map-world/rest/maps/World";
     function init() {
         if (!document.createElement('canvas').getContext) {
-            widgets.alert.showAlert('您的浏览器不支持 canvas，请升级', false);
+            widgets.alert.showAlert(resources.msg_supportCanvas, false);
             return;
         }
 
@@ -87,7 +87,7 @@
 
     function processFailed() {
         //查询失败后在控制台输出错误信息
-        console.log("SQL查询数据失败，请检查服务配置");
+        console.log(resources.msg_querySQLFailed);
     }
 
 </script>

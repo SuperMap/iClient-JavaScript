@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>标号库加载</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+    <title data-i18n="resources.title_loadSymbolLib">标号库加载</title>
     <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
     <style type="text/css">
         body {
@@ -54,17 +53,17 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>标号库加载</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_loadSymbolLib">标号库加载</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="标绘" onclick="plotSymbol()"/>&nbsp; &nbsp;
-        <input type="button" class="btn btn-default" value="取消标绘" onclick="PlottingDrawCancel()"/>&nbsp; &nbsp;
-        <input type="button" class="btn btn-default" value="清空" onclick="PlottingClear()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_plot" onclick="plotSymbol()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancelMarker" onclick="PlottingDrawCancel()"/>&nbsp; &nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_clear" onclick="PlottingClear()"/>
     </div>
     <div id="popupWin" class="popupWindow" style="display: block;top: 400px; height: 150px;">
         <div class='panel'>
             <div class='input-group'>
                 <div class="winTitle">
-                    <span class="title_left">标号库信息:</span>
+                    <span class="title_left" data-i18n="resources.text_symbolLibInfo">标号库信息:</span>
                 </div>
             </div>
         </div>
@@ -73,6 +72,7 @@
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
 <script>
     var plottingLayer, plottingEdit, layer, drawGraphicObject, map, plotting, symbolLibManager;
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";
@@ -158,7 +158,7 @@
         var tr_SymbolLibName = document.createElement("tr");
 
         var tdName_SymbolLibName = document.createElement("td");
-        var textName_SymbolLibName = document.createTextNode("标号库名称");
+        var textName_SymbolLibName = document.createTextNode(resources.text_symbolLibName);
         tdName_SymbolLibName.appendChild(textName_SymbolLibName);
         tr_SymbolLibName.appendChild(tdName_SymbolLibName);
 
@@ -173,7 +173,7 @@
         var tr_SymbolLibID = document.createElement("tr");
 
         var tdName_SymbolLibID = document.createElement("td");
-        var textName_SymbolLibID = document.createTextNode("标号库ID");
+        var textName_SymbolLibID = document.createTextNode(resources.text_SymbolLibID);
         tdName_SymbolLibID.appendChild(textName_SymbolLibID);
         tr_SymbolLibID.appendChild(tdName_SymbolLibID);
 
@@ -188,7 +188,7 @@
         var tr_SymbolCount = document.createElement("tr");
 
         var tdName_SymbolCount = document.createElement("td");
-        var textName_SymbolCount = document.createTextNode("标号个数");
+        var textName_SymbolCount = document.createTextNode(resources.text_symbolCounts);
         tdName_SymbolCount.appendChild(textName_SymbolCount);
         tr_SymbolCount.appendChild(tdName_SymbolCount);
 

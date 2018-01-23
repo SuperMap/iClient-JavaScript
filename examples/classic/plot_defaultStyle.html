@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>缺省属性</title>
-    <script type="text/javascript" include="bootstrap,responsive,colorpicker" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_defaultStyle">缺省属性</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -39,15 +37,15 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>缺省属性</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_defaultStyle">缺省属性</h5></div>
     <div class='panel-body content'>
         <div class='panel'>
             <div class='input-group'>
-                <span class='input-group-addon'>线宽：</span>
+                <span class='input-group-addon' data-i18n="resources.text_lineWidth">线宽：</span>
                 <input type='text' class='form-control' id='lineWidth' value='2' onchange="lineWidthChanges()"/>
             </div>
             <div class='input-group'>
-                <span class='input-group-addon'>线型：</span>
+                <span class='input-group-addon' data-i18n="resources.text_lineType">线型：</span>
                 <select class='form-control' id='lineStyle' onchange="lineStyleChanges()">
                     <option value='solid'>solid</option>
                     <option value='dot'>dot</option>
@@ -58,32 +56,34 @@
                 </select>
             </div>
             <div class='input-group'>
-                <span class='input-group-addon'>线色：</span>
+                <span class='input-group-addon' data-i18n="resources.text_lineColor">线色：</span>
                 <input type="text" id="lineColor" value="" class='form-control'/>
                 <span class='input-group-addon'><img src='images/colorpicker.png' id="cp1"
                                                      style="cursor:pointer"/></span>
             </div>
             <div class='input-group'>
-                <span class='input-group-addon'>标号宽度：</span>
+                <span class='input-group-addon' data-i18n="resources.text_markerWidth">标号宽度：</span>
                 <input type='text' class='form-control' id='symbolWidth' value='40' onchange="symbolWidthChanges()"/>
             </div>
             <div class='input-group'>
-                <span class='input-group-addon'>标号高度：</span>
+                <span class='input-group-addon' data-i18n="resources.text_markerHeight">标号高度：</span>
                 <input type='text' class='form-control' id='symbolHeight' value='40' onchange="symbolHeightChanges()"/>
             </div>
             <div class='input-group'>
-                <span class='input-group-addon'>使用缺省属性：</span>
+                <span class='input-group-addon' data-i18n="resources.text_defaultStyle">使用缺省属性：</span>
                 <select class='form-control' id='defaultStyleFlag' onchange="defaultStyleFlagChanges()">
                     <option value='0'>false</option>
                     <option value='1'>true</option>
-                </select>
+                </select>                                           
             </div>
         </div>
-        <input type="button" class="btn btn-default" value="绘制标号" onclick="drawPolygon()"/>
-        <input type="button" class="btn btn-default" value="取消标绘" onclick="cancel()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_drawMarker" onclick="drawPolygon()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_cancelMarker" onclick="cancel()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap,responsive,colorpicker" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
 <script>
     var map, baseLayer, plottingLayer, drawFeature, plotting, plottingEdit;
     var host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090";

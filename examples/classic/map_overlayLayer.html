@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>图层叠加</title>
+    <title data-i18n="resources.title_overlayLayer">图层叠加</title>
     <style type="text/css">
         .editPane {
             position: absolute;
@@ -19,16 +19,16 @@
 <div id="map">
     <div class='panel panel-primary editPane' id='editPane' style="z-index: 99999">
         <div class='panel-heading'>
-            <h5 class='panel-title text-center'>SuperMap REST 地图叠加</h5>
+            <h5 class='panel-title text-center' data-i18n="resources.text_mapOverlay">SuperMap REST 地图叠加</h5>
         </div>
         <div class='panel-body' id='params'>
             <div class='input-group'>
-                <span class='input-group-addon'>透明度</span>
-                <input id='layerOpacity' type='text' class='form-control' placeholder="设置图层的不透明度,取值[0-1]之间"/>
+                <span class='input-group-addon' data-i18n="resources.text_opacity">透明度</span>
+                <input id='layerOpacity' type='text' class='form-control' data-i18n="[placeholder]resources.text_input_tips_opacity"/>
             </div>
             <p></p>
             <div align='right' class='input-group'>
-                <input type='button' id='calc' class='btn btn-primary' value='点击生成对应透明度图层' onclick="setLayerOpacity()"/>
+                <input type='button' id='calc' class='btn btn-primary' data-i18n="[value]resources.btn_createOpacity" onclick="setLayerOpacity()"/>
             </div>
         </div>
     </div>

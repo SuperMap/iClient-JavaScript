@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>动态饼图</title>
+    <title data-i18n="resources.title_dynamicPieChart">动态饼图</title>
     <style type="text/css">
         .arc path {
             stroke: #fff;
@@ -29,13 +29,13 @@
 
     function init() {
         if (!hasSVG()) {
-            widgets.alert.showAlert('您的浏览器不支持 SVG，请升级！', false);
+            widgets.alert.showAlert(resources.msg_supportSVG, false);
             return;
         }
 
         //ie 9 支持 svg，但不完善，不能正常运行此范例
         if (SuperMap.Browser.name === "msie" && SuperMap.Browser.version.indexOf("9") !== -1) {
-            widgets.alert.showAlert('您的浏览器不支持本范例，请升级！', false);
+            widgets.alert.showAlert(resources.msg_supportInstance, false);
             return;
         }
 
@@ -132,7 +132,7 @@
                     //组织 D3 PieDChart 数据
                     var data = [
                         {
-                            "NAME": "其他省份" + allArea + "%",
+                            "NAME": resources.text_otherProvince + allArea + "%",
                             "SmArea": anotherArea
                         },
                         {

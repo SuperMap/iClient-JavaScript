@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>自定义右键菜单</title>
+    <title data-i18n="resources.title_contextMenu">自定义右键菜单</title>
     <style type="text/css">
         ul {
             list-style-type: none;
@@ -44,11 +44,15 @@
     <ul style="margin-top: 0px; margin-bottom: 0px; margin-left:0px;">
         <li onclick="zoomin()">
             <div style="float:left;padding-right: 5px;width:30px;height:30px"><img src="./images/plus.png"/></div>
-            <div style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">放大</div>
+            <div data-i18n="resources.btn_enlarge"
+                 style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">放大
+            </div>
         </li>
         <li onclick="zoomout()">
             <div style="float:left;padding-right: 5px;width:30px;height:30px"><img src="./images/subtract.png"/></div>
-            <div style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">缩小</div>
+            <div data-i18n="resources.btn_lessen"
+                 style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">缩小
+            </div>
     </ul>
 </div>
 <script type="text/javascript" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
@@ -56,10 +60,11 @@
 <script type="text/javascript">
     var map, layer, menu, host = window.isLocal ? window.server : "http://support.supermap.com.cn:8090",
         url = host + "/iserver/services/map-world/rest/maps/World";
+
     function init() {
         var broz = SuperMap.Util.getBrowser();
         if (broz.device === 'android' || broz.device === 'apple') {
-            widgets.alert.showAlert('您的设备不支持，请使用pc或其他设备', false);
+            widgets.alert.showAlert(resources.msg_supportEquipment, false);
         }
         map = new SuperMap.Map("map", {
             eventListeners: {
@@ -78,14 +83,17 @@
         layer.events.on({"layerInitialized": addLayer});
         map.events.register("mousedown");
     }
+
     $(document).ready(function () {
         init();
-        widgets.alert.showAlert('点击右键选择缩放选项',true);
+        widgets.alert.showAlert(resources.msg_clickZoom, true);
     });
+
     function addLayer() {
         map.addLayers([layer]);
         map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 1);
     }
+
     //创建EventUtil对象
     var EventUtil = {
         addHandler: function (element, type, handler) {
@@ -131,11 +139,13 @@
             menu.style.visibility = "visible";
         });
     });
+
     //放大 ，在当前缩放级别的基础上放大一级。
     function zoomin() {
         menu.style.visibility = "hidden";
         map.zoomIn();
     }
+
     //缩小，在当前缩放级别的基础上缩小一级。
     function zoomout() {
         menu.style.visibility = "hidden";

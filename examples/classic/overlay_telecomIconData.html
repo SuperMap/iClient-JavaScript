@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>电信符号数据</title>
-    <script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
-    <script type="text/javascript" exclude="iclient-classic" exclude="iclient-classic" src="../../dist/include-classic.js"></script>
+    <title data-i18n="resources.title_telecomIconData">电信符号数据</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,13 +32,18 @@
 <body>
 <div id="toolbar" class="panel panel-primary">
     <div class='panel-heading'>
-        <h5 class='panel-title text-center'>电信符号数据</h5></div>
+        <h5 class='panel-title text-center' data-i18n="resources.title_telecomIconData">电信符号数据</h5></div>
     <div class='panel-body content'>
-        <input type="button" class="btn btn-default" value="标注专业符号" onclick="createMarker()"/>&nbsp;
-        <input type="button" class="btn btn-default" value="清除" onclick="clearAllFeatures()"/>
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.btn_createIcon"
+               onclick="createMarker()"/>&nbsp;
+        <input type="button" class="btn btn-default" data-i18n="[value]resources.text_input_value_clear"
+               onclick="clearAllFeatures()"/>
     </div>
 </div>
 <div id="map"></div>
+<script type="text/javascript" include="bootstrap" src="../js/include-web.js"></script>
+<script type="text/javascript" exclude="iclient-classic" exclude="iclient-classic"
+        src="../../dist/include-classic.js"></script>
 <script>
     var featuresOrigin = [];
     var map, local, layer, vector, select;
@@ -370,7 +373,7 @@
             var i = SuperMap.Util.indexOf(vector.features, feature);
             var j = ++i;
             contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>" +
-                "<span style='font-weight: bold; font-size: 18px;'>设备</span>" + j + "<br>";
+                "<span style='font-weight: bold; font-size: 18px;'>" + resources.text_equipment + "</span>" + j + "<br>";
             contentHTML += "</div>";
             //初始化一个弹出窗口，当某个地图要素被选中时会弹出此窗口，用来显示选中地图要素的属性信息
             popup = new SuperMap.Popup.FramedCloud("chicken",
