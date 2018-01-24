@@ -58504,6 +58504,20 @@ var ImageMapLayer = exports.ImageMapLayer = _leaflet.Layer.extend({
     },
 
     /**
+     * @private
+     * @function L.supermap.imageMapLayer.prototype.onRemove
+     * @description 从地图上移除
+     * @param map - {L.map} 待移除的地图对象
+     */
+    onRemove: function onRemove(map) {
+        // eslint-disable-line no-unused-vars
+        if (this._currentImage) {
+            this._map.removeLayer(this._currentImage);
+        }
+        this._map.off('moveend', this.update, this);
+    },
+
+    /**
      * @function L.supermap.imageMapLayer.prototype.bringToFront
      * @description 将当前图层置顶
      */
